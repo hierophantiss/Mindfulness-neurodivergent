@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Play, Pause, Info, Volume2, VolumeX, SkipBack, SkipForward, Headphones } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../hooks/useLanguage';
-import HeroMeditator, { THEME_COLORS } from '../components/HeroMeditator';
 
 const EXERCISES: Record<string, any> = {
   'body-scan': {
@@ -538,17 +537,17 @@ export default function GenericExercise() {
       <div className="flex-1 flex flex-col items-center w-full max-w-lg mx-auto pb-safe mb-8">
         
         {/* Cover Art / Abstract Visual */}
-        <div className="relative w-64 h-64 md:w-72 md:h-72 mb-10 mt-4 rounded-[2rem] shadow-2xl overflow-hidden group">
-          <div className="absolute inset-0 bg-pine-800/30 backdrop-blur-[2px] border border-white/10 rounded-[2rem] z-0"></div>
+        <div className="relative w-64 h-64 md:w-72 md:h-72 mb-10 mt-4 rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden group">
+          <div className="absolute inset-0 bg-[#061114] border border-white/5 rounded-[3rem] z-0"></div>
           
           <div className="absolute inset-0 z-10 flex items-center justify-center">
-            <HeroMeditator 
-              mode={id === 'mindful-swaying' ? 'sway' : (id && ['body-scan', 'contact-observe', 'tree-pose', 'vertical-axis', 'gravity-surrender'].includes(id) ? 'grounding' : 'idle')} 
-              posture={id === 'tree-pose' || id === 'mindful-walking' ? 'standing' : 'sitting'}
-              runAnimation={running} 
-              audioActive={audioEnabled && running} 
-              themeColor={THEME_COLORS[theme.id as keyof typeof THEME_COLORS] || THEME_COLORS.default}
-              language={language}
+            <video 
+              autoPlay 
+              loop 
+              muted 
+              playsInline 
+              src="/hero_breathing.mp4" 
+              className={cn("w-full h-full object-cover transition-opacity duration-1000", running ? "opacity-100" : "opacity-60 grayscale-[50%]")}
             />
           </div>
         </div>

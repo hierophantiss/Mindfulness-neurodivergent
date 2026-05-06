@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Music, Bell } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
-import HeroMeditator from '../components/HeroMeditator';
 import { useCompanion } from '../hooks/useCompanion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Home() {
   const { language, t } = useLanguage();
@@ -11,6 +11,7 @@ export default function Home() {
   const { companionData } = useCompanion();
   
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: any) => {
@@ -25,6 +26,11 @@ export default function Home() {
     };
   }, []);
 
+  const showToast = (message: string) => {
+    setToastMessage(message);
+    setTimeout(() => setToastMessage(null), 3500);
+  };
+
   const handleInstallClick = async () => {
     if (deferredPrompt) {
       deferredPrompt.prompt();
@@ -33,27 +39,48 @@ export default function Home() {
         setDeferredPrompt(null);
       }
     } else {
-      alert(language === 'el' ? 'Η εφαρμογή είναι ήδη εγκατεστημένη ή δεν υποστηρίζεται σε αυτόν τον περιηγητή.' : 'The app is already installed or not supported in this browser.');
+      showToast(language === 'el' ? 'Η εφαρμογή είναι ήδη εγκατεστημένη ή δεν υποστηρίζεται σε αυτόν τον περιηγητή.' : 'The app is already installed or not supported in this browser.');
     }
   };
 
   const handleMusicClick = () => {
-    alert(language === 'el' ? 'Μουσική επένδυση θα προστεθεί σε επόμενη έκδοση!' : 'Background music will be added in a future update!');
+    showToast(language === 'el' ? 'Μουσική επένδυση θα προστεθεί σε επόμενη έκδοση!' : 'Background music will be added in a future update!');
   };
 
   const handleNotificationsClick = () => {
-    alert(language === 'el' ? 'Οι ειδοποιήσεις υπενθύμισης έρχονται σύντομα!' : 'Reminder notifications are coming soon!');
+    showToast(language === 'el' ? 'Οι ειδοποιήσεις υπενθύμισης έρχονται σύντομα!' : 'Reminder notifications are coming soon!');
   };
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-full animate-in fade-in slide-in-from-bottom-4 duration-500 lg:p-6 lg:gap-8 lg:items-stretch">
+    <div className="flex flex-col lg:flex-row min-h-full animate-in fade-in slide-in-from-bottom-4 duration-500 lg:p-6 lg:gap-8 lg:items-stretch relative">
       
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {toastMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-pine-900/95 border border-pine-700/50 text-pine-100 text-sm font-medium px-6 py-3 rounded-full shadow-lg backdrop-blur-md whitespace-nowrap text-center max-w-[90vw] truncate"
+          >
+            {toastMessage}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Hero Banner */}
       <section 
         className="relative flex-none h-[32vh] lg:h-auto lg:flex-1 lg:min-h-[500px] lg:mb-0 overflow-hidden rounded-[1.75rem] rounded-t-none lg:rounded-[2.5rem] bg-[#0a1a2f] border-b lg:border border-pine-800 shadow-[0_8px_30px_rgb(0,0,0,0.3)]"
       >
         <img src="/hero.webp" alt="Cosmic Background" className="absolute inset-0 w-full h-full object-cover opacity-80" />
-        <HeroMeditator mode="idle" className="absolute inset-0 w-full h-full object-cover" language={language} />
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          src="/hero_breathing.mp4" 
+          className="absolute inset-0 w-full h-full object-cover" 
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-pine-950 via-pine-900/40 to-transparent mix-blend-multiply flex flex-col justify-end p-6" />
         
         {/* Top left action buttons */}

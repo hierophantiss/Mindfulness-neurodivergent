@@ -11,6 +11,13 @@ export default function Layout() {
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === '/';
+  const mainRef = React.useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (mainRef.current) {
+      mainRef.current.scrollTo(0, 0);
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     const hasSeenIntro = localStorage.getItem('N_MINDFULNESS_SEEN_INTRO');
@@ -43,7 +50,7 @@ export default function Layout() {
       </div>
 
       {/* Main Content Area */}
-      <main id="main-content" className={cn(
+      <main id="main-content" ref={mainRef} className={cn(
         "flex-1 relative z-10 max-w-7xl mx-auto w-full flex flex-col overflow-y-auto overflow-x-hidden",
         isHome ? "px-0 py-0" : "px-4 md:px-8 pt-safe pb-safe"
       )}>

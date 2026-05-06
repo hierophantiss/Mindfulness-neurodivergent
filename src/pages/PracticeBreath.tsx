@@ -18,6 +18,8 @@ export default function PracticeBreath() {
   const cycleSeconds = Math.round(pattern.totalCycleDurationMs / 1000);
 
   const [running, setRunning] = useState(false);
+  const [isIntro, setIsIntro] = useState(false);
+  const [introElapsed, setIntroElapsed] = useState(0);
   const [audioEnabled, setAudioEnabled] = useState(false);
   const [cycles, setCycles] = useState(0);
   const [phase, setPhase] = useState(pattern.labels[0]);
@@ -166,6 +168,16 @@ export default function PracticeBreath() {
     }
   };
 
+  const startSequence = () => {
+    if (pattern.id === 'be-like-a-flower-5-5') {
+       setIsIntro(true);
+       setIntroElapsed(0);
+       setRunning(true);
+    } else {
+       setRunning(true);
+    }
+  };
+
   const savePreferenceAndStart = (withAudio: boolean) => {
     if (rememberChoice) {
       const pref = withAudio ? 'with' : 'without';
@@ -174,20 +186,37 @@ export default function PracticeBreath() {
     }
     setShowWarning(false);
     setAudioEnabled(withAudio);
-    setRunning(true);
+    startSequence();
   };
 
   const handleStartToggle = () => {
-    if (running) {
+    if (running || isIntro) {
       setRunning(false);
+      setIsIntro(false);
     } else {
       if (audioPref === null) {
         setShowWarning(true);
       } else {
-        setRunning(true);
+        startSequence();
       }
     }
   };
+
+  useEffect(() => {
+    if (!isIntro) return;
+    
+    const interval = setInterval(() => {
+       setIntroElapsed(prev => {
+          if (prev >= 4) {
+             setIsIntro(false);
+             return 0;
+          }
+          return prev + 1;
+       });
+    }, 1000);
+    
+    return () => clearInterval(interval);
+  }, [isIntro]);
 
   const handlePhaseChange = useCallback((p: PhaseLabel, idx: number) => {
     setPhase(p);
@@ -332,7 +361,7 @@ export default function PracticeBreath() {
         {/* The Animated Canvas Background */}
         <div className="absolute inset-0 pointer-events-none z-0">
           <BreathCanvas 
-            running={running} 
+            running={running || isIntro}
             audioEnabled={audioEnabled}
             patternId={pattern.id}
             phases={pattern.phases}
@@ -340,8 +369,11 @@ export default function PracticeBreath() {
             cycles={cycles}
             videoSrc={pattern.video}
             videoPeak={pattern.videoPeak}
+            videoInhaleStart={pattern.videoInhaleStart}
             videoInhaleEnd={pattern.videoInhaleEnd}
             videoExhaleStart={pattern.videoExhaleStart}
+            videoExhaleEnd={pattern.videoExhaleEnd}
+            isIntro={isIntro}
             onCycleComplete={setCycles}
             onPhaseChange={handlePhaseChange}
             onTick={updateArmPos}
@@ -376,8 +408,10 @@ export default function PracticeBreath() {
              
              {/* Counter Text */}
              <div className="z-10 font-sans font-semibold text-[3.5rem] tabular-nums drop-shadow-md">
-                {!running ? (
+                {!running && !isIntro ? (
                   <span className="text-white/40 mb-1 inline-block">∞</span>
+                ) : isIntro ? (
+                  <span className="text-amber-400">{5 - introElapsed}</span>
                 ) : isInhale ? (
                   <span className="text-sky-400">{phaseSeconds}</span>
                 ) : isExhale ? (
@@ -395,10 +429,10 @@ export default function PracticeBreath() {
           style={{ bottom: '8%' }}
         >
           <h2 className="text-3xl font-medium tracking-wide mb-1 text-white transition-all text-center drop-shadow-md">
-            {language === 'en' ? phase.label.en : phase.label.el}
+            {isIntro ? (language === 'en' ? 'Get Ready' : 'Προετοιμασία') : (language === 'en' ? phase.label.en : phase.label.el)}
           </h2>
           <p className="text-pine-200/90 italic tracking-wide text-[13px] text-center drop-shadow-md pb-2">
-            {language === 'en' ? phase.sub.en : phase.sub.el}
+            {isIntro ? (language === 'en' ? 'Follow the video' : 'Ακολούθησε την κίνηση') : (language === 'en' ? phase.sub.en : phase.sub.el)}
           </p>
         </div>
 

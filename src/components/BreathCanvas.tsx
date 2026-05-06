@@ -40,8 +40,11 @@ interface BreathCanvasProps {
   cycles: number;
   videoSrc?: string;
   videoPeak?: number; // legacy
+  videoInhaleStart?: number;
   videoInhaleEnd?: number;
   videoExhaleStart?: number;
+  videoExhaleEnd?: number;
+  isIntro?: boolean;
   onCycleComplete: (cycles: number) => void;
   onPhaseChange: (phase: PhaseLabel, index: number) => void;
   onTick?: (armPos: number) => void;
@@ -71,8 +74,11 @@ export default function BreathCanvas({
   cycles,
   videoSrc = '/raising_arms.mp4',
   videoPeak = 0.5,
+  videoInhaleStart = 0,
   videoInhaleEnd = 0.45,
   videoExhaleStart = 0.65,
+  videoExhaleEnd = 1.0,
+  isIntro = false,
   onCycleComplete, 
   onPhaseChange,
   onTick
@@ -81,7 +87,16 @@ export default function BreathCanvas({
   const videoRef = useRef<HTMLVideoElement>(null);
   
   // Ref for mutable animation state
-  const state = useRef({
+  const state = useRef<{
+    phaseIdx: number;
+    phaseStartTime: number;
+    introStartTime?: number;
+    armPos: number;
+    time: number;
+    cycles: number;
+    lastTime: number;
+    particles: { x: number; y: number; size: number; speed: number; phaseOffset: number; }[];
+  }>({
     phaseIdx: 0,
     phaseStartTime: performance.now(),
     armPos: 0,
@@ -103,13 +118,16 @@ export default function BreathCanvas({
 
     if (running && videoRef.current && videoRef.current.duration) {
       const vdur = videoRef.current.duration;
+      const inStart = vdur * videoInhaleStart;
       const inEnd = vdur * videoInhaleEnd;
       const exStart = vdur * videoExhaleStart;
       const phase = phases[0];
-      videoRef.current.currentTime = 0;
+      videoRef.current.currentTime = isIntro ? 0 : inStart;
       
-      if (phase.armFrom === 0 && phase.armTo === 1) {
-         videoRef.current.playbackRate = Math.max(0.1, inEnd / (phase.dur / 1000));
+      if (isIntro) {
+         videoRef.current.playbackRate = 1.0;
+      } else if (phase.armFrom === 0 && phase.armTo === 1) {
+         videoRef.current.playbackRate = Math.max(0.1, (inEnd - inStart) / (phase.dur / 1000));
       } else if (phase.armFrom === 1 && phase.armTo === 0) {
          videoRef.current.currentTime = exStart;
          videoRef.current.playbackRate = Math.max(0.1, (vdur - exStart) / (phase.dur / 1000));
@@ -150,33 +168,43 @@ export default function BreathCanvas({
       state.current.lastTime = now;
 
       if (running) {
-        const elapsed = now - state.current.phaseStartTime;
-        const phase = phases[state.current.phaseIdx];
-        const progress = Math.min(elapsed / phase.dur, 1);
-        const ep = easeInOutSine(progress);
-        
-        state.current.armPos = phase.armFrom + (phase.armTo - phase.armFrom) * ep;
-        
-        if (onTick) {
-          onTick(state.current.armPos);
-        }
-
-        if (progress >= 1) {
-          state.current.phaseIdx = (state.current.phaseIdx + 1) % phases.length;
-          state.current.phaseStartTime = now;
-          onPhaseChange(phaseLabels[state.current.phaseIdx], state.current.phaseIdx);
-
-          if (state.current.phaseIdx === 0) {
-            state.current.cycles++;
-            onCycleComplete(state.current.cycles);
-          }
+        if (isIntro) {
+           if (!state.current.introStartTime) state.current.introStartTime = now;
+           const introElapsedMs = now - state.current.introStartTime;
+           if (onTick) onTick(0);
+           state.current.phaseStartTime = now; // Prevent phase progression
+        } else {
+           if (state.current.introStartTime) state.current.introStartTime = 0;
+           const elapsed = now - state.current.phaseStartTime;
+           const phase = phases[state.current.phaseIdx];
+           const progress = Math.min(elapsed / phase.dur, 1);
+           const ep = easeInOutSine(progress);
+           
+           state.current.armPos = phase.armFrom + (phase.armTo - phase.armFrom) * ep;
+           
+           if (onTick) {
+             onTick(state.current.armPos);
+           }
+   
+           if (progress >= 1) {
+             state.current.phaseIdx = (state.current.phaseIdx + 1) % phases.length;
+             state.current.phaseStartTime = now;
+             onPhaseChange(phaseLabels[state.current.phaseIdx], state.current.phaseIdx);
+   
+             if (state.current.phaseIdx === 0) {
+               state.current.cycles++;
+               onCycleComplete(state.current.cycles);
+             }
+           }
         }
         
         // Continuous Video Synchronization
         if (videoRef.current && videoRef.current.duration && !isNaN(videoRef.current.duration)) {
              const vdur = videoRef.current.duration;
+             const inStart = vdur * videoInhaleStart;
              const inEnd = vdur * videoInhaleEnd;
              const exStart = vdur * videoExhaleStart;
+             const exEnd = vdur * videoExhaleEnd;
              const currentPhase = phases[state.current.phaseIdx];
              
              let idealTime = 0;
@@ -186,13 +214,18 @@ export default function BreathCanvas({
              const curElapsed = now - state.current.phaseStartTime;
              const curProgress = Math.min(curElapsed / currentPhase.dur, 1);
              
-             if (currentPhase.dur > 0) {
+             if (isIntro) {
+                 const introElapsedMs = now - (state.current.introStartTime || now);
+                 idealTime = (introElapsedMs / 1000);
+                 if (idealTime > vdur * videoInhaleStart) idealTime = vdur * videoInhaleStart;
+                 expectedRate = 1;
+             } else if (currentPhase.dur > 0) {
                  if (currentPhase.armFrom === 0 && currentPhase.armTo === 1) {
-                     idealTime = curProgress * inEnd;
-                     expectedRate = inEnd / (currentPhase.dur / 1000);
+                     idealTime = inStart + curProgress * (inEnd - inStart);
+                     expectedRate = (inEnd - inStart) / (currentPhase.dur / 1000);
                  } else if (currentPhase.armFrom === 1 && currentPhase.armTo === 0) {
-                     idealTime = exStart + curProgress * (vdur - exStart);
-                     expectedRate = (vdur - exStart) / (currentPhase.dur / 1000);
+                     idealTime = exStart + curProgress * (exEnd - exStart);
+                     expectedRate = (exEnd - exStart) / (currentPhase.dur / 1000);
                  } else if (currentPhase.armFrom === 1 && currentPhase.armTo === 1) {
                      idealTime = inEnd + curProgress * (exStart - inEnd);
                      if (exStart - inEnd < 0.1) {
@@ -243,7 +276,7 @@ export default function BreathCanvas({
         state.current.armPos = (Math.sin(state.current.time * 1.5) * 0.5 + 0.5) * 0.1;
       }
 
-      // draw(ctx, canvas); // disable canvas rendering
+      // draw(ctx, canvas); // enable canvas rendering
       animId = requestAnimationFrame(tick);
     };
 

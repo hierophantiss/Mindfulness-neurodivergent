@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../hooks/useLanguage';
 import { ArrowRight, Check } from 'lucide-react';
-import HeroMeditator from './HeroMeditator';
 
 export default function Onboarding({ onComplete }: { onComplete: () => void }) {
   const { t, language } = useLanguage();
@@ -48,7 +47,14 @@ export default function Onboarding({ onComplete }: { onComplete: () => void }) {
     <div className="fixed inset-0 z-50 flex flex-col bg-pine-950 font-sans overflow-hidden">
       {/* Background Visual */}
       <div className="absolute inset-0 z-0 opacity-40">
-        <HeroMeditator mode="idle" posture="sitting" language={language} runAnimation={true} />
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          src="/hero_breathing.mp4" 
+          className="w-full h-full object-cover" 
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-pine-950 via-pine-950/80 to-transparent mix-blend-multiply" />
       </div>
 

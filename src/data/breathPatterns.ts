@@ -14,8 +14,10 @@ export interface BreathPattern {
   labels: { label: { el: string, en: string }, sub: { el: string, en: string } }[];
   video?: string;
   videoPeak?: number;
+  videoInhaleStart?: number;
   videoInhaleEnd?: number;
   videoExhaleStart?: number;
+  videoExhaleEnd?: number;
 }
 
 export const BREATH_PATTERNS: BreathPattern[] = [
@@ -71,7 +73,9 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     totalCycleDurationMs: 10000,
     audioConfig: { base: 200, beat: 10, pulse: 10, ambientLayers: ['/waterfall.mp3'] }, // Alpha
     video: '/raising_arms.mp4',
-    videoPeak: 0.55,
+    videoPeak: 0.5,
+    videoInhaleEnd: 0.5,
+    videoExhaleStart: 0.5,
     phases: [
       { dur: 5000, armFrom: 0, armTo: 1 },
       { dur: 5000, armFrom: 1, armTo: 0 }
@@ -91,7 +95,9 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     totalCycleDurationMs: 10000,
     audioConfig: { base: 180, beat: 8, pulse: 8, ambientLayers: ['/ocean-waves.mp3'] }, // Alpha/Theta
     video: '/deep_bow.mp4',
-    videoPeak: 0.55,
+    videoPeak: 0.5,
+    videoInhaleEnd: 0.5,
+    videoExhaleStart: 0.5,
     phases: [
       { dur: 5000, armFrom: 0, armTo: 1 },
       { dur: 5000, armFrom: 1, armTo: 0 }
@@ -105,13 +111,15 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     id: 'tree-pose-5-5',
     category: 'movement',
     hasBinaural: true,
-    title: { el: 'Στάση Δέντρου (5-5)', en: 'Tree Pose (5-5)' },
+    title: { el: 'Εκπνοή από τον ουρανό (5-5)', en: 'Exhale from the sky (5-5)' },
     subtitle: { el: 'Ισορροπία & Σταθερότητα', en: 'Balance & Stability' },
     desc: { el: 'Ενισχύει τη συγκέντρωση και την εσωτερική σταθερότητα.', en: 'Enhances focus and inner stability.' },
     totalCycleDurationMs: 10000,
     audioConfig: { base: 200, beat: 10, pulse: 10, ambientLayers: ['/rain.mp3'] },
     video: '/tree_pose.mp4',
-    videoPeak: 0.55,
+    videoPeak: 0.5,
+    videoInhaleEnd: 0.5,
+    videoExhaleStart: 0.5,
     phases: [
       { dur: 5000, armFrom: 0, armTo: 1 },
       { dur: 5000, armFrom: 1, armTo: 0 }
@@ -130,7 +138,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     desc: { el: 'Μια κίνηση που συμβολίζει την εσωτερική εστίαση και τη γαλήνη του Ασκητή.', en: 'A movement symbolizing inner focus and the serenity of the Ascetic.' },
     totalCycleDurationMs: 10000,
     audioConfig: { base: 190, beat: 9, pulse: 9, ambientLayers: ['/fireplace.mp3'] },
-    video: '/ascetic_breathing.mp4',
+    video: '/lotus_bloom.mp4',
     videoPeak: 0.5,
     videoInhaleEnd: 0.5,
     videoExhaleStart: 0.5,
@@ -154,9 +162,13 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     audioConfig: { base: 200, beat: 10, pulse: 10, ambientLayers: ['/ocean-waves.mp3'] }, // Alpha
     video: '/be_like_a_flower.mp4',
     videoPeak: 0.5,
+    videoInhaleStart: 0.5,
+    videoInhaleEnd: 0.75,
+    videoExhaleStart: 0.75,
+    videoExhaleEnd: 1.0,
     phases: [
-      { dur: 5000, armFrom: 0, armTo: 1 },
-      { dur: 5000, armFrom: 1, armTo: 0 }
+      { dur: 5000, armFrom: 1, armTo: 0 },
+      { dur: 5000, armFrom: 0, armTo: 1 }
     ],
     labels: [
       { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "μάζεψε τα χέρια (5s)", en: "gather arms (5s)" } },
@@ -173,7 +185,9 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     totalCycleDurationMs: 10000,
     audioConfig: { base: 200, beat: 10, pulse: 10, ambientLayers: ['/ocean-waves.mp3'] },
     video: '/tree_pose_left.mp4',
-    videoPeak: 0.55,
+    videoPeak: 0.5,
+    videoInhaleEnd: 0.5,
+    videoExhaleStart: 0.5,
     phases: [
       { dur: 5000, armFrom: 0, armTo: 1 },
       { dur: 5000, armFrom: 1, armTo: 0 }
@@ -193,7 +207,9 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     totalCycleDurationMs: 10000,
     audioConfig: { base: 180, beat: 8, pulse: 8, ambientLayers: ['/waterfall.mp3'] },
     video: '/bending_forward.mp4',
-    videoPeak: 0.55,
+    videoPeak: 0.5,
+    videoInhaleEnd: 0.5,
+    videoExhaleStart: 0.5,
     phases: [
       { dur: 5000, armFrom: 0, armTo: 1 },
       { dur: 5000, armFrom: 1, armTo: 0 }

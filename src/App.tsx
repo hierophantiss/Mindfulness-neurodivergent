@@ -21,21 +21,6 @@ import Onboarding from './components/Onboarding';
 
 import { LanguageProvider, useLanguage } from './hooks/useLanguage';
 
-function ForceHomeOnReload() {
-  const navigate = useNavigate();
-  
-  useEffect(() => {
-    try {
-      const navEntries = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
-      if (navEntries.length > 0 && navEntries[0].type === 'reload') {
-        navigate('/', { replace: true });
-      }
-    } catch (e) {}
-  }, [navigate]);
-
-  return null;
-}
-
 function AppContent() {
   const [showOnboarding, setShowOnboarding] = useState(false);
 
@@ -49,7 +34,6 @@ function AppContent() {
     <>
       {showOnboarding && <Onboarding onComplete={() => setShowOnboarding(false)} />}
       <HashRouter>
-        <ForceHomeOnReload />
         <CompanionProvider>
           <Routes>
           <Route path="/" element={<Layout />}>
