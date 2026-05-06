@@ -1,11 +1,83 @@
-<div align="center">
+# Οδηγός Ενσυνειδητότητας για Νευροδιαφορετικούς
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+Δωρεάν διαδικτυακός οδηγός αυτορρύθμισης μέσω του **Τετραπλού Άξονα Συνείδησης**.
 
-  <h1>Built with AI Studio</h2>
+**Συγγραφέας:** Θεόδωρος Μπαϊρακτάρης  
+**Άδεια:** [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+---
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+## 🚀 Πώς να ανεβάσεις στο GitHub Pages (βήμα-βήμα)
 
-</div>
+### Βήμα 1 — Δημιούργησε νέο repository
+1. Πήγαινε στο [github.com](https://github.com) και κάνε login.
+2. Κλικ στο **"New repository"** (πράσινο κουμπί πάνω δεξιά).
+3. Δώσε ένα όνομα, π.χ. `mindfulness-guide` ή `odigos-ensyneidhtotitas`.
+4. Επίλεξε **Public** (απαραίτητο για δωρεάν GitHub Pages).
+5. Κλικ **"Create repository"**.
+
+### Βήμα 2 — Ανέβασε τα αρχεία
+1. Στο νέο repository, κλικ **"Add file" → "Upload files"**.
+2. Σύρε και άφησε:
+   - `index.html` ← η ιστοσελίδα
+   - `Οδηγος_Ενσυνειδητοτητας.pdf` ← το PDF (αν θέλεις download link)
+3. Κλικ **"Commit changes"**.
+
+### Βήμα 3 — Ενεργοποίησε GitHub Pages
+1. Πήγαινε στο repository σου → **Settings** (πάνω δεξιά).
+2. Από το αριστερό μενού κλικ **"Pages"**.
+3. Κάτω από **"Source"** επίλεξε:
+   - Branch: `main`
+   - Folder: `/ (root)`
+4. Κλικ **"Save"**.
+5. Σε 1-2 λεπτά η σελίδα είναι online στο:
+
+```
+https://[username].github.io/[repository-name]/
+```
+
+---
+
+## 📁 Δομή αρχείων
+
+```
+repo/
+├── index.html                         ← Η κύρια σελίδα (αυτό που ανεβαίνει)
+├── Οδηγος_Ενσυνειδητοτητας.pdf        ← Το PDF για download (προαιρετικό)
+└── README.md                          ← Αυτό το αρχείο
+```
+
+---
+
+## ✏️ Αν θέλεις να ενημερώσεις το PDF download link
+
+Άνοιξε το `index.html` και βρες αυτό το σημείο:
+
+```javascript
+document.getElementById('downloadBtn').addEventListener('click', (e) => {
+  e.preventDefault();
+  alert('...');
+});
+```
+
+Αντικατέστησέ το με:
+
+```javascript
+document.getElementById('downloadBtn').setAttribute(
+  'href',
+  'Οδηγος_Ενσυνειδητοτητας.pdf'
+);
+document.getElementById('downloadBtn').removeAttribute('id');
+```
+
+Ή απλά άλλαξε το `href` του κουμπιού απευθείας στο HTML:
+```html
+<a href="Οδηγος_Ενσυνειδητοτητας.pdf" class="btn btn-outline" download>⬇ Κατέβασε PDF</a>
+```
+
+---
+
+## 📄 Άδεια
+
+Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International  
+© 2025 Θεόδωρος Μπαϊρακτάρης
