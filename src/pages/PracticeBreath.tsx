@@ -282,7 +282,7 @@ export default function PracticeBreath() {
         running ? "opacity-20 hover:opacity-100 focus-within:opacity-100" : "opacity-100"
       )}>
         <button 
-          onClick={() => navigate('/practice/breath')} 
+          onClick={() => navigate(-1)} 
           className="w-10 h-10 rounded-full bg-pine-800/50 border border-pine-700 flex items-center justify-center hover:bg-pine-700 text-pine-300 hover:text-white transition-colors"
         >
           <ArrowLeft size={20} />

@@ -1,14 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { Music, Bell } from 'lucide-react';
+import { Music, Bell, BookOpen, Wind, Activity, Compass, BookMarked, Download, Smartphone, ArrowRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
-import { useCompanion } from '../hooks/useCompanion';
 import { motion, AnimatePresence } from 'framer-motion';
+
+// Breath-like easing curve for smooth entry
+const easingCurve = [0.25, 1, 0.3, 1];
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.2,
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 1.5, ease: easingCurve } 
+  }
+};
 
 export default function Home() {
   const { language, t } = useLanguage();
   const navigate = useNavigate();
-  const { companionData } = useCompanion();
   
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -18,12 +39,8 @@ export default function Home() {
       e.preventDefault();
       setDeferredPrompt(e);
     };
-
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    };
+    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
   }, []);
 
   const showToast = (message: string) => {
@@ -39,171 +56,173 @@ export default function Home() {
         setDeferredPrompt(null);
       }
     } else {
-      showToast(language === 'el' ? 'Η εφαρμογή είναι ήδη εγκατεστημένη ή δεν υποστηρίζεται σε αυτόν τον περιηγητή.' : 'The app is already installed or not supported in this browser.');
+      showToast(language === 'el' ? 'Η εφαρμογή είναι ήδη εγκατεστημένη ή δεν υποστηρίζεται.' : 'The app is already installed or not supported.');
     }
   };
 
-  const handleMusicClick = () => {
-    showToast(language === 'el' ? 'Μουσική επένδυση θα προστεθεί σε επόμενη έκδοση!' : 'Background music will be added in a future update!');
-  };
-
-  const handleNotificationsClick = () => {
-    showToast(language === 'el' ? 'Οι ειδοποιήσεις υπενθύμισης έρχονται σύντομα!' : 'Reminder notifications are coming soon!');
-  };
-
   return (
-    <div className="flex flex-col lg:flex-row min-h-full animate-in fade-in slide-in-from-bottom-4 duration-500 lg:p-6 lg:gap-8 lg:items-stretch relative">
+    <div className="flex flex-col relative w-full pb-28 pt-0 min-h-screen">
       
+      {/* Immersive Background Layer */}
+      <div className="fixed inset-0 z-0 bg-pine-950 pointer-events-none">
+        <img src="/hero.webp" alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.15] mix-blend-luminosity" />
+        <div className="absolute inset-0 bg-gradient-to-b from-pine-950/40 via-pine-950/80 to-pine-950"></div>
+        {/* Glow effects */}
+        <div className="absolute top-0 left-0 w-full h-[50vh] bg-teal-900/20 rounded-full blur-[120px] mix-blend-screen opacity-50 transform -translate-y-1/2"></div>
+        <div className="absolute bottom-0 right-0 w-[80vw] h-[50vh] bg-pine-800/30 rounded-full blur-[100px] mix-blend-screen opacity-40 transform translate-y-1/4 translate-x-1/4"></div>
+      </div>
+
       {/* Toast Notification */}
       <AnimatePresence>
         {toastMessage && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-pine-900/95 border border-pine-700/50 text-pine-100 text-sm font-medium px-6 py-3 rounded-full shadow-lg backdrop-blur-md whitespace-nowrap text-center max-w-[90vw] truncate"
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            transition={{ duration: 0.4, ease: easingCurve }}
+            className="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-pine-900/95 border border-pine-700/50 text-pine-100 text-sm font-medium px-6 py-3 rounded-full shadow-2xl backdrop-blur-md whitespace-nowrap text-center max-w-[90vw] truncate"
           >
             {toastMessage}
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Hero Banner */}
-      <section 
-        className="relative flex-none h-[32vh] lg:h-auto lg:flex-1 lg:min-h-[500px] lg:mb-0 overflow-hidden rounded-[1.75rem] rounded-t-none lg:rounded-[2.5rem] bg-[#0a1a2f] border-b lg:border border-pine-800 shadow-[0_8px_30px_rgb(0,0,0,0.3)]"
+      {/* Main Content - Bento Grid Architecture */}
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="flex-1 w-full max-w-2xl mx-auto px-6 max-sm:px-4 py-8 lg:py-12 flex flex-col gap-5 z-20 relative"
       >
-        <img src="/hero.webp" alt="Cosmic Background" className="absolute inset-0 w-full h-full object-cover opacity-80" />
-        <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline 
-          src="/hero_breathing.mp4" 
-          className="absolute inset-0 w-full h-full object-cover" 
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-pine-950 via-pine-900/40 to-transparent mix-blend-multiply flex flex-col justify-end p-6" />
-        
-        {/* Top left action buttons */}
-        <div className="absolute top-[60px] left-4 flex flex-col gap-3 z-20">
-          <button onClick={handleMusicClick} className="w-9 h-9 rounded-full bg-pine-950/40 border border-pine-700/30 flex items-center justify-center backdrop-blur-md text-pine-300 hover:text-white transition-colors">
-             <Music size={16} strokeWidth={2} />
-          </button>
-          <button onClick={handleNotificationsClick} className="w-9 h-9 rounded-full bg-pine-950/40 border border-pine-700/30 flex items-center justify-center backdrop-blur-md text-amber-400/80 hover:text-amber-400 transition-colors">
-            <Bell size={16} strokeWidth={2} />
-          </button>
-        </div>
-
-
-
-      </section>
-
-      {/* Main Content Area */}
-      <div className="flex-1 w-full lg:flex lg:flex-col lg:justify-center lg:items-center">
-        <div className="flex flex-col gap-2 px-4 lg:px-0 pb-safe mb-1 mt-3 lg:mb-0 lg:mt-0 w-full lg:max-w-xl">
-
-          <p className="text-center text-pine-300/90 text-[13px] md:text-sm font-medium italic mb-1 tracking-wide">
-            {language === 'el' ? '«Ο νους σου δεν είναι χαλασμένος, απλά λειτουργεί διαφορετικά.»' : '«Your mind is not broken, it simply functions differently.»'}
-          </p>
-
-          {/* SOS Card - Top Priority */}
-          <div 
-            onClick={() => navigate('/practice/breath')}
-            className="group block w-full relative bg-gradient-to-br from-pine-800/60 to-pine-900/90 shadow-[0_8px_32px_rgba(0,0,0,0.25)] border border-pine-600/40 p-4 rounded-[1.5rem] text-left transition-all overflow-hidden active:scale-[0.98] hover:shadow-[0_16px_40px_rgba(20,184,166,0.15)] hover:border-teal-500/30 mb-2 cursor-pointer backdrop-blur-md"
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-teal-500/0 via-teal-500/10 to-teal-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%]"></div>
-            <button 
-              onClick={(e) => { e.stopPropagation(); navigate('/practice/breath/sos-breath'); }}
-              className="absolute top-4 right-4 bg-teal-500/20 border border-teal-500/30 text-teal-300 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-sm hover:bg-teal-500/30 active:bg-teal-500/40 z-20 cursor-pointer backdrop-blur-sm transition-colors"
-            >
-              SOS
+        {/* Header Section */}
+        <motion.div variants={itemVariants} className="flex justify-between items-start pt-2 sm:pt-4 pb-2">
+          <div className="pr-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading text-white tracking-wide mb-3 drop-shadow-lg leading-tight">
+              {language === 'el' ? 'Βρες τον ρυθμό σου' : 'Find your rhythm'}
+            </h1>
+            <p className="text-pine-200/90 text-[13px] sm:text-sm font-medium italic tracking-wide max-w-[280px] sm:max-w-sm leading-relaxed">
+              {language === 'el' ? '«Ο νους σου δεν είναι χαλασμένος, απλά λειτουργεί διαφορετικά.»' : '«Your mind is not broken, it simply functions differently.»'}
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-2 shrink-0">
+            <button onClick={() => showToast(language === 'el' ? 'Μουσική σύντομα!' : 'Music coming soon!')} className="w-10 h-10 rounded-full bg-pine-800/40 border border-white/10 flex items-center justify-center backdrop-blur-xl text-white/80 hover:text-white hover:bg-pine-700/60 transition-all duration-300 shadow-sm">
+               <Music size={18} strokeWidth={2} />
             </button>
-            <div className="flex items-center gap-4 relative z-10">
-              <div className="text-[36px] shrink-0 drop-shadow-[0_4px_8px_rgba(0,0,0,0.4)] transform group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500 pl-1">
-                🫁
-              </div>
-              <div>
-                <h3 className="text-[17px] font-heading font-medium text-white mb-1 drop-shadow-sm leading-tight group-hover:text-teal-50 transition-colors">{t('home.needCalm')}</h3>
-                <p className="text-pine-300 flex-1 text-[13px] opacity-90 drop-shadow-sm leading-snug">{t('home.needCalmSub')}</p>
+            <button onClick={() => showToast(language === 'el' ? 'Ειδοποιήσεις σύντομα!' : 'Notifications soon!')} className="w-10 h-10 rounded-full bg-pine-800/40 border border-white/10 flex items-center justify-center backdrop-blur-xl text-amber-400/80 hover:text-amber-400 hover:bg-pine-700/60 transition-all duration-300 shadow-sm">
+              <Bell size={18} strokeWidth={2} />
+            </button>
+          </div>
+        </motion.div>
+
+        {/* Zone 1: The Commitment (8-Week Program) */}
+        <motion.div variants={itemVariants}>
+          <Link 
+            to="/chapters" 
+            className="group block relative bg-pine-800/40 backdrop-blur-xl shadow-xl border border-white/10 rounded-3xl p-6 transition-all duration-500 overflow-hidden hover:bg-pine-800/60 hover:shadow-2xl hover:-translate-y-1"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-teal-500/0 via-teal-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            <div className="absolute top-0 right-0 p-6 opacity-20 group-hover:opacity-40 transition-opacity duration-700 transform group-hover:scale-110 group-hover:rotate-6">
+              <BookOpen size={80} strokeWidth={1} className="text-teal-200" />
+            </div>
+            
+            <div className="relative z-10 flex flex-col items-start">
+              <span className="inline-block px-3 py-1 bg-white/10 text-pine-200 text-xs font-semibold tracking-widest uppercase rounded-full mb-4 border border-white/5">
+                {language === 'el' ? 'Κεντρικο Προγραμμα' : 'Core Program'}
+              </span>
+              <h2 className="text-2xl md:text-3xl font-heading text-white mb-2 leading-tight">
+                {t('home.read')}
+              </h2>
+              <p className="text-pine-300/90 text-sm md:text-base max-w-[75%] leading-relaxed mb-6">
+                 {t('home.readSub')}
+              </p>
+              <div className="flex items-center gap-2 text-teal-300 text-sm font-medium group-hover:text-teal-200 transition-colors">
+                <span>{language === 'el' ? 'Ξεκινήστε τώρα' : 'Begin your journey'}</span>
+                <ArrowRight size={16} className="transform group-hover:translate-x-1 transition-transform" />
               </div>
             </div>
-          </div>
-          
-          {/* Two Columns for Learn and Practice */}
-          <div className="grid grid-cols-2 gap-3 mb-2">
-            <Link to="/chapters" className="group relative bg-gradient-to-b from-pine-800/50 to-pine-900/80 shadow-[0_8px_20px_rgba(0,0,0,0.2)] border border-pine-600/40 py-4 px-3 rounded-[1.5rem] text-center transition-all overflow-hidden flex flex-col items-center justify-center gap-2 active:scale-[0.97] hover:shadow-[0_12px_30px_rgba(20,184,166,0.1)] hover:border-teal-500/20 backdrop-blur-md">
-              <div className="absolute inset-0 bg-gradient-to-t from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="text-[32px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.4)] leading-none transform group-hover:-translate-y-1 transition-transform duration-500">
-                📖
-              </div>
-              <div className="relative z-10">
-                <h3 className="text-[14px] font-heading font-medium text-white mb-0.5 drop-shadow-sm">{t('home.read')}</h3>
-                <p className="text-pine-300/90 text-[11px] leading-snug tracking-wide drop-shadow-sm">{t('home.readSub').split(' & ').join(' &\n')}</p>
-              </div>
-            </Link>
+          </Link>
+        </motion.div>
 
-            <Link to="/practice" className="group relative bg-gradient-to-b from-pine-800/50 to-pine-900/80 shadow-[0_8px_20px_rgba(0,0,0,0.2)] border border-pine-600/40 py-4 px-3 rounded-[1.5rem] text-center transition-all overflow-hidden flex flex-col items-center justify-center gap-2 active:scale-[0.97] hover:shadow-[0_12px_30px_rgba(20,184,166,0.1)] hover:border-teal-500/20 backdrop-blur-md">
-              <div className="absolute inset-0 bg-gradient-to-t from-amber-500/0 via-amber-500/5 to-amber-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="text-[32px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.4)] leading-none transform group-hover:-translate-y-1 transition-transform duration-500">
-                🎯
+        {/* Zone 2: The Moment (Microdoses) */}
+        <motion.div variants={itemVariants} className="grid grid-cols-2 gap-4 md:gap-5">
+          <Link 
+            to="/practice/breath/sos-breath"
+            className="group relative bg-pine-800/30 backdrop-blur-xl shadow-lg border border-white/10 p-5 rounded-[2rem] transition-all duration-500 hover:bg-pine-800/50 hover:shadow-xl hover:-translate-y-1 overflow-hidden"
+          >
+            <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:opacity-20 transition-opacity duration-700 text-teal-300">
+               <Wind size={100} strokeWidth={1} />
+            </div>
+            <div className="relative z-10">
+              <div className="w-10 h-10 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-300 mb-3 border border-teal-500/20">
+                <Wind size={20} />
               </div>
-              <div className="relative z-10">
-                <h3 className="text-[14px] font-heading font-medium text-white mb-0.5 drop-shadow-sm">{t('home.practice')}</h3>
-                <p className="text-pine-300/90 text-[11px] leading-snug tracking-wide drop-shadow-sm">{t('home.practiceSub').split(' & ').join(' &\n')}</p>
-              </div>
-            </Link>
-          </div>
+              <h3 className="text-lg font-heading text-white mb-1">{language === 'el' ? 'Αναπνοή' : 'Breath'}</h3>
+              <p className="text-pine-300/80 text-xs">SOS & {language === 'el' ? 'γείωση' : 'grounding'}</p>
+            </div>
+          </Link>
 
-          {/* Special Interest & Tracking */}
-          <div className="grid grid-cols-2 gap-3 mb-3">
-            <Link 
-              to="/rabbithole" 
-              className="group block relative bg-gradient-to-bl from-pine-800/60 to-pine-900/80 shadow-[0_4px_15px_rgba(0,0,0,0.2)] border border-pine-600/40 p-4 rounded-[1.5rem] text-left transition-all overflow-hidden active:scale-[0.98] hover:shadow-[0_8px_25px_rgba(0,0,0,0.3)] hover:border-pine-500/40 flex flex-col justify-center items-center text-center h-[90px] backdrop-blur-md"
-            >
-              <div className="text-[30px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.4)] mb-2 transform group-hover:-translate-y-1 transition-transform duration-500 leading-none flex items-center gap-1 justify-center">
-                <span>🐇</span><span className="text-[22px]">🕳️</span>
+          <Link 
+            to="/practice/microdoses"
+            className="group relative bg-pine-800/30 backdrop-blur-xl shadow-lg border border-white/10 p-5 rounded-[2rem] transition-all duration-500 hover:bg-pine-800/50 hover:shadow-xl hover:-translate-y-1 overflow-hidden"
+          >
+            <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:opacity-20 transition-opacity duration-700 text-amber-300">
+               <Activity size={100} strokeWidth={1} />
+            </div>
+            <div className="relative z-10">
+              <div className="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-300 mb-3 border border-amber-500/20">
+                <Activity size={20} />
               </div>
-              <div className="relative z-10 w-full">
-                <h3 className="text-[14px] font-heading font-medium text-white mb-1 drop-shadow-sm leading-tight">{t('home.rabbitHole')}</h3>
-                <p className="text-pine-300/80 text-[10px] uppercase tracking-[0.15em] drop-shadow-sm truncate">{t('home.rabbitHoleSub')}</p>
-              </div>
-            </Link>
+              <h3 className="text-lg font-heading text-white mb-1">{language === 'el' ? 'Κίνηση' : 'Movement'}</h3>
+              <p className="text-pine-300/80 text-xs">{language === 'el' ? 'Εκτόνωση ενέργειας' : 'Release energy'}</p>
+            </div>
+          </Link>
+        </motion.div>
 
-            <Link 
-              to="/journal" 
-              className="group block relative bg-gradient-to-br from-pine-800/60 to-pine-900/80 shadow-[0_4px_15px_rgba(0,0,0,0.2)] border border-pine-600/40 p-4 rounded-[1.5rem] text-left transition-all overflow-hidden active:scale-[0.98] hover:shadow-[0_8px_25px_rgba(0,0,0,0.3)] hover:border-pine-500/40 flex flex-col justify-center items-center text-center h-[90px] backdrop-blur-md"
-            >
-              <div className="text-[30px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.4)] mb-2 transform group-hover:-translate-y-1 transition-transform duration-500 leading-none">
-                📝
-              </div>
-              <div className="relative z-10 w-full">
-                <h3 className="text-[14px] font-heading font-medium text-white mb-1 drop-shadow-sm leading-tight">{language === 'el' ? 'Ημερολόγιο' : 'Journal'}</h3>
-                <p className="text-pine-300/80 text-[10px] uppercase tracking-[0.15em] drop-shadow-sm truncate">{language === 'el' ? 'ΙΣΤΟΡΙΚΟ & ΠΕΡΑΣΜΑΤΑ' : 'HISTORY & ENTRIES'}</p>
-              </div>
-            </Link>
-          </div>
+        {/* Zone 3: The Understanding (Theory & Journal) */}
+        <motion.div variants={itemVariants} className="grid grid-cols-2 gap-4 md:gap-5">
+           <Link 
+            to="/rabbithole"
+            className="group flex flex-col justify-between bg-pine-800/20 backdrop-blur-md border border-white/5 p-5 rounded-[1.5rem] transition-all duration-300 hover:bg-pine-800/40"
+          >
+            <Compass size={20} className="text-pine-400 mb-3" />
+            <div>
+              <h3 className="text-sm font-heading text-white mb-1">{t('home.rabbitHole')}</h3>
+              <p className="text-pine-400/80 text-[10px] uppercase tracking-wider">{t('home.rabbitHoleSub')}</p>
+            </div>
+          </Link>
 
-          {/* Two Columns for Downloads/Install */}
-          <div className="grid grid-cols-2 gap-3">
-            <a href={language === 'en' ? "/workbook_en.pdf" : "/workbook_el.pdf"} download className="group relative bg-pine-800/40 shadow-sm border border-pine-600/30 hover:bg-pine-700/60 backdrop-blur-md py-3 px-3 rounded-[1.25rem] text-center transition-all overflow-hidden flex flex-row items-center justify-center gap-3 active:scale-[0.97] hover:shadow-[0_8px_20px_rgba(0,0,0,0.2)]">
-               <div className="text-[22px] drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)] leading-none transform group-hover:scale-110 transition-transform duration-500">
-                📥
-              </div>
-              <div className="text-left relative z-10">
-                <h3 className="text-[12px] font-heading font-medium text-pine-100 mb-0.5 tracking-wide drop-shadow-sm">{t('home.downloadPdfTitle')}</h3>
-              </div>
-            </a>
+          <Link 
+            to="/journal"
+            className="group flex flex-col justify-between bg-pine-800/20 backdrop-blur-md border border-white/5 p-5 rounded-[1.5rem] transition-all duration-300 hover:bg-pine-800/40"
+          >
+            <BookMarked size={20} className="text-pine-400 mb-3" />
+            <div>
+              <h3 className="text-sm font-heading text-white mb-1">{language === 'el' ? 'Ημερολόγιο' : 'Journal'}</h3>
+              <p className="text-pine-400/80 text-[10px] uppercase tracking-wider">{language === 'el' ? 'ΙΣΤΟΡΙΚΟ' : 'HISTORY'}</p>
+            </div>
+          </Link>
+        </motion.div>
 
-            <button onClick={handleInstallClick} className="group relative bg-pine-800/40 shadow-sm border border-pine-600/30 hover:bg-pine-700/60 backdrop-blur-md py-3 px-3 rounded-[1.25rem] text-center transition-all overflow-hidden flex flex-row items-center justify-center gap-3 active:scale-[0.97] hover:shadow-[0_8px_20px_rgba(0,0,0,0.2)]">
-              <div className="text-[22px] drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)] leading-none transform group-hover:scale-110 transition-transform duration-500">
-                📱
-              </div>
-              <div className="text-left relative z-10">
-                <h3 className="text-[12px] font-heading font-medium text-pine-100 mb-0.5 tracking-wide drop-shadow-sm">{t('home.installAppTitle')}</h3>
-              </div>
-            </button>
-          </div>
-        </div>
-      </div>
+        {/* Tools & Resources */}
+        <motion.div variants={itemVariants} className="pt-2 flex flex-wrap gap-3 pb-8">
+          <a 
+            href={language === 'en' ? "/workbook_en.pdf" : "/workbook_el.pdf"} 
+            download 
+            className="flex-1 min-w-[140px] flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white/5 border border-white/10 text-pine-300 hover:bg-white/10 hover:text-white transition-colors text-xs font-medium"
+          >
+            <Download size={16} />
+            <span>{t('home.downloadPdfTitle')}</span>
+          </a>
+          <button 
+            onClick={handleInstallClick} 
+            className="flex-1 min-w-[140px] flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white/5 border border-white/10 text-pine-300 hover:bg-white/10 hover:text-white transition-colors text-xs font-medium"
+          >
+            <Smartphone size={16} />
+            <span>{t('home.installAppTitle')}</span>
+          </button>
+        </motion.div>
+
+      </motion.div>
     </div>
   );
 }

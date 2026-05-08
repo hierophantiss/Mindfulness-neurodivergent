@@ -374,7 +374,7 @@ function HubFlow({ goBack, onClose, navigate }: { goBack: () => void, onClose: (
         </button>
 
         <button 
-           onClick={() => { onClose(); navigate(`/practice/breath`); }} 
+           onClick={() => { onClose(); navigate(`/practice/breath/sos-breath`); }} 
            className="p-4 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-2xl text-left hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors w-full"
         >
           <div className="text-xl mb-1">🫁</div>
