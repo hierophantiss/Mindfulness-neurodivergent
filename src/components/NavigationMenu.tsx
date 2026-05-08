@@ -1,18 +1,31 @@
 import React, { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Sun, Moon, Info, Music, Bell } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
+import { useTheme } from '../hooks/useTheme';
 
 export default function NavigationMenu() {
   const [isOpen, setIsOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const { language } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
 
   const handleNav = (path: string) => {
     setIsOpen(false);
     navigate(path);
+  };
+
+  const showInfo = () => {
+    setIsOpen(false);
+    navigate('/landing_info');
+  };
+
+  const showToast = (message: string) => {
+    setToastMessage(message);
+    setTimeout(() => setToastMessage(null), 3500);
   };
 
   // Do not show top left button on certain screens if they have their own headers, 
@@ -31,6 +44,20 @@ export default function NavigationMenu() {
 
   return (
     <>
+      <AnimatePresence>
+        {toastMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            transition={{ duration: 0.4 }}
+            className="fixed top-6 left-1/2 -translate-x-1/2 z-[10000] bg-pine-800/90 border border-white/10 text-white text-sm font-medium px-6 py-3 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-xl whitespace-nowrap text-center max-w-[90vw] truncate"
+          >
+            {toastMessage}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <button 
         onClick={() => setIsOpen(true)}
         className="fixed top-4 left-4 z-40 w-12 h-12 bg-pine-900/40 backdrop-blur-md rounded-full flex items-center justify-center border border-white/10 text-pine-100 hover:bg-pine-800/80 hover:border-teal-500/30 transition-all shadow-[0_4px_12px_rgba(0,0,0,0.3)]"
@@ -87,6 +114,37 @@ export default function NavigationMenu() {
                     </button>
                   );
                 })}
+              </div>
+
+              <div className="flex justify-around items-center p-4 border-t border-pine-800/60 mt-auto">
+                <button 
+                  onClick={showInfo} 
+                  title={language === 'el' ? 'Πληροφορίες' : 'Info'}
+                  className="w-12 h-12 rounded-full flex items-center justify-center text-pine-300 hover:bg-pine-800 hover:text-white transition-colors"
+                >
+                  <Info size={22} />
+                </button>
+                <button 
+                  onClick={toggleTheme} 
+                  title={language === 'el' ? 'Εναλλαγή Θέματος' : 'Toggle Theme'}
+                  className="w-12 h-12 rounded-full flex items-center justify-center text-pine-300 hover:bg-pine-800 hover:text-white transition-colors"
+                >
+                  {theme === 'light' ? <Moon size={22} /> : <Sun size={22} />}
+                </button>
+                <button 
+                  onClick={() => showToast(language === 'el' ? 'Μουσική σύντομα!' : 'Music coming soon!')}
+                  title={language === 'el' ? 'Μουσική' : 'Music'}
+                  className="w-12 h-12 rounded-full flex items-center justify-center text-pine-300 hover:bg-pine-800 hover:text-white transition-colors"
+                >
+                  <Music size={22} />
+                </button>
+                <button 
+                  onClick={() => showToast(language === 'el' ? 'Ειδοποιήσεις σύντομα!' : 'Notifications soon!')}
+                  title={language === 'el' ? 'Ειδοποιήσεις' : 'Notifications'}
+                  className="w-12 h-12 rounded-full flex items-center justify-center text-pine-300 hover:bg-pine-800 hover:text-white transition-colors"
+                >
+                  <Bell size={22} />
+                </button>
               </div>
             </motion.div>
           </>

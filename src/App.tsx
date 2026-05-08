@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { HashRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import { CompanionProvider } from './hooks/useCompanion';
 import Layout from './components/Layout';
-import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
+import Landing from './pages/Landing';
 import Chapters from './pages/Chapters';
 import ChapterDetail from './pages/ChapterDetail';
 import Program from './pages/Program';
@@ -20,9 +21,11 @@ import Intro from './pages/Intro';
 import Onboarding from './components/Onboarding';
 
 import { LanguageProvider, useLanguage } from './hooks/useLanguage';
+import { ThemeProvider } from './hooks/useTheme';
 
 function AppContent() {
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const hasSeenIntro = localStorage.getItem('hasSeenIntro') === 'true';
 
   useEffect(() => {
     if (localStorage.getItem('onboarding_complete') !== 'true') {
@@ -37,7 +40,9 @@ function AppContent() {
         <CompanionProvider>
           <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
+            <Route index element={hasSeenIntro ? <Navigate to="/dashboard" replace /> : <Landing />} />
+            <Route path="landing_info" element={<Landing />} />
+            <Route path="dashboard" element={<Dashboard />} />
             <Route path="method" element={<Method />} />
             <Route path="intro" element={<Intro />} />
             <Route path="rabbithole" element={<RabbitHole />} />
@@ -63,7 +68,9 @@ function AppContent() {
 export default function App() {
   return (
     <LanguageProvider>
-      <AppContent />
+      <ThemeProvider>
+        <AppContent />
+      </ThemeProvider>
     </LanguageProvider>
   );
 }
