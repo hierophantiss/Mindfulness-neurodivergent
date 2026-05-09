@@ -194,45 +194,6 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     ],
   },
   {
-    id: "tree-pose-5-5",
-    category: "movement",
-    hasBinaural: true,
-    title: {
-      el: "Εκπνοή από τον ουρανό (5-5)",
-      en: "Exhale from the sky (5-5)",
-    },
-    subtitle: { el: "Ισορροπία & Σταθερότητα", en: "Balance & Stability" },
-    desc: {
-      el: "Ενισχύει τη συγκέντρωση και την εσωτερική σταθερότητα.",
-      en: "Enhances focus and inner stability.",
-    },
-    totalCycleDurationMs: 10000,
-    audioConfig: {
-      base: 200,
-      beat: 10,
-      pulse: 10,
-      ambientLayers: ["/rain.mp3"],
-    },
-    video: "/infinity_greeting.mp4",
-    videoPeak: 0.5,
-    videoInhaleEnd: 0.5,
-    videoExhaleStart: 0.5,
-    phases: [
-      { dur: 5000, armFrom: 0, armTo: 1 },
-      { dur: 5000, armFrom: 1, armTo: 0 },
-    ],
-    labels: [
-      {
-        label: { el: "Εισπνοή", en: "Inhale" },
-        sub: { el: "έκταση (5s)", en: "extend (5s)" },
-      },
-      {
-        label: { el: "Εκπνοή", en: "Exhale" },
-        sub: { el: "κέντρο (5s)", en: "center (5s)" },
-      },
-    ],
-  },
-  {
     id: "lotus-bloom-5-5",
     category: "movement",
     hasBinaural: true,
@@ -378,81 +339,6 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       {
         label: { el: "Εκπνοή", en: "Exhale" },
         sub: { el: "κατέβασμα (6s)", en: "lower arms (6s)" },
-      },
-    ],
-  },
-  {
-    id: "tree-pose-left-5-5",
-    category: "movement",
-    hasBinaural: true,
-    title: { el: "Στάση Δέντρου (Αριστερά)", en: "Tree Pose (Left)" },
-    subtitle: { el: "Ισορροπία & Σταθερότητα", en: "Balance & Stability" },
-    desc: {
-      el: "Ενισχύει τη συγκέντρωση προσφέροντας ισορροπία σε όλο το σώμα.",
-      en: "Enhances focus providing balance to the whole body.",
-    },
-    totalCycleDurationMs: 10000,
-    audioConfig: {
-      base: 200,
-      beat: 10,
-      pulse: 10,
-      ambientLayers: ["/ocean-waves.mp3"],
-    },
-    video: "/tree_pose_left.mp4",
-    videoPeak: 0.5,
-    videoInhaleEnd: 0.5,
-    videoExhaleStart: 0.5,
-    phases: [
-      { dur: 5000, armFrom: 0, armTo: 1 },
-      { dur: 5000, armFrom: 1, armTo: 0 },
-    ],
-    labels: [
-      {
-        label: { el: "Εισπνοή", en: "Inhale" },
-        sub: { el: "έκταση (5s)", en: "extend (5s)" },
-      },
-      {
-        label: { el: "Εκπνοή", en: "Exhale" },
-        sub: { el: "κέντρο (5s)", en: "center (5s)" },
-      },
-    ],
-  },
-  {
-    id: "bending-forward-5-5",
-    category: "movement",
-    hasBinaural: true,
-    title: { el: "Κάμψη Εμπρός (5-5)", en: "Bending Forward (5-5)" },
-    subtitle: {
-      el: "Χαλάρωση & Ενδοσκόπηση",
-      en: "Relaxation & Introspection",
-    },
-    desc: {
-      el: "Μειώνει την πίεση, δίνοντας στο σώμα την ευκαιρία να ξεκουραστεί.",
-      en: "Reduces pressure, giving the body a chance to rest.",
-    },
-    totalCycleDurationMs: 10000,
-    audioConfig: {
-      base: 180,
-      beat: 8,
-      pulse: 8,
-      ambientLayers: ["/waterfall.mp3"],
-    },
-    video: "/infinity_greeting.mp4",
-    videoPeak: 0.5,
-    videoInhaleEnd: 0.5,
-    videoExhaleStart: 0.5,
-    phases: [
-      { dur: 5000, armFrom: 0, armTo: 1 },
-      { dur: 5000, armFrom: 1, armTo: 0 },
-    ],
-    labels: [
-      {
-        label: { el: "Εισπνοή", en: "Inhale" },
-        sub: { el: "άνοιγμα (5s)", en: "open (5s)" },
-      },
-      {
-        label: { el: "Εκπνοή", en: "Exhale" },
-        sub: { el: "κάμψη (5s)", en: "bend (5s)" },
       },
     ],
   },

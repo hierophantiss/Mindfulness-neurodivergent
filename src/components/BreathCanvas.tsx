@@ -62,10 +62,7 @@ const B_COLORS: Record<string, { primary: string; secondary: string; aura: strin
   '4-7-8':   { primary: '#2A4D69', secondary: '#4B86B4', aura: '100, 150, 190' },
   '5-5':     { primary: '#C5A059', secondary: '#E8C547', aura: '220, 190, 90' },
   'deep-bow-5-5': { primary: '#3A5E57', secondary: '#60857D', aura: '70, 130, 120' },
-  'tree-pose-5-5': { primary: '#4B2C5E', secondary: '#7F5283', aura: '120, 80, 150' },
-  'tree-pose-left-5-5': { primary: '#4B2C5E', secondary: '#7F5283', aura: '120, 80, 150' },
   'lotus-bloom-5-5': { primary: '#8B5E3C', secondary: '#B98B53', aura: '185, 140, 85' },
-  'bending-forward-5-5': { primary: '#2A4D69', secondary: '#4B86B4', aura: '100, 150, 190' },
   'sleep-delta': { primary: '#4B2C5E', secondary: '#7F5283', aura: '120, 80, 150' },
   'sleep-classical': { primary: '#8B5E3C', secondary: '#B98B53', aura: '185, 140, 85' },
   'delta': { primary: '#4B2C5E', secondary: '#7F5283', aura: '120, 80, 150' }, // added delta for compatibility
