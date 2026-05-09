@@ -51,7 +51,6 @@ interface BreathCanvasProps {
   videoInhaleEnd?: number;
   videoExhaleStart?: number;
   videoExhaleEnd?: number;
-  isIntro?: boolean;
   onCycleComplete: (cycles: number) => void;
   onPhaseChange: (phase: PhaseLabel, index: number) => void;
   onTick?: (armPos: number) => void;
@@ -83,7 +82,6 @@ export default function BreathCanvas({
   videoInhaleEnd = 0.45,
   videoExhaleStart = 0.65,
   videoExhaleEnd = 1.0,
-  isIntro = false,
   onCycleComplete, 
   onPhaseChange,
   onTick
@@ -146,10 +144,7 @@ export default function BreathCanvas({
       const phase = phases[0];
       const startLabelEn = phaseLabels[0]?.label?.en;
       
-      if (isIntro) {
-         videoRef.current.currentTime = 0;
-         videoRef.current.playbackRate = 1.0;
-      } else if (startLabelEn === "Inhale") {
+      if (startLabelEn === "Inhale") {
          videoRef.current.currentTime = inStart;
          videoRef.current.playbackRate = Math.max(0.1, (inEnd - inStart) / (phase.dur / 1000));
       } else if (startLabelEn === "Exhale") {
@@ -176,12 +171,6 @@ export default function BreathCanvas({
       state.current.lastTime = now;
 
       if (running) {
-        if (isIntro) {
-           if (!state.current.introStartTime) state.current.introStartTime = now;
-           const introElapsedMs = now - state.current.introStartTime;
-           if (onTick) onTick(0);
-           state.current.phaseStartTime = now; // Prevent phase progression
-        } else {
            if (state.current.introStartTime) state.current.introStartTime = 0;
            const elapsed = now - state.current.phaseStartTime;
            const phase = phases[state.current.phaseIdx];
@@ -228,7 +217,6 @@ export default function BreathCanvas({
                 }
              }
            }
-        }
         
       } else {
         // idle animation
@@ -245,7 +233,7 @@ export default function BreathCanvas({
       cancelAnimationFrame(animId);
       
     };
-  }, [running, isIntro, onCycleComplete, onPhaseChange]);
+  }, [running, onCycleComplete, onPhaseChange]);
 
   return (
     <div className="w-full h-full relative flex items-center justify-center overflow-hidden bg-[#061114]">

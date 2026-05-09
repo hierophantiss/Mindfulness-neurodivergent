@@ -27,24 +27,24 @@ const EXERCISES: Record<string, any> = {
       ]
     }
   },
-  'tree-pose': {
-    title: { el: 'Η Άσκηση του Δέντρου', en: 'The Tree Pose' },
-    desc: { el: 'Χρησιμοποίησε τη φαντασία σου για να νιώσεις σταθερότητα και ασφάλεια.', en: 'Use your imagination to feel stability and safety.' },
+  'grounding-scan': {
+    title: { el: 'Αίσθηση Γείωσης', en: 'Grounding Sensation' },
+    desc: { el: 'Βρες το κέντρο σου και νιώσε τη σταθερότητα του εδάφους.', en: 'Find your center and feel the stability of the ground.' },
     duration: 300, // 5 minutes
     color: 'rose',
     instructions: {
       el: [
-        "Στάσου όρθιος/η με τα πόδια στο άνοιγμα των ώμων, ή κάθισε με τα πέλματα σταθερά.",
-        "Φαντάσου ότι από τα πέλματά σου φυτρώνουν ρίζες που προχωρούν όλο και πιο βαθιά μέσα στη γη.",
-        "Νιώσε τη σταθερότητα που σου προσφέρει αυτή η ισχυρή σύνδεση.",
-        "Φαντάσου τον κορμό σου σαν τον κορμό ενός δυνατού δέντρου – ευθυτενής αλλά ελαστικός.",
+        "Στάσου όρθιος/η με τα πόδια στο άνοιγμα των ώμων, ή κάθισε με τα πέλματα σταθερά στο πάτωμα.",
+        "Φέρε την προσοχή σου αποκλειστικά στην επαφή των πελμάτων με το έδαφος.",
+        "Νιώσε τη σταθερότητα που σου προσφέρει το πάτωμα.",
+        "Φαντάσου το κορμί σου να χαλαρώνει προς τα κάτω με κάθε εκπνοή.",
         "Μείνε σε αυτή την αίσθηση σταθερότητας, αναπνέοντας ελεύθερα."
       ],
       en: [
         "Stand up with feet shoulder-width apart, or sit with feet flat on the floor.",
-        "Imagine roots growing out of your feet, going deeper and deeper into the earth.",
-        "Feel the stability this strong connection gives you.",
-        "Imagine your torso like the trunk of a strong tree – upright but flexible.",
+        "Bring your attention exclusively to the contact of your soles with the ground.",
+        "Feel the stability the floor provides you.",
+        "Imagine your body relaxing downwards with every exhale.",
         "Stay in this sense of stability, breathing freely."
       ]
     }

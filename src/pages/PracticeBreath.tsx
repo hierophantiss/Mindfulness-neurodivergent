@@ -20,8 +20,6 @@ export default function PracticeBreath() {
   const cycleSeconds = Math.round(pattern.totalCycleDurationMs / 1000);
 
   const [running, setRunning] = useState(false);
-  const [isIntro, setIsIntro] = useState(false);
-  const [introElapsed, setIntroElapsed] = useState(0);
   const [audioEnabled, setAudioEnabled] = useState(false);
   const [cycles, setCycles] = useState(0);
   const [phase, setPhase] = useState(pattern.labels[0]);
@@ -171,8 +169,6 @@ export default function PracticeBreath() {
   };
 
   const startSequence = () => {
-    setIsIntro(false);
-    setIntroElapsed(0);
     setRunning(true);
   };
 
@@ -188,9 +184,8 @@ export default function PracticeBreath() {
   };
 
   const handleStartToggle = () => {
-    if (running || isIntro) {
+    if (running) {
       setRunning(false);
-      setIsIntro(false);
     } else {
       if (audioPref === null) {
         setShowWarning(true);
@@ -199,22 +194,6 @@ export default function PracticeBreath() {
       }
     }
   };
-
-  useEffect(() => {
-    if (!isIntro) return;
-    
-    const interval = setInterval(() => {
-       setIntroElapsed(prev => {
-          if (prev >= 4) {
-             setIsIntro(false);
-             return 0;
-          }
-          return prev + 1;
-       });
-    }, 1000);
-    
-    return () => clearInterval(interval);
-  }, [isIntro]);
 
   const handlePhaseChange = useCallback((p: PhaseLabel, idx: number) => {
     setPhase(p);
@@ -359,7 +338,7 @@ export default function PracticeBreath() {
         {/* The Animated Canvas Background */}
         <div className="absolute inset-0 pointer-events-none z-0">
           <BreathCanvas 
-            running={running || isIntro}
+            running={running}
             audioEnabled={audioEnabled}
             patternId={pattern.id}
             phases={pattern.phases}
@@ -372,7 +351,6 @@ export default function PracticeBreath() {
             videoInhaleEnd={pattern.videoInhaleEnd}
             videoExhaleStart={pattern.videoExhaleStart}
             videoExhaleEnd={pattern.videoExhaleEnd}
-            isIntro={isIntro}
             onCycleComplete={setCycles}
             onPhaseChange={handlePhaseChange}
             onTick={updateArmPos}
@@ -407,10 +385,8 @@ export default function PracticeBreath() {
              
              {/* Counter Text */}
              <div className="z-10 font-sans font-semibold text-[3.5rem] tabular-nums drop-shadow-md">
-                {!running && !isIntro ? (
+                {!running ? (
                   <span className="text-white/40 mb-1 inline-block">∞</span>
-                ) : isIntro ? (
-                  <span className="text-amber-400">{5 - introElapsed}</span>
                 ) : isInhale ? (
                   <span className="text-sky-400">{phaseSeconds}</span>
                 ) : isExhale ? (
@@ -428,10 +404,10 @@ export default function PracticeBreath() {
           style={{ bottom: '8%' }}
         >
           <h2 className="text-3xl font-medium tracking-wide mb-1 text-white transition-all text-center drop-shadow-md">
-            {isIntro ? (language === 'en' ? 'Get Ready' : 'Προετοιμασία') : (language === 'en' ? phase.label.en : phase.label.el)}
+            {language === 'en' ? phase.label.en : phase.label.el}
           </h2>
           <p className="text-pine-200/90 italic tracking-wide text-[13px] text-center drop-shadow-md pb-2">
-            {isIntro ? (language === 'en' ? 'Follow the video' : 'Ακολούθησε την κίνηση') : (language === 'en' ? phase.sub.en : phase.sub.el)}
+            {language === 'en' ? phase.sub.en : phase.sub.el}
           </p>
         </div>
 
