@@ -93,6 +93,7 @@ function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClo
   const { companionData } = useCompanion();
   const navigate = useNavigate();
   const { language } = useLanguage();
+  const { reduceMotion } = useAccessibility();
   
   // Calculate specific dynamic messages
   const now = new Date();
