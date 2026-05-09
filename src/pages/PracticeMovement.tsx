@@ -74,7 +74,7 @@ export default function PracticeMovement() {
   const breathExercises = BREATH_PATTERNS.filter(p => p.category === 'breath');
 
   return (
-    <div className="flex flex-col flex-1 bg-pine-900 -mx-4 -mt-4 -mb-8 px-4 pt-4 pb-8 md:-mx-8 md:-mt-8 md:-mb-8 md:px-8 md:pt-8 md:pb-8 overflow-y-auto">
+    <div className="flex flex-col flex-1 bg-pine-900 -mx-4 -mt-4 -mb-8 px-4 pt-4 pb-8 md:-mx-8 md:-mt-8 md:-mb-8 md:px-8 md:pt-8 md:pb-8 overflow-y-auto scroll-smooth">
       {/* Top Bar */}
       <div className="flex items-center gap-4 mb-6 shrink-0">
         <button 

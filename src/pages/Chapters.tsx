@@ -17,7 +17,7 @@ export default function Chapters() {
   return (
     <div className="flex flex-col relative w-full pt-10 min-h-screen">
       <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-safe mb-4 relative z-10 px-4 md:px-8">
-        <div className="flex flex-col items-center justify-center text-center mb-6 pt-4 pb-2">
+        <div className="flex flex-col items-center justify-center text-center mb-4 pt-4 pb-0">
           <button 
             onClick={() => navigate('/')} 
             className="absolute left-4 md:left-8 w-12 h-12 rounded-full flex items-center justify-center text-white/80 bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.05] hover:border-white/10 backdrop-blur-md transition-all duration-300 z-50 shadow-lg"
@@ -32,9 +32,25 @@ export default function Chapters() {
           </h2>
         </div>
 
+        {/* Internal Page Links */}
+        <div className="flex justify-center gap-4 mb-8 overflow-x-auto pb-2 scrollbar-none snap-x sticky top-0 z-20 bg-pine-950/80 backdrop-blur-md py-3 -mx-4 px-4 border-b border-white/5">
+          <a href="#basis" onClick={(e) => { e.preventDefault(); document.getElementById('basis')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }} className="text-xs font-semibold uppercase tracking-wider text-pine-300 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-full snap-start whitespace-nowrap">
+            {language === 'en' ? 'Foundation' : 'Βάση'}
+          </a>
+          <a href="#application" onClick={(e) => { e.preventDefault(); document.getElementById('application')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }} className="text-xs font-semibold uppercase tracking-wider text-pine-300 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-full snap-start whitespace-nowrap">
+            {language === 'en' ? 'Application' : 'Εφαρμογή'}
+          </a>
+          <a href="#depth" onClick={(e) => { e.preventDefault(); document.getElementById('depth')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }} className="text-xs font-semibold uppercase tracking-wider text-pine-300 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-full snap-start whitespace-nowrap">
+            {language === 'en' ? 'Depth' : 'Σύνθεση'}
+          </a>
+          <a href="#program" onClick={(e) => { e.preventDefault(); document.getElementById('program')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }} className="text-xs font-semibold uppercase tracking-wider text-pine-300 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-full snap-start whitespace-nowrap">
+            {language === 'en' ? 'Program' : 'Πρόγραμμα'}
+          </a>
+        </div>
+
         <div className="w-full lg:max-w-5xl mx-auto">
         {/* Section 1: The Quadruple Axis */}
-        <div className="mb-12 mt-2">
+        <div id="basis" className="mb-12 mt-2 scroll-mt-24">
           <div className="text-center mb-6">
             <h3 className="text-sm font-bold text-pine-400 tracking-[0.2em] uppercase mb-1">
               {language === 'el' ? 'Ο Τετραπλος Αξονας' : 'The Quadruple Axis'}
@@ -90,7 +106,7 @@ export default function Chapters() {
         </div>
 
         {/* Section 2: Application */}
-        <div className="mb-12">
+        <div id="application" className="mb-12 scroll-mt-24">
           <div className="mb-4 pl-3 border-l-2 border-pine-500">
             <h3 className="text-lg font-semibold text-white leading-tight">
               {language === 'el' ? 'Πώς τα χρησιμοποιείς στη ζωή σου' : 'How to use them in your life'}
@@ -124,7 +140,7 @@ export default function Chapters() {
         </div>
 
         {/* Section 3: Synthesis / Practice */}
-        <div className="mb-8">
+        <div id="depth" className="mb-8 scroll-mt-24">
           <div className="mb-4 pl-3 border-l-2 border-pine-500">
             <h3 className="text-lg font-semibold text-white leading-tight">
               {language === 'el' ? 'Σύνθεση / Πρακτική / Επιστήμη' : 'Synthesis / Practice / Science'}
@@ -158,7 +174,7 @@ export default function Chapters() {
         </div>
 
         {/* Section 4: 8 Week Program */}
-        <div className="mb-8 mt-12 relative">
+        <div id="program" className="mb-8 mt-12 relative scroll-mt-24">
           <div className="absolute inset-0 bg-teal-500/10 rounded-[2rem] blur-xl pointer-events-none"></div>
           <Link
             to="/program"
