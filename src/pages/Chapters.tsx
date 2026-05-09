@@ -79,6 +79,7 @@ export default function Chapters() {
                     <img 
                       src={`/chap${chapter.num}.${chapter.num === 2 ? 'png' : 'jpg'}`}
                       alt={chapter.title}
+                      loading="lazy"
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-pine-950/20 group-hover:bg-transparent transition-colors duration-500" />

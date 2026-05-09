@@ -150,6 +150,7 @@ export function useBinauralAudio(config: AudioConfig) {
     // Start external ambient layers if any
     config.ambientLayers?.forEach(path => {
       const audio = new Audio(path);
+      audio.preload = 'none';
       audio.loop = true;
       audio.volume = 0;
       audio.play().catch(console.warn);

@@ -169,6 +169,7 @@ export default function ChapterDetail() {
                     <img 
                       src={`/chap${chapter.num}.${chapter.num === 2 ? 'png' : 'jpg'}`} 
                       className="absolute inset-0 w-full h-full object-cover" 
+                      loading="lazy"
                       alt={chapter.title} 
                       onError={(e) => e.currentTarget.style.display = 'none'}
                     />
@@ -253,7 +254,7 @@ export default function ChapterDetail() {
                       transition={{ duration: 0.6 }}
                       className="mt-10 rounded-[2rem] overflow-hidden border border-white/[0.08] shadow-xl"
                     >
-                      <img src={curPage.section.image} alt={curPage.section.title} className="w-full h-auto object-cover max-h-96 opacity-90 hover:opacity-100 transition-opacity" />
+                      <img src={curPage.section.image} alt={curPage.section.title} loading="lazy" className="w-full h-auto object-cover max-h-96 opacity-90 hover:opacity-100 transition-opacity" />
                     </motion.div>
                   )}
                 </div>
