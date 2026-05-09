@@ -60,7 +60,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex flex-col relative w-full h-[100dvh] overflow-hidden pb-20 pt-4 z-10 selection:bg-teal-500/30">
+    <div className="flex flex-col relative w-full h-full overflow-y-auto pb-4 pt-2 z-10 selection:bg-teal-500/30">
       
       {/* Background ambient lighting for depth without clutter */}
       <div className="absolute top-0 left-0 w-full h-[50vh] bg-gradient-to-b from-pine-900/50 via-pine-900/20 to-transparent pointer-events-none -z-10" />
@@ -152,7 +152,7 @@ export default function Dashboard() {
           <motion.div variants={itemVariants} className="col-span-1 md:col-span-12 grid grid-cols-2 gap-3 md:gap-4">
             
             <Link 
-              to="/practice/breath"
+              to="/practice/movement#breath"
               className="group relative h-32 md:h-36 flex flex-col items-center justify-center text-center overflow-hidden rounded-3xl bg-gradient-to-b from-white/[0.03] to-white/[0.01] hover:from-white/[0.06] hover:to-white/[0.03] border border-white/[0.05] hover:border-teal-400/30 backdrop-blur-md transition-all duration-500 shadow-lg hover:shadow-xl hover:-translate-y-1"
             >
               <div className="absolute inset-0 bg-gradient-to-t from-teal-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

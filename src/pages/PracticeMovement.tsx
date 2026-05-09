@@ -1,5 +1,5 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { BREATH_PATTERNS, BreathPattern } from '../data/breathPatterns';
 import { ArrowLeft, Activity, Wind } from 'lucide-react';
 import { cn } from '../lib/utils';
@@ -57,6 +57,17 @@ function PatternCard({ p, colorScheme, icon: Icon, onClick, language }: {
 export default function PracticeMovement() {
   const navigate = useNavigate();
   const { language } = useLanguage();
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (hash) {
+      const element = document.getElementById(hash.replace('#', ''));
+      if (element) {
+        setTimeout(() => element.scrollIntoView({ behavior: 'smooth' }), 100);
+      }
+    }
+  }, [hash]);
+
 
   // Filter patterns
   const movementExercises = BREATH_PATTERNS.filter(p => p.category === 'movement');
@@ -86,7 +97,7 @@ export default function PracticeMovement() {
       </div>
 
       {/* Mindful Movement Section */}
-      <h2 className="text-xl font-semibold text-indigo-200 mb-4 px-2">
+      <h2 id="movement" className="text-xl font-semibold text-indigo-200 mb-4 px-2">
         {language === 'el' ? 'Ενσυνείδητη Κίνηση' : 'Mindful Movement'}
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-safe mb-8">
@@ -103,7 +114,7 @@ export default function PracticeMovement() {
       </div>
 
       {/* Breath Section */}
-      <h2 className="text-xl font-semibold text-orange-200 mb-4 px-2">
+      <h2 id="breath" className="text-xl font-semibold text-orange-200 mb-4 px-2">
         {language === 'el' ? 'Ρυθμοί Αναπνοής' : 'Breath Rhythms'}
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-safe mb-4">

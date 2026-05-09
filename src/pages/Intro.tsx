@@ -24,7 +24,7 @@ export default function Intro() {
       </header>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto px-5 py-8 space-y-10 custom-scrollbar pb-safe mb-8">
+      <div className="flex-1 overflow-y-auto px-5 py-8 space-y-10 custom-scrollbar pb-24 sm:pb-32 mb-8">
         
         {/* Helper Introduction */}
         <section className="bg-pine-900/30 border border-pine-700/40 rounded-[1.5rem] p-6 shadow-lg relative overflow-hidden">

@@ -28,7 +28,7 @@ export default function Landing() {
   };
 
   return (
-    <div className="flex flex-col relative w-full h-[100dvh] overflow-hidden selection:bg-amber-500/30 transition-colors duration-1000 bg-[#1E1B18]">
+    <div className="flex flex-col relative w-full h-full overflow-y-auto overflow-x-hidden selection:bg-amber-500/30 transition-colors duration-1000 bg-[#1E1B18]">
       
       {/* Deep Immersive Background */}
       <div className="absolute inset-0 pointer-events-none z-0">
@@ -90,13 +90,13 @@ export default function Landing() {
         </motion.div>
 
         {/* Central Composition */}
-        <div className="flex-1 flex flex-col items-center justify-center w-full pb-8">
+        <div className="flex-1 flex flex-col items-center justify-center w-full pb-2">
            
            <motion.div 
              initial={{ opacity: 0, scale: 0.95 }}
              animate={{ opacity: 1, scale: 1 }}
              transition={{ duration: 1.5, ease: [0.25, 1, 0.3, 1] }}
-             className="relative w-full flex flex-col items-center justify-center mt-4 sm:mt-8"
+             className="relative w-full flex flex-col items-center justify-center mt-2 sm:mt-4"
            >
               {/* Floating Stars/Orbs */}
               <div className="absolute -top-12 left-[10%] sm:left-[20%] animate-[pulse_4s_ease-in-out_infinite]">
@@ -107,21 +107,21 @@ export default function Landing() {
               </div>
 
               {/* The Quote */}
-              <div className="relative z-20 flex flex-col items-center mb-12 sm:mb-16">
-                <span className={`pb-4 text-lg ${theme === 'light' ? 'text-teal-700/60' : 'text-teal-400/40'}`}>✦</span>
+              <div className="relative z-20 flex flex-col items-center mb-6 sm:mb-8">
+                <span className={`pb-2 text-lg ${theme === 'light' ? 'text-teal-700/60' : 'text-teal-400/40'}`}>✦</span>
                 <p className={`font-serif italic text-base sm:text-lg tracking-[0.05em] max-w-[280px] sm:max-w-md text-center leading-relaxed px-4 font-light drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] ${theme === 'light' ? 'text-pine-900/90 font-medium drop-shadow-none' : 'text-teal-50/70 mix-blend-screen'}`}>
                   {language === 'el' ? '« Ο νους σου δεν είναι χαλασμένος, απλά λειτουργεί διαφορετικά. »' : '« Your mind is not broken, it simply functions differently. »'}
                 </p>
               </div>
 
               {/* Gravity & Earth Area */}
-              <div className="relative flex flex-col items-center justify-center w-full min-h-[220px] sm:min-h-[260px] mb-8">
+              <div className="relative flex flex-col items-center justify-center w-full min-h-[180px] sm:min-h-[200px] mb-4">
                 
                 {/* Axis Line - Laser Gravity */}
-                <div className={`absolute -top-[160px] bottom-[50%] left-1/2 -translate-x-1/2 w-[1px] z-0 ${theme === 'light' ? 'bg-gradient-to-b from-teal-500/0 via-teal-600/40 to-teal-700/80 shadow-[0_0_15px_rgba(15,118,110,0.3)]' : 'bg-gradient-to-b from-teal-200/0 via-teal-300/40 to-teal-400/80 shadow-[0_0_15px_rgba(45,212,191,0.5)]'}`}></div>
+                <div className={`absolute -top-[120px] bottom-[50%] left-1/2 -translate-x-1/2 w-[1px] z-0 ${theme === 'light' ? 'bg-gradient-to-b from-teal-500/0 via-teal-600/40 to-teal-700/80 shadow-[0_0_15px_rgba(15,118,110,0.3)]' : 'bg-gradient-to-b from-teal-200/0 via-teal-300/40 to-teal-400/80 shadow-[0_0_15px_rgba(45,212,191,0.5)]'}`}></div>
 
                 {/* 3D-like Earth Component */}
-                <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-48 h-48 sm:w-60 sm:h-60 rounded-full flex items-center justify-center overflow-hidden transition-transform duration-1000 ease-out animate-[pulse_6s_ease-in-out_infinite] ${theme === 'light' ? 'bg-gradient-to-br from-[#86efac] via-[#38bdf8] to-[#1e40af] opacity-80 border-blue-900/10 shadow-[0_0_60px_rgba(14,165,233,0.3),inset_-20px_-20px_40px_rgba(0,0,0,0.2),inset_4px_4px_16px_rgba(255,255,255,0.8)]' : 'bg-gradient-to-br from-[#4ade80] via-[#0ea5e9] to-[#1e3a8a] border-blue-200/5 shadow-[0_0_80px_rgba(14,165,233,0.15),inset_-20px_-20px_40px_rgba(0,0,0,0.8),inset_4px_4px_16px_rgba(255,255,255,0.3)] opacity-90'}`}>
+                <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-44 h-44 sm:w-52 sm:h-52 rounded-full flex items-center justify-center overflow-hidden transition-transform duration-1000 ease-out animate-[pulse_6s_ease-in-out_infinite] ${theme === 'light' ? 'bg-gradient-to-br from-[#86efac] via-[#38bdf8] to-[#1e40af] opacity-80 border-blue-900/10 shadow-[0_0_60px_rgba(14,165,233,0.3),inset_-20px_-20px_40px_rgba(0,0,0,0.2),inset_4px_4px_16px_rgba(255,255,255,0.8)]' : 'bg-gradient-to-br from-[#4ade80] via-[#0ea5e9] to-[#1e3a8a] border-blue-200/5 shadow-[0_0_80px_rgba(14,165,233,0.15),inset_-20px_-20px_40px_rgba(0,0,0,0.8),inset_4px_4px_16px_rgba(255,255,255,0.3)] opacity-90'}`}>
                   {/* Internal Glow at the pole */}
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-16 bg-teal-200/40 blur-[12px] rounded-full transform -translate-y-1/2"></div>
                   {/* Organic Continents */}
@@ -157,7 +157,7 @@ export default function Landing() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.6 }}
-          className="w-full flex flex-col items-center pb-8 sm:pb-12 pt-4 relative z-30"
+          className="w-full flex flex-col items-center pb-12 sm:pb-16 pt-2 relative z-30"
         >
           {/* Don't show again checkbox */}
           <div className="mb-4 sm:mb-6 flex items-center gap-3 cursor-pointer group" onClick={() => setDontShowAgain(!dontShowAgain)}>
