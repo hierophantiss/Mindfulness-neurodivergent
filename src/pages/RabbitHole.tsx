@@ -54,6 +54,22 @@ export default function RabbitHole() {
         "Προς το παρόν, θα αποδεχτώ την ταμπέλα “αυτιστικός” — όπως αποδέχομαι τη λέξη “τραπέζι”. Όμως ο αυτισμός δεν είναι αυτό που είμαι στην ουσία μου. Και, με κάθε σεβασμό, δεν πιστεύω πως είναι διαταραχή.",
         "Αν με αναζητήσετε, θα με βρείτε νοερά στο δάσος, μαζί με τα δέντρα και τα ζώα, να στοχάζομαι βαθιά. Γιατί, τελικά, δεν υπάρχει τίποτα — απολύτως τίποτα — που να μου λείπει."
       ]
+    },
+    {
+      id: 'what-is-sandbox',
+      title: language === 'en' ? 'What does Sandbox mean?' : 'Τι σημαίνει Sandbox;',
+      author: language === 'en' ? 'Core Concept' : 'Βασική Έννοια',
+      pages: language === 'en' ? [
+        "A sandbox is an isolated and safe programming environment (mindfulness/approved space).",
+        "Here, you let a process, a thought or a representation of a part of yourself (IFS part) \"execute\" and you monitor what possible warnings or errors the system throws (body, emotions).",
+        "However, you don't just find problems in the \"code\" here. In this space, you can also observe the optimal performance of these parts, finding their ideal way of running, or even discovering their very core function.",
+        "All of this happens without risking the main branch — your own life and your tangible relationships."
+      ] : [
+        "Ένα απομονωμένο και ασφαλές προγραμματιστικό περιβάλλον (mindfulness/εγκεκριμένος χώρος).",
+        "Εδώ, αφήνεις μία διεργασία, μία σκέψη ή αναπαράσταση ενός τμήματος του εαυτού σου (IFS part) να \"εκτελεστεί\" και παρακολουθείς τι πιθανά warnings ή errors ρίχνει το σύστημα (σώμα, συναισθήματα).",
+        "Όμως στο Sandbox δεν εντοπίζεις μόνο προβλήματα στον \"κώδικα\". Εδώ παρακολουθείς και την καλύτερη δυνατή λειτουργία αυτών των μερών, βρίσκοντας τον ιδανικό τρόπο να «τρέχουν» ή ακόμα και ανακαλύπτοντας την ίδια τη βασική τους λειτουργία (core function).",
+        "Όλα αυτά χωρίς να κινδυνεύει το main branch — η ίδια σου η ζωή και οι απτές σου σχέσεις."
+      ]
     }
   ];
 
@@ -104,10 +120,10 @@ export default function RabbitHole() {
     if (!article) return null;
 
     return (
-      <div className="fixed inset-0 z-50 bg-[#050f1c] text-white flex flex-col animate-in fade-in duration-300">
+      <div className="fixed inset-0 z-50 bg-[#1E1B18] text-white flex flex-col animate-in fade-in duration-300">
         
         {/* Top Progress Bar & Header */}
-        <div className="pt-safe px-4 pb-3 flex items-center justify-between border-b border-pine-800/40 bg-[#071324]/80 backdrop-blur-md relative z-20">
+        <div className="pt-safe px-4 pb-3 flex items-center justify-between border-b border-pine-800/40 bg-[#1E1B18]/80 backdrop-blur-md relative z-20">
           <button 
             onClick={() => setActiveArticle(null)} 
             className="p-2 -ml-2 text-pine-400 hover:text-white transition-colors active:scale-95"
@@ -190,9 +206,9 @@ export default function RabbitHole() {
 
   // List View Render (when activeArticle is null)
   return (
-    <div className="flex flex-col min-h-screen bg-[#071324] animate-in fade-in pb-24">
+    <div className="flex flex-col min-h-screen bg-[#1E1B18] animate-in fade-in pb-24">
       {/* Header */}
-      <header className="sticky top-0 z-30 bg-[#071324]/80 backdrop-blur-xl border-b border-pine-800/60 shadow-sm">
+      <header className="sticky top-0 z-30 bg-[#1E1B18]/80 backdrop-blur-xl border-b border-pine-800/60 shadow-sm">
         <div className="flex items-center justify-between px-4 h-16">
           <Link 
             to="/"

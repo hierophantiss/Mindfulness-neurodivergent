@@ -6,15 +6,28 @@
   --font-heading: "Outfit", "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Playfair Display", ui-serif, Georgia, serif;
   
-  --color-pine-950: #061114;
-  --color-pine-900: #0C1E26;
-  --color-pine-800: #15323E;
-  --color-pine-700: #204958;
-  --color-pine-600: #2F6375;
-  --color-pine-300: #7CB0B8;
-  --color-pine-200: #A8CDD3;
-  --color-pine-100: #DDF1F3;
-  --color-pine-50:  #F2F9FA;
+  /* Warm Dark Sepia/Taupe theme for Sandbox */
+  --color-pine-950: #1C1916;
+  --color-pine-900: #2C2824;
+  --color-pine-800: #3A352F;
+  --color-pine-700: #524B43;
+  --color-pine-600: #6B6258;
+  --color-pine-300: #C2AB9A;
+  --color-pine-200: #D8C3B3;
+  --color-pine-100: #EBE0D7;
+  --color-pine-50:  #FAF6F2;
+  
+  /* Warm Sage/Olive mapping for 'teal' variables to fit sandbox aesthetic */
+  --color-teal-50:  #F4F5F0;
+  --color-teal-100: #E6E8DE;
+  --color-teal-200: #C1C9B8;
+  --color-teal-300: #9BAA8E;
+  --color-teal-400: #7A8D68;
+  --color-teal-500: #5C704D;
+  --color-teal-600: #46553A;
+  --color-teal-700: #35402C;
+  --color-teal-800: #262E20;
+  --color-teal-900: #191E15;
   
   --color-gold-500: #D4AF37;
   --color-gold-400: #E6C25B;
@@ -31,10 +44,7 @@
 
 @layer base {
   body {
-    @apply bg-pine-950 text-pine-100 font-sans transition-colors duration-700 ease-in-out;
-  }
-  .light-theme body {
-    @apply bg-[#F4F1EA] text-[#2D3748];
+    @apply bg-pine-900 text-pine-50 font-sans transition-colors duration-700 ease-in-out;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading tracking-tight;
@@ -49,147 +59,130 @@
   .btn-3d-base {
     @apply relative overflow-hidden transition-all duration-300 ease-out;
   }
+
+  /* Engraved Text Effect */
+  .text-engraved {
+    color: rgba(255, 255, 255, 0.8) !important;
+    text-shadow: 
+      -1px -1px 1px rgba(0, 0, 0, 0.4),
+       1px 1px 1px rgba(255, 255, 255, 0.3);
+  }
   
-  /* Core Program / Deep Teal */
+  /* Rock Shapes */
+  .rock-shape-1 { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+  .rock-shape-2 { border-radius: 60% 40% 30% 70% / 50% 60% 40% 50%; }
+  .rock-shape-3 { border-radius: 50% 50% 60% 40% / 40% 40% 60% 60%; }
+  .rock-shape-4 { border-radius: 40% 60% 50% 50% / 60% 40% 50% 50%; }
+  
+  /* Core Program / Mossy River Stone -> Soft Clay */
   .btn-3d-core {
-    @apply bg-gradient-to-b from-[#163f4c] to-[#0a1a20];
-    box-shadow: 0 12px 24px rgba(0,0,0,0.6), inset 0 3px 3px rgba(255,255,255,0.15), inset 0 -5px 6px rgba(0,0,0,0.6), inset 0 0 30px rgba(20,184,166,0.1);
+    background-color: rgba(24, 20, 16, 0.5);
+    box-shadow: inset 6px 8px 16px rgba(0,0,0,0.7), inset -2px -2px 6px rgba(255,255,255,0.04), 0 1px 1px rgba(255,255,255,0.05);
   }
   .btn-3d-core:hover {
-    @apply -translate-y-1.5;
-    box-shadow: 0 18px 32px rgba(0,0,0,0.7), inset 0 3px 3px rgba(255,255,255,0.25), inset 0 -5px 6px rgba(0,0,0,0.6), inset 0 0 30px rgba(20,184,166,0.15);
+    background-color: rgba(18, 14, 10, 0.6);
+    box-shadow: inset 8px 12px 20px rgba(0,0,0,0.8), inset -3px -3px 8px rgba(255,255,255,0.05), 0 1px 1px rgba(255,255,255,0.05);
   }
   .btn-3d-core:active {
-    @apply translate-y-1.5;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.8), inset 0 6px 10px rgba(0,0,0,0.8), inset 0 0 20px rgba(20,184,166,0.05);
+    background-color: rgba(12, 10, 8, 0.7);
+    box-shadow: inset 12px 16px 24px rgba(0,0,0,0.9), inset -1px -1px 4px rgba(255,255,255,0.03);
   }
 
-  /* Breath / Dark Teal */
+  /* Breath / Soft Slate -> Soft Sage Clay */
   .btn-3d-breath {
-    @apply bg-gradient-to-b from-[#113a43] to-[#08151a];
-    box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 3px 3px rgba(255,255,255,0.12), inset 0 -4px 5px rgba(0,0,0,0.5), inset 0 0 20px rgba(45,212,191,0.05);
+    background-color: rgba(16, 18, 14, 0.5);
+    box-shadow: inset 6px 8px 16px rgba(0,0,0,0.7), inset -2px -2px 6px rgba(255,255,255,0.04), 0 1px 1px rgba(255,255,255,0.05);
   }
   .btn-3d-breath:hover {
-    @apply -translate-y-1;
-    box-shadow: 0 14px 28px rgba(0,0,0,0.6), inset 0 3px 3px rgba(255,255,255,0.2), inset 0 -4px 5px rgba(0,0,0,0.5), inset 0 0 20px rgba(45,212,191,0.1);
+    background-color: rgba(10, 12, 8, 0.6);
+    box-shadow: inset 8px 12px 20px rgba(0,0,0,0.8), inset -3px -3px 8px rgba(255,255,255,0.05), 0 1px 1px rgba(255,255,255,0.05);
   }
   .btn-3d-breath:active {
-    @apply translate-y-1;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.7), inset 0 5px 8px rgba(0,0,0,0.7), inset 0 0 15px rgba(45,212,191,0.05);
+    background-color: rgba(6, 8, 4, 0.7);
+    box-shadow: inset 12px 16px 24px rgba(0,0,0,0.9), inset -1px -1px 4px rgba(255,255,255,0.03);
   }
 
-  /* Movement / Dark Amber */
+  /* Movement / Warm Sandstone -> Terracotta Wood */
   .btn-3d-movement {
-    @apply bg-gradient-to-b from-[#3a2a11] to-[#0a181e];
-    box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 3px 3px rgba(255,255,255,0.12), inset 0 -4px 5px rgba(0,0,0,0.5), inset 0 0 20px rgba(245,158,11,0.05);
+    background-color: rgba(28, 18, 12, 0.5);
+    box-shadow: inset 6px 8px 16px rgba(0,0,0,0.7), inset -2px -2px 6px rgba(255,255,255,0.04), 0 1px 1px rgba(255,255,255,0.05);
   }
   .btn-3d-movement:hover {
-    @apply -translate-y-1;
-    box-shadow: 0 14px 28px rgba(0,0,0,0.6), inset 0 3px 3px rgba(255,255,255,0.2), inset 0 -4px 5px rgba(0,0,0,0.5), inset 0 0 20px rgba(245,158,11,0.1);
+    background-color: rgba(22, 12, 8, 0.6);
+    box-shadow: inset 8px 12px 20px rgba(0,0,0,0.8), inset -3px -3px 8px rgba(255,255,255,0.05), 0 1px 1px rgba(255,255,255,0.05);
   }
   .btn-3d-movement:active {
-    @apply translate-y-1;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.7), inset 0 5px 8px rgba(0,0,0,0.7), inset 0 0 15px rgba(245,158,11,0.05);
+    background-color: rgba(16, 8, 4, 0.7);
+    box-shadow: inset 12px 16px 24px rgba(0,0,0,0.9), inset -1px -1px 4px rgba(255,255,255,0.03);
   }
 
-  /* Standard / Slate Pine */
+  /* Standard / Grey Pebbles -> Taupe Wood */
   .btn-3d-standard {
-    @apply bg-gradient-to-b from-[#1a303a] to-[#08151a];
-    box-shadow: 0 8px 16px rgba(0,0,0,0.4), inset 0 2px 3px rgba(255,255,255,0.1), inset 0 -3px 4px rgba(0,0,0,0.4);
+    background-color: rgba(20, 18, 16, 0.5);
+    box-shadow: inset 5px 6px 12px rgba(0,0,0,0.7), inset -2px -2px 4px rgba(255,255,255,0.04), 0 1px 1px rgba(255,255,255,0.05);
   }
   .btn-3d-standard:hover {
-    @apply -translate-y-1;
-    box-shadow: 0 12px 24px rgba(0,0,0,0.5), inset 0 2px 3px rgba(255,255,255,0.15), inset 0 -3px 4px rgba(0,0,0,0.4);
+    background-color: rgba(14, 12, 10, 0.6);
+    box-shadow: inset 7px 10px 16px rgba(0,0,0,0.8), inset -3px -3px 6px rgba(255,255,255,0.05), 0 1px 1px rgba(255,255,255,0.05);
   }
   .btn-3d-standard:active {
-    @apply translate-y-1;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.6), inset 0 4px 6px rgba(0,0,0,0.6);
+    background-color: rgba(8, 6, 4, 0.7);
+    box-shadow: inset 10px 14px 20px rgba(0,0,0,0.9), inset -1px -1px 3px rgba(255,255,255,0.03);
   }
 
-  /* Small Tool Buttons */
+  /* Small Tool Pebbles */
   .btn-3d-small {
-    @apply bg-gradient-to-b from-[#1d3742] to-[#0d1f26];
-    box-shadow: 0 6px 12px rgba(0,0,0,0.3), inset 0 2px 2px rgba(255,255,255,0.1), inset 0 -2px 3px rgba(0,0,0,0.3);
+    background-color: rgba(20, 18, 16, 0.5);
+    box-shadow: inset 3px 4px 8px rgba(0,0,0,0.7), inset -1px -1px 3px rgba(255,255,255,0.04), 0 1px 1px rgba(255,255,255,0.05);
   }
   .btn-3d-small:hover {
-    @apply -translate-y-0.5;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.4), inset 0 2px 2px rgba(255,255,255,0.15), inset 0 -2px 3px rgba(0,0,0,0.3);
+    background-color: rgba(14, 12, 10, 0.6);
+    box-shadow: inset 5px 6px 12px rgba(0,0,0,0.8), inset -2px -2px 4px rgba(255,255,255,0.05), 0 1px 1px rgba(255,255,255,0.05);
   }
   .btn-3d-small:active {
-    @apply translate-y-1;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 3px 4px rgba(0,0,0,0.6);
+    background-color: rgba(8, 6, 4, 0.7);
+    box-shadow: inset 8px 10px 16px rgba(0,0,0,0.9), inset -1px -1px 2px rgba(255,255,255,0.03);
   }
 
   /* Icon Buttons */
   .btn-3d-icon {
-    @apply bg-gradient-to-b from-[#1d3742] to-[#0d1f26];
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3), inset 0 2px 2px rgba(255,255,255,0.1), inset 0 -2px 2px rgba(0,0,0,0.3);
+    background-color: rgba(20, 18, 16, 0.5);
+    box-shadow: inset 3px 4px 8px rgba(0,0,0,0.7), inset -1px -1px 3px rgba(255,255,255,0.04), 0 1px 1px rgba(255,255,255,0.05);
   }
   .btn-3d-icon:hover {
-    @apply -translate-y-0.5;
-    box-shadow: 0 6px 14px rgba(0,0,0,0.4), inset 0 2px 2px rgba(255,255,255,0.15), inset 0 -2px 2px rgba(0,0,0,0.3);
+    background-color: rgba(14, 12, 10, 0.6);
+    box-shadow: inset 5px 6px 12px rgba(0,0,0,0.8), inset -2px -2px 4px rgba(255,255,255,0.05), 0 1px 1px rgba(255,255,255,0.05);
   }
   .btn-3d-icon:active {
-    @apply translate-y-1;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.5), inset 0 3px 4px rgba(0,0,0,0.6);
+    background-color: rgba(8, 6, 4, 0.7);
+    box-shadow: inset 8px 10px 16px rgba(0,0,0,0.9), inset -1px -1px 2px rgba(255,255,255,0.03);
   }
 
-  /* --- LIGHT THEME BUTTON OVERRIDES --- */
-  .light-theme .btn-3d-core {
-    @apply bg-gradient-to-b from-[#e2ece5] to-[#c7dacf] text-[#1a3f33];
-    box-shadow: 0 12px 24px rgba(0,0,0,0.06), inset 0 3px 3px rgba(255,255,255,0.9), inset 0 -5px 6px rgba(0,0,0,0.05), inset 0 0 30px rgba(20,184,166,0.05);
+  /* Deep Hole Effect */
+  .btn-hole {
+    @apply bg-gradient-to-tl from-[#1d2731] to-[#0d1016] text-teal-100;
+    box-shadow: inset 10px 16px 24px -4px rgba(0,0,0,0.8), inset -2px -2px 6px rgba(255,255,255,0.05), 0 1px 2px rgba(255,255,255,0.1);
   }
-  .light-theme .btn-3d-core:hover {
-    @apply -translate-y-1.5;
-    box-shadow: 0 18px 32px rgba(0,0,0,0.1), inset 0 3px 3px rgba(255,255,255,1), inset 0 -5px 6px rgba(0,0,0,0.05), inset 0 0 30px rgba(20,184,166,0.1);
+  .btn-hole:hover {
+    box-shadow: inset 12px 20px 28px -4px rgba(0,0,0,0.85), inset -2px -2px 6px rgba(255,255,255,0.03), 0 1px 2px rgba(255,255,255,0.1);
   }
-  .light-theme .btn-3d-core:active {
-    @apply translate-y-1.5;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.03), inset 0 6px 10px rgba(0,0,0,0.05), inset 0 0 20px rgba(20,184,166,0.03);
-  }
+}
 
-  .light-theme .btn-3d-breath {
-    @apply bg-gradient-to-b from-[#e0eaf5] to-[#c2d3e4] text-[#1e3a5f];
-    box-shadow: 0 10px 20px rgba(0,0,0,0.05), inset 0 3px 3px rgba(255,255,255,0.9), inset 0 -4px 5px rgba(0,0,0,0.05), inset 0 0 20px rgba(45,212,191,0.03);
-  }
-  .light-theme .btn-3d-breath:hover {
-    @apply -translate-y-1;
-    box-shadow: 0 14px 28px rgba(0,0,0,0.08), inset 0 3px 3px rgba(255,255,255,1), inset 0 -4px 5px rgba(0,0,0,0.05), inset 0 0 20px rgba(45,212,191,0.05);
-  }
-  .light-theme .btn-3d-breath:active {
-    @apply translate-y-1;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.03), inset 0 5px 8px rgba(0,0,0,0.05), inset 0 0 15px rgba(45,212,191,0.03);
-  }
+@keyframes sand-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-20px, 15px) scale(1.05); }
+}
 
-  .light-theme .btn-3d-movement {
-    @apply bg-gradient-to-b from-[#f5e3d3] to-[#e4cbb4] text-[#5e3a21];
-    box-shadow: 0 10px 20px rgba(0,0,0,0.05), inset 0 3px 3px rgba(255,255,255,0.9), inset 0 -4px 5px rgba(0,0,0,0.05), inset 0 0 20px rgba(245,158,11,0.03);
-  }
-  .light-theme .btn-3d-movement:hover {
-    @apply -translate-y-1;
-    box-shadow: 0 14px 28px rgba(0,0,0,0.08), inset 0 3px 3px rgba(255,255,255,1), inset 0 -4px 5px rgba(0,0,0,0.05), inset 0 0 20px rgba(245,158,11,0.05);
-  }
-  .light-theme .btn-3d-movement:active {
-    @apply translate-y-1;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.03), inset 0 5px 8px rgba(0,0,0,0.05), inset 0 0 15px rgba(245,158,11,0.03);
-  }
+@keyframes ripples-flow {
+  0% { transform: scale(1); stroke-dashoffset: 0; }
+  50% { transform: scale(1.04); }
+  100% { transform: scale(1); stroke-dashoffset: -120; }
+}
 
-  .light-theme .btn-3d-standard,
-  .light-theme .btn-3d-small,
-  .light-theme .btn-3d-icon {
-    @apply bg-gradient-to-b from-[#ffffff] to-[#e8ebed] text-[#4A5568];
-    box-shadow: 0 8px 16px rgba(0,0,0,0.04), inset 0 2px 3px rgba(255,255,255,0.9), inset 0 -3px 4px rgba(0,0,0,0.05);
-  }
-  .light-theme .btn-3d-standard:hover,
-  .light-theme .btn-3d-small:hover,
-  .light-theme .btn-3d-icon:hover {
-    @apply -translate-y-1;
-    box-shadow: 0 12px 24px rgba(0,0,0,0.06), inset 0 2px 3px rgba(255,255,255,1), inset 0 -3px 4px rgba(0,0,0,0.05);
-  }
-  .light-theme .btn-3d-standard:active,
-  .light-theme .btn-3d-small:active,
-  .light-theme .btn-3d-icon:active {
-    @apply translate-y-1;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.03), inset 0 4px 6px rgba(0,0,0,0.05);
-  }
+.animate-sand-drift {
+  animation: sand-drift 40s ease-in-out infinite;
+}
+
+.animate-ripples {
+  animation: ripples-flow 35s linear infinite;
 }

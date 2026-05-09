@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, BookOpen } from 'lucide-react';
 import { CHAPTERS_DATA } from '../data/chapters';
 import { useLanguage } from '../hooks/useLanguage';
-import { InteractiveBackground } from '../components/InteractiveBackground';
 
 export default function Chapters() {
   const navigate = useNavigate();
@@ -17,9 +16,6 @@ export default function Chapters() {
 
   return (
     <div className="flex flex-col relative w-full pt-10 min-h-screen">
-      {/* Immersive Background Layer */}
-      <InteractiveBackground />
-
       <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-safe mb-4 relative z-10 px-4 md:px-8">
         <div className="flex flex-col items-center justify-center text-center mb-6 pt-4 pb-2">
           <button 

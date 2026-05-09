@@ -169,11 +169,13 @@ export default function PracticeBreath() {
   };
 
   const startSequence = () => {
-    if (pattern.id === 'be-like-a-flower-5-5') {
-       setIsIntro(true);
+    if (pattern.useVideoOnly || pattern.skipIntro) {
+       setIsIntro(false);
        setIntroElapsed(0);
        setRunning(true);
     } else {
+       setIsIntro(true);
+       setIntroElapsed(0);
        setRunning(true);
     }
   };
@@ -368,6 +370,7 @@ export default function PracticeBreath() {
             phaseLabels={pattern.labels}
             cycles={cycles}
             videoSrc={pattern.video}
+            useVideoOnly={pattern.useVideoOnly}
             videoPeak={pattern.videoPeak}
             videoInhaleStart={pattern.videoInhaleStart}
             videoInhaleEnd={pattern.videoInhaleEnd}

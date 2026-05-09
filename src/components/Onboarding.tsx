@@ -52,7 +52,7 @@ export default function Onboarding({ onComplete }: { onComplete: () => void }) {
           loop 
           muted 
           playsInline 
-          src="/hero_breathing.mp4" 
+          src="/infinity_greeting.mp4" 
           className="w-full h-full object-cover" 
         />
         <div className="absolute inset-0 bg-gradient-to-t from-pine-950 via-pine-950/80 to-transparent mix-blend-multiply" />

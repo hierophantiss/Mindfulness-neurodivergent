@@ -125,13 +125,6 @@ export default function NavigationMenu() {
                   <Info size={22} />
                 </button>
                 <button 
-                  onClick={toggleTheme} 
-                  title={language === 'el' ? 'Εναλλαγή Θέματος' : 'Toggle Theme'}
-                  className="w-12 h-12 rounded-full flex items-center justify-center text-pine-300 hover:bg-pine-800 hover:text-white transition-colors"
-                >
-                  {theme === 'light' ? <Moon size={22} /> : <Sun size={22} />}
-                </button>
-                <button 
                   onClick={() => showToast(language === 'el' ? 'Μουσική σύντομα!' : 'Music coming soon!')}
                   title={language === 'el' ? 'Μουσική' : 'Music'}
                   className="w-12 h-12 rounded-full flex items-center justify-center text-pine-300 hover:bg-pine-800 hover:text-white transition-colors"

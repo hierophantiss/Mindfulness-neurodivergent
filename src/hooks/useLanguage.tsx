@@ -45,7 +45,7 @@ const translations: Record<string, Record<Language, string>> = {
   'home.methodBtn': { el: 'Η Μέθοδος & τα Σύμβολα', en: 'The Method & Symbols' },
   'home.methodBtnSub': { el: 'Ο Ελέφαντας & η Μαϊμού', en: 'The Elephant & The Monkey' },
   'home.rabbitHole': { el: 'Η Τρύπα του Λαγού', en: 'Rabbit Hole' },
-  'home.rabbitHoleSub': { el: 'Αλληγορίες του Κόσμου', en: 'Allegories of the World' },
+  'home.rabbitHoleSub': { el: 'IFS, Αλληγορίες & Χάρτες του Νου', en: 'IFS, Allegories & Maps of Mind' },
   'home.needCalm': { el: 'Χρειάζομαι ηρεμία τώρα', en: 'I need calm now' },
   'home.needCalmSub': { el: 'Αναπνοή, SOS ή μικρή δόση', en: 'Breath, SOS, or a micro dose' },
   'home.read': { el: 'Θέλω να μάθω', en: 'I want to learn' },

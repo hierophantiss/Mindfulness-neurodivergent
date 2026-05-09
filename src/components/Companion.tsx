@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useCompanion } from '../hooks/useCompanion';
 import CompanionSheet from './CompanionSheet';
+import { useLanguage } from '../hooks/useLanguage';
+import { X } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 
 export const InfinitySVG = ({ size }: { size: number }) => (
   <svg width={size} height={Math.round(size * 0.55)} viewBox="0 0 120 66" fill="none" xmlns="http://www.w3.org/2000/svg" className="inf-svg-glow filter drop-shadow-md">
@@ -23,7 +26,30 @@ export default function Companion() {
   const { companionData, updateCompanionData, setSheetVisible, sheetVisible } = useCompanion();
   const [position, setPosition] = useState({ x: window.innerWidth - 68, y: window.innerHeight / 2 - 26 });
   const [isDragging, setIsDragging] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(false);
   const dragRef = useRef<{ startX: number, startY: number, initX: number, initY: number } | null>(null);
+  const { language } = useLanguage();
+
+  useEffect(() => {
+    // Only show if they haven't seen it
+    const hasSeen = localStorage.getItem('N_MINDFULNESS_SEEN_COMPANION_TUTORIAL');
+    if (!hasSeen) {
+      // Delay it a bit so it doesn't fight with WelcomeModal immediately, or pops nicely after load
+      const timer = setTimeout(() => {
+        setShowTutorial(true);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const dismissTutorial = (e?: React.MouseEvent) => {
+    if (e) {
+       e.preventDefault();
+       e.stopPropagation();
+    }
+    setShowTutorial(false);
+    localStorage.setItem('N_MINDFULNESS_SEEN_COMPANION_TUTORIAL', 'true');
+  };
 
   useEffect(() => {
     // Sync position with saved state
@@ -73,6 +99,9 @@ export default function Companion() {
     const dy = e.clientY - dragRef.current.startY;
     if (!isDragging && Math.sqrt(dx*dx + dy*dy) > 10) {
       setIsDragging(true);
+      if (showTutorial) {
+        dismissTutorial();
+      }
     }
 
     if (isDragging) {
@@ -104,8 +133,13 @@ export default function Companion() {
       e.stopPropagation();
       return;
     }
+    if (showTutorial) {
+      dismissTutorial(e);
+    }
     setSheetVisible(true);
   };
+
+  const isRightSide = position.x > window.innerWidth / 2;
 
   return (
     <>
@@ -118,6 +152,37 @@ export default function Companion() {
         onPointerCancel={onPointerUp}
         onClick={handleClick}
       >
+        <AnimatePresence>
+          {showTutorial && (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, x: isRightSide ? 20 : -20 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              exit={{ opacity: 0, scale: 0.9, x: isRightSide ? 20 : -20 }}
+              className={`absolute top-1/2 -translate-y-1/2 flex items-center gap-2 bg-pine-900/95 backdrop-blur-md text-pine-50 p-3 rounded-2xl shadow-2xl border border-teal-500/30 font-sans pointer-events-auto whitespace-nowrap z-50 ${isRightSide ? 'right-[120%]' : 'left-[120%]'}`}
+              onClick={dismissTutorial}
+            >
+              <div className="absolute top-1/2 -translate-y-1/2 border-[6px] border-transparent"
+                  style={isRightSide 
+                    ? { right: '-12px', borderLeftColor: 'rgba(20, 184, 166, 0.3)' } 
+                    : { left: '-12px', borderRightColor: 'rgba(20, 184, 166, 0.3)' }} />
+              <div className="absolute top-1/2 -translate-y-1/2 border-[6px] border-transparent"
+                  style={isRightSide 
+                    ? { right: '-11px', borderLeftColor: 'rgba(5, 46, 38, 0.95)' } 
+                    : { left: '-11px', borderRightColor: 'rgba(5, 46, 38, 0.95)' }} />      
+              <span className="text-[13px] font-medium tracking-wide">
+                {language === 'el' ? 'Hej, πάτα στο ♾️ για βοήθεια!' : 'Hej, tap on ♾️ for help!'}
+              </span>
+              <button 
+                onClick={dismissTutorial} 
+                className="p-1.5 hover:bg-white/10 rounded-full ml-1 transition-colors flex-shrink-0"
+                aria-label="Close tutorial"
+              >
+                <X size={14} className="text-pine-300" />
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <InfinitySVG size={36} />
         {companionData.dailyLogs.length > 0 && <span className="absolute animate-ping top-1 right-1 w-2 h-2 bg-amber-400 rounded-full" />}
       </div>

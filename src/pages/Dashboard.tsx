@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Music, Bell, BookOpen, Wind, Activity, Compass, BookMarked, Download, Smartphone, ArrowRight, Sun, Moon, Info } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Wind, Activity, Compass, BookMarked, Download, Smartphone, ArrowRight, Zap, Play } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
-import { useTheme } from '../hooks/useTheme';
 import { motion, AnimatePresence } from 'framer-motion';
-import { InteractiveBackground } from '../components/InteractiveBackground';
 
-// Breath-like easing curve for smooth entry
+// Soft easing for a calm entry
 const easingCurve: [number, number, number, number] = [0.25, 1, 0.3, 1];
 
 const containerVariants = {
@@ -14,25 +12,23 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.2,
+      staggerChildren: 0.1,
+      delayChildren: 0.1,
     }
   }
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 40 },
+  hidden: { opacity: 0, y: 20 },
   visible: { 
     opacity: 1, 
     y: 0, 
-    transition: { duration: 1.5, ease: easingCurve } 
+    transition: { duration: 1, ease: easingCurve } 
   }
 };
 
 export default function Dashboard() {
   const { language, t } = useLanguage();
-  const { theme, toggleTheme } = useTheme();
-  const navigate = useNavigate();
   
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -64,10 +60,10 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex flex-col relative w-full pb-28 pt-10 min-h-screen">
+    <div className="flex flex-col relative w-full pb-28 pt-8 min-h-screen z-10 selection:bg-teal-500/30">
       
-      {/* Immersive Background Layer */}
-      <InteractiveBackground />
+      {/* Background ambient lighting for depth without clutter */}
+      <div className="absolute top-0 left-0 w-full h-[60vh] bg-gradient-to-b from-pine-900/50 via-pine-900/20 to-transparent pointer-events-none -z-10" />
 
       {/* Toast Notification */}
       <AnimatePresence>
@@ -77,142 +73,156 @@ export default function Dashboard() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.95 }}
             transition={{ duration: 0.4, ease: easingCurve }}
-            className="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-pine-800/90 border border-white/10 text-white text-sm font-medium px-6 py-3 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-xl whitespace-nowrap text-center max-w-[90vw] truncate"
+            className="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-pine-800/90 border border-white/10 text-white text-sm font-medium px-6 py-3 rounded-full shadow-2xl backdrop-blur-xl whitespace-nowrap text-center max-w-[90vw] truncate"
           >
             {toastMessage}
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Main Content - Bento Grid Architecture */}
       <motion.div 
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="flex-1 w-full max-w-2xl mx-auto px-5 sm:px-6 py-4 lg:py-8 flex flex-col gap-6 z-20 relative"
+        className="flex-1 w-full max-w-4xl mx-auto px-5 sm:px-8 py-4 flex flex-col gap-8 lg:gap-10"
       >
-        {/* Dashboard Title */}
-        <motion.div variants={itemVariants} className="mb-4">
-          <h1 className={`text-3xl font-heading tracking-wide ${theme === 'light' ? 'text-teal-900' : 'text-white'}`}>
-             {language === 'el' ? 'Πίνακας Ελέγχου' : 'Dashboard'}
+        {/* Header section */}
+        <motion.div variants={itemVariants} className="text-center md:text-left flex flex-col gap-2 relative mt-4">
+          <div className="absolute -top-10 -left-10 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+          <h1 className="text-3xl md:text-5xl font-heading tracking-tight text-white/95">
+             {language === 'el' ? 'Ο Χώρος Σου' : 'Your Space'}
           </h1>
-          <p className={`font-light text-sm mt-1 ${theme === 'light' ? 'text-teal-700' : 'text-pine-300'}`}>
-             {language === 'el' ? 'Επιλέξτε τη δράση σας για σήμερα' : 'Choose your action for today'}
+          <p className="font-light text-[15px] md:text-lg text-white/60 max-w-lg mx-auto md:mx-0">
+             {language === 'el' ? 'Ένα ελεγχόμενο περιβάλλον για να γνωρίσεις τα μέρη του εαυτού σου.' : 'A safe environment to explore your parts and their interactions.'}
           </p>
         </motion.div>
 
-        {/* Zone 1: The Commitment (8-Week Program) */}
-        <motion.div variants={itemVariants}>
-          <Link 
-            to="/chapters" 
-            className="group block relative rounded-[2.5rem] p-8 btn-3d-core btn-3d-base"
-          >
-            <div className={`absolute inset-0 bg-gradient-to-br to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none ${theme === 'light' ? 'from-teal-900/0 via-teal-900/5' : 'from-teal-500/0 via-teal-500/10'}`} />
-            <div className={`absolute top-0 right-0 p-8 transform group-hover:scale-110 group-hover:rotate-6 pointer-events-none transition-opacity duration-700 ${theme === 'light' ? 'opacity-5 group-hover:opacity-10' : 'opacity-10 group-hover:opacity-30'}`}>
-              <BookOpen size={100} strokeWidth={1} className={theme === 'light' ? 'text-teal-900' : 'text-teal-200'} />
-            </div>
+        {/* Dynamic Bento Grid Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-6 auto-rows-auto">
+          
+          {/* Core Program - Hero Card */}
+          <motion.div variants={itemVariants} className="col-span-1 md:col-span-12">
+            <Link 
+              to="/chapters" 
+              className="group relative flex flex-col md:flex-row items-center md:items-stretch overflow-hidden rounded-[2rem] bg-white/[0.03] hover:bg-white/[0.05] border border-white/[0.05] hover:border-amber-500/20 backdrop-blur-xl transition-all duration-500 shadow-xl"
+            >
+              {/* Abstract decorative element */}
+              <div className="absolute right-0 top-0 w-64 h-64 bg-amber-500/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/3 group-hover:bg-amber-500/20 transition-colors duration-700 pointer-events-none" />
+              
+              <div className="flex-1 p-8 md:p-12 z-10 flex flex-col justify-center text-center md:text-left w-full">
+                <div className="flex flex-col items-center md:items-start">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 text-[11px] font-semibold tracking-widest uppercase rounded-full mb-4 md:mb-6 bg-amber-500/10 text-amber-300/90 border border-amber-500/20 backdrop-blur-sm">
+                    <Zap size={12} />
+                    {language === 'el' ? 'Βασικο Προγραμμα' : 'Core Program'}
+                  </span>
+                  <h2 className="text-3xl md:text-5xl font-heading mb-3 leading-tight tracking-wide text-white/90 group-hover:text-white transition-colors duration-300">
+                    {language === 'el' ? 'Κεφάλαια & Θεωρία' : 'Chapters & Theory'}
+                  </h2>
+                  <p className="text-sm md:text-base text-white/50 mb-6 max-w-md hidden md:block">
+                    {language === 'el' ? 'Ξεκίνησε το ταξίδι σου από τα βασικά. Κατανόησε το νευρικό σου σύστημα.' : 'Start your journey from the basics. Understand your nervous system.'}
+                  </p>
+                  
+                  <div className="inline-flex items-center gap-2 mt-2 md:mt-4 text-sm font-medium tracking-wide text-white/70 group-hover:text-amber-200 transition-colors">
+                    <span>{language === 'el' ? 'Ξεκινήστε την ανάγνωση' : 'Start reading'}</span>
+                    <ArrowRight size={16} className="transform group-hover:translate-x-1 transition-transform duration-300" />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="hidden md:flex relative w-[30%] min-w-[250px] items-center justify-center p-8 z-10 border-l border-white/[0.05]">
+                 <div className="w-24 h-24 rounded-full bg-amber-500/10 flex items-center justify-center border border-amber-500/20 group-hover:scale-110 transition-transform duration-500">
+                    <Play size={32} className="text-amber-300/80 ml-2" fill="currentColor" />
+                 </div>
+              </div>
+            </Link>
+          </motion.div>
+
+          {/* Microdoses Title Row */}
+          <motion.div variants={itemVariants} className="col-span-1 md:col-span-12 flex items-center justify-between mt-2 px-2">
+              <h3 className="text-lg font-heading text-white/80">{language === 'el' ? 'Άμεσες Πρακτικές' : 'Quick Practices'}</h3>
+              <Link to="/practice" className="text-xs font-semibold tracking-wider uppercase text-teal-400 hover:text-teal-300 flex items-center gap-1">
+                 {language === 'el' ? 'Ολες οι ασκησεις' : 'View all'} <ArrowRight size={12} />
+              </Link>
+          </motion.div>
+
+          {/* Practices container */}
+          <motion.div variants={itemVariants} className="col-span-1 md:col-span-12 grid grid-cols-2 gap-4 md:gap-6">
             
-            <div className="relative z-10 flex flex-col items-start">
-              <span className={`inline-block px-3 py-1 text-xs font-semibold tracking-[0.2em] uppercase rounded-full mb-5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] ${theme === 'light' ? 'bg-black/5 text-teal-800 border-black/5' : 'bg-white/5 text-teal-100 border-white/5'}`}>
-                {language === 'el' ? 'Κεντρικο Προγραμμα' : 'Core Program'}
-              </span>
-              <h2 className={`text-3xl md:text-4xl font-heading mb-3 leading-tight drop-shadow-sm ${theme === 'light' ? 'text-teal-950' : 'text-white'}`}>
-                {t('home.read')}
-              </h2>
-              <p className={`text-sm md:text-base max-w-[80%] leading-relaxed mb-8 font-light ${theme === 'light' ? 'text-teal-800/80' : 'text-pine-200/80'}`}>
-                 {t('home.readSub')}
-              </p>
-              <div className={`flex items-center gap-2 text-sm font-semibold tracking-wide uppercase transition-colors ${theme === 'light' ? 'text-teal-800 group-hover:text-teal-900' : 'text-teal-300/90 group-hover:text-teal-200'}`}>
-                <span>{language === 'el' ? 'Ξεκινήστε τώρα' : 'Begin your journey'}</span>
-                <ArrowRight size={16} className="transform group-hover:translate-x-2 transition-transform duration-300" />
+            <Link 
+              to="/practice/breath"
+              className="group relative h-40 md:h-48 flex flex-col items-center justify-center text-center overflow-hidden rounded-[2rem] bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.05] hover:border-teal-500/30 backdrop-blur-md transition-all duration-500"
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-teal-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="w-14 h-14 rounded-full bg-teal-500/10 flex items-center justify-center mb-3 group-hover:-translate-y-1 transition-transform duration-500 border border-teal-500/20 text-teal-300">
+                <Wind size={24} strokeWidth={1.5} />
               </div>
-            </div>
-          </Link>
-        </motion.div>
+              <h3 className="text-base md:text-xl font-heading tracking-wide text-white/90 group-hover:text-white">{language === 'el' ? 'Αναπνοή' : 'Breath'}</h3>
+            </Link>
 
-        {/* Zone 2: The Moment (Microdoses) */}
-        <motion.div variants={itemVariants} className="grid grid-cols-2 gap-5 md:gap-6">
-          <Link 
-            to="/practice/breath/sos-breath"
-            className="group relative p-6 rounded-[2rem] flex flex-col justify-between aspect-square md:aspect-auto md:min-h-[160px] btn-3d-breath btn-3d-base"
-          >
-            <div className={`absolute -right-4 -bottom-4 opacity-[0.03] group-hover:opacity-[0.1] transition-opacity duration-700 pointer-events-none ${theme === 'light' ? 'text-teal-900' : 'text-teal-300'}`}>
-               <Wind size={120} strokeWidth={1} />
-            </div>
-            <div className="relative z-10">
-              <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 border shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] group-hover:scale-110 transition-transform duration-500 ${theme === 'light' ? 'bg-white/40 text-teal-900 border-white/50' : 'bg-teal-500/10 text-teal-300 border-teal-500/20'}`}>
-                <Wind size={22} />
+            <Link 
+              to="/practice/movement"
+              className="group relative h-40 md:h-48 flex flex-col items-center justify-center text-center overflow-hidden rounded-[2rem] bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.05] hover:border-orange-500/30 backdrop-blur-md transition-all duration-500"
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="w-14 h-14 rounded-full bg-orange-500/10 flex items-center justify-center mb-3 group-hover:-translate-y-1 transition-transform duration-500 border border-orange-500/20 text-orange-300">
+                <Activity size={24} strokeWidth={1.5} />
               </div>
-            </div>
-            <div className="relative z-10 pt-2">
-              <h3 className={`text-xl font-heading mb-1 tracking-wide ${theme === 'light' ? 'text-teal-950' : 'text-white'}`}>{language === 'el' ? 'Αναπνοή' : 'Breath'}</h3>
-              <p className={`text-xs font-light tracking-wide uppercase ${theme === 'light' ? 'text-teal-800' : 'text-pine-300/60'}`}>SOS & {language === 'el' ? 'γείωση' : 'grounding'}</p>
-            </div>
-          </Link>
+              <h3 className="text-base md:text-xl font-heading tracking-wide text-white/90 group-hover:text-white">{language === 'el' ? 'Κίνηση' : 'Movement'}</h3>
+            </Link>
 
-          <Link 
-            to="/practice/microdoses"
-            className="group relative p-6 rounded-[2rem] flex flex-col justify-between aspect-square md:aspect-auto md:min-h-[160px] btn-3d-movement btn-3d-base"
-          >
-            <div className={`absolute -right-4 -bottom-4 opacity-[0.03] group-hover:opacity-[0.15] transition-opacity duration-700 pointer-events-none ${theme === 'light' ? 'text-amber-900' : 'text-amber-300'}`}>
-               <Activity size={120} strokeWidth={1} />
-            </div>
-            <div className="relative z-10">
-              <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 border shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] group-hover:scale-110 transition-transform duration-500 ${theme === 'light' ? 'bg-white/40 text-amber-900 border-white/50' : 'bg-amber-500/10 text-amber-300 border-amber-500/20'}`}>
-                <Activity size={22} />
+          </motion.div>
+
+          {/* Tools & Inner Work */}
+          <motion.div variants={itemVariants} className="col-span-1 md:col-span-12 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mt-4">
+            
+            <Link 
+              to="/rabbithole"
+              className="col-span-1 md:col-span-2 group flex items-center gap-4 p-5 md:p-6 rounded-3xl bg-white/[0.02] hover:bg-white/[0.04] border border-white/[0.05] hover:border-white/10 backdrop-blur-sm transition-all duration-300"
+            >
+              <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0 text-white/60 group-hover:text-white/90 transition-colors">
+                <Compass size={22} strokeWidth={1.5} />
               </div>
-            </div>
-            <div className="relative z-10 pt-2">
-              <h3 className={`text-xl font-heading mb-1 tracking-wide ${theme === 'light' ? 'text-amber-950' : 'text-white'}`}>{language === 'el' ? 'Κίνηση' : 'Movement'}</h3>
-              <p className={`text-xs font-light tracking-wide uppercase ${theme === 'light' ? 'text-amber-800' : 'text-pine-300/60'}`}>{language === 'el' ? 'Εκτόνωση ενέργειας' : 'Release energy'}</p>
-            </div>
-          </Link>
-        </motion.div>
+              <div className="flex flex-col text-left">
+                <h3 className="text-sm md:text-base font-semibold text-white/80 group-hover:text-white leading-tight">{t('home.rabbitHole')}</h3>
+                <span className="text-[11px] md:text-xs text-white/40 mt-1">{language === 'el' ? 'Βαθύτερη γνώση' : 'Deeper insight'}</span>
+              </div>
+            </Link>
 
-        {/* Zone 3: The Understanding (Theory & Journal) */}
-        <motion.div variants={itemVariants} className="grid grid-cols-2 gap-5 md:gap-6">
-           <Link 
-            to="/rabbithole"
-            className="group relative flex flex-col justify-between p-5 md:p-6 rounded-[1.5rem] btn-3d-standard btn-3d-base"
-          >
-            <Compass size={22} className={`mb-4 transition-colors ${theme === 'light' ? 'text-teal-800 group-hover:text-teal-900' : 'text-pine-400 group-hover:text-pine-300'}`} />
-            <div>
-              <h3 className={`text-base font-heading mb-1 tracking-wide ${theme === 'light' ? 'text-teal-950' : 'text-white'}`}>{t('home.rabbitHole')}</h3>
-              <p className={`text-[10px] md:text-xs uppercase tracking-widest font-medium ${theme === 'light' ? 'text-teal-700' : 'text-pine-400/60'}`}>{t('home.rabbitHoleSub')}</p>
-            </div>
-          </Link>
+            <Link 
+              to="/journal"
+              className="col-span-1 md:col-span-2 group flex items-center gap-4 p-5 md:p-6 rounded-3xl bg-white/[0.02] hover:bg-white/[0.04] border border-white/[0.05] hover:border-white/10 backdrop-blur-sm transition-all duration-300"
+            >
+              <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0 text-white/60 group-hover:text-white/90 transition-colors">
+                <BookMarked size={22} strokeWidth={1.5} />
+              </div>
+              <div className="flex flex-col text-left">
+                <h3 className="text-sm md:text-base font-semibold text-white/80 group-hover:text-white leading-tight">{language === 'el' ? 'Ημερολόγιο' : 'Journal'}</h3>
+                <span className="text-[11px] md:text-xs text-white/40 mt-1">{language === 'el' ? 'Σημειώσεις & Σκέψεις' : 'Notes & Reflections'}</span>
+              </div>
+            </Link>
+          </motion.div>
 
-          <Link 
-            to="/journal"
-            className="group relative flex flex-col justify-between p-5 md:p-6 rounded-[1.5rem] btn-3d-standard btn-3d-base"
-          >
-            <BookMarked size={22} className={`mb-4 transition-colors ${theme === 'light' ? 'text-teal-800 group-hover:text-teal-900' : 'text-pine-400 group-hover:text-pine-300'}`} />
-            <div>
-              <h3 className={`text-base font-heading mb-1 tracking-wide ${theme === 'light' ? 'text-teal-950' : 'text-white'}`}>{language === 'el' ? 'Ημερολόγιο' : 'Journal'}</h3>
-              <p className={`text-[10px] md:text-xs uppercase tracking-widest font-medium ${theme === 'light' ? 'text-teal-700' : 'text-pine-400/60'}`}>{language === 'el' ? 'ΙΣΤΟΡΙΚΟ' : 'HISTORY'}</p>
-            </div>
-          </Link>
-        </motion.div>
+          {/* Utils */}
+          <motion.div variants={itemVariants} className="col-span-1 md:col-span-12 flex flex-wrap md:flex-nowrap gap-3 mt-4">
+            <a 
+              href={language === 'en' ? "/workbook_en.pdf" : "/workbook_el.pdf"} 
+              download 
+              className="flex-1 flex justify-center items-center gap-2 py-4 rounded-2xl bg-white/[0.01] hover:bg-white/[0.04] border border-white/[0.05] text-[12px] font-medium tracking-wide text-white/50 hover:text-white/80 transition-all"
+            >
+              <Download size={16} />
+              <span>{t('home.downloadPdfTitle')}</span>
+            </a>
+            
+            <button 
+              onClick={handleInstallClick} 
+              className="flex-1 flex justify-center items-center gap-2 py-4 rounded-2xl bg-white/[0.01] hover:bg-white/[0.04] border border-white/[0.05] text-[12px] font-medium tracking-wide text-white/50 hover:text-white/80 transition-all"
+            >
+              <Smartphone size={16} />
+              <span>{t('home.installAppTitle')}</span>
+            </button>
+          </motion.div>
 
-        {/* Tools & Resources */}
-        <motion.div variants={itemVariants} className="pt-4 flex flex-wrap gap-4 pb-8">
-          <a 
-            href={language === 'en' ? "/workbook_en.pdf" : "/workbook_el.pdf"} 
-            download 
-            className="flex-1 min-w-[140px] flex items-center justify-center gap-2 py-4 px-4 rounded-[1.25rem] text-[13px] font-medium uppercase tracking-wide group btn-3d-small btn-3d-base"
-          >
-            <Download size={16} className={`transition-colors ${theme === 'light' ? 'text-teal-800 group-hover:text-teal-900' : 'text-pine-400 group-hover:text-pine-300'}`} />
-            <span className={theme === 'light' ? 'text-teal-900' : 'text-pine-200'}>{t('home.downloadPdfTitle')}</span>
-          </a>
-          <button 
-            onClick={handleInstallClick} 
-            className="flex-1 min-w-[140px] flex items-center justify-center gap-2 py-4 px-4 rounded-[1.25rem] text-[13px] font-medium uppercase tracking-wide group btn-3d-small btn-3d-base"
-          >
-            <Smartphone size={16} className={`transition-colors ${theme === 'light' ? 'text-teal-800 group-hover:text-teal-900' : 'text-pine-400 group-hover:text-pine-300'}`} />
-            <span className={theme === 'light' ? 'text-teal-900' : 'text-pine-200'}>{t('home.installAppTitle')}</span>
-          </button>
-        </motion.div>
-
+        </div>
       </motion.div>
     </div>
   );

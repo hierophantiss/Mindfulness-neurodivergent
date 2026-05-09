@@ -28,18 +28,18 @@ export default function Landing() {
   };
 
   return (
-    <div className={`flex flex-col relative w-full h-[100dvh] overflow-hidden selection:bg-teal-500/30 transition-colors duration-1000 ${theme === 'light' ? 'bg-[#F4F1EA]' : 'bg-[#051014]'}`}>
+    <div className="flex flex-col relative w-full h-[100dvh] overflow-hidden selection:bg-amber-500/30 transition-colors duration-1000 bg-[#1E1B18]">
       
       {/* Deep Immersive Background */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        <div className={`absolute inset-0 transition-opacity duration-1000 ${theme === 'light' ? 'opacity-0' : 'bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#0d222b] via-[#051014] to-[#020508] opacity-100'}`}></div>
+        <div className="absolute inset-0 transition-opacity duration-1000 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#2C2622] via-[#1E1B18] to-[#12100E] opacity-100"></div>
         
         {/* Soft light sources */}
-        <div className={`absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full blur-[120px] transition-colors duration-1000 ${theme === 'light' ? 'bg-teal-200/40 mix-blend-multiply opacity-70' : 'bg-teal-500/10 mix-blend-screen opacity-50'}`}></div>
-        <div className={`absolute bottom-[-10%] right-[-10%] w-[70vw] h-[70vw] rounded-full blur-[130px] transition-colors duration-1000 ${theme === 'light' ? 'bg-amber-100/60 mix-blend-multiply opacity-60' : 'bg-[#1e3a8a]/20 mix-blend-screen opacity-50'}`}></div>
+        <div className="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full blur-[120px] transition-colors duration-1000 bg-[#e6a15c]/15 mix-blend-screen opacity-50"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[70vw] h-[70vw] rounded-full blur-[130px] transition-colors duration-1000 bg-[#788276]/20 mix-blend-screen opacity-50"></div>
         
         {/* Noise texture for organic feel */}
-        <div className={`absolute inset-0 transition-opacity duration-1000 ${theme === 'light' ? 'opacity-[0.03]' : 'opacity-[0.04]'} bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay`}></div>
+        <div className="absolute inset-0 transition-opacity duration-1000 opacity-[0.04] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay"></div>
       </div>
 
       {/* Toast Notification */}
@@ -68,23 +68,20 @@ export default function Landing() {
         >
           {/* Left Setting - Language/Settings */}
           <div className="flex gap-3 pl-16 sm:pl-[72px]">
-             <button onClick={toggleLanguage} className={`w-12 h-12 rounded-full border flex items-center justify-center backdrop-blur-xl transition-all duration-300 btn-3d-icon btn-3d-base ${theme === 'light' ? 'bg-white/40 border-teal-900/10 text-teal-900 hover:bg-white/60 shadow-[0_4px_16px_rgba(13,34,43,0.1)]' : 'bg-white/5 border-white/10 text-teal-200/80 hover:text-white hover:bg-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.2)]'}`}>
+             <button onClick={toggleLanguage} className="w-12 h-12 rounded-full border flex items-center justify-center backdrop-blur-xl transition-all duration-300 btn-3d-icon btn-3d-base bg-white/5 border-white/10 text-teal-200/80 hover:text-white hover:bg-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.2)]">
                <span className="font-bold text-sm">{language === 'el' ? 'EN' : 'EL'}</span>
              </button>
-             <button onClick={() => showToast(language === 'el' ? 'Ρυθμίσεις σύντομα' : 'Settings coming soon')} className={`hidden sm:flex w-12 h-12 rounded-full border items-center justify-center backdrop-blur-xl transition-all duration-300 btn-3d-icon btn-3d-base ${theme === 'light' ? 'bg-white/40 border-teal-900/10 text-teal-900 hover:bg-white/60 shadow-[0_4px_16px_rgba(13,34,43,0.1)]' : 'bg-white/5 border-white/10 text-teal-200/80 hover:text-white hover:bg-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.2)]'}`}>
+             <button onClick={() => showToast(language === 'el' ? 'Ρυθμίσεις σύντομα' : 'Settings coming soon')} className="hidden sm:flex w-12 h-12 rounded-full border items-center justify-center backdrop-blur-xl transition-all duration-300 btn-3d-icon btn-3d-base bg-white/5 border-white/10 text-teal-200/80 hover:text-white hover:bg-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.2)]">
                <Settings size={20} strokeWidth={1.5} />
              </button>
           </div>
 
-          {/* Right Controls - Theme, Audio & SOS */}
+          {/* Right Controls - Audio & SOS */}
           <div className="flex gap-3">
-            <button onClick={toggleTheme} className={`w-12 h-12 rounded-full border flex items-center justify-center backdrop-blur-xl transition-all duration-300 btn-3d-icon btn-3d-base ${theme === 'light' ? 'bg-white/40 border-teal-900/10 text-teal-900 hover:bg-white/60 shadow-[0_4px_16px_rgba(13,34,43,0.1)]' : 'bg-white/5 border-white/10 text-teal-200/80 hover:text-white hover:bg-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.2)]'}`}>
-               {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
-            </button>
             <button onClick={() => showToast(language === 'el' ? 'Μουσική σύντομα!' : 'Music coming soon!')} className={`w-12 h-12 rounded-full border flex items-center justify-center backdrop-blur-xl transition-all duration-300 btn-3d-icon btn-3d-base ${theme === 'light' ? 'bg-white/40 border-teal-900/10 text-teal-900 hover:bg-white/60 shadow-[0_4px_16px_rgba(13,34,43,0.1)]' : 'bg-white/5 border-white/10 text-teal-200/80 hover:text-white hover:bg-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.2)]'}`}>
                <Volume2 size={20} strokeWidth={1.5} />
             </button>
-            <button onClick={() => showToast(language === 'el' ? 'Λειτουργία SOS κλήθηκε' : 'SOS mode triggered')} className={`w-12 h-12 rounded-full border flex items-center justify-center backdrop-blur-xl transition-all duration-300 group relative overflow-hidden btn-3d-movement btn-3d-base ${theme === 'light' ? 'bg-amber-100/50 border-amber-500/30 text-amber-600 hover:bg-amber-200/50 hover:text-amber-700 shadow-[0_4px_16px_rgba(245,158,11,0.1)]' : 'bg-amber-500/10 border-amber-500/20 text-amber-400 hover:bg-amber-500/20 hover:text-amber-300 shadow-[0_4px_16px_rgba(245,158,11,0.15)]'}`}>
+            <button onClick={() => navigate('/practice/breath/sos-breath')} className={`w-12 h-12 rounded-full border flex items-center justify-center backdrop-blur-xl transition-all duration-300 group relative overflow-hidden btn-3d-movement btn-3d-base ${theme === 'light' ? 'bg-amber-100/50 border-amber-500/30 text-amber-600 hover:bg-amber-200/50 hover:text-amber-700 shadow-[0_4px_16px_rgba(245,158,11,0.1)]' : 'bg-amber-500/10 border-amber-500/20 text-amber-400 hover:bg-amber-500/20 hover:text-amber-300 shadow-[0_4px_16px_rgba(245,158,11,0.15)]'}`}>
                <span className="font-bold tracking-widest text-[13px] group-hover:scale-105 transition-transform">SOS</span>
                {/* SOS ripple effect */}
                <div className={`absolute inset-0 rounded-full border animate-[ping_2s_ease-in-out_infinite] opacity-50 ${theme === 'light' ? 'border-amber-500/40' : 'border-amber-500/50'}`}></div>
@@ -136,7 +133,7 @@ export default function Landing() {
                 </div>
 
                 {/* Depth overlay for the text */}
-                <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] z-10 pointer-events-none rounded-full blur-[6px] ${theme === 'light' ? 'bg-[radial-gradient(ellipse_at_center,_rgba(244,241,234,0.75)_0%,_transparent_60%)]' : 'bg-[radial-gradient(ellipse_at_center,_rgba(5,16,20,0.65)_0%,_transparent_60%)]'}`}></div>
+                <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] z-10 pointer-events-none rounded-full blur-[6px] ${theme === 'light' ? 'bg-[radial-gradient(ellipse_at_center,_rgba(244,241,234,0.75)_0%,_transparent_60%)]' : 'bg-[radial-gradient(ellipse_at_center,_rgba(12,30,38,0.65)_0%,_transparent_60%)]'}`}></div>
 
                 {/* Massive 3D Text Overlaid */}
                 <div className="relative z-20 text-center flex flex-col items-center w-full px-2 mt-4 perspective-[1000px]">

@@ -6,6 +6,8 @@ import NavigationMenu from './NavigationMenu';
 import WelcomeModal from './WelcomeModal';
 import { useLanguage } from '../hooks/useLanguage';
 
+import { InteractiveBackground } from './InteractiveBackground';
+
 export default function Layout() {
   const { t } = useLanguage();
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
@@ -42,12 +44,7 @@ export default function Layout() {
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-emerald-500 text-white px-4 py-2 rounded-md z-50 shadow-lg">
         {t('skip_to_content')}
       </a>
-      {/* Background Atmosphere - Luminous Dark Theme */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10 bg-gradient-to-b from-[#0a1e27] to-[#061114]">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-teal-500/10 rounded-full blur-[120px] opacity-60 mix-blend-screen" />
-        <div className="absolute -bottom-[20%] -left-[10%] w-[600px] h-[600px] bg-emerald-700/5 rounded-full blur-[100px] opacity-40 mix-blend-screen" />
-        <div className="absolute -top-[10%] -right-[5%] w-[500px] h-[500px] bg-amber-600/5 rounded-full blur-[100px] opacity-30 mix-blend-screen" />
-      </div>
+      <InteractiveBackground />
 
       {/* Main Content Area */}
       <main id="main-content" ref={mainRef} className={cn(

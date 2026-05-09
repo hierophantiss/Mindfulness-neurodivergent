@@ -502,7 +502,7 @@ export default function GenericExercise() {
   const theme = getThemeColors();
 
   return (
-    <div className={cn("flex flex-col flex-1 bg-[#081216] -mx-4 -mt-4 -mb-8 px-4 pt-4 pb-8 md:-mx-8 md:-mt-8 md:-mb-8 md:px-8 md:pt-8 md:pb-8 overflow-y-auto bg-gradient-to-b to-[#081216]", theme.bg)}>
+    <div className={cn("flex flex-col flex-1 bg-[#0C1E26] -mx-4 -mt-4 -mb-8 px-4 pt-4 pb-8 md:-mx-8 md:-mt-8 md:-mb-8 md:px-8 md:pt-8 md:pb-8 overflow-y-auto bg-gradient-to-b to-[#0C1E26]", theme.bg)}>
       
       {/* Top Nav */}
       <div className={cn(
@@ -546,7 +546,7 @@ export default function GenericExercise() {
               loop 
               muted 
               playsInline 
-              src="/hero_breathing.mp4" 
+              src="/infinity_greeting.mp4" 
               className={cn("w-full h-full object-cover transition-opacity duration-1000", running ? "opacity-100" : "opacity-60 grayscale-[50%]")}
             />
           </div>
