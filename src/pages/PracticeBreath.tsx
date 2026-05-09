@@ -171,15 +171,9 @@ export default function PracticeBreath() {
   };
 
   const startSequence = () => {
-    if (pattern.useVideoOnly || pattern.skipIntro) {
-       setIsIntro(false);
-       setIntroElapsed(0);
-       setRunning(true);
-    } else {
-       setIsIntro(true);
-       setIntroElapsed(0);
-       setRunning(true);
-    }
+    setIsIntro(false);
+    setIntroElapsed(0);
+    setRunning(true);
   };
 
   const savePreferenceAndStart = (withAudio: boolean) => {

@@ -172,22 +172,24 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       pulse: 8,
       ambientLayers: ["/ocean-waves.mp3"],
     }, // Alpha/Theta
-    video: "/infinity_greeting.mp4",
+    video: "/animations/deepbow.mp4",
     videoPeak: 0.5,
-    videoInhaleEnd: 0.5,
-    videoExhaleStart: 0.5,
+    videoInhaleStart: 0.5,
+    videoInhaleEnd: 1.0,
+    videoExhaleStart: 0.0,
+    videoExhaleEnd: 0.5,
     phases: [
-      { dur: 5000, armFrom: 0, armTo: 0.8, waistFrom: 0, waistTo: 0.45, headFrom: 0, headTo: 0.2 },
-      { dur: 5000, armFrom: 0.8, armTo: 0, waistFrom: 0.45, waistTo: 0, headFrom: 0.2, headTo: 0 },
+      { dur: 5000, armFrom: 1, armTo: 0, waistFrom: 0, waistTo: 0.45, headFrom: 0, headTo: 0.2 },
+      { dur: 5000, armFrom: 0, armTo: 1, waistFrom: 0.45, waistTo: 0, headFrom: 0.2, headTo: 0 },
     ],
     labels: [
       {
-        label: { el: "Εισπνοή", en: "Inhale" },
-        sub: { el: "άνοιγμα (5s)", en: "open (5s)" },
-      },
-      {
         label: { el: "Εκπνοή", en: "Exhale" },
         sub: { el: "υπόκλιση (5s)", en: "bow (5s)" },
+      },
+      {
+        label: { el: "Εισπνοή", en: "Inhale" },
+        sub: { el: "άνοιγμα (5s)", en: "open (5s)" },
       },
     ],
   },

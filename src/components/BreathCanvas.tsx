@@ -145,16 +145,19 @@ export default function BreathCanvas({
       const inStart = vdur * videoInhaleStart;
       const inEnd = vdur * videoInhaleEnd;
       const exStart = vdur * videoExhaleStart;
+      const exEnd = vdur * videoExhaleEnd;
       const phase = phases[0];
-      videoRef.current.currentTime = isIntro ? 0 : inStart;
+      const startLabelEn = phaseLabels[0]?.label?.en;
       
       if (isIntro) {
+         videoRef.current.currentTime = 0;
          videoRef.current.playbackRate = 1.0;
-      } else if (phase.armFrom === 0 && phase.armTo === 1) {
+      } else if (startLabelEn === "Inhale") {
+         videoRef.current.currentTime = inStart;
          videoRef.current.playbackRate = Math.max(0.1, (inEnd - inStart) / (phase.dur / 1000));
-      } else if (phase.armFrom === 1 && phase.armTo === 0) {
+      } else if (startLabelEn === "Exhale") {
          videoRef.current.currentTime = exStart;
-         videoRef.current.playbackRate = Math.max(0.1, (vdur - exStart) / (phase.dur / 1000));
+         videoRef.current.playbackRate = Math.max(0.1, (exEnd - exStart) / (phase.dur / 1000));
       }
       
       videoRef.current.play().catch(e => console.log('Playback error:', e));
@@ -211,12 +214,13 @@ export default function BreathCanvas({
              // Adjust video on phase change only to avoid rAF thrashing
              if (!useVideoOnly && videoRef.current && videoRef.current.duration) {
                 const vdur = videoRef.current.duration;
-                if (nextPhase.armFrom === 0 && nextPhase.armTo === 1) {
+                const nextLabelEn = phaseLabels[state.current.phaseIdx]?.label?.en;
+                if (nextLabelEn === "Inhale") {
                     // Inhale
                     videoRef.current.currentTime = vdur * videoInhaleStart;
                     videoRef.current.playbackRate = Math.max(0.1, (vdur * videoInhaleEnd - vdur * videoInhaleStart) / (nextPhase.dur / 1000));
                     videoRef.current.play().catch(e => console.log('Play error:', e));
-                } else if (nextPhase.armFrom === 1 && nextPhase.armTo === 0) {
+                } else if (nextLabelEn === "Exhale") {
                     // Exhale
                     videoRef.current.currentTime = vdur * videoExhaleStart;
                     videoRef.current.playbackRate = Math.max(0.1, (vdur * videoExhaleEnd - vdur * videoExhaleStart) / (nextPhase.dur / 1000));

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { HashRouter, Routes, Route, useNavigate, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import { CompanionProvider } from './hooks/useCompanion';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
@@ -37,7 +37,7 @@ function AppContent() {
   return (
     <>
       {showOnboarding && <Onboarding onComplete={() => setShowOnboarding(false)} />}
-      <HashRouter>
+      <BrowserRouter>
         <CompanionProvider>
           <Routes>
           <Route path="/" element={<Layout />}>
@@ -61,7 +61,7 @@ function AppContent() {
           </Route>
           </Routes>
         </CompanionProvider>
-      </HashRouter>
+      </BrowserRouter>
     </>
   );
 }

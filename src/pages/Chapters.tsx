@@ -76,9 +76,10 @@ export default function Chapters() {
                 {/* The Image as an Icon container */}
                 <div className="relative z-10 mb-4 transform group-hover:-translate-y-1 transition-transform duration-500">
                   <div className="w-16 h-16 md:w-20 md:h-20 rounded-[1.25rem] shadow-[0_8px_16px_rgba(0,0,0,0.4)] border-2 border-white/10 overflow-hidden relative">
-                    <div 
-                      className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                      style={{ backgroundImage: `url(/chap${chapter.num}.${chapter.num === 2 ? 'png' : 'jpg'})` }}
+                    <img 
+                      src={`/chap${chapter.num}.${chapter.num === 2 ? 'png' : 'jpg'}`}
+                      alt={chapter.title}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-pine-950/20 group-hover:bg-transparent transition-colors duration-500" />
                   </div>
