@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Home, BookOpen, Activity, BookMarked, Menu, X, Info, Music, Bell, Compass, LayoutGrid } from 'lucide-react';
+import { Home, BookOpen, Activity, BookMarked, Menu, X, Info, Music, Bell, Compass, LayoutGrid, EyeOff, Eye } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useTheme } from '../hooks/useTheme';
+import { useAccessibility } from '../hooks/useAccessibility';
 
 export default function NavigationMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +13,7 @@ export default function NavigationMenu() {
   const location = useLocation();
   const { language } = useLanguage();
   const { theme, toggleTheme } = useTheme();
+  const { reduceMotion, toggleReduceMotion } = useAccessibility();
 
   const handleNav = (path: string) => {
     setIsOpen(false);
@@ -141,7 +143,7 @@ export default function NavigationMenu() {
                 </button>
               </div>
 
-              <div className="flex-1 overflow-y-auto py-6 px-6 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto w-full">
+              <div className="flex-[1] overflow-y-auto py-6 px-6 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto w-full content-start">
                 {moreItems.map((item) => {
                   return (
                     <button
@@ -150,12 +152,41 @@ export default function NavigationMenu() {
                       className="flex flex-col items-center gap-3 p-5 rounded-3xl transition-all bg-white/[0.03] hover:bg-white/[0.08] text-pine-100 border border-white/[0.05] hover:border-white/10"
                     >
                       <span className="text-3xl">{item.icon}</span>
-                      <span className="font-medium tracking-wide text-xs">
+                      <span className="font-medium tracking-wide text-xs text-center">
                         {language === 'en' ? item.labelEn : item.labelEl}
                       </span>
                     </button>
                   );
                 })}
+              </div>
+
+              {/* Settings / Accessibility Toggles */}
+              <div className="px-6 pb-6 max-w-2xl mx-auto w-full">
+                <div className="bg-white/[0.03] border border-white/[0.05] rounded-3xl p-4 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center bg-pine-900/50 text-pine-300">
+                      {reduceMotion ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-sm font-medium text-pine-100">
+                        {language === 'en' ? 'Reduce Motion' : 'Μείωση Κίνησης'}
+                      </span>
+                      <span className="text-[10px] text-pine-400">
+                        {language === 'en' ? 'Disable breathing animations' : 'Απενεργοποίηση εφέ αναπνοής'}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  {/* Toggle Switch */}
+                  <button 
+                    onClick={toggleReduceMotion}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${reduceMotion ? 'bg-amber-500' : 'bg-white/10'}`}
+                  >
+                    <span 
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${reduceMotion ? 'translate-x-6' : 'translate-x-1'}`}
+                    />
+                  </button>
+                </div>
               </div>
 
               <div className="flex justify-center gap-6 items-center p-6 border-t border-pine-800/40 mt-auto pb-safe">

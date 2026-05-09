@@ -22,6 +22,7 @@ import Onboarding from './components/Onboarding';
 
 import { LanguageProvider, useLanguage } from './hooks/useLanguage';
 import { ThemeProvider } from './hooks/useTheme';
+import { AccessibilityProvider } from './hooks/useAccessibility';
 
 function AppContent() {
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -69,7 +70,9 @@ export default function App() {
   return (
     <LanguageProvider>
       <ThemeProvider>
-        <AppContent />
+        <AccessibilityProvider>
+          <AppContent />
+        </AccessibilityProvider>
       </ThemeProvider>
     </LanguageProvider>
   );

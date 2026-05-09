@@ -6,12 +6,14 @@ import { cn } from '../lib/utils';
 import { useBinauralAudio } from '../hooks/useBinauralAudio';
 import { BREATH_PATTERNS } from '../data/breathPatterns';
 import { useLanguage } from '../hooks/useLanguage';
+import { useAccessibility } from '../hooks/useAccessibility';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function PracticeBreath() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { language } = useLanguage();
+  const { reduceMotion } = useAccessibility();
   
   const currentPatternId = id || '4-2-6-1';
   const pattern = BREATH_PATTERNS.find(p => p.id === currentPatternId) || BREATH_PATTERNS[0];
@@ -327,7 +329,7 @@ export default function PracticeBreath() {
           >
             <Headphones size={18} />
             {audioPref === null ? (
-              <span className="absolute -top-1 -right-1 w-3 h-3 bg-indigo-500 rounded-full border-2 border-pine-900 animate-pulse"></span>
+              <span className={`absolute -top-1 -right-1 w-3 h-3 bg-indigo-500 rounded-full border-2 border-pine-900 ${reduceMotion ? '' : 'animate-pulse'}`}></span>
             ) : null}
           </button>
         </div>
@@ -398,7 +400,7 @@ export default function PracticeBreath() {
                    }}
                    initial={{ scale: 0.8, opacity: 0 }}
                    animate={{ 
-                     scale: isInhale ? 1.6 : isPause ? (phaseIdx === 1 ? 1.6 : 0.8) : 0.8,
+                     scale: reduceMotion ? 1.0 : (isInhale ? 1.6 : isPause ? (phaseIdx === 1 ? 1.6 : 0.8) : 0.8),
                      opacity: isInhale ? 0.6 : isPause ? 0.3 : 0.6
                    }}
                    transition={{ 

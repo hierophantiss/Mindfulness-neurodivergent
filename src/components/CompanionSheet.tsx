@@ -7,6 +7,7 @@ import { KNOWLEDGE_FAQ } from '../data/faq';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
+import { useAccessibility } from '../hooks/useAccessibility';
 
 /* Companion Sheet states/flows */
 type FlowState = 'main' | 'mood' | 'hub' | 'explore' | 'options';
@@ -14,6 +15,7 @@ type FlowState = 'main' | 'mood' | 'hub' | 'explore' | 'options';
 export default function CompanionSheet() {
   const { sheetVisible, setSheetVisible, companionData, trackActivity, updateCompanionData } = useCompanion();
   const { language } = useLanguage();
+  const { reduceMotion } = useAccessibility();
   const [flow, setFlow] = useState<FlowState>('main');
   const [history, setHistory] = useState<FlowState[]>([]);
   const navigate = useNavigate();
@@ -189,8 +191,8 @@ function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClo
       <div className="flex items-center justify-between pb-3 border-b border-stone-200/60 dark:border-stone-800/60">
          <div className="flex items-center gap-3">
            <div className="flex -space-x-1">
-             <div className="w-6 h-6 rounded-full bg-teal-500/20 mix-blend-multiply dark:mix-blend-lighten animate-pulse" />
-             <div className="w-6 h-6 rounded-full bg-indigo-500/20 mix-blend-multiply dark:mix-blend-lighten animate-pulse delay-75" />
+             <div className={`w-6 h-6 rounded-full bg-teal-500/20 mix-blend-multiply dark:mix-blend-lighten ${reduceMotion ? '' : 'animate-pulse'}`} />
+             <div className={`w-6 h-6 rounded-full bg-indigo-500/20 mix-blend-multiply dark:mix-blend-lighten ${reduceMotion ? '' : 'animate-pulse delay-75'}`} />
            </div>
            <h2 className="font-display font-medium text-lg leading-none tracking-tight">
              {language === 'el' ? 'Καθοδήγηση' : 'Guidance'}

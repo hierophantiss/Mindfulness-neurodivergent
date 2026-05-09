@@ -3,11 +3,13 @@ import { Music, Bell, Sun, Moon, ArrowRight, Settings, Volume2 } from 'lucide-re
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useTheme } from '../hooks/useTheme';
+import { useAccessibility } from '../hooks/useAccessibility';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Landing() {
   const { language, setLanguage } = useLanguage();
   const { theme, toggleTheme } = useTheme();
+  const { reduceMotion } = useAccessibility();
   const toggleLanguage = () => setLanguage(language === 'el' ? 'en' : 'el');
   const navigate = useNavigate();
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -99,10 +101,10 @@ export default function Landing() {
              className="relative w-full flex flex-col items-center justify-center mt-2 sm:mt-4"
            >
               {/* Floating Stars/Orbs */}
-              <div className="absolute -top-12 left-[10%] sm:left-[20%] animate-[pulse_4s_ease-in-out_infinite]">
+              <div className={`absolute -top-12 left-[10%] sm:left-[20%] ${reduceMotion ? '' : 'animate-[pulse_4s_ease-in-out_infinite]'}`}>
                  <Moon size={36} className={`drop-shadow-[0_0_15px_rgba(191,219,254,0.3)] ${theme === 'light' ? 'text-teal-600/40' : 'text-blue-200/80'}`} fill="currentColor" strokeWidth={0} />
               </div>
-              <div className="absolute -top-16 right-[10%] sm:right-[20%] animate-[pulse_5s_ease-in-out_infinite]">
+              <div className={`absolute -top-16 right-[10%] sm:right-[20%] ${reduceMotion ? '' : 'animate-[pulse_5s_ease-in-out_infinite]'}`}>
                  <Sun size={42} className={`drop-shadow-[0_0_20px_rgba(252,211,77,0.4)] ${theme === 'light' ? 'text-amber-400/50' : 'text-amber-300/90'}`} fill="currentColor" strokeWidth={0} />
               </div>
 
@@ -121,7 +123,7 @@ export default function Landing() {
                 <div className={`absolute -top-[120px] bottom-[50%] left-1/2 -translate-x-1/2 w-[1px] z-0 ${theme === 'light' ? 'bg-gradient-to-b from-teal-500/0 via-teal-600/40 to-teal-700/80 shadow-[0_0_15px_rgba(15,118,110,0.3)]' : 'bg-gradient-to-b from-teal-200/0 via-teal-300/40 to-teal-400/80 shadow-[0_0_15px_rgba(45,212,191,0.5)]'}`}></div>
 
                 {/* 3D-like Earth Component */}
-                <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-44 h-44 sm:w-52 sm:h-52 rounded-full flex items-center justify-center overflow-hidden transition-transform duration-1000 ease-out animate-[pulse_6s_ease-in-out_infinite] ${theme === 'light' ? 'bg-gradient-to-br from-[#86efac] via-[#38bdf8] to-[#1e40af] opacity-80 border-blue-900/10 shadow-[0_0_60px_rgba(14,165,233,0.3),inset_-20px_-20px_40px_rgba(0,0,0,0.2),inset_4px_4px_16px_rgba(255,255,255,0.8)]' : 'bg-gradient-to-br from-[#4ade80] via-[#0ea5e9] to-[#1e3a8a] border-blue-200/5 shadow-[0_0_80px_rgba(14,165,233,0.15),inset_-20px_-20px_40px_rgba(0,0,0,0.8),inset_4px_4px_16px_rgba(255,255,255,0.3)] opacity-90'}`}>
+                <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-44 h-44 sm:w-52 sm:h-52 rounded-full flex items-center justify-center overflow-hidden transition-transform duration-1000 ease-out ${reduceMotion ? '' : 'animate-[pulse_6s_ease-in-out_infinite]'} ${theme === 'light' ? 'bg-gradient-to-br from-[#86efac] via-[#38bdf8] to-[#1e40af] opacity-80 border-blue-900/10 shadow-[0_0_60px_rgba(14,165,233,0.3),inset_-20px_-20px_40px_rgba(0,0,0,0.2),inset_4px_4px_16px_rgba(255,255,255,0.8)]' : 'bg-gradient-to-br from-[#4ade80] via-[#0ea5e9] to-[#1e3a8a] border-blue-200/5 shadow-[0_0_80px_rgba(14,165,233,0.15),inset_-20px_-20px_40px_rgba(0,0,0,0.8),inset_4px_4px_16px_rgba(255,255,255,0.3)] opacity-90'}`}>
                   {/* Internal Glow at the pole */}
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-16 bg-teal-200/40 blur-[12px] rounded-full transform -translate-y-1/2"></div>
                   {/* Organic Continents */}
