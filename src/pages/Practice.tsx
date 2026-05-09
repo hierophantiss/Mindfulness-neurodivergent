@@ -17,10 +17,10 @@ export default function Practice() {
       </button>
 
       <section>
-        <h2 className="text-3xl font-semibold text-white tracking-tight mb-2">
+        <h2 className="text-4xl font-medium text-white tracking-tight mb-3">
           {language === 'el' ? 'Εξάσκηση' : 'Practice'}
         </h2>
-        <p className="text-pine-200">
+        <p className="text-lg text-pine-300 font-normal mb-8">
           {language === 'el' ? 'Επίλεξε την κατηγορία εξάσκησης που χρειάζεσαι.' : 'Choose the practice category you need.'}
         </p>
       </section>
@@ -29,12 +29,12 @@ export default function Practice() {
         {/* Movement & Breath Hub Card */}
         <Link
           to="/practice/movement"
-          className="group relative block border p-6 md:p-8 rounded-[2rem] transition-all duration-500 cursor-pointer overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.2)] active:scale-[0.98] hover:shadow-[0_12px_40px_rgba(79,70,229,0.15)] hover:-translate-y-1 backdrop-blur-md bg-gradient-to-br from-indigo-950/60 to-indigo-900/80 border-indigo-700/40 hover:border-indigo-500/50"
+          className="group relative block p-6 md:p-8 rounded-[2rem] transition-all duration-500 cursor-pointer overflow-hidden shadow-xl active:scale-[0.98] hover:-translate-y-1 backdrop-blur-md bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.05] hover:border-indigo-400/30"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/0 via-indigo-500/10 to-indigo-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%]"></div>
           
           <div className="flex flex-col items-center text-center gap-5 relative z-10 w-full h-full justify-center min-h-[160px] md:min-h-[200px]">
-            <div className="w-16 h-16 md:w-20 md:h-20 rounded-[1.25rem] flex items-center justify-center shrink-0 shadow-inner transition-transform duration-500 group-hover:scale-110 bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
+            <div className="w-16 h-16 md:w-20 md:h-20 rounded-[1.25rem] flex items-center justify-center shrink-0 shadow-inner transition-transform duration-500 group-hover:scale-110 bg-indigo-500/10 text-indigo-300 border border-indigo-400/20 backdrop-blur-sm">
               <Move className="w-8 h-8 md:w-10 md:h-10" />
             </div>
             <div>
@@ -51,12 +51,12 @@ export default function Practice() {
         {/* Microdoses Hub Card */}
         <Link
           to="/practice/microdoses"
-          className="group relative block border p-6 md:p-8 rounded-[2rem] transition-all duration-500 cursor-pointer overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.2)] active:scale-[0.98] hover:shadow-[0_12px_40px_rgba(16,185,129,0.15)] hover:-translate-y-1 backdrop-blur-md bg-gradient-to-br from-emerald-950/60 to-emerald-900/80 border-emerald-700/40 hover:border-emerald-500/50"
+          className="group relative block p-6 md:p-8 rounded-[2rem] transition-all duration-500 cursor-pointer overflow-hidden shadow-xl active:scale-[0.98] hover:-translate-y-1 backdrop-blur-md bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.05] hover:border-emerald-400/30"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/0 via-emerald-500/10 to-emerald-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%]"></div>
           
           <div className="flex flex-col items-center text-center gap-5 relative z-10 w-full h-full justify-center min-h-[160px] md:min-h-[200px]">
-            <div className="w-16 h-16 md:w-20 md:h-20 rounded-[1.25rem] flex items-center justify-center shrink-0 shadow-inner transition-transform duration-500 group-hover:scale-110 bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
+            <div className="w-16 h-16 md:w-20 md:h-20 rounded-[1.25rem] flex items-center justify-center shrink-0 shadow-inner transition-transform duration-500 group-hover:scale-110 bg-emerald-500/10 text-emerald-300 border border-emerald-400/20 backdrop-blur-sm">
               <Zap className="w-8 h-8 md:w-10 md:h-10 fill-emerald-300" />
             </div>
             <div>

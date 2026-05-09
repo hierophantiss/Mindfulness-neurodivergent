@@ -557,8 +557,8 @@ export default function GenericExercise() {
           "w-full text-center px-6 mb-8 transition-opacity duration-1000",
           running ? "opacity-30 hover:opacity-100" : "opacity-100"
         )}>
-          <h1 className="text-2xl font-semibold text-white tracking-wide mb-2">{language === 'en' ? exercise.title.en : exercise.title.el}</h1>
-          <p className="text-sm text-pine-400 leading-relaxed font-light">{language === 'en' ? exercise.desc.en : exercise.desc.el}</p>
+          <h1 className="text-3xl font-medium text-white tracking-wide mb-3">{language === 'en' ? exercise.title.en : exercise.title.el}</h1>
+          <p className="text-base md:text-lg text-pine-300 leading-loose font-normal">{language === 'en' ? exercise.desc.en : exercise.desc.el}</p>
         </div>
 
         {/* Audio Player Controls */}
@@ -609,17 +609,17 @@ export default function GenericExercise() {
           "w-full bg-pine-800/30 border border-pine-700/50 rounded-[2rem] p-6 lg:p-8 mt-4 transition-opacity duration-1000",
           running ? "opacity-30 hover:opacity-100 focus-within:opacity-100" : "opacity-100"
         )}>
-          <h3 className="text-base font-medium text-white mb-6 flex items-center gap-2">
-            <Info className={theme.accent} size={18} />
+          <h3 className="text-lg font-medium text-white mb-6 flex items-center gap-3">
+            <Info className={theme.accent} size={20} />
             {language === 'el' ? 'Οδηγίες' : 'Instructions'}
           </h3>
-          <ul className="space-y-4">
+          <ul className="space-y-6">
             {(language === 'en' ? exercise.instructions.en : exercise.instructions.el)?.map((step: string, idx: number) => (
-              <li key={idx} className="flex gap-4 text-pine-300">
-                <span className={cn("flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold mt-0.5", theme.light, theme.accent)}>
+              <li key={idx} className="flex gap-4 text-pine-100">
+                <span className={cn("flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium mt-1", theme.light, theme.accent)}>
                   {idx + 1}
                 </span>
-                <span className="leading-relaxed text-[15px]">{step}</span>
+                <span className="leading-loose text-[17px] font-normal">{step}</span>
               </li>
             ))}
           </ul>

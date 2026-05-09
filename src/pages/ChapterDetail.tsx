@@ -20,6 +20,7 @@ export default function ChapterDetail() {
   const [page, setPage] = useState(0);
   const [direction, setDirection] = useState(1);
   const touchStartX = useRef(0);
+  const [visibleParagraphs, setVisibleParagraphs] = useState(1);
 
   // Generate pages array dynamically
   const pages = [];
@@ -55,6 +56,7 @@ export default function ChapterDetail() {
     if (page < pages.length - 1) {
       setDirection(1);
       setPage(p => p + 1);
+      setVisibleParagraphs(1);
     } else {
       // Mark as complete and go back
       updateChapterProgress(chapter.num, 1);
@@ -66,6 +68,7 @@ export default function ChapterDetail() {
     if (page > 0) {
       setDirection(-1);
       setPage(p => p - 1);
+      setVisibleParagraphs(1);
     }
   };
 
@@ -162,50 +165,50 @@ export default function ChapterDetail() {
             {curPage.type === 'intro' && (
               <div className="flex flex-col items-center text-center mt-0">
                 {(chapter.num >= 1 && chapter.num <= 4) ? (
-                  <div className="w-full relative rounded-3xl overflow-hidden mb-6 aspect-square max-h-[35vh]">
+                  <div className="w-full relative rounded-3xl overflow-hidden mb-6 md:mb-10 aspect-[4/3] md:aspect-[16/9] max-h-[45vh]">
                     <img 
                       src={`/chap${chapter.num}.${chapter.num === 2 ? 'png' : 'jpg'}`} 
                       className="absolute inset-0 w-full h-full object-cover" 
                       alt={chapter.title} 
                       onError={(e) => e.currentTarget.style.display = 'none'}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-pine-950 via-pine-900/40 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-pine-950 via-pine-900/60 to-transparent" />
                     
-                    <div className="absolute inset-0 flex flex-col justify-end p-6 pb-8">
-                      <h1 className="text-4xl md:text-5xl font-semibold text-white tracking-tight mb-2 leading-tight drop-shadow-lg">
+                    <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-10 pb-8 md:pb-12 text-left md:text-center">
+                      <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium text-white tracking-tight mb-3 md:mb-4 leading-tight drop-shadow-lg">
                         {chapter.title}
                       </h1>
-                      <p className="text-lg text-pine-100 font-medium max-w-xl mx-auto tracking-wide drop-shadow-md">
+                      <p className="text-lg md:text-xl text-pine-100 font-normal max-w-2xl mx-auto tracking-wide drop-shadow-md">
                         {chapter.sub}
                       </p>
                     </div>
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center text-center mt-4 mb-8">
+                  <div className="flex flex-col items-center text-center mt-6 mb-12">
                     <div 
-                      className="w-24 h-24 rounded-3xl flex items-center justify-center text-5xl bg-opacity-20 backdrop-blur-sm mb-6 shrink-0"
+                      className="w-24 h-24 md:w-32 md:h-32 rounded-3xl flex items-center justify-center text-5xl md:text-6xl bg-opacity-20 backdrop-blur-sm mb-6 shrink-0"
                       style={{ backgroundColor: `${chapter.hex}30`, color: chapter.hex }}
                     >
                       {chapter.icon}
                     </div>
-                    <h1 className="text-3xl md:text-5xl font-semibold text-white tracking-tight mb-4 leading-tight">
+                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-medium text-white tracking-tight mb-5 leading-tight">
                       {chapter.title}
                     </h1>
-                    <p className="text-lg text-pine-100 font-medium max-w-xl mx-auto tracking-wide">
+                    <p className="text-lg md:text-xl text-pine-100 font-normal max-w-2xl mx-auto tracking-wide">
                       {chapter.sub}
                     </p>
                   </div>
                 )}
 
-                <div className="bg-pine-800/60 shadow-md border border-pine-600/50 rounded-3xl p-6 w-full text-left">
-                  <h3 className="text-sm font-semibold text-pine-300 uppercase tracking-wider mb-3">
+                <div className="bg-white/[0.03] shadow-lg border border-white/[0.05] rounded-[2rem] p-8 md:p-10 w-full text-left backdrop-blur-md">
+                  <h3 className="text-sm font-medium text-pine-300 uppercase tracking-widest mb-4">
                     {language === 'el' ? 'Περίληψη' : 'Summary'}
                   </h3>
-                  <p className="text-pine-100 leading-[1.7] text-[16px] tracking-wide">{chapter.summary}</p>
+                  <p className="text-pine-50 leading-loose text-lg tracking-wide font-normal">{chapter.summary}</p>
                   
                   {chapter.tldr && (
-                    <div className="mt-5 p-4 rounded-2xl bg-opacity-10 border" style={{ backgroundColor: `${chapter.hex}10`, borderColor: `${chapter.hex}30` }}>
-                      <p className="text-[15px] font-medium leading-[1.7] tracking-wide text-white drop-shadow-sm">{chapter.tldr}</p>
+                    <div className="mt-8 p-6 md:p-8 rounded-[1.5rem] bg-opacity-10 border" style={{ backgroundColor: `${chapter.hex}10`, borderColor: `${chapter.hex}30` }}>
+                      <p className="text-[17px] md:text-lg font-medium leading-loose tracking-wide text-white drop-shadow-sm">{chapter.tldr}</p>
                     </div>
                   )}
                 </div>
@@ -213,37 +216,65 @@ export default function ChapterDetail() {
             )}
 
             {curPage.type === 'theory' && curPage.section && (
-              <div className="mt-2 h-full flex flex-col">
-                <h2 className="text-2xl font-semibold text-white mb-5 leading-tight border-b border-pine-800 pb-3">
+              <div className="mt-4 md:mt-8 h-full flex flex-col px-2 md:px-6">
+                <h2 className="text-3xl md:text-4xl font-medium text-white mb-8 border-b border-white/[0.08] pb-4 leading-tight">
                   {curPage.section.title}
                 </h2>
-                <div className="space-y-6 text-pine-100 leading-[1.7] text-[17px] tracking-wide">
-                  {curPage.section.paragraphs.map((par: string, p_idx: number) => (
-                    <p key={p_idx} dangerouslySetInnerHTML={{ __html: par }} />
-                  ))}
-                  {curPage.section.image && (
-                    <div className="mt-6 rounded-2xl overflow-hidden border border-pine-800 shadow-md">
-                      <img src={curPage.section.image} alt={curPage.section.title} className="w-full h-auto object-cover max-h-64 opacity-90 hover:opacity-100 transition-opacity" />
+                <div className="space-y-8 text-pine-50 leading-loose text-lg md:text-[19px] tracking-wide font-normal">
+                  <AnimatePresence initial={false}>
+                    {curPage.section.paragraphs.slice(0, visibleParagraphs).map((par: string, p_idx: number) => (
+                      <motion.p 
+                        key={p_idx} 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                        dangerouslySetInnerHTML={{ __html: par }} 
+                        className="leading-loose" 
+                      />
+                    ))}
+                  </AnimatePresence>
+                  
+                  {visibleParagraphs < curPage.section.paragraphs.length && (
+                    <div className="pt-4 flex justify-center">
+                      <button 
+                        onClick={() => setVisibleParagraphs(v => v + 1)}
+                        className="px-6 py-3 rounded-full bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.1] text-pine-200 hover:text-white transition-all text-sm tracking-wide flex items-center gap-2"
+                      >
+                        {language === 'el' ? 'Συνέχεια Ανάγνωσης' : 'Continue Reading'}
+                        <ChevronRight size={16} />
+                      </button>
                     </div>
+                  )}
+
+                  {visibleParagraphs >= curPage.section.paragraphs.length && curPage.section.image && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6 }}
+                      className="mt-10 rounded-[2rem] overflow-hidden border border-white/[0.08] shadow-xl"
+                    >
+                      <img src={curPage.section.image} alt={curPage.section.title} className="w-full h-auto object-cover max-h-96 opacity-90 hover:opacity-100 transition-opacity" />
+                    </motion.div>
                   )}
                 </div>
               </div>
             )}
 
             {curPage.type === 'exercise' && (
-              <div className="mt-2 space-y-6">
+              <div className="mt-4 md:mt-8 space-y-8 px-2 md:px-6">
                 {chapter.exercise && (
-                  <div className="bg-pine-800/60 shadow-md border border-pine-600/50 rounded-3xl p-6">
-                    <h2 className="text-xl font-semibold text-white mb-5 flex items-center gap-2">
-                      <span style={{ color: chapter.hex }}>{language === 'el' ? 'Άσκηση:' : 'Exercise:'}</span> {chapter.exercise.title}
+                  <div className="bg-white/[0.03] shadow-lg border border-white/[0.05] rounded-[2rem] p-8 md:p-10 backdrop-blur-md">
+                    <h2 className="text-2xl md:text-3xl font-medium text-white mb-8 flex flex-col md:flex-row items-start md:items-center gap-3 leading-tight">
+                      <span style={{ color: chapter.hex }} className="shrink-0">{language === 'el' ? 'Άσκηση:' : 'Exercise:'}</span> 
+                      <span>{chapter.exercise.title}</span>
                     </h2>
-                    <ul className="space-y-5">
+                    <ul className="space-y-8">
                       {chapter.exercise.steps.map((step, idx) => (
-                        <li key={idx} className="flex gap-4 text-pine-100 text-[16px] leading-[1.7] tracking-wide items-start">
-                          <span className="w-6 h-6 rounded-full bg-pine-700/50 flex items-center justify-center text-xs font-mono shrink-0 mt-0.5 text-pine-300">
+                        <li key={idx} className="flex gap-5 text-pine-50 text-lg leading-loose tracking-wide items-start">
+                          <span className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-sm shrink-0 mt-1 text-pine-300 font-medium">
                             {idx + 1}
                           </span>
-                          <span>{step}</span>
+                          <span className="font-normal">{step}</span>
                         </li>
                       ))}
                     </ul>

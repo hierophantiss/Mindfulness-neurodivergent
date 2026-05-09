@@ -68,20 +68,20 @@ export default function Landing() {
         >
           {/* Left Setting - Language/Settings */}
           <div className="flex gap-3 pl-16 sm:pl-[72px]">
-             <button onClick={toggleLanguage} className="w-12 h-12 rounded-full border flex items-center justify-center backdrop-blur-xl transition-all duration-300 btn-3d-icon btn-3d-base bg-white/5 border-white/10 text-teal-200/80 hover:text-white hover:bg-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.2)]">
+             <button onClick={toggleLanguage} className="w-12 h-12 rounded-full border flex items-center justify-center backdrop-blur-xl transition-all duration-300 bg-white/[0.03] hover:bg-white/[0.08] border-white/[0.05] hover:border-white/10 text-teal-200/80 hover:text-white shadow-[0_4px_16px_rgba(0,0,0,0.2)]">
                <span className="font-bold text-sm">{language === 'el' ? 'EN' : 'EL'}</span>
              </button>
-             <button onClick={() => showToast(language === 'el' ? 'Ρυθμίσεις σύντομα' : 'Settings coming soon')} className="hidden sm:flex w-12 h-12 rounded-full border items-center justify-center backdrop-blur-xl transition-all duration-300 btn-3d-icon btn-3d-base bg-white/5 border-white/10 text-teal-200/80 hover:text-white hover:bg-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.2)]">
+             <button onClick={() => showToast(language === 'el' ? 'Ρυθμίσεις σύντομα' : 'Settings coming soon')} className="hidden sm:flex w-12 h-12 rounded-full border items-center justify-center backdrop-blur-xl transition-all duration-300 bg-white/[0.03] hover:bg-white/[0.08] border-white/[0.05] hover:border-white/10 text-teal-200/80 hover:text-white shadow-[0_4px_16px_rgba(0,0,0,0.2)]">
                <Settings size={20} strokeWidth={1.5} />
              </button>
           </div>
 
           {/* Right Controls - Audio & SOS */}
           <div className="flex gap-3">
-            <button onClick={() => showToast(language === 'el' ? 'Μουσική σύντομα!' : 'Music coming soon!')} className={`w-12 h-12 rounded-full border flex items-center justify-center backdrop-blur-xl transition-all duration-300 btn-3d-icon btn-3d-base ${theme === 'light' ? 'bg-white/40 border-teal-900/10 text-teal-900 hover:bg-white/60 shadow-[0_4px_16px_rgba(13,34,43,0.1)]' : 'bg-white/5 border-white/10 text-teal-200/80 hover:text-white hover:bg-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.2)]'}`}>
+            <button onClick={() => showToast(language === 'el' ? 'Μουσική σύντομα!' : 'Music coming soon!')} className={`w-12 h-12 rounded-full border flex items-center justify-center backdrop-blur-xl transition-all duration-300 ${theme === 'light' ? 'bg-white/40 border-teal-900/10 text-teal-900 hover:bg-white/60 shadow-[0_4px_16px_rgba(13,34,43,0.1)]' : 'bg-white/[0.03] hover:bg-white/[0.08] border-white/[0.05] hover:border-white/10 text-teal-200/80 hover:text-white shadow-[0_4px_16px_rgba(0,0,0,0.2)]'}`}>
                <Volume2 size={20} strokeWidth={1.5} />
             </button>
-            <button onClick={() => navigate('/practice/breath/sos-breath')} className={`w-12 h-12 rounded-full border flex items-center justify-center backdrop-blur-xl transition-all duration-300 group relative overflow-hidden btn-3d-movement btn-3d-base ${theme === 'light' ? 'bg-amber-100/50 border-amber-500/30 text-amber-600 hover:bg-amber-200/50 hover:text-amber-700 shadow-[0_4px_16px_rgba(245,158,11,0.1)]' : 'bg-amber-500/10 border-amber-500/20 text-amber-400 hover:bg-amber-500/20 hover:text-amber-300 shadow-[0_4px_16px_rgba(245,158,11,0.15)]'}`}>
+            <button onClick={() => navigate('/practice/breath/sos-breath')} className={`w-12 h-12 rounded-full border flex items-center justify-center backdrop-blur-xl transition-all duration-300 group relative overflow-hidden ${theme === 'light' ? 'bg-amber-100/50 border-amber-500/30 text-amber-600 hover:bg-amber-200/50 hover:text-amber-700 shadow-[0_4px_16px_rgba(245,158,11,0.1)]' : 'bg-amber-500/10 border-amber-500/20 text-amber-400 hover:bg-amber-500/20 hover:text-amber-300 shadow-[0_4px_16px_rgba(245,158,11,0.15)]'}`}>
                <span className="font-bold tracking-widest text-[13px] group-hover:scale-105 transition-transform">SOS</span>
                {/* SOS ripple effect */}
                <div className={`absolute inset-0 rounded-full border animate-[ping_2s_ease-in-out_infinite] opacity-50 ${theme === 'light' ? 'border-amber-500/40' : 'border-amber-500/50'}`}></div>
@@ -171,7 +171,7 @@ export default function Landing() {
 
           <button 
             onClick={handleEnter}
-            className="group relative flex items-center justify-center px-10 py-5 rounded-full font-bold uppercase tracking-[0.2em] text-sm btn-3d-core btn-3d-base"
+            className="group relative flex items-center justify-center px-10 py-5 rounded-full font-bold uppercase tracking-[0.2em] text-sm bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.05] hover:border-white/10 backdrop-blur-md shadow-lg transition-all duration-300"
           >
              {/* Text and Icon */}
              <div className="relative z-10 flex items-center gap-3">

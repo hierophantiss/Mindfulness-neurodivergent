@@ -20,7 +20,7 @@ export default function Chapters() {
         <div className="flex flex-col items-center justify-center text-center mb-6 pt-4 pb-2">
           <button 
             onClick={() => navigate('/')} 
-            className="absolute left-4 md:left-8 w-12 h-12 rounded-full flex items-center justify-center text-white/80 btn-3d-icon btn-3d-base"
+            className="absolute left-4 md:left-8 w-12 h-12 rounded-full flex items-center justify-center text-white/80 bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.05] hover:border-white/10 backdrop-blur-md transition-all duration-300 z-50 shadow-lg"
           >
             <ArrowLeft size={20} />
           </button>
@@ -49,12 +49,7 @@ export default function Chapters() {
               <Link 
                 to={`/chapters/${chapter.num}`}
                 key={chapter.num} 
-                className={`group flex flex-col justify-center items-center rounded-[2rem] p-5 md:p-6 min-h-[170px] ${
-                  chapter.num === 1 ? 'btn-3d-core btn-3d-base' : 
-                  chapter.num === 2 ? 'btn-3d-breath btn-3d-base' : 
-                  chapter.num === 3 ? 'btn-3d-movement btn-3d-base' : 
-                  'btn-3d-standard btn-3d-base'
-                }`}
+                className="group flex flex-col justify-center items-center rounded-[2rem] p-5 md:p-6 min-h-[170px] bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.05] hover:border-white/10 backdrop-blur-xl transition-all duration-500 shadow-xl overflow-hidden relative"
               >
                 {/* Background Subtle Gradient Glow */}
                 <div 
@@ -106,7 +101,7 @@ export default function Chapters() {
               <Link 
                 to={`/chapters/${chapter.num}`}
                 key={chapter.num} 
-                className="group flex items-center rounded-3xl p-4 btn-3d-standard btn-3d-base"
+                className="group flex items-center rounded-3xl p-4 bg-white/[0.03] hover:bg-white/[0.05] border border-white/[0.05] hover:border-white/10 backdrop-blur-md transition-all duration-300 shadow-lg"
               >
                 <div className="flex items-center gap-4 w-full relative z-10 pointer-events-none">
                   <div 
@@ -140,7 +135,7 @@ export default function Chapters() {
               <Link 
                 to={`/chapters/${chapter.num}`}
                 key={chapter.num} 
-                className="group flex items-center rounded-3xl p-4 btn-3d-standard btn-3d-base"
+                className="group flex items-center rounded-3xl p-4 bg-white/[0.03] hover:bg-white/[0.05] border border-white/[0.05] hover:border-white/10 backdrop-blur-md transition-all duration-300 shadow-lg"
               >
                 <div className="flex items-center gap-4 w-full relative z-10 pointer-events-none">
                    <div 
@@ -167,7 +162,7 @@ export default function Chapters() {
           <div className="absolute inset-0 bg-teal-500/10 rounded-[2rem] blur-xl pointer-events-none"></div>
           <Link
             to="/program"
-            className="group flex flex-col items-center justify-center text-center p-6 md:p-8 rounded-[2rem] btn-3d-core btn-3d-base"
+            className="group flex flex-col items-center justify-center text-center p-6 md:p-8 rounded-[2rem] bg-white/[0.03] hover:bg-white/[0.05] border border-white/[0.05] hover:border-teal-500/20 backdrop-blur-xl transition-all duration-500 shadow-xl overflow-hidden relative"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/[0.05] to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%] pointer-events-none"></div>
             <div className="w-16 h-16 rounded-full bg-teal-500/20 text-teal-300 flex items-center justify-center mb-4 transition-transform duration-500 group-hover:scale-110 group-hover:bg-teal-500/30 ring-1 ring-teal-500/50 shadow-inner">

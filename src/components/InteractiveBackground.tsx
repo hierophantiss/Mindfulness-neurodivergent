@@ -90,9 +90,27 @@ export function InteractiveBackground() {
         }}
       ></div>
 
+      {/* Subtle Dust / Dust Particles for ambient calm breathing */}
+      <div className="absolute inset-0 mix-blend-screen opacity-40">
+        {[...Array(12)].map((_, i) => (
+          <div
+            key={`particle-${i}`}
+            className="absolute rounded-full bg-white blur-[2px] animate-particle-float"
+            style={{
+              width: `${Math.random() * 4 + 2}px`,
+              height: `${Math.random() * 4 + 2}px`,
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * -20}s`,
+              animationDuration: `${Math.random() * 10 + 15}s`,
+            }}
+          />
+        ))}
+      </div>
+
       {/* Intense sand texturing using procedural fractal noise */}
       <div 
-        className={`absolute inset-0 mix-blend-overlay ${theme === 'light' ? 'opacity-40' : 'opacity-[0.15]'}`}
+        className={`absolute inset-0 mix-blend-overlay ${theme === 'light' ? 'opacity-40' : 'opacity-[0.12]'}`}
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
           backgroundSize: '150px 150px'

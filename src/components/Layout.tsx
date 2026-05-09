@@ -48,8 +48,8 @@ export default function Layout() {
 
       {/* Main Content Area */}
       <main id="main-content" ref={mainRef} className={cn(
-        "flex-1 relative z-10 max-w-7xl mx-auto w-full flex flex-col overflow-y-auto overflow-x-hidden",
-        isHome ? "px-0 py-0" : "px-4 md:px-8 pt-safe pb-safe"
+        "flex-1 relative z-10 max-w-7xl mx-auto w-full flex flex-col overflow-y-auto overflow-x-hidden pb-28",
+        isHome ? "px-0 py-0" : "px-4 md:px-8 pt-safe"
       )}>
         <Outlet />
       </main>
