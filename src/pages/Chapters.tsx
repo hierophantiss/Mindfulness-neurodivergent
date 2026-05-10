@@ -77,7 +77,7 @@ export default function Chapters() {
                 <div className="relative z-10 mb-4 transform group-hover:-translate-y-1 transition-transform duration-500">
                   <div className="w-16 h-16 md:w-20 md:h-20 rounded-[1.25rem] shadow-[0_8px_16px_rgba(0,0,0,0.4)] border-2 border-white/10 overflow-hidden relative">
                     <img 
-                      src={`/chap${chapter.num}.${chapter.num === 2 ? 'png' : 'jpg'}`}
+                      src={chapter.num === 5 ? '/hero.webp' : `/chap${chapter.num}.png`}
                       alt={chapter.title}
                       loading="lazy"
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"

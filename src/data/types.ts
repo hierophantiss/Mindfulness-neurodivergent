@@ -31,6 +31,7 @@ export interface TheorySection {
   title: string;
   paragraphs: string[];
   image?: string;
+  interactive?: string;
 }
 
 export interface Chapter {

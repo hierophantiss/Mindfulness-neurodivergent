@@ -7,6 +7,7 @@ import { useCompanion } from '../hooks/useCompanion';
 import { useLanguage } from '../hooks/useLanguage';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../lib/utils';
+import GravityThoughts from '../components/animations/GravityThoughts';
 
 export default function ChapterDetail() {
   const { id } = useParams();
@@ -167,7 +168,7 @@ export default function ChapterDetail() {
                 {(chapter.num >= 1 && chapter.num <= 4) ? (
                   <div className="w-full relative rounded-3xl overflow-hidden mb-6 md:mb-10 aspect-[4/3] md:aspect-[16/9] max-h-[45vh]">
                     <img 
-                      src={`/chap${chapter.num}.${chapter.num === 2 ? 'png' : 'jpg'}`} 
+                      src={chapter.num === 5 ? '/hero.webp' : `/chap${chapter.num}.png`} 
                       className="absolute inset-0 w-full h-full object-cover" 
                       loading="lazy"
                       alt={chapter.title} 
@@ -235,6 +236,17 @@ export default function ChapterDetail() {
                     ))}
                   </AnimatePresence>
                   
+                  {curPage.section.interactive === 'gravity_thoughts' && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: 0.3 }}
+                      className="mt-10 mb-10"
+                    >
+                      <GravityThoughts />
+                    </motion.div>
+                  )}
+
                   {visibleParagraphs < curPage.section.paragraphs.length && (
                     <div className="pt-4 flex justify-center">
                       <button 
