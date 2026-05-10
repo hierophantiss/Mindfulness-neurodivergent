@@ -47,7 +47,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
      theorySections:[
        {title:"The Antidote to Overload",paragraphs: ["Open Attention is the most powerful tool against overload. The opening of attention acts as a safety signal in the brain: 'there is no danger, there is space'.", "Peripheral vision, open hearing, the sense of space around — all these together 'turn off' the alarm signal."]},
        {title:"From Focus to Openness",paragraphs: ["The transition happens in 3 steps:", "1. Focus on a point (Attention).\n2. Soften your gaze — don't hold on.\n3. Let the space embrace you — sounds, body, air, all together.", "You don't try to see everything. You let everything exist."]},
-       {title:"The Sky and the Clouds",paragraphs: ["The space of the sky always remains open, just like the space of awareness. Thoughts, emotions, sensations — they are clouds. They come and go. You are the space that holds them."]}
+       {title:"The Sky and the Clouds",paragraphs: ["The space of the sky always remains open, just like the space of awareness (Maha Ati/Mahamudra). Thoughts, emotions, sensations — they are clouds. They come and go. You are the space that holds them."]}
      ],
      exercise:{title:"Exercise: Broadening the Space",steps:["Sit comfortably. Close your eyes.","Feel your body and breath.","Focus on a fixed point for a few seconds.","Let your attention spread — as if embracing the whole field.","Listen, see, feel without focusing and without judgment."]},
      insight:"You are not the clouds. You are the space that holds them.",reflection:"What changed when my attention opened up?"},
@@ -129,7 +129,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
      theorySections:[
        {title:'Το Αντίδοτο στην Υπερφόρτωση',paragraphs: [`Η Ανοιχτή Προσοχή είναι το πιο ισχυρό εργαλείο ενάντια στην υπερφόρτωση. Το άνοιγμα της προσοχής λειτουργεί ως σήμα ασφάλειας στον εγκέφαλο: «δεν υπάρχει κίνδυνος, υπάρχει χώρος».`, `Η περιφερειακή όραση, η ανοιχτή ακοή, η αίσθηση του χώρου γύρω — όλα αυτά μαζί «σβήνουν» το σήμα συναγερμού.`]},
        {title:'Από την Εστίαση στην Ανοιχτότητα',paragraphs: [`Η μετάβαση γίνεται σε 3 βήματα:`, `1. Εστίασε σε ένα σημείο (Προσοχή).\n2. Μαλάκωσε το βλέμμα — μην κρατάς.\n3. Άφησε τον χώρο να σε αγκαλιάσει — ήχοι, σώμα, αέρας, όλα μαζί.`, `Δεν προσπαθείς να δεις τα πάντα. Αφήνεις τα πάντα να υπάρχουν.`]},
-       {title:'Ο Ουρανός και τα Σύννεφα',paragraphs: [`Ο χώρος του ουρανού μένει πάντα ανοιχτός, όπως και ο χώρος της επίγνωσης. Σκέψεις, συναισθήματα, αισθήσεις — είναι σύννεφα. Έρχονται και φεύγουν. Εσύ είσαι ο χώρος που τα χωράει.`]}
+       {title:'Ο Ουρανός και τα Σύννεφα',paragraphs: [`Ο χώρος του ουρανού μένει πάντα ανοιχτός, όπως και ο χώρος της επίγνωσης (Μάχα Άτι - Maha Ati/Mahamudra). Σκέψεις, συναισθήματα, αισθήσεις — είναι σύννεφα. Έρχονται και φεύγουν. Εσύ είσαι ο χώρος που τα χωράει.`]}
      ],
      exercise:{title:'Άσκηση: Διεύρυνση του Χώρου',steps:['Κάθισε άνετα. Κλείσε τα μάτια.','Νιώσε το σώμα και την αναπνοή.','Εστίασε σε ένα σταθερό σημείο για λίγα δευτερόλεπτα.','Άφησε την προσοχή να απλωθεί — σαν να αγκαλιάζει όλο το πεδίο.','Άκου, δες, νιώσε χωρίς εστίαση και χωρίς κριτική.']},
      insight:'Δεν είσαι τα σύννεφα. Είσαι ο χώρος που τα χωράει.',reflection:'Τι άλλαξε όταν η προσοχή άνοιξε;'},

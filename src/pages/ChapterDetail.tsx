@@ -8,6 +8,7 @@ import { useLanguage } from '../hooks/useLanguage';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../lib/utils';
 import GravityThoughts from '../components/animations/GravityThoughts';
+import OpenAwareness from '../components/animations/OpenAwareness';
 
 export default function ChapterDetail() {
   const { id } = useParams();
@@ -244,6 +245,17 @@ export default function ChapterDetail() {
                       className="mt-10 mb-10"
                     >
                       <GravityThoughts />
+                    </motion.div>
+                  )}
+
+                  {curPage.section.interactive === 'open_awareness' && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: 0.3 }}
+                      className="mt-10 mb-10"
+                    >
+                      <OpenAwareness />
                     </motion.div>
                   )}
 
