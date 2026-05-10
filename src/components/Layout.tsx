@@ -39,6 +39,8 @@ export default function Layout() {
     setShowWelcomeModal(false);
   };
 
+  const isIntroPage = ['/', '/landing_info', '/intro'].includes(location.pathname);
+
   return (
     <div className="h-[100dvh] bg-pine-950 text-pine-100 font-sans selection:bg-teal-500/30 flex flex-col relative">
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-emerald-500 text-white px-4 py-2 rounded-md z-50 shadow-lg">
@@ -58,7 +60,7 @@ export default function Layout() {
       {!isHome && location.pathname !== '/landing_info' && <NavigationMenu />}
 
       {/* The Floating Companion */}
-      <Companion />
+      {!isIntroPage && <Companion />}
 
       <WelcomeModal isOpen={showWelcomeModal} onClose={handleCloseModal} />
     </div>

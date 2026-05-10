@@ -70,6 +70,54 @@ export default function RabbitHole() {
         "Όμως στο Sandbox δεν εντοπίζεις μόνο προβλήματα στον \"κώδικα\". Εδώ παρακολουθείς και την καλύτερη δυνατή λειτουργία αυτών των μερών, βρίσκοντας τον ιδανικό τρόπο να «τρέχουν» ή ακόμα και ανακαλύπτοντας την ίδια τη βασική τους λειτουργία (core function).",
         "Όλα αυτά χωρίς να κινδυνεύει το main branch — η ίδια σου η ζωή και οι απτές σου σχέσεις."
       ]
+    },
+    {
+      id: 'mahamudra-one-taste',
+      title: language === 'en' ? 'Mahamudra: The One Taste' : 'Μαχαμουντρα: Η Μία Γεύση',
+      author: language === 'en' ? 'Vajrayana Wisdom' : 'Σοφία Vajrayana',
+      pages: language === 'en' ? [
+        "In the practice of Mahamudra, there is a stage called 'One Taste' (ekarsa). It is the realization that all experiences, whether 'good' or 'bad', share the same fundamental essence.",
+        "Just as water, ice, and steam are all H2O, all perceptions, thoughts, and sensations are nothing but the display of the luminous nature of mind.",
+        "For a neurodivergent mind, this is a revolutionary bridge to sensory integration. Instead of being overwhelmed by fragmented stimuli, we learn to recognize their singular 'taste' — the presence of awareness itself.",
+        "When we stop fighting the 'noise' and start recognizing the 'essence', the nervous system begins to self-regulate. Sensory processing is no longer a battle, but a dance of the same energy."
+      ] : [
+        "Στην πρακτική της Μαχαμουντρα, υπάρχει ένα στάδιο που ονομάζεται «Μία Γεύση» (ekarsa). Είναι η συνειδητοποίηση ότι όλες οι εμπειρίες, είτε «καλές» είτε «κακές», μοιράζονται την ίδια θεμελιώδη ουσία.",
+        "Όπως το νερό, ο πάγος και ο ατμός είναι όλα H2O, έτσι και όλες οι αντιλήψεις, οι σκέψεις και οι αισθήσεις δεν είναι τίποτα άλλο από την προβολή της φωτεινής φύσης του νου.",
+        "Για έναν νευροδιαφορετικό νου, αυτό αποτελεί μια επαναστατική γέφυρα προς την αισθητηριακή ολοκλήρωση. Αντί να κατακλυζόμαστε από κατακερματισμένα ερεθίσματα, μαθαίνουμε να αναγνωρίζουμε τη μοναδική τους «γεύση» — την ίδια την παρουσία της επίγνωσης.",
+        "Όταν σταματάμε να πολεμάμε τον «θόρυβο» και αρχίζουμε να αναγνωρίζουμε την «ουσία», το νευρικό σύστημα αρχίζει να αυτορρυθμίζεται. Η αισθητηριακή επεξεργασία παύει να είναι μια μάχη και γίνεται ένας χορός της ίδιας ενέργειας."
+      ]
+    },
+    {
+      id: 'binaural-gateway',
+      title: language === 'en' ? 'Binaural Beats & The Gateway' : 'Binaural Beats & Το Gateway',
+      author: language === 'en' ? 'Modern Neuroscience' : 'Σύγχρονη Νευροεπιστήμη',
+      pages: language === 'en' ? [
+        "The use of Binaural Beats was extensively studied by the Monroe Institute and even documented in the CIA's 'Gateway Experience' report as a tool for altering consciousness.",
+        "Binaural beats work through 'frequency following response'. By playing two slightly different frequencies in each ear, the brain creates a third internal tone: the binaural beat.",
+        "Modern research confirms that specific frequencies can regulate brain states. Alpha frequencies (8-13 Hz) are particularly powerful as they promote 'Hemispheric Synchronization'.",
+        "When both hemispheres of the brain resonate at the same frequency, internal fragmentation decreases. For ADHD and Autism, this synchronization creates a 'coherent' state that facilitates deep focus and emotional stability."
+      ] : [
+        "Η χρήση των Binaural Beats μελετήθηκε εκτενώς από το Monroe Institute και μάλιστα τεκμηριώθηκε στην αναφορά 'Gateway Experience' της CIA ως εργαλείο για την αλλαγή της συνειδητότητας.",
+        "Οι binaural beats λειτουργούν μέσω της «απόκρισης παρακολούθησης συχνότητας». Παίζοντας δύο ελαφρώς διαφορετικές συχνότητες σε κάθε αυτί, ο εγκέφαλος δημιουργεί έναν τρίτο εσωτερικό τόνο: τον binaural beat.",
+        "Η σύγχρονη έρευνα επιβεβαιώνει ότι συγκεκριμένες συχνότητες μπορούν να ρυθμίσουν τις εγκεφαλικές καταστάσεις. Οι συχνότητες Άλφα (8-13 Hz) είναι ιδιαίτερα ισχυρές καθώς προάγουν τον «Συγχρονισμό των Ημισφαιρίων».",
+        "Όταν και τα δύο ημισφαίρια του εγκεφάλου συντονίζονται στην ίδια συχνότητα, ο εσωτερικός κατακερματισμός μειώνεται. Για τη ΔΕΠΥ και τον Αυτισμό, αυτός ο συγχρονισμός δημιουργεί μια «συνεκτική» κατάσταση που διευκολύνει τη βαθιά εστίαση και τη συναισθηματική σταθερότητα."
+      ]
+    },
+    {
+      id: 'open-focus-brain',
+      title: language === 'en' ? 'The Open Focus Brain' : 'Το Open Focus Brain',
+      author: 'Les Fehmi, PhD',
+      pages: language === 'en' ? [
+        "The Open Focus technique, developed by Dr. Les Fehmi, reveals that peak performance and brain synchronization are achieved not through willpower, but through 'effortless awareness'.",
+        "The secret lies in shifting from 'Narrow Focus' (the chronic tension of modern life) to 'Open Focus'. This is achieved by perceiving the 'Space' between objects, thoughts, and sounds.",
+        "By emphasizing the absence of objects — the silence between words, the distance between atoms — the nervous system naturally shifts into synchronous Alpha waves.",
+        "This 'synchronous Alpha' state unifies both hemispheres of the brain. It is the physiological foundation for the 'One Taste' of Mahamudra: a state where inner and outer space become one."
+      ] : [
+        "Η τεχνική Open Focus, που αναπτύχθηκε από τον Δρ. Les Fehmi, αποκαλύπτει ότι η μέγιστη απόδοση και ο συγχρονισμός του εγκεφάλου επιτυγχάνονται όχι μέσω της θέλησης, αλλά μέσω της «άκοπης επίγνωσης».",
+        "Το μυστικό βρίσκεται στη μετάβαση από τη «Στενή Εστίαση» (τη χρόνια ένταση της σύγχρονης ζωής) στην «Ανοιχτή Εστίαση». Αυτό επιτυγχάνεται με την αντίληψη του «Χώρου» ανάμεσα στα αντικείμενα, τις σκέψεις και τους ήχους.",
+        "Δίνοντας έμφαση στην απουσία αντικειμένων —τη σιωπή ανάμεσα στις λέξεις, την απόσταση ανάμεσα στα άτομα— το νευρικό σύστημα μεταβαίνει φυσικά σε συγχρονισμένα κύματα Άλφα.",
+        "Αυτή η κατάσταση «συγχρονισμένου Άλφα» ενοποιεί και τα δύο ημισφαίρια του εγκεφάλου. Είναι το φυσιολογικό θεμέλιο για τη «Μία Γεύση» της Μαχαμούντρα: μια κατάσταση όπου ο εσωτερικός και ο εξωτερικός χώρος γίνονται ένα."
+      ]
     }
   ];
 
