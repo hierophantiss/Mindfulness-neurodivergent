@@ -61,10 +61,10 @@ export default function Practice() {
             </div>
             <div>
               <h3 className="text-2xl md:text-3xl font-heading font-medium mb-3 drop-shadow-sm leading-tight text-white group-hover:text-emerald-50 transition-colors">
-                {language === 'en' ? 'Microdoses' : 'Μικρές Δόσεις'}
+                {language === 'en' ? 'Invisible Microdoses' : 'Αόρατες Μικροδόσεις'}
               </h3>
               <p className="text-base text-emerald-200/90 leading-relaxed font-medium">
-                {language === 'en' ? 'Quick, text-based guides for immediate grounding anywhere.' : 'Γρήγοροι, γραπτοί οδηγοί για άμεση γείωση οπουδήποτε.'}
+                {language === 'en' ? 'Stealth practices you can do anywhere without being noticed.' : 'Αόρατες πρακτικές που γίνονται παντού χωρίς να σε καταλάβει κανείς.'}
               </p>
             </div>
           </div>

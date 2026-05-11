@@ -132,8 +132,8 @@ export default function Landing() {
               },
               { 
                 icon: <Zap className="text-emerald-400" />, 
-                el: 'Microdoses: Πρακτικές 1-3 λεπτών για τη ροή της ημέρας.', 
-                en: 'Microdoses: 1-3 min practices for your daily flow.' 
+                el: 'Αόρατες Μικροδόσεις: Πρακτικές 1-3 λεπτών για κάθε στιγμή.', 
+                en: 'Invisible Microdoses: 1-3 min practices for any moment.' 
               },
               { 
                 icon: <Calendar className="text-blue-400" />, 
@@ -195,8 +195,8 @@ export default function Landing() {
               },
               { 
                 title: '⚡ Spacing Effect', 
-                el: 'Οι μικρές δόσεις (Microdoses) είναι πιο αποτελεσματικές από τις μεγάλες συνεδρίες. (Cepeda et al., 2006)', 
-                en: 'Small doses (Microdoses) are more effective than long occasional sessions. (Cepeda et al., 2006)' 
+                el: 'Οι "Αόρατες" μικρές δόσεις είναι πιο αποτελεσματικές από τις μεγάλες συνεδρίες. (Cepeda et al., 2006)', 
+                en: 'Invisible Microdoses are more effective than long occasional sessions. (Cepeda et al., 2006)' 
               }
             ].map((r, i) => (
               <div key={i} className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors">

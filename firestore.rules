@@ -1,45 +1,130 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    
+    // 0. Global Safety Net
     match /{document=**} {
       allow read, write: if false;
     }
 
+    // --- Helper Functions ---
+    
     function isSignedIn() {
       return request.auth != null;
+    }
+
+    function isEmailVerified() {
+      return request.auth.token.email_verified == true;
     }
 
     function isOwner(userId) {
       return isSignedIn() && request.auth.uid == userId;
     }
 
+    // Admin lookup - assuming 'admins' collection contains documents where id = uid
+    function isAdmin() {
+      return isSignedIn() && (
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        request.auth.token.email.lowerAscii() == 'bairaktaris.theodoros@gmail.com'
+      );
+    }
+
     function isValidId(id) {
       return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
     }
 
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // --- Entity Validations ---
+
+    function isValidUserProfile(data) {
+      return data.uid is string &&
+             data.uid == request.auth.uid &&
+             (!('sessions' in data) || data.sessions is int) &&
+             (!('minutes' in data) || data.minutes is int) &&
+             (!('streak' in data) || data.streak is int) &&
+             (!('lastDate' in data) || data.lastDate is string) &&
+             (!('explored' in data) || data.explored is list) &&
+             (!('dailyCount' in data) || data.dailyCount is map) &&
+             data.keys().hasAll(['uid']) && data.keys().size() <= 10;
+    }
+
+    function isValidJournalEntry(data) {
+      return data.uid is string &&
+             data.uid == request.auth.uid &&
+             data.date is string &&
+             (!('dayIndex' in data) || data.dayIndex is int) &&
+             (!('checked' in data) || data.checked is map) &&
+             (!('comfort' in data) || data.comfort is int) &&
+             (!('tags' in data) || data.tags is string) &&
+             (!('tensions' in data) || data.tensions is list) &&
+             (!('note' in data) || data.note is string) &&
+             data.keys().hasAll(['uid', 'date']);
+    }
+
+    function isValidMoodEntry(data) {
+      return data.uid is string &&
+             data.uid == request.auth.uid &&
+             data.date is string &&
+             data.val is int && data.val >= 0 && data.val <= 4 &&
+             data.keys().hasAll(['uid', 'date', 'val']);
+    }
+
+    function isValidMediaAsset(data) {
+      return data.name is string && data.name.size() <= 512 &&
+             data.url is string && data.url.size() <= 2048 &&
+             data.type in ['video', 'audio', 'animation', 'image'] &&
+             (!('size' in data) || data.size is int) &&
+             (!('mimeType' in data) || data.mimeType is string) &&
+             (!('uploadedBy' in data) || data.uploadedBy is string) &&
+             (!('storagePath' in data) || data.storagePath is string) &&
+             (!('createdAt' in data) || data.createdAt is timestamp) &&
+             data.keys().hasAll(['name', 'url', 'type']);
+    }
+
+    // --- Collection Routes ---
+
     match /users/{userId} {
-      allow get: if isOwner(userId) && isValidId(userId);
-      allow create: if isOwner(userId) && isValidId(userId)
-        && request.resource.data.keys().hasAll(['uid', 'updatedAt'])
-        && request.resource.data.uid == userId
-        && request.resource.data.updatedAt == request.time;
-      allow update: if isOwner(userId) && isValidId(userId)
-        && request.resource.data.updatedAt == request.time;
+      allow get: if isOwner(userId) || isAdmin();
+      allow create: if isOwner(userId) && isValidUserProfile(incoming());
+      allow update: if isOwner(userId) && isValidUserProfile(incoming()) && 
+                    incoming().diff(existing()).affectedKeys().hasOnly(['sessions', 'minutes', 'streak', 'lastDate', 'explored', 'dailyCount', 'updatedAt']);
       
       match /journal/{entryId} {
-        allow get, list: if isOwner(userId) && isValidId(userId);
-        allow create, update: if isOwner(userId) && isValidId(userId)
-          && request.resource.data.uid == userId
-          && request.resource.data.updatedAt == request.time;
-        allow delete: if isOwner(userId) && isValidId(userId);
+        allow get: if isOwner(userId) || isAdmin();
+        allow list: if isOwner(userId) || isAdmin();
+        allow create: if isOwner(userId) && isValidId(entryId) && isValidJournalEntry(incoming());
+        allow update: if isOwner(userId) && isValidId(entryId) && isValidJournalEntry(incoming()) &&
+                      incoming().diff(existing()).affectedKeys().hasOnly(['checked', 'comfort', 'tags', 'tensions', 'note', 'updatedAt']);
+        allow delete: if isOwner(userId);
       }
 
       match /moods/{moodId} {
-        allow get, list: if isOwner(userId) && isValidId(userId);
-        allow create, update: if isOwner(userId) && isValidId(userId)
-          && request.resource.data.uid == userId
-          && request.resource.data.updatedAt == request.time;
+        allow get: if isOwner(userId) || isAdmin();
+        allow list: if isOwner(userId) || isAdmin();
+        allow create: if isOwner(userId) && isValidId(moodId) && isValidMoodEntry(incoming());
+        allow update: if isOwner(userId) && isValidId(moodId) && isValidMoodEntry(incoming()) &&
+                      incoming().diff(existing()).affectedKeys().hasOnly(['val', 'updatedAt']);
+        allow delete: if isOwner(userId);
       }
     }
+
+    match /media/{mediaId} {
+      allow read, get, list: if true;
+      allow create, update: if isAdmin() && isValidId(mediaId) && isValidMediaAsset(incoming());
+      allow delete: if isAdmin();
+    }
+
+    match /admins/{adminId} {
+      allow read: if isSignedIn();
+      allow write: if false; // Only manageable through firebase console for security
+    }
+
   }
 }

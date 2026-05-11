@@ -64,6 +64,21 @@
         "updatedAt": { "type": "string", "format": "date-time" }
       },
       "required": ["uid", "date"]
+    },
+    "MediaAsset": {
+      "title": "Media Asset",
+      "description": "Animations, videos and audio stored in Firebase Storage.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "url": { "type": "string", "format": "uri" },
+        "type": { "type": "string", "enum": ["video", "audio", "animation", "image"] },
+        "size": { "type": "integer" },
+        "mimeType": { "type": "string" },
+        "uploadedBy": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "url", "type"]
     }
   },
   "firestore": {
@@ -78,6 +93,10 @@
     "/users/{userId}/moods/{moodId}": {
       "schema": "MoodEntry",
       "description": "Daily mood entries. moodId is the date."
+    },
+    "/media": {
+      "schema": "MediaAsset",
+      "description": "Public media assets catalog."
     }
   }
 }

@@ -30,7 +30,10 @@ async function prerender() {
 
     for (const route of routes) {
       const page = await browser.newPage();
-      await page.goto(`http://localhost:3001${route}`, { waitUntil: 'networkidle0' });
+      await page.goto(`http://localhost:3001${route}`, { 
+        waitUntil: 'networkidle2',
+        timeout: 60000 
+      });
       
       const html = await page.content();
       

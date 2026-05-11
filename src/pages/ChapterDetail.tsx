@@ -381,7 +381,7 @@ export default function ChapterDetail() {
              className="w-full h-10 rounded-2xl bg-teal-900/40 border border-teal-800 flex items-center justify-center gap-2 text-teal-300 hover:bg-teal-800/60 transition-colors font-semibold shadow-sm text-[13px]"
            >
              <Zap size={16} />
-             {language === 'el' ? 'Μικρές Δόσεις Ασκήσεων' : 'Microdose Practices'}
+             {language === 'el' ? 'Αόρατες Μικρές Δόσεις' : 'Invisible Microdoses'}
            </button>
         )}
         <div className="flex gap-2">

@@ -24,19 +24,56 @@ export default function PracticeMicrodoses() {
   const categories = [
     { id: 'all', label: { el: 'Όλα', en: 'All' } },
     { id: 'body', label: { el: 'Σώμα', en: 'Body' } },
+    { id: 'breath', label: { el: 'Αναπνοή', en: 'Breath' } },
     { id: 'focus', label: { el: 'Προσοχή', en: 'Focus' } },
     { id: 'space', label: { el: 'Χώρος', en: 'Space' } }
   ];
 
   const exercises = [
     {
-      id: 'body-scan-micro',
-      title: { el: 'Μικρο-Γείωση Σώματος', en: 'Micro Body Grounding' },
+      id: 'stealth-grounding',
+      title: { el: 'Αόρατη Γείωση', en: 'Invisible Grounding' },
       type: 'body',
-      dur: { el: '3 λεπτά', en: '3 minutes' },
-      desc: { el: 'Σύντομος έλεγχος του σώματος για άμεση επιστροφή στο εδώ και τώρα.', en: 'Short body check for an immediate return to the here and now.' },
+      dur: { el: '1 λεπτό', en: '1 minute' },
+      desc: { el: 'Νιώσε τα πέλματα, την κοιλιά και τον άξονα. Κανείς δεν θα προσέξει ότι κάνεις πρακτική.', en: 'Feel your feet, belly, and axis. No one will notice you are practicing.' },
+      icon: <Anchor size={26} />,
+      link: '/practice/body/vertical-axis'
+    },
+    {
+      id: 'stealth-breath',
+      title: { el: 'Αόρατη Αναπνοή', en: 'Invisible Breath' },
+      type: 'breath',
+      dur: { el: '1-2 λεπτά', en: '1-2 minutes' },
+      desc: { el: 'Παρατήρησε την αναπνοή. Αν νιώθεις άγχος, μεγάλωσε την εκπνοή (4-2-7-1).', en: 'Observe your breath. If feeling anxious, extend the exhale (4-2-7-1).' },
       icon: <Zap size={26} />,
-      link: '/practice/body/body-scan-micro'
+      link: '/practice/breath/4-2-7-1'
+    },
+    {
+      id: 'attention-check',
+      title: { el: 'Έλεγχος Προσοχής', en: 'Attention Check' },
+      type: 'focus',
+      dur: { el: '30 δευτ.', en: '30 sec' },
+      desc: { el: 'Πού είναι η προσοχή σου τώρα; Στη σκέψη ή στην παρουσία; Άνοιξε την προσοχή σου.', en: 'Where is your attention now? In thought or presence? Open your attention.' },
+      icon: <Focus size={26} />,
+      link: '/practice/focus/attention-observation'
+    },
+    {
+      id: 'open-presence',
+      title: { el: 'Ανοιχτή Παρουσία', en: 'Open Presence' },
+      type: 'space',
+      dur: { el: '1-3 λεπτά', en: '1-3 minutes' },
+      desc: { el: 'Γείωση, αναπνοή, προσοχή σταθερή. Άφησε τα πάντα και άνοιξε στον χώρο.', en: 'Grounding, breathing, steady attention. Let everything go and open to space.' },
+      icon: <Box size={26} />,
+      link: '/practice/space/soft-eyes'
+    },
+    {
+      id: 'sky-gazing-micro',
+      title: { el: 'Βλέμμα στον Ουρανό', en: 'Sky Gazing' },
+      type: 'space',
+      dur: { el: '30 δευτ.', en: '30 sec' },
+      desc: { el: 'Κοίταξε τον ουρανό για 30 δευτερόλεπτα. Άμεση αποσυμπίεση του νευρικού συστήματος.', en: 'Look at the sky for 30 seconds. Immediate nervous system decompression.' },
+      icon: <Box size={26} />,
+      link: '/practice/space/sky-clouds'
     },
     {
       id: 'contact-observe',
@@ -46,78 +83,6 @@ export default function PracticeMicrodoses() {
       desc: { el: 'Απευθείας γείωση στο παρόν παρατηρώντας τα σημεία επαφής με τη γη.', en: 'Direct grounding in the present by observing points of contact with the earth.' },
       icon: <Anchor size={26} />,
       link: '/practice/body/contact-observe'
-    },
-    {
-      id: 'vertical-axis',
-      title: { el: 'Ο Κατακόρυφος Άξονας', en: 'The Vertical Axis' },
-      type: 'body',
-      dur: { el: '3 λεπτά', en: '3 minutes' },
-      desc: { el: 'Νιώσε τη δομή που σε κρατά όρθιο χωρίς προσπάθεια.', en: 'Feel the structure that keeps you upright effortlessly.' },
-      icon: <Focus size={26} />,
-      link: '/practice/body/vertical-axis'
-    },
-    {
-      id: 'gravity-surrender',
-      title: { el: 'Παράδοση στη Βαρύτητα', en: 'Surrender to Gravity' },
-      type: 'body',
-      dur: { el: '3 λεπτά', en: '3 minutes' },
-      desc: { el: 'Άφησε το βάρος σου να πέσει. Η πρώτη πράξη χαλάρωσης.', en: 'Let your weight drop. The first act of relaxation.' },
-      icon: <Zap size={26} />,
-      link: '/practice/body/gravity-surrender'
-    },
-    {
-      id: 'mindful-walking',
-      title: { el: 'Ενσυνείδητο Περπάτημα', en: 'Mindful Walking' },
-      type: 'body',
-      dur: { el: '5 λεπτά', en: '5 minutes' },
-      desc: { el: 'Η γείωση σε κίνηση. Δράση με πλήρη επίγνωση του σώματος.', en: 'Grounding in motion. Action with full body awareness.' },
-      icon: <Zap size={26} />,
-      link: '/practice/body/mindful-walking'
-    },
-    {
-      id: 'attention-observation',
-      title: { el: 'Παρατήρηση Προσοχής', en: 'Attention Observation' },
-      type: 'focus',
-      dur: { el: '5 λεπτά', en: '5 minutes' },
-      desc: { el: 'Πού πηγαίνει η προσοχή σας φυσικά; Απλώς δείτε.', en: 'Where does your attention go naturally? Just see.' },
-      icon: <Focus size={26} />,
-      link: '/practice/focus/attention-observation'
-    },
-    {
-      id: 'fixed-point',
-      title: { el: 'Κλειστή Εστίαση', en: 'Closed Focus' },
-      type: 'focus',
-      dur: { el: '5 λεπτά', en: '5 minutes' },
-      desc: { el: 'Μαζέψτε τη δέσμη της προσοχής σε ένα μόνο σημείο.', en: 'Gather the beam of attention to a single point.' },
-      icon: <Focus size={26} />,
-      link: '/practice/focus/fixed-point'
-    },
-    {
-      id: 'labeling-technique',
-      title: { el: 'Η Ταμπέλα', en: 'Labeling' },
-      type: 'focus',
-      dur: { el: '5 λεπτά', en: '5 minutes' },
-      desc: { el: 'Όταν μια σκέψη σε τραβάει, βάλε ταμπέλα και επέστρεψε.', en: 'When a thought pulls you, label it and return.' },
-      icon: <Focus size={26} />,
-      link: '/practice/focus/labeling-technique'
-    },
-    {
-      id: 'soft-eyes',
-      title: { el: 'Μαλακά Μάτια', en: 'Soft Eyes' },
-      type: 'space',
-      dur: { el: '5 λεπτά', en: '5 minutes' },
-      desc: { el: 'Αγκαλιάστε όλο το οπτικό πεδίο χωρίς να εστιάζετε.', en: 'Embrace the entire visual field without focusing.' },
-      icon: <Box size={26} />,
-      link: '/practice/space/soft-eyes'
-    },
-    {
-      id: 'sky-clouds',
-      title: { el: 'Ουρανός και Σύννεφα', en: 'Sky and Clouds' },
-      type: 'space',
-      dur: { el: '7 λεπτά', en: '7 minutes' },
-      desc: { el: 'Σκέψεις είναι σύννεφα. Εσείς είστε ο ουρανός.', en: 'Thoughts are clouds. You are the sky.' },
-      icon: <Box size={26} />,
-      link: '/practice/space/sky-clouds'
     }
   ];
 
@@ -133,6 +98,13 @@ export default function PracticeMicrodoses() {
           icon: 'bg-emerald-500/20 text-emerald-300 border-emerald-400/30 shadow-emerald-900/20',
           title: 'text-emerald-100',
           tag: 'text-emerald-400'
+        };
+      case 'breath': // Teal/Cyan
+        return {
+          card: 'bg-cyan-950/40 border-cyan-800/50 hover:bg-cyan-900/60 hover:border-cyan-500/50',
+          icon: 'bg-cyan-500/20 text-cyan-300 border-cyan-400/30 shadow-cyan-900/20',
+          title: 'text-cyan-100',
+          tag: 'text-cyan-400'
         };
       case 'focus': // Gold
         return {
@@ -170,13 +142,13 @@ export default function PracticeMicrodoses() {
       </div>
 
       <section>
-        <h2 className="text-3xl font-semibold text-white tracking-tight mb-2">
-          {language === 'el' ? 'Μικρές Δόσεις' : 'Microdoses'}
+        <h2 className="text-3xl font-serif text-white tracking-tight mb-2">
+          {language === 'el' ? 'Αόρατες Μικρές Δόσεις' : 'Invisible Microdoses'}
         </h2>
         <p className="text-pine-200">
           {language === 'el' 
-            ? 'Σύντομες νοητικές και σωματικές ασκήσεις που μπορείς να κάνεις παντού, χωρίς ανάγκη βίντεο ή ήχου.' 
-            : 'Short mental and physical exercises you can do anywhere, without the need for video or sound.'}
+            ? 'Αόρατες πρακτικές που μπορείς να κάνεις παντού, χωρίς να σε καταλάβει κανείς. Για κάθε στιγμή της ημέρας.' 
+            : 'Invisible practices you can do anywhere, without anyone noticing. For every moment of the day.'}
         </p>
       </section>
 
@@ -192,6 +164,10 @@ export default function PracticeMicrodoses() {
             case 'body': 
               activeStyle = "bg-emerald-500 border-emerald-500 text-white shadow-md shadow-emerald-500/20"; 
               inactiveStyle = "bg-emerald-950/30 text-emerald-300/80 border-emerald-800/50 hover:bg-emerald-900/50 hover:text-emerald-100 hover:border-emerald-500/50 shadow-sm";
+              break;
+            case 'breath': 
+              activeStyle = "bg-cyan-500 border-cyan-500 text-white shadow-md shadow-cyan-500/20"; 
+              inactiveStyle = "bg-cyan-950/30 text-cyan-300/80 border-cyan-800/50 hover:bg-cyan-900/50 hover:text-cyan-100 hover:border-cyan-500/50 shadow-sm";
               break;
             case 'focus': 
               activeStyle = "bg-amber-500 border-amber-500 text-white shadow-md shadow-amber-500/20"; 

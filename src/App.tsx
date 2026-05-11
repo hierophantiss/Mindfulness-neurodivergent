@@ -19,10 +19,12 @@ import Method from './pages/Method';
 import RabbitHole from './pages/RabbitHole';
 import Intro from './pages/Intro';
 import Onboarding from './components/Onboarding';
+import StorageManager from './pages/StorageManager';
 
 import { LanguageProvider, useLanguage } from './hooks/useLanguage';
 import { ThemeProvider } from './hooks/useTheme';
 import { AccessibilityProvider } from './hooks/useAccessibility';
+import { FirebaseProvider } from './lib/FirebaseContext';
 
 function AppContent() {
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -60,6 +62,7 @@ function AppContent() {
           <Route path="practice/:category/:id" element={<GenericExercise />} />
           <Route path="journal" element={<Journal />} />
           <Route path="faq" element={<Faq />} />
+          <Route path="media" element={<StorageManager />} />
         </Route>
         </Routes>
       </CompanionProvider>
@@ -69,12 +72,14 @@ function AppContent() {
 
 export default function App() {
   return (
-    <LanguageProvider>
-      <ThemeProvider>
-        <AccessibilityProvider>
-          <AppContent />
-        </AccessibilityProvider>
-      </ThemeProvider>
-    </LanguageProvider>
+    <FirebaseProvider>
+      <LanguageProvider>
+        <ThemeProvider>
+          <AccessibilityProvider>
+            <AppContent />
+          </AccessibilityProvider>
+        </ThemeProvider>
+      </LanguageProvider>
+    </FirebaseProvider>
   );
 }

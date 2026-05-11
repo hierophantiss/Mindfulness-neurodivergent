@@ -433,7 +433,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       {
         q: 'Πώς χρησιμοποιώ τον Τετραπλό Άξονα στη δουλειά;',
         a: '3 αναπνοές πριν ανοίξεις email. Νιώσε τα πέλματα πριν μιλήσεις σε meeting. Ταμπέλα στις σκέψεις ανησυχίας. Αυτά τα 3 πράγματα, κάθε μέρα, αλλάζουν τη σχέση σου με την ένταση χωρίς να χρειαστείς χρόνο.',
-        tags: ['daily', 'work', 'practical', 'micro-doses'],
+        tags: ['daily', 'work', 'practical', 'invisible-doses'],
         depth: 1
       },
       {
@@ -450,8 +450,8 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'Πόσο χρόνο χρειάζεται καθημερινά;',
-        a: 'Η συνέπεια σε μικρές δόσεις είναι πιο σημαντική από τη διάρκεια. 5 δευτερόλεπτα γείωσης πριν ξεκινήσεις τη μέρα. 10 δευτερόλεπτα αναπνοής πριν τον ύπνο. Αρκεί. Η παρουσία δεν χρειάζεται ώρες — ξεκινά με νίκες λίγων δευτερολέπτων.',
-        tags: ['daily', 'time', 'micro-doses', 'encouragement'],
+        a: 'Η συνέπεια σε αόρατες δόσεις είναι πιο σημαντική από τη διάρκεια. 5 δευτερόλεπτα γείωσης πριν ξεκινήσεις τη μέρα. 10 δευτερόλεπτα αναπνοής πριν τον ύπνο. Αρκεί. Η παρουσία δεν χρειάζεται ώρες — ξεκινά με νίκες λίγων δευτερολέπτων.',
+        tags: ['daily', 'time', 'invisible-doses', 'encouragement'],
         depth: 1
       }
     ],
@@ -459,7 +459,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       {
         q: 'How do I use the Fourfold Axis at work?',
         a: '3 breaths before opening email. Feel your soles before speaking in a meeting. Label anxious thoughts. These 3 things, every day, change your relationship with tension without needing extra time.',
-        tags: ['daily', 'work', 'practical', 'micro-doses'],
+        tags: ['daily', 'work', 'practical', 'invisible-doses'],
         depth: 1
       },
       {
@@ -476,8 +476,8 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'How much time does it need daily?',
-        a: 'Consistency in small doses matters more than duration. 5 seconds of grounding before starting the day. 10 seconds of breathing before sleep. That\'s enough. Presence doesn\'t need hours — it starts with victories of a few seconds.',
-        tags: ['daily', 'time', 'micro-doses', 'encouragement'],
+        a: 'Consistency in invisible doses matters more than duration. 5 seconds of grounding before starting the day. 10 seconds of breathing before sleep. That\'s enough. Presence doesn\'t need hours — it starts with victories of a few seconds.',
+        tags: ['daily', 'time', 'invisible-doses', 'encouragement'],
         depth: 1
       }
     ]

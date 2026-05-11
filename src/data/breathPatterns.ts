@@ -75,6 +75,54 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     ],
   },
   {
+    id: "4-2-7-1",
+    category: "breath",
+    hasBinaural: true,
+    title: { el: "4-2-7-1", en: "4-2-7-1" },
+    subtitle: { el: "Αόρατη Ηρεμία", en: "Stealth Calm" },
+    desc: {
+      el: "Ρυθμός για άμεση μείωση του άγχους. Η παρατεταμένη εκπνοή ενεργοποιεί το πνευμονογαστρικό νεύρο.",
+      en: "Rhythm for immediate anxiety reduction. Prolonged exhalation activates the vagus nerve.",
+    },
+    totalCycleDurationMs: 14000,
+    audioConfig: {
+      base: 180,
+      beat: 6,
+      pulse: 6,
+      ambientLayers: ["/ocean-waves.mp3"],
+    }, 
+    video: "/Basic.mp4",
+    skipIntro: true,
+    videoInhaleStart: 0.0,
+    videoInhaleEnd: 0.5,
+    videoExhaleStart: 0.5,
+    videoExhaleEnd: 1.0,
+    phases: [
+      { dur: 4000, armFrom: 0, armTo: 1 },
+      { dur: 2000, armFrom: 1, armTo: 1 },
+      { dur: 7000, armFrom: 1, armTo: 0 },
+      { dur: 1000, armFrom: 0, armTo: 0 },
+    ],
+    labels: [
+      {
+        label: { el: "Εισπνοή", en: "Inhale" },
+        sub: { el: "εισπνοή (4s)", en: "inhale (4s)" },
+      },
+      {
+        label: { el: "Παύση", en: "Hold" },
+        sub: { el: "κράτημα (2s)", en: "hold (2s)" },
+      },
+      {
+        label: { el: "Εκπνοή", en: "Exhale" },
+        sub: { el: "παρατεταμένη εκπνοή (7s)", en: "long exhale (7s)" },
+      },
+      {
+        label: { el: "Παύση", en: "Hold" },
+        sub: { el: "παύση (1s)", en: "hold (1s)" },
+      },
+    ],
+  },
+  {
     id: "4-7-8",
     category: "breath",
     hasBinaural: true,

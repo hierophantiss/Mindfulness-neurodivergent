@@ -141,9 +141,9 @@ export default function Intro() {
 
             <div className="bg-pine-900/30 border border-pine-700/40 p-4 rounded-3xl space-y-2">
               <div className="text-xl mb-1">⚡</div>
-              <h3 className="font-bold text-pine-100 text-[15px]">{language === 'el' ? 'Μικρές δόσεις, μεγάλα αποτελέσματα.' : 'Microdoses, macro results.'}</h3>
+              <h3 className="font-bold text-pine-100 text-[15px]">{language === 'el' ? 'Αόρατες δόσεις, μεγάλα αποτελέσματα.' : 'Invisible doses, macro results.'}</h3>
               <p className="text-pine-300 text-xs leading-relaxed">
-                {language === 'el' ? 'Σύντομες αλλά συχνές πρακτικές είναι πιο αποτελεσματικές από μεγάλες συνεδρίες, λόγω του spacing effect. (Cepeda et al., 2006)' : 'Short but frequent practices are more effective than long sessions, due to the spacing effect. (Cepeda et al., 2006)'}
+                {language === 'el' ? 'Σύντομες αλλά συχνές πρακτικές ("Invisible") είναι πιο αποτελεσματικές από μεγάλες συνεδρίες, λόγω του spacing effect. (Cepeda et al., 2006)' : 'Short but frequent practices ("Invisible") are more effective than long sessions, due to the spacing effect. (Cepeda et al., 2006)'}
               </p>
             </div>
           </div>
