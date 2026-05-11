@@ -15,196 +15,172 @@ export default function Chapters() {
   const depthChapters = chapters.filter(c => c.num >= 8 && c.num <= 10);
 
   return (
-    <div className="flex flex-col relative w-full pt-10 min-h-screen">
-      <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-safe mb-4 relative z-10 px-4 md:px-8">
-        <div className="flex flex-col items-center justify-center text-center mb-4 pt-4 pb-0">
+    <div className="flex flex-col relative w-full h-full min-h-screen pt-8">
+      <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20 px-6 max-w-5xl mx-auto w-full">
+        
+        {/* Header - Editorial Style */}
+        <header className="flex flex-col items-center text-center space-y-6 relative">
           <button 
-            onClick={() => navigate('/')} 
-            className="absolute left-4 md:left-8 w-12 h-12 rounded-full flex items-center justify-center text-white/80 bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.05] hover:border-white/10 backdrop-blur-md transition-all duration-300 z-50 shadow-lg"
+            onClick={() => navigate('/dashboard')} 
+            className="btn-zen absolute left-0 top-0 !px-3 !py-3 hidden md:flex"
           >
             <ArrowLeft size={20} />
           </button>
-          <div className="w-14 h-14 rounded-full bg-teal-500/10 border border-teal-500/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] flex items-center justify-center text-teal-300 mb-3">
-             <BookOpen size={28} />
-          </div>
-          <h2 className="text-3xl font-heading text-white tracking-widest drop-shadow-lg opacity-90">
-            {language === 'en' ? 'Theory & Practice' : 'Θεωρία & Πρακτική'}
-          </h2>
-        </div>
-
-        {/* Internal Page Links */}
-        <div className="flex justify-center gap-4 mb-8 overflow-x-auto pb-2 scrollbar-none snap-x sticky top-0 z-20 bg-pine-950/80 backdrop-blur-md py-3 -mx-4 px-4 border-b border-white/5">
-          <a href="#basis" onClick={(e) => { e.preventDefault(); document.getElementById('basis')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }} className="text-xs font-semibold uppercase tracking-wider text-pine-300 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-full snap-start whitespace-nowrap">
-            {language === 'en' ? 'Foundation' : 'Βάση'}
-          </a>
-          <a href="#application" onClick={(e) => { e.preventDefault(); document.getElementById('application')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }} className="text-xs font-semibold uppercase tracking-wider text-pine-300 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-full snap-start whitespace-nowrap">
-            {language === 'en' ? 'Application' : 'Εφαρμογή'}
-          </a>
-          <a href="#depth" onClick={(e) => { e.preventDefault(); document.getElementById('depth')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }} className="text-xs font-semibold uppercase tracking-wider text-pine-300 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-full snap-start whitespace-nowrap">
-            {language === 'en' ? 'Depth' : 'Σύνθεση'}
-          </a>
-          <a href="#program" onClick={(e) => { e.preventDefault(); document.getElementById('program')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }} className="text-xs font-semibold uppercase tracking-wider text-pine-300 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-full snap-start whitespace-nowrap">
-            {language === 'en' ? 'Program' : 'Πρόγραμμα'}
-          </a>
-        </div>
-
-        <div className="w-full lg:max-w-5xl mx-auto">
-        {/* Section 1: The Quadruple Axis */}
-        <div id="basis" className="mb-12 mt-2 scroll-mt-24">
-          <div className="text-center mb-6">
-            <h3 className="text-sm font-bold text-pine-400 tracking-[0.2em] uppercase mb-1">
-              {language === 'el' ? 'Ο Τετραπλος Αξονας' : 'The Quadruple Axis'}
-            </h3>
-            <p className="text-pine-200/80 font-medium text-sm">
-              {language === 'el' ? 'Η βάση. Ξεκίνα από εδώ.' : 'The foundation. Start here.'}
+          
+          <div className="space-y-4">
+            <div className="flex items-center justify-center gap-3">
+              <span className="text-[11px] font-bold tracking-[0.2em] text-teal-400 uppercase">
+                {language === 'en' ? 'Theory & Practice' : 'Θεωρία & Πρακτική'}
+              </span>
+            </div>
+            <h2 className="text-5xl md:text-7xl font-heading text-white italic leading-none tracking-tight">
+              {language === 'en' ? 'The Library' : 'Η Βιβλιοθήκη'}
+            </h2>
+            <p className="text-lg text-pine-300 font-light max-w-xl mx-auto leading-relaxed">
+              {language === 'el' ? 'Μαθαίνοντας να ιππεύεις τον άνεμο. Ένας οδηγός για την επίγνωση.' : 'Learning to ride the wind. A guide to awareness.'}
             </p>
           </div>
+        </header>
+
+        {/* Section 1: The Quadruple Axis - Atmospheric Cards */}
+        <div id="basis" className="space-y-8">
+          <div className="flex items-center gap-4">
+            <span className="w-12 h-[1px] bg-white/10"></span>
+            <h3 className="text-[11px] font-bold text-pine-400 tracking-[0.3em] uppercase">
+              {language === 'el' ? 'Ο Τετραπλος Αξονας' : 'The Quadruple Axis'}
+            </h3>
+          </div>
           
-          <div className="grid grid-cols-2 gap-3 md:gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {basisChapters.map(chapter => (
               <Link 
                 to={`/chapters/${chapter.num}`}
                 key={chapter.num} 
-                className="group flex flex-col justify-center items-center rounded-[2rem] p-5 md:p-6 min-h-[170px] bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.05] hover:border-white/10 backdrop-blur-xl transition-all duration-500 shadow-xl overflow-hidden relative"
+                className="group relative flex flex-col justify-end min-h-[300px] overflow-hidden rounded-[2.5rem] glass-card p-8 transition-all duration-700 hover:border-white/20"
               >
-                {/* Background Subtle Gradient Glow */}
                 <div 
-                  className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity duration-700 pointer-events-none"
-                  style={{ background: `radial-gradient(circle at 50% 30%, ${chapter.hex}, transparent 60%)` }}
+                  className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-700"
+                  style={{ background: `radial-gradient(circle at 70% 30%, ${chapter.hex}, transparent 80%)` }}
                 />
                 
-                {/* The Image replaced by a Styled Icon container */}
-                <div className="relative z-10 mb-4 transform group-hover:-translate-y-1 transition-transform duration-500">
-                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-[1.25rem] bg-white/[0.03] border border-white/10 flex items-center justify-center relative overflow-hidden">
-                    {/* Inner Glow matching chapter hex */}
-                    <div 
-                      className="absolute inset-0 blur-xl opacity-20"
-                      style={{ background: `radial-gradient(circle, ${chapter.hex}, transparent 70%)` }}
-                    />
-                    
-                    {/* Main Icon */}
-                    <div className="relative z-10 text-white/90 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]">
-                      {chapter.num === 1 && <Mountain size={32} />}
-                      {chapter.num === 2 && <Wind size={32} />}
-                      {chapter.num === 3 && <Target size={32} />}
-                      {chapter.num === 4 && <Maximize size={32} />}
-                    </div>
-                  </div>
-                  
-                  {/* Emoji Badge remains as is but cleaner */}
-                  <div 
-                    className="absolute -bottom-2 -right-2 w-7 h-7 md:w-8 md:h-8 rounded-full border-2 border-pine-900 bg-pine-950 flex items-center justify-center text-xs md:text-sm shadow-xl z-20"
-                  >
-                    {chapter.icon}
-                  </div>
-                </div>
-
-                <div className="relative z-10 text-center flex flex-col items-center">
-                  <h3 className="text-[17px] md:text-xl font-semibold text-white mb-1.5 leading-tight tracking-wide drop-shadow-sm">{chapter.title}</h3>
-                  <span 
-                    className="inline-block px-2.5 py-0.5 md:px-3 md:py-1 rounded-full text-[10px] md:text-[11px] font-bold tracking-wider backdrop-blur-md border border-white/5"
-                    style={{ backgroundColor: `${chapter.hex}25`, color: chapter.hex }}
-                  >
-                    «{chapter.tag}»
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        {/* Section 2: Application */}
-        <div id="application" className="mb-12 scroll-mt-24">
-          <div className="mb-4 pl-3 border-l-2 border-pine-500">
-            <h3 className="text-lg font-semibold text-white leading-tight">
-              {language === 'el' ? 'Πώς τα χρησιμοποιείς στη ζωή σου' : 'How to use them in your life'}
-            </h3>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {applicationChapters.map((chapter) => (
-              <Link 
-                to={`/chapters/${chapter.num}`}
-                key={chapter.num} 
-                className="group flex items-center rounded-3xl p-4 bg-white/[0.03] hover:bg-white/[0.05] border border-white/[0.05] hover:border-white/10 backdrop-blur-md transition-all duration-300 shadow-lg"
-              >
-                <div className="flex items-center gap-4 w-full relative z-10 pointer-events-none">
-                  <div 
-                    className="w-11 h-11 rounded-xl flex items-center justify-center text-xl shrink-0 backdrop-blur-sm border border-white/5 transition-transform group-hover:scale-110"
-                    style={{ backgroundColor: `${chapter.hex}25`, color: chapter.hex }}
-                  >
-                    {chapter.icon}
-                  </div>
-                  <div className="flex-1">
-                    <span className="text-[10px] font-bold uppercase tracking-widest block opacity-80 mb-0.5" style={{ color: chapter.hex }}>
-                      {language === 'en' ? 'Chapter' : 'Κεφάλαιο'} {chapter.num}
-                    </span>
-                    <h3 className="text-base font-medium text-white mb-0.5 leading-tight">{chapter.title}</h3>
-                    <p className="text-xs text-pine-300/80 line-clamp-1">{chapter.sub}</p>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        {/* Section 3: Synthesis / Practice */}
-        <div id="depth" className="mb-8 scroll-mt-24">
-          <div className="mb-4 pl-3 border-l-2 border-pine-500">
-            <h3 className="text-lg font-semibold text-white leading-tight">
-              {language === 'el' ? 'Σύνθεση / Πρακτική / Επιστήμη' : 'Synthesis / Practice / Science'}
-            </h3>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {depthChapters.map((chapter) => (
-              <Link 
-                to={`/chapters/${chapter.num}`}
-                key={chapter.num} 
-                className="group flex items-center rounded-3xl p-4 bg-white/[0.03] hover:bg-white/[0.05] border border-white/[0.05] hover:border-white/10 backdrop-blur-md transition-all duration-300 shadow-lg"
-              >
-                <div className="flex items-center gap-4 w-full relative z-10 pointer-events-none">
+                <div className="relative z-10 space-y-4">
                    <div 
-                    className="w-11 h-11 rounded-xl flex items-center justify-center text-xl shrink-0 backdrop-blur-sm border border-white/5 transition-transform group-hover:scale-110"
+                    className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl backdrop-blur-md border border-white/10"
                     style={{ backgroundColor: `${chapter.hex}25`, color: chapter.hex }}
                   >
                     {chapter.icon}
                   </div>
-                  <div className="flex-1">
-                    <span className="text-[10px] font-bold uppercase tracking-widest block opacity-80 mb-0.5" style={{ color: chapter.hex }}>
-                      {language === 'en' ? 'Chapter' : 'Κεφάλαιο'} {chapter.num}
-                    </span>
-                    <h3 className="text-base font-medium text-white mb-0.5 leading-tight">{chapter.title}</h3>
-                    <p className="text-xs text-pine-300/80 line-clamp-1">{chapter.sub}</p>
+                  <div>
+                    <h3 className="text-3xl font-heading text-white italic group-hover:text-white/90 transition-colors">{chapter.title}</h3>
+                    <p className="text-sm text-pine-300 font-light mt-1 drop-shadow-sm">{chapter.sub}</p>
                   </div>
+                  <div className="flex items-center gap-2">
+                    <span 
+                      className="text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full border"
+                      style={{ borderColor: `${chapter.hex}40`, color: chapter.hex, backgroundColor: `${chapter.hex}10` }}
+                    >
+                      {chapter.tag}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="absolute top-0 right-0 p-8 text-white/5 group-hover:scale-110 transition-transform duration-1000">
+                  {chapter.num === 1 && <Mountain size={140} strokeWidth={0.5} />}
+                  {chapter.num === 2 && <Wind size={140} strokeWidth={0.5} />}
+                  {chapter.num === 3 && <Target size={140} strokeWidth={0.5} />}
+                  {chapter.num === 4 && <Maximize size={140} strokeWidth={0.5} />}
                 </div>
               </Link>
             ))}
           </div>
         </div>
 
-        {/* Section 4: 8 Week Program */}
-        <div id="program" className="mb-8 mt-12 relative scroll-mt-24">
-          <div className="absolute inset-0 bg-teal-500/10 rounded-[2rem] blur-xl pointer-events-none"></div>
+        {/* Section 2 & 3 Combined Refine */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          {/* Application */}
+          <div id="application" className="space-y-8">
+            <div className="flex items-center gap-4">
+              <span className="w-12 h-[1px] bg-white/10"></span>
+              <h3 className="text-[11px] font-bold text-pine-400 tracking-[0.3em] uppercase">
+                {language === 'el' ? 'Εφαρμογη' : 'Application'}
+              </h3>
+            </div>
+            <div className="space-y-4">
+              {applicationChapters.map((chapter) => (
+                <Link 
+                  to={`/chapters/${chapter.num}`}
+                  key={chapter.num} 
+                  className="group flex items-center gap-6 p-4 rounded-[1.5rem] glass-card border-none hover:bg-white/[0.06] transition-all duration-300"
+                >
+                  <div 
+                    className="w-12 h-12 rounded-xl flex items-center justify-center text-xl shrink-0 backdrop-blur-sm transition-transform group-hover:scale-110"
+                    style={{ backgroundColor: `${chapter.hex}25`, color: chapter.hex }}
+                  >
+                    {chapter.icon}
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-heading text-white italic leading-tight group-hover:translate-x-1 transition-transform">{chapter.title}</h3>
+                    <p className="text-xs text-pine-400 mt-0.5">{chapter.sub}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Depth */}
+          <div id="depth" className="space-y-8">
+            <div className="flex items-center gap-4">
+              <span className="w-12 h-[1px] bg-white/10"></span>
+              <h3 className="text-[11px] font-bold text-pine-400 tracking-[0.3em] uppercase">
+                {language === 'el' ? 'Συνθεση' : 'Depth'}
+              </h3>
+            </div>
+            <div className="space-y-4">
+              {depthChapters.map((chapter) => (
+                <Link 
+                  to={`/chapters/${chapter.num}`}
+                  key={chapter.num} 
+                  className="group flex items-center gap-6 p-4 rounded-[1.5rem] glass-card border-none hover:bg-white/[0.06] transition-all duration-300"
+                >
+                  <div 
+                    className="w-12 h-12 rounded-xl flex items-center justify-center text-xl shrink-0 backdrop-blur-sm transition-transform group-hover:scale-110"
+                    style={{ backgroundColor: `${chapter.hex}25`, color: chapter.hex }}
+                  >
+                    {chapter.icon}
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-heading text-white italic leading-tight group-hover:translate-x-1 transition-transform">{chapter.title}</h3>
+                    <p className="text-xs text-pine-400 mt-0.5">{chapter.sub}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Section 4: 8 Week Program - Epic Style */}
+        <div id="program" className="relative group">
+          <div className="absolute inset-0 bg-teal-500/10 rounded-[3rem] blur-2xl opacity-50 group-hover:opacity-100 transition-opacity duration-1000"></div>
           <Link
             to="/program"
-            className="group flex flex-col items-center justify-center text-center p-6 md:p-8 rounded-[2rem] bg-white/[0.03] hover:bg-white/[0.05] border border-white/[0.05] hover:border-teal-500/20 backdrop-blur-xl transition-all duration-500 shadow-xl overflow-hidden relative"
+            className="relative flex flex-col items-center justify-center text-center p-12 md:p-20 rounded-[3rem] glass-card border-teal-500/10 hover:border-teal-500/30 transition-all duration-700"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/[0.05] to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%] pointer-events-none"></div>
-            <div className="w-16 h-16 rounded-full bg-teal-500/20 text-teal-300 flex items-center justify-center mb-4 transition-transform duration-500 group-hover:scale-110 group-hover:bg-teal-500/30 ring-1 ring-teal-500/50 shadow-inner">
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5v-15A2.5 2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+            <div className="w-16 h-16 rounded-full bg-teal-500/10 text-teal-400 flex items-center justify-center mb-8 border border-teal-500/20 group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(20,184,166,0.3)] transition-all duration-700">
+               <BookOpen size={32} strokeWidth={1.5} />
             </div>
-            <h3 className="text-2xl font-semibold text-white mb-2 tracking-wide">
+            <h3 className="text-4xl md:text-5xl font-heading text-white italic mb-4 leading-tight">
               {language === 'el' ? 'Πρόγραμμα 8 Εβδομάδων' : '8 Weeks Program'}
             </h3>
-            <p className="text-pine-200/80 text-sm max-w-[280px] leading-relaxed">
+            <p className="text-lg text-pine-300 font-light max-w-md leading-relaxed">
               {language === 'el' 
-                ? 'Μαθαίνοντας να ιππεύεις τον άνεμο. Μια δομημένη πρακτική πορεία 8 εβδομάδων.' 
-                : 'Learning to ride the wind. A 8-week structured practical journey.'}
+                ? 'Μια δομημένη πρακτική πορεία για την ενσωμάτωση της επίγνωσης στην καθημερινότητα.' 
+                : 'A structured practical journey to integrate awareness into daily life.'}
             </p>
           </Link>
         </div>
+
       </div>
     </div>
-  </div>
   );
 }
 

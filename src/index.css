@@ -1,58 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 
 @theme {
   --color-white: #fcf5e3; /* Soft beige cream */
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "Outfit", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Playfair Display", "Outfit", "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Playfair Display", ui-serif, Georgia, serif;
   
-  /* Soft Dark Mode (Slate) */
-  --color-pine-950: #0b1120;
-  --color-pine-900: #0f172a;
-  --color-pine-800: #1e293b;
-  --color-pine-700: #334155;
-  --color-pine-600: #475569;
-  --color-pine-500: #64748b;
-  --color-pine-300: #cbd5e1;
-  --color-pine-200: #e2e8f0;
-  --color-pine-100: #f1f5f9;
+  /* Deep Zen Palette */
+  --color-pine-950: #05080f;
+  --color-pine-900: #0a0f1d;
+  --color-pine-800: #161e31;
+  --color-pine-700: #2a3449;
+  --color-pine-600: #3f495e;
+  --color-pine-500: #59657a;
+  --color-pine-300: #a1acc3;
+  --color-pine-200: #cbd5e1;
+  --color-pine-100: #e2e8f0;
   --color-pine-50:  #f8fafc;
   
-  /* Soft Teal (Breath/Calming) */
-  --color-teal-50:  #f0fdfa;
-  --color-teal-100: #ccfbf1;
-  --color-teal-200: #99f6e4;
-  --color-teal-300: #5eead4;
-  --color-teal-400: #2dd4bf;
-  --color-teal-500: #14b8a6;
-  --color-teal-600: #0d9488;
-  --color-teal-700: #0f766e;
-  --color-teal-800: #115e59;
-  --color-teal-900: #134e4a;
-  
-  /* Soft Terracotta/Amber (Movement/Energy) */
-  --color-amber-50:  #fffbeb;
-  --color-amber-100: #fef3c7;
-  --color-amber-200: #fde68a;
-  --color-amber-300: #fcd34d;
-  --color-amber-400: #fbbf24;
-  --color-amber-500: #f59e0b;
-  --color-amber-600: #d97706;
-  --color-amber-700: #b45309;
-  --color-amber-800: #92400e;
-  --color-amber-900: #78350f;
-  
-  --color-gold-500: #D4AF37;
-  --color-gold-400: #E6C25B;
-  
-  --color-emerald-500: #10B981;
-  --color-emerald-400: #34D399;
+  /* Atmospheric Accents */
+  --color-indigo- zen: rgba(99, 102, 241, 0.15);
+  --color-teal-zen: rgba(20, 184, 166, 0.15);
+  --color-amber-zen: rgba(245, 158, 11, 0.15);
+}
 
-  /* Axis Colors */
-  --color-axis-body: #7A9E7E;
-  --color-axis-breath: #C07050;
-  --color-axis-focus: #C8922A;
-  --color-axis-space: #B5A7D0;
+@utility atmosphere-bg {
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(20, 184, 166, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(5, 8, 15, 1) 0%, #0a0f1d 100%);
+}
+
+@utility glass-card {
+  @apply bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] shadow-2xl;
+}
+
+@utility glass-pill {
+  @apply bg-white/[0.05] border border-white/[0.1] backdrop-blur-lg;
 }
 
 @layer utilities {
@@ -71,30 +56,20 @@
 
 @layer base {
   html {
-    @apply scroll-smooth;
+    @apply scroll-smooth antialiased;
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-pine-900 text-pine-50 font-sans transition-colors duration-700 ease-in-out;
+    @apply bg-pine-950 text-pine-50 font-sans transition-colors duration-700 ease-in-out atmosphere-bg;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading tracking-tight;
-  }
-  *:focus-visible {
-    @apply outline-none ring-2 ring-emerald-500 ring-offset-2 ring-offset-pine-950;
+    @apply font-heading tracking-tight font-medium;
   }
 }
 
 @layer components {
-
-
-  /* Deep Hole Effect */
-  .btn-hole {
-    @apply bg-gradient-to-tl from-[#1d2731] to-[#0d1016] text-teal-100;
-    box-shadow: inset 10px 16px 24px -4px rgba(0,0,0,0.8), inset -2px -2px 6px rgba(255,255,255,0.05), 0 1px 2px rgba(255,255,255,0.1);
-  }
-  .btn-hole:hover {
-    box-shadow: inset 12px 20px 28px -4px rgba(0,0,0,0.85), inset -2px -2px 6px rgba(255,255,255,0.03), 0 1px 2px rgba(255,255,255,0.1);
+  .btn-zen {
+    @apply relative overflow-hidden glass-pill px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 hover:bg-white/[0.1] hover:translate-y-[-1px] active:scale-95;
   }
 }
 

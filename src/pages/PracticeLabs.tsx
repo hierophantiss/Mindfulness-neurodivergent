@@ -44,72 +44,72 @@ export default function PracticeLabs() {
   }, []);
 
   const formatName = (name: string) => {
-    // Remove timestamp prefix if exists (e.g. 1778513365071_name.html)
     let clean = name.replace(/^\d+_/, '').replace('.html', '');
-    // Convert snake_case or kebab-case to Title Case
     return clean.split(/[_-]/).map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="flex items-center gap-4 mb-2">
+    <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="flex items-center gap-4">
         <button 
           onClick={() => navigate('/practice')} 
-          className="w-10 h-10 rounded-full bg-pine-800 border border-pine-700 flex items-center justify-center text-pine-300 hover:bg-pine-700 hover:text-white transition-colors"
+          className="btn-zen !px-3 !py-3"
         >
           <ArrowLeft size={20} />
         </button>
+        <span className="text-[11px] font-bold tracking-[0.2em] text-indigo-400 uppercase">
+          {language === 'el' ? 'Διαδραστικά Εργαλεία' : 'Interactive Tools'}
+        </span>
       </div>
 
-      <section>
-        <h2 className="text-3xl font-serif text-white tracking-tight mb-2 flex items-center gap-3">
-          <Beaker className="text-indigo-400" />
-          {language === 'el' ? 'Διαδραστικά Εργαστήρια' : 'Interactive Labs'}
+      <header className="space-y-4 max-w-2xl">
+        <h2 className="text-5xl md:text-6xl font-heading text-white italic leading-tight">
+          {language === 'el' ? 'Εργαστήρια' : 'Interactive Labs'}
         </h2>
-        <p className="text-pine-200">
+        <p className="text-lg text-pine-300 font-light leading-relaxed">
           {language === 'el' 
-            ? 'Πειραματικές ασκήσεις και διαδραστικά περιβάλλοντα για την εξερεύνηση της προσοχής και της επίγνωσης.' 
-            : 'Experimental exercises and interactive environments to explore attention and awareness.'}
+            ? 'Πειραματικές ασκήσεις και διαδραστικά περιβάλλοντα για την εξερεύνηση της προσοχής.' 
+            : 'Experimental exercises and interactive environments to explore attention.'}
         </p>
-      </section>
+      </header>
 
       {loading ? (
         <div className="flex flex-col items-center justify-center py-20 gap-4">
           <Loader2 className="w-10 h-10 text-indigo-500 animate-spin" />
-          <p className="text-pine-400 text-sm">{language === 'el' ? 'Φόρτωση εργαστηρίων...' : 'Loading labs...'}</p>
+          <p className="text-pine-400 text-sm italic">{language === 'el' ? 'Προετοιμασία περιβάλλοντος...' : 'Preparing environment...'}</p>
         </div>
       ) : labs.length === 0 ? (
-        <div className="text-center py-20 bg-white/5 rounded-[2rem] border border-white/5">
-          <p className="text-pine-400">
+        <div className="text-center py-20 glass-card rounded-[2.5rem]">
+          <p className="text-pine-400 italic">
             {language === 'el' ? 'Δεν βρέθηκαν διαθέσιμα εργαστήρια.' : 'No labs found.'}
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 pb-safe mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-20">
           {labs.map(lab => (
             <Link
               key={lab.id}
               to={`/practice/lab/${lab.id}`}
-              className="group relative bg-[#12242D] border border-white/10 hover:border-indigo-500/50 rounded-[2rem] p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10"
+              className="group relative glass-card rounded-[2.5rem] p-8 transition-all duration-500 hover:border-indigo-400/40 hover:-translate-y-1 overflow-hidden"
             >
-              <div className="flex flex-col h-full gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 border border-indigo-500/20 group-hover:scale-110 transition-transform">
-                  <Beaker size={24} />
+              <div className="flex flex-col h-full gap-8 relative z-10">
+                <div className="w-14 h-14 rounded-2xl bg-indigo-400/10 flex items-center justify-center text-indigo-300 border border-indigo-400/20 group-hover:scale-110 transition-transform duration-500">
+                  <Beaker size={28} />
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-indigo-100">
+                <div className="space-y-2">
+                  <h3 className="text-2xl font-heading text-white italic group-hover:text-indigo-100 transition-colors">
                     {formatName(lab.name)}
                   </h3>
-                  <p className="text-sm text-pine-300 line-clamp-2">
+                  <p className="text-sm text-pine-300 font-light line-clamp-2 leading-relaxed">
                     {language === 'el' 
-                      ? 'Διαδραστική εμπειρία βασισμένη στον κώδικα.' 
-                      : 'Interactive experience based on code.'}
+                      ? 'Διαδραστική εμπειρία βασισμένη στον κώδικα για βαθιά επίγνωση.' 
+                      : 'Interactive experience based on code for deep awareness.'}
                   </p>
                 </div>
-                <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                  <span className="text-xs font-bold text-indigo-400 uppercase tracking-widest">{language === 'el' ? 'ΠΕΙΡΑΜΑΤΙΚΟ' : 'EXPERIMENTAL'}</span>
-                  <div className="bg-indigo-600 p-2 rounded-xl text-white">
-                    <Play size={16} fill="white" />
+                <div className="flex items-center justify-between pt-6 border-t border-white/5">
+                  <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">{language === 'el' ? 'ΠΕΙΡΑΜΑΤΙΚΟ' : 'EXPERIMENTAL'}</span>
+                  <div className="bg-white/10 p-2 rounded-xl text-white group-hover:bg-white group-hover:text-pine-950 transition-all duration-500">
+                    <Play size={16} fill="currentColor" />
                   </div>
                 </div>
               </div>

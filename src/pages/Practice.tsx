@@ -8,83 +8,89 @@ export default function Practice() {
   const { language } = useLanguage();
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <button 
-        onClick={() => navigate('/')} 
-        className="w-10 h-10 rounded-full bg-pine-800 border border-pine-700 flex items-center justify-center text-pine-300 hover:bg-pine-700 hover:text-white transition-colors mb-2"
-      >
-        <ArrowLeft size={20} />
-      </button>
+    <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="flex items-center gap-4">
+        <button 
+          onClick={() => navigate('/dashboard')} 
+          className="btn-zen !px-3 !py-3"
+        >
+          <ArrowLeft size={20} />
+        </button>
+        <span className="text-[11px] font-bold tracking-[0.2em] text-indigo-400 uppercase">
+          {language === 'el' ? 'Κεντρο Εξασκησης' : 'Practice Hub'}
+        </span>
+      </div>
 
-      <section>
-        <h2 className="text-4xl font-medium text-white tracking-tight mb-3">
+      <header className="space-y-4 max-w-2xl">
+        <h2 className="text-5xl md:text-6xl font-heading text-white italic leading-tight">
           {language === 'el' ? 'Εξάσκηση' : 'Practice'}
         </h2>
-        <p className="text-lg text-pine-300 font-normal mb-8">
-          {language === 'el' ? 'Επίλεξε την κατηγορία εξάσκησης που χρειάζεσαι.' : 'Choose the practice category you need.'}
+        <p className="text-lg text-pine-300 font-light leading-relaxed">
+          {language === 'el' 
+            ? 'Επίλεξε την κατηγορία εξάσκησης που ταιριάζει στην κατάστασή σου.' 
+            : 'Choose the practice category that fits your current state.'}
         </p>
-      </section>
+      </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pb-safe mb-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pb-12">
         {/* Interactive Labs Card */}
         <Link
           to="/practice/labs"
-          className="group relative block p-6 md:p-8 rounded-[2rem] transition-all duration-500 cursor-pointer overflow-hidden shadow-xl active:scale-[0.98] hover:-translate-y-1 backdrop-blur-md bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.05] hover:border-indigo-400/30 md:col-span-2"
+          className="group relative block p-10 rounded-[2.5rem] glass-card transition-all duration-700 hover:border-indigo-400/40 md:col-span-2 overflow-hidden"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/0 via-indigo-500/10 to-indigo-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%]"></div>
+          <div className="absolute top-0 right-0 p-8 text-white/5 group-hover:scale-125 transition-transform duration-1000">
+            <Beaker size={160} strokeWidth={0.5} />
+          </div>
           
-          <div className="flex flex-col md:flex-row items-center text-center md:text-left gap-6 relative z-10 w-full h-full min-h-[140px]">
-            <div className="w-20 h-20 md:w-24 md:h-24 rounded-[1.5rem] flex items-center justify-center shrink-0 shadow-inner transition-transform duration-500 group-hover:scale-110 bg-indigo-500/10 text-indigo-300 border border-indigo-400/20 backdrop-blur-sm">
-              <Beaker className="w-10 h-10 md:w-12 md:h-12" />
+          <div className="flex flex-col md:flex-row items-center gap-10 relative z-10">
+            <div className="w-24 h-24 rounded-3xl bg-indigo-400/10 flex items-center justify-center text-indigo-300 border border-indigo-400/20 group-hover:scale-110 transition-transform duration-500">
+              <Beaker size={40} />
             </div>
-            <div>
-              <h3 className="text-2xl md:text-4xl font-heading font-medium mb-3 drop-shadow-sm leading-tight text-white group-hover:text-indigo-50 transition-colors">
+            <div className="space-y-2 text-center md:text-left">
+              <h3 className="text-3xl md:text-4xl font-heading text-white italic">
                 {language === 'en' ? 'Interactive Labs' : 'Διαδραστικά Εργαστήρια'}
               </h3>
-              <p className="text-lg text-indigo-200/90 leading-relaxed font-medium">
+              <p className="text-pine-300 font-light max-w-xl">
                 {language === 'en' ? 'Explore your mind through code. Use the HTML tools you’ve uploaded.' : 'Εξερεύνησε το νου μέσα από τον κώδικα. Χρησιμοποίησε τα HTML εργαλεία που ανέβασες.'}
               </p>
             </div>
           </div>
         </Link>
-        {/* Movement & Breath Hub Card */}
+
+        {/* Movement Card */}
         <Link
           to="/practice/movement"
-          className="group relative block p-6 md:p-8 rounded-[2rem] transition-all duration-500 cursor-pointer overflow-hidden shadow-xl active:scale-[0.98] hover:-translate-y-1 backdrop-blur-md bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.05] hover:border-indigo-400/30"
+          className="group relative block p-10 rounded-[2.5rem] glass-card transition-all duration-700 hover:border-teal-400/40"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/0 via-indigo-500/10 to-indigo-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%]"></div>
-          
-          <div className="flex flex-col items-center text-center gap-5 relative z-10 w-full h-full justify-center min-h-[160px] md:min-h-[200px]">
-            <div className="w-16 h-16 md:w-20 md:h-20 rounded-[1.25rem] flex items-center justify-center shrink-0 shadow-inner transition-transform duration-500 group-hover:scale-110 bg-indigo-500/10 text-indigo-300 border border-indigo-400/20 backdrop-blur-sm">
-              <Move className="w-8 h-8 md:w-10 md:h-10" />
+          <div className="flex flex-col gap-8 relative z-10 h-full justify-between">
+            <div className="w-16 h-16 rounded-2xl bg-teal-400/10 flex items-center justify-center text-teal-400 border border-teal-400/20 group-hover:scale-110 transition-transform duration-500">
+              <Move size={32} />
             </div>
-            <div>
-              <h3 className="text-2xl md:text-3xl font-heading font-medium mb-3 drop-shadow-sm leading-tight text-white group-hover:text-indigo-50 transition-colors">
+            <div className="space-y-3">
+              <h3 className="text-3xl font-heading text-white italic">
                 {language === 'en' ? 'Breath & Movement' : 'Αναπνοή & Κίνηση'}
               </h3>
-              <p className="text-base text-indigo-200/90 leading-relaxed font-medium">
+              <p className="text-pine-300 font-light text-sm leading-relaxed">
                 {language === 'en' ? 'Full exercises with video guidance and binaural audio.' : 'Ολοκληρωμένες ασκήσεις με καθοδήγηση βίντεο και binaural ήχο.'}
               </p>
             </div>
           </div>
         </Link>
 
-        {/* Microdoses Hub Card */}
+        {/* Microdoses Card */}
         <Link
           to="/practice/microdoses"
-          className="group relative block p-6 md:p-8 rounded-[2rem] transition-all duration-500 cursor-pointer overflow-hidden shadow-xl active:scale-[0.98] hover:-translate-y-1 backdrop-blur-md bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.05] hover:border-emerald-400/30"
+          className="group relative block p-10 rounded-[2.5rem] glass-card transition-all duration-700 hover:border-amber-400/40"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/0 via-emerald-500/10 to-emerald-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%]"></div>
-          
-          <div className="flex flex-col items-center text-center gap-5 relative z-10 w-full h-full justify-center min-h-[160px] md:min-h-[200px]">
-            <div className="w-16 h-16 md:w-20 md:h-20 rounded-[1.25rem] flex items-center justify-center shrink-0 shadow-inner transition-transform duration-500 group-hover:scale-110 bg-emerald-500/10 text-emerald-300 border border-emerald-400/20 backdrop-blur-sm">
-              <Zap className="w-8 h-8 md:w-10 md:h-10 fill-emerald-300" />
+          <div className="flex flex-col gap-8 relative z-10 h-full justify-between">
+            <div className="w-16 h-16 rounded-2xl bg-amber-400/10 flex items-center justify-center text-amber-400 border border-amber-400/20 group-hover:scale-110 transition-transform duration-500">
+              <Zap size={32} />
             </div>
-            <div>
-              <h3 className="text-2xl md:text-3xl font-heading font-medium mb-3 drop-shadow-sm leading-tight text-white group-hover:text-emerald-50 transition-colors">
+            <div className="space-y-3">
+              <h3 className="text-3xl font-heading text-white italic">
                 {language === 'en' ? 'Invisible Microdoses' : 'Αόρατες Μικροδόσεις'}
               </h3>
-              <p className="text-base text-emerald-200/90 leading-relaxed font-medium">
+              <p className="text-pine-300 font-light text-sm leading-relaxed">
                 {language === 'en' ? 'Stealth practices you can do anywhere without being noticed.' : 'Αόρατες πρακτικές που γίνονται παντού χωρίς να σε καταλάβει κανείς.'}
               </p>
             </div>
