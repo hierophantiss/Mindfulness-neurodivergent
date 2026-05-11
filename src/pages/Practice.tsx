@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Wind, Zap, ArrowLeft, Move } from 'lucide-react';
+import { Wind, Zap, ArrowLeft, Move, Beaker } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 
 export default function Practice() {
@@ -26,6 +26,27 @@ export default function Practice() {
       </section>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pb-safe mb-4">
+        {/* Interactive Labs Card */}
+        <Link
+          to="/practice/labs"
+          className="group relative block p-6 md:p-8 rounded-[2rem] transition-all duration-500 cursor-pointer overflow-hidden shadow-xl active:scale-[0.98] hover:-translate-y-1 backdrop-blur-md bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.05] hover:border-indigo-400/30 md:col-span-2"
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/0 via-indigo-500/10 to-indigo-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%]"></div>
+          
+          <div className="flex flex-col md:flex-row items-center text-center md:text-left gap-6 relative z-10 w-full h-full min-h-[140px]">
+            <div className="w-20 h-20 md:w-24 md:h-24 rounded-[1.5rem] flex items-center justify-center shrink-0 shadow-inner transition-transform duration-500 group-hover:scale-110 bg-indigo-500/10 text-indigo-300 border border-indigo-400/20 backdrop-blur-sm">
+              <Beaker className="w-10 h-10 md:w-12 md:h-12" />
+            </div>
+            <div>
+              <h3 className="text-2xl md:text-4xl font-heading font-medium mb-3 drop-shadow-sm leading-tight text-white group-hover:text-indigo-50 transition-colors">
+                {language === 'en' ? 'Interactive Labs' : 'Διαδραστικά Εργαστήρια'}
+              </h3>
+              <p className="text-lg text-indigo-200/90 leading-relaxed font-medium">
+                {language === 'en' ? 'Explore your mind through code. Use the HTML tools you’ve uploaded.' : 'Εξερεύνησε το νου μέσα από τον κώδικα. Χρησιμοποίησε τα HTML εργαλεία που ανέβασες.'}
+              </p>
+            </div>
+          </div>
+        </Link>
         {/* Movement & Breath Hub Card */}
         <Link
           to="/practice/movement"

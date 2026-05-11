@@ -12,6 +12,8 @@ import Practice from './pages/Practice';
 import PracticeMovement from './pages/PracticeMovement';
 import PracticeMicrodoses from './pages/PracticeMicrodoses';
 import PracticeBreath from './pages/PracticeBreath';
+import PracticeLabs from './pages/PracticeLabs';
+import LabViewer from './pages/LabViewer';
 import Journal from './pages/Journal';
 import Faq from './pages/Faq';
 import GenericExercise from './pages/GenericExercise';
@@ -58,6 +60,8 @@ function AppContent() {
           <Route path="practice" element={<Practice />} />
           <Route path="practice/movement" element={<PracticeMovement />} />
           <Route path="practice/microdoses" element={<PracticeMicrodoses />} />
+          <Route path="practice/labs" element={<PracticeLabs />} />
+          <Route path="practice/lab/:id" element={<LabViewer />} />
           <Route path="practice/breath/:id" element={<PracticeBreath />} />
           <Route path="practice/:category/:id" element={<GenericExercise />} />
           <Route path="journal" element={<Journal />} />

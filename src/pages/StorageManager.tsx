@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
-import { collection, addDoc, getDocs, query, orderBy, deleteDoc, doc, serverTimestamp } from 'firebase/firestore';
+import { ref, uploadBytesResumable, getDownloadURL, deleteObject, listAll } from 'firebase/storage';
+import { collection, addDoc, getDocs, query, orderBy, deleteDoc, doc, serverTimestamp, onSnapshot, where } from 'firebase/firestore';
 import { storage, db, handleFirestoreError, OperationType, signInWithGoogle } from '../lib/firebase';
 import { useFirebase } from '../lib/FirebaseContext';
-import { Upload, Trash2, Video, Music, Image as ImageIcon, Box, Loader2, AlertCircle } from 'lucide-react';
+import { Upload, Trash2, Video, Music, Image as ImageIcon, Box, Loader2, AlertCircle, Link as LinkIcon, X, RefreshCw } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 
 interface MediaItem {
   id: string;
   name: string;
   url: string;
-  type: 'video' | 'audio' | 'animation' | 'image';
+  type: 'video' | 'audio' | 'animation' | 'image' | 'html';
   size: number;
   mimeType: string;
   createdAt: any;
@@ -24,51 +24,62 @@ export default function StorageManager() {
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showUrlModal, setShowUrlModal] = useState(false);
+  const [manualUrl, setManualUrl] = useState('');
+  const [manualName, setManualName] = useState('');
+  const [manualType, setManualType] = useState<'video' | 'audio' | 'animation' | 'image' | 'html'>('image');
 
   // isAdmin check (following the rules logic)
   const isAdmin = user?.email?.toLowerCase() === 'bairaktaris.theodoros@gmail.com';
 
   useEffect(() => {
-    if (!authLoading && user) {
-      fetchMedia();
-    } else if (!authLoading && !user) {
-      setLoading(false);
-    }
-  }, [user, authLoading]);
-
-  const fetchMedia = async () => {
-    setLoading(true);
     const path = 'media';
-    try {
-      const q = query(collection(db, path)); // Query all first to avoid missing docs without createdAt
-      const querySnapshot = await getDocs(q);
-      console.log(`Firestore fetch: Found ${querySnapshot.size} documents in 'media' collection.`);
+    setLoading(true);
+    const q = query(collection(db, path));
+    
+    // Safety timeout to prevent infinite loading
+    const safetyTimer = setTimeout(() => {
+      setLoading(false);
+    }, 8000);
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      clearTimeout(safetyTimer);
+      console.log(`Firestore snapshot: Found ${querySnapshot.size} documents in 'media' collection.`);
       const items: MediaItem[] = [];
       querySnapshot.forEach((doc) => {
-        items.push({ id: doc.id, ...doc.data() } as MediaItem);
+        const data = doc.data();
+        items.push({ id: doc.id, ...data } as MediaItem);
       });
+      
       // Sort in JS manually
       items.sort((a, b) => {
-        const timeA = a.createdAt?.seconds || 0;
-        const timeB = b.createdAt?.seconds || 0;
-        return timeB - timeA;
+        const timeA = a.createdAt?.seconds || (a.createdAt instanceof Date ? a.createdAt.getTime() / 1000 : 0);
+        const timeB = b.createdAt?.seconds || (b.createdAt instanceof Date ? b.createdAt.getTime() / 1000 : 0);
+        return (timeB || 0) - (timeA || 0);
       });
+      
       setMedia(items);
-    } catch (err) {
-      console.error('Error fetching media:', err);
-      try {
-        handleFirestoreError(err, OperationType.LIST, path);
-      } catch (e: any) {
-        setError(language === 'el' ? 'Σφάλμα κατά την ανάκτηση των δεδομένων (Permissions).' : 'Error fetching media (Permissions).');
-      }
-    } finally {
       setLoading(false);
-    }
-  };
+    }, (err) => {
+      clearTimeout(safetyTimer);
+      console.error('Error in onSnapshot:', err);
+      setLoading(false);
+    });
+
+    return () => {
+      unsubscribe();
+      clearTimeout(safetyTimer);
+    };
+  }, [language]);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
+
+    if (!user) {
+      setError(language === 'el' ? 'Παρακαλώ συνδεθείτε.' : 'Please log in.');
+      return;
+    }
 
     if (!isAdmin) {
       setError(language === 'el' ? 'Μόνο ο διαχειριστής μπορεί να ανεβάσει αρχεία.' : 'Only the admin can upload files.');
@@ -98,7 +109,13 @@ export default function StorageManager() {
             },
             (err) => {
               console.error('Upload error:', err);
-              reject(err);
+              if (err.code === 'storage/unauthorized') {
+                reject(new Error(language === 'el' 
+                  ? 'Δεν έχετε δικαιώματα εγγραφής στο Storage. Παρακαλώ ελέγξτε τους κανόνες στο Firebase Console.' 
+                  : 'You do not have write permissions in Storage. Please check your rules in the Firebase Console.'));
+              } else {
+                reject(err);
+              }
             },
             async () => {
               try {
@@ -147,7 +164,6 @@ export default function StorageManager() {
       }
     }
 
-    await fetchMedia();
     setUploading(false);
     setProgress(0);
     if (e.target) e.target.value = '';
@@ -158,6 +174,105 @@ export default function StorageManager() {
         : `Successfully uploaded ${completedCount} files.${failedCount > 0 ? ` (${failedCount} failed)` : ''}`);
     } else if (failedCount > 0) {
       alert(language === 'el' ? 'Η μεταφόρτωση απέτυχε για όλα τα αρχεία. Ελέγξτε την κονσόλα για λεπτομέρειες.' : 'Upload failed for all files. Check console for details.');
+    }
+  };
+
+  const handleUrlChange = (url: string) => {
+    setManualUrl(url);
+    if (url && !manualName) {
+      try {
+        const urlObj = new URL(url);
+        const pathParts = urlObj.pathname.split('/');
+        const fileName = decodeURIComponent(pathParts[pathParts.length - 1]);
+        if (fileName && fileName.includes('.')) {
+          setManualName(fileName);
+          if (fileName.endsWith('.html')) setManualType('html');
+          else if (fileName.endsWith('.mp4') || fileName.endsWith('.webm')) setManualType('video');
+          else if (fileName.endsWith('.mp3') || fileName.endsWith('.wav')) setManualType('audio');
+        }
+      } catch (e) {
+        // Not a valid full URL yet, ignore
+      }
+    }
+  };
+
+  const handleManualAdd = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!manualUrl || !manualName) return;
+
+    setUploading(true);
+    try {
+      await addDoc(collection(db, 'media'), {
+        name: manualName,
+        url: manualUrl,
+        type: manualType,
+        size: 0, // Unknown for manual
+        mimeType: 'external/url',
+        uploadedBy: user?.uid,
+        createdAt: serverTimestamp(),
+      });
+      setManualUrl('');
+      setManualName('');
+      setShowUrlModal(false);
+      alert(language === 'el' ? 'Επιτυχής καταχώρηση!' : 'Successfully registered!');
+    } catch (err: any) {
+      console.error('Manual add error:', err);
+      setError(err.message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleSync = async () => {
+    if (!isAdmin) return;
+    setUploading(true);
+    setError(null);
+    let addedCount = 0;
+
+    try {
+      const storageRef = ref(storage, 'assets/');
+      const result = await listAll(storageRef);
+      
+      const firestoreItems = await getDocs(collection(db, 'media'));
+      const existingPaths = new Set();
+      firestoreItems.forEach(doc => {
+        const data = doc.data();
+        if (data.storagePath) existingPaths.add(data.storagePath);
+      });
+
+      for (const itemRef of result.items) {
+        if (!existingPaths.has(itemRef.fullPath)) {
+          console.log(`Syncing new file found in storage: ${itemRef.name}`);
+          const downloadURL = await getDownloadURL(itemRef);
+          
+          let type: MediaItem['type'] = 'image';
+          const name = itemRef.name.toLowerCase();
+          if (name.endsWith('.mp4') || name.endsWith('.webm')) type = 'video';
+          else if (name.endsWith('.mp3') || name.endsWith('.wav')) type = 'audio';
+          else if (name.endsWith('.html')) type = 'html';
+          
+          await addDoc(collection(db, 'media'), {
+            name: itemRef.name,
+            url: downloadURL,
+            type: type,
+            size: 0,
+            mimeType: 'application/octet-stream',
+            uploadedBy: user?.uid,
+            createdAt: serverTimestamp(),
+            storagePath: itemRef.fullPath
+          });
+          addedCount++;
+        }
+      }
+
+      alert(language === 'el' 
+        ? `Ο συγχρονισμός ολοκληρώθηκε. Βρέθηκαν ${addedCount} νέα αρχεία.` 
+        : `Sync complete. Found ${addedCount} new files.`);
+    } catch (err: any) {
+      console.error('Sync error:', err);
+      setError(err.message);
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -185,31 +300,6 @@ export default function StorageManager() {
     }
   };
 
-  if (authLoading) {
-    return (
-      <div className="flex justify-center p-24">
-        <Loader2 size={48} className="animate-spin text-teal-500" />
-      </div>
-    );
-  }
-
-  if (!user) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[50vh] text-pine-200">
-        <AlertCircle size={48} className="mb-4 text-amber-500" />
-        <p className="text-xl mb-2">{language === 'el' ? 'Παρακαλώ συνδεθείτε για να διαχειριστείτε τα αρχεία.' : 'Please log in to manage media.'}</p>
-        <button 
-          onClick={signInWithGoogle}
-          className="bg-white/10 hover:bg-white/20 text-white px-6 py-2 rounded-2xl transition-all"
-        >
-          {language === 'el' ? 'Σύνδεση τώρα' : 'Sign in now'}
-        </button>
-      </div>
-    );
-  }
-
-  const isEmailVerified = user.emailVerified;
-
   return (
     <div className="max-w-4xl mx-auto p-6 bg-pine-950/40 rounded-[2.5rem] border border-white/5 backdrop-blur-xl">
       <div className="flex justify-between items-center mb-8">
@@ -218,32 +308,124 @@ export default function StorageManager() {
             {language === 'el' ? 'Διαχείριση Πολυμέσων' : 'Media Manager'}
           </h1>
           <div className="flex flex-col gap-1">
-            <p className="text-pine-300 text-sm">
-                Connected as: <span className="text-teal-400 font-mono">{user.email}</span>
-            </p>
-            {isAdmin && (
-              <p className="text-emerald-400 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1">
-                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
-                Admin Access Granted
-              </p>
+            {authLoading ? (
+              <div className="flex items-center gap-2 text-pine-400 text-sm">
+                <Loader2 size={14} className="animate-spin" />
+                <span>{language === 'el' ? 'Έλεγχος σύνδεσης...' : 'Checking auth...'}</span>
+              </div>
+            ) : user ? (
+              <>
+                <p className="text-pine-300 text-sm">
+                    Connected as: <span className="text-teal-400 font-mono">{user.email}</span>
+                </p>
+                {isAdmin && (
+                  <p className="text-emerald-400 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
+                    Admin Access Granted
+                  </p>
+                )}
+              </>
+            ) : (
+              <button 
+                onClick={signInWithGoogle}
+                className="text-teal-400 text-sm hover:underline flex items-center gap-1"
+              >
+                {language === 'el' ? 'Συνδεθείτε για διαχείριση' : 'Sign in to manage'}
+              </button>
             )}
           </div>
         </div>
         
         {isAdmin && (
-          <label className={`cursor-pointer bg-teal-600 hover:bg-teal-500 text-white px-5 py-2.5 rounded-2xl flex items-center gap-2 transition-all shadow-lg active:scale-95 ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
-            <Upload size={18} />
-            <span className="font-semibold">{language === 'el' ? 'Ανέβασμα' : 'Upload'}</span>
-            <input 
-              type="file" 
-              className="hidden" 
-              onChange={handleFileUpload} 
-              disabled={uploading} 
-              multiple 
-            />
-          </label>
+          <div className="flex gap-2">
+            <button 
+              onClick={handleSync}
+              disabled={uploading}
+              className="bg-white/5 hover:bg-white/10 text-white px-4 py-2.5 rounded-2xl flex items-center gap-2 transition-all border border-white/10"
+              title={language === 'el' ? 'Συγχρονισμός με Storage' : 'Sync with Storage'}
+            >
+              <RefreshCw size={18} className={uploading ? 'animate-spin' : ''} />
+              <span className="font-semibold text-sm hidden sm:inline">{language === 'el' ? 'Συγχρονισμός' : 'Sync'}</span>
+            </button>
+            <label className={`cursor-pointer bg-teal-600 hover:bg-teal-500 text-white px-5 py-2.5 rounded-2xl flex items-center gap-2 transition-all shadow-lg active:scale-95 ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
+              <Upload size={18} />
+              <span className="font-semibold text-sm">{language === 'el' ? 'Ανέβασμα' : 'Upload'}</span>
+              <input 
+                type="file" 
+                className="hidden" 
+                onChange={handleFileUpload} 
+                disabled={uploading} 
+                multiple 
+              />
+            </label>
+            <button 
+              onClick={() => setShowUrlModal(true)}
+              className="bg-white/5 hover:bg-white/10 text-white px-5 py-2.5 rounded-2xl flex items-center gap-2 transition-all border border-white/10"
+            >
+              <LinkIcon size={18} />
+              <span className="font-semibold text-sm">{language === 'el' ? 'Σύνδεσμος' : 'Link'}</span>
+            </button>
+          </div>
         )}
       </div>
+
+      {showUrlModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="bg-pine-900 border border-white/10 rounded-[2rem] p-8 w-full max-w-md shadow-2xl">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-serif text-white">{language === 'el' ? 'Προσθήκη με URL' : 'Add via URL'}</h2>
+              <button onClick={() => setShowUrlModal(false)} className="text-pine-400 hover:text-white">
+                <X size={24} />
+              </button>
+            </div>
+            <form onSubmit={handleManualAdd} className="space-y-4">
+              <div>
+                <label className="block text-xs font-medium text-pine-400 uppercase mb-1.5">{language === 'el' ? 'Όνομα' : 'Name'}</label>
+                <input 
+                  type="text" 
+                  value={manualName}
+                  onChange={(e) => setManualName(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-teal-500"
+                  placeholder="e.g. video_intro.mp4"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-pine-400 uppercase mb-1.5">URL</label>
+                <input 
+                  type="url" 
+                  value={manualUrl}
+                  onChange={(e) => handleUrlChange(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-teal-500"
+                  placeholder="https://..."
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-pine-400 uppercase mb-1.5">{language === 'el' ? 'Τύπος' : 'Type'}</label>
+                <select 
+                  value={manualType}
+                  onChange={(e) => setManualType(e.target.value as any)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-teal-500"
+                >
+                  <option value="video">Video</option>
+                  <option value="animation">Animation (GIF/MP4)</option>
+                  <option value="html">HTML Exercise</option>
+                  <option value="audio">Audio</option>
+                  <option value="image">Image</option>
+                </select>
+              </div>
+              <button 
+                type="submit"
+                disabled={uploading}
+                className="w-full bg-teal-600 hover:bg-teal-500 text-white font-bold py-4 rounded-xl shadow-lg transition-all active:scale-[0.98] disabled:opacity-50"
+              >
+                {uploading ? <Loader2 className="animate-spin mx-auto" /> : (language === 'el' ? 'Καταχώρηση' : 'Register')}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
 
       {uploading && (
         <div className="mb-8 p-4 bg-teal-900/20 border border-teal-500/30 rounded-2xl">
@@ -281,8 +463,16 @@ export default function StorageManager() {
             media.map((item) => (
               <div key={item.id} className="group relative bg-white/[0.03] border border-white/5 rounded-3xl p-4 hover:bg-white/[0.06] transition-all">
                 <div className="flex items-center gap-4">
-                  <div className={`p-3 rounded-2xl ${item.type === 'video' ? 'bg-amber-500/10 text-amber-400' : item.type === 'audio' ? 'bg-blue-500/10 text-blue-400' : 'bg-emerald-500/10 text-emerald-400'}`}>
-                    {item.type === 'video' ? <Video size={24} /> : item.type === 'audio' ? <Music size={24} /> : <Box size={24} />}
+                  <div className={`p-3 rounded-2xl ${
+                    item.type === 'video' ? 'bg-amber-500/10 text-amber-400' : 
+                    item.type === 'audio' ? 'bg-blue-500/10 text-blue-400' : 
+                    item.type === 'html' ? 'bg-purple-500/10 text-purple-400' :
+                    'bg-emerald-500/10 text-emerald-400'
+                  }`}>
+                    {item.type === 'video' ? <Video size={24} /> : 
+                     item.type === 'audio' ? <Music size={24} /> : 
+                     item.type === 'html' ? <LinkIcon size={24} /> :
+                     <Box size={24} />}
                   </div>
                   <div className="flex-1 min-w-0">
                     <h3 className="text-white font-medium truncate mb-0.5">{item.name}</h3>
@@ -293,6 +483,14 @@ export default function StorageManager() {
                 </div>
                 
                 <div className="mt-4 pt-4 border-t border-white/5 flex gap-2">
+                  <a 
+                    href={item.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex-1 bg-teal-600/20 hover:bg-teal-600/30 text-teal-300 py-1.5 rounded-xl text-xs transition-colors text-center font-medium"
+                  >
+                    {language === 'el' ? 'Προβολή' : 'View'}
+                  </a>
                   <button 
                     onClick={() => {
                         navigator.clipboard.writeText(item.url);
@@ -300,7 +498,7 @@ export default function StorageManager() {
                     }}
                     className="flex-1 bg-white/5 hover:bg-white/10 text-pine-200 py-1.5 rounded-xl text-xs transition-colors"
                   >
-                    Copy Link
+                    Link
                   </button>
                   {isAdmin && (
                     <button 

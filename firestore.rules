@@ -79,7 +79,7 @@ service cloud.firestore {
     function isValidMediaAsset(data) {
       return data.name is string && data.name.size() <= 512 &&
              data.url is string && data.url.size() <= 2048 &&
-             data.type in ['video', 'audio', 'animation', 'image'] &&
+             data.type in ['video', 'audio', 'animation', 'image', 'html'] &&
              (!('size' in data) || data.size is int) &&
              (!('mimeType' in data) || data.mimeType is string) &&
              (!('uploadedBy' in data) || data.uploadedBy is string) &&
