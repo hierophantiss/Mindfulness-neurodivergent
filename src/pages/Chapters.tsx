@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, BookOpen } from 'lucide-react';
+import { ArrowLeft, BookOpen, Mountain, Wind, Target, Maximize } from 'lucide-react';
 import { CHAPTERS_DATA } from '../data/chapters';
 import { useLanguage } from '../hooks/useLanguage';
 
@@ -73,21 +73,27 @@ export default function Chapters() {
                   style={{ background: `radial-gradient(circle at 50% 30%, ${chapter.hex}, transparent 60%)` }}
                 />
                 
-                {/* The Image as an Icon container */}
+                {/* The Image replaced by a Styled Icon container */}
                 <div className="relative z-10 mb-4 transform group-hover:-translate-y-1 transition-transform duration-500">
-                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-[1.25rem] shadow-[0_8px_16px_rgba(0,0,0,0.4)] border-2 border-white/10 overflow-hidden relative">
-                    <img 
-                      src={chapter.num === 5 ? '/hero.webp' : `/chap${chapter.num}.png`}
-                      alt={chapter.title}
-                      loading="lazy"
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-[1.25rem] bg-white/[0.03] border border-white/10 flex items-center justify-center relative overflow-hidden">
+                    {/* Inner Glow matching chapter hex */}
+                    <div 
+                      className="absolute inset-0 blur-xl opacity-20"
+                      style={{ background: `radial-gradient(circle, ${chapter.hex}, transparent 70%)` }}
                     />
-                    <div className="absolute inset-0 bg-pine-950/20 group-hover:bg-transparent transition-colors duration-500" />
+                    
+                    {/* Main Icon */}
+                    <div className="relative z-10 text-white/90 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]">
+                      {chapter.num === 1 && <Mountain size={32} />}
+                      {chapter.num === 2 && <Wind size={32} />}
+                      {chapter.num === 3 && <Target size={32} />}
+                      {chapter.num === 4 && <Maximize size={32} />}
+                    </div>
                   </div>
                   
-                  {/* Emoji Badge */}
+                  {/* Emoji Badge remains as is but cleaner */}
                   <div 
-                    className="absolute -bottom-2 -right-2 w-7 h-7 md:w-8 md:h-8 rounded-full border-2 border-pine-800 bg-pine-900 flex items-center justify-center text-xs md:text-sm shadow-lg overflow-hidden"
+                    className="absolute -bottom-2 -right-2 w-7 h-7 md:w-8 md:h-8 rounded-full border-2 border-pine-900 bg-pine-950 flex items-center justify-center text-xs md:text-sm shadow-xl z-20"
                   >
                     {chapter.icon}
                   </div>
