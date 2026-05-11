@@ -26,7 +26,7 @@ async function prerender() {
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 
-    const routes = ['/', '/intro', '/method', '/chapters', '/program', '/practice', '/faq', '/rabbithole', '/journal'];
+    const routes = ['/', '/intro', '/method', '/chapters', '/program', '/practice', '/faq', '/rabbithole', '/journal', '/dashboard', '/media'];
 
     for (const route of routes) {
       const page = await browser.newPage();

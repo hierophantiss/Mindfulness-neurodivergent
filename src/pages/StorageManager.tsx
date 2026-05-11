@@ -42,6 +42,7 @@ export default function StorageManager() {
     try {
       const q = query(collection(db, path)); // Query all first to avoid missing docs without createdAt
       const querySnapshot = await getDocs(q);
+      console.log(`Firestore fetch: Found ${querySnapshot.size} documents in 'media' collection.`);
       const items: MediaItem[] = [];
       querySnapshot.forEach((doc) => {
         items.push({ id: doc.id, ...doc.data() } as MediaItem);
@@ -80,6 +81,7 @@ export default function StorageManager() {
 
     const fileList = Array.from(files);
     let completedCount = 0;
+    let failedCount = 0;
 
     for (const file of fileList) {
       try {
@@ -91,7 +93,6 @@ export default function StorageManager() {
             'state_changed',
             (snapshot) => {
               const fileProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-              // Average progress across all files
               const overallProgress = ((completedCount * 100) + fileProgress) / fileList.length;
               setProgress(overallProgress);
             },
@@ -123,10 +124,11 @@ export default function StorageManager() {
                 });
                 
                 completedCount++;
-                console.log(`Success! File ${completedCount}/${fileList.length} saved.`);
+                console.log(`Success! File ${completedCount}/${fileList.length} saved in Firestore.`);
                 resolve();
               } catch (dbErr: any) {
                 console.error('Firestore error during upload:', dbErr);
+                failedCount++;
                 let message = dbErr.message || 'Unknown Firestore error';
                 try {
                   handleFirestoreError(dbErr, OperationType.CREATE, 'media');
@@ -140,16 +142,23 @@ export default function StorageManager() {
         });
       } catch (err: any) {
         console.error('Error in batch upload:', err);
+        failedCount++;
         setError(language === 'el' ? `Σφάλμα στο αρχείο ${file.name}: ${err.message}` : `Error in file ${file.name}: ${err.message}`);
-        // Continue with next file or stop? Let's stop to be safe.
-        break;
       }
     }
 
-    fetchMedia();
+    await fetchMedia();
     setUploading(false);
     setProgress(0);
-    if (e.target) e.target.value = ''; // Reset input
+    if (e.target) e.target.value = '';
+    
+    if (completedCount > 0) {
+      alert(language === 'el' 
+        ? `Επιτυχής μεταφόρτωση ${completedCount} αρχείων.${failedCount > 0 ? ` (${failedCount} απέτυχαν)` : ''}`
+        : `Successfully uploaded ${completedCount} files.${failedCount > 0 ? ` (${failedCount} failed)` : ''}`);
+    } else if (failedCount > 0) {
+      alert(language === 'el' ? 'Η μεταφόρτωση απέτυχε για όλα τα αρχεία. Ελέγξτε την κονσόλα για λεπτομέρειες.' : 'Upload failed for all files. Check console for details.');
+    }
   };
 
   const handleDelete = async (item: MediaItem & { storagePath?: string }) => {
