@@ -19,8 +19,6 @@ import Faq from './pages/Faq';
 import GenericExercise from './pages/GenericExercise';
 import Method from './pages/Method';
 import RabbitHole from './pages/RabbitHole';
-import Intro from './pages/Intro';
-import Onboarding from './components/Onboarding';
 import StorageManager from './pages/StorageManager';
 
 import { LanguageProvider, useLanguage } from './hooks/useLanguage';
@@ -29,18 +27,7 @@ import { AccessibilityProvider } from './hooks/useAccessibility';
 import { FirebaseProvider } from './lib/FirebaseContext';
 
 function AppContent() {
-  const [showOnboarding, setShowOnboarding] = useState(false);
   const hasSeenIntro = localStorage.getItem('hasSeenIntro') === 'true';
-
-  useEffect(() => {
-    if (localStorage.getItem('onboarding_complete') !== 'true') {
-      setShowOnboarding(true);
-    }
-  }, []);
-
-  if (showOnboarding) {
-    return <Onboarding onComplete={() => setShowOnboarding(false)} />;
-  }
 
   return (
     <BrowserRouter>
@@ -51,7 +38,6 @@ function AppContent() {
           <Route path="landing_info" element={<Landing />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="method" element={<Method />} />
-          <Route path="intro" element={<Intro />} />
           <Route path="rabbithole" element={<RabbitHole />} />
           <Route path="chapters" element={<Chapters />} />
           <Route path="chapters/:id" element={<ChapterDetail />} />

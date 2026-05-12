@@ -35,11 +35,8 @@ export default function Landing() {
   };
 
   const handleEnter = () => {
-    if (dontShowAgain) {
-      localStorage.setItem('hasSeenIntro', 'true');
-    } else {
-      localStorage.setItem('hasSeenIntro', 'false');
-    }
+    localStorage.setItem('hasSeenIntro', 'true');
+    localStorage.setItem('onboarding_complete', 'true'); // Also mark this as complete
     navigate('/dashboard');
   };
 
@@ -47,7 +44,26 @@ export default function Landing() {
   const prevStep = () => setCurrentStep(prev => prev - 1);
 
   const slides = [
-    // 0: Welcome / Hero
+    // 0: Infinity Greeting (Merged from Onboarding)
+    {
+      id: 'greeting',
+      content: (
+        <div className="flex flex-col items-center text-center max-w-sm mx-auto">
+          <div className="w-24 h-24 rounded-full bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-300 text-5xl mb-8 animate-pulse">
+            ∞
+          </div>
+          <h2 className="text-3xl font-heading text-white mb-6 italic">
+            {language === 'el' ? 'Καλώς ήρθες' : 'Welcome'}
+          </h2>
+          <p className="text-lg text-pine-200 leading-relaxed font-light italic">
+            {language === 'el' 
+              ? 'Είμαι ο ∞. Σχεδιάστηκα για να σε υποστηρίξω στην εξερεύνηση του νευρικού σου συστήματος, χωρίς πίεση και χωρίς κριτική.' 
+              : 'I am ∞. I was designed to support you in exploring your nervous system, without pressure and without judgment.'}
+          </p>
+        </div>
+      )
+    },
+    // 1: Welcome / Hero
     {
       id: 'welcome',
       content: (
@@ -73,29 +89,28 @@ export default function Landing() {
         </div>
       )
     },
-    // 1: What makes it different
+    // 2: What makes it different
     {
       id: 'diff',
       content: (
         <div className="flex flex-col gap-8 w-full max-w-md mx-auto">
           <div className="text-center mb-4">
             <h3 className="text-2xl font-serif text-white mb-2">
-              {language === 'el' ? 'Τι κάνει αυτό το εργαλείο διαφορετικό' : 'What makes this tool different'}
+              {language === 'el' ? 'Γιατί είναι διαφορετικό' : 'Why it\'s different'}
             </h3>
             <div className="w-12 h-1 bg-teal-500/30 mx-auto rounded-full"></div>
           </div>
           
-          <div className="grid gap-4">
+          <div className="grid gap-3">
             {[
-              { el: 'Δωρεάν, χωρίς λογαριασμό, χωρίς διαφημίσεις', en: 'Free, no account, no ads' },
-              { el: 'Σχεδιασμένο ειδικά για νευροδιαφορετικούς', en: 'Designed specifically for neurodivergents' },
+              { el: 'Σχεδιασμένο για νευροδιαφορετικούς', en: 'Designed for neurodivergents' },
               { el: 'Trauma-informed: σέβεται τα όριά σου', en: 'Trauma-informed: respects your boundaries' },
-              { el: 'Λειτουργεί offline — εγκατάσταση στο κινητό', en: 'Works offline — Install on your device' },
-              { el: 'Τα δεδομένα σου μένουν μόνο στη συσκευή σου', en: 'Your data stays only on your device' }
+              { el: 'Τα δεδομένα σου μένουν στη συσκευή σου', en: 'Your data stays on your device' },
+              { el: 'Δωρεάν, χωρίς διαφημίσεις, χωρίς ενοχές', en: 'Free, no ads, no guilt' }
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-4 p-4 rounded-2xl bg-white/[0.03] border border-white/5">
-                <CheckCircle2 size={24} className="text-teal-400 shrink-0" />
-                <p className="text-teal-50/80 text-sm sm:text-base leading-tight">
+                <CheckCircle2 size={20} className="text-teal-400 shrink-0" />
+                <p className="text-teal-50/80 text-sm leading-tight">
                   {language === 'el' ? item.el : item.en}
                 </p>
               </div>
@@ -104,7 +119,7 @@ export default function Landing() {
         </div>
       )
     },
-    // 2: The 4 Pillars
+    // 3: The 4 Pillars
     {
       id: 'pillars',
       content: (
@@ -113,37 +128,18 @@ export default function Landing() {
             <h3 className="text-2xl font-serif text-white mb-2">
               {language === 'el' ? 'Τα Εργαλεία σου' : 'Your Tools'}
             </h3>
-            <p className="text-teal-50/40 text-sm uppercase tracking-widest leading-relaxed">
-              {language === 'el' ? 'Σχεδιασμένα για άμεση ρύθμιση' : 'Designed for immediate regulation'}
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 gap-3">
             {[
-              { 
-                icon: <Brain className="text-teal-400" />, 
-                el: 'Binaural Beats: Συγχρονισμός ημισφαιρίων μέσω ήχου.', 
-                en: 'Binaural Beats: Audio-based brain synchronization.' 
-              },
-              { 
-                icon: <Activity className="text-amber-400" />, 
-                el: 'Mindful Movement: Κίνηση για εκτόνωση υπερφόρτωσης.', 
-                en: 'Mindful Movement: Motion to release overload.' 
-              },
-              { 
-                icon: <Zap className="text-emerald-400" />, 
-                el: 'Αόρατες Μικροδόσεις: Πρακτικές 1-3 λεπτών για κάθε στιγμή.', 
-                en: 'Invisible Microdoses: 1-3 min practices for any moment.' 
-              },
-              { 
-                icon: <Calendar className="text-blue-400" />, 
-                el: 'Πρόγραμμα 8 Εβδομάδων: Μια γερή επιστημονική βάση.', 
-                en: '8-Week Program: A solid scientific foundation.' 
-              }
+              { icon: <Brain size={18} />, el: 'Binaural Beats & Ήχοι', en: 'Binaural Beats & Audio' },
+              { icon: <Activity size={18} />, el: 'Mindful Movement & Κίνηση', en: 'Mindful Movement & Motion' },
+              { icon: <Zap size={18} />, el: 'Αόρατες Μικροδόσεις', en: 'Invisible Microdoses' },
+              { icon: <Calendar size={18} />, el: 'Πρόγραμμα 8 Εβδομάδων', en: '8-Week Program' }
             ].map((pillar, i) => (
               <div key={i} className="flex gap-4 p-4 rounded-2xl bg-white/[0.03] border border-white/5 items-center">
-                <div className="p-3 rounded-xl bg-white/[0.05]">{pillar.icon}</div>
-                <p className="text-teal-50/70 text-sm leading-relaxed">
+                <div className="text-teal-400">{pillar.icon}</div>
+                <p className="text-teal-50/70 text-sm font-light uppercase tracking-widest">
                   {language === 'el' ? pillar.el : pillar.en}
                 </p>
               </div>
@@ -152,125 +148,7 @@ export default function Landing() {
         </div>
       )
     },
-    // 3: Research
-    {
-      id: 'research',
-      content: (
-        <div className="flex flex-col gap-6 w-full max-w-lg mx-auto pr-4">
-          <div className="text-center sticky top-0 bg-[#1E1B18] z-10 pb-4">
-            <h3 className="text-2xl font-serif text-white">
-              {language === 'el' ? 'Η Επιστήμη' : 'The Science'}
-            </h3>
-            <p className="text-teal-400/60 text-[10px] tracking-[0.2em] font-bold uppercase mt-2">
-              {language === 'el' ? 'Βασισμένο σε κλινική έρευνα' : 'Based on clinical research'}
-            </p>
-          </div>
-
-          <div className="space-y-6 pb-4">
-            {[
-              { 
-                title: '🧠 Neuroplasticity', 
-                el: '8 εβδομάδες πρακτικής αυξάνουν το πάχος του φλοιού στην insula και τον ιππόκαμπο. (Hölzel et al., 2011)', 
-                en: '8 weeks of practice increase cortical thickness in the insula and hippocampus. (Hölzel et al., 2011)' 
-              },
-              { 
-                title: '🫁 Vagus Nerve', 
-                el: 'Η αργή εκπνοή ενεργοποιεί το πνευμονογαστρικό νεύρο και μειώνει την κορτιζόλη. (Gerritsen & Band, 2018)', 
-                en: 'Slow exhalation activates the vagus nerve and reduces cortisol levels. (Gerritsen & Band, 2018)' 
-              },
-              { 
-                title: '👁 Prefrontal Cortex', 
-                el: 'Η εστιασμένη προσοχή ενισχύει τον προμετωπιαίο φλοιό — θεμέλιο αυτορρύθμισης. (Lazar et al., 2005)', 
-                en: 'Focused attention strengthens the prefrontal cortex — the foundation of self-regulation. (Lazar et al., 2005)' 
-              },
-              { 
-                title: '🌊 Default Mode Network', 
-                el: 'Μειώνει τη δραστηριότητα του δικτύου που ευθύνεται για τη νοητική περιπλάνηση. (Brewer et al., 2011)', 
-                en: 'Reduces activity in the network responsible for mind-wandering. (Brewer et al., 2011)' 
-              },
-              { 
-                title: '❤️ Cardiac Coherence', 
-                el: 'Ρυθμική αναπνοή 5-5 συγχρονίζει τη μεταβλητότητα καρδιακού ρυθμού. (McCraty et al., 2009)', 
-                en: 'Rhythmic 5-5 breathing synchronizes heart rate variability. (McCraty et al., 2009)' 
-              },
-              { 
-                title: '⚡ Spacing Effect', 
-                el: 'Οι "Αόρατες" μικρές δόσεις είναι πιο αποτελεσματικές από τις μεγάλες συνεδρίες. (Cepeda et al., 2006)', 
-                en: 'Invisible Microdoses are more effective than long occasional sessions. (Cepeda et al., 2006)' 
-              }
-            ].map((r, i) => (
-              <div key={i} className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors">
-                <h4 className="text-teal-300 text-sm font-bold mb-2 flex items-center gap-2">
-                   <div className="w-1 h-1 bg-teal-500 rounded-full" />
-                   {r.title}
-                </h4>
-                <p className="text-teal-50/60 text-xs sm:text-sm leading-relaxed font-light">
-                  {language === 'el' ? r.el : r.en}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )
-    },
-    // 4: Trauma Informed
-    {
-      id: 'trauma',
-      content: (
-        <div className="flex flex-col gap-8 w-full max-w-md mx-auto">
-          <div className="text-center">
-            <div className="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-emerald-500/20">
-              <ShieldCheck className="text-emerald-400" size={32} />
-            </div>
-            <h3 className="text-2xl font-serif text-white mb-2">
-              {language === 'el' ? 'Trauma-informed Προσέγγιση' : 'Trauma-informed' }
-            </h3>
-          </div>
-
-          <div className="space-y-4">
-            {[
-              { el: 'Ξεκινά πάντα από το σώμα — όχι από τη σκέψη. Η γείωση δημιουργεί ασφάλεια.', en: 'Starts from the body — not thought. Grounding creates safety.' },
-              { el: 'Δεν ζητάει «άδειασμα του νου». Η προσοχή επιστρέφει απαλά.', en: 'No "mind emptying" required. Attention returns gently.' },
-              { el: 'Σέβεται τα όρια — αν κάτι φέρνει δυσφορία, σταματάς.', en: 'Respects boundaries — stop if you feel discomfort.' },
-              { el: 'Χρησιμοποιεί καλοσύνη αντί κατάκριση.', en: 'Uses kindness instead of judgment.' }
-            ].map((item, i) => (
-              <div key={i} className="flex gap-4 items-start">
-                <Heart size={18} className="text-emerald-400 mt-1 shrink-0 opacity-50" />
-                <p className="text-teal-50/70 text-sm sm:text-base italic leading-relaxed">
-                  {language === 'el' ? item.el : item.en}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )
-    },
-    // 5: Creator
-    {
-      id: 'creator',
-      content: (
-        <div className="flex flex-col gap-6 w-full max-w-md mx-auto text-center pr-2">
-           <div className="w-24 h-24 rounded-full bg-gradient-to-br from-teal-500/20 to-blue-500/20 mx-auto flex items-center justify-center border border-white/10 shadow-inner shrink-0 text-teal-400/60 drop-shadow-lg">
-             <User size={48} className="text-teal-200/40" />
-           </div>
-           
-           <div>
-             <h3 className="text-xl font-serif text-white mb-1">
-               {language === 'el' ? 'Θεόδωρος Μπαϊρακτάρης' : 'Theodoros Bairaktaris'}
-             </h3>
-             <p className="text-teal-400/60 text-[10px] tracking-[0.2em] font-bold uppercase mb-4">
-               {language === 'el' ? 'Δημιουργός της Μεθόδου' : 'Method Creator'}
-             </p>
-             <p className="text-teal-50/60 text-sm leading-relaxed px-4 italic">
-               {language === 'el' 
-                ? 'Νευροδιαφορετικός ασκούμενος με πάνω από 20 χρόνια πρακτικής σε παραδόσεις Mindful Movement και Διαλογισμού. Η μέθοδος γεννήθηκε από προσωπική ανάγκη για εργαλεία παρουσίας που λειτουργούν για τον νευροδιαφορετικό νου.' 
-                : 'Neurodivergent practitioner with over 20 years of practice in Mindful Movement and Meditation traditions. The method was born out of personal need for presence tools that work for the neurodivergent mind.'}
-             </p>
-           </div>
-        </div>
-      )
-    },
-    // 6: Final CTA
+    // 4: Final CTA
     {
       id: 'final',
       content: (
@@ -285,18 +163,6 @@ export default function Landing() {
           </div>
 
           <div className="flex flex-col items-center gap-8 w-full">
-             <button 
-              onClick={() => setDontShowAgain(!dontShowAgain)}
-              className="flex items-center gap-3 group transition-opacity hover:opacity-100 opacity-60"
-             >
-               <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${dontShowAgain ? 'bg-teal-500 border-teal-500 shadow-[0_0_10px_rgba(20,184,166,0.4)]' : 'border-white/20'}`}>
-                 {dontShowAgain && <CheckCircle2 size={12} className="text-white" />}
-               </div>
-               <span className="text-[11px] tracking-widest text-teal-50 group-hover:text-white transition-colors uppercase font-medium">
-                  {language === 'el' ? 'Παράλειψη εισαγωγής στο μέλλον' : 'Skip intro next time'}
-               </span>
-             </button>
-
              <button 
               onClick={handleEnter}
               className="group relative w-full flex items-center justify-center px-8 py-6 rounded-full font-bold uppercase tracking-[0.25em] text-xs bg-white text-black shadow-[0_8px_40px_rgba(255,255,255,0.15)] hover:shadow-[0_8px_50px_rgba(255,255,255,0.25)] transition-all duration-500 active:scale-95"

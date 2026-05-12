@@ -43,7 +43,7 @@ export default function NavigationMenu() {
     { path: '/program', icon: '🗺️', labelEn: 'Program', labelEl: 'Πλάνο' },
     { path: '/rabbithole', icon: '🐇', labelEn: 'Rabbit Hole', labelEl: 'Εξερεύνηση' },
     { path: '/faq', icon: '❓', labelEn: 'FAQ', labelEl: 'Συχνές Ερωτήσεις' },
-    { path: '/intro', icon: '∞', labelEn: 'Guide', labelEl: 'Οδηγός' },
+    { path: '/landing_info', icon: '∞', labelEn: 'Guide', labelEl: 'Οδηγός' },
     { path: '/media', icon: '🎬', labelEn: 'Media', labelEl: 'Υλικό' },
   ];
 
@@ -85,15 +85,13 @@ export default function NavigationMenu() {
                     transition={{ type: "spring", stiffness: 300, damping: 25 }}
                   />
                 )}
-                <div className="relative z-10 flex flex-row items-center gap-1.5">
+                <div className="relative z-10 flex flex-col items-center gap-0.5 sm:flex-row sm:gap-1.5">
                   <div className="scale-90 origin-center">
                     {item.icon}
                   </div>
-                  {isActive && (
-                    <span className="text-[11px] font-medium tracking-wide">
-                      {language === 'en' ? item.labelEn : item.labelEl}
-                    </span>
-                  )}
+                  <span className={`text-[9px] sm:text-[11px] font-medium tracking-wide transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-60'}`}>
+                    {language === 'en' ? item.labelEn : item.labelEl}
+                  </span>
                 </div>
               </button>
             );
@@ -103,16 +101,19 @@ export default function NavigationMenu() {
 
           <button
             onClick={() => setIsOpen(true)}
-            className={`flex flex-row items-center justify-center gap-1.5 px-3 py-2 md:px-4 rounded-full transition-all duration-300 relative ${
+            className={`flex flex-col items-center justify-center gap-0.5 sm:flex-row sm:gap-1.5 px-3 py-2 md:px-4 rounded-full transition-all duration-300 relative ${
               isOpen
                 ? 'text-amber-400 bg-white/5'
                 : 'text-pine-300 hover:bg-white/5 hover:text-white'
             }`}
           >
-            <div className="relative z-10 flex flex-row items-center gap-1.5">
+            <div className="relative z-10 flex flex-col items-center gap-0.5 sm:flex-row sm:gap-1.5">
               <div className="scale-90 origin-center">
                 <LayoutGrid size={22} />
               </div>
+              <span className={`text-[9px] sm:text-[11px] font-medium tracking-wide transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-60'}`}>
+                {language === 'en' ? 'More' : 'Μενού'}
+              </span>
             </div>
           </button>
         </div>

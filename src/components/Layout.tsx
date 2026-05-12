@@ -3,14 +3,12 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { cn } from '../lib/utils';
 import Companion from './Companion';
 import NavigationMenu from './NavigationMenu';
-import WelcomeModal from './WelcomeModal';
 import { useLanguage } from '../hooks/useLanguage';
 
 import { InteractiveBackground } from './InteractiveBackground';
 
 export default function Layout() {
   const { t } = useLanguage();
-  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === '/';
   const mainRef = React.useRef<HTMLElement>(null);
@@ -20,24 +18,6 @@ export default function Layout() {
       mainRef.current.scrollTo(0, 0);
     }
   }, [location.pathname]);
-
-  useEffect(() => {
-    const hasSeenIntro = localStorage.getItem('N_MINDFULNESS_SEEN_INTRO');
-    if (!hasSeenIntro) {
-      setShowWelcomeModal(true);
-    }
-
-    const showModalListener = () => {
-      setShowWelcomeModal(true);
-    };
-    window.addEventListener('show-welcome-modal', showModalListener);
-    return () => window.removeEventListener('show-welcome-modal', showModalListener);
-  }, []);
-
-  const handleCloseModal = () => {
-    localStorage.setItem('N_MINDFULNESS_SEEN_INTRO', 'true');
-    setShowWelcomeModal(false);
-  };
 
   const isIntroPage = ['/', '/landing_info', '/intro'].includes(location.pathname);
 
@@ -50,8 +30,8 @@ export default function Layout() {
 
       {/* Main Content Area */}
       <main id="main-content" ref={mainRef} className={cn(
-        "flex-1 relative z-10 max-w-7xl mx-auto w-full flex flex-col overflow-y-auto overflow-x-hidden scroll-smooth",
-        isHome ? "px-0 py-0" : "px-4 md:px-8 pt-safe pb-20 md:pb-24"
+         "flex-1 relative z-10 max-w-7xl mx-auto w-full flex flex-col overflow-y-auto overflow-x-hidden scroll-smooth",
+         isHome ? "px-0 py-0" : "px-4 md:px-8 pt-safe pb-20 md:pb-24"
       )}>
         <Outlet />
       </main>
@@ -61,8 +41,6 @@ export default function Layout() {
 
       {/* The Floating Companion */}
       {!isIntroPage && <Companion />}
-
-      <WelcomeModal isOpen={showWelcomeModal} onClose={handleCloseModal} />
     </div>
   );
 }

@@ -20,6 +20,34 @@ export default function RabbitHole() {
 
   const articles = [
     {
+      id: 'koshas-veils',
+      title: language === 'en' ? 'The Veils of Being' : 'Τα Πέπλα της Ύπαρξης',
+      author: language === 'en' ? 'Yoga & 4-fold Axis' : 'Φιλοσοφία του 4πλού Άξονα',
+      pages: language === 'en' ? [
+        "The Matryoshka Allegory: A journey from the material body to the air of pure consciousness.",
+        "Just as a Matryoshka hides a smaller one inside, our existence consists of veils, one embracing the other. Every time we 'brush aside' a veil, we come closer to our core, which is absolute freedom.",
+        "1. The Outer Matryoshka (Annamaya Kosha): The Veil of the Body. The largest, 'heaviest' doll. It is our physical body, the matter we touch. Axis: BODY. Grounding, Gravity, Senses.",
+        "2. The Veil of Breath (Pranamaya Kosha): The second doll is made of energy. It is the breath that gives life to matter. Axis: BREATH. The bridge connecting the outside with the inside.",
+        "3. The Veil of Mind (Manomaya): The veil of thoughts and emotions. The noise that covers stillness. Axis: ATTENTION. Our own axis that allows us to observe this veil without getting entangled in it. Clarity: By setting thoughts aside, attention finds the next, subtler level.",
+        "4. The Veil of Wisdom (Vijnanamaya): Internal Discernment. This doll no longer contains reactions, but pure knowledge. It is the ability to see truth beyond the 'I'. It is where Attention becomes Awareness.",
+        "5. The Veil of Bliss (Anandamaya): The last and subtlest veil. It is the sense of deep peace. It is not an emotion; it is our nature when everything else has quieted down.",
+        "The Smallest Matryoshka: The Gateway of Space (THE AIR). When you open the last, smallest doll, you find nothing solid. You find air. Axis: SPACE. It is pure consciousness. It has no shape, no limits, yet it contains all other dolls within it.",
+        "Mapping Summary:\nBODY -> Annamaya -> Outer Form\nBREATH -> Pranamaya -> Vital Flow\nATTENTION -> Manomaya/Vijnanamaya -> The Observer\nSPACE -> Anandamaya/Atman -> The Air of Freedom",
+        "You are not the Matryoshka you see from the outside. You are the air that exists inside the smallest one, where every form ends."
+      ] : [
+        "Η αλληγορία της Μπάμπουσκα: Μια διαδρομή από το υλικό σώμα στον αέρα της καθαρής συνείδησης.",
+        "Όπως μια Μπάμπουσκα κρύβει μέσα της μια μικρότερη, έτσι και η ύπαρξή μας αποτελείται από πέπλα που το ένα αγκαλιάζει το άλλο. Κάθε φορά που 'παραμερίζουμε' ένα πέπλο, ερχόμαστε πιο κοντά στον πυρήνα μας, ο οποίος είναι η απόλυτη ελευθερία.",
+        "1. Η Εξωτερική Μπάμπουσκα (Annamaya Kosha): Το Πέπλο του Σώματος. Είναι η πιο μεγάλη, η πιο 'βαριά' μπάμπουσκα. Είναι το φυσικό μας σώμα, η ύλη που αγγίζουμε. Άξονας: ΣΩΜΑ. Γείωση, Βαρύτητα, Αισθήσεις.",
+        "2. Το Πέπλο της Πνοής (Pranamaya Kosha): Η δεύτερη μπάμπουσκα είναι φτιαγμένη από ενέργεια. Είναι η πνοή που δίνει ζωή στην ύλη. Άξονας: ΑΝΑΠΝΟΗ. Η γέφυρα που συνδέει το έξω με το μέσα.",
+        "3. Το Πέπλο του Νου (Manomaya): Το πέπλο των σκέψεων και των συναισθημάτων. Ο θόρυβος που καλύπτει την ηρεμία. Άξονας: ΠΡΟΣΟΧΗ. Ο δικός μας άξονας που μας επιτρέπει να παρατηρούμε αυτό το πέπλο χωρίς να μπερδευόμαστε.",
+        "4. Το Πέπλο της Σοφίας (Vijnanamaya): Η Εσωτερική Διάκριση. Αυτή η μπάμπουσκα δεν περιέχει πλέον αντιδράσεις, αλλά καθαρή γνώση. Είναι η ικανότητα να βλέπεις την αλήθεια πέρα από το 'εγώ'. Είναι το σημείο όπου η Προσοχή γίνεται Επίγνωση.",
+        "5. Το Πέπλο της Μακαριότητας (Anandamaya): Το τελευταίο και πιο λεπτό πέπλο. Είναι η αίσθηση της βαθιάς ειρήνης. Δεν είναι συναίσθημα, είναι η φύση μας όταν όλα τα άλλα έχουν ησυχάσει.",
+        "Η Μικρότερη Μπάμπουσκα: Η Πύλη του Χώρου (O ΑΕΡΑΣ). Όταν ανοίγεις και την τελευταία, την πιο μικρή μπάμπουσκα, δεν βρίσκεις κάτι άλλο στερεό. Βρίσκεις αέρα. Άξονας: ΧΩΡΟΣ. Είναι η καθαρή συνείδηση. Δεν έχει σχήμα, δεν έχει όρια, αλλά μέσα της περιέχονται όλες οι άλλες μπάμπουσκες.",
+        "Χάρτης Αντιστοίχισης:\nΣΩΜΑ -> Annamaya -> Η Εξωτερική Μορφή\nΑΝΑΠΝΟΗ -> Pranamaya -> Η Ζωτική Ροή\nΠΡΟΣΟΧΗ -> Manomaya/Vijnanamaya -> Ο Παρατηρητής\nΧΩΡΟΣ -> Anandamaya/Atman -> Ο Αέρας της Ελευθερίας",
+        "Δεν είσαι η μπάμπουσκα που βλέπεις απέξω. Είσαι ο αέρας που υπάρχει μέσα στην πιο μικρή, εκεί που τελειώνει κάθε μορφή."
+      ]
+    },
+    {
       id: 'buddha-autism',
       title: language === 'en' ? 'Was Buddha on the Spectrum?' : 'Ήταν ο Βούδας στο φάσμα;',
       author: 'Louise Woodford',
@@ -215,7 +243,7 @@ export default function RabbitHole() {
             className="max-w-xl w-full animate-in fade-in zoom-in-[0.98] duration-300 ease-out"
           >
             <BookOpen size={24} className="text-teal-500/20 mx-auto justify-center mb-6" />
-            <p className="text-[19px] md:text-[22px] leading-[1.8] font-serif text-pine-100 text-center tracking-wide" style={{ textShadow: "0 2px 10px rgba(0,0,0,0.4)"}}>
+            <p className="text-[19px] md:text-[22px] leading-[1.8] font-serif text-pine-100 text-center tracking-wide whitespace-pre-line" style={{ textShadow: "0 2px 10px rgba(0,0,0,0.4)"}}>
               {article.pages[currentPage]}
             </p>
           </div>
@@ -315,37 +343,49 @@ export default function RabbitHole() {
             </div>
           </Link>
 
-          {articles.map((article) => (
-            <button 
-              key={article.id}
-              onClick={() => { setActiveArticle(article.id); setCurrentPage(0); }}
-              className="w-full bg-gradient-to-b from-pine-900/50 to-pine-950/80 border border-pine-700/40 rounded-[2rem] p-6 md:p-8 shadow-[0_8px_32px_rgba(0,0,0,0.2)] flex flex-col text-left transition-all duration-500 active:scale-[0.98] hover:shadow-[0_12px_40px_rgba(0,0,0,0.4)] hover:border-pine-600/60 hover:from-pine-800/50 hover:to-pine-900/80 relative overflow-hidden group backdrop-blur-md"
-            >
-              <div className="absolute top-0 right-0 p-4 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 group-hover:opacity-15 transition-all duration-500">
-                <BookOpen className="w-[80px] h-[80px] md:w-[120px] md:h-[120px]" />
-              </div>
-              <div className="flex items-center gap-4 mb-5 relative z-10">
-                <div className="w-14 h-14 rounded-2xl bg-pine-950/80 flex items-center justify-center border border-white/5 flex-shrink-0 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] group-hover:scale-110 transition-transform duration-500">
-                  <BookOpen size={24} className="text-teal-400 drop-shadow-md" />
+          {articles.map((article) => {
+            const isNew = article.id === 'koshas-veils';
+            return (
+              <button 
+                key={article.id}
+                onClick={() => { setActiveArticle(article.id); setCurrentPage(0); }}
+                className={`w-full border rounded-[2rem] p-6 md:p-8 shadow-[0_8px_32px_rgba(0,0,0,0.2)] flex flex-col text-left transition-all duration-500 active:scale-[0.98] hover:shadow-[0_12px_40px_rgba(0,0,0,0.4)] relative overflow-hidden group backdrop-blur-md ${
+                  isNew 
+                    ? 'bg-gradient-to-br from-teal-900/40 to-pine-950/80 border-teal-500/30' 
+                    : 'bg-gradient-to-b from-pine-900/50 to-pine-950/80 border-pine-700/40 hover:border-pine-600/60'
+                }`}
+              >
+                {isNew && (
+                  <div className="absolute top-4 right-4 bg-teal-500 text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-widest z-20 shadow-lg animate-pulse">
+                    {language === 'en' ? 'New Reflection' : 'Νέος Στοχασμός'}
+                  </div>
+                )}
+                <div className="absolute top-0 right-0 p-4 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 group-hover:opacity-15 transition-all duration-500">
+                  <BookOpen className={`w-[80px] h-[80px] md:w-[120px] md:h-[120px] ${isNew ? 'text-teal-400' : ''}`} />
                 </div>
-                <div>
-                  <h2 className="text-[19px] md:text-[22px] font-heading font-medium text-white leading-snug tracking-wide group-hover:text-pine-50 transition-colors">{article.title}</h2>
-                  <p className="text-[11px] md:text-xs uppercase tracking-[0.2em] text-pine-400/90 font-bold mt-1.5">{article.author}</p>
+                <div className="flex items-center gap-4 mb-5 relative z-10">
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center border border-white/5 flex-shrink-0 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] group-hover:scale-110 transition-transform duration-500 ${isNew ? 'bg-teal-500/20' : 'bg-pine-950/80'}`}>
+                    <BookOpen size={24} className={`${isNew ? 'text-teal-300' : 'text-teal-400'} drop-shadow-md`} />
+                  </div>
+                  <div>
+                    <h2 className="text-[19px] md:text-[22px] font-heading font-medium text-white leading-snug tracking-wide group-hover:text-pine-50 transition-colors">{article.title}</h2>
+                    <p className={`text-[11px] md:text-xs uppercase tracking-[0.2em] font-bold mt-1.5 ${isNew ? 'text-teal-400/80' : 'text-pine-400/90'}`}>{article.author}</p>
+                  </div>
                 </div>
-              </div>
-              <p className="text-pine-200/90 text-sm md:text-base leading-relaxed line-clamp-3 relative z-10 font-medium italic">
-                "{article.pages[0]}"
-              </p>
-              <div className="mt-6 pt-5 border-t border-pine-800/80 flex justify-between items-center text-teal-400 font-bold text-[13px] md:text-sm relative z-10 group-hover:text-teal-300 transition-colors">
-                <span className="flex items-center gap-2">
-                  {t.startReading} <ChevronRight size={18} className="transform group-hover:translate-x-1 transition-transform" />
-                </span>
-                <span className="text-[11px] text-pine-400/80 font-bold tracking-[0.2em] uppercase">
-                  {article.pages.length} {language === 'en' ? 'PAGES' : 'ΣΕΛΙΔΕΣ'}
-                </span>
-              </div>
-            </button>
-          ))}
+                <p className="text-pine-200/90 text-sm md:text-base leading-relaxed line-clamp-3 relative z-10 font-medium italic">
+                  "{article.pages[0]}"
+                </p>
+                <div className="mt-6 pt-5 border-t border-pine-800/80 flex justify-between items-center text-teal-400 font-bold text-[13px] md:text-sm relative z-10 group-hover:text-teal-300 transition-colors">
+                  <span className="flex items-center gap-2">
+                    {t.startReading} <ChevronRight size={18} className="transform group-hover:translate-x-1 transition-transform" />
+                  </span>
+                  <span className="text-[11px] text-pine-400/80 font-bold tracking-[0.2em] uppercase">
+                    {article.pages.length} {language === 'en' ? 'PAGES' : 'ΣΕΛΙΔΕΣ'}
+                  </span>
+                </div>
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>
