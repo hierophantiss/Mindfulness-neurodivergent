@@ -101,7 +101,7 @@ export default function ChapterDetail() {
     <div className="flex flex-col h-full animate-in fade-in duration-700 max-w-4xl mx-auto px-6">
       
       {/* Header Controls */}
-      <header className="flex items-center justify-between py-8 shrink-0">
+      <header className="flex items-center justify-between pt-6 pb-2 shrink-0">
         <button 
           onClick={() => navigate('/chapters')} 
           className="btn-zen !px-3 !py-3"
@@ -109,9 +109,16 @@ export default function ChapterDetail() {
           <ArrowLeft size={18} />
         </button>
         <div className="flex flex-col items-center">
-          <span className="text-[10px] font-bold tracking-[0.2em] text-pine-400 uppercase">
-            {language === 'el' ? 'Κεφάλαιο' : 'Chapter'} {chapter.num}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-bold tracking-[0.2em] text-pine-400 uppercase">
+              {language === 'el' ? 'Κεφάλαιο' : 'Chapter'} {chapter.num}
+            </span>
+            {CHAPTER_MICRO_CAT[chapter.num] && (
+              <span className="text-[9px] font-bold tracking-widest px-2 py-0.5 rounded-full bg-white/5 text-white/30 border border-white/5 uppercase">
+                {CHAPTER_MICRO_CAT[chapter.num]}
+              </span>
+            )}
+          </div>
           <div className="flex gap-1 mt-2">
             {pages.map((_, i) => (
               <div 
@@ -130,7 +137,7 @@ export default function ChapterDetail() {
 
       {/* Main Content Area */}
       <main 
-        className="flex-1 relative overflow-hidden flex flex-col mb-24"
+        className="flex-1 relative overflow-hidden flex flex-col"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
@@ -143,40 +150,41 @@ export default function ChapterDetail() {
             animate="center"
             exit="exit"
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="h-full overflow-y-auto scrollbar-none py-4"
+            className="flex-1 overflow-y-auto scrollbar-none flex flex-col"
           >
+            <div className="flex-1 flex flex-col justify-start min-h-full pt-4 pb-40 text-center sm:text-left max-w-3xl mx-auto w-full">
             {curPage.type === 'intro' && (
-              <div className="space-y-12 py-8">
+              <div className="space-y-12">
                 <div className="space-y-6 text-center">
                    <div 
-                    className="w-20 h-20 rounded-3xl flex items-center justify-center text-4xl mx-auto backdrop-blur-md border border-white/10 group-hover:scale-110 transition-transform duration-700"
+                    className="w-24 h-24 rounded-3xl flex items-center justify-center text-5xl mx-auto backdrop-blur-md border border-white/10 group-hover:scale-110 transition-transform duration-700 shadow-2xl"
                     style={{ backgroundColor: `${chapter.hex}25`, color: chapter.hex }}
                   >
                     {chapter.icon}
                   </div>
-                  <h1 className="text-5xl md:text-7xl font-heading text-white italic leading-tight tracking-tight">
+                  <h1 className="text-5xl md:text-7xl font-heading text-white italic leading-tight tracking-tight px-4">
                     {chapter.title}
                   </h1>
-                  <p className="text-xl text-pine-300 font-light max-w-2xl mx-auto leading-relaxed italic">
+                  <p className="text-xl md:text-2xl text-pine-300 font-light max-w-2xl mx-auto leading-relaxed italic px-6">
                     {chapter.sub}
                   </p>
                 </div>
 
-                <div className="glass-card rounded-[3rem] p-10 md:p-14 space-y-8 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 p-8 text-white/[0.02] -rotate-12">
+                <div className="glass-card rounded-[3rem] p-10 md:p-14 space-y-8 relative overflow-hidden w-full text-left shadow-[0_24px_48px_-12px_rgba(0,0,0,0.5)]">
+                  <div className="absolute top-0 right-0 p-10 text-white/[0.03] -rotate-12 scale-125">
                     {chapter.icon}
                   </div>
                   <div className="space-y-4">
                     <span className="text-[10px] font-bold tracking-[0.3em] text-pine-500 uppercase">
                       {language === 'el' ? 'ΣΥΝΟΨΗ' : 'SUMMARY'}
                     </span>
-                    <p className="text-2xl text-white font-light leading-relaxed">
+                    <p className="text-2xl md:text-4xl text-white font-light leading-[1.3] tracking-tight">
                       {chapter.summary}
                     </p>
                   </div>
                   
                   {chapter.tldr && (
-                    <div className="pt-8 border-t border-white/5 italic text-pine-400 text-lg font-light leading-relaxed">
+                    <div className="pt-8 border-t border-white/5 italic text-pine-400 text-lg md:text-xl font-light leading-relaxed">
                       «{chapter.tldr}»
                     </div>
                   )}
@@ -185,86 +193,127 @@ export default function ChapterDetail() {
             )}
 
             {curPage.type === 'theory' && curPage.section && (
-              <article className="space-y-10 py-8">
-                <h2 className="text-4xl md:text-5xl font-heading text-white italic leading-tight">
-                  {curPage.section.title}
-                </h2>
-                <div className="space-y-8 text-pine-200 text-lg md:text-xl font-light leading-relaxed">
+              <article className="space-y-10 md:space-y-14 text-left w-full">
+                <header className="space-y-3">
+                  <span className="text-[10px] font-bold tracking-[0.3em] text-teal-400 uppercase">
+                    {language === 'el' ? 'ΘΕΩΡΙΑ' : 'THEORY'}
+                  </span>
+                  <h2 className="text-4xl md:text-6xl font-heading text-white italic leading-[1.1] tracking-tight">
+                    {curPage.section.title}
+                  </h2>
+                </header>
+
+                <div className="space-y-10 text-pine-100 text-xl md:text-2xl font-light leading-relaxed">
                   {curPage.section.paragraphs.slice(0, visibleParagraphs).map((par: string, p_idx: number) => (
                     <p 
                       key={p_idx} 
-                      className="animate-in fade-in slide-in-from-bottom-2 duration-700"
+                      className="animate-in fade-in slide-in-from-bottom-5 duration-1000 ease-out italic"
                       dangerouslySetInnerHTML={{ __html: par }} 
                     />
                   ))}
                   
-                  {visibleParagraphs < curPage.section.paragraphs.length && (
+                  {visibleParagraphs < curPage.section.paragraphs.length ? (
                     <button 
                       onClick={() => setVisibleParagraphs(v => v + 1)}
-                      className="group flex items-center gap-3 text-pine-400 hover:text-white transition-colors text-sm font-bold uppercase tracking-widest py-4 border-b border-white/5 w-full"
+                      className="group flex items-center justify-between gap-3 text-white transition-all bg-white/5 hover:bg-white/10 rounded-[1.5rem] px-7 py-5 border border-white/5 mt-10 w-full shadow-lg"
                     >
-                      {language === 'el' ? 'ΣΥΝΕΧΕΙΑ' : 'CONTINUE READING'}
-                      <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                      <span className="text-sm font-bold uppercase tracking-widest">
+                        {language === 'el' ? 'ΣΥΝΕΧΕΙΑ ΑΝΑΓΝΩΣΗΣ' : 'CONTINUE READING'}
+                      </span>
+                      <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform text-pine-400" />
                     </button>
-                  )}
+                  ) : (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5, duration: 0.8 }}
+                      className="pt-12 space-y-8"
+                    >
+                      {curPage.section.interactive === 'gravity_thoughts' && (
+                        <div className="py-8"><GravityThoughts /></div>
+                      )}
+                      {curPage.section.interactive === 'open_awareness' && (
+                        <div className="py-8"><OpenAwareness /></div>
+                      )}
 
-                  {curPage.section.interactive === 'gravity_thoughts' && (
-                    <div className="py-12"><GravityThoughts /></div>
-                  )}
-                  {curPage.section.interactive === 'open_awareness' && (
-                    <div className="py-12"><OpenAwareness /></div>
-                  )}
+                      {curPage.section.image && (
+                        <img 
+                          src={curPage.section.image} 
+                          alt="" 
+                          className="w-full rounded-[3rem] opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-1000 shadow-2xl" 
+                        />
+                      )}
 
-                  {visibleParagraphs >= curPage.section.paragraphs.length && curPage.section.image && (
-                    <img 
-                      src={curPage.section.image} 
-                      alt="" 
-                      className="w-full rounded-[2.5rem] opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-1000 mt-12" 
-                    />
+                      {/* Key Takeaways for this section or end of sections */}
+                      <div className="glass-card rounded-[2.5rem] p-8 border border-white/5 space-y-6">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400">
+                            <Sparkles size={16} />
+                          </div>
+                          <span className="text-[10px] font-bold tracking-[0.2em] text-pine-400 uppercase">
+                            {language === 'el' ? 'ΒΑΣΙΚΑ ΣΗΜΕΙΑ' : 'KEY POINTS'}
+                          </span>
+                        </div>
+                        <ul className="space-y-4">
+                          {CHAPTER_TAKEAWAYS[currentLang][chapter.num]?.slice(0, 3).map((take, idx) => (
+                            <li key={idx} className="flex gap-4 items-start text-base md:text-lg text-pine-300 font-light italic leading-relaxed">
+                              <span className="text-teal-500/50 mt-1.5">•</span>
+                              {take}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </motion.div>
                   )}
                 </div>
               </article>
             )}
 
             {curPage.type === 'exercise' && (
-              <div className="space-y-12 py-8">
+              <div className="space-y-16 text-left w-full">
                 {chapter.exercise && (
-                  <div className="glass-card rounded-[3rem] p-10 md:p-14 space-y-10">
-                    <header className="space-y-3">
-                      <span className="text-[10px] font-bold tracking-[0.3em] text-pine-500 uppercase">
-                        {language === 'el' ? 'ΠΡΑΚΤΙΚΗ ΑΣΚΗΣΗ' : 'PRACTICE EXERCISE'}
-                      </span>
-                      <h2 className="text-4xl font-heading text-white italic">{chapter.exercise.title}</h2>
+                  <div className="glass-card rounded-[3.5rem] p-10 md:p-14 space-y-10 shadow-2xl">
+                    <header className="space-y-5">
+                      <div className="flex items-center gap-4">
+                         <div className="w-12 h-12 rounded-[1.25rem] bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+                          <Zap size={24} />
+                        </div>
+                        <span className="text-[10px] font-bold tracking-[0.3em] text-pine-500 uppercase">
+                          {language === 'el' ? 'ΠΡΑΚΤΙΚΗ ΑΣΚΗΣΗ' : 'PRACTICE EXERCISE'}
+                        </span>
+                      </div>
+                      <h2 className="text-4xl font-heading text-white italic leading-tight tracking-tight">{chapter.exercise.title}</h2>
                     </header>
                     <ul className="space-y-8">
                       {chapter.exercise.steps.map((step, idx) => (
-                        <li key={idx} className="flex gap-6 items-start group">
-                          <span className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-[10px] font-bold text-pine-400 group-hover:bg-white group-hover:text-pine-950 transition-all duration-500">
+                        <li key={idx} className="flex gap-8 items-start group">
+                          <span className="w-10 h-10 rounded-[1rem] bg-white/5 flex items-center justify-center text-[10px] font-bold text-pine-400 group-hover:bg-white group-hover:text-pine-950 transition-all duration-700 shrink-0">
                             0{idx + 1}
                           </span>
-                          <span className="text-lg text-pine-200 font-light leading-relaxed group-hover:text-white transition-colors">{step}</span>
+                          <span className="text-xl md:text-2xl text-pine-100 font-light leading-relaxed group-hover:text-white transition-colors italic">{step}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
                 )}
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                   {chapter.insight && (
-                    <div className="glass-card rounded-[2.5rem] p-8 space-y-4">
+                    <div className="glass-card rounded-[2.5rem] p-10 space-y-6">
                       <span className="text-[10px] font-bold text-teal-400 uppercase tracking-widest">{language === 'el' ? 'ΕΠΙΓΝΩΣΗ' : 'INSIGHT'}</span>
-                      <p className="text-pine-300 italic font-light leading-relaxed">"{chapter.insight}"</p>
+                      <p className="text-xl md:text-2xl text-pine-300 italic font-light leading-relaxed">"{chapter.insight}"</p>
                     </div>
                   )}
                   {chapter.reflection && (
-                    <div className="glass-card rounded-[2.5rem] p-8 space-y-4">
+                    <div className="glass-card rounded-[2.5rem] p-10 space-y-6">
                       <span className="text-[10px] font-bold text-amber-400 uppercase tracking-widest">{language === 'el' ? 'ΑΝΑΣΤΟΧΑΣΜΟΣ' : 'REFLECTION'}</span>
-                      <p className="text-pine-300 font-light leading-relaxed">{chapter.reflection}</p>
+                      <p className="text-xl md:text-2xl text-pine-300 font-light leading-relaxed italic">{chapter.reflection}</p>
                     </div>
                   )}
                 </div>
               </div>
             )}
+            </div>
           </motion.div>
         </AnimatePresence>
       </main>

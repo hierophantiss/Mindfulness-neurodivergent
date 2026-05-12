@@ -26,6 +26,8 @@ import { ThemeProvider } from './hooks/useTheme';
 import { AccessibilityProvider } from './hooks/useAccessibility';
 import { FirebaseProvider } from './lib/FirebaseContext';
 
+import { LabProvider } from './hooks/useLabs';
+
 function AppContent() {
   const hasSeenIntro = localStorage.getItem('hasSeenIntro') === 'true';
 
@@ -64,11 +66,13 @@ export default function App() {
   return (
     <FirebaseProvider>
       <LanguageProvider>
-        <ThemeProvider>
-          <AccessibilityProvider>
-            <AppContent />
-          </AccessibilityProvider>
-        </ThemeProvider>
+        <LabProvider>
+          <ThemeProvider>
+            <AccessibilityProvider>
+              <AppContent />
+            </AccessibilityProvider>
+          </ThemeProvider>
+        </LabProvider>
       </LanguageProvider>
     </FirebaseProvider>
   );

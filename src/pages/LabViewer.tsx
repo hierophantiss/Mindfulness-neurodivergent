@@ -5,12 +5,14 @@ import { ArrowLeft, Loader2, Maximize, Minimize, RefreshCw } from 'lucide-react'
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { useLanguage } from '../hooks/useLanguage';
+import { useLabs } from '../hooks/useLabs';
 import { cn } from '../lib/utils';
 
 export default function LabViewer() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { language } = useLanguage();
+  const { labs, loading: labsLoading } = useLabs();
   const [lab, setLab] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -20,22 +22,34 @@ export default function LabViewer() {
   useEffect(() => {
     async function fetchLab() {
       if (!id) return;
-      try {
-        const docRef = doc(db, 'media', id);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setLab({ id: docSnap.id, ...docSnap.data() });
-        } else {
-          setError('Lab not found');
-        }
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
+      
+      // Try to find in global labs first
+      const existingLab = labs.find(l => l.id === id);
+      if (existingLab) {
+        setLab(existingLab);
         setLoading(false);
+        return;
+      }
+
+      // If not in global yet (e.g. direct link), fetch it but only if global labs loading is finished
+      if (!labsLoading) {
+        try {
+          const docRef = doc(db, 'media', id);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            setLab({ id: docSnap.id, ...docSnap.data() });
+          } else {
+            setError('Lab not found');
+          }
+        } catch (err: any) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
+        }
       }
     }
     fetchLab();
-  }, [id]);
+  }, [id, labs, labsLoading]);
 
   const toggleFullscreen = () => setIsFullscreen(!isFullscreen);
   const reload = () => setKey(prev => prev + 1);

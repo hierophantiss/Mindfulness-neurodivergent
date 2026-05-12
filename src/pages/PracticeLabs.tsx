@@ -2,46 +2,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Beaker, ArrowLeft, Loader2, Play } from 'lucide-react';
-import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
-import { db } from '../lib/firebase';
+import { useLabs } from '../hooks/useLabs';
 import { useLanguage } from '../hooks/useLanguage';
 import { cn } from '../lib/utils';
-
-interface Lab {
-  id: string;
-  name: string;
-  url: string;
-  type: string;
-}
 
 export default function PracticeLabs() {
   const navigate = useNavigate();
   const { language } = useLanguage();
-  const [labs, setLabs] = useState<Lab[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchLabs() {
-      try {
-        const q = query(
-          collection(db, 'media'),
-          where('type', '==', 'html'),
-          orderBy('createdAt', 'desc')
-        );
-        const snapshot = await getDocs(q);
-        const labsData = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        })) as Lab[];
-        setLabs(labsData);
-      } catch (err) {
-        console.error('Error fetching labs:', err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchLabs();
-  }, []);
+  const { labs, loading } = useLabs();
 
   const formatName = (name: string) => {
     let clean = name.replace(/^\d+_/, '').replace('.html', '');
