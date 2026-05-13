@@ -163,9 +163,9 @@ export default function Journal() {
   const checkedAxes = axes.filter(ax => entry.checked[ax.key]);
 
   return (
-    <div className="flex flex-col h-[100dvh] overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500 pb-safe">
+    <div className="flex flex-col h-full overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* Header */}
-      <div className="flex-none flex items-center gap-3 px-4 pt-4 pb-2">
+      <div className="flex-none flex items-center gap-3 px-4 pt-2 pb-2">
         <button 
           onClick={() => navigate('/')} 
           className="w-10 h-10 rounded-full bg-pine-800 border border-pine-700 flex flex-none items-center justify-center text-pine-300 hover:bg-pine-700 hover:text-white transition-colors"

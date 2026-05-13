@@ -102,7 +102,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex flex-col relative w-full h-full z-10 overflow-hidden">
+    <div className="flex flex-col relative w-full min-h-full z-10">
       
       {/* Sensory Pulse Backdrop */}
       <AnimatePresence>
@@ -162,7 +162,7 @@ export default function Dashboard() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="w-full max-w-lg mx-auto px-6 pt-4 pb-8 flex flex-col justify-start"
+        className="w-full max-w-lg mx-auto px-6 pt-4 pb-12 flex flex-col justify-start"
       >
         <div className="flex flex-col gap-1.5">
           {/* Daily Wisdom Card */}

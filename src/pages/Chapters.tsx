@@ -15,8 +15,8 @@ export default function Chapters() {
   const depthChapters = chapters.filter(c => c.num >= 8 && c.num <= 10);
 
   return (
-    <div className="flex flex-col relative w-full h-full min-h-screen pt-8">
-      <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20 px-6 max-w-5xl mx-auto w-full">
+    <div className="flex flex-col relative w-full min-h-full pt-8">
+      <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-32 px-6 max-w-5xl mx-auto w-full">
         
         {/* Header - Editorial Style */}
         <header className="flex flex-col items-center text-center space-y-6 relative">

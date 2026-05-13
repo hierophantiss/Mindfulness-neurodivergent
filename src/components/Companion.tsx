@@ -60,8 +60,12 @@ export default function Companion() {
        const clampWidth = 52; // roughly width of FAB
        const clampHeight = 52;
        
+       // Handle safe areas for Y clamping
+       const safeBottom = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--safe-area-inset-bottom') || '0');
+       const bottomLimit = maxH - clampHeight - 80 - (safeBottom || 16); // 80px for menu space
+       
        const cX = Math.max(8, Math.min(maxW - clampWidth - 8, companionData.fabPos.x));
-       const cY = Math.max(60, Math.min(maxH - clampHeight - 8, companionData.fabPos.y));
+       const cY = Math.max(60, Math.min(bottomLimit, companionData.fabPos.y));
        setPosition({ x: cX, y: cY });
     }
   }, [companionData.fabPos]);
@@ -70,9 +74,13 @@ export default function Companion() {
     const handleResize = () => {
        const clampWidth = 52; 
        const clampHeight = 52;
+       const maxH = window.innerHeight;
+       const safeBottom = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--safe-area-inset-bottom') || '0');
+       const bottomLimit = maxH - clampHeight - 80 - (safeBottom || 16);
+
        setPosition(prev => ({
          x: Math.max(8, Math.min(window.innerWidth - clampWidth - 8, prev.x)),
-         y: Math.max(60, Math.min(window.innerHeight - clampHeight - 8, prev.y))
+         y: Math.max(60, Math.min(bottomLimit, prev.y))
        }));
     }
     window.addEventListener('resize', handleResize);
@@ -107,12 +115,16 @@ export default function Companion() {
     if (isDragging) {
       const clampWidth = 52; 
       const clampHeight = 52;
+      const maxH = window.innerHeight;
+      const safeBottom = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--safe-area-inset-bottom') || '0');
+      const bottomLimit = maxH - clampHeight - 80 - (safeBottom || 16);
+
       const newX = dragRef.current.initX + dx;
       const newY = dragRef.current.initY + dy;
       
       setPosition({
         x: Math.max(8, Math.min(window.innerWidth - clampWidth - 8, newX)),
-        y: Math.max(60, Math.min(window.innerHeight - clampHeight - 8, newY))
+        y: Math.max(60, Math.min(bottomLimit, newY))
       });
     }
   };
