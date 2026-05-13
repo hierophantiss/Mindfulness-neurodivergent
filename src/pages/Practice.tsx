@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Wind, Zap, ArrowLeft, Move, Beaker } from 'lucide-react';
+import { Wind, Zap, ArrowLeft, Move } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 
 export default function Practice() {
@@ -33,44 +33,20 @@ export default function Practice() {
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pb-12">
-        {/* Interactive Labs Card */}
-        <Link
-          to="/practice/labs"
-          className="group relative block p-10 rounded-[2.5rem] glass-card transition-all duration-700 hover:border-indigo-400/40 md:col-span-2 overflow-hidden"
-        >
-          <div className="absolute top-0 right-0 p-8 text-white/5 group-hover:scale-125 transition-transform duration-1000">
-            <Beaker size={160} strokeWidth={0.5} />
-          </div>
-          
-          <div className="flex flex-col md:flex-row items-center gap-10 relative z-10">
-            <div className="w-24 h-24 rounded-3xl bg-indigo-400/10 flex items-center justify-center text-indigo-300 border border-indigo-400/20 group-hover:scale-110 transition-transform duration-500">
-              <Beaker size={40} />
-            </div>
-            <div className="space-y-2 text-center md:text-left">
-              <h3 className="text-3xl md:text-4xl font-heading text-white italic">
-                {language === 'en' ? 'Interactive Labs' : 'Διαδραστικά Εργαστήρια'}
-              </h3>
-              <p className="text-pine-300 font-light max-w-xl">
-                {language === 'en' ? 'Explore your mind through code. Use the HTML tools you’ve uploaded.' : 'Εξερεύνησε το νου μέσα από τον κώδικα. Χρησιμοποίησε τα HTML εργαλεία που ανέβασες.'}
-              </p>
-            </div>
-          </div>
-        </Link>
-
         {/* Movement Card */}
         <Link
           to="/practice/movement"
-          className="group relative block p-10 rounded-[2.5rem] glass-card transition-all duration-700 hover:border-teal-400/40"
+          className="group relative block p-10 rounded-[2.5rem] glass-card transition-all duration-700 hover:border-teal-400/40 md:col-span-2"
         >
-          <div className="flex flex-col gap-8 relative z-10 h-full justify-between">
-            <div className="w-16 h-16 rounded-2xl bg-teal-400/10 flex items-center justify-center text-teal-400 border border-teal-400/20 group-hover:scale-110 transition-transform duration-500">
-              <Move size={32} />
+          <div className="flex flex-col md:flex-row items-center gap-10 relative z-10">
+            <div className="w-24 h-24 rounded-3xl bg-teal-400/10 flex items-center justify-center text-teal-400 border border-teal-400/20 group-hover:scale-110 transition-transform duration-500">
+              <Move size={40} />
             </div>
-            <div className="space-y-3">
-              <h3 className="text-3xl font-heading text-white italic">
+            <div className="space-y-2 text-center md:text-left">
+              <h3 className="text-3xl md:text-4xl font-heading text-white italic">
                 {language === 'en' ? 'Breath & Movement' : 'Αναπνοή & Κίνηση'}
               </h3>
-              <p className="text-pine-300 font-light text-sm leading-relaxed">
+              <p className="text-pine-300 font-light max-w-xl">
                 {language === 'en' ? 'Full exercises with video guidance and binaural audio.' : 'Ολοκληρωμένες ασκήσεις με καθοδήγηση βίντεο και binaural ήχο.'}
               </p>
             </div>
@@ -80,17 +56,17 @@ export default function Practice() {
         {/* Microdoses Card */}
         <Link
           to="/practice/microdoses"
-          className="group relative block p-10 rounded-[2.5rem] glass-card transition-all duration-700 hover:border-amber-400/40"
+          className="group relative block p-10 rounded-[2.5rem] glass-card transition-all duration-700 hover:border-amber-400/40 md:col-span-2"
         >
-          <div className="flex flex-col gap-8 relative z-10 h-full justify-between">
-            <div className="w-16 h-16 rounded-2xl bg-amber-400/10 flex items-center justify-center text-amber-400 border border-amber-400/20 group-hover:scale-110 transition-transform duration-500">
-              <Zap size={32} />
+          <div className="flex flex-col md:flex-row items-center gap-10 relative z-10">
+            <div className="w-24 h-24 rounded-3xl bg-amber-400/10 flex items-center justify-center text-amber-400 border border-amber-400/20 group-hover:scale-110 transition-transform duration-500">
+              <Zap size={40} />
             </div>
-            <div className="space-y-3">
-              <h3 className="text-3xl font-heading text-white italic">
+            <div className="space-y-2 text-center md:text-left">
+              <h3 className="text-3xl md:text-4xl font-heading text-white italic">
                 {language === 'en' ? 'Invisible Microdoses' : 'Αόρατες Μικροδόσεις'}
               </h3>
-              <p className="text-pine-300 font-light text-sm leading-relaxed">
+              <p className="text-pine-300 font-light max-w-xl">
                 {language === 'en' ? 'Stealth practices you can do anywhere without being noticed.' : 'Αόρατες πρακτικές που γίνονται παντού χωρίς να σε καταλάβει κανείς.'}
               </p>
             </div>

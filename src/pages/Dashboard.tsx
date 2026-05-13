@@ -232,38 +232,20 @@ export default function Dashboard() {
           </motion.div>
 
           {/* Explorations Bento Grid */}
-          <div className="grid grid-cols-2 gap-2">
-            {/* Labs Card */}
-            <motion.div variants={itemVariants}>
-              <Link 
-                to="/practice/labs"
-                className="group relative block p-3.5 bg-white/[0.01] border border-white/10 rounded-[1.4rem] hover:bg-white/[0.03] transition-all active:scale-[0.98]"
-              >
-                <div className="flex flex-col gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-amber-500/5 flex items-center justify-center text-amber-500/40 border border-amber-500/10">
-                    <Zap size={16} />
-                  </div>
-                  <div>
-                    <h4 className="text-[15px] font-serif text-white italic tracking-tight leading-none mb-0.5 font-medium">{language === 'el' ? 'Εργαστήρια' : 'Labs'}</h4>
-                    <p className="text-[8px] text-white/20 font-light italic font-serif leading-tight">{language === 'el' ? 'Διαδραστικά εργαλεία' : 'Interactive tools'}</p>
-                  </div>
-                </div>
-              </Link>
-            </motion.div>
-
+          <div className="grid grid-cols-1 gap-2">
             {/* Practice Card */}
             <motion.div variants={itemVariants}>
               <Link 
                 to="/practice"
                 className="group relative block p-3.5 bg-white/[0.01] border border-white/10 rounded-[1.4rem] hover:bg-white/[0.03] transition-all active:scale-[0.98]"
               >
-                <div className="flex flex-col gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-indigo-500/5 flex items-center justify-center text-indigo-400/40 border border-indigo-500/10">
-                    <Activity size={16} />
+                <div className="flex items-center gap-3.5">
+                  <div className="w-10 h-10 rounded-lg bg-indigo-500/5 flex items-center justify-center text-indigo-400/40 border border-indigo-500/10 shrink-0">
+                    <Activity size={20} />
                   </div>
                   <div>
-                    <h4 className="text-[15px] font-serif text-white italic tracking-tight leading-none mb-0.5 font-medium">{language === 'el' ? 'Εξάσκηση' : 'Practice'}</h4>
-                    <p className="text-[8px] text-white/20 font-light italic font-serif leading-tight">{language === 'el' ? 'Αναπνοή & κίνηση' : 'Breath & movement'}</p>
+                    <h4 className="text-[17px] font-serif text-white italic tracking-tight leading-none mb-1 font-medium">{language === 'el' ? 'Εξάσκηση' : 'Practice'}</h4>
+                    <p className="text-[10px] text-white/20 font-light italic font-serif leading-tight">{language === 'el' ? 'Αναπνοή, κίνηση & αόρατες μικροδόσεις' : 'Breath, movement & stealth microdoses'}</p>
                   </div>
                 </div>
               </Link>

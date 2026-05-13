@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metronome of Presence</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #05080a;
+            color: #bde0cf;
+            font-family: 'Inter', system-ui, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        canvas {
+            display: block;
+        }
+        .controls {
+            position: absolute;
+            bottom: 40px;
+            width: 100%;
+            text-align: center;
+        }
+        .caption {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 12px 24px;
+            border-radius: 20px;
+            font-size: 14px;
+            backdrop-blur: 10px;
+            border: 1px solid rgba(140, 200, 170, 0.3);
+            max-width: 80%;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div class="controls">
+        <div class="caption" id="caption">Βρείτε τον ρυθμό. Επιστρέψτε στο κέντρο.</div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const caption = document.getElementById('caption');
+
+        let width, height;
+        let time = 0;
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width * window.devicePixelRatio;
+            canvas.height = height * window.devicePixelRatio;
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        const strings = {
+            el: "Ρυθμός και Παρουσία. Κάθε ταλάντωση είναι μια επιστροφή.",
+            en: "Rhythm and Presence. Every oscillation is a return."
+        };
+
+        const lang = window.location.search.includes('lang=en') ? 'en' : 'el';
+        caption.innerText = strings[lang];
+
+        function animate() {
+            ctx.fillStyle = '#05080a';
+            ctx.fillRect(0, 0, width, height);
+
+            time += 0.02;
+
+            const cx = width / 2;
+            const cy = height / 3;
+            const length = 250;
+            const angle = Math.sin(time) * 0.8;
+
+            const targetX = cx + Math.sin(angle) * length;
+            const targetY = cy + Math.cos(angle) * length;
+
+            // Draw pivot
+            ctx.beginPath();
+            ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+            ctx.fillStyle = '#bde0cf';
+            ctx.fill();
+
+            // Draw line
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(targetX, targetY);
+            ctx.strokeStyle = 'rgba(189, 224, 207, 0.3)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Draw weight
+            const glow = (Math.abs(Math.sin(time)) < 0.1) ? 20 : 0;
+            ctx.shadowBlur = glow;
+            ctx.shadowColor = '#7fc1a3';
+            
+            ctx.beginPath();
+            ctx.arc(targetX, targetY, 25, 0, Math.PI * 2);
+            ctx.fillStyle = (Math.abs(Math.sin(time)) < 0.1) ? '#7fc1a3' : '#3a5f50';
+            ctx.fill();
+            ctx.strokeStyle = '#bde0cf';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            ctx.shadowBlur = 0;
+
+            // Target zone
+            ctx.beginPath();
+            ctx.arc(cx, cy + length, 30, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(127, 193, 163, 0.2)';
+            ctx.setLineDash([5, 5]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            if (Math.abs(Math.sin(time)) < 0.1) {
+                ctx.beginPath();
+                ctx.arc(cx, cy + length, 80 * (1 - Math.abs(Math.sin(time)) * 10), 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(127, 193, 163, 0.4)';
+                ctx.stroke();
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>

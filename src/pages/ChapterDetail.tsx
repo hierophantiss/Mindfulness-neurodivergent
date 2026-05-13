@@ -7,8 +7,7 @@ import { useCompanion } from '../hooks/useCompanion';
 import { useLanguage } from '../hooks/useLanguage';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../lib/utils';
-import GravityThoughts from '../components/animations/GravityThoughts';
-import OpenAwareness from '../components/animations/OpenAwareness';
+import InteractiveRenderer from '../components/InteractiveRenderer';
 
 export default function ChapterDetail() {
   const { id } = useParams();
@@ -229,11 +228,8 @@ export default function ChapterDetail() {
                       transition={{ delay: 0.5, duration: 0.8 }}
                       className="pt-12 space-y-8"
                     >
-                      {curPage.section.interactive === 'gravity_thoughts' && (
-                        <div className="py-8"><GravityThoughts /></div>
-                      )}
-                      {curPage.section.interactive === 'open_awareness' && (
-                        <div className="py-8"><OpenAwareness /></div>
+                      {curPage.section.interactive && (
+                        <InteractiveRenderer id={curPage.section.interactive} />
                       )}
 
                       {curPage.section.image && (

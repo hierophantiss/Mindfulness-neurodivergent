@@ -1,11 +1,6 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    
-    // 0. Global Safety Net
-    match /{document=**} {
-      allow read, write: if false;
-    }
 
     // --- Helper Functions ---
     
@@ -21,11 +16,10 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == userId;
     }
 
-    // Admin lookup - assuming 'admins' collection contains documents where id = uid
     function isAdmin() {
       return isSignedIn() && (
-        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
-        request.auth.token.email.lower() == 'bairaktaris.theodoros@gmail.com'
+        request.auth.token.email == 'bairaktaris.theodoros@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
       );
     }
 
@@ -90,6 +84,11 @@ service cloud.firestore {
 
     // --- Collection Routes ---
 
+    // Allow connectivity check
+    match /test/connection {
+      allow get: if true;
+    }
+
     match /users/{userId} {
       allow get: if isOwner(userId) || isAdmin();
       allow create: if isOwner(userId) && isValidUserProfile(incoming());
@@ -115,16 +114,14 @@ service cloud.firestore {
       }
     }
 
-    match /media/{mediaId} {
-      allow read, get, list: if true;
-      allow create, update: if isAdmin() && isValidId(mediaId) && isValidMediaAsset(incoming());
-      allow delete: if isAdmin();
+    match /media/{document=**} {
+      allow read: if true;
+      allow write: if isAdmin();
     }
 
-    match /admins/{adminId} {
-      allow read: if isSignedIn();
-      allow write: if false; // Only manageable through firebase console for security
+    // 0. Global Safety Net (Move to bottom)
+    match /{document=**} {
+      allow read, write: if false;
     }
-
   }
 }
