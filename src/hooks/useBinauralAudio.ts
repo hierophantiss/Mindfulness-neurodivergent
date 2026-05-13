@@ -1,4 +1,4 @@
-import { useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect, useCallback, useState } from 'react';
 
 // Generates short noise buffers
 function makeBrownNoise(ac: AudioContext) {
@@ -46,7 +46,8 @@ export function useBinauralAudio(config: AudioConfig) {
   const acRef = useRef<AudioContext | null>(null);
   const masterGainRef = useRef<GainNode | null>(null);
   const oceanGainRef = useRef<GainNode | null>(null);
-  const isPlayingRef = useRef(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const isPlayingRef = useRef(false); // Internal ref to avoid stale closure issues
   const ambientAudiosRef = useRef<HTMLAudioElement[]>([]);
   const volumeRef = useRef(1);
 
@@ -68,29 +69,40 @@ export function useBinauralAudio(config: AudioConfig) {
   }, []);
 
   const cleanup = useCallback(() => {
+    console.log('Cleaning up audio...');
     if (acRef.current) {
-      if (acRef.current.state !== 'closed') {
-        acRef.current.close().catch(console.warn);
-      }
+      try {
+        if (acRef.current.state !== 'closed') {
+          acRef.current.close().catch(console.warn);
+        }
+      } catch (e) {}
       acRef.current = null;
     }
     masterGainRef.current = null;
     oceanGainRef.current = null;
+    setIsPlaying(false);
     isPlayingRef.current = false;
     
     ambientAudiosRef.current.forEach(audio => {
-      audio.pause();
-      audio.src = '';
+      try {
+        audio.pause();
+        audio.src = '';
+        audio.load();
+      } catch (e) {}
     });
     ambientAudiosRef.current = [];
   }, []);
 
   useEffect(() => {
-    return cleanup;
+    return () => {
+      cleanup();
+    };
   }, [cleanup]);
 
   const startAudio = useCallback(() => {
     if (isPlayingRef.current) return;
+    isPlayingRef.current = true;
+    setIsPlaying(true);
     
     const ac = new (window.AudioContext || (window as any).webkitAudioContext)();
     acRef.current = ac;
@@ -100,6 +112,16 @@ export function useBinauralAudio(config: AudioConfig) {
     master.connect(ac.destination);
     masterGainRef.current = master;
 
+    // Pink Noise Layer (more soothing for ND brains)
+    const pinkBuffer = makePinkNoise(ac);
+    const pinkSource = ac.createBufferSource();
+    pinkSource.buffer = pinkBuffer;
+    pinkSource.loop = true;
+    const pinkGain = ac.createGain();
+    pinkGain.gain.value = 0.05; // very subtle
+    pinkSource.connect(pinkGain).connect(master);
+    pinkSource.start();
+
     // Pulse Entrainment (Amplitude Modulation)
     const amNode = ac.createGain();
     amNode.gain.value = 1.0;
@@ -107,9 +129,9 @@ export function useBinauralAudio(config: AudioConfig) {
 
     const pulseLfo = ac.createOscillator();
     pulseLfo.type = 'sine';
-    pulseLfo.frequency.value = config.pulse;
+    pulseLfo.frequency.value = config.pulse || 0.1;
     const pulseDepth = ac.createGain();
-    pulseDepth.gain.value = 0.3; // depth
+    pulseDepth.gain.value = 0.2; // subtle depth
     pulseLfo.connect(pulseDepth);
     pulseDepth.connect(amNode.gain);
     pulseLfo.start();
@@ -121,7 +143,7 @@ export function useBinauralAudio(config: AudioConfig) {
     const binL = ac.createOscillator();
     binL.type = 'sine';
     binL.frequency.value = config.base;
-    const gL = ac.createGain(); gL.gain.value = 0.4;
+    const gL = ac.createGain(); gL.gain.value = 0.3;
     const pL = ac.createStereoPanner(); pL.pan.value = -1;
     binL.connect(gL).connect(pL).connect(binauralNode);
     binL.start();
@@ -130,16 +152,16 @@ export function useBinauralAudio(config: AudioConfig) {
     const binR = ac.createOscillator();
     binR.type = 'sine';
     binR.frequency.value = config.base + config.beat;
-    const gR = ac.createGain(); gR.gain.value = 0.4;
+    const gR = ac.createGain(); gR.gain.value = 0.3;
     const pR = ac.createStereoPanner(); pR.pan.value = 1;
     binR.connect(gR).connect(pR).connect(binauralNode);
     binR.start();
 
-    // Pad
-    const padG = ac.createGain(); padG.gain.value = 0.08;
+    // Pad - Dynamic harmony
+    const padG = ac.createGain(); padG.gain.value = 0.05;
     [config.base*0.5, config.base*1.5, config.base*2].forEach((f, i) => {
       const o = ac.createOscillator(); o.type = 'sine'; o.frequency.value = f;
-      const g = ac.createGain(); g.gain.value = [0.5, 0.25, 0.15][i] || 0.02;
+      const g = ac.createGain(); g.gain.value = [0.4, 0.2, 0.1][i] || 0.02;
       o.connect(g).connect(padG); o.start();
     });
     padG.connect(binauralNode);
@@ -150,31 +172,33 @@ export function useBinauralAudio(config: AudioConfig) {
     // Start external ambient layers if any
     config.ambientLayers?.forEach(path => {
       const audio = new Audio(path);
-      audio.preload = 'none';
+      audio.preload = 'auto';
       audio.loop = true;
       audio.volume = 0;
       audio.play().catch(console.warn);
       ambientAudiosRef.current.push(audio);
       
-      // Manual fade in
       let progress = 0;
       const fadeInterval = setInterval(() => {
+        if (!isPlayingRef.current) {
+          clearInterval(fadeInterval);
+          return;
+        }
         progress = Math.min(1, progress + 0.05);
-        // Balance volumes: cat purring can be dominant, waves loud, others a bit softer
         const maxVol = path.includes('cat') ? 0.8 : 0.4;
         audio.volume = progress * maxVol * volumeRef.current;
         if (progress >= 1) clearInterval(fadeInterval);
       }, 150);
     });
 
-    isPlayingRef.current = true;
-
   }, [config]);
 
   const stopAudio = useCallback(() => {
     if (!isPlayingRef.current) return;
+    isPlayingRef.current = false;
+    setIsPlaying(false);
     
-    // Fade out ambient audios manually
+    // Fade out ambient audios
     ambientAudiosRef.current.forEach(audio => {
       let vol = audio.volume;
       const fadeInterval = setInterval(() => {
@@ -190,17 +214,19 @@ export function useBinauralAudio(config: AudioConfig) {
     if (acRef.current && masterGainRef.current) {
       const ac = acRef.current;
       try {
+        masterGainRef.current.gain.cancelScheduledValues(ac.currentTime);
+        masterGainRef.current.gain.setValueAtTime(masterGainRef.current.gain.value, ac.currentTime);
         masterGainRef.current.gain.linearRampToValueAtTime(0, ac.currentTime + 1.2);
       } catch(e) {}
     }
     
     setTimeout(() => {
       cleanup();
-    }, 1300);
+    }, 1500);
   }, [cleanup]);
 
   const updateArmPos = useCallback((armPos: number) => {
-    if (!isPlayingRef.current || !acRef.current || !oceanGainRef.current) return;
+    if (!isPlaying || !acRef.current || !oceanGainRef.current) return;
     try {
       // Modulate ocean volume slightly based on arm position
       const target = 0.1 + armPos * 0.3;
@@ -208,5 +234,5 @@ export function useBinauralAudio(config: AudioConfig) {
     } catch (e) {}
   }, []);
 
-  return { startAudio, stopAudio, updateArmPos, isPlaying: isPlayingRef.current, setGlobalVolume };
+  return { startAudio, stopAudio, updateArmPos, isPlaying, setGlobalVolume };
 }

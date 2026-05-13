@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Wind, Activity, Zap, Download, Smartphone, BookOpen, Notebook, Sun, Moon, Coffee, ArrowRight, Sparkles, User, Telescope, Heart } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Wind, Activity, Zap, Download, Smartphone, BookOpen, Notebook, Sun, Moon, Coffee, ArrowRight, Sparkles, User, Telescope, Heart, Play, Pause, Waves, Anchor, Focus, Maximize } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
+import { useBinauralAudio } from '../hooks/useBinauralAudio';
+import { cn } from '../lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
 
 
@@ -33,6 +35,15 @@ const itemVariants = {
 export default function Dashboard() {
   const { language, t } = useLanguage();
   const { user, logout } = useFirebase();
+  
+  const audioConfig = useMemo(() => ({
+    base: 110,
+    beat: 6.3,
+    pulse: 0.1,
+    ambientLayers: ['https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3'] // Subtle pink noise/wind
+  }), []);
+
+  const { startAudio, stopAudio, isPlaying } = useBinauralAudio(audioConfig);
   
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -184,9 +195,38 @@ export default function Dashboard() {
           
           {/* Main Journey Hero Card */}
           <motion.div variants={itemVariants} className="relative">
+            {/* Audio Toggle Floating Widget */}
+            <div className="absolute -top-3 -right-2 z-20">
+              <button
+                onClick={() => isPlaying ? stopAudio() : startAudio()}
+                className={cn(
+                  "flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-500",
+                  isPlaying 
+                    ? "bg-teal-500/20 border-teal-500/30 text-teal-300" 
+                    : "bg-white/5 border-white/10 text-white/40 hover:bg-white/10 hover:text-white/60"
+                )}
+              >
+                {isPlaying ? (
+                   <>
+                     <div className="flex gap-0.5 items-end h-2.5">
+                       <motion.div animate={{ height: [4, 10, 6] }} transition={{ repeat: Infinity, duration: 0.6 }} className="w-0.5 bg-current rounded-full" />
+                       <motion.div animate={{ height: [8, 4, 10] }} transition={{ repeat: Infinity, duration: 0.8 }} className="w-0.5 bg-current rounded-full" />
+                       <motion.div animate={{ height: [6, 8, 4] }} transition={{ repeat: Infinity, duration: 0.7 }} className="w-0.5 bg-current rounded-full" />
+                     </div>
+                     <span className="text-[9px] font-bold tracking-wider uppercase">On</span>
+                   </>
+                ) : (
+                  <>
+                    <Play size={10} fill="currentColor" />
+                    <span className="text-[9px] font-bold tracking-wider uppercase">{language === 'el' ? 'ΗΧΟΣ' : 'AUDIO'}</span>
+                  </>
+                )}
+              </button>
+            </div>
+
             <Link 
               to="/chapters" 
-              className="relative block group overflow-hidden rounded-[1.8rem] bg-gradient-to-br from-[#064e3b] via-[#042f2e] to-[#011a1a] p-5 pt-3 shadow-2xl transition-all active:scale-[0.98] border border-white/5"
+              className="relative block group overflow-hidden rounded-[1.8rem] bg-gradient-to-br from-[#064e3b] via-[#042f2e] to-[#011a1a] p-5 pt-3 shadow-2xl transition-all active:scale-[0.98] border border-white/5 animate-breathe"
             >
               <div className="relative z-10 space-y-3">
                 <div className="space-y-2">
@@ -233,19 +273,48 @@ export default function Dashboard() {
 
           {/* Explorations Bento Grid */}
           <div className="grid grid-cols-1 gap-2">
-            {/* Practice Card */}
+            {/* Practice Card - Redesigned with 4 Axes */}
             <motion.div variants={itemVariants}>
               <Link 
                 to="/practice"
-                className="group relative block p-3.5 bg-white/[0.01] border border-white/10 rounded-[1.4rem] hover:bg-white/[0.03] transition-all active:scale-[0.98]"
+                className="group relative block p-4 bg-white/[0.01] border border-white/10 rounded-[1.6rem] hover:bg-white/[0.03] transition-all active:scale-[0.98] overflow-hidden"
               >
-                <div className="flex items-center gap-3.5">
-                  <div className="w-10 h-10 rounded-lg bg-indigo-500/5 flex items-center justify-center text-indigo-400/40 border border-indigo-500/10 shrink-0">
-                    <Activity size={20} />
+                {/* Background Accent */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 blur-3xl -mr-16 -mt-16 rounded-full group-hover:bg-indigo-500/10 transition-colors" />
+                
+                <div className="relative z-10 flex flex-col gap-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 border border-indigo-500/20 shadow-inner group-hover:scale-110 transition-transform duration-500">
+                        <Activity size={20} />
+                      </div>
+                      <div>
+                        <h4 className="text-[18px] font-serif text-white italic tracking-tight leading-none mb-1 font-medium italic">
+                          {language === 'el' ? 'Εξάσκηση' : 'Practice'}
+                        </h4>
+                        <p className="text-[10px] text-white/40 font-light font-sans tracking-wide">
+                          {language === 'el' ? 'Ολιστική ενσυνειδητότητα' : 'Holistic mindfulness'}
+                        </p>
+                      </div>
+                    </div>
+                    <ArrowRight size={14} className="text-white/10 group-hover:text-white/40 transition-all group-hover:translate-x-1" />
                   </div>
-                  <div>
-                    <h4 className="text-[17px] font-serif text-white italic tracking-tight leading-none mb-1 font-medium">{language === 'el' ? 'Εξάσκηση' : 'Practice'}</h4>
-                    <p className="text-[10px] text-white/20 font-light italic font-serif leading-tight">{language === 'el' ? 'Αναπνοή, κίνηση & αόρατες μικροδόσεις' : 'Breath, movement & stealth microdoses'}</p>
+
+                  {/* The 4 Axes Indicators */}
+                  <div className="grid grid-cols-4 gap-2 pt-1">
+                    {[
+                      { icon: Anchor, label: { el: 'Βαρύτητα', en: 'Gravity' } },
+                      { icon: Wind, label: { el: 'Ανάσα', en: 'Breath' } },
+                      { icon: Focus, label: { el: 'Προσοχή', en: 'Attention' } },
+                      { icon: Maximize, label: { el: 'Χώρος', en: 'Space' } }
+                    ].map((axis, i) => (
+                      <div key={i} className="flex flex-col items-center gap-1.5 p-2 rounded-xl bg-white/[0.03] border border-white/[0.03]">
+                        <axis.icon size={12} className="text-white/20" />
+                        <span className="text-[7px] font-bold uppercase tracking-[0.1em] text-white/30 text-center leading-none">
+                          {language === 'el' ? axis.label.el : axis.label.en}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </Link>
@@ -285,28 +354,43 @@ export default function Dashboard() {
             </motion.div>
           </div>
 
-          {/* Download Buttons Section */}
-          <div className="grid grid-cols-2 gap-2 mt-1 px-1">
+          {/* Download & Install Section - Organized Grid */}
+          <div className="grid grid-cols-2 gap-3 mt-4 pt-4 border-t border-white/5">
             <motion.div variants={itemVariants}>
               <button 
                 onClick={() => showToast(language === 'el' ? 'Λήψη Βιβλίου...' : 'Downloading Book...')}
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-[1rem] bg-teal-900/20 border border-teal-500/20 text-teal-400/80 hover:bg-teal-900/30 transition-all active:scale-[0.95]"
+                className="group w-full flex flex-col items-center gap-2 p-4 rounded-[1.2rem] bg-white/[0.02] border border-white/10 hover:bg-white/[0.05] transition-all active:scale-[0.95] text-center"
               >
-                <Download size={14} />
-                <span className="text-[10px] font-bold uppercase tracking-wider font-sans">
-                  {language === 'el' ? 'Βιβλίο' : 'Book'}
-                </span>
+                <div className="w-8 h-8 rounded-full bg-teal-500/10 flex items-center justify-center text-teal-400/60 border border-teal-500/10 group-hover:scale-110 transition-transform">
+                  <Download size={14} />
+                </div>
+                <div className="space-y-0.5">
+                  <span className="block text-[8px] font-black uppercase tracking-[0.15em] text-white/20">
+                     {language === 'el' ? 'Πολυμέσα' : 'Multimedia'}
+                  </span>
+                  <span className="block text-[11px] font-bold text-teal-100/60 tracking-wide font-sans">
+                    {language === 'el' ? 'ΒΙΒΛΙΟ' : 'THE BOOK'}
+                  </span>
+                </div>
               </button>
             </motion.div>
+            
             <motion.div variants={itemVariants}>
               <button 
                 onClick={handleInstallClick}
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-[1rem] bg-indigo-900/20 border border-indigo-500/20 text-indigo-400/80 hover:bg-indigo-900/30 transition-all active:scale-[0.95]"
+                className="group w-full flex flex-col items-center gap-2 p-4 rounded-[1.2rem] bg-white/[0.02] border border-white/10 hover:bg-white/[0.05] transition-all active:scale-[0.95] text-center"
               >
-                <Smartphone size={14} />
-                <span className="text-[10px] font-bold uppercase tracking-wider font-sans">
-                  {language === 'el' ? 'Εφαρμογή' : 'App'}
-                </span>
+                <div className="w-8 h-8 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-400/60 border border-indigo-500/10 group-hover:scale-110 transition-transform">
+                  <Smartphone size={14} />
+                </div>
+                <div className="space-y-0.5">
+                  <span className="block text-[8px] font-black uppercase tracking-[0.15em] text-white/20">
+                     PWA / Native
+                  </span>
+                  <span className="block text-[11px] font-bold text-indigo-100/60 tracking-wide font-sans">
+                    {language === 'el' ? 'ΕΦΑΡΜΟΓΗ' : 'THE APP'}
+                  </span>
+                </div>
               </button>
             </motion.div>
           </div>
