@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useNavigate, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import { CompanionProvider } from './hooks/useCompanion';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
@@ -28,7 +28,7 @@ function AppContent() {
   const hasSeenIntro = localStorage.getItem('hasSeenIntro') === 'true';
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <CompanionProvider>
         <Routes>
         <Route path="/" element={<Layout />}>
@@ -52,7 +52,7 @@ function AppContent() {
         </Route>
         </Routes>
       </CompanionProvider>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

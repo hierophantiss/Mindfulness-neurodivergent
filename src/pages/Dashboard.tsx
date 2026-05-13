@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Wind, Activity, Zap, Download, Smartphone, BookOpen, Notebook, Sun, Moon, Coffee, ArrowRight, Sparkles, User, Telescope, Heart, Play, Pause, Waves, Anchor, Focus, Maximize } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
@@ -44,7 +44,15 @@ export default function Dashboard() {
   }), []);
 
   const { startAudio, stopAudio, isPlaying } = useBinauralAudio(audioConfig);
-  
+
+  const toggleAudio = useCallback(() => {
+    if (isPlaying) {
+      stopAudio();
+    } else {
+      startAudio();
+    }
+  }, [isPlaying, startAudio, stopAudio]);
+
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [greeting, setGreeting] = useState('');
@@ -198,7 +206,7 @@ export default function Dashboard() {
             {/* Audio Toggle Floating Widget */}
             <div className="absolute -top-3 -right-2 z-20">
               <button
-                onClick={() => isPlaying ? stopAudio() : startAudio()}
+                onClick={toggleAudio}
                 className={cn(
                   "flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-500 shadow-lg backdrop-blur-md",
                   isPlaying 

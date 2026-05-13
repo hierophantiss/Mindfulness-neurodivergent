@@ -202,33 +202,31 @@ export function useBinauralAudio(config: AudioConfig) {
     isPlayingRef.current = false;
     setIsPlaying(false);
     
-    // Immediate volume drop to avoid trailing sound
+    // 1. Immediate mute of master gain to prevent "trailing" or "stuck" oscilators
     if (acRef.current && masterGainRef.current) {
       try {
         const ac = acRef.current;
         masterGainRef.current.gain.cancelScheduledValues(ac.currentTime);
         masterGainRef.current.gain.setValueAtTime(masterGainRef.current.gain.value, ac.currentTime);
-        masterGainRef.current.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.8);
-      } catch(e) {}
+        // Ramp to zero quickly but smoothly
+        masterGainRef.current.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime + 0.5);
+      } catch(e) {
+        console.warn("Master gain ramp failed", e);
+      }
     }
 
-    // Fade out ambient audios
+    // 2. Stop all ambient audio elements immediately
     ambientAudiosRef.current.forEach(audio => {
-      let vol = audio.volume;
-      const fadeInterval = setInterval(() => {
-        vol = Math.max(0, vol - 0.1);
-        audio.volume = vol;
-        if (vol <= 0) {
-          clearInterval(fadeInterval);
-          audio.pause();
-        }
-      }, 50);
+      try {
+        audio.pause();
+        audio.volume = 0;
+      } catch (e) {}
     });
 
-    // Final hard cleanup after fade
+    // 3. Final atomic cleanup after the ramp duration
     setTimeout(() => {
       cleanup();
-    }, 1000);
+    }, 600);
   }, [cleanup]);
 
   const updateArmPos = useCallback((armPos: number) => {
