@@ -11,6 +11,9 @@ interface JournalEntry {
   day: string;
   checked: Record<Axis, boolean>;
   note: string;
+  mood?: string;
+  energy?: number; // 1-5
+  sensory?: string[];
 }
 
 export default function Journal() {
@@ -52,7 +55,20 @@ export default function Journal() {
       focus: { el: ['Η προσοχή ήταν κλειστή, ανοιχτή ή διασπασμένη;','Πού κόλλησε η προσοχή μου;','Πόσες φορές επέστρεψα;'], en: ['Was attention closed, open or scattered?','Where did my attention stick?','How many times did I return?'] },
       space: { el: ['Είχα ανοιχτή επίγνωση;','Ένιωσα τον χώρο γύρω μου;','Άκουσα ήχους χωρίς να κολλήσω;'], en: ['Did I have open awareness?','Did I feel the space around me?','Did I hear sounds without getting stuck?'] }
     },
-    confirmReset: { el: 'Να καθαριστούν όλες οι εγγραφές;', en: 'Clear all entries?' }
+    confirmReset: { el: 'Να καθαριστούν όλες οι εγγραφές;', en: 'Clear all entries?' },
+    moods: [
+      { id: 'calm', el: '🧘 Ήρεμος', en: '🧘 Calm', color: '#14b8a6' },
+      { id: 'focus', el: '🎯 Συγκεντρωμένος', en: '🎯 Focused', color: '#0ea5e9' },
+      { id: 'tired', el: '😴 Κουρασμένος', en: '😴 Tired', color: '#6366f1' },
+      { id: 'anxious', el: '🌀 Αγχωμένος', en: '🌀 Anxious', color: '#f59e0b' },
+      { id: 'overwhelmed', el: '💥 Υπερφορτωμένος', en: '💥 Overwhelmed', color: '#ef4444' }
+    ],
+    sensoryLabels: {
+      el: ['🔊 Θόρυβος', '🔇 Ησυχία', '💡 Έντονο φως', '👥 Πολύς κόσμος', '🏠 Ασφαλής χώρος'],
+      en: ['🔊 Noisy', '🔇 Quiet', '💡 Bright light', '👥 Social', '🏠 Safe space']
+    },
+    energyLabel: { el: 'Επίπεδο Ενέργειας', en: 'Energy Level' },
+    sensoryTitle: { el: 'Περιβάλλον / Αισθήσεις', en: 'Environment / Sensory' }
   };
 
   const getEmptyWeek = (): JournalEntry[] => {
@@ -60,7 +76,9 @@ export default function Journal() {
       id: i,
       day: d,
       checked: { body: false, breath: false, focus: false, space: false },
-      note: ''
+      note: '',
+      energy: 3,
+      sensory: []
     }));
   };
 
@@ -131,6 +149,29 @@ export default function Journal() {
   const updateNote = (di: number, text: string) => {
     const newData = [...journalData];
     newData[di].note = text;
+    saveJournal(newData);
+  };
+
+  const updateMood = (di: number, moodId: string) => {
+    const newData = [...journalData];
+    newData[di].mood = newData[di].mood === moodId ? undefined : moodId;
+    saveJournal(newData);
+  };
+
+  const updateEnergy = (di: number, val: number) => {
+    const newData = [...journalData];
+    newData[di].energy = val;
+    saveJournal(newData);
+  };
+
+  const toggleSensory = (di: number, label: string) => {
+    const newData = [...journalData];
+    const current = newData[di].sensory || [];
+    if (current.includes(label)) {
+      newData[di].sensory = current.filter(l => l !== label);
+    } else {
+      newData[di].sensory = [...current, label];
+    }
     saveJournal(newData);
   };
 
@@ -249,12 +290,88 @@ export default function Journal() {
                   backgroundColor: entry.checked[ax.key] ? ax.hex : 'transparent',
                   color: entry.checked[ax.key] ? '#fff' : '#e2e8f0'
                 }}
-                className="border-2 rounded-2xl px-3 py-2.5 text-[13px] md:text-[14px] font-semibold transition-all text-left shadow-sm active:scale-[0.98] flex items-center gap-2"
+                className="border-2 rounded-2xl px-3 py-2 text-[13px] font-semibold transition-all text-left shadow-sm active:scale-[0.98] flex items-center gap-2"
               >
                 <span>{ax.label.split(' ')[0]}</span>
                 <span className="flex-1 truncate">{ax.label.split(' ')[1]}</span>
               </button>
             ))}
+          </div>
+
+          {/* Quick Mood/Energy - Key for ND Accessibility */}
+          <div className="flex-none mb-4 space-y-4">
+            {/* Energy Slider */}
+            <div>
+              <div className="flex justify-between items-center mb-1.5 px-1">
+                <span className="text-[11px] font-bold text-pine-400 uppercase tracking-wider">{texts.energyLabel[language]}</span>
+                <span className="text-[14px]">
+                  {entry.energy === 1 && '🪫'}
+                  {entry.energy === 2 && '🔋'}
+                  {entry.energy === 3 && '⚡'}
+                  {entry.energy === 4 && '⚡⚡'}
+                  {entry.energy === 5 && '🔥'}
+                </span>
+              </div>
+              <div className="flex gap-1.5">
+                {[1, 2, 3, 4, 5].map((val) => (
+                  <button
+                    key={val}
+                    onClick={() => updateEnergy(activeDay, val)}
+                    className={cn(
+                      "h-2 flex-1 rounded-full transition-all",
+                      (entry.energy || 0) >= val 
+                        ? (val <= 2 ? "bg-amber-500" : val <= 4 ? "bg-teal-500" : "bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.4)]")
+                        : "bg-pine-800"
+                    )}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Mood Picker */}
+            <div className="flex flex-wrap gap-2">
+              {texts.moods.map(m => (
+                <button
+                  key={m.id}
+                  onClick={() => updateMood(activeDay, m.id)}
+                  style={{
+                    backgroundColor: entry.mood === m.id ? m.color : 'transparent',
+                    borderColor: entry.mood === m.id ? m.color : 'rgba(255,255,255,0.1)',
+                    color: entry.mood === m.id ? '#fff' : '#94a3b8'
+                  }}
+                  className={cn(
+                    "px-3 py-1.5 rounded-full border text-[11px] font-bold transition-all active:scale-[0.95]",
+                    entry.mood === m.id ? "shadow-lg scale-[1.02]" : "hover:bg-white/5"
+                  )}
+                >
+                  {language === 'el' ? m.el : m.en}
+                </button>
+              ))}
+            </div>
+            
+            {/* Sensory Environment */}
+            <div className="pt-2">
+              <span className="block text-[10px] font-bold text-pine-400 uppercase mb-2 ml-1 tracking-wider">{texts.sensoryTitle[language]}</span>
+              <div className="flex flex-wrap gap-1.5">
+                {texts.sensoryLabels[language].map(label => {
+                  const isSelected = entry.sensory?.includes(label);
+                  return (
+                    <button
+                      key={label}
+                      onClick={() => toggleSensory(activeDay, label)}
+                      className={cn(
+                        "px-2.5 py-1 rounded-lg text-[10px] font-medium border transition-all",
+                        isSelected 
+                          ? "bg-pine-200 text-pine-900 border-pine-200" 
+                          : "bg-pine-950/40 border-pine-800 text-pine-500 hover:border-pine-700"
+                      )}
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
 
           {/* Prompts (Only show if at least one axis checked) */}

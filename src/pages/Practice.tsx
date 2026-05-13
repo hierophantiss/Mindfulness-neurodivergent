@@ -21,7 +21,7 @@ export default function Practice() {
         </span>
       </div>
 
-      <header className="space-y-4 max-w-2xl">
+      <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
         <h2 className="text-5xl md:text-6xl font-heading text-white italic leading-tight">
           {language === 'el' ? 'Εξάσκηση' : 'Practice'}
         </h2>
@@ -32,7 +32,7 @@ export default function Practice() {
         </p>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pb-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pb-12 max-w-4xl mx-auto w-full">
         {/* Movement Card */}
         <Link
           to="/practice/movement"

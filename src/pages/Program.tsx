@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../hooks/useLanguage';
 import { useCompanion } from '../hooks/useCompanion';
+import { Skeleton } from '../components/ui/Skeleton';
 import { D as courseDataEl } from '../data/course-el';
 import { D as courseDataEn } from '../data/course-en';
 
@@ -11,6 +12,13 @@ export default function Program() {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const { companionData } = useCompanion();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 700);
+    return () => clearTimeout(timer);
+  }, []);
+
   const courseData = language === 'en' ? courseDataEn : courseDataEl;
   const weeks = Object.keys(courseData).map(Number).sort((a, b) => a - b);
   
@@ -49,7 +57,21 @@ export default function Program() {
       {/* Program Grid */}
       <div className="max-w-4xl mx-auto px-2">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {weeks.map((weekNum) => {
+          {loading ? (
+            [...Array(6)].map((_, i) => (
+              <div key={i} className="p-8 rounded-[2.5rem] bg-white/[0.01] border border-white/5 space-y-6">
+                <div className="flex justify-between items-start">
+                  <Skeleton className="w-12 h-12 rounded-2xl" />
+                  <Skeleton className="h-3 w-16 rounded" />
+                </div>
+                <div className="space-y-4">
+                  <Skeleton className="h-3 w-1/4 rounded" />
+                  <Skeleton className="h-8 w-3/4 rounded-lg" />
+                </div>
+              </div>
+            ))
+          ) : (
+            weeks.map((weekNum) => {
             const week = courseData[weekNum];
             const isCompleted = curW > weekNum;
             const isCurrent = curW === weekNum;
@@ -101,7 +123,7 @@ export default function Program() {
                 </div>
               </Link>
             );
-          })}
+          }))}
         </div>
       </div>
     </div>

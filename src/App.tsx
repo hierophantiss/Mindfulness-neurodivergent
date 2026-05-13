@@ -3,7 +3,6 @@ import { HashRouter, Routes, Route, useNavigate, Navigate } from 'react-router-d
 import { CompanionProvider } from './hooks/useCompanion';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
-import Landing from './pages/Landing';
 import Chapters from './pages/Chapters';
 import ChapterDetail from './pages/ChapterDetail';
 import Program from './pages/Program';
@@ -25,15 +24,12 @@ import { AccessibilityProvider } from './hooks/useAccessibility';
 import { FirebaseProvider } from './lib/FirebaseContext';
 
 function AppContent() {
-  const hasSeenIntro = localStorage.getItem('hasSeenIntro') === 'true';
-
   return (
     <HashRouter>
       <CompanionProvider>
         <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={hasSeenIntro ? <Navigate to="/dashboard" replace /> : <Landing />} />
-          <Route path="landing_info" element={<Landing />} />
+          <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="method" element={<Method />} />
           <Route path="rabbithole" element={<RabbitHole />} />

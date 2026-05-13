@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, BookOpen, Mountain, Wind, Target, Maximize } from 'lucide-react';
 import { CHAPTERS_DATA } from '../data/chapters';
 import { useLanguage } from '../hooks/useLanguage';
+import { Skeleton } from '../components/ui/Skeleton';
 
 export default function Chapters() {
   const navigate = useNavigate();
   const { language } = useLanguage();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 800);
+    return () => clearTimeout(timer);
+  }, []);
+
   const currentLang = language === 'en' && CHAPTERS_DATA['en'] ? 'en' : 'el';
   const chapters = CHAPTERS_DATA[currentLang] || [];
 
@@ -52,7 +60,19 @@ export default function Chapters() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {basisChapters.map(chapter => (
+            {loading ? (
+              [...Array(4)].map((_, i) => (
+                <div key={i} className="min-h-[300px] rounded-[2.5rem] bg-white/[0.01] border border-white/5 p-8 flex flex-col justify-end space-y-4">
+                  <Skeleton className="w-12 h-12 rounded-2xl" />
+                  <div className="space-y-2">
+                    <Skeleton className="h-8 w-3/4 rounded-lg" />
+                    <Skeleton className="h-4 w-1/2 rounded" />
+                  </div>
+                  <Skeleton className="h-6 w-20 rounded-full" />
+                </div>
+              ))
+            ) : (
+              basisChapters.map(chapter => (
               <Link 
                 to={`/chapters/${chapter.num}`}
                 key={chapter.num} 
@@ -91,7 +111,7 @@ export default function Chapters() {
                   {chapter.num === 4 && <Maximize size={140} strokeWidth={0.5} />}
                 </div>
               </Link>
-            ))}
+            )))}
           </div>
         </div>
 
@@ -106,7 +126,18 @@ export default function Chapters() {
               </h3>
             </div>
             <div className="space-y-4">
-              {applicationChapters.map((chapter) => (
+              {loading ? (
+                [...Array(3)].map((_, i) => (
+                  <div key={i} className="flex items-center gap-6 p-4 rounded-[1.5rem] bg-white/[0.01] border border-white/5">
+                    <Skeleton className="w-12 h-12 rounded-xl shrink-0" />
+                    <div className="flex-1 space-y-2">
+                      <Skeleton className="h-5 w-1/2 rounded" />
+                      <Skeleton className="h-3 w-1/4 rounded" />
+                    </div>
+                  </div>
+                ))
+              ) : (
+                applicationChapters.map((chapter) => (
                 <Link 
                   to={`/chapters/${chapter.num}`}
                   key={chapter.num} 
@@ -123,7 +154,7 @@ export default function Chapters() {
                     <p className="text-xs text-pine-400 mt-0.5">{chapter.sub}</p>
                   </div>
                 </Link>
-              ))}
+              )))}
             </div>
           </div>
 
@@ -136,7 +167,18 @@ export default function Chapters() {
               </h3>
             </div>
             <div className="space-y-4">
-              {depthChapters.map((chapter) => (
+              {loading ? (
+                [...Array(3)].map((_, i) => (
+                  <div key={i} className="flex items-center gap-6 p-4 rounded-[1.5rem] bg-white/[0.01] border border-white/5">
+                    <Skeleton className="w-12 h-12 rounded-xl shrink-0" />
+                    <div className="flex-1 space-y-2">
+                      <Skeleton className="h-5 w-1/2 rounded" />
+                      <Skeleton className="h-3 w-1/4 rounded" />
+                    </div>
+                  </div>
+                ))
+              ) : (
+                depthChapters.map((chapter) => (
                 <Link 
                   to={`/chapters/${chapter.num}`}
                   key={chapter.num} 
@@ -153,7 +195,7 @@ export default function Chapters() {
                     <p className="text-xs text-pine-400 mt-0.5">{chapter.sub}</p>
                   </div>
                 </Link>
-              ))}
+              )))}
             </div>
           </div>
         </div>

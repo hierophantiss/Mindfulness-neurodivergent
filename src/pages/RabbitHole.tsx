@@ -304,18 +304,18 @@ export default function RabbitHole() {
       </header>
 
       {/* Content */}
-      <div className="flex-1 px-4 pt-6 max-w-2xl mx-auto w-full">
+      <div className="flex-1 px-4 pt-6 max-w-4xl mx-auto w-full">
         <p className="text-pine-300/80 text-sm italic mb-8 text-center px-4 leading-relaxed">
           {language === 'en' 
             ? 'A collection of theoretical pieces, allegories, and insights from across the world charting the human path to the exploration of consciousness.'
             : 'Μια βιβλιοθήκη με θεωρητικά κείμενα, αλληγορίες και στοχασμούς από όλο τον κόσμο για την ανθρώπινη πορεία προς την εξερεύνηση της συνειδητότητας.'}
         </p>
 
-        <div className="space-y-4 md:space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           {/* Link to Method & Symbols */}
           <Link 
             to="/method"
-            className="w-full bg-gradient-to-br from-pine-800/60 to-pine-900/80 border border-pine-600/40 rounded-[2rem] p-6 md:p-8 shadow-[0_8px_32px_rgba(0,0,0,0.25)] block text-left transition-all duration-500 active:scale-[0.98] hover:shadow-[0_12px_40px_rgba(20,184,166,0.15)] hover:border-teal-500/30 relative overflow-hidden group backdrop-blur-md"
+            className="w-full md:col-span-2 bg-gradient-to-br from-pine-800/60 to-pine-900/80 border border-pine-600/40 rounded-[2rem] p-6 md:p-8 shadow-[0_8px_32px_rgba(0,0,0,0.25)] block text-left transition-all duration-500 active:scale-[0.98] hover:shadow-[0_12px_40px_rgba(20,184,166,0.15)] hover:border-teal-500/30 relative overflow-hidden group backdrop-blur-md"
           >
             <div className="absolute top-0 right-0 p-4 opacity-[0.03] transform translate-x-4 -translate-y-4 group-hover:scale-110 group-hover:opacity-[0.05] transition-all duration-500">
               <span className="text-[100px] md:text-[140px]">🐘</span>
@@ -375,13 +375,15 @@ export default function RabbitHole() {
                 <p className="text-pine-200/90 text-sm md:text-base leading-relaxed line-clamp-3 relative z-10 font-medium italic">
                   "{article.pages[0]}"
                 </p>
-                <div className="mt-6 pt-5 border-t border-pine-800/80 flex justify-between items-center text-teal-400 font-bold text-[13px] md:text-sm relative z-10 group-hover:text-teal-300 transition-colors">
-                  <span className="flex items-center gap-2">
-                    {t.startReading} <ChevronRight size={18} className="transform group-hover:translate-x-1 transition-transform" />
-                  </span>
-                  <span className="text-[11px] text-pine-400/80 font-bold tracking-[0.2em] uppercase">
-                    {article.pages.length} {language === 'en' ? 'PAGES' : 'ΣΕΛΙΔΕΣ'}
-                  </span>
+                <div className="mt-auto pt-6">
+                  <div className="pt-5 border-t border-pine-800/80 flex justify-between items-center text-teal-400 font-bold text-[13px] md:text-sm relative z-10 group-hover:text-teal-300 transition-colors">
+                    <span className="flex items-center gap-2">
+                      {t.startReading} <ChevronRight size={18} className="transform group-hover:translate-x-1 transition-transform" />
+                    </span>
+                    <span className="text-[11px] text-pine-400/80 font-bold tracking-[0.2em] uppercase">
+                      {article.pages.length} {language === 'en' ? 'PAGES' : 'ΣΕΛΙΔΕΣ'}
+                    </span>
+                  </div>
                 </div>
               </button>
             );

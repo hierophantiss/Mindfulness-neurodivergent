@@ -3,6 +3,7 @@ import { ref, uploadBytesResumable, getDownloadURL, deleteObject, listAll } from
 import { collection, addDoc, getDocs, query, orderBy, deleteDoc, doc, serverTimestamp, onSnapshot, where } from 'firebase/firestore';
 import { storage, db, handleFirestoreError, OperationType, signInWithGoogle } from '../lib/firebase';
 import { useFirebase } from '../lib/FirebaseContext';
+import { Skeleton } from '../components/ui/Skeleton';
 import { Upload, Trash2, Video, Music, Image as ImageIcon, Box, Loader2, AlertCircle, Link as LinkIcon, X, RefreshCw } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 
@@ -450,8 +451,23 @@ export default function StorageManager() {
       )}
 
       {loading ? (
-        <div className="flex justify-center p-12">
-          <Loader2 size={32} className="animate-spin text-teal-500" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="bg-white/[0.03] border border-white/5 rounded-3xl p-4">
+              <div className="flex items-center gap-4">
+                <Skeleton className="w-12 h-12 rounded-2xl" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-4 w-3/4 rounded" />
+                  <Skeleton className="h-3 w-1/2 rounded" />
+                </div>
+              </div>
+              <div className="mt-4 pt-4 border-t border-white/5 flex gap-2">
+                <Skeleton className="h-8 flex-1 rounded-xl" />
+                <Skeleton className="h-8 flex-1 rounded-xl" />
+                <Skeleton className="h-8 w-10 rounded-xl" />
+              </div>
+            </div>
+          ))}
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

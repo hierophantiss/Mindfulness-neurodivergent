@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { Wind, Activity, Zap, Download, Smartphone, BookOpen, Notebook, Sun, Moon, Coffee, ArrowRight, Sparkles, User, Telescope, Heart, Play, Pause, Waves, Anchor, Focus, Maximize } from 'lucide-react';
+import { Wind, Activity, Zap, Download, Smartphone, BookOpen, Notebook, Sun, Moon, Coffee, ArrowRight, Sparkles, User, Telescope, Heart, Play, Pause, Waves, Anchor, Focus, Maximize, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useBinauralAudio } from '../hooks/useBinauralAudio';
@@ -8,6 +8,8 @@ import { motion, AnimatePresence } from 'motion/react';
 
 
 import { useFirebase } from '../lib/FirebaseContext';
+import { Skeleton } from '../components/ui/Skeleton';
+import InfoModal from '../components/InfoModal';
 
 // Soft easing for a calm entry
 const easingCurve: [number, number, number, number] = [0.25, 1, 0.3, 1];
@@ -34,7 +36,16 @@ const itemVariants = {
 
 export default function Dashboard() {
   const { language, t } = useLanguage();
-  const { user, logout } = useFirebase();
+  const { user, logout, loading: authLoading } = useFirebase();
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
+
+  useEffect(() => {
+    const hasSeenIntro = localStorage.getItem('hasSeenIntro') === 'true';
+    if (!hasSeenIntro) {
+      setIsInfoOpen(true);
+      localStorage.setItem('hasSeenIntro', 'true');
+    }
+  }, []);
   
   const audioConfig = useMemo(() => ({
     base: 110,
@@ -120,6 +131,27 @@ export default function Dashboard() {
     }
   };
 
+  if (authLoading) {
+    return (
+      <div className="w-full max-w-3xl mx-auto px-6 pt-4 pb-12 flex flex-col gap-4">
+        <Skeleton className="h-10 w-full rounded-[1.2rem]" />
+        <Skeleton className="h-48 w-full rounded-[1.8rem]" />
+        <div className="flex items-center px-4 pt-4">
+          <Skeleton className="h-3 w-20 rounded-full" />
+        </div>
+        <Skeleton className="h-32 w-full rounded-[1.6rem]" />
+        <div className="space-y-1.5 pt-2">
+          <Skeleton className="h-14 w-full rounded-[1.2rem]" />
+          <Skeleton className="h-14 w-full rounded-[1.2rem]" />
+        </div>
+        <div className="grid grid-cols-2 gap-3 mt-4 pt-4 border-t border-white/5">
+          <Skeleton className="h-20 w-full rounded-[1.2rem]" />
+          <Skeleton className="h-20 w-full rounded-[1.2rem]" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col relative w-full min-h-full z-10">
       
@@ -181,9 +213,26 @@ export default function Dashboard() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="w-full max-w-lg mx-auto px-6 pt-4 pb-12 flex flex-col justify-start"
+        className="w-full max-w-3xl mx-auto px-6 pt-4 pb-12 flex flex-col justify-start"
       >
         <div className="flex flex-col gap-1.5">
+          {/* Header with Help Button */}
+          <motion.div variants={itemVariants} className="flex items-center justify-between px-1 mb-2">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" />
+              <span className="text-[10px] font-bold tracking-[0.2em] text-white/30 uppercase">
+                {language === 'el' ? 'ΠΥΛΗ ΕΠΙΓΝΩΣΗΣ' : 'AWARENESS GATEWAY'}
+              </span>
+            </div>
+            <button 
+              onClick={() => setIsInfoOpen(true)}
+              className="p-2 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-teal-400 hover:bg-white/10 transition-all active:scale-90"
+              title="Information"
+            >
+              <Info size={16} />
+            </button>
+          </motion.div>
+
           {/* Daily Wisdom Card */}
           {activeWisdom && (
             <motion.div 
@@ -330,11 +379,11 @@ export default function Dashboard() {
           </div>
 
           {/* List Style Cards */}
-          <div className="space-y-1.5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             <motion.div variants={itemVariants}>
               <Link 
                  to="/rabbithole"
-                 className="group flex items-center gap-2.5 p-2.5 bg-white/[0.01] border border-white/10 rounded-[1.2rem] hover:bg-white/[0.03] transition-all active:scale-[0.97]"
+                 className="group flex items-center gap-2.5 p-2.5 h-full bg-white/[0.01] border border-white/10 rounded-[1.2rem] hover:bg-white/[0.03] transition-all active:scale-[0.97]"
               >
                 <div className="w-9 h-9 rounded-lg bg-teal-500/5 flex items-center justify-center text-teal-400/30 border border-teal-500/10">
                   <Telescope size={16} />
@@ -349,7 +398,7 @@ export default function Dashboard() {
             <motion.div variants={itemVariants}>
               <Link 
                  to="/journal"
-                 className="group flex items-center gap-2.5 p-2.5 bg-white/[0.01] border border-white/10 rounded-[1.2rem] hover:bg-white/[0.03] transition-all active:scale-[0.97]"
+                 className="group flex items-center gap-2.5 p-2.5 h-full bg-white/[0.01] border border-white/10 rounded-[1.2rem] hover:bg-white/[0.03] transition-all active:scale-[0.97]"
               >
                 <div className="w-9 h-9 rounded-lg bg-rose-500/5 flex items-center justify-center text-rose-400/30 border border-rose-500/10">
                    <Notebook size={16} />
@@ -404,6 +453,8 @@ export default function Dashboard() {
           </div>
         </div>
       </motion.div>
+
+      <InfoModal isOpen={isInfoOpen} onClose={() => setIsInfoOpen(false)} />
     </div>
   );
 }
