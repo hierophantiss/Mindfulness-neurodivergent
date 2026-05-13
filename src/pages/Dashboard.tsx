@@ -162,7 +162,7 @@ export default function Dashboard() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="flex-1 w-full max-w-lg mx-auto px-6 pt-4 pb-20 flex flex-col justify-start h-full overflow-hidden"
+        className="w-full max-w-lg mx-auto px-6 pt-4 pb-8 flex flex-col justify-start"
       >
         <div className="flex flex-col gap-1.5">
           {/* Daily Wisdom Card */}

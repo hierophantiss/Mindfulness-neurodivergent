@@ -64,7 +64,7 @@ export default function NavigationMenu() {
       </AnimatePresence>
 
       {/* Bottom Navigation Dock */}
-      <div className="fixed bottom-3 left-1/2 -translate-x-1/2 z-40 w-auto pointer-events-none">
+      <div className="fixed bottom-[calc(1.25rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-40 w-auto pointer-events-none">
         <div className="bg-[#0f171a]/80 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] px-6 py-2.5 flex items-center justify-center gap-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] pointer-events-auto">
           {mainNavItems.map((item) => {
             const isActive = location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path));
@@ -193,7 +193,7 @@ export default function NavigationMenu() {
                 </div>
               </div>
 
-              <div className="flex justify-center gap-6 items-center p-6 border-t border-pine-800/40 mt-auto pb-safe">
+              <div className="flex justify-center gap-6 items-center p-6 border-t border-pine-800/40 mt-auto pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
                 <button 
                   onClick={showInfo} 
                   title={language === 'el' ? 'Πληροφορίες' : 'Info'}
