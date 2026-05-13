@@ -90,6 +90,15 @@ export default function Dashboard() {
     setTimeout(() => setIsPulsing(false), 4000);
   };
 
+  const [isStandalone, setIsStandalone] = useState(false);
+
+  useEffect(() => {
+    // Check if running in standalone mode
+    if (window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone) {
+      setIsStandalone(true);
+    }
+  }, []);
+
   useEffect(() => {
     // Greeting logic
     const hour = new Date().getHours();
@@ -213,7 +222,7 @@ export default function Dashboard() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="w-full max-w-3xl mx-auto px-6 pt-4 pb-12 flex flex-col justify-start"
+        className="w-full max-w-5xl mx-auto px-6 pt-4 pb-12 flex flex-col justify-start"
       >
         <div className="flex flex-col gap-1.5">
           {/* Header with Help Button */}
@@ -432,24 +441,26 @@ export default function Dashboard() {
               </button>
             </motion.div>
             
-            <motion.div variants={itemVariants}>
-              <button 
-                onClick={handleInstallClick}
-                className="group w-full flex flex-col items-center gap-2 p-4 rounded-[1.2rem] bg-white/[0.02] border border-white/10 hover:bg-white/[0.05] transition-all active:scale-[0.95] text-center"
-              >
-                <div className="w-8 h-8 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-400/60 border border-indigo-500/10 group-hover:scale-110 transition-transform">
-                  <Smartphone size={14} />
-                </div>
-                <div className="space-y-0.5">
-                  <span className="block text-[8px] font-black uppercase tracking-[0.15em] text-white/20">
-                     PWA / Native
-                  </span>
-                  <span className="block text-[11px] font-bold text-indigo-100/60 tracking-wide font-sans">
-                    {language === 'el' ? 'ΕΦΑΡΜΟΓΗ' : 'THE APP'}
-                  </span>
-                </div>
-              </button>
-            </motion.div>
+            {!isStandalone && (
+              <motion.div variants={itemVariants}>
+                <button 
+                  onClick={handleInstallClick}
+                  className="group w-full flex flex-col items-center gap-2 p-4 rounded-[1.2rem] bg-white/[0.02] border border-white/10 hover:bg-white/[0.05] transition-all active:scale-[0.95] text-center"
+                >
+                  <div className="w-8 h-8 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-400/60 border border-indigo-500/10 group-hover:scale-110 transition-transform">
+                    <Smartphone size={14} />
+                  </div>
+                  <div className="space-y-0.5">
+                    <span className="block text-[8px] font-black uppercase tracking-[0.15em] text-white/20">
+                       PWA / Native
+                    </span>
+                    <span className="block text-[11px] font-bold text-indigo-100/60 tracking-wide font-sans">
+                      {language === 'el' ? 'ΕΦΑΡΜΟΓΗ' : 'THE APP'}
+                    </span>
+                  </div>
+                </button>
+              </motion.div>
+            )}
           </div>
         </div>
       </motion.div>
