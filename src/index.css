@@ -1,13 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Outfit:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 
 @theme {
   --color-white: #fcf5e3; /* Soft beige cream */
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "Playfair Display", "Outfit", "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
-  
-  /* Deep Zen Palette */
+  --font-heading: "Playfair Display", serif;
+  --font-serif: "Playfair Display", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   --color-pine-950: #05080f;
   --color-pine-900: #0a0f1d;
   --color-pine-800: #161e31;
@@ -96,7 +95,7 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-pine-950 text-pine-50 font-sans transition-colors duration-700 ease-in-out atmosphere-bg;
+    @apply bg-[#0a0a0c] text-pine-50 font-sans transition-colors duration-700 ease-in-out atmosphere-bg;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading tracking-tight font-medium;

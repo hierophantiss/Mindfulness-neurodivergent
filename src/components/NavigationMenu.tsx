@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Home, BookOpen, Activity, BookMarked, Menu, X, Info, Music, Bell, Compass, LayoutGrid, EyeOff, Eye, Database, User as UserIcon, LogOut } from 'lucide-react';
+import { Home, BookOpen, Activity, Notebook, Menu, X, Info, Music, Bell, Compass, LayoutGrid, EyeOff, Eye, Database, User as UserIcon, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
@@ -33,10 +33,10 @@ export default function NavigationMenu() {
   };
 
   const mainNavItems = [
-    { path: '/', icon: <Home size={22} />, labelEn: 'Home', labelEl: 'Αρχική' },
-    { path: '/chapters', icon: <BookOpen size={22} />, labelEn: 'Read', labelEl: 'Διάβασμα' },
-    { path: '/practice', icon: <Activity size={22} />, labelEn: 'Practice', labelEl: 'Πρακτική' },
-    { path: '/journal', icon: <BookMarked size={22} />, labelEn: 'Journal', labelEl: 'Ημερολόγιο' },
+    { path: '/', icon: <Home size={18} />, labelEn: 'Home', labelEl: 'Αρχική' },
+    { path: '/chapters', icon: <BookOpen size={18} />, labelEn: 'Read', labelEl: 'Διάβασμα' },
+    { path: '/practice', icon: <Activity size={18} />, labelEn: 'Practice', labelEl: 'Πρακτική' },
+    { path: '/journal', icon: <Notebook size={18} />, labelEn: 'Journal', labelEl: 'Ημερολόγιο' },
   ];
 
   const moreItems = [
@@ -64,57 +64,54 @@ export default function NavigationMenu() {
       </AnimatePresence>
 
       {/* Bottom Navigation Dock */}
-      <div className="fixed bottom-0 md:bottom-6 left-0 md:left-1/2 md:-translate-x-1/2 z-40 w-full md:w-auto pointer-events-none">
-        <div className="bg-[#0f171a]/95 backdrop-blur-2xl border-t md:border border-white/10 md:rounded-full p-2 pb-[calc(env(safe-area-inset-bottom,0px)+0.25rem)] md:pb-2 flex items-center justify-around sm:justify-center sm:gap-4 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] pointer-events-auto">
+      <div className="fixed bottom-3 left-1/2 -translate-x-1/2 z-40 w-auto pointer-events-none">
+        <div className="bg-[#0f171a]/80 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] px-6 py-2.5 flex items-center justify-center gap-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] pointer-events-auto">
           {mainNavItems.map((item) => {
             const isActive = location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path));
             return (
               <button
                 key={item.path}
                 onClick={() => handleNav(item.path)}
-                className={`flex flex-row items-center justify-center gap-1.5 px-3 py-2 md:px-4 rounded-full transition-all duration-300 relative ${
+                className={`flex flex-col items-center justify-center gap-1 transition-all duration-500 relative py-1 ${
                   isActive
-                    ? 'text-amber-400'
-                    : 'text-pine-300 hover:bg-white/5 hover:text-white'
+                    ? 'text-teal-400'
+                    : 'text-white/20 hover:text-white/40'
                 }`}
               >
+                <div className={`relative z-10 transition-transform duration-500 ${isActive ? 'scale-110' : 'scale-100 opacity-80'}`}>
+                  {item.icon}
+                </div>
+                <span className={`text-[8px] font-bold tracking-widest uppercase transition-all duration-500 font-sans ${isActive ? 'opacity-100 translate-y-0' : 'opacity-40 translate-y-0.5'}`}>
+                  {language === 'en' ? item.labelEn : item.labelEl}
+                </span>
+                
                 {isActive && (
                   <motion.div 
-                    layoutId="nav-pill" 
-                    className="absolute inset-0 bg-white/5 rounded-full" 
-                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                    layoutId="active-nav-glow" 
+                    className="absolute -bottom-1 w-1 h-1 rounded-full bg-teal-400 shadow-[0_0_12px_rgba(45,212,191,1)]" 
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                   />
                 )}
-                <div className="relative z-10 flex flex-col items-center gap-0.5 sm:flex-row sm:gap-1.5">
-                  <div className="scale-90 origin-center">
-                    {item.icon}
-                  </div>
-                  <span className={`text-[9px] sm:text-[11px] font-medium tracking-wide transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-60'}`}>
-                    {language === 'en' ? item.labelEn : item.labelEl}
-                  </span>
-                </div>
               </button>
             );
           })}
           
-          <div className="w-[1px] h-6 bg-white/10 mx-1"></div>
+          <div className="w-[1px] h-6 bg-white/10 mx-1 opacity-50"></div>
 
           <button
             onClick={() => setIsOpen(true)}
-            className={`flex flex-col items-center justify-center gap-0.5 sm:flex-row sm:gap-1.5 px-3 py-2 md:px-4 rounded-full transition-all duration-300 relative ${
+            className={`flex flex-col items-center justify-center gap-1 transition-all duration-500 relative py-1 ${
               isOpen
-                ? 'text-amber-400 bg-white/5'
-                : 'text-pine-300 hover:bg-white/5 hover:text-white'
+                ? 'text-teal-400'
+                : 'text-white/20 hover:text-white/40'
             }`}
           >
-            <div className="relative z-10 flex flex-col items-center gap-0.5 sm:flex-row sm:gap-1.5">
-              <div className="scale-90 origin-center">
-                <LayoutGrid size={22} />
-              </div>
-              <span className={`text-[9px] sm:text-[11px] font-medium tracking-wide transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-60'}`}>
-                {language === 'en' ? 'More' : 'Μενού'}
-              </span>
+            <div className={`transition-transform duration-500 ${isOpen ? 'scale-110 rotate-90' : 'scale-100 opacity-80'}`}>
+              <LayoutGrid size={18} />
             </div>
+            <span className={`text-[8px] font-bold tracking-widest uppercase transition-all duration-500 font-sans ${isOpen ? 'opacity-100' : 'opacity-40'}`}>
+              {language === 'en' ? 'More' : 'Μενού'}
+            </span>
           </button>
         </div>
       </div>
