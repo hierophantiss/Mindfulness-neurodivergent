@@ -69,7 +69,7 @@ export function useBinauralAudio(config: AudioConfig) {
   }, []);
 
   const cleanup = useCallback(() => {
-    console.log('Cleaning up audio...');
+    console.log('Stopping and cleaning up audio...');
     if (acRef.current) {
       try {
         if (acRef.current.state !== 'closed') {
@@ -80,27 +80,32 @@ export function useBinauralAudio(config: AudioConfig) {
     }
     masterGainRef.current = null;
     oceanGainRef.current = null;
-    setIsPlaying(false);
-    isPlayingRef.current = false;
     
     ambientAudiosRef.current.forEach(audio => {
       try {
         audio.pause();
+        audio.currentTime = 0;
         audio.src = '';
         audio.load();
       } catch (e) {}
     });
     ambientAudiosRef.current = [];
+    
+    setIsPlaying(false);
+    isPlayingRef.current = false;
   }, []);
 
   useEffect(() => {
-    return () => {
-      cleanup();
-    };
+    return () => cleanup();
   }, [cleanup]);
 
   const startAudio = useCallback(() => {
-    if (isPlayingRef.current) return;
+    if (isPlayingRef.current) {
+      console.log('Audio already playing, ignoring start request.');
+      return;
+    }
+    
+    console.log('Starting audio...');
     isPlayingRef.current = true;
     setIsPlaying(true);
     
@@ -112,13 +117,13 @@ export function useBinauralAudio(config: AudioConfig) {
     master.connect(ac.destination);
     masterGainRef.current = master;
 
-    // Pink Noise Layer (more soothing for ND brains)
+    // Pink Noise Layer (more soothing for ND brains - less "hiss" than white noise)
     const pinkBuffer = makePinkNoise(ac);
     const pinkSource = ac.createBufferSource();
     pinkSource.buffer = pinkBuffer;
     pinkSource.loop = true;
     const pinkGain = ac.createGain();
-    pinkGain.gain.value = 0.05; // very subtle
+    pinkGain.gain.value = 0.03; // extremely subtle
     pinkSource.connect(pinkGain).connect(master);
     pinkSource.start();
 
@@ -131,7 +136,7 @@ export function useBinauralAudio(config: AudioConfig) {
     pulseLfo.type = 'sine';
     pulseLfo.frequency.value = config.pulse || 0.1;
     const pulseDepth = ac.createGain();
-    pulseDepth.gain.value = 0.2; // subtle depth
+    pulseDepth.gain.value = 0.15; 
     pulseLfo.connect(pulseDepth);
     pulseDepth.connect(amNode.gain);
     pulseLfo.start();
@@ -143,7 +148,7 @@ export function useBinauralAudio(config: AudioConfig) {
     const binL = ac.createOscillator();
     binL.type = 'sine';
     binL.frequency.value = config.base;
-    const gL = ac.createGain(); gL.gain.value = 0.3;
+    const gL = ac.createGain(); gL.gain.value = 0.25;
     const pL = ac.createStereoPanner(); pL.pan.value = -1;
     binL.connect(gL).connect(pL).connect(binauralNode);
     binL.start();
@@ -152,30 +157,25 @@ export function useBinauralAudio(config: AudioConfig) {
     const binR = ac.createOscillator();
     binR.type = 'sine';
     binR.frequency.value = config.base + config.beat;
-    const gR = ac.createGain(); gR.gain.value = 0.3;
+    const gR = ac.createGain(); gR.gain.value = 0.25;
     const pR = ac.createStereoPanner(); pR.pan.value = 1;
     binR.connect(gR).connect(pR).connect(binauralNode);
     binR.start();
 
-    // Pad - Dynamic harmony
-    const padG = ac.createGain(); padG.gain.value = 0.05;
-    [config.base*0.5, config.base*1.5, config.base*2].forEach((f, i) => {
-      const o = ac.createOscillator(); o.type = 'sine'; o.frequency.value = f;
-      const g = ac.createGain(); g.gain.value = [0.4, 0.2, 0.1][i] || 0.02;
-      o.connect(g).connect(padG); o.start();
-    });
-    padG.connect(binauralNode);
-
-    // Fade in primary audio
-    master.gain.linearRampToValueAtTime(0.5 * volumeRef.current, ac.currentTime + 3);
-
-    // Start external ambient layers if any
+    // Optional ambient layers
     config.ambientLayers?.forEach(path => {
       const audio = new Audio(path);
       audio.preload = 'auto';
       audio.loop = true;
       audio.volume = 0;
-      audio.play().catch(console.warn);
+      
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          console.error("Audio play failed:", error);
+        });
+      }
+      
       ambientAudiosRef.current.push(audio);
       
       let progress = 0;
@@ -184,45 +184,51 @@ export function useBinauralAudio(config: AudioConfig) {
           clearInterval(fadeInterval);
           return;
         }
-        progress = Math.min(1, progress + 0.05);
-        const maxVol = path.includes('cat') ? 0.8 : 0.4;
+        progress = Math.min(1, progress + 0.02);
+        const maxVol = path.includes('cat') ? 0.8 : 0.3;
         audio.volume = progress * maxVol * volumeRef.current;
         if (progress >= 1) clearInterval(fadeInterval);
-      }, 150);
+      }, 100);
     });
+
+    // Fade in primary master
+    master.gain.linearRampToValueAtTime(0.4 * volumeRef.current, ac.currentTime + 2);
 
   }, [config]);
 
   const stopAudio = useCallback(() => {
     if (!isPlayingRef.current) return;
+    console.log('Stopping audio...');
     isPlayingRef.current = false;
     setIsPlaying(false);
     
+    // Immediate volume drop to avoid trailing sound
+    if (acRef.current && masterGainRef.current) {
+      try {
+        const ac = acRef.current;
+        masterGainRef.current.gain.cancelScheduledValues(ac.currentTime);
+        masterGainRef.current.gain.setValueAtTime(masterGainRef.current.gain.value, ac.currentTime);
+        masterGainRef.current.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.8);
+      } catch(e) {}
+    }
+
     // Fade out ambient audios
     ambientAudiosRef.current.forEach(audio => {
       let vol = audio.volume;
       const fadeInterval = setInterval(() => {
-        vol = Math.max(0, vol - 0.05);
+        vol = Math.max(0, vol - 0.1);
         audio.volume = vol;
         if (vol <= 0) {
           clearInterval(fadeInterval);
           audio.pause();
         }
-      }, 100);
+      }, 50);
     });
 
-    if (acRef.current && masterGainRef.current) {
-      const ac = acRef.current;
-      try {
-        masterGainRef.current.gain.cancelScheduledValues(ac.currentTime);
-        masterGainRef.current.gain.setValueAtTime(masterGainRef.current.gain.value, ac.currentTime);
-        masterGainRef.current.gain.linearRampToValueAtTime(0, ac.currentTime + 1.2);
-      } catch(e) {}
-    }
-    
+    // Final hard cleanup after fade
     setTimeout(() => {
       cleanup();
-    }, 1500);
+    }, 1000);
   }, [cleanup]);
 
   const updateArmPos = useCallback((armPos: number) => {

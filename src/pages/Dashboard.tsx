@@ -40,7 +40,7 @@ export default function Dashboard() {
     base: 110,
     beat: 6.3,
     pulse: 0.1,
-    ambientLayers: ['https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3'] // Subtle pink noise/wind
+    ambientLayers: ['/ocean-waves.mp3'] // Use high-quality local ocean waves
   }), []);
 
   const { startAudio, stopAudio, isPlaying } = useBinauralAudio(audioConfig);
@@ -200,24 +200,24 @@ export default function Dashboard() {
               <button
                 onClick={() => isPlaying ? stopAudio() : startAudio()}
                 className={cn(
-                  "flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-500",
+                  "flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-500 shadow-lg backdrop-blur-md",
                   isPlaying 
-                    ? "bg-teal-500/20 border-teal-500/30 text-teal-300" 
-                    : "bg-white/5 border-white/10 text-white/40 hover:bg-white/10 hover:text-white/60"
+                    ? "bg-teal-500/30 border-teal-400/50 text-teal-200 ring-2 ring-teal-500/20" 
+                    : "bg-black/40 border-white/10 text-white/40 hover:bg-black/60 hover:text-white/60"
                 )}
               >
                 {isPlaying ? (
                    <>
                      <div className="flex gap-0.5 items-end h-2.5">
-                       <motion.div animate={{ height: [4, 10, 6] }} transition={{ repeat: Infinity, duration: 0.6 }} className="w-0.5 bg-current rounded-full" />
-                       <motion.div animate={{ height: [8, 4, 10] }} transition={{ repeat: Infinity, duration: 0.8 }} className="w-0.5 bg-current rounded-full" />
-                       <motion.div animate={{ height: [6, 8, 4] }} transition={{ repeat: Infinity, duration: 0.7 }} className="w-0.5 bg-current rounded-full" />
+                       <motion.div animate={{ height: [4, 10, 5, 8, 4] }} transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }} className="w-0.5 bg-current rounded-full" />
+                       <motion.div animate={{ height: [8, 4, 10, 6, 9] }} transition={{ repeat: Infinity, duration: 0.8, ease: "easeInOut" }} className="w-0.5 bg-current rounded-full" />
+                       <motion.div animate={{ height: [5, 9, 4, 8, 5] }} transition={{ repeat: Infinity, duration: 1.0, ease: "easeInOut" }} className="w-0.5 bg-current rounded-full" />
                      </div>
-                     <span className="text-[9px] font-bold tracking-wider uppercase">On</span>
+                     <span className="text-[9px] font-black tracking-[0.1em] uppercase">Focus On</span>
                    </>
                 ) : (
                   <>
-                    <Play size={10} fill="currentColor" />
+                    <Waves size={10} className="animate-pulse" />
                     <span className="text-[9px] font-bold tracking-wider uppercase">{language === 'el' ? 'ΗΧΟΣ' : 'AUDIO'}</span>
                   </>
                 )}
