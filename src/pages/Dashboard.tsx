@@ -242,21 +242,48 @@ export default function Dashboard() {
         className="w-full max-w-5xl mx-auto px-6 pt-4 pb-12 flex flex-col justify-start"
       >
         <div className="flex flex-col gap-1.5">
-          {/* Header with Help Button */}
-          <motion.div variants={itemVariants} className="flex items-center justify-between px-1 mb-2">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" />
-              <span className="text-[10px] font-bold tracking-[0.2em] text-white/30 uppercase">
-                {language === 'el' ? 'ΠΥΛΗ ΕΠΙΓΝΩΣΗΣ' : 'AWARENESS GATEWAY'}
-              </span>
+          {/* Header Section */}
+          <motion.div variants={itemVariants} className="flex items-end justify-between px-1 mb-6 mt-2">
+            <div className="flex flex-col gap-1.5">
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-1.5 h-1.5 rounded-full bg-teal-500/80 animate-pulse" />
+                <span className="text-[9px] font-bold tracking-[0.25em] text-teal-400/50 uppercase">
+                  {language === 'el' ? 'ΠΥΛΗ ΕΠΙΓΝΩΣΗΣ' : 'AWARENESS GATEWAY'}
+                </span>
+              </div>
+              <h1 className="text-3xl font-serif text-white/90 italic tracking-tight leading-none">
+                {greeting}{user?.displayName ? `, ${user.displayName.split(' ')[0]}` : ''}
+              </h1>
+              <p className="text-[11px] text-white/30 font-sans tracking-wide">
+                {currentDate}
+              </p>
             </div>
-            <button 
-              onClick={() => setIsInfoOpen(true)}
-              className="p-2 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-teal-400 hover:bg-white/10 transition-all active:scale-90"
-              title="Information"
-            >
-              <Info size={16} />
-            </button>
+            
+            <div className="flex items-center gap-2">
+              <button
+                onClick={toggleAudio}
+                className={cn(
+                  "p-2.5 rounded-full border transition-all duration-500 shadow-lg backdrop-blur-md",
+                  isPlaying 
+                    ? "bg-teal-500/20 border-teal-400/40 text-teal-300 relative overflow-hidden" 
+                    : "bg-white/5 border-white/10 text-white/40 hover:bg-white/10 hover:text-white/60"
+                )}
+                title={language === 'el' ? 'Ηχητικό Τοπίο' : 'Ambient Audio'}
+              >
+                {isPlaying && (
+                  <div className="absolute inset-0 bg-teal-400/10 animate-pulse" />
+                )}
+                {isPlaying ? <Waves size={16} className="animate-pulse relative z-10" /> : <Play size={16} />}
+              </button>
+              
+              <button 
+                onClick={() => setIsInfoOpen(true)}
+                className="p-2.5 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-white/80 hover:bg-white/10 transition-all active:scale-90"
+                title="Information"
+              >
+                <Info size={16} />
+              </button>
+            </div>
           </motion.div>
 
           {/* Daily Wisdom Card */}
@@ -277,71 +304,45 @@ export default function Dashboard() {
           )}
           
           {/* Main Journey Hero Card */}
-          <motion.div variants={itemVariants} className="relative">
-            {/* Audio Toggle Floating Widget */}
-            <div className="absolute -top-3 -right-2 z-20">
-              <button
-                onClick={toggleAudio}
-                className={cn(
-                  "flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-500 shadow-lg backdrop-blur-md",
-                  isPlaying 
-                    ? "bg-teal-500/30 border-teal-400/50 text-teal-200 ring-2 ring-teal-500/20" 
-                    : "bg-black/40 border-white/10 text-white/40 hover:bg-black/60 hover:text-white/60"
-                )}
-              >
-                {isPlaying ? (
-                   <>
-                     <div className="flex gap-0.5 items-end h-2.5">
-                       <motion.div animate={{ height: [4, 10, 5, 8, 4] }} transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }} className="w-0.5 bg-current rounded-full" />
-                       <motion.div animate={{ height: [8, 4, 10, 6, 9] }} transition={{ repeat: Infinity, duration: 0.8, ease: "easeInOut" }} className="w-0.5 bg-current rounded-full" />
-                       <motion.div animate={{ height: [5, 9, 4, 8, 5] }} transition={{ repeat: Infinity, duration: 1.0, ease: "easeInOut" }} className="w-0.5 bg-current rounded-full" />
-                     </div>
-                     <span className="text-[9px] font-black tracking-[0.1em] uppercase">Focus On</span>
-                   </>
-                ) : (
-                  <>
-                    <Waves size={10} className="animate-pulse" />
-                    <span className="text-[9px] font-bold tracking-wider uppercase">{language === 'el' ? 'ΗΧΟΣ' : 'AUDIO'}</span>
-                  </>
-                )}
-              </button>
-            </div>
-
+          <motion.div variants={itemVariants} className="relative mt-2">
             <Link 
               to="/chapters" 
-              className="relative block group overflow-hidden rounded-[1.8rem] bg-gradient-to-br from-[#064e3b] via-[#042f2e] to-[#011a1a] p-5 pt-3 shadow-2xl transition-all active:scale-[0.98] border border-white/5 animate-breathe"
+              className="relative block group overflow-hidden rounded-[2rem] bg-[#081f18] p-6 pt-5 shadow-2xl transition-all active:scale-[0.98] border border-teal-900/40"
             >
-              <div className="relative z-10 space-y-3">
-                <div className="space-y-2">
-                  <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-xl bg-white/5 border border-white/5">
-                    <BookOpen size={9} className="text-white/20" />
-                    <span className="text-[7px] font-bold tracking-[0.2em] text-[#4ed9a6] uppercase font-sans leading-tight">
-                      {language === 'el' ? "ΝΕΥΡΟΔΙΑΦΟΡΕΤΙΚΉ ΕΝΣΥΝΕΙΔΗΤΌΤΗΤΑ" : "NEURODIVERGENT MINDFULNESS"}
+              {/* Soft texture/gradient for 'breathable' feel */}
+              <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 via-transparent to-black/40 pointer-events-none" />
+              
+              <div className="relative z-10 space-y-4">
+                <div className="space-y-3">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/40 border border-teal-500/20 backdrop-blur-md">
+                    <BookOpen size={10} className="text-teal-400/60" />
+                    <span className="text-[8px] font-bold tracking-[0.2em] text-teal-300 uppercase font-sans leading-tight">
+                      {language === 'el' ? "ΝΕΥΡΟΔΙΑΦΟΡΕΤΙΚΗ ΕΝΣΥΝΕΙΔΗΤΌΤΗΤΑ" : "NEURODIVERGENT MINDFULNESS"}
                     </span>
                   </div>
-                  <h3 className="text-[28px] font-serif text-white italic tracking-tight leading-none">
+                  <h3 className="text-4xl font-serif text-white/95 italic tracking-tight leading-tight">
                     {language === 'el' ? 'Γνώθι Σαυτόν' : 'Know Thyself'}
                   </h3>
                 </div>
                 
-                <div className="flex items-center justify-between pt-1">
-                  <div className="inline-flex h-9 items-center justify-center rounded-xl bg-white/10 backdrop-blur-md text-white px-5 text-[11px] font-bold border border-white/10 transition-all font-sans">
-                    {language === 'el' ? 'Ξεκινήστε' : 'Start'}
+                <div className="flex items-center justify-between pt-2">
+                  <div className="inline-flex h-10 items-center justify-center rounded-2xl bg-white/10 hover:bg-white/15 backdrop-blur-md text-white/90 px-6 text-[12px] font-medium border border-white/10 transition-all font-sans group-hover:border-teal-500/30">
+                    {language === 'el' ? 'Ξεκινήστε την πρακτική' : 'Start the journey'}
                   </div>
                   
-                  <div className="flex flex-col items-end gap-1 min-w-[90px]">
-                    <span className="text-[8px] font-medium text-white/20 font-sans tracking-wide">
+                  <div className="flex flex-col items-end gap-1.5 min-w-[90px]">
+                    <span className="text-[9px] font-medium text-white/30 font-sans tracking-wider uppercase">
                       {language === 'el' ? 'Κεφάλαιο 2 • 38%' : 'Chapter 2 • 38%'}
                     </span>
-                    <div className="h-1 w-20 bg-white/5 rounded-full overflow-hidden">
-                      <div className="h-full bg-teal-400 w-[38%] rounded-full opacity-80" />
+                    <div className="h-1.5 w-24 bg-black/40 border border-white/5 rounded-full overflow-hidden">
+                      <div className="h-full bg-teal-500 w-[38%] rounded-full opacity-80 shadow-[0_0_8px_rgba(20,184,166,0.6)]" />
                     </div>
                   </div>
                 </div>
               </div>
               
               {/* Subtle glass reflection */}
-              <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/[0.03] to-transparent pointer-events-none"></div>
+              <div className="absolute top-0 left-0 w-full h-[40%] bg-gradient-to-b from-white/[0.04] to-transparent pointer-events-none rounded-t-[2rem]"></div>
             </Link>
           </motion.div>
         </div>
@@ -405,34 +406,44 @@ export default function Dashboard() {
           </div>
 
           {/* List Style Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-1">
             <motion.div variants={itemVariants}>
               <Link 
                  to="/rabbithole"
-                 className="group flex items-center gap-2.5 p-2.5 h-full bg-white/[0.01] border border-white/10 rounded-[1.2rem] hover:bg-white/[0.03] transition-all active:scale-[0.97]"
+                 className="group flex items-center gap-3 p-3 h-full bg-[#12141c] border border-white-[0.05] rounded-[1.4rem] hover:bg-[#161922] transition-all active:scale-[0.98]"
               >
-                <div className="w-9 h-9 rounded-lg bg-teal-500/5 flex items-center justify-center text-teal-400/30 border border-teal-500/10">
-                  <Telescope size={16} />
+                <div className="w-10 h-10 rounded-xl bg-teal-500/5 flex items-center justify-center text-teal-500/40 border border-teal-500/10 group-hover:text-teal-400 transition-colors">
+                  <Telescope size={18} />
                 </div>
                 <div className="flex-1">
-                  <h4 className="text-[13px] font-serif text-white italic font-medium tracking-tight">{language === 'el' ? 'Τρύπα του Λαγού' : 'The Rabbit Hole'}</h4>
+                  <h4 className="text-[14px] font-serif text-white/90 italic font-medium tracking-tight">
+                    {language === 'el' ? 'Τρύπα του Λαγού' : 'The Rabbit Hole'}
+                  </h4>
+                  <p className="text-[10px] text-white/30 font-sans mt-0.5">
+                     {language === 'el' ? 'Φιλοσοφική εξερεύνηση' : 'Philosophical exploration'}
+                  </p>
                 </div>
-                <ArrowRight size={12} className="text-white/10 group-hover:text-white/30 transition-colors mr-1" />
+                <ArrowRight size={14} className="text-white/10 group-hover:text-white/40 transition-colors mr-2 group-hover:translate-x-1" />
               </Link>
             </motion.div>
 
             <motion.div variants={itemVariants}>
               <Link 
                  to="/journal"
-                 className="group flex items-center gap-2.5 p-2.5 h-full bg-white/[0.01] border border-white/10 rounded-[1.2rem] hover:bg-white/[0.03] transition-all active:scale-[0.97]"
+                 className="group flex items-center gap-3 p-3 h-full bg-[#12141c] border border-white-[0.05] rounded-[1.4rem] hover:bg-[#161922] transition-all active:scale-[0.98]"
               >
-                <div className="w-9 h-9 rounded-lg bg-rose-500/5 flex items-center justify-center text-rose-400/30 border border-rose-500/10">
-                   <Notebook size={16} />
+                <div className="w-10 h-10 rounded-xl bg-rose-500/5 flex items-center justify-center text-rose-500/40 border border-rose-500/10 group-hover:text-rose-400 transition-colors">
+                   <Notebook size={18} />
                 </div>
                 <div className="flex-1">
-                  <h4 className="text-[13px] font-serif text-white italic font-medium tracking-tight">{language === 'el' ? 'Καταφύγιο' : 'The Sanctuary'}</h4>
+                  <h4 className="text-[14px] font-serif text-white/90 italic font-medium tracking-tight">
+                    {language === 'el' ? 'Καταφύγιο' : 'The Sanctuary'}
+                  </h4>
+                  <p className="text-[10px] text-white/30 font-sans mt-0.5">
+                     {language === 'el' ? 'Ημερολόγιο & Σκέψεις' : 'Journal & Thoughts'}
+                  </p>
                 </div>
-                <ArrowRight size={12} className="text-white/10 group-hover:text-white/30 transition-colors mr-1" />
+                <ArrowRight size={14} className="text-white/10 group-hover:text-white/40 transition-colors mr-2 group-hover:translate-x-1" />
               </Link>
             </motion.div>
           </div>
