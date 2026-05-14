@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
       tailwindcss(),
       VitePWA({
         registerType: 'autoUpdate',
-        includeAssets: ['favicon.ico', 'hero.png', 'robots.txt', 'sitemap.xml', '*.mp3', '*.mp4'],
+        includeAssets: ['favicon.ico', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'hero.png', 'robots.txt', 'sitemap.xml', '*.mp3', '*.mp4'],
         manifest: {
           name: 'Neurodivergent Mindfulness',
           short_name: 'Mindfulness',
@@ -24,17 +24,17 @@ export default defineConfig(({ mode }) => {
           orientation: 'portrait',
           icons: [
             {
-              src: 'hero.png',
+              src: 'icon-192.png',
               sizes: '192x192',
               type: 'image/png'
             },
             {
-              src: 'hero.png',
+              src: 'icon-512.png',
               sizes: '512x512',
               type: 'image/png'
             },
             {
-              src: 'hero.png',
+              src: 'icon-512.png',
               sizes: '512x512',
               type: 'image/png',
               purpose: 'any maskable'

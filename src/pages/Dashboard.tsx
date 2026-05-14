@@ -7,10 +7,8 @@ import { cn } from '../lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
 
 
-import { useFirebase } from '../lib/FirebaseContext';
 import { Skeleton } from '../components/ui/Skeleton';
 import InfoModal from '../components/InfoModal';
-import SyncProgressCard from '../components/SyncProgressCard';
 
 // Soft easing for a calm entry
 const easingCurve: [number, number, number, number] = [0.25, 1, 0.3, 1];
@@ -37,7 +35,6 @@ const itemVariants = {
 
 export default function Dashboard() {
   const { language, t } = useLanguage();
-  const { user, logout, loading: authLoading } = useFirebase();
   const [isInfoOpen, setIsInfoOpen] = useState(false);
 
   useEffect(() => {
@@ -158,27 +155,6 @@ export default function Dashboard() {
     }
   };
 
-  if (authLoading) {
-    return (
-      <div className="w-full max-w-3xl mx-auto px-6 pt-4 pb-12 flex flex-col gap-4">
-        <Skeleton className="h-10 w-full shape-cloud-6" />
-        <Skeleton className="h-48 w-full shape-cloud-1" />
-        <div className="flex items-center px-4 pt-4">
-          <Skeleton className="h-3 w-20 rounded-full" />
-        </div>
-        <Skeleton className="h-32 w-full shape-cloud-2" />
-        <div className="space-y-1.5 pt-2">
-          <Skeleton className="h-14 w-full shape-cloud-3" />
-          <Skeleton className="h-14 w-full shape-cloud-4" />
-        </div>
-        <div className="grid grid-cols-2 gap-3 mt-4 pt-4 border-t border-white/5">
-          <Skeleton className="h-20 w-full shape-cloud-5" />
-          <Skeleton className="h-20 w-full shape-cloud-6" />
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="flex flex-col relative w-full min-h-full z-10">
       
@@ -253,7 +229,7 @@ export default function Dashboard() {
                 </span>
               </div>
               <h1 className="text-3xl font-serif text-white/90 italic tracking-tight leading-none">
-                {greeting}{user?.displayName ? `, ${user.displayName.split(' ')[0]}` : ''}
+                {greeting}
               </h1>
               <p className="text-[11px] text-white/30 font-sans tracking-wide">
                 {currentDate}
@@ -491,10 +467,6 @@ export default function Dashboard() {
               </motion.div>
             )}
           </div>
-          
-          <motion.div variants={itemVariants}>
-            <SyncProgressCard />
-          </motion.div>
         </div>
       </motion.div>
 

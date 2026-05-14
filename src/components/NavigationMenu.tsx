@@ -5,7 +5,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useTheme } from '../hooks/useTheme';
 import { useAccessibility } from '../hooks/useAccessibility';
-import { useFirebase } from '../lib/FirebaseContext';
 
 export default function NavigationMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +15,6 @@ export default function NavigationMenu() {
   const { language } = useLanguage();
   const { theme, toggleTheme } = useTheme();
   const { reduceMotion, toggleReduceMotion } = useAccessibility();
-  const { user, signInWithGoogle, logout } = useFirebase();
 
   useEffect(() => {
     const handler = (e: any) => {
@@ -256,30 +254,6 @@ export default function NavigationMenu() {
                 >
                   <Bell size={20} />
                 </button>
-                <div className="w-[1px] h-6 bg-white/10 mx-1"></div>
-                {user ? (
-                  <button 
-                    onClick={() => {
-                        logout();
-                        setIsOpen(false);
-                    }}
-                    title={language === 'el' ? 'Αποσύνδεση' : 'Logout'}
-                    className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 text-pine-300 hover:bg-red-500/10 hover:text-red-400 transition-colors border border-white/5"
-                  >
-                    <LogOut size={20} />
-                  </button>
-                ) : (
-                  <button 
-                    onClick={() => {
-                        signInWithGoogle();
-                        setIsOpen(false);
-                    }}
-                    title={language === 'el' ? 'Σύνδεση' : 'Login'}
-                    className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 text-pine-300 hover:bg-teal-500/10 hover:text-teal-400 transition-colors border border-white/5"
-                  >
-                    <UserIcon size={20} />
-                  </button>
-                )}
               </div>
             </motion.div>
           </>
