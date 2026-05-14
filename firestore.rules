@@ -46,7 +46,11 @@ service cloud.firestore {
              (!('lastDate' in data) || data.lastDate is string) &&
              (!('explored' in data) || data.explored is list) &&
              (!('dailyCount' in data) || data.dailyCount is map) &&
-             data.keys().hasAll(['uid']) && data.keys().size() <= 10;
+             (!('companionData' in data) || data.companionData is string) &&
+             (!('breathHistory' in data) || data.breathHistory is string) &&
+             (!('journalHistory' in data) || data.journalHistory is string) &&
+             (!('journalV1' in data) || data.journalV1 is string) &&
+             data.keys().hasAll(['uid']) && data.keys().size() <= 14;
     }
 
     function isValidJournalEntry(data) {
@@ -93,7 +97,7 @@ service cloud.firestore {
       allow get: if isOwner(userId) || isAdmin();
       allow create: if isOwner(userId) && isValidUserProfile(incoming());
       allow update: if isOwner(userId) && isValidUserProfile(incoming()) && 
-                    incoming().diff(existing()).affectedKeys().hasOnly(['sessions', 'minutes', 'streak', 'lastDate', 'explored', 'dailyCount', 'updatedAt']);
+                    incoming().diff(existing()).affectedKeys().hasOnly(['sessions', 'minutes', 'streak', 'lastDate', 'explored', 'dailyCount', 'companionData', 'breathHistory', 'journalHistory', 'journalV1', 'updatedAt']);
       
       match /journal/{entryId} {
         allow get: if isOwner(userId) || isAdmin();

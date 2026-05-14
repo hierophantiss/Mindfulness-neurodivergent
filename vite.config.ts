@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
       tailwindcss(),
       VitePWA({
         registerType: 'autoUpdate',
-        includeAssets: ['favicon.ico', 'hero.png', 'robots.txt', 'sitemap.xml'],
+        includeAssets: ['favicon.ico', 'hero.png', 'robots.txt', 'sitemap.xml', '*.mp3', '*.mp4'],
         manifest: {
           name: 'Neurodivergent Mindfulness',
           short_name: 'Mindfulness',
@@ -42,9 +42,24 @@ export default defineConfig(({ mode }) => {
           ]
         },
         workbox: {
-          maximumFileSizeToCacheInBytes: 15 * 1024 * 1024, // 15MB
+          maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB
           globPatterns: ['**/*.{js,css,html,ico,png,svg,mp3,mp4,pdf}'],
           runtimeCaching: [
+            {
+              urlPattern: /\.(?:mp3|wav|mp4)$/i,
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'media-assets-cache',
+                expiration: {
+                  maxEntries: 20,
+                  maxAgeSeconds: 60 * 60 * 24 * 365 // 365 days
+                },
+                rangeRequests: true,
+                cacheableResponse: {
+                  statuses: [0, 200, 206]
+                }
+              }
+            },
             {
               urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
               handler: 'CacheFirst',

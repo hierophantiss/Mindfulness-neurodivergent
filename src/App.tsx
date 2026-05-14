@@ -16,7 +16,6 @@ import Faq from './pages/Faq';
 import GenericExercise from './pages/GenericExercise';
 import Method from './pages/Method';
 import RabbitHole from './pages/RabbitHole';
-import StorageManager from './pages/StorageManager';
 import Onboarding from './pages/Onboarding';
 
 import { LanguageProvider, useLanguage } from './hooks/useLanguage';
@@ -46,7 +45,6 @@ function AppContent() {
           <Route path="practice/:category/:id" element={<GenericExercise />} />
           <Route path="journal" element={<Journal />} />
           <Route path="faq" element={<Faq />} />
-          <Route path="media" element={<StorageManager />} />
         </Route>
         </Routes>
       </CompanionProvider>

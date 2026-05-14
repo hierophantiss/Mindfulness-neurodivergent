@@ -64,7 +64,6 @@ export default function NavigationMenu() {
     { path: '/rabbithole', icon: '🐇', labelEn: 'Rabbit Hole', labelEl: 'Εξερεύνηση' },
     { path: '/faq', icon: '❓', labelEn: 'FAQ', labelEl: 'Συχνές Ερωτήσεις' },
     { path: '/method', icon: '∞', labelEn: 'Method', labelEl: 'Η Μέθοδος' },
-    { path: '/media', icon: '🎬', labelEn: 'Media', labelEl: 'Υλικό' },
   ];
 
   return (

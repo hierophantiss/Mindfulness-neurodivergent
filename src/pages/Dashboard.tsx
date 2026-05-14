@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useFirebase } from '../lib/FirebaseContext';
 import { Skeleton } from '../components/ui/Skeleton';
 import InfoModal from '../components/InfoModal';
+import SyncProgressCard from '../components/SyncProgressCard';
 
 // Soft easing for a calm entry
 const easingCurve: [number, number, number, number] = [0.25, 1, 0.3, 1];
@@ -490,6 +491,10 @@ export default function Dashboard() {
               </motion.div>
             )}
           </div>
+          
+          <motion.div variants={itemVariants}>
+            <SyncProgressCard />
+          </motion.div>
         </div>
       </motion.div>
 

@@ -21,6 +21,10 @@
             "count": { "type": "integer" }
           }
         },
+        "companionData": { "type": "string" },
+        "breathHistory": { "type": "string" },
+        "journalHistory": { "type": "string" },
+        "journalV1": { "type": "string" },
         "updatedAt": { "type": "string", "format": "date-time" }
       },
       "required": ["uid"]
