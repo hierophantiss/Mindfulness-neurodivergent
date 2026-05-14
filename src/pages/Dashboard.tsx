@@ -437,10 +437,10 @@ export default function Dashboard() {
                 </div>
                 <div className="flex-1">
                   <h4 className="text-[14px] font-serif text-white/90 italic font-medium tracking-tight">
-                    {language === 'el' ? 'Καταφύγιο' : 'The Sanctuary'}
+                    {language === 'el' ? 'Ημερολόγιο' : 'Journal'}
                   </h4>
                   <p className="text-[10px] text-white/30 font-sans mt-0.5">
-                     {language === 'el' ? 'Ημερολόγιο & Σκέψεις' : 'Journal & Thoughts'}
+                     {language === 'el' ? 'Σκέψεις & Καταγραφές' : 'Thoughts & Records'}
                   </p>
                 </div>
                 <ArrowRight size={14} className="text-white/10 group-hover:text-white/40 transition-colors mr-2 group-hover:translate-x-1" />

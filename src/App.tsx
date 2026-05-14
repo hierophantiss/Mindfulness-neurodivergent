@@ -17,6 +17,7 @@ import GenericExercise from './pages/GenericExercise';
 import Method from './pages/Method';
 import RabbitHole from './pages/RabbitHole';
 import StorageManager from './pages/StorageManager';
+import Onboarding from './pages/Onboarding';
 
 import { LanguageProvider, useLanguage } from './hooks/useLanguage';
 import { ThemeProvider } from './hooks/useTheme';
@@ -28,6 +29,7 @@ function AppContent() {
     <HashRouter>
       <CompanionProvider>
         <Routes>
+        <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />

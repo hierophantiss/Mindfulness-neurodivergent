@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, Navigate } from 'react-router-dom';
 import { cn } from '../lib/utils';
 import Companion from './Companion';
 import NavigationMenu from './NavigationMenu';
@@ -13,11 +13,17 @@ export default function Layout() {
   const isHome = location.pathname === '/';
   const mainRef = React.useRef<HTMLElement>(null);
 
+  const hasCompletedOnboarding = localStorage.getItem('hasCompletedOnboarding') === 'true';
+
   useEffect(() => {
     if (mainRef.current) {
       mainRef.current.scrollTo(0, 0);
     }
   }, [location.pathname]);
+
+  if (!hasCompletedOnboarding && location.pathname !== '/onboarding') {
+    return <Navigate to="/onboarding" replace />;
+  }
 
   const isIntroPage = ['/', '/landing_info', '/intro'].includes(location.pathname);
 
