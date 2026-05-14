@@ -85,8 +85,6 @@ export function useBinauralAudio(config: AudioConfig) {
       try {
         audio.pause();
         audio.currentTime = 0;
-        audio.src = '';
-        audio.load();
       } catch (e) {}
     });
     ambientAudiosRef.current = [];
@@ -164,7 +162,10 @@ export function useBinauralAudio(config: AudioConfig) {
 
     // Optional ambient layers
     config.ambientLayers?.forEach(path => {
-      const audio = new Audio(path);
+      if (!path) return;
+      
+      const audioUrl = path.startsWith('http') ? path : new URL(path, window.location.origin).href;
+      const audio = new Audio(audioUrl);
       audio.preload = 'auto';
       audio.loop = true;
       audio.volume = 0;
@@ -172,7 +173,7 @@ export function useBinauralAudio(config: AudioConfig) {
       const playPromise = audio.play();
       if (playPromise !== undefined) {
         playPromise.catch(error => {
-          console.error("Audio play failed:", error);
+          console.warn("Audio play failed for path:", path, error);
         });
       }
       
@@ -180,7 +181,7 @@ export function useBinauralAudio(config: AudioConfig) {
       
       let progress = 0;
       const fadeInterval = setInterval(() => {
-        if (!isPlayingRef.current) {
+        if (!isPlayingRef.current || !ambientAudiosRef.current.includes(audio)) {
           clearInterval(fadeInterval);
           return;
         }

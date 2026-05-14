@@ -3,7 +3,7 @@ import { Chapter } from './types';
 export const CHAPTERS_DATA: Record<string, Chapter[]> = {
   en: [
     {num:1,title:"Body",sub:"The Stability of 'Here'",tag:"Here",color:"var(--color-axis-body)",hex:"#7A9E7E",icon:"🧍",
-     video:"videos/body_exercise.mp4",
+     video:"/Basic.mp4",
      summary:"The body is the undeniable foundation of the present moment. We learn to perceive gravity, our posture, and our contact with space.",
      tldr:"The body is the only point that is always in the 'Here'. Gravity is the direct proof of your presence. Feel your weight → calm the autopilot.",
      theorySections:[
@@ -17,7 +17,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
      exercise:{title:"Exercise: The Book / Box",steps:["Stand upright comfortably.","Take a book or a box and place it on your head.","Notice how you need to stand so it doesn't fall. Feel how the weight goes down smoothly through the neck, spine, and pelvis.","Feel the weight, the touch of the soles on the ground, and the sense of the axis keeping you upright."]},
      insight:"Gravity is always here. The body is always here. That is enough to get started.",reflection:"What did I notice in my body after the exercise?"},
     {num:2,title:"Breath of Life",sub:"The Energy of the Present Self",tag:"Energy",color:"var(--color-axis-breath)",hex:"#C07050",icon:"🫁",
-     video:"videos/breath_exercise.mp4",
+     video:"/Basic.mp4",
      summary:"The breath connects us with the rhythm of life and teaches the acceptance of transience.",
      tldr:"Breath is the rhythm of 'Now'. Exhalation is the relaxation switch. Do not control it, just feel the touch of the air.",
      theorySections:[
@@ -30,7 +30,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
      exercise:{title:"Exercise: The Active Return",steps:["Stand comfortably. Feel the gravity.","Turn your attention to the inhalation and exhalation.","Feel the air touching the nostrils.","On the exhale, let the belly contract gently.","If you feel anxious, let the exhalation come out slowly through the mouth."]},
      insight:"I observe without intervening. Every breath is a new beginning.",reflection:"How was my breath? (fast/slow, shallow/deep, tight/free)"},
     {num:3,title:"Attention",sub:"The Direction of Consciousness",tag:"Direction",color:"var(--color-axis-focus)",hex:"#C8922A",icon:"👁",
-     video:"videos/attention_exercise.mp4",
+     video:"/Basic.mp4",
      summary:"Attention is the flashlight of the mind — it can focus, open up, or scatter.",
      tldr:"Attention is like a flashlight. Sometimes it gets stuck (hyperfocus), sometimes it scatters. The 'gentle return' without judgment is the exercise itself.",
      theorySections:[
@@ -42,7 +42,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
      exercise:{title:"Exercise: Stabilizing the Flashlight",steps:["Sit comfortably. Close your eyes.","Feel your body and the rhythm of your breath.","Open your eyes. Choose a fixed focal point.","Hold your attention there with body and breath awareness.","If you drift away: label it → gently return."]},
      insight:"The return of attention is not a failure — it is the exercise itself.",reflection:"Where does my attention tend to 'stick' or 'run'?"},
     {num:4,title:"Space",sub:"The Opening of Awareness",tag:"Opening",color:"var(--color-axis-space)",hex:"#B5A7D0",icon:"✦",
-     video:"videos/space_exercise.mp4",
+     video:"/Basic.mp4",
      summary:"Space is the most liberating center. We learn to open our awareness like the sky.",
      theorySections:[
        {title:"The Antidote to Overload",paragraphs: ["Open Attention is the most powerful tool against overload. The opening of attention acts as a safety signal in the brain: 'there is no danger, there is space'.", "Peripheral vision, open hearing, the sense of space around — all these together 'turn off' the alarm signal."]},
@@ -84,7 +84,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
   ],
   el: [
     {num:1,title:'Σώμα',sub:'Η Σταθερότητα του «Εδώ»',tag:'Εδώ',color:'var(--color-axis-body)',hex:'#7A9E7E',icon:'🧍',
-     video:'videos/body_exercise.mp4',
+     video:'/Basic.mp4',
      summary:'Το σώμα είναι η αναμφισβήτητη βάση της παρούσας στιγμής. Μαθαίνουμε να αντιλαμβανόμαστε τη βαρύτητα, τη στάση μας και την επαφή με τον χώρο.',
      tldr:'Το σώμα είναι το μοναδικό σημείο που είναι πάντα στο «Εδώ». Η βαρύτητα είναι η άμεση απόδειξη της παρουσίας σου. Νιώσε το βάρος σου → ηρέμησε τον αυτόματο πιλότο.',
      theorySections:[
@@ -98,7 +98,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
      exercise:{title:'Άσκηση: Το Βιβλίο / Κουτί',steps:['Σταθείτε όρθιοι με άνεση.','Πάρτε ένα βιβλίο ή κουτί και τοποθετήστε το στο κεφάλι σας.','Παρατηρήστε πώς χρειάζεται να σταθείτε για να μην πέσει. Νιώστε πώς το βάρος κατεβαίνει ομαλά μέσα από τον λαιμό, τη σπονδυλική στήλη και τη λεκάνη.','Νιώστε το βάρος, την αφή των πελμάτων στο έδαφος και την αίσθηση του άξονα που σας κρατά όρθιους.']},
      insight:'Η βαρύτητα είναι πάντα εδώ. Το σώμα είναι πάντα εδώ. Αυτό είναι αρκετό για να ξεκινήσουμε.',reflection:'Τι παρατήρησα στο σώμα μου μετά την άσκηση;'},
     {num:2,title:'Αναπνοή ζωή',sub:'Η Ενέργεια του Παρουσιακού Εαυτού',tag:'Ενέργεια',color:'var(--color-axis-breath)',hex:'#C07050',icon:'🫁',
-     video:'videos/breath_exercise.mp4',
+     video:'/Basic.mp4',
      summary:'Η αναπνοή μάς συνδέει με τον ρυθμό της ζωής και διδάσκει την αποδοχή της παροδικότητας.',
      tldr:'Η αναπνοή είναι ο ρυθμός του «Τώρα». Η εκπνοή είναι ο διακόπτης χαλάρωσης. Μην την ελέγχεις, απλώς νιώσε την αφή του αέρα.',
      theorySections:[
@@ -111,7 +111,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
      exercise:{title:'Άσκηση: Η Ενεργή Επιστροφή',steps:['Στάσου άνετα. Νιώσε τη βαρύτητα.','Στρέψε την προσοχή στην εισπνοή και εκπνοή.','Νιώσε τον αέρα που αγγίζει τα ρουθούνια.','Στην εκπνοή, άφησε την κοιλιά να μαζευτεί ήπια.','Αν νιώθεις άγχος, άφησε την εκπνοή να βγαίνει αργά από το στόμα.']},
      insight:'Παρατηρώ χωρίς να επεμβαίνω. Κάθε αναπνοή είναι μια νέα αρχή.',reflection:'Πώς ήταν η αναπνοή μου; (γρήγορη/αργή, ρηχή/βαθιά, σφιγμένη/ελεύθερη)'},
     {num:3,title:'Προσοχή',sub:'Η Κατεύθυνση της Συνείδησης',tag:'Κατεύθυνση',color:'var(--color-axis-focus)',hex:'#C8922A',icon:'👁',
-     video:'videos/attention_exercise.mp4',
+     video:'/Basic.mp4',
      summary:'Η προσοχή είναι ο φακός του νου — μπορεί να εστιάζει, να ανοίγει ή να διασπάται.',
      tldr:'Η προσοχή είναι σαν φακός. Μερικές φορές κολλάει (hyperfocus), μερικές φορές σκορπίζει. Η «απαλή επιστροφή» χωρίς κριτική είναι η ίδια η άσκηση.',
      theorySections:[
@@ -124,7 +124,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
      exercise:{title:'Άσκηση: Σταθεροποίηση του Φακού',steps:['Κάθισε άνετα. Κλείσε τα μάτια.','Νιώσε το σώμα σου και τον ρυθμό της αναπνοής.','Άνοιξε τα μάτια. Επίλεξε ένα σταθερό σημείο εστίασης.','Κράτησε την προσοχή εκεί με επίγνωση σώματος και αναπνοής.','Αν παρασυρθείς: βάλε ταμπέλα → επέστρεψε απαλά.']},
      insight:'Η επιστροφή της προσοχής δεν είναι αποτυχία — είναι η ίδια η άσκηση.',reflection:'Πού τείνει να «κολλάει» ή να «τρέχει» η προσοχή μου;'},
     {num:4,title:'Χώρος',sub:'Το Άνοιγμα της Επίγνωσης',tag:'Άνοιγμα',color:'var(--color-axis-space)',hex:'#B5A7D0',icon:'✦',
-     video:'videos/space_exercise.mp4',
+     video:'/Basic.mp4',
      summary:'Ο Χώρος είναι το πιο απελευθερωτικό κέντρο. Μαθαίνουμε να ανοίγουμε την επίγνωση σαν ουρανό.',
      theorySections:[
        {title:'Το Αντίδοτο στην Υπερφόρτωση',paragraphs: [`Η Ανοιχτή Προσοχή είναι το πιο ισχυρό εργαλείο ενάντια στην υπερφόρτωση. Το άνοιγμα της προσοχής λειτουργεί ως σήμα ασφάλειας στον εγκέφαλο: «δεν υπάρχει κίνδυνος, υπάρχει χώρος».`, `Η περιφερειακή όραση, η ανοιχτή ακοή, η αίσθηση του χώρου γύρω — όλα αυτά μαζί «σβήνουν» το σήμα συναγερμού.`]},

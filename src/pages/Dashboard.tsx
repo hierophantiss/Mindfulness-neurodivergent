@@ -128,13 +128,30 @@ export default function Dashboard() {
     setTimeout(() => setToastMessage(null), 3500);
   };
 
+  const handleBookDownload = () => {
+    const fileName = language === 'el' ? 'workbook_el.pdf' : 'workbook_en.pdf';
+    const link = document.createElement('a');
+    link.href = `/${fileName}`;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showToast(language === 'el' ? 'Λήψη Βιβλίου...' : 'Downloading Book...');
+  };
+
   const handleInstallClick = async () => {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+
     if (deferredPrompt) {
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
       if (outcome === 'accepted') {
         setDeferredPrompt(null);
       }
+    } else if (isIOS) {
+      showToast(language === 'el' 
+        ? 'Σε iOS: Πατήστε "Κοινοποίηση" ⎋ και μετά "Προσθήκη στην Οθόνη Αφετηρίας" ⊞.' 
+        : 'On iOS: Tap "Share" ⎋ and then "Add to Home Screen" ⊞.');
     } else {
       showToast(language === 'el' ? 'Η εφαρμογή είναι ήδη εγκατεστημένη ή δεν υποστηρίζεται.' : 'The app is already installed or not supported.');
     }
@@ -424,7 +441,7 @@ export default function Dashboard() {
           <div className="grid grid-cols-2 gap-3 mt-4 pt-4 border-t border-white/5">
             <motion.div variants={itemVariants}>
               <button 
-                onClick={() => showToast(language === 'el' ? 'Λήψη Βιβλίου...' : 'Downloading Book...')}
+                onClick={handleBookDownload}
                 className="group w-full flex flex-col items-center gap-2 p-4 rounded-[1.2rem] bg-white/[0.02] border border-white/10 hover:bg-white/[0.05] transition-all active:scale-[0.95] text-center"
               >
                 <div className="w-8 h-8 rounded-full bg-teal-500/10 flex items-center justify-center text-teal-400/60 border border-teal-500/10 group-hover:scale-110 transition-transform">
