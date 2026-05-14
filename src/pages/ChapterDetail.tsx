@@ -46,7 +46,7 @@ export default function ChapterDetail() {
   }, [page, chapter, pages.length, updateChapterProgress]);
 
   if (!chapter) {
-    return <div className="p-8 text-center text-pine-400">{language === 'el' ? 'Κεφάλαιο δεν βρέθηκε.' : 'Chapter not found.'}</div>;
+    return <div className="p-8 text-center text-white/40">{language === 'el' ? 'Κεφάλαιο δεν βρέθηκε.' : 'Chapter not found.'}</div>;
   }
 
   const handleNext = () => {
@@ -109,7 +109,7 @@ export default function ChapterDetail() {
         </button>
         <div className="flex flex-col items-center">
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-bold tracking-[0.2em] text-pine-400 uppercase">
+            <span className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase">
               {language === 'el' ? 'Κεφάλαιο' : 'Chapter'} {chapter.num}
             </span>
             {CHAPTER_MICRO_CAT[chapter.num] && (
@@ -161,29 +161,29 @@ export default function ChapterDetail() {
                   >
                     {chapter.icon}
                   </div>
-                  <h1 className="text-5xl md:text-7xl font-heading text-white italic leading-tight tracking-tight px-4">
+                  <h1 className="text-5xl md:text-7xl font-serif text-white/90 italic leading-tight tracking-tight px-4">
                     {chapter.title}
                   </h1>
-                  <p className="text-xl md:text-2xl text-pine-300 font-light max-w-2xl mx-auto leading-relaxed italic px-6">
+                  <p className="text-xl md:text-2xl text-white/50 max-w-2xl mx-auto leading-relaxed italic px-6 font-serif">
                     {chapter.sub}
                   </p>
                 </div>
 
-                <div className="glass-card rounded-[3rem] p-10 md:p-14 space-y-8 relative overflow-hidden w-full text-left shadow-[0_24px_48px_-12px_rgba(0,0,0,0.5)]">
+                <div className="bg-[#12141c] border border-white/5 shape-cloud-2 p-10 md:p-14 space-y-8 relative overflow-hidden w-full text-left shadow-2xl">
                   <div className="absolute top-0 right-0 p-10 text-white/[0.03] -rotate-12 scale-125">
                     {chapter.icon}
                   </div>
                   <div className="space-y-4">
-                    <span className="text-[10px] font-bold tracking-[0.3em] text-pine-500 uppercase">
+                    <span className="text-[10px] font-bold tracking-[0.3em] text-teal-400/60 uppercase">
                       {language === 'el' ? 'ΣΥΝΟΨΗ' : 'SUMMARY'}
                     </span>
-                    <p className="text-2xl md:text-4xl text-white font-light leading-[1.3] tracking-tight">
+                    <p className="text-2xl md:text-4xl text-white/90 font-serif italic leading-[1.3] tracking-tight">
                       {chapter.summary}
                     </p>
                   </div>
                   
                   {chapter.tldr && (
-                    <div className="pt-8 border-t border-white/5 italic text-pine-400 text-lg md:text-xl font-light leading-relaxed">
+                    <div className="pt-8 border-t border-white/5 italic text-white/50 text-lg md:text-xl font-sans leading-relaxed">
                       «{chapter.tldr}»
                     </div>
                   )}
@@ -194,15 +194,15 @@ export default function ChapterDetail() {
             {curPage.type === 'theory' && curPage.section && (
               <article className="space-y-10 md:space-y-14 text-left w-full">
                 <header className="space-y-3">
-                  <span className="text-[10px] font-bold tracking-[0.3em] text-teal-400 uppercase">
+                  <span className="text-[10px] font-bold tracking-[0.3em] text-teal-400/80 uppercase">
                     {language === 'el' ? 'ΘΕΩΡΙΑ' : 'THEORY'}
                   </span>
-                  <h2 className="text-4xl md:text-6xl font-heading text-white italic leading-[1.1] tracking-tight">
+                  <h2 className="text-4xl md:text-6xl font-serif text-white/90 italic leading-[1.1] tracking-tight">
                     {curPage.section.title}
                   </h2>
                 </header>
 
-                <div className="space-y-10 text-pine-100 text-xl md:text-2xl font-light leading-relaxed">
+                <div className="space-y-10 text-white/70 text-xl md:text-2xl font-serif leading-relaxed">
                   {curPage.section.paragraphs.slice(0, visibleParagraphs).map((par: string, p_idx: number) => (
                     <p 
                       key={p_idx} 
@@ -214,12 +214,12 @@ export default function ChapterDetail() {
                   {visibleParagraphs < curPage.section.paragraphs.length ? (
                     <button 
                       onClick={() => setVisibleParagraphs(v => v + 1)}
-                      className="group flex items-center justify-between gap-3 text-white transition-all bg-white/5 hover:bg-white/10 rounded-[1.5rem] px-7 py-5 border border-white/5 mt-10 w-full shadow-lg"
+                      className="group flex items-center justify-between gap-3 text-white/90 transition-all bg-[#12141c] hover:bg-[#161922] border border-white/5 shape-cloud-6 px-7 py-5 mt-10 w-full shadow-lg"
                     >
-                      <span className="text-sm font-bold uppercase tracking-widest">
+                      <span className="text-xs font-bold uppercase tracking-widest">
                         {language === 'el' ? 'ΣΥΝΕΧΕΙΑ ΑΝΑΓΝΩΣΗΣ' : 'CONTINUE READING'}
                       </span>
-                      <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform text-pine-400" />
+                      <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform text-white/40" />
                     </button>
                   ) : (
                     <motion.div 
@@ -236,23 +236,23 @@ export default function ChapterDetail() {
                         <img 
                           src={curPage.section.image} 
                           alt="" 
-                          className="w-full rounded-[3rem] opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-1000 shadow-2xl" 
+                          className="w-full shape-cloud-4 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-1000 shadow-2xl" 
                         />
                       )}
 
                       {/* Key Takeaways for this section or end of sections */}
-                      <div className="glass-card rounded-[2.5rem] p-8 border border-white/5 space-y-6">
+                      <div className="bg-[#12141c] shape-cloud-5 p-8 border border-white/5 space-y-6 shadow-xl">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400">
+                          <div className="w-8 h-8 rounded-full bg-teal-500/10 flex items-center justify-center text-teal-400/80">
                             <Sparkles size={16} />
                           </div>
-                          <span className="text-[10px] font-bold tracking-[0.2em] text-pine-400 uppercase">
+                          <span className="text-[10px] font-bold tracking-[0.2em] text-white/50 uppercase">
                             {language === 'el' ? 'ΒΑΣΙΚΑ ΣΗΜΕΙΑ' : 'KEY POINTS'}
                           </span>
                         </div>
                         <ul className="space-y-4">
                           {CHAPTER_TAKEAWAYS[currentLang][chapter.num]?.slice(0, 3).map((take, idx) => (
-                            <li key={idx} className="flex gap-4 items-start text-base md:text-lg text-pine-300 font-light italic leading-relaxed">
+                            <li key={idx} className="flex gap-4 items-start text-base md:text-lg text-white/60 font-serif italic leading-relaxed">
                               <span className="text-teal-500/50 mt-1.5">•</span>
                               {take}
                             </li>
@@ -268,25 +268,25 @@ export default function ChapterDetail() {
             {curPage.type === 'exercise' && (
               <div className="space-y-16 text-left w-full">
                 {chapter.exercise && (
-                  <div className="glass-card rounded-[3.5rem] p-10 md:p-14 space-y-10 shadow-2xl">
+                  <div className="bg-[#12141c] border border-white/5 shape-cloud-1 p-10 md:p-14 space-y-10 shadow-2xl">
                     <header className="space-y-5">
                       <div className="flex items-center gap-4">
-                         <div className="w-12 h-12 rounded-[1.25rem] bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+                         <div className="w-12 h-12 rounded-[1.25rem] bg-teal-500/5 border border-teal-500/10 flex items-center justify-center text-teal-400/60">
                           <Zap size={24} />
                         </div>
-                        <span className="text-[10px] font-bold tracking-[0.3em] text-pine-500 uppercase">
+                        <span className="text-[10px] font-bold tracking-[0.3em] text-teal-400/80 uppercase">
                           {language === 'el' ? 'ΠΡΑΚΤΙΚΗ ΑΣΚΗΣΗ' : 'PRACTICE EXERCISE'}
                         </span>
                       </div>
-                      <h2 className="text-4xl font-heading text-white italic leading-tight tracking-tight">{chapter.exercise.title}</h2>
+                      <h2 className="text-4xl font-serif text-white/90 italic leading-tight tracking-tight">{chapter.exercise.title}</h2>
                     </header>
                     <ul className="space-y-8">
                       {chapter.exercise.steps.map((step, idx) => (
                         <li key={idx} className="flex gap-8 items-start group">
-                          <span className="w-10 h-10 rounded-[1rem] bg-white/5 flex items-center justify-center text-[10px] font-bold text-pine-400 group-hover:bg-white group-hover:text-pine-950 transition-all duration-700 shrink-0">
+                          <span className="w-10 h-10 rounded-[1rem] bg-white/[0.03] flex items-center justify-center text-[10px] font-bold text-white/40 group-hover:bg-white/10 group-hover:text-white/90 transition-all duration-700 shrink-0">
                             0{idx + 1}
                           </span>
-                          <span className="text-xl md:text-2xl text-pine-100 font-light leading-relaxed group-hover:text-white transition-colors italic">{step}</span>
+                          <span className="text-xl md:text-2xl text-white/70 font-sans leading-relaxed group-hover:text-white/90 transition-colors">{step}</span>
                         </li>
                       ))}
                     </ul>
@@ -295,15 +295,17 @@ export default function ChapterDetail() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                   {chapter.insight && (
-                    <div className="glass-card rounded-[2.5rem] p-10 space-y-6">
-                      <span className="text-[10px] font-bold text-teal-400 uppercase tracking-widest">{language === 'el' ? 'ΕΠΙΓΝΩΣΗ' : 'INSIGHT'}</span>
-                      <p className="text-xl md:text-2xl text-pine-300 italic font-light leading-relaxed">"{chapter.insight}"</p>
+                    <div className="bg-[#12141c] border border-white/5 shape-cloud-3 p-10 space-y-6 shadow-xl relative overflow-hidden group hover:border-teal-500/30 transition-all">
+                      <div className="absolute inset-0 bg-gradient-to-br from-teal-500/[0.02] to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                      <span className="text-[10px] font-bold text-teal-400/60 uppercase tracking-widest relative z-10 block">{language === 'el' ? 'ΕΠΙΓΝΩΣΗ' : 'INSIGHT'}</span>
+                      <p className="text-xl md:text-2xl text-white/80 font-serif italic leading-relaxed relative z-10">"{chapter.insight}"</p>
                     </div>
                   )}
                   {chapter.reflection && (
-                    <div className="glass-card rounded-[2.5rem] p-10 space-y-6">
-                      <span className="text-[10px] font-bold text-amber-400 uppercase tracking-widest">{language === 'el' ? 'ΑΝΑΣΤΟΧΑΣΜΟΣ' : 'REFLECTION'}</span>
-                      <p className="text-xl md:text-2xl text-pine-300 font-light leading-relaxed italic">{chapter.reflection}</p>
+                    <div className="bg-[#12141c] border border-white/5 shape-cloud-6 p-10 space-y-6 shadow-xl relative overflow-hidden group hover:border-yellow-500/20 transition-all">
+                      <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/[0.02] to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                      <span className="text-[10px] font-bold text-yellow-500/50 uppercase tracking-widest relative z-10 block">{language === 'el' ? 'ΑΝΑΣΤΟΧΑΣΜΟΣ' : 'REFLECTION'}</span>
+                      <p className="text-xl md:text-2xl text-white/80 font-sans font-light leading-relaxed relative z-10">{chapter.reflection}</p>
                     </div>
                   )}
                 </div>
@@ -315,7 +317,7 @@ export default function ChapterDetail() {
       </main>
 
       {/* Footer Controls */}
-      <footer className="fixed bottom-0 left-0 right-0 p-6 max-w-4xl mx-auto z-20 backdrop-blur-xl bg-pine-950/20">
+      <footer className="fixed bottom-0 left-0 right-0 p-6 max-w-4xl mx-auto z-20 backdrop-blur-xl bg-[#0f1117]/80 border-t border-white/5">
         <div className="flex gap-4">
           <button
             onClick={handlePrev}
@@ -327,7 +329,7 @@ export default function ChapterDetail() {
           
           <button
             onClick={handleNext}
-            className="flex-[3] btn-zen bg-white !text-pine-950 hover:bg-white/90 flex justify-center items-center gap-3 !py-4"
+            className="flex-[3] btn-zen bg-white !text-black hover:bg-white/90 flex justify-center items-center gap-3 !py-4"
             style={{ 
               backgroundColor: chapter.hex, 
               color: '#000',

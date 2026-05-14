@@ -22,32 +22,67 @@ export default function Practice() {
       </div>
 
       <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-        <h2 className="text-5xl md:text-6xl font-heading text-white italic leading-tight">
+        <h2 className="text-5xl md:text-6xl font-serif text-white/90 italic leading-tight">
           {language === 'el' ? 'Εξάσκηση' : 'Practice'}
         </h2>
-        <p className="text-lg text-pine-300 font-light leading-relaxed">
+        <p className="text-lg text-white/50 font-sans leading-relaxed">
           {language === 'el' 
             ? 'Επίλεξε την κατηγορία εξάσκησης που ταιριάζει στην κατάστασή σου.' 
             : 'Choose the practice category that fits your current state.'}
         </p>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pb-12 max-w-4xl mx-auto w-full">
+      <div className="grid grid-cols-1 gap-8 pb-12 max-w-4xl mx-auto w-full">
+        {/* Breath Card */}
+        <Link
+          to="/practice/movement#breath"
+          className="group relative block p-8 md:p-10 shape-cloud-1 bg-[#081f18] border border-teal-900/40 transition-all duration-700 hover:border-teal-400/40 shadow-2xl overflow-hidden"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 via-transparent to-black/40 pointer-events-none" />
+          <div className="absolute top-0 right-0 w-64 h-64 bg-teal-500/10 blur-[80px] -mr-32 -mt-32 rounded-full pointer-events-none transition-transform group-hover:scale-150 duration-1000" />
+          
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-8 relative z-10">
+            <div className="w-20 h-20 shrink-0 shape-cloud-2 bg-teal-400/10 flex items-center justify-center text-teal-400 border border-teal-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
+              <Wind size={36} strokeWidth={1.5} />
+            </div>
+            <div className="space-y-4 text-center md:text-left flex-1">
+              <h3 className="text-3xl md:text-4xl font-serif text-white/90 italic drop-shadow-md">
+                {language === 'en' ? 'Breath & Sleep' : 'Αναπνοή & Ύπνος'}
+              </h3>
+              <p className="text-teal-100/60 font-sans max-w-2xl text-[15px] md:text-[17px] leading-relaxed">
+                {language === 'en' 
+                 ? 'Deep breathing rhythms, sleep induction, and nervous system regulation.' 
+                 : 'Ρυθμοί αναπνοής, χαλάρωση νευρικού συστήματος και προετοιμασία για ύπνο.'}
+              </p>
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 pt-2">
+                <span className="px-3 py-1.5 rounded-full bg-teal-950/50 border border-teal-800/50 text-[10px] text-teal-300 uppercase tracking-wider font-bold">432Hz / 528Hz</span>
+                <span className="px-3 py-1.5 rounded-full bg-teal-950/50 border border-teal-800/50 text-[10px] text-teal-300 uppercase tracking-wider font-bold">Cat Purr</span>
+                <span className="px-3 py-1.5 rounded-full bg-teal-950/50 border border-teal-800/50 text-[10px] text-teal-300 uppercase tracking-wider font-bold">Ocean & Rain</span>
+                <span className="px-3 py-1.5 rounded-full bg-teal-950/50 border border-teal-800/50 text-[10px] text-teal-300 uppercase tracking-wider font-bold">Binaural</span>
+              </div>
+            </div>
+          </div>
+        </Link>
+
         {/* Movement Card */}
         <Link
-          to="/practice/movement"
-          className="group relative block p-10 rounded-[2.5rem] glass-card transition-all duration-700 hover:border-teal-400/40 md:col-span-2"
+          to="/practice/movement#movement"
+          className="group relative block p-8 md:p-10 shape-cloud-3 bg-[#12141c] border border-white/5 transition-all duration-700 hover:bg-[#161922] hover:border-indigo-500/20 shadow-2xl overflow-hidden"
         >
-          <div className="flex flex-col md:flex-row items-center gap-10 relative z-10">
-            <div className="w-24 h-24 rounded-3xl bg-teal-400/10 flex items-center justify-center text-teal-400 border border-teal-400/20 group-hover:scale-110 transition-transform duration-500">
-              <Move size={40} />
+          <div className="absolute top-0 left-0 w-64 h-64 bg-indigo-500/5 blur-[80px] -ml-32 -mt-32 rounded-full pointer-events-none transition-transform group-hover:scale-150 duration-1000" />
+          
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-8 relative z-10">
+            <div className="w-20 h-20 shrink-0 shape-cloud-4 bg-indigo-400/10 flex items-center justify-center text-indigo-400 border border-indigo-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
+              <Move size={36} strokeWidth={1.5} />
             </div>
-            <div className="space-y-2 text-center md:text-left">
-              <h3 className="text-3xl md:text-4xl font-heading text-white italic">
-                {language === 'en' ? 'Breath & Movement' : 'Αναπνοή & Κίνηση'}
+            <div className="space-y-3 text-center md:text-left flex-1">
+              <h3 className="text-3xl md:text-4xl font-serif text-white/90 italic">
+                {language === 'en' ? 'Mindful Movement' : 'Ενσυνείδητη Κίνηση'}
               </h3>
-              <p className="text-pine-300 font-light max-w-xl">
-                {language === 'en' ? 'Full exercises with video guidance and binaural audio.' : 'Ολοκληρωμένες ασκήσεις με καθοδήγηση βίντεο και binaural ήχο.'}
+              <p className="text-white/50 font-sans max-w-xl text-[15px] md:text-[17px] leading-relaxed">
+                {language === 'en' 
+                 ? 'Gentle somatic practices connecting breath and physical movement.' 
+                 : 'Ήπιες σωματικές πρακτικές που συνδέουν την αναπνοή με τη φυσική κίνηση του σώματος.'}
               </p>
             </div>
           </div>
@@ -56,18 +91,22 @@ export default function Practice() {
         {/* Microdoses Card */}
         <Link
           to="/practice/microdoses"
-          className="group relative block p-10 rounded-[2.5rem] glass-card transition-all duration-700 hover:border-amber-400/40 md:col-span-2"
+          className="group relative block p-8 md:p-10 shape-cloud-2 bg-[#12141c] border border-white/5 transition-all duration-700 hover:bg-[#161922] hover:border-amber-500/20 shadow-2xl overflow-hidden"
         >
-          <div className="flex flex-col md:flex-row items-center gap-10 relative z-10">
-            <div className="w-24 h-24 rounded-3xl bg-amber-400/10 flex items-center justify-center text-amber-400 border border-amber-400/20 group-hover:scale-110 transition-transform duration-500">
-              <Zap size={40} />
+          <div className="absolute bottom-0 right-0 w-64 h-64 bg-amber-500/5 blur-[80px] -mr-32 -mb-32 rounded-full pointer-events-none transition-transform group-hover:scale-150 duration-1000" />
+          
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-8 relative z-10">
+            <div className="w-20 h-20 shrink-0 shape-cloud-5 bg-amber-400/10 flex items-center justify-center text-amber-400 border border-amber-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
+              <Zap size={36} strokeWidth={1.5} />
             </div>
-            <div className="space-y-2 text-center md:text-left">
-              <h3 className="text-3xl md:text-4xl font-heading text-white italic">
+            <div className="space-y-3 text-center md:text-left flex-1">
+              <h3 className="text-3xl md:text-4xl font-serif text-white/90 italic">
                 {language === 'en' ? 'Invisible Microdoses' : 'Αόρατες Μικροδόσεις'}
               </h3>
-              <p className="text-pine-300 font-light max-w-xl">
-                {language === 'en' ? 'Stealth practices you can do anywhere without being noticed.' : 'Αόρατες πρακτικές που γίνονται παντού χωρίς να σε καταλάβει κανείς.'}
+              <p className="text-white/50 font-sans max-w-xl text-[15px] md:text-[17px] leading-relaxed">
+                {language === 'en' 
+                 ? 'Stealth practices you can do anywhere without being noticed.' 
+                 : 'Αόρατες πρακτικές που γίνονται παντού χωρίς να σε καταλάβει κανείς.'}
               </p>
             </div>
           </div>

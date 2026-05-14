@@ -160,19 +160,19 @@ export default function Dashboard() {
   if (authLoading) {
     return (
       <div className="w-full max-w-3xl mx-auto px-6 pt-4 pb-12 flex flex-col gap-4">
-        <Skeleton className="h-10 w-full rounded-[1.2rem]" />
-        <Skeleton className="h-48 w-full rounded-[1.8rem]" />
+        <Skeleton className="h-10 w-full shape-cloud-6" />
+        <Skeleton className="h-48 w-full shape-cloud-1" />
         <div className="flex items-center px-4 pt-4">
           <Skeleton className="h-3 w-20 rounded-full" />
         </div>
-        <Skeleton className="h-32 w-full rounded-[1.6rem]" />
+        <Skeleton className="h-32 w-full shape-cloud-2" />
         <div className="space-y-1.5 pt-2">
-          <Skeleton className="h-14 w-full rounded-[1.2rem]" />
-          <Skeleton className="h-14 w-full rounded-[1.2rem]" />
+          <Skeleton className="h-14 w-full shape-cloud-3" />
+          <Skeleton className="h-14 w-full shape-cloud-4" />
         </div>
         <div className="grid grid-cols-2 gap-3 mt-4 pt-4 border-t border-white/5">
-          <Skeleton className="h-20 w-full rounded-[1.2rem]" />
-          <Skeleton className="h-20 w-full rounded-[1.2rem]" />
+          <Skeleton className="h-20 w-full shape-cloud-5" />
+          <Skeleton className="h-20 w-full shape-cloud-6" />
         </div>
       </div>
     );
@@ -290,7 +290,7 @@ export default function Dashboard() {
           {activeWisdom && (
             <motion.div 
               variants={itemVariants}
-              className="group relative p-2.5 rounded-[1.2rem] bg-white/[0.01] border border-white/10 overflow-hidden"
+              className="group relative p-2.5 shape-cloud-6 bg-white/[0.01] border border-white/10 overflow-hidden"
             >
               <div className="relative z-10 flex items-center gap-3">
                 <div className="text-teal-400/40 shrink-0">
@@ -307,7 +307,7 @@ export default function Dashboard() {
           <motion.div variants={itemVariants} className="relative mt-2">
             <Link 
               to="/chapters" 
-              className="relative block group overflow-hidden rounded-[2rem] bg-[#081f18] p-6 pt-5 shadow-2xl transition-all active:scale-[0.98] border border-teal-900/40"
+              className="relative block group overflow-hidden shape-cloud-1 bg-[#081f18] p-6 pt-5 shadow-2xl transition-all active:scale-[0.98] border border-teal-900/40"
             >
               {/* Soft texture/gradient for 'breathable' feel */}
               <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 via-transparent to-black/40 pointer-events-none" />
@@ -321,12 +321,12 @@ export default function Dashboard() {
                     </span>
                   </div>
                   <h3 className="text-4xl font-serif text-white/95 italic tracking-tight leading-tight">
-                    {language === 'el' ? 'Γνώθι Σαυτόν' : 'Know Thyself'}
+                    {language === 'el' ? 'Εγχειρίδιο Παρουσίας' : 'Presence Workbook'}
                   </h3>
                 </div>
                 
                 <div className="flex items-center justify-between pt-2">
-                  <div className="inline-flex h-10 items-center justify-center rounded-2xl bg-white/10 hover:bg-white/15 backdrop-blur-md text-white/90 px-6 text-[12px] font-medium border border-white/10 transition-all font-sans group-hover:border-teal-500/30">
+                  <div className="inline-flex h-10 items-center justify-center shape-btn bg-white/10 hover:bg-white/15 backdrop-blur-md text-white/90 px-6 text-[12px] font-medium border border-white/10 transition-all font-sans group-hover:border-teal-500/30">
                     {language === 'el' ? 'Ξεκινήστε την πρακτική' : 'Start the journey'}
                   </div>
                   
@@ -342,7 +342,7 @@ export default function Dashboard() {
               </div>
               
               {/* Subtle glass reflection */}
-              <div className="absolute top-0 left-0 w-full h-[40%] bg-gradient-to-b from-white/[0.04] to-transparent pointer-events-none rounded-t-[2rem]"></div>
+              <div className="absolute top-0 left-0 w-full h-[40%] bg-gradient-to-b from-white/[0.04] to-transparent pointer-events-none"></div>
             </Link>
           </motion.div>
         </div>
@@ -361,7 +361,7 @@ export default function Dashboard() {
             <motion.div variants={itemVariants}>
               <Link 
                 to="/practice"
-                className="group relative block p-4 bg-white/[0.01] border border-white/10 rounded-[1.6rem] hover:bg-white/[0.03] transition-all active:scale-[0.98] overflow-hidden"
+                className="group relative block p-4 bg-white/[0.01] border border-white/10 shape-cloud-2 hover:bg-white/[0.03] transition-all active:scale-[0.98] overflow-hidden"
               >
                 {/* Background Accent */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 blur-3xl -mr-16 -mt-16 rounded-full group-hover:bg-indigo-500/10 transition-colors" />
@@ -410,14 +410,14 @@ export default function Dashboard() {
             <motion.div variants={itemVariants}>
               <Link 
                  to="/rabbithole"
-                 className="group flex items-center gap-3 p-3 h-full bg-[#12141c] border border-white-[0.05] rounded-[1.4rem] hover:bg-[#161922] transition-all active:scale-[0.98]"
+                 className="group flex items-center gap-3 p-3 h-full bg-[#12141c] border border-white/5 shape-cloud-3 hover:bg-[#161922] transition-all active:scale-[0.98]"
               >
                 <div className="w-10 h-10 rounded-xl bg-teal-500/5 flex items-center justify-center text-teal-500/40 border border-teal-500/10 group-hover:text-teal-400 transition-colors">
                   <Telescope size={18} />
                 </div>
                 <div className="flex-1">
                   <h4 className="text-[14px] font-serif text-white/90 italic font-medium tracking-tight">
-                    {language === 'el' ? 'Τρύπα του Λαγού' : 'The Rabbit Hole'}
+                    {language === 'el' ? 'Κουνελότρυπα' : 'The Rabbit Hole'}
                   </h4>
                   <p className="text-[10px] text-white/30 font-sans mt-0.5">
                      {language === 'el' ? 'Φιλοσοφική εξερεύνηση' : 'Philosophical exploration'}
@@ -430,7 +430,7 @@ export default function Dashboard() {
             <motion.div variants={itemVariants}>
               <Link 
                  to="/journal"
-                 className="group flex items-center gap-3 p-3 h-full bg-[#12141c] border border-white-[0.05] rounded-[1.4rem] hover:bg-[#161922] transition-all active:scale-[0.98]"
+                 className="group flex items-center gap-3 p-3 h-full bg-[#12141c] border border-white/5 shape-cloud-4 hover:bg-[#161922] transition-all active:scale-[0.98]"
               >
                 <div className="w-10 h-10 rounded-xl bg-rose-500/5 flex items-center justify-center text-rose-500/40 border border-rose-500/10 group-hover:text-rose-400 transition-colors">
                    <Notebook size={18} />
@@ -453,7 +453,7 @@ export default function Dashboard() {
             <motion.div variants={itemVariants}>
               <button 
                 onClick={handleBookDownload}
-                className="group w-full flex flex-col items-center gap-2 p-4 rounded-[1.2rem] bg-white/[0.02] border border-white/10 hover:bg-white/[0.05] transition-all active:scale-[0.95] text-center"
+                className="group w-full flex flex-col items-center gap-2 p-4 shape-cloud-5 bg-white/[0.02] border border-white/10 hover:bg-white/[0.05] transition-all active:scale-[0.95] text-center"
               >
                 <div className="w-8 h-8 rounded-full bg-teal-500/10 flex items-center justify-center text-teal-400/60 border border-teal-500/10 group-hover:scale-110 transition-transform">
                   <Download size={14} />
@@ -473,7 +473,7 @@ export default function Dashboard() {
               <motion.div variants={itemVariants}>
                 <button 
                   onClick={handleInstallClick}
-                  className="group w-full flex flex-col items-center gap-2 p-4 rounded-[1.2rem] bg-white/[0.02] border border-white/10 hover:bg-white/[0.05] transition-all active:scale-[0.95] text-center"
+                  className="group w-full flex flex-col items-center gap-2 p-4 shape-cloud-5 bg-white/[0.02] border border-white/10 hover:bg-white/[0.05] transition-all active:scale-[0.95] text-center"
                 >
                   <div className="w-8 h-8 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-400/60 border border-indigo-500/10 group-hover:scale-110 transition-transform">
                     <Smartphone size={14} />

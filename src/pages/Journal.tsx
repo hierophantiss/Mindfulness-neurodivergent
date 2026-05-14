@@ -391,7 +391,7 @@ export default function Journal() {
 
       {/* Day Selector */}
       <div className="flex-none px-2 mb-3">
-        <div className="flex justify-between items-center bg-pine-900/50 rounded-[1.25rem] p-1.5 border border-pine-800">
+        <div className="flex justify-between items-center bg-pine-900/50 shape-btn p-1.5 border border-pine-800">
           {journalData.map((d, i) => {
             const isDayDone = Object.values(d.checked).filter(Boolean).length === axes.length;
             const isActive = i === activeDay;
@@ -426,7 +426,7 @@ export default function Journal() {
       <div className="flex-1 overflow-y-auto px-4 pb-4 custom-scrollbar">
         {view === 'daily' ? (
           <div className={cn(
-            "min-h-full flex flex-col rounded-[1.5rem] border overflow-hidden p-4 transition-colors",
+            "min-h-full flex flex-col shape-cloud-6 border overflow-hidden p-4 transition-colors",
             done ? "bg-teal-900/20 border-teal-500/30" : "bg-pine-800/20 border-pine-700/60"
           )}>
             {/* Day Header */}
@@ -599,7 +599,7 @@ export default function Journal() {
                 value={entry.note}
                 onChange={(e) => updateNote(activeDay, e.target.value)}
                 placeholder={texts.notePlaceholder[language]}
-                className="w-full h-40 border border-pine-600/60 bg-pine-950/50 rounded-[1.5rem] p-4 text-[15px] text-pine-100 resize-none focus:outline-none focus:border-teal-500/60 focus:bg-pine-950 transition-colors shadow-inner leading-relaxed placeholder:text-pine-800"
+                className="w-full h-40 border border-pine-600/60 bg-pine-950/50 shape-cloud-2 p-4 text-[15px] text-pine-100 resize-none focus:outline-none focus:border-teal-500/60 focus:bg-pine-950 transition-colors shadow-inner leading-relaxed placeholder:text-pine-800"
               />
             </div>
 
@@ -607,7 +607,7 @@ export default function Journal() {
             <div className="mt-8 flex flex-col items-center gap-4">
               <button 
                 onClick={exportJournal}
-                className="w-full py-4 rounded-2xl bg-teal-500/10 border-2 border-dashed border-teal-500/40 text-teal-400 text-sm font-bold hover:bg-teal-500/20 transition-all flex items-center justify-center gap-2"
+                className="w-full py-4 shape-btn bg-teal-500/10 border-2 border-dashed border-teal-500/40 text-teal-400 text-sm font-bold hover:bg-teal-500/20 transition-all flex items-center justify-center gap-2"
               >
                 {texts.exportBtn[language]}
               </button>
@@ -623,7 +623,7 @@ export default function Journal() {
         ) : (
           <div className="space-y-6">
             {/* Mood Trends Chart */}
-            <div className="bg-pine-900/40 p-6 rounded-[2rem] border border-pine-800/60">
+            <div className="bg-pine-900/40 p-6 shape-cloud-2 border border-pine-800/60">
               <div className="mb-6 flex items-center justify-between">
                 <div>
                   <h3 className="text-lg font-bold text-white font-heading">
@@ -685,7 +685,7 @@ export default function Journal() {
             </div>
 
             {/* Weekly Progress Chart */}
-            <div className="bg-pine-900/40 p-6 rounded-[2rem] border border-pine-800/60">
+            <div className="bg-pine-900/40 p-6 shape-cloud-3 border border-pine-800/60">
               <div className="mb-6">
                 <h3 className="text-lg font-bold text-white font-heading">
                   {language === 'el' ? 'Συνολική Πρόοδος' : 'Weekly Progress'}
@@ -731,7 +731,7 @@ export default function Journal() {
 
             {/* Breath Sessions */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-pine-900/40 p-5 rounded-[1.5rem] border border-pine-800/60 flex flex-col items-center justify-center text-center">
+              <div className="bg-pine-900/40 p-5 shape-cloud-4 border border-pine-800/60 flex flex-col items-center justify-center text-center">
                 <div className="w-10 h-10 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center mb-2">
                   <Check size={20} />
                 </div>
@@ -739,7 +739,7 @@ export default function Journal() {
                 <div className="text-[10px] font-bold text-pine-400 uppercase tracking-widest">{language === 'el' ? 'ΟΛΟΚΛΗΡΩΜΕΝΑ' : 'COMPLETED'}</div>
               </div>
               
-              <div className="bg-pine-900/40 p-5 rounded-[1.5rem] border border-pine-800/60 flex flex-col items-center justify-center text-center">
+              <div className="bg-pine-900/40 p-5 shape-cloud-5 border border-pine-800/60 flex flex-col items-center justify-center text-center">
                 <div className="w-10 h-10 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center mb-2">
                   <Check size={20} className="rotate-12" />
                 </div>

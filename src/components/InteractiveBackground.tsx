@@ -1,86 +1,63 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useTheme } from '../hooks/useTheme';
 
 export function InteractiveBackground() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
   const { theme } = useTheme();
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({
-        x: e.clientX / window.innerWidth,
-        y: e.clientY / window.innerHeight,
-      });
-    };
-
-    const handleMouseEnter = () => setIsHovering(true);
-    const handleMouseLeave = () => setIsHovering(false);
-
-    window.addEventListener('mousemove', handleMouseMove);
-    document.body.addEventListener('mouseenter', handleMouseEnter);
-    document.body.addEventListener('mouseleave', handleMouseLeave);
-
-    setMousePosition({ x: 0.5, y: 0.5 });
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      document.body.removeEventListener('mouseenter', handleMouseEnter);
-      document.body.removeEventListener('mouseleave', handleMouseLeave);
-    };
+  // Generate static random stars, avoiding hydration mismatch
+  const stars = useMemo(() => {
+    return Array.from({ length: 250 }).map(() => {
+      // More stars at the top, fewer at the horizon (skewing y using pow)
+      const y = Math.pow(Math.random(), 1.2) * 100;
+      const x = Math.random() * 100;
+      // Size varies, some very tiny
+      const size = Math.random() * 1.5 + 0.5;
+      const opacity = Math.random() * 0.5 + 0.1;
+      const blinkDuration = Math.random() * 4 + 3;
+      const blinkDelay = Math.random() * 5;
+      
+      return { x, y, size, opacity, blinkDuration, blinkDelay };
+    });
   }, []);
 
-  // Make the lines pop more depending on theme
-  const sandLineColor = theme === 'light' ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.06)';
-
   return (
-    <div className={`fixed inset-0 z-0 pointer-events-none overflow-hidden transition-colors duration-1000 ease-out ${theme === 'light' ? 'bg-[#F0EBE1]' : 'bg-transparent'}`}>
+    <div className={`fixed inset-0 z-0 pointer-events-none overflow-hidden transition-colors duration-1000 ease-out ${theme === 'light' ? 'bg-[#cbd5e1]' : 'bg-[#02040a]'}`}>
       
-      {/* Simplified Soft Orbs - Only gradients, no distracting patterns */}
+      {/* Deep Space Background (Dawn Gradient) */}
       <div 
-        className={`absolute w-[100vw] h-[100vw] rounded-full blur-[120px] transition-transform duration-[3000ms] ease-out will-change-transform ${theme === 'light' ? 'bg-orange-100/30' : 'bg-[#e6a15c]/05'}`}
+        className={`absolute inset-0 transition-opacity duration-1000 ${theme === 'light' ? 'opacity-0' : 'opacity-100'}`}
         style={{
-          transform: `translate(${mousePosition.x * 15 - 7}vw, ${mousePosition.y * 15 - 7}vh)`,
-          left: '-20%',
-          top: '-20%',
+          background: 'linear-gradient(to bottom, #020308 0%, #070b19 40%, #0c1a2f 80%, #0f2438 100%)'
         }}
-      ></div>
+      />
 
-      <div 
-        className={`absolute w-[80vw] h-[80vw] rounded-full blur-[120px] transition-transform duration-[3000ms] ease-out will-change-transform delay-150 ${theme === 'light' ? 'bg-stone-200/40' : 'bg-[#788276]/10'}`}
-        style={{
-          transform: `translate(${mousePosition.x * -15 + 7}vw, ${mousePosition.y * -10 + 5}vh)`,
-          right: '-15%',
-          bottom: '-15%',
-        }}
-      ></div>
-
-      {/* Subtle Dust / Dust Particles for ambient calm breathing */}
-      <div className="absolute inset-0 mix-blend-screen opacity-40">
-        {[...Array(12)].map((_, i) => (
+      {/* Stars Layer */}
+      <div className={`absolute inset-0 transition-opacity duration-1000 ${theme === 'light' ? 'opacity-0' : 'opacity-100'}`}>
+        {stars.map((star, i) => (
           <div
-            key={`particle-${i}`}
-            className="absolute rounded-full bg-white blur-[2px] animate-particle-float"
+            key={i}
+            className="absolute rounded-full bg-white animate-twinkle"
             style={{
-              width: `${Math.random() * 4 + 2}px`,
-              height: `${Math.random() * 4 + 2}px`,
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * -20}s`,
-              animationDuration: `${Math.random() * 10 + 15}s`,
-            }}
+              left: `${star.x}%`,
+              top: `${star.y}%`,
+              width: `${star.size}px`,
+              height: `${star.size}px`,
+              // Using CSS variables for the animation
+              '--twinkle-base': star.opacity.toString(),
+              '--twinkle-duration': `${star.blinkDuration}s`,
+              '--twinkle-delay': `${star.blinkDelay}s`,
+            } as React.CSSProperties}
           />
         ))}
       </div>
 
-      {/* Intense sand texturing using procedural fractal noise */}
+      {/* Very faint mist/glow at the horizon (bottom) to give the "pre-dawn" look */}
       <div 
-        className={`absolute inset-0 mix-blend-overlay ${theme === 'light' ? 'opacity-40' : 'opacity-[0.12]'}`}
+        className={`absolute bottom-0 left-0 right-0 h-[40vh] mix-blend-screen pointer-events-none transition-opacity duration-1000 ${theme === 'light' ? 'opacity-0' : 'opacity-70'}`}
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-          backgroundSize: '150px 150px'
+          background: 'linear-gradient(to top, rgba(20, 184, 166, 0.08) 0%, rgba(99, 102, 241, 0.03) 40%, transparent 100%)'
         }}
-      ></div>
+      />
     </div>
   );
 }

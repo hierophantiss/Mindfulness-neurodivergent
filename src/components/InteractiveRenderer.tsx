@@ -33,7 +33,7 @@ export default function InteractiveRenderer({ id }: InteractiveRendererProps) {
   const src = `/animations/${fileName}`;
 
   return (
-    <div className="relative w-full h-[500px] md:h-[650px] bg-[#050710] rounded-[2.5rem] overflow-hidden border border-white/5 shadow-2xl my-10 group">
+    <div className="relative w-full h-[500px] md:h-[650px] bg-[#050710] shape-cloud-3 overflow-hidden border border-white/5 shadow-2xl my-10 group">
       <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black/20 to-transparent pointer-events-none z-10" />
       <iframe 
         src={src} 

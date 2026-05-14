@@ -43,10 +43,10 @@ export default function Program() {
               {language === 'en' ? '8 Weeks Program' : 'Πρόγραμμα 8 Εβδομάδων'}
             </span>
           </div>
-          <h2 className="text-5xl md:text-7xl font-heading text-white italic leading-none tracking-tight">
+          <h2 className="text-5xl md:text-7xl font-serif text-white/90 italic leading-none tracking-tight">
             {language === 'en' ? 'The Path' : 'Η Διαδρομή'}
           </h2>
-          <p className="text-lg text-pine-300 font-light max-w-xl mx-auto leading-relaxed italic">
+          <p className="text-lg text-white/50 font-sans max-w-xl mx-auto leading-relaxed">
             {language === 'en' 
               ? 'A 56-day structured journey to master awareness and emotional regulation.'
               : 'Μια δομημένη πορεία 56 ημερών για την εκμάθηση της επίγνωσης.'}
@@ -81,23 +81,24 @@ export default function Program() {
                 to={`/program/week/${weekNum}`} 
                 key={weekNum} 
                 className={cn(
-                  "group relative p-8 rounded-[2.5rem] glass-card transition-all duration-500 overflow-hidden",
-                  isCurrent && "border-teal-400/40 shadow-[0_0_30px_rgba(45,212,191,0.1)]",
-                  isCompleted && "opacity-60 grayscale hover:grayscale-0 hover:opacity-100"
+                  "group relative p-8 bg-[#12141c] border border-white/5 transition-all duration-500 overflow-hidden hover:bg-[#161922]",
+                  isCurrent && "border-teal-400/40 shadow-2xl bg-[#161922]",
+                  isCompleted && "opacity-60 grayscale hover:grayscale-0 hover:opacity-100",
+                  `shape-cloud-${(weekNum % 5) + 1}`
                 )}
               >
                 <div className="flex flex-col gap-6 relative z-10 h-full">
                   <div className="flex justify-between items-start">
                     <div className={cn(
-                      "w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-heading font-bold border transition-all duration-500",
+                      "w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-sans font-bold border transition-all duration-500",
                       isCurrent 
                         ? "bg-teal-400/20 text-teal-300 border-teal-400/30 shadow-[0_0_20px_rgba(45,212,191,0.2)]" 
-                        : "bg-white/5 text-pine-400 border-white/10 group-hover:bg-white/10 group-hover:text-white"
+                        : "bg-white/5 text-white/50 border-white/10 group-hover:bg-white/10 group-hover:text-white"
                     )}>
                       {isCompleted ? <CheckCircle2 size={24} /> : weekNum}
                     </div>
                     
-                    <div className="text-[10px] font-bold text-pine-500 uppercase tracking-widest pt-2">
+                    <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest pt-2">
                       {isCurrent && curD > 0 
                         ? `${curD}/${week.days.length} ${language === 'en' ? 'DONE' : 'ΗΜΕΡΕΣ'}`
                         : `${week.days.length} ${language === 'en' ? 'DAYS' : 'ΗΜΕΡΕΣ'}`
@@ -105,21 +106,43 @@ export default function Program() {
                     </div>
                   </div>
 
-                  <div className="space-y-2">
+                  <div className="space-y-4">
                     <span className="text-[10px] font-bold text-teal-400 opacity-60 uppercase tracking-[0.2em]">
                       {language === 'en' ? 'Week' : 'Εβδομάδα'} {weekNum}
                     </span>
                     <h3 className={cn(
-                      "text-2xl font-heading italic leading-tight transition-colors",
-                      isCompleted ? "text-pine-400 font-light" : "text-white"
+                      "text-2xl font-serif italic leading-tight transition-colors",
+                      isCompleted ? "text-white/40" : "text-white/90"
                     )}>
                       {week.title}
                     </h3>
                   </div>
+
+                  <div className="flex gap-1.5 opacity-80 mt-6 pt-4 border-t border-white/5 relative z-20">
+                    {week.days.map((_, i) => {
+                      let dayCompleted = false;
+                      if (curW > weekNum) {
+                        dayCompleted = true;
+                      } else if (curW === weekNum && i < curD) {
+                        dayCompleted = true;
+                      }
+
+                      return (
+                        <div 
+                          key={i} 
+                          title={`${language === 'en' ? 'Day' : 'Ημέρα'} ${i + 1}`}
+                          className={cn(
+                            "h-1.5 flex-1 rounded-full transition-all duration-500",
+                            dayCompleted ? "bg-teal-400/80 shadow-[0_0_8px_rgba(45,212,191,0.4)]" : "bg-white/10 group-hover:bg-white/20"
+                          )} 
+                        />
+                      );
+                    })}
+                  </div>
                 </div>
 
                 <div className="absolute -bottom-4 -right-4 p-8 text-white/[0.02] group-hover:text-white/[0.05] transition-all duration-700 select-none pointer-events-none">
-                   <span className="text-9xl font-heading font-black italic">W{weekNum}</span>
+                   <span className="text-9xl font-serif font-black italic">W{weekNum}</span>
                 </div>
               </Link>
             );

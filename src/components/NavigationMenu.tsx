@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Home, BookOpen, Activity, Notebook, Menu, X, Info, Music, Bell, Compass, LayoutGrid, EyeOff, Eye, Database, User as UserIcon, LogOut } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Home, BookOpen, Activity, Notebook, Menu, X, Info, Music, Bell, Compass, LayoutGrid, EyeOff, Eye, Database, User as UserIcon, LogOut, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
@@ -10,12 +10,32 @@ import { useFirebase } from '../lib/FirebaseContext';
 export default function NavigationMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const { language } = useLanguage();
   const { theme, toggleTheme } = useTheme();
   const { reduceMotion, toggleReduceMotion } = useAccessibility();
   const { user, signInWithGoogle, logout } = useFirebase();
+
+  useEffect(() => {
+    const handler = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        setDeferredPrompt(null);
+      }
+    }
+  };
 
   const handleNav = (path: string) => {
     setIsOpen(false);
@@ -24,7 +44,7 @@ export default function NavigationMenu() {
 
   const showInfo = () => {
     setIsOpen(false);
-    navigate('/landing_info');
+    navigate('/method');
   };
 
   const showToast = (message: string) => {
@@ -33,7 +53,7 @@ export default function NavigationMenu() {
   };
 
   const mainNavItems = [
-    { path: '/', icon: <Home size={18} />, labelEn: 'Home', labelEl: 'Αρχική' },
+    { path: '/dashboard', icon: <Home size={18} />, labelEn: 'Home', labelEl: 'Αρχική' },
     { path: '/chapters', icon: <BookOpen size={18} />, labelEn: 'Read', labelEl: 'Διάβασμα' },
     { path: '/practice', icon: <Activity size={18} />, labelEn: 'Practice', labelEl: 'Πρακτική' },
     { path: '/journal', icon: <Notebook size={18} />, labelEn: 'Journal', labelEl: 'Ημερολόγιο' },
@@ -43,7 +63,7 @@ export default function NavigationMenu() {
     { path: '/program', icon: '🗺️', labelEn: 'Program', labelEl: 'Πλάνο' },
     { path: '/rabbithole', icon: '🐇', labelEn: 'Rabbit Hole', labelEl: 'Εξερεύνηση' },
     { path: '/faq', icon: '❓', labelEn: 'FAQ', labelEl: 'Συχνές Ερωτήσεις' },
-    { path: '/landing_info', icon: '∞', labelEn: 'Guide', labelEl: 'Οδηγός' },
+    { path: '/method', icon: '∞', labelEn: 'Method', labelEl: 'Η Μέθοδος' },
     { path: '/media', icon: '🎬', labelEn: 'Media', labelEl: 'Υλικό' },
   ];
 
@@ -65,7 +85,7 @@ export default function NavigationMenu() {
 
       {/* Bottom Navigation Dock */}
       <div className="fixed bottom-[calc(1.25rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-40 w-auto pointer-events-none">
-        <div className="bg-[#0f171a]/80 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] px-6 py-2.5 flex items-center justify-center gap-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] pointer-events-auto">
+        <div className="bg-[#0f171a]/80 backdrop-blur-3xl border border-white/10 shape-nav px-6 py-2.5 flex items-center justify-center gap-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] pointer-events-auto">
           {mainNavItems.map((item) => {
             const isActive = location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path));
             return (
@@ -164,8 +184,8 @@ export default function NavigationMenu() {
                 })}
               </div>
 
-              {/* Settings / Accessibility Toggles */}
-              <div className="px-6 pb-6 max-w-2xl mx-auto w-full">
+              {/* Settings / Accessibility & Install Toggles */}
+              <div className="px-6 pb-6 max-w-2xl mx-auto w-full flex flex-col gap-3">
                 <div className="bg-white/[0.03] border border-white/[0.05] rounded-3xl p-4 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full flex items-center justify-center bg-pine-900/50 text-pine-300">
@@ -191,6 +211,28 @@ export default function NavigationMenu() {
                     />
                   </button>
                 </div>
+
+                {/* Install App - Only show when install prompt is available */}
+                {deferredPrompt && (
+                  <button 
+                    onClick={handleInstallClick}
+                    className="bg-teal-500/10 border border-teal-500/20 hover:bg-teal-500/20 rounded-3xl p-4 flex items-center justify-between transition-colors active:scale-[0.98]"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center bg-teal-500/20 text-teal-400">
+                        <Download size={18} />
+                      </div>
+                      <div className="flex flex-col text-left">
+                        <span className="text-sm font-medium text-teal-100">
+                          {language === 'en' ? 'Install App' : 'Εγκατάσταση Εφαρμογής'}
+                        </span>
+                        <span className="text-[10px] text-teal-400/80">
+                          {language === 'en' ? 'Add to your home screen' : 'Προσθήκη στην αρχική οθόνη'}
+                        </span>
+                      </div>
+                    </div>
+                  </button>
+                )}
               </div>
 
               <div className="flex justify-center gap-6 items-center p-6 border-t border-pine-800/40 mt-auto pb-[calc(1.5rem+env(safe-area-inset-bottom))]">

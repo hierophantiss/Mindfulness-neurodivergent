@@ -5,6 +5,127 @@ import { cn } from '../lib/utils';
 import { useLanguage } from '../hooks/useLanguage';
 
 const EXERCISES: Record<string, any> = {
+  // --- ΜΙΚΡΟΔΟΣΕΙΣ ΑΠΟ ΤΟ 8-ΕΒΔΟΜΑΔΟ ΠΡΟΓΡΑΜΜΑ ---
+  'axis-pause': {
+    title: { el: '1 Δευτερόλεπτο (Βαρύτητα & Άξονας)', en: '1 Second Pause (Gravity & Axis)' },
+    desc: { el: 'Κανείς δεν θα προσέξει τίποτα. Μια στιγμιαία επαναφορά του νευρικού συστήματος.', en: 'No one will notice a thing. A momentary reset of the nervous system.' },
+    duration: 60, // 1 min practice (though the pause is 1s)
+    color: 'emerald',
+    instructions: {
+      el: [
+        "Σταμάτησε ό,τι κάνεις για 1 δευτερόλεπτο.",
+        "Νιώσε απλά το βάρος του σώματός σου να 'πέφτει'.",
+        "Ταυτόχρονα, νιώσε τον κατακόρυφο άξονα που σε κρατάει όρθιο.",
+        "Χωρίς να σφίγγεσαι. Συνέχισε τη μέρα σου."
+      ],
+      en: [
+        "Stop whatever you're doing for 1 second.",
+        "Simply feel the weight of your body 'dropping'.",
+        "At the same time, feel the vertical axis keeping you upright.",
+        "Without tensing up. Continue your day."
+      ]
+    }
+  },
+  'shoulder-drop': {
+    title: { el: 'Απελευθέρωση Ώμων', en: 'Shoulder Drop' },
+    desc: { el: 'Διάλυσε τη συσσωρευμένη ένταση αόρατα, όπου κι αν βρίσκεσαι.', en: 'Dissolve accumulated tension invisibly, wherever you are.' },
+    duration: 60, 
+    color: 'emerald',
+    instructions: {
+      el: [
+        "Φέρε την προσοχή στους ώμους σου. Νιώσε πώς τους κρατάς.",
+        "Με μια φυσική εκπνοή, άφησέ τους απλά να πέσουν.",
+        "Δώσε το βάρος τους στη βαρύτητα.",
+        "Ο άξονας παραμένει ψηλός, οι ώμοι βαριά προσγειωμένοι."
+      ],
+      en: [
+        "Bring attention to your shoulders. Notice how you hold them.",
+        "With a natural exhale, just let them drop.",
+        "Give their weight to gravity.",
+        "Your axis remains tall, your shoulders heavily grounded."
+      ]
+    }
+  },
+  'rhythm-5-5': {
+    title: { el: 'Ρυθμική Αναπνοή 5-5', en: 'Rhythmic Breath 5-5' },
+    desc: { el: 'Η απόλυτη συμμετρία που ηρεμεί άμεσα τον «αυτόματο πιλότο».', en: 'The absolute symmetry that instantly calms the "autopilot".' },
+    duration: 120, // 2 mins
+    color: 'teal',
+    instructions: {
+      el: [
+        "Χωρίς να αλλάξεις κάτι άλλο, άρχισε να μετράς νοερά.",
+        "Εισπνοή για 5 δευτερόλεπτα.",
+        "Εκπνοή για 5 δευτερόλεπτα.",
+        "Νιώσε τον αέρα στα ρουθούνια. Επανέλαβε όσες φορές χρειάζεται."
+      ],
+      en: [
+        "Without changing anything else, start counting mentally.",
+        "Inhale for 5 seconds.",
+        "Exhale for 5 seconds.",
+        "Feel the air at your nostrils. Repeat as needed."
+      ]
+    }
+  },
+  'anchor-7-sec': {
+    title: { el: 'Οπτική Άγκυρα 7"', en: 'Visual Anchor 7"' },
+    desc: { el: 'Το βλέμμα κλειδώνει, ο νους ησυχάζει.', en: 'Gaze locks, mind quiets.' },
+    duration: 60, // 1 min (with 7 sec reps)
+    color: 'amber',
+    instructions: {
+      el: [
+        "Επίλεξε ένα οποιοδήποτε μικρό αντικείμενο στο χώρο σου.",
+        "Κοίταξέ το σταθερά, χωρίς να πάρεις τα μάτια σου, για 7 δευτερόλεπτα.",
+        "Μην το κρίνεις. Απλώς κοίταξε το σχήμα και το χρώμα του.",
+        "Επέστρεψε στην εργασία σου."
+      ],
+      en: [
+        "Pick any small object in your space.",
+        "Look at it steadily, without looking away, for 7 seconds.",
+        "Don't judge it. Just look at its shape and color.",
+        "Return to your task."
+      ]
+    }
+  },
+  'alternate-focus': {
+    title: { el: 'Εναλλάξ Εστίαση', en: 'Alternate Focus' },
+    desc: { el: 'Η κίνηση του βλέμματος ξεκουράζει το νευρικό σύστημα.', en: 'Moving your gaze rests the nervous system.' },
+    duration: 90, 
+    color: 'amber',
+    instructions: {
+      el: [
+        "Επίλεξε ένα αντικείμενο στα δεξιά σου και ένα στα αριστερά σου.",
+        "Κοίτα το δεξί με εστίαση. Νιώσε την αναπνοή σου.",
+        "Απαλά, μετάφερε το βλέμμα σου στο αριστερό αντικείμενο.",
+        "Κάνε την εναλλαγή αργά, χρησιμοποιώντας την κίνηση των ματιών σου για χαλάρωση."
+      ],
+      en: [
+        "Pick an object to your right and one to your left.",
+        "Look at the right one with focus. Feel your breath.",
+        "Gently, shift your gaze to the left object.",
+        "Alternate slowly, using the eye movement for relaxation."
+      ]
+    }
+  },
+  'samatha-micro': {
+    title: { el: 'Σκέψεις σαν Σύννεφα', en: 'Thoughts as Clouds' },
+    desc: { el: 'Μην πολεμάς τις σκέψεις. Άλλαξε τον τρόπο που τις κοιτάς.', en: "Don't fight thoughts. Change how you look at them." },
+    duration: 120, // 2 mins
+    color: 'indigo',
+    instructions: {
+      el: [
+        "Φαντάσου το μυαλό σου σαν έναν μεγάλο ουρανό.",
+        "Κάθε σκέψη που έρχεται είναι απλώς ένα συννεφάκι.",
+        "Δεν την κρατάς, δεν τη διώχνεις. Την βλέπεις να διασχίζει τον ουρανό.",
+        "Εσύ παραμένεις ο σταθερός, ανοιχτός παρατηρητής."
+      ],
+      en: [
+        "Imagine your mind as a vast sky.",
+        "Every thought that comes is just a small cloud.",
+        "You don't hold it, you don't chase it away. Watch it cross the sky.",
+        "You remain the steady, open observer."
+      ]
+    }
+  },
   'body-scan': {
     title: { el: 'Μικρο-Γείωση Σώματος', en: 'Micro Body Grounding' },
     desc: { el: 'Σύντομος έλεγχος του σώματος για άμεση επιστροφή στο εδώ και τώρα.', en: 'Short body check for an immediate return to the here and now.' },

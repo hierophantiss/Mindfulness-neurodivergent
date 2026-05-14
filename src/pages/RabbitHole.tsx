@@ -1,17 +1,29 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { BookOpen, ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 
 export default function RabbitHole() {
+  const location = useLocation();
+  const navigate = useNavigate();
   const { language } = useLanguage();
   const [activeArticle, setActiveArticle] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
+
+  useEffect(() => {
+    if (location.state && (location.state as any).activeArticle) {
+      setActiveArticle((location.state as any).activeArticle);
+      setCurrentPage(0);
+      // Clear the state so it doesn't reopen upon refresh
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state, location.pathname, navigate]);
   
   const touchStartX = useRef(0);
 
   const t = {
-    title: language === 'en' ? 'The Rabbit Hole' : 'Η Τρύπα του Λαγού',
+    title: language === 'en' ? 'The Rabbit Hole' : 'Κουνελότρυπα',
     subtitle: language === 'en' ? 'Allegories of the World' : 'Αλληγορίες του Κόσμου',
     back: language === 'en' ? 'Back' : 'Πίσω',
     startReading: language === 'en' ? 'Start Reading' : 'Έναρξη Ανάγνωσης',
@@ -146,6 +158,35 @@ export default function RabbitHole() {
         "Δίνοντας έμφαση στην απουσία αντικειμένων —τη σιωπή ανάμεσα στις λέξεις, την απόσταση ανάμεσα στα άτομα— το νευρικό σύστημα μεταβαίνει φυσικά σε συγχρονισμένα κύματα Άλφα.",
         "Αυτή η κατάσταση «συγχρονισμένου Άλφα» ενοποιεί και τα δύο ημισφαίρια του εγκεφάλου. Είναι το φυσιολογικό θεμέλιο για τη «Μία Γεύση» της Μαχαμούντρα: μια κατάσταση όπου ο εσωτερικός και ο εξωτερικός χώρος γίνονται ένα."
       ]
+    },
+    {
+      id: 'riding-the-wind',
+      title: language === 'en' ? 'Learning to Ride the Wind' : 'Μαθαίνοντας να ιππεύεις τον άνεμο',
+      author: language === 'en' ? 'Tsa Lung & Practice' : 'Tsa Lung & Παράδοση',
+      pages: language === 'en' ? [
+        "In the Tibetan tradition, the practice of *tsa lung* (channels and winds) teaches us that the energy of the mind, the 'wind', moves through the physical and energetic pathways of the body. This principle pervades all great traditions. Yoga was perhaps the first to systematize the union of body and breath, describing our existence as a 'Matryoshka': veils embracing one another.",
+        "We find the same unification in Kung Fu (as taught by Bodhidharma to ground the scattered mind), in the arts of Qi Gong and Tai Chi, and in the sacred spinning of the Sufis.",
+        "All these methods share a common goal: **regulating the nervous system so that open awareness can emerge effortlessly.** For a neurodivergent person, energy often moves violently between distraction and fixation. The goal is to learn to ride this wind, cultivating a calmness that cooperates with our brain instead of fighting it.",
+        "**The Body as a Channel / The Veil of Matter (Annamaya Kosha)**\nThe journey begins with the physical body. The pressure of feeling different translates into chronic tightness. \n* Movement – through *tsa lung* or Tai Chi – unlocks the body.\n* By focusing on gravity, the nervous system receives its first message of safety and grounding.",
+        "**Breath as Wind / The Veil of Breath (Pranamaya Kosha)**\nThe second Matryoshka is the breath.\n* A slow exhalation through the mouth sends safety signals via the vagus nerve. It reduces the 'fight or flight' response, allowing the brain to lower its defenses.",
+        "**Rhythm & Brain Waves / The Veils of the Mind (Manomaya Kosha)**\nIn moments of hyperarousal, the mind emits chaotic Beta waves. To quiet this noise, we need rhythm. The Sufis, through rhythmic movements and the recitation of sacred sounds (*dhikr*), tune their nervous system to the frequency of love, bringing the center to the heart.",
+        "Neurologically, this unification causes the **synchronization of the two hemispheres**. Chaotic waves give way to **Alpha and Theta waves**. Presence becomes total and effortless.",
+        "**Open Space, Mahamudra, and 'One Taste' (Anandamaya Kosha)**\nWhen energy flows freely, we brush aside the final veil. There we find Space. In the Mahamudra tradition, this state is called **'One Taste'**. There is no longer a separation between the observer and the observed, between 'inside' and 'outside'. Everything – thoughts, sounds, emotions – has the same 'taste' of pure awareness.",
+        "At this point, neuroscientists observe an explosion of **Gamma waves**, which are associated with absolute clarity and the experience of Oneness.",
+        "You are not the Matryoshka you see from the outside. **You are the air in the smallest Matryoshka (in the heart), which is inseparably united with the infinite space.** In this open awareness, the mind may continue to think, but it stops carrying you away. You have learned to ride the wind."
+      ] : [
+        "Στην παράδοση του Θιβέτ, η πρακτική του *tsa lung* (κανάλια και άνεμοι) μας διδάσκει ότι η ενέργεια του νου, δηλαδή ο «άνεμος», κινείται μέσα από τα φυσικά και ενεργειακά μονοπάτια του σώματος.",
+        "Αυτή η αρχή διαπερνά όλες τις μεγάλες παραδόσεις. Η Γιόγκα ήταν ίσως η πρώτη που συστηματοποίησε την ένωση σώματος και αναπνοής, περιγράφοντας την ύπαρξή μας σαν μια «Μπάμπουσκα»: πέπλα που το ένα αγκαλιάζει το άλλο.",
+        "Την ίδια ενοποίηση συναντάμε στο Κουνγκ Φου (όπως το δίδαξε ο Μποντιντάρμα για να γειώσει τον διασκορπισμένο νου), στις τέχνες του Τσι Κονγκ και του Τάι Τσι, αλλά και στις ιερές περιστροφές των Σούφι.",
+        "Όλες αυτές οι μέθοδοι μοιράζονται έναν κοινό στόχο: **τη ρύθμιση του νευρικού συστήματος, ώστε η ανοιχτή επίγνωση να αναδυθεί αβίαστα.**\n\nΓια έναν νευροαποκλίνοντα άνθρωπο, η ενέργεια συχνά κινείται βίαια ανάμεσα στη διάσπαση και την καθήλωση. Το ζητούμενο είναι να μάθουμε να ιππεύουμε αυτόν τον άνεμο, καλλιεργώντας μια ηρεμία που συνεργάζεται με τον εγκέφαλό μας αντί να τον πολεμά.",
+        "**Το Σώμα ως Κανάλι / Το Πέπλο της Ύλης (Annamaya Kosha)**\nΗ διαδρομή ξεκινά από το φυσικό σώμα. Η πίεση του να νιώθουμε διαφορετικοί μεταφράζεται σε χρόνια σφιξίματα.\n* Η κίνηση –μέσα από το *tsa lung* ή το Τάι Τσι– ξεκλειδώνει το σώμα.\n* Εστιάζοντας στη βαρύτητα, το νευρικό σύστημα λαμβάνει το πρώτο μήνυμα ασφάλειας και γείωσης.",
+        "**Η Αναπνοή ως Άνεμος / Το Πέπλο της Πνοής (Pranamaya Kosha)**\nΗ δεύτερη μπάμπουσκα είναι η πνοή.\n* Μια αργή εκπνοή από το στόμα στέλνει σήματα ασφαλείας μέσω του πνευμονογαστρικού νεύρου. Μειώνει την αντίδραση «πάλης ή φυγής», επιτρέποντας στον εγκέφαλο να ρίξει τις άμυνές του.",
+        "**Ρυθμός & Εγκεφαλικά Κύματα / Τα Πέπλα του Νου (Manomaya Kosha)**\nΣε στιγμές υπερδιέγερσης, ο νους εκπέμπει χαοτικά κύματα Βήτα. Για να ησυχάσει αυτός ο θόρυβος, χρειαζόμαστε ρυθμό. Οι Σούφι, μέσα από ρυθμικές κινήσεις και την απαγγελία ιερών ήχων (*ζικρ*), συντονίζουν το νευρικό τους σύστημα με τη συχνότητα της αγάπης, φέρνοντας το κέντρο στην καρδιά.",
+        "Νευρολογικά, αυτή η ενοποίηση προκαλεί τον **συγχρονισμό των δύο ημισφαιρίων**. Τα χαοτικά κύματα υποχωρούν για τα **κύματα Άλφα και Θήτα**. Η παρουσία γίνεται ολική και αβίαστη.",
+        "**Ανοιχτός Χώρος, Μαχαμούντρα και «Μια Γεύση» (Anandamaya Kosha)**\nΌταν η ενέργεια ρέει ελεύθερα, παραμερίζουμε και το τελευταίο πέπλο. Εκεί βρίσκουμε τον Χώρο. Στην παράδοση της Μαχαμούντρα, αυτή η κατάσταση ονομάζεται **«Μια Γεύση» (One Taste)**. Δεν υπάρχει πλέον διαχωρισμός ανάμεσα στον παρατηρητή και το παρατηρούμενο, ανάμεσα στο «μέσα» και το «έξω». Τα πάντα –σκέψεις, ήχοι, συναισθήματα– έχουν την ίδια «γεύση» καθαρής επίγνωσης.",
+        "Σε αυτό το σημείο, οι νευροεπιστήμονες παρατηρούν την έκρηξη των **κυμάτων Γάμμα**, που συνδέονται με την απόλυτη διαύγεια και την εμπειρία της Ενότητας.",
+        "Δεν είσαι η μπάμπουσκα που βλέπεις απέξω. **Είσαι ο αέρας στην πιο μικρή μπάμπουσκα (στην καρδιά), που είναι αδιάσπαστα ενωμένος με τον άπειρο χώρο.** Σε αυτή την ανοιχτή επίγνωση, το μυαλό μπορεί να συνεχίσει να σκέφτεται, αλλά παύει να σε παρασύρει. Έχεις μάθει να ιππεύεις τον άνεμο.."
+      ]
     }
   ];
 
@@ -193,25 +234,25 @@ export default function RabbitHole() {
   // Story Viewer Render
   if (activeArticle) {
     const article = articles.find(a => a.id === activeArticle);
-    if (!article) return null;
+    if (!article) return <div className="text-white p-20 mt-20 text-center">Article not found: {activeArticle}</div>;
 
-    return (
-      <div className="fixed inset-0 z-50 bg-[#1E1B18] text-white flex flex-col animate-in fade-in duration-300">
+    const storyViewer = (
+      <div className="fixed inset-0 z-[9999] bg-[#0f1117] text-white flex flex-col animate-in fade-in duration-300">
         
         {/* Top Progress Bar & Header */}
-        <div className="pt-safe px-4 pb-3 flex items-center justify-between border-b border-pine-800/40 bg-[#1E1B18]/80 backdrop-blur-md relative z-20">
+        <div className="pt-safe px-4 pb-3 flex items-center justify-between border-b border-white/5 bg-[#0f1117]/80 backdrop-blur-md relative z-20">
           <button 
             onClick={() => setActiveArticle(null)} 
-            className="p-2 -ml-2 text-pine-400 hover:text-white transition-colors active:scale-95"
+            className="p-2 -ml-2 text-white/40 hover:text-white transition-colors active:scale-95"
             aria-label={t.close}
           >
             <X size={24} />
           </button>
           <div className="flex-1 px-4 text-center">
-            <h2 className="text-[14px] font-bold text-pine-100 truncate">{article.title}</h2>
+            <h2 className="text-[14px] font-medium font-serif italic text-white/90 truncate">{article.title}</h2>
           </div>
-          <div className="w-10 text-xs text-teal-400 font-mono text-right font-medium tracking-wide">
-            {currentPage + 1}<span className="text-pine-600">/{article.pages.length}</span>
+          <div className="w-10 text-xs text-teal-400/80 font-mono text-right font-medium tracking-wide">
+            {currentPage + 1}<span className="text-white/20">/{article.pages.length}</span>
           </div>
         </div>
 
@@ -222,35 +263,20 @@ export default function RabbitHole() {
               key={i} 
               className={`h-1 flex-1 rounded-full transition-all duration-500 ${
                 i === currentPage 
-                  ? 'bg-teal-400 scale-y-125' 
+                  ? 'bg-teal-400/80 scale-y-125' 
                   : i < currentPage 
-                    ? 'bg-teal-500/50' 
-                    : 'bg-pine-800/60'
+                    ? 'bg-teal-500/30' 
+                    : 'bg-white/10'
               }`} 
             />
           ))}
         </div>
 
-        {/* Reading Area */}
-        <div 
-          className="flex-1 relative flex items-center justify-center px-6 md:px-16 pb-10"
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-        >
-          {/* Main Text Content */}
-          <div 
-            key={currentPage} 
-            className="max-w-xl w-full animate-in fade-in zoom-in-[0.98] duration-300 ease-out"
-          >
-            <BookOpen size={24} className="text-teal-500/20 mx-auto justify-center mb-6" />
-            <p className="text-[19px] md:text-[22px] leading-[1.8] font-serif text-pine-100 text-center tracking-wide whitespace-pre-line" style={{ textShadow: "0 2px 10px rgba(0,0,0,0.4)"}}>
-              {article.pages[currentPage]}
-            </p>
-          </div>
-
-          {/* Invisible Hitboxes with glowing subtle chevrons */}
+        {/* Reading Area Wrapper */}
+        <div className="flex-1 relative flex overflow-hidden">
+          {/* Invisible Hitboxes (Fixed in the viewer, outside scrolling) */}
           <button 
-            className="absolute top-0 left-0 w-[40%] h-full z-10 flex flex-col justify-center items-start pl-2 md:pl-6 group outline-none"
+            className="absolute top-0 left-0 w-[30%] h-full z-10 flex flex-col justify-center items-start pl-2 md:pl-6 group outline-none"
             onClick={(e) => { e.stopPropagation(); handlePrev(); }}
             aria-label="Previous page"
             disabled={currentPage === 0}
@@ -263,7 +289,7 @@ export default function RabbitHole() {
           </button>
           
           <button 
-            className="absolute top-0 right-0 w-[40%] h-full z-10 flex flex-col justify-center items-end pr-2 md:pr-6 group outline-none"
+            className="absolute top-0 right-0 w-[30%] h-full z-10 flex flex-col justify-center items-end pr-2 md:pr-6 group outline-none"
             onClick={(e) => { e.stopPropagation(); handleNext(); }}
             aria-label="Next page"
             disabled={currentPage === article.pages.length - 1}
@@ -275,29 +301,48 @@ export default function RabbitHole() {
             )}
           </button>
 
+          {/* Scrolling Content */}
+          <div 
+            className="flex-1 overflow-y-auto px-6 md:px-16"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
+            {/* Main Text Content */}
+            <div 
+              key={currentPage} 
+              className="min-h-full flex flex-col justify-center max-w-xl mx-auto w-full py-12 pb-32 animate-in fade-in zoom-in-[0.98] duration-300 ease-out relative z-0 pointer-events-none"
+            >
+              <BookOpen size={24} className="text-teal-500/20 mx-auto justify-center mb-8" />
+              <p className="text-[20px] md:text-[24px] leading-[1.7] font-serif text-white/90 text-center tracking-wide whitespace-pre-line pointer-events-auto" style={{ textShadow: "0 4px 20px rgba(0,0,0,0.6)"}}>
+                {article.pages[currentPage]}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     );
+
+    return createPortal(storyViewer, document.body);
   }
 
   // List View Render (when activeArticle is null)
   return (
-    <div className="flex flex-col min-h-screen bg-[#1E1B18] animate-in fade-in pb-24">
+    <div className="flex flex-col min-h-screen animate-in fade-in pb-24">
       {/* Header */}
-      <header className="sticky top-0 z-30 bg-[#1E1B18]/80 backdrop-blur-xl border-b border-pine-800/60 shadow-sm">
+      <header className="sticky top-0 z-30 bg-[#0f1117]/80 backdrop-blur-xl border-b border-white/5 shadow-sm">
         <div className="flex items-center justify-between px-4 h-16">
           <Link 
             to="/"
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-pine-900/50 text-pine-200 hover:text-white transition-colors active:scale-95"
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/[0.03] border border-white/[0.05] text-white/40 hover:text-white transition-colors active:scale-95"
             aria-label={t.back}
           >
-            <ChevronLeft size={24} />
+            <ChevronLeft size={20} />
           </Link>
           <div className="flex flex-col items-center flex-1">
-            <h1 className="text-sm font-bold text-pine-100 tracking-wide uppercase flex items-center gap-2">
-              <span className="text-xl">🐇🕳️</span> {t.title}
+            <h1 className="text-lg font-serif italic text-white/90 tracking-wide flex items-center gap-2">
+              <span className="text-[16px] not-italic opacity-80">🐇🕳️</span> {t.title}
             </h1>
-            <p className="text-[10px] text-pine-400 uppercase tracking-widest">{t.subtitle}</p>
+            <p className="text-[9px] text-teal-400/60 uppercase tracking-[0.25em] mt-0.5">{t.subtitle}</p>
           </div>
           <div className="w-10" />
         </div>
@@ -305,7 +350,7 @@ export default function RabbitHole() {
 
       {/* Content */}
       <div className="flex-1 px-4 pt-6 max-w-4xl mx-auto w-full">
-        <p className="text-pine-300/80 text-sm italic mb-8 text-center px-4 leading-relaxed">
+        <p className="text-white/40 text-sm md:text-base font-serif italic mb-10 text-center px-4 leading-relaxed">
           {language === 'en' 
             ? 'A collection of theoretical pieces, allegories, and insights from across the world charting the human path to the exploration of consciousness.'
             : 'Μια βιβλιοθήκη με θεωρητικά κείμενα, αλληγορίες και στοχασμούς από όλο τον κόσμο για την ανθρώπινη πορεία προς την εξερεύνηση της συνειδητότητας.'}
@@ -315,30 +360,30 @@ export default function RabbitHole() {
           {/* Link to Method & Symbols */}
           <Link 
             to="/method"
-            className="w-full md:col-span-2 bg-gradient-to-br from-pine-800/60 to-pine-900/80 border border-pine-600/40 rounded-[2rem] p-6 md:p-8 shadow-[0_8px_32px_rgba(0,0,0,0.25)] block text-left transition-all duration-500 active:scale-[0.98] hover:shadow-[0_12px_40px_rgba(20,184,166,0.15)] hover:border-teal-500/30 relative overflow-hidden group backdrop-blur-md"
+            className="w-full md:col-span-2 bg-[#12141c] border border-white/5 rounded-[2rem] p-6 md:p-8 shadow-xl block text-left transition-all duration-500 active:scale-[0.98] hover:bg-[#161922] hover:border-teal-500/20 relative overflow-hidden group"
           >
-            <div className="absolute top-0 right-0 p-4 opacity-[0.03] transform translate-x-4 -translate-y-4 group-hover:scale-110 group-hover:opacity-[0.05] transition-all duration-500">
-              <span className="text-[100px] md:text-[140px]">🐘</span>
+            <div className="absolute top-0 right-0 p-4 opacity-[0.02] transform translate-x-4 -translate-y-4 group-hover:scale-110 group-hover:opacity-[0.04] transition-all duration-700">
+              <span className="text-[120px] md:text-[160px] grayscale">🐘</span>
             </div>
-            <div className="absolute inset-0 bg-gradient-to-r from-teal-500/0 via-teal-500/5 to-teal-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-teal-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 
             <div className="flex items-center gap-4 mb-5 relative z-10">
-              <div className="w-14 h-14 rounded-2xl bg-pine-950/80 flex items-center justify-center border border-white/5 shadow-inner flex-shrink-0 group-hover:scale-110 transition-transform duration-500">
-                <span className="text-[24px] drop-shadow-md">🐘</span>
+              <div className="w-14 h-14 rounded-2xl bg-white/[0.03] flex items-center justify-center border border-white/5 shadow-inner flex-shrink-0 group-hover:scale-110 transition-transform duration-500">
+                <span className="text-[24px] drop-shadow-md grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all">🐘</span>
               </div>
               <div>
-                <h2 className="text-[19px] md:text-[22px] font-heading font-medium text-white leading-snug tracking-wide group-hover:text-teal-50 transition-colors">{language === 'en' ? 'The Method & Symbols' : 'Η Μέθοδος & τα Σύμβολα'}</h2>
-                <p className="text-[11px] md:text-xs uppercase tracking-[0.2em] text-teal-400/80 font-bold mt-1.5">{language === 'en' ? 'THE ELEPHANT & THE MONKEY' : 'Ο ΕΛΕΦΑΝΤΑΣ ΚΑΙ Η ΜΑΙΜΟΥ'}</p>
+                <h2 className="text-[20px] md:text-[24px] font-serif italic font-medium text-white/90 leading-snug tracking-tight group-hover:text-teal-100 transition-colors">{language === 'en' ? 'The Method & Symbols' : 'Η Μέθοδος & τα Σύμβολα'}</h2>
+                <p className="text-[10px] md:text-[11px] uppercase tracking-[0.25em] text-white/30 font-bold mt-1.5">{language === 'en' ? 'THE ELEPHANT & THE MONKEY' : 'Ο ΕΛΕΦΑΝΤΑΣ ΚΑΙ Η ΜΑΙΜΟΥ'}</p>
               </div>
             </div>
-            <p className="text-pine-200/90 text-sm md:text-base leading-relaxed line-clamp-3 relative z-10 font-medium">
+            <p className="text-white/50 text-sm md:text-[15px] leading-relaxed line-clamp-3 relative z-10 font-medium">
               {language === 'en' 
                 ? "Dive into the allegorical framework that structures the practice. Understanding how the mind wanders and returns."
                 : "Εξερευνήστε το αλληγορικό πλαίσιο που δομεί την πρακτική. Πώς ο νους περιπλανάται και πώς επιστρέφει."}
             </p>
-            <div className="mt-6 pt-5 border-t border-pine-700/50 flex justify-between items-center text-teal-300 font-bold text-[13px] md:text-sm relative z-10 group-hover:text-teal-200 transition-colors">
+            <div className="mt-6 pt-5 border-t border-white/5 flex justify-between items-center text-teal-400/80 font-medium text-[13px] md:text-sm relative z-10 group-hover:text-teal-300 transition-colors">
               <span className="flex items-center gap-2">
-                {language === 'en' ? 'Explore Symbols' : 'Εξερεύνηση Συμβόλων'} <ChevronRight size={18} className="transform group-hover:translate-x-1 transition-transform" />
+                {language === 'en' ? 'Explore Symbols' : 'Εξερεύνηση Συμβόλων'} <ChevronRight size={16} className="transform group-hover:translate-x-1 transition-transform" />
               </span>
             </div>
           </Link>
@@ -349,38 +394,39 @@ export default function RabbitHole() {
               <button 
                 key={article.id}
                 onClick={() => { setActiveArticle(article.id); setCurrentPage(0); }}
-                className={`w-full border rounded-[2rem] p-6 md:p-8 shadow-[0_8px_32px_rgba(0,0,0,0.2)] flex flex-col text-left transition-all duration-500 active:scale-[0.98] hover:shadow-[0_12px_40px_rgba(0,0,0,0.4)] relative overflow-hidden group backdrop-blur-md ${
+                className={`w-full border rounded-[2rem] p-6 md:p-8 shadow-xl flex flex-col text-left transition-all duration-500 active:scale-[0.98] hover:shadow-2xl relative overflow-hidden group ${
                   isNew 
-                    ? 'bg-gradient-to-br from-teal-900/40 to-pine-950/80 border-teal-500/30' 
-                    : 'bg-gradient-to-b from-pine-900/50 to-pine-950/80 border-pine-700/40 hover:border-pine-600/60'
+                    ? 'bg-[#12141c] border-teal-500/20 hover:border-teal-500/40 hover:bg-[#151922]' 
+                    : 'bg-[#12141c] border-white/5 hover:border-white/10 hover:bg-[#161922]'
                 }`}
               >
                 {isNew && (
-                  <div className="absolute top-4 right-4 bg-teal-500 text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-widest z-20 shadow-lg animate-pulse">
-                    {language === 'en' ? 'New Reflection' : 'Νέος Στοχασμός'}
+                  <div className="absolute top-5 right-5 bg-teal-500/10 border border-teal-500/20 text-teal-300 text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-widest z-20">
+                    {language === 'en' ? 'New' : 'Νεο'}
                   </div>
                 )}
-                <div className="absolute top-0 right-0 p-4 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 group-hover:opacity-15 transition-all duration-500">
-                  <BookOpen className={`w-[80px] h-[80px] md:w-[120px] md:h-[120px] ${isNew ? 'text-teal-400' : ''}`} />
-                </div>
+                
+                {/* Subtle background glow for new items */}
+                {isNew && <div className="absolute inset-0 bg-gradient-to-br from-teal-500/[0.03] to-transparent pointer-events-none" />}
+
                 <div className="flex items-center gap-4 mb-5 relative z-10">
-                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center border border-white/5 flex-shrink-0 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] group-hover:scale-110 transition-transform duration-500 ${isNew ? 'bg-teal-500/20' : 'bg-pine-950/80'}`}>
-                    <BookOpen size={24} className={`${isNew ? 'text-teal-300' : 'text-teal-400'} drop-shadow-md`} />
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center border border-white/5 flex-shrink-0 group-hover:scale-110 transition-transform duration-500 ${isNew ? 'bg-teal-500/[0.05]' : 'bg-white/[0.02]'}`}>
+                    <BookOpen size={22} className={`${isNew ? 'text-teal-400/80' : 'text-white/30'}`} />
                   </div>
-                  <div>
-                    <h2 className="text-[19px] md:text-[22px] font-heading font-medium text-white leading-snug tracking-wide group-hover:text-pine-50 transition-colors">{article.title}</h2>
-                    <p className={`text-[11px] md:text-xs uppercase tracking-[0.2em] font-bold mt-1.5 ${isNew ? 'text-teal-400/80' : 'text-pine-400/90'}`}>{article.author}</p>
+                  <div className="flex-1 pr-12">
+                    <h2 className="text-[18px] md:text-[20px] font-serif italic font-medium text-white/90 leading-snug tracking-tight group-hover:text-white transition-colors">{article.title}</h2>
+                    <p className={`text-[9px] md:text-[10px] uppercase tracking-[0.2em] font-bold mt-1.5 ${isNew ? 'text-teal-400/60' : 'text-white/30'}`}>{article.author}</p>
                   </div>
                 </div>
-                <p className="text-pine-200/90 text-sm md:text-base leading-relaxed line-clamp-3 relative z-10 font-medium italic">
+                <p className="text-white/40 text-[13px] md:text-[14px] leading-relaxed line-clamp-3 relative z-10 font-sans">
                   "{article.pages[0]}"
                 </p>
                 <div className="mt-auto pt-6">
-                  <div className="pt-5 border-t border-pine-800/80 flex justify-between items-center text-teal-400 font-bold text-[13px] md:text-sm relative z-10 group-hover:text-teal-300 transition-colors">
+                  <div className="pt-5 border-t border-white/5 flex justify-between items-center text-white/50 font-medium text-[13px] md:text-[14px] relative z-10 group-hover:text-white/70 transition-colors">
                     <span className="flex items-center gap-2">
-                      {t.startReading} <ChevronRight size={18} className="transform group-hover:translate-x-1 transition-transform" />
+                       {t.startReading} <ChevronRight size={16} className="transform group-hover:translate-x-1 transition-transform" />
                     </span>
-                    <span className="text-[11px] text-pine-400/80 font-bold tracking-[0.2em] uppercase">
+                    <span className="text-[10px] text-white/20 font-bold tracking-[0.25em] uppercase">
                       {article.pages.length} {language === 'en' ? 'PAGES' : 'ΣΕΛΙΔΕΣ'}
                     </span>
                   </div>

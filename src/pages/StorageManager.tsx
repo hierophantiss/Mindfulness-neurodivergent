@@ -302,7 +302,7 @@ export default function StorageManager() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-pine-950/40 rounded-[2.5rem] border border-white/5 backdrop-blur-xl">
+    <div className="max-w-4xl mx-auto p-6 bg-pine-950/40 shape-cloud-2 border border-white/5 backdrop-blur-xl">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-serif text-white mb-1">

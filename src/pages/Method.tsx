@@ -131,8 +131,8 @@ export default function Method() {
         </section>
 
         {/* The Difference Section */}
-        <section className="bg-pine-900/30 border border-pine-700/40 rounded-[1.5rem] p-5 shadow-lg relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-1.5 h-full bg-teal-600/80 rounded-l-[1.5rem]" />
+        <section className="bg-pine-900/30 border border-pine-700/40 shape-cloud-4 p-5 shadow-lg relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-1.5 h-full bg-teal-600/80 rounded-l-[2.5rem]" />
           <h2 className="text-[16px] font-bold text-teal-100 mb-3 drop-shadow-sm">
             {t.diffTitle}
           </h2>
@@ -176,7 +176,7 @@ export default function Method() {
           </h2>
           
           <div className="space-y-6">
-            <div className="bg-pine-900/30 border border-pine-700/40 rounded-[1.5rem] p-5 shadow-lg relative overflow-hidden">
+            <div className="bg-pine-900/30 border border-pine-700/40 shape-cloud-5 p-5 shadow-lg relative overflow-hidden">
               <h3 className="text-[16px] font-bold text-amber-200 mb-3 drop-shadow-sm flex items-center gap-2">
                 <span>🐘🐒</span> {t.allegory1Title}
               </h3>
@@ -188,7 +188,7 @@ export default function Method() {
               </div>
             </div>
 
-            <div className="bg-pine-900/30 border border-pine-700/40 rounded-[1.5rem] p-5 shadow-lg relative overflow-hidden">
+            <div className="bg-pine-900/30 border border-pine-700/40 shape-cloud-6 p-5 shadow-lg relative overflow-hidden">
               <h3 className="text-[16px] font-bold text-blue-200 mb-3 drop-shadow-sm flex items-center gap-2">
                 <span>🚲</span> {t.allegory2Title}
               </h3>
