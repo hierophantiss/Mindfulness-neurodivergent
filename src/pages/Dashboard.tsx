@@ -106,6 +106,24 @@ export default function Dashboard() {
     }
   }, []);
 
+  // Determine a soft hue based on the day of the week
+  const dayColors = useMemo(() => {
+    const day = new Date().getDay();
+    // Providing very subtle, dark-mode friendly tints, combined with the signature soft-glass white base
+    const getBg = (rgb: string) => `linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(${rgb}, 0.12) 100%)`;
+    
+    switch(day) {
+      case 0: return { bg: getBg('244, 63, 94'), border: 'rgba(244, 63, 94, 0.15)' }; // Sunday (Rose)
+      case 1: return { bg: getBg('14, 165, 233'), border: 'rgba(14, 165, 233, 0.15)' }; // Monday (Sky Blue)
+      case 2: return { bg: getBg('16, 185, 129'), border: 'rgba(16, 185, 129, 0.15)' }; // Tuesday (Emerald)
+      case 3: return { bg: getBg('217, 70, 239'), border: 'rgba(217, 70, 239, 0.15)' }; // Wednesday (Fuchsia)
+      case 4: return { bg: getBg('245, 158, 11'), border: 'rgba(245, 158, 11, 0.15)' }; // Thursday (Amber)
+      case 5: return { bg: getBg('20, 184, 166'), border: 'rgba(20, 184, 166, 0.15)' }; // Friday (Teal)
+      case 6: return { bg: getBg('139, 92, 246'), border: 'rgba(139, 92, 246, 0.15)' }; // Saturday (Violet)
+      default: return { bg: getBg('20, 184, 166'), border: 'rgba(20, 184, 166, 0.15)' };
+    }
+  }, []);
+
   useEffect(() => {
     // Greeting logic
     if (hour < 12) {
@@ -288,11 +306,12 @@ export default function Dashboard() {
             </div>
           </motion.div>
 
-          {/* Daily Wisdom Card */}
+          {/* Wisdom Card */}
           {activeWisdom && (
             <motion.div 
               variants={itemVariants}
               className="group relative p-2.5 shape-cloud-6 soft-glass overflow-hidden transition-colors duration-500"
+              style={{ background: dayColors.bg, borderColor: dayColors.border }}
             >
               <div className="relative z-10 flex items-center gap-3">
                 <div className="text-teal-400/40 shrink-0">
@@ -310,6 +329,7 @@ export default function Dashboard() {
             <Link 
               to="/chapters" 
               className="relative block group overflow-hidden shape-cloud-1 soft-glass p-6 pt-5 transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.05]"
+              style={{ background: dayColors.bg, borderColor: dayColors.border }}
             >
               {/* Soft texture/gradient for 'breathable' feel */}
               <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 via-transparent to-black/40 pointer-events-none" />
@@ -364,6 +384,7 @@ export default function Dashboard() {
               <Link 
                 to="/practice"
                 className="group relative block p-5 shape-cloud-2 soft-glass transition-all duration-300 active:scale-[0.98] overflow-hidden hover:bg-white/[0.05]"
+                style={{ background: dayColors.bg, borderColor: dayColors.border }}
               >
                 {/* Background Accent */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 blur-3xl -mr-16 -mt-16 rounded-full group-hover:bg-indigo-500/10 transition-colors" />
@@ -413,6 +434,7 @@ export default function Dashboard() {
               <Link 
                  to="/rabbithole"
                  className="group flex items-center gap-3 p-4 h-full shape-cloud-3 soft-glass transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.05]"
+                 style={{ background: dayColors.bg, borderColor: dayColors.border }}
               >
                 <div className="w-10 h-10 rounded-xl bg-teal-500/5 flex items-center justify-center text-teal-500/40 border border-teal-500/10 group-hover:text-teal-400 transition-colors">
                   <Telescope size={18} />
@@ -433,6 +455,7 @@ export default function Dashboard() {
               <Link 
                  to="/journal"
                  className="group flex items-center gap-3 p-4 h-full shape-cloud-4 soft-glass transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.05]"
+                 style={{ background: dayColors.bg, borderColor: dayColors.border }}
               >
                 <div className="w-10 h-10 rounded-xl bg-rose-500/5 flex items-center justify-center text-rose-500/40 border border-rose-500/10 group-hover:text-rose-400 transition-colors">
                    <Notebook size={18} />
@@ -456,6 +479,7 @@ export default function Dashboard() {
               <button 
                 onClick={handleBookDownload}
                 className="group w-full flex flex-col items-center gap-2 p-5 shape-cloud-5 soft-glass transition-all duration-300 active:scale-[0.95] text-center hover:bg-white/[0.05]"
+                style={{ background: dayColors.bg, borderColor: dayColors.border }}
               >
                 <div className="w-8 h-8 rounded-full bg-teal-500/10 flex items-center justify-center text-teal-400/60 border border-teal-500/10 group-hover:scale-110 transition-transform">
                   <Download size={14} />
@@ -476,6 +500,7 @@ export default function Dashboard() {
                 <button 
                   onClick={handleInstallClick}
                   className="group w-full flex flex-col items-center gap-2 p-5 shape-cloud-5 soft-glass transition-all duration-300 active:scale-[0.95] text-center hover:bg-white/[0.05]"
+                  style={{ background: dayColors.bg, borderColor: dayColors.border }}
                 >
                   <div className="w-8 h-8 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-400/60 border border-indigo-500/10 group-hover:scale-110 transition-transform">
                     <Smartphone size={14} />
