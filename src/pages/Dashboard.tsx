@@ -256,7 +256,7 @@ export default function Dashboard() {
                to: '/practice/breath/4-7-8',
                title: { el: 'Ανάσα 4-7-8', en: '4-7-8 Breathing' },
                desc: { el: 'ΗΡΕΜΙΑ & ΧΑΛΑΡΩΣΗ', en: 'CALM & RELAX' },
-               icon: Wind,
+               icon: Heart,
                color: 'text-teal-400',
                bg: 'bg-teal-500/10 border-teal-500/20 shadow-[0_0_20px_rgba(20,184,166,0.15)]'
            };
@@ -265,16 +265,16 @@ export default function Dashboard() {
                to: '/practice/breath/box-breathing',
                title: { el: 'Box Breathing', en: 'Box Breathing' },
                desc: { el: 'ΕΣΤΙΑΣΗ ΚΑΙ ΡΟΗ', en: 'FOCUS & FLOW' },
-               icon: Focus,
+               icon: Zap,
                color: 'text-amber-400',
                bg: 'bg-amber-500/10 border-amber-500/20 shadow-[0_0_20px_rgba(245,158,11,0.15)]'
            };
         case 'decompress':
            return {
                to: '/journal',
-               title: { el: 'Νοητική Αποφόρτιση', en: 'Mental Decompression' },
-               desc: { el: 'ΚΑΤΑΓΡΑΦΗ & ΧΩΡΟΣ', en: 'JOURNAL & SPACE' },
-               icon: Anchor,
+               title: { el: 'Προσωπική Πρόταση', en: 'Personal Proposal' },
+               desc: { el: 'ΑΠΟΣΥΜΠΙΕΣΗ & ΧΩΡΟΣ', en: 'DECOMPRESS & SPACE' },
+               icon: Wind,
                color: 'text-indigo-400',
                bg: 'bg-indigo-500/10 border-indigo-500/20 shadow-[0_0_20px_rgba(99,102,241,0.15)]'
            };

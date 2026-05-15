@@ -112,32 +112,47 @@ export default function Onboarding() {
         <div className="flex flex-col items-center text-center space-y-8 w-full max-w-xl mx-auto">
           <div className="space-y-4 max-w-md mx-auto">
              <h2 className="text-3xl font-serif italic text-white tracking-tight leading-snug">
-               {language === 'el' ? 'Τι αναζητάτε κυρίως;' : 'What are you looking for?'}
+               {language === 'el' ? 'Πώς νιώθετε συνήθως;' : 'How do you usually feel?'}
              </h2>
              <p className="text-sm text-white/50 font-sans leading-relaxed">
                {language === 'el' 
-                 ? 'Επιλέξτε ένα, για να προσαρμόσουμε τον χώρο σας.'
-                 : 'Choose one to gently tailor your space.'}
+                 ? 'Επιλέξτε αυτό που σας απασχολεί περισσότερο, για να διαμορφώσουμε τις προτάσεις σας.'
+                 : 'Choose what concerns you most, so we can tailor your suggestions.'}
              </p>
           </div>
           <div className="flex flex-col gap-3 w-full max-w-sm mx-auto">
             {[
-              { id: 'calm', icon: Anchor, title: { el: 'Ηρεμία / Άγχος', en: 'Calm / Anxiety Relief' } },
-              { id: 'focus', icon: Focus, title: { el: 'Εστίαση (ΔΕΠΥ)', en: 'Focus (ADHD Support)' } },
-              { id: 'decompress', icon: Wind, title: { el: 'Αποφόρτιση', en: 'Sensory Decompression' } }
+              { id: 'calm', icon: Anchor, title: { el: 'Αναζητώ Ηρεμία', en: 'I seek Calmness' }, sub: { el: 'Άγχος & Υπερδιέγερση', en: 'Anxiety & Overstimulation' } },
+              { id: 'focus', icon: Focus, title: { el: 'Θέλω να Εστιάσω', en: 'I want to Focus' }, sub: { el: 'ΔΕΠΥ & Οργάνωση', en: 'ADHD & Organization' } },
+              { id: 'decompress', icon: Wind, title: { el: 'Χρειάζομαι Χώρο', en: 'I need Space' }, sub: { el: 'Αποφόρτιση & Χαλάρωση', en: 'Decompression & Rest' } }
             ].map((opt) => (
               <button 
                 key={opt.id}
                 onClick={() => setIntention(opt.id as any)}
                 className={cn(
-                  "flex items-center gap-4 p-4 rounded-2xl border transition-all duration-300 text-left active:scale-[0.98]",
-                  intention === opt.id 
-                    ? "bg-teal-500/20 border-teal-500/50 text-teal-100" 
-                    : "bg-white/[0.03] border-white/5 text-white/70 hover:bg-white/[0.05]"
+                  "flex items-center gap-4 p-5 rounded-2xl border transition-all duration-300 text-left active:scale-[0.98] group",
+                   intention === opt.id 
+                    ? "bg-teal-500/20 border-teal-500/50 shadow-[0_0_15px_rgba(20,184,166,0.1)]" 
+                    : "bg-white/[0.03] border-white/5 hover:bg-white/[0.06] hover:border-white/10"
                 )}
               >
-                 <opt.icon size={20} className={intention === opt.id ? "text-teal-400" : "text-white/40"} />
-                 <span className="font-sans font-medium">{language === 'el' ? opt.title.el : opt.title.en}</span>
+                 <div className={cn(
+                   "w-10 h-10 rounded-xl flex items-center justify-center transition-colors",
+                   intention === opt.id ? "bg-teal-400/20 text-teal-400" : "bg-white/5 text-white/40 group-hover:text-white/60"
+                 )}>
+                   <opt.icon size={20} />
+                 </div>
+                 <div className="flex flex-col">
+                   <span className={cn(
+                     "font-serif italic text-lg transition-colors",
+                     intention === opt.id ? "text-white" : "text-white/80"
+                   )}>
+                     {language === 'el' ? opt.title.el : opt.title.en}
+                   </span>
+                   <span className="text-[10px] uppercase tracking-widest text-white/40 font-black mt-0.5">
+                     {language === 'el' ? opt.sub.el : opt.sub.en}
+                   </span>
+                 </div>
               </button>
             ))}
           </div>
