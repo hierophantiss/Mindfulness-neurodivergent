@@ -39,15 +39,15 @@ export function InteractiveBackground() {
     resizeCanvas();
 
     // Create stars network
-    const starCount = 300;
+    const starCount = 450;
     const newStars: Star[] = [];
     for (let i = 0; i < starCount; i++) {
       newStars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        size: Math.random() * 1.5 + 0.2, // Tiny to small stars
-        opacity: Math.random() * 0.8 + 0.2,
-        speed: Math.random() * 0.005 + 0.001,
+        size: Math.random() * 1.8 + 0.1, // Variation in size
+        opacity: Math.random() * 0.7 + 0.3,
+        speed: Math.random() * 0.003 + 0.001,
         blinkOffset: Math.random() * Math.PI * 2,
       });
     }
@@ -73,21 +73,31 @@ export function InteractiveBackground() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Determine star visibility and count based on time of day
-      const maxActiveStars = starsRef.current.length;
-      const starOpacityMul = isDay ? 0.6 : 1.0;
+      const starOpacityMul = isDay ? 0.3 : (isDusk ? 0.6 : 1.0);
 
       for (let i = 0; i < starsRef.current.length; i++) {
-
         const star = starsRef.current[i];
-        
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
         
         // Twinkle effect using sine wave
         const blink = (Math.sin(time * star.speed * 100 + star.blinkOffset) + 1) / 2;
-        const currentOpacity = star.opacity * (0.3 + blink * 0.7) * starOpacityMul;
+        const currentOpacity = star.opacity * (0.2 + blink * 0.8) * starOpacityMul;
         
-        ctx.fillStyle = `rgba(255, 255, 255, ${currentOpacity})`;
+        if (currentOpacity < 0.05) continue; // Performance optimization
+
+        ctx.beginPath();
+        // Slightly larger stars blink more noticeably
+        const size = star.size * (0.8 + blink * 0.4);
+        ctx.arc(star.x, star.y, size, 0, Math.PI * 2);
+        
+        // Add subtle color variation: mostly white, some teal/blueish
+        if (i % 20 === 0) {
+          ctx.fillStyle = `rgba(165, 243, 252, ${currentOpacity})`; // Cyan-ish
+        } else if (i % 35 === 0) {
+          ctx.fillStyle = `rgba(216, 180, 254, ${currentOpacity})`; // Purple-ish
+        } else {
+          ctx.fillStyle = `rgba(255, 255, 255, ${currentOpacity})`;
+        }
+        
         ctx.fill();
         ctx.closePath();
       }
@@ -104,7 +114,7 @@ export function InteractiveBackground() {
   // Determine dark background tones according strictly to dark mode constraints
   const getGradient = () => {
     if (isNight) {
-      return 'linear-gradient(to bottom, #02040a 0%, #060b19 50%, #0a1128 100%)';
+      return 'linear-gradient(to bottom, #010204 0%, #03060c 50%, #050814 100%)';
     } else if (isDusk) {
       return 'linear-gradient(to bottom, #050a14 0%, #0b1528 40%, #1c1423 80%, #2f1b1a 100%)';
     } else { // isDay (STILL DARK)
