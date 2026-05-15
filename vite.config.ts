@@ -43,8 +43,7 @@ export default defineConfig(({ mode }) => {
           ]
         },
         devOptions: {
-          enabled: true,
-          type: 'module',
+          enabled: false,
         },
         workbox: {
           maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB

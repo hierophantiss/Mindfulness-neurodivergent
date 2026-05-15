@@ -27,7 +27,6 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="manifest" href="/manifest.json">
 
 <!-- Fonts (optimized: swap display for fast FCP) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -133,13 +132,15 @@
 
   <script type="module" src="/src/main.tsx"></script>
   <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(err => {
-          console.error('ServiceWorker registration failed: ', err);
-        });
-      });
-    }
+    // Emergency failsafe: if main app doesn't remove splash within 6 seconds, hide it here.
+    setTimeout(function() {
+      var s = document.getElementById('splash-screen');
+      if (s) {
+        s.style.opacity = '0';
+        s.style.visibility = 'hidden';
+        setTimeout(function() { if(s.parentNode) s.remove(); }, 800);
+      }
+    }, 6000);
   </script>
 </body>
 </html>
