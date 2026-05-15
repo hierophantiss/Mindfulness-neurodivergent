@@ -204,17 +204,6 @@ export default function Dashboard() {
     setTimeout(() => setToastMessage(null), 3500);
   };
 
-  const handleBookDownload = () => {
-    const fileName = language === 'el' ? 'workbook_el.pdf' : 'workbook_en.pdf';
-    const link = document.createElement('a');
-    link.href = `/${fileName}`;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    showToast(language === 'el' ? 'Λήψη Βιβλίου...' : 'Downloading Book...');
-  };
-
   const handleInstallClick = async () => {
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
     const isIframe = window.self !== window.top;
@@ -230,20 +219,20 @@ export default function Dashboard() {
       }
     } else if (isIframe) {
        showToast(language === 'el'
-         ? 'Ανοίξτε την εφαρμογή σε νέο παράθυρο για να την εγκαταστήσετε.'
-         : 'Open the app in a new tab to install it.');
+         ? 'Ανοίξτε την εφαρμογή σε νέο παράθυρο (Open in new tab) για να την εγκαταστήσετε.'
+         : 'Open the app in a new tab to enable installation.');
     } else if (isIOS) {
       showToast(language === 'el' 
-        ? 'Σε iOS: Πατήστε "Κοινοποίηση" ⎋ και μετά "Προσθήκη στην Οθόνη Αφετηρίας" ⊞.' 
-        : 'On iOS: Tap "Share" ⎋ and then "Add to Home Screen" ⊞.');
+        ? 'Εγκατάσταση (iOS): Πατήστε "Κοινοποίηση" ⎋ και μετά "Προσθήκη στην Οθόνη Αφετηρίας" ⊞.' 
+        : 'Install (iOS): Tap "Share" ⎋ and then "Add to Home Screen" ⊞.');
     } else {
       const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone;
       if (isStandalone) {
         showToast(language === 'el' ? 'Η εφαρμογή είναι ήδη εγκατεστημένη.' : 'The app is already installed.');
       } else {
         showToast(language === 'el' 
-          ? 'Πατήστε τις 3 τελείες (Μενού) του browser > "Εγκατάσταση εφαρμογής" / "Προσθήκη στην οθόνη".' 
-          : 'Tap the 3 dots (Menu) in your browser > "Install app" / "Add to screen".');
+          ? 'Εγκατάσταση: Πατήστε τις 3 τελείες (Μενού) του Chrome και μετά "Εγκατάσταση εφαρμογής".' 
+          : 'Installation: Tap the 3 dots (Chrome Menu) and select "Install app".');
       }
     }
   };
@@ -625,9 +614,13 @@ export default function Dashboard() {
           {/* Download & Install Section - Organized Grid */}
           <div className="grid grid-cols-2 gap-3 mt-4 pt-4 border-t border-white/5">
             <motion.div variants={itemVariants}>
-              <button 
-                onClick={handleBookDownload}
-                className="group w-full flex flex-col items-center gap-2 p-5 shape-cloud-5 soft-glass transition-all duration-300 active:scale-[0.95] text-center hover:bg-white/[0.05]"
+              <a 
+                href={language === 'el' ? '/workbook_el.pdf' : '/workbook_en.pdf'}
+                download={language === 'el' ? 'Awareness_Gateway_Workbook_EL.pdf' : 'Awareness_Gateway_Workbook_EN.pdf'}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => showToast(language === 'el' ? 'Λήψη Βιβλίου...' : 'Downloading Book...')}
+                className="group w-full flex flex-col items-center gap-2 p-5 shape-cloud-5 soft-glass transition-all duration-300 active:scale-[0.95] text-center hover:bg-white/[0.05] cursor-pointer"
                 style={{ background: dayColors.bg, borderColor: dayColors.border }}
               >
                 <div className="w-8 h-8 rounded-full bg-teal-500/10 flex items-center justify-center text-teal-400/60 border border-teal-500/10 group-hover:scale-110 transition-transform">
@@ -638,10 +631,10 @@ export default function Dashboard() {
                      {language === 'el' ? 'Πολυμέσα' : 'Multimedia'}
                   </span>
                   <span className="block text-[11px] font-bold text-teal-100/60 tracking-wide font-sans">
-                    {language === 'el' ? 'ΒΙΒΛΙΟ' : 'THE BOOK'}
+                    {language === 'el' ? 'ΚΑΤΕΒΑΣΤΕ ΤΟ ΒΙΒΛΙΟ' : 'DOWNLOAD BOOK'}
                   </span>
                 </div>
-              </button>
+              </a>
             </motion.div>
             
             {!isStandalone && (
@@ -659,7 +652,7 @@ export default function Dashboard() {
                        PWA / Native
                     </span>
                     <span className="block text-[11px] font-bold text-indigo-100/60 tracking-wide font-sans">
-                      {language === 'el' ? 'ΕΦΑΡΜΟΓΗ' : 'THE APP'}
+                      {language === 'el' ? 'ΕΓΚΑΤΑΣΤΑΣΗ APP' : 'INSTALL APP'}
                     </span>
                   </div>
                 </button>
