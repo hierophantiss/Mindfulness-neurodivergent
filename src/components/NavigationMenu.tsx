@@ -288,6 +288,12 @@ export default function NavigationMenu() {
                 {/* Install App - Always show with manual fallback */}
                 <button 
                   onClick={async () => {
+                    const inIframe = window.self !== window.top;
+                    if (inIframe) {
+                      showToast(language === 'el' ? 'Ανοίξτε την εφαρμογή σε νέα καρτέλα για να την εγκαταστήσετε.' : 'Open the app in a new tab to install it.');
+                      return;
+                    }
+
                     const promptEvent = deferredPrompt || (window as any).initDeferredPrompt;
                     if (promptEvent) {
                       promptEvent.prompt();
@@ -298,10 +304,13 @@ export default function NavigationMenu() {
                       }
                     } else {
                        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
-                       if (isIOS) {
+                       const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone;
+                       if (isStandalone) {
+                         showToast(language === 'el' ? 'Η εφαρμογή είναι ήδη εγκατεστημένη.' : 'The app is already installed.');
+                       } else if (isIOS) {
                          showToast(language === 'el' ? 'Σε iOS: Κοινοποίηση ⎋ > Προσθήκη στην Οθόνη Αφετηρίας ⊞.' : 'On iOS: Share ⎋ > Add to Home Screen ⊞.');
                        } else {
-                         showToast(language === 'el' ? 'Χρησιμοποιήστε το μενού του browser για εγκατάσταση.' : 'Use your browser menu to install.');
+                         showToast(language === 'el' ? 'Πατήστε τις 3 τελείες (Μενού) του browser > "Εγκατάσταση εφαρμογής".' : 'Tap the 3 dots (Menu) in your browser > "Install app".');
                        }
                     }
                   }}

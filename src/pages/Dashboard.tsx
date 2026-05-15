@@ -192,9 +192,14 @@ export default function Dashboard() {
         ? 'Σε iOS: Πατήστε "Κοινοποίηση" ⎋ και μετά "Προσθήκη στην Οθόνη Αφετηρίας" ⊞.' 
         : 'On iOS: Tap "Share" ⎋ and then "Add to Home Screen" ⊞.');
     } else {
-      showToast(language === 'el' 
-        ? 'Χρησιμοποιήστε το μενού του browser για εγκατάσταση, ή ίσως είναι ήδη εγκατεστημένη.' 
-        : 'Use your browser menu to install, or it may already be installed.');
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone;
+      if (isStandalone) {
+        showToast(language === 'el' ? 'Η εφαρμογή είναι ήδη εγκατεστημένη.' : 'The app is already installed.');
+      } else {
+        showToast(language === 'el' 
+          ? 'Πατήστε τις 3 τελείες (Μενού) του browser > "Εγκατάσταση εφαρμογής" / "Προσθήκη στην οθόνη".' 
+          : 'Tap the 3 dots (Menu) in your browser > "Install app" / "Add to screen".');
+      }
     }
   };
 

@@ -152,7 +152,7 @@ export const initUISounds = () => {
   // Hover
   document.addEventListener('mouseover', (e) => {
     const clickable = getClickable(e.target as HTMLElement);
-    if (clickable && !clickable.disabled) {
+    if (clickable && !(clickable as any).disabled) {
       const oldHover = clickable.dataset.hovered;
       if (!oldHover) {
         clickable.dataset.hovered = 'true';
@@ -192,7 +192,7 @@ export const initUISounds = () => {
     };
     
     const clickable = getClickable(e.target as HTMLElement);
-    if (clickable && !clickable.disabled) {
+    if (clickable && !(clickable as any).disabled) {
       // Resume audio context on first click if needed
       getAudioContext();
       playSound('click');
