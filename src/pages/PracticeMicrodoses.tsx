@@ -41,6 +41,24 @@ export default function PracticeMicrodoses() {
       link: '/practice/body/axis-pause'
     },
     {
+      id: 'soft-belly',
+      title: { el: 'Μαλακή Κοιλιά', en: 'Soft Belly' },
+      type: 'body',
+      dur: { el: '30 δευτ.', en: '30 sec' },
+      desc: { el: 'Άφησε την κοιλιά να χαλαρώσει εντελώς. Στέλνει άμεσο σήμα ασφάλειας στο νευρικό σύστημα.', en: 'Let your belly relax completely. Sends an immediate safety signal to the nervous system.' },
+      icon: <Anchor size={28} strokeWidth={1.5} />,
+      link: '/practice/body/soft-belly'
+    },
+    {
+      id: 'unlocked-knees',
+      title: { el: 'Ξεκλείδωτα Γόνατα', en: 'Unlocked Knees' },
+      type: 'body',
+      dur: { el: '15 δευτ.', en: '15 sec' },
+      desc: { el: 'Λύγισε ελάχιστα τα γόνατα καθώς στέκεσαι. Επιτρέπει στο βάρος να ρεύσει προς τη γη.', en: 'Slightly bend your knees while standing. Allows weight to flow to the earth.' },
+      icon: <Anchor size={28} strokeWidth={1.5} />,
+      link: '/practice/body/unlocked-knees'
+    },
+    {
       id: 'contact-observe',
       title: { el: 'Παρατήρηση Επαφής', en: 'Contact Observation' },
       type: 'body',
@@ -58,6 +76,42 @@ export default function PracticeMicrodoses() {
       icon: <Anchor size={28} strokeWidth={1.5} />,
       link: '/practice/body/shoulder-drop'
     },
+    {
+      id: 'hand-weight',
+      title: { el: 'Το Βάρος των Χεριών', en: 'Hand Weight' },
+      type: 'body',
+      dur: { el: '20 δευτ.', en: '20 sec' },
+      desc: { el: 'Νιώσε το βάρος των χεριών σου να "κρέμεται" από τους ώμους. Απόλυτη αδράνεια.', en: 'Feel the weight of your hands "hanging" from your shoulders. Absolute inertia.' },
+      icon: <Anchor size={28} strokeWidth={1.5} />,
+      link: '/practice/body/hand-weight'
+    },
+    {
+      id: 'pelvis-root',
+      title: { el: 'Η Λεκάνη ως Γλάστρα', en: 'Pelvis as a Pot' },
+      type: 'body',
+      dur: { el: '30 δευτ.', en: '30 sec' },
+      desc: { el: 'Νιώσε τη λεκάνη σου ως τη σταθερή βάση όπου "ριζώνει" ο άξονάς σου. Βάθος και ασφάλεια.', en: 'Feel your pelvis as the stable base where your axis "roots". Depth and security.' },
+      icon: <Anchor size={28} strokeWidth={1.5} />,
+      link: '/practice/body/pelvis-root'
+    },
+    {
+      id: 'jaw-release',
+      title: { el: 'Χαλάρωση Γνάθου', en: 'Jaw Release' },
+      type: 'body',
+      dur: { el: '10 δευτ.', en: '10 sec' },
+      desc: { el: 'Άφησε την κάτω γνάθο να κρεμάσει ελαφρά. Ξεκλειδώνει την ένταση από όλο το σώμα.', en: 'Let your lower jaw hang slightly. Unlocks tension from the entire body.' },
+      icon: <Anchor size={28} strokeWidth={1.5} />,
+      link: '/practice/body/jaw-release'
+    },
+    {
+      id: 'gravity-sink',
+      title: { el: 'Βύθιση στη Βαρύτητα', en: 'Gravity Sink' },
+      type: 'body',
+      dur: { el: '15 δευτ.', en: '15 sec' },
+      desc: { el: 'Φαντάσου το σώμα σου να βυθίζεται 1 χιλιοστό μέσα στο έδαφος. Απόλυτη παράδοση.', en: 'Imagine your body sinking 1 millimeter into the ground. Absolute surrender.' },
+      icon: <Anchor size={28} strokeWidth={1.5} />,
+      link: '/practice/body/gravity-sink'
+    },
 
     // Breath (Axis 2)
     {
@@ -70,6 +124,15 @@ export default function PracticeMicrodoses() {
       link: '/practice/breath/rhythm-5-5'
     },
     {
+      id: 'nostril-touch',
+      title: { el: 'Εσωτερική Αφή', en: 'Internal Touch' },
+      type: 'breath',
+      dur: { el: '30 δευτ.', en: '30 sec' },
+      desc: { el: 'Νιώσε τη δροσιά του αέρα στα ρουθούνια. Η πιο λεπτή σωματική αίσθηση.', en: 'Feel the coolness of the air at the nostrils. The most subtle physical sensation.' },
+      icon: <Zap size={28} strokeWidth={1.5} />,
+      link: '/practice/breath/nostril-focus'
+    },
+    {
       id: 'stealth-breath',
       title: { el: 'Αόρατη Αναπνοή (Παύση)', en: 'Invisible Breath (Pause)' },
       type: 'breath',
@@ -77,6 +140,42 @@ export default function PracticeMicrodoses() {
       desc: { el: 'Παρατήρησε την απαλή παύση ανάμεσα στην εισπνοή και την εκπνοή. Εκεί υπάρχει η απόλυτη ησυχία.', en: 'Observe the soft pause between inhale and exhale. Absolute stillness lies there.' },
       icon: <Zap size={28} strokeWidth={1.5} />,
       link: '/practice/breath/breath-observation'
+    },
+    {
+      id: 'breath-path',
+      title: { el: 'Η Διαδρομή του Αέρα', en: 'The Path of Air' },
+      type: 'breath',
+      dur: { el: '45 δευτ.', en: '45 sec' },
+      desc: { el: 'Ακολούθησε το ταξίδι: Μύτη - Λαιμός - Πνευμόνια. Και πάλι πίσω. Ο νους ταξιδεύει με τη ροή.', en: 'Follow the journey: Nose - Throat - Lungs. And back again. The mind travels with the flow.' },
+      icon: <Zap size={28} strokeWidth={1.5} />,
+      link: '/practice/breath/breath-path'
+    },
+    {
+      id: 'humming-vibration',
+      title: { el: 'Ηχητική Δόνηση (Humming)', en: 'Vocal Vibration (Humming)' },
+      type: 'breath',
+      dur: { el: '1 λεπτό', en: '1 minute' },
+      desc: { el: 'Βγάλε έναν ανεπαίσθητο ήχο "Mmm" στην εκπνοή. Το εσωτερικό μασάζ του νευρικού συστήματος.', en: 'Make a subtle "Mmm" sound on the exhale. The internal massage of the nervous system.' },
+      icon: <Zap size={28} strokeWidth={1.5} />,
+      link: '/practice/breath/vocal-vibration'
+    },
+    {
+      id: 'breath-4-2-7',
+      title: { el: 'Αναπνοή 4-2-7 (Ηρεμία)', en: 'Breath 4-2-7 (Calm)' },
+      type: 'breath',
+      dur: { el: '1 λεπτό', en: '1 minute' },
+      desc: { el: '4 εισπνοή, 2 κράτημα, 7 εκπνοή. Ο ταχύτερος τρόπος να ηρεμήσεις το νευρικό σύστημα.', en: '4 in, 2 hold, 7 out. The fastest way to calm the nervous system.' },
+      icon: <Zap size={28} strokeWidth={1.5} />,
+      link: '/practice/breath/breath-4-2-7'
+    },
+    {
+      id: 'ocean-breath',
+      title: { el: 'Ήχος Ωκεανού', en: 'Ocean Breath' },
+      type: 'breath',
+      dur: { el: '30 δευτ.', en: '30 sec' },
+      desc: { el: 'Δημιούργησε έναν απαλό ψίθυρο στο λαιμό καθώς αναπνέεις. Σαν το κύμα της θάλασσας.', en: 'Create a soft whisper in the throat while breathing. Like the ocean wave.' },
+      icon: <Zap size={28} strokeWidth={1.5} />,
+      link: '/practice/breath/ocean-breath'
     },
 
     // Focus (Axis 3)
@@ -90,6 +189,15 @@ export default function PracticeMicrodoses() {
       link: '/practice/focus/anchor-7-sec'
     },
     {
+      id: 'triple-anchor',
+      title: { el: 'Τριπλή Άγκυρα', en: 'Triple Anchor' },
+      type: 'focus',
+      dur: { el: '1 λεπτό', en: '1 minute' },
+      desc: { el: 'Νιώσε ταυτόχρονα: Πέλματα (Γη), Αναπνοή (Αέρας) και ένα Σημείο (Χώρος). Απόλυτη παρουσία.', en: 'Feel simultaneously: Feet (Earth), Breath (Air), and a Point (Space). Absolute presence.' },
+      icon: <Focus size={28} strokeWidth={1.5} />,
+      link: '/practice/focus/triple-anchor'
+    },
+    {
       id: 'alternate-focus',
       title: { el: 'Εναλλάξ Εστίαση', en: 'Alternate Focus' },
       type: 'focus',
@@ -97,6 +205,24 @@ export default function PracticeMicrodoses() {
       desc: { el: 'Μετάφερε το βλέμμα αργά ανάμεσα σε δύο αντικείμενα. Ξεκουράζει αμέσως το μυαλό.', en: 'Shift gaze slowly between two objects. Instantly rests the mind.' },
       icon: <Focus size={28} strokeWidth={1.5} />,
       link: '/practice/focus/alternate-focus'
+    },
+    {
+      id: 'gentle-return',
+      title: { el: 'Η Απαλή Επιστροφή', en: 'Gentle Return' },
+      type: 'focus',
+      dur: { el: 'Συνεχές', en: 'Continuous' },
+      desc: { el: 'Όταν ο "ελέφαντας" της σκέψης φύγει, φέρτον πίσω στο σώμα με το απαλό λάσο της πρόθεσης.', en: 'When the "elephant" of thought wanders, bring it back to the body with the gentle lasso of intention.' },
+      icon: <Focus size={28} strokeWidth={1.5} />,
+      link: '/practice/focus/gentle-return'
+    },
+    {
+      id: 'eye-horizon',
+      title: { el: 'Άγκυρα στο Ύψος των Ματιών', en: 'Eye Level Anchor' },
+      type: 'focus',
+      dur: { el: '1 λεπτό', en: '1 minute' },
+      desc: { el: 'Κράτα το βλέμμα στο ύψος των ματιών. Ούτε πάνω ούτε κάτω. Η οριζόντια σταθερότητα του νου.', en: 'Keep your gaze at eye level. Neither up nor down. The horizontal stability of the mind.' },
+      icon: <Focus size={28} strokeWidth={1.5} />,
+      link: '/practice/focus/eye-level'
     },
     {
       id: 'samatha-micro',
@@ -107,8 +233,35 @@ export default function PracticeMicrodoses() {
       icon: <Focus size={28} strokeWidth={1.5} />,
       link: '/practice/focus/samatha-micro'
     },
+    {
+      id: 'one-sound',
+      title: { el: 'Ο Ένας Ήχος', en: 'The One Sound' },
+      type: 'focus',
+      dur: { el: '20 δευτ.', en: '20 sec' },
+      desc: { el: 'Απομόνωσε έναν μόνο ήχο από το περιβάλλον και δώσε του όλη σου την προσοχή.', en: 'Isolate a single sound from the environment and give it your full attention.' },
+      icon: <Focus size={28} strokeWidth={1.5} />,
+      link: '/practice/focus/one-sound'
+    },
+    {
+      id: 'sensory-54321',
+      title: { el: '5 Αισθήσεις (Micro)', en: '5 Senses (Micro)' },
+      type: 'focus',
+      dur: { el: '1 λεπτό', en: '1 minute' },
+      desc: { el: 'Παρατήρησε γρήγορα: 3 πράγματα που βλέπεις, 2 που ακούς, 1 που νιώθεις στο δέρμα.', en: 'Quickly notice: 3 things you see, 2 you hear, 1 you feel on your skin.' },
+      icon: <Focus size={28} strokeWidth={1.5} />,
+      link: '/practice/focus/sensory-micro'
+    },
 
     // Space (Axis 4)
+    {
+      id: 'short-moment',
+      title: { el: 'Στιγμιαία Παύση', en: 'Short Moment' },
+      type: 'space',
+      dur: { el: '5 δευτ.', en: '5 sec' },
+      desc: { el: 'Για 5 δευτερόλεπτα, άφησε τα πάντα ακριβώς όπως είναι. Μια στιγμή απόλυτης ανάπαυσης.', en: 'For 5 seconds, let everything be exactly as it is. A moment of absolute rest.' },
+      icon: <Box size={28} strokeWidth={1.5} />,
+      link: '/practice/space/short-moment'
+    },
     {
       id: 'sky-gazing-micro',
       title: { el: 'Βλέμμα στον Ουρανό', en: 'Sky Gazing' },
@@ -117,6 +270,33 @@ export default function PracticeMicrodoses() {
       desc: { el: 'Κοίταξε τον ουρανό, απορροφώντας την αίσθηση του μεγάλου, ανοιχτού χώρου.', en: 'Look at the sky, absorbing the feeling of vast, open space.' },
       icon: <Box size={28} strokeWidth={1.5} />,
       link: '/practice/space/sky-clouds'
+    },
+    {
+      id: 'tilopa-rest',
+      title: { el: 'Ξεκούραση (Tilopa)', en: 'Rest (Tilopa)' },
+      type: 'space',
+      dur: { el: '10 δευτ.', en: '10 sec' },
+      desc: { el: 'Μην αναπολείς, μην φαντάζεσαι, μην εξετάζεις, μην ελέγχεις. Απλά ξεκουράσου.', en: 'Do not recall, do not imagine, do not examine, do not control. Just rest.' },
+      icon: <Box size={28} strokeWidth={1.5} />,
+      link: '/practice/space/tilopa-rest'
+    },
+    {
+      id: 'spacious-metta',
+      title: { el: 'Ευρύχωρη Καλοσύνη', en: 'Spacious Kindness' },
+      type: 'space',
+      dur: { el: '1 λεπτό', en: '1 minute' },
+      desc: { el: 'Νιώσε την καρδιά σου να ανοίγει σαν τον ουρανό, χωρώντας τα πάντα με αποδοχή.', en: 'Feel your heart open like the sky, holding everything with acceptance.' },
+      icon: <Box size={28} strokeWidth={1.5} />,
+      link: '/practice/space/metta-expansion'
+    },
+    {
+      id: 'silence-background',
+      title: { el: 'Η Σιωπή πίσω από τα πάντα', en: 'Silence in the Background' },
+      type: 'space',
+      dur: { el: '30 δευτ.', en: '30 sec' },
+      desc: { el: 'Άκουσε τους ήχους, αλλά πρόσεξε τη σιωπή που τους φιλοξενεί όλους.', en: 'Listen to the sounds, but notice the silence that hosts them all.' },
+      icon: <Box size={28} strokeWidth={1.5} />,
+      link: '/practice/space/silence-background'
     },
     {
       id: 'open-presence',

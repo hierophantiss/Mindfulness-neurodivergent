@@ -1,83 +1,61 @@
-# Οδηγός Ενσυνειδητότητας για Νευροδιαφορετικούς
+# Awareness Gateway | ⚛️
+### *Μαθαίνοντας να Ιππεύεις τον Άνεμο*
+#### Trauma-Informed Mindfulness specifically crafted for Neurodivergent Minds (ADHD & Autism)
 
-Δωρεάν διαδικτυακός οδηγός αυτορρύθμισης μέσω του **Τετραπλού Άξονα Συνείδησης**.
-
-**Συγγραφέας:** Θεόδωρος Μπαϊρακτάρης  
-**Άδεια:** [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)
-
----
-
-## 🚀 Πώς να ανεβάσεις στο GitHub Pages (βήμα-βήμα)
-
-### Βήμα 1 — Δημιούργησε νέο repository
-1. Πήγαινε στο [github.com](https://github.com) και κάνε login.
-2. Κλικ στο **"New repository"** (πράσινο κουμπί πάνω δεξιά).
-3. Δώσε ένα όνομα, π.χ. `mindfulness-guide` ή `odigos-ensyneidhtotitas`.
-4. Επίλεξε **Public** (απαραίτητο για δωρεάν GitHub Pages).
-5. Κλικ **"Create repository"**.
-
-### Βήμα 2 — Ανέβασε τα αρχεία
-1. Στο νέο repository, κλικ **"Add file" → "Upload files"**.
-2. Σύρε και άφησε:
-   - `index.html` ← η ιστοσελίδα
-   - `Οδηγος_Ενσυνειδητοτητας.pdf` ← το PDF (αν θέλεις download link)
-3. Κλικ **"Commit changes"**.
-
-### Βήμα 3 — Ενεργοποίησε GitHub Pages
-1. Πήγαινε στο repository σου → **Settings** (πάνω δεξιά).
-2. Από το αριστερό μενού κλικ **"Pages"**.
-3. Κάτω από **"Source"** επίλεξε:
-   - Branch: `main`
-   - Folder: `/ (root)`
-4. Κλικ **"Save"**.
-5. Σε 1-2 λεπτά η σελίδα είναι online στο:
-
-```
-https://[username].github.io/[repository-name]/
-```
+**Awareness Gateway** is a digital sanctuary and a comprehensive guide designed to navigate the complexities of the neurodivergent experience through the lens of mindfulness. It moves away from "one-size-fits-all" approaches, offering a modular, clinical, and poetic framework for self-regulation and awareness.
 
 ---
 
-## 📁 Δομή αρχείων
+## 🌟 The Core Philosophy: The Fourfold Axis
 
-```
-repo/
-├── index.html                         ← Η κύρια σελίδα (αυτό που ανεβαίνει)
-├── Οδηγος_Ενσυνειδητοτητας.pdf        ← Το PDF για download (προαιρετικό)
-└── README.md                          ← Αυτό το αρχείο
-```
+The application is built around the **Fourfold Axis of Consciousness**, a structured path to re-associating with the self:
 
----
-
-## ✏️ Αν θέλεις να ενημερώσεις το PDF download link
-
-Άνοιξε το `index.html` και βρες αυτό το σημείο:
-
-```javascript
-document.getElementById('downloadBtn').addEventListener('click', (e) => {
-  e.preventDefault();
-  alert('...');
-});
-```
-
-Αντικατέστησέ το με:
-
-```javascript
-document.getElementById('downloadBtn').setAttribute(
-  'href',
-  'Οδηγος_Ενσυνειδητοτητας.pdf'
-);
-document.getElementById('downloadBtn').removeAttribute('id');
-```
-
-Ή απλά άλλαξε το `href` του κουμπιού απευθείας στο HTML:
-```html
-<a href="Οδηγος_Ενσυνειδητοτητας.pdf" class="btn btn-outline" download>⬇ Κατέβασε PDF</a>
-```
+1.  **Gravity / Body (Βαρύτητα & Σώμα):** Grounding in the physical vessel. Learning to feel the weight of existence as a source of stability.
+2.  **Breath (Ανάσα):** Navigating the internal rhythms. Using the breath not as a chore, but as a bridge to the nervous system.
+3.  **Attention (Προσοχή):** Cultivating the "observer." Training the ability to hold focus without the weight of judgment.
+4.  **Space (Χώρος):** Open presence. Recognizing that we are the space in which every thought, emotion, and sensation arises and dissolves.
 
 ---
 
-## 📄 Άδεια
+## 🛠️ Key Features
 
-Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International  
-© 2025 Θεόδωρος Μπαϊρακτάρης
+-   **Modular Education (Chapters):** Interactive, chapter-based learning that explains the "why" and "how" behind the 4 axes.
+-   **8-Week Progressive Program:** A structured journey from foundational grounding to advanced open awareness, tailored for neurodivergent pacing.
+-   **Practice Sanctuary:**
+    -   **Invisible Microdoses:** Brief, subtle exercises (15-60 sec) that can be done anywhere, designed for immediate nervous system regulation.
+    -   **Focused Exercises:** Dedicated practices for Breath, Movement, and Attention.
+-   **The Rabbit Hole:** A collection of deeper philosophical concepts for those who wish to understand the theoretical roots of the practice.
+-   **The Sanctuary:** A rest-focused environment with ambient soundscapes (Ocean, Rain, Fire, Cat Purring) for deep recovery.
+-   **Digital Journal:** A space for reflection, tracking insights and progress through the chapters.
+-   **Companion Intelligence:** A gentle, AI-powered mindfulness companion to guide users through the method and offer personalized support.
+
+---
+
+## 🎨 Design & Experience
+
+Crafted as a **Premium Digital Product**, Awareness Gateway prioritizes:
+-   **Low-Stimulus Interface:** Deep charcoal backgrounds and teal accents to reduce sensory overload.
+-   **Serif Typography:** *Playfair Display* italics for an editorial, grounded feel.
+-   **Fluid Animations:** Purposeful, subtle motion (Motion API) to guide hierarchy without distraction.
+-   **Trauma-Informed UX:** Giving the user control, choice, and absolute safety in every interaction.
+
+---
+
+## 💻 Technical Stack
+
+-   **Frontend:** React 18 + Vite
+-   **Styling:** Tailwind CSS (Modern Utility-First)
+-   **Animations:** Motion/React
+-   **State Management:** React Context API (Time, Language, Themes, Accessibility)
+-   **Routing:** React Router (HashRouter for broad compatibility)
+-   **Icons:** Lucide-React
+
+---
+
+## 📄 License & Credits
+
+**Author:** [Theodoros Bairaktaris](https://github.com/theodorosbair)  
+**License:** [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)
+
+© 2025-2026 Awareness Gateway. All rights reserved.
+
