@@ -15,11 +15,11 @@ export default defineConfig(({ mode }) => {
         registerType: 'autoUpdate',
         includeAssets: ['favicon.ico', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'hero.png', 'robots.txt', 'sitemap.xml', '*.mp3', '*.mp4'],
         manifest: {
-          name: 'Neurodivergent Mindfulness',
-          short_name: 'Mindfulness',
+          name: 'Awareness Gateway',
+          short_name: 'Awareness',
           description: 'A trauma-informed mindfulness guide for neurodivergent minds (ADHD, Autism).',
-          theme_color: '#1A5F6E',
-          background_color: '#0a1a1a',
+          theme_color: '#0f1117',
+          background_color: '#0f1117',
           display: 'standalone',
           orientation: 'portrait',
           icons: [

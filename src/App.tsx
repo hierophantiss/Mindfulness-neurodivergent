@@ -22,6 +22,7 @@ import { LanguageProvider, useLanguage } from './hooks/useLanguage';
 import { ThemeProvider } from './hooks/useTheme';
 import { AccessibilityProvider } from './hooks/useAccessibility';
 import { TimeProvider } from './contexts/TimeContext';
+import { RewardProvider } from './contexts/RewardContext';
 
 function AppContent() {
   return (
@@ -57,9 +58,11 @@ export default function App() {
     <TimeProvider>
       <LanguageProvider>
         <ThemeProvider>
-          <AccessibilityProvider>
-            <AppContent />
-          </AccessibilityProvider>
+          <RewardProvider>
+            <AccessibilityProvider>
+              <AppContent />
+            </AccessibilityProvider>
+          </RewardProvider>
         </ThemeProvider>
       </LanguageProvider>
     </TimeProvider>

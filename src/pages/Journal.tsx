@@ -3,6 +3,7 @@ import { ArrowLeft, Check, BarChart2, Calendar } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../hooks/useLanguage';
+import { useReward } from '../contexts/RewardContext';
 import { 
   LineChart, 
   Line, 
@@ -33,6 +34,7 @@ interface JournalEntry {
 export default function Journal() {
   const navigate = useNavigate();
   const { language } = useLanguage();
+  const { triggerReward } = useReward();
   const [isRecording, setIsRecording] = useState(false);
   
   const texts = {
@@ -209,6 +211,13 @@ export default function Journal() {
   const toggleCheck = (di: number, key: Axis) => {
     const newData = [...journalData];
     newData[di].checked[key] = !newData[di].checked[key];
+    
+    // Check if now all axes are checked
+    const isNowAllChecked = Object.values(newData[di].checked).every(Boolean);
+    if (isNowAllChecked && !Object.values(journalData[di].checked).every(Boolean)) {
+       triggerReward('journal');
+    }
+    
     saveJournal(newData);
   };
 

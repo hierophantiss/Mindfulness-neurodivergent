@@ -75,7 +75,7 @@ export default function CompanionSheet() {
             className="fixed bottom-0 left-0 right-0 max-h-[85dvh] bg-stone-100 dark:bg-stone-900 shadow-2xl rounded-t-3xl border border-stone-200 dark:border-stone-800 z-[9999] flex flex-col overflow-hidden max-w-2xl mx-auto pb-[env(safe-area-inset-bottom)]"
           >
             {/* Grab Handle */}
-            <div className="flex justify-center p-3 cursor-pointer touch-none" onClick={handleClose}>
+            <div role="button" className="flex justify-center p-3 cursor-pointer touch-none" onClick={handleClose}>
               <div className="w-10 h-1.5 bg-stone-300 dark:bg-stone-700 rounded-full" />
             </div>
 

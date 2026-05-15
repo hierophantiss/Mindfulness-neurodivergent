@@ -8,12 +8,14 @@ import { BREATH_PATTERNS } from '../data/breathPatterns';
 import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useReward } from '../contexts/RewardContext';
 
 export default function PracticeBreath() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { language } = useLanguage();
   const { reduceMotion } = useAccessibility();
+  const { triggerReward } = useReward();
   
   const currentPatternId = id || '4-2-6-1';
   const pattern = BREATH_PATTERNS.find(p => p.id === currentPatternId) || BREATH_PATTERNS[0];
@@ -450,14 +452,30 @@ export default function PracticeBreath() {
            )}
          </button>
 
-         {/* Reset button */}
-         <button
-           onClick={() => { setRunning(false); setCycles(0); setPhaseIdx(0); setPhase(pattern.labels[0]); }}
-           className="flex-1 h-9 rounded-full bg-transparent border border-pine-700/60 flex items-center justify-center gap-2 text-pine-400 hover:text-white hover:bg-pine-800/50 transition-all duration-300 active:scale-95"
-         >
-           <X size={14} />
-           <span className="text-[10px] font-bold tracking-wider mt-0.5 uppercase opacity-90">{language === 'el' ? 'Επαναφορα' : 'Reset'}</span>
-         </button>
+         {/* Reset/Complete button */}
+         {(!running && cycles > 2) ? (
+           <button
+             onClick={() => { 
+               triggerReward('breath');
+               setRunning(false); 
+               setCycles(0); 
+               setPhaseIdx(0); 
+               setPhase(pattern.labels[0]); 
+             }}
+             className="flex-1 h-9 rounded-full bg-teal-500/20 border border-teal-500/40 flex items-center justify-center gap-2 text-teal-300 hover:bg-teal-500/30 transition-all duration-300 active:scale-95 shadow-[0_0_15px_rgba(20,184,166,0.15)]"
+           >
+             <Check size={14} />
+             <span className="text-[10px] font-bold tracking-wider mt-0.5 uppercase">{language === 'el' ? 'Ολοκληρωση' : 'Complete'}</span>
+           </button>
+         ) : (
+           <button
+             onClick={() => { setRunning(false); setCycles(0); setPhaseIdx(0); setPhase(pattern.labels[0]); }}
+             className="flex-1 h-9 rounded-full bg-transparent border border-pine-700/60 flex items-center justify-center gap-2 text-pine-400 hover:text-white hover:bg-pine-800/50 transition-all duration-300 active:scale-95"
+           >
+             <X size={14} />
+             <span className="text-[10px] font-bold tracking-wider mt-0.5 uppercase opacity-90">{language === 'el' ? 'Επαναφορα' : 'Reset'}</span>
+           </button>
+         )}
       </div>
 
       {/* Sleep Timer Modal */}

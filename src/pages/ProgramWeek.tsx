@@ -8,12 +8,15 @@ import { ArrowLeft, Check, PlayCircle, Clock, MapPin, ChevronLeft, ChevronRight,
 import { motion, AnimatePresence } from 'framer-motion';
 import CameraAnimation from '../components/CameraAnimation';
 import SamathaAnimation from '../components/SamathaAnimation';
+import { playSound } from '../lib/soundEffects';
+import { useReward } from '../contexts/RewardContext';
 
 export default function ProgramWeek() {
   const { weekId } = useParams();
   const navigate = useNavigate();
   const { language } = useLanguage();
   const { companionData, updateCompanionData } = useCompanion();
+  const { triggerReward } = useReward();
   
   const courseData = language === 'en' ? courseDataEn : courseDataEl;
   const weekNum = Number(weekId);
@@ -94,6 +97,9 @@ export default function ProgramWeek() {
   const isCompleted = weekNum < curW || (weekNum === curW && activeDay < curD);
 
   const handleComplete = () => {
+    // Play complete sound and show reward
+    triggerReward('program');
+    
     // Only advance if it's the latest day they are on
     if (!isCompleted) {
       let nextW = weekNum;
