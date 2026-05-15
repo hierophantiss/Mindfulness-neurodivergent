@@ -201,7 +201,7 @@ export default function ChapterDetail() {
             transition={{ duration: 0.4, ease: "easeOut" }}
             className="flex-1 overflow-y-auto scrollbar-none flex flex-col"
           >
-            <div className="flex-1 flex flex-col justify-start min-h-full pt-4 pb-40 text-center sm:text-left max-w-3xl mx-auto w-full">
+            <div className="flex-1 flex flex-col justify-start min-h-full pt-4 pb-20 text-center sm:text-left max-w-3xl mx-auto w-full">
             {curPage.type === 'intro' && (
               <div className="space-y-12">
                 <div className="space-y-6 text-center">
@@ -345,38 +345,50 @@ export default function ChapterDetail() {
                 </div>
               </div>
             )}
+
+            {/* In-content Navigation Buttons */}
+            <div className="mt-24 pb-12 flex flex-col items-center gap-8">
+              {page < pages.length - 1 ? (
+                <button
+                  onClick={handleNext}
+                  className="group flex flex-col items-center gap-4 transition-all duration-700"
+                >
+                  <div className="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center group-hover:border-teal-500/50 group-hover:bg-teal-500/5 transition-all duration-700 group-active:scale-90 shadow-lg">
+                    <ChevronRight size={28} className="text-white/20 group-hover:text-teal-400 transition-colors ml-1" />
+                  </div>
+                  <span className="text-[10px] font-bold tracking-[0.4em] text-white/30 group-hover:text-teal-400 transition-colors uppercase">
+                    {language === 'el' ? 'ΣΥΝΕΧΕΙΑ' : 'CONTINUE'}
+                  </span>
+                </button>
+              ) : (
+                <button
+                  onClick={handleNext}
+                  className="w-full max-w-sm py-6 rounded-2xl flex justify-center items-center gap-4 text-black font-bold uppercase tracking-widest transition-all duration-500 active:scale-[0.98] shadow-2xl"
+                  style={{ 
+                    backgroundColor: chapter.hex,
+                    boxShadow: `0 20px 40px -10px ${chapter.hex}50`
+                  }}
+                >
+                  <span className="text-sm">{language === 'el' ? 'Ολοκλήρωση' : 'COMPLETE'}</span>
+                  <Check size={20} />
+                </button>
+              )}
+
+              {page > 0 && (
+                <button 
+                  onClick={handlePrev}
+                  className="text-[10px] font-bold text-white/20 hover:text-white/40 tracking-[0.2em] uppercase transition-colors"
+                >
+                  {language === 'el' ? 'ΠΡΟΗΓΟΥΜΕΝΟ' : 'PREVIOUS'}
+                </button>
+              )}
+            </div>
+            
             </div>
           </motion.div>
         </AnimatePresence>
       </main>
 
-      {/* Footer Controls */}
-      <footer className="fixed bottom-0 left-0 right-0 p-6 max-w-4xl mx-auto z-20 backdrop-blur-xl bg-[#0f1117]/80 border-t border-white/5">
-        <div className="flex gap-4">
-          <button
-            onClick={handlePrev}
-            disabled={page === 0}
-            className="btn-zen flex-1 disabled:opacity-20 flex justify-center !py-4"
-          >
-            <ChevronLeft size={20} />
-          </button>
-          
-          <button
-            onClick={handleNext}
-            className="flex-[3] btn-zen bg-white !text-black hover:bg-white/90 flex justify-center items-center gap-3 !py-4"
-            style={{ 
-              backgroundColor: chapter.hex, 
-              color: '#000',
-              boxShadow: `0 10px 30px -10px ${chapter.hex}60`
-            }}
-          >
-            <span className="text-sm font-bold uppercase tracking-widest">
-              {page === pages.length - 1 ? (language === 'el' ? 'Ολοκλήρωση' : 'COMPLETE') : (language === 'el' ? 'Επόμενο' : 'NEXT')}
-            </span>
-            {page === pages.length - 1 ? <Check size={18} /> : <ChevronRight size={18} />}
-          </button>
-        </div>
-      </footer>
     </div>
   );
 }
