@@ -17,6 +17,8 @@ import GenericExercise from './pages/GenericExercise';
 import Method from './pages/Method';
 import RabbitHole from './pages/RabbitHole';
 import Onboarding from './pages/Onboarding';
+import Sanctuary from './pages/Sanctuary';
+import Settings from './pages/Settings';
 
 import { LanguageProvider, useLanguage } from './hooks/useLanguage';
 import { ThemeProvider } from './hooks/useTheme';
@@ -45,6 +47,8 @@ function AppContent() {
           <Route path="practice/breath/:id" element={<PracticeBreath />} />
           <Route path="practice/:category/:id" element={<GenericExercise />} />
           <Route path="journal" element={<Journal />} />
+          <Route path="sanctuary" element={<Sanctuary />} />
+          <Route path="settings" element={<Settings />} />
           <Route path="faq" element={<Faq />} />
         </Route>
         </Routes>

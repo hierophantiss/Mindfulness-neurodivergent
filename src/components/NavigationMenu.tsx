@@ -66,6 +66,7 @@ export default function NavigationMenu() {
   const moreItems = [
     { path: '/program', icon: '🗺️', labelEn: 'Program', labelEl: 'Πλάνο' },
     { path: '/rabbithole', icon: '🐇', labelEn: 'Rabbit Hole', labelEl: 'Εξερεύνηση' },
+    { path: '/sanctuary', icon: '🌙', labelEn: 'Sanctuary', labelEl: 'Καταφύγιο' },
     { path: '/faq', icon: '❓', labelEn: 'FAQ', labelEl: 'Συχνές Ερωτήσεις' },
     { path: '/method', icon: '∞', labelEn: 'Method', labelEl: 'Η Μέθοδος' },
   ];

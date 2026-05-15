@@ -402,6 +402,14 @@ export default function Dashboard() {
                 {isPlaying ? <Waves size={16} className="animate-pulse relative z-10" /> : <Play size={16} />}
               </button>
               
+              <Link 
+                to="/settings"
+                className="p-2.5 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-white/80 hover:bg-white/10 transition-all duration-300 active:scale-95"
+                title={language === 'el' ? 'Ρυθμίσεις' : 'Settings'}
+              >
+                <User size={16} />
+              </Link>
+              
               <button 
                 onClick={() => setIsInfoOpen(true)}
                 className="p-2.5 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-white/80 hover:bg-white/10 transition-all duration-300 active:scale-95"
@@ -568,6 +576,27 @@ export default function Dashboard() {
 
           {/* List Style Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-1">
+            <motion.div variants={itemVariants}>
+              <Link 
+                 to="/sanctuary"
+                 className="group flex items-center gap-3 p-4 h-full shape-cloud-1 soft-glass transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.05]"
+                 style={{ background: dayColors.bg, borderColor: dayColors.border }}
+              >
+                <div className="w-10 h-10 rounded-xl bg-cyan-500/5 flex items-center justify-center text-cyan-500/40 border border-cyan-500/10 group-hover:text-cyan-400 transition-colors">
+                  <Moon size={18} />
+                </div>
+                <div className="flex-1">
+                  <h4 className="text-[14px] font-serif text-white/90 italic font-medium tracking-tight">
+                    {language === 'el' ? 'Το Καταφύγιο' : 'The Sanctuary'}
+                  </h4>
+                  <p className="text-[10px] text-white/30 font-sans mt-0.5">
+                     {language === 'el' ? 'Χώρος ανάπαυσης' : 'Space of rest'}
+                  </p>
+                </div>
+                <ArrowRight size={14} className="text-white/10 group-hover:text-white/40 transition-colors mr-2 group-hover:translate-x-1" />
+              </Link>
+            </motion.div>
+
             <motion.div variants={itemVariants}>
               <Link 
                  to="/rabbithole"

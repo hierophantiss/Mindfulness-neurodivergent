@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { ArrowLeft, Check, BarChart2, Calendar } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../hooks/useLanguage';
 import { useReward } from '../contexts/RewardContext';
+import { getAIReflection, AIReflectionResponse } from '../services/geminiService';
 import { 
   LineChart, 
   Line, 
@@ -15,6 +17,7 @@ import {
   AreaChart,
   Area
 } from 'recharts';
+import { Sparkles, Loader2, MessageSquare, ListFilter, Quote, Activity } from 'lucide-react';
 
 type Axis = 'body' | 'breath' | 'focus' | 'space';
 
@@ -126,6 +129,9 @@ export default function Journal() {
   const [activeDay, setActiveDay] = useState<number>(0);
   const [breathSessions, setBreathSessions] = useState<Record<number, number>>({});
   const [view, setView] = useState<'daily' | 'stats'>('daily');
+  const [aiReflection, setAiReflection] = useState<AIReflectionResponse | null>(null);
+  const [isAiLoading, setIsAiLoading] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
 
   const moodValueMap: Record<string, number> = {
     'calm': 5,
@@ -336,6 +342,32 @@ export default function Journal() {
     if (window.confirm(message)) {
       saveJournal(getEmptyWeek());
       setActiveDay(0);
+      setAiReflection(null);
+    }
+  };
+
+  const handleFetchAI = async () => {
+    setIsAiLoading(true);
+    setAiError(null);
+    try {
+      // Filter for days that have at least some data (either a check or a note)
+      const dataWithContent = journalData.filter(d => 
+        Object.values(d.checked).some(Boolean) || (d.note && d.note.length > 5)
+      );
+
+      if (dataWithContent.length === 0) {
+        setAiError(language === 'el' ? 'Χρειάζεται τουλάχιστον μία καταγραφή για ανάλυση.' : 'Need at least one entry for analysis.');
+        setIsAiLoading(false);
+        return;
+      }
+
+      const reflection = await getAIReflection(journalData, language);
+      setAiReflection(reflection);
+      triggerReward('journal');
+    } catch (err: any) {
+      setAiError(language === 'el' ? 'Σφάλμα κατά την ανάλυση. Δοκιμάστε ξανά.' : 'Error during analysis. Try again.');
+    } finally {
+      setIsAiLoading(false);
     }
   };
 
@@ -432,198 +464,273 @@ export default function Journal() {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 overflow-y-auto px-4 pb-4 custom-scrollbar">
+      <div className="flex-1 overflow-y-auto px-4 pb-12 custom-scrollbar">
         {view === 'daily' ? (
-          <div className={cn(
-            "min-h-full flex flex-col shape-cloud-6 border overflow-hidden p-4 transition-colors",
-            done ? "bg-teal-900/20 border-teal-500/30" : "bg-pine-800/20 border-pine-700/60"
-          )}>
-            {/* Day Header */}
-            <div className="flex-none flex justify-between items-center mb-4">
-              <div className="flex items-center gap-3">
-                <h3 className="text-xl font-bold text-pine-50 font-heading">
-                  {entry.day}
-                </h3>
-                {sessions > 0 && (
-                  <span className="inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full bg-teal-500/20 text-teal-200 border border-teal-500/30">
-                    🫁 {sessions}
+          <div className="space-y-6">
+            {/* Quick Mood Selector */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between px-1">
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20">
+                  {language === 'el' ? 'Πώς νιώθετε;' : 'How are you feeling?'}
+                </span>
+                {entry.mood && (
+                  <span className="text-[10px] font-bold text-teal-400 uppercase tracking-widest">
+                    {texts.moods.find(m => m.id === entry.mood)?.[language]}
                   </span>
                 )}
               </div>
+              <div className="flex justify-between gap-1.5 overflow-x-auto pb-1 no-scrollbar">
+                {texts.moods.map((mood) => (
+                  <button
+                    key={mood.id}
+                    onClick={() => updateMood(activeDay, mood.id)}
+                    className={cn(
+                      "flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center text-xl transition-all duration-300 active:scale-90",
+                      entry.mood === mood.id 
+                        ? "bg-white/[0.08] border border-white/20 shadow-lg scale-110" 
+                        : "bg-white/[0.02] border border-white/5 opacity-40 hover:opacity-100"
+                    )}
+                  >
+                    {mood.el.split(' ')[0]}
+                  </button>
+                ))}
+              </div>
             </div>
 
-            {/* Axes Grid */}
-            <div className="flex-none grid grid-cols-2 gap-2 mb-6">
-              {axes.map(ax => (
-                <button
-                  key={ax.key}
-                  onClick={() => toggleCheck(activeDay, ax.key)}
-                  style={{
-                    borderColor: ax.hex,
-                    backgroundColor: entry.checked[ax.key] ? ax.hex : 'transparent',
-                    color: entry.checked[ax.key] ? '#fff' : '#e2e8f0'
-                  }}
-                  className="border-2 rounded-2xl px-3 py-3 text-[14px] font-semibold transition-all duration-300 text-left shadow-sm active:scale-95 flex items-center gap-2 hover:brightness-110"
-                >
-                  <span>{ax.label.split(' ')[0]}</span>
-                  <span className="flex-1 truncate">{ax.label.split(' ')[1]}</span>
-                </button>
-              ))}
-            </div>
-
-            <div className="space-y-6 mb-6">
-               {/* Comfort Slider with Emoji */}
-               <div className="bg-pine-900/40 p-4 rounded-2xl border border-pine-800/60">
-                <div className="flex justify-between items-center mb-4">
-                  <span className="text-[11px] font-bold text-pine-400 uppercase tracking-widest">{texts.comfortLevel[language]}</span>
-                  <span className="text-2xl">{texts.comfortEmojis[(entry.comfort || 3) - 1]}</span>
+            {/* Check-in Sections Grouped */}
+            <div className="space-y-8">
+              {/* 1. THE MIND */}
+              <section className="space-y-4">
+                <div className="flex items-center gap-2 border-l-2 border-indigo-500/30 pl-3">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400/60">
+                    {language === 'el' ? 'Ο Νους' : 'The Mind'}
+                  </span>
                 </div>
-                <div className="flex items-center gap-4">
-                  <input 
-                    type="range" min="1" max="5" 
-                    value={entry.comfort || 3} 
-                    onChange={(e) => updateComfort(activeDay, parseInt(e.target.value))}
-                    className="flex-1 accent-teal-500 h-1.5 bg-pine-950 rounded-full appearance-none cursor-pointer"
-                  />
+                <div className="grid grid-cols-2 gap-2">
+                  {[axes[1], axes[2]].map(ax => (
+                    <button
+                      key={ax.key}
+                      onClick={() => toggleCheck(activeDay, ax.key)}
+                      className={cn(
+                        "p-4 rounded-2xl border-2 transition-all duration-300 text-left active:scale-[0.98] group",
+                        entry.checked[ax.key] 
+                          ? "bg-indigo-500/10 border-indigo-500/40" 
+                          : "bg-white/[0.02] border-white/5 opacity-60 hover:opacity-100"
+                      )}
+                    >
+                      <div className={cn(
+                          "w-8 h-8 rounded-xl flex items-center justify-center mb-2 transition-colors",
+                          entry.checked[ax.key] ? "bg-indigo-500/20 text-indigo-400" : "bg-white/5 text-white/40 group-hover:text-white/60"
+                      )}>
+                        <span className="text-sm">{ax.label.split(' ')[0]}</span>
+                      </div>
+                      <span className={cn(
+                        "text-[13px] font-serif italic",
+                        entry.checked[ax.key] ? "text-white" : "text-white/30"
+                      )}>{ax.label.split(' ')[1]}</span>
+                    </button>
+                  ))}
                 </div>
-                <div className="flex justify-between mt-2">
-                  <span className="text-[10px] text-pine-500">{texts.comfortLabels[language][0]}</span>
-                  <span className="text-[10px] font-bold text-teal-400">{texts.comfortLabels[language][(entry.comfort || 3) - 1]}</span>
-                  <span className="text-[10px] text-pine-500">{texts.comfortLabels[language][4]}</span>
+              </section>
+
+              {/* 2. THE BODY */}
+              <section className="space-y-4">
+                <div className="flex items-center gap-2 border-l-2 border-emerald-500/30 pl-3">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-400/60">
+                    {language === 'el' ? 'Το Σώμα' : 'The Body'}
+                  </span>
                 </div>
-              </div>
+                <div className="grid grid-cols-2 gap-2">
+                   <button
+                      onClick={() => toggleCheck(activeDay, axes[0].key)}
+                      className={cn(
+                        "p-4 rounded-2xl border-2 transition-all duration-300 text-left active:scale-[0.98] group",
+                        entry.checked[axes[0].key] 
+                          ? "bg-emerald-500/10 border-emerald-500/40" 
+                          : "bg-white/[0.02] border-white/5 opacity-60 hover:opacity-100"
+                      )}
+                    >
+                      <div className={cn(
+                          "w-8 h-8 rounded-xl flex items-center justify-center mb-2 transition-colors",
+                          entry.checked[axes[0].key] ? "bg-emerald-500/20 text-emerald-400" : "bg-white/5 text-white/40 group-hover:text-white/60"
+                      )}>
+                         <span className="text-sm">{axes[0].label.split(' ')[0]}</span>
+                      </div>
+                      <span className={cn(
+                        "text-[13px] font-serif italic",
+                        entry.checked[axes[0].key] ? "text-white" : "text-white/30"
+                      )}>{axes[0].label.split(' ')[1]}</span>
+                    </button>
 
-              {/* Tags Input */}
-              <div className="px-1">
-                <input 
-                  type="text"
-                  placeholder={texts.tagsPlaceholder[language]}
-                  value={entry.tags || ''}
-                  onChange={(e) => updateTags(activeDay, e.target.value)}
-                  className="w-full bg-pine-950/40 border border-pine-800 rounded-xl px-4 py-3 text-sm text-pine-200 placeholder:text-pine-700 focus:outline-none focus:border-teal-500/40"
-                />
-              </div>
+                    <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-4 flex flex-col justify-center">
+                       <span className="text-[10px] font-black text-white/20 uppercase tracking-widest mb-2">{texts.comfortLevel[language]}</span>
+                       <div className="flex items-center gap-2">
+                          <span className="text-lg">{texts.comfortEmojis[(entry.comfort || 3) - 1]}</span>
+                          <input 
+                            type="range" min="1" max="5" 
+                            value={entry.comfort || 3} 
+                            onChange={(e) => updateComfort(activeDay, parseInt(e.target.value))}
+                            className="flex-1 accent-emerald-500 h-1 bg-white/10 rounded-full appearance-none cursor-pointer"
+                          />
+                       </div>
+                    </div>
+                </div>
 
-              {/* Visual Body Map */}
-              <div className="bg-pine-900/40 p-5 rounded-2xl border border-pine-800/60">
-                <div className="text-[11px] font-bold text-pine-400 uppercase tracking-widest mb-4">{texts.bodyMapTitle[language]}</div>
-                <div className="flex flex-col md:flex-row gap-6 items-center">
-                  <div className="w-32 h-44 shrink-0 bg-pine-950/60 border border-pine-800 rounded-2xl overflow-hidden shadow-inner relative flex items-center justify-center p-2">
-                    <svg viewBox="0 0 100 160" className="w-full h-full">
-                      <style>{`
-                        .bp { transition: all 0.3s ease; cursor: pointer; fill: none; stroke: #4a5568; stroke-width: 1.5; }
-                        .bp-active { stroke: #14b8a6; stroke-width: 2.5; filter: drop-shadow(0 0 4px #14b8a6); opacity: 1 !important; }
-                      `}</style>
-                      <g className={cn("bp", entry.tensions?.includes('head') && "bp-active")} onClick={() => toggleTension(activeDay, 'head')}>
-                        <path d="M50,10 Q58,10 60,20 Q60,30 50,30 Q42,30 40,20 Q40,10 50,10" />
-                      </g>
-                      <g className={cn("bp", entry.tensions?.includes('neck') && "bp-active")} onClick={() => toggleTension(activeDay, 'neck')}>
-                        <path d="M46,30 L46,38 M54,30 L54,38" />
-                        <path d="M30,45 Q50,38 70,45 L75,55 L25,55 Z" />
-                      </g>
-                      <g className={cn("bp", entry.tensions?.includes('chest') && "bp-active")} onClick={() => toggleTension(activeDay, 'chest')}>
-                        <path d="M35,55 L65,55 L68,80 L32,80 Z" />
-                      </g>
-                      <g className={cn("bp", entry.tensions?.includes('belly') && "bp-active")} onClick={() => toggleTension(activeDay, 'belly')}>
-                        <path d="M32,80 L68,80 L65,105 L35,105 Z" />
-                        <circle cx="50" cy="92" r="2" />
-                      </g>
-                      <g className={cn("bp", entry.tensions?.includes('hands') && "bp-active")} onClick={() => toggleTension(activeDay, 'hands')}>
-                        <path d="M25,48 L15,75 L12,105 Q12,112 18,110 L22,75" />
-                        <path d="M75,48 L85,75 L88,105 Q88,112 82,110 L78,75" />
-                      </g>
-                      <g className={cn("bp", entry.tensions?.includes('legs') && "bp-active")} onClick={() => toggleTension(activeDay, 'legs')}>
-                        <path d="M35,105 L30,135 L33,160 L45,158 L42,135 L50,110" />
-                        <path d="M65,105 L70,135 L67,160 L55,158 L58,135 L50,110" />
-                      </g>
-                      <g className={cn("bp", entry.tensions?.includes('back') && "bp-active")} onClick={() => toggleTension(activeDay, 'back')}>
-                        <path d="M50,40 L50,105" strokeDasharray="3,3" />
-                      </g>
-                    </svg>
+                {/* Body Map Integration - Cleaner */}
+                <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-6 overflow-hidden">
+                  <div className="flex gap-6 items-center">
+                    <div className="w-24 h-32 shrink-0 opacity-40 hover:opacity-100 transition-opacity">
+                      <svg viewBox="0 0 100 160" className="w-full h-full">
+                        <style>{`
+                          .bp { transition: all 0.3s ease; cursor: pointer; fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 1.5; }
+                          .bp-active { stroke: #10b981; stroke-width: 2.5; filter: drop-shadow(0 0 4px rgba(16,185,129,0.4)); opacity: 1 !important; }
+                        `}</style>
+                        <g className={cn("bp", entry.tensions?.includes('head') && "bp-active")} onClick={() => toggleTension(activeDay, 'head')}>
+                          <path d="M50,10 Q58,10 60,20 Q60,30 50,30 Q42,30 40,20 Q40,10 50,10" />
+                        </g>
+                        <g className={cn("bp", entry.tensions?.includes('neck') && "bp-active")} onClick={() => toggleTension(activeDay, 'neck')}>
+                          <path d="M46,30 L46,38 M54,30 L54,38" />
+                        </g>
+                        <g className={cn("bp", entry.tensions?.includes('chest') && "bp-active")} onClick={() => toggleTension(activeDay, 'chest')}>
+                          <path d="M35,55 L65,55 L68,80 L32,80 Z" />
+                        </g>
+                        <g className={cn("bp", entry.tensions?.includes('belly') && "bp-active")} onClick={() => toggleTension(activeDay, 'belly')}>
+                          <path d="M32,80 L68,80 L65,105 L35,105 Z" />
+                        </g>
+                        <g className={cn("bp", entry.tensions?.includes('hands') && "bp-active")} onClick={() => toggleTension(activeDay, 'hands')}>
+                          <path d="M25,48 L15,75 L12,105 Q12,112 18,110 L22,75" />
+                          <path d="M75,48 L85,75 L88,105 Q88,112 82,110 L78,75" />
+                        </g>
+                        <g className={cn("bp", entry.tensions?.includes('legs') && "bp-active")} onClick={() => toggleTension(activeDay, 'legs')}>
+                          <path d="M35,105 L30,135 L33,160 L45,158 L42,135 L50,110" />
+                          <path d="M65,105 L70,135 L67,160 L55,158 L58,135 L50,110" />
+                        </g>
+                      </svg>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5 flex-1 content-start">
+                      {Object.keys(texts.bodyParts).slice(0, 6).map(key => (
+                         <button
+                           key={key}
+                           onClick={() => toggleTension(activeDay, key)}
+                           className={cn(
+                             "px-2.5 py-1.5 rounded-xl text-[10px] font-bold border transition-all active:scale-95",
+                             entry.tensions?.includes(key)
+                               ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/40"
+                               : "bg-white/5 text-white/30 border-white/5 hover:border-white/10"
+                           )}
+                         >
+                           {(texts.bodyParts as any)[key][language]}
+                         </button>
+                      ))}
+                    </div>
                   </div>
-                  <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-                    {Object.entries(texts.bodyParts).map(([key, label]) => (
-                      <button
-                        key={key}
-                        onClick={() => toggleTension(activeDay, key)}
-                        className={cn(
-                          "px-3 py-2 rounded-xl text-xs font-bold border transition-all duration-300 active:scale-95",
-                          entry.tensions?.includes(key)
-                            ? "bg-teal-500/20 text-teal-400 border-teal-500/40"
-                            : "bg-pine-950/40 text-pine-500 border-pine-800 hover:border-pine-600 hover:bg-pine-800/40"
-                        )}
-                      >
-                        {label[language]}
-                      </button>
+                </div>
+              </section>
+
+              {/* 3. THE ENVIRONMENT */}
+              <section className="space-y-4">
+                <div className="flex items-center gap-2 border-l-2 border-amber-500/30 pl-3">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-amber-400/60">
+                    {language === 'el' ? 'Ο Χώρος' : 'The Environment'}
+                  </span>
+                </div>
+                <div className="space-y-3">
+                  <button
+                    onClick={() => toggleCheck(activeDay, axes[3].key)}
+                    className={cn(
+                      "w-full p-4 rounded-2xl border-2 transition-all duration-300 text-left active:scale-[0.98] group flex items-center justify-between",
+                      entry.checked[axes[3].key] 
+                        ? "bg-amber-500/10 border-amber-500/40" 
+                        : "bg-white/[0.02] border-white/5 opacity-60 hover:opacity-100"
+                    )}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={cn(
+                          "w-8 h-8 rounded-xl flex items-center justify-center transition-colors",
+                          entry.checked[axes[3].key] ? "bg-amber-500/20 text-amber-400" : "bg-white/5 text-white/40"
+                      )}>
+                        <span className="text-sm">{axes[3].label.split(' ')[0]}</span>
+                      </div>
+                      <span className={cn(
+                        "text-[13px] font-serif italic",
+                        entry.checked[axes[3].key] ? "text-white" : "text-white/30"
+                      )}>{axes[3].label.split(' ')[1]}</span>
+                    </div>
+                    {entry.checked[axes[3].key] && <Check size={16} className="text-amber-400" />}
+                  </button>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    {texts.sensoryLabels[language].slice(0, 4).map(label => (
+                       <button
+                         key={label}
+                         onClick={() => toggleSensory(activeDay, label)}
+                         className={cn(
+                           "px-3 py-3 rounded-2xl text-[11px] font-sans font-medium border transition-all text-left group",
+                           entry.sensory?.includes(label)
+                             ? "bg-white/[0.08] text-white border-white/20"
+                             : "bg-white/[0.02] text-white/30 border-white/5 opacity-60 hover:opacity-100"
+                         )}
+                       >
+                         {label}
+                       </button>
                     ))}
                   </div>
                 </div>
-              </div>
-            </div>
+              </section>
 
-            {/* Prompts Area */}
-            {checkedAxes.length > 0 && (
-              <div className="mb-6 bg-pine-900/60 p-4 rounded-2xl border border-pine-800/80">
-                <div className="text-[10px] font-bold text-pine-400 uppercase tracking-widest mb-3">
-                  {texts.promptLabel[language]}
+              {/* NOTES / JOURNALING */}
+              <section className="space-y-4 pt-4 border-t border-white/5">
+                <div className="flex items-center justify-between px-1">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20">
+                     {language === 'el' ? 'Σημειώσεις & Σκέψεις' : 'Notes & Reflections'}
+                  </span>
+                  <button 
+                    onClick={() => startSpeech(activeDay)}
+                    className={cn(
+                      "p-2 rounded-full transition-all duration-300 active:scale-90",
+                      isRecording ? "bg-rose-500/20 text-rose-400 animate-pulse" : "bg-white/5 text-white/30"
+                    )}
+                  >
+                    {isRecording ? <Loader2 className="animate-spin" size={16} /> : <Sparkles size={16} />}
+                  </button>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  {checkedAxes.map(ax => 
-                    texts.prompts[ax.key][language].map((q, qIdx) => {
-                      const used = entry.note && entry.note.includes(q);
-                      if (used) return null;
-                      return (
-                        <button
-                          key={`${ax.key}-${qIdx}`}
-                          onClick={() => addPrompt(activeDay, q)}
-                          className="text-[11px] px-3 py-2 rounded-xl border bg-pine-800/80 border-pine-700/80 text-pine-200 hover:bg-pine-700 hover:border-pine-500 transition-all text-left active:scale-95"
-                        >
-                          {q}
-                        </button>
-                      );
-                    })
+
+                <div className="relative">
+                  <textarea
+                    value={entry.note}
+                    onChange={(e) => updateNote(activeDay, e.target.value)}
+                    placeholder={texts.notePlaceholder[language]}
+                    className="w-full h-48 rounded-[2rem] bg-white/[0.03] border border-white/5 p-6 text-[15px] text-white/90 font-sans leading-relaxed focus:outline-none focus:bg-white/[0.06] transition-all placeholder:text-white/10"
+                  />
+                </div>
+
+                <div className="flex gap-2 overflow-x-auto pb-2 px-1 no-scrollbar">
+                   {checkedAxes.map(ax => 
+                    texts.prompts[ax.key][language].map((q, qIdx) => (
+                      <button
+                        key={`${ax.key}-${qIdx}`}
+                        onClick={() => addPrompt(activeDay, q)}
+                        className="flex-shrink-0 px-4 py-2.5 rounded-xl border border-white/5 bg-white/[0.02] text-[11px] text-white/40 hover:text-white hover:bg-white/5 transition-all text-left italic font-serif"
+                      >
+                        {q}
+                      </button>
+                    ))
                   )}
                 </div>
-              </div>
-            )}
-
-            {/* Actions & Notes */}
-            <div className="space-y-4">
-              <div className="flex justify-between items-center px-1">
-                <div className="text-[12px] font-semibold text-pine-300">{texts.noteLabel[language]}</div>
-                <button 
-                  onClick={() => startSpeech(activeDay)}
-                  className={cn(
-                    "flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-300 active:scale-95",
-                    isRecording 
-                      ? "bg-rose-500/20 border-rose-500/40 text-rose-400 animate-pulse" 
-                      : "bg-teal-500/10 border-teal-500/20 text-teal-400 hover:bg-teal-500/20"
-                  )}
-                >
-                  <span className="text-lg">{isRecording ? '🔴' : '🎙️'}</span>
-                  <span className="text-[10px] font-bold uppercase tracking-wider">{isRecording ? 'REC' : 'VOICE'}</span>
-                </button>
-              </div>
-              <textarea
-                value={entry.note}
-                onChange={(e) => updateNote(activeDay, e.target.value)}
-                placeholder={texts.notePlaceholder[language]}
-                className="w-full h-40 border border-pine-600/60 bg-pine-950/50 shape-cloud-2 p-4 text-[15px] text-pine-100 resize-none focus:outline-none focus:border-teal-500/60 focus:bg-pine-950 transition-colors shadow-inner leading-relaxed placeholder:text-pine-800"
-              />
+              </section>
             </div>
 
-            {/* Export Action */}
-            <div className="mt-8 flex flex-col items-center gap-4">
+            <div className="flex flex-col gap-4 pt-8">
               <button 
                 onClick={exportJournal}
-                className="w-full py-4 shape-btn bg-teal-500/10 border-2 border-dashed border-teal-500/40 text-teal-400 text-sm font-bold hover:bg-teal-500/20 transition-all duration-300 active:scale-95 flex items-center justify-center gap-2"
+                className="w-full py-4 rounded-2xl bg-teal-500/10 border-2 border-dashed border-teal-500/20 text-teal-400 text-[11px] font-black uppercase tracking-widest hover:bg-teal-500/20 transition-all active:scale-[0.98]"
               >
                 {texts.exportBtn[language]}
               </button>
               
               <button 
                 onClick={resetJournal}
-                className="text-[12px] font-medium text-pine-500 hover:text-rose-400 underline decoration-pine-800 hover:decoration-rose-400 underline-offset-8 transition-all duration-300 active:scale-95 px-4 py-4"
+                className="py-4 text-[11px] font-sans font-medium text-white/10 hover:text-rose-500/50 transition-colors"
               >
                 {texts.resetBtn[language]}
               </button>
@@ -631,59 +738,182 @@ export default function Journal() {
           </div>
         ) : (
           <div className="space-y-6">
-            {/* Mood Trends Chart */}
-            <div className="bg-pine-900/40 p-6 shape-cloud-2 border border-pine-800/60">
-              <div className="mb-6 flex items-center justify-between">
+            {/* Header Insight */}
+            <div className="flex flex-col items-center justify-center py-6 text-center">
+               <div className="w-16 h-16 rounded-full bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 mb-4">
+                  <BarChart2 size={32} />
+               </div>
+               <h3 className="text-2xl font-serif italic text-white/90">
+                 {language === 'el' ? 'Η Εβδομάδα σου' : 'Your Week'}
+               </h3>
+               <p className="text-[10px] uppercase font-black tracking-widest text-white/20 mt-1">
+                 {language === 'el' ? 'ΣΤΟΙΧΕΙΑ ΠΡΟΣΩΠΙΚΗΣ ΡΟΗΣ' : 'PERSONAL FLOW DATA'}
+               </p>
+            </div>
+
+            {/* Quick Stats Grid */}
+            <div className="grid grid-cols-2 gap-3">
+               <div className="bg-white/[0.02] border border-white/5 rounded-[2rem] p-6 text-center">
+                  <span className="block text-[32px] font-sans font-light text-white mb-1 leading-none">{total}</span>
+                  <span className="block text-[9px] uppercase font-black tracking-widest text-white/20">
+                    {language === 'el' ? 'ΟΛΟΚΛΗΡΩΜΕΝΑ' : 'COMPLETED'}
+                  </span>
+               </div>
+               <div className="bg-white/[0.02] border border-white/5 rounded-[2rem] p-6 text-center">
+                  <span className="block text-[32px] font-sans font-light text-indigo-400 mb-1 leading-none">
+                    {Object.values(breathSessions).reduce((a, b) => a + b, 0)}
+                  </span>
+                  <span className="block text-[9px] uppercase font-black tracking-widest text-white/20">
+                    {language === 'el' ? 'ΑΝΑΣΕΣ' : 'SESSIONS'}
+                  </span>
+               </div>
+            </div>
+
+            {/* AI AI Reflection Section - Moved Up for priority */}
+            <div className="pt-2">
+               {!aiReflection && !isAiLoading ? (
+                 <button 
+                   onClick={handleFetchAI}
+                   className="w-full flex items-center justify-center gap-4 p-8 rounded-[2.5rem] border border-teal-500/20 bg-teal-500/5 hover:bg-teal-500/10 transition-all duration-500 group active:scale-[0.98]"
+                 >
+                   <div className="w-12 h-12 rounded-2xl bg-teal-400/10 flex items-center justify-center text-teal-400 group-hover:scale-110 transition-transform">
+                     <Sparkles size={24} />
+                   </div>
+                   <div className="text-left">
+                     <span className="block text-lg font-serif italic text-white/90">
+                       {language === 'el' ? 'AI Αναστοχασμός' : 'AI Reflection'}
+                     </span>
+                     <span className="block text-[9px] font-black uppercase tracking-[0.2em] text-teal-500/40">
+                       {language === 'el' ? 'ΑΝΑΚΑΛΥΨΕ ΤΑ ΜΟΤΙΒΑ ΣΟΥ' : 'DISCOVER YOUR PATTERNS'}
+                     </span>
+                   </div>
+                 </button>
+               ) : (
+                 <div className="space-y-4">
+                   {isAiLoading ? (
+                     <div className="flex flex-col items-center justify-center py-12 space-y-4 text-center bg-white/[0.02] border border-white/5 rounded-[2.5rem]">
+                        <Loader2 size={32} className="text-teal-500 animate-spin" />
+                        <p className="text-[11px] font-sans font-medium text-white/30 tracking-widest uppercase animate-pulse">
+                          {language === 'el' ? 'Αναγνώριση Μοτίβων...' : 'Identifying Patterns...'}
+                        </p>
+                     </div>
+                   ) : aiReflection ? (
+                     <motion.div 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="space-y-6"
+                     >
+                       {/* AI Summary Card */}
+                       <div className="relative p-10 rounded-[3rem] bg-teal-500/5 border border-teal-500/10 overflow-hidden shadow-2xl">
+                          <div className="absolute top-6 right-8 text-teal-400/5">
+                            <Quote size={80} />
+                          </div>
+                          <p className="relative z-10 text-[20px] font-serif italic text-white/90 leading-relaxed text-center">
+                            "{aiReflection.summary}"
+                          </p>
+                       </div>
+
+                       {/* Findings Grid - Modernized */}
+                       <div className="grid grid-cols-1 gap-4">
+                          <div className="bg-white/[0.03] p-8 rounded-[2.5rem] border border-white/5">
+                            <div className="flex items-center gap-3 mb-6 text-teal-400">
+                               <div className="p-2 rounded-xl bg-teal-400/10">
+                                 <ListFilter size={18} />
+                               </div>
+                               <span className="text-[10px] font-black uppercase tracking-widest text-white/40">
+                                 {language === 'el' ? 'Παρατηρήσεις' : 'Patterns Detected'}
+                               </span>
+                            </div>
+                            <ul className="space-y-4">
+                              {aiReflection.patterns.map((p, i) => (
+                                <li key={i} className="flex gap-4 text-[14px] text-white/70 font-sans leading-relaxed">
+                                  <span className="text-teal-500 mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" />
+                                  {p}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          <div className="bg-white/[0.02] p-8 rounded-[2.5rem] border border-white/5">
+                            <div className="flex items-center gap-3 mb-6 text-indigo-400">
+                               <div className="p-2 rounded-xl bg-indigo-400/10">
+                                 <MessageSquare size={18} />
+                               </div>
+                               <span className="text-[10px] font-black uppercase tracking-widest text-white/40">
+                                 {language === 'el' ? 'Βοηθητικές Ερωτήσεις' : 'Questions for you'}
+                               </span>
+                            </div>
+                            <ul className="space-y-4">
+                              {aiReflection.questions.map((q, i) => (
+                                <li key={i} className="text-[14px] text-white/70 font-serif italic leading-relaxed py-3 px-6 border-l-2 border-indigo-500/20 bg-indigo-500/5 rounded-r-2xl">
+                                  {q}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                       </div>
+
+                       <button 
+                         onClick={handleFetchAI}
+                         className="w-full py-4 text-[10px] font-black uppercase tracking-widest text-white/10 hover:text-teal-400 transition-colors"
+                       >
+                         {language === 'el' ? 'Ανανέωση Ανάλυσης' : 'Refresh Analysis'}
+                       </button>
+                     </motion.div>
+                   ) : null}
+                 </div>
+               )}
+            </div>
+
+            {/* Mood Trends Chart - More Elegant */}
+            <div className="bg-white/[0.02] border border-white/5 p-8 rounded-[2.5rem] space-y-6">
+              <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-lg font-bold text-white font-heading">
-                    {language === 'el' ? 'Τάσεις Διάθεσης' : 'Mood Trends'}
-                  </h3>
-                  <p className="text-xs text-pine-400">
-                    {language === 'el' ? 'Η συναισθηματική σας διακύμανση αυτή την εβδομάδα' : 'Your emotional fluctuation this week'}
+                  <h4 className="text-lg font-serif italic text-white/90">
+                    {language === 'el' ? 'Συναισθηματική Ροή' : 'Emotional Flow'}
+                  </h4>
+                  <p className="text-[9px] uppercase font-black tracking-widest text-white/20 mt-1">
+                    {language === 'el' ? 'ΔΙΑΚΥΜΑΝΣΗ ΔΙΑΘΕΣΗΣ' : 'MOOD FLUCTUATION'}
                   </p>
                 </div>
-                <div className="flex gap-2 text-[10px] items-center">
-                  <div className="flex items-center gap-1">
-                    <div className="w-2 h-2 rounded-full bg-teal-400" />
-                    <span className="text-pine-300">{language === 'el' ? 'Διάθεση' : 'Mood'}</span>
-                  </div>
+                <div className="p-2 rounded-xl bg-white/5 text-white/20">
+                   <Activity size={18} />
                 </div>
               </div>
               
-              <div className="h-[240px] w-full">
+              <div className="h-[240px] w-full mt-4">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                     <defs>
                       <linearGradient id="colorMood" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#14b8a6" stopOpacity={0.3}/>
+                        <stop offset="5%" stopColor="#14b8a6" stopOpacity={0.2}/>
                         <stop offset="95%" stopColor="#14b8a6" stopOpacity={0}/>
                       </linearGradient>
                     </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#2d3748" vertical={false} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" vertical={false} />
                     <XAxis 
                       dataKey="name" 
                       axisLine={false} 
                       tickLine={false} 
-                      tick={{ fill: '#718096', fontSize: 10, fontWeight: 'bold' }}
+                      tick={{ fill: 'rgba(255,255,255,0.2)', fontSize: 10, fontWeight: 'bold' }}
                     />
                     <YAxis 
                       domain={[0, 5]} 
-                      ticks={[1, 2, 3, 4, 5]}
+                      ticks={[1, 3, 5]}
                       axisLine={false} 
                       tickLine={false} 
-                      tick={{ fill: '#718096', fontSize: 10 }}
+                      tick={{ fill: 'rgba(255,255,255,0.2)', fontSize: 10 }}
                       tickFormatter={(value) => texts.comfortEmojis[value-1] || ''}
                     />
                     <Tooltip 
-                      contentStyle={{ backgroundColor: '#0a1a1a', border: '1px solid #1a3a3a', borderRadius: '1rem', fontSize: '12px' }}
+                      contentStyle={{ backgroundColor: '#0c0e14', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '1.5rem', fontSize: '11px', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.5)' }}
                       itemStyle={{ color: '#14b8a6' }}
-                      formatter={(value: number) => [texts.comfortLabels[language][value - 1], language === 'el' ? 'Διάθεση' : 'Mood']}
                     />
                     <Area 
                       type="monotone" 
                       dataKey="mood" 
                       stroke="#14b8a6" 
-                      strokeWidth={3}
+                      strokeWidth={2}
                       fillOpacity={1} 
                       fill="url(#colorMood)" 
                       connectNulls
@@ -693,69 +923,49 @@ export default function Journal() {
               </div>
             </div>
 
-            {/* Weekly Progress Chart */}
-            <div className="bg-pine-900/40 p-6 shape-cloud-3 border border-pine-800/60">
-              <div className="mb-6">
-                <h3 className="text-lg font-bold text-white font-heading">
-                  {language === 'el' ? 'Συνολική Πρόοδος' : 'Weekly Progress'}
-                </h3>
-                <p className="text-xs text-pine-400">
-                  {language === 'el' ? 'Ενέργειες ανά ημέρα' : 'Completed actions per day'}
-                </p>
+            {/* Progress Chart */}
+            <div className="bg-white/[0.02] border border-white/5 p-8 rounded-[2.5rem] space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-lg font-serif italic text-white/90">
+                    {language === 'el' ? 'Συνολική Δεσμευση' : 'Total Engagement'}
+                  </h4>
+                  <p className="text-[9px] uppercase font-black tracking-widest text-white/20 mt-1">
+                    {language === 'el' ? 'ΕΝΕΡΓΕΙΕΣ ΠΡΑΚΤΙΚΗΣ' : 'PRACTICE ACTIONS'}
+                  </p>
+                </div>
+                <div className="p-2 rounded-xl bg-white/5 text-white/20">
+                   <Calendar size={18} />
+                </div>
               </div>
               
-              <div className="h-[200px] w-full">
+              <div className="h-[180px] w-full mt-4">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#2d3748" vertical={false} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" vertical={false} />
                     <XAxis 
                       dataKey="name" 
                       axisLine={false} 
                       tickLine={false} 
-                      tick={{ fill: '#718096', fontSize: 10, fontWeight: 'bold' }}
+                      tick={{ fill: 'rgba(255,255,255,0.2)', fontSize: 10, fontWeight: 'bold' }}
                     />
                     <YAxis 
                       domain={[0, 4]} 
-                      ticks={[0, 1, 2, 3, 4]}
+                      ticks={[0, 2, 4]}
                       axisLine={false} 
                       tickLine={false} 
-                      tick={{ fill: '#718096', fontSize: 10 }}
-                    />
-                    <Tooltip 
-                      contentStyle={{ backgroundColor: '#0a1a1a', border: '1px solid #1a3a3a', borderRadius: '1rem', fontSize: '12px' }}
-                      itemStyle={{ color: '#818cf8' }}
+                      tick={{ fill: 'rgba(255,255,255,0.2)', fontSize: 10 }}
                     />
                     <Line 
-                      type="stepAfter" 
+                      type="monotone" 
                       dataKey="checks" 
                       stroke="#818cf8" 
-                      strokeWidth={3} 
-                      dot={{ r: 4, fill: '#818cf8' }}
-                      activeDot={{ r: 6 }}
+                      strokeWidth={2} 
+                      dot={false}
+                      activeDot={{ r: 6, fill: '#818cf8' }}
                     />
                   </LineChart>
                 </ResponsiveContainer>
-              </div>
-            </div>
-
-            {/* Breath Sessions */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-pine-900/40 p-5 shape-cloud-4 border border-pine-800/60 flex flex-col items-center justify-center text-center">
-                <div className="w-10 h-10 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center mb-2">
-                  <Check size={20} />
-                </div>
-                <div className="text-2xl font-bold text-white leading-tight">{total}</div>
-                <div className="text-[10px] font-bold text-pine-400 uppercase tracking-widest">{language === 'el' ? 'ΟΛΟΚΛΗΡΩΜΕΝΑ' : 'COMPLETED'}</div>
-              </div>
-              
-              <div className="bg-pine-900/40 p-5 shape-cloud-5 border border-pine-800/60 flex flex-col items-center justify-center text-center">
-                <div className="w-10 h-10 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center mb-2">
-                  <Check size={20} className="rotate-12" />
-                </div>
-                <div className="text-2xl font-bold text-white leading-tight">
-                  {Object.values(breathSessions).reduce((a, b) => a + b, 0)}
-                </div>
-                <div className="text-[10px] font-bold text-pine-400 uppercase tracking-widest">{language === 'el' ? 'ΣΥΝΕΔΡΙΕΣ ΑΝΑΠΝΟΗΣ' : 'BREATH SESSIONS'}</div>
               </div>
             </div>
           </div>
