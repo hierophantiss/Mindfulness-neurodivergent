@@ -15,7 +15,7 @@ export function InteractiveBackground() {
   const { hour } = useTime();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const starsRef = useRef<Star[]>([]);
-  const requestRef = useRef<number>();
+  const requestRef = useRef<number>(0);
   
   // Calculate states based on hour
   const isNight = hour < 6 || hour >= 20;

@@ -431,7 +431,7 @@ export default function PracticeBreath() {
          <button
            onClick={handleStartToggle}
            className={cn(
-             "flex-1 h-9 rounded-full flex items-center justify-center gap-2 transition-all shadow-sm z-20 outline-none",
+             "flex-1 h-9 rounded-full flex items-center justify-center gap-2 transition-all duration-300 shadow-sm z-20 outline-none active:scale-95",
              running 
                ? "bg-pine-800 border border-pine-700 text-amber-200" 
                : "bg-pine-700 border border-teal-700/50 text-white"
@@ -453,7 +453,7 @@ export default function PracticeBreath() {
          {/* Reset button */}
          <button
            onClick={() => { setRunning(false); setCycles(0); setPhaseIdx(0); setPhase(pattern.labels[0]); }}
-           className="flex-1 h-9 rounded-full bg-transparent border border-pine-700/60 flex items-center justify-center gap-2 text-pine-400 hover:text-white hover:bg-pine-800/50 transition-colors"
+           className="flex-1 h-9 rounded-full bg-transparent border border-pine-700/60 flex items-center justify-center gap-2 text-pine-400 hover:text-white hover:bg-pine-800/50 transition-all duration-300 active:scale-95"
          >
            <X size={14} />
            <span className="text-[10px] font-bold tracking-wider mt-0.5 uppercase opacity-90">{language === 'el' ? 'Επαναφορα' : 'Reset'}</span>

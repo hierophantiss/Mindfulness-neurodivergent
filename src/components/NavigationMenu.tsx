@@ -89,16 +89,16 @@ export default function NavigationMenu() {
               <button
                 key={item.path}
                 onClick={() => handleNav(item.path)}
-                className={`flex flex-col items-center justify-center gap-1 transition-all duration-500 relative py-1 ${
+                className={`flex flex-col items-center justify-center gap-1 transition-all duration-300 relative py-1 active:scale-95 ${
                   isActive
                     ? 'text-teal-400'
                     : 'text-white/20 hover:text-white/40'
                 }`}
               >
-                <div className={`relative z-10 transition-transform duration-500 ${isActive ? 'scale-110' : 'scale-100 opacity-80'}`}>
+                <div className={`relative z-10 transition-transform duration-300 ${isActive ? 'scale-110' : 'scale-100 opacity-80'}`}>
                   {item.icon}
                 </div>
-                <span className={`text-[8px] font-bold tracking-widest uppercase transition-all duration-500 font-sans ${isActive ? 'opacity-100 translate-y-0' : 'opacity-40 translate-y-0.5'}`}>
+                <span className={`text-[8px] font-bold tracking-widest uppercase transition-all duration-300 font-sans ${isActive ? 'opacity-100 translate-y-0' : 'opacity-40 translate-y-0.5'}`}>
                   {language === 'en' ? item.labelEn : item.labelEl}
                 </span>
                 
@@ -117,16 +117,16 @@ export default function NavigationMenu() {
 
           <button
             onClick={() => setIsOpen(true)}
-            className={`flex flex-col items-center justify-center gap-1 transition-all duration-500 relative py-1 ${
+            className={`flex flex-col items-center justify-center gap-1 transition-all duration-300 relative py-1 active:scale-95 ${
               isOpen
                 ? 'text-teal-400'
                 : 'text-white/20 hover:text-white/40'
             }`}
           >
-            <div className={`transition-transform duration-500 ${isOpen ? 'scale-110 rotate-90' : 'scale-100 opacity-80'}`}>
+            <div className={`transition-transform duration-300 ${isOpen ? 'scale-110 rotate-90' : 'scale-100 opacity-80'}`}>
               <LayoutGrid size={18} />
             </div>
-            <span className={`text-[8px] font-bold tracking-widest uppercase transition-all duration-500 font-sans ${isOpen ? 'opacity-100' : 'opacity-40'}`}>
+            <span className={`text-[8px] font-bold tracking-widest uppercase transition-all duration-300 font-sans ${isOpen ? 'opacity-100' : 'opacity-40'}`}>
               {language === 'en' ? 'More' : 'Μενού'}
             </span>
           </button>

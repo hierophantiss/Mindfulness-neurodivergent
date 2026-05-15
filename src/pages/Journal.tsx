@@ -400,8 +400,8 @@ export default function Journal() {
                 key={i}
                 onClick={() => setActiveDay(i)}
                 className={cn(
-                  "flex-1 flex flex-col items-center justify-center py-2 rounded-xl transition-all relative",
-                  isActive ? "bg-pine-800 shadow-md" : "hover:bg-pine-800/50"
+                  "flex-1 flex flex-col items-center justify-center py-2 rounded-xl transition-all relative active:scale-95 duration-200",
+                  isActive ? "bg-pine-800 shadow-md" : "hover:bg-pine-800/50 hover:bg-pine-800/40"
                 )}
               >
                 <span className={cn(
@@ -454,7 +454,7 @@ export default function Journal() {
                     backgroundColor: entry.checked[ax.key] ? ax.hex : 'transparent',
                     color: entry.checked[ax.key] ? '#fff' : '#e2e8f0'
                   }}
-                  className="border-2 rounded-2xl px-3 py-3 text-[14px] font-semibold transition-all text-left shadow-sm active:scale-[0.98] flex items-center gap-2"
+                  className="border-2 rounded-2xl px-3 py-3 text-[14px] font-semibold transition-all duration-300 text-left shadow-sm active:scale-95 flex items-center gap-2 hover:brightness-110"
                 >
                   <span>{ax.label.split(' ')[0]}</span>
                   <span className="flex-1 truncate">{ax.label.split(' ')[1]}</span>

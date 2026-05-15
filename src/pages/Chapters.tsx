@@ -81,7 +81,7 @@ export default function Chapters() {
                 to={`/chapters/${chapter.num}`}
                 key={chapter.num} 
                 className={cn(
-                  "group relative flex flex-col justify-end min-h-[300px] overflow-hidden bg-[#12141c] border border-white/5 p-8 transition-all duration-700 hover:border-white/20",
+                  "group relative flex flex-col justify-end min-h-[300px] overflow-hidden bg-[#12141c] border border-white/5 p-8 transition-all duration-300 active:scale-[0.98] hover:border-white/10 hover:bg-white/[0.02]",
                   `shape-cloud-${(chapter.num % 5) + 1}`
                 )}
               >
@@ -148,7 +148,7 @@ export default function Chapters() {
                 <Link 
                   to={`/chapters/${chapter.num}`}
                   key={chapter.num} 
-                  className="group flex items-center gap-6 p-4 shape-cloud-6 bg-[#12141c] border border-transparent hover:border-white/5 hover:bg-[#161922] transition-all duration-300"
+                  className="group flex items-center gap-6 p-4 shape-cloud-6 bg-[#12141c] border border-transparent active:scale-[0.98] hover:border-white/5 hover:bg-white/[0.03] transition-all duration-300"
                 >
                   <div 
                     className="w-12 h-12 rounded-xl flex items-center justify-center text-xl shrink-0 backdrop-blur-sm transition-transform group-hover:scale-110"
@@ -189,7 +189,7 @@ export default function Chapters() {
                 <Link 
                   to={`/chapters/${chapter.num}`}
                   key={chapter.num} 
-                  className="group flex items-center gap-6 p-4 shape-cloud-6 bg-[#12141c] border border-transparent hover:border-white/5 hover:bg-[#161922] transition-all duration-300"
+                  className="group flex items-center gap-6 p-4 shape-cloud-6 bg-[#12141c] border border-transparent active:scale-[0.98] hover:border-white/5 hover:bg-white/[0.03] transition-all duration-300"
                 >
                   <div 
                     className="w-12 h-12 rounded-xl flex items-center justify-center text-xl shrink-0 backdrop-blur-sm transition-transform group-hover:scale-110"
@@ -212,7 +212,7 @@ export default function Chapters() {
           <div className="absolute inset-0 bg-teal-500/10 shape-cloud-3 blur-2xl opacity-50 group-hover:opacity-100 transition-opacity duration-1000"></div>
           <Link
             to="/program"
-            className="relative flex flex-col items-center justify-center text-center p-12 md:p-20 shape-cloud-3 bg-[#12141c]/80 border border-teal-500/20 hover:border-teal-400/40 hover:bg-[#161922] transition-all duration-700 shadow-2xl"
+            className="relative flex flex-col items-center justify-center text-center p-12 md:p-20 shape-cloud-3 bg-[#12141c]/80 border border-teal-500/20 active:scale-[0.98] hover:border-teal-400/40 hover:bg-white/[0.02] transition-all duration-500 shadow-2xl"
           >
             <div className="w-16 h-16 rounded-2xl bg-teal-500/10 text-teal-400 flex items-center justify-center mb-8 border border-teal-500/20 group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(20,184,166,0.3)] transition-all duration-700">
                <BookOpen size={28} strokeWidth={1.5} />

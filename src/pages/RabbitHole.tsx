@@ -360,7 +360,7 @@ export default function RabbitHole() {
           {/* Link to Method & Symbols */}
           <Link 
             to="/method"
-            className="w-full md:col-span-2 bg-[#12141c] border border-white/5 rounded-[2rem] p-6 md:p-8 shadow-xl block text-left transition-all duration-500 active:scale-[0.98] hover:bg-[#161922] hover:border-teal-500/20 relative overflow-hidden group"
+            className="w-full md:col-span-2 bg-[#12141c] border border-white/5 rounded-[2rem] p-6 md:p-8 shadow-xl block text-left transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-teal-500/20 relative overflow-hidden group"
           >
             <div className="absolute top-0 right-0 p-4 opacity-[0.02] transform translate-x-4 -translate-y-4 group-hover:scale-110 group-hover:opacity-[0.04] transition-all duration-700">
               <span className="text-[120px] md:text-[160px] grayscale">🐘</span>
@@ -394,10 +394,10 @@ export default function RabbitHole() {
               <button 
                 key={article.id}
                 onClick={() => { setActiveArticle(article.id); setCurrentPage(0); }}
-                className={`w-full border rounded-[2rem] p-6 md:p-8 shadow-xl flex flex-col text-left transition-all duration-500 active:scale-[0.98] hover:shadow-2xl relative overflow-hidden group ${
+                className={`w-full border rounded-[2rem] p-6 md:p-8 shadow-xl flex flex-col text-left transition-all duration-300 active:scale-[0.98] hover:shadow-2xl relative overflow-hidden group ${
                   isNew 
-                    ? 'bg-[#12141c] border-teal-500/20 hover:border-teal-500/40 hover:bg-[#151922]' 
-                    : 'bg-[#12141c] border-white/5 hover:border-white/10 hover:bg-[#161922]'
+                    ? 'bg-[#12141c] border-teal-500/20 hover:border-teal-500/40 hover:bg-teal-950/20' 
+                    : 'bg-[#12141c] border-white/5 hover:border-white/10 hover:bg-white/[0.04]'
                 }`}
               >
                 {isNew && (

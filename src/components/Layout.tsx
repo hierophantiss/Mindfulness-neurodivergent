@@ -4,6 +4,7 @@ import { cn } from '../lib/utils';
 import Companion from './Companion';
 import NavigationMenu from './NavigationMenu';
 import { useLanguage } from '../hooks/useLanguage';
+import { motion, AnimatePresence } from 'motion/react';
 
 import { InteractiveBackground } from './InteractiveBackground';
 
@@ -40,7 +41,18 @@ export default function Layout() {
          "flex-1 relative z-10 max-w-7xl mx-auto w-full flex flex-col overflow-x-hidden scroll-smooth",
          isHome ? "px-0 py-0 overflow-hidden" : "px-4 md:px-8 pt-[env(safe-area-inset-top)] pb-[calc(100px+env(safe-area-inset-bottom))] md:pb-24 overflow-y-auto"
       )}>
-        <Outlet />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={location.pathname}
+            initial={{ opacity: 0, scale: 0.98, filter: 'blur(4px)' }}
+            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, scale: 0.98, filter: 'blur(4px)' }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col flex-1 h-full w-full"
+          >
+            <Outlet />
+          </motion.div>
+        </AnimatePresence>
       </main>
 
       {/* The Navigation Menu */}
