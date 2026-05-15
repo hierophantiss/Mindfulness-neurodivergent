@@ -63,6 +63,14 @@
   @apply bg-white/[0.03] backdrop-blur-3xl border border-white/[0.08] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6)];
 }
 
+@utility soft-glass {
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
 @utility ancient-link {
   @apply font-serif italic text-pine-300 underline decoration-pine-500/30 underline-offset-4 hover:text-white hover:decoration-white/50 transition-all duration-300;
 }

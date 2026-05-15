@@ -1,79 +1,159 @@
-import React, { useMemo, useEffect, useState } from 'react';
-import { useTheme } from '../hooks/useTheme';
+import React, { useEffect, useRef } from 'react';
+import { useTime } from '../contexts/TimeContext';
+import { cn } from '../lib/utils';
+
+interface Star {
+  x: number;
+  y: number;
+  size: number;
+  opacity: number;
+  speed: number;
+  blinkOffset: number;
+}
 
 export function InteractiveBackground() {
-  const { theme } = useTheme();
-  const [isDay, setIsDay] = useState(true);
+  const { hour } = useTime();
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const starsRef = useRef<Star[]>([]);
+  const requestRef = useRef<number>();
+  
+  // Calculate states based on hour
+  const isNight = hour < 6 || hour >= 20;
+  const isDusk = hour >= 18 && hour < 20;
+  const isDay = hour >= 6 && hour < 18;
 
+  // Initialize canvas and stars
   useEffect(() => {
-    const hour = new Date().getHours();
-    setIsDay(hour >= 6 && hour < 19);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Create stars network
+    const starCount = 300;
+    const newStars: Star[] = [];
+    for (let i = 0; i < starCount; i++) {
+      newStars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 1.5 + 0.2, // Tiny to small stars
+        opacity: Math.random() * 0.8 + 0.2,
+        speed: Math.random() * 0.005 + 0.001,
+        blinkOffset: Math.random() * Math.PI * 2,
+      });
+    }
+    starsRef.current = newStars;
+
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+    };
   }, []);
 
-  // Generate static random stars, avoiding hydration mismatch
-  const stars = useMemo(() => {
-    return Array.from({ length: 250 }).map(() => {
-      // More stars at the top, fewer at the horizon (skewing y using pow)
-      const y = Math.pow(Math.random(), 1.2) * 100;
-      const x = Math.random() * 100;
-      // Size varies, some very tiny
-      const size = Math.random() * 1.5 + 0.5;
-      const opacity = Math.random() * 0.5 + 0.1;
-      const blinkDuration = Math.random() * 4 + 3;
-      const blinkDelay = Math.random() * 5;
-      
-      return { x, y, size, opacity, blinkDuration, blinkDelay };
-    });
-  }, []);
+  // Animation Loop
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let time = 0;
+
+    const animate = () => {
+      time += 0.016;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Determine star visibility and count based on time of day
+      const maxActiveStars = isNight ? starsRef.current.length : Math.floor(starsRef.current.length * 0.3);
+      const starOpacityMul = isDay ? 0.3 : 1.0;
+
+      for (let i = 0; i < starsRef.current.length; i++) {
+        if (i > maxActiveStars && !isNight) continue;
+
+        const star = starsRef.current[i];
+        
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        
+        // Twinkle effect using sine wave
+        const blink = (Math.sin(time * star.speed * 100 + star.blinkOffset) + 1) / 2;
+        const currentOpacity = star.opacity * (0.3 + blink * 0.7) * starOpacityMul;
+        
+        ctx.fillStyle = `rgba(255, 255, 255, ${currentOpacity})`;
+        ctx.fill();
+        ctx.closePath();
+      }
+
+      requestRef.current = requestAnimationFrame(animate);
+    };
+
+    requestRef.current = requestAnimationFrame(animate);
+    return () => {
+      if (requestRef.current) cancelAnimationFrame(requestRef.current);
+    };
+  }, [isNight, isDay, isDusk]);
+
+  // Determine dark background tones according strictly to dark mode constraints
+  const getGradient = () => {
+    if (isNight) {
+      return 'linear-gradient(to bottom, #02040a 0%, #060b19 50%, #0a1128 100%)';
+    } else if (isDusk) {
+      return 'linear-gradient(to bottom, #050a14 0%, #0b1528 40%, #1c1423 80%, #2f1b1a 100%)';
+    } else { // isDay (STILL DARK)
+      return 'linear-gradient(to bottom, #0a192f 0%, #0f2442 50%, #15325c 100%)';
+    }
+  };
 
   return (
-    <div className={`fixed inset-0 z-0 pointer-events-none overflow-hidden transition-colors duration-1000 ease-out bg-[#02040a]`}>
+    <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden transition-colors duration-[3000ms] ease-in-out" style={{ background: getGradient() }}>
       
-      {/* Deep Space Background (Dawn Gradient) */}
+      {/* Dynamic Background Element (Sun or Moon) */}
       <div 
-        className={`absolute inset-0 transition-all duration-[3000ms] opacity-100`}
-        style={{
-          background: isDay 
-            ? 'linear-gradient(to bottom, #112d4e 0%, #3f72af 40%, #dbe2ef 80%, #f9f7f7 100%)'
-            : 'linear-gradient(to bottom, #020308 0%, #070b19 40%, #0c1a2f 80%, #0f2438 100%)'
-        }}
-      />
-
-      {/* Sun / Moon layer */}
-      <div className={`absolute top-[10%] ${isDay ? 'left-[20%]' : 'right-[20%]'} transition-all duration-[3000ms] ease-in-out w-32 h-32 md:w-48 md:h-48 rounded-full blur-[2px]`}>
-        <div className={`absolute inset-0 rounded-full blur-2xl transition-opacity duration-[3000ms] ${isDay ? 'bg-orange-400/30' : 'bg-indigo-400/20'}`} />
-        <div className={`w-full h-full rounded-full transition-all duration-[3000ms] ${isDay ? 'bg-gradient-to-br from-[#FFFDE4] to-[#F1C40F] shadow-[0_0_80px_30px_rgba(241,196,15,0.2)]' : 'bg-gradient-to-br from-[#e2e8f0] to-[#94a3b8] shadow-[0_0_60px_20px_rgba(148,163,184,0.15)] shadow-indigo-500/10'}`} />
+        className={cn(
+          "absolute transition-all duration-[3000ms] ease-in-out z-10",
+          // Placement: standard is top right, dusk is lower
+          isDusk ? "top-[60%] right-[10%] md:right-[20%] w-32 h-32 md:w-48 md:h-48" : "top-[10%] right-[10%] md:right-[20%] w-24 h-24 md:w-32 md:h-32",
+          // Opacity controls the presence - low during day according to instructions
+          isNight ? "opacity-90" : isDay ? "opacity-15" : "opacity-30" 
+        )}
+      >
+        {isNight ? (
+          /* Crescent Moon using CSS clip/mask */
+          <div className="relative w-full h-full">
+             <div className="absolute inset-0 rounded-full bg-slate-200/80 shadow-[0_0_40px_10px_rgba(226,232,240,0.1)] blur-[1px]"></div>
+             <div className="absolute inset-[-10%] rounded-full bg-[#02040a] transform translate-x-[-25%] translate-y-[15%]"></div>
+          </div>
+        ) : (
+          /* Sun with soft radial glow */
+          <div className="relative w-full h-full rounded-full flex items-center justify-center">
+            <div className={cn(
+              "absolute inset-[-200%] md:inset-[-150%] rounded-full opacity-60",
+              isDusk ? "bg-[radial-gradient(circle,rgba(251,146,60,0.4)_0%,transparent_70%)]" : "bg-[radial-gradient(circle,rgba(253,224,71,0.5)_0%,transparent_70%)]"
+            )} />
+            <div className={cn(
+              "w-1/2 h-1/2 rounded-full absolute",
+              isDusk ? "bg-orange-400 blur-[8px]" : "bg-yellow-200 blur-[12px]"
+            )} />
+          </div>
+        )}
       </div>
 
-      {/* Stars Layer */}
-      <div className={`absolute inset-0 transition-opacity duration-1000 ${isDay ? 'opacity-0' : 'opacity-100'}`}>
-        {stars.map((star, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full bg-white animate-twinkle"
-            style={{
-              left: `${star.x}%`,
-              top: `${star.y}%`,
-              width: `${star.size}px`,
-              height: `${star.size}px`,
-              // Using CSS variables for the animation
-              '--twinkle-base': star.opacity.toString(),
-              '--twinkle-duration': `${star.blinkDuration}s`,
-              '--twinkle-delay': `${star.blinkDelay}s`,
-            } as React.CSSProperties}
-          />
-        ))}
-      </div>
-
-      {/* Very faint mist/glow at the horizon (bottom) to give the "pre-dawn" look */}
-      <div 
-        className={`absolute bottom-0 left-0 right-0 h-[40vh] mix-blend-screen pointer-events-none transition-all duration-1000 opacity-70`}
-        style={{
-          background: isDay 
-            ? 'linear-gradient(to top, rgba(245, 158, 11, 0.2) 0%, rgba(20, 184, 166, 0.05) 40%, transparent 100%)'
-            : 'linear-gradient(to top, rgba(20, 184, 166, 0.08) 0%, rgba(99, 102, 241, 0.03) 40%, transparent 100%)'
-        }}
+      {/* The animated stars canvas */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 z-20 pointer-events-none transition-opacity duration-1000"
       />
+
     </div>
   );
 }
+

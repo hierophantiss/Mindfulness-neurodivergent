@@ -5,6 +5,7 @@ import { useLanguage } from '../hooks/useLanguage';
 import { useBinauralAudio } from '../hooks/useBinauralAudio';
 import { cn } from '../lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
+import { useTime } from '../contexts/TimeContext';
 
 
 import { Skeleton } from '../components/ui/Skeleton';
@@ -42,6 +43,7 @@ const itemVariants = {
 export default function Dashboard() {
   const { language, t } = useLanguage();
   const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const { hour } = useTime();
 
   useEffect(() => {
     const hasSeenIntro = localStorage.getItem('hasSeenIntro') === 'true';
@@ -106,8 +108,6 @@ export default function Dashboard() {
 
   useEffect(() => {
     // Greeting logic
-    const hour = new Date().getHours();
-    
     if (hour < 12) {
       setGreeting(language === 'el' ? `Καλημέρα` : `Good Morning`);
     } else if (hour < 18) {
@@ -134,7 +134,7 @@ export default function Dashboard() {
     
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-  }, [language]);
+  }, [language, hour]);
 
   const showToast = (message: string) => {
     setToastMessage(message);
@@ -290,9 +290,7 @@ export default function Dashboard() {
           {activeWisdom && (
             <motion.div 
               variants={itemVariants}
-              className={cn("group relative p-2.5 shape-cloud-6 overflow-hidden shadow-lg backdrop-blur-sm transition-colors duration-1000",
-                isDay ? "bg-orange-500/10 border border-orange-500/20" : "bg-indigo-900/20 border border-indigo-500/20"
-              )}
+              className="group relative p-2.5 shape-cloud-6 soft-glass overflow-hidden transition-colors duration-1000"
             >
               <div className="relative z-10 flex items-center gap-3">
                 <div className="text-teal-400/40 shrink-0">
@@ -309,9 +307,7 @@ export default function Dashboard() {
           <motion.div variants={itemVariants} className="relative mt-2">
             <Link 
               to="/chapters" 
-              className={cn("relative block group overflow-hidden shape-cloud-1 p-6 pt-5 shadow-2xl transition-all duration-1000 active:scale-[0.98] border backdrop-blur-md",
-                isDay ? "bg-orange-950/40 border-orange-500/20 hover:border-orange-500/40" : "bg-indigo-950/40 border-indigo-500/20 hover:border-indigo-500/40"
-              )}
+              className="relative block group overflow-hidden shape-cloud-1 soft-glass p-6 pt-5 transition-all duration-1000 active:scale-[0.98] hover:bg-white/[0.2]"
             >
               {/* Soft texture/gradient for 'breathable' feel */}
               <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 via-transparent to-black/40 pointer-events-none" />
@@ -365,9 +361,7 @@ export default function Dashboard() {
             <motion.div variants={itemVariants}>
               <Link 
                 to="/practice"
-                className={cn("group relative block p-5 shape-cloud-2 shadow-lg backdrop-blur-md transition-all duration-1000 active:scale-[0.98] overflow-hidden border",
-                  isDay ? "bg-orange-500/5 border-orange-500/10 hover:bg-orange-500/10" : "bg-indigo-500/5 border-indigo-500/10 hover:bg-indigo-500/10"
-                )}
+                className="group relative block p-5 shape-cloud-2 soft-glass transition-all duration-1000 active:scale-[0.98] overflow-hidden hover:bg-white/[0.2]"
               >
                 {/* Background Accent */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 blur-3xl -mr-16 -mt-16 rounded-full group-hover:bg-indigo-500/10 transition-colors" />
@@ -416,9 +410,7 @@ export default function Dashboard() {
             <motion.div variants={itemVariants}>
               <Link 
                  to="/rabbithole"
-                 className={cn("group flex items-center gap-3 p-4 h-full shape-cloud-3 shadow-lg backdrop-blur-md transition-all duration-1000 active:scale-[0.98] border",
-                   isDay ? "bg-orange-500/5 border-orange-500/10 hover:bg-orange-500/10" : "bg-indigo-500/5 border-indigo-500/10 hover:bg-indigo-500/10"
-                 )}
+                 className="group flex items-center gap-3 p-4 h-full shape-cloud-3 soft-glass transition-all duration-1000 active:scale-[0.98] hover:bg-white/[0.2]"
               >
                 <div className="w-10 h-10 rounded-xl bg-teal-500/5 flex items-center justify-center text-teal-500/40 border border-teal-500/10 group-hover:text-teal-400 transition-colors">
                   <Telescope size={18} />
@@ -438,9 +430,7 @@ export default function Dashboard() {
             <motion.div variants={itemVariants}>
               <Link 
                  to="/journal"
-                 className={cn("group flex items-center gap-3 p-4 h-full shape-cloud-4 shadow-lg backdrop-blur-md transition-all duration-1000 active:scale-[0.98] border",
-                    isDay ? "bg-orange-500/5 border-orange-500/10 hover:bg-orange-500/10" : "bg-indigo-500/5 border-indigo-500/10 hover:bg-indigo-500/10"
-                 )}
+                 className="group flex items-center gap-3 p-4 h-full shape-cloud-4 soft-glass transition-all duration-1000 active:scale-[0.98] hover:bg-white/[0.2]"
               >
                 <div className="w-10 h-10 rounded-xl bg-rose-500/5 flex items-center justify-center text-rose-500/40 border border-rose-500/10 group-hover:text-rose-400 transition-colors">
                    <Notebook size={18} />
@@ -463,9 +453,7 @@ export default function Dashboard() {
             <motion.div variants={itemVariants}>
               <button 
                 onClick={handleBookDownload}
-                className={cn("group w-full flex flex-col items-center gap-2 p-5 shape-cloud-5 shadow-lg backdrop-blur-md transition-all duration-1000 active:scale-[0.95] text-center border",
-                  isDay ? "bg-orange-600/10 border-orange-500/10 hover:bg-orange-600/20 hover:border-orange-500/20" : "bg-teal-900/20 border-teal-500/10 hover:bg-teal-900/30 hover:border-teal-500/20"
-                )}
+                className="group w-full flex flex-col items-center gap-2 p-5 shape-cloud-5 soft-glass transition-all duration-1000 active:scale-[0.95] text-center hover:bg-white/[0.2]"
               >
                 <div className="w-8 h-8 rounded-full bg-teal-500/10 flex items-center justify-center text-teal-400/60 border border-teal-500/10 group-hover:scale-110 transition-transform">
                   <Download size={14} />
@@ -485,9 +473,7 @@ export default function Dashboard() {
               <motion.div variants={itemVariants}>
                 <button 
                   onClick={handleInstallClick}
-                  className={cn("group w-full flex flex-col items-center gap-2 p-5 shape-cloud-5 shadow-lg backdrop-blur-md transition-all duration-1000 active:scale-[0.95] text-center border",
-                    isDay ? "bg-orange-600/10 border-orange-500/10 hover:bg-orange-600/20 hover:border-orange-500/20" : "bg-indigo-900/20 border-indigo-500/10 hover:bg-indigo-900/30 hover:border-indigo-500/20"
-                  )}
+                  className="group w-full flex flex-col items-center gap-2 p-5 shape-cloud-5 soft-glass transition-all duration-1000 active:scale-[0.95] text-center hover:bg-white/[0.2]"
                 >
                   <div className="w-8 h-8 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-400/60 border border-indigo-500/10 group-hover:scale-110 transition-transform">
                     <Smartphone size={14} />

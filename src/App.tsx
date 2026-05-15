@@ -21,6 +21,7 @@ import Onboarding from './pages/Onboarding';
 import { LanguageProvider, useLanguage } from './hooks/useLanguage';
 import { ThemeProvider } from './hooks/useTheme';
 import { AccessibilityProvider } from './hooks/useAccessibility';
+import { TimeProvider } from './contexts/TimeContext';
 
 function AppContent() {
   return (
@@ -53,12 +54,14 @@ function AppContent() {
 
 export default function App() {
   return (
-    <LanguageProvider>
-      <ThemeProvider>
-        <AccessibilityProvider>
-          <AppContent />
-        </AccessibilityProvider>
-      </ThemeProvider>
-    </LanguageProvider>
+    <TimeProvider>
+      <LanguageProvider>
+        <ThemeProvider>
+          <AccessibilityProvider>
+            <AppContent />
+          </AccessibilityProvider>
+        </ThemeProvider>
+      </LanguageProvider>
+    </TimeProvider>
   );
 }
