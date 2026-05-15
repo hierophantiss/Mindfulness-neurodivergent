@@ -124,7 +124,7 @@ export default function ProgramWeek() {
       <div className="flex items-center gap-4 mb-8">
         <button 
           onClick={() => navigate('/program')} 
-          className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-white/40 hover:bg-white/10 hover:text-white transition-all backdrop-blur-md"
+          className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-white/40 hover:bg-white/10 hover:text-white transition-all duration-300 active:scale-[0.98] backdrop-blur-md"
         >
           <ArrowLeft size={20} />
         </button>
@@ -147,7 +147,7 @@ export default function ProgramWeek() {
                 className={`snap-start shrink-0 flex flex-col items-start p-5 shape-cloud-6 border transition-all duration-300 active:scale-[0.98] ${
                   activeDay === idx 
                     ? 'bg-teal-500/10 border-teal-500/30 text-white min-w-[220px] shadow-sm ring-1 ring-teal-500/20' 
-                    : 'bg-[#12141c] shadow-sm border-white/5 text-white/50 hover:bg-[#161922] min-w-[180px] backdrop-blur-sm'
+                    : 'bg-[#12141c] shadow-sm border-white/5 text-white/50 hover:bg-white/[0.04] min-w-[180px] backdrop-blur-sm'
                 }`}
               >
                 <div className="w-full flex justify-between items-center mb-2">
@@ -283,7 +283,7 @@ export default function ProgramWeek() {
           <button
             onClick={goPrevStep}
             disabled={activeStep === 0}
-            className="flex h-12 px-5 rounded-xl bg-white/5 border border-white/5 items-center justify-center gap-2 text-white/50 disabled:opacity-0 disabled:cursor-not-allowed hover:bg-[#161922] hover:text-white/90 transition-all font-medium text-sm backdrop-blur-sm"
+            className="flex h-12 px-5 rounded-xl bg-white/5 border border-white/5 items-center justify-center gap-2 text-white/50 disabled:opacity-0 disabled:cursor-not-allowed hover:bg-white/[0.08] hover:text-white/90 transition-all duration-300 active:scale-95 font-medium text-sm backdrop-blur-sm"
           >
             <ChevronLeft size={18} />
             <span className="hidden sm:inline">{language === 'el' ? 'Πίσω' : 'Back'}</span>
@@ -293,10 +293,10 @@ export default function ProgramWeek() {
             <button 
               onClick={handleComplete}
               disabled={isCompleted}
-              className={`group flex items-center gap-2 px-6 h-12 rounded-xl font-bold transition-all ${
+              className={`group flex items-center gap-2 px-6 h-12 rounded-xl font-bold transition-all duration-300 ${
                 isCompleted 
                   ? 'bg-white/10 text-white/40 cursor-default opacity-80 border border-white/5' 
-                  : 'bg-teal-500 hover:bg-teal-400 text-black shadow-[0_4px_15px_rgba(20,184,166,0.3)] active:scale-[0.98]'
+                  : 'bg-teal-500 hover:bg-teal-400 text-black shadow-[0_4px_15px_rgba(20,184,166,0.3)] active:scale-95'
               }`}
             >
               <span>{isCompleted ? (language === 'en' ? 'Completed' : 'Ολοκληρώθηκε') : (language === 'en' ? 'Complete Day' : 'Ολοκλήρωση')}</span>
@@ -305,7 +305,7 @@ export default function ProgramWeek() {
           ) : (
             <button
               onClick={goNextStep}
-              className="flex h-12 px-6 rounded-xl items-center justify-center gap-2 transition-all font-bold text-sm bg-teal-500/10 text-teal-300 border border-teal-500/30 hover:bg-teal-500/20 shadow-sm"
+              className="flex h-12 px-6 rounded-xl items-center justify-center gap-2 transition-all duration-300 active:scale-95 font-bold text-sm bg-teal-500/10 text-teal-300 border border-teal-500/30 hover:bg-teal-500/20 shadow-sm"
             >
               {language === 'el' ? 'Συνέχεια' : 'Next'}
               <ChevronRight size={18} />

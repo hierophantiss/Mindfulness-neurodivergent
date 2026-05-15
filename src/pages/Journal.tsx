@@ -538,10 +538,10 @@ export default function Journal() {
                         key={key}
                         onClick={() => toggleTension(activeDay, key)}
                         className={cn(
-                          "px-3 py-2 rounded-xl text-xs font-bold border transition-all",
+                          "px-3 py-2 rounded-xl text-xs font-bold border transition-all duration-300 active:scale-95",
                           entry.tensions?.includes(key)
                             ? "bg-teal-500/20 text-teal-400 border-teal-500/40"
-                            : "bg-pine-950/40 text-pine-500 border-pine-800 hover:border-pine-600"
+                            : "bg-pine-950/40 text-pine-500 border-pine-800 hover:border-pine-600 hover:bg-pine-800/40"
                         )}
                       >
                         {label[language]}
@@ -585,7 +585,7 @@ export default function Journal() {
                 <button 
                   onClick={() => startSpeech(activeDay)}
                   className={cn(
-                    "flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all",
+                    "flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-300 active:scale-95",
                     isRecording 
                       ? "bg-rose-500/20 border-rose-500/40 text-rose-400 animate-pulse" 
                       : "bg-teal-500/10 border-teal-500/20 text-teal-400 hover:bg-teal-500/20"
@@ -607,14 +607,14 @@ export default function Journal() {
             <div className="mt-8 flex flex-col items-center gap-4">
               <button 
                 onClick={exportJournal}
-                className="w-full py-4 shape-btn bg-teal-500/10 border-2 border-dashed border-teal-500/40 text-teal-400 text-sm font-bold hover:bg-teal-500/20 transition-all flex items-center justify-center gap-2"
+                className="w-full py-4 shape-btn bg-teal-500/10 border-2 border-dashed border-teal-500/40 text-teal-400 text-sm font-bold hover:bg-teal-500/20 transition-all duration-300 active:scale-95 flex items-center justify-center gap-2"
               >
                 {texts.exportBtn[language]}
               </button>
               
               <button 
                 onClick={resetJournal}
-                className="text-[12px] font-medium text-pine-500 hover:text-rose-400 underline decoration-pine-800 hover:decoration-rose-400 underline-offset-8 transition-all px-4 py-4"
+                className="text-[12px] font-medium text-pine-500 hover:text-rose-400 underline decoration-pine-800 hover:decoration-rose-400 underline-offset-8 transition-all duration-300 active:scale-95 px-4 py-4"
               >
                 {texts.resetBtn[language]}
               </button>

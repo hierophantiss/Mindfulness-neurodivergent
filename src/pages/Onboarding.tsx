@@ -129,7 +129,7 @@ export default function Onboarding() {
       <div className="pt-safe px-6 py-6 flex justify-end">
         <button 
           onClick={() => setLanguage(language === 'en' ? 'el' : 'en')}
-          className="px-4 py-2 rounded-full border border-white/10 text-xs font-bold tracking-widest text-white/40 hover:bg-white/5 hover:text-white transition-colors"
+          className="px-4 py-2 rounded-full border border-white/10 text-xs font-bold tracking-widest text-white/40 hover:bg-white/5 hover:text-white transition-all duration-300 active:scale-95"
         >
           {language === 'en' ? 'ΕΛ' : 'EN'}
         </button>

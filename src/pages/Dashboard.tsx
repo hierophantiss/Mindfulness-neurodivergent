@@ -263,7 +263,7 @@ export default function Dashboard() {
               <button
                 onClick={toggleAudio}
                 className={cn(
-                  "p-2.5 rounded-full border transition-all duration-500 shadow-lg backdrop-blur-md",
+                  "p-2.5 rounded-full border transition-all duration-300 shadow-lg backdrop-blur-md active:scale-95",
                   isPlaying 
                     ? "bg-teal-500/20 border-teal-400/40 text-teal-300 relative overflow-hidden" 
                     : "bg-white/5 border-white/10 text-white/40 hover:bg-white/10 hover:text-white/60"
@@ -278,7 +278,7 @@ export default function Dashboard() {
               
               <button 
                 onClick={() => setIsInfoOpen(true)}
-                className="p-2.5 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-white/80 hover:bg-white/10 transition-all active:scale-90"
+                className="p-2.5 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-white/80 hover:bg-white/10 transition-all duration-300 active:scale-95"
                 title="Information"
               >
                 <Info size={16} />

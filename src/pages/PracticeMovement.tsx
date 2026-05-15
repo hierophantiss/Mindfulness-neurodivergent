@@ -81,7 +81,7 @@ export default function PracticeMovement() {
       <div className="flex items-center gap-4 mb-6 shrink-0 z-10 relative">
         <button 
           onClick={() => navigate('/practice')} 
-          className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 transition-colors backdrop-blur-md"
+          className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 hover:text-white transition-all duration-300 active:scale-[0.98] backdrop-blur-md"
         >
           <ArrowLeft size={20} className="text-white/80" />
         </button>

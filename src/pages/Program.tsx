@@ -81,8 +81,8 @@ export default function Program() {
                 to={`/program/week/${weekNum}`} 
                 key={weekNum} 
                 className={cn(
-                  "group relative p-8 bg-[#12141c] border border-white/5 transition-all duration-500 overflow-hidden hover:bg-[#161922]",
-                  isCurrent && "border-teal-400/40 shadow-2xl bg-[#161922]",
+                  "group relative p-8 bg-[#12141c] border border-white/5 transition-all duration-300 active:scale-[0.98] overflow-hidden hover:bg-white/[0.04]",
+                  isCurrent && "border-teal-400/40 shadow-2xl bg-white/[0.02]",
                   isCompleted && "opacity-60 grayscale hover:grayscale-0 hover:opacity-100",
                   `shape-cloud-${(weekNum % 5) + 1}`
                 )}

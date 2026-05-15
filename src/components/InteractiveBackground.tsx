@@ -73,11 +73,10 @@ export function InteractiveBackground() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Determine star visibility and count based on time of day
-      const maxActiveStars = isNight ? starsRef.current.length : Math.floor(starsRef.current.length * 0.3);
-      const starOpacityMul = isDay ? 0.3 : 1.0;
+      const maxActiveStars = starsRef.current.length;
+      const starOpacityMul = isDay ? 0.6 : 1.0;
 
       for (let i = 0; i < starsRef.current.length; i++) {
-        if (i > maxActiveStars && !isNight) continue;
 
         const star = starsRef.current[i];
         
@@ -109,7 +108,8 @@ export function InteractiveBackground() {
     } else if (isDusk) {
       return 'linear-gradient(to bottom, #050a14 0%, #0b1528 40%, #1c1423 80%, #2f1b1a 100%)';
     } else { // isDay (STILL DARK)
-      return 'linear-gradient(to bottom, #0a192f 0%, #0f2442 50%, #15325c 100%)';
+      // Slightly darker day background to make stars visible
+      return 'linear-gradient(to bottom, #071221 0%, #0b1a30 50%, #102646 100%)';
     }
   };
 

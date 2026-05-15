@@ -202,7 +202,7 @@ export default function PracticeMicrodoses() {
               to={ex.link}
               key={ex.id}
               className={cn(
-                "group relative block bg-[#12141c] border border-white/5 hover:border-white/10 hover:bg-[#161922] p-8 transition-all duration-500 hover:-translate-y-1 overflow-hidden shadow-xl",
+                "group relative block bg-[#12141c] border border-white/5 hover:border-white/10 hover:bg-white/[0.04] p-8 transition-all duration-300 active:scale-[0.98] overflow-hidden shadow-xl",
                 `shape-cloud-${(idx % 5) + 1}`
               )}
             >
