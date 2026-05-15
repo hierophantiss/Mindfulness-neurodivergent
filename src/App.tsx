@@ -21,7 +21,6 @@ import Onboarding from './pages/Onboarding';
 import { LanguageProvider, useLanguage } from './hooks/useLanguage';
 import { ThemeProvider } from './hooks/useTheme';
 import { AccessibilityProvider } from './hooks/useAccessibility';
-import { FirebaseProvider } from './lib/FirebaseContext';
 
 function AppContent() {
   return (
@@ -54,14 +53,12 @@ function AppContent() {
 
 export default function App() {
   return (
-    <FirebaseProvider>
-      <LanguageProvider>
-        <ThemeProvider>
-          <AccessibilityProvider>
-            <AppContent />
-          </AccessibilityProvider>
-        </ThemeProvider>
-      </LanguageProvider>
-    </FirebaseProvider>
+    <LanguageProvider>
+      <ThemeProvider>
+        <AccessibilityProvider>
+          <AppContent />
+        </AccessibilityProvider>
+      </ThemeProvider>
+    </LanguageProvider>
   );
 }

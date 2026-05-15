@@ -18,18 +18,24 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.08,
+      staggerChildren: 0.12,
       delayChildren: 0.1,
     }
   }
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 15 },
+  hidden: { opacity: 0, y: 30, scale: 0.96 },
   visible: { 
     opacity: 1, 
     y: 0, 
-    transition: { duration: 0.8, ease: easingCurve } 
+    scale: 1,
+    transition: { 
+      type: "spring",
+      stiffness: 80,
+      damping: 15,
+      mass: 0.8
+    } 
   }
 };
 
@@ -67,6 +73,7 @@ export default function Dashboard() {
   const [greeting, setGreeting] = useState('');
   const [greetingIcon, setGreetingIcon] = useState<React.ReactNode>(null);
   const [currentDate, setCurrentDate] = useState('');
+  const [isDay, setIsDay] = useState(true);
 
   const [isPulsing, setIsPulsing] = useState(false);
   const [activeWisdom, setActiveWisdom] = useState<{el: string, en: string} | null>(null);
@@ -108,6 +115,8 @@ export default function Dashboard() {
     } else {
       setGreeting(language === 'el' ? `Καλό βράδυ` : `Good Evening`);
     }
+
+    setIsDay(hour >= 6 && hour < 19);
 
     // Date logic
     const options: Intl.DateTimeFormatOptions = { weekday: 'long', day: 'numeric', month: 'long' };
@@ -281,7 +290,9 @@ export default function Dashboard() {
           {activeWisdom && (
             <motion.div 
               variants={itemVariants}
-              className="group relative p-2.5 shape-cloud-6 bg-white/[0.01] border border-white/10 overflow-hidden"
+              className={cn("group relative p-2.5 shape-cloud-6 overflow-hidden shadow-lg backdrop-blur-sm transition-colors duration-1000",
+                isDay ? "bg-orange-500/10 border border-orange-500/20" : "bg-indigo-900/20 border border-indigo-500/20"
+              )}
             >
               <div className="relative z-10 flex items-center gap-3">
                 <div className="text-teal-400/40 shrink-0">
@@ -298,7 +309,9 @@ export default function Dashboard() {
           <motion.div variants={itemVariants} className="relative mt-2">
             <Link 
               to="/chapters" 
-              className="relative block group overflow-hidden shape-cloud-1 bg-[#081f18] p-6 pt-5 shadow-2xl transition-all active:scale-[0.98] border border-teal-900/40"
+              className={cn("relative block group overflow-hidden shape-cloud-1 p-6 pt-5 shadow-2xl transition-all duration-1000 active:scale-[0.98] border backdrop-blur-md",
+                isDay ? "bg-orange-950/40 border-orange-500/20 hover:border-orange-500/40" : "bg-indigo-950/40 border-indigo-500/20 hover:border-indigo-500/40"
+              )}
             >
               {/* Soft texture/gradient for 'breathable' feel */}
               <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 via-transparent to-black/40 pointer-events-none" />
@@ -352,7 +365,9 @@ export default function Dashboard() {
             <motion.div variants={itemVariants}>
               <Link 
                 to="/practice"
-                className="group relative block p-4 bg-white/[0.01] border border-white/10 shape-cloud-2 hover:bg-white/[0.03] transition-all active:scale-[0.98] overflow-hidden"
+                className={cn("group relative block p-5 shape-cloud-2 shadow-lg backdrop-blur-md transition-all duration-1000 active:scale-[0.98] overflow-hidden border",
+                  isDay ? "bg-orange-500/5 border-orange-500/10 hover:bg-orange-500/10" : "bg-indigo-500/5 border-indigo-500/10 hover:bg-indigo-500/10"
+                )}
               >
                 {/* Background Accent */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 blur-3xl -mr-16 -mt-16 rounded-full group-hover:bg-indigo-500/10 transition-colors" />
@@ -401,7 +416,9 @@ export default function Dashboard() {
             <motion.div variants={itemVariants}>
               <Link 
                  to="/rabbithole"
-                 className="group flex items-center gap-3 p-3 h-full bg-[#12141c] border border-white/5 shape-cloud-3 hover:bg-[#161922] transition-all active:scale-[0.98]"
+                 className={cn("group flex items-center gap-3 p-4 h-full shape-cloud-3 shadow-lg backdrop-blur-md transition-all duration-1000 active:scale-[0.98] border",
+                   isDay ? "bg-orange-500/5 border-orange-500/10 hover:bg-orange-500/10" : "bg-indigo-500/5 border-indigo-500/10 hover:bg-indigo-500/10"
+                 )}
               >
                 <div className="w-10 h-10 rounded-xl bg-teal-500/5 flex items-center justify-center text-teal-500/40 border border-teal-500/10 group-hover:text-teal-400 transition-colors">
                   <Telescope size={18} />
@@ -421,7 +438,9 @@ export default function Dashboard() {
             <motion.div variants={itemVariants}>
               <Link 
                  to="/journal"
-                 className="group flex items-center gap-3 p-3 h-full bg-[#12141c] border border-white/5 shape-cloud-4 hover:bg-[#161922] transition-all active:scale-[0.98]"
+                 className={cn("group flex items-center gap-3 p-4 h-full shape-cloud-4 shadow-lg backdrop-blur-md transition-all duration-1000 active:scale-[0.98] border",
+                    isDay ? "bg-orange-500/5 border-orange-500/10 hover:bg-orange-500/10" : "bg-indigo-500/5 border-indigo-500/10 hover:bg-indigo-500/10"
+                 )}
               >
                 <div className="w-10 h-10 rounded-xl bg-rose-500/5 flex items-center justify-center text-rose-500/40 border border-rose-500/10 group-hover:text-rose-400 transition-colors">
                    <Notebook size={18} />
@@ -444,7 +463,9 @@ export default function Dashboard() {
             <motion.div variants={itemVariants}>
               <button 
                 onClick={handleBookDownload}
-                className="group w-full flex flex-col items-center gap-2 p-4 shape-cloud-5 bg-white/[0.02] border border-white/10 hover:bg-white/[0.05] transition-all active:scale-[0.95] text-center"
+                className={cn("group w-full flex flex-col items-center gap-2 p-5 shape-cloud-5 shadow-lg backdrop-blur-md transition-all duration-1000 active:scale-[0.95] text-center border",
+                  isDay ? "bg-orange-600/10 border-orange-500/10 hover:bg-orange-600/20 hover:border-orange-500/20" : "bg-teal-900/20 border-teal-500/10 hover:bg-teal-900/30 hover:border-teal-500/20"
+                )}
               >
                 <div className="w-8 h-8 rounded-full bg-teal-500/10 flex items-center justify-center text-teal-400/60 border border-teal-500/10 group-hover:scale-110 transition-transform">
                   <Download size={14} />
@@ -464,7 +485,9 @@ export default function Dashboard() {
               <motion.div variants={itemVariants}>
                 <button 
                   onClick={handleInstallClick}
-                  className="group w-full flex flex-col items-center gap-2 p-4 shape-cloud-5 bg-white/[0.02] border border-white/10 hover:bg-white/[0.05] transition-all active:scale-[0.95] text-center"
+                  className={cn("group w-full flex flex-col items-center gap-2 p-5 shape-cloud-5 shadow-lg backdrop-blur-md transition-all duration-1000 active:scale-[0.95] text-center border",
+                    isDay ? "bg-orange-600/10 border-orange-500/10 hover:bg-orange-600/20 hover:border-orange-500/20" : "bg-indigo-900/20 border-indigo-500/10 hover:bg-indigo-900/30 hover:border-indigo-500/20"
+                  )}
                 >
                   <div className="w-8 h-8 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-400/60 border border-indigo-500/10 group-hover:scale-110 transition-transform">
                     <Smartphone size={14} />

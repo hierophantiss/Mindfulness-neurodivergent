@@ -2,12 +2,62 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { CHAPTERS_DATA } from '../data/chapters';
 import { CHAPTER_TAKEAWAYS, CHAPTER_MICRO_CAT } from '../data/takeaways';
-import { ArrowLeft, ChevronLeft, ChevronRight, Check, Zap, Sparkles } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, Check, Zap, Sparkles } from 'lucide-react';
 import { useCompanion } from '../hooks/useCompanion';
 import { useLanguage } from '../hooks/useLanguage';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../lib/utils';
 import InteractiveRenderer from '../components/InteractiveRenderer';
+
+const ExpandableParagraph = ({ text, index, language }: { text: string, index: number, language: "en" | "el" }) => {
+  const [isExpanded, setIsExpanded] = useState(index === 0);
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.1, duration: 0.6 }}
+      className="relative group cursor-pointer"
+      onClick={() => setIsExpanded(!isExpanded)}
+    >
+      <div 
+        className={cn(
+          "transition-all duration-500 ease-out italic border-l-[3px] md:border-l-4 pl-4 md:pl-6",
+          isExpanded ? "border-teal-500/40" : "border-white/5 hover:border-teal-500/20"
+        )}
+      >
+        <div 
+          className={cn(
+            "relative transition-all duration-500 overflow-hidden",
+            !isExpanded ? "max-h-20 text-white/50 opacity-80 line-clamp-2 md:line-clamp-3" : "max-h-[1000px] text-white/70"
+          )}
+          dangerouslySetInnerHTML={{ __html: text }}
+        />
+        
+        <AnimatePresence>
+          {!isExpanded && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-[#050710] to-transparent pointer-events-none" 
+            />
+          )}
+        </AnimatePresence>
+      </div>
+      
+      <div className="mt-4 pl-4 md:pl-6 2xl:pl-8 flex items-center gap-1.5 transition-colors">
+        <div className="text-[10px] uppercase tracking-[0.2em] font-sans font-bold text-teal-400/30 group-hover:text-teal-400/60 transition-colors flex items-center gap-1.5">
+          {isExpanded ? (
+            <><ChevronUp size={14} /> {language === 'el' ? 'ΣΥΜΠΤΥΞΗ' : 'COLLAPSE'}</>
+          ) : (
+            <><ChevronDown size={14} /> {language === 'el' ? 'ΠΕΡΙΣΣΟΤΕΡΑ' : 'READ MORE'}</>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
 
 export default function ChapterDetail() {
   const { id } = useParams();
@@ -202,32 +252,17 @@ export default function ChapterDetail() {
                   </h2>
                 </header>
 
-                <div className="space-y-10 text-white/70 text-xl md:text-2xl font-serif leading-relaxed">
-                  {curPage.section.paragraphs.slice(0, visibleParagraphs).map((par: string, p_idx: number) => (
-                    <p 
-                      key={p_idx} 
-                      className="animate-in fade-in slide-in-from-bottom-5 duration-1000 ease-out italic"
-                      dangerouslySetInnerHTML={{ __html: par }} 
-                    />
+                <div className="space-y-8 text-white/70 text-xl md:text-2xl font-serif leading-relaxed">
+                  {curPage.section.paragraphs.map((par: string, p_idx: number) => (
+                    <ExpandableParagraph key={p_idx} text={par} index={p_idx} language={language} />
                   ))}
                   
-                  {visibleParagraphs < curPage.section.paragraphs.length ? (
-                    <button 
-                      onClick={() => setVisibleParagraphs(v => v + 1)}
-                      className="group flex items-center justify-between gap-3 text-white/90 transition-all bg-[#12141c] hover:bg-[#161922] border border-white/5 shape-cloud-6 px-7 py-5 mt-10 w-full shadow-lg"
-                    >
-                      <span className="text-xs font-bold uppercase tracking-widest">
-                        {language === 'el' ? 'ΣΥΝΕΧΕΙΑ ΑΝΑΓΝΩΣΗΣ' : 'CONTINUE READING'}
-                      </span>
-                      <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform text-white/40" />
-                    </button>
-                  ) : (
-                    <motion.div 
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.5, duration: 0.8 }}
-                      className="pt-12 space-y-8"
-                    >
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5, duration: 0.8 }}
+                    className="pt-12 space-y-8"
+                  >
                       {curPage.section.interactive && (
                         <InteractiveRenderer id={curPage.section.interactive} />
                       )}
@@ -260,7 +295,6 @@ export default function ChapterDetail() {
                         </ul>
                       </div>
                     </motion.div>
-                  )}
                 </div>
               </article>
             )}

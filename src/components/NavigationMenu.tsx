@@ -181,32 +181,102 @@ export default function NavigationMenu() {
                 })}
               </div>
 
-              {/* Settings / Accessibility & Install Toggles */}
+                {/* Settings / Accessibility & Install Toggles */}
               <div className="px-6 pb-6 max-w-2xl mx-auto w-full flex flex-col gap-3">
-                <div className="bg-white/[0.03] border border-white/[0.05] rounded-3xl p-4 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full flex items-center justify-center bg-pine-900/50 text-pine-300">
-                      {reduceMotion ? <EyeOff size={18} /> : <Eye size={18} />}
+                <div className="bg-white/[0.03] border border-white/[0.05] rounded-3xl p-4 flex flex-col gap-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center bg-pine-900/50 text-pine-300">
+                        {reduceMotion ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium text-pine-100">
+                          {language === 'en' ? 'Reduce Motion' : 'Μείωση Κίνησης'}
+                        </span>
+                        <span className="text-[10px] text-pine-400">
+                          {language === 'en' ? 'Disable breathing animations' : 'Απενεργοποίηση εφέ αναπνοής'}
+                        </span>
+                      </div>
                     </div>
-                    <div className="flex flex-col">
-                      <span className="text-sm font-medium text-pine-100">
-                        {language === 'en' ? 'Reduce Motion' : 'Μείωση Κίνησης'}
-                      </span>
-                      <span className="text-[10px] text-pine-400">
-                        {language === 'en' ? 'Disable breathing animations' : 'Απενεργοποίηση εφέ αναπνοής'}
-                      </span>
-                    </div>
+                    
+                    {/* Toggle Switch */}
+                    <button 
+                      onClick={toggleReduceMotion}
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${reduceMotion ? 'bg-amber-500' : 'bg-white/10'}`}
+                    >
+                      <span 
+                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${reduceMotion ? 'translate-x-6' : 'translate-x-1'}`}
+                      />
+                    </button>
                   </div>
                   
-                  {/* Toggle Switch */}
-                  <button 
-                    onClick={toggleReduceMotion}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${reduceMotion ? 'bg-amber-500' : 'bg-white/10'}`}
-                  >
-                    <span 
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${reduceMotion ? 'translate-x-6' : 'translate-x-1'}`}
-                    />
-                  </button>
+                  <div className="w-full h-px bg-white/5 my-1"></div>
+                  
+                  <div className="flex items-center justify-between">
+                     <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center bg-pine-900/50 text-pine-300">
+                        <Database size={18} />
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium text-pine-100">
+                          {language === 'en' ? 'Your Data' : 'Τα Δεδομένα σας'}
+                        </span>
+                        <span className="text-[10px] text-pine-400">
+                          {language === 'en' ? 'Save or restore progress' : 'Αποθήκευση ή επαναφορά προόδου'}
+                        </span>
+                      </div>
+                     </div>
+                     <div className="flex gap-2">
+                       <button 
+                         onClick={() => {
+                           const data: Record<string, string> = {};
+                           for(let i = 0; i < localStorage.length; i++) {
+                             const key = localStorage.key(i);
+                             if (key && !key.startsWith('vite')) {
+                               data[key] = localStorage.getItem(key) || '';
+                             }
+                           }
+                           const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+                           const url = URL.createObjectURL(blob);
+                           const a = document.createElement('a');
+                           a.href = url;
+                           a.download = `mindfulness-backup-${new Date().toISOString().split('T')[0]}.json`;
+                           a.click();
+                           URL.revokeObjectURL(url);
+                           showToast(language === 'en' ? 'Data exported!' : 'Τα δεδομένα εξήχθησαν!');
+                         }}
+                         className="px-3 py-1.5 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-medium transition-colors"
+                       >
+                         {language === 'en' ? 'Export' : 'Εξαγωγή'}
+                       </button>
+                       <label className="px-3 py-1.5 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-medium transition-colors cursor-pointer">
+                         {language === 'en' ? 'Import' : 'Εισαγωγή'}
+                         <input 
+                           type="file" 
+                           accept=".json"
+                           className="hidden" 
+                           onChange={(e) => {
+                             const file = e.target.files?.[0];
+                             if(!file) return;
+                             const reader = new FileReader();
+                             reader.onload = (event) => {
+                               try {
+                                 const parsed = JSON.parse(event.target?.result as string);
+                                 Object.keys(parsed).forEach(k => {
+                                   localStorage.setItem(k, parsed[k]);
+                                 });
+                                 showToast(language === 'en' ? 'Data imported successfully!' : 'Τα δεδομένα εισήχθησαν!');
+                                 setTimeout(() => window.location.reload(), 1500);
+                               } catch(err) {
+                                 showToast(language === 'en' ? 'Invalid backup file' : 'Άκυρο αρχείο αντιγράφου');
+                               }
+                             };
+                             reader.readAsText(file);
+                           }} 
+                         />
+                       </label>
+                     </div>
+                  </div>
                 </div>
 
                 {/* Install App - Only show when install prompt is available */}
