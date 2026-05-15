@@ -18,6 +18,7 @@ export default defineConfig(({ mode }) => {
           name: 'Awareness Gateway',
           short_name: 'Awareness',
           description: 'A trauma-informed mindfulness guide for neurodivergent minds (ADHD, Autism).',
+          start_url: '/',
           theme_color: '#0f1117',
           background_color: '#0f1117',
           display: 'standalone',

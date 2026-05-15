@@ -20,7 +20,13 @@ export default function NavigationMenu() {
     const handler = (e: any) => {
       e.preventDefault();
       setDeferredPrompt(e);
+      (window as any).initDeferredPrompt = e;
     };
+    
+    if ((window as any).initDeferredPrompt) {
+      setDeferredPrompt((window as any).initDeferredPrompt);
+    }
+
     window.addEventListener('beforeinstallprompt', handler);
     return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
@@ -279,12 +285,28 @@ export default function NavigationMenu() {
                   </div>
                 </div>
 
-                {/* Install App - Only show when install prompt is available */}
-                {deferredPrompt && (
-                  <button 
-                    onClick={handleInstallClick}
-                    className="bg-teal-500/10 border border-teal-500/20 hover:bg-teal-500/20 rounded-3xl p-4 flex items-center justify-between transition-colors active:scale-[0.98]"
-                  >
+                {/* Install App - Always show with manual fallback */}
+                <button 
+                  onClick={async () => {
+                    const promptEvent = deferredPrompt || (window as any).initDeferredPrompt;
+                    if (promptEvent) {
+                      promptEvent.prompt();
+                      const { outcome } = await promptEvent.userChoice;
+                      if (outcome === 'accepted') {
+                        setDeferredPrompt(null);
+                        (window as any).initDeferredPrompt = null;
+                      }
+                    } else {
+                       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+                       if (isIOS) {
+                         showToast(language === 'el' ? 'Σε iOS: Κοινοποίηση ⎋ > Προσθήκη στην Οθόνη Αφετηρίας ⊞.' : 'On iOS: Share ⎋ > Add to Home Screen ⊞.');
+                       } else {
+                         showToast(language === 'el' ? 'Χρησιμοποιήστε το μενού του browser για εγκατάσταση.' : 'Use your browser menu to install.');
+                       }
+                    }
+                  }}
+                  className="bg-teal-500/10 border border-teal-500/20 hover:bg-teal-500/20 rounded-3xl p-4 flex items-center justify-between transition-colors active:scale-[0.98]"
+                >
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full flex items-center justify-center bg-teal-500/20 text-teal-400">
                         <Download size={18} />
@@ -299,7 +321,6 @@ export default function NavigationMenu() {
                       </div>
                     </div>
                   </button>
-                )}
               </div>
 
               <div className="flex justify-center gap-6 items-center p-6 border-t border-pine-800/40 mt-auto pb-[calc(1.5rem+env(safe-area-inset-bottom))]">

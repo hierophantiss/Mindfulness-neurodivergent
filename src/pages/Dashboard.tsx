@@ -174,7 +174,9 @@ export default function Dashboard() {
         ? 'Σε iOS: Πατήστε "Κοινοποίηση" ⎋ και μετά "Προσθήκη στην Οθόνη Αφετηρίας" ⊞.' 
         : 'On iOS: Tap "Share" ⎋ and then "Add to Home Screen" ⊞.');
     } else {
-      showToast(language === 'el' ? 'Η εφαρμογή είναι ήδη εγκατεστημένη.' : 'The app is already installed.');
+      showToast(language === 'el' 
+        ? 'Χρησιμοποιήστε το μενού του browser για εγκατάσταση, ή ίσως είναι ήδη εγκατεστημένη.' 
+        : 'Use your browser menu to install, or it may already be installed.');
     }
   };
 
