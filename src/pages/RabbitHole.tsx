@@ -11,6 +11,8 @@ export default function RabbitHole() {
   const [activeArticle, setActiveArticle] = useState<string | null>(null);
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
   const [videoStartTime, setVideoStartTime] = useState<number>(0);
+  const [mantraStep, setMantraStep] = useState<number>(0);
+  const [activeAttentionStyles, setActiveAttentionStyles] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
@@ -64,6 +66,76 @@ export default function RabbitHole() {
       }
     },
     {
+      id: '7Qbat52NE98', // Tai Chi Walking
+      title: language === 'en' ? "Tai Chi Walking: Grounding Motion" : "Tai Chi Walking: Η Κίνηση της Γείωσης",
+      author: "Master Gu",
+      category: language === 'en' ? "Grounding & Motion" : "Γείωση & Κίνηση",
+      thumbnail: "https://img.youtube.com/vi/7Qbat52NE98/maxresdefault.jpg",
+      description: language === 'en' ? {
+        intro: "Conscious walking through Tai Chi is a powerful grounding practice. Using the geometry of the feet and the transfer of weight, you return to the 'here and now'.",
+        points: [
+          { time: "01:10", title: "The Open Stance (Keeping the Qua Open)", text: "Start with toes slightly out and knees 'soft'. This protects joints and creates a stable, agile base." },
+          { time: "01:52", title: "Weight Transfer (Heel-Toes-Weight)", text: "Every step is a conscious choice: heel first, then toes of the 'empty' foot [02:07], then transfer weight." },
+          { time: "09:24", title: "The Flow Mantra", text: "Follow the rhythmic mantra: 'Heel, toes, forward, backward, out, tap' [09:26] to anchor your attention." }
+        ],
+        tip: "Observe how the rhythmic contact with the earth instantly stills the horizontal monkey mind.",
+        bridge: "At the end [11:15], pause and observe the clarity and grounding of the present moment.",
+        bridgeTime: 675,
+        mantra: ["HEEL", "TOES", "FORWARD", "BACKWARD", "OUT", "TAP"],
+        mantraEL: ["ΦΤΕΡΝΑ", "ΔΑΧΤΥΛΑ", "ΜΠΡΟΣΤΑ", "ΠΙΣΩ", "ΕΞΩ", "TAP"]
+      } : {
+        intro: "Η ενσυνείδητη βάδιση μέσω του Tai Chi είναι μια ισχυρή πρακτική γείωσης. Χρησιμοποιώντας τη γεωμετρία των ποδιών και τη μεταφορά του βάρους, επιστρέφεις στο 'εδώ και τώρα'.",
+        points: [
+          { time: "01:10", title: "Η Ανοιχτή Στάση (Keeping the Qua Open)", text: "Ξεκινάς με τα δάχτυλα των ποδιών στραμμένα ελαφρώς προς τα έξω και τα γόνατα 'μαλακά'. Αυτό δημιουργεί μια σταθερή βάση." },
+          { time: "01:52", title: "Η Μεταφορά του Βάρους (Heel-Toes-Weight)", text: "Κάθε βήμα είναι συνειδητή επιλογή: ακουμπάς φτέρνα, μετά δάχτυλα του 'άδειου' ποδιού [02:07] και μετά βάρος." },
+          { time: "09:24", title: "Η Μάντρα της Ροής", text: "Ακολούθησε τη ρυθμική μάντρα: «Φτέρνα, δάχτυλα, μπροστά, πίσω, έξω, tap» [09:26] για να γειώσεις την προσοχή." }
+        ],
+        tip: "Παρατήρησε πώς η ρυθμική επαφή με τη γη σταματά αμέσως την οριζόντια περιπλάνηση του νου.",
+        bridge: "Στο τέλος [11:15], σταμάτησε και παρατήρησε την καθαρότητα και τη γείωση της παρούσας στιγμής.",
+        bridgeTime: 675,
+        mantra: ["HEEL", "TOES", "FORWARD", "BACKWARD", "OUT", "TAP"],
+        mantraEL: ["ΦΤΕΡΝΑ", "ΔΑΧΤΥΛΑ", "ΜΠΡΟΣΤΑ", "ΠΙΣΩ", "ΕΞΩ", "TAP"]
+      }
+    },
+    {
+      id: 'no4x4ewf1dM', // Plum Village
+      title: language === 'en' ? "Plum Village: The 10 Mindful Movements" : "Plum Village: Οι 10 Ενσυνείδητες Κινήσεις",
+      author: "Plum Village",
+      category: language === 'en' ? "Mindfulness & Motion" : "Ενσυνειδητότητα & Κίνηση",
+      thumbnail: "https://img.youtube.com/vi/no4x4ewf1dM/maxresdefault.jpg",
+      description: language === 'en' ? {
+        intro: "The 10 Mindful Movements from the Plum Village tradition are a series of simple, flowing exercises that turn physical motion into living meditation. Each movement is designed to bring attention back to the body and regulate the breath.",
+        points: [
+          { time: "00:14", title: "Posture of Presence", text: "The exercise begins with a quiet, steady posture. Learn to stand with awareness, feeling the connection with the ground." },
+          { time: "00:28", title: "Coordination of Motion & Breath", text: "Every physical movement is guided by the breath. When hands go up, you inhale; when down, you exhale." },
+          { time: "01:05", title: "The Mental Mantra", text: "As you perform the movements, the mind quiets following the simple flow: 'Inhaling, I know I am inhaling. Exhaling, I know I am exhaling.'" }
+        ],
+        tip: "Space: At the end of each movement, return to the steady stance [01:19], feeling the quiet, open space created within.",
+        bridge: "Return to the stance of presence. Feel the silence within.",
+        bridgeTime: 79,
+        movements: Array.from({ length: 10 }, (_, i) => ({
+          id: i + 1,
+          name: `Movement ${i + 1}`,
+          nameEL: `Κίνηση ${i + 1}`,
+        }))
+      } : {
+        intro: "Οι 10 Ενσυνείδητες Κινήσεις από την παράδοση του Plum Village είναι μια σειρά απλών, ρέουσων ασκήσεων που μετατρέπουν τη σωματική κίνηση σε ζωντανό διαλογισμό. Κάθε κίνηση είναι σχεδιασμένη για να επαναφέρει την προσοχή στο σώμα, να ρυθμίσει την αναπνοή και να ανοίξει τον εσωτερικό μας χώρο.",
+        points: [
+          { time: "00:14", title: "Η Στάση της Παρουσίας", text: "Η άσκηση ξεκινά με μια ήσυχη, σταθερή στάση του σώματος. Μαθαίνουμε να στεκόμαστε με επίγνωση, νιώθοντας τη σύνδεση με το έδαφος." },
+          { time: "00:28", title: "Ο Συντονισμός Κίνησης & Πνοής", text: "Κάθε σωματική κίνηση καθοδηγείται από την αναπνοή. Όταν τα χέρια ανεβαίνουν, εισπνέουμε· όταν κατεβαίνουν, εκπνέουμε." },
+          { time: "01:05", title: "Η Μάντρα του Νου", text: "Καθώς εκτελείς τις κινήσεις, ο νους ησυχάζει ακολουθώντας την απλή, εσωτερική ροή: «Εισπνέω, ξέρω ότι εισπνέω. Εκπνέω, ξέρω ότι εκπνέω»." }
+        ],
+        tip: "Χώρος: Στο τέλος κάθε κίνησης, επιστρέφεις στη σταθερή στάση [01:19], νιώθοντας τον ήσυχο, ανοιχτό χώρο που έχει δημιουργηθεί μέσα σου και γύρω σου.",
+        bridge: "Επιστροφή στη στάση της παρουσίας. Νιώσε τη σιωπή μέσα σου.",
+        bridgeTime: 79,
+        movements: Array.from({ length: 10 }, (_, i) => ({
+          id: i + 1,
+          name: `Movement ${i + 1}`,
+          nameEL: `Κίνηση ${i + 1}`,
+        }))
+      }
+    },
+    {
       id: 'HDoAuilRt3Q', // Complete Breathing
       title: language === 'en' ? "Complete Breathing Experience" : "Η Βιωματική Εμπειρία της Πλήρους Αναπνοής",
       author: "Fabio Andrico",
@@ -92,11 +164,44 @@ export default function RabbitHole() {
       }
     },
     {
-      id: 'H6Y8eG6iZ6Q', // Open Focus - Les Fehmi
-      title: language === 'en' ? "Effortless Awareness" : "Άκοπη Επίγνωση",
+      id: 'tmgHDEypPAQ', // Open Focus - Les Fehmi
+      title: language === 'en' ? "Open Focus: The Neuroscience of Diffuse Attention" : "Open Focus: Η Νευροεπιστήμη της Διάχυτης Προσοχής",
       author: "Dr. Les Fehmi",
-      category: language === 'en' ? "Neuroscience" : "Νευροεπιστήμη",
-      thumbnail: "https://img.youtube.com/vi/H6Y8eG6iZ6Q/maxresdefault.jpg"
+      category: language === 'en' ? "Neuroscience & Attention" : "Νευροεπιστήμη & Προσοχή",
+      thumbnail: "https://img.youtube.com/vi/tmgHDEypPAQ/maxresdefault.jpg",
+      description: language === 'en' ? {
+        intro: "When you try to focus persistently and narrowly (Narrow Focus), your nervous system unconsciously activates a 'fight or flight' state [01:00]. Open Focus teaches us that by changing how we attend, we can instantly change our biology.",
+        points: [
+          { time: "01:00", title: "Narrow Focus & Stress", text: "Persistent narrow focus increases cortisol and muscle tension, trapping us in a state of chronic alarm." },
+          { time: "01:32", title: "Brain Wave Rhythms", text: "Changing focus style slows down brain waves, making them rhythmic and synchronous." },
+          { time: "05:13", title: "Awareness of Awareness", text: "The peak state where you are aware of the process of being aware, leading to absolute clarity." }
+        ],
+        tip: "Space: Shift from 'Doing' [05:51] to authentic 'Being'. It is the essence of the Space Axis.",
+        bridge: "When you combine all attention styles [05:06], the mind passes from effort to pure existence.",
+        bridgeTime: 306,
+        attentionStyles: [
+          { id: 'narrow', name: 'Narrow Focus', nameEL: 'Στενή Προσοχή', time: '01:00', desc: 'Single object, excluding all else.', descEL: 'Εστίαση σε ένα μόνο αντικείμενο, αποκλείοντας όλα τα άλλα.' },
+          { id: 'diffuse', name: 'Diffuse Focus', nameEL: 'Διάχυτη Προσοχή', time: '02:21', desc: 'Including space, sounds, and sensations.', descEL: 'Συμπερίληψη του χώρου, των ήχων και των αισθήσεων γύρω μας.' },
+          { id: 'immersed', name: 'Immersed Focus', nameEL: 'Απορροφημένη Προσοχή', time: '02:29', desc: 'Full union with the experience (e.g., dance, a hug).', descEL: 'Πλήρης εμβάθυνση και ένωση με την εμπειρία (π.χ. χορός, μια αγκαλιά).' },
+          { id: 'separate', name: 'Separate Focus', nameEL: 'Αποστασιοποιημένη Προσοχή', time: '02:54', desc: 'Observation from a distance, like an objective judge.', descEL: 'Παρατήρηση από απόσταση, σαν αντικειμενικός κριτής.' }
+        ]
+      } : {
+        intro: "Όταν προσπαθείς να εστιάσεις επίμονα και στενά (Narrow Focus), το νευρικό σου σύστημα ενεργοποιεί ασυνείδητα την κατάσταση 'μάχης ή φυγής' [01:00]. Η μέθοδος του Open Focus μας διδάσκει ότι αλλάζοντας τον τρόπο που προσέχουμε, αλλάζουμε αμέσως τη βιολογία μας.",
+        points: [
+          { time: "01:00", title: "Στενή Προσοχή & Στρες", text: "Η επίμονη στενή εστίαση αυξάνει την κορτιζόλη και την ένταση, παγιδεύοντάς μας σε μια κατάσταση συναγερμού." },
+          { time: "01:32", title: "Ρυθμοί Εγκεφαλικών Κυμάτων", text: "Η αλλαγή στυλ προσοχής επιβραδύνει τα εγκεφαλικά κύματα, κάνοντάς τα ρυθμικά και συγχρονισμένα." },
+          { time: "05:13", title: "Επίγνωση της Επίγνωσης", text: "Η κορυφαία κατάσταση όπου έχεις επίγνωση της ίδιας της διαδικασίας της επίγνωσης." }
+        ],
+        tip: "Χώρος: Πέρασμα από το κουραστικό 'κάνω' [05:51] στο αυθεντικό 'είμαι'. Είναι η ουσία του Άξονα του Χώρου.",
+        bridge: "Όταν συνδυάζεις και τα 4 στυλ ταυτόχρονα [05:06], ο νους περνά από την προσπάθεια στην καθαρή ύπαρξη.",
+        bridgeTime: 306,
+        attentionStyles: [
+          { id: 'narrow', name: 'Narrow Focus', nameEL: 'Στενή Προσοχή', time: '01:00', desc: 'Single object, excluding all else.', descEL: 'Εστίαση σε ένα μόνο αντικείμενο, αποκλείοντας όλα τα άλλα.' },
+          { id: 'diffuse', name: 'Diffuse Focus', nameEL: 'Διάχυτη Προσοχή', time: '02:21', desc: 'Including space, sounds, and sensations.', descEL: 'Συμπερίληψη του χώρου, των ήχων και των αισθήσεων γύρω μας.' },
+          { id: 'immersed', name: 'Immersed Focus', nameEL: 'Απορροφημένη Προσοχή', time: '02:29', desc: 'Full union with the experience (e.g., dance, a hug).', descEL: 'Πλήρης εμβάθυνση και ένωση με την εμπειρία (π.χ. χορός, μια αγκαλιά).' },
+          { id: 'separate', name: 'Separate Focus', nameEL: 'Αποστασιοποιημένη Προσοχή', time: '02:54', desc: 'Observation from a distance, like an objective judge.', descEL: 'Παρατήρηση από απόσταση, σαν αντικειμενικός κριτής.' }
+        ]
+      }
     },
     {
       id: 'i1z6L1IsZlg', // Yantra Yoga
@@ -552,6 +657,8 @@ export default function RabbitHole() {
               onClick={() => {
                 setActiveVideo(video.id);
                 setVideoStartTime(0);
+                setMantraStep(0);
+                setActiveAttentionStyles([]);
               }}
               className="group relative aspect-video bg-[#12141c] border border-white/5 rounded-[2rem] overflow-hidden transition-all duration-500 hover:border-teal-500/30 active:scale-[0.98] shadow-lg"
             >
@@ -644,6 +751,197 @@ export default function RabbitHole() {
                            </p>
                         </div>
                       </div>
+
+                      {desc.mantra && (
+                        <div className="space-y-4">
+                          <span className="text-[10px] font-black uppercase tracking-widest text-white/20 px-2">
+                            {language === 'el' ? 'ΟΔΗΓΟΣ ΡΟΗΣ' : 'FLOW GUIDE'}
+                          </span>
+                          <div className="bg-[#1D9E75]/5 border border-[#1D9E75]/20 rounded-[2.5rem] p-8 text-center relative overflow-hidden group/mantra">
+                             <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 to-transparent opacity-50"></div>
+                             
+                             {/* Stepper Dots */}
+                             <div className="flex justify-center gap-1.5 mb-8 relative z-10">
+                               {desc.mantra.map((_, idx) => (
+                                 <div 
+                                   key={idx}
+                                   className={`h-1 rounded-full transition-all duration-500 ${idx === mantraStep ? 'w-8 bg-teal-400' : 'w-2 bg-white/10'}`}
+                                 />
+                               ))}
+                             </div>
+
+                             <div className="relative h-20 flex items-center justify-center mb-6">
+                               <h4 className="text-3xl md:text-4xl font-serif italic text-white/90 animate-in fade-in zoom-in duration-500 tracking-widest" key={mantraStep}>
+                                 {language === 'el' ? desc.mantraEL[mantraStep] : desc.mantra[mantraStep]}
+                               </h4>
+                             </div>
+
+                             <div className="flex items-center justify-center gap-4 relative z-10">
+                               <button 
+                                 onClick={() => setMantraStep((prev) => (prev > 0 ? prev - 1 : desc.mantra!.length - 1))}
+                                 className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-all active:scale-95"
+                               >
+                                 <ChevronLeft size={20} />
+                               </button>
+                               <button 
+                                 onClick={() => setMantraStep((prev) => (prev < desc.mantra!.length - 1 ? prev + 1 : 0))}
+                                 className="px-8 h-12 rounded-full bg-teal-500 text-black font-bold text-[11px] uppercase tracking-widest hover:bg-teal-400 transition-all active:scale-95 shadow-lg shadow-teal-500/20"
+                               >
+                                 {language === 'el' ? 'ΕΠΟΜΕΝΟ' : 'NEXT'}
+                               </button>
+                             </div>
+                             
+                             <button 
+                               onClick={() => setVideoStartTime(564)}
+                               className="mt-6 text-[9px] font-bold text-teal-400/60 uppercase tracking-[0.2em] hover:text-teal-400 transition-colors flex items-center justify-center gap-2 mx-auto"
+                             >
+                                <Youtube size={12} />
+                                {language === 'el' ? 'ΔΕΣ ΤΟ ΣΤΟ ΒΙΝΤΕΟ' : 'WATCH IN VIDEO'} [09:24]
+                             </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {desc.movements && (
+                        <div className="space-y-4">
+                          <span className="text-[10px] font-black uppercase tracking-widest text-white/20 px-2">
+                            {language === 'el' ? 'ΟΔΗΓΟΣ ΚΙΝΗΣΕΩΝ' : 'MOVEMENTS GUIDE'}
+                          </span>
+                          <div className="bg-indigo-500/5 border border-indigo-500/20 rounded-[2.5rem] p-8 relative overflow-hidden">
+                             <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent opacity-50"></div>
+                             
+                             {/* Header */}
+                             <div className="flex items-center justify-between mb-8 relative z-10">
+                               <div className="flex flex-col">
+                                 <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest mb-1">
+                                   {language === 'el' ? `ΚΙΝΗΣΗ ${desc.movements[mantraStep].id} / 10` : `MOVEMENT ${desc.movements[mantraStep].id} / 10`}
+                                 </span>
+                                 <h4 className="text-xl font-serif italic text-white/90">
+                                   {language === 'el' ? desc.movements[mantraStep].nameEL : desc.movements[mantraStep].name}
+                                 </h4>
+                               </div>
+                               <div className="flex gap-2">
+                                 <button 
+                                   onClick={() => setMantraStep((prev) => (prev > 0 ? prev - 1 : 9))}
+                                   className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white transition-all"
+                                 >
+                                   <ChevronLeft size={18} />
+                                 </button>
+                                 <button 
+                                   onClick={() => setMantraStep((prev) => (prev < 9 ? prev + 1 : 0))}
+                                   className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white transition-all"
+                                 >
+                                   <ChevronRight size={18} />
+                                 </button>
+                               </div>
+                             </div>
+
+                             {/* Breath Instruction */}
+                             <div className="grid grid-cols-2 gap-4 relative z-10">
+                               <div className="bg-white/5 border border-white/10 p-6 rounded-3xl text-center group transition-all hover:bg-teal-500/10 hover:border-teal-500/30">
+                                 <div className="w-8 h-8 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 mx-auto mb-3">
+                                   <ChevronRight size={16} className="-rotate-90" />
+                                 </div>
+                                 <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest block mb-1">
+                                    {language === 'el' ? 'ΕΙΣΠΝΟΗ' : 'INHALE'}
+                                 </span>
+                                 <p className="text-sm font-serif italic text-white/80">
+                                    {language === 'el' ? 'Χέρια πάνω' : 'Hands up'}
+                                 </p>
+                               </div>
+                               <div className="bg-white/5 border border-white/10 p-6 rounded-3xl text-center group transition-all hover:bg-indigo-500/10 hover:border-indigo-500/30">
+                                 <div className="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 mx-auto mb-3">
+                                   <ChevronRight size={16} className="rotate-90" />
+                                 </div>
+                                 <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest block mb-1">
+                                    {language === 'el' ? 'ΕΚΠΝΟΗ' : 'EXHALE'}
+                                 </span>
+                                 <p className="text-sm font-serif italic text-white/80">
+                                    {language === 'el' ? 'Χέρια κάτω' : 'Hands down'}
+                                 </p>
+                               </div>
+                             </div>
+
+                             <button 
+                               onClick={() => setVideoStartTime(65)}
+                               className="mt-8 text-[9px] font-bold text-indigo-400/60 uppercase tracking-[0.2em] hover:text-indigo-400 transition-colors flex items-center justify-center gap-2 mx-auto"
+                             >
+                                <Youtube size={12} />
+                                {language === 'el' ? 'ΔΕΣ ΤΟ ΣΤΟ ΒΙΝΤΕΟ' : 'WATCH IN VIDEO'} [01:05]
+                             </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {desc.attentionStyles && (
+                        <div className="space-y-4">
+                          <span className="text-[10px] font-black uppercase tracking-widest text-white/20 px-2">
+                            {language === 'el' ? 'ΣΤΥΛ ΠΡΟΣΟΧΗΣ' : 'ATTENTION STYLES'}
+                          </span>
+                          <div className="bg-amber-500/5 border border-amber-500/20 rounded-[2.5rem] p-8 relative overflow-hidden">
+                             <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-50"></div>
+                             
+                             <div className="grid grid-cols-2 gap-3 relative z-10 mb-8">
+                               {desc.attentionStyles.map((style) => {
+                                 const isActive = activeAttentionStyles.includes(style.id);
+                                 return (
+                                   <button 
+                                     key={style.id}
+                                     onClick={() => {
+                                       setActiveAttentionStyles(prev => 
+                                         isActive ? prev.filter(id => id !== style.id) : [...prev, style.id]
+                                       );
+                                       const [mins, secs] = style.time.split(':').map(Number);
+                                       setVideoStartTime((mins * 60) + secs);
+                                     }}
+                                     className={`p-4 rounded-3xl border transition-all text-left group active:scale-95 ${
+                                       isActive 
+                                         ? 'bg-amber-500/20 border-amber-500/50 shadow-lg shadow-amber-500/10' 
+                                         : 'bg-white/5 border-white/10 hover:border-white/20'
+                                     }`}
+                                   >
+                                      <div className={`w-2 h-2 rounded-full mb-3 transition-all ${isActive ? 'bg-amber-400 scale-125' : 'bg-white/20'}`}></div>
+                                      <span className={`text-[11px] font-bold uppercase tracking-wider block mb-1 ${isActive ? 'text-amber-200' : 'text-white/40'}`}>
+                                        {language === 'el' ? style.nameEL : style.name}
+                                      </span>
+                                      <p className="text-[10px] text-white/30 leading-tight">
+                                        {language === 'el' ? style.descEL : style.desc}
+                                      </p>
+                                   </button>
+                                 );
+                               })}
+                             </div>
+
+                             {activeAttentionStyles.length === 4 ? (
+                               <div className="relative z-10 bg-teal-500/20 border border-teal-500/40 rounded-3xl p-6 text-center animate-in zoom-in duration-500">
+                                 <div className="w-12 h-12 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 mx-auto mb-4 animate-pulse">
+                                   <Play size={24} fill="currentColor" />
+                                 </div>
+                                 <h4 className="text-xl font-serif italic text-white mb-2">
+                                   {language === 'el' ? 'Ενεργοποίηση Άξονα Χώρου' : 'Space Axis Activated'}
+                                 </h4>
+                                 <p className="text-[11px] text-teal-300/60 uppercase tracking-widest font-bold mb-4">
+                                   {language === 'el' ? 'ΚΑΤΑΣΤΑΣΗ PURE BEING' : 'PURE BEING STATE'}
+                                 </p>
+                                 <button 
+                                   onClick={() => setVideoStartTime(306)}
+                                   className="w-full h-12 rounded-2xl bg-teal-500 text-black font-black text-[11px] uppercase tracking-[0.2em] hover:bg-teal-400 transition-all shadow-lg shadow-teal-500/20"
+                                 >
+                                    {language === 'el' ? 'ΒΙΩΣΕ ΤΟ ΤΩΡΑ' : 'EXPERIENCE NOW'} [05:06]
+                                 </button>
+                               </div>
+                             ) : (
+                               <div className="relative z-10 text-center py-4">
+                                 <p className="text-[10px] font-medium text-white/20 uppercase tracking-[0.2em]">
+                                   {language === 'el' 
+                                     ? `Επιλογή ${activeAttentionStyles.length}/4 για τον Χώρο` 
+                                     : `Select ${activeAttentionStyles.length}/4 for Space`}
+                                 </p>
+                               </div>
+                             )}
+                          </div>
+                        </div>
+                      )}
 
                       <div className="space-y-4">
                         <span className="text-[10px] font-black uppercase tracking-widest text-white/20 px-2">
