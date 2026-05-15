@@ -7,13 +7,16 @@ import { cn } from '../lib/utils';
 
 export default function Onboarding() {
   const [step, setStep] = useState(0);
+  const [intention, setIntention] = useState<'calm' | 'focus' | 'decompress' | null>(null);
   const navigate = useNavigate();
   const { language, setLanguage } = useLanguage();
 
   const handleComplete = () => {
     localStorage.setItem('hasCompletedOnboarding', 'true');
-    // We should also probably mark 'hasSeenIntro' as true to avoid the modal
     localStorage.setItem('hasSeenIntro', 'true');
+    if (intention) {
+      localStorage.setItem('n_mindfulness_intention', intention);
+    }
     navigate('/dashboard', { replace: true });
   };
 
@@ -104,6 +107,44 @@ export default function Onboarding() {
       )
     },
     {
+      id: 'intention',
+      content: (
+        <div className="flex flex-col items-center text-center space-y-8 w-full max-w-xl mx-auto">
+          <div className="space-y-4 max-w-md mx-auto">
+             <h2 className="text-3xl font-serif italic text-white tracking-tight leading-snug">
+               {language === 'el' ? 'Τι αναζητάτε κυρίως;' : 'What are you looking for?'}
+             </h2>
+             <p className="text-sm text-white/50 font-sans leading-relaxed">
+               {language === 'el' 
+                 ? 'Επιλέξτε ένα, για να προσαρμόσουμε τον χώρο σας.'
+                 : 'Choose one to gently tailor your space.'}
+             </p>
+          </div>
+          <div className="flex flex-col gap-3 w-full max-w-sm mx-auto">
+            {[
+              { id: 'calm', icon: Anchor, title: { el: 'Ηρεμία / Άγχος', en: 'Calm / Anxiety Relief' } },
+              { id: 'focus', icon: Focus, title: { el: 'Εστίαση (ΔΕΠΥ)', en: 'Focus (ADHD Support)' } },
+              { id: 'decompress', icon: Wind, title: { el: 'Αποφόρτιση', en: 'Sensory Decompression' } }
+            ].map((opt) => (
+              <button 
+                key={opt.id}
+                onClick={() => setIntention(opt.id as any)}
+                className={cn(
+                  "flex items-center gap-4 p-4 rounded-2xl border transition-all duration-300 text-left active:scale-[0.98]",
+                  intention === opt.id 
+                    ? "bg-teal-500/20 border-teal-500/50 text-teal-100" 
+                    : "bg-white/[0.03] border-white/5 text-white/70 hover:bg-white/[0.05]"
+                )}
+              >
+                 <opt.icon size={20} className={intention === opt.id ? "text-teal-400" : "text-white/40"} />
+                 <span className="font-sans font-medium">{language === 'el' ? opt.title.el : opt.title.en}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )
+    },
+    {
       id: 'ready',
       content: (
         <div className="flex flex-col items-center text-center space-y-8">
@@ -174,7 +215,9 @@ export default function Onboarding() {
           <span>
             {step === steps.length - 1 
               ? (language === 'el' ? 'Έναρξη' : 'Begin') 
-              : (language === 'el' ? 'Συνέχεια' : 'Continue')}
+              : (steps[step].id === 'intention' && !intention)
+                ? (language === 'el' ? 'Παράλειψη' : 'Skip')
+                : (language === 'el' ? 'Συνέχεια' : 'Continue')}
           </span>
           <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
         </button>

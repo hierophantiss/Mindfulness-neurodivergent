@@ -93,15 +93,6 @@ export default function PracticeBreath() {
     setGlobalVolume(globalVolume);
   }, [globalVolume, setGlobalVolume]);
 
-  // Sync Audio with running state if audioEnabled
-  useEffect(() => {
-    if (running && audioEnabled) {
-      startAudio();
-    } else {
-      stopAudio();
-    }
-  }, [running, audioEnabled, startAudio, stopAudio]);
-
   // Clean up audio on unmount
   useEffect(() => {
     return () => stopAudio();
@@ -110,10 +101,11 @@ export default function PracticeBreath() {
   // Reset state when pattern changes
   useEffect(() => {
     setRunning(false);
+    stopAudio();
     setCycles(0);
     setPhase(pattern.labels[0]);
     setPhaseIdx(0);
-  }, [pattern]);
+  }, [pattern, stopAudio]);
 
   // Track session ID for this run
   useEffect(() => {
@@ -166,12 +158,25 @@ export default function PracticeBreath() {
     if (audioPref === null && !showWarning && !audioEnabled) {
       setShowWarning(true);
     } else {
-      setAudioEnabled(!audioEnabled);
+      const nextAudio = !audioEnabled;
+      setAudioEnabled(nextAudio);
+      // If already running, toggle audio immediately
+      if (running) {
+        if (nextAudio) {
+          startAudio().catch(err => console.error("Direct startAudio failed:", err));
+        } else {
+          stopAudio();
+        }
+      }
     }
   };
 
-  const startSequence = () => {
+  const startSequence = (withAudio: boolean = audioEnabled) => {
+    setAudioEnabled(withAudio);
     setRunning(true);
+    if (withAudio) {
+      startAudio().catch(err => console.error("Start sequence audio failed:", err));
+    }
   };
 
   const savePreferenceAndStart = (withAudio: boolean) => {
@@ -182,17 +187,18 @@ export default function PracticeBreath() {
     }
     setShowWarning(false);
     setAudioEnabled(withAudio);
-    startSequence();
+    startSequence(withAudio);
   };
 
   const handleStartToggle = () => {
     if (running) {
       setRunning(false);
+      stopAudio();
     } else {
       if (audioPref === null) {
         setShowWarning(true);
       } else {
-        startSequence();
+        startSequence(audioEnabled);
       }
     }
   };
@@ -469,7 +475,13 @@ export default function PracticeBreath() {
            </button>
          ) : (
            <button
-             onClick={() => { setRunning(false); setCycles(0); setPhaseIdx(0); setPhase(pattern.labels[0]); }}
+             onClick={() => { 
+              setRunning(false); 
+              stopAudio();
+              setCycles(0); 
+              setPhaseIdx(0); 
+              setPhase(pattern.labels[0]); 
+            }}
              className="flex-1 h-9 rounded-full bg-transparent border border-pine-700/60 flex items-center justify-center gap-2 text-pine-400 hover:text-white hover:bg-pine-800/50 transition-all duration-300 active:scale-95"
            >
              <X size={14} />

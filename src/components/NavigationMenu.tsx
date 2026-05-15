@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Home, BookOpen, Activity, Notebook, Menu, X, Info, Music, Bell, Compass, LayoutGrid, EyeOff, Eye, Database, User as UserIcon, LogOut, Download } from 'lucide-react';
+import { Home, BookOpen, Activity, Notebook, Menu, X, Info, Music, Bell, Compass, LayoutGrid, EyeOff, Eye, Database, User as UserIcon, LogOut, Download, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
@@ -284,6 +284,34 @@ export default function NavigationMenu() {
                      </div>
                   </div>
                 </div>
+
+                   <div className="w-full h-px bg-white/5 my-1"></div>
+                   
+                   <div className="flex items-center justify-between">
+                     <div className="flex items-center gap-3">
+                       <div className="w-10 h-10 rounded-full flex items-center justify-center bg-indigo-900/50 text-indigo-300">
+                         <Sparkles size={18} />
+                       </div>
+                       <div className="flex flex-col">
+                         <span className="text-sm font-medium text-pine-100">
+                           {language === 'en' ? 'App Intention' : 'Τρέχουσες Ανάγκες'}
+                         </span>
+                         <span className="text-[10px] text-pine-400">
+                           {language === 'en' ? 'Change your main focus' : 'Αλλαγή στόχου'}
+                         </span>
+                       </div>
+                     </div>
+                     <button
+                       onClick={() => {
+                         localStorage.removeItem('hasCompletedOnboarding');
+                         window.location.href = '#/onboarding';
+                         window.location.reload();
+                       }}
+                       className="px-3 py-1.5 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-medium transition-colors"
+                     >
+                       {language === 'en' ? 'Update' : 'Αλλαγή'}
+                     </button>
+                   </div>
 
                 {/* Install App - Always show with manual fallback */}
                 <button 

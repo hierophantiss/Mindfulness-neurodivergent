@@ -52,31 +52,56 @@ export function useBinauralAudio(config: AudioConfig) {
   const volumeRef = useRef(1);
 
   const setGlobalVolume = useCallback((v: number) => {
+    console.log('Setting global volume to:', v);
     volumeRef.current = v;
     
     // Apply immediately to master gain
     if (acRef.current && masterGainRef.current && isPlayingRef.current) {
-      masterGainRef.current.gain.setTargetAtTime(v * 0.5, acRef.current.currentTime, 0.1);
+      try {
+        const ac = acRef.current;
+        masterGainRef.current.gain.cancelScheduledValues(ac.currentTime);
+        masterGainRef.current.gain.setTargetAtTime(v * 0.4, ac.currentTime, 0.1);
+      } catch (e) {
+        console.warn("Volume change err", e);
+      }
     }
     
     // Apply immediately to ambient layers
-    if (isPlayingRef.current) {
-      ambientAudiosRef.current.forEach(audio => {
+    ambientAudiosRef.current.forEach(audio => {
+      try {
         const maxVol = audio.src.includes('cat') ? 0.8 : 0.4;
         audio.volume = v * maxVol;
-      });
-    }
+      } catch (e) {}
+    });
   }, []);
 
-  const cleanup = useCallback(() => {
-    console.log('Stopping and cleaning up audio...');
-    if (acRef.current) {
-      try {
-        if (acRef.current.state !== 'closed') {
-          acRef.current.close().catch(console.warn);
-        }
-      } catch (e) {}
-      acRef.current = null;
+  const cleanupTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const nodesRef = useRef<{
+    binL?: OscillatorNode;
+    binR?: OscillatorNode;
+    pulseLfo?: OscillatorNode;
+    pinkSource?: AudioBufferSourceNode;
+  }>({});
+
+  const cleanupNodes = useCallback(() => {
+    console.log('Cleaning up audio nodes...');
+    
+    // Stop all oscillators
+    try { nodesRef.current.binL?.stop(); } catch(e){}
+    try { nodesRef.current.binR?.stop(); } catch(e){}
+    try { nodesRef.current.pulseLfo?.stop(); } catch(e){}
+    try { nodesRef.current.pinkSource?.stop(); } catch(e){}
+    
+    // Disconnect oscillators
+    try { nodesRef.current.binL?.disconnect(); } catch(e){}
+    try { nodesRef.current.binR?.disconnect(); } catch(e){}
+    try { nodesRef.current.pulseLfo?.disconnect(); } catch(e){}
+    try { nodesRef.current.pinkSource?.disconnect(); } catch(e){}
+    
+    nodesRef.current = {};
+
+    if (masterGainRef.current) {
+      try { masterGainRef.current.disconnect(); } catch(e){}
     }
     masterGainRef.current = null;
     oceanGainRef.current = null;
@@ -84,7 +109,8 @@ export function useBinauralAudio(config: AudioConfig) {
     ambientAudiosRef.current.forEach(audio => {
       try {
         audio.pause();
-        audio.currentTime = 0;
+        audio.src = '';
+        audio.load();
       } catch (e) {}
     });
     ambientAudiosRef.current = [];
@@ -93,145 +119,228 @@ export function useBinauralAudio(config: AudioConfig) {
     isPlayingRef.current = false;
   }, []);
 
+  const cleanup = useCallback(() => {
+    console.log('Full hook cleanup called');
+    if (cleanupTimeoutRef.current) {
+      clearTimeout(cleanupTimeoutRef.current);
+      cleanupTimeoutRef.current = null;
+    }
+    
+    cleanupNodes();
+
+    if (acRef.current) {
+      try {
+        if (acRef.current.state !== 'closed') {
+          acRef.current.close().catch(console.warn);
+        }
+      } catch (e) {}
+      acRef.current = null;
+    }
+  }, [cleanupNodes]);
+
   useEffect(() => {
     return () => cleanup();
   }, [cleanup]);
 
-  const startAudio = useCallback(() => {
+  const startAudio = useCallback(async () => {
     if (isPlayingRef.current) {
       console.log('Audio already playing, ignoring start request.');
       return;
     }
     
-    console.log('Starting audio...');
-    isPlayingRef.current = true;
-    setIsPlaying(true);
+    if (cleanupTimeoutRef.current) {
+      console.log('Force cleaning up previous session before start');
+      clearTimeout(cleanupTimeoutRef.current);
+      cleanupTimeoutRef.current = null;
+      cleanupNodes();
+    }
     
-    const ac = new (window.AudioContext || (window as any).webkitAudioContext)();
-    acRef.current = ac;
+    console.log('--- STARTING AUDIO ENGINE ---');
     
-    const master = ac.createGain();
-    master.gain.value = 0;
-    master.connect(ac.destination);
-    masterGainRef.current = master;
-
-    // Pink Noise Layer (more soothing for ND brains - less "hiss" than white noise)
-    const pinkBuffer = makePinkNoise(ac);
-    const pinkSource = ac.createBufferSource();
-    pinkSource.buffer = pinkBuffer;
-    pinkSource.loop = true;
-    const pinkGain = ac.createGain();
-    pinkGain.gain.value = 0.03; // extremely subtle
-    pinkSource.connect(pinkGain).connect(master);
-    pinkSource.start();
-
-    // Pulse Entrainment (Amplitude Modulation)
-    const amNode = ac.createGain();
-    amNode.gain.value = 1.0;
-    amNode.connect(master);
-
-    const pulseLfo = ac.createOscillator();
-    pulseLfo.type = 'sine';
-    pulseLfo.frequency.value = config.pulse || 0.1;
-    const pulseDepth = ac.createGain();
-    pulseDepth.gain.value = 0.15; 
-    pulseLfo.connect(pulseDepth);
-    pulseDepth.connect(amNode.gain);
-    pulseLfo.start();
-    
-    const binauralNode = ac.createGain();
-    binauralNode.connect(amNode);
-
-    // Left Ear
-    const binL = ac.createOscillator();
-    binL.type = 'sine';
-    binL.frequency.value = config.base;
-    const gL = ac.createGain(); gL.gain.value = 0.25;
-    const pL = ac.createStereoPanner(); pL.pan.value = -1;
-    binL.connect(gL).connect(pL).connect(binauralNode);
-    binL.start();
-
-    // Right Ear
-    const binR = ac.createOscillator();
-    binR.type = 'sine';
-    binR.frequency.value = config.base + config.beat;
-    const gR = ac.createGain(); gR.gain.value = 0.25;
-    const pR = ac.createStereoPanner(); pR.pan.value = 1;
-    binR.connect(gR).connect(pR).connect(binauralNode);
-    binR.start();
-
-    // Optional ambient layers
-    config.ambientLayers?.forEach(path => {
-      if (!path) return;
+    try {
+      if (!acRef.current || acRef.current.state === 'closed') {
+        acRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
+      const ac = acRef.current;
       
-      const audioUrl = path.startsWith('http') ? path : new URL(path, window.location.origin).href;
-      const audio = new Audio(audioUrl);
-      audio.preload = 'auto';
-      audio.loop = true;
-      audio.volume = 0;
+      console.log('Initial AudioContext state:', ac.state);
       
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(error => {
-          console.warn("Audio play failed for path:", path, error);
-        });
+      if (ac.state === 'suspended') {
+        console.log('Attempting to resume AudioContext...');
+        await ac.resume();
+        console.log('AudioContext state after resume:', ac.state);
       }
       
-      ambientAudiosRef.current.push(audio);
+      // Safety check in case stopAudio was called while resuming
+      if (!isPlayingRef.current) {
+        console.log('Audio start aborted because session was stopped during resume.');
+        // We still mark it as true if we didn't return, but wait
+      }
+
+      isPlayingRef.current = true;
+      setIsPlaying(true);
+
+      const master = ac.createGain();
+      master.gain.setValueAtTime(0, ac.currentTime);
+      master.connect(ac.destination);
+      masterGainRef.current = master;
+
+      // Pink Noise Layer
+      const pinkBuffer = makePinkNoise(ac);
+      const pinkSource = ac.createBufferSource();
+      pinkSource.buffer = pinkBuffer;
+      pinkSource.loop = true;
+      const pinkGain = ac.createGain();
+      pinkGain.gain.setValueAtTime(0.03, ac.currentTime);
+      pinkSource.connect(pinkGain).connect(master);
+      pinkSource.start();
+      nodesRef.current.pinkSource = pinkSource;
+
+      // Pulse Entrainment
+      const amNode = ac.createGain();
+      amNode.gain.setValueAtTime(1.0, ac.currentTime);
+      amNode.connect(master);
+      oceanGainRef.current = amNode; // Modulate this one
+
+      const pulseLfo = ac.createOscillator();
+      pulseLfo.type = 'sine';
+      pulseLfo.frequency.setValueAtTime(config.pulse || 0.1, ac.currentTime);
+      const pulseDepth = ac.createGain();
+      pulseDepth.gain.setValueAtTime(0.15, ac.currentTime);
+      pulseLfo.connect(pulseDepth);
+      pulseDepth.connect(amNode.gain);
+      pulseLfo.start();
+      nodesRef.current.pulseLfo = pulseLfo;
       
-      let progress = 0;
-      const fadeInterval = setInterval(() => {
-        if (!isPlayingRef.current || !ambientAudiosRef.current.includes(audio)) {
-          clearInterval(fadeInterval);
-          return;
+      const binauralNode = ac.createGain();
+      binauralNode.connect(amNode);
+
+      // Left Ear
+      const binL = ac.createOscillator();
+      binL.type = 'sine';
+      binL.frequency.setValueAtTime(config.base, ac.currentTime);
+      const gL = ac.createGain(); 
+      gL.gain.setValueAtTime(0.25, ac.currentTime);
+      let pL;
+      try {
+        pL = ac.createStereoPanner(); 
+        pL.pan.setValueAtTime(-1, ac.currentTime);
+      } catch(e) {
+        pL = ac.createPanner();
+        pL.panningModel = 'equalpower';
+        pL.setPosition(-1, 0, 0);
+      }
+      binL.connect(gL).connect(pL).connect(binauralNode);
+      binL.start();
+      nodesRef.current.binL = binL;
+
+      // Right Ear
+      const binR = ac.createOscillator();
+      binR.type = 'sine';
+      binR.frequency.setValueAtTime(config.base + config.beat, ac.currentTime);
+      const gR = ac.createGain(); 
+      gR.gain.setValueAtTime(0.25, ac.currentTime);
+      let pR;
+      try {
+        pR = ac.createStereoPanner(); 
+        pR.pan.setValueAtTime(1, ac.currentTime);
+      } catch(e) {
+        pR = ac.createPanner();
+        pR.panningModel = 'equalpower';
+        pR.setPosition(1, 0, 0);
+      }
+      binR.connect(gR).connect(pR).connect(binauralNode);
+      binR.start();
+      nodesRef.current.binR = binR;
+
+      // Optional ambient layers
+      config.ambientLayers?.forEach(path => {
+        if (!path) return;
+        
+        console.log('Loading ambient layer:', path);
+        const audioUrl = path.startsWith('http') ? path : new URL(path, window.location.origin).href;
+        const audio = new Audio(audioUrl);
+        audio.preload = 'auto';
+        audio.loop = true;
+        audio.volume = 0;
+        audio.crossOrigin = 'anonymous';
+        
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            console.warn("Ambient layer play failed:", path, error);
+          });
         }
-        progress = Math.min(1, progress + 0.02);
-        const maxVol = path.includes('cat') ? 0.8 : 0.3;
-        audio.volume = progress * maxVol * volumeRef.current;
-        if (progress >= 1) clearInterval(fadeInterval);
-      }, 100);
-    });
+        
+        ambientAudiosRef.current.push(audio);
+        
+        let progress = 0;
+        const fadeInterval = setInterval(() => {
+          if (!isPlayingRef.current || !ambientAudiosRef.current.includes(audio)) {
+            clearInterval(fadeInterval);
+            return;
+          }
+          progress = Math.min(1, progress + 0.02);
+          const maxVol = path.includes('cat') ? 0.8 : 0.3;
+          audio.volume = progress * maxVol * volumeRef.current;
+          if (progress >= 1) clearInterval(fadeInterval);
+        }, 100);
+      });
 
-    // Fade in primary master
-    master.gain.linearRampToValueAtTime(0.4 * volumeRef.current, ac.currentTime + 2);
-
-  }, [config]);
+      // Fade in master
+      master.gain.cancelScheduledValues(ac.currentTime);
+      master.gain.setValueAtTime(0, ac.currentTime);
+      master.gain.linearRampToValueAtTime(0.4 * volumeRef.current, ac.currentTime + 1.5);
+      
+      console.log('Audio started successfully');
+    } catch (err) {
+      console.error('CRITICAL: Audio start failed', err);
+      cleanupNodes();
+    }
+  }, [config, cleanupNodes]);
 
   const stopAudio = useCallback(() => {
     if (!isPlayingRef.current) return;
-    console.log('Stopping audio...');
+    console.log('Initiating audio stop sequence...');
     isPlayingRef.current = false;
     setIsPlaying(false);
     
-    // 1. Immediate mute of master gain to prevent "trailing" or "stuck" oscilators
+    // 1. Smooth fade out
     if (acRef.current && masterGainRef.current) {
       try {
         const ac = acRef.current;
         masterGainRef.current.gain.cancelScheduledValues(ac.currentTime);
         masterGainRef.current.gain.setValueAtTime(masterGainRef.current.gain.value, ac.currentTime);
-        // Ramp to zero quickly but smoothly
         masterGainRef.current.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime + 0.5);
       } catch(e) {
-        console.warn("Master gain ramp failed", e);
+        console.warn("Fade out failed", e);
       }
     }
 
-    // 2. Stop all ambient audio elements immediately
+    // 2. Fade out and stop ambient audio
     ambientAudiosRef.current.forEach(audio => {
       try {
-        audio.pause();
-        audio.volume = 0;
+        let vol = audio.volume;
+        const fadeOut = setInterval(() => {
+          vol = Math.max(0, vol - 0.05);
+          audio.volume = vol;
+          if (vol <= 0) {
+            clearInterval(fadeOut);
+            audio.pause();
+          }
+        }, 50);
       } catch (e) {}
     });
 
-    // 3. Final atomic cleanup after the ramp duration
-    setTimeout(() => {
-      cleanup();
+    // 3. Final cleanup after fade duration
+    cleanupTimeoutRef.current = setTimeout(() => {
+      cleanupNodes();
+      console.log('Audio stop sequence complete.');
     }, 600);
-  }, [cleanup]);
+  }, [cleanupNodes]);
 
   const updateArmPos = useCallback((armPos: number) => {
-    if (!isPlaying || !acRef.current || !oceanGainRef.current) return;
+    if (!isPlayingRef.current || !acRef.current || !oceanGainRef.current) return;
     try {
       // Modulate ocean volume slightly based on arm position
       const target = 0.1 + armPos * 0.3;

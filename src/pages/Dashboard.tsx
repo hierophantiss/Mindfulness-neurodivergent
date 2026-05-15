@@ -98,12 +98,57 @@ export default function Dashboard() {
   };
 
   const [isStandalone, setIsStandalone] = useState(false);
+  const [mindfulStats, setMindfulStats] = useState({ totalMin: 0, journalCount: 0, keyword: '' });
+  const [userIntention, setUserIntention] = useState<string | null>(null);
 
   useEffect(() => {
     // Check if running in standalone mode
     if (window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone) {
       setIsStandalone(true);
     }
+    
+    setUserIntention(localStorage.getItem('n_mindfulness_intention'));
+
+    // Calculate Mindful Stats
+    let min = 0;
+    try {
+      const bHist = JSON.parse(localStorage.getItem('breath_history') || '{}');
+      min += (bHist.totalMin || 0);
+    } catch {}
+    try {
+       const jHist = JSON.parse(localStorage.getItem('journal_history') || '{}');
+       min += (jHist.totalMin || 0);
+    } catch {}
+    
+    let journals = 0;
+    let foundKeywords: string[] = [];
+    const positiveWords = ['γαλήνη', 'ανακούφιση', 'χαρά', 'ήρεμα', 'ήρεμος', 'ήρεμη', 'φως', 'αγάπη', 'ανάσα', 'ευγνωμοσύνη', 'ησυχία', 'ροή', 'παρόν', 'καλύτερα', 'χαλάρωση', 'σύνδεση', 'peace', 'joy', 'calm', 'love', 'breath', 'gratitude', 'light', 'hope', 'quiet', 'flow', 'present', 'better', 'rest', 'relax', 'connection'];
+    
+    try {
+      const jV1 = JSON.parse(localStorage.getItem('journal_v1') || '[]');
+      if (Array.isArray(jV1)) {
+        jV1.forEach((j: any) => {
+          if (j.note && j.note.trim().length > 0) {
+            journals++;
+            const text = j.note.toLowerCase();
+            positiveWords.forEach(w => {
+              if (text.includes(w) && !foundKeywords.includes(w)) {
+                foundKeywords.push(w);
+              }
+            });
+          }
+        });
+      }
+    } catch {}
+    
+    // Pick a random keyword if any found
+    let randomKeyword = '';
+    if (foundKeywords.length > 0) {
+      randomKeyword = foundKeywords[Math.floor(Math.random() * foundKeywords.length)];
+    }
+    
+    setMindfulStats({ totalMin: min, journalCount: journals, keyword: randomKeyword });
+
   }, []);
 
   // Determine a soft hue based on the day of the week
@@ -203,6 +248,42 @@ export default function Dashboard() {
     }
   };
 
+  const getRecommended = () => {
+    if (!userIntention) return null;
+    switch (userIntention) {
+        case 'calm':
+           return {
+               to: '/practice/breath/4-7-8',
+               title: { el: 'Ανάσα 4-7-8', en: '4-7-8 Breathing' },
+               desc: { el: 'ΗΡΕΜΙΑ & ΧΑΛΑΡΩΣΗ', en: 'CALM & RELAX' },
+               icon: Wind,
+               color: 'text-teal-400',
+               bg: 'bg-teal-500/10 border-teal-500/20 shadow-[0_0_20px_rgba(20,184,166,0.15)]'
+           };
+        case 'focus':
+           return {
+               to: '/practice/breath/box-breathing',
+               title: { el: 'Box Breathing', en: 'Box Breathing' },
+               desc: { el: 'ΕΣΤΙΑΣΗ ΚΑΙ ΡΟΗ', en: 'FOCUS & FLOW' },
+               icon: Focus,
+               color: 'text-amber-400',
+               bg: 'bg-amber-500/10 border-amber-500/20 shadow-[0_0_20px_rgba(245,158,11,0.15)]'
+           };
+        case 'decompress':
+           return {
+               to: '/journal',
+               title: { el: 'Νοητική Αποφόρτιση', en: 'Mental Decompression' },
+               desc: { el: 'ΚΑΤΑΓΡΑΦΗ & ΧΩΡΟΣ', en: 'JOURNAL & SPACE' },
+               icon: Anchor,
+               color: 'text-indigo-400',
+               bg: 'bg-indigo-500/10 border-indigo-500/20 shadow-[0_0_20px_rgba(99,102,241,0.15)]'
+           };
+        default: return null;
+    }
+  };
+
+  const rec = getRecommended();
+
   return (
     <div className="flex flex-col relative w-full min-h-full z-10">
       
@@ -279,9 +360,40 @@ export default function Dashboard() {
               <h1 className="text-3xl font-serif text-white/90 italic tracking-tight leading-none">
                 {greeting}
               </h1>
-              <p className="text-[11px] text-white/30 font-sans tracking-wide">
-                {currentDate}
-              </p>
+              <div className="flex flex-col gap-3">
+                <p className="text-[11px] text-white/30 font-sans tracking-wide">
+                  {currentDate}
+                </p>
+                {/* Mindful Stats Pill */}
+                {(mindfulStats.totalMin > 0 || mindfulStats.journalCount > 0) && (
+                  <div className="flex flex-wrap items-center gap-2">
+                    {mindfulStats.totalMin > 0 && (
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-100/80">
+                         <Activity size={10} className="text-teal-400" />
+                         <span className="text-[10px] font-sans font-medium tracking-wide">
+                             {mindfulStats.totalMin} {language === 'el' ? 'λεπτά' : 'minutes'}
+                         </span>
+                      </div>
+                    )}
+                    {mindfulStats.journalCount > 0 && (
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-100/80">
+                         <Notebook size={10} className="text-rose-400" />
+                         <span className="text-[10px] font-sans font-medium tracking-wide">
+                             {mindfulStats.journalCount} {language === 'el' ? 'σκέψεις' : 'reflections'}
+                         </span>
+                      </div>
+                    )}
+                    {mindfulStats.keyword && (
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-100/80">
+                         <Sparkles size={10} className="text-indigo-400" />
+                         <span className="text-[10px] font-sans font-medium tracking-wide italic">
+                             "{mindfulStats.keyword}"
+                         </span>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
             
             <div className="flex items-center gap-2">
@@ -375,6 +487,38 @@ export default function Dashboard() {
         </div>
 
         <div className="flex flex-col gap-2 pt-0">
+          {/* Recommended Tool (Dynamic based on Intention) */}
+          {rec && (
+            <motion.div variants={itemVariants} className="mb-4 mt-2">
+              <div className="flex items-center px-4 mb-2">
+                 <h3 className="text-[8px] font-sans font-black tracking-[0.2em] text-teal-400/80 uppercase flex-shrink-0">
+                     {language === 'el' ? 'ΠΡΟΤΕΙΝΕΤΑΙ ΓΙΑ ΣΑΣ' : 'RECOMMENDED FOR YOU'}
+                 </h3>
+              </div>
+              <Link 
+                to={rec.to}
+                className={cn("group flex items-center justify-between p-5 rounded-3xl soft-glass transition-all duration-500 active:scale-[0.98] border", rec.bg)}
+              >
+                 <div className="flex items-center gap-4">
+                     <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center border bg-black/20 backdrop-blur-md", rec.color, rec.bg)}>
+                         <rec.icon size={22} />
+                     </div>
+                     <div>
+                        <h4 className="text-[18px] font-serif text-white italic tracking-tight leading-none mb-1.5 font-medium">
+                          {language === 'el' ? rec.title.el : rec.title.en}
+                        </h4>
+                        <p className={cn("text-[10px] font-bold tracking-[0.1em] uppercase", rec.color)}>
+                          {language === 'el' ? rec.desc.el : rec.desc.en}
+                        </p>
+                     </div>
+                 </div>
+                 <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors">
+                     <ArrowRight size={14} className={cn("transition-transform group-hover:translate-x-1", rec.color)} />
+                 </div>
+              </Link>
+            </motion.div>
+          )}
+
           {/* Section Title */}
           <motion.div variants={itemVariants} className="flex items-center px-4">
             <h3 className="text-[8px] font-sans font-black tracking-[0.2em] text-white/10 uppercase flex-shrink-0">
