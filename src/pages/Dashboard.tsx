@@ -116,7 +116,13 @@ export default function Dashboard() {
     const handleBeforeInstallPrompt = (e: any) => {
       e.preventDefault();
       setDeferredPrompt(e);
+      (window as any).initDeferredPrompt = e;
     };
+    
+    if ((window as any).initDeferredPrompt) {
+      setDeferredPrompt((window as any).initDeferredPrompt);
+    }
+    
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
   }, [language]);
@@ -139,19 +145,27 @@ export default function Dashboard() {
 
   const handleInstallClick = async () => {
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+    const isIframe = window.self !== window.top;
+    
+    const promptEvent = deferredPrompt || (window as any).initDeferredPrompt;
 
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
+    if (promptEvent) {
+      promptEvent.prompt();
+      const { outcome } = await promptEvent.userChoice;
       if (outcome === 'accepted') {
         setDeferredPrompt(null);
+        (window as any).initDeferredPrompt = null;
       }
+    } else if (isIframe) {
+       showToast(language === 'el'
+         ? 'Ανοίξτε την εφαρμογή σε νέο παράθυρο για να την εγκαταστήσετε.'
+         : 'Open the app in a new tab to install it.');
     } else if (isIOS) {
       showToast(language === 'el' 
         ? 'Σε iOS: Πατήστε "Κοινοποίηση" ⎋ και μετά "Προσθήκη στην Οθόνη Αφετηρίας" ⊞.' 
         : 'On iOS: Tap "Share" ⎋ and then "Add to Home Screen" ⊞.');
     } else {
-      showToast(language === 'el' ? 'Η εφαρμογή είναι ήδη εγκατεστημένη ή δεν υποστηρίζεται.' : 'The app is already installed or not supported.');
+      showToast(language === 'el' ? 'Η εφαρμογή είναι ήδη εγκατεστημένη.' : 'The app is already installed.');
     }
   };
 

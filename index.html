@@ -76,6 +76,13 @@
   ]
 }
 </script>
+<script>
+  window.initDeferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    window.initDeferredPrompt = e;
+  });
+</script>
 </head>
 <body class="dark">
   <div id="root"></div>
