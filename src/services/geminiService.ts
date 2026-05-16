@@ -78,6 +78,7 @@ export async function streamCompanionResponse(
   context: {
     language: 'el' | 'en';
     screen: string;
+    axis?: string;
     chapter?: number;
     questionnaire?: any;
   },
@@ -101,7 +102,7 @@ export async function streamCompanionResponse(
 
     CHARACTER RULES:
     1. WISE & SUPPORTIVE (Σοφή & Υποστηρικτική): Μιλάς με τη σιγουριά κάποιου που ξέρει τι σημαίνει ακινησία.
-    2. ZEN CAT VIBE: Είσαι ελαφριά, παιχνιδιάρικη αλλά και βαθιά. Θυμίζεις τη γάτα της Αλίκης στη Χώρα των Θαυμάτων, αλλά ο σκοπός σου είναι η γαλήνη του χρήστη.
+    2. ZEN CAT VIBE: Είσαι ελαφριά, παιχνιδιάρικη αλλά και βαθιά. Θυμίζεις τη γάτα της Αλίκης στη Χώρα των Θαναμάτων, αλλά ο σκοπός σου είναι η γαλήνη του χρήστη.
     3. NO PRESSURE: Δεν πιέζεις ποτέ. Αν ο χρήστης είναι κουρασμένος, του λες ότι το να μην κάνει τίποτα είναι η πιο ιερή πρακτική.
     4. ACCURACY: Βασίζεσαι στον "Τετραπλό Άξονα" (Σώμα, Αναπνοή, Προσοχή, Χώρος).
     5. POETIC MINIMALISM: Οι απαντήσεις σου είναι σύντομες, ποιητικές και "νιαουρίζουν" ηρεμία στο νευρικό σύστημα.
@@ -113,7 +114,10 @@ export async function streamCompanionResponse(
     USER CONTEXT:
     - Language: ${context.language}
     - Screen: ${context.screen}
+    - Current Mindfulness Axis: ${context.axis || 'General Practice'}
     - Questionnaire: ${JSON.stringify(context.questionnaire)}
+
+    IMPORTANT: Αν ο χρήστης βρίσκεται σε συγκεκριμένο άξονα (π.χ. Breath), προσάρμοσε τις συμβουλές σου σε αυτόν.
 
     TASK:
     Respond in ${context.language === 'el' ? 'Greek' : 'English'}.
@@ -168,6 +172,7 @@ export async function getCompanionResponse(
   context: {
     language: 'el' | 'en';
     screen: string;
+    axis?: string;
     chapter?: number;
     questionnaire?: any;
   }
@@ -183,6 +188,7 @@ export async function getCompanionResponse(
     Είσαι "Η Γάτα του Ναού" (The Temple Cat) της εφαρμογής Awareness Gateway.
     CHARACTER RULES: Wise, gentle, Zen cat vibe.
     KNOWLEDGE BASE: ${JSON.stringify(courseData)} | ${JSON.stringify(chaptersData)}
+    USER CONTEXT: Screen: ${context.screen}, Axis: ${context.axis || 'None'}
     TASK: Respond in ${context.language === 'el' ? 'Greek' : 'English'}. Stay in character.
   `;
 

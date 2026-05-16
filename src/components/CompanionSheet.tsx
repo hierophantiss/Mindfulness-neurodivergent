@@ -796,6 +796,36 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
     updateCompanionData({ chatHistory: newUserHistory });
 
     try {
+      // Detect axis and specific context from URL
+      const path = location.pathname;
+      let axis = 'General';
+      let specificContext = '';
+
+      if (path.includes('/practice/body')) {
+        axis = 'Body (Soma)';
+        if (path.includes('grounding')) specificContext = 'Grounding Practice';
+        else if (path.includes('body-scan')) specificContext = 'Body Scan';
+      } 
+      else if (path.includes('/practice/breath')) {
+        axis = 'Breath (Anapnoe)';
+        if (path.includes('sos-breath')) specificContext = 'SOS Breath';
+        else if (path.includes('box-breathing')) specificContext = 'Box Breathing';
+      }
+      else if (path.includes('/practice/attention')) {
+        axis = 'Attention (Prosochi)';
+        if (path.includes('anchor')) specificContext = 'Breath Anchor';
+      }
+      else if (path.includes('/practice/space')) {
+        axis = 'Space (Choros)';
+        if (path.includes('sensory')) specificContext = 'Sensory Exploration';
+      }
+      else if (path.includes('/chapters/')) {
+        const chMatch = path.match(/\/chapters\/(\d+)/);
+        if (chMatch) specificContext = `Reading Chapter ${chMatch[1]}`;
+      }
+
+      const fullAxis = specificContext ? `${axis} - ${specificContext}` : axis;
+
       // New client-side streaming implementation
       updateCompanionData(prev => ({
         ...prev,
@@ -816,6 +846,7 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
         {
           language,
           screen: companionData.lastScreen,
+          axis: fullAxis,
           questionnaire: companionData.questionnaire,
         },
         (chunk) => {
