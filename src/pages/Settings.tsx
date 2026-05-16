@@ -30,19 +30,27 @@ export default function Settings() {
     };
   }, []);
 
-  const handleInstall = () => {
+  const handleInstall = async () => {
     const promptEvent = (window as any).initDeferredPrompt;
     if (promptEvent) {
-      promptEvent.prompt();
-      promptEvent.userChoice.then((choiceResult: any) => {
+      try {
+        await promptEvent.prompt();
+        const choiceResult = await promptEvent.userChoice;
         if (choiceResult.outcome === 'accepted') {
           console.log('User accepted the A2HS prompt');
           setCanInstall(false);
+          (window as any).initDeferredPrompt = null;
+        } else {
+          console.log('User dismissed the A2HS prompt');
         }
-        (window as any).initDeferredPrompt = null;
-      });
+      } catch (err: any) {
+        console.error('PWA Prompt Error:', err);
+        alert(language === 'el' 
+            ? "Υπήρξε πρόβλημα με την προτροπή εγκατάστασης. Σιγουρευτείτε ότι δεν την έχετε ήδη εγκαταστήσει." 
+            : "There was a problem with the install prompt. Ensure it isn't already installed.");
+      }
     } else {
-      alert(language === 'el' ? "Η συσκευή σας δεν υποστηρίζει αυτήν τη λειτουργία ή η εφαρμογή είναι ήδη εγκατεστημένη." : "Your device does not support this feature, or the app is already installed.");
+      alert(language === 'el' ? "Η συσκευή σας δεν υποστηρίζει αυτήν τη λειτουργία αυτή τη στιγμή (πιθανώς δοκιμάζετε σε ανώνυμη περιήγηση ή εκτός HTTPS), ή η εφαρμογή είναι ήδη εγκατεστημένη." : "Your device does not support this feature currently (possibly in incognito or outside HTTPS), or the app is already installed.");
     }
   };
 
