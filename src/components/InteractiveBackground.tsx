@@ -73,7 +73,8 @@ export function InteractiveBackground() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Determine star visibility and count based on time of day
-      const starOpacityMul = isDay ? 0.3 : (isDusk ? 0.6 : 1.0);
+      // Increased visibility during day as requested
+      const starOpacityMul = isDay ? 0.5 : (isDusk ? 0.75 : 1.0);
 
       for (let i = 0; i < starsRef.current.length; i++) {
         const star = starsRef.current[i];
@@ -82,7 +83,7 @@ export function InteractiveBackground() {
         const blink = (Math.sin(time * star.speed * 100 + star.blinkOffset) + 1) / 2;
         const currentOpacity = star.opacity * (0.2 + blink * 0.8) * starOpacityMul;
         
-        if (currentOpacity < 0.05) continue; // Performance optimization
+        if (currentOpacity < 0.03) continue; // Performance optimization
 
         ctx.beginPath();
         // Slightly larger stars blink more noticeably
@@ -111,29 +112,39 @@ export function InteractiveBackground() {
     };
   }, [isNight, isDay, isDusk]);
 
-  // Determine dark background tones according strictly to dark mode constraints
-  const getGradient = () => {
-    if (isNight) {
-      return 'linear-gradient(to bottom, #010204 0%, #03060c 50%, #050814 100%)';
-    } else if (isDusk) {
-      return 'linear-gradient(to bottom, #050a14 0%, #0b1528 40%, #1c1423 80%, #2f1b1a 100%)';
-    } else { // isDay (STILL DARK)
-      // Slightly darker day background to make stars visible
-      return 'linear-gradient(to bottom, #071221 0%, #0b1a30 50%, #102646 100%)';
-    }
-  };
-
   return (
-    <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden transition-colors duration-[3000ms] ease-in-out" style={{ background: getGradient() }}>
+    <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#010204]">
+      {/* Layered Backgrounds for smooth transition */}
+      <div 
+        className={cn(
+          "absolute inset-0 transition-opacity duration-[4000ms] ease-in-out",
+          isNight ? "opacity-100" : "opacity-0"
+        )}
+        style={{ background: 'linear-gradient(to bottom, #010204 0%, #03060c 50%, #050814 100%)' }}
+      />
+      <div 
+        className={cn(
+          "absolute inset-0 transition-opacity duration-[4000ms] ease-in-out",
+          isDusk ? "opacity-100" : "opacity-0"
+        )}
+        style={{ background: 'linear-gradient(to bottom, #050a14 0%, #0b1528 40%, #1c1423 80%, #2f1b1a 100%)' }}
+      />
+      <div 
+        className={cn(
+          "absolute inset-0 transition-opacity duration-[4000ms] ease-in-out",
+          isDay ? "opacity-100" : "opacity-0"
+        )}
+        style={{ background: 'linear-gradient(to bottom, #0a1b33 0%, #152c4e 50%, #1a3a6b 100%)' }}
+      />
       
       {/* Dynamic Background Element (Sun or Moon) */}
       <div 
         className={cn(
-          "absolute transition-all duration-[3000ms] ease-in-out z-10",
+          "absolute transition-all duration-[4000ms] ease-in-out z-10",
           // Placement: standard is top right, dusk is lower
-          isDusk ? "top-[60%] right-[10%] md:right-[20%] w-32 h-32 md:w-48 md:h-48" : "top-[10%] right-[10%] md:right-[20%] w-24 h-24 md:w-32 md:h-32",
-          // Opacity controls the presence - low during day according to instructions
-          isNight ? "opacity-90" : isDay ? "opacity-15" : "opacity-30" 
+          isDusk ? "top-[55%] right-[10%] md:right-[20%] w-32 h-32 md:w-48 md:h-48" : "top-[10%] right-[10%] md:right-[20%] w-24 h-24 md:w-32 md:h-32",
+          // Opacity controls - increased for day to show change
+          isNight ? "opacity-90" : isDay ? "opacity-40" : "opacity-60" 
         )}
       >
         {isNight ? (
@@ -147,11 +158,11 @@ export function InteractiveBackground() {
           <div className="relative w-full h-full rounded-full flex items-center justify-center">
             <div className={cn(
               "absolute inset-[-200%] md:inset-[-150%] rounded-full opacity-60",
-              isDusk ? "bg-[radial-gradient(circle,rgba(251,146,60,0.4)_0%,transparent_70%)]" : "bg-[radial-gradient(circle,rgba(253,224,71,0.5)_0%,transparent_70%)]"
+              isDusk ? "bg-[radial-gradient(circle,rgba(251,146,60,0.4)_0%,transparent_70%)]" : "bg-[radial-gradient(circle,rgba(165,243,252,0.3)_0%,transparent_70%)]"
             )} />
             <div className={cn(
               "w-1/2 h-1/2 rounded-full absolute",
-              isDusk ? "bg-orange-400 blur-[8px]" : "bg-yellow-200 blur-[12px]"
+              isDusk ? "bg-orange-400 blur-[8px]" : "bg-teal-200/50 blur-[12px]"
             )} />
           </div>
         )}

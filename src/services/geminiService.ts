@@ -173,8 +173,8 @@ export async function getCompanionResponse(
         systemInstruction,
       },
       history: history.map(h => ({
-        role: h.role === 'user' ? ('user' as const) : ('assistant' as const),
-        content: h.content
+        role: h.role === 'user' ? ('user' as const) : ('model' as const),
+        parts: [{ text: h.content }]
       }))
     });
     
