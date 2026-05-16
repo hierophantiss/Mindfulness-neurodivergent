@@ -801,7 +801,7 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: userMsg,
-          history: newUserHistory.filter(m => m.role !== 'system').map(m => ({ role: m.role as any, content: m.content })),
+          history: (companionData.chatHistory || []).filter(m => m.role !== 'system').map(m => ({ role: m.role as any, content: m.content })),
           context: {
             language,
             screen: companionData.lastScreen,

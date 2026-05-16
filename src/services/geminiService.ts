@@ -144,23 +144,40 @@ export async function streamCompanionResponse(
     Stay in character as the Temple Cat. Be wise, gentle, and brief.
   `;
 
+  // Construct contents and ensure alternating user/model roles
+  const contents = [
+    ...history.map(h => ({
+      role: h.role === 'user' ? ('user' as const) : ('model' as const),
+      parts: [{ text: h.content }]
+    }))
+  ];
+
+  // If the last message in history is from 'user', and we are adding another 'user' message,
+  // we should either skip adding the last message or merge them.
+  // However, the cleanest is to ensure the caller passes the correct history.
+  // We'll add a guard here.
+  const lastRole = contents.length > 0 ? contents[contents.length - 1].role : null;
+  if (lastRole !== 'user') {
+    contents.push({ role: 'user', parts: [{ text: message }] });
+  } else {
+    // If last was user, just update the last message to include the new one (as a fallback)
+    // or just use the new message if the last one was the same.
+    if (contents[contents.length - 1].parts[0].text !== message) {
+      contents[contents.length - 1].parts[0].text += "\n\n" + message;
+    }
+  }
+
   try {
-    const responseStream = await ai.models.generateContentStream({
+    const response = await ai.models.generateContentStream({
       model: MODEL_NAME,
-      contents: [
-        ...history.map(h => ({
-          role: h.role === 'user' ? ('user' as const) : ('model' as const),
-          parts: [{ text: h.content }]
-        })),
-        { role: 'user', parts: [{ text: message }] }
-      ],
+      contents,
       config: {
         systemInstruction,
         thinkingConfig: { thinkingLevel: ThinkingLevel.LOW }
       }
     });
     
-    for await (const chunk of responseStream) {
+    for await (const chunk of response) {
       const chunkText = chunk.text;
       if (chunkText) {
         onChunk(chunkText);
@@ -242,16 +259,27 @@ export async function getCompanionResponse(
     Stay in character as the Temple Cat. Be wise, gentle, and brief.
   `;
 
+  // Construct contents and ensure alternating user/model roles
+  const contents = [
+    ...history.map(h => ({
+      role: h.role === 'user' ? ('user' as const) : ('model' as const),
+      parts: [{ text: h.content }]
+    }))
+  ];
+
+  const lastRole = contents.length > 0 ? contents[contents.length - 1].role : null;
+  if (lastRole !== 'user') {
+    contents.push({ role: 'user', parts: [{ text: message }] });
+  } else {
+    if (contents[contents.length - 1].parts[0].text !== message) {
+      contents[contents.length - 1].parts[0].text += "\n\n" + message;
+    }
+  }
+
   try {
     const response = await ai.models.generateContent({
       model: MODEL_NAME,
-      contents: [
-        ...history.map(h => ({
-          role: h.role === 'user' ? ('user' as const) : ('model' as const),
-          parts: [{ text: h.content }]
-        })),
-        { role: 'user', parts: [{ text: message }] }
-      ],
+      contents,
       config: {
         systemInstruction,
         thinkingConfig: { thinkingLevel: ThinkingLevel.LOW }
