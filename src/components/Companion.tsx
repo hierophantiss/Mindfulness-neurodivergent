@@ -169,7 +169,7 @@ export default function Companion() {
                     ? { right: '-11px', borderLeftColor: 'rgba(5, 46, 38, 0.95)' } 
                     : { left: '-11px', borderRightColor: 'rgba(5, 46, 38, 0.95)' }} />      
               <span className="text-[13px] font-medium tracking-wide">
-                {language === 'el' ? 'Hej, πάτα στην 🐈‍⬛ για βοήθεια!' : 'Hej, tap on 🐈‍⬛ for help!'}
+                {language === 'el' ? 'Hej, πάτα στην εικόνα για βοήθεια!' : 'Hej, tap on the image for help!'}
               </span>
               <button 
                 onClick={dismissTutorial} 
@@ -182,7 +182,17 @@ export default function Companion() {
           )}
         </AnimatePresence>
 
-        <span className="text-3xl filter drop-shadow-sm transform group-hover:scale-110 transition-transform">🐈‍⬛</span>
+        <div className="relative w-10 h-10 rounded-full overflow-hidden shadow-inner group-hover:scale-110 transition-transform duration-300 ring-2 ring-teal-500/20">
+          <img 
+            src="/favicon.svg" 
+            alt="Magical Cat" 
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              // Fallback to PNG if SVG fails or is not preferred
+              (e.target as HTMLImageElement).src = '/favicon-96x96.png';
+            }}
+          />
+        </div>
         {companionData.dailyLogs.length > 0 && <span className="absolute animate-ping top-1 right-1 w-2 h-2 bg-amber-400 rounded-full" />}
       </div>
       <CompanionSheet />
