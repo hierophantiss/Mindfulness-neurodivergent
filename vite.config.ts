@@ -29,6 +29,22 @@ export default defineConfig(({ mode }) => {
           theme_color: '#0f1117',
           background_color: '#0f1117',
           orientation: 'portrait',
+          screenshots: [
+            {
+              src: '/hero.png',
+              sizes: '1280x720',
+              type: 'image/png',
+              form_factor: 'wide',
+              label: 'Dashboard Preview'
+            },
+            {
+              src: '/hero.png',
+              sizes: '1280x720',
+              type: 'image/png',
+              form_factor: 'narrow',
+              label: 'App Preview'
+            }
+          ],
           icons: [
             {
               src: '/web-app-manifest-192x192.png',
