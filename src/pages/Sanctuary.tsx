@@ -26,8 +26,38 @@ export default function Sanctuary() {
   const [videoStartTime, setVideoStartTime] = useState<number>(0);
   const [mantraStep, setMantraStep] = useState<number>(0);
   const [activeAttentionStyles, setActiveAttentionStyles] = useState<string[]>([]);
+  const [isVoidActive, setIsVoidActive] = useState(false);
 
   const videos = [
+    {
+      id: 'j1OOEwpLcDc', // Eckhart Tolle - Night Sky
+      title: language === 'en' ? "Micro-Meditation: The Infinity of Space" : "Micro-Meditation: Η Απεραντότητα του Χώρου",
+      author: "Eckhart Tolle",
+      category: language === 'en' ? "Space & Emptiness" : "Χώρος & Κενό",
+      thumbnail: "https://img.youtube.com/vi/j1OOEwpLcDc/maxresdefault.jpg",
+      isSpaceMeditation: true,
+      description: language === 'en' ? {
+        intro: "In this teaching, Eckhart Tolle invites us to look at the night sky not for the stars, but for the vast space that contains them. A practice of connecting external space with the quiet dimension within.",
+        points: [
+          { time: "00:00", title: "Common Nature", text: "Focusing on external space connects you automatically with your internal space. There is a common quality of stillness and freedom." },
+          { time: "00:21", title: "The Night Sky Analogy", text: "When you look at the night sky, what is most awesome is not the stars, but the vast expanse of space itself." },
+          { time: "01:00", title: "The Presence of Void", text: "The most inconceivable of all is the vastness of space that allows everything to exist." }
+        ],
+        tip: "Space: Don't look AT the stars, look AT the space between them. Feel the same space between your thoughts.",
+        bridge: "The space between stars is the same as the stillness within you.",
+        bridgeTime: 21
+      } : {
+        intro: "Σε αυτή τη διδασκαλία, ο Eckhart Tolle μας καλεί να κοιτάξουμε τον νυχτερινό ουρανό όχι για τα αστέρια, αλλά για τον απέραντο χώρο που τα περιέχει. Μια πρακτική σύνδεσης του εξωτερικού χώρου με την ήσυχη διάσταση μέσα μας.",
+        points: [
+          { time: "00:00", title: "Η Κοινή Φύση", text: "Εστιάζοντας στον εξωτερικό χώρο, συνδέεσαι αυτόματα με τον εσωτερικό σου χώρο. Υπάρχει μια κοινή ποιότητα ησυχίας και ελευθερίας." },
+          { time: "00:21", title: "Η Αναλογία του Νυχτερινού Ουρανού", text: "Όταν κοιτάζεις τον νυχτερινό ουρανό, αυτό που προκαλεί το μεγαλύτερο δέος δεν είναι τα αστέρια, αλλά η απέραντη έκταση του ίδιου του χώρου." },
+          { time: "01:00", title: "Η Ύπαρξη του Κενού", text: "Το πιο ασύλληπτο από όλα είναι η απέραντη έκταση του ίδιου του χώρου που περιέχει όλα αυτά τα σώματα και τους επιτρέπει να υπάρχουν." }
+        ],
+        tip: "Χώρος: Μην κοιτάς ΤΑ αστέρια, κοίτα ΤΟΝ χώρο ανάμεσά τους. Νιώσε τον ίδιο χώρο ανάμεσα στις σκέψεις σου.",
+        bridge: "Ο χώρος ανάμεσα στα αστέρια είναι η ίδια η σιωπή που υπάρχει μέσα σου.",
+        bridgeTime: 21
+      }
+    },
     {
       id: 'MJ6m5DOER-c', // Eckhart Tolle
       title: language === 'en' ? "Eckhart Tolle: The Ocean of Pure Awareness" : "Eckhart Tolle: Ο Ωκεανός της Καθαρής Επίγνωσης",
@@ -459,6 +489,7 @@ export default function Sanctuary() {
                     setVideoStartTime(0);
                     setMantraStep(0);
                     setActiveAttentionStyles([]);
+                    setIsVoidActive(false);
                   }}
                   className="group relative aspect-video bg-[#12141c] border border-white/5 rounded-[2rem] overflow-hidden transition-all duration-500 hover:border-teal-500/30 active:scale-[0.98] shadow-lg"
                 >
@@ -489,9 +520,32 @@ export default function Sanctuary() {
 
       {/* Video Portal Modal */}
       {activeVideo && createPortal(
-        <div className="fixed inset-0 z-[10000] bg-[#0f1117] flex flex-col animate-in fade-in duration-500 overflow-y-auto custom-scrollbar">
+        <div className={cn(
+          "fixed inset-0 z-[10000] flex flex-col animate-in fade-in duration-1000 overflow-y-auto custom-scrollbar transition-colors duration-1000",
+          isVoidActive ? "bg-black" : "bg-[#0f1117]"
+        )}>
+          {/* Starry Background for Void Mode */}
+          <AnimatePresence>
+            {isVoidActive && (
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 3 }}
+                className="fixed inset-0 pointer-events-none z-0"
+              >
+                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.08)_0%,transparent_1px)] bg-[length:120px_120px]" />
+                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.05)_0%,transparent_1px)] bg-[length:180px_180px] animate-pulse" />
+                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(255,255,255,0.03)_0%,transparent_1px)] bg-[length:250px_250px]" />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           {/* Header Bar */}
-          <div className="flex-none flex items-center justify-between px-6 h-20 border-b border-white/5 bg-[#0f1117]/80 backdrop-blur-xl sticky top-0 z-50">
+          <div className={cn(
+            "flex-none flex items-center justify-between px-6 h-20 border-b border-white/5 backdrop-blur-xl sticky top-0 z-50 transition-all duration-1000",
+            isVoidActive ? "bg-transparent border-transparent opacity-20 hover:opacity-100" : "bg-[#0f1117]/80"
+          )}>
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-teal-500/10 flex items-center justify-center text-teal-400">
                 <Youtube size={16} />
@@ -508,10 +562,16 @@ export default function Sanctuary() {
             </button>
           </div>
 
-          <div className="flex-1 flex flex-col md:flex-row max-w-7xl mx-auto w-full p-4 md:p-8 gap-8">
+          <div className="relative z-10 flex-1 flex flex-col md:flex-row max-w-7xl mx-auto w-full p-4 md:p-8 gap-8 transition-opacity duration-1000">
             {/* Player Container */}
-            <div className="flex-[2] space-y-6">
-              <div className="w-full aspect-video rounded-[2rem] overflow-hidden bg-black shadow-2xl border border-white/10 relative group">
+            <div className={cn(
+              "flex-[2] space-y-6 transition-all duration-1000",
+              isVoidActive ? "scale-105" : "scale-100"
+            )}>
+              <div className={cn(
+                "w-full aspect-video rounded-[2rem] overflow-hidden bg-black shadow-2xl transition-all duration-1000 relative group",
+                isVoidActive ? "border-white/20 shadow-[0_0_100px_rgba(255,255,255,0.05)]" : "border-white/10"
+              )}>
                 <iframe
                   key={`${activeVideo}-${videoStartTime}`}
                   width="100%"
@@ -525,7 +585,7 @@ export default function Sanctuary() {
                 />
               </div>
 
-              <div className="hidden md:block">
+              <div className={cn("hidden md:block transition-opacity duration-1000", isVoidActive ? "opacity-20" : "opacity-100")}>
                  <h2 className="text-3xl md:text-4xl font-serif italic text-white/95 mb-2">
                    {videos.find(v => v.id === activeVideo)?.title}
                  </h2>
@@ -536,13 +596,43 @@ export default function Sanctuary() {
             </div>
 
             {/* Description / Insights Sidebar */}
-            <div className="flex-1 space-y-8 animate-in slide-in-from-right-4 duration-700 delay-300">
+            <div className={cn(
+              "flex-1 space-y-8 animate-in slide-in-from-right-4 duration-700 delay-300 transition-opacity duration-1000",
+              isVoidActive ? "opacity-20 hover:opacity-100" : "opacity-100"
+            )}>
               {(() => {
                 const videoData = videos.find(v => v.id === activeVideo);
                 if (videoData?.description) {
                   const desc = videoData.description;
                   return (
                     <div className="space-y-8 pb-12">
+                      {/* Special Void Toggle for Space Meditations */}
+                      {videoData.isSpaceMeditation && (
+                        <motion.button 
+                          initial={{ scale: 0.95, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          onClick={() => setIsVoidActive(!isVoidActive)}
+                          className={cn(
+                            "w-full py-5 rounded-[2.5rem] border flex items-center justify-center gap-3 transition-all duration-700 font-serif italic text-lg shadow-2xl",
+                            isVoidActive 
+                             ? "bg-white/5 border-white/30 text-white shadow-[0_0_60px_rgba(255,255,255,0.1)]" 
+                             : "bg-teal-500/10 border-teal-500/30 text-teal-400 hover:bg-teal-500/20"
+                          )}
+                        >
+                          <motion.div 
+                            animate={{ 
+                              scale: isVoidActive ? [1, 1.5, 1] : 1,
+                              opacity: isVoidActive ? [0.5, 1, 0.5] : 1
+                            }}
+                            transition={{ duration: 4, repeat: Infinity }}
+                            className={cn("w-3 h-3 rounded-full", isVoidActive ? "bg-white" : "bg-teal-500")} 
+                          />
+                          {isVoidActive 
+                             ? (language === 'el' ? 'Return from Reality' : 'Return from the Void')
+                             : (language === 'el' ? 'Enter the Void' : 'Enter the Void')}
+                        </motion.button>
+                      )}
+
                       <div className="bg-white/[0.02] border border-white/5 p-8 rounded-[2.5rem] space-y-4">
                         <p className="text-[14px] text-white/60 leading-relaxed font-sans">
                           {desc.intro}
