@@ -36,6 +36,15 @@ async function startServer() {
   app.post('/api/ai/companion', async (req, res) => {
     try {
       const { message, history, context } = req.body;
+      console.log('AI Request:', { message, historyLength: history?.length });
+
+      const apiKey = process.env.GEMINI_API_KEY;
+      if (!apiKey || apiKey.trim() === '') {
+        console.error('CRITICAL: GEMINI_API_KEY is missing or empty.');
+        return res.status(500).json({ error: 'Gemini API Key is missing or empty on the server.' });
+      }
+      console.log('Gemini API Key is present. Length:', apiKey.length);
+      
       const { streamCompanionResponse } = await import('./src/services/geminiService.ts');
       
       // Set headers for streaming

@@ -1,9 +1,9 @@
-import { GoogleGenAI, ThinkingLevel } from "@google/genai";
+import { GoogleGenAI } from "@google/genai";
 import { CHAPTERS_DATA } from "../data/chapters";
 import { D as D_EL } from "../data/course-el";
 import { D as D_EN } from "../data/course-en";
 
-const MODEL_NAME = "gemini-3-flash-preview"; 
+const MODEL_NAME = "gemini-2.0-flash"; 
 
 export interface AIReflectionResponse {
   patterns: string[];
@@ -78,7 +78,6 @@ export async function getAIReflection(
       config: {
         systemInstruction,
         responseMimeType: "application/json",
-        thinkingConfig: { thinkingLevel: ThinkingLevel.LOW }
       },
     });
 
@@ -173,7 +172,6 @@ export async function streamCompanionResponse(
       contents,
       config: {
         systemInstruction,
-        thinkingConfig: { thinkingLevel: ThinkingLevel.LOW }
       }
     });
     
@@ -282,7 +280,6 @@ export async function getCompanionResponse(
       contents,
       config: {
         systemInstruction,
-        thinkingConfig: { thinkingLevel: ThinkingLevel.LOW }
       },
     });
     

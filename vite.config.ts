@@ -13,32 +13,43 @@ export default defineConfig(({ mode }) => {
       tailwindcss(),
       VitePWA({
         registerType: 'autoUpdate',
-        includeAssets: ['favicon.ico', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'hero.png', 'robots.txt', 'sitemap.xml', '*.mp3', '*.mp4'],
+        manifestFilename: 'manifest.json',
+        includeAssets: ['favicon.ico', 'favicon.svg', 'web-app-manifest-192x192.png', 'web-app-manifest-512x512.png', 'apple-touch-icon.png', 'hero.png', 'robots.txt', 'sitemap.xml', '*.mp3', '*.mp4'],
         manifest: {
-          name: 'Awareness Gateway',
+          id: '/',
+          name: 'Neurodivergent Awareness',
           short_name: 'Awareness',
           description: 'A trauma-informed mindfulness guide for neurodivergent minds (ADHD, Autism).',
           start_url: '/',
+          scope: '/',
           theme_color: '#0f1117',
           background_color: '#0f1117',
           display: 'standalone',
           orientation: 'portrait',
           icons: [
             {
-              src: 'icon-192.png',
+              src: 'web-app-manifest-192x192.png',
               sizes: '192x192',
-              type: 'image/png'
+              type: 'image/png',
+              purpose: 'any'
             },
             {
-              src: 'icon-512.png',
-              sizes: '512x512',
-              type: 'image/png'
+              src: 'web-app-manifest-192x192.png',
+              sizes: '192x192',
+              type: 'image/png',
+              purpose: 'maskable'
             },
             {
-              src: 'icon-512.png',
+              src: 'web-app-manifest-512x512.png',
               sizes: '512x512',
               type: 'image/png',
-              purpose: 'any maskable'
+              purpose: 'any'
+            },
+            {
+              src: 'web-app-manifest-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+              purpose: 'maskable'
             }
           ]
         },
@@ -97,7 +108,7 @@ export default defineConfig(({ mode }) => {
       })
     ],
     define: {
-      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
+      // No sensitive keys here
     },
     resolve: {
       alias: {

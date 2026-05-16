@@ -810,7 +810,11 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
         }),
       });
 
-      if (!response.ok) throw new Error('Stream failed');
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Server error response:', errorText);
+        throw new Error(`Stream failed: ${response.status} ${errorText}`);
+      }
       if (!response.body) throw new Error('No body');
 
       const reader = response.body.getReader();
