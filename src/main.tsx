@@ -5,8 +5,16 @@ import './index.css';
 import {initUISounds} from './lib/soundEffects';
 import {registerSW} from 'virtual:pwa-register';
 
-// Register PWA service worker
-registerSW({immediate: true});
+// Register PWA service worker with enhanced logging
+registerSW({
+  immediate: true,
+  onRegistered(r) {
+    console.log('PWA: Service Worker registered', r);
+  },
+  onRegisterError(error) {
+    console.error('PWA: Service Worker registration failed', error);
+  }
+});
 
 initUISounds();
 

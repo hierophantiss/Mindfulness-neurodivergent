@@ -20,52 +20,6 @@ async function startServer() {
     res.json({ status: 'ok' });
   });
 
-  // Gemini Proxy Routes
-  app.post('/api/ai/reflection', async (req, res) => {
-    try {
-      const { journalData, language } = req.body;
-      const { getAIReflection } = await import('./src/services/geminiService.ts');
-      const result = await getAIReflection(journalData, language);
-      res.json(result);
-    } catch (error: any) {
-      console.error('Reflection API Error:', error);
-      res.status(500).json({ error: error.message || 'Internal Server Error' });
-    }
-  });
-
-  app.post('/api/ai/companion', async (req, res) => {
-    try {
-      const { message, history, context } = req.body;
-      console.log('AI Request:', { message, historyLength: history?.length });
-
-      const apiKey = process.env.GEMINI_API_KEY;
-      if (!apiKey || apiKey.trim() === '') {
-        console.error('CRITICAL: GEMINI_API_KEY is missing or empty.');
-        return res.status(500).json({ error: 'Gemini API Key is missing or empty on the server.' });
-      }
-      console.log('Gemini API Key is present. Length:', apiKey.length);
-      
-      const { streamCompanionResponse } = await import('./src/services/geminiService.ts');
-      
-      // Set headers for streaming
-      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-      res.setHeader('Transfer-Encoding', 'chunked');
-
-      await streamCompanionResponse(message, history, context, (chunk) => {
-        res.write(chunk);
-      });
-      
-      res.end();
-    } catch (error: any) {
-      console.error('Companion API Error:', error);
-      if (!res.headersSent) {
-        res.status(500).json({ error: error.message || 'Internal Server Error' });
-      } else {
-        res.end();
-      }
-    }
-  });
-
   // Vite integration
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({

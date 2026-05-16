@@ -6,7 +6,7 @@ import { KNOWLEDGE_CONCEPTS } from '../data/concepts';
 import { KNOWLEDGE_FAQ } from '../data/faq';
 import { D as D_EL } from '../data/course-el';
 import { D as D_EN } from '../data/course-en';
-import { getCompanionResponse } from '../services/geminiService';
+import { getCompanionResponse, streamCompanionResponse } from '../services/geminiService';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
@@ -796,32 +796,7 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
     updateCompanionData({ chatHistory: newUserHistory });
 
     try {
-      const response = await fetch('/api/ai/companion', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: userMsg,
-          history: (companionData.chatHistory || []).filter(m => m.role !== 'system').map(m => ({ role: m.role as any, content: m.content })),
-          context: {
-            language,
-            screen: companionData.lastScreen,
-            questionnaire: companionData.questionnaire,
-          }
-        }),
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Server error response:', errorText);
-        throw new Error(`Stream failed: ${response.status} ${errorText}`);
-      }
-      if (!response.body) throw new Error('No body');
-
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let assistantContent = '';
-
-      // Initialize assistant message
+      // New client-side streaming implementation
       updateCompanionData(prev => ({
         ...prev,
         chatHistory: [
@@ -834,25 +809,29 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
         ]
       }));
 
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        
-        const chunk = decoder.decode(value, { stream: true });
-        assistantContent += chunk;
-
-        // Update just the last message
-        updateCompanionData(prev => {
-          const newHistory = [...(prev.chatHistory || [])];
-          if (newHistory.length > 0) {
-            newHistory[newHistory.length - 1] = {
-              ...newHistory[newHistory.length - 1],
-              content: assistantContent
-            };
-          }
-          return { ...prev, chatHistory: newHistory };
-        });
-      }
+      let assistantContent = '';
+      await streamCompanionResponse(
+        userMsg,
+        (companionData.chatHistory || []).filter(m => m.role !== 'system').map(m => ({ role: m.role as any, content: m.content })),
+        {
+          language,
+          screen: companionData.lastScreen,
+          questionnaire: companionData.questionnaire,
+        },
+        (chunk) => {
+          assistantContent += chunk;
+          updateCompanionData(prev => {
+            const newHistory = [...(prev.chatHistory || [])];
+            if (newHistory.length > 0) {
+              newHistory[newHistory.length - 1] = {
+                ...newHistory[newHistory.length - 1],
+                content: assistantContent
+              };
+            }
+            return { ...prev, chatHistory: newHistory };
+          });
+        }
+      );
     } catch (err) {
       console.error(err);
       updateCompanionData(prev => ({

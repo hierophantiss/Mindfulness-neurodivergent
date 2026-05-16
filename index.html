@@ -24,9 +24,8 @@
 <link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/">
 <link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/">
 <title>Neurodivergent Awareness</title>
-  <link rel="manifest" href="/manifest.json">
-  <meta name="apple-mobile-web-app-title" content="Neurodivergent Awareness">
-  <meta name="application-name" content="Neurodivergent Awareness">
+  <meta name="apple-mobile-web-app-title" content="Awareness">
+  <meta name="application-name" content="Awareness">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="shortcut icon" href="/favicon.ico">
@@ -88,8 +87,13 @@
 <script>
   window.initDeferredPrompt = null;
   window.addEventListener('beforeinstallprompt', (e) => {
+    console.log('PWA: beforeinstallprompt event fired');
     e.preventDefault();
     window.initDeferredPrompt = e;
+  });
+  window.addEventListener('appinstalled', () => {
+    console.log('PWA: Application installed successfully');
+    window.initDeferredPrompt = null;
   });
 </script>
 </head>

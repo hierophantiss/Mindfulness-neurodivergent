@@ -13,13 +13,15 @@ export default defineConfig(({ mode }) => {
       tailwindcss(),
       VitePWA({
         registerType: 'autoUpdate',
+        strategies: 'generateSW',
+        injectRegister: 'auto',
         manifestFilename: 'manifest.json',
         includeAssets: ['favicon.ico', 'favicon.svg', 'web-app-manifest-192x192.png', 'web-app-manifest-512x512.png', 'apple-touch-icon.png', 'hero.png', 'robots.txt', 'sitemap.xml', '*.mp3', '*.mp4'],
         manifest: {
-          id: '/',
+          id: 'awareness-gateway-app',
           name: 'Neurodivergent Awareness',
           short_name: 'Awareness',
-          description: 'A trauma-informed mindfulness guide for neurodivergent minds (ADHD, Autism).',
+          description: 'A trauma-informed mindfulness guide for neurodivergent minds.',
           start_url: '/',
           scope: '/',
           theme_color: '#0f1117',
@@ -28,28 +30,38 @@ export default defineConfig(({ mode }) => {
           orientation: 'portrait',
           icons: [
             {
-              src: 'web-app-manifest-192x192.png',
+              src: '/web-app-manifest-192x192.png',
               sizes: '192x192',
               type: 'image/png',
               purpose: 'any'
             },
             {
-              src: 'web-app-manifest-192x192.png',
+              src: '/web-app-manifest-192x192.png',
               sizes: '192x192',
               type: 'image/png',
               purpose: 'maskable'
             },
             {
-              src: 'web-app-manifest-512x512.png',
+              src: '/web-app-manifest-512x512.png',
               sizes: '512x512',
               type: 'image/png',
               purpose: 'any'
             },
             {
-              src: 'web-app-manifest-512x512.png',
+              src: '/web-app-manifest-512x512.png',
               sizes: '512x512',
               type: 'image/png',
               purpose: 'maskable'
+            },
+            {
+              src: '/icon-192.png',
+              sizes: '192x192',
+              type: 'image/png'
+            },
+            {
+              src: '/icon-512.png',
+              sizes: '512x512',
+              type: 'image/png'
             }
           ]
         },
