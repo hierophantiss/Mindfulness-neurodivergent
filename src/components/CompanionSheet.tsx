@@ -643,6 +643,8 @@ function QuestionnaireFlow({ goBack }: { goBack: () => void }) {
     }
   ];
 
+  const [completed, setCompleted] = useState(false);
+
   const handleNext = () => {
     if (step < steps.length - 1) {
       setStep(s => s + 1);
@@ -650,7 +652,11 @@ function QuestionnaireFlow({ goBack }: { goBack: () => void }) {
       updateCompanionData({
         questionnaire: { ...answers, completed: true }
       });
-      goBack();
+      // Also sync for dashboard (legacy key used by dashboard)
+      if (answers.focus && answers.focus.length > 0) {
+        localStorage.setItem('n_mindfulness_intention', answers.focus[0]);
+      }
+      setCompleted(true);
     }
   };
 
@@ -669,6 +675,28 @@ function QuestionnaireFlow({ goBack }: { goBack: () => void }) {
       setTimeout(handleNext, 300);
     }
   };
+
+  if (completed) {
+    return (
+      <div className="space-y-6 animate-fade-in py-8 text-center text-stone-800 dark:text-stone-200">
+        <div className="w-20 h-20 bg-teal-500/10 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl shadow-inner">✅</div>
+        <h3 className="text-2xl font-serif italic text-teal-950 dark:text-teal-100 mb-2">
+          {language === 'el' ? 'Το πρόγραμμα ανανεώθηκε!' : 'Program Updated!'}
+        </h3>
+        <p className="text-stone-500 dark:text-stone-400 mb-8 max-w-xs mx-auto">
+          {language === 'el' 
+            ? 'Οι προτάσεις σου έχουν προσαρμοστεί με βάση τις νέες σου προτιμήσεις.' 
+            : 'Your suggestions have been adjusted based on your new preferences.'}
+        </p>
+        <button 
+          onClick={goBack}
+          className="w-full py-4 bg-teal-700 hover:bg-teal-800 text-white rounded-2xl font-bold tracking-widest uppercase transition-all"
+        >
+          {language === 'el' ? 'ΕΠΙΣΤΡΟΦΗ ➔' : 'RETURN ➔'}
+        </button>
+      </div>
+    );
+  }
 
   const curStep = steps[step];
 

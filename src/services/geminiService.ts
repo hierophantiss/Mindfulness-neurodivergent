@@ -1,6 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 
-const MODEL_NAME = "gemini-1.5-flash"; 
+const MODEL_NAME = "gemini-3-flash-preview"; 
 
 export interface AIReflectionResponse {
   patterns: string[];
@@ -68,16 +68,17 @@ export async function getAIReflection(
   `;
 
   try {
-    const model = ai.getGenerativeModel({ model: MODEL_NAME });
-    const result = await model.generateContent({
-      contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
-      generationConfig: {
+    const response = await ai.models.generateContent({
+      model: MODEL_NAME,
+      contents: userPrompt,
+      config: {
+        systemInstruction,
         responseMimeType: "application/json",
       },
     });
 
-    const text = result.response.text();
-    const parsed = JSON.parse(text || "{}");
+    const text = response.text || "{}";
+    const parsed = JSON.parse(text);
     return {
       patterns: parsed.patterns || [],
       questions: parsed.questions || [],
@@ -166,20 +167,19 @@ export async function getCompanionResponse(
   `;
 
   try {
-    const model = ai.getGenerativeModel({ 
+    const chat = ai.chats.create({
       model: MODEL_NAME,
-      systemInstruction: { role: 'system', parts: [{ text: systemInstruction }] }
-    });
-    
-    const chat = model.startChat({
+      config: {
+        systemInstruction,
+      },
       history: history.map(h => ({
-        role: h.role === 'user' ? 'user' : 'model',
-        parts: [{ text: h.content }]
+        role: h.role === 'user' ? ('user' as const) : ('assistant' as const),
+        content: h.content
       }))
     });
-
-    const result = await chat.sendMessage(message);
-    return result.response.text();
+    
+    const response = await chat.sendMessage({ message });
+    return response.text || (context.language === 'el' ? "Συγγνώμη, υπήρξε ένα πρόβλημα στην επικοινωνία." : "Sorry, there was a problem communicating.");
   } catch (error) {
     console.error("Companion AI Error:", error);
     return context.language === 'el' ? "Συγγνώμη, υπήρξε ένα πρόβλημα στην επικοινωνία." : "Sorry, there was a problem communicating.";

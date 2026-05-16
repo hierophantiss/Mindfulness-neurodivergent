@@ -6,6 +6,7 @@ import { useBinauralAudio } from '../hooks/useBinauralAudio';
 import { cn } from '../lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
 import { useTime } from '../contexts/TimeContext';
+import { useCompanion } from '../hooks/useCompanion';
 
 
 import { Skeleton } from '../components/ui/Skeleton';
@@ -42,6 +43,7 @@ const itemVariants = {
 
 export default function Dashboard() {
   const { language, t } = useLanguage();
+  const { companionData } = useCompanion();
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const { hour } = useTime();
 
@@ -107,7 +109,9 @@ export default function Dashboard() {
       setIsStandalone(true);
     }
     
-    setUserIntention(localStorage.getItem('n_mindfulness_intention'));
+    // Use intention from questionnaire first, fallback to legacy key
+    const primaryIntention = companionData.questionnaire?.focus?.[0] || localStorage.getItem('n_mindfulness_intention');
+    setUserIntention(primaryIntention);
 
     // Calculate Mindful Stats
     let min = 0;
@@ -149,7 +153,7 @@ export default function Dashboard() {
     
     setMindfulStats({ totalMin: min, journalCount: journals, keyword: randomKeyword });
 
-  }, []);
+  }, [companionData.questionnaire]);
 
   // Determine a soft hue based on the day of the week
   const dayColors = useMemo(() => {
@@ -241,6 +245,7 @@ export default function Dashboard() {
     if (!userIntention) return null;
     switch (userIntention) {
         case 'calm':
+        case 'anxiety':
            return {
                to: '/practice/breath/4-7-8',
                title: { el: 'Ανάσα 4-7-8', en: '4-7-8 Breathing' },
@@ -259,6 +264,7 @@ export default function Dashboard() {
                bg: 'bg-amber-500/10 border-amber-500/20 shadow-[0_0_20px_rgba(245,158,11,0.15)]'
            };
         case 'decompress':
+        case 'rest':
            return {
                to: '/journal',
                title: { el: 'Προσωπική Πρόταση', en: 'Personal Proposal' },
@@ -267,6 +273,15 @@ export default function Dashboard() {
                color: 'text-indigo-400',
                bg: 'bg-indigo-500/10 border-indigo-500/20 shadow-[0_0_20px_rgba(99,102,241,0.15)]'
            };
+        case 'awareness':
+            return {
+                to: '/method',
+                title: { el: 'Ο Τετραπλός Άξονας', en: 'The Fourfold Axis' },
+                desc: { el: 'ΑΥΤΟΓΝΩΣΙΑ & ΜΕΘΟΔΟΣ', en: 'SELF-AWARENESS' },
+                icon: Telescope,
+                color: 'text-rose-400',
+                bg: 'bg-rose-500/10 border-rose-500/20 shadow-[0_0_20px_rgba(244,63,94,0.15)]'
+            };
         default: return null;
     }
   };
