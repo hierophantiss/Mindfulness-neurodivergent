@@ -48,11 +48,11 @@ The app is structured to provide both structured learning and spontaneous regula
 
 ---
 
-## 🤖 Intelligence Layer: The Companion
+## 🤖 Intelligence Layer: The Temple Cat
 
-Awareness Gateway features **The Companion** (Ο Σύντροφος), powered by Google's **Gemini-1.5-Flash**. 
+Awareness Gateway features **The Temple Cat** (Η Γάτα του Ναού), powered by Google's **Gemini-3-Flash**. 
 
-1.  **The Companion:** A persistent AI presence available via the `CompanionSheet` which offers real-time support and context-aware guidance.
+1.  **The Temple Cat:** A persistent AI presence available via the bubble trigger which offers wise, supportive, and mindful guidance using the persona of a Zen temple-dwelling cat.
 2.  **Pattern Recognition:** The journal service uses LLM prompts to find recurring themes in user reflections and offer "Mirror Questions" for deeper inquiry.
 3.  **Security First:** All AI interactions are proxied through a secure Express backend with `dotenv` protection. API keys never reach the client-side.
 

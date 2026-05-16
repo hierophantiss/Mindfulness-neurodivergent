@@ -169,7 +169,7 @@ export default function Companion() {
                     ? { right: '-11px', borderLeftColor: 'rgba(5, 46, 38, 0.95)' } 
                     : { left: '-11px', borderRightColor: 'rgba(5, 46, 38, 0.95)' }} />      
               <span className="text-[13px] font-medium tracking-wide">
-                {language === 'el' ? 'Hej, πάτα στο ♾️ για βοήθεια!' : 'Hej, tap on ♾️ for help!'}
+                {language === 'el' ? 'Hej, πάτα στην 🐈‍⬛ για βοήθεια!' : 'Hej, tap on 🐈‍⬛ for help!'}
               </span>
               <button 
                 onClick={dismissTutorial} 
@@ -182,7 +182,7 @@ export default function Companion() {
           )}
         </AnimatePresence>
 
-        <InfinitySVG size={36} />
+        <span className="text-3xl filter drop-shadow-sm transform group-hover:scale-110 transition-transform">🐈‍⬛</span>
         {companionData.dailyLogs.length > 0 && <span className="absolute animate-ping top-1 right-1 w-2 h-2 bg-amber-400 rounded-full" />}
       </div>
       <CompanionSheet />

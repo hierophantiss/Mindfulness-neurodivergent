@@ -761,6 +761,18 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const scrollRef = React.useRef<HTMLDivElement>(null);
+  const [isOffline, setIsOffline] = useState(!navigator.onLine);
+
+  useEffect(() => {
+    const handleOnline = () => setIsOffline(false);
+    const handleOffline = () => setIsOffline(true);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -769,7 +781,7 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
   }, [companionData.chatHistory, loading]);
 
   const handleSend = async () => {
-    if (!input.trim() || loading) return;
+    if (!input.trim() || loading || isOffline) return;
 
     const userMsg = input.trim();
     setInput('');
@@ -863,13 +875,13 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
       <div className="flex items-center justify-between px-5 py-4 border-b border-stone-200 dark:border-stone-800 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md sticky top-0 z-20">
         <div className="flex items-center gap-3">
           <button onClick={goBack} className="w-9 h-9 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center transition hover:bg-stone-200 dark:hover:bg-stone-700 active:scale-90 overflow-hidden">
-            <span className="text-stone-600 dark:text-stone-400">←</span>
+            <span className="text-xl">🐈‍⬛</span>
           </button>
           <div className="flex flex-col">
-            <h2 className="font-display text-lg font-medium leading-none tracking-tight text-pine-900 dark:text-pine-50">{language === 'el' ? 'Ο Σύντροφος' : 'The Companion'}</h2>
+            <h2 className="font-display text-lg font-medium leading-none tracking-tight text-pine-900 dark:text-pine-50">{language === 'el' ? 'Η Γάτα του Ναού' : 'The Temple Cat'}</h2>
             <div className="flex items-center gap-1.5 mt-1">
               <div className="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse" />
-              <span className="text-[10px] uppercase tracking-widest text-stone-500 dark:text-stone-400 font-bold">Παρουσία / Presence</span>
+              <span className="text-[10px] uppercase tracking-widest text-stone-500 dark:text-stone-400 font-bold">{language === 'el' ? 'Ενσυνείδητη Παρουσία' : 'Mindful Presence'}</span>
             </div>
           </div>
         </div>
@@ -879,11 +891,11 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
       <div ref={scrollRef} className="flex-1 overflow-y-auto px-5 py-8 space-y-8 scroll-smooth custom-scrollbar">
         {history.length === 0 && (
           <div className="text-center py-10 px-6 max-w-sm mx-auto">
-            <div className="w-20 h-20 bg-teal-500/10 dark:bg-teal-500/5 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl shadow-inner animate-soft-pulse">✨</div>
+            <div className="w-20 h-20 bg-teal-500/10 dark:bg-teal-500/5 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl shadow-inner animate-soft-pulse">🐈‍⬛</div>
             <p className="text-stone-500 dark:text-stone-400 font-serif italic text-[17px] leading-relaxed">
               {language === 'el' 
-                ? '«Πώς μπορώ να σε συνοδεύσω στην πρακτική σου αυτή τη στιγμή;»' 
-                : '"How can I accompany you in your practice right now?"'}
+                ? '«Νιώσε το βάρος σου στο έδαφος... Πώς μπορώ να σε συντροφεύσω στη σιωπή του ναού μας σήμερα;»' 
+                : '"Feel your weight on the ground... How can I accompany you in the silence of our temple today?"'}
             </p>
             <div className="mt-8 grid grid-cols-1 gap-2">
                {[
@@ -929,13 +941,21 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
 
       {/* Input Area */}
       <div className="p-4 bg-white/80 dark:bg-stone-900/80 border-t border-stone-200 dark:border-stone-800 backdrop-blur-md sticky bottom-0 z-20">
+        {isOffline && (
+          <div className="text-center py-2 px-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-[11px] mb-3 font-medium">
+            {language === 'el' 
+              ? 'Η Γάτα αναπαύεται... (Είσαι εκτός σύνδεσης)' 
+              : 'The Cat is resting... (You are offline)'}
+          </div>
+        )}
         <div className="flex gap-2 max-w-2xl mx-auto">
           <input 
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-            placeholder={language === 'el' ? 'Μίλησε μου...' : 'Speak to me...'}
-            className="flex-1 bg-stone-100 dark:bg-stone-800 border-none rounded-2xl px-5 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/30 transition-all dark:text-white placeholder:text-stone-400 dark:placeholder:text-stone-500 font-medium"
+            disabled={isOffline}
+            placeholder={isOffline ? (language === 'el' ? 'Εκτός σύνδεσης...' : 'Offline...') : (language === 'el' ? 'Μίλησε μου...' : 'Speak to me...')}
+            className="flex-1 bg-stone-100 dark:bg-stone-800 border-none rounded-2xl px-5 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/30 transition-all dark:text-white placeholder:text-stone-400 dark:placeholder:text-stone-500 font-medium disabled:opacity-50"
           />
           <button 
             onClick={handleSend}

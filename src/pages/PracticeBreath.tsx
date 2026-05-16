@@ -465,6 +465,7 @@ export default function PracticeBreath() {
            <button
              onClick={() => { 
                triggerReward('breath');
+               markBreathComplete(currentPatternId);
                setRunning(false); 
                setCycles(0); 
                setPhaseIdx(0); 
