@@ -94,10 +94,12 @@
     console.log('PWA: beforeinstallprompt event fired');
     e.preventDefault();
     window.initDeferredPrompt = e;
+    window.dispatchEvent(new CustomEvent('pwa-installable'));
   });
   window.addEventListener('appinstalled', () => {
     console.log('PWA: Application installed successfully');
     window.initDeferredPrompt = null;
+    window.dispatchEvent(new CustomEvent('pwa-installed'));
   });
 </script>
 </head>

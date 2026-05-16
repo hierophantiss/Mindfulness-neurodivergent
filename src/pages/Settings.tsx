@@ -18,12 +18,16 @@ export default function Settings() {
       setCanInstall(true);
     }
     
-    const handleBeforeInstallPrompt = () => {
-      setCanInstall(true);
-    };
+    const handleInstallable = () => setCanInstall(true);
+    const handleInstalled = () => setCanInstall(false);
 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('pwa-installable', handleInstallable as any);
+    window.addEventListener('pwa-installed', handleInstalled as any);
+
+    return () => {
+      window.removeEventListener('pwa-installable', handleInstallable as any);
+      window.removeEventListener('pwa-installed', handleInstalled as any);
+    };
   }, []);
 
   const handleInstall = () => {
