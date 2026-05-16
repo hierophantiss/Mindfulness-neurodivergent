@@ -73,14 +73,15 @@ async function startServer() {
       res.setHeader('Content-Type', 'text/plain; charset=utf-8');
       res.setHeader('Transfer-Encoding', 'chunked');
 
-      const result = await ai.models.generateContentStream({
-        model: "gemini-1.5-flash", // Use a stable flash model
+      const result = await ai.getGenerativeModel({
+        model: "gemini-1.5-flash",
+        systemInstruction,
+      }).generateContentStream({
         contents,
-        config: { systemInstruction }
       });
 
-      for await (const chunk of result) {
-        const text = chunk.text;
+      for await (const chunk of result.stream) {
+        const text = chunk.text();
         if (text) {
           res.write(text);
         }
@@ -88,8 +89,13 @@ async function startServer() {
       res.end();
     } catch (error: any) {
       console.error("Server API Error:", error);
-      res.status(500).write(JSON.stringify({ error: error.message }));
-      res.end();
+      // Ensure we send a proper JSON error if streaming hasn't started
+      if (!res.headersSent) {
+        res.status(500).json({ error: error.message || "Internal Server Error" });
+      } else {
+        res.write(`\n[Server Error: ${error.message}]`);
+        res.end();
+      }
     }
   });
 
@@ -114,16 +120,16 @@ async function startServer() {
         ${JSON.stringify(journalData)}
       `;
 
-      const result = await ai.models.generateContent({
+      const model = ai.getGenerativeModel({
         model: "gemini-1.5-flash",
-        contents: userPrompt,
-        config: {
-          systemInstruction,
+        systemInstruction,
+        generationConfig: {
           responseMimeType: "application/json",
         },
       });
 
-      res.json(JSON.parse(result.text || "{}"));
+      const result = await model.generateContent(userPrompt);
+      res.json(JSON.parse(result.response.text() || "{}"));
     } catch (error: any) {
       console.error("Reflection API Error:", error);
       res.status(500).json({ error: error.message });

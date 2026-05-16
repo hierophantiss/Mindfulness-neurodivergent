@@ -23,8 +23,15 @@ export async function getAIReflection(
     });
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-      throw new Error(errorData.error || `Server responded with ${response.status}`);
+      let errorMessage = `Server responded with ${response.status}`;
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.error || errorMessage;
+      } catch (e) {
+        const textError = await response.text().catch(() => "");
+        if (textError) errorMessage = textError;
+      }
+      throw new Error(errorMessage);
     }
 
     return await response.json();
@@ -54,8 +61,15 @@ export async function streamCompanionResponse(
     });
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-      throw new Error(errorData.error || `Server responded with ${response.status}`);
+      let errorMessage = `Server responded with ${response.status}`;
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.error || errorMessage;
+      } catch (e) {
+        const textError = await response.text().catch(() => "");
+        if (textError) errorMessage = textError;
+      }
+      throw new Error(errorMessage);
     }
 
     const reader = response.body?.getReader();
