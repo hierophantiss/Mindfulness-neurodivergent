@@ -20,6 +20,8 @@ const defaultCompanionData = (): CompanionData => ({
   dailyOpen: { date: '', count: 0 },
   posResetV3: true,
   introSeen: false,
+  questionnaire: undefined,
+  chatHistory: [],
 });
 
 interface CompanionContextType {

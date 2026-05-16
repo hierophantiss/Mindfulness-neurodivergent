@@ -10,12 +10,38 @@ async function startServer() {
   const app = express();
   const PORT = 3000;
 
-  // Add middleware for parsing JSON/forms
-  app.use(express.json());
+  // Add middleware for parsing JSON/forms with larger limit
+  app.use(express.json({ limit: '10mb' }));
+  app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
   // API health check
   app.get('/api/health', (req, res) => {
     res.json({ status: 'ok' });
+  });
+
+  // Gemini Proxy Routes
+  app.post('/api/ai/reflection', async (req, res) => {
+    try {
+      const { journalData, language } = req.body;
+      const { getAIReflection } = await import('./src/services/geminiService.ts');
+      const result = await getAIReflection(journalData, language);
+      res.json(result);
+    } catch (error: any) {
+      console.error('Reflection API Error:', error);
+      res.status(500).json({ error: error.message || 'Internal Server Error' });
+    }
+  });
+
+  app.post('/api/ai/companion', async (req, res) => {
+    try {
+      const { message, history, context } = req.body;
+      const { getCompanionResponse } = await import('./src/services/geminiService.ts');
+      const response = await getCompanionResponse(message, history, context);
+      res.json({ response });
+    } catch (error: any) {
+      console.error('Companion API Error:', error);
+      res.status(500).json({ error: error.message || 'Internal Server Error' });
+    }
   });
 
   // Vite integration

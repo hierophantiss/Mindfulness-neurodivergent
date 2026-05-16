@@ -6,19 +6,15 @@ import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 export const InfinitySVG = ({ size }: { size: number }) => (
-  <svg width={size} height={Math.round(size * 0.55)} viewBox="0 0 120 66" fill="none" xmlns="http://www.w3.org/2000/svg" className="inf-svg-glow filter drop-shadow-md">
+  <svg width={size} height={Math.round(size * 0.55)} viewBox="0 0 120 66" fill="none" xmlns="http://www.w3.org/2000/svg" className="inf-svg-glow filter drop-shadow-sm">
     <defs>
       <linearGradient id="inf-grad" x1="0" y1="33" x2="120" y2="33" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="#E8704A"/>
-        <stop offset="20%" stopColor="#E8A030"/>
-        <stop offset="40%" stopColor="#C8C040"/>
-        <stop offset="55%" stopColor="#50B870"/>
-        <stop offset="70%" stopColor="#40A0A8"/>
-        <stop offset="85%" stopColor="#6070C0"/>
-        <stop offset="100%" stopColor="#9860A8"/>
+        <stop offset="0%" stopColor="#1D9E75"/>
+        <stop offset="50%" stopColor="#2DD4BF"/>
+        <stop offset="100%" stopColor="#1D9E75"/>
       </linearGradient>
     </defs>
-    <path d="M60 33 C60 16, 45 4, 30 4 C15 4, 2 16, 2 33 C2 50, 15 62, 30 62 C45 62, 60 50, 60 33 C60 16, 75 4, 90 4 C105 4, 118 16, 118 33 C118 50, 105 62, 90 62 C75 62, 60 50, 60 33Z" stroke="url(#inf-grad)" strokeWidth="6.5" strokeLinecap="round" fill="none"/>
+    <path d="M60 33 C60 16, 45 4, 30 4 C15 4, 2 16, 2 33 C2 50, 15 62, 30 62 C45 62, 60 50, 60 33 C60 16, 75 4, 90 4 C105 4, 118 16, 118 33 C118 50, 105 62, 90 62 C75 62, 60 50, 60 33Z" stroke="url(#inf-grad)" strokeWidth="7" strokeLinecap="round" fill="none" />
   </svg>
 );
 
@@ -34,7 +30,6 @@ export default function Companion() {
     // Only show if they haven't seen it
     const hasSeen = localStorage.getItem('N_MINDFULNESS_SEEN_COMPANION_TUTORIAL');
     if (!hasSeen) {
-      // Delay it a bit so it doesn't fight with WelcomeModal immediately, or pops nicely after load
       const timer = setTimeout(() => {
         setShowTutorial(true);
       }, 5000);
@@ -52,17 +47,14 @@ export default function Companion() {
   };
 
   useEffect(() => {
-    // Sync position with saved state
     if (companionData.fabPos) {
-       // clamp coordinates
        const maxW = window.innerWidth;
        const maxH = window.innerHeight;
-       const clampWidth = 52; // roughly width of FAB
-       const clampHeight = 52;
+       const clampWidth = 56; 
+       const clampHeight = 56;
        
-       // Handle safe areas for Y clamping
        const safeBottom = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--safe-area-inset-bottom') || '0');
-       const bottomLimit = maxH - clampHeight - 80 - (safeBottom || 16); // 80px for menu space
+       const bottomLimit = maxH - clampHeight - 85 - (safeBottom || 16); 
        
        const cX = Math.max(8, Math.min(maxW - clampWidth - 8, companionData.fabPos.x));
        const cY = Math.max(60, Math.min(bottomLimit, companionData.fabPos.y));
@@ -72,11 +64,11 @@ export default function Companion() {
 
   useEffect(() => {
     const handleResize = () => {
-       const clampWidth = 52; 
-       const clampHeight = 52;
+       const clampWidth = 56; 
+       const clampHeight = 56;
        const maxH = window.innerHeight;
        const safeBottom = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--safe-area-inset-bottom') || '0');
-       const bottomLimit = maxH - clampHeight - 80 - (safeBottom || 16);
+       const bottomLimit = maxH - clampHeight - 85 - (safeBottom || 16);
 
        setPosition(prev => ({
          x: Math.max(8, Math.min(window.innerWidth - clampWidth - 8, prev.x)),
@@ -88,7 +80,6 @@ export default function Companion() {
   }, []);
 
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    // Only capture if it's a left click or touch
     if (e.pointerType === 'mouse' && e.button !== 0) return;
     e.currentTarget.setPointerCapture(e.pointerId);
     dragRef.current = {
@@ -102,22 +93,19 @@ export default function Companion() {
   const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!dragRef.current) return;
     
-    // threshold before dragging begins to allow clicking
     const dx = e.clientX - dragRef.current.startX;
     const dy = e.clientY - dragRef.current.startY;
     if (!isDragging && Math.sqrt(dx*dx + dy*dy) > 10) {
       setIsDragging(true);
-      if (showTutorial) {
-        dismissTutorial();
-      }
+      if (showTutorial) dismissTutorial();
     }
 
     if (isDragging) {
-      const clampWidth = 52; 
-      const clampHeight = 52;
+      const clampWidth = 56; 
+      const clampHeight = 56;
       const maxH = window.innerHeight;
       const safeBottom = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--safe-area-inset-bottom') || '0');
-      const bottomLimit = maxH - clampHeight - 80 - (safeBottom || 16);
+      const bottomLimit = maxH - clampHeight - 85 - (safeBottom || 16);
 
       const newX = dragRef.current.initX + dx;
       const newY = dragRef.current.initY + dy;
@@ -145,9 +133,7 @@ export default function Companion() {
       e.stopPropagation();
       return;
     }
-    if (showTutorial) {
-      dismissTutorial(e);
-    }
+    if (showTutorial) dismissTutorial(e);
     setSheetVisible(true);
   };
 
@@ -156,7 +142,7 @@ export default function Companion() {
   return (
     <>
       <div 
-        className={`fixed z-50 flex items-center justify-center w-[52px] h-[52px] rounded-full bg-stone-100 dark:bg-stone-800 shadow-xl border border-stone-200/50 dark:border-stone-700/50 cursor-pointer touch-none transition-transform duration-200 ${isDragging ? 'scale-105 opacity-90' : 'hover:scale-105 active:scale-95'}`}
+        className={`fixed z-50 flex items-center justify-center w-[56px] h-[56px] rounded-full bg-stone-100/90 dark:bg-stone-900/90 backdrop-blur-md shadow-2xl border border-white/20 dark:border-stone-700/30 cursor-pointer touch-none transition-transform duration-300 ${isDragging ? 'scale-110 opacity-80' : 'hover:scale-110 active:scale-90 shadow-teal-500/10'}`}
         style={{ left: position.x, top: position.y }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
@@ -164,6 +150,7 @@ export default function Companion() {
         onPointerCancel={onPointerUp}
         onClick={handleClick}
       >
+        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-teal-500/5 to-transparent pointer-events-none" />
         <AnimatePresence>
           {showTutorial && (
             <motion.div 

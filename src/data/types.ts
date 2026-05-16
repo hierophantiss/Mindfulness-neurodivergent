@@ -66,6 +66,19 @@ export interface CompanionChapterProgress {
   visits: number;
 }
 
+export interface QuestionnaireData {
+  completed: boolean;
+  intensity: 'gentle' | 'standard' | 'deep';
+  focus: string[];
+  dailyTime: number;
+}
+
+export interface ChatMessage {
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+  timestamp: string;
+}
+
 export interface CompanionData {
   chapterProgress: Record<number, CompanionChapterProgress>;
   programProgress: { week: number; day: number; lastVisit: string | null };
@@ -83,4 +96,6 @@ export interface CompanionData {
   posResetV3: boolean;
   introSeen: boolean;
   onboarded?: boolean;
+  questionnaire?: QuestionnaireData;
+  chatHistory?: ChatMessage[];
 }

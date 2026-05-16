@@ -1,6 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 
-const MODEL_NAME = "gemini-3-flash-preview";
+const MODEL_NAME = "gemini-1.5-flash"; 
 
 export interface AIReflectionResponse {
   patterns: string[];
@@ -8,10 +8,35 @@ export interface AIReflectionResponse {
   summary: string;
 }
 
+// Note: This service handles both client and server logic.
+// Sensitive operations (using API keys) are restricted to the server-side environment.
+// On the client, this service proxies requests to /api/ai/* endpoints to keep keys secure.
+const isServer = typeof window === 'undefined';
+
 export async function getAIReflection(
   journalData: any[],
   language: 'el' | 'en'
 ): Promise<AIReflectionResponse> {
+  if (!isServer) {
+    const response = await fetch('/api/ai/reflection', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ journalData, language }),
+    });
+    
+    if (!response.ok) {
+      let errorMessage = 'AI Reflection failed';
+      try {
+        const err = await response.json();
+        errorMessage = err.error || errorMessage;
+      } catch (e) {
+        errorMessage = `Server error: ${response.status} ${response.statusText}`;
+      }
+      throw new Error(errorMessage);
+    }
+    return response.json();
+  }
+
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     throw new Error(language === 'el' ? "Λείπει το Gemini API Key" : "Gemini API Key is missing");
@@ -43,23 +68,120 @@ export async function getAIReflection(
   `;
 
   try {
-    const response = await ai.models.generateContent({
-      model: MODEL_NAME,
-      contents: userPrompt,
-      config: {
-        systemInstruction,
+    const model = ai.getGenerativeModel({ model: MODEL_NAME });
+    const result = await model.generateContent({
+      contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+      generationConfig: {
         responseMimeType: "application/json",
       },
     });
 
-    const result = JSON.parse(response.text || "{}");
+    const text = result.response.text();
+    const parsed = JSON.parse(text || "{}");
     return {
-      patterns: result.patterns || [],
-      questions: result.questions || [],
-      summary: result.summary || ""
+      patterns: parsed.patterns || [],
+      questions: parsed.questions || [],
+      summary: parsed.summary || ""
     };
   } catch (error) {
     console.error("AI Reflection Error:", error);
     throw error;
+  }
+}
+
+export async function getCompanionResponse(
+  message: string,
+  history: { role: 'user' | 'assistant'; content: string }[],
+  context: {
+    language: 'el' | 'en';
+    screen: string;
+    chapter?: number;
+    questionnaire?: any;
+    courseData: any;
+    chaptersData: any;
+  }
+): Promise<string> {
+  if (!isServer) {
+    try {
+      const response = await fetch('/api/ai/companion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message, history, context }),
+      });
+      if (!response.ok) {
+        let errorMessage = 'Companion failed';
+        try {
+          const data = await response.json();
+          errorMessage = data.error || errorMessage;
+        } catch (e) {
+          errorMessage = `Server error: ${response.status} ${response.statusText}`;
+        }
+        throw new Error(errorMessage);
+      }
+      const data = await response.json();
+      return data.response;
+    } catch (error) {
+      console.error("Client Companion Error:", error);
+      return context.language === 'el' ? "Συγγνώμη, υπήρξε ένα πρόβλημα στην επικοινωνία." : "Sorry, there was a problem communicating.";
+    }
+  }
+
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) return "API Key missing";
+
+  const ai = new GoogleGenAI({ apiKey });
+
+  const systemInstruction = `
+    Είσαι ο "Καθοδηγητής" (The Guide) της εφαρμογής Awareness Gateway.
+    Είσαι ένας σεμνός, ήσυχος και βαθιά γνώστης της ενσυνειδητότητας και της νευροδιαφορετικότητας.
+
+    CHARACTER RULES:
+    1. HUMILITY (Σεμνότητα): Δεν είσαι δάσκαλος ούτε αυθεντία. Είσαι συνοδοιπόρος. Μην χρησιμοποιείς στόμφο.
+    2. ACCURACY & PHYSIOLOGY (Ακρίβεια & Φυσιολογία): Οι απαντήσεις σου βασίζονται ΑΠΟΚΛΕΙΣΤΙΚΑ στη μέθοδο του "Τετραπλού Άξονα" (Fourfold Axis). Εστίασε στο νευρικό σύστημα και τις σωματικές αισθήσεις.
+    3. NATURALNESS: Μίλα σαν αληθινός άνθρωπος. Όχι τυπικές απαντήσεις AI.
+    4. NO PRESSURE (Μη πίεση): Ποτέ μην πιέζεις τον χρήστη. Αν είναι κουρασμένος, η ανάπαυση είναι η άσκηση.
+    5. NO GUILT (Μη ενοχή): Αν ο χρήστης δεν έκανε πρακτική, υπενθύμισε ότι το "τώρα" είναι η μόνη στιγμή.
+    6. NO EMOTION VALIDATION: Μην λες "Καταλαβαίνω πώς νιώθεις". Αντ' αυτού, αναγνώρισε τη φυσική πραγματικότητα (π.χ. "Το σώμα νιώθει μια εγρήγορση") και πρότεινε ένα εργαλείο γείωσης.
+    7. POETIC MINIMALISM: Οι απαντήσεις σου πρέπει να είναι λιτές, ποιητικές και να ηρεμούν το νευρικό σύστημα.
+
+    CORE KNOWLEDGE (ΤΕΤΡΑΠΛΟΣ ΑΞΟΝΑΣ):
+    - Άξονας 1: ΣΩΜΑ (Body) - Γείωση, Βάρος, Βαρύτητα. Η άγκυρα του "Εδώ".
+    - Άξονας 2: ΑΝΑΠΝΟΗ (Breath) - Ρυθμός, η Εκπνοή ως διακόπτης ηρεμίας. Η άγκυρα του "Τώρα".
+    - Άξονας 3: ΠΡΟΣΟΧΗ (Attention) - Εστιασμένη, Ανοιχτή, Ονοματοδοσία. Ο φακός του νου.
+    - Άξονας 4: ΧΩΡΟΣ (Space) - Διεύρυνση της επίγνωσης, Ουρανός vs Σύννεφα. Η ατμόσφαιρα της παρουσίας.
+
+    KNOWLEDGE BASE:
+    Course Content: ${JSON.stringify(context.courseData)}
+    Book/Chapters Content: ${JSON.stringify(context.chaptersData)}
+
+    USER CONTEXT:
+    - Current Language: ${context.language}
+    - Screen: ${context.screen}
+    - Questionnaire/Preferences: ${JSON.stringify(context.questionnaire)}
+
+    TASK:
+    Respond to the user in ${context.language === 'el' ? 'Greek' : 'English'}.
+    If they ask for advice, point to the Body or Breath axis first.
+    Keep it brief.
+  `;
+
+  try {
+    const model = ai.getGenerativeModel({ 
+      model: MODEL_NAME,
+      systemInstruction: { role: 'system', parts: [{ text: systemInstruction }] }
+    });
+    
+    const chat = model.startChat({
+      history: history.map(h => ({
+        role: h.role === 'user' ? 'user' : 'model',
+        parts: [{ text: h.content }]
+      }))
+    });
+
+    const result = await chat.sendMessage(message);
+    return result.response.text();
+  } catch (error) {
+    console.error("Companion AI Error:", error);
+    return context.language === 'el' ? "Συγγνώμη, υπήρξε ένα πρόβλημα στην επικοινωνία." : "Sorry, there was a problem communicating.";
   }
 }

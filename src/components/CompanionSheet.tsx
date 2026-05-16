@@ -4,13 +4,16 @@ import { CHAPTERS_DATA, CHAPTER_PRACTICES } from '../data/chapters';
 import { MOOD_ROUTES } from '../data/moods';
 import { KNOWLEDGE_CONCEPTS } from '../data/concepts';
 import { KNOWLEDGE_FAQ } from '../data/faq';
+import { D as D_EL } from '../data/course-el';
+import { D as D_EN } from '../data/course-en';
+import { getCompanionResponse } from '../services/geminiService';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
 
 /* Companion Sheet states/flows */
-type FlowState = 'main' | 'mood' | 'hub' | 'explore' | 'options';
+type FlowState = 'main' | 'mood' | 'hub' | 'explore' | 'options' | 'guide' | 'questionnaire';
 
 export default function CompanionSheet() {
   const { sheetVisible, setSheetVisible, companionData, trackActivity, updateCompanionData } = useCompanion();
@@ -48,10 +51,12 @@ export default function CompanionSheet() {
   const renderContent = () => {
     switch (flow) {
       case 'main': return <MainFlow navTo={navTo} onClose={handleClose} />;
-      case 'mood': return <MoodFlow goBack={goBack} onClose={handleClose} navigate={navigate} />;
+      case 'mood': return <MoodFlow goBack={goBack} onClose={handleClose} navigate={navigate} navTo={navTo} />;
       case 'hub': return <HubFlow goBack={goBack} onClose={handleClose} navigate={navigate} />;
       case 'options': return <OptionsFlow goBack={goBack} onClose={handleClose} />;
       case 'explore': return <ExploreFlow goBack={goBack} onClose={handleClose} />;
+      case 'guide': return <GuideFlow goBack={goBack} onClose={handleClose} />;
+      case 'questionnaire': return <QuestionnaireFlow goBack={goBack} />;
       default: return <MainFlow navTo={navTo} onClose={handleClose} />;
     }
   };
@@ -248,7 +253,7 @@ function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClo
   );
 }
 
-function MoodFlow({ goBack, onClose, navigate }: { goBack: () => void, onClose: () => void, navigate: any }) {
+function MoodFlow({ goBack, onClose, navigate, navTo }: { goBack: () => void, onClose: () => void, navigate: any, navTo: (dest: FlowState) => void }) {
   const { trackActivity } = useCompanion();
   const [selectedMoodId, setSelectedMoodId] = useState<string | null>(null);
   const { language } = useLanguage();
@@ -322,20 +327,49 @@ function MoodFlow({ goBack, onClose, navigate }: { goBack: () => void, onClose: 
   return (
     <div className="space-y-6 animate-fade-in text-stone-800 dark:text-stone-200">
       <div className="flex items-center gap-3 pb-4 border-b border-stone-200 dark:border-stone-800">
-        <button onClick={goBack} className="w-8 h-8 rounded-full bg-stone-200 dark:bg-stone-800 flex items-center justify-center">←</button>
-        <h2 className="font-display text-lg font-medium">{language === 'el' ? 'Πώς είσαι αυτή τη στιγμή;' : 'How are you right now?'}</h2>
+        <button onClick={goBack} className="w-8 h-8 rounded-full bg-stone-200 dark:bg-stone-800 flex items-center justify-center hover:bg-stone-300 dark:hover:bg-stone-700 transition">←</button>
+        <h2 className="font-display text-lg font-medium tracking-tight">
+          {language === 'el' ? 'Συνομιλία με τον Καθοδηγητή' : 'Chat with Guide'}
+        </h2>
+      </div>
+
+      <div className="flex flex-col gap-3">
+         <button 
+           onClick={() => navTo('guide')}
+           className="flex items-center gap-4 p-4 bg-teal-600 dark:bg-teal-700 text-white rounded-2xl hover:bg-teal-700 dark:hover:bg-teal-800 transition-all shadow-sm active:scale-[0.98]"
+         >
+           <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/20 text-xl font-bold">✨</div>
+           <div className="text-left">
+             <div className="font-bold text-[15px]">{language === 'el' ? 'Ρώτησε κάτι' : 'Ask something'}</div>
+             <div className="text-[12px] opacity-80">{language === 'el' ? 'Πώς να διαχειριστώ αυτό που νιώθω;' : 'How to manage what I feel?'}</div>
+           </div>
+         </button>
+
+         <button 
+           onClick={() => navTo('questionnaire')}
+           className="flex items-center gap-4 p-4 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-2xl hover:bg-stone-50 dark:hover:bg-stone-700 transition-all shadow-sm active:scale-[0.98]"
+         >
+           <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-stone-100 dark:bg-stone-900 text-xl font-bold">📝</div>
+           <div className="text-left">
+             <div className="font-bold text-[15px] text-stone-800 dark:text-stone-200">{language === 'el' ? 'Προσαρμογή Προγράμματος' : 'Program Customization'}</div>
+             <div className="text-[12px] opacity-80 text-stone-500 dark:text-stone-400">{language === 'el' ? 'Φτιάξε το δικό σου ρυθμό' : 'Set your own pace'}</div>
+           </div>
+         </button>
       </div>
       
-      <div className="grid grid-cols-2 gap-2">
-         {moodsToShow.map(id => {
-           const rt = MOOD_ROUTES[id];
-           return (
-             <button key={id} onClick={() => handleMoodSelect({ id })} className="flex flex-col items-center justify-center gap-1 p-3 bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-3xl hover:border-teal-500 hover:bg-teal-50 dark:hover:bg-teal-900/30 transition-colors text-center w-full">
-               <span className="text-3xl drop-shadow-sm mb-1">{rt.icon}</span>
-               <span className="font-medium text-xs leading-tight">{getLabel(rt.label)}</span>
-             </button>
-           )
-         })}
+      <div className="pt-2 border-t border-stone-200 dark:border-stone-800">
+        <p className="text-[13px] font-medium text-stone-500 dark:text-stone-400 mb-3 ml-1">{language === 'el' ? 'Ή επίλεξε μια διάθεση:' : 'Or pick a mood:'}</p>
+        <div className="grid grid-cols-2 gap-2">
+           {moodsToShow.map(id => {
+             const rt = MOOD_ROUTES[id];
+             return (
+               <button key={id} onClick={() => handleMoodSelect({ id })} className="flex flex-col items-center justify-center gap-1 p-3 bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-2xl hover:border-teal-500 hover:bg-teal-50 dark:hover:bg-teal-900/30 transition-colors text-center w-full">
+                 <span className="text-2xl drop-shadow-sm mb-1">{rt.icon}</span>
+                 <span className="font-medium text-[11px] leading-tight text-stone-600 dark:text-stone-400">{getLabel(rt.label)}</span>
+               </button>
+             )
+           })}
+        </div>
       </div>
     </div>
   );
@@ -567,3 +601,283 @@ function ExploreFlow({ goBack, onClose }: { goBack: () => void, onClose: () => v
     </div>
   );
 }
+
+function QuestionnaireFlow({ goBack }: { goBack: () => void }) {
+  const { language } = useLanguage();
+  const { updateCompanionData, companionData } = useCompanion();
+  const [step, setStep] = useState(0);
+  const [answers, setAnswers] = useState<any>({
+    intensity: 'standard',
+    focus: [],
+    dailyTime: 10
+  });
+
+  const steps = [
+    {
+      title: language === 'el' ? 'Ποιος είναι ο στόχος σου;' : 'What is your goal?',
+      options: [
+        { id: 'anxiety', label: language === 'el' ? 'Μείωση Άγχους' : 'Reduce Anxiety', icon: '🌊' },
+        { id: 'focus', label: language === 'el' ? 'Καλύτερη Συγκέντρωση' : 'Better Focus', icon: '👁' },
+        { id: 'rest', label: language === 'el' ? 'Ανάπαυση / Ύπνος' : 'Rest / Sleep', icon: '🌙' },
+        { id: 'awareness', label: language === 'el' ? 'Αυτογνωσία' : 'Self-Awareness', icon: '✦' },
+      ],
+      multi: true
+    },
+    {
+      title: language === 'el' ? 'Τι ένταση προτιμάς;' : 'What intensity do you prefer?',
+      options: [
+        { id: 'gentle', label: language === 'el' ? 'Ήπια (Μικρά βήματα)' : 'Gentle (Small steps)', icon: '🌱' },
+        { id: 'standard', label: language === 'el' ? 'Ισορροπημένη' : 'Balanced', icon: '⚖️' },
+        { id: 'deep', label: language === 'el' ? 'Εντατική (Βαθύτερη εξάσκηση)' : 'Intensive (Deeper practice)', icon: '🔥' },
+      ],
+      multi: false
+    },
+    {
+      title: language === 'el' ? 'Πόσο χρόνο μπορείς να διαθέτεις καθημερινά;' : 'How much time can you give daily?',
+      options: [
+        { id: 5, label: language === 'el' ? '5 λεπτά' : '5 minutes', icon: '🕔' },
+        { id: 10, label: language === 'el' ? '10 λεπτά' : '10 minutes', icon: '🕙' },
+        { id: 20, label: language === 'el' ? '20+ λεπτά' : '20+ minutes', icon: '⌛' },
+      ],
+      multi: false
+    }
+  ];
+
+  const handleNext = () => {
+    if (step < steps.length - 1) {
+      setStep(s => s + 1);
+    } else {
+      updateCompanionData({
+        questionnaire: { ...answers, completed: true }
+      });
+      goBack();
+    }
+  };
+
+  const toggleOption = (id: any) => {
+    const currentStep = steps[step];
+    if (currentStep.multi) {
+      setAnswers((prev: any) => ({
+        ...prev,
+        focus: prev.focus.includes(id) 
+          ? prev.focus.filter((i: any) => i !== id)
+          : [...prev.focus, id]
+      }));
+    } else {
+      const field = step === 1 ? 'intensity' : 'dailyTime';
+      setAnswers((prev: any) => ({ ...prev, [field]: id }));
+      setTimeout(handleNext, 300);
+    }
+  };
+
+  const curStep = steps[step];
+
+  return (
+    <div className="space-y-6 animate-fade-in">
+      <div className="flex items-center justify-between pb-4 border-b border-stone-200 dark:border-stone-800">
+        <div className="flex items-center gap-3">
+          <button onClick={goBack} className="w-8 h-8 rounded-full bg-stone-200 dark:bg-stone-800 flex items-center justify-center transition hover:bg-stone-300 dark:hover:bg-stone-700">←</button>
+          <h2 className="font-display text-lg font-medium tracking-tight">{language === 'el' ? 'Προσαρμογή' : 'Customization'}</h2>
+        </div>
+        <div className="text-xs font-bold text-stone-400">{step + 1} / {steps.length}</div>
+      </div>
+
+      <div className="py-2">
+        <h3 className="text-2xl font-display font-medium text-stone-800 dark:text-stone-100 mb-6 leading-tight">
+          {curStep.title}
+        </h3>
+
+        <div className="grid gap-3">
+          {curStep.options.map(opt => {
+            const isSelected = curStep.multi 
+              ? answers.focus.includes(opt.id)
+              : (step === 1 ? answers.intensity === opt.id : answers.dailyTime === opt.id);
+            
+            return (
+              <button
+                key={String(opt.id)}
+                onClick={() => toggleOption(opt.id)}
+                className={`flex items-center justify-between p-5 rounded-2xl border-2 transition-all group ${
+                  isSelected 
+                    ? 'border-teal-500 bg-teal-50 dark:bg-teal-900/20 text-teal-900 dark:text-teal-100' 
+                    : 'border-stone-100 dark:border-stone-800 bg-white dark:bg-stone-900 text-stone-600 dark:text-stone-400 hover:border-stone-200'
+                }`}
+              >
+                <div className="flex items-center gap-4">
+                  <span className="text-2xl group-hover:scale-110 transition-transform">{opt.icon}</span>
+                  <span className="font-bold text-[15px]">{opt.label}</span>
+                </div>
+                {isSelected && <span className="w-6 h-6 rounded-full bg-teal-500 text-white flex items-center justify-center text-xs">✓</span>}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {curStep.multi && (
+        <button 
+          disabled={answers.focus.length === 0}
+          onClick={handleNext}
+          className="w-full py-4 bg-teal-700 hover:bg-teal-800 text-white rounded-2xl font-bold tracking-widest uppercase transition-all disabled:opacity-50 disabled:grayscale"
+        >
+          {language === 'el' ? 'ΕΠΟΜΕΝΟ ➔' : 'NEXT ➔'}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => void }) {
+  const { language } = useLanguage();
+  const { companionData, updateCompanionData } = useCompanion();
+  const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [companionData.chatHistory, loading]);
+
+  const handleSend = async () => {
+    if (!input.trim() || loading) return;
+
+    const userMsg = input.trim();
+    setInput('');
+    setLoading(true);
+
+    const newUserHistory = [...(companionData.chatHistory || []), {
+      role: 'user' as const,
+      content: userMsg,
+      timestamp: new Date().toISOString()
+    }];
+
+    updateCompanionData({ chatHistory: newUserHistory });
+
+    try {
+      const response = await getCompanionResponse(
+        userMsg,
+        newUserHistory.filter(m => m.role !== 'system').map(m => ({ role: m.role as any, content: m.content })),
+        {
+          language,
+          screen: companionData.lastScreen,
+          questionnaire: companionData.questionnaire,
+          courseData: language === 'el' ? D_EL : D_EN,
+          chaptersData: CHAPTERS_DATA[language === 'en' ? 'en' : 'el']
+        }
+      );
+
+      updateCompanionData(prev => ({
+        ...prev,
+        chatHistory: [
+          ...(prev.chatHistory || []),
+          {
+            role: 'assistant' as const,
+            content: response,
+            timestamp: new Date().toISOString()
+          }
+        ]
+      }));
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const history = companionData.chatHistory || [];
+
+  return (
+    <div className="flex flex-col h-[70dvh] -mx-5 -mb-6 animate-fade-in relative bg-stone-50 dark:bg-stone-900/40">
+      {/* Header */}
+      <div className="flex items-center justify-between px-5 py-4 border-b border-stone-200 dark:border-stone-800 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md sticky top-0 z-20">
+        <div className="flex items-center gap-3">
+          <button onClick={goBack} className="w-9 h-9 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center transition hover:bg-stone-200 dark:hover:bg-stone-700 active:scale-90 overflow-hidden">
+            <span className="text-stone-600 dark:text-stone-400">←</span>
+          </button>
+          <div className="flex flex-col">
+            <h2 className="font-display text-lg font-medium leading-none tracking-tight text-pine-900 dark:text-pine-50">{language === 'el' ? 'Ο Καθοδηγητής' : 'The Guide'}</h2>
+            <div className="flex items-center gap-1.5 mt-1">
+              <div className="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse" />
+              <span className="text-[10px] uppercase tracking-widest text-stone-500 dark:text-stone-400 font-bold">Παρουσία / Presence</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Messages */}
+      <div ref={scrollRef} className="flex-1 overflow-y-auto px-5 py-8 space-y-8 scroll-smooth custom-scrollbar">
+        {history.length === 0 && (
+          <div className="text-center py-10 px-6 max-w-sm mx-auto">
+            <div className="w-20 h-20 bg-teal-500/10 dark:bg-teal-500/5 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl shadow-inner animate-soft-pulse">✨</div>
+            <p className="text-stone-500 dark:text-stone-400 font-serif italic text-[17px] leading-relaxed">
+              {language === 'el' 
+                ? '«Πώς μπορώ να σε συνοδεύσω στην πρακτική σου αυτή τη στιγμή;»' 
+                : '"How can I accompany you in your practice right now?"'}
+            </p>
+            <div className="mt-8 grid grid-cols-1 gap-2">
+               {[
+                 language === 'el' ? 'Νιώθω ένταση στο σώμα' : 'I feel tension in my body',
+                 language === 'el' ? 'Πώς να κάνω την αναπνοή SOS;' : 'How to do SOS breath?',
+                 language === 'el' ? 'Δυσκολεύομαι να ηρεμήσω' : 'I find it hard to calm down'
+               ].map((suggestion, i) => (
+                 <button 
+                  key={i}
+                  onClick={() => setInput(suggestion)}
+                  className="text-[13px] text-teal-700 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/20 py-2 px-4 rounded-xl border border-teal-200/50 dark:border-teal-800/50 transition-colors"
+                 >
+                   {suggestion}
+                 </button>
+               ))}
+            </div>
+          </div>
+        )}
+        
+        {history.map((msg, idx) => (
+          <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+            <div className={`max-w-[85%] rounded-3xl px-5 py-4 shadow-sm text-[15px] leading-relaxed ${
+              msg.role === 'user' 
+                ? 'bg-teal-700 text-white rounded-tr-none font-medium' 
+                : 'bg-white dark:bg-stone-800/90 text-stone-800 dark:text-stone-100 border border-stone-100 dark:border-stone-700/50 rounded-tl-none font-serif italic text-[16px]'
+            }`}>
+              {msg.content}
+            </div>
+          </div>
+        ))}
+        {loading && (
+          <div className="flex justify-start">
+            <div className="bg-white/50 dark:bg-stone-800/50 rounded-3xl rounded-tl-none px-6 py-4 border border-stone-100 dark:border-stone-800/50">
+               <div className="flex gap-2">
+                 <div className="w-1.5 h-1.5 bg-teal-500/50 rounded-full animate-bounce" />
+                 <div className="w-1.5 h-1.5 bg-teal-500/50 rounded-full animate-bounce [animation-delay:0.2s]" />
+                 <div className="w-1.5 h-1.5 bg-teal-500/50 rounded-full animate-bounce [animation-delay:0.4s]" />
+               </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Input Area */}
+      <div className="p-4 bg-white/80 dark:bg-stone-900/80 border-t border-stone-200 dark:border-stone-800 backdrop-blur-md sticky bottom-0 z-20">
+        <div className="flex gap-2 max-w-2xl mx-auto">
+          <input 
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+            placeholder={language === 'el' ? 'Μίλησε μου...' : 'Speak to me...'}
+            className="flex-1 bg-stone-100 dark:bg-stone-800 border-none rounded-2xl px-5 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/30 transition-all dark:text-white placeholder:text-stone-400 dark:placeholder:text-stone-500 font-medium"
+          />
+          <button 
+            onClick={handleSend}
+            disabled={!input.trim() || loading}
+            className="group w-14 h-14 bg-teal-700 hover:bg-teal-800 text-white rounded-2xl flex items-center justify-center transition-all active:scale-90 disabled:opacity-50 disabled:grayscale shadow-lg shadow-teal-700/20"
+          >
+            <span className="text-xl font-bold group-hover:translate-x-1 transition-transform">➔</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
