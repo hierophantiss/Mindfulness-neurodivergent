@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { ChevronLeft, Languages, Activity, Info, LogOut, Sparkles, Moon, Sun, Database } from 'lucide-react';
+import { ChevronLeft, Languages, Activity, Info, LogOut, Sparkles, Moon, Sun, Database, FileText, Download } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
@@ -10,6 +10,37 @@ export default function Settings() {
   const navigate = useNavigate();
   const { language, setLanguage } = useLanguage();
   const { reduceMotion, toggleReduceMotion } = useAccessibility();
+  const [canInstall, setCanInstall] = useState(false);
+
+  useEffect(() => {
+    // Check if the prompt is available
+    if ((window as any).initDeferredPrompt) {
+      setCanInstall(true);
+    }
+    
+    const handleBeforeInstallPrompt = () => {
+      setCanInstall(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+  }, []);
+
+  const handleInstall = () => {
+    const promptEvent = (window as any).initDeferredPrompt;
+    if (promptEvent) {
+      promptEvent.prompt();
+      promptEvent.userChoice.then((choiceResult: any) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the A2HS prompt');
+          setCanInstall(false);
+        }
+        (window as any).initDeferredPrompt = null;
+      });
+    } else {
+      alert(language === 'el' ? "Η συσκευή σας δεν υποστηρίζει αυτήν τη λειτουργία ή η εφαρμογή είναι ήδη εγκατεστημένη." : "Your device does not support this feature, or the app is already installed.");
+    }
+  };
 
   const sections = [
     {
@@ -22,7 +53,15 @@ export default function Settings() {
           value: language === 'el' ? 'Ελληνικά' : 'English',
           action: () => setLanguage(language === 'el' ? 'en' : 'el'),
           color: 'text-teal-400'
-        }
+        },
+        ...(canInstall ? [{
+          id: 'install',
+          icon: Download,
+          label: { el: 'Εγκατάσταση (App)', en: 'Install App' },
+          value: null,
+          action: handleInstall,
+          color: 'text-green-400'
+        }] : [])
       ]
     },
     {
@@ -49,6 +88,16 @@ export default function Settings() {
     {
         title: { el: 'Δεδομένα', en: 'Data' },
         items: [
+          {
+            id: 'export-pdf',
+            icon: FileText,
+            label: { el: 'Εξαγωγή Βιβλίου (PDF)', en: 'Export Workbook (PDF)' },
+            value: null,
+            action: () => {
+              window.open('#/workbook/print', '_blank');
+            },
+            color: 'text-blue-400'
+          },
           {
             id: 'sync',
             icon: Database,

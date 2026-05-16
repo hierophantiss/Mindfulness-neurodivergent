@@ -1,15 +1,11 @@
 import express from 'express';
 import 'dotenv/config';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import { createServer as createViteServer } from 'vite';
 import { GoogleGenAI } from "@google/genai";
 import { CHAPTERS_DATA } from "./src/data/chapters";
 import { D as D_EL } from "./src/data/course-el";
 import { D as D_EN } from "./src/data/course-en";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 async function startServer() {
   const app = express();
@@ -73,17 +69,17 @@ async function startServer() {
       res.setHeader('Content-Type', 'text/plain; charset=utf-8');
       res.setHeader('Transfer-Encoding', 'chunked');
 
-      const result = await ai.getGenerativeModel({
-        model: "gemini-1.5-flash",
-        systemInstruction,
-      }).generateContentStream({
+      const response = await ai.models.generateContentStream({
+        model: "gemini-3-flash-preview",
         contents,
+        config: {
+          systemInstruction,
+        }
       });
 
-      for await (const chunk of result.stream) {
-        const text = chunk.text();
-        if (text) {
-          res.write(text);
+      for await (const chunk of response) {
+        if (chunk.text) {
+          res.write(chunk.text);
         }
       }
       res.end();
@@ -120,16 +116,16 @@ async function startServer() {
         ${JSON.stringify(journalData)}
       `;
 
-      const model = ai.getGenerativeModel({
-        model: "gemini-1.5-flash",
-        systemInstruction,
-        generationConfig: {
+      const response = await ai.models.generateContent({
+        model: "gemini-3-flash-preview",
+        contents: userPrompt,
+        config: {
+          systemInstruction,
           responseMimeType: "application/json",
         },
       });
 
-      const result = await model.generateContent(userPrompt);
-      res.json(JSON.parse(result.response.text() || "{}"));
+      res.json(JSON.parse(response.text || "{}"));
     } catch (error: any) {
       console.error("Reflection API Error:", error);
       res.status(500).json({ error: error.message });

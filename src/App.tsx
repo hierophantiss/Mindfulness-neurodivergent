@@ -19,6 +19,7 @@ import RabbitHole from './pages/RabbitHole';
 import Onboarding from './pages/Onboarding';
 import Sanctuary from './pages/Sanctuary';
 import Settings from './pages/Settings';
+import PrintWorkbook from './pages/PrintWorkbook';
 
 import { LanguageProvider, useLanguage } from './hooks/useLanguage';
 import { ThemeProvider } from './hooks/useTheme';
@@ -33,6 +34,7 @@ function AppContent() {
       <CompanionProvider>
         <Routes>
         <Route path="/onboarding" element={<Onboarding />} />
+        <Route path="/workbook/print" element={<PrintWorkbook />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
