@@ -18,15 +18,16 @@ export default defineConfig(({ mode }) => {
         manifestFilename: 'manifest.json',
         includeAssets: ['favicon.ico', 'favicon.svg', 'web-app-manifest-192x192.png', 'web-app-manifest-512x512.png', 'apple-touch-icon.png', 'hero.png', 'robots.txt', 'sitemap.xml', '*.mp3', '*.mp4'],
         manifest: {
-          id: 'awareness-gateway-app',
-          name: 'Neurodivergent Awareness',
+          id: 'awareness-gateway-v1',
+          name: 'Awareness Gateway',
           short_name: 'Awareness',
-          description: 'A trauma-informed mindfulness guide for neurodivergent minds.',
+          description: 'Mindfulness for Neurodivergent Minds (ADHD, Autism).',
           start_url: '/',
+          display: 'standalone',
+          display_override: ['window-controls-overlay', 'minimal-ui'],
           scope: '/',
           theme_color: '#0f1117',
           background_color: '#0f1117',
-          display: 'standalone',
           orientation: 'portrait',
           icons: [
             {
