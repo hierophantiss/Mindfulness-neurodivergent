@@ -184,11 +184,11 @@ export default function Companion() {
 
         <div className="relative w-10 h-10 rounded-full overflow-hidden shadow-inner group-hover:scale-110 transition-transform duration-300 ring-2 ring-teal-500/20">
           <img 
-            src="/favicon.svg" 
+            src="/temple-cat.png" 
             alt="Magical Cat" 
             className="w-full h-full object-cover"
             onError={(e) => {
-              // Fallback to PNG if SVG fails or is not preferred
+              // Fallback if the user-provided image hasn't been uploaded yet
               (e.target as HTMLImageElement).src = '/favicon-96x96.png';
             }}
           />
