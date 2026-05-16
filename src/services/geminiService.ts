@@ -1,6 +1,9 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, ThinkingLevel } from "@google/genai";
+import { CHAPTERS_DATA } from "../data/chapters";
+import { D as D_EL } from "../data/course-el";
+import { D as D_EN } from "../data/course-en";
 
-const MODEL_NAME = "gemini-1.5-flash"; 
+const MODEL_NAME = "gemini-3-flash-preview"; 
 
 export interface AIReflectionResponse {
   patterns: string[];
@@ -74,6 +77,7 @@ export async function getAIReflection(
       config: {
         systemInstruction,
         responseMimeType: "application/json",
+        thinkingConfig: { thinkingLevel: ThinkingLevel.LOW }
       },
     });
 
@@ -98,8 +102,7 @@ export async function streamCompanionResponse(
     screen: string;
     chapter?: number;
     questionnaire?: any;
-    courseData: any;
-    chaptersData: any;
+    // courseData and chaptersData are now handled server-side
   },
   onChunk: (chunk: string) => void
 ): Promise<void> {
@@ -110,6 +113,10 @@ export async function streamCompanionResponse(
   }
 
   const ai = new GoogleGenAI({ apiKey });
+
+  // Use server-side data for knowledge base
+  const courseData = context.language === 'el' ? D_EL : D_EN;
+  const chaptersData = CHAPTERS_DATA[context.language === 'en' ? 'en' : 'el'];
 
   const systemInstruction = `
     Είσαι ο "Companion" (Ο Σύντροφος) της εφαρμογής Awareness Gateway.
@@ -131,8 +138,8 @@ export async function streamCompanionResponse(
     - Άξονας 4: ΧΩΡΟΣ (Space) - Διεύρυνση της επίγνωσης, Ουρανός vs Σύννεφα. Η ατμόσφαιρα της παρουσίας.
 
     KNOWLEDGE BASE:
-    Course Content: ${JSON.stringify(context.courseData)}
-    Book/Chapters Content: ${JSON.stringify(context.chaptersData)}
+    Course Content: ${JSON.stringify(courseData)}
+    Book/Chapters Content: ${JSON.stringify(chaptersData)}
 
     USER CONTEXT:
     - Current Language: ${context.language}
@@ -146,20 +153,23 @@ export async function streamCompanionResponse(
   `;
 
   try {
-    const chat = ai.models.getGenerativeModel({
+    const responseStream = await ai.models.generateContentStream({
       model: MODEL_NAME,
-      systemInstruction,
-    }).startChat({
-      history: history.map(h => ({
-        role: h.role === 'user' ? ('user' as const) : ('model' as const),
-        parts: [{ text: h.content }]
-      }))
+      contents: [
+        ...history.map(h => ({
+          role: h.role === 'user' ? ('user' as const) : ('model' as const),
+          parts: [{ text: h.content }]
+        })),
+        { role: 'user', parts: [{ text: message }] }
+      ],
+      config: {
+        systemInstruction,
+        thinkingConfig: { thinkingLevel: ThinkingLevel.LOW }
+      }
     });
     
-    const result = await chat.sendMessageStream(message);
-    
-    for await (const chunk of result.stream) {
-      const chunkText = chunk.text();
+    for await (const chunk of responseStream) {
+      const chunkText = chunk.text;
       if (chunkText) {
         onChunk(chunkText);
       }
@@ -178,8 +188,7 @@ export async function getCompanionResponse(
     screen: string;
     chapter?: number;
     questionnaire?: any;
-    courseData: any;
-    chaptersData: any;
+    // courseData and chaptersData are now handled server-side
   }
 ): Promise<string> {
   if (!isServer) {
@@ -212,6 +221,10 @@ export async function getCompanionResponse(
 
   const ai = new GoogleGenAI({ apiKey });
 
+  // Use server-side data
+  const courseData = context.language === 'el' ? D_EL : D_EN;
+  const chaptersData = CHAPTERS_DATA[context.language === 'en' ? 'en' : 'el'];
+
   const systemInstruction = `
     Είσαι ο "Companion" (Ο Σύντροφος) της εφαρμογής Awareness Gateway.
     Είσαι ένας σεμνός, ήσυχος και βαθιά γνώστης της ενσυνειδητότητας και της νευροδιαφορετικότητας.
@@ -232,8 +245,8 @@ export async function getCompanionResponse(
     - Άξονας 4: ΧΩΡΟΣ (Space) - Διεύρυνση της επίγνωσης, Ουρανός vs Σύννεφα. Η ατμόσφαιρα της παρουσίας.
 
     KNOWLEDGE BASE:
-    Course Content: ${JSON.stringify(context.courseData)}
-    Book/Chapters Content: ${JSON.stringify(context.chaptersData)}
+    Course Content: ${JSON.stringify(courseData)}
+    Book/Chapters Content: ${JSON.stringify(chaptersData)}
 
     USER CONTEXT:
     - Current Language: ${context.language}
@@ -247,18 +260,21 @@ export async function getCompanionResponse(
   `;
 
   try {
-    const chat = ai.chats.create({
+    const response = await ai.models.generateContent({
       model: MODEL_NAME,
+      contents: [
+        ...history.map(h => ({
+          role: h.role === 'user' ? ('user' as const) : ('model' as const),
+          parts: [{ text: h.content }]
+        })),
+        { role: 'user', parts: [{ text: message }] }
+      ],
       config: {
         systemInstruction,
+        thinkingConfig: { thinkingLevel: ThinkingLevel.LOW }
       },
-      history: history.map(h => ({
-        role: h.role === 'user' ? ('user' as const) : ('model' as const),
-        parts: [{ text: h.content }]
-      }))
     });
     
-    const response = await chat.sendMessage({ message });
     return response.text || (context.language === 'el' ? "Συγγνώμη, υπήρξε ένα πρόβλημα στην επικοινωνία." : "Sorry, there was a problem communicating.");
   } catch (error) {
     console.error("Companion AI Error:", error);

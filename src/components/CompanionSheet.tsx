@@ -794,8 +794,6 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
             language,
             screen: companionData.lastScreen,
             questionnaire: companionData.questionnaire,
-            courseData: language === 'el' ? D_EL : D_EN,
-            chaptersData: CHAPTERS_DATA[language === 'en' ? 'en' : 'el']
           }
         }),
       });
