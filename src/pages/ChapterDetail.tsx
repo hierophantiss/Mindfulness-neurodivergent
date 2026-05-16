@@ -5,6 +5,8 @@ import { CHAPTER_TAKEAWAYS, CHAPTER_MICRO_CAT } from '../data/takeaways';
 import { ArrowLeft, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, Check, Zap, Sparkles } from 'lucide-react';
 import { useCompanion } from '../hooks/useCompanion';
 import { useLanguage } from '../hooks/useLanguage';
+import { useReward } from '../contexts/RewardContext';
+import { useProgress } from '../contexts/ProgressContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../lib/utils';
 import InteractiveRenderer from '../components/InteractiveRenderer';
@@ -64,6 +66,7 @@ export default function ChapterDetail() {
   const navigate = useNavigate();
   const { updateChapterProgress, trackActivity } = useCompanion();
   const { language } = useLanguage();
+  const { markChapterComplete } = useProgress();
   
   const currentLang = language === 'en' && CHAPTERS_DATA['en'] ? 'en' : 'el';
   const chapter = CHAPTERS_DATA[currentLang].find(c => c.num === Number(id));
@@ -106,6 +109,7 @@ export default function ChapterDetail() {
       setVisibleParagraphs(1);
     } else {
       updateChapterProgress(chapter.num, 1);
+      markChapterComplete(chapter.num);
       navigate('/chapters');
     }
   };

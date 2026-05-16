@@ -9,6 +9,7 @@ import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useReward } from '../contexts/RewardContext';
+import { useProgress } from '../contexts/ProgressContext';
 
 export default function PracticeBreath() {
   const { id } = useParams();
@@ -16,6 +17,7 @@ export default function PracticeBreath() {
   const { language } = useLanguage();
   const { reduceMotion } = useAccessibility();
   const { triggerReward } = useReward();
+  const { markBreathComplete } = useProgress();
   
   const currentPatternId = id || '4-2-6-1';
   const pattern = BREATH_PATTERNS.find(p => p.id === currentPatternId) || BREATH_PATTERNS[0];

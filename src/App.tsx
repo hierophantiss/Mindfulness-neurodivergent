@@ -25,6 +25,7 @@ import { ThemeProvider } from './hooks/useTheme';
 import { AccessibilityProvider } from './hooks/useAccessibility';
 import { TimeProvider } from './contexts/TimeContext';
 import { RewardProvider } from './contexts/RewardContext';
+import { ProgressProvider } from './contexts/ProgressContext';
 
 function AppContent() {
   return (
@@ -63,9 +64,11 @@ export default function App() {
       <LanguageProvider>
         <ThemeProvider>
           <RewardProvider>
-            <AccessibilityProvider>
-              <AppContent />
-            </AccessibilityProvider>
+            <ProgressProvider>
+              <AccessibilityProvider>
+                <AppContent />
+              </AccessibilityProvider>
+            </ProgressProvider>
           </RewardProvider>
         </ThemeProvider>
       </LanguageProvider>

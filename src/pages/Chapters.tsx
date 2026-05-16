@@ -3,12 +3,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, BookOpen, Mountain, Wind, Target, Maximize } from 'lucide-react';
 import { CHAPTERS_DATA } from '../data/chapters';
 import { useLanguage } from '../hooks/useLanguage';
+import { useProgress } from '../contexts/ProgressContext';
 import { Skeleton } from '../components/ui/Skeleton';
 import { cn } from '../lib/utils';
+import { Check } from 'lucide-react';
 
 export default function Chapters() {
   const navigate = useNavigate();
   const { language } = useLanguage();
+  const { isChapterComplete } = useProgress();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -92,10 +95,15 @@ export default function Chapters() {
                 
                 <div className="relative z-10 space-y-4">
                    <div 
-                    className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl backdrop-blur-md border border-white/10"
+                    className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl backdrop-blur-md border border-white/10 relative"
                     style={{ backgroundColor: `${chapter.hex}25`, color: chapter.hex }}
                   >
                     {chapter.icon}
+                    {isChapterComplete(chapter.num) && (
+                      <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-teal-500 flex items-center justify-center text-white border-2 border-[#12141c] animate-in zoom-in-50 duration-300">
+                        <Check size={12} strokeWidth={3} />
+                      </div>
+                    )}
                   </div>
                   <div>
                     <h3 className="text-3xl font-heading text-white/90 italic group-hover:text-white transition-colors">{chapter.title}</h3>
@@ -151,10 +159,15 @@ export default function Chapters() {
                   className="group flex items-center gap-6 p-4 shape-cloud-6 bg-[#12141c] border border-transparent active:scale-[0.98] hover:border-white/5 hover:bg-white/[0.03] transition-all duration-300"
                 >
                   <div 
-                    className="w-12 h-12 rounded-xl flex items-center justify-center text-xl shrink-0 backdrop-blur-sm transition-transform group-hover:scale-110"
+                    className="w-12 h-12 rounded-xl flex items-center justify-center text-xl shrink-0 backdrop-blur-sm transition-transform group-hover:scale-110 relative"
                     style={{ backgroundColor: `${chapter.hex}25`, color: chapter.hex }}
                   >
                     {chapter.icon}
+                    {isChapterComplete(chapter.num) && (
+                      <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-teal-500 flex items-center justify-center text-white border border-[#12141c]">
+                        <Check size={10} strokeWidth={3} />
+                      </div>
+                    )}
                   </div>
                   <div className="flex-1">
                     <h3 className="text-lg font-serif text-white/90 italic leading-tight group-hover:translate-x-1 transition-transform">{chapter.title}</h3>
@@ -192,10 +205,15 @@ export default function Chapters() {
                   className="group flex items-center gap-6 p-4 shape-cloud-6 bg-[#12141c] border border-transparent active:scale-[0.98] hover:border-white/5 hover:bg-white/[0.03] transition-all duration-300"
                 >
                   <div 
-                    className="w-12 h-12 rounded-xl flex items-center justify-center text-xl shrink-0 backdrop-blur-sm transition-transform group-hover:scale-110"
+                    className="w-12 h-12 rounded-xl flex items-center justify-center text-xl shrink-0 backdrop-blur-sm transition-transform group-hover:scale-110 relative"
                     style={{ backgroundColor: `${chapter.hex}25`, color: chapter.hex }}
                   >
                     {chapter.icon}
+                    {isChapterComplete(chapter.num) && (
+                      <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-teal-500 flex items-center justify-center text-white border border-[#12141c]">
+                        <Check size={10} strokeWidth={3} />
+                      </div>
+                    )}
                   </div>
                   <div className="flex-1">
                     <h3 className="text-lg font-serif text-white/90 italic leading-tight group-hover:translate-x-1 transition-transform">{chapter.title}</h3>

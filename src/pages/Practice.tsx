@@ -2,10 +2,15 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Wind, Zap, ArrowLeft, Move } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
+import { useProgress } from '../contexts/ProgressContext';
+import { Check } from 'lucide-react';
 
 export default function Practice() {
   const navigate = useNavigate();
   const { language } = useLanguage();
+  const { progress } = useProgress();
+
+  const completedBreathsCount = progress.completedBreaths.length;
 
   return (
     <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -46,9 +51,17 @@ export default function Practice() {
               <Wind size={36} strokeWidth={1.5} />
             </div>
             <div className="space-y-4 text-center md:text-left flex-1">
-              <h3 className="text-3xl md:text-4xl font-serif text-white/90 italic drop-shadow-md">
-                {language === 'en' ? 'Breath & Sleep' : 'Αναπνοή & Ύπνος'}
-              </h3>
+              <div className="flex items-center justify-center md:justify-start gap-4">
+                <h3 className="text-3xl md:text-4xl font-serif text-white/90 italic drop-shadow-md">
+                  {language === 'en' ? 'Breath & Sleep' : 'Αναπνοή & Ύπνος'}
+                </h3>
+                {completedBreathsCount > 0 && (
+                  <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 text-[10px] font-bold uppercase tracking-wider">
+                    <Check size={12} strokeWidth={3} />
+                    {completedBreathsCount}
+                  </div>
+                )}
+              </div>
               <p className="text-teal-100/60 font-sans max-w-2xl text-[15px] md:text-[17px] leading-relaxed">
                 {language === 'en' 
                  ? 'Deep breathing rhythms, sleep induction, and nervous system regulation.' 

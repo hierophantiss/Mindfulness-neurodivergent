@@ -3,6 +3,7 @@ import { Outlet, useLocation, Navigate } from 'react-router-dom';
 import { cn } from '../lib/utils';
 import Companion from './Companion';
 import NavigationMenu from './NavigationMenu';
+import OfflineNotification from './OfflineNotification';
 import { useLanguage } from '../hooks/useLanguage';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -35,6 +36,7 @@ export default function Layout() {
         {t('skip_to_content')}
       </a>
       <InteractiveBackground />
+      <OfflineNotification />
 
       {/* Main Content Area */}
       <main id="main-content" ref={mainRef} className={cn(

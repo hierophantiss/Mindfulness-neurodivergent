@@ -10,6 +10,7 @@ import CameraAnimation from '../components/CameraAnimation';
 import SamathaAnimation from '../components/SamathaAnimation';
 import { playSound } from '../lib/soundEffects';
 import { useReward } from '../contexts/RewardContext';
+import { useProgress } from '../contexts/ProgressContext';
 
 export default function ProgramWeek() {
   const { weekId } = useParams();
@@ -17,6 +18,7 @@ export default function ProgramWeek() {
   const { language } = useLanguage();
   const { companionData, updateCompanionData } = useCompanion();
   const { triggerReward } = useReward();
+  const { isLessonComplete, markLessonComplete } = useProgress();
   
   const courseData = language === 'en' ? courseDataEn : courseDataEl;
   const weekNum = Number(weekId);
@@ -92,16 +94,22 @@ export default function ProgramWeek() {
     exit: (dir: number) => ({ zIndex: 0, x: dir < 0 ? 50 : -50, opacity: 0 })
   };
 
-  const curW = companionData.programProgress?.week || 0;
-  const curD = companionData.programProgress?.day || 0;
-  const isCompleted = weekNum < curW || (weekNum === curW && activeDay < curD);
+  const isCompleted = isLessonComplete(weekNum, activeDay + 1);
 
   const handleComplete = () => {
     // Play complete sound and show reward
-    triggerReward('program');
-    
-    // Only advance if it's the latest day they are on
     if (!isCompleted) {
+      playSound('complete');
+      triggerReward('program');
+      markLessonComplete(weekNum, activeDay + 1);
+    }
+    
+    // Advance companion data progress if needed
+    const curW = companionData.programProgress?.week || 0;
+    const curD = companionData.programProgress?.day || 0;
+    const isCompanionBehind = weekNum > curW || (weekNum === curW && activeDay >= curD);
+
+    if (isCompanionBehind) {
       let nextW = weekNum;
       let nextD = activeDay + 1;
       if (nextD >= week.days.length) {
@@ -118,9 +126,9 @@ export default function ProgramWeek() {
       
       // Auto move to next day or back to program if week finished
       if (nextD === 0) {
-        setTimeout(() => navigate('/program'), 500);
+        setTimeout(() => navigate('/program'), 800);
       } else {
-        setTimeout(() => setActiveDay(nextD), 500);
+        setTimeout(() => setActiveDay(nextD), 800);
       }
     }
   };
@@ -145,12 +153,12 @@ export default function ProgramWeek() {
         {/* Days Horizontal Scroll */}
         <div className="flex gap-4 overflow-x-auto pb-6 snap-x hide-scrollbar px-1">
           {week.days.map((day: any, idx: number) => {
-             const dayCompleted = weekNum < curW || (weekNum === curW && idx < curD);
+             const dayCompleted = isLessonComplete(weekNum, idx + 1);
              return (
               <button
                 key={idx}
                 onClick={() => setActiveDay(idx)}
-                className={`snap-start shrink-0 flex flex-col items-start p-5 shape-cloud-6 border transition-all duration-300 active:scale-[0.98] ${
+                className={`snap-start shrink-0 flex flex-col items-start p-5 rounded-2xl border transition-all duration-300 active:scale-[0.98] ${
                   activeDay === idx 
                     ? 'bg-teal-500/10 border-teal-500/30 text-white min-w-[220px] shadow-sm ring-1 ring-teal-500/20' 
                     : 'bg-[#12141c] shadow-sm border-white/5 text-white/50 hover:bg-white/[0.04] min-w-[180px] backdrop-blur-sm'

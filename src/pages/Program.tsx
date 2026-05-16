@@ -4,6 +4,7 @@ import { ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../hooks/useLanguage';
 import { useCompanion } from '../hooks/useCompanion';
+import { useProgress } from '../contexts/ProgressContext';
 import { Skeleton } from '../components/ui/Skeleton';
 import { D as courseDataEl } from '../data/course-el';
 import { D as courseDataEn } from '../data/course-en';
@@ -12,6 +13,7 @@ export default function Program() {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const { companionData } = useCompanion();
+  const { isLessonComplete } = useProgress();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -73,7 +75,7 @@ export default function Program() {
           ) : (
             weeks.map((weekNum) => {
             const week = courseData[weekNum];
-            const isCompleted = curW > weekNum;
+            const isCompleted = week.days.every((_, i) => isLessonComplete(weekNum, i + 1));
             const isCurrent = curW === weekNum;
             
             return (
@@ -120,12 +122,7 @@ export default function Program() {
 
                   <div className="flex gap-1.5 opacity-80 mt-6 pt-4 border-t border-white/5 relative z-20">
                     {week.days.map((_, i) => {
-                      let dayCompleted = false;
-                      if (curW > weekNum) {
-                        dayCompleted = true;
-                      } else if (curW === weekNum && i < curD) {
-                        dayCompleted = true;
-                      }
+                      const dayCompleted = isLessonComplete(weekNum, i + 1);
 
                       return (
                         <div 
