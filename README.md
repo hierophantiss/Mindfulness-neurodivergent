@@ -50,11 +50,11 @@ The app is structured to provide both structured learning and spontaneous regula
 
 ## 🤖 Intelligence Layer: The Companion
 
-Awareness Gateway features **Companion Intelligence**, powered by Google's **Gemini-3-Flash**. 
+Awareness Gateway features **The Companion** (Ο Σύντροφος), powered by Google's **Gemini-1.5-Flash**. 
 
-1.  **The Guide:** A persistent AI companion available via the `CompanionSheet` which offers real-time program customization and support.
+1.  **The Companion:** A persistent AI presence available via the `CompanionSheet` which offers real-time support and context-aware guidance.
 2.  **Pattern Recognition:** The journal service uses LLM prompts to find recurring themes in user reflections and offer "Mirror Questions" for deeper inquiry.
-3.  **Security First:** All AI interactions are proxied through a secure Express backend. API keys never reach the client-side, ensuring a production-grade infrastructure.
+3.  **Security First:** All AI interactions are proxied through a secure Express backend with `dotenv` protection. API keys never reach the client-side.
 
 ---
 

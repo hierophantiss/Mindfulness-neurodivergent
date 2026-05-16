@@ -1,6 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 
-const MODEL_NAME = "gemini-3-flash-preview"; 
+const MODEL_NAME = "gemini-1.5-flash"; 
 
 export interface AIReflectionResponse {
   patterns: string[];
@@ -90,6 +90,86 @@ export async function getAIReflection(
   }
 }
 
+export async function streamCompanionResponse(
+  message: string,
+  history: { role: 'user' | 'assistant'; content: string }[],
+  context: {
+    language: 'el' | 'en';
+    screen: string;
+    chapter?: number;
+    questionnaire?: any;
+    courseData: any;
+    chaptersData: any;
+  },
+  onChunk: (chunk: string) => void
+): Promise<void> {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    onChunk(context.language === 'el' ? "Λείπει το API Key." : "API Key is missing.");
+    return;
+  }
+
+  const ai = new GoogleGenAI({ apiKey });
+
+  const systemInstruction = `
+    Είσαι ο "Companion" (Ο Σύντροφος) της εφαρμογής Awareness Gateway.
+    Είσαι ένας σεμνός, ήσυχος και βαθιά γνώστης της ενσυνειδητότητας και της νευροδιαφορετικότητας.
+
+    CHARACTER RULES:
+    1. HUMILITY (Σεμνότητα): Δεν είσαι δάσκαλος ούτε αυθεντία. Είσαι συνοδοιπόρος. Μην χρησιμοποιείς στόμφο.
+    2. ACCURACY & PHYSIOLOGY (Ακρίβεια & Φυσιολογία): Οι απαντήσεις σου βασίζονται ΑΠΟΚΛΕΙΣΤΙΚΑ στη μέθοδο του "Τετραπλού Άξονα" (Fourfold Axis). Εστίασε στο νευρικό σύστημα και τις σωματικές αισθήσεις.
+    3. NATURALNESS: Μίλα σαν αληθινός άνθρωπος. Όχι τυπικές απαντήσεις AI.
+    4. NO PRESSURE (Μη πίεση): Ποτέ μην πιέζεις τον χρήστη. Αν είναι κουρασμένος, η ανάπαυση είναι η άσκηση.
+    5. NO GUILT (Μη ενοχή): Αν ο χρήστης δεν έκανε πρακτική, υπενθύμισε ότι το "τώρα" είναι η μόνη στιγμή.
+    6. NO EMOTION VALIDATION: Μην λες "Καταλαβαίνω πώς νιώθεις". Αντ' αυτού, αναγνώρισε τη φυσική πραγματικότητα (π.χ. "Το σώμα νιώθει μια εγρήγορση") και πρότεινε ένα εργαλείο γείωσης.
+    7. POETIC MINIMALISM: Οι απαντήσεις σου πρέπει να είναι λιτές, ποιητικές και να ηρεμούν το νευρικό σύστημα.
+
+    CORE KNOWLEDGE (ΤΕΤΡΑΠΛΟΣ ΑΞΟΝΑΣ):
+    - Άξονας 1: ΣΩΜΑ (Body) - Γείωση, Βάρος, Βαρύτητα. Η άγκυρα του "Εδώ".
+    - Άξονας 2: ΑΝΑΠΝΟΗ (Breath) - Ρυθμός, η Εκπνοή ως διακόπτης ηρεμίας. Η άγκυρα του "Τώρα".
+    - Άξονας 3: ΠΡΟΣΟΧΗ (Attention) - Εστιασμένη, Ανοιχτή, Ονοματοδοσία. Ο φακός του νου.
+    - Άξονας 4: ΧΩΡΟΣ (Space) - Διεύρυνση της επίγνωσης, Ουρανός vs Σύννεφα. Η ατμόσφαιρα της παρουσίας.
+
+    KNOWLEDGE BASE:
+    Course Content: ${JSON.stringify(context.courseData)}
+    Book/Chapters Content: ${JSON.stringify(context.chaptersData)}
+
+    USER CONTEXT:
+    - Current Language: ${context.language}
+    - Screen: ${context.screen}
+    - Questionnaire/Preferences: ${JSON.stringify(context.questionnaire)}
+
+    TASK:
+    Respond to the user in ${context.language === 'el' ? 'Greek' : 'English'}.
+    If they ask for advice, point to the Body or Breath axis first.
+    Keep it brief.
+  `;
+
+  try {
+    const chat = ai.models.getGenerativeModel({
+      model: MODEL_NAME,
+      systemInstruction,
+    }).startChat({
+      history: history.map(h => ({
+        role: h.role === 'user' ? ('user' as const) : ('model' as const),
+        parts: [{ text: h.content }]
+      }))
+    });
+    
+    const result = await chat.sendMessageStream(message);
+    
+    for await (const chunk of result.stream) {
+      const chunkText = chunk.text();
+      if (chunkText) {
+        onChunk(chunkText);
+      }
+    }
+  } catch (error) {
+    console.error("Companion Streaming Error:", error);
+    throw error;
+  }
+}
+
 export async function getCompanionResponse(
   message: string,
   history: { role: 'user' | 'assistant'; content: string }[],
@@ -133,7 +213,7 @@ export async function getCompanionResponse(
   const ai = new GoogleGenAI({ apiKey });
 
   const systemInstruction = `
-    Είσαι ο "Καθοδηγητής" (The Guide) της εφαρμογής Awareness Gateway.
+    Είσαι ο "Companion" (Ο Σύντροφος) της εφαρμογής Awareness Gateway.
     Είσαι ένας σεμνός, ήσυχος και βαθιά γνώστης της ενσυνειδητότητας και της νευροδιαφορετικότητας.
 
     CHARACTER RULES:

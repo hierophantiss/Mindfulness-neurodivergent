@@ -784,31 +784,74 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
     updateCompanionData({ chatHistory: newUserHistory });
 
     try {
-      const response = await getCompanionResponse(
-        userMsg,
-        newUserHistory.filter(m => m.role !== 'system').map(m => ({ role: m.role as any, content: m.content })),
-        {
-          language,
-          screen: companionData.lastScreen,
-          questionnaire: companionData.questionnaire,
-          courseData: language === 'el' ? D_EL : D_EN,
-          chaptersData: CHAPTERS_DATA[language === 'en' ? 'en' : 'el']
-        }
-      );
+      const response = await fetch('/api/ai/companion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: userMsg,
+          history: newUserHistory.filter(m => m.role !== 'system').map(m => ({ role: m.role as any, content: m.content })),
+          context: {
+            language,
+            screen: companionData.lastScreen,
+            questionnaire: companionData.questionnaire,
+            courseData: language === 'el' ? D_EL : D_EN,
+            chaptersData: CHAPTERS_DATA[language === 'en' ? 'en' : 'el']
+          }
+        }),
+      });
 
+      if (!response.ok) throw new Error('Stream failed');
+      if (!response.body) throw new Error('No body');
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let assistantContent = '';
+
+      // Initialize assistant message
       updateCompanionData(prev => ({
         ...prev,
         chatHistory: [
           ...(prev.chatHistory || []),
           {
             role: 'assistant' as const,
-            content: response,
+            content: '',
             timestamp: new Date().toISOString()
           }
         ]
       }));
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        
+        const chunk = decoder.decode(value, { stream: true });
+        assistantContent += chunk;
+
+        // Update just the last message
+        updateCompanionData(prev => {
+          const newHistory = [...(prev.chatHistory || [])];
+          if (newHistory.length > 0) {
+            newHistory[newHistory.length - 1] = {
+              ...newHistory[newHistory.length - 1],
+              content: assistantContent
+            };
+          }
+          return { ...prev, chatHistory: newHistory };
+        });
+      }
     } catch (err) {
       console.error(err);
+      updateCompanionData(prev => ({
+        ...prev,
+        chatHistory: [
+          ...(prev.chatHistory || []),
+          {
+            role: 'assistant' as const,
+            content: language === 'el' ? "Συγγνώμη, υπήρξε ένα πρόβλημα στην επικοινωνία." : "Sorry, there was a problem communicating.",
+            timestamp: new Date().toISOString()
+          }
+        ]
+      }));
     } finally {
       setLoading(false);
     }
@@ -825,7 +868,7 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
             <span className="text-stone-600 dark:text-stone-400">←</span>
           </button>
           <div className="flex flex-col">
-            <h2 className="font-display text-lg font-medium leading-none tracking-tight text-pine-900 dark:text-pine-50">{language === 'el' ? 'Ο Καθοδηγητής' : 'The Guide'}</h2>
+            <h2 className="font-display text-lg font-medium leading-none tracking-tight text-pine-900 dark:text-pine-50">{language === 'el' ? 'Ο Σύντροφος' : 'The Companion'}</h2>
             <div className="flex items-center gap-1.5 mt-1">
               <div className="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse" />
               <span className="text-[10px] uppercase tracking-widest text-stone-500 dark:text-stone-400 font-bold">Παρουσία / Presence</span>

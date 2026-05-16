@@ -1,4 +1,5 @@
 import express from 'express';
+import 'dotenv/config';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createServer as createViteServer } from 'vite';
@@ -35,12 +36,24 @@ async function startServer() {
   app.post('/api/ai/companion', async (req, res) => {
     try {
       const { message, history, context } = req.body;
-      const { getCompanionResponse } = await import('./src/services/geminiService.ts');
-      const response = await getCompanionResponse(message, history, context);
-      res.json({ response });
+      const { streamCompanionResponse } = await import('./src/services/geminiService.ts');
+      
+      // Set headers for streaming
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.setHeader('Transfer-Encoding', 'chunked');
+
+      await streamCompanionResponse(message, history, context, (chunk) => {
+        res.write(chunk);
+      });
+      
+      res.end();
     } catch (error: any) {
       console.error('Companion API Error:', error);
-      res.status(500).json({ error: error.message || 'Internal Server Error' });
+      if (!res.headersSent) {
+        res.status(500).json({ error: error.message || 'Internal Server Error' });
+      } else {
+        res.end();
+      }
     }
   });
 
