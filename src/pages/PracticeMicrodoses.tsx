@@ -351,7 +351,7 @@ export default function PracticeMicrodoses() {
       </header>
 
       {/* Modern Filter Tabs */}
-      <div className="flex overflow-x-auto gap-4 pb-2 scrollbar-none sticky top-0 z-20 -mx-6 px-6 bg-[#0f1117]/80 backdrop-blur-xl py-4 border-b border-white/5">
+      <div className="flex overflow-x-auto gap-4 pb-2 scrollbar-none sticky top-0 z-20 -mx-6 px-6 bg-black/40 backdrop-blur-md/80 backdrop-blur-xl py-4 border-b border-white/5">
         {categories.map(cat => {
           const isActive = activeTab === cat.id;
           const color = getTypeColor(cat.id);
@@ -382,7 +382,7 @@ export default function PracticeMicrodoses() {
               to={ex.link}
               key={ex.id}
               className={cn(
-                "group relative block bg-[#12141c] border border-white/5 hover:border-white/10 hover:bg-white/[0.04] p-8 transition-all duration-300 active:scale-[0.98] overflow-hidden shadow-xl",
+"group relative block glass-card hover:border-white/10 hover:bg-white/[0.04] p-8 transition-all duration-300 active:scale-[0.98]",
                 `shape-cloud-${(idx % 5) + 1}`
               )}
             >

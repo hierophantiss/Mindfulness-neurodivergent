@@ -20,7 +20,7 @@ function PatternCard({ p, colorScheme, icon: Icon, onClick, language }: {
       onClick={onClick}
       className={cn(
         "group relative border p-6 text-left transition-all duration-300 overflow-hidden flex flex-col shadow-md active:scale-[0.98] hover:shadow-lg hover:-translate-y-0.5 backdrop-blur-sm",
-        "bg-[#12141c]/80 border-white/5 hover:bg-[#161922] hover:border-white/10",
+"glass-card/80 hover:bg-[#161922] hover:border-white/10",
         p.id ? `shape-cloud-${(p.id.length % 5) + 1}` : "shape-cloud-1"
       )}
     >
@@ -90,7 +90,7 @@ export default function PracticeMovement() {
         </h1>
       </div>
 
-      <div className="text-white/60 mb-8 max-w-lg bg-[#0f1117]/80 p-5 rounded-2xl border border-white/5 backdrop-blur-md z-10 relative">
+      <div className="text-white/60 mb-8 max-w-lg bg-black/40 backdrop-blur-md/80 p-5 rounded-2xl border border-white/5 backdrop-blur-md z-10 relative">
         <p className="text-[15px] font-sans leading-relaxed mb-3">
           {language === 'el' 
             ? 'Ασκήσεις ενσυνείδητης κίνησης και αναπνοής. Συνοδεύονται από ακουστικά κύματα (binaural beats) για συγχρονισμό των εγκεφαλικών ημισφαιρίων και μπορούν να χρησιμοποιηθούν με τα μάτια ανοιχτά ή κλειστά.' 

@@ -299,7 +299,7 @@ export default function Sanctuary() {
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-[#05070a] overflow-y-auto flex flex-col pt-20 custom-scrollbar">
+    <div className="relative min-h-screen w-full bg-transparent overflow-y-auto flex flex-col pt-20 custom-scrollbar">
       {/* Background Dimmer */}
       <AnimatePresence>
         {isDimmed && (
@@ -491,7 +491,7 @@ export default function Sanctuary() {
                     setActiveAttentionStyles([]);
                     setIsVoidActive(false);
                   }}
-                  className="group relative aspect-video bg-[#12141c] border border-white/5 rounded-[2rem] overflow-hidden transition-all duration-500 hover:border-teal-500/30 active:scale-[0.98] shadow-lg"
+ className="group relative aspect-video glass-card rounded-[2rem] transition-all duration-500 hover:border-teal-500/30 active:scale-[0.98]"
                 >
                   <div className="absolute inset-0 grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-80 transition-all duration-700 bg-center bg-cover" style={{ backgroundImage: `url(${video.thumbnail})` }} />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0f1117] via-[#0f1117]/40 to-transparent group-hover:via-[#0f1117]/20 transition-all duration-500" />
@@ -522,7 +522,7 @@ export default function Sanctuary() {
       {activeVideo && createPortal(
         <div className={cn(
           "fixed inset-0 z-[10000] flex flex-col animate-in fade-in duration-1000 overflow-y-auto custom-scrollbar transition-colors duration-1000",
-          isVoidActive ? "bg-black" : "bg-[#0f1117]"
+          isVoidActive ? "bg-black" : "bg-black/40 backdrop-blur-md"
         )}>
           {/* Starry Background for Void Mode */}
           <AnimatePresence>
@@ -544,7 +544,7 @@ export default function Sanctuary() {
           {/* Header Bar */}
           <div className={cn(
             "flex-none flex items-center justify-between px-6 h-20 border-b border-white/5 backdrop-blur-xl sticky top-0 z-50 transition-all duration-1000",
-            isVoidActive ? "bg-transparent border-transparent opacity-20 hover:opacity-100" : "bg-[#0f1117]/80"
+            isVoidActive ? "bg-transparent border-transparent opacity-20 hover:opacity-100" : "bg-black/40 backdrop-blur-md/80"
           )}>
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-teal-500/10 flex items-center justify-center text-teal-400">

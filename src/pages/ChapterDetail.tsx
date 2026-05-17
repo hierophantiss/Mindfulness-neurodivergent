@@ -223,7 +223,7 @@ export default function ChapterDetail() {
                   </p>
                 </div>
 
-                <div className="bg-[#12141c] border border-white/5 shape-cloud-2 p-10 md:p-14 space-y-8 relative overflow-hidden w-full text-left shadow-2xl">
+ <div className="glass-card shape-cloud-2 p-10 md:p-14 space-y-8 relative w-full text-left">
                   <div className="absolute top-0 right-0 p-10 text-white/[0.03] -rotate-12 scale-125">
                     {chapter.icon}
                   </div>
@@ -280,7 +280,7 @@ export default function ChapterDetail() {
                       )}
 
                       {/* Key Takeaways for this section or end of sections */}
-                      <div className="bg-[#12141c] shape-cloud-5 p-8 border border-white/5 space-y-6 shadow-xl">
+ <div className="glass-card shape-cloud-5 p-8 space-y-6">
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 rounded-full bg-teal-500/10 flex items-center justify-center text-teal-400/80">
                             <Sparkles size={16} />
@@ -306,7 +306,7 @@ export default function ChapterDetail() {
             {curPage.type === 'exercise' && (
               <div className="space-y-16 text-left w-full">
                 {chapter.exercise && (
-                  <div className="bg-[#12141c] border border-white/5 shape-cloud-1 p-10 md:p-14 space-y-10 shadow-2xl">
+ <div className="glass-card shape-cloud-1 p-10 md:p-14 space-y-10">
                     <header className="space-y-5">
                       <div className="flex items-center gap-4">
                          <div className="w-12 h-12 rounded-[1.25rem] bg-teal-500/5 border border-teal-500/10 flex items-center justify-center text-teal-400/60">
@@ -333,14 +333,14 @@ export default function ChapterDetail() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                   {chapter.insight && (
-                    <div className="bg-[#12141c] border border-white/5 shape-cloud-3 p-10 space-y-6 shadow-xl relative overflow-hidden group hover:border-teal-500/30 transition-all">
+ <div className="glass-card shape-cloud-3 p-10 space-y-6 relative group hover:border-teal-500/30 transition-all">
                       <div className="absolute inset-0 bg-gradient-to-br from-teal-500/[0.02] to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"></div>
                       <span className="text-[10px] font-bold text-teal-400/60 uppercase tracking-widest relative z-10 block">{language === 'el' ? 'ΕΠΙΓΝΩΣΗ' : 'INSIGHT'}</span>
                       <p className="text-xl md:text-2xl text-white/80 font-serif italic leading-relaxed relative z-10">"{chapter.insight}"</p>
                     </div>
                   )}
                   {chapter.reflection && (
-                    <div className="bg-[#12141c] border border-white/5 shape-cloud-6 p-10 space-y-6 shadow-xl relative overflow-hidden group hover:border-yellow-500/20 transition-all">
+ <div className="glass-card shape-cloud-6 p-10 space-y-6 relative group hover:border-yellow-500/20 transition-all">
                       <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/[0.02] to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"></div>
                       <span className="text-[10px] font-bold text-yellow-500/50 uppercase tracking-widest relative z-10 block">{language === 'el' ? 'ΑΝΑΣΤΟΧΑΣΜΟΣ' : 'REFLECTION'}</span>
                       <p className="text-xl md:text-2xl text-white/80 font-sans font-light leading-relaxed relative z-10">{chapter.reflection}</p>

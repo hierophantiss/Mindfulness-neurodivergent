@@ -161,7 +161,7 @@ export default function ProgramWeek() {
                 className={`snap-start shrink-0 flex flex-col items-start p-5 rounded-2xl border transition-all duration-300 active:scale-[0.98] ${
                   activeDay === idx 
                     ? 'bg-teal-500/10 border-teal-500/30 text-white min-w-[220px] shadow-sm ring-1 ring-teal-500/20' 
-                    : 'bg-[#12141c] shadow-sm border-white/5 text-white/50 hover:bg-white/[0.04] min-w-[180px] backdrop-blur-sm'
+ : 'glass-card text-white/50 hover:bg-white/[0.04] min-w-[180px] '
                 }`}
               >
                 <div className="w-full flex justify-between items-center mb-2">
@@ -185,16 +185,16 @@ export default function ProgramWeek() {
       
       {/* Day Content Progressive View */}
       <div 
-        className="bg-[#12141c] border border-white/5 shadow-2xl rounded-[2rem] p-6 md:p-10 flex flex-col relative overflow-hidden backdrop-blur-md min-h-[500px]"
+ className="glass-card rounded-[2rem] p-6 md:p-10 flex flex-col relative min-h-[500px]"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
         <div className="flex flex-wrap gap-3 mb-6 text-xs text-white/60 font-medium">
-          <div className="flex items-center gap-2 bg-[#0f1117]/60 px-4 py-2 rounded-full border border-white/5 shadow-inner backdrop-blur-sm">
+          <div className="flex items-center gap-2 bg-black/40 backdrop-blur-md/60 px-4 py-2 rounded-full border border-white/5 shadow-inner backdrop-blur-sm">
             <Clock size={14} className="text-amber-400/80" />
             <span>{currentDayContent.dur}</span>
           </div>
-          <div className="flex items-center gap-2 bg-[#0f1117]/60 px-4 py-2 rounded-full border border-white/5 shadow-inner backdrop-blur-sm">
+          <div className="flex items-center gap-2 bg-black/40 backdrop-blur-md/60 px-4 py-2 rounded-full border border-white/5 shadow-inner backdrop-blur-sm">
             <MapPin size={14} className="text-teal-400/80" />
             <span>{currentDayContent.where}</span>
           </div>
@@ -242,7 +242,7 @@ export default function ProgramWeek() {
                 )}
 
                 {currentStepData.id === 'exercise' && currentDayContent.exercise && (
-                  <div className="bg-[#0f1117]/80 border border-white/5 rounded-[2rem] p-6 sm:p-8 mb-6 shadow-2xl backdrop-blur-md">
+                  <div className="bg-black/40 backdrop-blur-md/80 border border-white/5 rounded-[2rem] p-6 sm:p-8 mb-6 shadow-2xl backdrop-blur-md">
                     <h4 className="text-xl md:text-2xl font-serif text-white mb-6 flex items-center gap-3 drop-shadow-sm">
                       <div className="bg-amber-500/20 text-amber-400 p-2 rounded-xl border border-amber-500/20 shadow-inner">
                         <PlayCircle size={24} strokeWidth={2} />
@@ -261,14 +261,14 @@ export default function ProgramWeek() {
                 )}
 
                 {currentStepData.id === 'breathing' && currentDayContent.breathing && (
-                  <div className="bg-[#12141c] border border-white/5 rounded-[2rem] p-6 sm:p-8 mb-6 prose prose-invert max-w-none text-white/80 shadow-2xl backdrop-blur-md"
+ <div className="glass-card rounded-[2rem] p-6 sm:p-8 mb-6 prose prose-invert max-w-none text-white/80"
                        dangerouslySetInnerHTML={{ __html: currentDayContent.breathing }} />
                 )}
 
                 {currentStepData.id === 'insight' && (
                   <div className="grid grid-cols-1 gap-5 md:gap-6 mb-6">
                     {currentDayContent.insight && (
-                      <div className="bg-[#0f1117]/80 border border-white/5 rounded-[1.75rem] p-6 shadow-2xl backdrop-blur-sm">
+                      <div className="bg-black/40 backdrop-blur-md/80 border border-white/5 rounded-[1.75rem] p-6 shadow-2xl backdrop-blur-sm">
                         <div className="flex items-center gap-2 mb-3">
                           <div className="w-1.5 h-1.5 rounded-full bg-amber-400/80"></div>
                           <h5 className="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-400/90 drop-shadow-sm">{language === 'el' ? 'Επίγνωση' : 'Insight'}</h5>
@@ -277,7 +277,7 @@ export default function ProgramWeek() {
                       </div>
                     )}
                     {currentDayContent.reflection && (
-                      <div className="bg-[#0f1117]/80 border border-white/5 rounded-[1.75rem] p-6 shadow-2xl backdrop-blur-sm">
+                      <div className="bg-black/40 backdrop-blur-md/80 border border-white/5 rounded-[1.75rem] p-6 shadow-2xl backdrop-blur-sm">
                         <div className="flex items-center gap-2 mb-3">
                           <div className="w-1.5 h-1.5 rounded-full bg-teal-400/80"></div>
                           <h5 className="text-[10px] font-bold uppercase tracking-[0.2em] text-teal-400/90 drop-shadow-sm">

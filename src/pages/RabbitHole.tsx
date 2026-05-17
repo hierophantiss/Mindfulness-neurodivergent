@@ -60,6 +60,36 @@ export default function RabbitHole() {
       ]
     },
     {
+      id: 'dzogchen-nature-of-mind',
+      title: language === 'en' ? 'The Nature of Mind & Tregchod' : 'Η Φύση του Νου & Η Λύση της Έντασης',
+      author: language === 'en' ? 'Dzogchen & Neuroscience' : 'Τζοκτσέν & Νευροεπιστήμη',
+      pages: language === 'en' ? [
+        "According to Tibetan Buddhism and the Dzogchen tradition, the mind has two aspects. The first is the ordinary, dualistic, and discriminating mind, called 'Sem'.",
+        "'Sem' operates in time (past and future), clinging, comparing, and continuously creating inner scenarios. Neurophysiologically, this closely relates to the brain's Default Mode Network (DMN), often accompanied by high Beta waves: a state of chronic tension and subtle alarm.",
+        "The other aspect is the Nature of Mind (Rigpa). This is our indestructible, unchanging essence. It is the state of pure, open awareness—observation without an observer.",
+        "Like a pure crystal taking on the color of whatever it touches without changing itself, or a mirror reflecting everything purely without grasping, the Nature of Mind reflects experience without being altered by it.",
+        "In neuroscience, this profound state corresponds to the synchronization of the two brain hemispheres through Alpha and Gamma waves. The nervous system shifts from fragmented survival mode into harmonious integration.",
+        "But how do we transition from the tension of 'Sem' to the vastness of the Nature of Mind? In Dzogchen, the answer is not forceful control or striving, but 'Tregchod', which translates to: the absolute cutting through, or release, of tension.",
+        "The 4-Stage Method of our practice is effectively an application of Tregchod: releasing tension layer by layer.",
+        "Stage 1 (Body): We abandon the mental scenarios of 'Sem'. Through the sensation of gravity, we drop immediately into the physical present.\nStage 2 (Breath): We focus on the internal touch, dissolving respiratory tension.\nStage 3 (Attention): We notice mental tension and let it unravel.\nStage 4 (Space): With tensions resolved, pristine open awareness organically emerges.",
+        "And here lies a profound truth about self-compassion. At first, trying forcefully to 'be kind to yourself' might feel entirely fake or impossible.",
+        "However, compassion is not a feeling we must actively manufacture and give to ourselves. When we remove the pressure, the internal rejection, and the subtle violence of constant striving, our nature organically emanates kindness.",
+        "The self is the very source of compassion. We do not need to acquire it from the outside; we only need to let the tension settle and allow our true nature to shine."
+      ] : [
+        "Σύμφωνα με τον Θιβετιανό Βουδισμό και την παράδοση του Τζοκτσέν (Dzogchen), ο νους έχει δύο όψεις. Η πρώτη είναι ο συνηθισμένος, δυαδικός και διακριτικός νους, τον οποίο αποκαλούν «Σεμ» (Sem).",
+        "Ο «Σεμ» λειτουργεί μέσα στο χρόνο, συγκρίνει, κρίνει και προσκολλάται συνεχώς σε νοητικά σενάρια. Νευροφυσιολογικά, λειτουργεί μέσα από το Δίκτυο Προεπιλεγμένης Λειτουργίας (DMN) του εγκεφάλου, εκπέμποντας συχνά υψηλά κύματα Βήτα: μια κατάσταση μόνιμου συναγερμού και χρόνιας έντασης.",
+        "Η άλλη όψη είναι η Φύση του Νου (Ρίγκπα). Είναι η άφθαρτη, αμετάβλητη ουσία μας. Η κατάσταση της καθαρής, ολικής ανοιχτής επίγνωσης, όπου υπάρχει παρατήρηση-αντίληψη χωρίς παρατηρητή.",
+        "Όπως μια κρυστάλλινη σφαίρα παίρνει το χρώμα του υλικού πάνω στο οποίο τοποθετείται χωρίς η ίδια να αλλάζει, ή όπως ο καθρέφτης αντανακλά τα πάντα δίχως να ταυτίζεται, η Φύση του Νου αντανακλά την εμπειρία δίχως να αλλοιώνεται από αυτήν.",
+        "Στη σύγχρονη νευροεπιστήμη, αυτή η κατάσταση συσχετίζεται με τον συγχρονισμό των δύο ημισφαιρίων μέσω κυμάτων Άλφα και Γάμμα. Το νευρικό σύστημα περνά από τον κατακερματισμό της επιβίωσης σε βαθιά ενοποίηση.",
+        "Όμως, πώς περνάμε από τον «Σεμ» στη Φύση του Νου; Στο Dzogchen, η απάντηση δεν είναι η πίεση, ο έλεγχος ή η πνευματική φιλοδοξία, αλλά το «Tregchod» (Τρέγκτσοντ) που σημαίνει: Η απόλυτη λύση της έντασης. Η αβίαστη, φυσική χαλάρωση.",
+        "Η προσέγγιση των 4 Σταδίων που ακολουθούμε αποτελεί μια άμεση, πρακτική εφαρμογή του Tregchod.",
+        "Στάδιο 1 (Σώμα): Βγαίνουμε από τα σενάρια του «Σεμ» και μέσω της πίεσης της βαρύτητας επιστρέφουμε στο τώρα.\nΣτάδιο 2 (Αναπνοή): Η εσωτερική αφή της πνοής λύνει τη σωματική ένταση.\nΣτάδιο 3 (Προσοχή): Παρατηρούμε τη νοητική ένταση και της επιτρέπουμε να διαλυθεί.\nΣτάδιο 4 (Χώρος): Με τις εντάσεις λυμένες, η ανοιχτή επίγνωση αναδύεται από μόνη της.",
+        "Και εδώ κρύβεται ένα μεγάλο μυστικό για την αυτό-συμπόνια: Στην αρχή, το να προσπαθείς εσκεμμένα να νιώσεις καλοσύνη για τον εαυτό σου μοιάζει συχνά ανέφικτο ή \"ψεύτικο\".",
+        "Η καλοσύνη δεν είναι κάτι 'εξωτερικό' που πρέπει με το ζόρι να δώσουμε στον εαυτό μας. Όταν μέσω της λύσης της έντασης (Tregchod) αφαιρέσουμε την πίεση, την εσωτερική απόρριψη και τη βία της συνεχούς προσπάθειας, ο ίδιος μας ο εαυτός αναδύει απόλυτη καλοσύνη.",
+        "Η Φύση του Νου είναι η ίδια η πηγή της συμπόνιας. Δεν χρειάζεται να την αποκτήσουμε, αρκεί μόνο να αφήσουμε την ένταση να καταλαγιάσει ώστε να επιτρέψουμε στη φύση μας να λάμψει."
+      ]
+    },
+    {
       id: 'buddha-autism',
       title: language === 'en' ? 'Was Buddha on the Spectrum?' : 'Ήταν ο Βούδας στο φάσμα;',
       author: 'Louise Woodford',
@@ -237,10 +267,10 @@ export default function RabbitHole() {
     if (!article) return <div className="text-white p-20 mt-20 text-center">Article not found: {activeArticle}</div>;
 
     const storyViewer = (
-      <div className="fixed inset-0 z-[9999] bg-[#0f1117] text-white flex flex-col animate-in fade-in duration-300">
+      <div className="fixed inset-0 z-[9999] bg-black/40 backdrop-blur-md text-white flex flex-col animate-in fade-in duration-300">
         
         {/* Top Progress Bar & Header */}
-        <div className="pt-safe px-4 pb-3 flex items-center justify-between border-b border-white/5 bg-[#0f1117]/80 backdrop-blur-md relative z-20">
+        <div className="pt-safe px-4 pb-3 flex items-center justify-between border-b border-white/5 bg-black/40 backdrop-blur-md/80 backdrop-blur-md relative z-20">
           <button 
             onClick={() => setActiveArticle(null)} 
             className="p-2 -ml-2 text-white/40 hover:text-white transition-colors active:scale-95"
@@ -329,7 +359,7 @@ export default function RabbitHole() {
   return (
     <div className="flex flex-col min-h-screen animate-in fade-in pb-24">
       {/* Header */}
-      <header className="sticky top-0 z-30 bg-[#0f1117]/80 backdrop-blur-xl border-b border-white/5 shadow-sm">
+      <header className="sticky top-0 z-30 bg-black/40 backdrop-blur-md/80 backdrop-blur-xl border-b border-white/5 shadow-sm">
         <div className="flex items-center justify-between px-4 h-16">
           <Link 
             to="/"
@@ -360,7 +390,7 @@ export default function RabbitHole() {
           {/* Link to Method & Symbols */}
           <Link 
             to="/method"
-            className="w-full md:col-span-2 bg-[#12141c] border border-white/5 rounded-[2rem] p-6 md:p-8 shadow-xl block text-left transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-teal-500/20 relative overflow-hidden group"
+ className="w-full md:col-span-2 glass-card rounded-[2rem] p-6 md:p-8 block text-left transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-teal-500/20 relative group"
           >
             <div className="absolute top-0 right-0 p-4 opacity-[0.02] transform translate-x-4 -translate-y-4 group-hover:scale-110 group-hover:opacity-[0.04] transition-all duration-700">
               <span className="text-[120px] md:text-[160px] grayscale">🐘</span>
@@ -389,15 +419,15 @@ export default function RabbitHole() {
           </Link>
 
           {articles.map((article) => {
-            const isNew = article.id === 'koshas-veils';
+            const isNew = article.id === 'dzogchen-nature-of-mind';
             return (
               <button 
                 key={article.id}
                 onClick={() => { setActiveArticle(article.id); setCurrentPage(0); }}
                 className={`w-full border rounded-[2rem] p-6 md:p-8 shadow-xl flex flex-col text-left transition-all duration-300 active:scale-[0.98] hover:shadow-2xl relative overflow-hidden group ${
                   isNew 
-                    ? 'bg-[#12141c] border-teal-500/20 hover:border-teal-500/40 hover:bg-teal-950/20' 
-                    : 'bg-[#12141c] border-white/5 hover:border-white/10 hover:bg-white/[0.04]'
+ ? 'glass-card border-teal-500/20 hover:border-teal-500/40 hover:bg-teal-950/20' 
+ : 'glass-card hover:border-white/10 hover:bg-white/[0.04]'
                 }`}
               >
                 {isNew && (

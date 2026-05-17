@@ -41,7 +41,7 @@ export default function Practice() {
         {/* Breath Card */}
         <Link
           to="/practice/movement#breath"
-          className="group relative block p-8 md:p-10 shape-cloud-1 bg-[#081f18] border border-teal-900/40 transition-all duration-300 active:scale-[0.98] hover:border-teal-400/40 hover:bg-teal-950 shadow-2xl overflow-hidden"
+          className="group relative block p-8 md:p-10 shape-cloud-1 bg-teal-950/40 backdrop-blur-md border border-teal-900/40 transition-all duration-300 active:scale-[0.98] hover:border-teal-400/40 hover:bg-teal-950 shadow-2xl overflow-hidden"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 via-transparent to-black/40 pointer-events-none" />
           <div className="absolute top-0 right-0 w-64 h-64 bg-teal-500/10 blur-[80px] -mr-32 -mt-32 rounded-full pointer-events-none transition-transform group-hover:scale-150 duration-1000" />
@@ -80,7 +80,7 @@ export default function Practice() {
         {/* Movement Card */}
         <Link
           to="/practice/movement#movement"
-          className="group relative block p-8 md:p-10 shape-cloud-3 bg-[#12141c] border border-white/5 transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-indigo-500/20 shadow-2xl overflow-hidden"
+ className="group relative block p-8 md:p-10 shape-cloud-3 glass-card transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-indigo-500/20"
         >
           <div className="absolute top-0 left-0 w-64 h-64 bg-indigo-500/5 blur-[80px] -ml-32 -mt-32 rounded-full pointer-events-none transition-transform group-hover:scale-150 duration-1000" />
           
@@ -104,7 +104,7 @@ export default function Practice() {
         {/* Microdoses Card */}
         <Link
           to="/practice/microdoses"
-          className="group relative block p-8 md:p-10 shape-cloud-2 bg-[#12141c] border border-white/5 transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-amber-500/20 shadow-2xl overflow-hidden"
+ className="group relative block p-8 md:p-10 shape-cloud-2 glass-card transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-amber-500/20"
         >
           <div className="absolute bottom-0 right-0 w-64 h-64 bg-amber-500/5 blur-[80px] -mr-32 -mb-32 rounded-full pointer-events-none transition-transform group-hover:scale-150 duration-1000" />
           

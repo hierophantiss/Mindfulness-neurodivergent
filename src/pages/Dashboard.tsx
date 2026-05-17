@@ -489,8 +489,8 @@ export default function Dashboard() {
           {activeWisdom && (
             <motion.div 
               variants={itemVariants}
-              className="group relative p-2.5 shape-cloud-6 soft-glass overflow-hidden transition-colors duration-500"
-              style={{ background: dayTheme.bg, borderColor: dayTheme.border }}
+ className="group relative p-2.5 shape-cloud-6 soft-glass transition-colors duration-500"
+              
             >
               <div className="relative z-10 flex items-center gap-3">
                 <div className="text-teal-400/40 shrink-0">
@@ -507,11 +507,11 @@ export default function Dashboard() {
           <motion.div variants={itemVariants} className="relative mt-2">
             <Link 
               to="/chapters" 
-              className="relative block group overflow-hidden shape-cloud-1 soft-glass p-6 pt-5 transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.05]"
-              style={{ background: dayTheme.bg, borderColor: dayTheme.border }}
+ className="relative block group shape-cloud-1 soft-glass p-6 pt-5 transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.05]"
+              
             >
               {/* Soft texture/gradient for 'breathable' feel */}
-              <div className={cn("absolute inset-0 bg-gradient-to-br via-transparent to-black/40 pointer-events-none", dayTheme.gradient)} />
+              <div className={cn("absolute inset-0 bg-gradient-to-br via-transparent to-black/40 pointer-events-none rounded-[inherit]", dayTheme.gradient)} />
               
               <div className="relative z-10 space-y-4">
                 <div className="space-y-3">
@@ -559,7 +559,7 @@ export default function Dashboard() {
               </div>
               <Link 
                 to={rec.to}
-                className={cn("group flex items-center justify-between p-5 rounded-3xl soft-glass transition-all duration-500 active:scale-[0.98] border", rec.bg)}
+ className={cn("group flex items-center justify-between p-5 rounded-3xl soft-glass transition-all duration-500 active:scale-[0.98] border", rec.bg)}
               >
                  <div className="flex items-center gap-4">
                      <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center border bg-black/20 backdrop-blur-md", rec.color, rec.bg)}>
@@ -594,8 +594,8 @@ export default function Dashboard() {
             <motion.div variants={itemVariants}>
               <Link 
                 to="/practice"
-                className="group relative block p-5 shape-cloud-2 soft-glass transition-all duration-300 active:scale-[0.98] overflow-hidden hover:bg-white/[0.05]"
-                style={{ background: dayTheme.bg, borderColor: dayTheme.border }}
+ className="group relative block p-5 shape-cloud-2 soft-glass transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.05]"
+                
               >
                 {/* Background Accent */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 blur-3xl -mr-16 -mt-16 rounded-full group-hover:bg-indigo-500/10 transition-colors" />
@@ -644,8 +644,8 @@ export default function Dashboard() {
             <motion.div variants={itemVariants}>
               <Link 
                  to="/sanctuary"
-                 className="group flex items-center gap-3 p-4 h-full shape-cloud-1 soft-glass transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.05]"
-                 style={{ background: dayTheme.bg, borderColor: dayTheme.border }}
+ className="group flex items-center gap-3 p-4 h-full shape-cloud-1 soft-glass transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.05]"
+                 
               >
                 <div className="w-10 h-10 rounded-xl bg-cyan-500/5 flex items-center justify-center text-cyan-500/40 border border-cyan-500/10 group-hover:text-cyan-400 transition-colors">
                   <Moon size={18} />
@@ -665,8 +665,8 @@ export default function Dashboard() {
             <motion.div variants={itemVariants}>
               <Link 
                  to="/rabbithole"
-                 className="group flex items-center gap-3 p-4 h-full shape-cloud-3 soft-glass transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.05]"
-                 style={{ background: dayTheme.bg, borderColor: dayTheme.border }}
+ className="group flex items-center gap-3 p-4 h-full shape-cloud-3 soft-glass transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.05]"
+                 
               >
                 <div className="w-10 h-10 rounded-xl bg-teal-500/5 flex items-center justify-center text-teal-500/40 border border-teal-500/10 group-hover:text-teal-400 transition-colors">
                   <Telescope size={18} />
@@ -686,8 +686,8 @@ export default function Dashboard() {
             <motion.div variants={itemVariants}>
               <Link 
                  to="/journal"
-                 className="group flex items-center gap-3 p-4 h-full shape-cloud-4 soft-glass transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.05]"
-                 style={{ background: dayTheme.bg, borderColor: dayTheme.border }}
+ className="group flex items-center gap-3 p-4 h-full shape-cloud-4 soft-glass transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.05]"
+                 
               >
                 <div className="w-10 h-10 rounded-xl bg-rose-500/5 flex items-center justify-center text-rose-500/40 border border-rose-500/10 group-hover:text-rose-400 transition-colors">
                    <Notebook size={18} />
@@ -714,8 +714,8 @@ export default function Dashboard() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => showToast(language === 'el' ? 'Λήψη Βιβλίου...' : 'Downloading Book...')}
-                className="group w-full flex flex-col items-center gap-2 p-5 shape-cloud-5 soft-glass transition-all duration-300 active:scale-[0.95] text-center hover:bg-white/[0.05] cursor-pointer"
-                style={{ background: dayTheme.bg, borderColor: dayTheme.border }}
+ className="group w-full flex flex-col items-center gap-2 p-5 shape-cloud-5 soft-glass transition-all duration-300 active:scale-[0.95] text-center hover:bg-white/[0.05] cursor-pointer"
+                
               >
                 <div className="w-8 h-8 rounded-full bg-teal-500/10 flex items-center justify-center text-teal-400/60 border border-teal-500/10 group-hover:scale-110 transition-transform">
                   <Download size={14} />
@@ -735,8 +735,8 @@ export default function Dashboard() {
               <motion.div variants={itemVariants}>
                 <button 
                   onClick={handleInstallClick}
-                  className="group w-full flex flex-col items-center gap-2 p-5 shape-cloud-5 soft-glass transition-all duration-300 active:scale-[0.95] text-center hover:bg-white/[0.05]"
-                  style={{ background: dayTheme.bg, borderColor: dayTheme.border }}
+ className="group w-full flex flex-col items-center gap-2 p-5 shape-cloud-5 soft-glass transition-all duration-300 active:scale-[0.95] text-center hover:bg-white/[0.05]"
+                  
                 >
                   <div className="w-8 h-8 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-400/60 border border-indigo-500/10 group-hover:scale-110 transition-transform">
                     <Smartphone size={14} />

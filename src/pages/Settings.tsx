@@ -136,7 +136,7 @@ export default function Settings() {
   ];
 
   return (
-    <div className="relative min-h-screen w-full bg-[#05070a] flex flex-col pt-20 pb-32">
+    <div className="relative min-h-screen w-full bg-transparent flex flex-col pt-20 pb-32">
        <div className="w-full max-w-xl mx-auto px-6">
           {/* Header */}
           <div className="flex items-center justify-between mb-10">

@@ -623,7 +623,7 @@ export default function GenericExercise() {
   const theme = getThemeColors();
 
   return (
-    <div className={cn("flex flex-col flex-1 bg-[#0C1E26] -mx-4 -mt-4 -mb-8 px-4 pt-4 pb-8 md:-mx-8 md:-mt-8 md:-mb-8 md:px-8 md:pt-8 md:pb-8 overflow-y-auto bg-gradient-to-b to-[#0C1E26]", theme.bg)}>
+ <div className={cn("flex flex-col flex-1 glass-card -mx-4 -mt-4 -mb-8 px-4 pt-4 pb-8 md:-mx-8 md:-mt-8 md:-mb-8 md:px-8 md:pt-8 md:pb-8 overflow-y-auto bg-gradient-to-b to-[#0C1E26]", theme.bg)}>
       
       {/* Top Nav */}
       <div className={cn(

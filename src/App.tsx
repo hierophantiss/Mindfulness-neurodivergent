@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { HashRouter, Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import { CompanionProvider } from './hooks/useCompanion';
 import Layout from './components/Layout';
+import { DynamicSpaceBackground } from './components/DynamicSpaceBackground';
 import Dashboard from './pages/Dashboard';
 import Chapters from './pages/Chapters';
 import ChapterDetail from './pages/ChapterDetail';
@@ -32,6 +33,7 @@ function AppContent() {
   return (
     <HashRouter>
       <CompanionProvider>
+        <DynamicSpaceBackground />
         <Routes>
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/workbook/print" element={<PrintWorkbook />} />
