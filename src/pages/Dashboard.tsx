@@ -258,6 +258,7 @@ export default function Dashboard() {
     const promptEvent = deferredPrompt || (window as any).initDeferredPrompt;
 
     if (promptEvent) {
+       // Chrome / Edge logic where event fired successfully
       promptEvent.prompt();
       const { outcome } = await promptEvent.userChoice;
       if (outcome === 'accepted') {
@@ -266,20 +267,22 @@ export default function Dashboard() {
       }
     } else if (isIframe) {
        showToast(language === 'el'
-         ? 'Ανοίξτε την εφαρμογή σε νέο παράθυρο (Open in new tab) για να την εγκαταστήσετε.'
+         ? 'Ανοίξτε σε νέο παράθυρο (Open in new tab) για εγκατάσταση (Web App).'
          : 'Open the app in a new tab to enable installation.');
     } else if (isIOS) {
       showToast(language === 'el' 
-        ? 'Εγκατάσταση (iOS): Πατήστε "Κοινοποίηση" ⎋ και μετά "Προσθήκη στην Οθόνη Αφετηρίας" ⊞.' 
-        : 'Install (iOS): Tap "Share" ⎋ and then "Add to Home Screen" ⊞.');
+        ? 'Εγκατάσταση Web App: Πατήστε "Κοινοποίηση" ⎋ και "Προσθήκη στην Οθόνη Αφετηρίας" ⊞.' 
+        : 'Install Web App: Tap "Share" ⎋ and then "Add to Home Screen" ⊞.');
     } else {
       const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone;
       if (isStandalone) {
-        showToast(language === 'el' ? 'Η εφαρμογή είναι ήδη εγκατεστημένη.' : 'The app is already installed.');
+        showToast(language === 'el' ? 'Η εφαρμογή Web App είναι ήδη εγκατεστημένη.' : 'The Web App is already installed.');
       } else {
+        // Fallback for Android when prompt event is blocked or missed
+        // Clarify that it's NOT a Play Store app
         showToast(language === 'el' 
-          ? 'Εγκατάσταση: Πατήστε τις 3 τελείες (Μενού) του Chrome και μετά "Εγκατάσταση εφαρμογής".' 
-          : 'Installation: Tap the 3 dots (Chrome Menu) and select "Install app".');
+          ? 'Είναι Web App (Όχι Play Store): Πατήστε τις 3 τελείες του browser > "Εγκατάσταση" ή "Προσθήκη στην οθόνη".' 
+          : 'It is a Web App (Not Play Store): Tap the 3 dots in your browser > "Install app" or "Add to Home Screen".');
       }
     }
   };
