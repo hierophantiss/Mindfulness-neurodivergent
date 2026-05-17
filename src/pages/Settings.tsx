@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { cn } from '../lib/utils';
+import { RainbowInfinity } from '../components/RainbowInfinity';
 
 export default function Settings() {
   const navigate = useNavigate();
@@ -242,7 +243,9 @@ export default function Settings() {
             <h1 className="text-2xl font-serif italic text-white/90">
                 {language === 'el' ? 'Ρυθμίσεις' : 'Settings'}
             </h1>
-            <div className="w-10" /> {/* Spacer */}
+            <div className="flex items-center justify-center w-10 h-10">
+               <RainbowInfinity size={28} className="opacity-80 drop-shadow-[0_0_8px_rgba(255,255,255,0.1)]" />
+            </div>
           </div>
 
           <div className="space-y-8">

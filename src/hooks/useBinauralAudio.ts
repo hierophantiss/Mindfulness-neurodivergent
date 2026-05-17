@@ -40,6 +40,7 @@ export interface AudioConfig {
   beat: number;
   pulse: number;
   ambientLayers?: string[];
+  disableSynth?: boolean;
 }
 
 export function useBinauralAudio(config: AudioConfig) {
@@ -142,7 +143,9 @@ export function useBinauralAudio(config: AudioConfig) {
     return () => cleanup();
   }, [cleanup]);
 
-  const startAudio = useCallback(async () => {
+  const startAudio = useCallback(async (overrideConfig?: AudioConfig) => {
+    const currentConfig = overrideConfig || config;
+    
     if (isPlayingRef.current) {
       console.log('Audio already playing, ignoring start request.');
       return;
@@ -185,76 +188,78 @@ export function useBinauralAudio(config: AudioConfig) {
       master.connect(ac.destination);
       masterGainRef.current = master;
 
-      // Pink Noise Layer
-      const pinkBuffer = makePinkNoise(ac);
-      const pinkSource = ac.createBufferSource();
-      pinkSource.buffer = pinkBuffer;
-      pinkSource.loop = true;
-      const pinkGain = ac.createGain();
-      pinkGain.gain.setValueAtTime(0.03, ac.currentTime);
-      pinkSource.connect(pinkGain).connect(master);
-      pinkSource.start();
-      nodesRef.current.pinkSource = pinkSource;
+      if (!currentConfig.disableSynth) {
+        // Pink Noise Layer
+        const pinkBuffer = makePinkNoise(ac);
+        const pinkSource = ac.createBufferSource();
+        pinkSource.buffer = pinkBuffer;
+        pinkSource.loop = true;
+        const pinkGain = ac.createGain();
+        pinkGain.gain.setValueAtTime(0.03, ac.currentTime);
+        pinkSource.connect(pinkGain).connect(master);
+        pinkSource.start();
+        nodesRef.current.pinkSource = pinkSource;
 
-      // Pulse Entrainment
-      const amNode = ac.createGain();
-      amNode.gain.setValueAtTime(1.0, ac.currentTime);
-      amNode.connect(master);
-      oceanGainRef.current = amNode; // Modulate this one
+        // Pulse Entrainment
+        const amNode = ac.createGain();
+        amNode.gain.setValueAtTime(1.0, ac.currentTime);
+        amNode.connect(master);
+        oceanGainRef.current = amNode; // Modulate this one
 
-      const pulseLfo = ac.createOscillator();
-      pulseLfo.type = 'sine';
-      pulseLfo.frequency.setValueAtTime(config.pulse || 0.1, ac.currentTime);
-      const pulseDepth = ac.createGain();
-      pulseDepth.gain.setValueAtTime(0.15, ac.currentTime);
-      pulseLfo.connect(pulseDepth);
-      pulseDepth.connect(amNode.gain);
-      pulseLfo.start();
-      nodesRef.current.pulseLfo = pulseLfo;
-      
-      const binauralNode = ac.createGain();
-      binauralNode.connect(amNode);
+        const pulseLfo = ac.createOscillator();
+        pulseLfo.type = 'sine';
+        pulseLfo.frequency.setValueAtTime(currentConfig.pulse || 0.1, ac.currentTime);
+        const pulseDepth = ac.createGain();
+        pulseDepth.gain.setValueAtTime(0.15, ac.currentTime);
+        pulseLfo.connect(pulseDepth);
+        pulseDepth.connect(amNode.gain);
+        pulseLfo.start();
+        nodesRef.current.pulseLfo = pulseLfo;
+        
+        const binauralNode = ac.createGain();
+        binauralNode.connect(amNode);
 
-      // Left Ear
-      const binL = ac.createOscillator();
-      binL.type = 'sine';
-      binL.frequency.setValueAtTime(config.base, ac.currentTime);
-      const gL = ac.createGain(); 
-      gL.gain.setValueAtTime(0.25, ac.currentTime);
-      let pL;
-      try {
-        pL = ac.createStereoPanner(); 
-        pL.pan.setValueAtTime(-1, ac.currentTime);
-      } catch(e) {
-        pL = ac.createPanner();
-        pL.panningModel = 'equalpower';
-        pL.setPosition(-1, 0, 0);
+        // Left Ear
+        const binL = ac.createOscillator();
+        binL.type = 'sine';
+        binL.frequency.setValueAtTime(currentConfig.base, ac.currentTime);
+        const gL = ac.createGain(); 
+        gL.gain.setValueAtTime(0.25, ac.currentTime);
+        let pL;
+        try {
+          pL = ac.createStereoPanner(); 
+          pL.pan.setValueAtTime(-1, ac.currentTime);
+        } catch(e) {
+          pL = ac.createPanner();
+          pL.panningModel = 'equalpower';
+          pL.setPosition(-1, 0, 0);
+        }
+        binL.connect(gL).connect(pL).connect(binauralNode);
+        binL.start();
+        nodesRef.current.binL = binL;
+
+        // Right Ear
+        const binR = ac.createOscillator();
+        binR.type = 'sine';
+        binR.frequency.setValueAtTime(currentConfig.base + currentConfig.beat, ac.currentTime);
+        const gR = ac.createGain(); 
+        gR.gain.setValueAtTime(0.25, ac.currentTime);
+        let pR;
+        try {
+          pR = ac.createStereoPanner(); 
+          pR.pan.setValueAtTime(1, ac.currentTime);
+        } catch(e) {
+          pR = ac.createPanner();
+          pR.panningModel = 'equalpower';
+          pR.setPosition(1, 0, 0);
+        }
+        binR.connect(gR).connect(pR).connect(binauralNode);
+        binR.start();
+        nodesRef.current.binR = binR;
       }
-      binL.connect(gL).connect(pL).connect(binauralNode);
-      binL.start();
-      nodesRef.current.binL = binL;
-
-      // Right Ear
-      const binR = ac.createOscillator();
-      binR.type = 'sine';
-      binR.frequency.setValueAtTime(config.base + config.beat, ac.currentTime);
-      const gR = ac.createGain(); 
-      gR.gain.setValueAtTime(0.25, ac.currentTime);
-      let pR;
-      try {
-        pR = ac.createStereoPanner(); 
-        pR.pan.setValueAtTime(1, ac.currentTime);
-      } catch(e) {
-        pR = ac.createPanner();
-        pR.panningModel = 'equalpower';
-        pR.setPosition(1, 0, 0);
-      }
-      binR.connect(gR).connect(pR).connect(binauralNode);
-      binR.start();
-      nodesRef.current.binR = binR;
 
       // Optional ambient layers
-      config.ambientLayers?.forEach(path => {
+      currentConfig.ambientLayers?.forEach(path => {
         if (!path) return;
         
         console.log('Loading ambient layer:', path);

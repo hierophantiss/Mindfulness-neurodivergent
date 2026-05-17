@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Shield, Anchor, Wind, Focus, Maximize, ArrowRight, Heart } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import { cn } from '../lib/utils';
+import { RainbowInfinity } from '../components/RainbowInfinity';
 
 export default function Onboarding() {
   const [step, setStep] = useState(0);
@@ -33,8 +34,8 @@ export default function Onboarding() {
       id: 'welcome',
       content: (
         <div className="flex flex-col items-center text-center space-y-8">
-          <div className="w-24 h-24 rounded-full bg-teal-500/10 flex items-center justify-center border border-teal-500/20 mb-4 mx-auto animate-pulse">
-            <Heart size={40} className="text-teal-400" />
+          <div className="w-24 h-24 rounded-full bg-white/5 flex items-center justify-center border border-white/10 mb-4 mx-auto animate-pulse shadow-[0_0_30px_rgba(255,255,255,0.05)]">
+            <RainbowInfinity size={56} className="opacity-90" />
           </div>
           <div className="space-y-4">
             <h1 className="text-4xl md:text-5xl font-serif italic text-white tracking-tight">

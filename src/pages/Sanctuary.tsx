@@ -1,17 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Waves, Wind, CloudRain, TreePine, Moon, ChevronLeft, Volume2, VolumeX, Timer, Info, Play, Youtube, X, ChevronRight } from 'lucide-react';
+import { Waves, Wind, CloudRain, TreePine, Moon, ChevronLeft, Volume2, Timer, Info, Play, Youtube, X, ChevronRight, Music, Sparkles, Droplets, Flame } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { cn } from '../lib/utils';
 import { useBinauralAudio } from '../hooks/useBinauralAudio';
 
-const sounds = [
-  { id: 'waves', icon: Waves, label: { el: 'Κύματα', en: 'Ocean Waves' }, color: 'text-cyan-400', file: '/ocean-waves.mp3' },
-  { id: 'rain', icon: CloudRain, label: { el: 'Βροχή', en: 'Soft Rain' }, color: 'text-indigo-400', file: '/soft-rain.mp3' },
-  { id: 'forest', icon: TreePine, label: { el: 'Δάσος', en: 'Forest Birds' }, color: 'text-emerald-400', file: '/forest.mp3' },
-  { id: 'wind', icon: Wind, label: { el: 'Άνεμος', en: 'Mountain Wind' }, color: 'text-slate-400', file: '/wind.mp3' },
+const sleepTracks = [
+  // Sleep & Meditation Audio (The new files)
+  { id: 'deep-silence', group: 'music', icon: Moon, label: { el: 'Εκτεταμένη Βαθιά Σιωπή', en: 'Extended Deep Silence' }, subtitle: { el: 'Κύματα & Άστρα', en: 'Waves & Stars HQ' }, color: 'text-indigo-400', disableSynth: true, files: ['/space-ambient.mp3'] },
+  { id: 'calming-zen', group: 'music', icon: Sparkles, label: { el: 'Ήρεμο Zen', en: 'Calming Zen' }, subtitle: { el: 'Απόλυτη Χαλάρωση', en: 'Absolute Relaxation' }, color: 'text-emerald-400', disableSynth: true, files: ['/atlasaudio-calming-zen-519422.mp3'] },
+  { id: 'sleep-963', group: 'music', icon: Music, label: { el: 'Συχνότητα Ύπνου (963Hz)', en: 'Sleep Frequency (963Hz)' }, subtitle: { el: 'Binaural & Immersive', en: 'Binaural & Immersive' }, color: 'text-purple-400', disableSynth: true, files: ['/atlasaudio-calming-zen-519422.mp3'] },
+  { id: 'beta-pure', group: 'music', icon: Wind, label: { el: 'Καθαρός Τόνος Beta (20Hz)', en: 'Pure Beta Tone (20Hz)' }, subtitle: { el: 'Ισοχρονικοί Τόνοι', en: 'Isochronic Tones' }, color: 'text-rose-400', disableSynth: true, files: ['/space-ambient.mp3'] },
+  { id: 'space-ambient', group: 'music', icon: Moon, label: { el: 'Διαστημική Ατμόσφαιρα', en: 'Space Ambient' }, subtitle: { el: 'Βαθύς Χώρος', en: 'Deep Space' }, color: 'text-slate-400', disableSynth: true, files: ['/space-ambient.mp3'] },
+  
+  // Mixed Binaural & Nature
+  { id: 'deep-delta-ocean', group: 'binaural', icon: Waves, label: { el: 'Ωκεανός & Βαθύς Ύπνος', en: 'Ocean & Deep Sleep' }, subtitle: { el: 'Delta 2.5Hz', en: 'Delta 2.5Hz' }, color: 'text-cyan-500', base: 100, beat: 2.5, pulse: 0.05, files: ['/ocean-waves.mp3'] },
+  { id: 'rain-theta', group: 'binaural', icon: CloudRain, label: { el: 'Βροχή & Χαλάρωση', en: 'Rain & Relaxation' }, subtitle: { el: 'Theta 6.3Hz', en: 'Theta 6.3Hz' }, color: 'text-indigo-500', base: 136.1, beat: 6.3, pulse: 0.1, files: ['/rain.mp3'] },
+  { id: 'water-alpha', group: 'binaural', icon: Droplets, label: { el: 'Καταρράκτης & Εστίαση', en: 'Waterfall & Focus' }, subtitle: { el: 'Alpha 10Hz', en: 'Alpha 10Hz' }, color: 'text-teal-500', base: 432, beat: 10, pulse: 0.1, files: ['/waterfall.mp3'] },
+  { id: 'fire-delta', group: 'binaural', icon: Flame, label: { el: 'Τζάκι & Επισκευή', en: 'Fire & Repair' }, subtitle: { el: 'Delta 1.5Hz', en: 'Delta 1.5Hz' }, color: 'text-orange-400', base: 110, beat: 1.5, pulse: 0.05, files: ['/fireplace.mp3'] },
+  { id: 'cat-purr-healing', group: 'binaural', icon: Moon, label: { el: 'Γάτα & Θεραπεία', en: 'Cat Purr & Healing' }, subtitle: { el: 'Theta 4Hz', en: 'Theta 4Hz' }, color: 'text-amber-500', base: 174, beat: 4, pulse: 0.1, files: ['/cat_purring.mp3'] },
 ];
 
 export default function Sanctuary() {
@@ -29,6 +38,7 @@ export default function Sanctuary() {
   const [isVoidActive, setIsVoidActive] = useState(false);
 
   const videos = [
+    // ... we keep exactly the same videos list ...
     {
       id: 'j1OOEwpLcDc', // Eckhart Tolle - Night Sky
       title: language === 'en' ? "Micro-Meditation: The Infinity of Space" : "Micro-Meditation: Η Απεραντότητα του Χώρου",
@@ -59,7 +69,7 @@ export default function Sanctuary() {
       }
     },
     {
-      id: 'MJ6m5DOER-c', // Eckhart Tolle
+      id: 'MJ6m5DOER-c',
       title: language === 'en' ? "Eckhart Tolle: The Ocean of Pure Awareness" : "Eckhart Tolle: Ο Ωκεανός της Καθαρής Επίγνωσης",
       author: "Eckhart Tolle",
       category: language === 'en' ? "Presence & Being" : "Παρουσία & Οντότητα",
@@ -87,7 +97,7 @@ export default function Sanctuary() {
       }
     },
     {
-      id: '7Qbat52NE98', // Tai Chi Walking
+      id: '7Qbat52NE98',
       title: language === 'en' ? "Tai Chi Walking: Grounding Motion" : "Tai Chi Walking: Η Κίνηση της Γείωσης",
       author: "Master Gu",
       category: language === 'en' ? "Grounding & Motion" : "Γείωση & Κίνηση",
@@ -119,7 +129,7 @@ export default function Sanctuary() {
       }
     },
     {
-      id: 'no4x4ewf1dM', // Plum Village
+      id: 'no4x4ewf1dM',
       title: language === 'en' ? "Plum Village: The 10 Mindful Movements" : "Plum Village: Οι 10 Ενσυνείδητες Κινήσεις",
       author: "Plum Village",
       category: language === 'en' ? "Mindfulness & Motion" : "Ενσυνειδητότητα & Κίνηση",
@@ -157,7 +167,7 @@ export default function Sanctuary() {
       }
     },
     {
-      id: 'HDoAuilRt3Q', // Complete Breathing
+      id: 'HDoAuilRt3Q',
       title: language === 'en' ? "Complete Breathing Experience" : "Η Βιωματική Εμπειρία της Πλήρους Αναπνοής",
       author: "Fabio Andrico",
       category: language === 'en' ? "Breath & Presence" : "Αναπνοή & Παρουσία",
@@ -185,7 +195,7 @@ export default function Sanctuary() {
       }
     },
     {
-      id: 'tmgHDEypPAQ', // Open Focus - Les Fehmi
+      id: 'tmgHDEypPAQ',
       title: language === 'en' ? "Open Focus: The Neuroscience of Diffuse Attention" : "Open Focus: Η Νευροεπιστήμη της Διάχυτης Προσοχής",
       author: "Dr. Les Fehmi",
       category: language === 'en' ? "Neuroscience & Attention" : "Νευροεπιστήμη & Προσοχή",
@@ -225,7 +235,7 @@ export default function Sanctuary() {
       }
     },
     {
-      id: 'i1z6L1IsZlg', // Yantra Yoga
+      id: 'i1z6L1IsZlg',
       title: language === 'en' ? "Yantra Yoga: The 8 Movements" : "Yantra Yoga: Οι 8 Κινήσεις",
       author: "Chögyal Namkhai Norbu",
       category: language === 'en' ? "Yoga & Energy" : "Yoga & Ενέργεια",
@@ -254,12 +264,15 @@ export default function Sanctuary() {
     }
   ];
 
-  // Initialize audio hook
-  const { startAudio, stopAudio, isPlaying } = useBinauralAudio({
-    base: 110,
-    beat: 6.3,
-    pulse: 0.1,
-    ambientLayers: activeSound ? [sounds.find(s => s.id === activeSound)?.file || ''] : []
+  const activeTrackDef = useMemo(() => sleepTracks.find(t => t.id === activeSound), [activeSound]);
+
+  // Handle playing state
+  const { startAudio, stopAudio, isPlaying, setGlobalVolume } = useBinauralAudio({
+    base: activeTrackDef?.base || 110,
+    beat: activeTrackDef?.beat || 6.3,
+    pulse: activeTrackDef?.pulse || 0.1,
+    disableSynth: activeTrackDef?.disableSynth,
+    ambientLayers: activeTrackDef?.files || []
   });
 
   useEffect(() => {
@@ -282,8 +295,19 @@ export default function Sanctuary() {
       stopAudio();
       setActiveSound(null);
     } else {
+      stopAudio();
       setActiveSound(id);
-      if (!isPlaying) startAudio();
+      
+      const newTrackDef = sleepTracks.find(t => t.id === id);
+      if (newTrackDef) {
+        startAudio({
+          base: newTrackDef.base || 110,
+          beat: newTrackDef.beat || 6.3,
+          pulse: newTrackDef.pulse || 0.1,
+          disableSynth: newTrackDef.disableSynth,
+          ambientLayers: newTrackDef.files || []
+        });
+      }
     }
   };
 
@@ -296,6 +320,12 @@ export default function Sanctuary() {
   const t = {
     videosTitle: language === 'en' ? 'Cinema of Consciousness' : 'Σινεμά της Συνειδητότητας',
     videosSubtitle: language === 'en' ? 'Visual insights and philosophical explorations' : 'Οπτικές αναζητήσεις και φιλοσοφικές εξερευνήσεις',
+    musicTitle: language === 'en' ? 'Binaural Beats & Sleep Music' : 'Ήχοι Ύπνου & Binaural Beats',
+    musicSubtitle: language === 'en' ? 'Curated states of rest and deep relaxation' : 'Επιλεγμένες συνθέσεις για βαθιά χαλάρωση',
+    groups: {
+      music: language === 'en' ? 'Sleep Music & Frequencies' : 'Μουσική Ύπνου & Συχνότητες',
+      binaural: language === 'en' ? 'Binaural & Nature' : 'Binaural & Ήχοι Φύσης',
+    }
   };
 
   return (
@@ -374,7 +404,7 @@ export default function Sanctuary() {
                 >
                   {activeSound ? (
                     (() => {
-                      const Svg = sounds.find(s => s.id === activeSound)?.icon || Waves;
+                      const Svg = sleepTracks.find(s => s.id === activeSound)?.icon || Waves;
                       return <Svg size={64} className="animate-pulse" />;
                     })()
                   ) : <Waves size={64} />}
@@ -387,31 +417,48 @@ export default function Sanctuary() {
         {/* Sound Selection */}
         <div className="space-y-8 mt-auto pb-12">
           {!isDimmed && (
-            <div className="grid grid-cols-2 gap-3">
-              {sounds.map((sound) => (
-                <button
-                  key={sound.id}
-                  onClick={() => handleSoundToggle(sound.id)}
-                  className={cn(
-                    "flex flex-col items-center gap-3 p-6 rounded-[2rem] border transition-all duration-500 group",
-                    activeSound === sound.id 
-                      ? "bg-white/[0.08] border-white/20 shadow-xl" 
-                      : "bg-white/[0.02] border-white/5 hover:bg-white/[0.04]"
-                  )}
-                >
-                  <div className={cn(
-                    "p-3 rounded-2xl transition-all duration-500",
-                    activeSound === sound.id ? "bg-white/10 " + sound.color : "bg-white/5 text-white/20 group-hover:text-white/40"
-                  )}>
-                    <sound.icon size={24} />
+            <div className="space-y-8">
+              {['music', 'binaural'].map(group => (
+                <div key={group} className="space-y-3">
+                  <h3 className="text-[10px] font-black uppercase tracking-widest text-white/30 px-2">
+                    {t.groups[group as keyof typeof t.groups]}
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    {sleepTracks.filter(s => s.group === group).map((sound) => (
+                      <button
+                        key={sound.id}
+                        onClick={() => handleSoundToggle(sound.id)}
+                        className={cn(
+                          "flex flex-col items-start gap-4 p-5 rounded-[2rem] border transition-all duration-500 group relative overflow-hidden",
+                          activeSound === sound.id 
+                            ? "bg-white/[0.08] border-white/20 shadow-xl" 
+                            : "bg-white/[0.02] border-white/5 hover:bg-white/[0.04]"
+                        )}
+                      >
+                        <div className={cn(
+                          "p-3 rounded-2xl transition-all duration-500 flex-shrink-0 relative z-10",
+                          activeSound === sound.id ? "bg-white/10 " + sound.color : "bg-white/5 text-white/20 group-hover:text-white/40 group-hover:bg-white/10"
+                        )}>
+                          <sound.icon size={24} />
+                        </div>
+                        <div className="text-left relative z-10">
+                          <span className={cn(
+                            "text-[12px] font-sans font-bold tracking-wide block mb-1",
+                            activeSound === sound.id ? "text-white" : "text-white/60 group-hover:text-white/80"
+                          )}>
+                            {language === 'el' ? sound.label.el : sound.label.en}
+                          </span>
+                          <span className="text-[9px] font-medium text-white/30 uppercase tracking-[0.1em] block">
+                            {language === 'el' ? sound.subtitle.el : sound.subtitle.en}
+                          </span>
+                        </div>
+                        {activeSound === sound.id && (
+                          <div className={cn("absolute inset-0 opacity-10 bg-gradient-to-br from-current to-transparent", sound.color)} />
+                        )}
+                      </button>
+                    ))}
                   </div>
-                  <span className={cn(
-                    "text-[11px] font-sans font-medium tracking-wide uppercase",
-                    activeSound === sound.id ? "text-white" : "text-white/30"
-                  )}>
-                    {language === 'el' ? sound.label.el : sound.label.en}
-                  </span>
-                </button>
+                </div>
               ))}
             </div>
           )}

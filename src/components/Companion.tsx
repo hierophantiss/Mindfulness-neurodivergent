@@ -9,9 +9,11 @@ export const InfinitySVG = ({ size }: { size: number }) => (
   <svg width={size} height={Math.round(size * 0.55)} viewBox="0 0 120 66" fill="none" xmlns="http://www.w3.org/2000/svg" className="inf-svg-glow filter drop-shadow-sm">
     <defs>
       <linearGradient id="inf-grad" x1="0" y1="33" x2="120" y2="33" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="#1D9E75"/>
-        <stop offset="50%" stopColor="#2DD4BF"/>
-        <stop offset="100%" stopColor="#1D9E75"/>
+        <stop offset="0%" stopColor="#ef4444"/>  {/* red-500 */}
+        <stop offset="25%" stopColor="#f59e0b"/> {/* amber-500 */}
+        <stop offset="50%" stopColor="#10b981"/> {/* emerald-500 */}
+        <stop offset="75%" stopColor="#3b82f6"/> {/* blue-500 */}
+        <stop offset="100%" stopColor="#a855f7"/> {/* purple-500 */}
       </linearGradient>
     </defs>
     <path d="M60 33 C60 16, 45 4, 30 4 C15 4, 2 16, 2 33 C2 50, 15 62, 30 62 C45 62, 60 50, 60 33 C60 16, 75 4, 90 4 C105 4, 118 16, 118 33 C118 50, 105 62, 90 62 C75 62, 60 50, 60 33Z" stroke="url(#inf-grad)" strokeWidth="7" strokeLinecap="round" fill="none" />

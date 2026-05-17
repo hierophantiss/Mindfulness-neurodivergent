@@ -7,6 +7,7 @@ import { cn } from '../lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
 import { useTime } from '../contexts/TimeContext';
 import { useCompanion } from '../hooks/useCompanion';
+import { RainbowInfinity } from '../components/RainbowInfinity';
 
 
 import { Skeleton } from '../components/ui/Skeleton';
@@ -59,7 +60,8 @@ export default function Dashboard() {
     base: 110,
     beat: 6.3,
     pulse: 0.1,
-    ambientLayers: ['/ocean-waves.mp3'] // Use high-quality local ocean waves
+    disableSynth: true, // Disable pink noise so it doesn't sound like water
+    ambientLayers: ['/space-ambient.mp3'] // Use space ambient for dashboard
   }), []);
 
   const { startAudio, stopAudio, isPlaying } = useBinauralAudio(audioConfig);
@@ -404,7 +406,7 @@ export default function Dashboard() {
       >
         <div className="flex flex-col gap-1.5">
           {/* Header Section */}
-          <motion.div variants={itemVariants} className="flex items-end justify-between px-1 mb-6 mt-2">
+          <motion.div variants={itemVariants} className="flex items-stretch justify-between px-1 mb-6 mt-2 relative">
             <div className="flex flex-col gap-1.5">
               <div className="flex items-center gap-2 mb-1">
                 <div className="w-1.5 h-1.5 rounded-full bg-teal-500/80 animate-pulse" />
@@ -451,38 +453,44 @@ export default function Dashboard() {
               </div>
             </div>
             
-            <div className="flex items-center gap-2">
-              <button
-                onClick={toggleAudio}
-                className={cn(
-                  "p-2.5 rounded-full border transition-all duration-300 shadow-lg backdrop-blur-md active:scale-95",
-                  isPlaying 
-                    ? "bg-teal-500/20 border-teal-400/40 text-teal-300 relative overflow-hidden" 
-                    : "bg-white/5 border-white/10 text-white/40 hover:bg-white/10 hover:text-white/60"
-                )}
-                title={language === 'el' ? 'Ηχητικό Τοπίο' : 'Ambient Audio'}
-              >
-                {isPlaying && (
-                  <div className="absolute inset-0 bg-teal-400/10 animate-pulse" />
-                )}
-                {isPlaying ? <Waves size={16} className="animate-pulse relative z-10" /> : <Play size={16} />}
-              </button>
-              
-              <Link 
-                to="/settings"
-                className="p-2.5 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-white/80 hover:bg-white/10 transition-all duration-300 active:scale-95"
-                title={language === 'el' ? 'Ρυθμίσεις' : 'Settings'}
-              >
-                <User size={16} />
-              </Link>
-              
-              <button 
-                onClick={() => setIsInfoOpen(true)}
-                className="p-2.5 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-white/80 hover:bg-white/10 transition-all duration-300 active:scale-95"
-                title="Information"
-              >
-                <Info size={16} />
-              </button>
+            <div className="flex flex-col items-end justify-between self-stretch">
+              <div className="pt-2 pr-2">
+                <RainbowInfinity size={48} className="drop-shadow-[0_0_12px_rgba(255,255,255,0.15)] animate-pulse" />
+              </div>
+
+              <div className="flex items-center gap-2 mt-auto">
+                <button
+                  onClick={toggleAudio}
+                  className={cn(
+                    "p-2.5 rounded-full border transition-all duration-300 shadow-lg backdrop-blur-md active:scale-95",
+                    isPlaying 
+                      ? "bg-teal-500/20 border-teal-400/40 text-teal-300 relative overflow-hidden" 
+                      : "bg-white/5 border-white/10 text-white/40 hover:bg-white/10 hover:text-white/60"
+                  )}
+                  title={language === 'el' ? 'Ηχητικό Τοπίο' : 'Ambient Audio'}
+                >
+                  {isPlaying && (
+                    <div className="absolute inset-0 bg-teal-400/10 animate-pulse" />
+                  )}
+                  {isPlaying ? <Waves size={16} className="animate-pulse relative z-10" /> : <Play size={16} />}
+                </button>
+                
+                <Link 
+                  to="/settings"
+                  className="p-2.5 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-white/80 hover:bg-white/10 transition-all duration-300 active:scale-95"
+                  title={language === 'el' ? 'Ρυθμίσεις' : 'Settings'}
+                >
+                  <User size={16} />
+                </Link>
+                
+                <button 
+                  onClick={() => setIsInfoOpen(true)}
+                  className="p-2.5 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-white/80 hover:bg-white/10 transition-all duration-300 active:scale-95"
+                  title="Information"
+                >
+                  <Info size={16} />
+                </button>
+              </div>
             </div>
           </motion.div>
 
