@@ -125,15 +125,15 @@ export default function Settings() {
          ? "Ανοίξατε την εφαρμογή μέσα από κάποιο άλλο App (πχ. Facebook/Instagram). Παρακαλούμε ανοίξτε τη σε κανονικό Browser (Chrome/Safari) για εγκατάσταση."
          : "You opened the app inside an in-app browser. Please open it in a regular browser (Chrome/Safari) to install.";
       } else if (isStandalone) {
-        msg = language === 'el' ? "Η εφαρμογή φαίνεται να είναι ήδη εγκατεστημένη!" : "App seems to be already installed!";
+        msg = language === 'el' ? "Η εφαρμογή βρίσκεται ήδη σε λειτουργία App!" : "App is already running in standalone mode!";
       } else if (isIos) {
         msg = language === 'el' 
-         ? "Σε συσκευές Apple (iOS), πατήστε το 'Share' κάτω στην οθόνη και μετά 'Προσθήκη στην οθόνη έναρξης' (Add to Home Screen)." 
+         ? "Σε συσκευές Apple (iOS), πατήστε το 'Share' (κοινοποίηση) κάτω στην οθόνη και μετά 'Προσθήκη στην οθόνη έναρξης' (Add to Home Screen)." 
          : "On Apple (iOS) devices, tap 'Share' then 'Add to Home Screen'.";
       } else {
         msg = language === 'el' 
-         ? "Δεν υποστηρίζεται αυτόματη εγκατάσταση στον browser σας. Επιλέξτε 'Προσθήκη στην οθόνη έναρξης' / 'Add to Home screen' χειροκίνητα από το μενού του browser (τρεις τελείες) πάνω δεξιά." 
-         : "Automatic installation is not supported here. Please choose 'Add to Home screen' manually from your browser's menu (three dots) at the top right.";
+         ? "Αν η εφαρμογή είναι ήδη εγκατεστημένη στη συσκευή σας, δεν μπορεί να εγκατασταθεί ξανά. Αλλιώς, πατήστε το μενού του browser (τρεις τελείες) και επιλέξτε 'Εγκατάσταση εφαρμογής' ή 'Προσθήκη στην οθόνη έναρξης'." 
+         : "If the app is already installed on your device, it cannot be installed again. Otherwise, tap the browser menu (three dots) and select 'Install app' or 'Add to Home screen'.";
       }
       alert(msg);
     }
@@ -151,7 +151,7 @@ export default function Settings() {
           action: () => setLanguage(language === 'el' ? 'en' : 'el'),
           color: 'text-teal-400'
         },
-        ...(canInstall ? [{
+        ...(!window.matchMedia('(display-mode: standalone)').matches ? [{
           id: 'install',
           icon: Download,
           label: { el: 'Εγκατάσταση (App)', en: 'Install App' },
