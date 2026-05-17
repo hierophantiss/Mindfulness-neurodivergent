@@ -61,20 +61,46 @@
 
 @layer components {
   .glass-card {
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(15, 17, 23, 0.4);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    animation: nebula-pulse 7s ease-in-out infinite;
+    /* Inner/Outer Nebula - Static base to prevent scroll lag */
+    box-shadow: 
+      inset 0 0 20px rgba(29, 158, 117, 0.03), /* Subtle inner glow */
+      0 8px 32px rgba(0, 0, 0, 0.4), /* Deep depth shadow */
+      0 0 15px rgba(29, 158, 117, 0.05); /* Soft outer nebula */
+    transition: all 0.3s ease-in-out;
+  }
+
+  .glass-card:hover {
+    box-shadow: 
+      inset 0 0 30px rgba(29, 158, 117, 0.08), /* Enhanced inner glass */
+      0 12px 40px rgba(0, 0, 0, 0.5), /* Deeper depth */
+      0 0 25px rgba(29, 158, 117, 0.15); /* Stronger outer nebula */
+    border: 1px solid rgba(29, 158, 117, 0.2);
   }
 
   .soft-glass {
-    background-color: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background-color: rgba(22, 30, 49, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    animation: nebula-pulse 8s ease-in-out infinite;
-    animation-delay: 1s; /* Slight offset for variety */
+    /* Soft Nebula implementation */
+    box-shadow: 
+      inset 0 0 15px rgba(255, 255, 255, 0.02),
+      0 4px 20px rgba(0, 0, 0, 0.3),
+      0 0 10px rgba(29, 158, 117, 0.03);
+    transition: all 0.3s ease-in-out;
+  }
+
+  .soft-glass:hover {
+    background-color: rgba(22, 30, 49, 0.5);
+    box-shadow: 
+      inset 0 0 20px rgba(255, 255, 255, 0.04), 
+      0 8px 24px rgba(0, 0, 0, 0.4),
+      0 0 20px rgba(29, 158, 117, 0.1); 
+    border: 1px solid rgba(255, 255, 255, 0.08);
   }
 }
 
