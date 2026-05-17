@@ -43,8 +43,8 @@ export function InteractiveBackground() {
     const newStars: Star[] = [];
     for (let i = 0; i < starCount; i++) {
       newStars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
+        x: Math.random(), // Store as percentage 0-1
+        y: Math.random(), // Store as percentage 0-1
         size: Math.random() * 1.8 + 0.1, // Variation in size
         opacity: Math.random() * 0.7 + 0.3,
         speed: Math.random() * 0.003 + 0.001,
@@ -88,7 +88,7 @@ export function InteractiveBackground() {
         ctx.beginPath();
         // Slightly larger stars blink more noticeably
         const size = star.size * (0.8 + blink * 0.4);
-        ctx.arc(star.x, star.y, size, 0, Math.PI * 2);
+        ctx.arc(star.x * canvas.width, star.y * canvas.height, size, 0, Math.PI * 2);
         
         // Add subtle color variation: mostly white, some teal/blueish
         if (i % 20 === 0) {

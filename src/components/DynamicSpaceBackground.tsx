@@ -27,8 +27,8 @@ export const DynamicSpaceBackground: React.FC = () => {
     const stars: Star[] = [];
 
     const createStar = (): Star => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
+      x: Math.random(), // 0 to 1 relative
+      y: Math.random(), // 0 to 1 relative
       z: Math.random() * 0.8 + 0.2, // Βάθος για το parallax εφέ
       size: Math.random() * 1.5 + 0.5,
       color: `rgba(255, 255, 255, ${Math.random() * 0.6 + 0.4})`,
@@ -79,12 +79,12 @@ export const DynamicSpaceBackground: React.FC = () => {
       // Σχεδίαση και κίνηση αστεριών
       stars.forEach((star) => {
         // Αργή, οργανική κίνηση προς τα πάνω/πλάι (cosmic drift)
-        star.y -= 0.1 * star.z;
-        if (star.y < 0) star.y = height;
+        star.y -= (0.1 * star.z) / height;
+        if (star.y < 0) star.y = 1.0;
 
         // Εφαρμογή του Parallax βάσει της κίνησης του ποντικιού
-        const renderX = star.x + mouseX * star.z;
-        const renderY = star.y + mouseY * star.z;
+        const renderX = (star.x * width) + mouseX * star.z;
+        const renderY = (star.y * height) + mouseY * star.z;
 
         // Λάμψη αστεριών (twinkle εφέ)
         ctx.beginPath();

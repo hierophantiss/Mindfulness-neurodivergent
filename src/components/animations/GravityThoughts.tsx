@@ -106,7 +106,14 @@ export default function GravityThoughts() {
     initSpecks();
 
     const stars: any[] = [];
-    for(let i=0; i<60; i++) stars.push({ x:Math.random()*2000, y:Math.random()*1000, vx:(Math.random()-0.5)*0.03, vy:(Math.random()-0.5)*0.03, sz:0.5+Math.random()*1.2, alpha:0.1+Math.random()*0.2 });
+    for(let i=0; i<60; i++) stars.push({ 
+      x: Math.random(), // store relative 0-1
+      y: Math.random(), // store relative 0-1
+      vx:(Math.random()-0.5)*0.0003, 
+      vy:(Math.random()-0.5)*0.0003, 
+      sz:0.5+Math.random()*1.2, 
+      alpha:0.1+Math.random()*0.2 
+    });
 
     function drawHero(x: number, y: number, tiltRad: number, headScale: number, bodyShiftY: number, alpha: number) {
       if (!ctx) return;
@@ -275,9 +282,9 @@ export default function GravityThoughts() {
       ctx.globalAlpha = 0.25;
       stars.forEach(s => { 
         s.x+=s.vx; s.y+=s.vy; 
-        if(s.x<0) s.x=w; if(s.x>w) s.x=0; 
-        if(s.y<0) s.y=h; if(s.y>h) s.y=0; 
-        ctx.beginPath(); ctx.arc(s.x,s.y,s.sz,0,Math.PI*2); 
+        if(s.x<0) s.x=1; if(s.x>1) s.x=0; 
+        if(s.y<0) s.y=1; if(s.y>1) s.y=0; 
+        ctx.beginPath(); ctx.arc(s.x*w, s.y*h, s.sz, 0, Math.PI*2); 
         ctx.fillStyle=`rgba(210,230,200,${s.alpha})`; ctx.fill(); 
       });
       ctx.globalAlpha = 1;
