@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useTime } from '../contexts/TimeContext';
+import { useProgress } from '../contexts/ProgressContext';
 import { cn } from '../lib/utils';
 
 interface Star {
@@ -13,6 +14,7 @@ interface Star {
 
 export function InteractiveBackground() {
   const { hour } = useTime();
+  const { progress } = useProgress();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const starsRef = useRef<Star[]>([]);
   const requestRef = useRef<number>(0);
@@ -21,6 +23,9 @@ export function InteractiveBackground() {
   const isNight = hour < 6 || hour >= 20;
   const isDusk = hour >= 18 && hour < 20;
   const isDay = hour >= 6 && hour < 18;
+
+  const baseStarCount = 100;
+  const targetStarCount = baseStarCount + (progress.completedLessons?.length || 0) * 12; // 12 stars per lesson
 
   // Initialize canvas and stars
   useEffect(() => {
@@ -38,25 +43,31 @@ export function InteractiveBackground() {
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    // Create stars network
-    const starCount = 450;
-    const newStars: Star[] = [];
-    for (let i = 0; i < starCount; i++) {
-      newStars.push({
-        x: Math.random(), // Store as percentage 0-1
-        y: Math.random(), // Store as percentage 0-1
-        size: Math.random() * 1.8 + 0.1, // Variation in size
-        opacity: Math.random() * 0.7 + 0.3,
-        speed: Math.random() * 0.003 + 0.001,
-        blinkOffset: Math.random() * Math.PI * 2,
-      });
-    }
-    starsRef.current = newStars;
-
     return () => {
       window.removeEventListener('resize', resizeCanvas);
     };
   }, []);
+
+  useEffect(() => {
+    // Dynamically adjust star count based on progress
+    if (starsRef.current.length < targetStarCount) {
+      const newStars = [...starsRef.current];
+      const diff = targetStarCount - newStars.length;
+      for (let i = 0; i < diff; i++) {
+        newStars.push({
+          x: Math.random(), // Store as percentage 0-1
+          y: Math.random(), // Store as percentage 0-1
+          size: Math.random() * 1.8 + 0.1, // Variation in size
+          opacity: Math.random() * 0.7 + 0.3,
+          speed: Math.random() * 0.003 + 0.001,
+          blinkOffset: Math.random() * Math.PI * 2,
+        });
+      }
+      starsRef.current = newStars;
+    } else if (starsRef.current.length > targetStarCount) {
+      starsRef.current = starsRef.current.slice(0, targetStarCount);
+    }
+  }, [targetStarCount]);
 
   // Animation Loop
   useEffect(() => {

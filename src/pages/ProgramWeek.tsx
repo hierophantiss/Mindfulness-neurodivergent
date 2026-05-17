@@ -154,28 +154,40 @@ export default function ProgramWeek() {
         <div className="flex gap-4 overflow-x-auto pb-6 snap-x hide-scrollbar px-1">
           {week.days.map((day: any, idx: number) => {
              const dayCompleted = isLessonComplete(weekNum, idx + 1);
+             const curW = companionData.programProgress?.week || 1;
+             const curD = companionData.programProgress?.day || 0;
+             const isLocked = weekNum > curW || (weekNum === curW && idx > curD);
+
              return (
               <button
                 key={idx}
-                onClick={() => setActiveDay(idx)}
+                onClick={() => {
+                  if (!isLocked) setActiveDay(idx);
+                }}
+                disabled={isLocked}
                 className={`snap-start shrink-0 flex flex-col items-start p-5 rounded-2xl border transition-all duration-300 active:scale-[0.98] ${
+                  isLocked ? 'glass-card opacity-50 grayscale cursor-not-allowed min-w-[180px]' :
                   activeDay === idx 
                     ? 'bg-teal-500/10 border-teal-500/30 text-white min-w-[220px] shadow-sm ring-1 ring-teal-500/20' 
- : 'glass-card text-white/50 hover:bg-white/[0.04] min-w-[180px] '
+                    : 'glass-card text-white/50 hover:bg-white/[0.04] min-w-[180px] '
                 }`}
               >
                 <div className="w-full flex justify-between items-center mb-2">
                   <div className={`text-[10px] font-bold uppercase tracking-[0.2em] ${activeDay === idx ? 'text-teal-400 drop-shadow-sm' : 'text-white/30'}`}>
                     {language === 'en' ? 'Day' : 'Ημερα'} {idx + 1}
                   </div>
-                  {dayCompleted && (
+                  {isLocked ? (
+                    <div className="w-4 h-4 rounded-full bg-white/10 text-white/40 flex items-center justify-center">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    </div>
+                  ) : dayCompleted && (
                     <div className="w-4 h-4 rounded-full bg-teal-500/20 text-teal-300 flex items-center justify-center border border-teal-500/30">
                       <Check size={10} strokeWidth={3} />
                     </div>
                   )}
                 </div>
                 <h4 className={`font-serif text-lg leading-tight text-left ${activeDay === idx ? 'text-white drop-shadow-sm' : 'text-white/60'}`}>
-                  {day.title}
+                  {isLocked ? (language === 'en' ? 'Locked' : 'Κλειδωμένο') : day.title}
                 </h4>
               </button>
             )
