@@ -335,12 +335,11 @@ export default function NavigationMenu() {
                        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
                        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone;
                        if (isStandalone) {
-                         showToast(language === 'el' ? 'Η εφαρμογή (Web App) είναι ήδη εγκατεστημένη.' : 'The Web App is already installed.');
+                         showToast(language === 'el' ? 'Η εφαρμογή είναι ήδη εγκατεστημένη.' : 'The app is already installed.');
                        } else if (isIOS) {
-                         showToast(language === 'el' ? 'Web App (iOS): Κοινοποίηση ⎋ > Προσθήκη στην Οθόνη Αφετηρίας ⊞.' : 'Web App (iOS): Share ⎋ > Add to Home Screen ⊞.');
+                         showToast(language === 'el' ? 'Σε iOS: Κοινοποίηση ⎋ > Προσθήκη στην Οθόνη Αφετηρίας ⊞.' : 'On iOS: Share ⎋ > Add to Home Screen ⊞.');
                        } else {
-                         // Explain it's a web app, not from the play store
-                         showToast(language === 'el' ? 'Είναι Web App: Πατήστε τις 3 τελείες του browser > "Εγκατάσταση" ή "Προσθήκη στην οθόνη".' : 'It is a Web App: Tap the 3 dots in your browser > "Install app" or "Add to Home Screen".');
+                         showToast(language === 'el' ? 'Πατήστε τις 3 τελείες (Μενού) του browser > "Εγκατάσταση εφαρμογής".' : 'Tap the 3 dots (Menu) in your browser > "Install app".');
                        }
                     }
                   }}

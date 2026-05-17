@@ -276,13 +276,11 @@ export default function Dashboard() {
     } else {
       const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone;
       if (isStandalone) {
-        showToast(language === 'el' ? 'Η εφαρμογή Web App είναι ήδη εγκατεστημένη.' : 'The Web App is already installed.');
+        showToast(language === 'el' ? 'Η εφαρμογή είναι ήδη εγκατεστημένη.' : 'The app is already installed.');
       } else {
-        // Fallback for Android when prompt event is blocked or missed
-        // Clarify that it's NOT a Play Store app
         showToast(language === 'el' 
-          ? 'Είναι Web App (Όχι Play Store): Πατήστε τις 3 τελείες του browser > "Εγκατάσταση" ή "Προσθήκη στην οθόνη".' 
-          : 'It is a Web App (Not Play Store): Tap the 3 dots in your browser > "Install app" or "Add to Home Screen".');
+          ? 'Εγκατάσταση: Πατήστε τις 3 τελείες (Μενού) του Chrome και μετά "Εγκατάσταση εφαρμογής".' 
+          : 'Installation: Tap the 3 dots (Menu) and select "Install app".');
       }
     }
   };
