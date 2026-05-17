@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { ChevronLeft, Languages, Activity, Info, LogOut, Sparkles, Moon, Sun, Database, FileText, Download } from 'lucide-react';
+import { ChevronLeft, Languages, Activity, Info, LogOut, Sparkles, Moon, Sun, Database, FileText, Download, Bug } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
@@ -11,18 +11,39 @@ export default function Settings() {
   const { language, setLanguage } = useLanguage();
   const { reduceMotion, toggleReduceMotion } = useAccessibility();
   const [canInstall, setCanInstall] = useState(false);
+  const [showDebug, setShowDebug] = useState(false);
+  const [debugLog, setDebugLog] = useState<string[]>([]);
+
+  const addLog = (msg: string) => {
+    setDebugLog(prev => [...prev, `${new Date().toLocaleTimeString()}: ${msg}`]);
+  };
 
   useEffect(() => {
-    // Check if the prompt is available
+    addLog(`Check initDeferredPrompt: ${!!(window as any).initDeferredPrompt}`);
+    
     if ((window as any).initDeferredPrompt) {
       setCanInstall(true);
     }
     
-    const handleInstallable = () => setCanInstall(true);
-    const handleInstalled = () => setCanInstall(false);
+    const handleInstallable = () => {
+      addLog('pwa-installable event fired');
+      setCanInstall(true);
+    };
+    const handleInstalled = () => {
+      addLog('pwa-installed event fired');
+      setCanInstall(false);
+    };
 
     window.addEventListener('pwa-installable', handleInstallable as any);
     window.addEventListener('pwa-installed', handleInstalled as any);
+
+    if (navigator.serviceWorker) {
+      navigator.serviceWorker.getRegistrations().then(regs => {
+        addLog(`SW Registrations: ${regs.length}`);
+      });
+    } else {
+      addLog('Service worker not supported');
+    }
 
     return () => {
       window.removeEventListener('pwa-installable', handleInstallable as any);
@@ -31,11 +52,13 @@ export default function Settings() {
   }, []);
 
   const handleInstall = async () => {
+    addLog('Install clicked');
     const promptEvent = (window as any).initDeferredPrompt;
     if (promptEvent) {
       try {
         await promptEvent.prompt();
         const choiceResult = await promptEvent.userChoice;
+        addLog(`User choice: ${choiceResult.outcome}`);
         if (choiceResult.outcome === 'accepted') {
           console.log('User accepted the A2HS prompt');
           setCanInstall(false);
@@ -44,13 +67,15 @@ export default function Settings() {
           console.log('User dismissed the A2HS prompt');
         }
       } catch (err: any) {
+        addLog(`Prompt error: ${err.message}`);
         console.error('PWA Prompt Error:', err);
         alert(language === 'el' 
-            ? "Υπήρξε πρόβλημα με την προτροπή εγκατάστασης. Σιγουρευτείτε ότι δεν την έχετε ήδη εγκαταστήσει." 
-            : "There was a problem with the install prompt. Ensure it isn't already installed.");
+            ? "Υπήρξε πρόβλημα με την προτροπή εγκατάστασης." 
+            : "There was a problem with the install prompt.");
       }
     } else {
-      alert(language === 'el' ? "Η συσκευή σας δεν υποστηρίζει αυτήν τη λειτουργία αυτή τη στιγμή (πιθανώς δοκιμάζετε σε ανώνυμη περιήγηση ή εκτός HTTPS), ή η εφαρμογή είναι ήδη εγκατεστημένη." : "Your device does not support this feature currently (possibly in incognito or outside HTTPS), or the app is already installed.");
+      addLog('No prompt event available during click');
+      alert(language === 'el' ? "Η εφαρμογή είναι ήδη εγκατεστημένη." : "App is already installed");
     }
   };
 
@@ -73,7 +98,15 @@ export default function Settings() {
           value: null,
           action: handleInstall,
           color: 'text-green-400'
-        }] : [])
+        }] : []),
+        {
+          id: 'debug',
+          icon: Bug,
+          label: { el: 'Διαγνωστικά', en: 'Diagnostics' },
+          value: null,
+          action: () => setShowDebug(!showDebug),
+          color: 'text-orange-400'
+        }
       ]
     },
     {
@@ -202,6 +235,27 @@ export default function Settings() {
              </div>
           </div>
        </div>
+
+      {showDebug && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80">
+          <div className="bg-slate-900 border border-white/10 p-6 rounded-2xl w-full max-w-md max-h-[80vh] overflow-y-auto">
+            <h2 className="text-lg text-white mb-4">PWA Diagnostics</h2>
+            <div className="space-y-2 mb-6">
+              {debugLog.map((log, i) => (
+                <div key={i} className="text-xs font-mono text-green-400 bg-black/50 p-2 rounded">
+                  {log}
+                </div>
+              ))}
+            </div>
+            <button 
+              onClick={() => setShowDebug(false)}
+              className="w-full py-3 bg-white/10 text-white rounded-xl hover:bg-white/20"
+            >
+              Κλείσιμο
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
