@@ -21,9 +21,17 @@ export default function Settings() {
   useEffect(() => {
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
     addLog(`Check initDeferredPrompt: ${!!(window as any).initDeferredPrompt}`);
-    addLog(`In standalone mode (already installed?): ${isStandalone}`);
+    addLog(`In standalone mode: ${isStandalone}`);
     addLog(`Is in iframe: ${window.self !== window.top}`);
-    addLog(`User agent: ${navigator.userAgent.substring(0, 50)}...`);
+    addLog(`User agent: ${navigator.userAgent}`);
+
+    // Check for webviews (Facebook, IG, etc.)
+    const ua = navigator.userAgent || navigator.vendor || (window as any).opera;
+    const isFacebookApp = /FBAN|FBAV/i.test(ua);
+    const isInstagramApp = /Instagram/i.test(ua);
+    const isLineApp = /Line/i.test(ua);
+    const isWebView = /; wv\)/i.test(ua) || isFacebookApp || isInstagramApp || isLineApp;
+    addLog(`Is WebView/In-App Browser: ${isWebView}`);
 
     // Check manifest link
     const manifestLink = document.querySelector('link[rel="manifest"]');
@@ -33,6 +41,13 @@ export default function Settings() {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.ready.then(reg => {
         addLog(`SW Ready. Active: ${!!reg.active}`);
+        
+        // Also check if getting related apps is supported
+        if ('getInstalledRelatedApps' in navigator) {
+          (navigator as any).getInstalledRelatedApps().then((relatedApps: any) => {
+             addLog(`Related apps installed: ${relatedApps.length}`);
+          });
+        }
       }).catch(err => {
         addLog(`SW Ready Error: ${err}`);
       });
@@ -96,20 +111,29 @@ export default function Settings() {
       const isIos = /iPhone|iPad|iPod/.test(navigator.userAgent);
       const isIframe = window.self !== window.top;
       
+      const ua = navigator.userAgent || navigator.vendor || (window as any).opera;
+      const isWebView = /; wv\)/i.test(ua) || /FBAN|FBAV|Instagram|Line/i.test(ua);
+      
       let msg = language === 'el' ? "Η εγκατάσταση δεν υποστηρίζεται αυτή τη στιγμή." : "Installation not currently supported.";
       
       if (isIframe) {
         msg = language === 'el' 
          ? "Βρίσκεστε σε περιβάλλον iframe (πρόσβαση από άλλη σελίδα). Ανοίξτε την εφαρμογή σε νέα καρτέλα για εγκατάσταση!" 
          : "You are inside an iframe. Please open the app in a new tab to install!";
+      } else if (isWebView) {
+        msg = language === 'el'
+         ? "Ανοίξατε την εφαρμογή μέσα από κάποιο άλλο App (πχ. Facebook/Instagram). Παρακαλούμε ανοίξτε τη σε κανονικό Browser (Chrome/Safari) για εγκατάσταση."
+         : "You opened the app inside an in-app browser. Please open it in a regular browser (Chrome/Safari) to install.";
       } else if (isStandalone) {
-        msg = language === 'el' ? "Η εφαρμογή είναι ήδη εγκατεστημένη!" : "App is already installed!";
+        msg = language === 'el' ? "Η εφαρμογή φαίνεται να είναι ήδη εγκατεστημένη!" : "App seems to be already installed!";
       } else if (isIos) {
         msg = language === 'el' 
          ? "Σε συσκευές Apple (iOS), πατήστε το 'Share' κάτω στην οθόνη και μετά 'Προσθήκη στην οθόνη έναρξης' (Add to Home Screen)." 
          : "On Apple (iOS) devices, tap 'Share' then 'Add to Home Screen'.";
       } else {
-        msg = language === 'el' ? "Η προτροπή εγκατάστασης δεν βρέθηκε. Ίσως δεν υποστηρίζεται από τον browser σας." : "Install prompt not found. Uncheck unsupported browser settings.";
+        msg = language === 'el' 
+         ? "Δεν υποστηρίζεται αυτόματη εγκατάσταση στον browser σας. Επιλέξτε 'Προσθήκη στην οθόνη έναρξης' / 'Add to Home screen' χειροκίνητα από το μενού του browser (τρεις τελείες) πάνω δεξιά." 
+         : "Automatic installation is not supported here. Please choose 'Add to Home screen' manually from your browser's menu (three dots) at the top right.";
       }
       alert(msg);
     }
