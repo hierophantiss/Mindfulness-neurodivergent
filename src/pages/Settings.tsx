@@ -24,6 +24,19 @@ export default function Settings() {
     addLog(`In standalone mode (already installed?): ${isStandalone}`);
     addLog(`Is in iframe: ${window.self !== window.top}`);
     addLog(`User agent: ${navigator.userAgent.substring(0, 50)}...`);
+
+    // Check manifest link
+    const manifestLink = document.querySelector('link[rel="manifest"]');
+    addLog(`Manifest link: ${manifestLink ? (manifestLink as HTMLLinkElement).href : 'Not found'}`);
+    
+    // Check SW fetch handler
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.ready.then(reg => {
+        addLog(`SW Ready. Active: ${!!reg.active}`);
+      }).catch(err => {
+        addLog(`SW Ready Error: ${err}`);
+      });
+    }
     
     if ((window as any).initDeferredPrompt) {
       setCanInstall(true);
