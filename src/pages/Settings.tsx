@@ -19,7 +19,11 @@ export default function Settings() {
   };
 
   useEffect(() => {
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
     addLog(`Check initDeferredPrompt: ${!!(window as any).initDeferredPrompt}`);
+    addLog(`In standalone mode (already installed?): ${isStandalone}`);
+    addLog(`Is in iframe: ${window.self !== window.top}`);
+    addLog(`User agent: ${navigator.userAgent.substring(0, 50)}...`);
     
     if ((window as any).initDeferredPrompt) {
       setCanInstall(true);
@@ -75,7 +79,26 @@ export default function Settings() {
       }
     } else {
       addLog('No prompt event available during click');
-      alert(language === 'el' ? "Η εφαρμογή είναι ήδη εγκατεστημένη." : "App is already installed");
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+      const isIos = /iPhone|iPad|iPod/.test(navigator.userAgent);
+      const isIframe = window.self !== window.top;
+      
+      let msg = language === 'el' ? "Η εγκατάσταση δεν υποστηρίζεται αυτή τη στιγμή." : "Installation not currently supported.";
+      
+      if (isIframe) {
+        msg = language === 'el' 
+         ? "Βρίσκεστε σε περιβάλλον iframe (πρόσβαση από άλλη σελίδα). Ανοίξτε την εφαρμογή σε νέα καρτέλα για εγκατάσταση!" 
+         : "You are inside an iframe. Please open the app in a new tab to install!";
+      } else if (isStandalone) {
+        msg = language === 'el' ? "Η εφαρμογή είναι ήδη εγκατεστημένη!" : "App is already installed!";
+      } else if (isIos) {
+        msg = language === 'el' 
+         ? "Σε συσκευές Apple (iOS), πατήστε το 'Share' κάτω στην οθόνη και μετά 'Προσθήκη στην οθόνη έναρξης' (Add to Home Screen)." 
+         : "On Apple (iOS) devices, tap 'Share' then 'Add to Home Screen'.";
+      } else {
+        msg = language === 'el' ? "Η προτροπή εγκατάστασης δεν βρέθηκε. Ίσως δεν υποστηρίζεται από τον browser σας." : "Install prompt not found. Uncheck unsupported browser settings.";
+      }
+      alert(msg);
     }
   };
 
