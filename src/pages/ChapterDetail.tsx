@@ -9,6 +9,7 @@ import { useReward } from '../contexts/RewardContext';
 import { useProgress } from '../contexts/ProgressContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../lib/utils';
+import { triggerReward } from '../components/RewardModal';
 import InteractiveRenderer from '../components/InteractiveRenderer';
 
 const ExpandableParagraph = ({ text, index, language }: { text: string, index: number, language: "en" | "el" }) => {
@@ -110,6 +111,7 @@ export default function ChapterDetail() {
     } else {
       updateChapterProgress(chapter.num, 1);
       markChapterComplete(chapter.num);
+      triggerReward();
       navigate('/chapters');
     }
   };

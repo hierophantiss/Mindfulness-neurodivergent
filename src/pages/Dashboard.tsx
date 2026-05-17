@@ -12,6 +12,7 @@ import { RainbowInfinity } from '../components/RainbowInfinity';
 
 import { Skeleton } from '../components/ui/Skeleton';
 import InfoModal from '../components/InfoModal';
+import StateCheckin from '../components/StateCheckin';
 
 // Soft easing for a calm entry
 const easingCurve: [number, number, number, number] = [0.25, 1, 0.3, 1];
@@ -46,15 +47,26 @@ export default function Dashboard() {
   const { language, t } = useLanguage();
   const { companionData } = useCompanion();
   const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const [showCheckin, setShowCheckin] = useState(false);
   const { hour } = useTime();
 
   useEffect(() => {
     const hasSeenIntro = localStorage.getItem('hasSeenIntro') === 'true';
+    const hasCheckedIn = sessionStorage.getItem('hasCheckedInSession');
     if (!hasSeenIntro) {
       setIsInfoOpen(true);
       localStorage.setItem('hasSeenIntro', 'true');
+    } else if (!hasCheckedIn) {
+      const timer = setTimeout(() => setShowCheckin(true), 600);
+      return () => clearTimeout(timer);
     }
   }, []);
+
+  const handleCheckinComplete = () => {
+    setShowCheckin(false);
+    sessionStorage.setItem('hasCheckedInSession', 'true');
+    setUserIntention(localStorage.getItem('n_mindfulness_intention'));
+  };
   
   const audioConfig = useMemo(() => ({
     base: 110,
@@ -385,6 +397,9 @@ export default function Dashboard() {
 
       {/* Toast Notification */}
       <AnimatePresence>
+        {showCheckin && <StateCheckin onComplete={handleCheckinComplete} />}
+      </AnimatePresence>
+      <AnimatePresence>
         {toastMessage && (
           <motion.div
             initial={{ opacity: 0, y: -20, scale: 0.95 }}
@@ -406,8 +421,8 @@ export default function Dashboard() {
       >
         <div className="flex flex-col gap-1.5">
           {/* Header Section */}
-          <motion.div variants={itemVariants} className="flex items-stretch justify-between px-1 mb-6 mt-2 relative">
-            <div className="flex flex-col gap-1.5">
+          <motion.div variants={itemVariants} className="flex items-stretch justify-between px-1 mb-6 mt-2 relative gap-4">
+            <div className="flex flex-col gap-1.5 flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
                 <div className="w-1.5 h-1.5 rounded-full bg-teal-500/80 animate-pulse" />
                 <span className="text-[9px] font-bold tracking-[0.25em] text-teal-400/50 uppercase">
@@ -421,37 +436,38 @@ export default function Dashboard() {
                 <p className="text-[11px] text-white/30 font-sans tracking-wide">
                   {currentDate}
                 </p>
-                {/* Mindful Stats Pill */}
-                {(mindfulStats.totalMin > 0 || mindfulStats.journalCount > 0) && (
-                  <div className="flex flex-wrap items-center gap-2">
-                    {mindfulStats.totalMin > 0 && (
-                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-100/80">
-                         <Activity size={10} className="text-teal-400" />
-                         <span className="text-[10px] font-sans font-medium tracking-wide">
-                             {mindfulStats.totalMin} {language === 'el' ? 'λεπτά' : 'minutes'}
-                         </span>
-                      </div>
-                    )}
-                    {mindfulStats.journalCount > 0 && (
-                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-100/80">
-                         <Notebook size={10} className="text-rose-400" />
-                         <span className="text-[10px] font-sans font-medium tracking-wide">
-                             {mindfulStats.journalCount} {language === 'el' ? 'σκέψεις' : 'reflections'}
-                         </span>
-                      </div>
-                    )}
-                    {mindfulStats.keyword && (
-                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-100/80">
-                         <Sparkles size={10} className="text-indigo-400" />
-                         <span className="text-[10px] font-sans font-medium tracking-wide italic">
-                             "{mindfulStats.keyword}"
-                         </span>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
+              
+              {/* Mindful Stats Pill */}
+              {(mindfulStats.totalMin > 0 || mindfulStats.journalCount > 0) && (
+                <div className="flex flex-wrap items-center gap-2">
+                  {mindfulStats.totalMin > 0 && (
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-100/80">
+                       <Activity size={10} className="text-teal-400" />
+                       <span className="text-[10px] font-sans font-medium tracking-wide">
+                           {mindfulStats.totalMin} {language === 'el' ? 'λεπτά' : 'minutes'}
+                       </span>
+                    </div>
+                  )}
+                  {mindfulStats.journalCount > 0 && (
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-100/80">
+                       <Notebook size={10} className="text-rose-400" />
+                       <span className="text-[10px] font-sans font-medium tracking-wide">
+                           {mindfulStats.journalCount} {language === 'el' ? 'σκέψεις' : 'reflections'}
+                       </span>
+                    </div>
+                  )}
+                  {mindfulStats.keyword && (
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-100/80">
+                       <Sparkles size={10} className="text-indigo-400" />
+                       <span className="text-[10px] font-sans font-medium tracking-wide italic">
+                           {`"${mindfulStats.keyword}"`}
+                       </span>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
+          </div>
             
             <div className="flex flex-col items-end justify-between self-stretch">
               <div className="pt-2 pr-2">

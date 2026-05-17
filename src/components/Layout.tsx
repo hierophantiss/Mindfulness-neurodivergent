@@ -6,6 +6,7 @@ import NavigationMenu from './NavigationMenu';
 import OfflineNotification from './OfflineNotification';
 import { useLanguage } from '../hooks/useLanguage';
 import { motion, AnimatePresence } from 'motion/react';
+import RewardModal from './RewardModal';
 
 export default function Layout() {
   const { t } = useLanguage();
@@ -59,6 +60,9 @@ export default function Layout() {
 
       {/* The Floating Companion */}
       {!isIntroPage && <Companion />}
+      
+      {/* Global Reward Modal */}
+      <RewardModal />
     </div>
   );
 }

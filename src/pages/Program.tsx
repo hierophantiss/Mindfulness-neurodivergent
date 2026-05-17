@@ -79,7 +79,7 @@ export default function Program() {
             const isCurrent = curW === weekNum;
             const isLocked = weekNum > curW;
             
-            const CardElement = isLocked ? 'div' : Link;
+            const CardElement = (isLocked ? 'div' : Link) as any;
             
             return (
               <CardElement 

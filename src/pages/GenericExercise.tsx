@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Play, Pause, Info, Volume2, VolumeX, SkipBack, SkipForward, Headphones } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../hooks/useLanguage';
+import { triggerReward } from '../components/RewardModal';
 
 const EXERCISES: Record<string, any> = {
   // --- ΜΙΚΡΟΔΟΣΕΙΣ ΑΠΟ ΤΟ 8-ΕΒΔΟΜΑΔΟ ΠΡΟΓΡΑΜΜΑ ---
@@ -591,6 +592,7 @@ export default function GenericExercise() {
           h.totalMin = Math.round((h.totalMin || 0) + exercise.duration / 60);
         }
         localStorage.setItem('journal_history', JSON.stringify(h));
+        triggerReward();
       } catch (e) {}
     }
   }, [elapsed, exercise.duration, id]);
