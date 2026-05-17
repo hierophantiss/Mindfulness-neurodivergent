@@ -32,6 +32,38 @@ export default function RabbitHole() {
 
   const articles = [
     {
+      id: 'dzogchen-great-perfection',
+      title: language === 'en' ? 'The Great Perfection (Dzogchen)' : 'Ντζόγκτσεν: Η Μεγάλη Τελειότητα',
+      author: language === 'en' ? 'Vangelis vadarma Petropoulos' : 'Βαγγέλης vadarma Πετρόπουλος',
+      pages: language === 'en' ? [
+        "The Great Perfection is considered by many Tibetans as the pinnacle of Buddhist spirituality. It challenges the view that the human mind intrinsically exists independently of all conceptual frameworks. Shattering the core of our empirical identity, the practice of the Great Perfection delves deeply into the prevailing belief in an inherently true, locally defined, egocentric mind.",
+        "According to this tradition, the classical strategy for investigating the mind's ontological status is the firsthand examination of how mental events, including consciousness itself, are created, unfold, and disappear. The fundamental challenge is discriminating between what is acquired sensorily and what is projected conceptually onto perceptual experience.",
+        "Within this meditative inquiry, the practitioner focuses attention on the appearances of mental events, observing closely exactly how they arise. The inquiry is guided by questions like: 'Do mental events appear all at once or gradually? Can their point of origin be identified? What is the nature of that from which they emerge?'",
+        "In the next phase, the practitioner examines the location of mental events. Experience itself is left to answer this question without preconceptions. Given that Buddhists consider mental events to appear 'within the mind', it follows that the nature of the space of perception within which they appear is meticulously examined.",
+        "The essence of the practice is summarized by Padmasambhava: 'With the gaze of the mind steady, activate your awareness unwaveringly, clearly, and unhindered, without directing it towards any meditative object. As attention stabilizes, examine thoroughly the stability of consciousness. Then, gently relax and remain calm.'",
+        "Through such inquiry, Buddhists have concluded that the mind and awareness itself are inherently unidentifiable objectively. The mind, like all other phenomena, is revealed to be empty, yet not a non-existent nothingness. It is luminous, knowing, and empty, like boundless space, flooded with transparent light.",
+        "The practice carefully examines the spaces within which physical and mental phenomena arise. The external space, within which we experience the environment and our body, and the internal space, within which we experience thoughts and feelings. According to Buddhist theory, both are equally 'physical'.",
+        "Buddhism rejects both materialism and the Cartesian mind-matter dualism. The Great Perfection avoids granting individual substance of any kind—mental, physical, or otherwise—to the contents of consciousness. All phenomena are like the reflection of stars in water or rainbows in the sky.",
+        "Primordial consciousness, the 'natural radiance' of the absolute space of phenomena, manifests with the clarity of dawn. Dudjom Lingpa explains that although the absolute space is present, it 'freezes' due to dualistic apprehension. The ground of the mind, naturally free, freezes and crystallizes, creating the forms of things.",
+        "Once you recognize the identity of the brilliantly luminous mind, you are freed from the need to distinguish between ultimate reality and the phenomenal world. Now everything has the 'same taste', governed by primordial purity and equality.",
+        "The truth is that our mind was never separate from primordial buddhic consciousness. The impression to the contrary is due to the delusion that our perceptions, thoughts, and feelings are our property. By recognizing how this delusion is created, we arrive at the realization of primordial consciousness.",
+        "Consequently, the root of suffering is the attachment to the idea that what is not actually 'I' and 'mine' is 'I' and 'mine'. It is a state of primordial ignorance (spiritual blindness) of our true nature."
+      ] : [
+        "Η Μεγάλη Τελειότητα θεωρείται από πολλούς Θιβετανούς ως το αποκορύφωμα της Βουδιστικής πνευματικότητας και θέτει υπό αμφισβήτηση την άποψη ότι ο ανθρώπινος νους υπάρχει εγγενώς, ανεξάρτητα από όλα τα εννοιολογικά πλαίσια. Συντρίβοντας τον πυρήνα της εμπειρικής μας ταυτότητας, η πρακτική της Μεγάλης Τελειότητας εμβαθύνει στην επικρατούσα πεποίθηση της ύπαρξης ενός έμφυτα αληθινού, τοπικά προσδιοριζόμενου, εγωκεντρικού νου.",
+        "Σύμφωνα με αυτή την παράδοση η κλασσική στρατηγική για την έρευνα της οντολογικής κατάστασης του νου, είναι η εξέταση από πρώτο χέρι του τρόπου, με τον οποίο δημιουργούνται, εκτυλίσσονται και χάνονται τα νοητικά συμβάντα, συμπεριλαμβανομένης και της ίδιας της συνείδησης. Η θεμελιώδης πρόκληση σ' αυτή την πρακτική είναι η διάκριση – μέσω διεισδυτικής επίγνωσης – ανάμεσα σ' εκείνο που προσκομίζεται αισθητηριακά και σ' εκείνο που προβάλλεται εννοιολογικά πάνω στην αντιληπτική εμπειρία.",
+        "Στα πλαίσια αυτού του τρόπου διαλογιστικής έρευνας, ο ασκούμενος επικεντρώνει την προσοχή του πάνω στις εμφανίσεις των νοητικών συμβάντων, παρατηρώντας στενά τον ακριβή τρόπο, με τον οποίο αυτές αναδύονται στο πεδίο της νοητικής αντίληψης. Πρακτικά η διαλογιστική έρευνα οδηγείται από ερωτήματα, όπως «Τα νοητικά συμβάντα εμφανίζονται όλα μεμιάς ή βαθμιαία; Μπορεί να προσδιορισθεί η θέση προέλευσής τους; Ποιά είναι η φύση εκείνου, από το οποίο αναδύονται;»",
+        "Στην επόμενη φάση αυτής της έρευνας ο ασκούμενος εξετάζει επισταμένα τη θέση των νοητικών συμβάντων. Η εμπειρία αφήνεται να απαντήσει σ' αυτό το ερώτημα, χωρίς την παρέμβαση προκαταλήψεων. Δεδομένου ότι οι Βουδιστές θεωρούν ότι τα νοητικά συμβάντα εμφανίζονται «μέσα στον νου», επόμενο είναι να εξετάζεται σχολαστικά η φύση του χώρου αντίληψης, εντός του οποίου αυτά εμφανίζονται.",
+        "Η ουσία της πρακτικής καταγράφεται περιεκτικά από τον Παντμασαμπάβα: «Με το βλέμμα του νου σταθερό, ενεργοποίησε την επίγνωσή σου αταλάντευτα, ξεκάθαρα, ακλόνητα και ανεμπόδιστα, χωρίς να την κατευθύνεις προς κάποιο διαλογιστικό αντικείμενο. Όσο αυξάνεται η σταθεροποίηση της προσοχής, εξέτασε ενδελεχώς τη σταθερότητα της συνείδησης. Μετά, απαλά χαλάρωσε και μείνε ήρεμος.»",
+        "Με τη βοήθεια τέτοιου είδους έρευνας οι Βουδιστές έχουν οδηγηθεί στο συμπέρασμα ότι ο νους και η ίδια η επίγνωση εκ φύσεως δεν είναι αντικειμενικά ταυτοποιήσιμα. Ο νους, όπως και όλα τα άλλα φαινόμενα, αποκαλύπτεται ότι είναι κενός, όχι όμως ένα ανυπόστατο τίποτα. Είναι φωτεινός, γνώστης και κενός, όπως ο απεριόριστος χώρος, πλημμυρισμένος από διάφανο φως.",
+        "Στα πλαίσια της άσκησης της Μεγάλης Τελειότητας εξετάζονται με μεγάλη προσοχή οι χώροι, εντός των οποίων αναδύονται τα φυσικά και τα νοητικά φαινόμενα. Ο εξωτερικός χώρος, εντός του οποίου έχουμε την εμπειρία του περιβάλλοντος και του σώματός μας, και ο εσωτερικός χώρος, εντός του οποίου βιώνουμε σκέψεις και αισθήματα. Και οι δύο είναι εξίσου «φυσικοί».",
+        "Ο Βουδισμός δεν αποδέχεται τον υλισμό, ούτε τον Καρτεσιανό διαχωρισμό ύλης-πνεύματος. Η Μεγάλη Τελειότητα – σε απόλυτη συμφωνία με την άποψη του Μεσαίου Δρόμου – αποφεύγει να δίνει ατομική υπόσταση οποιουδήποτε είδους στα περιεχόμενα της συνείδησης. Όλα τα φαινόμενα είναι σαν το καθρέφτισμα των άστρων στο νερό ή σαν τα ουράνια τόξα στον ουρανό.",
+        "Η πρωταρχική συνείδηση, «η φυσική λάμψη» του απόλυτου χώρου των φαινομένων, εκδηλώνεται με τη διαύγεια και καθαρότητα της αυγής. Ο Ντάτζομ Λίνγκπα εξηγεί ότι αν και ο απόλυτος χώρος των φαινομένων είναι παρών, εντούτοις «παγώνει» εξαιτίας της δυαδικής σύλληψης. Το έδαφος του νου, που είναι φυσικά ελεύθερο, παγώνει και κρυσταλλώνεται δημιουργώντας τις μορφές των πραγμάτων.",
+        "Από τη στιγμή που αναγνωρίζεις την ταυτότητα του απαστράπτοντος φωτεινού νου, έχεις απαλλαγεί από την ανάγκη να κάνεις διάκριση ανάμεσα στην έσχατη πραγματικότητα και στον κόσμο των φαινομένων. Τώρα όλα έχουν την «ίδια γεύση», όλα διέπονται από την πρωταρχική καθαρότητα και ισότητα.",
+        "Η αλήθεια είναι ότι ο νους μας ποτέ δεν ήταν ξεχωριστός από την πρωταρχική βουδική συνείδηση. Η εντύπωση για το αντίθετο οφείλεται στην αυταπάτη ότι οι αντιλήψεις μας, οι σκέψεις μας και τα αισθήματά μας είναι ιδιοκτησία μας. Με αυτόν τον τρόπο βυθιζόμαστε στην αυταπάτη, που συσκοτίζει την αληθινή φύση της συνείδησής μας.",
+        "Κατά συνέπεια, η ρίζα της οδύνης είναι η προσκόλληση στην ιδέα ότι είναι «εγώ» και «δικό μου» εκείνο που στην πραγματικότητα δεν είναι «εγώ» και «δικό μου». Πρόκειται για μια κατάσταση αρχέγονης άγνοιας (πνευματικής τυφλότητας) της αληθινής φύσης μας."
+      ]
+    },
+    {
       id: 'koshas-veils',
       title: language === 'en' ? 'The Veils of Being' : 'Τα Πέπλα της Ύπαρξης',
       author: language === 'en' ? 'Yoga & 4-fold Axis' : 'Φιλοσοφία του 4πλού Άξονα',
@@ -419,7 +451,7 @@ export default function RabbitHole() {
           </Link>
 
           {articles.map((article) => {
-            const isNew = article.id === 'dzogchen-nature-of-mind';
+            const isNew = article.id === 'dzogchen-great-perfection';
             return (
               <button 
                 key={article.id}
