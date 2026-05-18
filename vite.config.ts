@@ -1,8 +1,22 @@
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
+import fs from 'fs';
+import { createRequire } from 'module';
+globalThis.require = createRequire(import.meta.url);
+
 import { defineConfig, loadEnv } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
+import JSDOMRenderer from '@prerenderer/renderer-jsdom';
+import prerender from 'vite-plugin-prerender';
+
+// Read prerender routes
+let prerenderRoutes = ['/'];
+try {
+  prerenderRoutes = JSON.parse(fs.readFileSync(path.join(__dirname, 'src', 'prerender-paths.json'), 'utf-8'));
+} catch(e) {
+  console.log('No prerender paths found, using default');
+}
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
@@ -11,6 +25,11 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       tailwindcss(),
+      prerender({
+        staticDir: path.join(__dirname, 'dist'),
+        routes: prerenderRoutes,
+        renderer: new JSDOMRenderer(),
+      }),
       VitePWA({
         registerType: 'autoUpdate',
         strategies: 'generateSW',

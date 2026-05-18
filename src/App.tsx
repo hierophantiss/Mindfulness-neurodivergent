@@ -32,9 +32,11 @@ import { ProgressProvider } from './contexts/ProgressContext';
 function AppContent() {
   const isIframe = window.self !== window.top;
   const Router = isIframe ? HashRouter : BrowserRouter;
+  const match = window.location.pathname.match(/^\/(en|el)/);
+  const basename = match ? match[0] : '';
   
   return (
-    <Router>
+    <Router basename={basename}>
       <CompanionProvider>
         <DynamicSpaceBackground />
         <Routes>

@@ -65,6 +65,11 @@ const translations: Record<string, Record<Language, string>> = {
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<Language>(() => {
+    if (typeof window !== 'undefined') {
+      const path = window.location.pathname;
+      if (path.startsWith('/el')) return 'el';
+      if (path.startsWith('/en')) return 'en';
+    }
     const saved = localStorage.getItem('mindfulness_lang');
     if (saved === 'en' || saved === 'el') return saved;
     // Autodetect based on system language
