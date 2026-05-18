@@ -50,6 +50,19 @@ async function generate() {
     dynamicPaths.push(match[1]);
   }
   
+  // extract sleep tracks for Sanctuary
+  const sanctuaryCode = fs.readFileSync(path.join(ROOT_DIR, 'src', 'pages', 'Sanctuary.tsx'), 'utf-8');
+  // Match sleep tracks from "sleepTracks = [" until the end of the array
+  const tracksMatch = sanctuaryCode.match(/sleepTracks\s*=\s*\[([\s\S]*?)\];/);
+  const sitemapOnlyPaths: string[] = [];
+  if (tracksMatch) {
+    const idRegex = /id:\s*'([a-zA-Z0-9-]+)'/g;
+    let match;
+    while ((match = idRegex.exec(tracksMatch[1])) !== null) {
+      sitemapOnlyPaths.push(`/sanctuary?track=${match[1]}`);
+    }
+  }
+  
   // program weeks
   const maxWeeks = courseContentEn ? Object.keys(courseContentEn).length : 8;
   for (let w = 1; w <= maxWeeks; w++) {
@@ -69,19 +82,29 @@ async function generate() {
   fs.writeFileSync(prerenderFilePath, JSON.stringify(prerenderRoutes, null, 2));
   console.log(`✅ Generated ${prerenderRoutes.length} paths for prerendering.`);
 
-  const urls = prerenderRoutes.map(p => {
+  const allSitemapUrls = [...prerenderRoutes];
+  
+  sitemapOnlyPaths.forEach(p => {
+    allSitemapUrls.push(`/en${p}`);
+    allSitemapUrls.push(`/el${p}`);
+  });
+
+  const urls = allSitemapUrls.map(p => {
     const lang = p.startsWith('/en') ? 'en' : 'el';
     const pureRoute = p.replace(/^\/(en|el)/, '') || '/';
-    const loc = `${BASE_URL}${p}`;
-    const enUrl = `${BASE_URL}/en${pureRoute === '/' ? '' : pureRoute}`;
-    const elUrl = `${BASE_URL}/el${pureRoute === '/' ? '' : pureRoute}`;
+    // When using ampersands in XML loc, encode them
+    const encodedRoute = p.replace(/&/g, '&amp;');
+    const loc = `${BASE_URL}${encodedRoute}`;
+    const enUrl = `${BASE_URL}/en${pureRoute === '/' ? '' : pureRoute}`.replace(/&/g, '&amp;');
+    const elUrl = `${BASE_URL}/el${pureRoute === '/' ? '' : pureRoute}`.replace(/&/g, '&amp;');
+    const xdefaultUrl = `${BASE_URL}${pureRoute}`.replace(/&/g, '&amp;');
     
     return `
   <url>
     <loc>${loc}</loc>
     <xhtml:link rel="alternate" hreflang="en" href="${enUrl}" />
     <xhtml:link rel="alternate" hreflang="el" href="${elUrl}" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="${BASE_URL}${pureRoute}" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="${xdefaultUrl}" />
     <changefreq>weekly</changefreq>
     <priority>${p.length < 10 ? '1.0' : '0.8'}</priority>
   </url>`;

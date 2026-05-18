@@ -73,7 +73,7 @@ export default function Dashboard() {
     beat: 6.3,
     pulse: 0.1,
     disableSynth: true, // Disable pink noise so it doesn't sound like water
-    ambientLayers: ['/space-ambient.mp3'] // Use space ambient for dashboard
+    ambientLayers: ['/atlasaudio-calming-zen-519422.mp3'] // Use calming zen for dashboard
   }), []);
 
   const { startAudio, stopAudio, isPlaying } = useBinauralAudio(audioConfig);

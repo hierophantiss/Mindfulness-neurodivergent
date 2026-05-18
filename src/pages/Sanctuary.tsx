@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Waves, Wind, CloudRain, TreePine, Moon, ChevronLeft, Volume2, Timer, Info, Play, Youtube, X, ChevronRight, Music, Sparkles, Droplets, Flame } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { cn } from '../lib/utils';
 import { useBinauralAudio } from '../hooks/useBinauralAudio';
 
-const sleepTracks = [
+export const sleepTracks = [
   // Sleep & Meditation Audio (The new files)
-  { id: 'deep-silence', group: 'music', icon: Moon, label: { el: 'Εκτεταμένη Βαθιά Σιωπή', en: 'Extended Deep Silence' }, subtitle: { el: 'Κύματα & Άστρα', en: 'Waves & Stars HQ' }, color: 'text-indigo-400', disableSynth: true, files: ['/space-ambient.mp3'] },
+  { id: 'deep-silence', group: 'music', icon: Moon, label: { el: 'Εκτεταμένη Βαθιά Σιωπή', en: 'Extended Deep Silence' }, subtitle: { el: 'Κύματα & Άστρα', en: 'Waves & Stars HQ' }, color: 'text-indigo-400', disableSynth: true, files: ['/purebinaural-purebinaural-20-hz-beta-isochronic-tones-pure-tone-496540.mp3'] },
   { id: 'calming-zen', group: 'music', icon: Sparkles, label: { el: 'Ήρεμο Zen', en: 'Calming Zen' }, subtitle: { el: 'Απόλυτη Χαλάρωση', en: 'Absolute Relaxation' }, color: 'text-emerald-400', disableSynth: true, files: ['/atlasaudio-calming-zen-519422.mp3'] },
-  { id: 'sleep-963', group: 'music', icon: Music, label: { el: 'Συχνότητα Ύπνου (963Hz)', en: 'Sleep Frequency (963Hz)' }, subtitle: { el: 'Binaural & Immersive', en: 'Binaural & Immersive' }, color: 'text-purple-400', disableSynth: true, files: ['/atlasaudio-calming-zen-519422.mp3'] },
-  { id: 'beta-pure', group: 'music', icon: Wind, label: { el: 'Καθαρός Τόνος Beta (20Hz)', en: 'Pure Beta Tone (20Hz)' }, subtitle: { el: 'Ισοχρονικοί Τόνοι', en: 'Isochronic Tones' }, color: 'text-rose-400', disableSynth: true, files: ['/space-ambient.mp3'] },
-  { id: 'space-ambient', group: 'music', icon: Moon, label: { el: 'Διαστημική Ατμόσφαιρα', en: 'Space Ambient' }, subtitle: { el: 'Βαθύς Χώρος', en: 'Deep Space' }, color: 'text-slate-400', disableSynth: true, files: ['/space-ambient.mp3'] },
+  { id: 'sleep-963', group: 'music', icon: Music, label: { el: 'Συχνότητα Ύπνου (963Hz)', en: 'Sleep Frequency (963Hz)' }, subtitle: { el: 'Binaural & Immersive', en: 'Binaural & Immersive' }, color: 'text-purple-400', disableSynth: true, files: ['/meditativetiger-sleep-music-963-hz-binaural-immersive-audio-426673.mp3'] },
+  { id: 'beta-pure', group: 'music', icon: Wind, label: { el: 'Καθαρός Τόνος Beta (20Hz)', en: 'Pure Beta Tone (20Hz)' }, subtitle: { el: 'Ισοχρονικοί Τόνοι', en: 'Isochronic Tones' }, color: 'text-rose-400', disableSynth: true, files: ['/purebinaural-purebinaural-20-hz-beta-isochronic-tones-pure-tone-496540.mp3'] },
+  { id: 'space-ambient', group: 'music', icon: Moon, label: { el: 'Διαστημική Ατμόσφαιρα', en: 'Space Ambient' }, subtitle: { el: 'Βαθύς Χώρος', en: 'Deep Space' }, color: 'text-slate-400', disableSynth: true, files: ['/meditativetiger-sleep-music-963-hz-binaural-immersive-audio-426673.mp3'] },
   
   // Mixed Binaural & Nature
   { id: 'deep-delta-ocean', group: 'binaural', icon: Waves, label: { el: 'Ωκεανός & Βαθύς Ύπνος', en: 'Ocean & Deep Sleep' }, subtitle: { el: 'Delta 2.5Hz', en: 'Delta 2.5Hz' }, color: 'text-cyan-500', base: 100, beat: 2.5, pulse: 0.05, files: ['/ocean-waves.mp3'] },
@@ -25,8 +25,13 @@ const sleepTracks = [
 
 export default function Sanctuary() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { language } = useLanguage();
-  const [activeSound, setActiveSound] = useState<string | null>(null);
+  
+  const [activeSound, setActiveSound] = useState<string | null>(() => {
+    return searchParams.get('track') || null;
+  });
+  
   const [volume, setVolume] = useState(0.5);
   const [isDimmed, setIsDimmed] = useState(false);
   const [timer, setTimer] = useState<number | null>(null);
@@ -279,6 +284,22 @@ export default function Sanctuary() {
     setGlobalVolume(volume);
   }, [volume, setGlobalVolume]);
 
+  // Handle deep-linked audio start
+  useEffect(() => {
+    if (activeSound) {
+      const trackDef = sleepTracks.find(t => t.id === activeSound);
+      if (trackDef) {
+        startAudio({
+          base: trackDef.base || 110,
+          beat: trackDef.beat || 6.3,
+          pulse: trackDef.pulse || 0.1,
+          disableSynth: trackDef.disableSynth,
+          ambientLayers: trackDef.files || []
+        });
+      }
+    }
+  }, []);
+
   useEffect(() => {
     let interval: any;
     if (timeLeft !== null && timeLeft > 0) {
@@ -298,9 +319,13 @@ export default function Sanctuary() {
     if (activeSound === id) {
       stopAudio();
       setActiveSound(null);
+      searchParams.delete('track');
+      setSearchParams(searchParams, { replace: true });
     } else {
       stopAudio();
       setActiveSound(id);
+      searchParams.set('track', id);
+      setSearchParams(searchParams, { replace: true });
       
       const newTrackDef = sleepTracks.find(t => t.id === id);
       if (newTrackDef) {
