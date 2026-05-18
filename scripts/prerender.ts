@@ -4,9 +4,8 @@ import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-// Load prerenderer as CJS to avoid ESM issues across node versions and platforms
 const Prerenderer = require('@prerenderer/prerenderer');
-const JSDOMRenderer = require('@prerenderer/renderer-jsdom');
+const PuppeteerRenderer = require('@prerenderer/renderer-puppeteer');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,7 +22,12 @@ async function run() {
 
   const prerenderer = new Prerenderer({
     staticDir: path.join(ROOT_DIR, 'dist'),
-    renderer: new JSDOMRenderer(),
+    renderer: new PuppeteerRenderer({
+      renderAfterDocumentEvent: 'app-rendered',
+      maxConcurrentRoutes: 5,
+      // Pass args to make it stable in CI
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    }),
     server: {
       host: '127.0.0.1',
       port: 0 // Assign dynamic port to prevent EADDRINUSE
@@ -45,7 +49,11 @@ async function run() {
       if (!fs.existsSync(outDir)) {
           fs.mkdirSync(outDir, { recursive: true });
       }
-      fs.writeFileSync(file, route.html.trim());
+      
+      // Ensure splash screen is never in the raw prerendered HTML output
+      let html = route.html.replace(/<div\s+id="splash-screen"[\s\S]*?(<div\s+id="root"[^>]*>)/i, '$1');
+      
+      fs.writeFileSync(file, html.trim());
     }
     console.log('✅ Prerendering completed successfully.');
   } catch (err) {

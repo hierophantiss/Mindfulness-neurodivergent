@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tripartite Attention</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #05080a;
+            color: #bde0cf;
+            font-family: 'Inter', system-ui, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        canvas {
+            display: block;
+        }
+        .controls {
+            position: absolute;
+            bottom: 40px;
+            width: 100%;
+            text-align: center;
+        }
+        .caption {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 12px 24px;
+            border-radius: 20px;
+            font-size: 14px;
+            backdrop-blur: 10px;
+            border: 1px solid rgba(255, 170, 100, 0.3);
+            max-width: 80%;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div class="controls">
+        <div class="caption" id="caption">Πρόθεση, Προσοχή, Επίγνωση. Η τριπλή άγκυρα.</div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const caption = document.getElementById('caption');
+
+        let width, height, cx, cy;
+        let time = 0;
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width * window.devicePixelRatio;
+            canvas.height = height * window.devicePixelRatio;
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+            cx = width / 2;
+            cy = height / 2;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        const lang = window.location.search.includes('lang=en') ? 'en' : 'el';
+        const labels = {
+            el: ["Πρόθεση", "Προσοχή", "Επίγνωση"],
+            en: ["Intention", "Attention", "Awareness"]
+        };
+
+        function animate() {
+            ctx.fillStyle = '#05080a';
+            ctx.fillRect(0, 0, width, height);
+
+            time += 0.01;
+
+            const radius = 120;
+            const points = [];
+
+            for(let i=0; i<3; i++) {
+                const angle = (i * Math.PI * 2 / 3) + time * 0.5;
+                const x = cx + Math.cos(angle) * (radius + Math.sin(time * 2 + i) * 20);
+                const y = cy + Math.sin(angle) * (radius + Math.sin(time * 2 + i) * 20);
+                points.push({x, y, label: labels[lang][i]});
+            }
+
+            // Draw center
+            ctx.beginPath();
+            ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+            ctx.fillStyle = '#fff';
+            ctx.fill();
+
+            // Draw connections
+            ctx.beginPath();
+            ctx.moveTo(points[0].x, points[0].y);
+            ctx.lineTo(points[1].x, points[1].y);
+            ctx.lineTo(points[2].x, points[2].y);
+            ctx.closePath();
+            ctx.strokeStyle = 'rgba(255, 170, 100, 0.4)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Draw points and labels
+            points.forEach((p, i) => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 10, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffaa64';
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = '#ffaa64';
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 12px Inter';
+                ctx.textAlign = 'center';
+                ctx.fillText(p.label, p.x, p.y + 30);
+            });
+
+            // Draw flow
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius * 0.8, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(189, 224, 207, 0.1)';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>

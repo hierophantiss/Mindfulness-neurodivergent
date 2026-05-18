@@ -148,14 +148,16 @@
   <script type="module" src="/src/main.tsx"></script>
   <script>
     // Emergency failsafe: if main app doesn't remove splash within 6 seconds, hide it here.
-    setTimeout(function() {
-      var s = document.getElementById('splash-screen');
-      if (s) {
-        s.style.opacity = '0';
-        s.style.visibility = 'hidden';
-        setTimeout(function() { if(s.parentNode) s.remove(); }, 800);
-      }
-    }, 6000);
+    if (!navigator.userAgent.includes('jsdom') && !window.__PRERENDER_INJECTED) {
+      setTimeout(function() {
+        var s = document.getElementById('splash-screen');
+        if (s) {
+          s.style.opacity = '0';
+          s.style.visibility = 'hidden';
+          setTimeout(function() { if(s.parentNode) s.remove(); }, 800);
+        }
+      }, 6000);
+    }
   </script>
 </body>
 </html>
