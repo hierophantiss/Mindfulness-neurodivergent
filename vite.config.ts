@@ -28,7 +28,13 @@ export default defineConfig(({ mode }) => {
       prerender({
         staticDir: path.join(__dirname, 'dist'),
         routes: prerenderRoutes,
-        renderer: new JSDOMRenderer(),
+        renderer: new JSDOMRenderer({
+          // Any renderer options here
+        }),
+        server: {
+          host: '127.0.0.1',
+          port: 0
+        }
       }),
       VitePWA({
         registerType: 'autoUpdate',

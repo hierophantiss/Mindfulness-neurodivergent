@@ -6,7 +6,12 @@ if (fs.existsSync(p)) {
   let c = fs.readFileSync(p, 'utf8');
   if (!c.includes('createRequire')) {
     c = 'import { createRequire } from "module"; const require = createRequire(import.meta.url);\n' + c;
-    fs.writeFileSync(p, c);
-    console.log('✅ Patched vite-plugin-prerender');
   }
+  // Also log the actual error out in the catch block
+  if (c.includes('const msg = "[vite-plugin-prerender] Unable to prerender all routes!";')) {
+    c = c.replace('const msg = "[vite-plugin-prerender] Unable to prerender all routes!";\n    console.error(msg);', 'console.error("[vite-plugin-prerender] Unable to prerender all routes!", err);');
+  }
+  fs.writeFileSync(p, c);
+  console.log('✅ Patched vite-plugin-prerender');
 }
+

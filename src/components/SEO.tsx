@@ -47,9 +47,9 @@ export const SEO: React.FC = () => {
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
       <link rel="canonical" href={`${baseUrl}${path}`} />
-      <link rel="alternate" hreflang="en" href={enUrl} />
-      <link rel="alternate" hreflang="el" href={elUrl} />
-      <link rel="alternate" hreflang="x-default" href={`${baseUrl}${path}`} />
+      <link rel="alternate" hrefLang="en" href={enUrl} />
+      <link rel="alternate" hrefLang="el" href={elUrl} />
+      <link rel="alternate" hrefLang="x-default" href={`${baseUrl}${path}`} />
     </Helmet>
   );
 };
