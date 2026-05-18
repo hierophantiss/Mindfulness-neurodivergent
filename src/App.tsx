@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { HashRouter, Routes, Route, useNavigate, Navigate } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import { CompanionProvider } from './hooks/useCompanion';
 import Layout from './components/Layout';
 import { DynamicSpaceBackground } from './components/DynamicSpaceBackground';
@@ -30,8 +30,11 @@ import { RewardProvider } from './contexts/RewardContext';
 import { ProgressProvider } from './contexts/ProgressContext';
 
 function AppContent() {
+  const isIframe = window.self !== window.top;
+  const Router = isIframe ? HashRouter : BrowserRouter;
+  
   return (
-    <HashRouter>
+    <Router>
       <CompanionProvider>
         <DynamicSpaceBackground />
         <Routes>
@@ -58,7 +61,7 @@ function AppContent() {
         </Route>
         </Routes>
       </CompanionProvider>
-    </HashRouter>
+    </Router>
   );
 }
 
