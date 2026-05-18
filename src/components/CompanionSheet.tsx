@@ -871,7 +871,7 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
               src="/temple-cat.png" 
               alt="" 
               className="w-full h-full object-cover" 
-              onError={(e) => { (e.target as HTMLImageElement).src = '/favicon-96x96.png'; }}
+              onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/favicon-96x96.png'; }}
             />
           </button>
           <div className="flex flex-col">
@@ -893,7 +893,7 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
                 src="/temple-cat.png" 
                 alt="Magical Cat" 
                 className="w-full h-full object-cover" 
-                onError={(e) => { (e.target as HTMLImageElement).src = '/favicon-96x96.png'; }}
+                onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/favicon-96x96.png'; }}
               />
             </div>
             <p className="text-stone-500 dark:text-stone-400 font-serif italic text-[17px] leading-relaxed">

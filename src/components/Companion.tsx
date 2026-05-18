@@ -190,8 +190,8 @@ export default function Companion() {
             alt="Magical Cat" 
             className="w-full h-full object-cover"
             onError={(e) => {
-              // Fallback if the user-provided image hasn't been uploaded yet
-              (e.target as HTMLImageElement).src = '/favicon-96x96.png';
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = '/favicon-96x96.png';
             }}
           />
         </div>
