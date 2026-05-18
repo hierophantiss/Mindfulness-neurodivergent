@@ -10,7 +10,6 @@ import { motion, AnimatePresence } from 'motion/react';
 export default function Layout() {
   const { t } = useLanguage();
   const location = useLocation();
-  const isHome = location.pathname === '/';
   const mainRef = React.useRef<HTMLElement>(null);
 
   const hasCompletedOnboarding = localStorage.getItem('hasCompletedOnboarding') === 'true';
@@ -25,7 +24,7 @@ export default function Layout() {
     return <Navigate to="/onboarding" replace />;
   }
 
-  const isIntroPage = ['/', '/landing_info', '/intro'].includes(location.pathname);
+  const isIntroPage = ['/landing_info', '/intro'].includes(location.pathname);
 
   return (
     <div className="min-h-[100dvh] h-[100dvh] bg-transparent text-pine-100 font-sans selection:bg-teal-500/30 flex flex-col relative overflow-hidden">
@@ -37,8 +36,7 @@ export default function Layout() {
 
       {/* Main Content Area */}
       <main id="main-content" ref={mainRef} className={cn(
-         "flex-1 relative z-10 max-w-7xl mx-auto w-full flex flex-col overflow-x-hidden scroll-smooth",
-         isHome ? "px-0 py-0 overflow-hidden" : "px-4 md:px-8 pt-[env(safe-area-inset-top)] pb-[calc(100px+env(safe-area-inset-bottom))] md:pb-24 overflow-y-auto"
+         "flex-1 relative z-10 max-w-7xl mx-auto w-full flex flex-col overflow-x-hidden scroll-smooth overflow-y-auto px-4 md:px-8 pt-[env(safe-area-inset-top)] pb-[calc(100px+env(safe-area-inset-bottom))] md:pb-24"
       )}>
         <AnimatePresence mode="wait">
           <motion.div
@@ -55,7 +53,7 @@ export default function Layout() {
       </main>
 
       {/* The Navigation Menu */}
-      {!isHome && location.pathname !== '/landing_info' && <NavigationMenu />}
+      {location.pathname !== '/landing_info' && <NavigationMenu />}
 
       {/* The Floating Companion */}
       {!isIntroPage && <Companion />}
