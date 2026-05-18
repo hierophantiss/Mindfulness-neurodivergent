@@ -13,7 +13,8 @@ export default function Layout() {
   const location = useLocation();
   const mainRef = React.useRef<HTMLElement>(null);
 
-  const hasCompletedOnboarding = localStorage.getItem('hasCompletedOnboarding') === 'true';
+  const isPrerendering = typeof window !== 'undefined' && ((window as any).__PRERENDER_INJECTED || navigator.userAgent.includes('jsdom') || navigator.userAgent.includes('HeadlessChrome'));
+  const hasCompletedOnboarding = localStorage.getItem('hasCompletedOnboarding') === 'true' || isPrerendering;
 
   useEffect(() => {
     if (mainRef.current) {

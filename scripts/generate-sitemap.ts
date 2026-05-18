@@ -58,7 +58,7 @@ async function generate() {
 
   // Deduplicate
   const allStaticPaths = [...new Set([...mainRoutes, ...dynamicPaths])];
-  const prerenderRoutes = [];
+  const prerenderRoutes = ['/'];
   
   allStaticPaths.forEach(p => {
     prerenderRoutes.push(`/en${p === '/' ? '' : p}`);

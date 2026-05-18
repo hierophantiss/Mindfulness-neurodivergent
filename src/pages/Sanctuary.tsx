@@ -276,6 +276,10 @@ export default function Sanctuary() {
   });
 
   useEffect(() => {
+    setGlobalVolume(volume);
+  }, [volume, setGlobalVolume]);
+
+  useEffect(() => {
     let interval: any;
     if (timeLeft !== null && timeLeft > 0) {
       interval = setInterval(() => {

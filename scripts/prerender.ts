@@ -40,6 +40,10 @@ async function run() {
     
     const renderedRoutes = await prerenderer.renderRoutes(routes);
     
+    console.log(`Actually rendered ${renderedRoutes.length} routes out of ${routes.length}`);
+    const rNames = renderedRoutes.map(r => r.route);
+    console.log(rNames.slice(0, 10).join(', ') + ' ... ' + rNames.slice(-5).join(', '));
+    
     for (const route of renderedRoutes) {
       let outDir = path.join(ROOT_DIR, 'dist', route.route);
       if (route.route === '/') {
@@ -50,10 +54,8 @@ async function run() {
           fs.mkdirSync(outDir, { recursive: true });
       }
       
-      // Ensure splash screen is never in the raw prerendered HTML output
-      let html = route.html.replace(/<div\s+id="splash-screen"[\s\S]*?(<div\s+id="root"[^>]*>)/i, '$1');
-      
-      fs.writeFileSync(file, html.trim());
+      // Save the rendered HTML
+      fs.writeFileSync(file, route.html.trim());
     }
     console.log('✅ Prerendering completed successfully.');
   } catch (err) {

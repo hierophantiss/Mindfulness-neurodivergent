@@ -104,22 +104,6 @@
 </script>
 </head>
 <body class="dark">
-  <div id="splash-screen" style="position:fixed;inset:0;background-color:#0f1117;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;">
-    <div style="width:72px;height:72px;border-radius:50%;background:rgba(29, 158, 117, 0.1);display:flex;align-items:center;justify-content:center;margin-bottom:32px;border:1px solid rgba(29, 158, 117, 0.2);animation:splashPulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/>
-      </svg>
-    </div>
-    <h1 style="font-family:'Playfair Display', serif;font-size:28px;color:rgba(255,255,255,0.9);font-style:italic;font-weight:400;margin:0;letter-spacing:-0.02em;">Neurodivergent Awareness</h1>
-    <p style="font-family:'Inter', sans-serif;font-size:11px;color:rgba(255,255,255,0.3);margin-top:12px;letter-spacing:0.3em;text-transform:uppercase;font-weight:500;">Loading</p>
-    
-    <style>
-      @keyframes splashPulse {
-        0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(29, 158, 117, 0); }
-        50% { opacity: 0.7; transform: scale(1.03); box-shadow: 0 0 20px 0 rgba(29, 158, 117, 0.2); }
-      }
-    </style>
-  </div>
   <div id="root"></div>
   
   <!-- Content for Screen Readers and SEO (Hidden from visual UI) -->
@@ -146,18 +130,5 @@
   </section>
 
   <script type="module" src="/src/main.tsx"></script>
-  <script>
-    // Emergency failsafe: if main app doesn't remove splash within 6 seconds, hide it here.
-    if (!navigator.userAgent.includes('jsdom') && !window.__PRERENDER_INJECTED) {
-      setTimeout(function() {
-        var s = document.getElementById('splash-screen');
-        if (s) {
-          s.style.opacity = '0';
-          s.style.visibility = 'hidden';
-          setTimeout(function() { if(s.parentNode) s.remove(); }, 800);
-        }
-      }, 6000);
-    }
-  </script>
 </body>
 </html>

@@ -44,6 +44,11 @@ export interface AudioConfig {
 }
 
 export function useBinauralAudio(config: AudioConfig) {
+  const configRef = useRef(config);
+  useEffect(() => {
+    configRef.current = config;
+  }, [config]);
+
   const acRef = useRef<AudioContext | null>(null);
   const masterGainRef = useRef<GainNode | null>(null);
   const oceanGainRef = useRef<GainNode | null>(null);
@@ -70,7 +75,7 @@ export function useBinauralAudio(config: AudioConfig) {
     // Apply immediately to ambient layers
     ambientAudiosRef.current.forEach(audio => {
       try {
-        const maxVol = audio.src.includes('cat') ? 0.8 : 0.4;
+        const maxVol = configRef.current.disableSynth ? 1.0 : (audio.src.includes('cat') ? 0.8 : 0.4);
         audio.volume = v * maxVol;
       } catch (e) {}
     });
@@ -143,7 +148,7 @@ export function useBinauralAudio(config: AudioConfig) {
     return () => cleanup();
   }, [cleanup]);
 
-  const startAudio = useCallback(async (overrideConfig?: AudioConfig) => {
+  const startAudio = useCallback((overrideConfig?: AudioConfig) => {
     const currentConfig = overrideConfig || config;
     
     if (isPlayingRef.current) {
@@ -161,34 +166,32 @@ export function useBinauralAudio(config: AudioConfig) {
     console.log('--- STARTING AUDIO ENGINE ---');
     
     try {
-      if (!acRef.current || acRef.current.state === 'closed') {
+      let ac = acRef.current;
+      
+      if (!ac || ac.state === 'closed') {
         acRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+        ac = acRef.current;
       }
-      const ac = acRef.current;
       
       console.log('Initial AudioContext state:', ac.state);
       
       if (ac.state === 'suspended') {
         console.log('Attempting to resume AudioContext...');
-        await ac.resume();
-        console.log('AudioContext state after resume:', ac.state);
+        ac.resume().catch(console.warn);
       }
       
-      // Safety check in case stopAudio was called while resuming
-      if (!isPlayingRef.current) {
-        console.log('Audio start aborted because session was stopped during resume.');
-        // We still mark it as true if we didn't return, but wait
-      }
-
       isPlayingRef.current = true;
       setIsPlaying(true);
 
-      const master = ac.createGain();
-      master.gain.setValueAtTime(0, ac.currentTime);
-      master.connect(ac.destination);
-      masterGainRef.current = master;
+      let master: GainNode | null = null;
+      if (ac && !currentConfig.disableSynth) {
+        master = ac.createGain();
+        master.gain.setValueAtTime(0, ac.currentTime);
+        master.connect(ac.destination);
+        masterGainRef.current = master;
+      }
 
-      if (!currentConfig.disableSynth) {
+      if (ac && master && !currentConfig.disableSynth) {
         // Pink Noise Layer
         const pinkBuffer = makePinkNoise(ac);
         const pinkSource = ac.createBufferSource();
@@ -263,12 +266,10 @@ export function useBinauralAudio(config: AudioConfig) {
         if (!path) return;
         
         console.log('Loading ambient layer:', path);
-        const audioUrl = path.startsWith('http') ? path : new URL(path, window.location.origin).href;
-        const audio = new Audio(audioUrl);
+        const audio = new Audio(path);
         audio.preload = 'auto';
         audio.loop = true;
         audio.volume = 0;
-        audio.crossOrigin = 'anonymous';
         
         const playPromise = audio.play();
         if (playPromise !== undefined) {
@@ -285,17 +286,20 @@ export function useBinauralAudio(config: AudioConfig) {
             clearInterval(fadeInterval);
             return;
           }
-          progress = Math.min(1, progress + 0.02);
-          const maxVol = path.includes('cat') ? 0.8 : 0.3;
-          audio.volume = progress * maxVol * volumeRef.current;
+          progress = Math.min(1, progress + 0.1);
+          const maxVol = currentConfig.disableSynth ? 1.0 : (path.includes('cat') ? 0.8 : 0.4);
+          const finalVol = progress * maxVol * volumeRef.current;
+          audio.volume = isNaN(finalVol) ? 0 : finalVol;
           if (progress >= 1) clearInterval(fadeInterval);
         }, 100);
       });
 
       // Fade in master
-      master.gain.cancelScheduledValues(ac.currentTime);
-      master.gain.setValueAtTime(0, ac.currentTime);
-      master.gain.linearRampToValueAtTime(0.4 * volumeRef.current, ac.currentTime + 1.5);
+      if (ac && master) {
+        master.gain.cancelScheduledValues(ac.currentTime);
+        master.gain.setValueAtTime(0, ac.currentTime);
+        master.gain.linearRampToValueAtTime(0.4 * volumeRef.current, ac.currentTime + 1.5);
+      }
       
       console.log('Audio started successfully');
     } catch (err) {

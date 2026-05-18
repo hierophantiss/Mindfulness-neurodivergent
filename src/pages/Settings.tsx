@@ -45,9 +45,15 @@ export default function Settings() {
         
         // Also check if getting related apps is supported
         if ('getInstalledRelatedApps' in navigator) {
-          (navigator as any).getInstalledRelatedApps().then((relatedApps: any) => {
-             addLog(`Related apps installed: ${relatedApps.length}`);
-          });
+          try {
+            (navigator as any).getInstalledRelatedApps().then((relatedApps: any) => {
+               addLog(`Related apps installed: ${relatedApps.length}`);
+            }).catch((e: any) => {
+               addLog(`Related apps error: ${e.message}`);
+            });
+          } catch(e: any) {
+             addLog(`Related apps error: ${e.message}`);
+          }
         }
       }).catch(err => {
         addLog(`SW Ready Error: ${err}`);
