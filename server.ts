@@ -151,7 +151,11 @@ async function startServer() {
     // THE FIX: This catch-all route ensures that any refresh on a sub-route
     // (e.g., /chapters, /practice) correctly returns the main index.html
     // so React Router can handle it on the client side.
-    app.get('*', (req, res) => {
+    app.get('*', (req, res, next) => {
+      // If the request looks like an asset (has a file extension) and wasn't found by express.static, return 404
+      if (req.path.match(/\.[a-zA-Z0-9]+$/)) {
+        return next();
+      }
       res.sendFile(path.join(distPath, 'index.html'));
     });
   }

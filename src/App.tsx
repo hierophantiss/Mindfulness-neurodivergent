@@ -41,8 +41,8 @@ function AppContent() {
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/workbook/print" element={<PrintWorkbook />} />
         <Route path="/" element={<Layout />}>
-          <Route index element={<Navigate to="/dashboard" replace />} />
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route index element={<Dashboard />} />
+          <Route path="dashboard" element={<Navigate to="/" replace />} />
           <Route path="method" element={<Method />} />
           <Route path="rabbithole" element={<RabbitHole />} />
           <Route path="chapters" element={<Chapters />} />
@@ -58,6 +58,7 @@ function AppContent() {
           <Route path="sanctuary" element={<Sanctuary />} />
           <Route path="settings" element={<Settings />} />
           <Route path="faq" element={<Faq />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
         </Routes>
       </CompanionProvider>
