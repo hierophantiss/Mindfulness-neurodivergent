@@ -32,11 +32,39 @@ export default function NavigationMenu() {
   }, []);
 
   const handleInstallClick = async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+    const isIframe = window.self !== window.top;
+    
+    const promptEvent = deferredPrompt || (window as any).initDeferredPrompt;
+
+    if (promptEvent) {
+      promptEvent.prompt();
+      const { outcome } = await promptEvent.userChoice;
       if (outcome === 'accepted') {
         setDeferredPrompt(null);
+        (window as any).initDeferredPrompt = null;
+      }
+    } else if (isIframe) {
+       showToast(language === 'el'
+         ? 'Ανοίξτε σε νέο παράθυρο για εγκατάσταση.'
+         : 'Open the app in a new tab to enable installation.');
+    } else if (isIOS) {
+      showToast(language === 'el' 
+        ? 'Εγκατάσταση: Πατήστε "Κοινοποίηση" ⎋ και "Προσθήκη στην Οθόνη Αφετηρίας" ⊞.' 
+        : 'Install Web App: Tap "Share" ⎋ and then "Add to Home Screen" ⊞.');
+    } else {
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone;
+      if (isStandalone) {
+        showToast(language === 'el' ? 'Η εφαρμογή είναι ήδη εγκατεστημένη.' : 'The app is already installed.');
+      } else {
+        const isSamsungBrowser = navigator.userAgent.includes('SamsungBrowser');
+        showToast(language === 'el' 
+          ? isSamsungBrowser
+             ? 'Samsung Internet: Πατήστε το εικονίδιο λήψης (βέλος) στη γραμμή διεύθυνσης ή "Προσθήκη σελίδας σε" > "Αρχική οθόνη" από το μενού.'
+             : 'Εγκατάσταση: Πατήστε τις 3 τελείες (Μενού Chrome) και μετά "Εγκατάσταση εφαρμογής" ή "Προσθήκη στην αρχική οθόνη".' 
+          : isSamsungBrowser
+             ? 'Samsung Internet: Tap the download icon in URL bar or "Add page to" > "Home screen" from menu.'
+             : 'Installation: Tap the 3 dots (Chrome Menu) and select "Install app".');
       }
     }
   };

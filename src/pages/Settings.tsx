@@ -132,9 +132,14 @@ export default function Settings() {
          ? "Σε συσκευές Apple (iOS), πατήστε το 'Share' (κοινοποίηση) κάτω στην οθόνη και μετά 'Προσθήκη στην οθόνη έναρξης' (Add to Home Screen)." 
          : "On Apple (iOS) devices, tap 'Share' then 'Add to Home Screen'.";
       } else {
+        const isSamsungBrowser = navigator.userAgent.includes('SamsungBrowser');
         msg = language === 'el' 
-         ? "Αν η εφαρμογή είναι ήδη εγκατεστημένη στη συσκευή σας, δεν μπορεί να εγκατασταθεί ξανά. Αλλιώς, πατήστε το μενού του browser (τρεις τελείες) και επιλέξτε 'Εγκατάσταση εφαρμογής' ή 'Προσθήκη στην οθόνη έναρξης'." 
-         : "If the app is already installed on your device, it cannot be installed again. Otherwise, tap the browser menu (three dots) and select 'Install app' or 'Add to Home screen'.";
+         ? isSamsungBrowser 
+            ? "Στο Samsung Internet Browser: Πατήστε το εικονίδιο λήψης πάνω δεξιά στη γραμμή διεύθυνσης ή ανοίξτε το μενού (τρεις γραμμές κάτω δεξιά) και επιλέξτε 'Προσθήκη σελίδας σε' > 'Αρχική οθόνη'."
+            : "Αν η εφαρμογή είναι ήδη εγκατεστημένη δεν θα εμφανιστεί ξανά. Αλλιώς, πατήστε το μενού του browser (τρεις τελείες πάνω δεξιά) και επιλέξτε 'Εγκατάσταση εφαρμογής' (Install app) ή 'Προσθήκη στην αρχική οθόνη'." 
+         : isSamsungBrowser
+            ? "On Samsung Internet: Tap the download icon in the address bar, or tap the menu (three lines bottom right) and select 'Add page to' > 'Home screen'."
+            : "If the app is already installed it won't prompt again. Otherwise, tap the browser menu (three dots top right) and select 'Install app' or 'Add to Home screen'.";
       }
       alert(msg);
     }

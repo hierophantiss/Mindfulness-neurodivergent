@@ -292,9 +292,14 @@ export default function Dashboard() {
       if (isStandalone) {
         showToast(language === 'el' ? 'Η εφαρμογή είναι ήδη εγκατεστημένη.' : 'The app is already installed.');
       } else {
+        const isSamsungBrowser = navigator.userAgent.includes('SamsungBrowser');
         showToast(language === 'el' 
-          ? 'Εγκατάσταση: Πατήστε τις 3 τελείες (Μενού) του Chrome και μετά "Εγκατάσταση εφαρμογής".' 
-          : 'Installation: Tap the 3 dots (Menu) and select "Install app".');
+          ? isSamsungBrowser
+             ? 'Samsung Internet: Πατήστε το εικονίδιο λήψης στη γραμμή διεύθυνσης ή "Προσθήκη σελίδας σε" > "Αρχική οθόνη" από το μενού.'
+             : 'Εγκατάσταση: Πατήστε τις 3 τελείες (Μενού Chrome) και μετά "Εγκατάσταση εφαρμογής" ή "Προσθήκη στην αρχική οθόνη".' 
+          : isSamsungBrowser
+             ? 'Samsung Internet: Tap the download icon in URL bar or "Add page to" > "Home screen" from menu.'
+             : 'Installation: Tap the 3 dots (Chrome Menu) and select "Install app".');
       }
     }
   };
