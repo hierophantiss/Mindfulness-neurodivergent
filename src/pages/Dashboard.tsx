@@ -44,7 +44,7 @@ const itemVariants = {
 };
 
 export default function Dashboard() {
-  const { language, t } = useLanguage();
+  const { language, setLanguage, t } = useLanguage();
   const { companionData } = useCompanion();
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [showCheckin, setShowCheckin] = useState(false);
@@ -480,6 +480,13 @@ export default function Dashboard() {
               </div>
 
               <div className="flex items-center gap-2 mt-auto">
+                <button
+                  onClick={() => setLanguage(language === 'el' ? 'en' : 'el')}
+                  className="p-2.5 rounded-full bg-white/5 border border-white/10 text-white/50 hover:text-white/80 hover:bg-white/10 transition-all font-sans font-bold text-[10px] w-[38px] h-[38px] flex justify-center items-center active:scale-95"
+                  title={language === 'el' ? 'Change to English' : 'Αλλαγή σε Ελληνικά'}
+                >
+                  {language === 'el' ? 'EN' : 'ΕΛ'}
+                </button>
                 <button
                   onClick={toggleAudio}
                   className={cn(

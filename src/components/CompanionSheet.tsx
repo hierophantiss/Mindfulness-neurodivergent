@@ -433,7 +433,7 @@ function HubFlow({ goBack, onClose, navigate }: { goBack: () => void, onClose: (
 }
 
 function OptionsFlow({ goBack, onClose }: { goBack: () => void, onClose: () => void }) {
-  const { language, setLanguage } = useLanguage();
+  const { language } = useLanguage();
 
   return (
     <div className="space-y-6 animate-fade-in text-stone-800 dark:text-stone-200">
@@ -443,28 +443,6 @@ function OptionsFlow({ goBack, onClose }: { goBack: () => void, onClose: () => v
       </div>
 
       <div className="space-y-4">
-         <div className="bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-3xl p-4 flex items-center justify-between">
-           <div>
-             <div className="font-medium">{language === 'el' ? 'Γλώσσα (Language)' : 'Language'}</div>
-             <div className="text-xs opacity-70 mt-1">{language === 'el' ? 'Αλλαγή γλώσσας εφαρμογής' : 'Change app language'}</div>
-           </div>
-           
-           <div className="flex items-center bg-stone-200 dark:bg-stone-900 rounded-full p-1">
-             <button 
-                onClick={() => setLanguage('el')}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${language === 'el' ? 'bg-white dark:bg-stone-700 shadow-sm text-teal-700 dark:text-teal-200' : 'opacity-70 hover:opacity-100'}`}
-             >
-               ΕΛ
-             </button>
-             <button 
-                onClick={() => setLanguage('en')}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${language === 'en' ? 'bg-white dark:bg-stone-700 shadow-sm text-teal-700 dark:text-teal-200' : 'opacity-70 hover:opacity-100'}`}
-             >
-               EN
-             </button>
-           </div>
-         </div>
-         
          <div className="bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-3xl p-4 flex items-center justify-between">
            <div>
              <div className="font-medium">{language === 'el' ? 'Εισαγωγή' : 'Introduction'}</div>

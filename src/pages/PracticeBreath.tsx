@@ -4,7 +4,6 @@ import BreathCanvas, { PhaseLabel } from '../components/BreathCanvas';
 import { ArrowLeft, Play, Square, Headphones, X, Check, Timer, Volume1 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useBinauralAudio } from '../hooks/useBinauralAudio';
-import { triggerReward } from '../components/RewardModal';
 import { BREATH_PATTERNS } from '../data/breathPatterns';
 import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
@@ -151,7 +150,7 @@ export default function PracticeBreath() {
         }
         
         localStorage.setItem('breath_history', JSON.stringify(h));
-        triggerReward();
+        triggerReward('breath');
       } catch (e) {
         console.error('Failed to save breath history', e);
       }

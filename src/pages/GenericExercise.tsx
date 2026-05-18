@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Play, Pause, Info, Volume2, VolumeX, SkipBack, SkipForward, Headphones } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../hooks/useLanguage';
-import { triggerReward } from '../components/RewardModal';
+import { useReward } from '../contexts/RewardContext';
 
 const EXERCISES: Record<string, any> = {
   // --- ΜΙΚΡΟΔΟΣΕΙΣ ΑΠΟ ΤΟ 8-ΕΒΔΟΜΑΔΟ ΠΡΟΓΡΑΜΜΑ ---
@@ -509,6 +509,7 @@ export default function GenericExercise() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { language } = useLanguage();
+  const { triggerReward } = useReward();
   
   const exercise = id && EXERCISES[id] ? EXERCISES[id] : {
     title: { el: 'Ελεύθερη Πρακτική', en: 'Free Practice' },
@@ -592,7 +593,7 @@ export default function GenericExercise() {
           h.totalMin = Math.round((h.totalMin || 0) + exercise.duration / 60);
         }
         localStorage.setItem('journal_history', JSON.stringify(h));
-        triggerReward();
+        triggerReward('program');
       } catch (e) {}
     }
   }, [elapsed, exercise.duration, id]);

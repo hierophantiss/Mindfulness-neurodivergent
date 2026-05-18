@@ -9,7 +9,6 @@ import { useReward } from '../contexts/RewardContext';
 import { useProgress } from '../contexts/ProgressContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../lib/utils';
-import { triggerReward } from '../components/RewardModal';
 import InteractiveRenderer from '../components/InteractiveRenderer';
 
 const ExpandableParagraph = ({ text, index, language }: { text: string, index: number, language: "en" | "el" }) => {
@@ -68,6 +67,7 @@ export default function ChapterDetail() {
   const { updateChapterProgress, trackActivity } = useCompanion();
   const { language } = useLanguage();
   const { markChapterComplete } = useProgress();
+  const { triggerReward } = useReward();
   
   const currentLang = language === 'en' && CHAPTERS_DATA['en'] ? 'en' : 'el';
   const chapter = CHAPTERS_DATA[currentLang].find(c => c.num === Number(id));
@@ -111,7 +111,7 @@ export default function ChapterDetail() {
     } else {
       updateChapterProgress(chapter.num, 1);
       markChapterComplete(chapter.num);
-      triggerReward();
+      triggerReward('program');
       navigate('/chapters');
     }
   };
