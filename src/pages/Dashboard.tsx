@@ -24,6 +24,19 @@ export default function Dashboard() {
   const [activeMood, setActiveMood] = useState<number | null>(null);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   
+  // Show welcome modal on first visit
+  useEffect(() => {
+    const hasSeenWelcome = localStorage.getItem('fourfold_has_seen_welcome');
+    if (!hasSeenWelcome) {
+      // Small delay for better UX
+      const timer = setTimeout(() => {
+        setIsInfoOpen(true);
+        localStorage.setItem('fourfold_has_seen_welcome', 'true');
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
   const audioConfig = useMemo(() => ({
     base: 136.1, // Ohm
     beat: 7.83,  // Schumann
@@ -324,6 +337,15 @@ export default function Dashboard() {
             </div>
             <ChevronRight size={18} className="text-white/20 group-hover:text-white/60 transition-colors" />
           </Link>
+        </div>
+        
+        {/* 7. Privacy Policy */}
+        <div className="mt-8 text-center px-4">
+          <p className="text-[11px] text-white/30 leading-relaxed font-light">
+            {language === 'el' 
+              ? 'Πολιτική Απορρήτου: Όλα τα δεδομένα σας (πρόοδος, ρυθμίσεις) αποθηκεύονται αποκλειστικά και τοπικά στη συσκευή σας. Δεν συλλέγουμε, δεν παρακολουθούμε και δεν μεταφέρουμε προσωπικές πληροφορίες.'
+              : 'Privacy Policy: All your data (progress, settings) is stored exclusively and locally on your device. We do not collect, track, or transfer any personal information.'}
+          </p>
         </div>
         
       </div>

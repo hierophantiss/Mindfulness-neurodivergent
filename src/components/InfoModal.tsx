@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Anchor, Wind, Focus, Maximize, Heart, Info, CheckCircle2, BookOpen } from 'lucide-react';
+import { X, Anchor, Wind, Focus, Maximize, Heart, Info, CheckCircle2, BookOpen, Sparkles } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../hooks/useLanguage';
 
@@ -19,8 +19,8 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
       en: 'A mindfulness system designed for neurodivergent minds.' 
     },
     purpose: {
-      el: 'Αυτή η εφαρμογή είναι ένας trauma-informed οδηγός που στοχεύει στην αποενοχοποίηση της προσοχής. Αντί για "άδειαμα του μυαλού", καλλιεργούμε την επίγνωση των τεσσάρων διαστάσεων της εμπειρίας.',
-      en: 'This app is a trauma-informed guide that aims to destigmatize attention. Instead of "emptying the mind", we cultivate awareness across four dimensions of experience.'
+      el: 'Μια μέθοδος απελευθέρωσης της επίγνωσης, σχεδιασμένη με σεβασμό στη νευροδιαφορετικότητα. Ξεκινήστε την εξερεύνηση σας με μικρές πρακτικές αναπνοής, κίνησης και εστίασης στα παρακάτω κεφάλαια. Αντί για "άδειαμα του μυαλού", καλλιεργούμε την επίγνωση των τεσσάρων διαστάσεων της εμπειρίας.',
+      en: 'An awareness unbinding method tailored for neurodivergence. Start your exploration with gentle micro-practices in breath, movement, and focus in the chapters below. Instead of "emptying the mind", we cultivate awareness across four dimensions of experience.'
     },
     features: {
       title: { el: 'Τι κάνει αυτό το εργαλείο διαφορετικό', en: 'What makes this tool different' },
@@ -161,6 +161,19 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
             {/* Scrollable Content */}
             <div className="flex-1 overflow-y-auto px-6 md:px-8 pb-8 custom-scrollbar space-y-8">
               
+              {/* Welcome Description */}
+              <div className="bg-gradient-to-r from-teal-500/10 to-[#4a9eca]/10 border border-teal-500/20 rounded-3xl p-5 md:p-6">
+                <div className="flex items-center gap-2 text-teal-100 mb-2">
+                  <Sparkles size={18} className="text-teal-400" />
+                  <h3 className="text-sm font-medium tracking-wide">
+                    {language === 'el' ? 'Καλώς ήρθατε' : 'Welcome'}
+                  </h3>
+                </div>
+                <p className="text-[14px] text-teal-50/90 leading-relaxed font-light">
+                  {content.purpose[l]}
+                </p>
+              </div>
+
               {/* Features List */}
               <div className="space-y-3">
                 <h3 className="text-sm font-bold tracking-wider uppercase text-teal-400/80 mb-3 flex items-center gap-2">
@@ -233,9 +246,9 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                 </div>
               </div>
 
-              {/* Creator Section */}
+              {/* Creator & Privacy Section */}
               <div className="pt-6 border-t border-white/5 mt-8 flex flex-col items-center gap-3 text-center">
-                <div className="flex flex-col items-center max-w-lg">
+                <div className="flex flex-col items-center max-w-lg mb-4">
                   <p className="text-[10px] font-bold tracking-widest uppercase text-teal-400 opacity-60">
                     {content.creatorLabel[l]}
                   </p>
@@ -246,7 +259,19 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                     {content.creatorDesc[l]}
                   </p>
                 </div>
-                <p className="text-[10px] font-bold tracking-widest uppercase opacity-30 mt-4">
+                
+                <div className="flex flex-col items-center max-w-sm border-t border-white/5 pt-4">
+                  <p className="text-[10px] font-bold tracking-widest uppercase opacity-40 mb-1">
+                    {language === 'el' ? 'Πολιτικη Απορρητου' : 'Privacy Policy'}
+                  </p>
+                  <p className="text-[11px] text-white/30 leading-tight">
+                    {language === 'el' 
+                      ? 'Όλα τα δεδομένα σας (πρόοδος, ρυθμίσεις) αποθηκεύονται αποκλειστικά και τοπικά στη συσκευή σας. Δεν συλλέγουμε, δεν παρακολουθούμε και δεν μεταφέρουμε καμία προσωπική πληροφορία.'
+                      : 'All your data (progress, settings) is stored exclusively and locally on your device. We do not collect, track, or transfer any personal information.'}
+                  </p>
+                </div>
+
+                <p className="text-[10px] font-bold tracking-widest uppercase opacity-30 mt-6 pb-2">
                   {content.footer[l]}
                 </p>
               </div>
