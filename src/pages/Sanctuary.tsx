@@ -30,7 +30,7 @@ export default function Sanctuary() {
     return searchParams.get('track') || null;
   });
   
-  const [volume, setVolume] = useState(0.5);
+  const [volume, setVolume] = useState(1.0);
   const [isDimmed, setIsDimmed] = useState(false);
   const [timer, setTimer] = useState<number | null>(null);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
@@ -428,38 +428,90 @@ export default function Sanctuary() {
 
         {/* Visual Focus (Rendered only on audio tab) */}
         {activeTab === 'audio' && (
-        <div className="flex-1 flex flex-col items-center justify-center py-6 relative">
-          <div className="relative w-40 h-40 flex items-center justify-center">
-            <motion.div 
-              animate={{ 
-                scale: isPlaying ? [1, 1.1, 1] : 1,
-                opacity: isPlaying ? [0.4, 0.7, 0.4] : 0.2
+          <div className="flex-1 flex flex-col items-center justify-center py-6 relative">
+            <div className="relative w-56 h-56 flex items-center justify-center mb-8">
+              <motion.div 
+                animate={{ 
+                  scale: isPlaying ? [1, 1.1, 1] : 1,
+                  opacity: isPlaying ? [0.4, 0.7, 0.4] : 0.2
+                }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute inset-0 rounded-full bg-teal-500/10 border border-teal-500/30"
+              />
+              <div className="absolute inset-0 rounded-full border border-teal-500/10" />
+            </div>
+            
+            <div className="flex flex-col items-center gap-2 mb-8 text-center px-4">
+              <h2 className="text-[22px] font-serif italic text-white/90">
+                {activeTrackDef ? (language === 'el' ? activeTrackDef.label.el : activeTrackDef.label.en) : (language === 'el' ? 'Επιλέξτε ήχο' : 'Select a sound')}
+              </h2>
+              <p className="text-[11px] font-bold tracking-[0.15em] text-[#4a9eca] uppercase">
+                {activeTrackDef ? (language === 'el' ? activeTrackDef.subtitle.el : activeTrackDef.subtitle.en) : ''}
+              </p>
+            </div>
+
+            <div className="flex items-center gap-6 mb-8">
+              <button 
+                onClick={() => {
+                  if (!activeTrackDef) return;
+                  const currentIndex = sleepTracks.findIndex(t => t.id === activeTrackDef.id);
+                  const prevIndex = (currentIndex - 1 + sleepTracks.length) % sleepTracks.length;
+                  handleSoundToggle(sleepTracks[prevIndex].id);
+                  if (!isPlaying) handleSoundToggle(sleepTracks[prevIndex].id); // To ensure playing
+                }}
+                className={cn("w-12 h-12 flex items-center justify-center rounded-full bg-white/[0.04] border border-white/10 text-white/70 hover:text-white transition-colors", !activeTrackDef && "opacity-50 pointer-events-none")}
+              >
+                <ChevronLeft size={20} />
+              </button>
+              
+              <button 
+                onClick={() => {
+                  if (activeTrackDef) {
+                    if (isPlaying) stopAudio();
+                    else handleSoundToggle(activeTrackDef.id);
+                  } else if (sleepTracks.length > 0) {
+                    handleSoundToggle(sleepTracks[0].id);
+                  }
+                }}
+                className="w-16 h-16 flex items-center justify-center rounded-full bg-teal-500/20 border border-teal-500/40 text-teal-300 hover:bg-teal-500/30 transition-colors"
+              >
+                {isPlaying ? <span className="flex gap-1.5"><span className="w-1.5 h-4 bg-current rounded-full" /><span className="w-1.5 h-4 bg-current rounded-full" /></span> : <Play size={24} className="ml-1" fill="currentColor" />}
+              </button>
+
+              <button 
+                onClick={() => {
+                  if (!activeTrackDef) return;
+                  const currentIndex = sleepTracks.findIndex(t => t.id === activeTrackDef.id);
+                  const nextIndex = (currentIndex + 1) % sleepTracks.length;
+                  handleSoundToggle(sleepTracks[nextIndex].id);
+                  if (!isPlaying) handleSoundToggle(sleepTracks[nextIndex].id); // To ensure playing
+                }}
+                className={cn("w-12 h-12 flex items-center justify-center rounded-full bg-white/[0.04] border border-white/10 text-white/70 hover:text-white transition-colors", !activeTrackDef && "opacity-50 pointer-events-none")}
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+
+            <button 
+              onClick={() => {
+                // simple cycle timer: null -> 10 -> 20 -> 30 -> null
+                if (timer === null) { setTimer(10); setTimeLeft(10 * 60); }
+                else if (timer === 10) { setTimer(20); setTimeLeft(20 * 60); }
+                else if (timer === 20) { setTimer(30); setTimeLeft(30 * 60); }
+                else { setTimer(null); setTimeLeft(null); }
               }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute inset-0 rounded-full border border-teal-500/40 bg-teal-500/10"
-            />
-            {timeLeft !== null ? (
-              <span className="text-4xl font-light text-white tabular-nums relative z-10 font-sans">
-                {formatTime(timeLeft)}
-              </span>
-            ) : (
-              <div className={cn("relative z-10 transition-colors", isPlaying ? "text-teal-400" : "text-white/20")}>
-                {activeSound ? (
-                  (() => {
-                    const Svg = sleepTracks.find(s => s.id === activeSound)?.icon || Waves;
-                    return <Svg size={48} className={cn(isPlaying && "animate-pulse")} strokeWidth={1} />;
-                  })()
-                ) : <Waves size={48} strokeWidth={1} />}
-              </div>
-            )}
+              className="px-4 py-2 rounded-full bg-white/[0.05] border border-white/[0.08] flex items-center justify-center text-[12px] font-medium text-white/60 hover:bg-white/[0.1] transition-colors"
+            >
+               {timeLeft !== null ? `· ${formatTime(timeLeft)} · ` : '· '}
+               {language === 'el' ? 'Χρονοδιακόπτης' : 'Timer'}
+               {timeLeft === null ? ' ·' : ''}
+            </button>
           </div>
-        </div>
         )}
 
         {/* Volume & Timer Controls */}
-        {activeTab === 'audio' && activeSound && (
-          <div className="flex flex-col gap-5 px-6 py-5 bg-[#0f1117] border border-white/10 rounded-[2rem] shadow-xl mb-8 relative overflow-hidden">
-            <div className="absolute inset-0 bg-white/[0.02]" />
+        {activeTab === 'audio' && activeSound && !isDimmed && (
+          <div className="flex flex-col gap-5 px-6 py-5 bg-white/[0.02] border border-white/10 rounded-[2rem] shadow-xl mb-8 relative overflow-hidden">
             <div className="flex items-center gap-4 relative z-10">
               <Volume2 size={20} className="text-white/40" />
               <input 
@@ -472,30 +524,6 @@ export default function Sanctuary() {
                 className="flex-1 accent-teal-500 h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer"
               />
             </div>
-            <div className="flex justify-between gap-2 overflow-x-auto no-scrollbar relative z-10">
-              {[5, 10, 15, 20, 30].map(mins => (
-                <button
-                  key={mins}
-                  onClick={() => { setTimer(mins); setTimeLeft(mins * 60); }}
-                  className={cn(
-                    "flex-1 py-2.5 rounded-xl text-[12px] font-medium transition-colors border",
-                    timer === mins 
-                      ? "bg-teal-500/20 border-teal-500/40 text-teal-300" 
-                      : "bg-white/[0.04] border-white/10 text-white/50 hover:bg-white/[0.08]"
-                  )}
-                >
-                  {mins}m
-                </button>
-              ))}
-              {timer && (
-                <button 
-                  onClick={() => { setTimer(null); setTimeLeft(null); }}
-                  className="px-5 py-2.5 rounded-xl bg-white/[0.05] border border-white/10 text-white/70 hover:bg-white/[0.1] text-[12px]"
-                >
-                  Reset
-                </button>
-              )}
-            </div>
           </div>
         )}
 
@@ -504,46 +532,49 @@ export default function Sanctuary() {
           <div className="flex flex-col gap-10 pb-24">
             {['music', 'binaural'].map(group => (
               <div key={group} className="flex flex-col gap-4">
-                <h3 className="text-[11px] font-bold uppercase tracking-[0.15em] text-white/40 pl-2">
+                <h3 className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#4a9eca] pl-2">
                   {group === 'music' 
-                    ? (language === 'el' ? 'Μουσική & Συχνότητες' : 'Music & Frequencies')
-                    : (language === 'el' ? 'Binaural Κύματα' : 'Binaural Waves')
+                    ? (language === 'el' ? 'ΜΟΥΣΙΚΗ & ΣΥΧΝΟΤΗΤΕΣ' : 'MUSIC & FREQUENCIES')
+                    : (language === 'el' ? 'BINAURAL ΚΥΜΑΤΑ' : 'BINAURAL WAVES')
                   }
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-3">
                   {sleepTracks.filter(s => s.group === group).map((sound) => (
                     <button
                       key={sound.id}
                       onClick={() => handleSoundToggle(sound.id)}
                       className={cn(
-                        "flex flex-col gap-4 p-5 rounded-[2rem] border transition-all duration-300 active:scale-[0.98] text-left overflow-hidden relative group",
+                        "flex justify-between items-center p-4 rounded-[1.5rem] border transition-all duration-300 active:scale-[0.98] text-left overflow-hidden relative group",
                         activeSound === sound.id 
-                          ? "bg-[#1a1d27] border-teal-500/40 shadow-[0_4px_20px_rgba(20,184,166,0.15)]" 
-                          : "bg-[#0f1117] border-white/10 hover:border-white/20"
+                          ? "bg-[#1a3832]/60 border-teal-500/30" 
+                          : "bg-white/[0.03] border-white/[0.08] hover:border-white/20 hover:bg-white/[0.06]"
                       )}
                     >
-                      {activeSound === sound.id && (
-                        <div className={cn("absolute inset-0 opacity-[0.05] bg-gradient-to-br from-current to-transparent", sound.color)} />
-                      )}
-                      
                       <div className="flex items-center gap-4 relative z-10 w-full">
                         <div className={cn(
                           "w-12 h-12 flex items-center justify-center rounded-2xl flex-shrink-0 transition-colors",
-                          activeSound === sound.id ? "bg-teal-500/20 text-teal-400" : "bg-white/[0.05] text-white/40"
+                          activeSound === sound.id ? "bg-teal-500/20 text-teal-400" : "bg-white/[0.05] text-white/40 group-hover:text-white/70"
                         )}>
                           <sound.icon size={24} strokeWidth={1.5} />
                         </div>
                         <div className="flex flex-col">
                           <span className={cn(
-                            "text-[16px] font-medium leading-tight mb-1",
+                            "text-[17px] font-serif italic leading-tight mb-1",
                             activeSound === sound.id ? "text-white" : "text-white/80 group-hover:text-white"
                           )}>
                             {language === 'el' ? sound.label.el : sound.label.en}
                           </span>
-                          <span className="text-[10px] font-bold text-white/40 tracking-[0.1em] uppercase">
+                          <span className="text-[10px] font-medium text-white/40 tracking-[0.1em] uppercase">
                             {language === 'el' ? sound.subtitle.el : sound.subtitle.en}
                           </span>
                         </div>
+                      </div>
+                      <div className="relative z-10 pr-2">
+                         {activeSound === sound.id ? (
+                           <div className="w-1.5 h-1.5 rounded-full bg-teal-400 shadow-[0_0_8px_rgba(45,212,191,0.6)]" />
+                         ) : (
+                           <span className="text-white/30 text-lg font-light">∞</span>
+                         )}
                       </div>
                     </button>
                   ))}

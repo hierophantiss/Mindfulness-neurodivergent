@@ -35,6 +35,8 @@ function makePinkNoise(ac: AudioContext) {
   return buffer;
 }
 
+const ambientBufferCache: Record<string, AudioBuffer> = {};
+
 export interface AudioConfig {
   base: number;
   beat: number;
@@ -53,9 +55,9 @@ export function useBinauralAudio(config: AudioConfig) {
   const masterGainRef = useRef<GainNode | null>(null);
   const oceanGainRef = useRef<GainNode | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const isPlayingRef = useRef(false); // Internal ref to avoid stale closure issues
-  const ambientAudiosRef = useRef<HTMLAudioElement[]>([]);
+  const isPlayingRef = useRef(false); 
   const volumeRef = useRef(1);
+  const ambientAudiosRef = useRef<HTMLAudioElement[]>([]);
 
   const setGlobalVolume = useCallback((v: number) => {
     console.log('Setting global volume to:', v);
@@ -63,20 +65,21 @@ export function useBinauralAudio(config: AudioConfig) {
     
     const ac = acRef.current;
     
-    // Apply immediately to master gain
     if (ac && masterGainRef.current && isPlayingRef.current) {
       try {
         masterGainRef.current.gain.cancelScheduledValues(ac.currentTime);
-        masterGainRef.current.gain.setTargetAtTime(v * 0.4, ac.currentTime, 0.1);
+        const targetVol = configRef.current.disableSynth ? v : v * 0.4;
+        masterGainRef.current.gain.setTargetAtTime(targetVol, ac.currentTime, 0.1);
       } catch (e) {
         console.warn("Volume change err", e);
       }
     }
-    
+
     // Apply immediately to ambient layers
     ambientAudiosRef.current.forEach(audio => {
       try {
-        const maxVol = configRef.current.disableSynth ? 1.0 : (audio.src.includes('cat') ? 0.8 : 0.4);
+        const path = audio.src || '';
+        const maxVol = configRef.current.disableSynth ? 1.0 : (path.includes('cat') ? 0.8 : 0.4);
         const targetVol = v * maxVol;
         
         const ambientGain = (audio as any)._ambientGain as GainNode;
@@ -100,13 +103,11 @@ export function useBinauralAudio(config: AudioConfig) {
   const cleanupNodes = useCallback(() => {
     console.log('Cleaning up audio nodes...');
     
-    // Stop all oscillators
     try { nodesRef.current.binL?.stop(); } catch(e){}
     try { nodesRef.current.binR?.stop(); } catch(e){}
     try { nodesRef.current.pulseLfo?.stop(); } catch(e){}
     try { nodesRef.current.pinkSource?.stop(); } catch(e){}
     
-    // Disconnect oscillators
     try { nodesRef.current.binL?.disconnect(); } catch(e){}
     try { nodesRef.current.binR?.disconnect(); } catch(e){}
     try { nodesRef.current.pulseLfo?.disconnect(); } catch(e){}
@@ -123,13 +124,14 @@ export function useBinauralAudio(config: AudioConfig) {
     ambientAudiosRef.current.forEach(audio => {
       try {
         audio.pause();
-        audio.src = '';
-        audio.load();
-        audio.remove();
+        audio.removeAttribute('src');
+        if (audio.parentNode) {
+          audio.parentNode.removeChild(audio);
+        }
       } catch (e) {}
     });
     ambientAudiosRef.current = [];
-    
+
     setIsPlaying(false);
     isPlayingRef.current = false;
   }, []);
@@ -193,7 +195,7 @@ export function useBinauralAudio(config: AudioConfig) {
       setIsPlaying(true);
 
       let master: GainNode | null = null;
-      if (ac && !currentConfig.disableSynth) {
+      if (ac) {
         master = ac.createGain();
         master.gain.setValueAtTime(0, ac.currentTime);
         master.connect(ac.destination);
@@ -270,71 +272,58 @@ export function useBinauralAudio(config: AudioConfig) {
         nodesRef.current.binR = binR;
       }
 
-      // Optional ambient layers
-      currentConfig.ambientLayers?.forEach(path => {
-        if (!path) return;
-        
-        console.log('Loading ambient layer:', path);
-        const audio = new Audio(path);
-        audio.crossOrigin = 'anonymous'; // Important for CORS when using MediaElementSource
-        audio.preload = 'auto';
-        audio.loop = true;
-        // We set HTML element volume to 1 and use GainNode to control volume, as iOS ignores HTML volume.
-        audio.volume = 1.0; 
-        
-        audio.style.display = 'none';
-        document.body.appendChild(audio);
-        
-        let ambientGain: GainNode | null = null;
-        if (ac && ac.state !== 'closed') {
+      // Optional ambient layers using HTMLAudioElement
+      if (ac && master) {
+        currentConfig.ambientLayers?.forEach(path => {
+          if (!path) return;
+          
+          console.log('Loading ambient layer:', path);
+          const audio = new window.Audio(path);
+          if (path.startsWith('http')) {
+            audio.crossOrigin = 'anonymous'; 
+          }
+          audio.preload = 'auto';
+          audio.loop = true;
+          audio.setAttribute('playsinline', 'true');
+          
+          // Mobile Safari safety: Append to DOM
+          audio.style.display = 'none';
+          document.body.appendChild(audio);
+          
+          // Connect to Web Audio API for volume control (especially important for iOS)
+          const ambientGain = ac.createGain();
+          const maxVol = currentConfig.disableSynth ? 1.0 : (path.includes('cat') ? 0.8 : 0.4);
+          ambientGain.gain.setValueAtTime(maxVol * volumeRef.current, ac.currentTime);
+          
           try {
             const source = ac.createMediaElementSource(audio);
-            ambientGain = ac.createGain();
-            ambientGain.gain.setValueAtTime(0, ac.currentTime);
-            source.connect(ambientGain);
-            // Connect to master if available so it fades out with the synth, or directly to destination
-            ambientGain.connect(master || ac.destination); 
-          } catch (e) {
-            console.warn("Failed to create MediaElementSource", e);
-          }
-        }
-        
-        const playPromise = audio.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(error => {
-            console.warn("Ambient layer play failed:", path, error);
-          });
-        }
-        
-        // We store the gain node on the audio element object dynamically to fade it later
-        (audio as any)._ambientGain = ambientGain;
-        ambientAudiosRef.current.push(audio);
-        
-        let progress = 0;
-        const fadeInterval = setInterval(() => {
-          if (!isPlayingRef.current || !ambientAudiosRef.current.includes(audio)) {
-            clearInterval(fadeInterval);
-            return;
-          }
-          progress = Math.min(1, progress + 0.1);
-          const maxVol = currentConfig.disableSynth ? 1.0 : (path.includes('cat') ? 0.8 : 0.4);
-          const finalVol = progress * maxVol * volumeRef.current;
-          
-          if (ambientGain && ac) {
-            ambientGain.gain.linearRampToValueAtTime(isNaN(finalVol) ? 0 : finalVol, ac.currentTime + 0.1);
-          } else {
-            audio.volume = isNaN(finalVol) ? 0 : finalVol;
+            source.connect(ambientGain).connect(master);
+            // Must keep audio.volume = 1 so the HTML element outputs full signal to the Web Audio node
+            audio.volume = 1;
+          } catch(e) {
+            console.warn("Could not create MediaElementSource, fallback to standard volume control", e);
+            audio.volume = maxVol * volumeRef.current;
           }
           
-          if (progress >= 1) clearInterval(fadeInterval);
-        }, 100);
-      });
+          const playPromise = audio.play();
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+               console.log("Ambient layer playing successfully:", path);
+            }).catch(error => {
+               console.error("CRITICAL: Ambient layer play failed:", path, error);
+            });
+          }
+          
+          // Store the gain node on the audio element object so we can adjust it later
+          (audio as any)._ambientGain = ambientGain;
+          
+          ambientAudiosRef.current.push(audio);
+        });
 
-      // Fade in master
-      if (ac && master) {
-        master.gain.cancelScheduledValues(ac.currentTime);
+        // Fade in master
         master.gain.setValueAtTime(0, ac.currentTime);
-        master.gain.linearRampToValueAtTime(0.4 * volumeRef.current, ac.currentTime + 1.5);
+        const targetVol = currentConfig.disableSynth ? volumeRef.current : 0.4 * volumeRef.current;
+        master.gain.setTargetAtTime(targetVol, ac.currentTime, 0.5);
       }
       
       console.log('Audio started successfully');
@@ -362,12 +351,12 @@ export function useBinauralAudio(config: AudioConfig) {
       }
     }
 
-    // 2. Fade out and stop ambient audio
+    // 2. Final cleanup and ambient audio pause
     ambientAudiosRef.current.forEach(audio => {
       try {
         const ambientGain = (audio as any)._ambientGain as GainNode;
-        const ac = acRef.current;
-        if (ambientGain && ac) {
+        if (ambientGain && acRef.current) {
+           const ac = acRef.current;
            ambientGain.gain.cancelScheduledValues(ac.currentTime);
            ambientGain.gain.setValueAtTime(ambientGain.gain.value, ac.currentTime);
            ambientGain.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime + 0.5);
@@ -376,7 +365,7 @@ export function useBinauralAudio(config: AudioConfig) {
            let vol = audio.volume;
            const fadeOut = setInterval(() => {
              vol = Math.max(0, vol - 0.05);
-             audio.volume = vol;
+             audio.volume = isNaN(vol) ? 0 : vol;
              if (vol <= 0) {
                clearInterval(fadeOut);
                audio.pause();
@@ -386,7 +375,6 @@ export function useBinauralAudio(config: AudioConfig) {
       } catch (e) {}
     });
 
-    // 3. Final cleanup after fade duration
     cleanupTimeoutRef.current = setTimeout(() => {
       cleanupNodes();
       console.log('Audio stop sequence complete.');
