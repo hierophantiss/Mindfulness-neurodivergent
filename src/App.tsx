@@ -29,6 +29,8 @@ import { TimeProvider } from './contexts/TimeContext';
 import { RewardProvider } from './contexts/RewardContext';
 import { ProgressProvider } from './contexts/ProgressContext';
 
+import { ErrorBoundary } from './components/ErrorBoundary';
+
 function AppContent() {
   const isIframe = window.self !== window.top;
   const Router = isIframe ? HashRouter : BrowserRouter;
@@ -76,7 +78,9 @@ export default function App() {
           <RewardProvider>
             <ProgressProvider>
               <AccessibilityProvider>
-                <AppContent />
+                <ErrorBoundary>
+                  <AppContent />
+                </ErrorBoundary>
               </AccessibilityProvider>
             </ProgressProvider>
           </RewardProvider>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Sparkles, BookOpen, ArrowRight, Heart, Brain, Moon, Zap, ChevronRight, Telescope } from 'lucide-react';
+import { Sparkles, BookOpen, ArrowRight, Heart, Brain, Moon, Zap, ChevronRight, Telescope, Info, Waves, Play, Eye, EyeOff } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useCompanion } from '../hooks/useCompanion';
@@ -7,6 +7,9 @@ import { useTime } from '../contexts/TimeContext';
 import { cn } from '../lib/utils';
 import { motion } from 'motion/react';
 import StarryNightCanvas from '../components/StarryNightCanvas';
+import { useAccessibility } from '../hooks/useAccessibility';
+import { useBinauralAudio } from '../hooks/useBinauralAudio';
+import InfoModal from '../components/InfoModal';
 
 const glassCardClasses = "backdrop-blur-[4px] bg-white/[0.04] border border-white/[0.1] rounded-[16px]";
 
@@ -14,10 +17,30 @@ export default function Dashboard() {
   const { language, setLanguage } = useLanguage();
   const { companionData } = useCompanion();
   const { hour } = useTime();
+  const { reduceMotion, toggleReduceMotion } = useAccessibility();
 
   const [greeting, setGreeting] = useState('');
   const [currentDate, setCurrentDate] = useState('');
   const [activeMood, setActiveMood] = useState<number | null>(null);
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
+  
+  const audioConfig = useMemo(() => ({
+    base: 136.1, // Ohm
+    beat: 7.83,  // Schumann
+    pulse: 0.1,  // Slow pulse
+    disableSynth: true, // Disable pink noise
+    ambientLayers: ['/atlasaudio-calming-zen-519422.mp3']
+  }), []);
+
+  const { startAudio, stopAudio, isPlaying } = useBinauralAudio(audioConfig);
+
+  const toggleAudio = () => {
+    if (isPlaying) {
+      stopAudio();
+    } else {
+      startAudio();
+    }
+  };
   
   const [mindfulStats, setMindfulStats] = useState({ streak: 7, practices: 3, weeklyGoal: 85 });
   
@@ -44,8 +67,8 @@ export default function Dashboard() {
     
     // Example: Map some fake data if real logic takes too long, but we keep real structure
     setMindfulStats({ 
-      streak: Math.max(1, companionData.dailyLogs.length || 7), 
-      practices: Math.max(1, (companionData.programProgress?.day || 0) + 1), 
+      streak: Math.max(1, companionData?.dailyLogs?.length || 7), 
+      practices: Math.max(1, (companionData?.programProgress?.day || 0) + 1), 
       weeklyGoal: 85 
     });
   }, [language, hour, companionData]);
@@ -83,13 +106,52 @@ export default function Dashboard() {
             <span className="text-[13px] text-white/50 tracking-wide font-light">
               {currentDate}
             </span>
-            <button 
-              onClick={() => setLanguage(language === 'el' ? 'en' : 'el')}
-              className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white/[0.04] border border-white/[0.1] text-xs font-medium text-[#4a9eca] active:scale-95 transition-transform"
-            >
-              <div className="w-[4px] h-[4px] rounded-full bg-[#4a9eca]" />
-              {language === 'el' ? 'EN' : 'EL'}
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setIsInfoOpen(true)}
+                className="w-[28px] h-[28px] flex items-center justify-center rounded-full bg-white/[0.04] border border-white/[0.1] text-white/60 hover:text-white hover:bg-white/10 active:scale-95 transition-all"
+                title={language === 'el' ? 'Πληροφορίες' : 'Info'}
+              >
+                <Info size={14} />
+              </button>
+              
+              <button
+                onClick={toggleAudio}
+                className={cn(
+                  "w-[28px] h-[28px] flex items-center justify-center rounded-full border transition-all active:scale-95",
+                  isPlaying
+                    ? "bg-teal-500/20 border-teal-400/40 text-teal-300 relative overflow-hidden"
+                    : "bg-white/[0.04] border-white/[0.1] text-white/60 hover:text-white hover:bg-white/10"
+                )}
+                title={language === 'el' ? 'Ηχητικό Τοπίο' : 'Ambient Audio'}
+              >
+                {isPlaying && (
+                  <div className="absolute inset-0 bg-teal-400/10 animate-pulse" />
+                )}
+                {isPlaying ? <Waves size={14} className="animate-pulse relative z-10" /> : <Play size={14} />}
+              </button>
+
+              <button
+                onClick={toggleReduceMotion}
+                className={cn(
+                  "w-[28px] h-[28px] flex items-center justify-center rounded-full border transition-all active:scale-95",
+                  reduceMotion
+                    ? "bg-rose-500/20 border-rose-400/40 text-rose-300"
+                    : "bg-white/[0.04] border-white/[0.1] text-white/60 hover:text-white hover:bg-white/10"
+                )}
+                title={language === 'el' ? 'Μείωση Κίνησης' : 'Reduce Motion'}
+              >
+                {reduceMotion ? <EyeOff size={14} /> : <Eye size={14} />}
+              </button>
+
+              <button 
+                onClick={() => setLanguage(language === 'el' ? 'en' : 'el')}
+                className="flex items-center gap-1.5 px-2 py-0.5 h-[28px] rounded-full bg-white/[0.04] border border-white/[0.1] text-xs font-medium text-[#4a9eca] active:scale-95 transition-transform hover:bg-white/10 hover:text-white"
+              >
+                <div className="w-[4px] h-[4px] rounded-full bg-[#4a9eca]" />
+                {language === 'el' ? 'EN' : 'EL'}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -265,6 +327,7 @@ export default function Dashboard() {
         </div>
         
       </div>
+      <InfoModal isOpen={isInfoOpen} onClose={() => setIsInfoOpen(false)} />
     </div>
   );
 }
