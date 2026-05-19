@@ -115,25 +115,25 @@ export default function NavigationMenu() {
         )}
       </AnimatePresence>
 
-      {/* Bottom Navigation Dock */}
-      <div className="fixed bottom-[calc(1.25rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-40 w-auto pointer-events-none">
-        <div className="bg-[#0f171a]/80 backdrop-blur-3xl border border-white/10 shape-nav px-6 py-2.5 flex items-center justify-center gap-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] pointer-events-auto">
+      {/* Bottom Navigation */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#050d1a]/80 backdrop-blur-xl border-t-[0.5px] border-white/[0.06] pb-[env(safe-area-inset-bottom)]">
+        <div className="flex items-center justify-around px-2 py-3">
           {mainNavItems.map((item) => {
             const isActive = location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path));
             return (
               <button
                 key={item.path}
                 onClick={() => handleNav(item.path)}
-                className={`flex flex-col items-center justify-center gap-1 transition-all duration-300 relative py-1 active:scale-95 ${
+                className={`flex flex-col items-center justify-center gap-1 transition-all duration-300 relative py-1 flex-1 active:scale-95 ${
                   isActive
-                    ? 'text-teal-400'
-                    : 'text-white/20 hover:text-white/40'
+                    ? 'text-[#4a9eca]'
+                    : 'text-zinc-500 hover:text-zinc-400'
                 }`}
               >
-                <div className={`relative z-10 transition-transform duration-300 ${isActive ? 'scale-110' : 'scale-100 opacity-80'}`}>
+                <div className={`relative z-10 transition-transform duration-300 ${isActive ? 'scale-110' : 'scale-100'}`}>
                   {item.icon}
                 </div>
-                <span className={`text-[8px] font-bold tracking-widest uppercase transition-all duration-300 font-sans ${isActive ? 'opacity-100 translate-y-0' : 'opacity-40 translate-y-0.5'}`}>
+                <span className={`text-[9px] font-medium tracking-wide transition-all duration-300 font-sans ${isActive ? 'opacity-100' : 'opacity-80'}`}>
                   {language === 'en' ? item.labelEn : item.labelEl}
                 </span>
                 
@@ -148,20 +148,19 @@ export default function NavigationMenu() {
             );
           })}
           
-          <div className="w-[1px] h-6 bg-white/10 mx-1 opacity-50"></div>
-
+          
           <button
             onClick={() => setIsOpen(true)}
-            className={`flex flex-col items-center justify-center gap-1 transition-all duration-300 relative py-1 active:scale-95 ${
+            className={`flex flex-col items-center justify-center gap-1 transition-all duration-300 relative py-1 flex-1 active:scale-95 ${
               isOpen
-                ? 'text-teal-400'
-                : 'text-white/20 hover:text-white/40'
+                ? 'text-[#4a9eca]'
+                : 'text-zinc-500 hover:text-zinc-400'
             }`}
           >
-            <div className={`transition-transform duration-300 ${isOpen ? 'scale-110 rotate-90' : 'scale-100 opacity-80'}`}>
+            <div className={`transition-transform duration-300 ${isOpen ? 'scale-110 rotate-90' : 'scale-100'}`}>
               <LayoutGrid size={18} />
             </div>
-            <span className={`text-[8px] font-bold tracking-widest uppercase transition-all duration-300 font-sans ${isOpen ? 'opacity-100' : 'opacity-40'}`}>
+            <span className={`text-[9px] font-medium tracking-wide transition-all duration-300 font-sans ${isOpen ? 'opacity-100' : 'opacity-80'}`}>
               {language === 'en' ? 'More' : 'Μενού'}
             </span>
           </button>

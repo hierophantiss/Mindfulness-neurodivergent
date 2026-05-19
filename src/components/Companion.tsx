@@ -184,15 +184,11 @@ export default function Companion() {
           )}
         </AnimatePresence>
 
-        <div className="relative w-10 h-10 rounded-full overflow-hidden shadow-inner group-hover:scale-110 transition-transform duration-300 ring-2 ring-teal-500/20">
+        <div className="relative w-10 h-10 bg-stone-200/90 rounded-full overflow-hidden shadow-inner group-hover:scale-110 transition-transform duration-300 ring-2 ring-teal-500/20">
           <img 
-            src="/temple-cat.png" 
+            src="/favicon-96x96.png" 
             alt="Magical Cat" 
             className="w-full h-full object-cover"
-            onError={(e) => {
-              e.currentTarget.onerror = null;
-              e.currentTarget.src = '/favicon-96x96.png';
-            }}
           />
         </div>
         {companionData.dailyLogs.length > 0 && <span className="absolute animate-ping top-1 right-1 w-2 h-2 bg-amber-400 rounded-full" />}

@@ -166,7 +166,7 @@ export default function PracticeBreath() {
       // If already running, toggle audio immediately
       if (running) {
         if (nextAudio) {
-          startAudio().catch(err => console.error("Direct startAudio failed:", err));
+          startAudio();
         } else {
           stopAudio();
         }
@@ -178,7 +178,7 @@ export default function PracticeBreath() {
     setAudioEnabled(withAudio);
     setRunning(true);
     if (withAudio) {
-      startAudio().catch(err => console.error("Start sequence audio failed:", err));
+      startAudio();
     }
   };
 

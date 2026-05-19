@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Waves, Wind, CloudRain, TreePine, Moon, ChevronLeft, Volume2, Timer, Info, Play, Youtube, X, ChevronRight, Music, Sparkles, Droplets, Flame } from 'lucide-react';
+import { Waves, Wind, CloudRain, TreePine, Moon, ChevronLeft, Volume2, Timer, Info, Play, Youtube, X, ChevronRight, Music, Sparkles, Droplets, Flame, Film, Headphones } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { useLanguage } from '../hooks/useLanguage';
@@ -9,24 +9,22 @@ import { useBinauralAudio } from '../hooks/useBinauralAudio';
 
 export const sleepTracks = [
   // Sleep & Meditation Audio (The new files)
-  { id: 'deep-silence', group: 'music', icon: Moon, label: { el: 'Εκτεταμένη Βαθιά Σιωπή', en: 'Extended Deep Silence' }, subtitle: { el: 'Κύματα & Άστρα', en: 'Waves & Stars HQ' }, color: 'text-indigo-400', disableSynth: true, files: ['/purebinaural-purebinaural-20-hz-beta-isochronic-tones-pure-tone-496540.mp3'] },
   { id: 'calming-zen', group: 'music', icon: Sparkles, label: { el: 'Ήρεμο Zen', en: 'Calming Zen' }, subtitle: { el: 'Απόλυτη Χαλάρωση', en: 'Absolute Relaxation' }, color: 'text-emerald-400', disableSynth: true, files: ['/atlasaudio-calming-zen-519422.mp3'] },
-  { id: 'sleep-963', group: 'music', icon: Music, label: { el: 'Συχνότητα Ύπνου (963Hz)', en: 'Sleep Frequency (963Hz)' }, subtitle: { el: 'Binaural & Immersive', en: 'Binaural & Immersive' }, color: 'text-purple-400', disableSynth: true, files: ['/meditativetiger-sleep-music-963-hz-binaural-immersive-audio-426673.mp3'] },
-  { id: 'beta-pure', group: 'music', icon: Wind, label: { el: 'Καθαρός Τόνος Beta (20Hz)', en: 'Pure Beta Tone (20Hz)' }, subtitle: { el: 'Ισοχρονικοί Τόνοι', en: 'Isochronic Tones' }, color: 'text-rose-400', disableSynth: true, files: ['/purebinaural-purebinaural-20-hz-beta-isochronic-tones-pure-tone-496540.mp3'] },
-  { id: 'space-ambient', group: 'music', icon: Moon, label: { el: 'Διαστημική Ατμόσφαιρα', en: 'Space Ambient' }, subtitle: { el: 'Βαθύς Χώρος', en: 'Deep Space' }, color: 'text-slate-400', disableSynth: true, files: ['/meditativetiger-sleep-music-963-hz-binaural-immersive-audio-426673.mp3'] },
-  
+  { id: 'sleep-963', group: 'music', icon: Music, label: { el: 'Συχνότητα Ύπνου', en: 'Sleep Frequency' }, subtitle: { el: '963Hz Τοπίο', en: '963Hz Landscape' }, color: 'text-purple-400', disableSynth: true, files: ['/meditativetiger-sleep-music-963-hz-binaural-immersive-audio-426673.mp3'] },
+  { id: 'beta-pure', group: 'music', icon: Wind, label: { el: 'Ισοχρονικός Τόνος', en: 'Isochronic Tone' }, subtitle: { el: 'Beta 20Hz', en: 'Beta 20Hz' }, color: 'text-rose-400', disableSynth: true, files: ['/purebinaural-purebinaural-20-hz-beta-isochronic-tones-pure-tone-496540.mp3'] },
+
   // Mixed Binaural & Nature
-  { id: 'deep-delta-ocean', group: 'binaural', icon: Waves, label: { el: 'Ωκεανός & Βαθύς Ύπνος', en: 'Ocean & Deep Sleep' }, subtitle: { el: 'Delta 2.5Hz', en: 'Delta 2.5Hz' }, color: 'text-cyan-500', base: 100, beat: 2.5, pulse: 0.05, files: ['/ocean-waves.mp3'] },
-  { id: 'rain-theta', group: 'binaural', icon: CloudRain, label: { el: 'Βροχή & Χαλάρωση', en: 'Rain & Relaxation' }, subtitle: { el: 'Theta 6.3Hz', en: 'Theta 6.3Hz' }, color: 'text-indigo-500', base: 136.1, beat: 6.3, pulse: 0.1, files: ['/rain.mp3'] },
-  { id: 'water-alpha', group: 'binaural', icon: Droplets, label: { el: 'Καταρράκτης & Εστίαση', en: 'Waterfall & Focus' }, subtitle: { el: 'Alpha 10Hz', en: 'Alpha 10Hz' }, color: 'text-teal-500', base: 432, beat: 10, pulse: 0.1, files: ['/waterfall.mp3'] },
-  { id: 'fire-delta', group: 'binaural', icon: Flame, label: { el: 'Τζάκι & Επισκευή', en: 'Fire & Repair' }, subtitle: { el: 'Delta 1.5Hz', en: 'Delta 1.5Hz' }, color: 'text-orange-400', base: 110, beat: 1.5, pulse: 0.05, files: ['/fireplace.mp3'] },
-  { id: 'cat-purr-healing', group: 'binaural', icon: Moon, label: { el: 'Γάτα & Θεραπεία', en: 'Cat Purr & Healing' }, subtitle: { el: 'Theta 4Hz', en: 'Theta 4Hz' }, color: 'text-amber-500', base: 174, beat: 4, pulse: 0.1, files: ['/cat_purring.mp3'] },
+  { id: 'delta-pure', group: 'binaural', icon: Waves, label: { el: 'Delta Κύματα', en: 'Delta Waves' }, subtitle: { el: 'Βαθύς Ύπνος (Σκέτα)', en: 'Deep Sleep (Pure)' }, color: 'text-cyan-500', base: 100, beat: 2.5, pulse: 0.05, files: [] },
+  { id: 'delta-cat', group: 'binaural', icon: Moon, label: { el: 'Delta & Γουργουρητό', en: 'Delta & Cat Purr' }, subtitle: { el: 'Θεραπεία & Ηρεμία', en: 'Healing & Calm' }, color: 'text-amber-500', base: 100, beat: 2.5, pulse: 0.05, files: ['/cat_purring.mp3'] },
+  { id: 'rain-theta', group: 'binaural', icon: CloudRain, label: { el: 'Βροχή & Theta', en: 'Rain & Theta' }, subtitle: { el: 'Χαλάρωση (6.3Hz)', en: 'Relaxation (6.3Hz)' }, color: 'text-indigo-500', base: 136.1, beat: 6.3, pulse: 0.1, files: ['/rain.mp3'] },
 ];
 
 export default function Sanctuary() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { language } = useLanguage();
+  
+  const [activeTab, setActiveTab] = useState<'audio' | 'video'>('audio');
   
   const [activeSound, setActiveSound] = useState<string | null>(() => {
     return searchParams.get('track') || null;
@@ -358,8 +356,7 @@ export default function Sanctuary() {
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-transparent overflow-y-auto flex flex-col pt-20 custom-scrollbar">
-      {/* Background Dimmer */}
+    <div className="relative min-h-screen w-full bg-transparent overflow-y-auto flex flex-col pt-16 custom-scrollbar pb-32">
       <AnimatePresence>
         {isDimmed && (
           <motion.div 
@@ -371,27 +368,27 @@ export default function Sanctuary() {
         )}
       </AnimatePresence>
 
-      <div className="relative z-10 w-full max-w-2xl mx-auto px-6 py-8 flex-1 flex flex-col">
+      <div className="relative z-10 w-full max-w-2xl mx-auto px-5 py-6 flex-1 flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between mb-12">
+        <div className="flex items-center gap-4 mb-8">
           <button 
             onClick={() => navigate(-1)}
-            className="p-2 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-white transition-colors"
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/[0.04] border border-white/[0.1] text-white/60 hover:text-white transition-colors"
           >
             <ChevronLeft size={20} />
           </button>
-          <div className="text-center">
-            <h1 className="text-2xl font-serif italic text-white/90 tracking-tight">
+          <div className="flex-1 flex justify-center flex-col items-center">
+            <h1 className="text-[26px] font-serif italic text-white/90 leading-none">
               {language === 'el' ? 'Το Καταφύγιο' : 'The Sanctuary'}
             </h1>
-            <p className="text-[10px] uppercase font-black tracking-[0.2em] text-white/20 mt-1">
+            <p className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#4a9eca] mt-1.5">
               {language === 'el' ? 'ΧΩΡΟΣ ΑΝΑΠΑΥΣΗΣ' : 'SPACE OF REST'}
             </p>
           </div>
           <button 
             onClick={() => setIsDimmed(!isDimmed)}
             className={cn(
-              "p-2 rounded-full border transition-all duration-300",
+              "w-10 h-10 flex items-center justify-center rounded-full border transition-all duration-300",
               isDimmed ? "bg-teal-500/20 border-teal-500/50 text-teal-400" : "bg-white/5 border-white/10 text-white/40"
             )}
           >
@@ -399,164 +396,177 @@ export default function Sanctuary() {
           </button>
         </div>
 
-        {/* Visual Focus */}
-        <div className="flex-1 flex flex-col items-center justify-center py-12 relative">
-          <motion.div 
-            animate={{ 
-              scale: isPlaying ? [1, 1.05, 1] : 1,
-              opacity: isPlaying ? [0.6, 1, 0.6] : 0.4
-            }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            className="w-48 h-48 rounded-full bg-teal-500/10 border border-teal-500/20 flex items-center justify-center p-8 blur-sm overflow-hidden"
-          >
-            <div className="absolute inset-0 bg-gradient-to-t from-teal-500/20 to-transparent animate-pulse" />
-          </motion.div>
-          
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none">
-            <AnimatePresence mode="wait">
-              {timeLeft !== null ? (
-                <motion.span 
-                  key="timer"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 1.1 }}
-                  className="text-4xl font-sans font-light text-teal-100/60 tabular-nums"
-                >
-                  {formatTime(timeLeft)}
-                </motion.span>
-              ) : (
-                <motion.div 
-                   key="icon"
-                   initial={{ opacity: 0 }}
-                   animate={{ opacity: 1 }}
-                   className="text-teal-400/20"
-                >
-                  {activeSound ? (
-                    (() => {
-                      const Svg = sleepTracks.find(s => s.id === activeSound)?.icon || Waves;
-                      return <Svg size={64} className="animate-pulse" />;
-                    })()
-                  ) : <Waves size={64} />}
-                </motion.div>
+        {/* Custom Tabs */}
+        {!isDimmed && (
+          <div className="flex p-1 bg-white/[0.04] border border-white/[0.08] rounded-2xl mb-8">
+            <button
+              onClick={() => setActiveTab('audio')}
+              className={cn(
+                "flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-all duration-300",
+                activeTab === 'audio' 
+                  ? "bg-white/[0.1] text-white shadow-sm border border-white/[0.05]" 
+                  : "text-white/30 hover:text-white/60"
               )}
-            </AnimatePresence>
+            >
+              <Headphones size={16} />
+              {language === 'el' ? 'ΗΧΗΤΙΚΑ ΤΟΠΙΑ' : 'SOUNDSCAPES'}
+            </button>
+            <button
+              onClick={() => setActiveTab('video')}
+              className={cn(
+                "flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-all duration-300",
+                activeTab === 'video' 
+                  ? "bg-white/[0.1] text-white shadow-sm border border-white/[0.05]" 
+                  : "text-white/30 hover:text-white/60"
+              )}
+            >
+              <Film size={16} />
+              {language === 'el' ? 'ΒΙΝΤΕΟ' : 'VIDEO'}
+            </button>
+          </div>
+        )}
+
+        {/* Visual Focus (Rendered only on audio tab) */}
+        {activeTab === 'audio' && (
+        <div className="flex-1 flex flex-col items-center justify-center py-6 relative">
+          <div className="relative w-40 h-40 flex items-center justify-center">
+            <motion.div 
+              animate={{ 
+                scale: isPlaying ? [1, 1.1, 1] : 1,
+                opacity: isPlaying ? [0.4, 0.7, 0.4] : 0.2
+              }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute inset-0 rounded-full border border-teal-500/40 bg-teal-500/10"
+            />
+            {timeLeft !== null ? (
+              <span className="text-4xl font-light text-white tabular-nums relative z-10 font-sans">
+                {formatTime(timeLeft)}
+              </span>
+            ) : (
+              <div className={cn("relative z-10 transition-colors", isPlaying ? "text-teal-400" : "text-white/20")}>
+                {activeSound ? (
+                  (() => {
+                    const Svg = sleepTracks.find(s => s.id === activeSound)?.icon || Waves;
+                    return <Svg size={48} className={cn(isPlaying && "animate-pulse")} strokeWidth={1} />;
+                  })()
+                ) : <Waves size={48} strokeWidth={1} />}
+              </div>
+            )}
           </div>
         </div>
+        )}
 
-        {/* Sound Selection */}
-        <div className="space-y-8 mt-auto pb-12">
-          {!isDimmed && (
-            <div className="space-y-8">
-              {['music', 'binaural'].map(group => (
-                <div key={group} className="space-y-3">
-                  <h3 className="text-[10px] font-black uppercase tracking-widest text-white/30 px-2">
-                    {t.groups[group as keyof typeof t.groups]}
-                  </h3>
-                  <div className="grid grid-cols-2 gap-3">
-                    {sleepTracks.filter(s => s.group === group).map((sound) => (
-                      <button
-                        key={sound.id}
-                        onClick={() => handleSoundToggle(sound.id)}
-                        className={cn(
-                          "flex flex-col items-start gap-4 p-5 rounded-[2rem] border transition-all duration-500 group relative overflow-hidden",
-                          activeSound === sound.id 
-                            ? "bg-white/[0.08] border-white/20 shadow-xl" 
-                            : "bg-white/[0.02] border-white/5 hover:bg-white/[0.04]"
-                        )}
-                      >
+        {/* Volume & Timer Controls */}
+        {activeTab === 'audio' && activeSound && (
+          <div className="flex flex-col gap-5 px-6 py-5 bg-[#0f1117] border border-white/10 rounded-[2rem] shadow-xl mb-8 relative overflow-hidden">
+            <div className="absolute inset-0 bg-white/[0.02]" />
+            <div className="flex items-center gap-4 relative z-10">
+              <Volume2 size={20} className="text-white/40" />
+              <input 
+                type="range" 
+                min="0" 
+                max="1" 
+                step="0.01" 
+                value={volume}
+                onChange={(e) => setVolume(parseFloat(e.target.value))}
+                className="flex-1 accent-teal-500 h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer"
+              />
+            </div>
+            <div className="flex justify-between gap-2 overflow-x-auto no-scrollbar relative z-10">
+              {[5, 10, 15, 20, 30].map(mins => (
+                <button
+                  key={mins}
+                  onClick={() => { setTimer(mins); setTimeLeft(mins * 60); }}
+                  className={cn(
+                    "flex-1 py-2.5 rounded-xl text-[12px] font-medium transition-colors border",
+                    timer === mins 
+                      ? "bg-teal-500/20 border-teal-500/40 text-teal-300" 
+                      : "bg-white/[0.04] border-white/10 text-white/50 hover:bg-white/[0.08]"
+                  )}
+                >
+                  {mins}m
+                </button>
+              ))}
+              {timer && (
+                <button 
+                  onClick={() => { setTimer(null); setTimeLeft(null); }}
+                  className="px-5 py-2.5 rounded-xl bg-white/[0.05] border border-white/10 text-white/70 hover:bg-white/[0.1] text-[12px]"
+                >
+                  Reset
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Sound Cards */}
+        {activeTab === 'audio' && !isDimmed && (
+          <div className="flex flex-col gap-10 pb-24">
+            {['music', 'binaural'].map(group => (
+              <div key={group} className="flex flex-col gap-4">
+                <h3 className="text-[11px] font-bold uppercase tracking-[0.15em] text-white/40 pl-2">
+                  {group === 'music' 
+                    ? (language === 'el' ? 'Μουσική & Συχνότητες' : 'Music & Frequencies')
+                    : (language === 'el' ? 'Binaural Κύματα' : 'Binaural Waves')
+                  }
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {sleepTracks.filter(s => s.group === group).map((sound) => (
+                    <button
+                      key={sound.id}
+                      onClick={() => handleSoundToggle(sound.id)}
+                      className={cn(
+                        "flex flex-col gap-4 p-5 rounded-[2rem] border transition-all duration-300 active:scale-[0.98] text-left overflow-hidden relative group",
+                        activeSound === sound.id 
+                          ? "bg-[#1a1d27] border-teal-500/40 shadow-[0_4px_20px_rgba(20,184,166,0.15)]" 
+                          : "bg-[#0f1117] border-white/10 hover:border-white/20"
+                      )}
+                    >
+                      {activeSound === sound.id && (
+                        <div className={cn("absolute inset-0 opacity-[0.05] bg-gradient-to-br from-current to-transparent", sound.color)} />
+                      )}
+                      
+                      <div className="flex items-center gap-4 relative z-10 w-full">
                         <div className={cn(
-                          "p-3 rounded-2xl transition-all duration-500 flex-shrink-0 relative z-10",
-                          activeSound === sound.id ? "bg-white/10 " + sound.color : "bg-white/5 text-white/20 group-hover:text-white/40 group-hover:bg-white/10"
+                          "w-12 h-12 flex items-center justify-center rounded-2xl flex-shrink-0 transition-colors",
+                          activeSound === sound.id ? "bg-teal-500/20 text-teal-400" : "bg-white/[0.05] text-white/40"
                         )}>
-                          <sound.icon size={24} />
+                          <sound.icon size={24} strokeWidth={1.5} />
                         </div>
-                        <div className="text-left relative z-10">
+                        <div className="flex flex-col">
                           <span className={cn(
-                            "text-[12px] font-sans font-bold tracking-wide block mb-1",
-                            activeSound === sound.id ? "text-white" : "text-white/60 group-hover:text-white/80"
+                            "text-[16px] font-medium leading-tight mb-1",
+                            activeSound === sound.id ? "text-white" : "text-white/80 group-hover:text-white"
                           )}>
                             {language === 'el' ? sound.label.el : sound.label.en}
                           </span>
-                          <span className="text-[9px] font-medium text-white/30 uppercase tracking-[0.1em] block">
+                          <span className="text-[10px] font-bold text-white/40 tracking-[0.1em] uppercase">
                             {language === 'el' ? sound.subtitle.el : sound.subtitle.en}
                           </span>
                         </div>
-                        {activeSound === sound.id && (
-                          <div className={cn("absolute inset-0 opacity-10 bg-gradient-to-br from-current to-transparent", sound.color)} />
-                        )}
-                      </button>
-                    ))}
-                  </div>
+                      </div>
+                    </button>
+                  ))}
                 </div>
-              ))}
-            </div>
-          )}
-
-          {/* Volume and Timer Controls */}
-          {activeSound && !isDimmed && (
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="space-y-6 pt-4"
-            >
-              <div className="flex items-center gap-4 px-4 py-3 rounded-2xl bg-white/[0.03] border border-white/5">
-                <Volume2 size={16} className="text-white/20" />
-                <input 
-                  type="range" 
-                  min="0" 
-                  max="1" 
-                  step="0.01" 
-                  value={volume}
-                  onChange={(e) => setVolume(parseFloat(e.target.value))}
-                  className="flex-1 accent-teal-500 h-1 bg-white/10 rounded-full appearance-none cursor-pointer"
-                />
               </div>
-
-              <div className="flex justify-between gap-2 overflow-x-auto pb-2 px-1 no-scrollbar">
-                {[5, 10, 15, 20, 30].map(mins => (
-                  <button
-                    key={mins}
-                    onClick={() => {
-                      setTimer(mins);
-                      setTimeLeft(mins * 60);
-                    }}
-                    className={cn(
-                      "flex-shrink-0 px-4 py-2 rounded-xl border text-[11px] font-sans font-medium transition-all",
-                      timer === mins 
-                        ? "bg-teal-500/20 border-teal-500/40 text-teal-300" 
-                        : "bg-white/5 border-white/10 text-white/30 hover:bg-white/10"
-                    )}
-                  >
-                    {mins}m
-                  </button>
-                ))}
-                {timer && (
-                  <button 
-                    onClick={() => { setTimer(null); setTimeLeft(null); }}
-                    className="flex-shrink-0 px-4 py-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-[11px]"
-                  >
-                    Reset
-                  </button>
-                )}
-              </div>
-            </motion.div>
-          )}
-        </div>
+            ))}
+          </div>
+        )}
 
         {/* Video Library Section */}
-        {!isDimmed && (
-          <div className="mt-12 space-y-8 pb-24">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-2xl bg-teal-500/10 flex items-center justify-center text-teal-400 shadow-inner">
+        {activeTab === 'video' && !isDimmed && (
+          <div className="flex flex-col gap-6 pb-24">
+            <div className="flex items-center gap-3 px-2">
+              <div className="w-10 h-10 rounded-2xl bg-teal-500/10 flex items-center justify-center text-teal-400">
                 <Youtube size={20} />
               </div>
               <div>
-                <h2 className="text-[20px] md:text-[24px] font-serif italic font-medium text-white/90 leading-tight">{t.videosTitle}</h2>
-                <p className="text-[9px] md:text-[10px] uppercase tracking-[0.25em] text-white/30 font-bold mt-1">{t.videosSubtitle}</p>
+                <h2 className="text-[20px] font-serif italic text-white/90 leading-tight">{t.videosTitle}</h2>
+                <p className="text-[9px] uppercase tracking-[0.2em] text-white/40 font-bold mt-1">{t.videosSubtitle}</p>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-4">
+            <div className="flex flex-col gap-4">
               {videos.map((video) => (
                 <button 
                   key={video.id}
@@ -567,25 +577,26 @@ export default function Sanctuary() {
                     setActiveAttentionStyles([]);
                     setIsVoidActive(false);
                   }}
- className="group relative aspect-video glass-card rounded-[2rem] transition-all duration-500 hover:border-teal-500/30 active:scale-[0.98]"
+                  className="group flex flex-col md:flex-row gap-5 p-4 md:p-5 bg-[#0f1117] border border-white/10 rounded-[1.5rem] overflow-hidden hover:border-white/20 transition-all text-left w-full active:scale-[0.98]"
                 >
-                  <div className="absolute inset-0 grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-80 transition-all duration-700 bg-center bg-cover" style={{ backgroundImage: `url(${video.thumbnail})` }} />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0f1117] via-[#0f1117]/40 to-transparent group-hover:via-[#0f1117]/20 transition-all duration-500" />
-                  
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white transform group-hover:scale-110 group-hover:bg-teal-500/80 group-hover:border-teal-400/50 transition-all duration-500">
-                      <Play size={28} className="ml-1" fill="currentColor" />
+                  <div className="relative w-full md:w-56 aspect-video rounded-[1rem] overflow-hidden flex-shrink-0 border border-white/[0.05]">
+                    <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100" style={{ backgroundImage: `url(${video.thumbnail})` }} />
+                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20 group-hover:bg-teal-500/80 group-hover:border-teal-400 group-hover:scale-110 transition-all">
+                        <Play size={20} className="translate-x-[1px]" fill="currentColor" />
+                      </div>
                     </div>
                   </div>
-
-                  <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span className="text-[9px] font-black uppercase tracking-widest text-teal-400 bg-teal-400/10 px-2 py-0.5 rounded-full">
-                        {video.category}
-                      </span>
-                    </div>
-                    <h3 className="text-[16px] md:text-[18px] font-serif italic text-white/90 leading-snug group-hover:text-white transition-colors">{video.title}</h3>
-                    <p className="text-[10px] uppercase tracking-[0.15em] text-white/30 mt-1 font-bold">{video.author}</p>
+                  <div className="flex flex-col justify-center flex-1 min-w-0 pb-1">
+                    <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-teal-400 mb-2 block">
+                      {video.category}
+                    </span>
+                    <h3 className="text-[17px] font-serif italic text-white/90 leading-snug mb-1.5 group-hover:text-white transition-colors line-clamp-2">
+                      {video.title}
+                    </h3>
+                    <p className="text-[10px] uppercase tracking-widest font-black text-white/30 truncate">
+                      {video.author}
+                    </p>
                   </div>
                 </button>
               ))}

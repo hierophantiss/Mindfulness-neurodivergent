@@ -866,12 +866,11 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
       {/* Header */}
       <div className="flex items-center justify-between px-5 py-4 border-b border-stone-200 dark:border-stone-800 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md sticky top-0 z-20">
         <div className="flex items-center gap-3">
-          <button onClick={goBack} className="w-9 h-9 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center transition hover:bg-stone-200 dark:hover:bg-stone-700 active:scale-90 overflow-hidden ring-1 ring-teal-500/20">
+          <button onClick={goBack} className="w-9 h-9 rounded-full bg-stone-200 dark:bg-stone-300 flex items-center justify-center transition hover:bg-stone-300 dark:hover:bg-stone-400 active:scale-90 overflow-hidden ring-1 ring-teal-500/20">
             <img 
-              src="/temple-cat.png" 
-              alt="" 
+              src="/favicon-96x96.png" 
+              alt="Companion" 
               className="w-full h-full object-cover" 
-              onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/favicon-96x96.png'; }}
             />
           </button>
           <div className="flex flex-col">
@@ -888,12 +887,11 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
       <div ref={scrollRef} className="flex-1 overflow-y-auto px-5 py-8 space-y-8 scroll-smooth custom-scrollbar">
         {history.length === 0 && (
           <div className="text-center py-10 px-6 max-w-sm mx-auto">
-            <div className="w-20 h-20 bg-teal-500/10 dark:bg-teal-500/5 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner animate-soft-pulse overflow-hidden ring-2 ring-teal-500/20">
+            <div className="w-20 h-20 bg-stone-200/90 dark:bg-stone-300 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner animate-soft-pulse overflow-hidden ring-2 ring-teal-500/20">
               <img 
-                src="/temple-cat.png" 
+                src="/favicon-96x96.png" 
                 alt="Magical Cat" 
                 className="w-full h-full object-cover" 
-                onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/favicon-96x96.png'; }}
               />
             </div>
             <p className="text-stone-500 dark:text-stone-400 font-serif italic text-[17px] leading-relaxed">

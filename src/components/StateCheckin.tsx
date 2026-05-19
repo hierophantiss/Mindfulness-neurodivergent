@@ -73,8 +73,8 @@ export default function StateCheckin({ onComplete }: { onComplete: () => void })
         
         {/* Cat Avatar Header */}
         <div className="flex justify-center mb-6 relative">
-          <div className="w-20 h-20 bg-stone-800 rounded-full flex items-center justify-center border border-stone-700/50 shadow-lg overflow-hidden">
-             <img src="/temple-cat.png" alt="Cat Companion" className="w-full h-full object-cover rounded-full" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/favicon-96x96.png'; }} />
+          <div className="w-20 h-20 bg-stone-200/90 rounded-full flex items-center justify-center border border-stone-300 shadow-lg overflow-hidden">
+             <img src="/favicon-96x96.png" alt="Cat Companion" className="w-full h-full object-cover rounded-full" />
           </div>
         </div>
 
