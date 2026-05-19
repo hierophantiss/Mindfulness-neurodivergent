@@ -63,6 +63,28 @@ async function generate() {
     }
   }
   
+  // extract rabbithole articles
+  const rabbitholeCode = fs.readFileSync(path.join(ROOT_DIR, 'src', 'pages', 'RabbitHole.tsx'), 'utf-8');
+  const rabbitholeIds: string[] = [];
+  
+  // dzogchen is imported
+  rabbitholeIds.push('dzogchen-tregchod'); // This is the id of dzogchenArticle.id, we can hardcode it or parse
+  
+  // Try to match hardcoded ids like id: 'koshas-veils' or id: 'dzogchen-nature-of-mind'
+  const rhIdRegex = /id:\s*'([a-zA-Z0-9-]+)'/g;
+  let rhMatch;
+  while ((rhMatch = rhIdRegex.exec(rabbitholeCode)) !== null) {
+    if (rhMatch[1]) {
+      rabbitholeIds.push(rhMatch[1]);
+    }
+  }
+
+  // Deduplicate rabbithole ids
+  const uniqueRhIds = [...new Set(rabbitholeIds)];
+  uniqueRhIds.forEach(id => {
+    sitemapOnlyPaths.push(`/rabbithole?article=${id}`);
+  });
+
   // program weeks
   const maxWeeks = courseContentEn ? Object.keys(courseContentEn).length : 8;
   for (let w = 1; w <= maxWeeks; w++) {

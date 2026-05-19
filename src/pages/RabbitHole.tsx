@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { BookOpen, ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 
 import { dzogchenArticle } from '../data/dzogchenArticle';
@@ -9,18 +9,36 @@ import { dzogchenArticle } from '../data/dzogchenArticle';
 export default function RabbitHole() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { language } = useLanguage();
-  const [activeArticle, setActiveArticle] = useState<string | null>(null);
+  
+  const [activeArticle, setActiveArticleState] = useState<string | null>(null);
+  
+  const setActiveArticle = (id: string | null) => {
+    setActiveArticleState(id);
+    const newParams = new URLSearchParams(searchParams);
+    if (id) {
+      newParams.set('article', id);
+    } else {
+      newParams.delete('article');
+    }
+    setSearchParams(newParams, { replace: true });
+  };
+  
   const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
-    if (location.state && (location.state as any).activeArticle) {
+    const articleFromUrl = searchParams.get('article');
+    if (articleFromUrl) {
+      setActiveArticleState(articleFromUrl);
+      setCurrentPage(0);
+    } else if (location.state && (location.state as any).activeArticle) {
       setActiveArticle((location.state as any).activeArticle);
       setCurrentPage(0);
       // Clear the state so it doesn't reopen upon refresh
-      navigate(location.pathname, { replace: true, state: {} });
+      navigate(location.pathname + '?article=' + (location.state as any).activeArticle, { replace: true, state: {} });
     }
-  }, [location.state, location.pathname, navigate]);
+  }, [location.state, location.pathname, navigate, searchParams]);
   
   const touchStartX = useRef(0);
 
