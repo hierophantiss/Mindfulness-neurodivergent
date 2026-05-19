@@ -274,17 +274,17 @@ export default function Dashboard() {
             <ChevronRight size={18} className="text-white/20 group-hover:text-white/60 transition-colors" />
           </Link>
 
-          <Link to="/practice/movement/gravity" className={cn(glassCardClasses, "p-4 flex items-center justify-between group cursor-pointer active:scale-[0.98] transition-transform")}>
+          <Link to="/practice/microdoses" className={cn(glassCardClasses, "p-4 flex items-center justify-between group cursor-pointer active:scale-[0.98] transition-transform")}>
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-[14px] bg-[#9b7ee0]/10 flex items-center justify-center text-[#9b7ee0]">
-                <Brain size={20} strokeWidth={1.5} />
+                <Zap size={20} strokeWidth={1.5} />
               </div>
               <div className="flex flex-col gap-1">
                 <h3 className="text-[17px] font-serif italic text-white/90">
-                  {language === 'el' ? 'Βαρύτητα σώματος' : 'Body Gravity'}
+                  {language === 'el' ? 'Μικροδόσεις' : 'Microdoses'}
                 </h3>
                 <span className="text-[10px] uppercase tracking-wider text-white/40 font-medium">
-                  {language === 'el' ? 'GROUNDING · 6 ΛΕΠΤΑ' : 'GROUNDING · 6 MINS'}
+                  {language === 'el' ? 'ΓΡΗΓΟΡΗ ΕΠΑΝΑΦΟΡΑ · 1 ΛΕΠΤΟ' : 'QUICK RESET · 1 MIN'}
                 </span>
               </div>
             </div>
