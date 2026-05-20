@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter, HashRouter, Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import { CompanionProvider } from './hooks/useCompanion';
 import Layout from './components/Layout';
-import { DynamicSpaceBackground } from './components/DynamicSpaceBackground';
+import StarryNightCanvas from './components/StarryNightCanvas';
 import ConsoleOverlay from './components/ConsoleOverlay';
 import Dashboard from './pages/Dashboard';
 import Chapters from './pages/Chapters';
@@ -43,7 +43,7 @@ function AppContent() {
   return (
     <Router basename={basename}>
       <CompanionProvider>
-        <DynamicSpaceBackground />
+        <StarryNightCanvas />
         <Routes>
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/workbook/print" element={<PrintWorkbook />} />

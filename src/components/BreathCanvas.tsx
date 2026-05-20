@@ -236,7 +236,7 @@ export default function BreathCanvas({
   }, [running, onCycleComplete, onPhaseChange]);
 
   return (
-    <div className="w-full h-full relative flex items-center justify-center overflow-hidden bg-[#061114]">
+    <div className="w-full h-full relative flex items-center justify-center overflow-hidden bg-transparent">
       <video
          ref={videoRef}
          src={videoSrc || '/infinity_greeting.mp4'}
@@ -244,7 +244,7 @@ export default function BreathCanvas({
          loop
          muted
          playsInline
-         className="w-full h-full object-contain absolute inset-0 z-0 opacity-80"
+         className="w-full h-full object-cover absolute inset-0 z-0 opacity-80"
       />
       
     </div>

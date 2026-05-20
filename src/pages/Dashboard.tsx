@@ -6,7 +6,6 @@ import { useCompanion } from '../hooks/useCompanion';
 import { useTime } from '../contexts/TimeContext';
 import { cn } from '../lib/utils';
 import { motion } from 'motion/react';
-import StarryNightCanvas from '../components/StarryNightCanvas';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { useBinauralAudio } from '../hooks/useBinauralAudio';
 import InfoModal from '../components/InfoModal';
@@ -99,8 +98,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="relative w-full min-h-screen bg-[#050d1a] overflow-x-hidden text-white font-sans selection:bg-[#4a9eca]/30 selection:text-white pb-28">
-      <StarryNightCanvas />
+    <div className="relative w-full min-h-screen bg-transparent overflow-x-hidden text-white font-sans selection:bg-[#4a9eca]/30 selection:text-white pb-28">
       
       <div className="relative z-10 w-full max-w-lg mx-auto px-5 pt-10 flex flex-col gap-6">
         
