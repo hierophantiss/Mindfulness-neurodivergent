@@ -1,6 +1,6 @@
 {
-  "name": "Neurodivergent Awareness",
-  "description": "Neurodivergent Awareness: Μαθαίνοντας να Ιππεύεις τον Άνεμο - Ψηφιακός trauma-informed οδηγός mindfulness για νευροδιαφορετικά άτομα.",
+  "name": "Tai Chi Breathing",
+  "description": "Θεραπευτικός οδηγός αναπνοής και διαλογισμού με τρισδιάστατη αίσθηση και απαλή κίνηση Τάι Τσι.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
