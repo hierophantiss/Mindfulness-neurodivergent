@@ -41,7 +41,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       base: 180,
       beat: 6,
       pulse: 6,
-      ambientLayers: ["/ocean-waves.mp3", "/rain.mp3"],
+      ambientLayers: ["/space.mp3", "/binaural-beats-25-hz-delta-with-rain-.mp3"],
     }, // Theta
     video: "/Basic.mp4",
     skipIntro: true,
@@ -89,7 +89,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       base: 180,
       beat: 6,
       pulse: 6,
-      ambientLayers: ["/ocean-waves.mp3"],
+      ambientLayers: ["/space.mp3"],
     }, 
     video: "/Basic.mp4",
     skipIntro: true,
@@ -137,7 +137,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       base: 140,
       beat: 5,
       pulse: 5,
-      ambientLayers: ["/cat_purring.mp3", "/fireplace.mp3"],
+      ambientLayers: ["/cat-purring-.mp3", "/space-ambient.mp3"],
     }, // Theta
     video: "/Basic.mp4",
     skipIntro: true,
@@ -180,7 +180,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       base: 200,
       beat: 10,
       pulse: 10,
-      ambientLayers: ["/waterfall.mp3"],
+      ambientLayers: ["/space.mp3"],
     }, // Alpha
     video: "/Basic.mp4",
     skipIntro: true,
@@ -218,7 +218,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       base: 180,
       beat: 8,
       pulse: 8,
-      ambientLayers: ["/ocean-waves.mp3"],
+      ambientLayers: ["/space.mp3"],
     }, // Alpha/Theta
     video: "/animations/deepbow.mp4",
     videoPeak: 0.5,
@@ -256,7 +256,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       base: 190,
       beat: 9,
       pulse: 9,
-      ambientLayers: ["/fireplace.mp3"],
+      ambientLayers: ["/space-ambient.mp3"],
     },
     video: "/infinity_greeting.mp4",
     videoPeak: 0.5,
@@ -292,7 +292,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       base: 200,
       beat: 10,
       pulse: 10,
-      ambientLayers: ["/ocean-waves.mp3"],
+      ambientLayers: ["/space.mp3"],
     }, // Alpha
     video: "/infinity_greeting.mp4",
     useVideoOnly: true,
@@ -331,7 +331,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       base: 174,
       beat: 7,
       pulse: 7,
-      ambientLayers: ["/waterfall.mp3"],
+      ambientLayers: ["/space.mp3"],
     }, // Theta/Alpha for flow state
     video: "/infinity_greeting.mp4",
     videoPeak: 0.5,
@@ -367,7 +367,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       base: 220,
       beat: 12,
       pulse: 12,
-      ambientLayers: ["/ocean-waves.mp3"],
+      ambientLayers: ["/space.mp3"],
     }, // Alpha for alertness 
     video: "/infinity_greeting.mp4",
     phases: [
@@ -408,7 +408,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       base: 180,
       beat: 10,
       pulse: 10,
-      ambientLayers: ["/ocean-waves.mp3", "/fireplace.mp3"],
+      ambientLayers: ["/space.mp3", "/space-ambient.mp3"],
     }, // Alpha
     video: "/Basic.mp4",
     skipIntro: true,
@@ -456,7 +456,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       base: 100,
       beat: 2,
       pulse: 2,
-      ambientLayers: ["/cat_purring.mp3", "/fireplace.mp3", "/rain.mp3"],
+      ambientLayers: ["/cat-purring-.mp3", "/space-ambient.mp3", "/binaural-beats-25-hz-delta-with-rain-.mp3"],
     }, // Delta
     video: "/infinity_greeting.mp4",
     phases: [
@@ -491,7 +491,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       base: 180,
       beat: 6,
       pulse: 6,
-      ambientLayers: ["/ocean-waves.mp3", "/waterfall.mp3"],
+      ambientLayers: ["/space.mp3", "/space.mp3"],
     }, // Theta
     video: "/Basic.mp4",
     skipIntro: true,

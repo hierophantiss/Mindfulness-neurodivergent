@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useTheme } from '../hooks/useTheme';
 import { useAccessibility } from '../hooks/useAccessibility';
+import { useAudioMixer } from '../contexts/AudioContext';
 
 export default function NavigationMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,6 +16,7 @@ export default function NavigationMenu() {
   const { language } = useLanguage();
   const { theme, toggleTheme } = useTheme();
   const { reduceMotion, toggleReduceMotion } = useAccessibility();
+  const { masterPlaying, toggleMaster } = useAudioMixer();
 
   useEffect(() => {
     const handler = (e: any) => {
@@ -397,11 +399,11 @@ export default function NavigationMenu() {
                   <Info size={20} />
                 </button>
                 <button 
-                  onClick={() => showToast(language === 'el' ? 'Λειτουργία σύντομα!' : 'Feature coming soon!')}
-                  title={language === 'el' ? 'Μουσική' : 'Music'}
+                  onClick={() => toggleMaster()}
+                  title={language === 'el' ? 'Μικτής' : 'Mixer'}
                   className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 text-pine-300 hover:bg-white/10 hover:text-white transition-colors border border-white/5"
                 >
-                  <Music size={20} />
+                  {masterPlaying ? <Music size={20} className="text-teal-400" /> : <Music size={20} />}
                 </button>
                 <button 
                   onClick={() => showToast(language === 'el' ? 'Λειτουργία σύντομα!' : 'Feature coming soon!')}

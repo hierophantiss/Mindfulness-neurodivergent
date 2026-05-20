@@ -3,6 +3,7 @@ import { BrowserRouter, HashRouter, Routes, Route, useNavigate, Navigate } from 
 import { CompanionProvider } from './hooks/useCompanion';
 import Layout from './components/Layout';
 import { DynamicSpaceBackground } from './components/DynamicSpaceBackground';
+import ConsoleOverlay from './components/ConsoleOverlay';
 import Dashboard from './pages/Dashboard';
 import Chapters from './pages/Chapters';
 import ChapterDetail from './pages/ChapterDetail';
@@ -28,6 +29,8 @@ import { AccessibilityProvider } from './hooks/useAccessibility';
 import { TimeProvider } from './contexts/TimeContext';
 import { RewardProvider } from './contexts/RewardContext';
 import { ProgressProvider } from './contexts/ProgressContext';
+import { AudioProvider } from './contexts/AudioContext';
+import { AudioRenderer } from './components/AudioRenderer';
 
 import { ErrorBoundary } from './components/ErrorBoundary';
 
@@ -75,15 +78,19 @@ export default function App() {
     <TimeProvider>
       <LanguageProvider>
         <ThemeProvider>
-          <RewardProvider>
+          <AudioProvider>
+            <RewardProvider>
             <ProgressProvider>
               <AccessibilityProvider>
                 <ErrorBoundary>
+                  <ConsoleOverlay />
+                  <AudioRenderer />
                   <AppContent />
                 </ErrorBoundary>
               </AccessibilityProvider>
             </ProgressProvider>
           </RewardProvider>
+          </AudioProvider>
         </ThemeProvider>
       </LanguageProvider>
     </TimeProvider>

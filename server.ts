@@ -1,4 +1,5 @@
 import express from 'express';
+import fs from 'fs';
 import 'dotenv/config';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
@@ -131,6 +132,21 @@ async function startServer() {
       res.status(500).json({ error: error.message });
     }
   });
+
+  // Audio Debug Logger
+  app.post('/api/audio-log', express.json(), (req, res) => {
+    try {
+      const logLine = `[${new Date().toISOString()}] ${JSON.stringify(req.body)}\n`;
+      fs.appendFileSync('audio-debug.log', logLine);
+      res.json({ status: 'logged' });
+    } catch(e) {
+      console.error(e);
+      res.status(500).json({ error: 'failed' });
+    }
+  });
+
+  // Serve public folder statically (supports Accept-Ranges for iOS Safari)
+  app.use(express.static(path.join(process.cwd(), 'public')));
 
   // Vite integration
   if (process.env.NODE_ENV !== 'production') {

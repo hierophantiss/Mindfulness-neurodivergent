@@ -42,7 +42,7 @@ export default function Dashboard() {
     beat: 7.83,  // Schumann
     pulse: 0.1,  // Slow pulse
     disableSynth: true, // Disable pink noise
-    ambientLayers: ['/atlasaudio-calming-zen-519422.mp3']
+    ambientLayers: ['/music/audiopapkin-ambient-soundscapes-007-space-atmosphere-304974.mp3']
   }), []);
 
   const { startAudio, stopAudio, isPlaying } = useBinauralAudio(audioConfig);
