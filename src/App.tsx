@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, HashRouter, Routes, Route, useNavigate, Navigate } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { CompanionProvider } from './hooks/useCompanion';
 import Layout from './components/Layout';
 import { InteractiveBackground } from './components/InteractiveBackground';
@@ -73,20 +74,22 @@ function AppContent() {
 
 export default function App() {
   return (
-    <TimeProvider>
-      <LanguageProvider>
-        <ThemeProvider>
-          <RewardProvider>
-            <ProgressProvider>
-              <AudioProvider>
-                <AccessibilityProvider>
-                  <AppContent />
-                </AccessibilityProvider>
-              </AudioProvider>
-            </ProgressProvider>
-          </RewardProvider>
-        </ThemeProvider>
-      </LanguageProvider>
-    </TimeProvider>
+    <HelmetProvider>
+      <TimeProvider>
+        <LanguageProvider>
+          <ThemeProvider>
+            <RewardProvider>
+              <ProgressProvider>
+                <AudioProvider>
+                  <AccessibilityProvider>
+                    <AppContent />
+                  </AccessibilityProvider>
+                </AudioProvider>
+              </ProgressProvider>
+            </RewardProvider>
+          </ThemeProvider>
+        </LanguageProvider>
+      </TimeProvider>
+    </HelmetProvider>
   );
 }

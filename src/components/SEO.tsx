@@ -3,8 +3,8 @@ import { Helmet } from 'react-helmet-async';
 import { useLanguage } from '../hooks/useLanguage';
 import { useLocation } from 'react-router-dom';
 
-const DEFAULT_TITLE_EN = 'Awareness Gateway - Mindfulness for Neurodivergent Minds';
-const DEFAULT_TITLE_EL = 'Awareness Gateway - Ενσυνειδητότητα για Νευροδιαφορετικούς';
+const DEFAULT_TITLE_EN = 'Neurodivergent Mindfulness';
+const DEFAULT_TITLE_EL = 'Neurodivergent Mindfulness';
 const DEFAULT_DESC_EN = 'Trauma-informed mindfulness guide for ADHD & Autism.';
 const DEFAULT_DESC_EL = 'Trauma-informed οδηγός ενσυνειδητότητας για ΔΕΠΥ & Αυτισμό.';
 const DEFAULT_KW_EN = 'mindfulness, meditation, ADHD, autism, neurodivergent';

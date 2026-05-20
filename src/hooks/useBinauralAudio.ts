@@ -93,6 +93,7 @@ export function useBinauralAudio(config: AudioConfig) {
     pulseLfo?: OscillatorNode;
     pinkSource?: AudioBufferSourceNode;
     ambientAudios?: HTMLAudioElement[];
+    mediaSources?: any[];
   }>({});
 
   const cleanupNodes = useCallback(() => {
@@ -104,6 +105,14 @@ export function useBinauralAudio(config: AudioConfig) {
     try { nodesRef.current.pinkSource?.stop(); } catch(e){}
     
     // Stop all buffered ambient nodes
+    if (nodesRef.current.mediaSources) {
+      nodesRef.current.mediaSources.forEach(ms => {
+        try { ms.source.disconnect(); } catch(e) {}
+        try { ms.gain.disconnect(); } catch(e) {}
+      });
+      nodesRef.current.mediaSources = [];
+    }
+
     if (nodesRef.current.ambientAudios) {
       nodesRef.current.ambientAudios.forEach(audio => {
         try {
@@ -289,6 +298,9 @@ export function useBinauralAudio(config: AudioConfig) {
           document.body.appendChild(audio);
           
           const maxVol = currentConfig.disableSynth ? 1.0 : (path.includes('cat') ? 0.8 : 0.4);
+          
+          // DO NOT use createMediaElementSource! It causes silent playback in browser iframes!
+          // We just play it natively.
           audio.volume = maxVol * volumeRef.current;
           
           const playPromise = audio.play();

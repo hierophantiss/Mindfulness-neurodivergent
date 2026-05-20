@@ -36,7 +36,7 @@ export class ZenAudioEngine {
 
     // Resume context if suspended (browser autoplay policy)
     if (this.ctx.state === "suspended") {
-      this.ctx.resume();
+      this.ctx.resume().catch(console.warn);
     }
 
     const t = this.ctx.currentTime;
@@ -55,12 +55,12 @@ export class ZenAudioEngine {
 
     // Primary grounding frequency (Solfeggio or Ohm)
     this.primaryOsc = this.ctx.createOscillator();
-    this.primaryOsc.type = "sine";
+    this.primaryOsc.type = "triangle"; // richer tone for audibility
     this.primaryOsc.frequency.setValueAtTime(this.baseFreq, t);
 
     // Secondary oscillator for Theta binaural beat gap (4.5Hz)
     this.secondaryOsc = this.ctx.createOscillator();
-    this.secondaryOsc.type = "sine";
+    this.secondaryOsc.type = "triangle"; // richer tone for audibility
     this.secondaryOsc.frequency.setValueAtTime(this.baseFreq + 4.5, t);
 
     // Dynamic low-frequency modulation (for standard ocean wave swell feeling)
@@ -156,7 +156,9 @@ export class ZenAudioEngine {
   public setVolume(vol: number) {
     this.volume = vol;
     if (this.ctx && this.isPlaying && this.masterGain) {
-      this.masterGain.gain.setTargetAtTime(this.volume, this.ctx.currentTime, 0.1);
+      const t = this.ctx.currentTime;
+      this.masterGain.gain.cancelScheduledValues(t);
+      this.masterGain.gain.setTargetAtTime(this.volume, t, 0.1);
     }
   }
 
@@ -164,6 +166,8 @@ export class ZenAudioEngine {
     this.baseFreq = baseFreq;
     if (this.ctx && this.isPlaying && this.primaryOsc && this.secondaryOsc) {
       const t = this.ctx.currentTime;
+      this.primaryOsc.frequency.cancelScheduledValues(t);
+      this.secondaryOsc.frequency.cancelScheduledValues(t);
       this.primaryOsc.frequency.setTargetAtTime(this.baseFreq, t, 0.5);
       this.secondaryOsc.frequency.setTargetAtTime(this.baseFreq + 4.5, t, 0.5);
     }

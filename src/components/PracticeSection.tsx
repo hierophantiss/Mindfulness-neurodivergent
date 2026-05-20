@@ -128,9 +128,9 @@ export default function PracticeSection() {
       synthRef.current.stop();
       setAudioEnabled(false);
     } else {
-      synthRef.current.start();
       synthRef.current.setVolume(audioVolume);
       synthRef.current.setFrequency(solfeggioFreq);
+      synthRef.current.start();
       setAudioEnabled(true);
     }
   };
