@@ -105,8 +105,12 @@ interface AudioContextProps {
   volume: number;
   startAudio: (config: AudioConfig) => void;
   stopAudio: () => void;
+  needsInteraction: boolean;
+  resolveInteraction: () => void;
+  
   setGlobalVolume: (v: number) => void;
   updateArmPos: (armPos: number) => void;
+  
 }
 
 const AudioContext = createContext<AudioContextProps | undefined>(undefined);
@@ -135,6 +139,9 @@ function makePinkNoise(ac: AudioContext) {
 export function AudioProvider({ children }: { children: ReactNode }) {
   // -- 1. Legacy Music/Mixer State --
   const [masterPlaying, setMasterPlaying] = useState(false);
+  const [needsInteraction, setNeedsInteraction] = useState(false);
+  const [logs, setLogs] = useState<string[]>([]);
+  const addLog = (msg: string) => setLogs(prev => [...prev.slice(-9), msg]);
   const [masterVolume, setMasterVolume] = useState(1);
   const [tracks, setTracks] = useState<AudioState>({ space_ambient: { isPlaying: true, volume: 0.5 } });
 
@@ -167,15 +174,15 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     if (!src) return null;
     let audio = audioMapRef.current[src];
     if (!audio) {
-      console.log(`[Central Audio Engine] Creating lazy HTMLAudio for: ${src}`);
+      console.log('[Central Audio Engine] msg');
       const absoluteUrl = getAbsoluteUrl(src);
       audio = new Audio(absoluteUrl);
       audio.loop = true;
       audio.preload = 'auto';
-      audio.crossOrigin = 'anonymous';
+      
       
       audio.addEventListener('error', (e) => {
-        console.warn('[Central Audio Engine] HTMLAudio error for', src, e);
+        console.warn('[Central Audio Engine] Warn');
       });
       
       audioMapRef.current[src] = audio;
@@ -183,6 +190,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     return audioMapRef.current[src];
   };
 
+  
   const safePlay = (audio: HTMLAudioElement | null) => {
     if (!audio) return;
     try {
@@ -190,12 +198,16 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       if (playPromise !== undefined) {
         playPromise.catch(err => {
           console.warn('[Central Audio Engine] Play error:', err);
+          if (err.name === 'NotAllowedError') {
+            setNeedsInteraction(true);
+          }
         });
       }
     } catch(err) {
       console.warn('[Central Audio Engine] play() exception:', err);
     }
   };
+  
 
   const safePause = (audio: HTMLAudioElement | null) => {
     if (!audio) return;
@@ -324,8 +336,13 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     activeAmbientsRef.current = [];
   }, []);
 
+  const resolveInteraction = () => {
+    setNeedsInteraction(false);
+    activeAmbientsRef.current.forEach(audio => safePlay(audio));
+  };
+
   const startAudio = useCallback((config: AudioConfig) => {
-    console.log('[Central Audio Engine] Starting setup with config:', config);
+    console.log('[Central Audio Engine] msg');
     // 1. Clean up any existing playing sound source to prevent overlap
     stopAudioNoDelay();
 
@@ -432,9 +449,9 @@ export function AudioProvider({ children }: { children: ReactNode }) {
               binR.start();
               synthNodesRef.current.binR = binR;
 
-              console.log('[Central Audio Engine] Centralized Binaural beats synthesized successfully.');
+              console.log('[Central Audio Engine] msg');
             } catch(synthErr) {
-              console.warn('[Central Audio Engine] Synthesis failed:', synthErr);
+              console.warn('[Central Audio Engine] Warn');
             }
           }
 
@@ -449,12 +466,12 @@ export function AudioProvider({ children }: { children: ReactNode }) {
                 audio = new Audio(absoluteUrl);
                 audio.loop = true;
                 audio.preload = 'auto';
-                audio.crossOrigin = 'anonymous';
+                
                 audioMapRef.current[path] = audio;
               }
 
               if (audio) {
-                console.log(`[Central Audio Engine] Playing sleep loop: ${path}`);
+                console.log('[Central Audio Engine] msg');
                 try {
                   const maxVol = config.disableSynth ? 1.0 : (path.includes('cat') ? 0.8 : 0.4);
                   audio.volume = Math.max(0, Math.min(1, maxVol * volumeRef.current));
@@ -477,7 +494,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
 
   const stopAudio = useCallback(() => {
     if (!isPlayingRef.current) return;
-    console.log('[Central Audio Engine] Initiating fade-out sequence...');
+    console.log('[Central Audio Engine] msg');
 
     // 1. Web Audio synthesis node fade-out
     if (acRef.current && masterGainRef.current) {
@@ -516,7 +533,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   }, [stopAudioNoDelay]);
 
   const setGlobalVolume = useCallback((v: number) => {
-    console.log('[Central Audio Engine] Syncing global volume:', v);
+    console.log('[Central Audio Engine] msg');
     volumeRef.current = v;
     setVolumeState(v);
 
@@ -564,13 +581,13 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <AudioContext.Provider value={{
+<AudioContext.Provider value={{
       // Legacy states & triggers
       masterPlaying, masterVolume, tracks,
       toggleMaster, setMasterVolume, toggleTrack, setTrackVolume,
 
       // Centralized Engine triggers
-      isPlaying, volume, startAudio, stopAudio, setGlobalVolume, updateArmPos
+      needsInteraction, resolveInteraction, isPlaying, volume, startAudio, stopAudio, setGlobalVolume, updateArmPos
     }}>
       {children}
     </AudioContext.Provider>

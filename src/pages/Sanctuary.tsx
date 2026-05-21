@@ -1,3 +1,5 @@
+import { AudioEnabler } from '../components/AudioEnabler';
+import { DebugOverlay } from '../components/DebugOverlay';
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Waves, Wind, CloudRain, TreePine, Moon, ChevronLeft, Volume2, Timer, Info, Play, Youtube, X, ChevronRight, Music, Sparkles, Droplets, Flame, Film, Headphones } from 'lucide-react';
@@ -274,13 +276,7 @@ export default function Sanctuary() {
   const activeTrackDef = useMemo(() => sleepTracks.find(t => t.id === activeSound), [activeSound]);
 
   // Handle playing state
-  const { startAudio, stopAudio, isPlaying, setGlobalVolume } = useBinauralAudio({
-    base: activeTrackDef?.base || 110,
-    beat: activeTrackDef?.beat || 6.3,
-    pulse: activeTrackDef?.pulse || 0.1,
-    disableSynth: activeTrackDef?.disableSynth,
-    ambientLayers: activeTrackDef?.files || []
-  });
+  const { startAudio, stopAudio, isPlaying, setGlobalVolume } = useBinauralAudio();
 
   useEffect(() => {
     setGlobalVolume(volume);
@@ -590,7 +586,11 @@ export default function Sanctuary() {
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-transparent overflow-y-auto flex flex-col pt-16 custom-scrollbar pb-32">
+    <>
+      <DebugOverlay />
+      <AudioEnabler />
+      <div className="relative min-h-screen w-full bg-transparent overflow-y-auto flex flex-col pt-16 custom-scrollbar pb-32">
+
       <AnimatePresence>
         {isDimmed && (
           <motion.div 
@@ -1282,5 +1282,6 @@ export default function Sanctuary() {
         document.body
       )}
     </div>
+    </>
   );
 }

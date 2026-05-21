@@ -1,3 +1,4 @@
+import { AudioEnabler } from '../components/AudioEnabler';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import BreathCanvas, { PhaseLabel } from '../components/BreathCanvas';
