@@ -22,6 +22,7 @@ const defaultCompanionData = (): CompanionData => ({
   introSeen: false,
   questionnaire: undefined,
   chatHistory: [],
+  companionModeEnabled: false,
 });
 
 interface CompanionContextType {

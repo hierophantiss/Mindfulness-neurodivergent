@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Home, BookOpen, Activity, Notebook, Menu, X, Info, Music, Bell, Compass, LayoutGrid, EyeOff, Eye, Database, User as UserIcon, LogOut, Download, Sparkles } from 'lucide-react';
+import { Home, BookOpen, Activity, Notebook, Menu, X, Info, Music, Bell, Compass, LayoutGrid, EyeOff, Eye, Database, User as UserIcon, LogOut, Download, Sparkles, RotateCcw } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
@@ -9,6 +9,7 @@ import { useAudioMixer } from '../contexts/AudioContext';
 
 export default function NavigationMenu() {
   const [isOpen, setIsOpen] = useState(false);
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const navigate = useNavigate();
@@ -17,6 +18,12 @@ export default function NavigationMenu() {
   const { theme, toggleTheme } = useTheme();
   const { reduceMotion, toggleReduceMotion } = useAccessibility();
   const { masterPlaying, toggleMaster } = useAudioMixer();
+
+  useEffect(() => {
+    if (!isOpen) {
+      setShowResetConfirm(false);
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     const handler = (e: any) => {
@@ -340,8 +347,62 @@ export default function NavigationMenu() {
                        className="px-3 py-1.5 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-medium transition-colors"
                      >
                        {language === 'en' ? 'Update' : 'Αλλαγή'}
-                     </button>
-                   </div>
+                      </button>
+                    </div>
+
+                    <div className="w-full h-px bg-white/5 my-1"></div>
+
+                    <div className="transition-all duration-300">
+                      {!showResetConfirm ? (
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full flex items-center justify-center bg-rose-500/15 text-rose-300">
+                              <RotateCcw size={18} />
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-sm font-medium text-pine-100">
+                                {language === 'en' ? 'Clear All Data (Testing)' : 'Επαναφορά Εφαρμογής'}
+                              </span>
+                              <span className="text-[10px] text-rose-400">
+                                {language === 'en' ? 'Start from Day 1 onboarding' : 'Διαγραφή προόδου και έναρξη από την αρχή'}
+                              </span>
+                            </div>
+                          </div>
+                          <button
+                            onClick={() => setShowResetConfirm(true)}
+                            className="px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-300 rounded-lg text-xs font-medium transition-colors"
+                          >
+                            {language === 'en' ? 'Reset' : 'Επαναφορά'}
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col gap-3 p-3 bg-red-500/10 border border-red-500/20 rounded-xl">
+                          <span className="text-xs font-medium text-red-200">
+                            {language === 'en' 
+                              ? 'Are you sure? This will delete all your progress and history.' 
+                              : 'Είστε σίγουροι; Αυτή η ενέργεια θα διαγράψει όλη την πρόοδο και το ιστορικό σας.'}
+                          </span>
+                          <div className="flex justify-end gap-2">
+                             <button
+                               onClick={() => setShowResetConfirm(false)}
+                               className="px-2.5 py-1 bg-white/5 hover:bg-white/10 text-white rounded text-xs font-medium transition-colors"
+                             >
+                               {language === 'en' ? 'Cancel' : 'Ακύρωση'}
+                             </button>
+                             <button
+                               onClick={() => {
+                                 localStorage.clear();
+                                 window.location.hash = '';
+                                 window.location.reload();
+                               }}
+                               className="px-2.5 py-1 bg-red-600 hover:bg-red-500 text-white rounded text-xs font-medium transition-colors shadow-lg"
+                             >
+                               {language === 'en' ? 'Confirm Reset' : 'Επιβεβαίωση'}
+                             </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
 
                 {/* Install App - Always show with manual fallback */}
                 <button 

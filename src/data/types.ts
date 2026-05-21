@@ -98,4 +98,5 @@ export interface CompanionData {
   onboarded?: boolean;
   questionnaire?: QuestionnaireData;
   chatHistory?: ChatMessage[];
+  companionModeEnabled?: boolean;
 }

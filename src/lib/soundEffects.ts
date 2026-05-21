@@ -1,7 +1,8 @@
 // Web Audio API Synthesizer for UI Micro-interactions
 // No external assets required, generates soft, elegant sounds.
 
-let audioCtx: AudioContext | null = null;
+import { getSharedAudioContext } from './audioManager';
+
 let soundEnabled = true;
 
 export const setGlobalSoundEnabled = (enabled: boolean) => {
@@ -9,15 +10,7 @@ export const setGlobalSoundEnabled = (enabled: boolean) => {
 };
 
 export const getAudioContext = () => {
-  if (typeof window === 'undefined') return null;
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
-  }
-  if (audioCtx.state === 'suspended') {
-    // Only resume if we can (e.g. after user interaction)
-    audioCtx.resume().catch(() => {});
-  }
-  return audioCtx;
+  return getSharedAudioContext();
 };
 
 export const playSound = (type: 'hover' | 'click' | 'complete' | 'chime') => {
@@ -34,7 +27,11 @@ export const playSound = (type: 'hover' | 'click' | 'complete' | 'chime') => {
   }
 
   const ctx = getAudioContext();
-  if (!ctx || ctx.state !== 'running') return;
+  if (!ctx) return;
+
+  if (ctx.state === 'suspended') {
+    ctx.resume().catch(() => {});
+  }
 
   const t = ctx.currentTime;
   

@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { getSharedAudioContext } from "../lib/audioManager";
+
 export class ZenAudioEngine {
   private ctx: AudioContext | null = null;
   private primaryOsc: OscillatorNode | null = null;
@@ -22,8 +24,10 @@ export class ZenAudioEngine {
   public init() {
     if (this.ctx) return;
     try {
-      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
-      this.ctx = new AudioCtx();
+      const ac = getSharedAudioContext();
+      if (ac) {
+        this.ctx = ac;
+      }
     } catch (e) {
       console.error("Web Audio API is not supported in this browser", e);
     }

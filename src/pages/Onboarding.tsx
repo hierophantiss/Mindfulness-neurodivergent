@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
-import { Shield, Anchor, Wind, Focus, Maximize, ArrowRight, Heart } from 'lucide-react';
+import { Shield, Anchor, Wind, Focus, Maximize, ArrowRight, Heart, Sparkles, Compass } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import { cn } from '../lib/utils';
 import { RainbowInfinity } from '../components/RainbowInfinity';
@@ -45,6 +45,53 @@ export default function Onboarding() {
               {language === 'el' 
                 ? 'Στον χώρο ηρεμίας που σχεδιάστηκε για νευροδιαφορετικά άτομα.' 
                 : 'To a space of calm designed for neurodivergent minds.'}
+            </p>
+          </div>
+        </div>
+      )
+    },
+    {
+      id: 'app-intro',
+      content: (
+        <div className="flex flex-col items-center text-center space-y-8 max-w-lg mx-auto">
+          <div className="w-20 h-20 rounded-2xl bg-teal-500/10 flex items-center justify-center border border-teal-500/20 mb-2 mx-auto">
+            <Compass size={32} className="text-teal-400 animate-[spin_30s_linear_infinite]" />
+          </div>
+          <div className="space-y-4">
+            <h2 className="text-3xl font-serif italic text-white tracking-tight">
+              {language === 'el' ? 'Ένα Ψηφιακό Καταφύγιο' : 'A Digital Sanctuary'}
+            </h2>
+            <p className="text-base text-white/60 font-sans leading-relaxed">
+              {language === 'el' 
+                ? 'Η εφαρμογή μας είναι ένας ασφαλής χώρος επιβράδυνσης. Περιλαμβάνει 7 μοναδικά τμήματα: από θεωρία και πρακτικές αναπνοής, κίνησης ή προσοχής, μέχρι το προσωπικό σας Ημερολόγιο και ατμοσφαιρικούς ήχους περιβάλλοντος για απόλυτη χαλάρωση.' 
+                : 'Our application is a safe space for slowing down. It includes 7 unique sections: from theory and practices of breath, movement, or attention, to your personal Journal and atmospheric ambient sounds for complete relaxation.'}
+            </p>
+          </div>
+        </div>
+      )
+    },
+    {
+      id: 'companion-intro',
+      content: (
+        <div className="flex flex-col items-center text-center space-y-8 max-w-lg mx-auto">
+          <div className="relative w-24 h-24 rounded-full bg-teal-500/10 flex items-center justify-center border-2 border-teal-400/40 p-1 mx-auto shadow-[0_0_25px_rgba(20,184,166,0.15)]">
+            <img 
+              src="/favicon-96x96.png" 
+              alt="Companion" 
+              className="w-20 h-20 object-cover rounded-full"
+            />
+            <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-teal-400 flex items-center justify-center text-stone-950">
+              <Sparkles size={12} className="animate-pulse" />
+            </div>
+          </div>
+          <div className="space-y-4">
+            <h2 className="text-3xl font-serif italic text-white tracking-tight">
+              {language === 'el' ? 'Μια Φιλική Συντροφιά' : 'A Friendly Companion'}
+            </h2>
+            <p className="text-base text-white/60 font-sans leading-relaxed">
+              {language === 'el' 
+                ? 'Στην κάτω δεξιά γωνία κατοικεί ο ψηφιακός σας συνοδός (η μικρή μας γάτα). Είναι πάντα εκεί για να ελέγξει πώς νιώθετε, να συζητήσει μαζί σας, να απαντήσει στις ερωτήσεις σας και να προτείνει ασκήσεις κομμένες και ραμμένες στις ανάγκες σας.' 
+                : 'Living in the bottom-right corner is your digital companion (our little cat). Always there to check in on how you feel, talk with you, answer your questions, and suggest exercises tailored precisely to your needs.'}
             </p>
           </div>
         </div>

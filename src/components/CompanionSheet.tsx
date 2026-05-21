@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
+import { cn } from '../lib/utils';
 
 /* Companion Sheet states/flows */
 type FlowState = 'main' | 'mood' | 'hub' | 'explore' | 'options' | 'guide' | 'questionnaire';
@@ -191,6 +192,28 @@ function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClo
     message.actionLabel = `${ch?.icon} ${language === 'el' ? 'Ξεκίνα' : 'Start'}`;
     message.actionRoute = `/chapters/${nextChapterNum}`;
   }
+
+  // Override text if Quiet Mode is turned on
+  if (!companionData.companionModeEnabled) {
+    message.primary = language === 'el' 
+      ? '💤 Ήσυχη Καταγραφή' 
+      : '💤 Quiet Tracker Active';
+      
+    if (hasProgram) {
+      message.secondary = language === 'el'
+        ? `Καταγράφω σιωπηλά την πρόοδό σου. Είσαι στην Εβδομάδα ${progW}, Ημέρα ${progD + 1}. Μπορείς να συνεχίσεις απευθείας προς το επόμενο βήμα:`
+        : `Silently logging your progress. You are currently at Week ${progW}, Day ${progD + 1}. Resume your next lesson immediately:`;
+    } else if (resumeChapterNum) {
+      const ch = CHAPTERS_DATA[currentLang][resumeChapterNum - 1];
+      message.secondary = language === 'el'
+        ? `Θυμάμαι ότι είχες μείνει στο «${ch?.title}». Μπορείς να συνεχίσεις αθόρυβα την ανάγνωση από εδώ:`
+        : `I remember you left off reading at "${ch?.title}". You can resume silently from here:`;
+    } else {
+      message.secondary = language === 'el'
+        ? 'Καταγράφω σιωπηλά την πρόοδό σου στο παρασκήνιο χωρίς να σου αποσπώ την προσοχή. Είμαι εδώ όποτε με χρειαστείς!'
+        : 'Silently tracking your mindfulness milestones in the background. I am always ready whenever you call on me!';
+    }
+  }
   
   return (
     <div className="space-y-6 animate-fade-in text-stone-800 dark:text-stone-200">
@@ -201,7 +224,9 @@ function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClo
              <div className={`w-6 h-6 rounded-full bg-indigo-500/20 mix-blend-multiply dark:mix-blend-lighten ${reduceMotion ? '' : 'animate-pulse delay-75'}`} />
            </div>
            <h2 className="font-display font-medium text-lg leading-none tracking-tight">
-             {language === 'el' ? 'Καθοδήγηση' : 'Guidance'}
+             {companionData.companionModeEnabled 
+               ? (language === 'el' ? 'Καθοδήγηση' : 'Guidance')
+               : (language === 'el' ? 'Ήσυχη Καταγραφή' : 'Quiet Tracking')}
            </h2>
          </div>
          <div className="flex items-center gap-1.5">
@@ -434,6 +459,7 @@ function HubFlow({ goBack, onClose, navigate }: { goBack: () => void, onClose: (
 
 function OptionsFlow({ goBack, onClose }: { goBack: () => void, onClose: () => void }) {
   const { language } = useLanguage();
+  const { companionData, updateCompanionData } = useCompanion();
 
   return (
     <div className="space-y-6 animate-fade-in text-stone-800 dark:text-stone-200">
@@ -443,7 +469,76 @@ function OptionsFlow({ goBack, onClose }: { goBack: () => void, onClose: () => v
       </div>
 
       <div className="space-y-4">
-         <div className="bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-3xl p-4 flex items-center justify-between">
+         {/* Companion Mode Switcher */}
+         <div className="space-y-3">
+           <span className="text-[11px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-wider ml-1">
+             {language === 'el' ? 'Λειτουργία Καθοδηγητή (Companion Mode)' : 'Companion Mode'}
+           </span>
+           
+           <div className="grid gap-3">
+             {/* Active Mode (ON) */}
+             <button
+               onClick={() => updateCompanionData({ companionModeEnabled: true })}
+               className={cn(
+                 "flex flex-col text-left p-4 rounded-2xl border-2 transition-all cursor-pointer",
+                 companionData.companionModeEnabled
+                   ? "border-[#e99b37] bg-[#e99b37]/5 dark:bg-[#e99b37]/10 text-stone-900 dark:text-stone-100"
+                   : "border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 text-stone-500 dark:text-stone-400 hover:border-stone-300"
+               )}
+             >
+               <div className="flex items-center justify-between w-full mb-1">
+                 <div className="flex items-center gap-2">
+                   <span className="text-xl">🐱</span>
+                   <span className="font-bold text-[14px]">
+                     {language === 'el' ? 'Ενεργή Λειτουργία (Active)' : 'Active Mode'}
+                   </span>
+                 </div>
+                 {companionData.companionModeEnabled && (
+                   <span className="text-xs bg-[#e99b37] text-white px-2.5 py-0.5 rounded-full font-bold">
+                     {language === 'el' ? 'Ενεργό' : 'Active'}
+                   </span>
+                 )}
+               </div>
+               <p className="text-[13px] leading-relaxed opacity-85 pl-7">
+                 {language === 'el'
+                   ? 'Η γάτα εμφανίζεται στην αρχική σελίδα ως ζεστός καθοδηγητής, προτείνει το επόμενο βήμα και προσφέρει συντροφικότητα.'
+                   : 'The cat appears on the homepage as a warm guide, proposing the next step and offering companionship.'}
+               </p>
+             </button>
+
+             {/* Quiet Mode (OFF) */}
+             <button
+               onClick={() => updateCompanionData({ companionModeEnabled: false })}
+               className={cn(
+                 "flex flex-col text-left p-4 rounded-2xl border-2 transition-all cursor-pointer",
+                 !companionData.companionModeEnabled
+                   ? "border-emerald-600/70 bg-emerald-500/5 dark:bg-emerald-500/10 text-stone-900 dark:text-stone-100"
+                   : "border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 text-stone-500 dark:text-stone-400 hover:border-stone-300"
+               )}
+             >
+               <div className="flex items-center justify-between w-full mb-1">
+                 <div className="flex items-center gap-2">
+                   <span className="text-xl">💤</span>
+                   <span className="font-bold text-[14px]">
+                     {language === 'el' ? 'Ήσυχη Λειτουργία (Quiet)' : 'Quiet Mode'}
+                   </span>
+                 </div>
+                 {!companionData.companionModeEnabled && (
+                   <span className="text-xs bg-emerald-600 text-white px-2.5 py-0.5 rounded-full font-bold">
+                     {language === 'el' ? 'Ήσυχο' : 'Quiet'}
+                   </span>
+                 )}
+               </div>
+               <p className="text-[13px] leading-relaxed opacity-85 pl-7">
+                 {language === 'el'
+                   ? 'Η γάτα αποσύρεται διακριτικά από την αρχική. Συνεχίζει όμως να καταγράφει σιωπηλά την πρόοδό σας και είναι διαθέσιμη όποτε την χρειαστείτε.'
+                   : 'The cat retreats from the main dashboard. It still silently logs your progress and is ready whenever you call on it.'}
+               </p>
+             </button>
+           </div>
+         </div>
+
+         <div className="bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-3xl p-4 flex items-center justify-between mt-6">
            <div>
              <div className="font-medium">{language === 'el' ? 'Εισαγωγή' : 'Introduction'}</div>
              <div className="text-xs opacity-70 mt-1">{language === 'el' ? 'Βασικές αρχές ενσυνειδητότητας' : 'Core principles of mindfulness'}</div>

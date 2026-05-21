@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Sparkles, BookOpen, ArrowRight, Heart, Brain, Moon, Zap, ChevronRight, Telescope, Info, Waves, Play, Eye, EyeOff } from 'lucide-react';
+import { Sparkles, BookOpen, ArrowRight, Heart, Brain, Moon, Zap, ChevronRight, Telescope, Info, Waves, Play, Eye, EyeOff, Cat } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useCompanion } from '../hooks/useCompanion';
@@ -9,12 +9,13 @@ import { motion } from 'motion/react';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { useBinauralAudio } from '../hooks/useBinauralAudio';
 import InfoModal from '../components/InfoModal';
+import { CompanionDashboardWidget } from '../components/CompanionDashboardWidget';
 
 const glassCardClasses = "backdrop-blur-[4px] bg-white/[0.04] border border-white/[0.1] rounded-[16px]";
 
 export default function Dashboard() {
   const { language, setLanguage } = useLanguage();
-  const { companionData } = useCompanion();
+  const { companionData, updateCompanionData } = useCompanion();
   const { hour } = useTime();
   const { reduceMotion, toggleReduceMotion } = useAccessibility();
 
@@ -102,18 +103,13 @@ export default function Dashboard() {
       
       <div className="relative z-10 w-full max-w-lg mx-auto px-5 pt-10 flex flex-col gap-6">
         
-        {/* 1. Header */}
+        {/* 1. Header Actions (Always visible) */}
         <div className="flex flex-col gap-1">
           <span className="text-[10px] tracking-[2px] uppercase text-[#4a9eca] font-semibold mb-1">
             {language === 'el' ? 'ΠΥΛΗ ΕΠΙΓΝΩΣΗΣ' : 'AWARENESS GATEWAY'}
           </span>
-          <div className="flex items-center gap-2">
-            <h1 className="text-[30px] font-serif italic font-light leading-none">
-              {greeting}
-            </h1>
-            <Sparkles size={22} className="text-white opacity-80" strokeWidth={1.5} />
-          </div>
-          <div className="flex flex-row items-center justify-between mt-2">
+          
+          <div className="flex items-center justify-between mt-2">
             <span className="text-[13px] text-white/50 tracking-wide font-light">
               {currentDate}
             </span>
@@ -166,7 +162,15 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* 2. Quote Card */}
+        {/* 2. Primary Dashboard Header, Quote, and Stats (Always Visible) */}
+        <div className="flex items-center gap-2 mt-2">
+          <h1 className="text-[30px] font-serif italic font-light leading-none">
+            {greeting}
+          </h1>
+          <Sparkles size={22} className="text-white opacity-80" strokeWidth={1.5} />
+        </div>
+
+        {/* Quote Card */}
         <div className={cn(glassCardClasses, "p-5 flex items-center gap-4 mt-2")}>
           <Sparkles size={20} className="text-[#4a9eca] shrink-0" strokeWidth={1.5} />
           <p className="text-[15px] italic text-white/80 font-serif leading-relaxed">
@@ -174,7 +178,7 @@ export default function Dashboard() {
           </p>
         </div>
 
-        {/* 3. Streak Row */}
+        {/* Streak Row */}
         <div className="grid grid-cols-3 gap-3">
           <div className={cn(glassCardClasses, "flex flex-col items-center justify-center py-5 text-center gap-2")}>
             <span className="text-xl leading-none">🔥</span>
@@ -198,6 +202,11 @@ export default function Dashboard() {
             </span>
           </div>
         </div>
+
+        {/* 3. Companion Mode Widget (Included underneath if enabled) */}
+        {companionData.companionModeEnabled && (
+          <CompanionDashboardWidget />
+        )}
 
         {/* 4. Main Content Card */}
         <div className={cn(glassCardClasses, "p-6 flex flex-col gap-6 relative overflow-hidden")}>
