@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode, useRef } from 'react';
-import { Howl } from 'howler';
+import { Howl, Howler } from 'howler';
 import { getSharedAudioContext } from '../lib/audioManager';
 
 export interface SoundTrack {
@@ -192,11 +192,12 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     let audio = audioMapRef.current[src];
     if (!audio) {
       console.log(`[Central Audio Engine] Creating lazy Howl for: ${src}`);
-      const cacheBustedSrc = src.includes('?') ? src + '&v=2' : src + '?v=2';
+      const absoluteUrl = getAbsoluteUrl(src);
+      const cacheBustedSrc = absoluteUrl.includes('?') ? absoluteUrl + '&v=2' : absoluteUrl + '?v=2';
       audio = new Howl({
         src: [cacheBustedSrc],
         loop: true,
-        html5: false,
+        html5: true,
         onloaderror: (id, err) => console.warn(`[Central Audio Engine] Howl load error:`, err),
         onplayerror: (id, err) => console.warn(`[Central Audio Engine] Howl play error:`, err)
       });
@@ -234,6 +235,9 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     if (ac && ac.state === 'suspended') {
       ac.resume().catch(console.warn);
     }
+    if (Howler.ctx && Howler.ctx.state === 'suspended') {
+      Howler.ctx.resume().catch(console.warn);
+    }
     
     // Stop any playing central engine sound first to prevent overlap!
     stopAudioNoDelay();
@@ -260,39 +264,37 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     if (ac && ac.state === 'suspended') {
       ac.resume().catch(console.warn);
     }
+    if (Howler.ctx && Howler.ctx.state === 'suspended') {
+      Howler.ctx.resume().catch(console.warn);
+    }
 
     // Stop any playing central engine sound first to prevent overlap!
     stopAudioNoDelay();
 
-    setTracks(prev => {
-      const isCurrentlyPlaying = prev[id]?.isPlaying ?? false;
-      const currentVolume = prev[id]?.volume ?? 0.5;
+    setTracks(prevTracks => {
+      const isCurrentlyPlaying = prevTracks[id]?.isPlaying ?? false;
+      const currentVolume = prevTracks[id]?.volume ?? 0.5;
       const nextPlaying = !isCurrentlyPlaying;
       
-      const trackDef = AVAILABLE_TRACKS.find(t => t.id === id);
-      if (trackDef) {
-        if (nextPlaying && masterPlaying) {
-          const audio = getOrCreateAudio(trackDef.url);
-          safePlay(audio);
-        } else {
-          const audio = audioMapRef.current[trackDef.url];
-          safePause(audio);
-        }
-      }
+      const newState = { ...prevTracks, [id]: { isPlaying: nextPlaying, volume: currentVolume } };
 
-      const newState = { ...prev, [id]: { isPlaying: nextPlaying, volume: currentVolume } };
+      setMasterPlaying(prevMaster => {
+        // If we are enabling a track and master was off, turn master on
+        const nextMaster = nextPlaying ? true : prevMaster;
 
-      // Automatically enable master switch if disabled
-      if (nextPlaying && !masterPlaying) {
-        setMasterPlaying(true);
         AVAILABLE_TRACKS.forEach(track => {
           const tState = newState[track.id];
-          if (tState?.isPlaying) {
+          if (nextMaster && tState?.isPlaying) {
             const audio = getOrCreateAudio(track.url);
             safePlay(audio);
+          } else {
+            const audio = audioMapRef.current[track.url];
+            safePause(audio);
           }
         });
-      }
+
+        return nextMaster;
+      });
       
       return newState;
     });
@@ -364,122 +366,129 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         if (ac.state === 'suspended') {
           ac.resume().catch(console.warn);
         }
-
-        const master = ac.createGain();
-        const initialVol = config.disableSynth ? volumeRef.current : volumeRef.current * 0.4;
-        master.gain.setValueAtTime(initialVol, ac.currentTime);
-        master.connect(ac.destination);
-        masterGainRef.current = master;
-
-        // A. Synth Generation (if desired by the config)
-        if (!config.disableSynth) {
-          try {
-            // Noise generator
-            const pinkBuffer = makePinkNoise(ac);
-            const pinkSource = ac.createBufferSource();
-            pinkSource.buffer = pinkBuffer;
-            pinkSource.loop = true;
-            const pinkGain = ac.createGain();
-            pinkGain.gain.setValueAtTime(0.03, ac.currentTime);
-            pinkSource.connect(pinkGain).connect(master);
-            pinkSource.start();
-            synthNodesRef.current.pinkSource = pinkSource;
-
-            // Amplitude Modulation (Ocean breathing waves)
-            const amNode = ac.createGain();
-            amNode.gain.setValueAtTime(1.0, ac.currentTime);
-            amNode.connect(master);
-            oceanGainRef.current = amNode;
-
-            // Breathing Modulator
-            const pulseLfo = ac.createOscillator();
-            pulseLfo.type = 'sine';
-            pulseLfo.frequency.setValueAtTime(config.pulse || 0.1, ac.currentTime);
-            const pulseDepth = ac.createGain();
-            pulseDepth.gain.setValueAtTime(0.15, ac.currentTime);
-            pulseLfo.connect(pulseDepth).connect(amNode.gain);
-            pulseLfo.start();
-            synthNodesRef.current.pulseLfo = pulseLfo;
-
-            // Binaural Beat Split
-            const binauralNode = ac.createGain();
-            binauralNode.connect(amNode);
-
-            // Left Split (Base Freq)
-            const binL = ac.createOscillator();
-            binL.type = 'sine';
-            binL.frequency.setValueAtTime(config.base, ac.currentTime);
-            const gL = ac.createGain();
-            gL.gain.setValueAtTime(0.25, ac.currentTime);
-            let pL;
-            try {
-              pL = ac.createStereoPanner();
-              pL.pan.setValueAtTime(-1, ac.currentTime);
-            } catch (e) {
-              pL = ac.createPanner();
-              pL.panningModel = 'equalpower';
-              pL.setPosition(-1, 0, 0);
-            }
-            binL.connect(gL).connect(pL).connect(binauralNode);
-            binL.start();
-            synthNodesRef.current.binL = binL;
-
-            // Right Split (Base + Beat Freq)
-            const binR = ac.createOscillator();
-            binR.type = 'sine';
-            binR.frequency.setValueAtTime(config.base + config.beat, ac.currentTime);
-            const gR = ac.createGain();
-            gR.gain.setValueAtTime(0.25, ac.currentTime);
-            let pR;
-            try {
-              pR = ac.createStereoPanner();
-              pR.pan.setValueAtTime(1, ac.currentTime);
-            } catch (e) {
-              pR = ac.createPanner();
-              pR.panningModel = 'equalpower';
-              pR.setPosition(1, 0, 0);
-            }
-            binR.connect(gR).connect(pR).connect(binauralNode);
-            binR.start();
-            synthNodesRef.current.binR = binR;
-
-            console.log('[Central Audio Engine] Centralized Binaural beats synthesized successfully.');
-          } catch(synthErr) {
-            console.warn('[Central Audio Engine] Synthesis failed:', synthErr);
-          }
+        if (Howler.ctx && Howler.ctx.state === 'suspended') {
+          Howler.ctx.resume().catch(console.warn);
         }
 
-        // B. Play Ambient Sound MP3 Loops
-        if (config.ambientLayers && config.ambientLayers.length > 0) {
-          config.ambientLayers.forEach(path => {
-            if (!path) return;
-            // simple fallback if audioMapRef doesn't have it allocated yet
-            let audio = audioMapRef.current[path];
-            if (!audio) {
-              audio = new Howl({
-                src: [path],
-                html5: true,
-                loop: true,
-                preload: true,
-                volume: 0 
-              });
-              audioMapRef.current[path] = audio;
-            }
-            if (audio) {
-              console.log(`[Central Audio Engine] Playing sleep loop: ${path}`);
+        if (!isPlayingRef.current) return;
+        try {
+          const master = ac.createGain();
+          const initialVol = config.disableSynth ? volumeRef.current : volumeRef.current * 0.4;
+          master.gain.setValueAtTime(initialVol, ac.currentTime);
+          master.connect(ac.destination);
+          masterGainRef.current = master;
+
+          // A. Synth Generation (if desired by the config)
+          if (!config.disableSynth) {
+            try {
+              // Noise generator
+              const pinkBuffer = makePinkNoise(ac);
+              const pinkSource = ac.createBufferSource();
+              pinkSource.buffer = pinkBuffer;
+              pinkSource.loop = true;
+              const pinkGain = ac.createGain();
+              pinkGain.gain.setValueAtTime(0.03, ac.currentTime);
+              pinkSource.connect(pinkGain).connect(master);
+              pinkSource.start();
+              synthNodesRef.current.pinkSource = pinkSource;
+
+              // Amplitude Modulation (Ocean breathing waves)
+              const amNode = ac.createGain();
+              amNode.gain.setValueAtTime(1.0, ac.currentTime);
+              amNode.connect(master);
+              oceanGainRef.current = amNode;
+
+              // Breathing Modulator
+              const pulseLfo = ac.createOscillator();
+              pulseLfo.type = 'sine';
+              pulseLfo.frequency.setValueAtTime(config.pulse || 0.1, ac.currentTime);
+              const pulseDepth = ac.createGain();
+              pulseDepth.gain.setValueAtTime(0.15, ac.currentTime);
+              pulseLfo.connect(pulseDepth).connect(amNode.gain);
+              pulseLfo.start();
+              synthNodesRef.current.pulseLfo = pulseLfo;
+
+              // Binaural Beat Split
+              const binauralNode = ac.createGain();
+              binauralNode.connect(amNode);
+
+              // Left Split (Base Freq)
+              const binL = ac.createOscillator();
+              binL.type = 'sine';
+              binL.frequency.setValueAtTime(config.base, ac.currentTime);
+              const gL = ac.createGain();
+              gL.gain.setValueAtTime(0.25, ac.currentTime);
+              let pL;
               try {
-                const maxVol = config.disableSynth ? 1.0 : (path.includes('cat') ? 0.8 : 0.4);
-                audio.volume(maxVol * volumeRef.current);
-                
-                audio.stop(); // Howl's stop also resets the seek position
-                audio.play();
-                
-                activeAmbientsRef.current.push(audio);
-              } catch (playErr) {
-                console.error(`[Central Audio Engine] Error launching track play for ${path}:`, playErr);
+                pL = ac.createStereoPanner();
+                pL.pan.setValueAtTime(-1, ac.currentTime);
+              } catch (e) {
+                pL = ac.createPanner();
+                pL.panningModel = 'equalpower';
+                pL.setPosition(-1, 0, 0);
               }
+              binL.connect(gL).connect(pL).connect(binauralNode);
+              binL.start();
+              synthNodesRef.current.binL = binL;
+
+              // Right Split (Base + Beat Freq)
+              const binR = ac.createOscillator();
+              binR.type = 'sine';
+              binR.frequency.setValueAtTime(config.base + config.beat, ac.currentTime);
+              const gR = ac.createGain();
+              gR.gain.setValueAtTime(0.25, ac.currentTime);
+              let pR;
+              try {
+                pR = ac.createStereoPanner();
+                pR.pan.setValueAtTime(1, ac.currentTime);
+              } catch (e) {
+                pR = ac.createPanner();
+                pR.panningModel = 'equalpower';
+                pR.setPosition(1, 0, 0);
+              }
+              binR.connect(gR).connect(pR).connect(binauralNode);
+              binR.start();
+              synthNodesRef.current.binR = binR;
+
+              console.log('[Central Audio Engine] Centralized Binaural beats synthesized successfully.');
+            } catch(synthErr) {
+              console.warn('[Central Audio Engine] Synthesis failed:', synthErr);
             }
-          });
+          }
+
+          // B. Play Ambient Sound MP3 Loops
+          if (config.ambientLayers && config.ambientLayers.length > 0) {
+            config.ambientLayers.forEach(path => {
+              if (!path) return;
+              let audio = audioMapRef.current[path];
+              if (!audio) {
+                const absoluteUrl = getAbsoluteUrl(path);
+                const cacheBustedSrc = absoluteUrl.includes('?') ? absoluteUrl + '&v=2' : absoluteUrl + '?v=2';
+                audio = new Howl({
+                  src: [cacheBustedSrc],
+                  html5: true,
+                  loop: true,
+                  preload: true,
+                  volume: 0 
+                });
+                audioMapRef.current[path] = audio;
+              }
+              if (audio) {
+                console.log(`[Central Audio Engine] Playing sleep loop: ${path}`);
+                try {
+                  const maxVol = config.disableSynth ? 1.0 : (path.includes('cat') ? 0.8 : 0.4);
+                  audio.volume(maxVol * volumeRef.current);
+                  audio.stop(); 
+                  audio.play();
+                  activeAmbientsRef.current.push(audio);
+                } catch (playErr) {
+                  console.error(`[Central Audio Engine] Error launching track play for ${path}:`, playErr);
+                }
+              }
+            });
+          }
+        } catch(err) {
+           console.error('[Central Audio Engine] Async start error:', err);
         }
       }
     } catch(err) {
@@ -544,7 +553,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     if (!isPlayingRef.current || !acRef.current || !oceanGainRef.current) return;
     try {
       const target = 0.1 + armPos * 0.3;
-      oceanGainRef.current.gain.value = target;
+      oceanGainRef.current.gain.setTargetAtTime(target, acRef.current.currentTime, 0.05);
     } catch(e) {}
   }, []);
 
