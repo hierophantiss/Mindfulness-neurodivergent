@@ -9,7 +9,6 @@ import { motion } from 'motion/react';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { useBinauralAudio } from '../hooks/useBinauralAudio';
 import InfoModal from '../components/InfoModal';
-import { CompanionDashboardWidget } from '../components/CompanionDashboardWidget';
 
 const glassCardClasses = "backdrop-blur-[4px] bg-white/[0.04] border border-white/[0.1] rounded-[16px]";
 
@@ -170,43 +169,7 @@ export default function Dashboard() {
           <Sparkles size={22} className="text-white opacity-80" strokeWidth={1.5} />
         </div>
 
-        {/* Quote Card */}
-        <div className={cn(glassCardClasses, "p-5 flex items-center gap-4 mt-2")}>
-          <Sparkles size={20} className="text-[#4a9eca] shrink-0" strokeWidth={1.5} />
-          <p className="text-[15px] italic text-white/80 font-serif leading-relaxed">
-            {language === 'el' ? activeQuote.el : activeQuote.en}
-          </p>
-        </div>
-
-        {/* Streak Row */}
-        <div className="grid grid-cols-3 gap-3">
-          <div className={cn(glassCardClasses, "flex flex-col items-center justify-center py-5 text-center gap-2")}>
-            <span className="text-xl leading-none">🔥</span>
-            <span className="text-[22px] font-serif mb-1">{mindfulStats.streak}</span>
-            <span className="text-[9px] font-semibold tracking-wider text-white/40 uppercase">
-              {language === 'el' ? 'ΣΕΡΙ ΗΜΕΡΩΝ' : 'DAY STREAK'}
-            </span>
-          </div>
-          <div className={cn(glassCardClasses, "flex flex-col items-center justify-center py-5 text-center gap-2")}>
-            <span className="text-xl leading-none">🧠</span>
-            <span className="text-[22px] font-serif mb-1">{mindfulStats.practices}</span>
-            <span className="text-[9px] font-semibold tracking-wider text-white/40 uppercase">
-              {language === 'el' ? 'ΠΡΑΚΤΙΚΕΣ' : 'PRACTICES'}
-            </span>
-          </div>
-          <div className={cn(glassCardClasses, "flex flex-col items-center justify-center py-5 text-center gap-2")}>
-            <span className="text-xl leading-none">🌙</span>
-            <span className="text-[22px] font-serif mb-1">{mindfulStats.weeklyGoal}%</span>
-            <span className="text-[9px] font-semibold tracking-wider text-white/40 uppercase">
-              {language === 'el' ? 'ΕΒΔ. ΣΤΟΧΟΣ' : 'WEEKLY GOAL'}
-            </span>
-          </div>
-        </div>
-
-        {/* 3. Companion Mode Widget (Included underneath if enabled) */}
-        {companionData.companionModeEnabled && (
-          <CompanionDashboardWidget />
-        )}
+        {/* Removed Quote Card, Streak Row, and Companion Widget and moved them to the Floating Companion Panel as per user request */}
 
         {/* 4. Main Content Card */}
         <div className={cn(glassCardClasses, "p-6 flex flex-col gap-6 relative overflow-hidden")}>

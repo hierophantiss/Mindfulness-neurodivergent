@@ -135,6 +135,65 @@ function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClo
     }
   }
 
+  // Narrative calculation
+  const getDailyNarrative = () => {
+    let phase = 0;
+    const w = companionData.programProgress?.week || 0;
+    if (w < 2) phase = 0; 
+    else if (w >= 2 && w < 4) phase = 1; 
+    else if (w >= 4 && w < 6) phase = 2; 
+    else if (w >= 6) phase = 3; 
+
+    const elNarratives = [
+      {
+        title: "Γείωση & Βαρύτητα",
+        text: "Η μαϊμού της υπερανάλυσης (DMN) είναι ακόμα ανήσυχη. Ας γειώσουμε τον ελέφαντα του νευρικού συστήματος. Η βαρύτητα είναι το πρώτο μας σκοινί."
+      },
+      {
+        title: "Ρύθμιση της Αναπνοής",
+        text: "Ο ελέφαντας νιώθει το έδαφος, αλλά η ενέργειά του είναι ακανόνιστη. Ας χρησιμοποιήσουμε την αναπνοή για να ρυθμίσουμε το νευρικό του σύστημα."
+      },
+      {
+        title: "Η Επίγνωση ως Εργαλείο",
+        text: "Το σώμα και η αναπνοή έχουν ηρεμήσει, η μαϊμού κουράζεται. Ώρα να πιάσουμε το εργαλείο της καθαρής επίγνωσης."
+      },
+      {
+        title: "Ο Ανοιχτός Χώρος",
+        text: "Η μαϊμού κάθεται ήσυχα και ο ελέφαντας ηρεμεί. Δεν χρειάζεται πια να προσπαθούμε. Αναπαυόμαστε στον ανοιχτό χώρο."
+      }
+    ];
+
+    const enNarratives = [
+      {
+        title: "Grounding & Gravity",
+        text: "The monkey of over-analysis (DMN) is relentless. Let's ground the nervous system's elephant first. Gravity is our lasso."
+      },
+      {
+        title: "Regulating the Breath",
+        text: "The elephant feels the ground, but its energy is erratic. Let's use the breath to soothe its nervous system."
+      },
+      {
+        title: "Awareness as a Tool",
+        text: "The body and breath are calm, the monkey is tiring. It's time to grasp the tool of pure awareness."
+      },
+      {
+        title: "The Open Space",
+        text: "The monkey sits quietly behind, and the elephant calms. We no longer need to try; we rest in open awareness."
+      }
+    ];
+
+    return language === 'el' ? elNarratives[phase] : enNarratives[phase];
+  };
+
+  const narrative = getDailyNarrative();
+  
+  // Calculate Mindful Stats
+  const mindfulStats = { 
+    streak: Math.max(1, companionData?.dailyLogs?.length || 7), 
+    practices: Math.max(1, (companionData?.programProgress?.day || 0) + 1), 
+    weeklyGoal: 85 
+  };
+
   let message = {
     primary: language === 'el' ? 'Πώς θέλεις να συνεχίσουμε σήμερα;' : 'How do you want to continue today?',
     secondary: '',
@@ -233,6 +292,60 @@ function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClo
             <button onClick={() => navTo('options')} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-stone-200 dark:hover:bg-stone-800 transition text-stone-400 hover:text-stone-700 dark:hover:text-stone-300">⚙️</button>
             <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-stone-200 dark:hover:bg-stone-800 transition text-stone-400 hover:text-stone-700 dark:hover:text-stone-300">✕</button>
          </div>
+      </div>
+
+      {companionData.companionModeEnabled && (
+        <div className="relative bg-teal-50 dark:bg-stone-800/50 p-5 rounded-[24px] border border-stone-200/50 dark:border-stone-700/50 shadow-sm overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-[#e99b37]/10 blur-[40px] rounded-full pointer-events-none -mr-10 -mt-10" />
+          
+          <div className="flex items-start gap-4 relative z-10">
+            <div className="w-16 h-16 rounded-full overflow-hidden shrink-0 border-2 border-stone-200 dark:border-stone-700 shadow-sm relative">
+              <img 
+                src="/assets/cat1.png" 
+                alt="Companion" 
+                className="w-full h-full object-cover" 
+                onError={(e) => {
+                   (e.target as HTMLImageElement).src = 'https://api.dicebear.com/7.x/notionists/svg?seed=Felix&backgroundColor=e99b37';
+                }}
+              />
+              <div className="absolute bottom-1 right-1 w-3 h-3 bg-teal-500 rounded-full border-2 border-white dark:border-stone-800" />
+            </div>
+            
+            <div className="flex flex-col gap-1.5 pt-1">
+              <h3 className="text-[13px] font-bold text-[#e99b37] tracking-[1.5px] uppercase">
+                {narrative.title}
+              </h3>
+              <p className="text-[14.5px] text-stone-700 dark:text-stone-300 leading-relaxed font-serif italic pr-2">
+                «{narrative.text}»
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Streak Row */}
+      <div className="grid grid-cols-3 gap-2">
+        <div className="bg-stone-50 dark:bg-stone-800/80 border border-stone-100 dark:border-stone-700 rounded-2xl flex flex-col items-center justify-center py-4 text-center gap-1.5 shadow-sm">
+          <span className="text-lg leading-none">🔥</span>
+          <span className="text-[20px] font-display font-medium text-stone-800 dark:text-stone-200">{mindfulStats.streak}</span>
+          <span className="text-[9px] font-bold tracking-wider text-stone-400 uppercase">
+            {language === 'el' ? 'ΣΕΡΙ' : 'STREAK'}
+          </span>
+        </div>
+        <div className="bg-stone-50 dark:bg-stone-800/80 border border-stone-100 dark:border-stone-700 rounded-2xl flex flex-col items-center justify-center py-4 text-center gap-1.5 shadow-sm">
+          <span className="text-lg leading-none">🧠</span>
+          <span className="text-[20px] font-display font-medium text-stone-800 dark:text-stone-200">{mindfulStats.practices}</span>
+          <span className="text-[9px] font-bold tracking-wider text-stone-400 uppercase">
+            {language === 'el' ? 'ΠΡΑΚΤΙΚΕΣ' : 'PRACTICES'}
+          </span>
+        </div>
+        <div className="bg-stone-50 dark:bg-stone-800/80 border border-stone-100 dark:border-stone-700 rounded-2xl flex flex-col items-center justify-center py-4 text-center gap-1.5 shadow-sm">
+          <span className="text-lg leading-none">🌙</span>
+          <span className="text-[20px] font-display font-medium text-stone-800 dark:text-stone-200">{mindfulStats.weeklyGoal}%</span>
+          <span className="text-[9px] font-bold tracking-wider text-stone-400 uppercase">
+            {language === 'el' ? 'ΣΤΟΧΟΣ' : 'GOAL'}
+          </span>
+        </div>
       </div>
 
       <div className="relative bg-gradient-to-br from-teal-50/80 to-stone-50/40 dark:from-teal-950/30 dark:to-stone-900/40 p-5 rounded-3xl border border-teal-100/50 dark:border-teal-900/30 shadow-sm backdrop-blur-sm overflow-hidden">

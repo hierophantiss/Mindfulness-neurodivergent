@@ -24,27 +24,44 @@ export default function Companion() {
   const { companionData, updateCompanionData, setSheetVisible, sheetVisible } = useCompanion();
   const [position, setPosition] = useState({ x: window.innerWidth - 68, y: window.innerHeight / 2 - 26 });
   const [isDragging, setIsDragging] = useState(false);
-  const [showTutorial, setShowTutorial] = useState(false);
+  const [bubbleMessage, setBubbleMessage] = useState<string | null>(null);
   const dragRef = useRef<{ startX: number, startY: number, initX: number, initY: number } | null>(null);
   const { language } = useLanguage();
 
   useEffect(() => {
-    // Only show if they haven't seen it
     const hasSeen = localStorage.getItem('N_MINDFULNESS_SEEN_COMPANION_TUTORIAL');
-    if (!hasSeen) {
-      const timer = setTimeout(() => {
-        setShowTutorial(true);
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, []);
+    
+    const activeQuote = { 
+      el: "Η επίγνωση είναι η γέφυρα ανάμεσα στο χάος και τη γαλήνη.", 
+      en: "Awareness is the bridge between chaos and tranquility." 
+    };
 
-  const dismissTutorial = (e?: React.MouseEvent) => {
+    const timer = setTimeout(() => {
+      if (!hasSeen) {
+        setBubbleMessage(language === 'el' ? 'Hej, πάτα στην εικόνα για καθοδήγηση!' : 'Hej, tap on the image for guidance!');
+      } else {
+        if (Math.random() > 0.3) {
+          setBubbleMessage(language === 'el' ? activeQuote.el : activeQuote.en);
+        }
+      }
+    }, 3000);
+
+    const autoDismissTimer = setTimeout(() => {
+      setBubbleMessage(null);
+    }, 12000); // hide after 9 seconds of showing
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(autoDismissTimer);
+    };
+  }, [language]);
+
+  const dismissBubble = (e?: React.MouseEvent) => {
     if (e) {
        e.preventDefault();
        e.stopPropagation();
     }
-    setShowTutorial(false);
+    setBubbleMessage(null);
     localStorage.setItem('N_MINDFULNESS_SEEN_COMPANION_TUTORIAL', 'true');
   };
 
@@ -99,7 +116,7 @@ export default function Companion() {
     const dy = e.clientY - dragRef.current.startY;
     if (!isDragging && Math.sqrt(dx*dx + dy*dy) > 10) {
       setIsDragging(true);
-      if (showTutorial) dismissTutorial();
+      if (bubbleMessage) dismissBubble();
     }
 
     if (isDragging) {
@@ -135,7 +152,7 @@ export default function Companion() {
       e.stopPropagation();
       return;
     }
-    if (showTutorial) dismissTutorial(e);
+    if (bubbleMessage) dismissBubble(e);
     setSheetVisible(true);
   };
 
@@ -154,13 +171,14 @@ export default function Companion() {
       >
         <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-teal-500/5 to-transparent pointer-events-none" />
         <AnimatePresence>
-          {showTutorial && (
+          {bubbleMessage && (
             <motion.div 
               initial={{ opacity: 0, scale: 0.9, x: isRightSide ? 20 : -20 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               exit={{ opacity: 0, scale: 0.9, x: isRightSide ? 20 : -20 }}
-              className={`absolute top-1/2 -translate-y-1/2 flex items-center gap-2 bg-pine-900/95 backdrop-blur-md text-pine-50 p-3 rounded-2xl shadow-2xl border border-teal-500/30 font-sans pointer-events-auto whitespace-nowrap z-50 ${isRightSide ? 'right-[120%]' : 'left-[120%]'}`}
-              onClick={dismissTutorial}
+              className={`absolute top-1/2 -translate-y-1/2 flex items-center gap-2 bg-pine-900/95 backdrop-blur-md text-pine-50 p-3 rounded-2xl shadow-2xl border border-teal-500/30 font-sans pointer-events-auto z-50 ${isRightSide ? 'right-[120%]' : 'left-[120%]'}`}
+              style={{ width: 'max-content', maxWidth: '240px' }}
+              onClick={dismissBubble}
             >
               <div className="absolute top-1/2 -translate-y-1/2 border-[6px] border-transparent"
                   style={isRightSide 
@@ -170,11 +188,11 @@ export default function Companion() {
                   style={isRightSide 
                     ? { right: '-11px', borderLeftColor: 'rgba(5, 46, 38, 0.95)' } 
                     : { left: '-11px', borderRightColor: 'rgba(5, 46, 38, 0.95)' }} />      
-              <span className="text-[13px] font-medium tracking-wide">
-                {language === 'el' ? 'Hej, πάτα στην εικόνα για βοήθεια!' : 'Hej, tap on the image for help!'}
+              <span className="text-[13px] font-medium tracking-wide leading-snug">
+                {bubbleMessage}
               </span>
               <button 
-                onClick={dismissTutorial} 
+                onClick={dismissBubble} 
                 className="p-1.5 hover:bg-white/10 rounded-full ml-1 transition-colors flex-shrink-0"
                 aria-label="Close tutorial"
               >
