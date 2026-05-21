@@ -299,11 +299,11 @@ function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClo
           <div className="absolute top-0 right-0 w-32 h-32 bg-[#e99b37]/10 blur-[40px] rounded-full pointer-events-none -mr-10 -mt-10" />
           
           <div className="flex items-start gap-4 relative z-10">
-            <div className="w-16 h-16 rounded-full overflow-hidden shrink-0 border-2 border-stone-200 dark:border-stone-700 shadow-sm relative">
+            <div className="w-16 h-16 rounded-full overflow-hidden shrink-0 border-2 border-stone-200 dark:border-stone-700 shadow-sm relative bg-stone-100 dark:bg-stone-800">
               <img 
-                src="/assets/cat1.png" 
-                alt="Companion" 
-                className="w-full h-full object-cover" 
+                src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Cat%20face/3D/cat_face_3d.png" 
+                alt="kukuku" 
+                className="w-full h-full object-cover p-1.5" 
                 onError={(e) => {
                    (e.target as HTMLImageElement).src = 'https://api.dicebear.com/7.x/notionists/svg?seed=Felix&backgroundColor=e99b37';
                 }}

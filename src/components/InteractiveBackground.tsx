@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { motion } from 'motion/react';
 import { useTime } from '../contexts/TimeContext';
 import { useProgress } from '../contexts/ProgressContext';
 import { cn } from '../lib/utils';
@@ -177,6 +178,42 @@ export function InteractiveBackground() {
             )} />
           </div>
         )}
+      </div>
+
+      {/* Aurora Borealis Effect - Gentle color hues for night time */ }
+      <div 
+        className={cn(
+          "absolute inset-0 overflow-hidden pointer-events-none z-10 transition-opacity duration-[4000ms] ease-in-out",
+          isNight ? "opacity-50 md:opacity-70" : (isDusk ? "opacity-20" : "opacity-0")
+        )}
+      >
+        <motion.div
+           animate={{
+               x: ["0%", "10%", "-5%", "0%"],
+               y: ["0%", "-5%", "5%", "0%"],
+               scale: [1, 1.1, 0.95, 1],
+           }}
+           transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+           className="absolute -top-[20%] -left-[10%] w-[80%] h-[60%] bg-teal-500/20 blur-[100px] rounded-full mix-blend-screen"
+        />
+        <motion.div
+           animate={{
+               x: ["0%", "-10%", "5%", "0%"],
+               y: ["0%", "10%", "-5%", "0%"],
+               scale: [1, 1.15, 1.05, 1],
+           }}
+           transition={{ duration: 30, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+           className="absolute top-[10%] right-[0%] w-[70%] h-[60%] bg-emerald-400/20 blur-[120px] rounded-full mix-blend-screen"
+        />
+        <motion.div
+           animate={{
+               x: ["0%", "5%", "-10%", "0%"],
+               y: ["0%", "-10%", "5%", "0%"],
+               scale: [1, 1.05, 1.1, 1],
+           }}
+           transition={{ duration: 35, repeat: Infinity, ease: "easeInOut", delay: 5 }}
+           className="absolute bottom-[20%] left-[20%] w-[60%] h-[50%] bg-indigo-500/20 blur-[110px] rounded-full mix-blend-screen"
+        />
       </div>
 
       {/* The animated stars canvas */}

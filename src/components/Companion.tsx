@@ -38,7 +38,7 @@ export default function Companion() {
 
     const timer = setTimeout(() => {
       if (!hasSeen) {
-        setBubbleMessage(language === 'el' ? 'Hej, πάτα στην εικόνα για καθοδήγηση!' : 'Hej, tap on the image for guidance!');
+        setBubbleMessage(language === 'el' ? 'Γεια, είμαι η κουκουκου! Προτείνω να διαβάσεις πρώτα «Η Μέθοδος & Τα Σύμβολα».' : 'Hi, I\'m kukuku! I recommend reading "The Method & Symbols" first.');
       } else {
         if (Math.random() > 0.3) {
           setBubbleMessage(language === 'el' ? activeQuote.el : activeQuote.en);
@@ -176,27 +176,27 @@ export default function Companion() {
               initial={{ opacity: 0, scale: 0.9, x: isRightSide ? 20 : -20 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               exit={{ opacity: 0, scale: 0.9, x: isRightSide ? 20 : -20 }}
-              className={`absolute top-1/2 -translate-y-1/2 flex items-center gap-2 bg-pine-900/95 backdrop-blur-md text-pine-50 p-3 rounded-2xl shadow-2xl border border-teal-500/30 font-sans pointer-events-auto z-50 ${isRightSide ? 'right-[120%]' : 'left-[120%]'}`}
+              className={`absolute top-1/2 -translate-y-1/2 flex items-center gap-2 bg-stone-900 text-white p-3 rounded-2xl shadow-2xl border border-stone-700 font-sans pointer-events-auto z-50 ${isRightSide ? 'right-[120%]' : 'left-[120%]'}`}
               style={{ width: 'max-content', maxWidth: '240px' }}
               onClick={dismissBubble}
             >
               <div className="absolute top-1/2 -translate-y-1/2 border-[6px] border-transparent"
                   style={isRightSide 
-                    ? { right: '-12px', borderLeftColor: 'rgba(20, 184, 166, 0.3)' } 
-                    : { left: '-12px', borderRightColor: 'rgba(20, 184, 166, 0.3)' }} />
+                    ? { right: '-12px', borderLeftColor: '#44403c' } 
+                    : { left: '-12px', borderRightColor: '#44403c' }} />
               <div className="absolute top-1/2 -translate-y-1/2 border-[6px] border-transparent"
                   style={isRightSide 
-                    ? { right: '-11px', borderLeftColor: 'rgba(5, 46, 38, 0.95)' } 
-                    : { left: '-11px', borderRightColor: 'rgba(5, 46, 38, 0.95)' }} />      
-              <span className="text-[13px] font-medium tracking-wide leading-snug">
+                    ? { right: '-11px', borderLeftColor: '#1c1917' } 
+                    : { left: '-11px', borderRightColor: '#1c1917' }} />      
+              <span className="text-[13.5px] font-semibold tracking-wide leading-snug">
                 {bubbleMessage}
               </span>
               <button 
                 onClick={dismissBubble} 
-                className="p-1.5 hover:bg-white/10 rounded-full ml-1 transition-colors flex-shrink-0"
-                aria-label="Close tutorial"
+                className="p-1.5 hover:bg-white/20 rounded-full ml-1 transition-colors flex-shrink-0"
+                aria-label="Close message"
               >
-                <X size={14} className="text-pine-300" />
+                <X size={14} className="text-stone-300" />
               </button>
             </motion.div>
           )}
@@ -204,9 +204,9 @@ export default function Companion() {
 
         <div className="relative w-10 h-10 bg-stone-200/90 rounded-full overflow-hidden shadow-inner group-hover:scale-110 transition-transform duration-300 ring-2 ring-teal-500/20">
           <img 
-            src="/favicon-96x96.png" 
-            alt="Magical Cat" 
-            className="w-full h-full object-cover"
+            src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Cat%20face/3D/cat_face_3d.png" 
+            alt="kukuku" 
+            className="w-full h-full object-cover p-1"
           />
         </div>
         {companionData.dailyLogs.length > 0 && <span className="absolute animate-ping top-1 right-1 w-2 h-2 bg-amber-400 rounded-full" />}
