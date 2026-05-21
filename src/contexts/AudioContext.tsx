@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode, useRef } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode, useRef } from 'react';
 import { Howl } from 'howler';
 import { getSharedAudioContext } from '../lib/audioManager';
 
@@ -307,7 +307,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
 
   // -- 3. Centralized Audio Engine Implementation --
   
-  const stopAudioNoDelay = () => {
+  const stopAudioNoDelay = useCallback(() => {
     isPlayingRef.current = false;
     setIsPlaying(false);
 
@@ -336,9 +336,9 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       } catch (e) {}
     });
     activeAmbientsRef.current = [];
-  };
+  }, []);
 
-  const startAudio = (config: AudioConfig) => {
+  const startAudio = useCallback((config: AudioConfig) => {
     console.log('[Central Audio Engine] Starting setup with config:', config);
     // 1. Clean up any existing playing sound source to prevent overlap
     stopAudioNoDelay();
@@ -346,7 +346,9 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     // 2. Pause any legacy mixer tracks to keep audio clean and coordinated
     AVAILABLE_TRACKS.forEach(track => {
       const audio = audioMapRef.current[track.url];
-      safePause(audio);
+      if (audio && typeof audio.pause === 'function') {
+        try { audio.pause(); } catch(e) {}
+      }
     });
     setMasterPlaying(false);
 
@@ -451,7 +453,18 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         if (config.ambientLayers && config.ambientLayers.length > 0) {
           config.ambientLayers.forEach(path => {
             if (!path) return;
-            const audio = getOrCreateAudio(path);
+            // simple fallback if audioMapRef doesn't have it allocated yet
+            let audio = audioMapRef.current[path];
+            if (!audio) {
+              audio = new Howl({
+                src: [path],
+                html5: true,
+                loop: true,
+                preload: true,
+                volume: 0 
+              });
+              audioMapRef.current[path] = audio;
+            }
             if (audio) {
               console.log(`[Central Audio Engine] Playing sleep loop: ${path}`);
               try {
@@ -472,9 +485,9 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     } catch(err) {
       console.error('[Central Audio Engine] Start failed:', err);
     }
-  };
+  }, [stopAudioNoDelay]);
 
-  const stopAudio = () => {
+  const stopAudio = useCallback(() => {
     if (!isPlayingRef.current) return;
     console.log('[Central Audio Engine] Initiating fade-out sequence...');
 
@@ -501,15 +514,15 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     setTimeout(() => {
       stopAudioNoDelay();
     }, 500);
-  };
+  }, [stopAudioNoDelay]);
 
-  const setGlobalVolume = (v: number) => {
+  const setGlobalVolume = useCallback((v: number) => {
     console.log('[Central Audio Engine] Syncing global volume:', v);
     volumeRef.current = v;
     setVolumeState(v);
 
     const ac = acRef.current;
-    if (ac && masterGainRef.current && isPlayingRef.current) {
+    if (ac && masterGainRef.current && isPlayingRef.current && configRef.current) {
       try {
         masterGainRef.current.gain.cancelScheduledValues(ac.currentTime);
         const targetVol = configRef.current.disableSynth ? v : v * 0.4;
@@ -521,19 +534,19 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     activeAmbientsRef.current.forEach(audio => {
       try {
         const src = (audio as any)._src?.[0] || '';
-        const maxVol = configRef.current.disableSynth ? 1.0 : (src.includes('cat') ? 0.8 : 0.4);
+        const maxVol = (configRef.current && configRef.current.disableSynth) ? 1.0 : (src.includes('cat') ? 0.8 : 0.4);
         audio.volume(v * maxVol);
       } catch(e) {}
     });
-  };
+  }, []);
 
-  const updateArmPos = (armPos: number) => {
+  const updateArmPos = useCallback((armPos: number) => {
     if (!isPlayingRef.current || !acRef.current || !oceanGainRef.current) return;
     try {
       const target = 0.1 + armPos * 0.3;
-      oceanGainRef.current.gain.linearRampToValueAtTime(target, acRef.current.currentTime + 0.15);
+      oceanGainRef.current.gain.value = target;
     } catch(e) {}
-  };
+  }, []);
 
   // Cleanup on final component unmount
   useEffect(() => {

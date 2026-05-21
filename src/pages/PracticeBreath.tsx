@@ -150,7 +150,6 @@ export default function PracticeBreath() {
         }
         
         localStorage.setItem('breath_history', JSON.stringify(h));
-        triggerReward('breath');
       } catch (e) {
         console.error('Failed to save breath history', e);
       }
@@ -397,7 +396,7 @@ export default function PracticeBreath() {
              {/* Counter Text */}
              <div className="z-10 font-sans font-semibold text-[3.5rem] tabular-nums drop-shadow-md">
                 {!running ? (
-                  <span className="text-white/40 mb-1 inline-block">∞</span>
+                  currentPatternId !== '4-7-8' && <span className="text-white/40 mb-1 inline-block">∞</span>
                 ) : isInhale ? (
                   <span className="text-sky-400">{phaseSeconds}</span>
                 ) : isExhale ? (

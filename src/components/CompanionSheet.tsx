@@ -473,17 +473,6 @@ function MoodFlow({ goBack, onClose, navigate, navTo }: { goBack: () => void, on
 
       <div className="flex flex-col gap-3">
          <button 
-           onClick={() => navTo('guide')}
-           className="flex items-center gap-4 p-4 bg-teal-600 dark:bg-teal-700 text-white rounded-2xl hover:bg-teal-700 dark:hover:bg-teal-800 transition-all shadow-sm active:scale-[0.98]"
-         >
-           <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/20 text-xl font-bold">✨</div>
-           <div className="text-left">
-             <div className="font-bold text-[15px]">{language === 'el' ? 'Ρώτησε κάτι' : 'Ask something'}</div>
-             <div className="text-[12px] opacity-80">{language === 'el' ? 'Πώς να διαχειριστώ αυτό που νιώθω;' : 'How to manage what I feel?'}</div>
-           </div>
-         </button>
-
-         <button 
            onClick={() => navTo('questionnaire')}
            className="flex items-center gap-4 p-4 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-2xl hover:bg-stone-50 dark:hover:bg-stone-700 transition-all shadow-sm active:scale-[0.98]"
          >

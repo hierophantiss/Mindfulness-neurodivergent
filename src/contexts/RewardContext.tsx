@@ -21,7 +21,7 @@ const messages = {
   breath: [
     { en: "Every breath counts.", el: "Κάθε αναπνοή μετράει." },
     { en: "Space created.", el: "Δημιούργησες χώρο." },
-    { en: "Stillness found.", el: "Βρήκες τη γαλήνη." }
+    { en: "Exercise completed.", el: "Ολοκλήρωσες την άσκηση." }
   ],
   program: [
     { en: "One step closer to yourself.", el: "Ένα βήμα πιο κοντά στον εαυτό σου." },

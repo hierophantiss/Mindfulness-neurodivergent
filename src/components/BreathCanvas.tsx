@@ -68,7 +68,85 @@ const B_COLORS: Record<string, { primary: string; secondary: string; aura: strin
   'sos-breath': { primary: '#2A4D69', secondary: '#4B86B4', aura: '100, 150, 190' } // mapping sos-breath
 };
 
-export default function BreathCanvas({ 
+// drawing helper for lotus pattern
+function drawLotus(ctx: CanvasRenderingContext2D, width: number, height: number, progress: number, dpr: number) {
+  ctx.clearRect(0, 0, width, height);
+  ctx.save();
+  ctx.scale(dpr, dpr);
+  const cx = (width / dpr) / 2;
+  const cy = (height / dpr) / 2;
+
+  const eased = progress; 
+  ctx.globalCompositeOperation = 'screen';
+
+  const layers = [
+    { count: 12, color: `rgba(90, 160, 200, ${0.1 + 0.3 * eased})`, radiusStart: 30, radiusEnd: 150, sizeStart: 0.6, sizeEnd: 1.8, offset: 0 },
+    { count: 8, color: `rgba(180, 120, 220, ${0.2 + 0.5 * eased})`, radiusStart: 20, radiusEnd: 100, sizeStart: 0.5, sizeEnd: 1.4, offset: Math.PI / 8 },
+    { count: 8, color: `rgba(255, 180, 200, ${0.3 + 0.6 * eased})`, radiusStart: 10, radiusEnd: 50, sizeStart: 0.3, sizeEnd: 0.9, offset: Math.PI / 16 }
+  ];
+
+  layers.forEach((layer, layerIdx) => {
+    const dist = layer.radiusStart + (layer.radiusEnd - layer.radiusStart) * eased;
+    const scale = layer.sizeStart + (layer.sizeEnd - layer.sizeStart) * eased;
+
+    for (let i = 0; i < layer.count; i++) {
+       const breathingRotation = Math.sin(Date.now() / 3000 + layerIdx) * 0.05 * eased;
+       const angle = (i * Math.PI * 2) / layer.count + layer.offset + breathingRotation;
+       
+       ctx.save();
+       ctx.translate(cx, cy);
+       ctx.rotate(angle);
+       ctx.translate(0, -dist); 
+       ctx.scale(scale, scale);
+       
+       ctx.beginPath();
+       ctx.moveTo(0, -40);
+       ctx.bezierCurveTo(25, -20, 20, 20, 0, 40);
+       ctx.bezierCurveTo(-20, 20, -25, -20, 0, -40);
+       
+       ctx.fillStyle = layer.color;
+       ctx.shadowColor = layer.color;
+       ctx.shadowBlur = 15;
+       ctx.fill();
+       
+       ctx.beginPath();
+       ctx.moveTo(0, -35);
+       ctx.lineTo(0, 30);
+       ctx.strokeStyle = `rgba(255, 255, 255, ${0.1 + 0.2 * eased})`;
+       ctx.lineWidth = 1;
+       ctx.stroke();
+       
+       ctx.restore();
+    }
+  });
+
+  ctx.save();
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.beginPath();
+  const podSize = 8 + 12 * eased;
+  ctx.arc(cx, cy, podSize, 0, Math.PI * 2);
+  const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, podSize);
+  grad.addColorStop(0, '#FFF5C3');
+  grad.addColorStop(1, '#FFCA3A');
+  ctx.fillStyle = grad;
+  ctx.shadowColor = '#FFCA3A';
+  ctx.shadowBlur = 20 * eased + 5;
+  ctx.fill();
+  ctx.restore();
+  
+  ctx.save();
+  ctx.beginPath();
+  const ringSize = 100 + 150 * eased;
+  ctx.arc(cx, cy, ringSize, 0, Math.PI * 2);
+  ctx.strokeStyle = `rgba(255, 255, 255, ${0.05 * eased})`;
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.restore();
+
+  ctx.restore();
+}
+
+export default function BreathCanvas({  
   running, 
   audioEnabled = false,
   patternId = '4-2-6-1',
@@ -88,6 +166,22 @@ export default function BreathCanvas({
 }: BreathCanvasProps) {
   
   const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  
+  // Resize observer for canvas
+  useEffect(() => {
+    if (patternId !== '4-7-8') return;
+    const handleResize = () => {
+      if (canvasRef.current) {
+        const dpr = window.devicePixelRatio || 1;
+        canvasRef.current.width = canvasRef.current.clientWidth * dpr;
+        canvasRef.current.height = canvasRef.current.clientHeight * dpr;
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [patternId]);
   
   // Ref for mutable animation state
   const state = useRef<{
@@ -223,6 +317,14 @@ export default function BreathCanvas({
         state.current.armPos = (Math.sin(state.current.time * 1.5) * 0.5 + 0.5) * 0.1;
       }
 
+      if (patternId === '4-7-8' && canvasRef.current) {
+         const ctx = canvasRef.current.getContext('2d');
+         if (ctx) {
+            const dpr = window.devicePixelRatio || 1;
+            drawLotus(ctx, canvasRef.current.width, canvasRef.current.height, state.current.armPos, dpr);
+         }
+      }
+
             animId = requestAnimationFrame(tick);
     };
 
@@ -237,15 +339,19 @@ export default function BreathCanvas({
 
   return (
     <div className="w-full h-full relative flex items-center justify-center overflow-hidden bg-transparent">
-      <video
-         ref={videoRef}
-         src={videoSrc || '/infinity_greeting.mp4'}
-         autoPlay
-         loop
-         muted
-         playsInline
-         className="w-full h-full object-cover absolute inset-0 z-0 opacity-80"
-      />
+      {patternId === '4-7-8' ? (
+        <canvas ref={canvasRef} className="w-full h-full absolute inset-0 z-0 bg-transparent" />
+      ) : (
+        <video
+           ref={videoRef}
+           src={videoSrc || '/infinity_greeting.mp4'}
+           autoPlay
+           loop
+           muted
+           playsInline
+           className="w-full h-full object-cover absolute inset-0 z-0 opacity-80"
+        />
+      )}
       
     </div>
   );
