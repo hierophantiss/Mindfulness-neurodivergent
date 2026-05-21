@@ -1243,6 +1243,70 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://neurodivergent-mindfulness.org/en/sanctuary?track=space-atmosphere</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/sanctuary?track=space-atmosphere" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/sanctuary?track=space-atmosphere" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/sanctuary?track=space-atmosphere" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://neurodivergent-mindfulness.org/el/sanctuary?track=space-atmosphere</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/sanctuary?track=space-atmosphere" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/sanctuary?track=space-atmosphere" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/sanctuary?track=space-atmosphere" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://neurodivergent-mindfulness.org/en/sanctuary?track=space-ambient</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/sanctuary?track=space-ambient" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/sanctuary?track=space-ambient" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/sanctuary?track=space-ambient" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://neurodivergent-mindfulness.org/el/sanctuary?track=space-ambient</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/sanctuary?track=space-ambient" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/sanctuary?track=space-ambient" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/sanctuary?track=space-ambient" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://neurodivergent-mindfulness.org/en/sanctuary?track=space-pure</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/sanctuary?track=space-pure" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/sanctuary?track=space-pure" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/sanctuary?track=space-pure" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://neurodivergent-mindfulness.org/el/sanctuary?track=space-pure</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/sanctuary?track=space-pure" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/sanctuary?track=space-pure" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/sanctuary?track=space-pure" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://neurodivergent-mindfulness.org/en/sanctuary?track=cat-purring-2</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/sanctuary?track=cat-purring-2" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/sanctuary?track=cat-purring-2" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/sanctuary?track=cat-purring-2" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://neurodivergent-mindfulness.org/el/sanctuary?track=cat-purring-2</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/sanctuary?track=cat-purring-2" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/sanctuary?track=cat-purring-2" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/sanctuary?track=cat-purring-2" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://neurodivergent-mindfulness.org/en/sanctuary?track=delta-pure</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/sanctuary?track=delta-pure" />
     <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/sanctuary?track=delta-pure" />

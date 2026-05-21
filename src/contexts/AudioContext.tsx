@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useRef } from 'react';
+import { Howl } from 'howler';
 import { getSharedAudioContext } from '../lib/audioManager';
 
 export interface SoundTrack {
@@ -145,7 +146,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const configRef = useRef<AudioConfig>({ base: 110, beat: 6.3, pulse: 0.1 });
 
   // -- Refs for Audio Elements & Web Audio Nodes --
-  const audioMapRef = useRef<Record<string, HTMLAudioElement>>({});
+  const audioMapRef = useRef<Record<string, Howl>>({});
   
   const acRef = useRef<AudioContext | null>(null);
   const masterGainRef = useRef<GainNode | null>(null);
@@ -156,7 +157,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     pulseLfo?: OscillatorNode;
     pinkSource?: AudioBufferSourceNode;
   }>({});
-  const activeAmbientsRef = useRef<HTMLAudioElement[]>([]);
+  const activeAmbientsRef = useRef<Howl[]>([]);
 
   // Helper to safely resolve absolute URLs inside sandboxed iframes where window.location.origin is 'null'
   const getAbsoluteUrl = (src: string) => {
@@ -188,40 +189,30 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   // Function to lazily retrieve or initialize an HTMLAudioElement
   const getOrCreateAudio = (src: string) => {
     if (!src) return null;
-    
     let audio = audioMapRef.current[src];
     if (!audio) {
-      console.log(`[Central Audio Engine] Creating lazy HTMLAudioElement for: ${src}`);
-      
-      console.log(`[Central Audio Engine] Absolute URL resolved to: ${src}`);
-      audio = new Audio();
-      audio.loop = true;
-      audio.preload = 'auto';
-      audio.setAttribute('playsinline', 'true');
-      audio.style.display = 'none';
-
-      audio.addEventListener('error', () => {
-        const error = audio.error;
-        console.warn(`[Central Audio Engine] Error event on: ${src}. Mapped error:`, error);
-      });
-
-      // Append cache buster to force browser to fetch the new uncorrupted MP3
+      console.log(`[Central Audio Engine] Creating lazy Howl for: ${src}`);
       const cacheBustedSrc = src.includes('?') ? src + '&v=2' : src + '?v=2';
-      audio.src = cacheBustedSrc;
-      document.body.appendChild(audio);
+      audio = new Howl({
+        src: [cacheBustedSrc],
+        loop: true,
+        html5: false,
+        onloaderror: (id, err) => console.warn(`[Central Audio Engine] Howl load error:`, err),
+        onplayerror: (id, err) => console.warn(`[Central Audio Engine] Howl play error:`, err)
+      });
       audioMapRef.current[src] = audio;
     }
     return audioMapRef.current[src];
   };
 
-  const safePlay = (audio: HTMLAudioElement | null) => {
+  const safePlay = (audio: Howl | null) => {
     if (!audio) return;
-    audio.play().catch(e => {
-       if (e.name !== 'NotAllowedError') console.warn(`Autoplay blocked:`, e);
-    });
+    if (!audio.playing()) {
+      audio.play();
+    }
   };
 
-  const safePause = (audio: HTMLAudioElement | null) => {
+  const safePause = (audio: Howl | null) => {
     if (!audio) return;
     audio.pause();
   };
@@ -232,7 +223,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       const audio = audioMapRef.current[track.url];
       const state = tracks[track.id];
       if (audio && state) {
-        audio.volume = state.volume * masterVolume;
+        audio.volume(state.volume * masterVolume);
       }
     });
   }, [masterVolume, tracks]);
@@ -341,8 +332,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     // Pause all playing ambient sleep layers
     activeAmbientsRef.current.forEach(audio => {
       try {
-        audio.pause();
-        audio.currentTime = 0;
+        audio.stop();
       } catch (e) {}
     });
     activeAmbientsRef.current = [];
@@ -466,19 +456,10 @@ export function AudioProvider({ children }: { children: ReactNode }) {
               console.log(`[Central Audio Engine] Playing sleep loop: ${path}`);
               try {
                 const maxVol = config.disableSynth ? 1.0 : (path.includes('cat') ? 0.8 : 0.4);
-                audio.volume = maxVol * volumeRef.current;
+                audio.volume(maxVol * volumeRef.current);
                 
-                if (audio.readyState >= 1) {
-                  audio.currentTime = 0; // reset track to beginning
-                }
-                const playPromise = audio.play();
-                if (playPromise !== undefined) {
-                  playPromise.catch(err => {
-                    if (err.name !== 'NotAllowedError') { // Don't log expected autoplay policy errors
-                      console.error(`[Central Audio Engine] Playback launch failed for: ${path}`, err);
-                    }
-                  });
-                }
+                audio.stop(); // Howl's stop also resets the seek position
+                audio.play();
                 
                 activeAmbientsRef.current.push(audio);
               } catch (playErr) {
@@ -507,18 +488,12 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       } catch(e) {}
     }
 
-    // 2. HTML elements fade-out
+    // 2. Howler elements fade-out
     activeAmbientsRef.current.forEach(audio => {
       try {
-        let vol = audio.volume;
-        const interval = setInterval(() => {
-          vol = Math.max(0, vol - 0.05);
-          audio.volume = isNaN(vol) ? 0 : vol;
-          if (vol <= 0) {
-            clearInterval(interval);
-            audio.pause();
-          }
-        }, 30);
+        const curVol = audio.volume() as number;
+        audio.fade(curVol, 0, 500);
+        setTimeout(() => audio.stop(), 500);
       } catch(e) {}
     });
 
@@ -545,9 +520,9 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     // Adjust volume of active loops
     activeAmbientsRef.current.forEach(audio => {
       try {
-        const src = audio.getAttribute('src') || '';
+        const src = (audio as any)._src?.[0] || '';
         const maxVol = configRef.current.disableSynth ? 1.0 : (src.includes('cat') ? 0.8 : 0.4);
-        audio.volume = v * maxVol;
+        audio.volume(v * maxVol);
       } catch(e) {}
     });
   };
@@ -567,8 +542,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       // Unmount all lazily allocated audio elements
       Object.values(audioMapRef.current).forEach(audio => {
         try {
-          audio.pause();
-          audio.remove();
+          audio.unload();
         } catch (e) {}
       });
       audioMapRef.current = {};
