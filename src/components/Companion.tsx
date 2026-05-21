@@ -204,9 +204,9 @@ export default function Companion() {
 
         <div className="relative w-10 h-10 bg-stone-200/90 rounded-full overflow-hidden shadow-inner group-hover:scale-110 transition-transform duration-300 ring-2 ring-teal-500/20">
           <img 
-            src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Cat%20face/3D/cat_face_3d.png" 
-            alt="kukuku" 
-            className="w-full h-full object-cover p-1"
+            src="/favicon-96x96-v3.png" 
+            alt="Zen Master Cat Companion" 
+            className="w-full h-full object-cover"
           />
         </div>
         {companionData.dailyLogs.length > 0 && <span className="absolute animate-ping top-1 right-1 w-2 h-2 bg-amber-400 rounded-full" />}
