@@ -38,7 +38,7 @@ export default function Companion() {
 
     const timer = setTimeout(() => {
       if (!hasSeen) {
-        setBubbleMessage(language === 'el' ? 'Γεια, είμαι η κουκουκου! Προτείνω να διαβάσεις πρώτα «Η Μέθοδος & Τα Σύμβολα».' : 'Hi, I\'m kukuku! I recommend reading "The Method & Symbols" first.');
+        setBubbleMessage(language === 'el' ? 'Γεια, είμαι το κουκουκου! Προτείνω να διαβάσεις πρώτα «Η Μέθοδος & Τα Σύμβολα».' : 'Hi, I\'m kukuku! I recommend reading "The Method & Symbols" first.');
       } else {
         if (Math.random() > 0.3) {
           setBubbleMessage(language === 'el' ? activeQuote.el : activeQuote.en);
