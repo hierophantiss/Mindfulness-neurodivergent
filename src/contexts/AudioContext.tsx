@@ -185,7 +185,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     return src;
   };
 
-  // Function to lazily retrieve or initialize an HTMLAudioElement via Blob
+  // Function to lazily retrieve or initialize an HTMLAudioElement
   const getOrCreateAudio = (src: string) => {
     if (!src) return null;
     
@@ -193,47 +193,21 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     if (!audio) {
       console.log(`[Central Audio Engine] Creating lazy HTMLAudioElement for: ${src}`);
       
-      const absoluteUrl = getAbsoluteUrl(src);
-      console.log(`[Central Audio Engine] Absolute URL resolved to: ${absoluteUrl}`);
+      console.log(`[Central Audio Engine] Absolute URL resolved to: ${src}`);
       audio = new Audio();
       audio.loop = true;
-      audio.preload = 'none'; // Will load via fetch
+      audio.preload = 'auto';
       audio.setAttribute('playsinline', 'true');
       audio.style.display = 'none';
 
-      // Custom properties for blob state
-      (audio as any)._isBlobFetching = true;
-      (audio as any)._shouldBePlaying = false;
+      audio.addEventListener('error', () => {
+        const error = audio.error;
+        console.warn(`[Central Audio Engine] Error event on: ${src}. Mapped error:`, error);
+      });
 
-      fetch(absoluteUrl, { mode: 'cors' })
-        .then(r => {
-          if (!r.ok) throw new Error(`HTTP ${r.status}`);
-          return r.blob();
-        })
-        .then(blob => {
-          // Explicitly type the blob so the media element parses it correctly
-          let mime = 'audio/mpeg';
-          if (absoluteUrl.endsWith('.wav')) mime = 'audio/wav';
-          const typedBlob = new Blob([blob], { type: mime });
-          
-          const objectUrl = URL.createObjectURL(typedBlob);
-          audio.src = objectUrl;
-          
-          (audio as any)._isBlobFetching = false;
-          console.log(`[Central Audio Engine] Blob ready for ${src}`);
-          
-          // Start playing if it was requested while fetching
-          if ((audio as any)._shouldBePlaying) {
-             const playPromise = audio.play();
-             if (playPromise !== undefined) {
-                 playPromise.catch(e => console.warn(`[Central Audio Engine] Delayed blob play failed for ${src}:`, e));
-             }
-          }
-        })
-        .catch(err => {
-           console.error(`[Central Audio Engine] Blob fetch failed for ${src}:`, err);
-        });
-
+      // Append cache buster to force browser to fetch the new uncorrupted MP3
+      const cacheBustedSrc = src.includes('?') ? src + '&v=2' : src + '?v=2';
+      audio.src = cacheBustedSrc;
       document.body.appendChild(audio);
       audioMapRef.current[src] = audio;
     }
@@ -242,17 +216,13 @@ export function AudioProvider({ children }: { children: ReactNode }) {
 
   const safePlay = (audio: HTMLAudioElement | null) => {
     if (!audio) return;
-    (audio as any)._shouldBePlaying = true;
-    if (!(audio as any)._isBlobFetching && audio.src) {
-      audio.play().catch(e => {
-         if (e.name !== 'NotAllowedError') console.warn(`Autoplay blocked:`, e);
-      });
-    }
+    audio.play().catch(e => {
+       if (e.name !== 'NotAllowedError') console.warn(`Autoplay blocked:`, e);
+    });
   };
 
   const safePause = (audio: HTMLAudioElement | null) => {
     if (!audio) return;
-    (audio as any)._shouldBePlaying = false;
     audio.pause();
   };
 
@@ -371,7 +341,6 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     // Pause all playing ambient sleep layers
     activeAmbientsRef.current.forEach(audio => {
       try {
-        (audio as any)._shouldBePlaying = false;
         audio.pause();
         audio.currentTime = 0;
       } catch (e) {}
@@ -499,20 +468,16 @@ export function AudioProvider({ children }: { children: ReactNode }) {
                 const maxVol = config.disableSynth ? 1.0 : (path.includes('cat') ? 0.8 : 0.4);
                 audio.volume = maxVol * volumeRef.current;
                 
-                (audio as any)._shouldBePlaying = true;
-                
-                if (!(audio as any)._isBlobFetching && audio.src) {
-                  if (audio.readyState >= 1) {
-                    audio.currentTime = 0; // reset track to beginning
-                  }
-                  const playPromise = audio.play();
-                  if (playPromise !== undefined) {
-                    playPromise.catch(err => {
-                      if (err.name !== 'NotAllowedError') { // Don't log expected autoplay policy errors
-                        console.error(`[Central Audio Engine] Playback launch failed for: ${path}`, err);
-                      }
-                    });
-                  }
+                if (audio.readyState >= 1) {
+                  audio.currentTime = 0; // reset track to beginning
+                }
+                const playPromise = audio.play();
+                if (playPromise !== undefined) {
+                  playPromise.catch(err => {
+                    if (err.name !== 'NotAllowedError') { // Don't log expected autoplay policy errors
+                      console.error(`[Central Audio Engine] Playback launch failed for: ${path}`, err);
+                    }
+                  });
                 }
                 
                 activeAmbientsRef.current.push(audio);
@@ -545,7 +510,6 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     // 2. HTML elements fade-out
     activeAmbientsRef.current.forEach(audio => {
       try {
-        (audio as any)._shouldBePlaying = false;
         let vol = audio.volume;
         const interval = setInterval(() => {
           vol = Math.max(0, vol - 0.05);
