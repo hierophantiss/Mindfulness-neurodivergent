@@ -190,6 +190,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       console.log('[Central Audio Engine] msg');
       const absoluteUrl = getAbsoluteUrl(src);
       audio = new Audio(absoluteUrl);
+      audio.crossOrigin = 'anonymous';
       audio.loop = true;
       audio.preload = 'auto';
       
