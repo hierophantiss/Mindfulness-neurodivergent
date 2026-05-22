@@ -197,7 +197,11 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       const playPromise = audio.play();
       if (playPromise !== undefined) {
         playPromise.catch(err => {
-          console.warn('[Central Audio Engine] Play error:', err);
+          if (err.name === 'NotSupportedError') {
+            console.warn('[Central Audio Engine] Play error (NotSupportedError): This typically happens when running in a sandboxed iframe (like the development preview) where media autoplay or origin restrictions are enforced. Opening the application in a new tab will resolve this.', err, 'for source:', audio.src);
+          } else {
+            console.warn('[Central Audio Engine] Play error:', err, 'for source:', audio.src);
+          }
           if (err.name === 'NotAllowedError') {
             setNeedsInteraction(true);
           }
