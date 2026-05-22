@@ -76,7 +76,7 @@ export default function Onboarding() {
         <div className="flex flex-col items-center text-center space-y-8 max-w-lg mx-auto">
           <div className="relative w-24 h-24 rounded-full bg-teal-500/10 flex items-center justify-center border-2 border-teal-400/40 p-1 mx-auto shadow-[0_0_25px_rgba(20,184,166,0.15)]">
             <img 
-              src="/favicon-96x96-v3.png" 
+              src="/genfavicon-256.png" 
               alt="Companion" 
               className="w-20 h-20 object-cover rounded-full"
             />

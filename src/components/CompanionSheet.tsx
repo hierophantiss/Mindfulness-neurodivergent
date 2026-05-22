@@ -301,11 +301,11 @@ function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClo
           <div className="flex items-start gap-4 relative z-10">
             <div className="w-16 h-16 rounded-full overflow-hidden shrink-0 border-2 border-stone-200 dark:border-stone-700 shadow-sm relative bg-stone-100 dark:bg-stone-800">
               <img 
-                src="/favicon-96x96-v3.png" 
+                src="/genfavicon-256.png" 
                 alt="Zen Master Cat Companion" 
                 className="w-full h-full object-cover" 
                 onError={(e) => {
-                   (e.target as HTMLImageElement).src = '/favicon-96x96-v3.png';
+                   (e.target as HTMLImageElement).src = '/genfavicon-256.png';
                 }}
               />
               <div className="absolute bottom-1 right-1 w-3 h-3 bg-teal-500 rounded-full border-2 border-white dark:border-stone-800" />
@@ -1065,7 +1065,7 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
         <div className="flex items-center gap-3">
           <button onClick={goBack} className="w-9 h-9 rounded-full bg-stone-200 dark:bg-stone-300 flex items-center justify-center transition hover:bg-stone-300 dark:hover:bg-stone-400 active:scale-90 overflow-hidden ring-1 ring-teal-500/20">
             <img 
-              src="/favicon-96x96-v3.png" 
+              src="/genfavicon-256.png" 
               alt="Companion" 
               className="w-full h-full object-cover" 
             />
@@ -1086,7 +1086,7 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
           <div className="text-center py-10 px-6 max-w-sm mx-auto">
             <div className="w-20 h-20 bg-stone-200/90 dark:bg-stone-300 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner animate-soft-pulse overflow-hidden ring-2 ring-teal-500/20">
               <img 
-                src="/favicon-96x96-v3.png" 
+                src="/genfavicon-256.png" 
                 alt="Magical Cat" 
                 className="w-full h-full object-cover" 
               />

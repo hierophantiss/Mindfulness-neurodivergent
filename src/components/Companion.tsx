@@ -204,7 +204,7 @@ export default function Companion() {
 
         <div className="relative w-10 h-10 bg-stone-200/90 rounded-full overflow-hidden shadow-inner group-hover:scale-110 transition-transform duration-300 ring-2 ring-teal-500/20">
           <img 
-            src="/favicon-96x96-v3.png" 
+            src="/genfavicon-256.png" 
             alt="Zen Master Cat Companion" 
             className="w-full h-full object-cover"
           />
