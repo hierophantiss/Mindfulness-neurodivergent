@@ -183,7 +183,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   };
 
   // Function to lazily retrieve or initialize an HTMLAudioElement
-    const getOrCreateAudio = (src: string) => {
+  const getOrCreateAudio = (src: string) => {
     if (!src) return null;
     let audio = audioMapRef.current[src];
     if (!audio) {
@@ -193,6 +193,17 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       audio.loop = true;
       audio.preload = 'auto';
       
+      // Append silently to DOM so mobile Safari/Chrome allows playing it
+      audio.style.position = 'fixed';
+      audio.style.top = '0';
+      audio.style.left = '0';
+      audio.style.width = '1px';
+      audio.style.height = '1px';
+      audio.style.opacity = '0.01';
+      audio.style.pointerEvents = 'none';
+      if (typeof document !== 'undefined' && document.body) {
+        document.body.appendChild(audio);
+      }
       
       audio.addEventListener('error', (e) => {
         console.warn('[Central Audio Engine] Warn');
@@ -222,14 +233,51 @@ export function AudioProvider({ children }: { children: ReactNode }) {
             `- Source URL: ${audio.src}`
           );
           
+          // Send log payload to the server's audio log endpoint for inspection
+          const logPayload = {
+            type: 'play_error',
+            userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'Unknown',
+            href: typeof window !== 'undefined' ? window.location.href : 'Unknown',
+            origin: typeof window !== 'undefined' ? window.location.origin : 'Unknown',
+            audioSrc: audio.src,
+            errorName: err.name,
+            errorMessage: err.message,
+            mediaErrorCode,
+            mediaErrorMessage,
+            timestamp: new Date().toISOString()
+          };
+
+          fetch('/api/audio-log', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(logPayload)
+          }).catch(() => {});
+
           // Diagnostic network check
           if (audio.src && (audio.src.startsWith('http') || audio.src.startsWith('/'))) {
             fetch(audio.src)
               .then(res => {
+                const contentType = res.headers.get('content-type') || '';
+                const contentLength = res.headers.get('content-length') || '';
+                
+                // Log detailed network response info back to the server as well
+                fetch('/api/audio-log', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    type: 'network_diagnostic',
+                    audioSrc: audio.src,
+                    status: res.status,
+                    ok: res.ok,
+                    contentType,
+                    contentLength,
+                    timestamp: new Date().toISOString()
+                  })
+                }).catch(() => {});
+
                 if (!res.ok) {
                   console.error(`[Central Audio Engine] DIAGNOSTIC: File fetch failed with status: ${res.status}. The audio file is missing or unreachable.`);
                 } else {
-                  const contentType = res.headers.get('content-type') || '';
                   if (contentType.includes('text/html')) {
                     console.error(`[Central Audio Engine] DIAGNOSTIC: Path returned HTML instead of audio (likely 404 fallback). The file is missing or misplaced on the server!`);
                   } else {
@@ -239,6 +287,16 @@ export function AudioProvider({ children }: { children: ReactNode }) {
               })
               .catch(fetchErr => {
                 console.error(`[Central Audio Engine] DIAGNOSTIC: Failed to verify file via network:`, fetchErr);
+                fetch('/api/audio-log', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    type: 'network_diagnostic_error',
+                    audioSrc: audio.src,
+                    error: fetchErr.message || String(fetchErr),
+                    timestamp: new Date().toISOString()
+                  })
+                }).catch(() => {});
               });
           }
 
@@ -247,7 +305,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
           }
         });
       }
-    } catch(err) {
+    } catch(err: any) {
       console.warn('[Central Audio Engine] play() exception:', err);
     }
   };
@@ -504,15 +562,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
             config.ambientLayers.forEach(path => {
               if (!path) return;
               
-              let audio = audioMapRef.current[path];
-              if (!audio) {
-                const absoluteUrl = getAbsoluteUrl(path);
-                audio = new Audio(absoluteUrl);
-                audio.loop = true;
-                audio.preload = 'auto';
-                
-                audioMapRef.current[path] = audio;
-              }
+              let audio = getOrCreateAudio(path);
 
               if (audio) {
                 console.log('[Central Audio Engine] msg');
@@ -618,6 +668,9 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       Object.values(audioMapRef.current).forEach(audio => {
         try {
           audio.pause(); audio.src = '';
+          if (audio.parentNode) {
+            audio.parentNode.removeChild(audio);
+          }
         } catch (e) {}
       });
       audioMapRef.current = {};
