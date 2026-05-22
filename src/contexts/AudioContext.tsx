@@ -167,7 +167,20 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const activeAmbientsRef = useRef<HTMLAudioElement[]>([]);
 
   // Helper to safely resolve absolute URLs inside sandboxed iframes where window.location.origin is 'null'
-  const getAbsoluteUrl = (x: string) => x;
+  const getAbsoluteUrl = (path: string) => {
+    if (typeof window === 'undefined') return path;
+    if (path.startsWith('http://') || path.startsWith('https://')) return path;
+    
+    const baseHref = window.location.href.split('?')[0].split('#')[0];
+    const absoluteOrigin = window.location.origin !== 'null' ? window.location.origin : (baseHref.endsWith('/') ? baseHref.slice(0, -1) : baseHref);
+    
+    try {
+      const urlObj = new URL(path, absoluteOrigin);
+      return urlObj.toString();
+    } catch (e) {
+      return path;
+    }
+  };
 
   // Function to lazily retrieve or initialize an HTMLAudioElement
     const getOrCreateAudio = (src: string) => {
@@ -197,11 +210,38 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       const playPromise = audio.play();
       if (playPromise !== undefined) {
         playPromise.catch(err => {
-          if (err.name === 'NotSupportedError') {
-            console.warn('[Central Audio Engine] Play error (NotSupportedError): This typically happens when running in a sandboxed iframe (like the development preview) where media autoplay or origin restrictions are enforced. Opening the application in a new tab will resolve this.', err, 'for source:', audio.src);
-          } else {
-            console.warn('[Central Audio Engine] Play error:', err, 'for source:', audio.src);
+          const mediaErrorCode = audio.error ? audio.error.code : 'None';
+          const mediaErrorMessage = audio.error ? audio.error.message : 'None';
+          
+          console.warn(
+            `[Central Audio Engine] Play Error Info:\n` +
+            `- Error Name: ${err.name}\n` +
+            `- Error Message: ${err.message}\n` +
+            `- HTMLMediaElement Code: ${mediaErrorCode}\n` +
+            `- HTMLMediaElement Message: ${mediaErrorMessage}\n` +
+            `- Source URL: ${audio.src}`
+          );
+          
+          // Diagnostic network check
+          if (audio.src && (audio.src.startsWith('http') || audio.src.startsWith('/'))) {
+            fetch(audio.src)
+              .then(res => {
+                if (!res.ok) {
+                  console.error(`[Central Audio Engine] DIAGNOSTIC: File fetch failed with status: ${res.status}. The audio file is missing or unreachable.`);
+                } else {
+                  const contentType = res.headers.get('content-type') || '';
+                  if (contentType.includes('text/html')) {
+                    console.error(`[Central Audio Engine] DIAGNOSTIC: Path returned HTML instead of audio (likely 404 fallback). The file is missing or misplaced on the server!`);
+                  } else {
+                    console.log(`[Central Audio Engine] DIAGNOSTIC: File is found on server and serves content: ${contentType}. The play failure is likely due to browser autoplay/sandbox rules.`);
+                  }
+                }
+              })
+              .catch(fetchErr => {
+                console.error(`[Central Audio Engine] DIAGNOSTIC: Failed to verify file via network:`, fetchErr);
+              });
           }
+
           if (err.name === 'NotAllowedError') {
             setNeedsInteraction(true);
           }
