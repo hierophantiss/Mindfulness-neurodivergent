@@ -46,6 +46,17 @@ export const SEO: React.FC = () => {
       <title>{title}</title>
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
+      
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:url" content={`${baseUrl}${path}`} />
+      <meta property="og:type" content="website" />
+      <meta property="og:site_name" content="Neurodivergent Mindfulness" />
+      
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      
       <link rel="canonical" href={`${baseUrl}${path}`} />
       <link rel="alternate" hrefLang="en" href={enUrl} />
       <link rel="alternate" hrefLang="el" href={elUrl} />
