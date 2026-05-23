@@ -41,8 +41,8 @@ export default function Dashboard() {
     base: 136.1, // Ohm
     beat: 7.83,  // Schumann
     pulse: 0.1,  // Slow pulse
-    disableSynth: true, // Disable pink noise
-    ambientLayers: ['/music/audiopapkin-ambient-soundscapes-007-space-atmosphere-304974.mp3']
+    disableSynth: true, // Only ambient
+    ambientLayers: ['ocean'] as any[]
   }), []);
 
   const { startAudio, stopAudio, isPlaying } = useBinauralAudio(audioConfig);

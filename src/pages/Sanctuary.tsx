@@ -8,20 +8,20 @@ import { useLanguage } from '../hooks/useLanguage';
 import { cn } from '../lib/utils';
 import { useBinauralAudio } from '../hooks/useBinauralAudio';
 
-export const sleepTracks = [
-  // Sleep & Meditation Audio (The new files)
-  { id: 'calming-zen', group: 'music', icon: Sparkles, label: { el: 'Ήρεμο Zen', en: 'Calming Zen' }, subtitle: { el: 'Απόλυτη Χαλάρωση', en: 'Absolute Relaxation' }, color: 'text-emerald-400', disableSynth: true, files: ['/music/atlasaudio-calming-zen-519422.mp3'] },
-  { id: 'sleep-963', group: 'music', icon: Music, label: { el: 'Συχνότητα Ύπνου', en: 'Sleep Frequency' }, subtitle: { el: '963Hz Τοπίο', en: '963Hz Landscape' }, color: 'text-purple-400', disableSynth: true, files: ['/music/meditativetiger-sleep-music-963-hz-binaural-immersive-audio-426673.mp3'] },
-  { id: 'beta-pure', group: 'music', icon: Wind, label: { el: 'Ισοχρονικός Τόνος', en: 'Isochronic Tone' }, subtitle: { el: 'Beta 20Hz', en: 'Beta 20Hz' }, color: 'text-rose-400', disableSynth: true, files: ['/music/purebinaural-purebinaural-20-hz-beta-isochronic-tones-pure-tone-496540.mp3'] },
-  { id: 'space-atmosphere', group: 'music', icon: Moon, label: { el: 'Ατμόσφαιρα Διαστήματος', en: 'Space Atmosphere' }, subtitle: { el: 'Απόλυτη Ηρεμία', en: 'Absolute Calm' }, color: 'text-indigo-400', disableSynth: true, files: ['/music/audiopapkin-ambient-soundscapes-007-space-atmosphere-304974.mp3'] },
-  { id: 'space-ambient', group: 'music', icon: Sparkles, label: { el: 'Διαστημικό Τοπίο', en: 'Space Ambient' }, subtitle: { el: 'Αιθέριος Ήχος', en: 'Ethereal Sound' }, color: 'text-cyan-400', disableSynth: true, files: ['/music/space-ambient.mp3'] },
-  { id: 'space-pure', group: 'music', icon: Wind, label: { el: 'Το Κενό', en: 'The Void' }, subtitle: { el: 'Χαλαρωτικός Ήχος', en: 'Relaxing Sound' }, color: 'text-slate-400', disableSynth: true, files: ['/music/space.mp3'] },
-  { id: 'cat-purring-2', group: 'music', icon: Sparkles, label: { el: 'Θεραπευτικό Γουργουρητό', en: 'Healing Purr' }, subtitle: { el: 'Σκέτος Ήχος', en: 'Pure Sound' }, color: 'text-amber-400', disableSynth: true, files: ['/music/freesound_community-cat-purring-74746.mp3'] },
+export const sleepTracks: any[] = [
+  // Generative Nature
+  { id: 'rain-ambient', group: 'binaural', icon: CloudRain, label: { el: 'Ήρεμη Βροχή', en: 'Calm Rain' }, subtitle: { el: 'Οργανική γεννήτρια', en: 'Procedural generator' }, color: 'text-emerald-400', disableSynth: true, base: 0, beat: 0, ambientLayers: ['rain'] },
+  { id: 'ocean-ambient', group: 'binaural', icon: Waves, label: { el: 'Κύματα Ωκεανού', en: 'Ocean Waves' }, subtitle: { el: 'Οργανική γεννήτρια', en: 'Procedural generator' }, color: 'text-cyan-400', disableSynth: true, base: 0, beat: 0, ambientLayers: ['ocean'] },
+  { id: 'wind-ambient', group: 'binaural', icon: Wind, label: { el: 'Αέρας Βουνού', en: 'Mountain Wind' }, subtitle: { el: 'Οργανική γεννήτρια', en: 'Procedural generator' }, color: 'text-indigo-400', disableSynth: true, base: 0, beat: 0, ambientLayers: ['wind'] },
+  
+  // Mixed Binaural & Generative Nature
+  { id: 'sleep-963', group: 'binaural', icon: Moon, label: { el: 'Συχνότητα Ύπνου', en: 'Deep Sleep' }, subtitle: { el: '963Hz Τοπίο + Ωκεανός', en: '963Hz + Ocean' }, color: 'text-purple-400', disableSynth: false, base: 963, beat: 2.5, ambientLayers: ['ocean', 'wind'] },
+  { id: 'beta-pure', group: 'binaural', icon: Sparkles, label: { el: 'Ισοχρονικός Τόνος', en: 'Focus Beta' }, subtitle: { el: 'Beta 20Hz + Βροχή', en: 'Beta 20Hz + Rain' }, color: 'text-rose-400', disableSynth: false, base: 200, beat: 20, pulse: 20, ambientLayers: ['rain'] },
+  { id: 'theta-dream', group: 'binaural', icon: CloudRain, label: { el: 'Όνειρο Theta', en: 'Theta Dream' }, subtitle: { el: 'Όλα τα στοιχεία', en: 'All elements' }, color: 'text-fuchsia-400', disableSynth: false, base: 136.1, beat: 6.3, pulse: 0.1, ambientLayers: ['rain', 'ocean', 'wind'] },
 
-  // Mixed Binaural & Nature
-  { id: 'delta-pure', group: 'binaural', icon: Waves, label: { el: 'Delta Κύματα', en: 'Delta Waves' }, subtitle: { el: 'Βαθύς Ύπνος (Σκέτα)', en: 'Deep Sleep (Pure)' }, color: 'text-cyan-500', base: 100, beat: 2.5, pulse: 0.05, files: [] },
-  { id: 'delta-cat', group: 'binaural', icon: Moon, label: { el: 'Delta & Γουργουρητό', en: 'Delta & Cat Purr' }, subtitle: { el: 'Θεραπεία & Ηρεμία', en: 'Healing & Calm' }, color: 'text-amber-500', base: 100, beat: 2.5, pulse: 0.05, files: ['/music/cat-purring-.mp3'] },
-  { id: 'rain-theta', group: 'binaural', icon: CloudRain, label: { el: 'Βροχή & Theta', en: 'Rain & Theta' }, subtitle: { el: 'Χαλάρωση (6.3Hz)', en: 'Relaxation (6.3Hz)' }, color: 'text-indigo-500', base: 136.1, beat: 6.3, pulse: 0.1, files: ['/music/binaural-beats-25-hz-delta-with-rain-.mp3'] },
+  // Binaural Pure
+  { id: 'delta-pure', group: 'binaural', icon: Music, label: { el: 'Delta Κύματα', en: 'Delta Waves' }, subtitle: { el: 'Βαθύς Ύπνος (Σκέτα)', en: 'Deep Sleep (Pure)' }, color: 'text-slate-400', disableSynth: false, base: 100, beat: 2.5, pulse: 0.05, ambientLayers: [] },
+  { id: 'focus-pure', group: 'binaural', icon: Sparkles, label: { el: 'Εστίαση', en: 'Pure Focus' }, subtitle: { el: 'Καθαρό Beta', en: 'Pure Beta' }, color: 'text-amber-400', disableSynth: false, base: 144, beat: 14, pulse: 0, ambientLayers: [] },
 ];
 
 export default function Sanctuary() {
@@ -291,7 +291,7 @@ export default function Sanctuary() {
           beat: trackDef.beat || 6.3,
           pulse: trackDef.pulse || 0.1,
           disableSynth: trackDef.disableSynth,
-          ambientLayers: trackDef.files || []
+          ambientLayers: trackDef.ambientLayers || []
         });
       }
     }
@@ -561,7 +561,7 @@ export default function Sanctuary() {
           beat: newTrackDef.beat || 6.3,
           pulse: newTrackDef.pulse || 0.1,
           disableSynth: newTrackDef.disableSynth,
-          ambientLayers: newTrackDef.files || []
+          ambientLayers: newTrackDef.ambientLayers || []
         });
       }
     }

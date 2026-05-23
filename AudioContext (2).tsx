@@ -490,6 +490,8 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     setIsPlaying(true);
     setMasterPlaying(true);
 
+    if (config.disableSynth) return;
+
     try {
       const ctx = getCtx();
 
@@ -519,7 +521,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       pulseGain.gain.value = 1.0;
       pulseGain.connect(masterGain);
 
-      if (!config.disableSynth && config.pulse) {
+      if (config.pulse) {
         const lfo      = ctx.createOscillator();
         lfo.type            = config.pulseType ?? 'sine';
         lfo.frequency.value = config.pulse;
@@ -532,7 +534,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       }
 
       // ---- Binaural oscillators ----
-      if (!config.disableSynth && config.base > 0) {
+      if (config.base > 0) {
         const merger = ctx.createChannelMerger(2);
         merger.connect(pulseGain);
         if (ctx.destination.channelCount >= 2) {
