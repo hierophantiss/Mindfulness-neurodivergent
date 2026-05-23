@@ -7,7 +7,9 @@ import {
   Compass,
   RotateCcw,
   Languages,
-  ArrowLeft
+  ArrowLeft,
+  Wind,
+  Activity
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../hooks/useLanguage";
@@ -29,7 +31,7 @@ interface BreathingPreset {
 
 const PRESETS: BreathingPreset[] = [
   {
-    id: "taichi",
+    id: "fourfold",
     nameEl: "Ο Τετραπλός Άξονας",
     nameEn: "The Fourfold Axis",
     descEl: "Απαλή ενσυνείδητη κίνηση που συνδέει τον ουρανό με τη γη, προσφέροντας ελαφριά πίεση στην κοιλιά στο τέλος της εκπνοής.",
@@ -41,7 +43,7 @@ const PRESETS: BreathingPreset[] = [
   },
   {
     id: "box",
-    nameEl: "Τετράγωνη Αναπνοή (Box Breath)",
+    nameEl: "Τετράγωνη Αναπνοή",
     nameEn: "Box Breathing",
     descEl: "Χρησιμοποιείται από Zen δασκάλους και αθλητές για απόλυτη εστίαση και πνευματική ηρεμία.",
     descEn: "Used by Zen masters and high-performers to lock deep clarity and calm the mind.",
@@ -52,7 +54,7 @@ const PRESETS: BreathingPreset[] = [
   },
   {
     id: "resonant",
-    nameEl: "Συντονισμένη (Coherence)",
+    nameEl: "Συντονισμένη",
     nameEn: "Resonant Breathing",
     descEl: "Συντονίζει την καρδιακή συχνότητα για μέγιστη χαλάρωση και ισορροπία του νευρικού συστήματος.",
     descEn: "Saturates heart rate variability to immediately balance the central nervous system.",
@@ -74,10 +76,17 @@ const PRESETS: BreathingPreset[] = [
   }
 ];
 
+type SetupStep = 'theme' | 'rhythm' | 'player';
+type MovementType = "taichi" | "lotus";
+
 export default function PracticeSection() {
   const synthRef = useRef<ZenAudioEngine | null>(null);
   const navigate = useNavigate();
   const { language: lang, setLanguage: setLang } = useLanguage();
+
+  const [step, setStep] = useState<SetupStep>('theme');
+  const [movementType, setMovementType] = useState<MovementType>("taichi");
+  const [presetId, setPresetId] = useState<string>("fourfold");
 
   // Initialize synth safely only once on mount
   useEffect(() => {
@@ -86,7 +95,6 @@ export default function PracticeSection() {
     }
   }, []);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
-  const [presetId, setPresetId] = useState<string>("taichi");
 
   const [inhale, setInhale] = useState<number>(4.5);
   const [holdFull, setHoldFull] = useState<number>(1.0);
@@ -96,8 +104,6 @@ export default function PracticeSection() {
   const [audioEnabled, setAudioEnabled] = useState<boolean>(false);
   const [audioVolume, setAudioVolume] = useState<number>(0.3);
   const [solfeggioFreq, setSolfeggioFreq] = useState<number>(136.1);
-
-  const [movementType, setMovementType] = useState<"taichi" | "lotus" | "bow">("taichi");
 
   const [elapsed, setElapsed] = useState<number>(0);
   const [totalCycles, setTotalCycles] = useState<number>(0);
@@ -144,20 +150,35 @@ export default function PracticeSection() {
   }, []);
 
   useEffect(() => {
-    const animate = (time: number) => {
-      if (previousTimeRef.current !== null && isPlaying) {
-        const delta = (time - previousTimeRef.current) / 1000;
-        setElapsed((prev) => {
-          const cycleTotal = inhale + holdFull + exhale + holdEmpty;
-          if (cycleTotal <= 0) return 0;
-          const nextValue = prev + delta;
-          if (nextValue >= cycleTotal) {
-            setTotalCycles((c) => c + 1);
-            return nextValue - cycleTotal;
-          }
-          return nextValue;
-        });
+    if (step !== 'player') {
+      if (synthRef.current && audioEnabled) {
+         synthRef.current.stop();
+         setAudioEnabled(false);
       }
+      setIsPlaying(false);
+      return;
+    }
+    
+    if (!isPlaying) {
+      return;
+    }
+    
+    // isPlaying is true and step is 'player'
+    const animate = (time: number) => {
+      if (previousTimeRef.current === null) {
+        previousTimeRef.current = time;
+      }
+      const delta = (time - previousTimeRef.current) / 1000;
+      setElapsed((prev) => {
+        const cycleTotal = inhale + holdFull + exhale + holdEmpty;
+        if (cycleTotal <= 0) return 0;
+        const nextValue = prev + delta;
+        if (nextValue >= cycleTotal) {
+          setTotalCycles((c) => c + 1);
+          return nextValue - cycleTotal;
+        }
+        return nextValue;
+      });
       previousTimeRef.current = time;
       requestRef.current = requestAnimationFrame(animate);
     };
@@ -165,8 +186,9 @@ export default function PracticeSection() {
     requestRef.current = requestAnimationFrame(animate);
     return () => {
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
+      previousTimeRef.current = null; // Important for smooth resume
     };
-  }, [isPlaying, inhale, holdFull, exhale, holdEmpty]);
+  }, [isPlaying, inhale, holdFull, exhale, holdEmpty, step]);
 
   const cycleTotal = inhale + holdFull + exhale + holdEmpty;
 
@@ -241,180 +263,242 @@ export default function PracticeSection() {
     : `${phaseNameEn} ${currentSec} / ${totalPhaseSec}`;
 
   useEffect(() => {
-    if (audioEnabled && synthRef.current) {
+    if (audioEnabled && synthRef.current && step === 'player') {
       synthRef.current.update(breathForce, isRising);
     }
-  }, [breathForce, isRising, audioEnabled]);
+  }, [breathForce, isRising, audioEnabled, step]);
+
+  const secElapsed = Math.floor(elapsed);
+  const prevSecRef = useRef(0);
+  const phaseRef = useRef(phaseNameEn);
+  phaseRef.current = phaseNameEn;
+
+  useEffect(() => {
+    if (secElapsed !== prevSecRef.current && isPlaying && step === 'player') {
+      prevSecRef.current = secElapsed;
+      if ('vibrate' in navigator) {
+        if (phaseRef.current === "HOLD") {
+          navigator.vibrate(40);
+        } else {
+          navigator.vibrate(15);
+        }
+      }
+    }
+  }, [secElapsed, isPlaying, step]);
 
   const handleReset = () => {
     setElapsed(0);
     setTotalCycles(0);
     previousTimeRef.current = null;
+    prevSecRef.current = 0;
   };
 
-  return (
-    <div className="w-full min-h-screen flex flex-col items-center justify-start p-4 md:p-8 font-sans transition-all duration-300" style={{ backgroundColor: "var(--color-bg, #0f1117)", color: "var(--color-text, #d4d4d8)" }}>
-      {/* Header Info */}
-      <div className="w-full max-w-5xl flex justify-between items-center mb-8">
-        <div className="flex items-center gap-4">
-          <button 
-            onClick={() => navigate('/practice')} 
-            className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 hover:text-white transition-all duration-300 active:scale-[0.98] backdrop-blur-md"
-            style={{ color: "var(--color-text, #d4d4d8)" }}
-          >
+  const handleSelectTheme = (theme: MovementType) => {
+    setMovementType(theme);
+    setStep('rhythm');
+  };
+
+  const handleSelectRhythm = (id: string) => {
+    setPresetId(id);
+    setElapsed(0);
+    setIsPlaying(true);
+    setStep('player');
+  };
+
+  // ------------------------------------
+  // STEP 1: THEME SELECTION
+  // ------------------------------------
+  if (step === 'theme') {
+    return (
+      <div className="w-full min-h-screen flex flex-col p-4 md:p-8 font-sans animate-fade-in" style={{ backgroundColor: "var(--color-bg, #0f1117)", color: "var(--color-text, #d4d4d8)" }}>
+        {/* Header */}
+        <div className="w-full flex justify-between items-center mb-12 py-2">
+          <button onClick={() => navigate('/practice')} className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 transition-all cursor-pointer">
             <ArrowLeft size={20} />
           </button>
-          <h1 className="text-xl italic font-serif" style={{ color: "var(--color-accent, #1D9E75)", fontFamily: "var(--font-heading)" }}>
-            {lang === "el" ? "Πρακτική Γείωσης" : "Grounding Practice"}
-          </h1>
-        </div>
-        <div className="flex gap-4">
           <button onClick={() => setLang(lang === "el" ? "en" : "el")} className="transition-colors text-xs uppercase cursor-pointer flex gap-1 items-center hover:opacity-80" style={{ color: "var(--color-accent, #1D9E75)" }}>
             <Languages className="w-4 h-4" /> {lang === "el" ? "EN" : "EL"}
           </button>
         </div>
-      </div>
 
-      {/* Main Content Layout */}
-      <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-        
-        {/* Visual Arena (Hero) - Takes larger space */}
-        <div className="md:col-span-7 rounded-xl p-4 relative overflow-hidden flex flex-col justify-between shadow-lg" style={{ backgroundColor: "var(--color-surface, #1a1d27)", minHeight: "500px" }}>
-          
-          <TaiChiHero
-            breathForce={breathForce}
-            isRising={isRising}
-            breathStateText={lang === "el" ? phaseTextEl : phaseTextEn}
-            movementType={movementType}
-            rhythmText={liveRhythmText}
-          />
-          
-          <div className="absolute top-4 right-4 z-10 flex flex-col gap-2">
-            <button onClick={() => setIsPlaying(!isPlaying)} className="p-3 rounded-xl backdrop-blur cursor-pointer shadow-lg border hover:opacity-80 transition-opacity" style={{ backgroundColor: "rgba(15, 17, 23, 0.5)", borderColor: "rgba(212, 212, 216, 0.1)", color: "var(--color-text, #d4d4d8)"}}>
-              {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+        <div className="max-w-4xl mx-auto w-full flex-1">
+          <header className="text-center md:text-left mb-12">
+            <h2 className="text-4xl md:text-5xl font-serif text-white/90 italic leading-tight mb-4">
+              {lang === "el" ? "Οπτική Απεικόνιση" : "Visual Theme"}
+            </h2>
+            <p className="text-lg text-white/50 font-sans max-w-2xl">
+              {lang === "el" ? "Επίλεξε το μοτίβο κίνησης που σε βοηθάει να συγκεντρωθείς και να γειωθείς καλύτερα." : "Choose the movement pattern that helps you center and ground yourself best."}
+            </p>
+          </header>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <button
+              onClick={() => handleSelectTheme('taichi')}
+              className="group relative block p-8 md:p-10 rounded-[32px] border transition-all duration-300 text-left overflow-hidden cursor-pointer"
+              style={{ backgroundColor: "var(--color-surface, #1a1d27)", borderColor: "rgba(255,255,255,0.05)" }}
+            >
+              <div className="absolute top-0 right-0 w-64 h-64 bg-teal-500/10 blur-[80px] -mr-32 -mt-32 rounded-full pointer-events-none transition-transform group-hover:scale-150 duration-1000" />
+              <div className="w-16 h-16 rounded-2xl bg-teal-500/10 flex items-center justify-center text-teal-400 mb-6 group-hover:scale-110 transition-transform shadow-inner border border-teal-500/20">
+                <Activity size={32} strokeWidth={1.5} />
+              </div>
+              <h3 className="text-2xl md:text-3xl font-serif text-white/90 italic mb-3">
+                {lang === "el" ? "Η Ροή της Σύνδεσης" : "Grounding Flow"}
+              </h3>
+              <p className="text-white/50 font-sans text-sm md:text-base leading-relaxed">
+                {lang === "el" ? "Απαλή κίνηση που μιμείται την άμπωτη και την παλίρροια, συνδέοντας τον ουρανό με τη γη." : "Gentle movement mimicking the ebb and flow, connecting sky and earth."}
+              </p>
             </button>
-            <button onClick={handleReset} className="p-3 rounded-xl backdrop-blur cursor-pointer shadow-lg border hover:opacity-80 transition-opacity" style={{ backgroundColor: "rgba(15, 17, 23, 0.5)", borderColor: "rgba(212, 212, 216, 0.1)", color: "var(--color-text, #d4d4d8)" }}>
-              <RotateCcw className="w-5 h-5" />
+
+            <button
+              onClick={() => handleSelectTheme('lotus')}
+              className="group relative block p-8 md:p-10 rounded-[32px] border transition-all duration-300 text-left overflow-hidden cursor-pointer"
+              style={{ backgroundColor: "var(--color-surface, #1a1d27)", borderColor: "rgba(255,255,255,0.05)" }}
+            >
+              <div className="absolute bottom-0 right-0 w-64 h-64 bg-indigo-500/10 blur-[80px] -mr-32 -mb-32 rounded-full pointer-events-none transition-transform group-hover:scale-150 duration-1000" />
+              <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 mb-6 group-hover:scale-110 transition-transform shadow-inner border border-indigo-500/20">
+                <Wind size={32} strokeWidth={1.5} />
+              </div>
+              <h3 className="text-2xl md:text-3xl font-serif text-white/90 italic mb-3">
+                {lang === "el" ? "Το Άνθος του Λωτού" : "Lotus Blossom"}
+              </h3>
+              <p className="text-white/50 font-sans text-sm md:text-base leading-relaxed">
+                {lang === "el" ? "Πιο εσωτερική, κεντρική κίνηση συγκέντρωσης που ξεδιπλώνεται από τον πυρήνα προς τα έξω." : "A more internal, centered focusing movement that unfolds from the core."}
+              </p>
             </button>
           </div>
+        </div>
+      </div>
+    );
+  }
 
-          <div className="absolute bottom-4 left-4 right-4 z-10">
-            <div className="p-4 rounded-xl backdrop-blur flex justify-between items-center shadow-lg border" style={{ backgroundColor: "rgba(15, 17, 23, 0.7)", borderColor: "rgba(212, 212, 216, 0.1)" }}>
-              <div>
-                <p className="text-[10px] uppercase tracking-wider mb-1" style={{ color: "var(--color-accent, #1D9E75)" }}>{lang === "el" ? "Οδηγια Αναπνοης" : "Breath Directive"}</p>
-                <p className="italic font-serif" style={{ color: "var(--color-text, #d4d4d8)", fontFamily: "var(--font-heading)" }}>{lang === "el" ? phaseQuoteEl : phaseQuoteEn}</p>
-              </div>
-            </div>
+  // ------------------------------------
+  // STEP 2: RHYTHM SELECTION
+  // ------------------------------------
+  if (step === 'rhythm') {
+    return (
+      <div className="w-full min-h-screen flex flex-col p-4 md:p-8 font-sans animate-fade-in" style={{ backgroundColor: "var(--color-bg, #0f1117)", color: "var(--color-text, #d4d4d8)" }}>
+        <div className="w-full flex justify-between items-center mb-12 py-2">
+          <button onClick={() => setStep('theme')} className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 transition-all cursor-pointer">
+            <ArrowLeft size={20} />
+          </button>
+          <div className="text-[11px] font-bold tracking-[0.2em] uppercase text-white/40">
+            {movementType === 'taichi' ? (lang === 'el' ? 'ΡΟΗ' : 'FLOW') : (lang === 'el' ? 'ΛΩΤΟΣ' : 'LOTUS')}
           </div>
         </div>
 
-        {/* Controls Sidebar */}
-        <div className="md:col-span-5 flex flex-col gap-6 font-sans">
-          
-          {/* Presets */}
-          <div className="p-6 rounded-xl shadow-lg border border-transparent" style={{ backgroundColor: "var(--color-surface, #1a1d27)" }}>
-             <h2 className="text-sm font-semibold mb-4 flex gap-2 items-center" style={{ color: "var(--color-accent, #1D9E75)" }}><Compass className="w-4 h-4" /> {lang === "el" ? "Ρυθμοί Αναπνοής" : "Breathing Rhythms"}</h2>
-             <div className="flex flex-col gap-3">
-               {PRESETS.map((p) => (
-                 <button
-                   key={p.id}
-                   onClick={() => setPresetId(p.id)}
-                   className="text-left p-3 rounded-xl transition-all border cursor-pointer border-transparent"
-                   style={{
-                     backgroundColor: presetId === p.id ? "rgba(29, 158, 117, 0.1)" : "rgba(15, 17, 23, 0.5)",
-                     borderColor: presetId === p.id ? "var(--color-accent, #1D9E75)" : "transparent",
-                   }}
-                 >
-                   <div className="font-medium text-sm mb-1 text-[var(--color-text, #d4d4d8)]">{lang === "el" ? p.nameEl : p.nameEn}</div>
-                   <div className="text-[10px] text-[var(--color-accent, #1D9E75)] mb-1 opacity-90 font-mono tracking-wider">
-                     {lang === "el" 
-                       ? `ΕΙΣΠΝΟΗ: ${p.inhale}s | ΚΡΑΤΗΜΑ: ${p.holdFull}s | ΕΚΠΝΟΗ: ${p.exhale}s | ΚΡΑΤΗΜΑ: ${p.holdEmpty}s`
-                       : `INHALE: ${p.inhale}s | HOLD: ${p.holdFull}s | EXHALE: ${p.exhale}s | HOLD: ${p.holdEmpty}s`
-                     }
-                   </div>
-                   <div className="text-xs opacity-70 leading-relaxed text-[var(--color-text-muted, #71717a)]">{lang === "el" ? p.descEl : p.descEn}</div>
-                 </button>
-               ))}
-             </div>
-          </div>
+        <div className="max-w-4xl mx-auto w-full flex-1">
+          <header className="text-center md:text-left mb-10">
+            <h2 className="text-4xl md:text-5xl font-serif text-white/90 italic leading-tight mb-4">
+              {lang === "el" ? "Ρυθμός Αναπνοής" : "Breathing Rhythm"}
+            </h2>
+            <p className="text-lg text-white/50 font-sans max-w-2xl">
+              {lang === "el" ? "Επίλεξε το μοτίβο αναπνοής που θα συνοδεύσει την κίνηση." : "Select the breathing pattern to accompany the movement."}
+            </p>
+          </header>
 
-          {/* Sound Controls */}
-          <div className="p-6 rounded-xl shadow-lg" style={{ backgroundColor: "var(--color-surface, #1a1d27)" }}>
-             <div className="flex justify-between items-center mb-4" style={{ color: "var(--color-accent, #1D9E75)" }}>
-               <h2 className="text-sm font-semibold flex gap-2 items-center"><Volume2 className="w-4 h-4" /> {lang === "el" ? "Ηχητική Συχνότητα" : "Sound Frequency"}</h2>
-               <button onClick={toggleAudio} className={`text-xs px-3 py-1 rounded cursor-pointer transition-colors`} style={{ backgroundColor: audioEnabled ? "var(--color-accent, #1D9E75)" : "rgba(15, 17, 23, 0.5)", color: audioEnabled ? "#ffffff" : "var(--color-text-muted, #71717a)" }}>
-                 {audioEnabled ? (lang==="el"?"ΕΝΕΡΓΟ":"ON") : (lang==="el"?"ΑΝΕΝΕΡΓΟ":"OFF")}
-               </button>
-             </div>
-             
-             {audioEnabled && (
-                <div className="space-y-4 animate-opacity">
-                  <div className="grid grid-cols-3 gap-2">
-                    {[
-                      { hz: 136.1, name: "OM", desc: "Γείωση" },
-                      { hz: 432, name: "Miracle", desc: "Αρμονία" },
-                      { hz: 528, name: "Solfeggio", desc: "Κύτταρα" },
-                    ].map((f) => (
-                      <button
-                        key={f.hz}
-                        onClick={() => setSolfeggioFreq(f.hz)}
-                        className="p-2 text-center rounded-xl border cursor-pointer transition-colors"
-                        style={{
-                          backgroundColor: "rgba(15, 17, 23, 0.5)",
-                          borderColor: solfeggioFreq === f.hz ? "var(--color-accent, #1D9E75)" : "transparent",
-                          color: solfeggioFreq === f.hz ? "var(--color-accent, #1D9E75)" : "var(--color-text-muted, #71717a)",
-                        }}
-                      >
-                        <div className="text-sm font-mono">{f.hz}</div>
-                        <div className="text-[10px] mt-1">{lang === "el" ? f.desc : f.name}</div>
-                      </button>
-                    ))}
-                  </div>
-
-                  <div className="mt-4">
-                    <label className="text-xs mb-2 block" style={{ color: "var(--color-text-muted, #71717a)" }}>{lang==="el"?"Ένταση Ήχου":"Volume"}</label>
-                    <input
-                      type="range"
-                      min="0.05"
-                      max="0.8"
-                      step="0.05"
-                      value={audioVolume}
-                      onChange={(e) => setAudioVolume(parseFloat(e.target.value))}
-                      className="w-full cursor-pointer h-1.5 rounded-lg appearance-none"
-                      style={{ backgroundColor: "var(--color-bg, #0f1117)", accentColor: "var(--color-accent, #1D9E75)" }}
-                    />
-                  </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {PRESETS.map((p) => (
+              <button
+                key={p.id}
+                onClick={() => handleSelectRhythm(p.id)}
+                className="text-left p-6 md:p-8 rounded-[24px] border transition-all duration-300 overflow-hidden cursor-pointer group hover:bg-white/[0.04]"
+                style={{ backgroundColor: "var(--color-surface, #1a1d27)", borderColor: "rgba(255,255,255,0.05)" }}
+              >
+                <div className="font-serif text-2xl italic text-white/90 mb-2">{lang === "el" ? p.nameEl : p.nameEn}</div>
+                <div className="text-[10px] uppercase font-bold tracking-widest mb-4" style={{ color: "var(--color-accent, #1D9E75)" }}>
+                  {lang === "el" 
+                    ? `${p.inhale} - ${p.holdFull} - ${p.exhale} - ${p.holdEmpty}`
+                    : `${p.inhale} - ${p.holdFull} - ${p.exhale} - ${p.holdEmpty}`
+                  }
                 </div>
-             )}
+                <div className="text-[13px] md:text-[14px] opacity-60 leading-relaxed max-w-[90%]">
+                  {lang === "el" ? p.descEl : p.descEn}
+                </div>
+              </button>
+            ))}
           </div>
+        </div>
+      </div>
+    );
+  }
 
-          {/* Movement Type Settings */}
-          <div className="p-6 rounded-xl shadow-lg" style={{ backgroundColor: "var(--color-surface, #1a1d27)" }}>
-             <h2 className="text-sm font-semibold mb-4" style={{ color: "var(--color-accent, #1D9E75)" }}>{lang === "el" ? "Χορογραφία Αναπνοής" : "Choreography"}</h2>
-             <div className="flex flex-col gap-2">
-               {[
-                  { id: "taichi", labelEl: "Η Ροή της Σύνδεσης", labelEn: "Grounding Flow" },
-                  { id: "lotus", labelEl: "Άνθος Λωτού", labelEn: "Lotus Blossom" },
-                  { id: "bow", labelEl: "Βαθιά Υπόκλιση", labelEn: "Deep Bow" }
-                ].map((m) => (
-                  <button
-                    key={m.id}
-                    onClick={() => setMovementType(m.id as any)}
-                    className={`text-left p-3 rounded-xl transition-all border text-sm cursor-pointer border-transparent`}
-                    style={{
-                      backgroundColor: movementType === m.id ? "rgba(15, 17, 23, 1)" : "rgba(15, 17, 23, 0.5)",
-                      borderColor: movementType === m.id ? "var(--color-accent, #1D9E75)" : "transparent",
-                      color: movementType === m.id ? "var(--color-accent, #1D9E75)" : "var(--color-text-muted, #71717a)",
-                    }}
+  // ------------------------------------
+  // STEP 3: PLAYER
+  // ------------------------------------
+  return (
+    <div className="w-full min-h-screen flex flex-col items-center justify-start p-2 md:p-8 font-sans transition-all duration-300 animate-fade-in relative z-0" style={{ backgroundColor: "var(--color-bg, #0f1117)", color: "var(--color-text, #d4d4d8)" }}>
+      
+      {/* HUD Bar Overlay */}
+      <div className="w-full max-w-5xl flex justify-between items-center mb-2 z-20 px-2 pt-2 md:pt-0">
+        <button 
+          onClick={() => setStep('rhythm')} 
+          className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 transition-all duration-300 cursor-pointer backdrop-blur-md"
+        >
+          <ArrowLeft size={20} />
+        </button>
+        
+        {/* Compact Audio Controls Overlay */}
+        <div className="flex items-center gap-3 backdrop-blur-md bg-black/30 border border-white/5 p-1.5 rounded-full pr-4">
+           <button onClick={toggleAudio} className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-colors" style={{ backgroundColor: audioEnabled ? "var(--color-accent, #1D9E75)" : "rgba(255, 255, 255, 0.1)" }}>
+             {audioEnabled ? <Volume2 size={16} className="text-white" /> : <VolumeX size={16} className="text-white/50" />}
+           </button>
+           {audioEnabled && (
+             <div className="flex gap-2">
+                {[136.1, 432, 528].map(hz => (
+                  <button 
+                    key={hz} 
+                    onClick={() => setSolfeggioFreq(hz)} 
+                    className={`text-[10px] font-mono font-bold px-2 py-1 rounded transition-colors cursor-pointer ${solfeggioFreq === hz ? 'bg-white/20 text-white' : 'text-white/40 hover:text-white/80'}`}
                   >
-                    {lang === "el" ? m.labelEl : m.labelEn}
+                    {hz}
                   </button>
                 ))}
              </div>
-          </div>
-
+           )}
         </div>
+      </div>
+
+      {/* Main Visual Arena (Hero) - Expanded */}
+      <div className="w-full max-w-5xl flex-1 rounded-[32px] p-4 relative overflow-hidden flex flex-col justify-between shadow-2xl border" style={{ backgroundColor: "var(--color-surface, #1a1d27)", borderColor: "rgba(255,255,255,0.02)", minHeight: "80vh" }}>
+        
+        <TaiChiHero
+          breathForce={breathForce}
+          isRising={isRising}
+          breathStateText={""}
+          movementType={movementType}
+          rhythmText={""}
+        />
+
+        {/* Just numbers counter below the avatar (natural flow) */}
+        <div className="flex-1 flex flex-col items-center justify-center my-6 z-10 pointer-events-none">
+             <div className="text-4xl font-mono font-light text-white/80 tracking-[0.3em] drop-shadow-md">
+                 {currentSec} <span className="text-2xl text-white/40 tracking-[0.3em] relative -top-0.5">/ {totalPhaseSec}</span>
+             </div>
+        </div>
+
+        <div className="w-full text-center pb-4 z-10 pointer-events-none">
+          <p className="italic font-serif text-base md:text-lg drop-shadow-md" style={{ color: "var(--color-text, #d4d4d8)", fontFamily: "var(--font-heading)" }}>{lang === "el" ? phaseQuoteEl : phaseQuoteEn}</p>
+        </div>
+      </div>
+      
+      {/* Controls Below Screen */}
+      <div className="w-full max-w-5xl flex justify-center items-center gap-6 mt-8 mb-6 z-20 relative">
+        <button 
+          onClick={handleReset} 
+          className="w-14 h-14 flex items-center justify-center rounded-full backdrop-blur cursor-pointer shadow-lg border hover:scale-105 transition-transform" 
+          style={{ backgroundColor: "var(--color-surface, #1a1d27)", borderColor: "rgba(255,255,255,0.05)", color: "var(--color-text-muted, #71717a)" }}
+        >
+          <RotateCcw className="w-6 h-6" />
+        </button>
+        <button 
+          onClick={() => setIsPlaying(!isPlaying)} 
+          className="w-20 h-20 flex items-center justify-center rounded-full backdrop-blur cursor-pointer shadow-2xl border hover:scale-105 transition-transform" 
+          style={{ backgroundColor: "var(--color-accent, #1D9E75)", borderColor: "rgba(255,255,255,0.1)", color: "#fff" }}
+        >
+          {isPlaying ? <Pause className="w-8 h-8 fill-current" /> : <Play className="w-8 h-8 fill-current ml-1" />}
+        </button>
       </div>
     </div>
   );
 }
+

@@ -58,6 +58,43 @@ const MOODS = [
   { id: 4, emoji: '😄', label: { el: 'Θετικό', en: 'Positive' } },
 ];
 
+interface QuickTemplate {
+  id: string;
+  icon: string;
+  title: Record<'el' | 'en', string>;
+  content: Record<'el' | 'en', string>;
+}
+
+const QUICK_TEMPLATES: QuickTemplate[] = [
+  {
+    id: 'gratitude',
+    icon: '🙏',
+    title: { el: 'Ευγνωμοσύνη', en: 'Gratitude' },
+    content: {
+      el: 'Σήμερα νιώθω ευγνωμοσύνη για...\n\n1. \n2. \n3. \n\nΑυτό που με έκανε να χαμογελάσω:\n\n',
+      en: 'Today I feel grateful for...\n\n1. \n2. \n3. \n\nWhat made me smile:\n\n'
+    }
+  },
+  {
+    id: 'frustrations',
+    icon: '🌩️',
+    title: { el: 'Αποσυμπίεση', en: 'Daily Frustrations' },
+    content: {
+      el: 'Αυτό που με δυσκόλεψε σήμερα ήταν...\n\n\nΠώς αντέδρασε το σώμα μου σε αυτό:\n\n\nΤι μπορώ να αφήσω να φύγει:\n\n',
+      en: 'What challenged me today was...\n\n\nHow my body reacted to it:\n\n\nWhat I can let go of:\n\n'
+    }
+  },
+  {
+    id: 'creative',
+    icon: '✨',
+    title: { el: 'Δημιουργική Ροή', en: 'Creative Flow' },
+    content: {
+      el: 'Μια ιδέα που δεν θέλω να ξεχάσω...\n\n\nΑυτό που με ενέπνευσε σήμερα:\n\n\nΤι θέλω να εξερευνήσω αύριο:\n\n',
+      en: 'An idea I do not want to forget...\n\n\nWhat inspired me today:\n\n\nWhat I want to explore tomorrow:\n\n'
+    }
+  }
+];
+
 interface JournalEntry {
   text: string;
   mood: number | null;
@@ -127,6 +164,12 @@ export default function Journal() {
 
   const handleMoodSelect = (moodId: number) => {
     saveEntry(entryText, activeMood === moodId ? null : moodId);
+  };
+
+  const handleFocus = (template: QuickTemplate) => {
+    const textToAdd = template.content[language];
+    const newText = entryText + (entryText ? '\n\n' : '') + textToAdd;
+    saveEntry(newText, activeMood);
   };
 
   const addPrompt = (q: string) => {
@@ -246,6 +289,20 @@ export default function Journal() {
                  </button>
                ))}
              </div>
+           </div>
+
+           {/* Quick Templates */}
+           <div className="mb-4 flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
+             {QUICK_TEMPLATES.map(t => (
+               <button
+                 key={t.id}
+                 onClick={() => handleFocus(t)}
+                 className="shrink-0 flex items-center gap-2 bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.08] hover:border-white/[0.1] rounded-full px-4 py-2 transition-colors"
+               >
+                 <span>{t.icon}</span>
+                 <span className="text-xs font-medium tracking-wide text-white/70">{t.title[language]}</span>
+               </button>
+             ))}
            </div>
 
            {/* Editor */}

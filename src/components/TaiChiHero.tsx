@@ -105,20 +105,20 @@ export default function TaiChiHero({
     rotationFlair = 0;
 
   } else {
-    // ORIGINAL TAI CHI MOVEMENT (Qi-Flow)
+    // ORIGINAL TAI CHI MOVEMENT (Qi-Flow) extended over head
     eL_base = { x: 176, y: 220 };
     hL_base = { x: 182, y: 236 };
     
-    eL_travel_x = 0;
-    eL_travel_y = -25;
-    hL_travel_x = 0;
-    hL_travel_y = -45;
+    eL_travel_x = -7;
+    eL_travel_y = -45;
+    hL_travel_x = 13;
+    hL_travel_y = -85;
 
-    eL_sweep_x = isRising ? -12 : -4;
-    hL_sweep_x = isRising ? -25 : -6;
+    eL_sweep_x = isRising ? -25 : -10;
+    hL_sweep_x = isRising ? -40 : -15;
     
-    baseRotation = bf * 30;
-    rotationFlair = isRising ? -25 * sweep : 15 * sweep; 
+    baseRotation = bf * 130; // rotate palms more to face up/inward over head
+    rotationFlair = isRising ? -40 * sweep : 25 * sweep; 
   }
 
   const eL = {
@@ -491,13 +491,16 @@ export default function TaiChiHero({
       </svg>
 
       {/* Floating Soothing Breath/Phase Label overlay at top centers */}
+      {breathStateText && (
       <div className="absolute top-4 flex flex-col items-center">
         <span className="text-xs uppercase tracking-widest text-[#a855f7] bg-purple-950/40 px-3 py-1 rounded-full border border-purple-800/20 backdrop-blur-md animate-pulse">
           {breathStateText}
         </span>
       </div>
+      )}
 
       {/* Floating Breathing Ripple indicator inside circle */}
+      {rhythmText && (
       <div className="absolute bottom-6 bg-slate-900/40 border border-slate-700/50 backdrop-blur-md px-3 py-1 rounded-lg">
         <div className="flex items-center gap-2">
           {/* Inner pulsating dot */}
@@ -509,10 +512,11 @@ export default function TaiChiHero({
             }}
           />
           <span className="text-[10px] font-mono tracking-wider text-slate-300">
-            {rhythmText ? rhythmText : `AXIS FLOW: ${Math.round(breathForce * 100)}%`}
+            {rhythmText}
           </span>
         </div>
       </div>
+      )}
     </div>
   );
 }
