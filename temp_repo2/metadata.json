@@ -1,6 +1,0 @@
-{
-  "name": "Neurodivergent Mindfulness",
-  "description": "Θεραπευτικός οδηγός αναπνοής και διαλογισμού με τρισδιάστατη αίσθηση και απαλή κίνηση Τάι Τσι.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}

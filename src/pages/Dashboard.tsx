@@ -1,5 +1,4 @@
 import { AudioEnabler } from '../components/AudioEnabler';
-import { DebugOverlay } from '../components/DebugOverlay';
 import React, { useState, useEffect, useMemo } from 'react';
 import { Sparkles, BookOpen, ArrowRight, Heart, Brain, Moon, Zap, ChevronRight, Telescope, Info, Waves, Play, Eye, EyeOff, Cat } from 'lucide-react';
 import { Link } from 'react-router-dom';
