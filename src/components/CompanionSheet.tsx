@@ -12,6 +12,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { cn } from '../lib/utils';
+import { CatInfinityAvatar } from './CatInfinityAvatar';
 
 /* Companion Sheet states/flows */
 type FlowState = 'main' | 'mood' | 'hub' | 'explore' | 'options' | 'guide' | 'questionnaire';
@@ -299,15 +300,8 @@ function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClo
           <div className="absolute top-0 right-0 w-32 h-32 bg-[#e99b37]/10 blur-[40px] rounded-full pointer-events-none -mr-10 -mt-10" />
           
           <div className="flex items-start gap-4 relative z-10">
-            <div className="w-16 h-16 rounded-full overflow-hidden shrink-0 border-2 border-stone-200 dark:border-stone-700 shadow-sm relative bg-stone-100 dark:bg-stone-800">
-              <img 
-                src="/genfavicon-256.png" 
-                alt="Zen Master Cat Companion" 
-                className="w-full h-full object-cover" 
-                onError={(e) => {
-                   (e.target as HTMLImageElement).src = '/genfavicon-256.png';
-                }}
-              />
+            <div className="w-16 h-16 rounded-full overflow-hidden shrink-0 shadow-sm relative flex items-center justify-center border border-stone-200 dark:border-stone-700 bg-stone-100 dark:bg-stone-800">
+               <CatInfinityAvatar className="w-14 h-14" />
               <div className="absolute bottom-1 right-1 w-3 h-3 bg-teal-500 rounded-full border-2 border-white dark:border-stone-800" />
             </div>
             
@@ -1064,11 +1058,7 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
       <div className="flex items-center justify-between px-5 py-4 border-b border-stone-200 dark:border-stone-800 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md sticky top-0 z-20">
         <div className="flex items-center gap-3">
           <button onClick={goBack} className="w-9 h-9 rounded-full bg-stone-200 dark:bg-stone-300 flex items-center justify-center transition hover:bg-stone-300 dark:hover:bg-stone-400 active:scale-90 overflow-hidden ring-1 ring-teal-500/20">
-            <img 
-              src="/genfavicon-256.png" 
-              alt="Companion" 
-              className="w-full h-full object-cover" 
-            />
+            <CatInfinityAvatar className="w-8 h-8" />
           </button>
           <div className="flex flex-col">
             <h2 className="font-display text-lg font-medium leading-none tracking-tight text-pine-900 dark:text-pine-50">{language === 'el' ? 'Η Γάτα του Ναού' : 'The Temple Cat'}</h2>
@@ -1085,11 +1075,7 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
         {history.length === 0 && (
           <div className="text-center py-10 px-6 max-w-sm mx-auto">
             <div className="w-20 h-20 bg-stone-200/90 dark:bg-stone-300 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner animate-soft-pulse overflow-hidden ring-2 ring-teal-500/20">
-              <img 
-                src="/genfavicon-256.png" 
-                alt="Magical Cat" 
-                className="w-full h-full object-cover" 
-              />
+               <CatInfinityAvatar className="w-16 h-16" />
             </div>
             <p className="text-stone-500 dark:text-stone-400 font-serif italic text-[17px] leading-relaxed">
               {language === 'el' 

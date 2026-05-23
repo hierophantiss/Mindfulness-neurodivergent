@@ -4,6 +4,7 @@ import CompanionSheet from './CompanionSheet';
 import { useLanguage } from '../hooks/useLanguage';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { CatInfinityAvatar } from './CatInfinityAvatar';
 
 export const InfinitySVG = ({ size }: { size: number }) => (
   <svg width={size} height={Math.round(size * 0.55)} viewBox="0 0 120 66" fill="none" xmlns="http://www.w3.org/2000/svg" className="inf-svg-glow filter drop-shadow-sm">
@@ -202,12 +203,8 @@ export default function Companion() {
           )}
         </AnimatePresence>
 
-        <div className="relative w-10 h-10 bg-stone-200/90 rounded-full overflow-hidden shadow-inner group-hover:scale-110 transition-transform duration-300 ring-2 ring-teal-500/20">
-          <img 
-            src="/genfavicon-256.png" 
-            alt="Zen Master Cat Companion" 
-            className="w-full h-full object-cover"
-          />
+        <div className="relative w-11 h-11 rounded-full overflow-hidden shadow-inner flex items-center justify-center transition-transform duration-300 ring-2 ring-teal-500/20">
+          <CatInfinityAvatar className="w-10 h-10" />
         </div>
         {companionData.dailyLogs.length > 0 && <span className="absolute animate-ping top-1 right-1 w-2 h-2 bg-amber-400 rounded-full" />}
       </div>
