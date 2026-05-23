@@ -97,7 +97,7 @@ export default function CompanionSheet() {
 }
 
 function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClose: () => void }) {
-  const { companionData } = useCompanion();
+  const { companionData, updateCompanionData } = useCompanion();
   const navigate = useNavigate();
   const { language } = useLanguage();
   const { reduceMotion } = useAccessibility();
@@ -147,39 +147,39 @@ function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClo
 
     const elNarratives = [
       {
-        title: "Γείωση & Βαρύτητα",
-        text: "Η μαϊμού της υπερανάλυσης (DMN) είναι ακόμα ανήσυχη. Ας γειώσουμε τον ελέφαντα του νευρικού συστήματος. Η βαρύτητα είναι το πρώτο μας σκοινί."
+        title: "Γείωση (Σώμα)",
+        text: "Το νευρικό σύστημα ψάχνει για ασφάλεια. Πριν ελέγξουμε τη σκέψη, ας νιώσουμε τη βαρύτητα. Τα πέλματα στο πάτωμα είναι η πρώτη σου άγκυρα."
       },
       {
-        title: "Ρύθμιση της Αναπνοής",
-        text: "Ο ελέφαντας νιώθει το έδαφος, αλλά η ενέργειά του είναι ακανόνιστη. Ας χρησιμοποιήσουμε την αναπνοή για να ρυθμίσουμε το νευρικό του σύστημα."
+        title: "Ρύθμιση (Αναπνοή)",
+        text: "Έχοντας βρει το 'Εδώ' στο σώμα, περνάμε στο 'Τώρα'. Η αργή εκπνοή στέλνει σήμα χαλάρωσης στο πνευμονογαστρικό νεύρο (Vagus Nerve)."
       },
       {
-        title: "Η Επίγνωση ως Εργαλείο",
-        text: "Το σώμα και η αναπνοή έχουν ηρεμήσει, η μαϊμού κουράζεται. Ώρα να πιάσουμε το εργαλείο της καθαρής επίγνωσης."
+        title: "Κατεύθυνση (Προσοχή)",
+        text: "Αν ο νους τρέχει, μην τον πολεμάς. Δώσε του ένα σταθερό σημείο να ακουμπήσει. Σταθεροποίησε την προσοχή σου."
       },
       {
-        title: "Ο Ανοιχτός Χώρος",
-        text: "Η μαϊμού κάθεται ήσυχα και ο ελέφαντας ηρεμεί. Δεν χρειάζεται πια να προσπαθούμε. Αναπαυόμαστε στον ανοιχτό χώρο."
+        title: "Άνοιγμα (Χώρος / Ήχος)",
+        text: "Όταν ο νους 'κλειδώνει', η λύση δεν είναι η προσπάθεια, αλλά ο χώρος. Μαλάκωσε το βλέμμα (ανοιχτή όραση), άκου τους ήχους (ανοιχτή ακοή) και άσε το νευρικό σύστημα να αποσυμπιεστεί."
       }
     ];
 
     const enNarratives = [
       {
-        title: "Grounding & Gravity",
-        text: "The monkey of over-analysis (DMN) is relentless. Let's ground the nervous system's elephant first. Gravity is our lasso."
+        title: "Grounding (Body)",
+        text: "The nervous system constantly looks for safety. Before controlling thought, feel gravity. Feet on the floor is your first anchor."
       },
       {
-        title: "Regulating the Breath",
-        text: "The elephant feels the ground, but its energy is erratic. Let's use the breath to soothe its nervous system."
+        title: "Regulation (Breath)",
+        text: "Having found 'Here' in the body, we move to 'Now'. A slow exhale signals safety to the vagus nerve."
       },
       {
-        title: "Awareness as a Tool",
-        text: "The body and breath are calm, the monkey is tiring. It's time to grasp the tool of pure awareness."
+        title: "Direction (Attention)",
+        text: "If the mind races, don't fight it. Give it a steady point to rest on. Gently stabilize your attention."
       },
       {
-        title: "The Open Space",
-        text: "The monkey sits quietly behind, and the elephant calms. We no longer need to try; we rest in open awareness."
+        title: "Opening (Space / Sound)",
+        text: "When the mind hyperfocuses, the solution is space. Soften your gaze (open sight), let sounds in (open hearing), and allow your nervous system to decompress."
       }
     ];
 
@@ -369,6 +369,21 @@ function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClo
             )}
           </div>
         </div>
+      </div>
+
+      <div className="bg-stone-50/80 dark:bg-stone-800/60 p-1.5 rounded-2xl flex items-center border border-stone-200 dark:border-stone-700/80 shadow-sm">
+         <button 
+           onClick={() => updateCompanionData({ companionModeEnabled: true })}
+           className={cn("flex-1 py-3 px-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex justify-center items-center gap-1.5", companionData.companionModeEnabled ? "bg-white dark:bg-stone-700 shadow-sm text-teal-700 dark:text-teal-300" : "text-stone-500 hover:text-stone-700 dark:hover:text-stone-300")}
+         >
+           <span className="text-sm border border-stone-200 bg-stone-100 rounded-full w-6 h-6 flex items-center justify-center dark:border-stone-600 dark:bg-stone-800">🐱</span> {language === 'el' ? 'Ενεργος' : 'Active'}
+         </button>
+         <button 
+           onClick={() => updateCompanionData({ companionModeEnabled: false })}
+           className={cn("flex-1 py-3 px-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex justify-center items-center gap-1.5", !companionData.companionModeEnabled ? "bg-white dark:bg-stone-700 shadow-sm text-amber-700 dark:text-amber-400" : "text-stone-500 hover:text-stone-700 dark:hover:text-stone-300")}
+         >
+           <span className="text-sm border border-stone-200 bg-stone-100 rounded-full w-6 h-6 flex items-center justify-center dark:border-stone-600 dark:bg-stone-800">💤</span> {language === 'el' ? 'Ησυχος' : 'Quiet'}
+         </button>
       </div>
 
       <div className="grid grid-cols-2 gap-3">

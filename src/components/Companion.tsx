@@ -22,47 +22,68 @@ export const InfinitySVG = ({ size }: { size: number }) => (
 );
 
 export default function Companion() {
-  const { companionData, updateCompanionData, setSheetVisible, sheetVisible } = useCompanion();
+  const { companionData, updateCompanionData, setSheetVisible, sheetVisible, companionMessage, setCompanionMessage } = useCompanion();
   const [position, setPosition] = useState({ x: window.innerWidth - 68, y: window.innerHeight / 2 - 26 });
   const [isDragging, setIsDragging] = useState(false);
-  const [bubbleMessage, setBubbleMessage] = useState<string | null>(null);
   const dragRef = useRef<{ startX: number, startY: number, initX: number, initY: number } | null>(null);
   const { language } = useLanguage();
 
   useEffect(() => {
+    // Initial welcome message
     const hasSeen = localStorage.getItem('N_MINDFULNESS_SEEN_COMPANION_TUTORIAL');
     
-    const activeQuote = { 
-      el: "Η επίγνωση είναι η γέφυρα ανάμεσα στο χάος και τη γαλήνη.", 
-      en: "Awareness is the bridge between chaos and tranquility." 
-    };
+    // Fourfold / Nervous System Micro-tips
+    const quotes = [
+      { 
+        el: "Σώμα: Νιώσε τα πέλματά σου στο πάτωμα. Η βαρύτητα είναι η πιο σίγουρη άγκυρα.", 
+        en: "Body: Feel your feet on the floor. Gravity is your safest anchor." 
+      },
+      { 
+        el: "Αναπνοή: Μια αργή εκπνοή στέλνει σήμα ασφάλειας στο νευρικό σύστημα.", 
+        en: "Breath: A slow exhale signals safety to your nervous system." 
+      },
+      { 
+        el: "Προσοχή: Αν ο νους τρέχει, διάλεξε ένα σταθερό σημείο και κοίταξέ το απαλά.", 
+        en: "Attention: If your mind races, pick a steady point and look at it softly." 
+      },
+      { 
+        el: "Χώρος: Μαλάκωσε το βλέμμα σου (ανοιχτή όραση) και άσε τους ήχους να έρθουν σε σένα.", 
+        en: "Space: Soften your gaze (open sight) and let the ambient sounds come to you." 
+      }
+    ];
+    
+    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
 
     const timer = setTimeout(() => {
       if (!hasSeen) {
-        setBubbleMessage(language === 'el' ? 'Γεια, είμαι το κουκουκου! Προτείνω να διαβάσεις πρώτα «Η Μέθοδος & Τα Σύμβολα».' : 'Hi, I\'m kukuku! I recommend reading "The Method & Symbols" first.');
+        setCompanionMessage(language === 'el' ? 'Γεια! Προτείνω να διαβάσεις πρώτα «Η Μέθοδος». Είμαι εδώ για να σε καθοδηγώ.' : 'Hi! I recommend reading "The Method" first. I am here to guide you.');
       } else {
-        if (Math.random() > 0.3) {
-          setBubbleMessage(language === 'el' ? activeQuote.el : activeQuote.en);
+        if (Math.random() > 0.3 && !companionMessage) {
+          setCompanionMessage(language === 'el' ? randomQuote.el : randomQuote.en);
         }
       }
     }, 3000);
 
-    const autoDismissTimer = setTimeout(() => {
-      setBubbleMessage(null);
-    }, 12000); // hide after 9 seconds of showing
-
-    return () => {
-      clearTimeout(timer);
-      clearTimeout(autoDismissTimer);
-    };
+    return () => clearTimeout(timer);
   }, [language]);
+
+  // Auto-dismiss logic for any message
+  useEffect(() => {
+    if (!companionMessage) return;
+    
+    const autoDismissTimer = setTimeout(() => {
+      setCompanionMessage(null);
+    }, 12000); 
+
+    return () => clearTimeout(autoDismissTimer);
+  }, [companionMessage]);
 
   const dismissBubble = (e?: React.MouseEvent) => {
     if (e) {
        e.preventDefault();
        e.stopPropagation();
     }
-    setBubbleMessage(null);
+    setCompanionMessage(null);
     localStorage.setItem('N_MINDFULNESS_SEEN_COMPANION_TUTORIAL', 'true');
   };
 
@@ -117,7 +138,7 @@ export default function Companion() {
     const dy = e.clientY - dragRef.current.startY;
     if (!isDragging && Math.sqrt(dx*dx + dy*dy) > 10) {
       setIsDragging(true);
-      if (bubbleMessage) dismissBubble();
+      if (companionMessage) dismissBubble();
     }
 
     if (isDragging) {
@@ -153,7 +174,7 @@ export default function Companion() {
       e.stopPropagation();
       return;
     }
-    if (bubbleMessage) dismissBubble(e);
+    if (companionMessage) dismissBubble(e);
     setSheetVisible(true);
   };
 
@@ -172,8 +193,9 @@ export default function Companion() {
       >
         <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-teal-500/5 to-transparent pointer-events-none" />
         <AnimatePresence>
-          {bubbleMessage && (
+          {companionMessage && (
             <motion.div 
+              key={companionMessage}
               initial={{ opacity: 0, scale: 0.9, x: isRightSide ? 20 : -20 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               exit={{ opacity: 0, scale: 0.9, x: isRightSide ? 20 : -20 }}
@@ -190,7 +212,7 @@ export default function Companion() {
                     ? { right: '-11px', borderLeftColor: '#1c1917' } 
                     : { left: '-11px', borderRightColor: '#1c1917' }} />      
               <span className="text-[13.5px] font-semibold tracking-wide leading-snug">
-                {bubbleMessage}
+                {companionMessage}
               </span>
               <button 
                 onClick={dismissBubble} 
@@ -203,9 +225,17 @@ export default function Companion() {
           )}
         </AnimatePresence>
 
-        <div className="relative w-11 h-11 rounded-full overflow-hidden shadow-inner flex items-center justify-center transition-transform duration-300 ring-2 ring-teal-500/20">
+        <motion.div 
+          className="relative w-11 h-11 rounded-full overflow-hidden shadow-inner flex items-center justify-center transition-transform duration-300 ring-2 ring-teal-500/20 bg-[#F4F4F5] dark:bg-[#1C1917]"
+          animate={{ y: [0, -4, 0] }}
+          transition={{ 
+            repeat: Infinity, 
+            duration: 4, 
+            ease: "easeInOut" 
+          }}
+        >
           <CatInfinityAvatar className="w-10 h-10" />
-        </div>
+        </motion.div>
         {companionData.dailyLogs.length > 0 && <span className="absolute animate-ping top-1 right-1 w-2 h-2 bg-amber-400 rounded-full" />}
       </div>
       <CompanionSheet />

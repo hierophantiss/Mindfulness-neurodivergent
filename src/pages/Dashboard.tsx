@@ -15,7 +15,7 @@ const glassCardClasses = "backdrop-blur-[4px] bg-white/[0.04] border border-whit
 
 export default function Dashboard() {
   const { language, setLanguage } = useLanguage();
-  const { companionData, updateCompanionData } = useCompanion();
+  const { companionData, updateCompanionData, setCompanionMessage } = useCompanion();
   const { hour } = useTime();
   const { reduceMotion, toggleReduceMotion } = useAccessibility();
 
@@ -24,6 +24,36 @@ export default function Dashboard() {
   const [activeMood, setActiveMood] = useState<number | null>(null);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   
+  const handleMoodSelect = (moodId: number) => {
+    setActiveMood(moodId);
+    
+    let msgEl = "";
+    let msgEn = "";
+    
+    switch (moodId) {
+      case 1: // 😔
+        msgEl = "Βαρύτητα; Αυτό είναι το πρώτο σήμα (Σώμα). Άσε τα πόδια σου να πατήσουν γερά στο πάτωμα και δοκίμασε την Αναπνοή 4-7-8.";
+        msgEn = "Heaviness? That's the first signal (Body). Let your feet press firmly on the floor and try 4-7-8 Breathing.";
+        break;
+      case 2: // 😐
+        msgEl = "Μούδιασμα (H.A.L.T.); Η ενέργεια χρειάζεται μια διέξοδο. Δοκίμασε την άσκηση '1 λεπτό κίνηση' ή λίγη ανοιχτή όραση στον χώρο.";
+        msgEn = "Numbness (H.A.L.T.)? Energy needs an outlet. Try the '1 minute of movement' exercise or just softly look around.";
+        break;
+      case 3: // 🙂
+        msgEl = "Ηρεμία. Υπέροχο. Εδώ ακριβώς μπορείς να απλώσεις την προσοχή σου. Άκου τους ήχους γύρω σου χωρίς να προσπαθείς.";
+        msgEn = "Calm. Wonderful. Right here you can expand your awareness. Listen to the sounds around you without trying.";
+        break;
+      case 4: // 😄
+        msgEl = "Υψηλή ενέργεια! Νιώσε τη ροή της μέσα στο σώμα. Είναι ωραία ευκαιρία για μια καταγραφή στο Ημερολόγιο.";
+        msgEn = "High energy! Feel its flow within the body. It's a great opportunity for a Journal entry.";
+        break;
+    }
+    
+    setTimeout(() => {
+    	setCompanionMessage(language === 'el' ? msgEl : msgEn);
+    }, 300); // slight delay for a more natural feel
+  };
+
   // Show welcome modal on first visit
   useEffect(() => {
     const hasSeenWelcome = localStorage.getItem('fourfold_has_seen_welcome');
@@ -220,7 +250,7 @@ export default function Dashboard() {
               return (
                 <button 
                   key={mood.id}
-                  onClick={() => setActiveMood(mood.id)}
+                  onClick={() => handleMoodSelect(mood.id)}
                   className={cn(
                     "text-xl w-10 h-10 rounded-full flex items-center justify-center transition-all",
                     isActive 

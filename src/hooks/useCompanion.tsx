@@ -33,6 +33,8 @@ interface CompanionContextType {
   trackActivity: (type: string, payload?: any) => void;
   sheetVisible: boolean;
   setSheetVisible: (visible: boolean) => void;
+  companionMessage: string | null;
+  setCompanionMessage: (msg: string | null) => void;
 }
 
 const CompanionContext = createContext<CompanionContextType | undefined>(undefined);
@@ -43,7 +45,6 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       const stored = localStorage.getItem(COMPANION_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
-        // Basic migration if needed
         return { ...defaultCompanionData(), ...parsed };
       }
     } catch (e) {
@@ -53,6 +54,7 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   });
 
   const [sheetVisible, setSheetVisible] = useState(false);
+  const [companionMessage, setCompanionMessage] = useState<string | null>(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -145,7 +147,9 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       updateChapterProgress,
       trackActivity,
       sheetVisible,
-      setSheetVisible
+      setSheetVisible,
+      companionMessage,
+      setCompanionMessage
     }}>
       {children}
     </CompanionContext.Provider>
