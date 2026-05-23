@@ -428,11 +428,11 @@ export default function RabbitHole() {
                 <span className="text-[24px] drop-shadow-md grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all">🐘</span>
               </div>
               <div>
-                <h2 className="text-[20px] md:text-[24px] font-serif italic font-medium text-white/90 leading-snug tracking-tight group-hover:text-teal-100 transition-colors">{language === 'en' ? 'The Method & Symbols' : 'Η Μέθοδος & τα Σύμβολα'}</h2>
-                <p className="text-[10px] md:text-[11px] uppercase tracking-[0.25em] text-white/30 font-bold mt-1.5">{language === 'en' ? 'THE ELEPHANT & THE MONKEY' : 'Ο ΕΛΕΦΑΝΤΑΣ ΚΑΙ Η ΜΑΙΜΟΥ'}</p>
+                <h2 className="text-[20px] md:text-[24px] font-serif italic font-medium text-[#d4d4d8] leading-snug tracking-tight group-hover:text-teal-100 transition-colors">{language === 'en' ? 'The Method & Symbols' : 'Η Μέθοδος & τα Σύμβολα'}</h2>
+                <p className="text-[10px] md:text-[11px] uppercase tracking-[0.25em] text-[#d4d4d8]/50 font-bold mt-1.5">{language === 'en' ? 'THE ELEPHANT & THE MONKEY' : 'Ο ΕΛΕΦΑΝΤΑΣ ΚΑΙ Η ΜΑΙΜΟΥ'}</p>
               </div>
             </div>
-            <p className="text-white/50 text-sm md:text-[15px] leading-relaxed line-clamp-3 relative z-10 font-medium">
+            <p className="text-[#d4d4d8]/70 text-sm md:text-[15px] leading-relaxed line-clamp-3 relative z-10 font-medium">
               {language === 'en' 
                 ? "Dive into the allegorical framework that structures the practice. Understanding how the mind wanders and returns."
                 : "Εξερευνήστε το αλληγορικό πλαίσιο που δομεί την πρακτική. Πώς ο νους περιπλανάται και πώς επιστρέφει."}

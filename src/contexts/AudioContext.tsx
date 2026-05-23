@@ -265,34 +265,6 @@ function setupOcean(ctx: globalThis.AudioContext, dest: AudioNode): () => void {
   stoppers.push(startSource(foamSrc));
   stoppers.push(startOsc(foamLfo));
 
-  // --- Layer 3: sub-bass thump (sine tone burst simulating wave impact) ---
-  // Periodic low-frequency pulse at wave rhythm
-  const subOsc = ctx.createOscillator();
-  subOsc.type            = 'sine';
-  subOsc.frequency.value = 55; // Low sub tone
-
-  const subGain = ctx.createGain();
-  subGain.gain.value = 0;
-
-  const subLfo = ctx.createOscillator();
-  subLfo.type            = 'sine';
-  subLfo.frequency.value = 0.08;
-  const subLfoGain = ctx.createGain();
-  subLfoGain.gain.value = 0.08;
-  subLfo.connect(subLfoGain);
-  subLfoGain.connect(subGain.gain);
-
-  subOsc.connect(subGain);
-  subGain.connect(dest);
-
-  // Fade sub in slowly
-  setTimeout(() => {
-    subGain.gain.setTargetAtTime(0.04, ctx.currentTime, 1.0);
-  }, 4000);
-
-  stoppers.push(startOsc(subOsc));
-  stoppers.push(startOsc(subLfo));
-
   return () => stoppers.forEach(s => s());
 }
 

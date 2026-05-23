@@ -103,18 +103,18 @@ export default function Method() {
   const t = T[language as keyof typeof T];
 
   return (
-    <div className="flex flex-col h-full bg-pine-950 font-sans animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="flex flex-col h-full bg-[#0f1117] font-sans animate-in fade-in slide-in-from-bottom-4 duration-500">
       
       {/* Header */}
-      <header className="flex-none flex items-center justify-between px-6 py-5 bg-pine-900/50 border-b border-pine-800/80 sticky top-0 z-10 backdrop-blur-md">
+      <header className="flex-none flex items-center justify-between px-6 py-5 bg-white/[0.04] border-b border-white/[0.05] sticky top-0 z-10 backdrop-blur-md">
         <Link 
           to="/" 
-          className="w-10 h-10 rounded-full bg-pine-800/50 flex items-center justify-center text-pine-200 hover:bg-pine-700/50 hover:text-white transition-colors active:scale-95"
+          className="w-10 h-10 rounded-full bg-white/[0.04] flex items-center justify-center text-[#d4d4d8] hover:bg-white/[0.04] hover:text-white transition-colors active:scale-95"
           aria-label="Back to home"
         >
           <ArrowLeft size={20} />
         </Link>
-        <h1 className="text-lg font-bold text-pine-100 uppercase tracking-widest drop-shadow-sm truncate px-4">
+        <h1 className="text-lg font-bold text-[#d4d4d8] uppercase tracking-widest drop-shadow-sm truncate px-4">
           {t.title}
         </h1>
         <div className="w-10" />
@@ -125,42 +125,42 @@ export default function Method() {
         
         {/* Intro Section */}
         <section className="space-y-4">
-          <p className="text-pine-300 text-sm md:text-base leading-relaxed text-justify opacity-95">
+          <p className="text-[#d4d4d8]/80 text-sm md:text-base leading-relaxed text-justify opacity-95">
             {t.intro}
           </p>
         </section>
 
         {/* The Difference Section */}
-        <section className="bg-pine-900/30 border border-pine-700/40 shape-cloud-4 p-5 shadow-lg relative overflow-hidden">
+        <section className="bg-white/[0.04] border border-white/[0.05] shape-cloud-4 p-5 shadow-lg relative overflow-hidden">
           <div className="absolute top-0 left-0 w-1.5 h-full bg-teal-600/80 rounded-l-[2.5rem]" />
           <h2 className="text-[16px] font-bold text-teal-100 mb-3 drop-shadow-sm">
             {t.diffTitle}
           </h2>
-          <div className="text-pine-200/90 text-sm leading-relaxed whitespace-pre-wrap text-justify">
+          <div className="text-[#d4d4d8]/90 text-sm leading-relaxed whitespace-pre-wrap text-justify">
             {t.diffText}
           </div>
         </section>
 
         {/* Symbols Dictionary */}
         <section>
-          <h2 className="text-[18px] font-bold text-pine-100 mb-5 border-b border-pine-800/60 pb-2 uppercase tracking-wide">
+          <h2 className="text-[18px] font-bold text-[#d4d4d8] mb-5 border-b border-white/[0.05] pb-2 uppercase tracking-wide">
             {t.symbolsTitle}
           </h2>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {t.symbols.map((sym, idx) => (
               <div 
                 key={idx} 
-                className="bg-pine-800/40 border border-pine-700/50 p-4 rounded-3xl flex items-start gap-4 hover:bg-pine-800/60 transition-colors"
+                className="bg-white/[0.04] border border-white/[0.05] p-4 rounded-3xl flex items-start gap-4 hover:bg-white/[0.04] transition-colors"
                 style={{ animationDelay: `${idx * 100}ms` }}
               >
                 <div className="text-[32px] md:text-[40px] drop-shadow-md shrink-0 py-1">
                   {sym.icon}
                 </div>
                 <div>
-                  <h3 className="text-pine-100 font-bold text-[15px] mb-1">
+                  <h3 className="text-[#d4d4d8] font-bold text-[15px] mb-1">
                     {sym.name}
                   </h3>
-                  <p className="text-pine-300 text-[12px] leading-relaxed">
+                  <p className="text-[#d4d4d8]/80 text-[12px] leading-relaxed">
                     {sym.desc}
                   </p>
                 </div>
@@ -170,32 +170,32 @@ export default function Method() {
         </section>
 
         {/* Allegories Section */}
-        <section className="pt-4 border-t border-pine-800/60 mt-8">
-          <h2 className="text-[18px] font-bold text-pine-100 mb-5 border-b border-pine-800/60 pb-2 uppercase tracking-wide">
+        <section className="pt-4 border-t border-white/[0.05] mt-8">
+          <h2 className="text-[18px] font-bold text-[#d4d4d8] mb-5 border-b border-white/[0.05] pb-2 uppercase tracking-wide">
             {t.allegoriesTitle}
           </h2>
           
           <div className="space-y-6">
-            <div className="bg-pine-900/30 border border-pine-700/40 shape-cloud-5 p-5 shadow-lg relative overflow-hidden">
+            <div className="bg-white/[0.04] border border-white/[0.05] shape-cloud-5 p-5 shadow-lg relative overflow-hidden">
               <h3 className="text-[16px] font-bold text-amber-200 mb-3 drop-shadow-sm flex items-center gap-2">
                 <span>🐘🐒</span> {t.allegory1Title}
               </h3>
-              <p className="text-pine-200/90 text-sm leading-relaxed whitespace-pre-wrap text-justify mb-4">
+              <p className="text-[#d4d4d8]/90 text-sm leading-relaxed whitespace-pre-wrap text-justify mb-4">
                 {t.allegory1Text}
               </p>
-              <div className="pt-3 border-t border-pine-700/50 text-xs font-medium text-teal-300 leading-relaxed">
+              <div className="pt-3 border-t border-white/[0.05] text-xs font-medium text-teal-300 leading-relaxed">
                 ✨ {t.allegory1Lesson}
               </div>
             </div>
 
-            <div className="bg-pine-900/30 border border-pine-700/40 shape-cloud-6 p-5 shadow-lg relative overflow-hidden">
+            <div className="bg-white/[0.04] border border-white/[0.05] shape-cloud-6 p-5 shadow-lg relative overflow-hidden">
               <h3 className="text-[16px] font-bold text-blue-200 mb-3 drop-shadow-sm flex items-center gap-2">
                 <span>🚲</span> {t.allegory2Title}
               </h3>
-              <p className="text-pine-200/90 text-sm leading-relaxed whitespace-pre-wrap text-justify mb-4">
+              <p className="text-[#d4d4d8]/90 text-sm leading-relaxed whitespace-pre-wrap text-justify mb-4">
                 {t.allegory2Text}
               </p>
-              <div className="pt-3 border-t border-pine-700/50 text-xs font-medium text-teal-300 leading-relaxed">
+              <div className="pt-3 border-t border-white/[0.05] text-xs font-medium text-teal-300 leading-relaxed">
                 ✨ {t.allegory2Lesson}
               </div>
             </div>

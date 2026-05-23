@@ -10,18 +10,18 @@ import { useBinauralAudio } from '../hooks/useBinauralAudio';
 
 export const sleepTracks: any[] = [
   // Generative Nature
-  { id: 'rain-ambient', group: 'binaural', icon: CloudRain, label: { el: 'Ήρεμη Βροχή', en: 'Calm Rain' }, subtitle: { el: 'Οργανική γεννήτρια', en: 'Procedural generator' }, color: 'text-emerald-400', disableSynth: true, base: 0, beat: 0, ambientLayers: ['rain'] },
-  { id: 'ocean-ambient', group: 'binaural', icon: Waves, label: { el: 'Κύματα Ωκεανού', en: 'Ocean Waves' }, subtitle: { el: 'Οργανική γεννήτρια', en: 'Procedural generator' }, color: 'text-cyan-400', disableSynth: true, base: 0, beat: 0, ambientLayers: ['ocean'] },
-  { id: 'wind-ambient', group: 'binaural', icon: Wind, label: { el: 'Αέρας Βουνού', en: 'Mountain Wind' }, subtitle: { el: 'Οργανική γεννήτρια', en: 'Procedural generator' }, color: 'text-indigo-400', disableSynth: true, base: 0, beat: 0, ambientLayers: ['wind'] },
+  { id: 'rain-ambient', group: 'binaural', icon: CloudRain, label: { el: 'Ήρεμη Βροχή', en: 'Calm Rain' }, subtitle: { el: 'Φάσμα Ροζ/Καφέ Θορύβου (20Hz-20kHz)', en: 'Pink/Brown Noise Spectrum' }, color: 'text-emerald-400', disableSynth: true, base: 0, beat: 0, ambientLayers: ['rain'] },
+  { id: 'ocean-ambient', group: 'binaural', icon: Waves, label: { el: 'Κύματα Ωκεανού', en: 'Ocean Waves' }, subtitle: { el: 'Βαθύς Καφέ/Ροζ Θόρυβος (180Hz-800Hz)', en: 'Deep Brown/Pink Noise (180Hz-800Hz)' }, color: 'text-cyan-400', disableSynth: true, base: 0, beat: 0, ambientLayers: ['ocean'] },
+  { id: 'wind-ambient', group: 'binaural', icon: Wind, label: { el: 'Αέρας Βουνού', en: 'Mountain Wind' }, subtitle: { el: 'Ροζ/Λευκός Θόρυβος (500Hz-2800Hz)', en: 'Pink/White Noise Range (500Hz-2800Hz)' }, color: 'text-indigo-400', disableSynth: true, base: 0, beat: 0, ambientLayers: ['wind'] },
   
   // Mixed Binaural & Generative Nature
-  { id: 'sleep-963', group: 'binaural', icon: Moon, label: { el: 'Συχνότητα Ύπνου', en: 'Deep Sleep' }, subtitle: { el: '963Hz Τοπίο + Ωκεανός', en: '963Hz + Ocean' }, color: 'text-purple-400', disableSynth: false, base: 963, beat: 2.5, ambientLayers: ['ocean', 'wind'] },
-  { id: 'beta-pure', group: 'binaural', icon: Sparkles, label: { el: 'Ισοχρονικός Τόνος', en: 'Focus Beta' }, subtitle: { el: 'Beta 20Hz + Βροχή', en: 'Beta 20Hz + Rain' }, color: 'text-rose-400', disableSynth: false, base: 200, beat: 20, pulse: 20, ambientLayers: ['rain'] },
-  { id: 'theta-dream', group: 'binaural', icon: CloudRain, label: { el: 'Όνειρο Theta', en: 'Theta Dream' }, subtitle: { el: 'Όλα τα στοιχεία', en: 'All elements' }, color: 'text-fuchsia-400', disableSynth: false, base: 136.1, beat: 6.3, pulse: 0.1, ambientLayers: ['rain', 'ocean', 'wind'] },
+  { id: 'sleep-963', group: 'binaural', icon: Moon, label: { el: 'Συχνότητα Ύπνου', en: 'Deep Sleep' }, subtitle: { el: '963Hz + Ωκεανός / Delta: 2.5Hz', en: '963Hz + Ocean / Delta: 2.5Hz' }, color: 'text-purple-400', disableSynth: false, base: 963, beat: 2.5, ambientLayers: ['ocean', 'wind'] },
+  { id: 'beta-pure', group: 'binaural', icon: Sparkles, label: { el: 'Ισοχρονικός Τόνος', en: 'Focus Beta' }, subtitle: { el: 'Isochronic 20Hz + Βροχή / Beta: 13-30Hz', en: 'Isochronic 20Hz + Rain / Beta: 13-30Hz' }, color: 'text-rose-400', disableSynth: false, base: 200, beat: 20, pulse: 20, ambientLayers: ['rain'] },
+  { id: 'theta-dream', group: 'binaural', icon: CloudRain, label: { el: 'Όνειρο Theta', en: 'Theta Dream' }, subtitle: { el: '136.1Hz + Nature / Theta: 4-8Hz', en: '136.1Hz + Nature / Theta: 4-8Hz' }, color: 'text-fuchsia-400', disableSynth: false, base: 136.1, beat: 6.3, pulse: 0.1, ambientLayers: ['rain', 'ocean', 'wind'] },
 
   // Binaural Pure
-  { id: 'delta-pure', group: 'binaural', icon: Music, label: { el: 'Delta Κύματα', en: 'Delta Waves' }, subtitle: { el: 'Βαθύς Ύπνος (Σκέτα)', en: 'Deep Sleep (Pure)' }, color: 'text-slate-400', disableSynth: false, base: 100, beat: 2.5, pulse: 0.05, ambientLayers: [] },
-  { id: 'focus-pure', group: 'binaural', icon: Sparkles, label: { el: 'Εστίαση', en: 'Pure Focus' }, subtitle: { el: 'Καθαρό Beta', en: 'Pure Beta' }, color: 'text-amber-400', disableSynth: false, base: 144, beat: 14, pulse: 0, ambientLayers: [] },
+  { id: 'delta-pure', group: 'binaural', icon: Music, label: { el: 'Delta Κύματα', en: 'Delta Waves' }, subtitle: { el: 'Καθαρό Delta 2.5Hz / Εύρος: 1-4Hz', en: 'Pure Delta 2.5Hz / Range: 1-4Hz' }, color: 'text-slate-400', disableSynth: false, base: 100, beat: 2.5, pulse: 0.05, ambientLayers: [] },
+  { id: 'focus-pure', group: 'binaural', icon: Sparkles, label: { el: 'Εστίαση Beta', en: 'Pure Focus' }, subtitle: { el: 'Καθαρό Beta 14Hz / Εύρος: 13-30Hz', en: 'Pure Beta 14Hz / Range: 13-30Hz' }, color: 'text-amber-400', disableSynth: false, base: 144, beat: 14, pulse: 0, ambientLayers: [] },
 ];
 
 export default function Sanctuary() {
