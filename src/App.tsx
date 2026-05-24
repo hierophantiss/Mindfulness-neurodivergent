@@ -14,6 +14,7 @@ import PracticeMovement from './pages/PracticeMovement';
 import PracticeMicrodoses from './pages/PracticeMicrodoses';
 import PracticeBreath from './pages/PracticeBreath';
 import PracticeSection from './components/PracticeSection';
+import PracticeSwaying from './pages/PracticeSwaying';
 import Journal from './pages/Journal';
 import Faq from './pages/Faq';
 import GenericExercise from './pages/GenericExercise';
@@ -56,6 +57,7 @@ function AppContent() {
           <Route path="program/week/:weekId" element={<ProgramWeek />} />
           <Route path="practice" element={<Practice />} />
           <Route path="practice/grounding" element={<PracticeSection />} />
+          <Route path="practice/swaying" element={<PracticeSwaying />} />
           <Route path="practice/movement" element={<PracticeMovement />} />
           <Route path="practice/microdoses" element={<PracticeMicrodoses />} />
           <Route path="practice/breath/:id" element={<PracticeBreath />} />

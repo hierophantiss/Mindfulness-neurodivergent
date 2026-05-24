@@ -62,6 +62,30 @@ export default function Practice() {
           </div>
         </Link>
 
+        {/* Swaying Card */}
+        <Link
+          to="/practice/swaying"
+          className="group relative block p-8 md:p-10 shape-cloud-3 glass-card transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-teal-500/20"
+        >
+          <div className="absolute top-1/2 right-1/2 w-64 h-64 bg-teal-500/5 blur-[80px] -mr-32 -mt-32 rounded-full pointer-events-none transition-transform group-hover:scale-150 duration-1000" />
+          
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-8 relative z-10">
+            <div className="w-20 h-20 shrink-0 shape-cloud-4 bg-teal-400/10 flex items-center justify-center text-teal-400 border border-teal-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
+              <Move size={36} strokeWidth={1.5} />
+            </div>
+            <div className="space-y-3 text-center md:text-left flex-1">
+              <h3 className="text-3xl md:text-4xl font-serif text-white/90 italic">
+                {language === 'en' ? 'Mindful Swaying' : 'Ενσυνείδητη Αιώρηση (Swaying)'}
+              </h3>
+              <p className="text-white/50 font-sans max-w-xl text-[15px] md:text-[17px] leading-relaxed">
+                {language === 'en' 
+                 ? 'A deep rhythmic swaying practice integrating Web Audio metronome to anchor your nervous system.' 
+                 : 'Μια βαθιά ρυθμική αιώρηση με μετρονόμο για τη γείωση του νευρικού συστήματος.'}
+              </p>
+            </div>
+          </div>
+        </Link>
+
         {/* Microdoses Card */}
         <Link
           to="/practice/microdoses"
