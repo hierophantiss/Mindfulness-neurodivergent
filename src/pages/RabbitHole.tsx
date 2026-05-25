@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { BookOpen, ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useSearchParams, useParams } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 
 import { dzogchenArticle } from '../data/dzogchenArticle';
+import { neverForceArticle } from '../data/neverForceArticle';
 
 export default function RabbitHole() {
+  const { articleId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -16,29 +18,42 @@ export default function RabbitHole() {
   
   const setActiveArticle = (id: string | null) => {
     setActiveArticleState(id);
-    const newParams = new URLSearchParams(searchParams);
+    setCurrentPage(0);
     if (id) {
-      newParams.set('article', id);
+      if (articleId !== id) {
+        navigate(`../rabbithole/${id}`, { replace: true });
+      }
     } else {
-      newParams.delete('article');
+      navigate(`../rabbithole`, { replace: true });
     }
-    setSearchParams(newParams, { replace: true });
   };
   
   const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
-    const articleFromUrl = searchParams.get('article');
-    if (articleFromUrl) {
-      setActiveArticleState(articleFromUrl);
-      setCurrentPage(0);
-    } else if (location.state && (location.state as any).activeArticle) {
-      setActiveArticle((location.state as any).activeArticle);
-      setCurrentPage(0);
-      // Clear the state so it doesn't reopen upon refresh
-      navigate(location.pathname + '?article=' + (location.state as any).activeArticle, { replace: true, state: {} });
+    // If it's a sub-route (e.g. /rabbithole/the-goose-is-out)
+    if (articleId) {
+      if (activeArticle !== articleId) {
+        setActiveArticleState(articleId);
+        setCurrentPage(0);
+      }
+    } else {
+      // Backwards compatibility for ?article= queries
+      const articleFromUrl = searchParams.get('article');
+      if (articleFromUrl) {
+        setActiveArticleState(articleFromUrl);
+        setCurrentPage(0);
+        navigate(`../rabbithole/${articleFromUrl}`, { replace: true });
+      } else if (location.state && (location.state as any).activeArticle) {
+        const stateArticle = (location.state as any).activeArticle;
+        setActiveArticleState(stateArticle);
+        setCurrentPage(0);
+        navigate(`../rabbithole/${stateArticle}`, { replace: true, state: {} });
+      } else {
+        setActiveArticleState(null);
+      }
     }
-  }, [location.state, location.pathname, navigate, searchParams]);
+  }, [articleId, location.state, navigate, searchParams]);
   
   const touchStartX = useRef(0);
 
@@ -51,6 +66,12 @@ export default function RabbitHole() {
   };
 
   const articles = [
+    {
+      id: neverForceArticle.id,
+      title: language === 'en' ? neverForceArticle.title.en : neverForceArticle.title.el,
+      author: language === 'en' ? neverForceArticle.author.en : neverForceArticle.author.el,
+      pages: language === 'en' ? neverForceArticle.pagesEn : neverForceArticle.pagesEl
+    },
     {
       id: dzogchenArticle.id,
       title: language === 'en' ? dzogchenArticle.title.en : dzogchenArticle.title.el,

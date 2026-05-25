@@ -9,7 +9,4 @@ createRoot(document.getElementById('root')!).render(
   </StrictMode>,
 );
 
-// Dispatch the event that prerender.js is waiting for
-setTimeout(() => {
-  document.dispatchEvent(new Event('app-rendered'));
-}, 500);
+document.dispatchEvent(new Event('app-rendered'));

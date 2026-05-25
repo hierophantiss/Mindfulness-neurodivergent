@@ -51,6 +51,7 @@ function AppContent() {
           <Route path="dashboard" element={<Navigate to="/" replace />} />
           <Route path="method" element={<Method />} />
           <Route path="rabbithole" element={<RabbitHole />} />
+          <Route path="rabbithole/:articleId" element={<RabbitHole />} />
           <Route path="chapters" element={<Chapters />} />
           <Route path="chapters/:id" element={<ChapterDetail />} />
           <Route path="program" element={<Program />} />
