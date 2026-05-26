@@ -32,6 +32,7 @@ import { TimeProvider } from './contexts/TimeContext';
 import { RewardProvider } from './contexts/RewardContext';
 import { ProgressProvider } from './contexts/ProgressContext';
 import { AudioProvider } from './contexts/AudioContext';
+import { ActivityTrackerProvider } from './contexts/ActivityTrackerContext';
 
 function AppContent() {
   const isIframe = window.self !== window.top;
@@ -83,11 +84,13 @@ export default function App() {
           <ThemeProvider>
             <RewardProvider>
               <ProgressProvider>
-                <AudioProvider>
-                  <AccessibilityProvider>
-                    <AppContent />
-                  </AccessibilityProvider>
-                </AudioProvider>
+                <ActivityTrackerProvider>
+                  <AudioProvider>
+                    <AccessibilityProvider>
+                      <AppContent />
+                    </AccessibilityProvider>
+                  </AudioProvider>
+                </ActivityTrackerProvider>
               </ProgressProvider>
             </RewardProvider>
           </ThemeProvider>

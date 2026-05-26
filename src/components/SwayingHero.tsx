@@ -60,8 +60,8 @@ export default function SwayingHero({ tickCount, tempo }: SwayingHeroProps) {
   const isExhaling = phase === 1;
   const targetBreathing = isExhaling ? 0.98 : 1.03;
 
-  const transitionConfig = { duration: tempo / 1000, ease: "easeInOut" };
-  const yTransitionConfig = { duration: tempo / 1000, times: [0, 0.5, 1], ease: "easeInOut" };
+  const transitionConfig = { duration: tempo / 1000, ease: "easeInOut" as const };
+  const yTransitionConfig = { duration: tempo / 1000, times: [0, 0.5, 1], ease: "easeInOut" as const };
 
   // Infinity symbol rainbow gradient colors
   const rainbowStops = [

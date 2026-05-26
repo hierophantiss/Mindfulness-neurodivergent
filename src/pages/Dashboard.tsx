@@ -10,6 +10,7 @@ import { motion } from 'motion/react';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { useBinauralAudio } from '../hooks/useBinauralAudio';
 import InfoModal from '../components/InfoModal';
+import ProgressHeroCanvas from '../components/ProgressHeroCanvas';
 
 const glassCardClasses = "backdrop-blur-[4px] bg-white/[0.04] border border-white/[0.1] rounded-[16px]";
 
@@ -193,11 +194,16 @@ export default function Dashboard() {
         </div>
 
         {/* 2. Primary Dashboard Header, Quote, and Stats (Always Visible) */}
-        <div className="flex items-center gap-2 mt-2">
-          <h1 className="text-[30px] font-serif italic font-light leading-none">
+        <div className="flex items-center gap-2 mt-2 font-serif italic font-light leading-none">
+          <h1 className="text-[30px]">
             {greeting}
           </h1>
           <Sparkles size={22} className="text-white opacity-80" strokeWidth={1.5} />
+        </div>
+
+        {/* Hero Visual State Canvas */}
+        <div className="mt-2 w-full">
+          <ProgressHeroCanvas />
         </div>
 
         {/* Removed Quote Card, Streak Row, and Companion Widget and moved them to the Floating Companion Panel as per user request */}

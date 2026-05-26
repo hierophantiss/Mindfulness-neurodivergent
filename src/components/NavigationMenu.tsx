@@ -117,7 +117,7 @@ export default function NavigationMenu() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.95 }}
             transition={{ duration: 0.4 }}
-            className="fixed top-6 left-1/2 -translate-x-1/2 z-[10000] bg-pine-800/90 border border-white/10 text-white text-sm font-medium px-6 py-3 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-xl whitespace-nowrap text-center max-w-[90vw] truncate"
+            className="fixed top-6 left-1/2 -translate-x-1/2 z-[10000] bg-zinc-800/90 border border-white/10 text-white text-sm font-medium px-6 py-3 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-xl whitespace-nowrap text-center max-w-[90vw] truncate"
           >
             {toastMessage}
           </motion.div>
@@ -125,54 +125,58 @@ export default function NavigationMenu() {
       </AnimatePresence>
 
       {/* Bottom Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#050d1a]/80 backdrop-blur-xl border-t-[0.5px] border-white/[0.06] pb-[env(safe-area-inset-bottom)]">
-        <div className="flex items-center justify-around px-2 py-3">
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#070b14]/90 backdrop-blur-2xl border-t border-white/10 pb-[env(safe-area-inset-bottom)] shadow-[0_-10px_40px_rgba(0,0,0,0.3)]">
+        <div className="flex items-center justify-around px-3 py-2 max-w-md mx-auto">
           {mainNavItems.map((item) => {
             const isActive = location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path));
             return (
-              <button
+              <motion.button
                 key={item.path}
                 onClick={() => handleNav(item.path)}
-                className={`flex flex-col items-center justify-center gap-1 transition-all duration-300 relative py-1 flex-1 active:scale-95 ${
+                whileHover={{ y: -2, scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`flex flex-col items-center justify-center gap-1.5 transition-all duration-300 relative py-2.5 px-2 rounded-2xl flex-1 ${
                   isActive
-                    ? 'text-[#4a9eca]'
-                    : 'text-zinc-500 hover:text-zinc-400'
+                    ? 'text-teal-300'
+                    : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.03]'
                 }`}
               >
-                <div className={`relative z-10 transition-transform duration-300 ${isActive ? 'scale-110' : 'scale-100'}`}>
+                <div className={`relative z-10 transition-all duration-300 ${isActive ? 'scale-110 drop-shadow-[0_0_8px_rgba(45,212,191,0.5)]' : 'scale-100'}`}>
                   {item.icon}
                 </div>
-                <span className={`text-[9px] font-medium tracking-wide transition-all duration-300 font-sans ${isActive ? 'opacity-100' : 'opacity-80'}`}>
+                <span className={`text-[10px] font-medium tracking-wide transition-all duration-300 font-sans ${isActive ? 'opacity-100 drop-shadow-md' : 'opacity-80'}`}>
                   {language === 'en' ? item.labelEn : item.labelEl}
                 </span>
                 
                 {isActive && (
                   <motion.div 
-                    layoutId="active-nav-glow" 
-                    className="absolute -bottom-1 w-1 h-1 rounded-full bg-teal-400 shadow-[0_0_12px_rgba(45,212,191,1)]" 
+                    layoutId="active-nav-bg" 
+                    className="absolute inset-0 rounded-2xl bg-teal-500/10 pointer-events-none" 
                     transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                   />
                 )}
-              </button>
+              </motion.button>
             );
           })}
           
           
-          <button
+          <motion.button
             onClick={() => setIsOpen(true)}
-            className={`flex flex-col items-center justify-center gap-1 transition-all duration-300 relative py-1 flex-1 active:scale-95 ${
+            whileHover={{ y: -2, scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className={`flex flex-col items-center justify-center gap-1.5 transition-all duration-300 relative py-2.5 px-2 rounded-2xl flex-1 ${
               isOpen
-                ? 'text-[#4a9eca]'
-                : 'text-zinc-500 hover:text-zinc-400'
+                ? 'text-teal-300 bg-teal-500/10'
+                : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.03]'
             }`}
           >
-            <div className={`transition-transform duration-300 ${isOpen ? 'scale-110 rotate-90' : 'scale-100'}`}>
+            <div className={`transition-all duration-300 relative z-10 ${isOpen ? 'scale-110 rotate-90 drop-shadow-[0_0_8px_rgba(45,212,191,0.5)]' : 'scale-100'}`}>
               <LayoutGrid size={18} />
             </div>
-            <span className={`text-[9px] font-medium tracking-wide transition-all duration-300 font-sans ${isOpen ? 'opacity-100' : 'opacity-80'}`}>
+            <span className={`text-[10px] font-medium tracking-wide transition-all duration-300 font-sans ${isOpen ? 'opacity-100 drop-shadow-md' : 'opacity-80'}`}>
               {language === 'en' ? 'More' : 'Μενού'}
             </span>
-          </button>
+          </motion.button>
         </div>
       </div>
 
@@ -184,7 +188,7 @@ export default function NavigationMenu() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-pine-950/60 backdrop-blur-sm z-[9998]"
+              className="fixed inset-0 bg-[#0f1117]/70 backdrop-blur-sm z-[9998]"
               onClick={() => setIsOpen(false)}
             />
             
@@ -193,15 +197,15 @@ export default function NavigationMenu() {
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed bottom-0 left-0 right-0 max-h-[85vh] bg-gradient-to-t from-pine-950/95 to-[#0a1316] backdrop-blur-2xl border-t border-pine-800/50 z-[9999] shadow-[0_-20px_40px_rgba(0,0,0,0.5)] flex flex-col rounded-t-[2rem]"
+              className="fixed bottom-0 left-0 right-0 max-h-[85vh] bg-[#1a1d27]/98 backdrop-blur-2xl border-t border-white/10 z-[9999] shadow-[0_-20px_50px_rgba(0,0,0,0.6)] flex flex-col rounded-t-[2rem]"
             >
-              <div className="p-4 flex justify-between items-center border-b border-pine-800/40">
-                <span className="font-bold text-pine-100 tracking-wider text-sm uppercase px-4">
+              <div className="p-4 flex justify-between items-center border-b border-white/[0.08]">
+                <span className="font-bold text-zinc-200 tracking-wider text-sm uppercase px-4">
                   {language === 'en' ? 'More Options' : 'Περισσότερα'}
                 </span>
                 <button 
                   onClick={() => setIsOpen(false)}
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-pine-300 hover:bg-pine-800 hover:text-white transition-colors"
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-zinc-400 hover:bg-white/10 hover:text-white transition-colors"
                 >
                   <X size={20} />
                 </button>
@@ -210,16 +214,18 @@ export default function NavigationMenu() {
               <div className="flex-[1] overflow-y-auto py-6 px-6 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto w-full content-start">
                 {moreItems.map((item) => {
                   return (
-                    <button
+                    <motion.button
                       key={item.path}
                       onClick={() => handleNav(item.path)}
-                      className="flex flex-col items-center gap-3 p-5 rounded-3xl transition-all bg-white/[0.03] hover:bg-white/[0.08] text-pine-100 border border-white/[0.05] hover:border-white/10"
+                      whileHover={{ y: -2, scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="flex flex-col items-center gap-3 p-5 rounded-3xl transition-all bg-white/[0.03] hover:bg-white/[0.08] text-zinc-200 border border-white/[0.05] hover:border-white/10"
                     >
                       <span className="text-3xl">{item.icon}</span>
                       <span className="font-medium tracking-wide text-xs text-center">
                         {language === 'en' ? item.labelEn : item.labelEl}
                       </span>
-                    </button>
+                    </motion.button>
                   );
                 })}
               </div>
@@ -229,14 +235,14 @@ export default function NavigationMenu() {
                 <div className="bg-white/[0.03] border border-white/[0.05] rounded-3xl p-4 flex flex-col gap-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center bg-pine-900/50 text-pine-300">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white/[0.05] text-zinc-300">
                         {reduceMotion ? <EyeOff size={18} /> : <Eye size={18} />}
                       </div>
                       <div className="flex flex-col">
-                        <span className="text-sm font-medium text-pine-100">
+                        <span className="text-sm font-medium text-zinc-200">
                           {language === 'en' ? 'Reduce Motion' : 'Μείωση Κίνησης'}
                         </span>
-                        <span className="text-[10px] text-pine-400">
+                        <span className="text-[10px] text-zinc-400">
                           {language === 'en' ? 'Disable breathing animations' : 'Απενεργοποίηση εφέ αναπνοής'}
                         </span>
                       </div>
@@ -257,14 +263,14 @@ export default function NavigationMenu() {
                   
                   <div className="flex items-center justify-between">
                      <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center bg-pine-900/50 text-pine-300">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white/[0.05] text-zinc-300">
                         <Database size={18} />
                       </div>
                       <div className="flex flex-col">
-                        <span className="text-sm font-medium text-pine-100">
+                        <span className="text-sm font-medium text-zinc-200">
                           {language === 'en' ? 'Your Data' : 'Τα Δεδομένα σας'}
                         </span>
-                        <span className="text-[10px] text-pine-400">
+                        <span className="text-[10px] text-zinc-400">
                           {language === 'en' ? 'Save or restore progress' : 'Αποθήκευση ή επαναφορά προόδου'}
                         </span>
                       </div>
@@ -330,10 +336,10 @@ export default function NavigationMenu() {
                          <Sparkles size={18} />
                        </div>
                        <div className="flex flex-col">
-                         <span className="text-sm font-medium text-pine-100">
+                         <span className="text-sm font-medium text-zinc-200">
                            {language === 'en' ? 'App Intention' : 'Τρέχουσες Ανάγκες'}
                          </span>
-                         <span className="text-[10px] text-pine-400">
+                         <span className="text-[10px] text-zinc-400">
                            {language === 'en' ? 'Change your main focus' : 'Αλλαγή στόχου'}
                          </span>
                        </div>
@@ -360,7 +366,7 @@ export default function NavigationMenu() {
                               <RotateCcw size={18} />
                             </div>
                             <div className="flex flex-col">
-                              <span className="text-sm font-medium text-pine-100">
+                              <span className="text-sm font-medium text-zinc-200">
                                 {language === 'en' ? 'Clear All Data (Testing)' : 'Επαναφορά Εφαρμογής'}
                               </span>
                               <span className="text-[10px] text-rose-400">
@@ -451,25 +457,25 @@ export default function NavigationMenu() {
                   </button>
               </div>
 
-              <div className="flex justify-center gap-6 items-center p-6 border-t border-pine-800/40 mt-auto pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
+              <div className="flex justify-center gap-6 items-center p-6 border-t border-white/[0.08] mt-auto pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
                 <button 
                   onClick={showInfo} 
                   title={language === 'el' ? 'Πληροφορίες' : 'Info'}
-                  className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 text-pine-300 hover:bg-white/10 hover:text-white transition-colors border border-white/5"
+                  className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 text-zinc-300 hover:bg-white/10 hover:text-white transition-colors border border-white/5"
                 >
                   <Info size={20} />
                 </button>
                 <button 
                   onClick={() => toggleMaster()}
                   title={language === 'el' ? 'Μικτής' : 'Mixer'}
-                  className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 text-pine-300 hover:bg-white/10 hover:text-white transition-colors border border-white/5"
+                  className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 text-zinc-300 hover:bg-white/10 hover:text-white transition-colors border border-white/5"
                 >
                   {masterPlaying ? <Music size={20} className="text-teal-400" /> : <Music size={20} />}
                 </button>
                 <button 
                   onClick={() => showToast(language === 'el' ? 'Λειτουργία σύντομα!' : 'Feature coming soon!')}
                   title={language === 'el' ? 'Ειδοποιήσεις' : 'Notifications'}
-                  className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 text-pine-300 hover:bg-white/10 hover:text-white transition-colors border border-white/5"
+                  className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 text-zinc-300 hover:bg-white/10 hover:text-white transition-colors border border-white/5"
                 >
                   <Bell size={20} />
                 </button>

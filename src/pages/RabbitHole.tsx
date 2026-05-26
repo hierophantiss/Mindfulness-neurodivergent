@@ -21,10 +21,10 @@ export default function RabbitHole() {
     setCurrentPage(0);
     if (id) {
       if (articleId !== id) {
-        navigate(`../rabbithole/${id}`, { replace: true });
+        navigate(`/rabbithole/${id}`, { replace: true });
       }
     } else {
-      navigate(`../rabbithole`, { replace: true });
+      navigate(`/rabbithole`, { replace: true });
     }
   };
   
@@ -43,12 +43,12 @@ export default function RabbitHole() {
       if (articleFromUrl) {
         setActiveArticleState(articleFromUrl);
         setCurrentPage(0);
-        navigate(`../rabbithole/${articleFromUrl}`, { replace: true });
+        navigate(`/rabbithole/${articleFromUrl}`, { replace: true });
       } else if (location.state && (location.state as any).activeArticle) {
         const stateArticle = (location.state as any).activeArticle;
         setActiveArticleState(stateArticle);
         setCurrentPage(0);
-        navigate(`../rabbithole/${stateArticle}`, { replace: true, state: {} });
+        navigate(`/rabbithole/${stateArticle}`, { replace: true, state: {} });
       } else {
         setActiveArticleState(null);
       }

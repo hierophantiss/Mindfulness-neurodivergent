@@ -11,6 +11,7 @@ import { useAccessibility } from '../hooks/useAccessibility';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useReward } from '../contexts/RewardContext';
 import { useProgress } from '../contexts/ProgressContext';
+import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 
 export default function PracticeBreath() {
   const { id } = useParams();
@@ -19,6 +20,7 @@ export default function PracticeBreath() {
   const { reduceMotion } = useAccessibility();
   const { triggerReward } = useReward();
   const { markBreathComplete } = useProgress();
+  const { logActivity } = useActivityTracker();
   
   const currentPatternId = id || '4-2-6-1';
   const pattern = BREATH_PATTERNS.find(p => p.id === currentPatternId) || BREATH_PATTERNS[0];
@@ -34,6 +36,52 @@ export default function PracticeBreath() {
   const [phaseSeconds, setPhaseSeconds] = useState(1);
   const phaseStartRef = useRef<number>(Date.now());
   const sessionIdRef = useRef<number>(0);
+  
+  // Activity Tracking
+  const sessionStartTimeRef = useRef<number | null>(null);
+  const currentCyclesRef = useRef(cycles);
+
+  useEffect(() => {
+    currentCyclesRef.current = cycles;
+  }, [cycles]);
+
+  useEffect(() => {
+    if (running) {
+      if (!sessionStartTimeRef.current) {
+        sessionStartTimeRef.current = Date.now();
+      }
+    } else {
+      if (sessionStartTimeRef.current) {
+        const duration = Math.round((Date.now() - sessionStartTimeRef.current) / 1000);
+        if (duration >= 15) {
+          logActivity({
+            category: 'breath',
+            itemId: currentPatternId,
+            durationSeconds: duration,
+            completed: currentCyclesRef.current > 2
+          });
+        }
+        sessionStartTimeRef.current = null;
+      }
+    }
+  }, [running, logActivity, currentPatternId]);
+
+  useEffect(() => {
+    return () => {
+      // Log on unmount if it was running
+      if (sessionStartTimeRef.current) {
+        const duration = Math.round((Date.now() - sessionStartTimeRef.current) / 1000);
+        if (duration >= 15) {
+          logActivity({
+            category: 'breath',
+            itemId: currentPatternId,
+            durationSeconds: duration,
+            completed: currentCyclesRef.current > 2
+          });
+        }
+      }
+    };
+  }, [logActivity, currentPatternId]);
 
   // Sleep Timer State
   const [showSleepTimer, setShowSleepTimer] = useState(false);
