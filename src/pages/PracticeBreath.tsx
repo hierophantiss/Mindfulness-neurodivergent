@@ -9,6 +9,7 @@ import { BREATH_PATTERNS } from '../data/breathPatterns';
 import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { motion, AnimatePresence } from 'framer-motion';
+import { RainbowInfinity } from '../components/RainbowInfinity';
 import { useReward } from '../contexts/RewardContext';
 import { useProgress } from '../contexts/ProgressContext';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
@@ -442,17 +443,46 @@ export default function PracticeBreath() {
                )}
              </AnimatePresence>
              
-             {/* Counter Text */}
-             <div className="z-10 font-sans font-semibold text-[3.5rem] tabular-nums drop-shadow-md">
-                {!running ? (
-                  currentPatternId !== '4-7-8' && <span className="text-white/40 mb-1 inline-block">∞</span>
-                ) : isInhale ? (
-                  <span className="text-sky-400">{phaseSeconds}</span>
-                ) : isExhale ? (
-                  <span className="text-emerald-400">{phaseSeconds}</span>
-                ) : (
-                  <span className="text-amber-300 transform -translate-y-1 inline-block">-</span>
-                )}
+             {/* Counter Text & Infinity */}
+             <div className="z-10 absolute inset-0 flex items-center justify-center">
+                <AnimatePresence>
+                  {running && (
+                    <motion.div 
+                      className="absolute inset-0 flex items-center justify-center pointer-events-none"
+                      initial={{ scale: 1, opacity: 0 }}
+                      animate={{ 
+                        scale: isInhale ? 0.7 : isExhale ? 1.5 : (phaseIdx === 1 ? 0.7 : 1.5),
+                        opacity: isInhale ? 0.4 : isExhale ? 0.8 : 0.5
+                      }}
+                      exit={{ opacity: 0, scale: 1 }}
+                      transition={{ 
+                        duration: pattern.phases[phaseIdx]?.dur / 1000 || 2, 
+                        ease: "easeInOut" 
+                      }}
+                    >
+                      <RainbowInfinity size={80} />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                
+                <div className="z-10 font-sans font-semibold text-[3.5rem] tabular-nums drop-shadow-md">
+                  {!running ? (
+                    currentPatternId !== '4-7-8' && (
+                      <motion.div 
+                        animate={{ scale: [1, 1.05, 1], opacity: [0.6, 1, 0.6] }} 
+                        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                      >
+                        <RainbowInfinity size={56} className="mb-2" />
+                      </motion.div>
+                    )
+                  ) : isInhale ? (
+                    <span className="text-sky-400">{phaseSeconds}</span>
+                  ) : isExhale ? (
+                    <span className="text-emerald-400">{phaseSeconds}</span>
+                  ) : (
+                    <span className="text-amber-300 transform -translate-y-1 inline-block">-</span>
+                  )}
+                </div>
              </div>
           </div>
         </div>
