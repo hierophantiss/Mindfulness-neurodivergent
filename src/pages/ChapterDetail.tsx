@@ -2,61 +2,29 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { CHAPTERS_DATA } from '../data/chapters';
 import { CHAPTER_TAKEAWAYS, CHAPTER_MICRO_CAT } from '../data/takeaways';
-import { ArrowLeft, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, Check, Zap, Sparkles } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, Check, Zap, Sparkles, Music } from 'lucide-react';
 import { useCompanion } from '../hooks/useCompanion';
 import { useLanguage } from '../hooks/useLanguage';
 import { useReward } from '../contexts/RewardContext';
 import { useProgress } from '../contexts/ProgressContext';
+import { useAudioMixer } from '../contexts/AudioContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../lib/utils';
 import InteractiveRenderer from '../components/InteractiveRenderer';
 
-const ExpandableParagraph = ({ text, index, language }: { text: string, index: number, language: "en" | "el" }) => {
-  const [isExpanded, setIsExpanded] = useState(index === 0);
-  
+const ZenParagraph = ({ text, index }: { text: string, index: number }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1, duration: 0.6 }}
-      className="relative group cursor-pointer"
-      onClick={() => setIsExpanded(!isExpanded)}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-10%" }}
+      transition={{ delay: index * 0.05, duration: 1.2, ease: "easeOut" }}
+      className="relative"
     >
       <div 
-        className={cn(
-          "transition-all duration-500 ease-out italic border-l-[3px] md:border-l-4 pl-4 md:pl-6",
-          isExpanded ? "border-teal-500/40" : "border-white/5 hover:border-teal-500/20"
-        )}
-      >
-        <div 
-          className={cn(
-            "relative transition-all duration-500 overflow-hidden",
-            !isExpanded ? "max-h-20 text-white/50 opacity-80 line-clamp-2 md:line-clamp-3" : "max-h-[1000px] text-white/70"
-          )}
-          dangerouslySetInnerHTML={{ __html: text }}
-        />
-        
-        <AnimatePresence>
-          {!isExpanded && (
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-[#050710] to-transparent pointer-events-none" 
-            />
-          )}
-        </AnimatePresence>
-      </div>
-      
-      <div className="mt-4 pl-4 md:pl-6 2xl:pl-8 flex items-center gap-1.5 transition-colors">
-        <div className="text-[10px] uppercase tracking-[0.2em] font-sans font-bold text-teal-400/30 group-hover:text-teal-400/60 transition-colors flex items-center gap-1.5">
-          {isExpanded ? (
-            <><ChevronUp size={14} /> {language === 'el' ? 'ΣΥΜΠΤΥΞΗ' : 'COLLAPSE'}</>
-          ) : (
-            <><ChevronDown size={14} /> {language === 'el' ? 'ΠΕΡΙΣΣΟΤΕΡΑ' : 'READ MORE'}</>
-          )}
-        </div>
-      </div>
+        className="font-sans font-light text-white/80 leading-loose prose-a:text-teal-400/80 hover:prose-a:text-teal-400 transition-colors duration-700"
+        dangerouslySetInnerHTML={{ __html: text }}
+      />
     </motion.div>
   );
 };
@@ -68,6 +36,7 @@ export default function ChapterDetail() {
   const { language } = useLanguage();
   const { markChapterComplete } = useProgress();
   const { triggerReward } = useReward();
+  const { masterPlaying, toggleMaster } = useAudioMixer();
   
   const currentLang = language === 'en' && CHAPTERS_DATA['en'] ? 'en' : 'el';
   const chapter = CHAPTERS_DATA[currentLang].find(c => c.num === Number(id));
@@ -165,11 +134,11 @@ export default function ChapterDetail() {
         </button>
         <div className="flex flex-col items-center">
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase">
+            <span className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase font-sans">
               {language === 'el' ? 'Κεφάλαιο' : 'Chapter'} {chapter.num}
             </span>
             {CHAPTER_MICRO_CAT[chapter.num] && (
-              <span className="text-[9px] font-bold tracking-widest px-2 py-0.5 rounded-full bg-white/5 text-white/30 border border-white/5 uppercase">
+              <span className="text-[9px] font-bold tracking-widest px-2 py-0.5 rounded-full bg-white/5 text-white/30 border border-white/5 uppercase font-sans">
                 {CHAPTER_MICRO_CAT[chapter.num]}
               </span>
             )}
@@ -180,14 +149,28 @@ export default function ChapterDetail() {
                 key={i} 
                 className={cn(
                   "h-1 rounded-full transition-all duration-500",
-                  i === page ? "w-6" : "w-2 bg-white/10"
+                  i === page ? "w-6" : "w-1 bg-white/10"
                 )}
                 style={{ backgroundColor: i === page ? chapter.hex : undefined }}
               />
             ))}
           </div>
         </div>
-        <div className="w-10 h-10" />
+        
+        {/* Discret Ambient Audio Toggle */}
+        <button 
+          onClick={toggleMaster}
+          title={language === 'el' ? 'Ηχητικό Τοπίο' : 'Ambient Audio'}
+          className={cn(
+            "rounded-full px-4 py-2 border flex items-center gap-2.5 transition-all duration-700 font-sans text-xs tracking-wider",
+            masterPlaying 
+              ? "text-teal-300 bg-teal-500/10 border-teal-500/20" 
+              : "text-white/40 bg-white/[0.02] border-white/5 hover:bg-white/[0.05] hover:text-white/70"
+          )}
+        >
+          <Music size={14} className={masterPlaying ? "animate-pulse" : ""} />
+          <span>{language === 'el' ? 'Ανάγνωση με Ήχο' : 'Ambient Reading'}</span>
+        </button>
       </header>
 
       {/* Main Content Area */}
@@ -207,39 +190,36 @@ export default function ChapterDetail() {
             transition={{ duration: 0.4, ease: "easeOut" }}
             className="flex-1 overflow-y-auto scrollbar-none flex flex-col"
           >
-            <div className="flex-1 flex flex-col justify-start min-h-full pt-4 pb-20 text-center sm:text-left max-w-3xl mx-auto w-full">
+            <div className="flex-1 flex flex-col justify-start min-h-full pt-4 pb-20 max-w-[65ch] mx-auto w-full">
             {curPage.type === 'intro' && (
               <div className="space-y-12">
                 <div className="space-y-6 text-center">
                    <div 
-                    className="w-24 h-24 rounded-3xl flex items-center justify-center text-5xl mx-auto backdrop-blur-md border border-white/10 group-hover:scale-110 transition-transform duration-700 shadow-2xl"
-                    style={{ backgroundColor: `${chapter.hex}25`, color: chapter.hex }}
+                    className="w-24 h-24 rounded-full flex items-center justify-center text-5xl mx-auto backdrop-blur-md border border-white/5 shadow-inner"
+                    style={{ backgroundColor: `${chapter.hex}15`, color: chapter.hex }}
                   >
                     {chapter.icon}
                   </div>
-                  <h1 className="text-5xl md:text-7xl font-serif text-white/90 italic leading-tight tracking-tight px-4">
+                  <h1 className="text-4xl md:text-6xl font-serif text-white/90 italic leading-tight tracking-tight px-4">
                     {chapter.title}
                   </h1>
-                  <p className="text-xl md:text-2xl text-white/50 max-w-2xl mx-auto leading-relaxed italic px-6 font-serif">
+                  <p className="text-lg md:text-xl text-white/50 leading-relaxed font-sans px-6 font-light">
                     {chapter.sub}
                   </p>
                 </div>
 
- <div className="glass-card shape-cloud-2 p-10 md:p-14 space-y-8 relative w-full text-left">
-                  <div className="absolute top-0 right-0 p-10 text-white/[0.03] -rotate-12 scale-125">
-                    {chapter.icon}
-                  </div>
-                  <div className="space-y-4">
-                    <span className="text-[10px] font-bold tracking-[0.3em] text-teal-400/60 uppercase">
+                <div className="py-12 space-y-6 relative w-full text-left">
+                  <div className="space-y-4 text-center">
+                    <span className="text-[10px] font-bold tracking-[0.3em] text-teal-400/60 uppercase font-sans">
                       {language === 'el' ? 'ΣΥΝΟΨΗ' : 'SUMMARY'}
                     </span>
-                    <p className="text-2xl md:text-4xl text-white/90 font-serif italic leading-[1.3] tracking-tight">
+                    <p className="text-2xl md:text-3xl text-white/90 font-serif italic leading-[1.6] tracking-tight">
                       {chapter.summary}
                     </p>
                   </div>
                   
                   {chapter.tldr && (
-                    <div className="pt-8 border-t border-white/5 italic text-white/50 text-lg md:text-xl font-sans leading-relaxed">
+                    <div className="pt-8 border-t border-white/5 text-center text-white/40 text-sm md:text-base font-sans leading-relaxed block px-8">
                       «{chapter.tldr}»
                     </div>
                   )}
@@ -248,53 +228,53 @@ export default function ChapterDetail() {
             )}
 
             {curPage.type === 'theory' && curPage.section && (
-              <article className="space-y-10 md:space-y-14 text-left w-full">
-                <header className="space-y-3">
-                  <span className="text-[10px] font-bold tracking-[0.3em] text-teal-400/80 uppercase">
+              <article className="space-y-12 md:space-y-16 text-left w-full">
+                <header className="space-y-4 text-center mt-8">
+                  <span className="text-[10px] font-bold tracking-[0.3em] text-teal-400/60 uppercase font-sans block">
                     {language === 'el' ? 'ΘΕΩΡΙΑ' : 'THEORY'}
                   </span>
-                  <h2 className="text-4xl md:text-6xl font-serif text-white/90 italic leading-[1.1] tracking-tight">
+                  <h2 className="text-3xl md:text-4xl font-serif text-white/90 italic leading-snug tracking-tight">
                     {curPage.section.title}
                   </h2>
                 </header>
 
-                <div className="space-y-8 text-white/70 text-xl md:text-2xl font-serif leading-relaxed">
+                <div className="space-y-8 text-base md:text-lg">
                   {curPage.section.paragraphs.map((par: string, p_idx: number) => (
-                    <ExpandableParagraph key={p_idx} text={par} index={p_idx} language={language} />
+                    <ZenParagraph key={p_idx} text={par} index={p_idx} />
                   ))}
                   
                   <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5, duration: 0.8 }}
-                    className="pt-12 space-y-8"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2, duration: 1 }}
+                    className="pt-16 space-y-8"
                   >
                       {curPage.section.interactive && (
-                        <InteractiveRenderer id={curPage.section.interactive} />
+                        <div className="my-12">
+                          <InteractiveRenderer id={curPage.section.interactive} asModal={true} />
+                        </div>
                       )}
 
                       {curPage.section.image && (
                         <img 
                           src={curPage.section.image} 
                           alt="" 
-                          className="w-full shape-cloud-4 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-1000 shadow-2xl" 
+                          className="w-full rounded-2xl opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-1000 my-10" 
                         />
                       )}
 
                       {/* Key Takeaways for this section or end of sections */}
- <div className="glass-card shape-cloud-5 p-8 space-y-6">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-teal-500/10 flex items-center justify-center text-teal-400/80">
-                            <Sparkles size={16} />
-                          </div>
-                          <span className="text-[10px] font-bold tracking-[0.2em] text-white/50 uppercase">
+                      <div className="border border-white/[0.03] bg-white/[0.01] rounded-3xl p-8 md:p-10 space-y-8 mt-16">
+                        <div className="flex items-center gap-3 justify-center text-center">
+                          <span className="text-[10px] font-bold tracking-[0.3em] text-white/30 uppercase font-sans">
                             {language === 'el' ? 'ΒΑΣΙΚΑ ΣΗΜΕΙΑ' : 'KEY POINTS'}
                           </span>
                         </div>
-                        <ul className="space-y-4">
+                        <ul className="space-y-6">
                           {CHAPTER_TAKEAWAYS[currentLang][chapter.num]?.slice(0, 3).map((take, idx) => (
                             <li key={idx} className="flex gap-4 items-start text-base md:text-lg text-white/60 font-serif italic leading-relaxed">
-                              <span className="text-teal-500/50 mt-1.5">•</span>
+                              <span className="text-white/20 mt-1.5">—</span>
                               {take}
                             </li>
                           ))}
@@ -306,46 +286,42 @@ export default function ChapterDetail() {
             )}
 
             {curPage.type === 'exercise' && (
-              <div className="space-y-16 text-left w-full">
+              <div className="space-y-16 text-left w-full mt-10">
                 {chapter.exercise && (
- <div className="glass-card shape-cloud-1 p-10 md:p-14 space-y-10">
-                    <header className="space-y-5">
-                      <div className="flex items-center gap-4">
-                         <div className="w-12 h-12 rounded-[1.25rem] bg-teal-500/5 border border-teal-500/10 flex items-center justify-center text-teal-400/60">
-                          <Zap size={24} />
-                        </div>
-                        <span className="text-[10px] font-bold tracking-[0.3em] text-teal-400/80 uppercase">
+                  <div className="border border-white/5 bg-white/[0.01] rounded-[2rem] p-8 md:p-12 space-y-10">
+                    <header className="space-y-4 text-center">
+                      <div className="flex items-center justify-center gap-4">
+                        <span className="text-[10px] font-bold tracking-[0.3em] text-teal-400/60 uppercase font-sans">
                           {language === 'el' ? 'ΠΡΑΚΤΙΚΗ ΑΣΚΗΣΗ' : 'PRACTICE EXERCISE'}
                         </span>
                       </div>
-                      <h2 className="text-4xl font-serif text-white/90 italic leading-tight tracking-tight">{chapter.exercise.title}</h2>
+                      <h2 className="text-3xl font-serif text-white/90 italic leading-tight tracking-tight">{chapter.exercise.title}</h2>
                     </header>
-                    <ul className="space-y-8">
+                    <ul className="space-y-8 pl-4">
                       {chapter.exercise.steps.map((step, idx) => (
-                        <li key={idx} className="flex gap-8 items-start group">
-                          <span className="w-10 h-10 rounded-[1rem] bg-white/[0.03] flex items-center justify-center text-[10px] font-bold text-white/40 group-hover:bg-white/10 group-hover:text-white/90 transition-all duration-700 shrink-0">
-                            0{idx + 1}
+                        <li key={idx} className="flex gap-6 items-start group">
+                          <span className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-[10px] font-sans font-bold text-white/40 shrink-0">
+                            {idx + 1}
                           </span>
-                          <span className="text-xl md:text-2xl text-white/70 font-sans leading-relaxed group-hover:text-white/90 transition-colors">{step}</span>
+                          <span className="text-lg md:text-xl text-white/70 font-sans font-light leading-relaxed group-hover:text-white/90 transition-colors pt-0.5">{step}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
                 )}
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {chapter.insight && (
- <div className="glass-card shape-cloud-3 p-10 space-y-6 relative group hover:border-teal-500/30 transition-all">
-                      <div className="absolute inset-0 bg-gradient-to-br from-teal-500/[0.02] to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                      <span className="text-[10px] font-bold text-teal-400/60 uppercase tracking-widest relative z-10 block">{language === 'el' ? 'ΕΠΙΓΝΩΣΗ' : 'INSIGHT'}</span>
-                      <p className="text-xl md:text-2xl text-white/80 font-serif italic leading-relaxed relative z-10">"{chapter.insight}"</p>
+                    <div className="border border-teal-500/10 p-8 rounded-3xl space-y-6 relative group hover:border-teal-500/20 transition-all">
+                      <div className="absolute inset-0 bg-gradient-to-br from-teal-500/[0.02] to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl"></div>
+                      <span className="text-[9px] font-bold text-teal-400/60 uppercase tracking-widest relative z-10 block font-sans">{language === 'el' ? 'ΕΠΙΓΝΩΣΗ' : 'INSIGHT'}</span>
+                      <p className="text-lg md:text-xl text-white/80 font-serif italic leading-relaxed relative z-10">"{chapter.insight}"</p>
                     </div>
                   )}
                   {chapter.reflection && (
- <div className="glass-card shape-cloud-6 p-10 space-y-6 relative group hover:border-yellow-500/20 transition-all">
-                      <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/[0.02] to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                      <span className="text-[10px] font-bold text-yellow-500/50 uppercase tracking-widest relative z-10 block">{language === 'el' ? 'ΑΝΑΣΤΟΧΑΣΜΟΣ' : 'REFLECTION'}</span>
-                      <p className="text-xl md:text-2xl text-white/80 font-sans font-light leading-relaxed relative z-10">{chapter.reflection}</p>
+                    <div className="border border-white/5 bg-white/[0.02] p-8 rounded-3xl space-y-6 relative group hover:bg-white/[0.04] transition-all">
+                      <span className="text-[9px] font-bold text-white/40 uppercase tracking-widest relative z-10 block font-sans">{language === 'el' ? 'ΑΝΑΣΤΟΧΑΣΜΟΣ' : 'REFLECTION'}</span>
+                      <p className="text-lg md:text-xl text-white/80 font-sans font-light leading-relaxed relative z-10">{chapter.reflection}</p>
                     </div>
                   )}
                 </div>

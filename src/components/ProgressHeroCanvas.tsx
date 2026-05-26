@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { useLanguage } from '../hooks/useLanguage';
+import { useTime } from '../contexts/TimeContext';
 import { motion } from 'framer-motion';
 
 // ─── Streak & Evolution Logic ───────────────────────────────────────────────
@@ -56,6 +57,9 @@ export default function ProgressHeroCanvas() {
   const { logs, getDailySummary } = useActivityTracker();
   const { reduceMotion } = useAccessibility();
   const { language } = useLanguage();
+  const { hour } = useTime();
+
+  const isNight = hour >= 18 || hour < 6;
 
   const [stages, setStages] = useState({
     grounding: false,
@@ -109,9 +113,82 @@ export default function ProgressHeroCanvas() {
     window.addEventListener('resize', resize);
     resize();
 
+    // ── Precompute Stars ──
+    const starCount = 80;
+    const stars = Array.from({ length: starCount }).map(() => ({
+      x: Math.random(),
+      y: Math.random(),
+      size: Math.random() * 1.3 + 0.2, // Slightly larger variation
+      speed: Math.random() * 0.5 + 0.1,
+      phase: Math.random() * Math.PI * 2,
+    }));
+
     const render = () => {
       time += reduceMotion ? 0 : 0.016;
       ctx.clearRect(0, 0, width, height);
+
+      if (isNight) {
+        // ── Starry Sky Background ──
+        ctx.save();
+        stars.forEach(star => {
+          const sx = star.x * width;
+          const sy = star.y * height;
+          // Twinkling effect
+          const opacity = 0.2 + ((Math.sin(time * star.speed + star.phase) + 1) / 2) * 0.6;
+          ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+          ctx.beginPath();
+          ctx.arc(sx, sy, star.size, 0, Math.PI * 2);
+          ctx.fill();
+          
+          // Very slow upward drift
+          if (!reduceMotion) {
+            star.y -= star.speed * 0.0003; // Slower drift
+            if (star.y < 0) star.y = 1;
+          }
+        });
+        ctx.restore();
+
+        // ── Northern Lights Waves ──
+        ctx.save();
+        for (let j = 0; j < 3; j++) {
+            ctx.beginPath();
+            ctx.moveTo(0, height);
+            for (let i = 0; i <= width; i += 20) {
+                const waveY = height * 0.35 + 
+                     Math.sin((i * 0.008) + time * (0.15 + j * 0.05)) * 40 +
+                     Math.cos((i * 0.004) - time * 0.1) * 35;
+                ctx.lineTo(i, waveY - j * 25);
+            }
+            ctx.lineTo(width, height);
+            ctx.lineTo(0, height);
+            ctx.closePath();
+            
+            const gradient = ctx.createLinearGradient(0, height * 0.1, 0, height);
+            if (j === 0) {
+                gradient.addColorStop(0, `rgba(16, 185, 129, ${0.12 + Math.sin(time * 0.8) * 0.04})`); // Emerald
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            } else if (j === 1) {
+                gradient.addColorStop(0, `rgba(6, 182, 212, ${0.1 + Math.cos(time * 0.7) * 0.04})`); // Cyan
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            } else {
+                gradient.addColorStop(0, `rgba(139, 92, 246, ${0.08 + Math.sin(time * 0.9) * 0.03})`); // Purple
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            }
+            
+            ctx.fillStyle = gradient;
+            ctx.fill();
+        }
+        ctx.restore();
+      } else {
+         // Soft glow for daytime (Deep Blue atmosphere)
+         ctx.save();
+         const dayGlow = ctx.createRadialGradient(width/2, height, height*0.1, width/2, height, height);
+         dayGlow.addColorStop(0, 'rgba(56, 189, 248, 0.1)'); // Sky blue subtle glow
+         dayGlow.addColorStop(1, 'rgba(15, 23, 42, 0)');
+         ctx.fillStyle = dayGlow;
+         ctx.fillRect(0, 0, width, height);
+         ctx.restore();
+      }
 
       const cx = width / 2;
       const cy = height / 1.85;
@@ -375,7 +452,7 @@ export default function ProgressHeroCanvas() {
       window.removeEventListener('resize', resize);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [stages, reduceMotion, evolutionStage, allActive]);
+  }, [stages, reduceMotion, evolutionStage, allActive, isNight]);
 
   // ─── Bilingual Marquee Messages ──────────────────────────────────────────────
   const messages = {
@@ -414,8 +491,10 @@ export default function ProgressHeroCanvas() {
     ? ['M', 'T', 'W', 'T', 'F', 'S', 'S']
     : ['Δ', 'Τ', 'Τ', 'Π', 'Π', 'Σ', 'Κ'];
 
+  const bgClass = isNight ? 'bg-[#0A0C10]' : 'bg-[#0B152A]';
+
   return (
-    <div className="w-full h-[260px] rounded-[16px] bg-[#0A0C10] border border-white/[0.05] relative overflow-hidden flex flex-col justify-end">
+    <div className={`w-full h-[260px] rounded-[16px] ${bgClass} border border-white/[0.05] relative overflow-hidden flex flex-col justify-end transition-colors duration-1000`}>
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
 
       {/* ── Top HUD: 4 axis indicators + streak ── */}

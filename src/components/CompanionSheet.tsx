@@ -101,6 +101,15 @@ function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClo
   const navigate = useNavigate();
   const { language } = useLanguage();
   const { reduceMotion } = useAccessibility();
+  const [intention, setIntention] = useState(localStorage.getItem('n_mindfulness_intention') || 'autism');
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setIntention(localStorage.getItem('n_mindfulness_intention') || 'autism');
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
   
   // Calculate specific dynamic messages
   const now = new Date();
@@ -371,29 +380,89 @@ function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClo
         </div>
       </div>
 
-      <div className="bg-stone-50/80 dark:bg-stone-800/60 p-1.5 rounded-2xl flex items-center border border-stone-200 dark:border-stone-700/80 shadow-sm">
-         <button 
-           onClick={() => updateCompanionData({ companionModeEnabled: true })}
-           className={cn("flex-1 py-3 px-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex justify-center items-center gap-1.5", companionData.companionModeEnabled ? "bg-white dark:bg-stone-700 shadow-sm text-teal-700 dark:text-teal-300" : "text-stone-500 hover:text-stone-700 dark:hover:text-stone-300")}
-         >
-           <span className="text-sm border border-stone-200 bg-stone-100 rounded-full w-6 h-6 flex items-center justify-center dark:border-stone-600 dark:bg-stone-800">🐱</span> {language === 'el' ? 'Ενεργος' : 'Active'}
-         </button>
-         <button 
-           onClick={() => updateCompanionData({ companionModeEnabled: false })}
-           className={cn("flex-1 py-3 px-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex justify-center items-center gap-1.5", !companionData.companionModeEnabled ? "bg-white dark:bg-stone-700 shadow-sm text-amber-700 dark:text-amber-400" : "text-stone-500 hover:text-stone-700 dark:hover:text-stone-300")}
-         >
-           <span className="text-sm border border-stone-200 bg-stone-100 rounded-full w-6 h-6 flex items-center justify-center dark:border-stone-600 dark:bg-stone-800">💤</span> {language === 'el' ? 'Ησυχος' : 'Quiet'}
-         </button>
+      <div className="bg-stone-50/50 dark:bg-stone-800/20 border border-stone-200/50 dark:border-stone-700/50 p-3 rounded-2xl space-y-3 mb-2">
+        <div className="flex items-center justify-between mb-1 ml-1 pr-1">
+          <span className="text-[10px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-widest">
+            {language === 'el' ? 'ΚΑΘΟΔΗΓΗΤΗΣ' : 'GUIDE'}
+          </span>
+          <button onClick={() => navTo('options')} className="text-[10px] text-stone-400 hover:text-stone-600 dark:hover:text-stone-300">
+            {language === 'el' ? 'ΡΥΘΜΙΣΕΙΣ' : 'SETTINGS'}
+          </button>
+        </div>
+
+        {/* Intention Toggle */}
+        <div className="flex bg-stone-200/50 dark:bg-stone-900/50 p-1 rounded-2xl relative w-full items-center">
+          <div 
+            className={cn(
+              "absolute top-1 bottom-1 w-[calc(50%-4px)] rounded-xl transition-all duration-300 ease-out shadow-sm",
+              intention === 'autism' 
+                ? "left-1 bg-white dark:bg-stone-700 border border-stone-200 dark:border-stone-600" 
+                : "left-[calc(50%+4px)] bg-white dark:bg-stone-700 border border-stone-200 dark:border-stone-600"
+            )} 
+          />
+          <button
+             onClick={() => {
+               localStorage.setItem('n_mindfulness_intention', 'autism');
+               setIntention('autism');
+               window.dispatchEvent(new Event('storage'));
+             }}
+             className={cn(
+               "relative z-10 flex-1 py-2 text-center rounded-xl text-[11px] font-bold tracking-wider transition-colors uppercase",
+               intention === 'autism'
+                 ? "text-teal-700 dark:text-teal-300"
+                 : "text-stone-500 hover:text-stone-700 dark:hover:text-stone-300"
+             )}
+          >
+            📖 {language === 'el' ? 'Μελετη' : 'Study'}
+          </button>
+          <button
+             onClick={() => {
+               localStorage.setItem('n_mindfulness_intention', 'adhd');
+               setIntention('adhd');
+               window.dispatchEvent(new Event('storage'));
+             }}
+             className={cn(
+               "relative z-10 flex-1 py-2 text-center rounded-xl text-[11px] font-bold tracking-wider transition-colors uppercase",
+               intention === 'adhd'
+                 ? "text-[#4a9eca] dark:text-[#6baee2]"
+                 : "text-stone-500 hover:text-stone-700 dark:hover:text-stone-300"
+             )}
+          >
+            ⚡ {language === 'el' ? 'Εξερευνηση' : 'Explore'}
+          </button>
+        </div>
+
+        {/* Companion Mode Switch */}
+        <div className="flex bg-stone-200/50 dark:bg-stone-900/50 p-1 rounded-2xl w-full items-center">
+           <button 
+             onClick={() => updateCompanionData({ companionModeEnabled: true })}
+             className={cn("flex-1 py-2 px-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex justify-center items-center gap-1.5", companionData.companionModeEnabled ? "bg-white dark:bg-stone-700 shadow-sm border border-stone-200 dark:border-stone-600 text-teal-700 dark:text-teal-300" : "text-stone-500 hover:text-stone-700 dark:hover:text-stone-300")}
+           >
+             <span className="text-[14px]">🐱</span> {language === 'el' ? 'Ενεργος' : 'Active'}
+           </button>
+           <button 
+             onClick={() => updateCompanionData({ companionModeEnabled: false })}
+             className={cn("flex-1 py-2 px-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex justify-center items-center gap-1.5", !companionData.companionModeEnabled ? "bg-white dark:bg-stone-700 shadow-sm border border-stone-200 dark:border-stone-600 text-amber-700 dark:text-amber-400" : "text-stone-500 hover:text-stone-700 dark:hover:text-stone-300")}
+           >
+             <span className="text-[14px]">💤</span> {language === 'el' ? 'Ησυχος' : 'Quiet'}
+           </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
          <button onClick={() => navTo('mood')} className="group flex flex-col items-center gap-2.5 p-4 bg-white dark:bg-stone-800/80 border border-stone-200/80 dark:border-stone-700/80 rounded-3xl hover:border-indigo-200 dark:hover:border-indigo-800 hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-all shadow-sm active:scale-[0.98]">
             <div className="w-12 h-12 flex items-center justify-center rounded-2xl bg-indigo-100/50 dark:bg-indigo-900/30 text-2xl group-hover:scale-110 transition-transform">💭</div>
-            <span className="font-semibold text-[13px] text-stone-700 dark:text-stone-300 tracking-wide">{language === 'el' ? 'Πώς νιώθεις;' : 'How do you feel?'}</span>
+            <div className="text-center">
+              <span className="font-semibold text-[13px] text-stone-700 dark:text-stone-300 tracking-wide block">{language === 'el' ? 'Πώς νιώθεις;' : 'How do you feel?'}</span>
+              <span className="text-[10px] text-stone-500 opacity-80">{language === 'el' ? 'Άμεσες Λύσεις' : 'Quick Resets'}</span>
+            </div>
          </button>
          <button onClick={() => navTo('hub')} className="group flex flex-col items-center gap-2.5 p-4 bg-white dark:bg-stone-800/80 border border-stone-200/80 dark:border-stone-700/80 rounded-3xl hover:border-emerald-200 dark:hover:border-emerald-800 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/20 transition-all shadow-sm active:scale-[0.98]">
             <div className="w-12 h-12 flex items-center justify-center rounded-2xl bg-emerald-100/50 dark:bg-emerald-900/30 text-2xl group-hover:scale-110 transition-transform">🧭</div>
-            <span className="font-semibold text-[13px] text-stone-700 dark:text-stone-300 tracking-wide">{language === 'el' ? 'Τι να κάνω;' : 'What to do?'}</span>
+            <div className="text-center">
+              <span className="font-semibold text-[13px] text-stone-700 dark:text-stone-300 tracking-wide block">{language === 'el' ? 'Πυξίδα' : 'Compass'}</span>
+              <span className="text-[10px] text-stone-500 opacity-80">{language === 'el' ? 'Εξερεύνηση' : 'Explore'}</span>
+            </div>
          </button>
       </div>
     </div>
@@ -571,6 +640,14 @@ function HubFlow({ goBack, onClose, navigate }: { goBack: () => void, onClose: (
 function OptionsFlow({ goBack, onClose }: { goBack: () => void, onClose: () => void }) {
   const { language } = useLanguage();
   const { companionData, updateCompanionData } = useCompanion();
+  const [intention, setIntention] = useState(localStorage.getItem('n_mindfulness_intention') || 'autism');
+
+  const handleIntentionChange = (newIntention: string) => {
+    localStorage.setItem('n_mindfulness_intention', newIntention);
+    setIntention(newIntention);
+    // Force a reload or UI update if necessary, though basic navigation is sufficient for now
+    window.dispatchEvent(new Event('storage'));
+  };
 
   return (
     <div className="space-y-6 animate-fade-in text-stone-800 dark:text-stone-200">
@@ -579,11 +656,47 @@ function OptionsFlow({ goBack, onClose }: { goBack: () => void, onClose: () => v
         <h2 className="font-display text-lg font-medium">{language === 'el' ? 'Ρυθμίσεις / Επιλογές' : 'Settings / Options'}</h2>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-6">
+         {/* Intention/Profile Switcher */}
+         <div className="space-y-3">
+           <span className="text-[11px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-wider ml-1">
+             {language === 'el' ? 'Προφίλ & Διαδρομή' : 'Profile & Pathway'}
+           </span>
+           <div className="grid grid-cols-2 gap-2">
+             <button
+               onClick={() => handleIntentionChange('autism')}
+               className={cn(
+                 "flex flex-col items-center justify-center text-center p-4 rounded-2xl border-2 transition-all cursor-pointer h-full",
+                 intention === 'autism'
+                   ? "border-teal-500 bg-teal-50 dark:bg-teal-900/20 text-stone-900 dark:text-stone-100"
+                   : "border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 text-stone-500 dark:text-stone-400 hover:border-stone-300"
+               )}
+             >
+               <span className="text-2xl mb-2">📖</span>
+               <span className="font-bold text-[13px]">{language === 'el' ? 'Μελέτη / Δομή' : 'Study / Structure'}</span>
+               <span className="text-[10px] mt-1 opacity-70">{language === 'el' ? 'Πρόγραμμα 8 Εβδομάδων' : '8-Week Program'}</span>
+             </button>
+
+             <button
+               onClick={() => handleIntentionChange('adhd')}
+               className={cn(
+                 "flex flex-col items-center justify-center text-center p-4 rounded-2xl border-2 transition-all cursor-pointer h-full",
+                 intention === 'adhd'
+                   ? "border-[#4a9eca] bg-[#4a9eca]/10 dark:bg-[#4a9eca]/20 text-stone-900 dark:text-stone-100"
+                   : "border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 text-stone-500 dark:text-stone-400 hover:border-stone-300"
+               )}
+             >
+               <span className="text-2xl mb-2">⚡</span>
+               <span className="font-bold text-[13px]">{language === 'el' ? 'Εξερεύνηση / Ασκήσεις' : 'Explore / Practice'}</span>
+               <span className="text-[10px] mt-1 opacity-70">{language === 'el' ? 'Άμεσες Λύσεις' : 'Quick Resets'}</span>
+             </button>
+           </div>
+         </div>
+
          {/* Companion Mode Switcher */}
          <div className="space-y-3">
            <span className="text-[11px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-wider ml-1">
-             {language === 'el' ? 'Λειτουργία Καθοδηγητή (Companion Mode)' : 'Companion Mode'}
+             {language === 'el' ? 'Λειτουργία Καθοδηγητή' : 'Companion Mode'}
            </span>
            
            <div className="grid gap-3">

@@ -59,7 +59,7 @@ export default function Layout() {
       {location.pathname !== '/landing_info' && <NavigationMenu />}
 
       {/* The Floating Companion */}
-      {!isIntroPage && <Companion />}
+      {!isIntroPage && !location.pathname.match(/^\/chapters\/\d+/) && <Companion />}
     </div>
   );
 }

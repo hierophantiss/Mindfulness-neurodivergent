@@ -1,6 +1,6 @@
 import { AudioEnabler } from '../components/AudioEnabler';
 import React, { useState, useEffect, useMemo } from 'react';
-import { Sparkles, BookOpen, ArrowRight, Heart, Brain, Moon, Zap, ChevronRight, Telescope, Info, Waves, Play, Eye, EyeOff, Cat } from 'lucide-react';
+import { Sparkles, BookOpen, ArrowRight, Heart, Brain, Moon, Zap, ChevronRight, Telescope, Info, Waves, Play, Eye, EyeOff, Cat, Calendar, Target } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useCompanion } from '../hooks/useCompanion';
@@ -24,6 +24,16 @@ export default function Dashboard() {
   const [currentDate, setCurrentDate] = useState('');
   const [activeMood, setActiveMood] = useState<number | null>(null);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
+  
+  const [intention, setIntention] = useState(localStorage.getItem('n_mindfulness_intention') || 'autism');
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setIntention(localStorage.getItem('n_mindfulness_intention') || 'autism');
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
   
   const handleMoodSelect = (moodId: number) => {
     setActiveMood(moodId);
@@ -208,141 +218,130 @@ export default function Dashboard() {
 
         {/* Removed Quote Card, Streak Row, and Companion Widget and moved them to the Floating Companion Panel as per user request */}
 
-        {/* 4. Main Content Card */}
-        <div className={cn(glassCardClasses, "p-6 flex flex-col gap-6 relative overflow-hidden")}>
-          <div className="absolute top-0 right-0 w-48 h-48 bg-[#4a9eca]/10 blur-[50px] rounded-full pointer-events-none -mr-10 -mt-10" />
-          
-          <div className="flex flex-col gap-4 relative z-10">
-            <div className="inline-flex items-center gap-2 self-start font-medium text-[#4a9eca]">
-              <BookOpen size={12} strokeWidth={2} />
-              <span className="text-[10px] tracking-[1.5px] uppercase font-bold">
-                {language === 'el' ? 'ΝΕΥΡΟΔΙΑΦΟΡΕΤΙΚΗ ΕΝΣΥΝΕΙΔΗΤΟΤΗΤΑ' : 'NEURODIVERGENT MINDFULNESS'}
-              </span>
-            </div>
-            
-            <h2 className="text-[26px] font-serif italic font-light leading-tight">
-              {language === 'el' ? 'Εγχειρίδιο Παρουσίας' : 'Presence Workbook'}
-            </h2>
-          </div>
-          
-          <div className="flex items-center justify-between relative z-10 mt-2">
-            <Link 
-              to="/chapters"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[12px] bg-white/[0.08] hover:bg-white/[0.12] border border-white/[0.1] text-sm font-medium transition-colors"
-            >
-              {language === 'el' ? 'Ξεκινήστε' : 'Start'}
-              <ArrowRight size={16} />
-            </Link>
-            
-            <div className="flex flex-col items-end gap-1.5 w-24">
-              <span className="text-[11px] font-semibold text-[#4a9eca] tracking-wide">
-                {language === 'el' ? 'Κεφ. 2 · 38%' : 'Ch. 2 · 38%'}
-              </span>
-              <div className="w-full h-[3px] bg-white/[0.08] rounded-full overflow-hidden">
-                <div className="h-full bg-[#4a9eca] rounded-full" style={{ width: '38%' }} />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* 5. Mood check-in row */}
-        <div className="flex items-center justify-between py-2">
-          <span className="text-[12px] text-white/40 font-medium">
-            {language === 'el' ? 'Πώς νιώθεις τώρα;' : 'How are you feeling?'}
-          </span>
-          <div className="flex items-center gap-3">
-            {moods.map((mood) => {
-              const isActive = activeMood === mood.id;
-              return (
-                <button 
-                  key={mood.id}
-                  onClick={() => handleMoodSelect(mood.id)}
-                  className={cn(
-                    "text-xl w-10 h-10 rounded-full flex items-center justify-center transition-all",
-                    isActive 
-                      ? "bg-[#4a9eca]/20 border border-[#4a9eca] shadow-[0_0_15px_rgba(74,158,202,0.3)]" 
-                      : "bg-white/[0.04] border border-white/[0.06] hover:bg-white/[0.08] opacity-70 hover:opacity-100"
-                  )}
-                >
-                  {mood.emoji}
-                </button>
-              )
-            })}
-          </div>
-        </div>
-
-        {/* 6. Recommended practices */}
-        <div className="flex flex-col gap-3">
+        {/* 4. The 3 Gentle Pillars */}
+        <div className="flex flex-col gap-3 mt-4">
           <span className="text-[10px] tracking-[1.5px] text-white/30 font-bold uppercase ml-1 mb-1">
-            {language === 'el' ? 'ΠΡΟΤΕΙΝΕΤΑΙ ΓΙΑ ΣΑΣ' : 'RECOMMENDED FOR YOU'}
+            {language === 'el' ? 'ΤΑ 3 ΒΗΜΑΤΑ ΣΟΥ' : 'YOUR 3 PATHWAYS'}
           </span>
-          
-          <Link to="/practice/breath/4-7-8" className={cn(glassCardClasses, "p-4 flex items-center justify-between group cursor-pointer active:scale-[0.98] transition-transform")}>
-            <div className="flex items-center gap-4">
+
+          {intention === 'autism' ? (
+            <>
+              {/* Program */}
+              <Link to="/program" className={cn(glassCardClasses, "p-4 flex items-center justify-between group cursor-pointer active:scale-[0.98] transition-transform relative overflow-hidden")}>
+                <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/10 blur-[40px] rounded-full pointer-events-none -mr-10 -mt-10" />
+                <div className="flex items-center gap-4 relative z-10">
+                  <div className="w-12 h-12 rounded-[14px] bg-teal-500/10 flex items-center justify-center text-teal-400">
+                    <Calendar size={20} strokeWidth={1.5} />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <h3 className="text-[17px] font-serif italic text-white/90">
+                      {language === 'el' ? 'Πρόγραμμα' : 'Program'}
+                    </h3>
+                    <span className="text-[10px] uppercase tracking-wider text-white/40 font-medium">
+                      {language === 'el' ? 'ΜΕΛΕΤΗ 8 ΕΒΔΟΜΑΔΩΝ' : '8-WEEK STUDY'}
+                    </span>
+                  </div>
+                </div>
+                <ChevronRight size={18} className="text-white/20 group-hover:text-white/60 transition-colors relative z-10" />
+              </Link>
+              
+              {/* Reading */}
+              <Link to="/chapters" className={cn(glassCardClasses, "p-4 flex items-center justify-between group cursor-pointer active:scale-[0.98] transition-transform relative overflow-hidden")}>
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[#4a9eca]/10 blur-[40px] rounded-full pointer-events-none -mr-10 -mt-10" />
+                <div className="flex items-center gap-4 relative z-10">
+                  <div className="w-12 h-12 rounded-[14px] bg-[#4a9eca]/10 flex items-center justify-center text-[#4a9eca]">
+                    <BookOpen size={20} strokeWidth={1.5} />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <h3 className="text-[17px] font-serif italic text-white/90">
+                      {language === 'el' ? 'Διάβασμα' : 'Reading'}
+                    </h3>
+                    <span className="text-[10px] uppercase tracking-wider text-white/40 font-medium">
+                      {language === 'el' ? 'ΤΟ ΕΓΧΕΙΡΙΔΙΟ ΤΗΣ ΠΑΡΟΥΣΙΑΣ' : 'THE PRESENCE WORKBOOK'}
+                    </span>
+                  </div>
+                </div>
+                <ChevronRight size={18} className="text-white/20 group-hover:text-white/60 transition-colors relative z-10" />
+              </Link>
+            </>
+          ) : (
+            <>
+              {/* Exercises */}
+              <Link to="/practice" className={cn(glassCardClasses, "p-4 flex items-center justify-between group cursor-pointer active:scale-[0.98] transition-transform relative overflow-hidden")}>
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[#4a9eca]/10 blur-[40px] rounded-full pointer-events-none -mr-10 -mt-10" />
+                <div className="flex items-center gap-4 relative z-10">
+                  <div className="w-12 h-12 rounded-[14px] bg-[#4a9eca]/10 flex items-center justify-center text-[#4a9eca]">
+                    <Target size={20} strokeWidth={1.5} />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <h3 className="text-[17px] font-serif italic text-white/90">
+                      {language === 'el' ? 'Ασκήσεις' : 'Exercises'}
+                    </h3>
+                    <span className="text-[10px] uppercase tracking-wider text-white/40 font-medium">
+                      {language === 'el' ? 'ΠΡΑΚΤΙΚΗ & MICRO-DOSES' : 'PRACTICE & MICRO-DOSES'}
+                    </span>
+                  </div>
+                </div>
+                <ChevronRight size={18} className="text-white/20 group-hover:text-white/60 transition-colors relative z-10" />
+              </Link>
+
+              {/* Audio / Sanctuary */}
+              <Link to="/sanctuary" className={cn(glassCardClasses, "p-4 flex items-center justify-between group cursor-pointer active:scale-[0.98] transition-transform relative overflow-hidden")}>
+                 <div className="absolute top-0 right-0 w-32 h-32 bg-[#e99b37]/10 blur-[40px] rounded-full pointer-events-none -mr-10 -mt-10" />
+                <div className="flex items-center gap-4 relative z-10">
+                  <div className="w-12 h-12 rounded-[14px] bg-[#e99b37]/10 flex items-center justify-center text-[#e99b37]">
+                    <Moon size={20} strokeWidth={1.5} />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <h3 className="text-[17px] font-serif italic text-white/90">
+                      {language === 'el' ? 'Καταφύγιο' : 'Sanctuary'}
+                    </h3>
+                    <span className="text-[10px] uppercase tracking-wider text-white/40 font-medium">
+                      {language === 'el' ? 'ΗΧΗΤΙΚΑ ΤΟΠΙΑ & ΗΡΕΜΙΑ' : 'SOUNDSCAPES & CALM'}
+                    </span>
+                  </div>
+                </div>
+                <ChevronRight size={18} className="text-white/20 group-hover:text-white/60 transition-colors relative z-10" />
+              </Link>
+            </>
+          )}
+
+          {/* Mindful Movement (Shared) */}
+          <Link to="/practice/movement" className={cn(glassCardClasses, "p-4 flex items-center justify-between group cursor-pointer active:scale-[0.98] transition-transform relative overflow-hidden")}>
+             <div className="absolute top-0 right-0 w-32 h-32 bg-[#5cc8a0]/10 blur-[40px] rounded-full pointer-events-none -mr-10 -mt-10" />
+            <div className="flex items-center gap-4 relative z-10">
               <div className="w-12 h-12 rounded-[14px] bg-[#5cc8a0]/10 flex items-center justify-center text-[#5cc8a0]">
-                <Heart size={20} strokeWidth={1.5} />
+                <Waves size={20} strokeWidth={1.5} />
               </div>
               <div className="flex flex-col gap-1">
                 <h3 className="text-[17px] font-serif italic text-white/90">
-                  {language === 'el' ? 'Ανάσα 4-7-8' : '4-7-8 Breathing'}
+                  {language === 'el' ? 'Mindful Movement' : 'Mindful Movement'}
                 </h3>
                 <span className="text-[10px] uppercase tracking-wider text-white/40 font-medium">
-                  {language === 'el' ? 'ΗΡΕΜΙΑ & ΧΑΛΑΡΩΣΗ · 4 ΛΕΠΤΑ' : 'CALM & RELAX · 4 MINS'}
+                  {language === 'el' ? 'ΑΠΕΛΕΥΘΕΡΩΣΗ ΕΝΕΡΓΕΙΑΣ' : 'ENERGY RELEASE'}
                 </span>
               </div>
             </div>
-            <ChevronRight size={18} className="text-white/20 group-hover:text-white/60 transition-colors" />
+            <ChevronRight size={18} className="text-white/20 group-hover:text-white/60 transition-colors relative z-10" />
           </Link>
 
-          <Link to="/practice/microdoses" className={cn(glassCardClasses, "p-4 flex items-center justify-between group cursor-pointer active:scale-[0.98] transition-transform")}>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-[14px] bg-[#9b7ee0]/10 flex items-center justify-center text-[#9b7ee0]">
-                <Zap size={20} strokeWidth={1.5} />
-              </div>
-              <div className="flex flex-col gap-1">
-                <h3 className="text-[17px] font-serif italic text-white/90">
-                  {language === 'el' ? 'Μικροδόσεις' : 'Microdoses'}
-                </h3>
-                <span className="text-[10px] uppercase tracking-wider text-white/40 font-medium">
-                  {language === 'el' ? 'ΓΡΗΓΟΡΗ ΕΠΑΝΑΦΟΡΑ · 1 ΛΕΠΤΟ' : 'QUICK RESET · 1 MIN'}
-                </span>
-              </div>
-            </div>
-            <ChevronRight size={18} className="text-white/20 group-hover:text-white/60 transition-colors" />
-          </Link>
-
-          <Link to="/sanctuary" className={cn(glassCardClasses, "p-4 flex items-center justify-between group cursor-pointer active:scale-[0.98] transition-transform")}>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-[14px] bg-[#e99b37]/10 flex items-center justify-center text-[#e99b37]">
-                <Moon size={20} strokeWidth={1.5} />
-              </div>
-              <div className="flex flex-col gap-1">
-                <h3 className="text-[17px] font-serif italic text-white/90">
-                  {language === 'el' ? 'Το Καταφύγιο' : 'The Sanctuary'}
-                </h3>
-                <span className="text-[10px] uppercase tracking-wider text-white/40 font-medium">
-                  {language === 'el' ? 'ΧΩΡΟΣ ΑΝΑΠΑΥΣΗΣ · 10 ΛΕΠΤΑ' : 'RESTING SPACE · 10 MINS'}
-                </span>
-              </div>
-            </div>
-            <ChevronRight size={18} className="text-white/20 group-hover:text-white/60 transition-colors" />
-          </Link>
-
-          <Link to="/rabbithole" className={cn(glassCardClasses, "p-4 flex items-center justify-between group cursor-pointer active:scale-[0.98] transition-transform")}>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-[14px] bg-teal-500/10 flex items-center justify-center text-teal-400">
+          {/* Rabbit Hole (Shared) */}
+          <Link to="/rabbithole" className={cn(glassCardClasses, "p-4 flex items-center justify-between group cursor-pointer active:scale-[0.98] transition-transform relative overflow-hidden")}>
+             <div className="absolute top-0 right-0 w-32 h-32 bg-[#a374d5]/10 blur-[40px] rounded-full pointer-events-none -mr-10 -mt-10" />
+            <div className="flex items-center gap-4 relative z-10">
+              <div className="w-12 h-12 rounded-[14px] bg-[#a374d5]/10 flex items-center justify-center text-[#a374d5]">
                 <Telescope size={20} strokeWidth={1.5} />
               </div>
               <div className="flex flex-col gap-1">
                 <h3 className="text-[17px] font-serif italic text-white/90">
-                  {language === 'el' ? 'Κουνελότρυπα' : 'The Rabbit Hole'}
+                  {language === 'el' ? 'Η Κουνελότρυπα' : 'The Rabbit Hole'}
                 </h3>
                 <span className="text-[10px] uppercase tracking-wider text-white/40 font-medium">
-                  {language === 'el' ? 'ΆΡΘΡΑ & ΕΞΕΡΕΥΝΗΣΗ' : 'ARTICLES & EXPLORATION'}
+                  {language === 'el' ? 'ΒΑΘΥΤΕΡΗ ΕΞΕΡΕΥΝΗΣΗ' : 'DEEPER EXPLORATION'}
                 </span>
               </div>
             </div>
-            <ChevronRight size={18} className="text-white/20 group-hover:text-white/60 transition-colors" />
+            <ChevronRight size={18} className="text-white/20 group-hover:text-white/60 transition-colors relative z-10" />
           </Link>
         </div>
         

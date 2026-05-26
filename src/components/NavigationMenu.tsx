@@ -93,6 +93,11 @@ export default function NavigationMenu() {
     setTimeout(() => setToastMessage(null), 3500);
   };
 
+  // Hide nav menu completely in chapters for Zen Reading Mode
+  if (location.pathname.match(/^\/chapters\/\d+/)) {
+    return null;
+  }
+
   const mainNavItems = [
     { path: '/dashboard', icon: <Home size={18} />, labelEn: 'Home', labelEl: 'Αρχική' },
     { path: '/chapters', icon: <BookOpen size={18} />, labelEn: 'Read', labelEl: 'Διάβασμα' },

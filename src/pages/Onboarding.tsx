@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
-import { Shield, Anchor, Wind, Focus, Maximize, ArrowRight, Heart, Sparkles, Compass } from 'lucide-react';
+import { Shield, Anchor, Wind, Focus, Maximize, ArrowRight, Heart, Sparkles, Compass, Zap, BookOpen } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import { cn } from '../lib/utils';
 import { RainbowInfinity } from '../components/RainbowInfinity';
 
 export default function Onboarding() {
   const [step, setStep] = useState(0);
-  const [intention, setIntention] = useState<'calm' | 'focus' | 'decompress' | null>(null);
+  const [intention, setIntention] = useState<'adhd' | 'autism' | null>(null);
   const navigate = useNavigate();
   const { language, setLanguage } = useLanguage();
 
@@ -170,9 +170,8 @@ export default function Onboarding() {
           </div>
           <div className="flex flex-col gap-3 w-full max-w-sm mx-auto">
             {[
-              { id: 'calm', icon: Anchor, title: { el: 'Αναζητώ Ηρεμία', en: 'I seek Calmness' }, sub: { el: 'Άγχος & Υπερδιέγερση', en: 'Anxiety & Overstimulation' } },
-              { id: 'focus', icon: Focus, title: { el: 'Θέλω να Εστιάσω', en: 'I want to Focus' }, sub: { el: 'ΔΕΠΥ & Οργάνωση', en: 'ADHD & Organization' } },
-              { id: 'decompress', icon: Wind, title: { el: 'Χρειάζομαι Χώρο', en: 'I need Space' }, sub: { el: 'Αποφόρτιση & Χαλάρωση', en: 'Decompression & Rest' } }
+              { id: 'adhd', icon: Zap, title: { el: 'Εξερεύνηση', en: 'Exploration' }, sub: { el: 'Άμεσες Ασκήσεις & Καταφύγιο', en: 'Quick Exercises & Sanctuary' } },
+              { id: 'autism', icon: BookOpen, title: { el: 'Μελέτη & Δομή', en: 'Study & Structure' }, sub: { el: 'Πρόγραμμα 8 Εβδομάδων', en: '8-Week Program' } }
             ].map((opt) => (
               <button 
                 key={opt.id}

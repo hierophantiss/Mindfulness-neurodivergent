@@ -8,7 +8,7 @@ const T = {
     title: 'Η Μέθοδος & Τα Σύμβολα',
     intro: 'Η ενσυνειδητότητα της μεθόδου μας δεν απαιτεί «να αδειάσεις το μυαλό σου», ούτε να μείνεις ακίνητος. Χρησιμοποιεί μια αλληγορία για να κατανοήσεις πώς η μέθοδος σε μαθαίνει να ρυθμίζεις το νευρικό σου σύστημα.',
     diffTitle: 'Γιατί διαφέρει από την κλασική Ενσυνειδητότητα (Mindfulness);',
-    diffText: 'Στην κλασική μέθοδο, η οδηγία είναι συχνά "απλώς παρατήρησε την αναπνοή σου". Για έναν νευροδιαφορετικό (π.χ. ΔΕΠΥ), αυτό αρχικά είναι σχεδόν αδύνατο χωρίς να καταλήξει να ελέγχει την αναπνοή, φέρνοντας περισσότερο άγχος. Εμείς αλλάζουμε τη σειρά:\n\n1. Νιώσε τη βαρύτητα: Δίνουμε μια σταθερή, αδιαμφισβήτητη άγκυρα (Σώμα).\n2. Ρύθμιση αναπνοής: Αν η αναπνοή είναι σφιγμένη, δεν την "αποδεχόμαστε" απλώς παθητικά, αλλά τη ρυθμίζουμε σκόπιμα (π.χ. παρατεταμένες εκπνοές από το στόμα) για να ηρεμήσουμε το νευρικό σύστημα.\n3. Κλειστή και Ανοιχτή Προσοχή: Εναλλαγή μεταξύ σημειακής εστίασης (πυρσός) και ανοιχτής επίγνωσης του χώρου, μετατρέποντας τον νου σε σύμμαχο.',
+    diffText: 'Στην κλασική μέθοδο, η οδηγία είναι συχνά "απλώς παρατήρησε την αναπνοή σου". Για έναν νου που "τρέχει", αυτό αρχικά είναι σχεδόν αδύνατο χωρίς να καταλήξει να ελέγχει την αναπνοή, φέρνοντας περισσότερο άγχος. Εμείς αλλάζουμε τη σειρά:\n\n1. Νιώσε τη βαρύτητα: Δίνουμε μια σταθερή, αδιαμφισβήτητη άγκυρα (Σώμα).\n2. Ρύθμιση αναπνοής: Αν η αναπνοή είναι σφιγμένη, δεν την "αποδεχόμαστε" απλώς παθητικά, αλλά τη ρυθμίζουμε σκόπιμα (π.χ. παρατεταμένες εκπνοές από το στόμα) για να ηρεμήσουμε το νευρικό σύστημα.\n3. Κλειστή και Ανοιχτή Προσοχή: Εναλλαγή μεταξύ σημειακής εστίασης (πυρσός) και ανοιχτής επίγνωσης του χώρου, μετατρέποντας τον νου σε σύμμαχο.',
     symbolsTitle: 'Το Λεξικό του Νου: Τα Σύμβολα',
     symbols: [
       {
@@ -54,7 +54,7 @@ const T = {
     title: 'The Method & Symbols',
     intro: 'The mindfulness of our method does not require you to "empty your mind", nor to stay perfectly still. It uses an allegory to help you understand how the method trains you to regulate your nervous system.',
     diffTitle: 'Why is it different from classical Mindfulness?',
-    diffText: 'In classical methods, the instruction is often "just observe your breath". For a neurodivergent mind (e.g., ADHD), this is often impossible at first without ending up controlling the breath, causing more anxiety. We change the formula:\n\n1. Feel gravity: We provide a stable, undeniable anchor (Body).\n2. Regulate breath: If breath is tight, we do not just passively "accept" it—we actively regulate it (e.g., long exhales from the mouth) to calm the nervous system.\n3. Closed and Open Attention: Alternating between pinpoint focus (torch) and open spatial awareness, making the mind an ally.',
+    diffText: 'In classical methods, the instruction is often "just observe your breath". For a mind that races, this is often impossible at first without ending up controlling the breath, causing more anxiety. We change the formula:\n\n1. Feel gravity: We provide a stable, undeniable anchor (Body).\n2. Regulate breath: If breath is tight, we do not just passively "accept" it—we actively regulate it (e.g., long exhales from the mouth) to calm the nervous system.\n3. Closed and Open Attention: Alternating between pinpoint focus (torch) and open spatial awareness, making the mind an ally.',
     symbolsTitle: 'Mind Dictionary: The Symbols',
     symbols: [
       {
