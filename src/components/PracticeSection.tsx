@@ -14,6 +14,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../hooks/useLanguage";
 import TaiChiHero from "./TaiChiHero";
+import { PlayPauseOverlay } from "./PlayPauseOverlay";
 import { ZenAudioEngine } from "../utils/audio";
 
 // Breathing presets definitions
@@ -459,8 +460,12 @@ export default function PracticeSection() {
       </div>
 
       {/* Main Visual Arena (Hero) - Expanded */}
-      <div className="w-full max-w-5xl flex-1 rounded-[32px] p-4 relative overflow-hidden flex flex-col justify-between shadow-2xl border" style={{ backgroundColor: "var(--color-surface, #1a1d27)", borderColor: "rgba(255,255,255,0.02)", minHeight: "80vh" }}>
-        
+      <div 
+        className="w-full max-w-5xl flex-1 rounded-[32px] p-4 relative overflow-hidden flex flex-col justify-between shadow-2xl border cursor-pointer" 
+        style={{ backgroundColor: "var(--color-surface, #1a1d27)", borderColor: "rgba(255,255,255,0.02)", minHeight: "80vh" }}
+        onClick={() => setIsPlaying(!isPlaying)}
+      >
+        <PlayPauseOverlay isPlaying={isPlaying} />
         <TaiChiHero
           breathForce={breathForce}
           isRising={isRising}
@@ -484,14 +489,14 @@ export default function PracticeSection() {
       {/* Controls Below Screen */}
       <div className="w-full max-w-5xl flex justify-center items-center gap-6 mt-8 mb-6 z-20 relative">
         <button 
-          onClick={handleReset} 
+          onClick={(e) => { e.stopPropagation(); handleReset(); }} 
           className="w-14 h-14 flex items-center justify-center rounded-full backdrop-blur cursor-pointer shadow-lg border hover:scale-105 transition-transform" 
           style={{ backgroundColor: "var(--color-surface, #1a1d27)", borderColor: "rgba(255,255,255,0.05)", color: "var(--color-text-muted, #71717a)" }}
         >
           <RotateCcw className="w-6 h-6" />
         </button>
         <button 
-          onClick={() => setIsPlaying(!isPlaying)} 
+          onClick={(e) => { e.stopPropagation(); setIsPlaying(!isPlaying); }} 
           className="w-20 h-20 flex items-center justify-center rounded-full backdrop-blur cursor-pointer shadow-2xl border hover:scale-105 transition-transform" 
           style={{ backgroundColor: "var(--color-accent, #1D9E75)", borderColor: "rgba(255,255,255,0.1)", color: "#fff" }}
         >

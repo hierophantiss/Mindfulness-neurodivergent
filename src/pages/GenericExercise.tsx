@@ -4,6 +4,7 @@ import { ArrowLeft, Play, Pause, Info, Volume2, VolumeX, SkipBack, SkipForward, 
 import { cn } from '../lib/utils';
 import { useLanguage } from '../hooks/useLanguage';
 import { useReward } from '../contexts/RewardContext';
+import { PlayPauseOverlay } from '../components/PlayPauseOverlay';
 
 const EXERCISES: Record<string, any> = {
   // --- ΜΙΚΡΟΔΟΣΕΙΣ ΑΠΟ ΤΟ 8-ΕΒΔΟΜΑΔΟ ΠΡΟΓΡΑΜΜΑ ---
@@ -626,15 +627,21 @@ export default function GenericExercise() {
   const theme = getThemeColors();
 
   return (
- <div className={cn("flex flex-col flex-1 glass-card -mx-4 -mt-4 -mb-8 px-4 pt-4 pb-8 md:-mx-8 md:-mt-8 md:-mb-8 md:px-8 md:pt-8 md:pb-8 overflow-y-auto bg-gradient-to-b to-[#0C1E26]", theme.bg)}>
+ <div 
+   className={cn("flex flex-col flex-1 glass-card -mx-4 -mt-4 -mb-8 px-4 pt-4 pb-8 md:-mx-8 md:-mt-8 md:-mb-8 md:px-8 md:pt-8 md:pb-8 overflow-y-auto bg-gradient-to-b to-[#0C1E26] cursor-pointer", theme.bg)}
+   onClick={toggleRun}
+ >
       
+      <PlayPauseOverlay isPlaying={running} />
+
       {/* Top Nav */}
       <div className={cn(
         "flex items-center justify-between mb-4 z-10 w-full mb-8 shrink-0 transition-opacity duration-1000",
         running ? "opacity-20 hover:opacity-100 focus-within:opacity-100" : "opacity-100"
       )}>
         <button 
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             if (window.history.length > 2) {
               navigate(-1);
             } else {
@@ -647,7 +654,10 @@ export default function GenericExercise() {
         </button>
         <div className="flex gap-4">
           <button
-            onClick={() => setAudioEnabled(!audioEnabled)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setAudioEnabled(!audioEnabled);
+            }}
             className={cn(
               "w-10 h-10 rounded-full border flex items-center justify-center transition-colors shadow-lg",
               audioEnabled ? "bg-[#183035] border-teal-500 text-teal-400" : "bg-pine-800/50 border-pine-700 text-pine-400"
@@ -661,7 +671,10 @@ export default function GenericExercise() {
       <div className="flex-1 flex flex-col items-center w-full max-w-lg mx-auto pb-safe mb-8">
         
         {/* Cover Art / Abstract Visual */}
-        <div className="relative w-64 h-64 md:w-72 md:h-72 mb-10 mt-4 rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden group">
+        <div 
+          className="relative w-64 h-64 md:w-72 md:h-72 mb-10 mt-4 rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden group cursor-pointer"
+          onClick={() => setRunning(!running)}
+        >
           <div className="absolute inset-0 bg-[#061114] border border-white/5 rounded-[3rem] z-0"></div>
           
           <div className="absolute inset-0 z-10 flex items-center justify-center">
@@ -703,13 +716,13 @@ export default function GenericExercise() {
           {/* Buttons */}
           <div className="flex items-center justify-center gap-8">
             <button className="text-pine-500 hover:text-white transition-colors"
-                onClick={() => setElapsed(Math.max(0, elapsed - 15))}
+                onClick={(e) => { e.stopPropagation(); setElapsed(Math.max(0, elapsed - 15)); }}
             >
               <SkipBack size={24} />
             </button>
             
             <button
-              onClick={toggleRun}
+              onClick={(e) => { e.stopPropagation(); toggleRun(); }}
               className={cn(
                 "w-20 h-20 rounded-full flex items-center justify-center transition-all shadow-xl",
                 running 
@@ -721,7 +734,7 @@ export default function GenericExercise() {
             </button>
             
             <button className="text-pine-500 hover:text-white transition-colors"
-               onClick={() => setElapsed(Math.min(exercise.duration, elapsed + 15))}
+               onClick={(e) => { e.stopPropagation(); setElapsed(Math.min(exercise.duration, elapsed + 15)); }}
             >
               <SkipForward size={24} />
             </button>

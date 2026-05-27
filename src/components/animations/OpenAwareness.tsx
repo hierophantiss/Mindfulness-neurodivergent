@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '../../hooks/useLanguage';
+import { PlayPauseOverlay } from '../PlayPauseOverlay';
 
 export default function OpenAwareness() {
   const { language } = useLanguage();
@@ -629,7 +630,12 @@ export default function OpenAwareness() {
       )}
 
       {/* Canvas Layer */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block" />
+      <canvas 
+        ref={canvasRef} 
+        className="absolute inset-0 w-full h-full block cursor-pointer" 
+        onClick={() => setAutoPlay(!autoPlay)}
+      />
+      <PlayPauseOverlay isPlaying={autoPlay} />
 
       {/* UI Overlay Layer */}
       <div className={`absolute inset-0 pointer-events-none transition-opacity duration-1000 ${showIntro ? 'opacity-0' : 'opacity-100'}`}>

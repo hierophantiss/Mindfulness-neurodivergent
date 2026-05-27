@@ -10,6 +10,8 @@ import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { motion, AnimatePresence } from 'framer-motion';
 import { RainbowInfinity } from '../components/RainbowInfinity';
+import { BreathingHero } from '../components/BreathingHero';
+import { PlayPauseOverlay } from '../components/PlayPauseOverlay';
 import { useReward } from '../contexts/RewardContext';
 import { useProgress } from '../contexts/ProgressContext';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
@@ -263,9 +265,21 @@ export default function PracticeBreath() {
     
     // Haptic feedback logic
     if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
-      navigator.vibrate(40);
+      const prevIdx = (idx - 1 + pattern.labels.length) % pattern.labels.length;
+      const prevLabel = pattern.labels[prevIdx].label.en;
+      
+      if (prevLabel === 'Inhale') {
+        // Reached peak of inhale (full expansion)
+        navigator.vibrate([30, 40, 30]);
+      } else if (prevLabel === 'Exhale') {
+        // Reached peak of exhale (full contraction)
+        navigator.vibrate([40]);
+      } else {
+        // Generic phase change
+        navigator.vibrate(20);
+      }
     }
-  }, []);
+  }, [pattern]);
 
   // Update seconds counter during phase
   useEffect(() => {
@@ -312,6 +326,8 @@ export default function PracticeBreath() {
         className="absolute inset-0 z-10 bg-black pointer-events-none transition-opacity duration-1000"
         style={{ opacity: sleepOverlayOpacity }}
       />
+      
+      <PlayPauseOverlay isPlaying={running} />
 
       {/* Top Bar */}
       <div className={cn(
@@ -394,7 +410,10 @@ export default function PracticeBreath() {
       )}
 
       {/* Hero Section (Canvas + Stats Overlay) */}
-      <div className="flex-1 relative w-full overflow-hidden flex flex-col justify-end">
+      <div 
+        className="flex-1 relative w-full overflow-hidden flex flex-col justify-end cursor-pointer"
+        onClick={handleStartToggle}
+      >
         {/* The Animated Canvas Background */}
         <div className="absolute inset-0 pointer-events-none z-0">
           <BreathCanvas 
@@ -420,68 +439,48 @@ export default function PracticeBreath() {
         {/* Organic Motion Circle & Counter (Centered exactly in the globe) */}
         <div 
           className="absolute left-0 right-0 z-10 flex flex-col items-center justify-center pointer-events-none drop-shadow-lg"
-          style={{ bottom: '26%' }}
+          style={{ bottom: '22%' }}
         >
-          <div className="relative flex items-center justify-center w-24 h-24">
-             <AnimatePresence>
-               {running && (
-                 <motion.div
-                   className="absolute inset-0 rounded-full blur-md pointer-events-none"
-                   style={{
-                     backgroundColor: isInhale ? 'rgba(56, 189, 248, 0.25)' : isExhale ? 'rgba(52, 211, 153, 0.25)' : 'rgba(251, 191, 36, 0.15)'
-                   }}
-                   initial={{ scale: 0.8, opacity: 0 }}
-                   animate={{ 
-                     scale: reduceMotion ? 1.0 : (isInhale ? 1.6 : isPause ? (phaseIdx === 1 ? 1.6 : 0.8) : 0.8),
-                     opacity: isInhale ? 0.6 : isPause ? 0.3 : 0.6
-                   }}
-                   transition={{ 
-                     duration: pattern.phases[phaseIdx].dur / 1000, 
-                     ease: "easeInOut" 
-                   }}
-                 />
-               )}
-             </AnimatePresence>
+          <div className="relative flex items-center justify-center w-[320px] h-[320px] md:w-[400px] md:h-[400px]">
              
              {/* Counter Text & Infinity */}
              <div className="z-10 absolute inset-0 flex items-center justify-center">
-                <AnimatePresence>
-                  {running && (
-                    <motion.div 
-                      className="absolute inset-0 flex items-center justify-center pointer-events-none"
-                      initial={{ scale: 1, opacity: 0 }}
-                      animate={{ 
-                        scale: isInhale ? 0.7 : isExhale ? 1.5 : (phaseIdx === 1 ? 0.7 : 1.5),
-                        opacity: isInhale ? 0.4 : isExhale ? 0.8 : 0.5
-                      }}
-                      exit={{ opacity: 0, scale: 1 }}
-                      transition={{ 
-                        duration: pattern.phases[phaseIdx]?.dur / 1000 || 2, 
-                        ease: "easeInOut" 
-                      }}
-                    >
-                      <RainbowInfinity size={80} />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                <motion.div 
+                  className="absolute inset-0 flex items-center justify-center pointer-events-none"
+                  initial={{ scale: 1, opacity: 0, filter: 'drop-shadow(0 0 0px rgba(0,0,0,0))' }}
+                  animate={{ 
+                    opacity: running ? (isInhale ? 0.6 : isExhale ? 1 : 0.8) : 0.4,
+                    filter: running ? (isInhale 
+                      ? 'drop-shadow(0 0 12px rgba(56, 189, 248, 0.4))' 
+                      : isExhale 
+                        ? 'drop-shadow(0 0 16px rgba(52, 211, 153, 0.7))' 
+                        : 'drop-shadow(0 0 12px rgba(251, 191, 36, 0.5))') : 'drop-shadow(0 0 8px rgba(167, 139, 250, 0.3))'
+                  }}
+                  transition={{ 
+                    duration: running ? (pattern.phases[phaseIdx]?.dur / 1000 || 2) : 4, 
+                    ease: [0.4, 0, 0.2, 1] 
+                  }}
+                >
+                  <BreathingHero
+                    phaseIdx={running ? phaseIdx : 0}
+                    isInhale={running ? isInhale : true}
+                    isExhale={running ? isExhale : false}
+                    isHold={running ? (!isInhale && !isExhale) : false}
+                    durationMs={running ? (pattern.phases[phaseIdx]?.dur || 2000) : 4000}
+                    className="w-full h-full"
+                  />
+                </motion.div>
                 
-                <div className="z-10 font-sans font-semibold text-[3.5rem] tabular-nums drop-shadow-md">
-                  {!running ? (
-                    currentPatternId !== '4-7-8' && (
-                      <motion.div 
-                        animate={{ scale: [1, 1.05, 1], opacity: [0.6, 1, 0.6] }} 
-                        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                      >
-                        <RainbowInfinity size={56} className="mb-2" />
-                      </motion.div>
+                <div className="z-10 absolute -top-12 md:top-auto md:-right-4 font-sans font-semibold text-[3.5rem] tabular-nums drop-shadow-md">
+                  {running ? (
+                    isInhale ? (
+                      <span className="text-sky-400">{phaseSeconds}</span>
+                    ) : isExhale ? (
+                      <span className="text-emerald-400">{phaseSeconds}</span>
+                    ) : (
+                      <span className="text-amber-300 transform -translate-y-1 inline-block">-</span>
                     )
-                  ) : isInhale ? (
-                    <span className="text-sky-400">{phaseSeconds}</span>
-                  ) : isExhale ? (
-                    <span className="text-emerald-400">{phaseSeconds}</span>
-                  ) : (
-                    <span className="text-amber-300 transform -translate-y-1 inline-block">-</span>
-                  )}
+                  ) : null}
                 </div>
              </div>
           </div>
@@ -518,7 +517,7 @@ export default function PracticeBreath() {
       )}>
          {/* Play/Pause button */}
          <button
-           onClick={handleStartToggle}
+           onClick={(e) => { e.stopPropagation(); handleStartToggle(); }}
            className={cn(
              "flex-1 h-9 rounded-full flex items-center justify-center gap-2 transition-all duration-300 shadow-sm z-20 outline-none active:scale-95",
              running 

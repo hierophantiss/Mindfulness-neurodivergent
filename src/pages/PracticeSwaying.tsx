@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../hooks/useLanguage";
 import SwayingHero from "../components/SwayingHero";
 import { useBinauralAudio } from "../hooks/useBinauralAudio";
+import { PlayPauseOverlay } from "../components/PlayPauseOverlay";
 
 export default function PracticeSwaying() {
   const navigate = useNavigate();
@@ -127,6 +128,15 @@ export default function PracticeSwaying() {
     return () => clearInterval(interval);
   }, [isPlaying]);
 
+  const handleTogglePlayback = () => {
+    if (!isPlaying) {
+      setElapsedSeconds(0);
+      setTickCount(0);
+      expectedNextTickRef.current = 0;
+    }
+    setIsPlaying(!isPlaying);
+  };
+
   // UI Instructions based on elapsed time (only shown when playing)
   let instruction = "";
   if (isPlaying) {
@@ -150,11 +160,17 @@ export default function PracticeSwaying() {
     : (lang === "el" ? "εισπνοή" : "inhale");
 
   return (
-    <div className="w-full min-h-screen flex flex-col p-4 md:p-8 font-sans animate-fade-in" style={{ backgroundColor: "var(--color-bg, #0f1117)", color: "var(--color-text, #d4d4d8)" }}>
+    <div 
+      className="w-full min-h-screen flex flex-col p-4 md:p-8 font-sans animate-fade-in relative cursor-pointer" 
+      style={{ backgroundColor: "var(--color-bg, #0f1117)", color: "var(--color-text, #d4d4d8)" }}
+      onClick={handleTogglePlayback}
+    >
+      <PlayPauseOverlay isPlaying={isPlaying} />
+
       {/* Top Bar */}
-      <div className="w-full max-w-5xl mx-auto flex justify-between items-center mb-6">
+      <div className="w-full max-w-5xl mx-auto flex justify-between items-center mb-6 z-10 block relative">
         <button 
-          onClick={() => navigate('/practice')} 
+          onClick={(e) => { e.stopPropagation(); navigate('/practice'); }} 
           className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 transition-all cursor-pointer"
         >
           <ArrowLeft size={20} />
@@ -165,8 +181,10 @@ export default function PracticeSwaying() {
       </div>
 
       {/* Main Area */}
-      <div className="flex-1 w-full max-w-5xl mx-auto flex flex-col items-center justify-center relative">
-        <div className="w-full sm:w-4/5 md:w-3/4 max-w-[600px] relative">
+      <div 
+        className="flex-1 w-full max-w-5xl mx-auto flex flex-col items-center justify-center relative"
+      >
+        <div className="w-full sm:w-4/5 md:w-3/4 max-w-[600px] relative pointer-events-none">
           <SwayingHero tickCount={isPlaying ? tickCount : 0} tempo={tempo} />
           
           {/* Subtle Breathing Label overlaying the hero */}
@@ -246,16 +264,8 @@ export default function PracticeSwaying() {
           </button>
           
           <button 
-            onClick={() => {
-              if (!isPlaying) {
-                // reset progress variables when starting
-                setElapsedSeconds(0);
-                setTickCount(0);
-                expectedNextTickRef.current = 0;
-              }
-              setIsPlaying(!isPlaying);
-            }} 
-            className="w-20 h-20 flex items-center justify-center rounded-full shadow-2xl border transition-all hover:scale-105 active:scale-95 cursor-pointer"
+            onClick={(e) => { e.stopPropagation(); handleTogglePlayback(); }} 
+            className="w-20 h-20 flex items-center justify-center rounded-full shadow-2xl border transition-all hover:scale-105 active:scale-95 cursor-pointer z-10"
             style={{ backgroundColor: "var(--color-accent, #1D9E75)", borderColor: "rgba(255,255,255,0.1)" }}
           >
             {isPlaying ? (

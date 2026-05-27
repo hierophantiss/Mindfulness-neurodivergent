@@ -86,12 +86,12 @@ export default function Onboarding() {
           </div>
           <div className="space-y-4">
             <h2 className="text-3xl font-serif italic text-white tracking-tight">
-              {language === 'el' ? 'Μια Φιλική Συντροφιά' : 'A Friendly Companion'}
+              {language === 'el' ? 'Ο Προσωπικός σας Συνοδός' : 'Your Personal Companion'}
             </h2>
             <p className="text-base text-white/60 font-sans leading-relaxed">
               {language === 'el' 
-                ? 'Στην κάτω δεξιά γωνία κατοικεί ο ψηφιακός σας συνοδός (η μικρή μας γάτα). Είναι πάντα εκεί για να ελέγξει πώς νιώθετε, να συζητήσει μαζί σας, να απαντήσει στις ερωτήσεις σας και να προτείνει ασκήσεις κομμένες και ραμμένες στις ανάγκες σας.' 
-                : 'Living in the bottom-right corner is your digital companion (our little cat). Always there to check in on how you feel, talk with you, answer your questions, and suggest exercises tailored precisely to your needs.'}
+                ? 'Στην κάτω δεξιά γωνία κατοικεί ο ψηφιακός σας συνοδός (η μικρή μας γάτα). Παρακολουθεί διακριτικά την πρόοδό σας, σας βοηθά να βρείτε ασκήσεις όταν πιέζεστε και κρατά σταθερό το νήμα της πρακτικής σας στο Πρόγραμμα ή στην Εξερεύνηση.' 
+                : 'Living in the bottom-right corner is your digital companion (our little cat). It quietly tracks your progress, helps you find exercises when you are overwhelmed, and keeps the thread of your practice steady across the Program or Exploration.'}
             </p>
           </div>
         </div>

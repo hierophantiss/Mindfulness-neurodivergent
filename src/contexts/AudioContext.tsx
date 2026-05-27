@@ -444,6 +444,12 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     const n = nodesRef.current;
     n.stoppers.forEach(s => s());
     n.stoppers    = [];
+    if (n.masterGain) {
+      try { n.masterGain.disconnect(); } catch (e) {}
+    }
+    if (n.compressor) {
+      try { n.compressor.disconnect(); } catch (e) {}
+    }
     n.masterGain  = undefined;
     n.compressor  = undefined;
   }, []);
@@ -477,10 +483,13 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       // ---- Master gain ----
       const masterGain = ctx.createGain();
       masterGain.connect(compressor);
+      
+      // Fix clipping on start by explicitly ensuring gain is 0 immediately
+      masterGain.gain.value = 0;
       masterGain.gain.setValueAtTime(0, ctx.currentTime);
       masterGain.gain.linearRampToValueAtTime(
         0.5 * globalVolumeRef.current * masterVolumeRef.current,
-        ctx.currentTime + 0.8
+        ctx.currentTime + 2.5
       );
 
       n.masterGain = masterGain;

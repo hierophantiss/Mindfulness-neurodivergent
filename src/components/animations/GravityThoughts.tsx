@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '../../hooks/useLanguage';
+import { PlayPauseOverlay } from '../PlayPauseOverlay';
 
 export default function GravityThoughts() {
   const { language } = useLanguage();
@@ -383,7 +384,12 @@ export default function GravityThoughts() {
 
   return (
     <div className="relative w-full h-[70vh] min-h-[400px] rounded-3xl overflow-hidden shadow-2xl bg-[#0c171b] border border-white/10 group mb-10 select-none">
-      <canvas ref={canvasRef} className="absolute inset-0 block w-full h-full cursor-pointer" />
+      <canvas 
+        ref={canvasRef} 
+        className="absolute inset-0 block w-full h-full cursor-pointer" 
+        onClick={() => setAutoPlay(!autoPlay)}
+      />
+      <PlayPauseOverlay isPlaying={autoPlay} />
       
       {showIntro && (
         <div 

@@ -294,7 +294,7 @@ function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClo
            </div>
            <h2 className="font-display font-medium text-lg leading-none tracking-tight">
              {companionData.companionModeEnabled 
-               ? (language === 'el' ? 'Καθοδήγηση' : 'Guidance')
+               ? (language === 'el' ? 'Συνοδός' : 'Companion')
                : (language === 'el' ? 'Ήσυχη Καταγραφή' : 'Quiet Tracking')}
            </h2>
          </div>
@@ -383,7 +383,7 @@ function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClo
       <div className="bg-stone-50/50 dark:bg-stone-800/20 border border-stone-200/50 dark:border-stone-700/50 p-3 rounded-2xl space-y-3 mb-2">
         <div className="flex items-center justify-between mb-1 ml-1 pr-1">
           <span className="text-[10px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-widest">
-            {language === 'el' ? 'ΚΑΘΟΔΗΓΗΤΗΣ' : 'GUIDE'}
+            {language === 'el' ? 'ΣΥΝΟΔΟΣ' : 'COMPANION'}
           </span>
           <button onClick={() => navTo('options')} className="text-[10px] text-stone-400 hover:text-stone-600 dark:hover:text-stone-300">
             {language === 'el' ? 'ΡΥΘΜΙΣΕΙΣ' : 'SETTINGS'}
@@ -545,7 +545,7 @@ function MoodFlow({ goBack, onClose, navigate, navTo }: { goBack: () => void, on
       <div className="flex items-center gap-3 pb-4 border-b border-stone-200 dark:border-stone-800">
         <button onClick={goBack} className="w-8 h-8 rounded-full bg-stone-200 dark:bg-stone-800 flex items-center justify-center hover:bg-stone-300 dark:hover:bg-stone-700 transition">←</button>
         <h2 className="font-display text-lg font-medium tracking-tight">
-          {language === 'el' ? 'Συνομιλία με τον Καθοδηγητή' : 'Chat with Guide'}
+          {language === 'el' ? 'Ο Συνοδός' : 'Your Companion'}
         </h2>
       </div>
 
@@ -696,7 +696,7 @@ function OptionsFlow({ goBack, onClose }: { goBack: () => void, onClose: () => v
          {/* Companion Mode Switcher */}
          <div className="space-y-3">
            <span className="text-[11px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-wider ml-1">
-             {language === 'el' ? 'Λειτουργία Καθοδηγητή' : 'Companion Mode'}
+             {language === 'el' ? 'Λειτουργία Συνοδού' : 'Companion Mode'}
            </span>
            
            <div className="grid gap-3">
@@ -725,8 +725,8 @@ function OptionsFlow({ goBack, onClose }: { goBack: () => void, onClose: () => v
                </div>
                <p className="text-[13px] leading-relaxed opacity-85 pl-7">
                  {language === 'el'
-                   ? 'Η γάτα εμφανίζεται στην αρχική σελίδα ως ζεστός καθοδηγητής, προτείνει το επόμενο βήμα και προσφέρει συντροφικότητα.'
-                   : 'The cat appears on the homepage as a warm guide, proposing the next step and offering companionship.'}
+                   ? 'Η γάτα εμφανίζεται στην αρχική σελίδα ως ζεστός συνοδός, προτείνει το επόμενο βήμα και προσφέρει συντροφικότητα.'
+                   : 'The cat appears on the homepage as a warm companion, proposing the next step and offering companionship.'}
                </p>
              </button>
 
