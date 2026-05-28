@@ -39,7 +39,7 @@ export function BreathHeroVessel({ phaseIdx, isInhale, isExhale, isHold, duratio
         {/* Vessel outline/container for the 'energy' line */}
         <div className="relative w-[30px] h-[65%] mt-auto mb-[15%]">
            
-           <svg w="100%" h="100%" viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full">
+           <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full">
             <defs>
               <linearGradient id="energyGrad" x1="0" y1="1" x2="0" y2="0">
                 <stop offset="0%" stopColor="#38bdf8" /> {/* Sky - Belly */}
