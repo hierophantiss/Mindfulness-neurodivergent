@@ -85,10 +85,10 @@ function articleSchema(title: string, desc: string, url: string) {
     headline: title,
     description: desc,
     url,
-    author: { '@type': 'Organization', name: 'Neurodivergent Mindfulness' },
+    author: { '@type': 'Organization', name: 'Neurodivergent Mindfulness App' },
     publisher: {
       '@type': 'Organization',
-      name: 'Neurodivergent Mindfulness',
+      name: 'Neurodivergent Mindfulness App',
       url: BASE_URL,
     },
     inLanguage: url.includes('/en/') ? 'en' : 'el',
@@ -292,7 +292,7 @@ export const SEO: React.FC = () => {
       <meta property="og:url"         content={canonicalUrl} />
       <meta property="og:image"       content={`${BASE_URL}/og-image.png`} />
       <meta property="og:type"        content="website" />
-      <meta property="og:site_name"   content="Neurodivergent Mindfulness" />
+      <meta property="og:site_name"   content="Neurodivergent Mindfulness App" />
 
       {/* Twitter */}
       <meta name="twitter:card"        content="summary_large_image" />
