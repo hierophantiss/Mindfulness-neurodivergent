@@ -92,6 +92,36 @@ const ARTICLES: Record<string, { en: [string, string]; el: [string, string] }> =
     el: ['Ποτέ Μη Βιάζεσαι – Η Τέχνη της Αβίαστης Πρακτικής | Neurodivergent Mindfulness App',
          'Γιατί η βίαιη πρακτική ενσυνειδητότητας αντιτίθεται για νευροδιαφορετικά άτομα. Η αρχή της αβίαστης πρακτικής.'],
   },
+  'tai-chi-cloud-hands': {
+    en: ['Cloud Hands Tai Chi Breathing | Neurodivergent Mindfulness App',
+         'Animated Tai Chi Cloud Hands with real-time skeletal movement synced to breath cycles and binaural beats. Mindful movement for ADHD and autistic nervous system regulation.'],
+    el: ['Χέρια στα Σύννεφα – Tai Chi Αναπνοή | Neurodivergent Mindfulness App',
+         'Κινούμενο Tai Chi με σκελετική κινηματική συγχρονισμένη με την αναπνοή και binaural beats. Κίνηση για ρύθμιση νευροδιαφορετικού νευρικού συστήματος.'],
+  },
+  'qigong-lifting-sky': {
+    en: ['Lifting the Sky – Qigong Breathwork | Neurodivergent Mindfulness App',
+         'Animated Qigong Lifting the Sky exercise with binaural beats. Somatic breathwork combining ancient movement and neuroscience for ADHD and autism regulation.'],
+    el: ['Σηκώνοντας τον Ουρανό – Qigong | Neurodivergent Mindfulness App',
+         'Κινούμενη άσκηση Qigong με binaural beats. Σωματική αναπνοή που συνδυάζει αρχαία κίνηση και νευροεπιστήμη για ΔΕΠΥ και αυτισμό.'],
+  },
+  'deep-bow-5-5': {
+    en: ['Deep Bow – Humility & Grounding Breathwork | Neurodivergent Mindfulness App',
+         'Animated Deep Bow movement with 5-5 breath cycle and binaural beats. A somatic grounding practice for neurodivergent nervous system regulation.'],
+    el: ['Βαθιά Υπόκλιση – Γείωση & Ταπεινότητα | Neurodivergent Mindfulness App',
+         'Κινούμενη άσκηση βαθιάς υπόκλισης με κύκλο 5-5 και binaural beats. Σωματική γείωση για νευροδιαφορετικά νευρικά συστήματα.'],
+  },
+  'be-like-a-flower-5-5': {
+    en: ['Greeting the Infinite – Animated Breathwork | Neurodivergent Mindfulness App',
+         'Animated breath movement synced to opening and expanding gestures. Binaural beats with mindful Tai Chi-inspired movement for ADHD and autism.'],
+    el: ['Χαιρετισμός στο Άπειρο – Κινούμενη Αναπνοή | Neurodivergent Mindfulness App',
+         'Κινούμενη αναπνοή με χειρονομίες ανοίγματος. Binaural beats με κίνηση εμπνευσμένη από Tai Chi για ΔΕΠΥ και αυτισμό.'],
+  },
+  'lotus-bloom-5-5': {
+    en: ['Ascetic Breath – Lotus Bloom Movement | Neurodivergent Mindfulness App',
+         'Animated Lotus Bloom breathing practice with binaural beats. Serenity and open awareness through mindful movement for neurodivergent individuals.'],
+    el: ['Ασκητική Αναπνοή – Κίνηση Λωτού | Neurodivergent Mindfulness App',
+         'Κινούμενη πρακτική αναπνοής Λωτού με binaural beats. Γαλήνη και ανοιχτή επίγνωση μέσα από κίνηση για νευροδιαφορετικά άτομα.'],
+  },
 };
 
 // ─────────────────────────────────────────────────────────────
@@ -114,8 +144,8 @@ function getMetaForRoute(route: string): RouteMeta {
       ? 'Neurodivergent Mindfulness App – Trauma-Informed Practice for ADHD & Autism'
       : 'Neurodivergent Mindfulness App – Ενσυνειδητότητα για ΔΕΠΥ & Αυτισμό',
     description: lang === 'en'
-      ? 'A mindful sanctuary for neurodivergent individuals. Ground yourself with trauma-informed breathwork, sensory practices, and philosophical reflections for ADHD and autism.'
-      : 'Ένα καταφύγιο ενσυνειδητότητας για νευροδιαφορετικά άτομα. Γείωση με ασφαλείς πρακτικές αναπνοής και αισθητηριακή εστίαση για ΔΕΠΥ και αυτισμό.',
+      ? 'Free mindfulness app for ADHD & autism. AI companion, animated Tai Chi & Qigong, binaural beats, breathwork, and a 10-chapter workbook — trauma-informed, privacy-first, neurodivergent-made.'
+      : 'Δωρεάν εφαρμογή ενσυνειδητότητας για ΔΕΠΥ & αυτισμό. AI σύντροφος, animated Tai Chi & Qigong, binaural beats, αναπνοή και βιβλίο 10 κεφαλαίων — trauma-informed, χωρίς tracking, από νευροδιαφορετικό.',
     schema: {},
     schemaType: 'WebApplication',
   };
@@ -188,16 +218,21 @@ function getMetaForRoute(route: string): RouteMeta {
   }
 
   // ── Practice breath exercise ──
-  const breathMatch = clean.match(/^\/practice\/breath\/([a-z0-9-]+)$/);
+  const breathMatch = clean.match(/^\/practice\/(breath|movement)\/([a-z0-9-]+)$/);
   if (breathMatch) {
-    const pattern = (BREATH_PATTERNS as any[]).find((p: any) => p.id === breathMatch[1]);
+    const pattern = (BREATH_PATTERNS as any[]).find((p: any) => p.id === breathMatch[2]);
     if (pattern) {
       const ptitle = pattern.title?.[lang] ?? pattern.title?.en ?? pattern.id;
       const psub   = pattern.subtitle?.[lang] ?? pattern.subtitle?.en ?? '';
       const t = `${ptitle} – ${psub} | Neurodivergent Mindfulness App`;
+      const isMovement = breathMatch[1] === 'movement';
       const d = lang === 'en'
-        ? `Guided breathwork: ${ptitle}. ${psub}. A neurodivergent-friendly breathing exercise for ADHD and autism nervous system regulation.`
-        : `Καθοδηγούμενη αναπνοή: ${ptitle}. Ρύθμιση νευρικού συστήματος για ΔΕΠΥ και αυτισμό.`;
+        ? isMovement
+          ? `Animated mindful movement: ${ptitle}. ${psub}. Real-time skeletal animation synced to breath with binaural beats. Tai Chi and Qigong-inspired somatic practice for ADHD and autism nervous system regulation.`
+          : `Guided breathwork: ${ptitle}. ${psub}. A neurodivergent-friendly breathing exercise for ADHD and autism nervous system regulation.`
+        : isMovement
+          ? `Κινούμενη ενσυνείδητη κίνηση: ${ptitle}. ${psub}. Animation συγχρονισμένο με αναπνοή και binaural beats. Tai Chi και Qigong για ρύθμιση νευροδιαφορετικού νευρικού συστήματος.`
+          : `Καθοδηγούμενη αναπνοή: ${ptitle}. Ρύθμιση νευρικού συστήματος για ΔΕΠΥ και αυτισμό.`;
       return {
         title: t, description: d, schemaType: 'HowTo',
         schema: {
@@ -266,8 +301,8 @@ function getMetaForRoute(route: string): RouteMeta {
       ? 'The Fourfold Axis Method | Neurodivergent Mindfulness App'
       : 'Η Μέθοδος του Τετραπλού Άξονα | Neurodivergent Mindfulness App';
     const d = lang === 'en'
-      ? 'The Fourfold Axis: Body, Breath, Attention, Space. A trauma-informed mindfulness framework adapted for ADHD and autistic nervous systems.'
-      : 'Ο Τετραπλός Άξονας: Σώμα, Αναπνοή, Προσοχή, Χώρος. Πλαίσιο ενσυνειδητότητας για ΔΕΠΥ και αυτισμό.';
+      ? 'The Fourfold Axis: Body, Breath, Attention, Space. A trauma-informed mindfulness framework for ADHD and autistic nervous systems — with AI companion, animated movement, binaural beats, and a free 10-chapter workbook.'
+      : 'Ο Τετραπλός Άξονας: Σώμα, Αναπνοή, Προσοχή, Χώρος. Πλαίσιο ενσυνειδητότητας για ΔΕΠΥ και αυτισμό — με AI σύντροφο, animated κίνηση, binaural beats και δωρεάν βιβλίο 10 κεφαλαίων.';
     return { title: t, description: d, schema: {}, schemaType: 'Article' };
   }
 
