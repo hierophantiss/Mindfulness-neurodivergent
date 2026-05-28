@@ -40,7 +40,7 @@ const ActivityTrackerContext = createContext<TrackerContextType | undefined>(und
 
 export const ActivityTrackerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [logs, setLogs] = useState<ActivityContextData[]>(() => {
-    const saved = localStorage.getItem('serene_detailed_activity_logs');
+    const saved = localStorage.getItem('neurodivergent_mindfulness_detailed_activity_logs');
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -52,7 +52,7 @@ export const ActivityTrackerProvider: React.FC<{ children: React.ReactNode }> = 
   });
 
   useEffect(() => {
-    localStorage.setItem('serene_detailed_activity_logs', JSON.stringify(logs));
+    localStorage.setItem('neurodivergent_mindfulness_detailed_activity_logs', JSON.stringify(logs));
   }, [logs]);
 
   const logActivity = useCallback((data: Omit<ActivityContextData, 'id' | 'timestamp'>) => {

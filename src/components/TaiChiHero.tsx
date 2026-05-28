@@ -414,7 +414,7 @@ export default function TaiChiHero({
               {/* Face Oval */}
               <ellipse cx="200" cy="183" rx="12" ry="14" fill="#e5bda3" />
 
-              {/* Serene Closed Eyes */}
+              {/* Peaceful Closed Eyes */}
               <path d="M 191 182 Q 194 185 197 182" fill="none" stroke="#6b4c35" strokeWidth="1.2" strokeLinecap="round" />
               <path d="M 203 182 Q 206 185 209 182" fill="none" stroke="#6b4c35" strokeWidth="1.2" strokeLinecap="round" />
 

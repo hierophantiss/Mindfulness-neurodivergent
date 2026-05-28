@@ -1,4 +1,4 @@
-# Σημαντικοί Κανόνες για το Project (Mindfulness / Serene)
+# Σημαντικοί Κανόνες για το Project (Neurodivergent Mindfulness)
 
 ## 1. Διαχείριση Αρχείων Ήχου (Audio & Binary Files Blind Spot)
 * **ΑΥΣΤΗΡΟΣ ΚΑΝΟΝΑΣ**: Απαγορεύεται ρητά η προσπάθεια αντιγραφής, μεταφοράς, λήψης ή επεξεργασίας δυαδικών αρχείων (binary files: `.mp3`, `.mp4`, `.pdf`, εικόνες) μέσα στο περιβάλλον εργασίας (π.χ. μέσω `node`, `fs.copyFileSync`, `shell_exec`). 
