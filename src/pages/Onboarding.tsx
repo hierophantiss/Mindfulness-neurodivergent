@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
 import { Shield, Anchor, Wind, Focus, Maximize, ArrowRight, Heart, Sparkles, Compass, Zap, BookOpen } from 'lucide-react';
@@ -11,6 +11,12 @@ export default function Onboarding() {
   const [intention, setIntention] = useState<'adhd' | 'autism' | null>(null);
   const navigate = useNavigate();
   const { language, setLanguage } = useLanguage();
+
+  useEffect(() => {
+    if (localStorage.getItem('hasCompletedOnboarding') === 'true') {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [navigate]);
 
   const handleComplete = () => {
     localStorage.setItem('hasCompletedOnboarding', 'true');
