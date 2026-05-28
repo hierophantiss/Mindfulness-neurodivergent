@@ -82,7 +82,7 @@ async function generate() {
   // Deduplicate rabbithole ids
   const uniqueRhIds = [...new Set(rabbitholeIds)];
   uniqueRhIds.forEach(id => {
-    sitemapOnlyPaths.push(`/rabbithole?article=${id}`);
+    dynamicPaths.push(`/rabbithole/${id}`);
   });
 
   // program weeks
