@@ -80,7 +80,7 @@ const T = {
       {
         icon: '🪢',
         name: 'The Rope (Gravity & Grounding)',
-        desc: 'Your unwavering anchor. Every time you feel your weight on the floor, you hold the rope.'
+        desc: 'Your steady anchor. Every time you feel your weight on the floor, you hold the rope.'
       },
       {
         icon: '🔦',

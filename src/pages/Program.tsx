@@ -50,7 +50,7 @@ export default function Program() {
           </h2>
           <p className="text-lg text-white/50 font-sans max-w-xl mx-auto leading-relaxed">
             {language === 'en' 
-              ? 'A 56-day structured journey to master awareness and emotional regulation.'
+              ? 'A 56-day structured path to master awareness and emotional regulation.'
               : 'Μια δομημένη πορεία 56 ημερών για την εκμάθηση της επίγνωσης.'}
           </p>
         </div>

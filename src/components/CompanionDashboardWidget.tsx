@@ -111,7 +111,7 @@ export const CompanionDashboardWidget: React.FC = () => {
             {language === 'el' ? 'Επομενο Βημα' : 'Next Step'}
           </span>
           <span className="text-[15px] font-medium text-white">
-            {currentDayData ? currentDayData.title : (language === 'el' ? 'Συνεχίστε το Ταξίδι' : 'Continue Journey')}
+            {currentDayData ? currentDayData.title : (language === 'el' ? 'Συνεχίστε την Πρακτική' : 'Continue Practice')}
           </span>
         </div>
         

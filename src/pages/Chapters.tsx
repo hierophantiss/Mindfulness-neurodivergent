@@ -241,7 +241,7 @@ export default function Chapters() {
             <p className="text-lg text-white/50 font-sans max-w-md leading-relaxed">
               {language === 'el' 
                 ? 'Μια δομημένη πρακτική πορεία για την ενσωμάτωση της επίγνωσης στην καθημερινότητα.' 
-                : 'A structured practical journey to integrate awareness into daily life.'}
+                : 'A structured practical path to integrate awareness into daily life.'}
             </p>
           </Link>
         </div>

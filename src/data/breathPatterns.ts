@@ -246,9 +246,9 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     category: "movement",
     hasBinaural: true,
     title: { el: "Ασκητική Αναπνοή (5-5)", en: "Ascetic Breath (5-5)" },
-    subtitle: { el: "Γαλήνη & Επίγνωση", en: "Serenity & Awareness" },
+    subtitle: { el: "Ηρεμία & Επίγνωση", en: "Calm & Awareness" },
     desc: {
-      el: "Μια κίνηση που συμβολίζει την εσωτερική εστίαση και τη γαλήνη του Ασκητή.",
+      el: "Μια κίνηση που συμβολίζει την εσωτερική εστίαση και την ηρεμία του Ασκητή.",
       en: "A movement symbolizing inner focus and the serenity of the Ascetic.",
     },
     totalCycleDurationMs: 10000,

@@ -54,7 +54,7 @@ export default function PracticeMicrodoses() {
       title: { el: 'Ξεκλείδωτα Γόνατα', en: 'Unlocked Knees' },
       type: 'body',
       dur: { el: '15 δευτ.', en: '15 sec' },
-      desc: { el: 'Λύγισε ελάχιστα τα γόνατα καθώς στέκεσαι. Επιτρέπει στο βάρος να ρεύσει προς τη γη.', en: 'Slightly bend your knees while standing. Allows weight to flow to the earth.' },
+      desc: { el: 'Λύγισε ελάχιστα τα γόνατα την ώρα που στέκεσαι. Επιτρέπει στο βάρος να ρεύσει προς τη γη.', en: 'Slightly bend your knees while standing. Allows weight to flow to the earth.' },
       icon: <Anchor size={28} strokeWidth={1.5} />,
       link: '/practice/body/unlocked-knees'
     },
@@ -146,7 +146,7 @@ export default function PracticeMicrodoses() {
       title: { el: 'Η Διαδρομή του Αέρα', en: 'The Path of Air' },
       type: 'breath',
       dur: { el: '45 δευτ.', en: '45 sec' },
-      desc: { el: 'Ακολούθησε το ταξίδι: Μύτη - Λαιμός - Πνευμόνια. Και πάλι πίσω. Ο νους ταξιδεύει με τη ροή.', en: 'Follow the journey: Nose - Throat - Lungs. And back again. The mind travels with the flow.' },
+      desc: { el: 'Ακολούθησε τη διαδρομή: Μύτη - Λαιμός - Πνευμόνια. Και πάλι πίσω. Ο νους μετακινείται με τη ροή.', en: 'Follow the flow: Nose - Throat - Lungs. And back again. The mind rests with the flow.' },
       icon: <Zap size={28} strokeWidth={1.5} />,
       link: '/practice/breath/breath-path'
     },
@@ -173,7 +173,7 @@ export default function PracticeMicrodoses() {
       title: { el: 'Ήχος Ωκεανού', en: 'Ocean Breath' },
       type: 'breath',
       dur: { el: '30 δευτ.', en: '30 sec' },
-      desc: { el: 'Δημιούργησε έναν απαλό ψίθυρο στο λαιμό καθώς αναπνέεις. Σαν το κύμα της θάλασσας.', en: 'Create a soft whisper in the throat while breathing. Like the ocean wave.' },
+      desc: { el: 'Δημιούργησε έναν απαλό ψίθυρο στο λαιμό την ώρα που αναπνέεις. Σαν το κύμα της θάλασσας.', en: 'Create a soft whisper in the throat while breathing. Like the ocean wave.' },
       icon: <Zap size={28} strokeWidth={1.5} />,
       link: '/practice/breath/ocean-breath'
     },

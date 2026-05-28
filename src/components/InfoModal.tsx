@@ -20,7 +20,7 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
     },
     purpose: {
       el: 'Μια μέθοδος απελευθέρωσης της επίγνωσης, σχεδιασμένη με σεβασμό στη νευροδιαφορετικότητα. Ξεκινήστε την εξερεύνηση σας με μικρές πρακτικές αναπνοής, κίνησης και εστίασης στα παρακάτω κεφάλαια. Αντί για "άδειαμα του μυαλού", καλλιεργούμε την επίγνωση των τεσσάρων διαστάσεων της εμπειρίας.',
-      en: 'An awareness unbinding method tailored for neurodivergence. Start your exploration with gentle micro-practices in breath, movement, and focus in the chapters below. Instead of "emptying the mind", we cultivate awareness across four dimensions of experience.'
+      en: 'An awareness unbinding method designed for neurodivergence. Start your exploration with gentle micro-practices in breath, movement, and focus in the chapters below. Instead of "emptying the mind", we cultivate awareness across four dimensions of experience.'
     },
     features: {
       title: { el: 'Τι κάνει αυτό το εργαλείο διαφορετικό', en: 'What makes this tool different' },

@@ -69,7 +69,7 @@ export default function Sanctuary() {
       thumbnail: "https://img.youtube.com/vi/N8V-UUriLQM/maxresdefault.jpg",
       isSpaceMeditation: true,
       description: language === 'en' ? {
-        intro: "A slower, deeper bilateral cycle designed for profound relaxation. Perfect for winding down or recovering from intense sensory or emotional overload.",
+        intro: "A slower, deeper bilateral cycle designed for deep physical relaxation. Perfect for winding down or recovering from intense sensory or emotional overload.",
         tip: "Let your eyes soften as they follow the target, allowing the rhythm to anchor you completely in the present."
       } : {
         intro: "Ένας πιο αργός, βαθύς διμερής κύκλος σχεδιασμένος για απόλυτη χαλάρωση. Ιδανικός για αποφόρτιση ή ανάκαμψη από έντονη αισθητηριακή ή συναισθηματική υπερφόρτωση.",

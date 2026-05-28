@@ -219,7 +219,7 @@ export const D: Record<number, any> = {
       insight: 'The best relationship is the one that allows both to breathe.'
     },
     {
-      title: 'Completing the Journey',
+      title: 'Completing the Practice',
       where: 'Anywhere',
       dur: 'Open-ended',
       lesson: '<p>The final day of the program. Reading and practice now is uniting the 4 centers. Gazing at the sky. Keeping attention open, and remembering: Your mind is not broken.</p>',

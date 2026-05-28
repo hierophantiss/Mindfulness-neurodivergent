@@ -256,7 +256,7 @@ function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClo
     message.secondaryActionRoute = '/practice';
   } else if (nextChapterNum) {
     const ch = CHAPTERS_DATA[currentLang][nextChapterNum - 1];
-    message.primary = language === 'el' ? `Το ταξίδι συνεχίζεται: «${ch?.title}»` : `The journey continues: "${ch?.title}"`;
+    message.primary = language === 'el' ? `Η πρακτική συνεχίζεται: «${ch?.title}»` : `The practice continues: "${ch?.title}"`;
     message.secondary = language === 'el' ? `${completedCount}/${totalChapters} κεφάλαια ολοκληρωμένα` : `${completedCount}/${totalChapters} chapters completed`;
     message.actionLabel = `${ch?.icon} ${language === 'el' ? 'Ξεκίνα' : 'Start'}`;
     message.actionRoute = `/chapters/${nextChapterNum}`;
@@ -602,7 +602,7 @@ function HubFlow({ goBack, onClose, navigate }: { goBack: () => void, onClose: (
           <div className="text-xs opacity-70 text-stone-600 dark:text-stone-400 mt-1 relative z-10">
             {companionData.programProgress?.week > 0 
               ? `${language === 'el' ? 'Εβδομάδα' : 'Week'} ${companionData.programProgress.week}, ${language === 'el' ? 'Ημέρα' : 'Day'} ${companionData.programProgress.day + 1}` 
-              : (language === 'el' ? 'Ξεκινήστε το ταξίδι σας' : 'Start your journey')}
+              : (language === 'el' ? 'Ξεκινήστε την πρακτική σας' : 'Start your practice')}
           </div>
         </button>
 
