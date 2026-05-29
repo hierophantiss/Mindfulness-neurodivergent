@@ -47,6 +47,7 @@ export async function streamCompanionResponse(
   context: {
     language: 'el' | 'en';
     screen: string;
+    intention?: string;
     axis?: string;
     chapter?: number;
     questionnaire?: any;
@@ -96,6 +97,7 @@ export async function getCompanionResponse(
   context: {
     language: 'el' | 'en';
     screen: string;
+    intention?: string;
     axis?: string;
     chapter?: number;
     questionnaire?: any;

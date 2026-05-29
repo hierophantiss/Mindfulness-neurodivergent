@@ -101,11 +101,9 @@ function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClo
   const navigate = useNavigate();
   const { language } = useLanguage();
   const { reduceMotion } = useAccessibility();
-  const [intention, setIntention] = useState(localStorage.getItem('n_mindfulness_intention') || 'autism');
-
   useEffect(() => {
     const handleStorageChange = () => {
-      setIntention(localStorage.getItem('n_mindfulness_intention') || 'autism');
+      // Intentionally left blank
     };
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
@@ -390,48 +388,6 @@ function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClo
           </button>
         </div>
 
-        {/* Intention Toggle */}
-        <div className="flex bg-stone-200/50 dark:bg-stone-900/50 p-1 rounded-2xl relative w-full items-center">
-          <div 
-            className={cn(
-              "absolute top-1 bottom-1 w-[calc(50%-4px)] rounded-xl transition-all duration-300 ease-out shadow-sm",
-              intention === 'autism' 
-                ? "left-1 bg-white dark:bg-stone-700 border border-stone-200 dark:border-stone-600" 
-                : "left-[calc(50%+4px)] bg-white dark:bg-stone-700 border border-stone-200 dark:border-stone-600"
-            )} 
-          />
-          <button
-             onClick={() => {
-               localStorage.setItem('n_mindfulness_intention', 'autism');
-               setIntention('autism');
-               window.dispatchEvent(new Event('storage'));
-             }}
-             className={cn(
-               "relative z-10 flex-1 py-2 text-center rounded-xl text-[11px] font-bold tracking-wider transition-colors uppercase",
-               intention === 'autism'
-                 ? "text-teal-700 dark:text-teal-300"
-                 : "text-stone-500 hover:text-stone-700 dark:hover:text-stone-300"
-             )}
-          >
-            📖 {language === 'el' ? 'Μελετη' : 'Study'}
-          </button>
-          <button
-             onClick={() => {
-               localStorage.setItem('n_mindfulness_intention', 'adhd');
-               setIntention('adhd');
-               window.dispatchEvent(new Event('storage'));
-             }}
-             className={cn(
-               "relative z-10 flex-1 py-2 text-center rounded-xl text-[11px] font-bold tracking-wider transition-colors uppercase",
-               intention === 'adhd'
-                 ? "text-[#4a9eca] dark:text-[#6baee2]"
-                 : "text-stone-500 hover:text-stone-700 dark:hover:text-stone-300"
-             )}
-          >
-            ⚡ {language === 'el' ? 'Εξερευνηση' : 'Explore'}
-          </button>
-        </div>
-
         {/* Companion Mode Switch */}
         <div className="flex bg-stone-200/50 dark:bg-stone-900/50 p-1 rounded-2xl w-full items-center">
            <button 
@@ -640,14 +596,6 @@ function HubFlow({ goBack, onClose, navigate }: { goBack: () => void, onClose: (
 function OptionsFlow({ goBack, onClose }: { goBack: () => void, onClose: () => void }) {
   const { language } = useLanguage();
   const { companionData, updateCompanionData } = useCompanion();
-  const [intention, setIntention] = useState(localStorage.getItem('n_mindfulness_intention') || 'autism');
-
-  const handleIntentionChange = (newIntention: string) => {
-    localStorage.setItem('n_mindfulness_intention', newIntention);
-    setIntention(newIntention);
-    // Force a reload or UI update if necessary, though basic navigation is sufficient for now
-    window.dispatchEvent(new Event('storage'));
-  };
 
   return (
     <div className="space-y-6 animate-fade-in text-stone-800 dark:text-stone-200">
@@ -657,42 +605,6 @@ function OptionsFlow({ goBack, onClose }: { goBack: () => void, onClose: () => v
       </div>
 
       <div className="space-y-6">
-         {/* Intention/Profile Switcher */}
-         <div className="space-y-3">
-           <span className="text-[11px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-wider ml-1">
-             {language === 'el' ? 'Προφίλ & Διαδρομή' : 'Profile & Pathway'}
-           </span>
-           <div className="grid grid-cols-2 gap-2">
-             <button
-               onClick={() => handleIntentionChange('autism')}
-               className={cn(
-                 "flex flex-col items-center justify-center text-center p-4 rounded-2xl border-2 transition-all cursor-pointer h-full",
-                 intention === 'autism'
-                   ? "border-teal-500 bg-teal-50 dark:bg-teal-900/20 text-stone-900 dark:text-stone-100"
-                   : "border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 text-stone-500 dark:text-stone-400 hover:border-stone-300"
-               )}
-             >
-               <span className="text-2xl mb-2">📖</span>
-               <span className="font-bold text-[13px]">{language === 'el' ? 'Μελέτη / Δομή' : 'Study / Structure'}</span>
-               <span className="text-[10px] mt-1 opacity-70">{language === 'el' ? 'Πρόγραμμα 8 Εβδομάδων' : '8-Week Program'}</span>
-             </button>
-
-             <button
-               onClick={() => handleIntentionChange('adhd')}
-               className={cn(
-                 "flex flex-col items-center justify-center text-center p-4 rounded-2xl border-2 transition-all cursor-pointer h-full",
-                 intention === 'adhd'
-                   ? "border-[#4a9eca] bg-[#4a9eca]/10 dark:bg-[#4a9eca]/20 text-stone-900 dark:text-stone-100"
-                   : "border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 text-stone-500 dark:text-stone-400 hover:border-stone-300"
-               )}
-             >
-               <span className="text-2xl mb-2">⚡</span>
-               <span className="font-bold text-[13px]">{language === 'el' ? 'Εξερεύνηση / Ασκήσεις' : 'Explore / Practice'}</span>
-               <span className="text-[10px] mt-1 opacity-70">{language === 'el' ? 'Άμεσες Λύσεις' : 'Quick Resets'}</span>
-             </button>
-           </div>
-         </div>
-
          {/* Companion Mode Switcher */}
          <div className="space-y-3">
            <span className="text-[11px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-wider ml-1">
@@ -949,10 +861,6 @@ function QuestionnaireFlow({ goBack }: { goBack: () => void }) {
       updateCompanionData({
         questionnaire: { ...answers, completed: true }
       });
-      // Also sync for dashboard (legacy key used by dashboard)
-      if (answers.focus && answers.focus.length > 0) {
-        localStorage.setItem('n_mindfulness_intention', answers.focus[0]);
-      }
       setCompleted(true);
     }
   };
@@ -1142,6 +1050,7 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
         (companionData.chatHistory || []).filter(m => m.role !== 'system').map(m => ({ role: m.role as any, content: m.content })),
         {
           language,
+          intention: localStorage.getItem('n_mindfulness_intention') || 'Unknown',
           screen: companionData.lastScreen,
           axis: fullAxis,
           questionnaire: companionData.questionnaire,

@@ -323,6 +323,22 @@ export default function RabbitHole() {
         "Το νευρικό μας σύστημα βρίσκεται συχνά σε κατάσταση υπερφόρτωσης, με τον «μηχανικό νου» να λειτουργεί συνεχώς στο παρασκήνιο. Γι' αυτό, η πρακτική απαιτεί να κάνουμε σιγά-σιγά δουλειά. Ξεκινάμε με το σώμα και την αναπνοή, με σκοπό να ηρεμήσουμε πρώτα το νευρικό σύστημα και να του δώσουμε σαφή σήματα ασφάλειας. Αφού επέλθει αυτή η πολύτιμη ηρεμία, μπορούμε να παρατηρήσουμε τον \"αυτόματο πιλότο\" —τις αρνητικές καταγραφές, τα μοτίβα και τον ασταμάτητο θόρυβο— και να τον απενεργοποιήσουμε.\nΣτη θέση αυτού του αυτόματου πιλότου, εγκαθιδρύουμε την αγνή παρουσία. Αυτό επιτυγχάνεται χρησιμοποιώντας ως άγκυρα τη σταθερότητα της βαρύτητας, προσεγγίζοντας πάντα τον εαυτό μας με καλοσύνη, συμπόνια και αποδοχή.",
         "Μέσα από αυτή την ήπια διαδικασία, δεν παλεύουμε να σπάσουμε βίαια το γυαλί. Αντιθέτως, «χαλαρώνουμε το μπουκάλι». Δημιουργούμε τις κατάλληλες συνθήκες ασφάλειας ώστε ο νους να μπορέσει τελικά να ελευθερωθεί και η χήνα να αναπνεύσει, επιβεβαιώνοντας στον νευροδιαφορετικό άνθρωπο ότι η ουσία του ήταν πάντοτε, εξαρχής, ελεύθερη."
       ]
+    },
+    {
+      id: 'blue-sky-mind',
+      title: language === 'en' ? 'Space - Sky' : 'Χώρος - Ουρανός',
+      author: 'Chögyam Trungpa Rinpoche',
+      pages: language === 'en' ? [
+        "Practice means that everything you do, you act from Blue Sky Mind. You don't run off with your delusions when they arise. Seeing them as clouds, you begin to understand that which stays and that which goes. This Blue Sky Mind observes all of these passing conditions and sees them all clearly, but it isn't any one of those states itself.",
+        "Blue Sky Mind, this unstainable consciousness, Buddha nature. Through practice you develop the strength to not identify with the things that come up and begin to prefer the spaciousness of your unstainable consciousness. The more time you spend as Blue Sky, the less you will want to spend time as clouds.",
+        "To the extent that you spend time in this birthless mind, in the mind that hasn't taken the hard form of opinion, likes, and dislikes, to that extent you can have a flexible, expansive, and open mind.",
+        "You keep returning to Blue Sky Mind and as you spend more and more time there, eventually that becomes your place of residence. At this point it feels like a true turn-around has occurred, one with entirely different quality of being."
+      ] : [
+        "Η πρακτική σημαίνει ότι καθετί που κάνεις, το πράττεις μέσα από τον Νου του Γαλάζιου Ουρανού. Δεν παρασύρεσαι από τις αυταπάτες σου όταν αυτές αναδύονται. Βλέποντάς τες σαν σύννεφα, αρχίζεις να κατανοείς τι είναι αυτό που μένει και τι είναι αυτό που φεύγει. Αυτός ο Νους του Γαλάζιου Ουρανού παρατηρεί όλες αυτές τις περαστικές συνθήκες και τις βλέπει όλες ξεκάθαρα, αλλά δεν ταυτίζεται με καμία από αυτές τις καταστάσεις.",
+        "Ο Νους του Γαλάζιου Ουρανού, αυτή η αμόλυντη συνειδητότητα, η βουδική φύση. Μέσα από την πρακτική αναπτύσσεις τη δύναμη να μην ταυτίζεσαι με τα πράγματα που προκύπτουν και αρχίζεις να προτιμάς την ευρυχωρία της αμόλυντης συνειδητότητάς σου. Όσο περισσότερο χρόνο περνάς ως Γαλάζιος Ουρανός, τόσο λιγότερο θα θέλεις να περνάς χρόνο ως σύννεφα.",
+        "Στον βαθμό που περνάς χρόνο σε αυτόν τον αγέννητο νου, στον νου που δεν έχει πάρει τη σκληρή μορφή της άποψης, των προτιμήσεων και των δυσαρεσκειών, σε αυτόν τον βαθμό μπορείς να έχεις έναν ευέλικτο, επεκτατικό και ανοιχτό νου.",
+        "Συνεχώς επιστρέφεις στον Νου του Γαλάζιου Ουρανού, και καθώς περνάς όλο και περισσότερο χρόνο εκεί, τελικά αυτός γίνεται η μόνιμη κατοικία σου. Σε αυτό το σημείο, νιώθεις ότι έχει συμβεί μια αληθινή μεταστροφή, μια μεταστροφή με μια εντελώς διαφορετική ποιότητα ύπαρξης."
+      ]
     }
   ];
 

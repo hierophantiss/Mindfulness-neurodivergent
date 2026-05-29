@@ -5,10 +5,10 @@ import { Shield, Anchor, Wind, Focus, Maximize, ArrowRight, Heart, Sparkles, Com
 import { useLanguage } from '../hooks/useLanguage';
 import { cn } from '../lib/utils';
 import { RainbowInfinity } from '../components/RainbowInfinity';
+import { CatInfinityAvatar } from '../components/CatInfinityAvatar';
 
 export default function Onboarding() {
   const [step, setStep] = useState(0);
-  const [intention, setIntention] = useState<'adhd' | 'autism' | null>(null);
   const navigate = useNavigate();
   const { language, setLanguage } = useLanguage();
 
@@ -21,9 +21,8 @@ export default function Onboarding() {
   const handleComplete = () => {
     localStorage.setItem('hasCompletedOnboarding', 'true');
     localStorage.setItem('hasSeenIntro', 'true');
-    if (intention) {
-      localStorage.setItem('n_mindfulness_intention', intention);
-    }
+    // Set intention to audhd by default since we removed the selection
+    localStorage.setItem('n_mindfulness_intention', 'audhd');
     navigate('/dashboard', { replace: true });
   };
 
@@ -81,11 +80,7 @@ export default function Onboarding() {
       content: (
         <div className="flex flex-col items-center text-center space-y-8 max-w-lg mx-auto">
           <div className="relative w-24 h-24 rounded-full bg-teal-500/10 flex items-center justify-center border-2 border-teal-400/40 p-1 mx-auto shadow-[0_0_25px_rgba(20,184,166,0.15)]">
-            <img 
-              src="/genfavicon-256.png" 
-              alt="Companion" 
-              className="w-20 h-20 object-cover rounded-full"
-            />
+            <CatInfinityAvatar className="w-20 h-20" />
             <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-teal-400 flex items-center justify-center text-stone-950">
               <Sparkles size={12} className="animate-pulse" />
             </div>
@@ -155,58 +150,6 @@ export default function Onboarding() {
                   {language === 'el' ? axis.title.el : axis.title.en}
                 </span>
               </motion.div>
-            ))}
-          </div>
-        </div>
-      )
-    },
-    {
-      id: 'intention',
-      content: (
-        <div className="flex flex-col items-center text-center space-y-8 w-full max-w-xl mx-auto">
-          <div className="space-y-4 max-w-md mx-auto">
-             <h2 className="text-3xl font-serif italic text-white tracking-tight leading-snug">
-               {language === 'el' ? 'Πώς νιώθετε συνήθως;' : 'How do you usually feel?'}
-             </h2>
-             <p className="text-sm text-white/50 font-sans leading-relaxed">
-               {language === 'el' 
-                 ? 'Επιλέξτε αυτό που σας απασχολεί περισσότερο, για να διαμορφώσουμε τις προτάσεις σας.'
-                 : 'Choose what concerns you most, so we can tailor your suggestions.'}
-             </p>
-          </div>
-          <div className="flex flex-col gap-3 w-full max-w-sm mx-auto">
-            {[
-              { id: 'adhd', icon: Zap, title: { el: 'Εξερεύνηση', en: 'Exploration' }, sub: { el: 'Άμεσες Ασκήσεις & Καταφύγιο', en: 'Quick Exercises & Sanctuary' } },
-              { id: 'autism', icon: BookOpen, title: { el: 'Μελέτη & Δομή', en: 'Study & Structure' }, sub: { el: 'Πρόγραμμα 8 Εβδομάδων', en: '8-Week Program' } }
-            ].map((opt) => (
-              <button 
-                key={opt.id}
-                onClick={() => setIntention(opt.id as any)}
-                className={cn(
-                  "flex items-center gap-4 p-5 rounded-2xl border transition-all duration-300 text-left active:scale-[0.98] group",
-                   intention === opt.id 
-                    ? "bg-teal-500/20 border-teal-500/50 shadow-[0_0_15px_rgba(20,184,166,0.1)]" 
-                    : "bg-white/[0.03] border-white/5 hover:bg-white/[0.06] hover:border-white/10"
-                )}
-              >
-                 <div className={cn(
-                   "w-10 h-10 rounded-xl flex items-center justify-center transition-colors",
-                   intention === opt.id ? "bg-teal-400/20 text-teal-400" : "bg-white/5 text-white/40 group-hover:text-white/60"
-                 )}>
-                   <opt.icon size={20} />
-                 </div>
-                 <div className="flex flex-col">
-                   <span className={cn(
-                     "font-serif italic text-lg transition-colors",
-                     intention === opt.id ? "text-white" : "text-white/80"
-                   )}>
-                     {language === 'el' ? opt.title.el : opt.title.en}
-                   </span>
-                   <span className="text-[10px] uppercase tracking-widest text-white/40 font-black mt-0.5">
-                     {language === 'el' ? opt.sub.el : opt.sub.en}
-                   </span>
-                 </div>
-              </button>
             ))}
           </div>
         </div>
@@ -283,9 +226,7 @@ export default function Onboarding() {
           <span>
             {step === steps.length - 1 
               ? (language === 'el' ? 'Έναρξη' : 'Begin') 
-              : (steps[step].id === 'intention' && !intention)
-                ? (language === 'el' ? 'Παράλειψη' : 'Skip')
-                : (language === 'el' ? 'Συνέχεια' : 'Continue')}
+              : (language === 'el' ? 'Συνέχεια' : 'Continue')}
           </span>
           <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
         </button>
