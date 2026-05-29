@@ -69,7 +69,7 @@ export default function Onboarding() {
             </h2>
             <p className="text-base text-white/60 font-sans leading-relaxed">
               {language === 'el' 
-                ? 'Η εφαρμογή μας είναι ένας ασφαλής χώρος επιβράδυνσης. Περιλαμβάνει 7 μοναδικά τμήματα: από θεωρία και πρακτικές αναπνοής, κίνησης ή προσοχής, μέχρι το προσωπικό σας Ημερολόγιο και ατμοσφαιρικούς ήχους περιβάλλοντος για απόλυτη χαλάρωση.' 
+                ? 'Η εφαρμογή μας είναι ένας ασφαλής χώρος επιβράδυνσης. Περιλαμβάνει 7 μοναδικά τμήματα: από θεωρία και πρακτικές αναπνοής, κίνησης ή προσοχής, μέχρι το προσωπικό σας Ημερολόγιο και ατμοσφαιρικούς ήχους περιβάλλοντος για χαλάρωση.' 
                 : 'Our application is a safe space for slowing down. It includes 7 unique sections: from theory and practices of breath, movement, or attention, to your personal Journal and atmospheric ambient sounds for complete relaxation.'}
             </p>
           </div>

@@ -81,7 +81,7 @@ export default function PracticeMicrodoses() {
       title: { el: 'Το Βάρος των Χεριών', en: 'Hand Weight' },
       type: 'body',
       dur: { el: '20 δευτ.', en: '20 sec' },
-      desc: { el: 'Νιώσε το βάρος των χεριών σου να "κρέμεται" από τους ώμους. Απόλυτη αδράνεια.', en: 'Feel the weight of your hands "hanging" from your shoulders. Absolute inertia.' },
+      desc: { el: 'Νιώσε το βάρος των χεριών σου να "κρέμεται" από τους ώμους. Αδράνεια.', en: 'Feel the weight of your hands "hanging" from your shoulders. Inertia.' },
       icon: <Anchor size={28} strokeWidth={1.5} />,
       link: '/practice/body/hand-weight'
     },
@@ -108,7 +108,7 @@ export default function PracticeMicrodoses() {
       title: { el: 'Βύθιση στη Βαρύτητα', en: 'Gravity Sink' },
       type: 'body',
       dur: { el: '15 δευτ.', en: '15 sec' },
-      desc: { el: 'Φαντάσου το σώμα σου να βυθίζεται 1 χιλιοστό μέσα στο έδαφος. Απόλυτη παράδοση.', en: 'Imagine your body sinking 1 millimeter into the ground. Absolute surrender.' },
+      desc: { el: 'Φαντάσου το σώμα σου να βυθίζεται 1 χιλιοστό μέσα στο έδαφος. Παράδοση.', en: 'Imagine your body sinking 1 millimeter into the ground. Surrender.' },
       icon: <Anchor size={28} strokeWidth={1.5} />,
       link: '/practice/body/gravity-sink'
     },
@@ -119,7 +119,7 @@ export default function PracticeMicrodoses() {
       title: { el: 'Αναπνοή 5-5', en: 'Breath 5-5' },
       type: 'breath',
       dur: { el: '1-2 λεπτά', en: '1-2 minutes' },
-      desc: { el: 'Απόλυτη συμμετρία (5 εισπνοή - 5 εκπνοή). Ρυθμίζει το νευρικό σύστημα χωρίς εντοπισμό.', en: 'Absolute symmetry (5 in - 5 out). Regulates the nervous system invisibly.' },
+      desc: { el: 'Συμμετρία (5 εισπνοή - 5 εκπνοή). Ρυθμίζει το νευρικό σύστημα χωρίς εντοπισμό.', en: 'Symmetry (5 in - 5 out). Regulates the nervous system invisibly.' },
       icon: <Zap size={28} strokeWidth={1.5} />,
       link: '/practice/breath/rhythm-5-5'
     },
@@ -137,7 +137,7 @@ export default function PracticeMicrodoses() {
       title: { el: 'Αόρατη Αναπνοή (Παύση)', en: 'Invisible Breath (Pause)' },
       type: 'breath',
       dur: { el: '1 λεπτό', en: '1 minute' },
-      desc: { el: 'Παρατήρησε την απαλή παύση ανάμεσα στην εισπνοή και την εκπνοή. Εκεί υπάρχει η απόλυτη ησυχία.', en: 'Observe the soft pause between inhale and exhale. Absolute stillness lies there.' },
+      desc: { el: 'Παρατήρησε την απαλή παύση ανάμεσα στην εισπνοή και την εκπνοή. Εκεί υπάρχει η ησυχία.', en: 'Observe the soft pause between inhale and exhale. Stillness lies there.' },
       icon: <Zap size={28} strokeWidth={1.5} />,
       link: '/practice/breath/breath-observation'
     },
@@ -193,7 +193,7 @@ export default function PracticeMicrodoses() {
       title: { el: 'Τριπλή Άγκυρα', en: 'Triple Anchor' },
       type: 'focus',
       dur: { el: '1 λεπτό', en: '1 minute' },
-      desc: { el: 'Νιώσε ταυτόχρονα: Πέλματα (Γη), Αναπνοή (Αέρας) και ένα Σημείο (Χώρος). Απόλυτη παρουσία.', en: 'Feel simultaneously: Feet (Earth), Breath (Air), and a Point (Space). Absolute presence.' },
+      desc: { el: 'Νιώσε ταυτόχρονα: Πέλματα (Γη), Αναπνοή (Αέρας) και ένα Σημείο (Χώρος). Παρουσία.', en: 'Feel simultaneously: Feet (Earth), Breath (Air), and a Point (Space). Presence.' },
       icon: <Focus size={28} strokeWidth={1.5} />,
       link: '/practice/focus/triple-anchor'
     },
@@ -258,7 +258,7 @@ export default function PracticeMicrodoses() {
       title: { el: 'Στιγμιαία Παύση', en: 'Short Moment' },
       type: 'space',
       dur: { el: '5 δευτ.', en: '5 sec' },
-      desc: { el: 'Για 5 δευτερόλεπτα, άφησε τα πάντα ακριβώς όπως είναι. Μια στιγμή απόλυτης ανάπαυσης.', en: 'For 5 seconds, let everything be exactly as it is. A moment of absolute rest.' },
+      desc: { el: 'Για 5 δευτερόλεπτα, άφησε τα πάντα ακριβώς όπως είναι. Μια στιγμή ανάπαυσης.', en: 'For 5 seconds, let everything be exactly as it is. A moment of rest.' },
       icon: <Box size={28} strokeWidth={1.5} />,
       link: '/practice/space/short-moment'
     },

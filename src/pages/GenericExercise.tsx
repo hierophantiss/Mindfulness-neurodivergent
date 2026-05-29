@@ -50,7 +50,7 @@ const EXERCISES: Record<string, any> = {
   },
   'rhythm-5-5': {
     title: { el: 'Ρυθμική Αναπνοή 5-5', en: 'Rhythmic Breath 5-5' },
-    desc: { el: 'Η απόλυτη συμμετρία που ηρεμεί άμεσα τον «αυτόματο πιλότο».', en: 'The absolute symmetry that instantly calms the "autopilot".' },
+    desc: { el: 'Συμμετρία που ηρεμεί άμεσα τον «αυτόματο πιλότο».', en: 'Symmetry that instantly calms the "autopilot".' },
     duration: 120, // 2 mins
     color: 'teal',
     instructions: {

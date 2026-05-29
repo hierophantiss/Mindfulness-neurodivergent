@@ -72,7 +72,7 @@ export default function Sanctuary() {
         intro: "A slower, deeper bilateral cycle designed for deep physical relaxation. Perfect for winding down or recovering from intense sensory or emotional overload.",
         tip: "Let your eyes soften as they follow the target, allowing the rhythm to anchor you completely in the present."
       } : {
-        intro: "Ένας πιο αργός, βαθύς διμερής κύκλος σχεδιασμένος για απόλυτη χαλάρωση. Ιδανικός για αποφόρτιση ή ανάκαμψη από έντονη αισθητηριακή ή συναισθηματική υπερφόρτωση.",
+        intro: "Ένας πιο αργός, βαθύς διμερής κύκλος σχεδιασμένος για χαλάρωση. Ιδανικός για αποφόρτιση ή ανάκαμψη από έντονη αισθητηριακή ή συναισθηματική υπερφόρτωση.",
         tip: "Αφήστε το βλέμμα σας να μαλακώσει καθώς ακολουθεί τον στόχο, επιτρέποντας στον ρυθμό να σας γειώσει πλήρως στο παρόν."
       }
     }

@@ -46,7 +46,7 @@ const PRESETS: BreathingPreset[] = [
     id: "box",
     nameEl: "Τετράγωνη Αναπνοή",
     nameEn: "Box Breathing",
-    descEl: "Χρησιμοποιείται από Zen δασκάλους και αθλητές για απόλυτη εστίαση και πνευματική ηρεμία.",
+    descEl: "Χρησιμοποιείται από Zen δασκάλους και αθλητές για εστίαση και πνευματική ηρεμία.",
     descEn: "Used by Zen masters and high-performers to lock deep clarity and calm the mind.",
     inhale: 4.0,
     holdFull: 4.0,

@@ -592,7 +592,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     id: "lotus-box", category: "grounding", visualizer: "lotus", hasBinaural: true,
     title: { el: "Λωτός: Τετράγωνη Αναπνοή", en: "Lotus: Box Breathing" },
     subtitle: { el: "Εστίαση & Ηρεμία", en: "Focus & Calm" },
-    desc: { el: "Απόλυτη εστίαση και πνευματική ηρεμία (4 - 4 - 4 - 4).", en: "Absolute focus and mental calm (4 - 4 - 4 - 4)." },
+    desc: { el: "Εστίαση και πνευματική ηρεμία (4 - 4 - 4 - 4).", en: "Focus and mental calm (4 - 4 - 4 - 4)." },
     totalCycleDurationMs: 16000, audioConfig: { base: 136.1, beat: 0, ambientLayers: [] },
     phases: [ { dur: 4000, armFrom: 0, armTo: 1 }, { dur: 4000, armFrom: 1, armTo: 1 }, { dur: 4000, armFrom: 1, armTo: 0 }, { dur: 4000, armFrom: 0, armTo: 0 } ],
     labels: [
