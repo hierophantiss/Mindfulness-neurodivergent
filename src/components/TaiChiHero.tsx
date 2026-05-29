@@ -10,7 +10,7 @@ interface TaiChiHeroProps {
   breathForce: number; // 0 to 1
   isRising: boolean; // true = inhaling, false = exhaling
   breathStateText: string;
-  movementType: "taichi" | "lotus" | "bow";
+  movementType: "taichi" | "lotus" | "bow" | "be-like-a-flower-5-5" | string;
   rhythmText?: string;
 }
 
@@ -61,16 +61,53 @@ export default function TaiChiHero({
   const bf = breathForce;
   const sweep = Math.sin(bf * Math.PI); // peaks at 0.5 (middle of movement), is 0 at ends
 
-  const bowBend = movementType === "bow" ? (1 - bf) : 0;
+  const bowBend = (movementType === "bow" || movementType === "deep-bow-5-5") ? (1 - bf) : 0;
   const torsoBendY = bowBend * 38;
+  const leanBackY = movementType === "qigong-lifting-sky" ? (bf * -4) : 0;
 
   // Modify base shoulders depending on the torso bend
-  const sL = { x: 182, y: 206 + torsoBendY };
-  const sR = { x: 218, y: 206 + torsoBendY };
+  const sL = { x: 182, y: 206 + torsoBendY + leanBackY };
+  const sR = { x: 218, y: 206 + torsoBendY + leanBackY };
 
   let eL_base, hL_base, eL_travel_y, hL_travel_y, eL_travel_x, hL_travel_x, eL_sweep_x, hL_sweep_x, baseRotation, rotationFlair;
 
-  if (movementType === "lotus") {
+  if (movementType === "qigong-lifting-sky") {
+    // LIFTING THE SKY:
+    // Exhale (bf -> 0): Hands at chest (prayer)
+    // Inhale (bf -> 1): Arms pushed up into a 'Y' shape, head leans slightly back
+    eL_base = { x: 178, y: 228 };
+    hL_base = { x: 196, y: 215 };
+    
+    eL_travel_x = -10; 
+    eL_travel_y = -35; 
+    hL_travel_x = -35; 
+    hL_travel_y = -65; 
+
+    eL_sweep_x = isRising ? -5 : 5;
+    hL_sweep_x = isRising ? -10 : 10;
+    
+    baseRotation = -135 + bf * 60; 
+    rotationFlair = isRising ? -10 * sweep : 10 * sweep;
+
+  } else if (movementType === "be-like-a-flower-5-5") {
+    // BE LIKE A FLOWER:
+    // Exhale (bf -> 0): Arms open horizontally wide (cross)
+    // Inhale (bf -> 1): Hands gather back to chest (prayer)
+    eL_base = { x: 145, y: 210 };
+    hL_base = { x: 110, y: 210 };
+    
+    eL_travel_x = 33;  // 145 + 33 = 178
+    eL_travel_y = 18;  // 210 + 18 = 228
+    hL_travel_x = 86;  // 110 + 86 = 196
+    hL_travel_y = 5;   // 210 + 5 = 215
+
+    eL_sweep_x = 0;
+    hL_sweep_x = isRising ? 5 : -5;
+    
+    baseRotation = -90 - bf * 45; // -90 (left) to -135 (up-left prayer)
+    rotationFlair = isRising ? 10 * sweep : -10 * sweep;
+
+  } else if (movementType === "lotus-bloom-5-5" || movementType === "lotus") {
     // LOTUS MOVEMENT: Starts hands together at chest, opens arms upwards like a lotus flower.
     eL_base = { x: 178, y: 228 };
     hL_base = { x: 196, y: 215 }; // Just slightly left of center (200), joining hands
@@ -88,7 +125,7 @@ export default function TaiChiHero({
     baseRotation = -135 + bf * 90;
     rotationFlair = isRising ? -15 * sweep : 15 * sweep;
 
-  } else if (movementType === "bow") {
+  } else if (movementType === "deep-bow-5-5" || movementType === "bow") {
     // DEEP BOW: Hands on waist to support the lower back, torso leans forward on exhale.
     eL_base = { x: 153, y: 232 }; // Bowed down (bf=0), elbows stick out
     hL_base = { x: 177, y: 242 }; // Hands resting on hips
@@ -372,19 +409,19 @@ export default function TaiChiHero({
 
           {/* TORSO / HOODIE (Black/Charcoal hoodie, centered) */}
           <g id="torso" fill="#13161d">
-            <path d={`M 180 ${206 + torsoBendY} L 220 ${206 + torsoBendY} L 214 248 L 186 248 Z`} />
+            <path d={`M 180 ${206 + torsoBendY + leanBackY} L 220 ${206 + torsoBendY + leanBackY} L 214 248 L 186 248 Z`} />
             {/* Kangaroo Pocket */}
             <path
-              d={`M 189 ${232 + torsoBendY * 0.35} L 211 ${232 + torsoBendY * 0.35} L 213 246 L 187 246 Z`}
+              d={`M 189 ${232 + torsoBendY * 0.35 + leanBackY * 0.35} L 211 ${232 + torsoBendY * 0.35 + leanBackY * 0.35} L 213 246 L 187 246 Z`}
               fill="#1b1e26"
               stroke="#0b0d12"
               strokeWidth="0.8"
             />
-            <path d={`M 189 ${232 + torsoBendY * 0.35} L 193 239 M 211 ${232 + torsoBendY * 0.35} L 207 239`} stroke="#0b0d12" strokeWidth="0.5" />
+            <path d={`M 189 ${232 + torsoBendY * 0.35 + leanBackY * 0.35} L 193 239 M 211 ${232 + torsoBendY * 0.35 + leanBackY * 0.35} L 207 239`} stroke="#0b0d12" strokeWidth="0.5" />
           </g>
 
           {/* RAINBOW INFINITY SYMBOL ON CHEST */}
-          <g id="infinity-symbol" transform={`translate(200, ${222 + torsoBendY * 0.6})`}>
+          <g id="infinity-symbol" transform={`translate(200, ${222 + torsoBendY * 0.6 + leanBackY * 0.6})`}>
             {/* Outer glow around symbol when breathing in */}
             <path
               d="M -6.5 0 C -6.5 -3.5 -2.5 -3.5 0 0 C 2.5 3.5 6.5 3.5 6.5 0 C 6.5 -3.5 2.5 -3.5 0 0 C -2.5 3.5 -6.5 3.5 -6.5 0 Z"
@@ -405,7 +442,7 @@ export default function TaiChiHero({
             />
           </g>
 
-          <g id="head-group" transform={`translate(200, ${206 + torsoBendY}) scale(${0.85 + bowBend * 0.15}) translate(-200, -206)`}>
+          <g id="head-group" transform={`translate(200, ${206 + torsoBendY + leanBackY * 1.5}) scale(${0.85 + bowBend * 0.15}) translate(-200, -206)`}>
             {/* INNER HEAD & FACE peeking from under hood */}
             <g id="face">
               {/* Neck */}

@@ -275,10 +275,10 @@ export default function Dashboard() {
                   </div>
                   <div className="flex flex-col gap-1">
                     <h3 className="text-[17px] font-serif italic text-white/90">
-                      {language === 'el' ? 'Ασκήσεις' : 'Exercises'}
+                      {language === 'el' ? 'Εξάσκηση' : 'Practice Hub'}
                     </h3>
                     <span className="text-[10px] uppercase tracking-wider text-white/40 font-medium">
-                      {language === 'el' ? 'ΠΡΑΚΤΙΚΗ & MICRO-DOSES' : 'PRACTICE & MICRO-DOSES'}
+                      {language === 'el' ? 'ΑΝΑΠΝΟΗ & ΚΙΝΗΣΗ' : 'BREATH & MOVEMENT'}
                     </span>
                   </div>
                 </div>
@@ -305,25 +305,6 @@ export default function Dashboard() {
               </Link>
             </>
           )}
-
-          {/* Mindful Movement (Shared) */}
-          <Link to="/practice/movement" className={cn(glassCardClasses, "p-4 flex items-center justify-between group cursor-pointer active:scale-[0.98] transition-transform relative overflow-hidden")}>
-             <div className="absolute top-0 right-0 w-32 h-32 bg-[#5cc8a0]/10 blur-[40px] rounded-full pointer-events-none -mr-10 -mt-10" />
-            <div className="flex items-center gap-4 relative z-10">
-              <div className="w-12 h-12 rounded-[14px] bg-[#5cc8a0]/10 flex items-center justify-center text-[#5cc8a0]">
-                <Waves size={20} strokeWidth={1.5} />
-              </div>
-              <div className="flex flex-col gap-1">
-                <h3 className="text-[17px] font-serif italic text-white/90">
-                  {language === 'el' ? 'Mindful Movement' : 'Mindful Movement'}
-                </h3>
-                <span className="text-[10px] uppercase tracking-wider text-white/40 font-medium">
-                  {language === 'el' ? 'ΑΠΕΛΕΥΘΕΡΩΣΗ ΕΝΕΡΓΕΙΑΣ' : 'ENERGY RELEASE'}
-                </span>
-              </div>
-            </div>
-            <ChevronRight size={18} className="text-white/20 group-hover:text-white/60 transition-colors relative z-10" />
-          </Link>
 
           {/* Rabbit Hole (Shared) */}
           <Link to="/rabbithole" className={cn(glassCardClasses, "p-4 flex items-center justify-between group cursor-pointer active:scale-[0.98] transition-transform relative overflow-hidden")}>

@@ -185,7 +185,13 @@ async function startServer() {
       if (req.path.match(/\.[a-zA-Z0-9]+$/)) {
         return next();
       }
-      res.sendFile(path.join(distPath, 'index.html'));
+      
+      const prerenderedPath = path.join(distPath, req.path, 'index.html');
+      if (fs.existsSync(prerenderedPath) && req.path !== '/') {
+        res.sendFile(prerenderedPath);
+      } else {
+        res.sendFile(path.join(distPath, 'index.html'));
+      }
     });
   }
 

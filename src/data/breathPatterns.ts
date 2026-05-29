@@ -3,7 +3,8 @@ import { AudioConfig } from "../hooks/useBinauralAudio";
 
 export interface BreathPattern {
   id: string;
-  category: "breath" | "movement";
+  category: "breath" | "movement" | "grounding";
+  visualizer?: "taichi" | "lotus";
   hasBinaural?: boolean;
   title: { el: string; en: string };
   subtitle: { el: string; en: string };
@@ -295,15 +296,15 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       ambientLayers: ['ocean', 'wind'],
     }, // Alpha
     video: "/Basic.mp4",
-    useVideoOnly: true,
+    useVideoOnly: false,
     videoPeak: 0.5,
     videoInhaleStart: 0.0,
     videoInhaleEnd: 0.5,
     videoExhaleStart: 0.5,
     videoExhaleEnd: 1.0,
     phases: [
-      { dur: 5000, armFrom: 0.8, armTo: 0.2, elbowFrom: -0.2, elbowTo: 1.5, headFrom: 0, headTo: 0.1 },
-      { dur: 5000, armFrom: 0.2, armTo: 0.8, elbowFrom: 1.5, elbowTo: -0.2, headFrom: 0.1, headTo: 0 },
+      { dur: 5000, armFrom: 1.0, armTo: 0.0, elbowFrom: -0.2, elbowTo: 1.5, headFrom: 0, headTo: 0.1 },
+      { dur: 5000, armFrom: 0.0, armTo: 1.0, elbowFrom: 1.5, elbowTo: -0.2, headFrom: 0.1, headTo: 0 },
     ],
     labels: [
       {
@@ -370,6 +371,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       ambientLayers: ['ocean', 'wind'],
     }, // Alpha for alertness 
     video: "/Basic.mp4",
+    useVideoOnly: false,
     phases: [
       { dur: 6000, armFrom: 0, armTo: 1 },
       { dur: 2000, armFrom: 1, armTo: 1 },
@@ -519,4 +521,112 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       },
     ],
   },
+  {
+    id: "taichi-fourfold", category: "grounding", visualizer: "taichi", hasBinaural: true,
+    title: { el: "Ροή: Τετραπλός Άξονας", en: "Flow: Fourfold Axis" },
+    subtitle: { el: "Γείωση & Σύνδεση", en: "Grounding & Connection" },
+    desc: { el: "Απαλή ενσυνείδητη κίνηση που συνδέει τον ουρανό με τη γη (4.5 - 1 - 5.5 - 1)", en: "Gentle mindful movement connecting heaven and earth (4.5 - 1 - 5.5 - 1)" },
+    totalCycleDurationMs: 12000, audioConfig: { base: 136.1, beat: 0, ambientLayers: [] },
+    phases: [ { dur: 4500, armFrom: 0, armTo: 1 }, { dur: 1000, armFrom: 1, armTo: 1 }, { dur: 5500, armFrom: 1, armTo: 0 }, { dur: 1000, armFrom: 0, armTo: 0 } ],
+    labels: [
+      { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άνοδος (4.5s)", en: "rise (4.5s)" } },
+      { label: { el: "Παύση", en: "Hold" }, sub: { el: "προσοχή (1s)", en: "awareness (1s)" } },
+      { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "κάθοδος (5.5s)", en: "sink (5.5s)" } },
+      { label: { el: "Παύση", en: "Hold" }, sub: { el: "βαρύτητα (1s)", en: "gravity (1s)" } },
+    ]
+  },
+  {
+    id: "taichi-box", category: "grounding", visualizer: "taichi", hasBinaural: true,
+    title: { el: "Ροή: Τετράγωνη Αναπνοή", en: "Flow: Box Breathing" },
+    subtitle: { el: "Εστίαση & Ηρεμία", en: "Focus & Calm" },
+    desc: { el: "Χρησιμοποιείται από Zen δασκάλους για πνευματική ηρεμία (4 - 4 - 4 - 4).", en: "Used by Zen masters for clarity and calm (4 - 4 - 4 - 4)." },
+    totalCycleDurationMs: 16000, audioConfig: { base: 136.1, beat: 0, ambientLayers: [] },
+    phases: [ { dur: 4000, armFrom: 0, armTo: 1 }, { dur: 4000, armFrom: 1, armTo: 1 }, { dur: 4000, armFrom: 1, armTo: 0 }, { dur: 4000, armFrom: 0, armTo: 0 } ],
+    labels: [
+      { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άνοδος (4s)", en: "rise (4s)" } },
+      { label: { el: "Παύση", en: "Hold" }, sub: { el: "προσοχή (4s)", en: "awareness (4s)" } },
+      { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "κάθοδος (4s)", en: "sink (4s)" } },
+      { label: { el: "Παύση", en: "Hold" }, sub: { el: "βαρύτητα (4s)", en: "gravity (4s)" } },
+    ]
+  },
+  {
+    id: "taichi-resonant", category: "grounding", visualizer: "taichi", hasBinaural: true,
+    title: { el: "Ροή: Συντονισμένη Αναπνοή", en: "Flow: Resonant Breathing" },
+    subtitle: { el: "Ισορροπία Συστήματος", en: "System Balance" },
+    desc: { el: "Συντονίζει την καρδιακή συχνότητα για μέγιστη χαλάρωση (5 - 0 - 5 - 0).", en: "Saturates heart rate variability to balance the nervous system (5 - 0 - 5 - 0)." },
+    totalCycleDurationMs: 10000, audioConfig: { base: 136.1, beat: 0, ambientLayers: [] },
+    phases: [ { dur: 5000, armFrom: 0, armTo: 1 }, { dur: 5000, armFrom: 1, armTo: 0 } ],
+    labels: [
+      { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άνοδος (5s)", en: "rise (5s)" } },
+      { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "κάθοδος (5s)", en: "sink (5s)" } },
+    ]
+  },
+  {
+    id: "taichi-active", category: "grounding", visualizer: "taichi", hasBinaural: true,
+    title: { el: "Ροή: Τονωτική", en: "Flow: Activating" },
+    subtitle: { el: "Ενέργεια & Εγρήγορση", en: "Energy & Alertness" },
+    desc: { el: "Ένας τονωτικός ρυθμός με σύντομη εκπνοή (4 - 4 - 2 - 2).", en: "An invigorating rhythm with a brief exhalation (4 - 4 - 2 - 2)." },
+    totalCycleDurationMs: 12000, audioConfig: { base: 136.1, beat: 0, ambientLayers: [] },
+    phases: [ { dur: 4000, armFrom: 0, armTo: 1 }, { dur: 4000, armFrom: 1, armTo: 1 }, { dur: 2000, armFrom: 1, armTo: 0 }, { dur: 2000, armFrom: 0, armTo: 0 } ],
+    labels: [
+      { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άνοδος (4s)", en: "rise (4s)" } },
+      { label: { el: "Παύση", en: "Hold" }, sub: { el: "προσοχή (4s)", en: "awareness (4s)" } },
+      { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "κάθοδος (2s)", en: "sink (2s)" } },
+      { label: { el: "Παύση", en: "Hold" }, sub: { el: "βαρύτητα (2s)", en: "gravity (2s)" } },
+    ]
+  },
+  {
+    id: "lotus-fourfold", category: "grounding", visualizer: "lotus", hasBinaural: true,
+    title: { el: "Λωτός: Τετραπλός Άξονας", en: "Lotus: Fourfold Axis" },
+    subtitle: { el: "Γείωση & Σύνδεση", en: "Grounding & Connection" },
+    desc: { el: "Εσωτερική συγκέντρωση που ξεδιπλώνεται (4.5 - 1 - 5.5 - 1).", en: "Internal focusing movement that unfolds (4.5 - 1 - 5.5 - 1)." },
+    totalCycleDurationMs: 12000, audioConfig: { base: 136.1, beat: 0, ambientLayers: [] },
+    phases: [ { dur: 4500, armFrom: 0, armTo: 1 }, { dur: 1000, armFrom: 1, armTo: 1 }, { dur: 5500, armFrom: 1, armTo: 0 }, { dur: 1000, armFrom: 0, armTo: 0 } ],
+    labels: [
+      { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άνοιγμα (4.5s)", en: "open (4.5s)" } },
+      { label: { el: "Παύση", en: "Hold" }, sub: { el: "προσοχή (1s)", en: "awareness (1s)" } },
+      { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "κλείσιμο (5.5s)", en: "close (5.5s)" } },
+      { label: { el: "Παύση", en: "Hold" }, sub: { el: "κέντρο (1s)", en: "center (1s)" } },
+    ]
+  },
+  {
+    id: "lotus-box", category: "grounding", visualizer: "lotus", hasBinaural: true,
+    title: { el: "Λωτός: Τετράγωνη Αναπνοή", en: "Lotus: Box Breathing" },
+    subtitle: { el: "Εστίαση & Ηρεμία", en: "Focus & Calm" },
+    desc: { el: "Απόλυτη εστίαση και πνευματική ηρεμία (4 - 4 - 4 - 4).", en: "Absolute focus and mental calm (4 - 4 - 4 - 4)." },
+    totalCycleDurationMs: 16000, audioConfig: { base: 136.1, beat: 0, ambientLayers: [] },
+    phases: [ { dur: 4000, armFrom: 0, armTo: 1 }, { dur: 4000, armFrom: 1, armTo: 1 }, { dur: 4000, armFrom: 1, armTo: 0 }, { dur: 4000, armFrom: 0, armTo: 0 } ],
+    labels: [
+      { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άνοιγμα (4s)", en: "open (4s)" } },
+      { label: { el: "Παύση", en: "Hold" }, sub: { el: "προσοχή (4s)", en: "awareness (4s)" } },
+      { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "κλείσιμο (4s)", en: "close (4s)" } },
+      { label: { el: "Παύση", en: "Hold" }, sub: { el: "κέντρο (4s)", en: "center (4s)" } },
+    ]
+  },
+  {
+    id: "lotus-resonant", category: "grounding", visualizer: "lotus", hasBinaural: true,
+    title: { el: "Λωτός: Συντονισμένη Αναπνοή", en: "Lotus: Resonant Breathing" },
+    subtitle: { el: "Ισορροπία Συστήματος", en: "System Balance" },
+    desc: { el: "Συντονίζει την καρδιακή συχνότητα (5 - 0 - 5 - 0).", en: "Saturates heart rate variability (5 - 0 - 5 - 0)." },
+    totalCycleDurationMs: 10000, audioConfig: { base: 136.1, beat: 0, ambientLayers: [] },
+    phases: [ { dur: 5000, armFrom: 0, armTo: 1 }, { dur: 5000, armFrom: 1, armTo: 0 } ],
+    labels: [
+      { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άνοιγμα (5s)", en: "open (5s)" } },
+      { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "κλείσιμο (5s)", en: "close (5s)" } },
+    ]
+  },
+  {
+    id: "lotus-active", category: "grounding", visualizer: "lotus", hasBinaural: true,
+    title: { el: "Λωτός: Τονωτική", en: "Lotus: Activating" },
+    subtitle: { el: "Ενέργεια & Εγρήγορση", en: "Energy & Alertness" },
+    desc: { el: "Ένας τονωτικός ρυθμός (4 - 4 - 2 - 2).", en: "An invigorating rhythm (4 - 4 - 2 - 2)." },
+    totalCycleDurationMs: 12000, audioConfig: { base: 136.1, beat: 0, ambientLayers: [] },
+    phases: [ { dur: 4000, armFrom: 0, armTo: 1 }, { dur: 4000, armFrom: 1, armTo: 1 }, { dur: 2000, armFrom: 1, armTo: 0 }, { dur: 2000, armFrom: 0, armTo: 0 } ],
+    labels: [
+      { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άνοιγμα (4s)", en: "open (4s)" } },
+      { label: { el: "Παύση", en: "Hold" }, sub: { el: "προσοχή (4s)", en: "awareness (4s)" } },
+      { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "κλείσιμο (2s)", en: "close (2s)" } },
+      { label: { el: "Παύση", en: "Hold" }, sub: { el: "κέντρο (2s)", en: "center (2s)" } },
+    ]
+  }
 ];

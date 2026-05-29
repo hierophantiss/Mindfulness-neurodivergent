@@ -218,14 +218,14 @@ function getMetaForRoute(route: string): RouteMeta {
   }
 
   // ── Practice breath exercise ──
-  const breathMatch = clean.match(/^\/practice\/(breath|movement)\/([a-z0-9-]+)$/);
+  const breathMatch = clean.match(/^\/practice\/(breath|movement|grounding)\/([a-z0-9-]+)$/);
   if (breathMatch) {
     const pattern = (BREATH_PATTERNS as any[]).find((p: any) => p.id === breathMatch[2]);
     if (pattern) {
       const ptitle = pattern.title?.[lang] ?? pattern.title?.en ?? pattern.id;
       const psub   = pattern.subtitle?.[lang] ?? pattern.subtitle?.en ?? '';
       const t = `${ptitle} – ${psub} | Neurodivergent Mindfulness App`;
-      const isMovement = breathMatch[1] === 'movement';
+      const isMovement = breathMatch[1] === 'movement' || breathMatch[1] === 'grounding';
       const d = lang === 'en'
         ? isMovement
           ? `Animated mindful movement: ${ptitle}. ${psub}. Real-time skeletal animation synced to breath with binaural beats. Tai Chi and Qigong-inspired somatic practice for ADHD and autism nervous system regulation.`

@@ -11,6 +11,7 @@ import { useAccessibility } from '../hooks/useAccessibility';
 import { motion, AnimatePresence } from 'framer-motion';
 import { RainbowInfinity } from '../components/RainbowInfinity';
 import { BreathingHero } from '../components/BreathingHero';
+import TaiChiHero from '../components/TaiChiHero';
 import { PlayPauseOverlay } from '../components/PlayPauseOverlay';
 import { useReward } from '../contexts/RewardContext';
 import { useProgress } from '../contexts/ProgressContext';
@@ -26,7 +27,63 @@ export default function PracticeBreath() {
   const { logActivity } = useActivityTracker();
   
   const currentPatternId = id || '4-2-6-1';
-  const pattern = BREATH_PATTERNS.find(p => p.id === currentPatternId) || BREATH_PATTERNS[0];
+  const basePattern = BREATH_PATTERNS.find(p => p.id === currentPatternId) || BREATH_PATTERNS[0];
+  
+  const [rhythmOverride, setRhythmOverride] = useState<'default' | '4-7-8' | '5-5-5-5' | '5-5'>('default');
+
+  const pattern = React.useMemo(() => {
+    if (basePattern.category !== 'movement' || rhythmOverride === 'default') return basePattern;
+    
+    let dur = 0;
+    let newPhases: any[] = [];
+    let newLabels: any[] = [];
+    
+    if (rhythmOverride === '4-7-8') {
+      dur = 19000;
+      newPhases = [
+        { dur: 4000, armFrom: 0, armTo: 1 },
+        { dur: 7000, armFrom: 1, armTo: 1 },
+        { dur: 8000, armFrom: 1, armTo: 0 },
+      ];
+      newLabels = [
+        { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άντληση (4s)", en: "draw (4s)" } },
+        { label: { el: "Κράτημα", en: "Hold" }, sub: { el: "εστίαση (7s)", en: "focus (7s)" } },
+        { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "απελευθέρωση (8s)", en: "release (8s)" } },
+      ];
+    } else if (rhythmOverride === '5-5-5-5') {
+       dur = 20000;
+       newPhases = [
+         { dur: 5000, armFrom: 0, armTo: 1 },
+         { dur: 5000, armFrom: 1, armTo: 1 },
+         { dur: 5000, armFrom: 1, armTo: 0 },
+         { dur: 5000, armFrom: 0, armTo: 0 }
+       ];
+       newLabels = [
+         { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άντληση (5s)", en: "draw (5s)" } },
+         { label: { el: "Κράτημα", en: "Hold" }, sub: { el: "ισορροπία (5s)", en: "balance (5s)" } },
+         { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "απελευθέρωση (5s)", en: "release (5s)" } },
+         { label: { el: "Κράτημα", en: "Hold" }, sub: { el: "κενό (5s)", en: "void (5s)" } },
+       ];
+    } else if (rhythmOverride === '5-5') {
+       dur = 10000;
+       newPhases = [
+         { dur: 5000, armFrom: 0, armTo: 1 },
+         { dur: 5000, armFrom: 1, armTo: 0 }
+       ];
+       newLabels = [
+         { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άντληση (5s)", en: "draw (5s)" } },
+         { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "απελευθέρωση (5s)", en: "release (5s)" } },
+       ];
+    }
+    
+    return {
+       ...basePattern,
+       totalCycleDurationMs: dur,
+       phases: newPhases,
+       labels: newLabels
+    };
+  }, [basePattern, rhythmOverride]);
+
   const cycleSeconds = Math.round(pattern.totalCycleDurationMs / 1000);
 
   const [running, setRunning] = useState(false);
@@ -34,6 +91,8 @@ export default function PracticeBreath() {
   const [cycles, setCycles] = useState(0);
   const [phase, setPhase] = useState(pattern.labels[0]);
   const [phaseIdx, setPhaseIdx] = useState(0);
+
+  const [smoothArmPos, setSmoothArmPos] = useState(0);
 
   // Counter State
   const [phaseSeconds, setPhaseSeconds] = useState(1);
@@ -319,7 +378,7 @@ export default function PracticeBreath() {
   const beatRangeStr = beatTypeName === 'Delta' ? '1-4 Hz' : beatTypeName === 'Theta' ? '4-8 Hz' : '8-14 Hz';
   
   return (
-    <div className="flex flex-col flex-1 bg-[#061114] -mx-4 -mt-4 -mb-8 px-4 pt-4 pb-8 md:-mx-8 md:-mt-8 md:-mb-8 md:px-8 md:pt-8 md:pb-8 overflow-hidden relative font-sans text-pine-100">
+    <div className="flex flex-col flex-1 bg-[#061114] -mx-4 -mt-4 -mb-8 px-4 pt-4 pb-8 md:-mx-8 md:-mt-8 md:-mb-8 md:px-8 md:pt-8 md:pb-8 overflow-hidden relative font-sans text-zinc-100">
       
       {/* Sleep Mode Overlay */}
       <div 
@@ -336,7 +395,7 @@ export default function PracticeBreath() {
       )}>
         <button 
           onClick={() => navigate(-1)} 
-          className="w-10 h-10 rounded-full bg-pine-800/50 border border-pine-700 flex items-center justify-center hover:bg-pine-700 text-pine-300 hover:text-white transition-colors"
+          className="w-10 h-10 rounded-full bg-zinc-800/50 border border-zinc-700 flex items-center justify-center hover:bg-zinc-700 text-zinc-300 hover:text-white transition-colors"
         >
           <ArrowLeft size={20} />
         </button>
@@ -344,8 +403,8 @@ export default function PracticeBreath() {
           <button 
             onClick={() => setShowSleepTimer(true)}
             className={cn(
-              "h-10 rounded-full border border-pine-700 flex items-center justify-center transition-colors shrink-0 shadow-lg px-3 overflow-hidden",
-              sleepMinutes > 0 ? "bg-pine-700 text-teal-300 border-teal-500/50" : "bg-pine-800/50 text-pine-400 opacity-80"
+              "h-10 rounded-full border border-zinc-700 flex items-center justify-center transition-colors shrink-0 shadow-lg px-3 overflow-hidden",
+              sleepMinutes > 0 ? "bg-zinc-700 text-teal-300 border-teal-500/50" : "bg-zinc-800/50 text-zinc-400 opacity-80"
             )}
           >
             <Timer size={18} />
@@ -356,7 +415,7 @@ export default function PracticeBreath() {
             )}
           </button>
           {audioEnabled && (
-            <div className="bg-pine-800/80 backdrop-blur-md border border-teal-900/50 rounded-[20px] flex items-center px-3 h-10 animate-in slide-in-from-right-4 fade-in duration-200 shadow-lg">
+            <div className="bg-zinc-800/80 backdrop-blur-md border border-teal-900/50 rounded-[20px] flex items-center px-3 h-10 animate-in slide-in-from-right-4 fade-in duration-200 shadow-lg">
               <Volume1 size={14} className="text-teal-400 mr-2 shrink-0" />
               <input
                 type="range"
@@ -365,7 +424,7 @@ export default function PracticeBreath() {
                 step="0.05"
                 value={globalVolume}
                 onChange={(e) => setGlobalVolumeState(parseFloat(e.target.value))}
-                className="w-20 md:w-24 accent-teal-500 h-1.5 bg-pine-900 rounded-lg appearance-none cursor-pointer"
+                className="w-20 md:w-24 accent-teal-500 h-1.5 bg-zinc-900 rounded-lg appearance-none cursor-pointer"
               />
             </div>
           )}
@@ -373,12 +432,12 @@ export default function PracticeBreath() {
             onClick={handleAudioToggle}
             className={cn(
               "w-10 h-10 rounded-full border flex items-center justify-center transition-colors relative shadow-lg shrink-0",
-              audioEnabled ? "bg-pine-700 border-teal-500 text-teal-400" : "bg-pine-800/50 border-pine-700 text-pine-300"
+              audioEnabled ? "bg-zinc-700 border-teal-500 text-teal-400" : "bg-zinc-800/50 border-zinc-700 text-zinc-300"
             )}
           >
             <Headphones size={18} />
             {audioPref === null ? (
-              <span className={`absolute -top-1 -right-1 w-3 h-3 bg-indigo-500 rounded-full border-2 border-pine-900 ${reduceMotion ? '' : 'animate-pulse'}`}></span>
+              <span className={`absolute -top-1 -right-1 w-3 h-3 bg-indigo-500 rounded-full border-2 border-zinc-900 ${reduceMotion ? '' : 'animate-pulse'}`}></span>
             ) : null}
           </button>
         </div>
@@ -387,11 +446,11 @@ export default function PracticeBreath() {
       {/* Info Banner for Binaural Beats */}
       {!running && showBanner && (
         <div className="z-20 w-full mb-4 md:px-0 relative px-4">
-          <div className="bg-pine-800/40 border border-teal-900/50 rounded-2xl p-3 pr-8 flex items-start gap-3 shadow-sm mx-auto max-w-sm relative">
+          <div className="bg-zinc-800/40 border border-teal-900/50 rounded-2xl p-3 pr-8 flex items-start gap-3 shadow-sm mx-auto max-w-sm relative">
             <div className="w-8 h-8 rounded-full bg-teal-900/40 border border-teal-800/50 flex items-center justify-center shrink-0 mt-0.5">
                <Headphones size={14} className="text-teal-400" />
             </div>
-            <p className="text-[13px] text-pine-200/90 leading-relaxed font-medium">
+            <p className="text-[13px] text-zinc-200/90 leading-relaxed font-medium">
               {language === 'el' 
                 ? 'Ενεργοποιήστε τα binaural beats πατώντας το εικονίδιο πάνω δεξιά (απαιτούν ακουστικά).' 
                 : 'Enable binaural beats by tapping the headphones icon on the top right.'}
@@ -401,11 +460,41 @@ export default function PracticeBreath() {
                 setShowBanner(false);
                 localStorage.setItem('hide_binaural_banner', 'true');
               }}
-              className="absolute top-2.5 right-2.5 p-1.5 text-pine-400 hover:text-pine-200 rounded-full hover:bg-pine-700/50 transition-colors"
+              className="absolute top-2.5 right-2.5 p-1.5 text-zinc-400 hover:text-zinc-200 rounded-full hover:bg-zinc-700/50 transition-colors"
             >
               <X size={14} />
             </button>
           </div>
+        </div>
+      )}
+
+      {/* Rhythm Override Selector (Movement Only) */}
+      {!running && basePattern.category === 'movement' && (
+        <div className="z-20 w-full mb-4 md:px-0 relative px-4 flex flex-col items-center animate-in fade-in slide-in-from-top-2 duration-500">
+           <span className="text-[11px] font-medium tracking-widest uppercase text-zinc-400 mb-2">
+             {language === 'el' ? 'Επιλογη Ρυθμου' : 'Rhythm Option'}
+           </span>
+           <div className="flex flex-wrap justify-center gap-2 max-w-sm">
+             {[
+               { id: 'default', el: 'Προεπιλογή', en: 'Original' },
+               { id: '4-7-8', el: '4-7-8 (Χαλάρωση)', en: '4-7-8 (Relax)' },
+               { id: '5-5-5-5', el: '5-5-5-5 (Κουτί)', en: '5-5-5-5 (Box)' },
+               { id: '5-5', el: '5-5 (Ροή)', en: '5-5 (Flow)' }
+             ].map(r => (
+               <button
+                 key={r.id}
+                 onClick={() => setRhythmOverride(r.id as any)}
+                 className={cn(
+                   "px-3 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all",
+                   rhythmOverride === r.id 
+                     ? "bg-teal-500/20 text-teal-300 border border-teal-500/50" 
+                     : "bg-zinc-800/50 text-zinc-400 border border-zinc-700/50 hover:bg-zinc-700/50"
+                 )}
+               >
+                 {language === 'el' ? r.el : r.en}
+               </button>
+             ))}
+           </div>
         </div>
       )}
 
@@ -432,7 +521,10 @@ export default function PracticeBreath() {
             videoExhaleEnd={pattern.videoExhaleEnd}
             onCycleComplete={setCycles}
             onPhaseChange={handlePhaseChange}
-            onTick={updateArmPos}
+            onTick={(pos) => {
+              if (updateArmPos) updateArmPos(pos);
+              setSmoothArmPos(pos);
+            }}
           />
         </div>
 
@@ -461,14 +553,24 @@ export default function PracticeBreath() {
                     ease: [0.4, 0, 0.2, 1] 
                   }}
                 >
-                  <BreathingHero
-                    phaseIdx={running ? phaseIdx : 0}
-                    isInhale={running ? isInhale : true}
-                    isExhale={running ? isExhale : false}
-                    isHold={running ? (!isInhale && !isExhale) : false}
-                    durationMs={running ? (pattern.phases[phaseIdx]?.dur || 2000) : 4000}
-                    className="w-full h-full"
-                  />
+                  {(pattern.category === 'movement' || pattern.visualizer) ? (
+                    <TaiChiHero
+                      breathForce={running ? smoothArmPos : 1.0}
+                      isRising={running ? isInhale : true}
+                      breathStateText=""
+                      movementType={pattern.visualizer || pattern.id}
+                      rhythmText=""
+                    />
+                  ) : (
+                    <BreathingHero
+                      phaseIdx={running ? phaseIdx : 0}
+                      isInhale={running ? isInhale : true}
+                      isExhale={running ? isExhale : false}
+                      isHold={running ? (!isInhale && !isExhale) : false}
+                      durationMs={running ? (pattern.phases[phaseIdx]?.dur || 2000) : 4000}
+                      className="w-full h-full"
+                    />
+                  )}
                 </motion.div>
                 
                 <div className="z-10 absolute -top-12 md:top-auto md:-right-4 font-sans font-semibold text-[3.5rem] tabular-nums drop-shadow-md">
@@ -494,7 +596,7 @@ export default function PracticeBreath() {
           <h2 className="text-3xl font-medium tracking-wide mb-1 text-white transition-all text-center drop-shadow-md">
             {language === 'en' ? phase.label.en : phase.label.el}
           </h2>
-          <p className="text-pine-200/90 italic tracking-wide text-[13px] text-center drop-shadow-md pb-2">
+          <p className="text-zinc-200/90 italic tracking-wide text-[13px] text-center drop-shadow-md pb-2">
             {language === 'en' ? phase.sub.en : phase.sub.el}
           </p>
         </div>
@@ -521,8 +623,8 @@ export default function PracticeBreath() {
            className={cn(
              "flex-1 h-9 rounded-full flex items-center justify-center gap-2 transition-all duration-300 shadow-sm z-20 outline-none active:scale-95",
              running 
-               ? "bg-pine-800 border border-pine-700 text-amber-200" 
-               : "bg-pine-700 border border-teal-700/50 text-white"
+               ? "bg-zinc-800 border border-zinc-700 text-amber-200" 
+               : "bg-zinc-700 border border-teal-700/50 text-white"
            )}
          >
            {running ? (
@@ -563,7 +665,7 @@ export default function PracticeBreath() {
               setPhaseIdx(0); 
               setPhase(pattern.labels[0]); 
             }}
-             className="flex-1 h-9 rounded-full bg-transparent border border-pine-700/60 flex items-center justify-center gap-2 text-pine-400 hover:text-white hover:bg-pine-800/50 transition-all duration-300 active:scale-95"
+             className="flex-1 h-9 rounded-full bg-transparent border border-zinc-700/60 flex items-center justify-center gap-2 text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition-all duration-300 active:scale-95"
            >
              <X size={14} />
              <span className="text-[10px] font-bold tracking-wider mt-0.5 uppercase opacity-90">{language === 'el' ? 'Επαναφορα' : 'Reset'}</span>
@@ -573,9 +675,9 @@ export default function PracticeBreath() {
 
       {/* Sleep Timer Modal */}
       {showSleepTimer && (
-        <div className="absolute inset-0 z-[60] flex items-center justify-center p-4 bg-pine-950/90 backdrop-blur-md">
-          <div className="bg-pine-900 border border-pine-700 p-5 md:p-6 rounded-[2rem] max-w-sm w-full shadow-[0_20px_50px_rgba(0,0,0,0.5)] animate-in zoom-in-95 fade-in duration-200">
-            <div className="w-14 h-14 rounded-full bg-pine-800 flex items-center justify-center mx-auto mb-4 border border-pine-600">
+        <div className="absolute inset-0 z-[60] flex items-center justify-center p-4 bg-zinc-950/90 backdrop-blur-md">
+          <div className="bg-zinc-900 border border-zinc-700 p-5 md:p-6 rounded-[2rem] max-w-sm w-full shadow-[0_20px_50px_rgba(0,0,0,0.5)] animate-in zoom-in-95 fade-in duration-200">
+            <div className="w-14 h-14 rounded-full bg-zinc-800 flex items-center justify-center mx-auto mb-4 border border-zinc-600">
               <Timer size={28} className="text-teal-400" />
             </div>
             
@@ -583,7 +685,7 @@ export default function PracticeBreath() {
               {language === 'el' ? 'Χρονοδιακόπτης ' : 'Sleep Timer '}
             </h3>
             
-            <p className="text-pine-200 text-xs md:text-sm text-center leading-relaxed mb-6">
+            <p className="text-zinc-200 text-xs md:text-sm text-center leading-relaxed mb-6">
               {language === 'el' ? 'Επιλέξτε μετά από πόση ώρα θέλετε να σταματήσει η εφαρμογή.' : 'Select when you want the application to stop.'}
             </p>
 
@@ -599,7 +701,7 @@ export default function PracticeBreath() {
                     "py-3 rounded-2xl border text-center font-medium transition-colors",
                     sleepMinutes === mins
                       ? "bg-teal-600 border-teal-500 text-white"
-                      : "bg-pine-800 border-pine-700 text-pine-300 hover:bg-pine-700/50 hover:text-white"
+                      : "bg-zinc-800 border-zinc-700 text-zinc-300 hover:bg-zinc-700/50 hover:text-white"
                   )}
                 >
                   <div className="text-lg">{mins}</div>
@@ -613,13 +715,13 @@ export default function PracticeBreath() {
                 setSleepMinutes(0);
                 setShowSleepTimer(false);
               }}
-              className="w-full bg-pine-800 border-2 border-transparent text-pine-300 font-medium py-3 rounded-full transition-colors hover:text-white hover:border-pine-600 mb-2 text-sm"
+              className="w-full bg-zinc-800 border-2 border-transparent text-zinc-300 font-medium py-3 rounded-full transition-colors hover:text-white hover:border-zinc-600 mb-2 text-sm"
             >
               {language === 'el' ? 'Απενεργοποίηση' : 'Turn Off'}
             </button>
             <button 
               onClick={() => setShowSleepTimer(false)}
-              className="w-full bg-transparent text-pine-400 font-medium py-2 rounded-full transition-colors hover:text-white text-sm"
+              className="w-full bg-transparent text-zinc-400 font-medium py-2 rounded-full transition-colors hover:text-white text-sm"
             >
               {language === 'el' ? 'Ακύρωση' : 'Cancel'}
             </button>
@@ -629,9 +731,9 @@ export default function PracticeBreath() {
 
       {/* Warning Modal */}
       {showWarning && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center p-4 bg-pine-950/90 backdrop-blur-md">
-          <div className="bg-pine-900 border border-pine-700 p-5 md:p-6 rounded-[2rem] max-w-sm w-full max-h-full overflow-y-auto shadow-[0_20px_50px_rgba(0,0,0,0.5)] animate-in zoom-in-95 fade-in duration-200 md:scrollbar-hide">
-            <div className="w-14 h-14 rounded-full bg-pine-800 flex items-center justify-center mx-auto mb-3 border border-pine-600">
+        <div className="absolute inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/90 backdrop-blur-md">
+          <div className="bg-zinc-900 border border-zinc-700 p-5 md:p-6 rounded-[2rem] max-w-sm w-full max-h-full overflow-y-auto shadow-[0_20px_50px_rgba(0,0,0,0.5)] animate-in zoom-in-95 fade-in duration-200 md:scrollbar-hide">
+            <div className="w-14 h-14 rounded-full bg-zinc-800 flex items-center justify-center mx-auto mb-3 border border-zinc-600">
               <Headphones size={28} className="text-teal-400" />
             </div>
             
@@ -639,7 +741,7 @@ export default function PracticeBreath() {
               {beatTypeName} Waves <br/> <span className="text-sm md:text-base">{language === 'el' ? '(Εσωτερική Ακοή & Γείωση)' : '(Inner Hearing & Grounding)'}</span>
             </h3>
             
-            <p className="text-pine-200 text-xs md:text-sm text-center leading-relaxed mb-5">
+            <p className="text-zinc-200 text-xs md:text-sm text-center leading-relaxed mb-5">
               {language === 'el' ? `Τα binaural beats στέλνουν διαφορετική συχνότητα σε κάθε αυτί, δημιουργώντας ήχο στη ζώνη ${beatTypeName} (${beatRangeStr}) που ενισχύει τη χαλάρωση και την ενσυνειδητότητα.` : `Binaural beats send different frequencies to each ear, creating sound in the ${beatTypeName} (${beatRangeStr}) range that enhances relaxation and mindfulness.`}
             </p>
 
@@ -653,11 +755,11 @@ export default function PracticeBreath() {
               </ul>
             </div>
 
-            <label className="flex items-start justify-center gap-3 text-xs text-pine-300 mb-5 cursor-pointer select-none group">
+            <label className="flex items-start justify-center gap-3 text-xs text-zinc-300 mb-5 cursor-pointer select-none group">
               <div 
                 className={cn(
                   "w-5 h-5 shrink-0 rounded border flex items-center justify-center transition-colors",
-                  rememberChoice ? "bg-teal-600 border-teal-500" : "bg-pine-800 border-pine-600 group-hover:border-pine-300"
+                  rememberChoice ? "bg-teal-600 border-teal-500" : "bg-zinc-800 border-zinc-600 group-hover:border-zinc-300"
                 )}
                 onClick={() => setRememberChoice(!rememberChoice)}
               >
@@ -671,20 +773,20 @@ export default function PracticeBreath() {
             <div className="flex flex-col gap-2.5">
               <button 
                 onClick={() => savePreferenceAndStart(true)}
-                className="w-full bg-pine-600 hover:bg-pine-700 border border-pine-300 text-white font-medium py-3 rounded-full transition-colors flex items-center justify-center gap-2 text-sm tracking-wide"
+                className="w-full bg-zinc-600 hover:bg-zinc-700 border border-zinc-300 text-white font-medium py-3 rounded-full transition-colors flex items-center justify-center gap-2 text-sm tracking-wide"
               >
                 <Headphones size={18} />
                 {language === 'el' ? 'Ξεκίνα με Binaural Beats' : 'Start with Binaural Beats'}
               </button>
               <button 
                 onClick={() => savePreferenceAndStart(false)}
-                className="w-full bg-pine-800 border border-pine-600 text-pine-300 font-medium py-2.5 rounded-full transition-colors hover:text-white text-sm"
+                className="w-full bg-zinc-800 border border-zinc-600 text-zinc-300 font-medium py-2.5 rounded-full transition-colors hover:text-white text-sm"
                >
                 {language === 'el' ? 'Ξεκίνα χωρίς ήχο' : 'Start without audio'}
               </button>
               <button 
                 onClick={() => setShowWarning(false)}
-                className="w-full bg-transparent text-pine-400/80 font-medium py-2 rounded-full transition-colors hover:text-white text-sm"
+                className="w-full bg-transparent text-zinc-400/80 font-medium py-2 rounded-full transition-colors hover:text-white text-sm"
                >
                 {language === 'el' ? 'Ακύρωση' : 'Cancel'}
               </button>

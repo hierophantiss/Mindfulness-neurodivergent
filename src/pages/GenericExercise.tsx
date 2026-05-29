@@ -648,7 +648,7 @@ export default function GenericExercise() {
               navigate('/practice');
             }
           }}
-          className="w-10 h-10 rounded-full bg-pine-800 border border-pine-700 flex items-center justify-center text-pine-300 hover:bg-pine-700 hover:text-white transition-colors"
+          className="w-10 h-10 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-300 hover:bg-zinc-700 hover:text-white transition-colors"
         >
           <ArrowLeft size={20} />
         </button>
@@ -660,7 +660,7 @@ export default function GenericExercise() {
             }}
             className={cn(
               "w-10 h-10 rounded-full border flex items-center justify-center transition-colors shadow-lg",
-              audioEnabled ? "bg-[#183035] border-teal-500 text-teal-400" : "bg-pine-800/50 border-pine-700 text-pine-400"
+              audioEnabled ? "bg-[#183035] border-teal-500 text-teal-400" : "bg-zinc-800/50 border-zinc-700 text-zinc-400"
             )}
           >
             {audioEnabled ? <Volume2 size={18} /> : <VolumeX size={18} />}
@@ -695,27 +695,27 @@ export default function GenericExercise() {
           running ? "opacity-30 hover:opacity-100" : "opacity-100"
         )}>
           <h1 className="text-3xl font-medium text-white tracking-wide mb-3">{language === 'en' ? exercise.title.en : exercise.title.el}</h1>
-          <p className="text-base md:text-lg text-pine-300 leading-loose font-normal">{language === 'en' ? exercise.desc.en : exercise.desc.el}</p>
+          <p className="text-base md:text-lg text-zinc-300 leading-loose font-normal">{language === 'en' ? exercise.desc.en : exercise.desc.el}</p>
         </div>
 
         {/* Audio Player Controls */}
         <div className="w-full px-6 mb-12">
           {/* Progress Bar */}
-          <div className="relative w-full h-2 rounded-full bg-pine-800 mb-4 cursor-pointer overflow-hidden">
+          <div className="relative w-full h-2 rounded-full bg-zinc-800 mb-4 cursor-pointer overflow-hidden">
              <div 
                className={cn("absolute top-0 left-0 h-full rounded-full transition-all duration-1000 ease-linear", theme.bar)}
                style={{ width: `${progressPercent}%` }}
              ></div>
           </div>
           
-          <div className="flex items-center justify-between text-xs text-pine-500 font-mono tracking-wider mb-8">
+          <div className="flex items-center justify-between text-xs text-zinc-500 font-mono tracking-wider mb-8">
              <span>{formatTime(elapsed)}</span>
              <span>{formatTime(exercise.duration)}</span>
           </div>
 
           {/* Buttons */}
           <div className="flex items-center justify-center gap-8">
-            <button className="text-pine-500 hover:text-white transition-colors"
+            <button className="text-zinc-500 hover:text-white transition-colors"
                 onClick={(e) => { e.stopPropagation(); setElapsed(Math.max(0, elapsed - 15)); }}
             >
               <SkipBack size={24} />
@@ -726,14 +726,14 @@ export default function GenericExercise() {
               className={cn(
                 "w-20 h-20 rounded-full flex items-center justify-center transition-all shadow-xl",
                 running 
-                  ? "bg-pine-800 border border-pine-700 text-white" 
+                  ? "bg-zinc-800 border border-zinc-700 text-white" 
                   : cn("text-pine-900 border-none shadow-[0_0_30px_rgba(0,0,0,0.3)]", theme.bar)
               )}
             >
               {running ? <Pause size={32} className="fill-current" /> : <Play size={36} className="ml-2 fill-current" />}
             </button>
             
-            <button className="text-pine-500 hover:text-white transition-colors"
+            <button className="text-zinc-500 hover:text-white transition-colors"
                onClick={(e) => { e.stopPropagation(); setElapsed(Math.min(exercise.duration, elapsed + 15)); }}
             >
               <SkipForward size={24} />
@@ -743,7 +743,7 @@ export default function GenericExercise() {
 
         {/* Instructions */}
         <div className={cn(
-          "w-full bg-pine-800/30 border border-pine-700/50 rounded-[2rem] p-6 lg:p-8 mt-4 transition-opacity duration-1000",
+          "w-full bg-zinc-800/30 border border-zinc-700/50 rounded-[2rem] p-6 lg:p-8 mt-4 transition-opacity duration-1000",
           running ? "opacity-30 hover:opacity-100 focus-within:opacity-100" : "opacity-100"
         )}>
           <h3 className="text-lg font-medium text-white mb-6 flex items-center gap-3">
@@ -752,7 +752,7 @@ export default function GenericExercise() {
           </h3>
           <ul className="space-y-6">
             {(language === 'en' ? exercise.instructions.en : exercise.instructions.el)?.map((step: string, idx: number) => (
-              <li key={idx} className="flex gap-4 text-pine-100">
+              <li key={idx} className="flex gap-4 text-zinc-100">
                 <span className={cn("flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium mt-1", theme.light, theme.accent)}>
                   {idx + 1}
                 </span>
