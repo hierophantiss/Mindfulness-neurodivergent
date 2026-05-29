@@ -2,22 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { BREATH_PATTERNS } from '../data/breathPatterns';
 
-export interface PhaseDef {
-  dur: number;
-  armFrom: number;
-  armTo: number;
-  elbowFrom?: number;
-  elbowTo?: number;
-  headFrom?: number;
-  headTo?: number;
-  waistFrom?: number;
-  waistTo?: number;
-}
-
-export interface PhaseLabel {
-  label: { el: string; en: string };
-  sub: { el: string; en: string };
-}
+import { PhaseDef, PhaseLabel } from '../data/types-breath';
+export type { PhaseDef, PhaseLabel };
 
 const DEFAULT_PHASES: PhaseDef[] = [
   { dur: 4000, armFrom: 0, armTo: 1 }, // inhale
@@ -27,10 +13,10 @@ const DEFAULT_PHASES: PhaseDef[] = [
 ];
 
 const DEFAULT_LABELS: PhaseLabel[] = [
-  { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "σήκωσε τα χέρια αργά", en: "raise arms slowly" } },
-  { label: { el: "Παύση", en: "Hold" }, sub: { el: "κράτα ψηλά", en: "hold high" } },
-  { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "κατέβασε αργά", en: "lower slowly" } },
-  { label: { el: "Παύση", en: "Hold" }, sub: { el: "νιώσε το βάρος", en: "feel the weight" } }
+  { text: 'Inhale', label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "σήκωσε τα χέρια αργά", en: "raise arms slowly" } },
+  { text: 'Hold', label: { el: "Παύση", en: "Hold" }, sub: { el: "κράτα ψηλά", en: "hold high" } },
+  { text: 'Exhale', label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "κατέβασε αργά", en: "lower slowly" } },
+  { text: 'Hold', label: { el: "Παύση", en: "Hold" }, sub: { el: "νιώσε το βάρος", en: "feel the weight" } }
 ];
 
 function easeInOutSine(x: number) {

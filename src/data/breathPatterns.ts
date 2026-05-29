@@ -1,5 +1,4 @@
-import { PhaseDef, PhaseLabel } from "../components/BreathCanvas";
-import { AudioConfig } from "../hooks/useBinauralAudio";
+import { PhaseDef, PhaseLabel, AudioConfig } from "./types-breath";
 
 export interface BreathPattern {
   id: string;

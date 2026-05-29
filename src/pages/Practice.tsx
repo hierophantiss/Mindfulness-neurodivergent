@@ -61,7 +61,7 @@ export default function Practice() {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const { progress } = useProgress();
-  const [activeCategory, setActiveCategory] = useState<'breath' | 'movement' | 'grounding' | null>(null);
+  const [activeCategory, setActiveCategory] = useState<'breath' | 'movement' | 'grounding' | 'swaying' | 'microdoses' | null>(null);
 
   const completedBreathsCount = progress.completedBreaths.length;
   
