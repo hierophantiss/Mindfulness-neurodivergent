@@ -19,8 +19,8 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
       en: 'A mindfulness system designed for neurodivergent minds.' 
     },
     purpose: {
-      el: 'Μια μέθοδος απελευθέρωσης της επίγνωσης, σχεδιασμένη με σεβασμό στη νευροδιαφορετικότητα. Ξεκινήστε την εξερεύνηση σας με μικρές πρακτικές αναπνοής, κίνησης και εστίασης στα παρακάτω κεφάλαια. Αντί για "άδειαμα του μυαλού", καλλιεργούμε την επίγνωση των τεσσάρων διαστάσεων της εμπειρίας.',
-      en: 'An awareness unbinding method designed for neurodivergence. Start your exploration with gentle micro-practices in breath, movement, and focus in the chapters below. Instead of "emptying the mind", we cultivate awareness across four dimensions of experience.'
+      el: 'Μια μέθοδος σταδιακής επανασύνδεσης με τα βασικά στοιχεία (Γη, Αέρας, Φωτιά, Νερό), σχεδιασμένη με σεβασμό στη νευροδιαφορετικότητα. Ξεκινήστε την εξερεύνηση σας με μικρές πρακτικές. Αντί για "άδειαμα του μυαλού", καλλιεργούμε την επίγνωση των τεσσάρων διαστάσεων της εμπειρίας.',
+      en: 'A method of gradual reconnection with the basic elements (Earth, Air, Fire, Water), designed for neurodivergence. Start your exploration with gentle micro-practices. Instead of "emptying the mind", we cultivate awareness across four dimensions of experience.'
     },
     features: {
       title: { el: 'Τι κάνει αυτό το εργαλείο διαφορετικό', en: 'What makes this tool different' },
@@ -52,14 +52,14 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
         { icon: '⚡', el: 'Μικρές δόσεις, μεγάλα αποτελέσματα. Σύντομες αλλά συχνές πρακτικές (5 δευτ. × πολλές φορές) είναι πιο αποτελεσματικές από μεγάλες συνεδρίες, λόγω του spacing effect.', en: 'Small doses, big impact. Short but frequent interventions are highly effective, leveraging the neurological spacing effect.' }
       ]
     },
-    axesTitle: { el: 'Οι 4 Άξονες', en: 'The 4 Axes' },
+    axesTitle: { el: 'Τα 4 Στοιχεία / Άξονες', en: 'The 4 Elements / Axes' },
     axes: [
       {
         id: 'body',
         icon: Anchor,
         color: 'text-indigo-400',
         bg: 'bg-indigo-500/10',
-        title: { el: 'Σώμα & Βαρύτητα', en: 'Body & Gravity' },
+        title: { el: 'Σώμα (Γη)', en: 'Body (Earth)' },
         desc: { 
           el: 'Η γείωση μέσω της αίσθησης του βάρους. Μαθαίνουμε να νιώθουμε την υποστήριξη της γης, παρέχοντας ένα αίσθημα ασφάλειας.',
           en: 'Grounding through the sensation of weight. We learn to feel the earth\'s support, providing a sense of safety.'
@@ -70,7 +70,7 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
         icon: Wind,
         color: 'text-teal-400',
         bg: 'bg-teal-500/10',
-        title: { el: 'Ανάσα', en: 'Breath' },
+        title: { el: 'Ανάσα (Ουρανός / Αέρας)', en: 'Breath (Sky / Air)' },
         desc: { 
           el: 'Ο ρυθμικός σύνδεσμος μεταξύ εσωτερικού και εξωτερικού κόσμου. Μια άγκυρα που είναι πάντα διαθέσιμη.',
           en: 'The rhythmic link between internal and external worlds. An anchor that is always available.'
@@ -81,7 +81,7 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
         icon: Focus,
         color: 'text-amber-400',
         bg: 'bg-amber-500/10',
-        title: { el: 'Προσοχή', en: 'Attention' },
+        title: { el: 'Προσοχή (Φωτιά)', en: 'Attention (Fire)' },
         desc: { 
           el: 'Η ικανότητα να στρέφουμε τον προβολέα της συνείδησης. Αναγνωρίζουμε πότε η προσοχή "κολλάει" και την επιστρέφουμε.',
           en: 'The ability to direct the spotlight of consciousness. We recognize when attention gets "stuck" and return it.'
@@ -92,7 +92,7 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
         icon: Maximize,
         color: 'text-rose-400',
         bg: 'bg-rose-500/10',
-        title: { el: 'Χώρος', en: 'Space' },
+        title: { el: 'Χώρος (Νερό)', en: 'Space (Water)' },
         desc: { 
           el: 'Η ανοιχτή επίγνωση. Συνειδητοποιούμε ότι δεν είμαστε οι σκέψεις μας, αλλά ο απεριόριστος χώρος.',
           en: 'Open awareness. We realize that we are not our thoughts, but the vast space.'

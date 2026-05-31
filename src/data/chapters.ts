@@ -2,10 +2,10 @@ import { Chapter } from './types';
 
 export const CHAPTERS_DATA: Record<string, Chapter[]> = {
   en: [
-    {num:1,title:"Body",sub:"The Stability of 'Here'",tag:"Here",color:"var(--color-axis-body)",hex:"#7A9E7E",icon:"🧍",
+    {num:1,title:"Body / Earth",sub:"The Stability of 'Here'",tag:"Here",color:"var(--color-axis-body)",hex:"#7A9E7E",icon:"⛰️",
      video:"/Basic.mp4",
-     summary:"The body is the undeniable foundation of the present moment. We learn to perceive gravity, our posture, and our contact with space.",
-     tldr:"The body is the only point that is always in the 'Here'. Gravity is the direct proof of your presence. Feel your weight → calm the autopilot.",
+     summary:"The body is the element of Earth, the undeniable foundation of the present moment. We learn to perceive gravity, our posture, and our grounded contact.",
+     tldr:"The body (Earth) is the only point always in the 'Here'. Gravity is the direct proof of your presence. Feel your weight → calm the autopilot.",
      theorySections:[
        {title:"The Beginning: Relaxation and Grounding",paragraphs: ["The practice of the Fourfold Axis always begins with the body. The body is our stable base, the unquestionable 'Here' that connects us to the present time.", "Our body is not just a vehicle. It is a living archive of our experiences. The posture we have developed often carries the rejection, frustration, and tension we experienced because we felt different."]},
        {title:"Gravity: The Unquestionable 'Here'",paragraphs: ["Gravity is not just a force — it is the proof of 'Here'. It shows us, without any doubt, exactly the point where we can exist in space, at this specific moment. Grounding is the first act of relaxation."], interactive: "gravity_thoughts"},
@@ -16,10 +16,10 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
      ],
      exercise:{title:"Exercise: The Book / Box",steps:["Stand upright comfortably.","Take a book or a box and place it on your head.","Notice how you need to stand so it doesn't fall. Feel how the weight goes down smoothly through the neck, spine, and pelvis.","Feel the weight, the touch of the soles on the ground, and the sense of the axis keeping you upright."]},
      insight:"Gravity is always here. The body is always here. That is enough to get started.",reflection:"What did I notice in my body after the exercise?"},
-    {num:2,title:"Breath of Life",sub:"The Energy of the Present Self",tag:"Energy",color:"var(--color-axis-breath)",hex:"#C07050",icon:"🫁",
+    {num:2,title:"Breath / Sky",sub:"The Energy of the Present Self",tag:"Energy",color:"var(--color-axis-breath)",hex:"#C07050",icon:"🫁",
      video:"/Basic.mp4",
-     summary:"The breath connects us with the rhythm of life and teaches the acceptance of transience.",
-     tldr:"Breath is the rhythm of 'Now'. Exhalation is the relaxation switch. Do not control it, just feel the touch of the air.",
+     summary:"The breath is the element of the Sky, connecting us with the continuous rhythm of life and teaching the acceptance of transience.",
+     tldr:"Breath (the Sky) is the rhythm of 'Now'. Exhalation is the relaxation switch. Do not control it, just feel the touch of the air.",
      theorySections:[
        {title:"The Rhythm of Existence",paragraphs: ["If the body unites us with the earth, the breath connects us with the sky and the ceaseless flow of the world.", "Each inhalation: a beginning. Each pause: now. Each exhalation: acceptance."], image: "/breathchapter.svg"},
        {title:"Inner Touch",paragraphs: ["The breath is not just air — it is touch. Feel the air in the nostrils, the expansion of the chest, the soft movement of the belly. This inner touch activates interoception — the bridge between body and consciousness."], interactive: "eswterikhafh"},
@@ -29,10 +29,10 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
      ],
      exercise:{title:"Exercise: The Active Return",steps:["Stand comfortably. Feel the gravity.","Turn your attention to the inhalation and exhalation.","Feel the air touching the nostrils.","On the exhale, let the belly contract gently.","If you feel anxious, let the exhalation come out slowly through the mouth."]},
      insight:"I observe without intervening. Every breath is a new beginning.",reflection:"How was my breath? (fast/slow, shallow/deep, tight/free)"},
-    {num:3,title:"Attention",sub:"The Direction of Consciousness",tag:"Direction",color:"var(--color-axis-focus)",hex:"#C8922A",icon:"👁",
+    {num:3,title:"Attention / Fire",sub:"The Fire of Consciousness",tag:"Direction",color:"var(--color-axis-focus)",hex:"#C8922A",icon:"🔥",
      video:"/Basic.mp4",
-     summary:"Attention is the flashlight of the mind — it can focus, open up, or scatter.",
-     tldr:"Attention is like a flashlight. Sometimes it gets stuck (hyperfocus), sometimes it scatters. The 'gentle return' without judgment is the exercise itself.",
+     summary:"Attention is the element of Fire — it can focus with intense heat, illuminate, or scatter out of control.",
+     tldr:"Attention is like a guiding Fire. Sometimes it gets stuck (hyperfocus), sometimes it scatters. The 'gentle return' trains the flame.",
      theorySections:[
        {title:"The Three Forms of Attention",paragraphs: ["• Focused (Closed): Like a flashlight — it illuminates a point with intensity.", "• Open: Like an open light — it illuminates many things together, without focusing.", "• Scattered: Like a strobe light — it jumps from thought to thought without returning."], interactive: "three_attention"},
        {title:"Anchored Attention (Hyperfocus)",paragraphs: ["The opposite extreme state: the mind locks onto a point and cannot leave. The world around disappears — space, body, time.", "Tool: Space (soften the gaze, feel the space around) + Body (feel gravity — it 'breaks' the tunnel)."], interactive: "camera_exercise"},
@@ -41,9 +41,9 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
      ],
      exercise:{title:"Exercise: Stabilizing the Flashlight",steps:["Sit comfortably. Close your eyes.","Feel your body and the rhythm of your breath.","Open your eyes. Choose a fixed focal point.","Hold your attention there with body and breath awareness.","If you drift away: label it → gently return."]},
      insight:"The return of attention is not a failure — it is the exercise itself.",reflection:"Where does my attention tend to 'stick' or 'run'?"},
-    {num:4,title:"Space",sub:"The Opening of Awareness",tag:"Opening",color:"var(--color-axis-space)",hex:"#B5A7D0",icon:"✦",
+    {num:4,title:"Space / Water",sub:"The Infinite Cosmic Ocean",tag:"Opening",color:"var(--color-axis-space)",hex:"#B5A7D0",icon:"🌌",
      video:"/Basic.mp4",
-     summary:"Space is the most liberating center. We learn to open our awareness like the sky.",
+     summary:"Space is the element of Water — the infinite cosmic ocean, the boundless space as trained in Tai Chi. We learn to remain open and fluid, containing all phenomena without resistance.",
      theorySections:[
        {title:"The Antidote to Overload",paragraphs: ["Open Attention is the most powerful tool against overload. The opening of attention acts as a safety signal in the brain: 'there is no danger, there is space'.", "Peripheral vision, open hearing, the sense of space around — all these together 'turn off' the alarm signal."]},
        {title:"From Focus to Openness",paragraphs: ["The transition happens in 3 steps:", "1. Focus on a point (Attention).\n2. Soften your gaze — don't hold on.\n3. Let the space embrace you — sounds, body, air, all together.", "You don't try to see everything. You let everything exist."], interactive: "metronomos"},
@@ -83,10 +83,10 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
      insight:"Your brain can change. Every practice builds new neural pathways.",reflection:"What do I carry from this practice?"}
   ],
   el: [
-    {num:1,title:'Σώμα',sub:'Η Σταθερότητα του «Εδώ»',tag:'Εδώ',color:'var(--color-axis-body)',hex:'#7A9E7E',icon:'🧍',
+    {num:1,title:'Σώμα / Γη',sub:'Η Σταθερότητα του «Εδώ»',tag:'Εδώ',color:'var(--color-axis-body)',hex:'#7A9E7E',icon:'⛰️',
      video:'/Basic.mp4',
-     summary:'Το σώμα είναι η αναμφισβήτητη βάση της παρούσας στιγμής. Μαθαίνουμε να αντιλαμβανόμαστε τη βαρύτητα, τη στάση μας και την επαφή με τον χώρο.',
-     tldr:'Το σώμα είναι το μοναδικό σημείο που είναι πάντα στο «Εδώ». Η βαρύτητα είναι η άμεση απόδειξη της παρουσίας σου. Νιώσε το βάρος σου → ηρέμησε τον αυτόματο πιλότο.',
+     summary:'Το Σώμα είναι το στοιχείο της Γης, η αναμφισβήτητη βάση της παρούσας στιγμής. Μαθαίνουμε να αντιλαμβανόμαστε τη βαρύτητα, τη στάση μας και την επαφή μας με το έδαφος.',
+     tldr:'Το Σώμα (Η Γη) είναι το μοναδικό σημείο που είναι πάντα στο «Εδώ». Η βαρύτητα είναι η άμεση απόδειξη της παρουσίας σου. Νιώσε το βάρος σου → ηρέμησε τον αυτόματο πιλότο.',
      theorySections:[
        {title:'Η Αρχή: Χαλάρωση και Γείωση',paragraphs: [`Η πρακτική του Τετραπλού Άξονα ξεκινά πάντα με το σώμα. Το σώμα είναι η σταθερή μας βάση, το αδιαμφίβολο «Εδώ» που μας συνδέει με τον παρόντα χρόνο.`, `Το σώμα μας δεν είναι απλώς ένα όχημα. Είναι ένα ζωντανό αρχείο των εμπειριών μας. Η στάση που έχουμε διαμορφώσει κουβαλά συχνά την απόρριψη, την απογοήτευση και την ένταση που βιώσαμε επειδή νιώθαμε διαφορετικοί.`]},
        {title:'Η Βαρύτητα: Το Αναμφίβολο «Εδώ»',paragraphs: [`Η βαρύτητα δεν είναι απλώς μια δύναμη — είναι η απόδειξη του «Εδώ». Μας δείχνει, χωρίς καμία αμφιβολία, το ακριβές σημείο όπου μπορούμε να υπάρξουμε στον χώρο, αυτή τη συγκεκριμένη στιγμή. Η γείωση είναι η πρώτη πράξη χαλάρωσης.`], interactive: "gravity_thoughts"},
@@ -97,10 +97,10 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
      ],
      exercise:{title:'Άσκηση: Το Βιβλίο / Κουτί',steps:['Σταθείτε όρθιοι με άνεση.','Πάρτε ένα βιβλίο ή κουτί και τοποθετήστε το στο κεφάλι σας.','Παρατηρήστε πώς χρειάζεται να σταθείτε για να μην πέσει. Νιώστε πώς το βάρος κατεβαίνει ομαλά μέσα από τον λαιμό, τη σπονδυλική στήλη και τη λεκάνη.','Νιώστε το βάρος, την αφή των πελμάτων στο έδαφος και την αίσθηση του άξονα που σας κρατά όρθιους.']},
      insight:'Η βαρύτητα είναι πάντα εδώ. Το σώμα είναι πάντα εδώ. Αυτό είναι αρκετό για να ξεκινήσουμε.',reflection:'Τι παρατήρησα στο σώμα μου μετά την άσκηση;'},
-    {num:2,title:'Αναπνοή ζωή',sub:'Η Ενέργεια του Εαυτού',tag:'Ενέργεια',color:'var(--color-axis-breath)',hex:'#C07050',icon:'🫁',
+    {num:2,title:'Αναπνοή / Ουρανός',sub:'Η Ενέργεια του Εαυτού',tag:'Ενέργεια',color:'var(--color-axis-breath)',hex:'#C07050',icon:'🫁',
      video:'/Basic.mp4',
-     summary:'Η αναπνοή μάς συνδέει με τον ρυθμό της ζωής και διδάσκει την αποδοχή της παροδικότητας.',
-     tldr:'Η αναπνοή είναι ο ρυθμός του «Τώρα». Η εκπνοή είναι ο διακόπτης χαλάρωσης. Μην την ελέγχεις, απλώς νιώσε την αφή του αέρα.',
+     summary:'Η Αναπνοή είναι ο Ουρανός, που μάς συνδέει με τον ρυθμό της ζωής και διδάσκει την αποδοχή της παροδικότητας.',
+     tldr:'Η Αναπνοή (Ο Ουρανός) είναι ο ρυθμός του «Τώρα». Η εκπνοή είναι ο διακόπτης χαλάρωσης. Μην την ελέγχεις, απλώς νιώσε την αφή του αέρα.',
      theorySections:[
        {title:'Ο Ρυθμός της Ύπαρξης',paragraphs: [`Αν το σώμα μάς ενώνει με τη γη, η αναπνοή μάς συνδέει με τον ουρανό και την αδιάκοπη ροή του κόσμου.`, `Κάθε εισπνοή: αρχή. Κάθε παύση: τώρα. Κάθε εκπνοή: αποδοχή.`], image: '/breathchapter.svg'},
        {title:'Εσωτερική Αφή',paragraphs: [`Η αναπνοή δεν είναι μόνο αέρας — είναι αφή. Νιώσε τον αέρα στα ρουθούνια, τη διαστολή του στήθους, τη μαλακή κίνηση της κοιλιάς. Αυτή η εσωτερική αφή ενεργοποιεί τη δια-αίσθηση (interoception) — τη γέφυρα μεταξύ σώματος και συνείδησης.`], interactive: "eswterikhafh"},
@@ -110,10 +110,10 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
      ],
      exercise:{title:'Άσκηση: Η Ενεργή Επιστροφή',steps:['Στάσου άνετα. Νιώσε τη βαρύτητα.','Στρέψε την προσοχή στην εισπνοή και εκπνοή.','Νιώσε τον αέρα που αγγίζει τα ρουθούνια.','Στην εκπνοή, άφησε την κοιλιά να μαζευτεί ήπια.','Αν νιώθεις άγχος, άφησε την εκπνοή να βγαίνει αργά από το στόμα.']},
      insight:'Παρατηρώ χωρίς να επεμβαίνω. Κάθε αναπνοή είναι μια νέα αρχή.',reflection:'Πώς ήταν η αναπνοή μου; (γρήγορη/αργή, ρηχή/βαθιά, σφιγμένη/ελεύθερη)'},
-    {num:3,title:'Προσοχή',sub:'Η Κατεύθυνση της Συνείδησης',tag:'Κατεύθυνση',color:'var(--color-axis-focus)',hex:'#C8922A',icon:'👁',
+    {num:3,title:'Προσοχή / Φωτιά',sub:'Η Φλόγα της Συνείδησης',tag:'Κατεύθυνση',color:'var(--color-axis-focus)',hex:'#C8922A',icon:'🔥',
      video:'/Basic.mp4',
-     summary:'Η προσοχή είναι ο φακός του νου — μπορεί να εστιάζει, να ανοίγει ή να διασπάται.',
-     tldr:'Η προσοχή είναι σαν φακός. Μερικές φορές κολλάει (hyperfocus), μερικές φορές σκορπίζει. Η «απαλή επιστροφή» χωρίς κριτική είναι η ίδια η άσκηση.',
+     summary:'Η Προσοχή είναι το στοιχείο της Φωτιάς — μπορεί να εστιάζει ισχυρά, να ζεσταίνει ή να καίει ανεξέλεγκτα και να διασπάται.',
+     tldr:'Η Προσοχή είναι σαν τη Φωτιά. Μερικές φορές κολλάει (hyperfocus), μερικές φορές σκορπίζει. Η «απαλή επιστροφή» χωρίς κριτική γυμνάζει τη φλόγα.',
      theorySections:[
        {title:'Οι Τρεις Μορφές Προσοχής',paragraphs: [`• Εστιασμένη (Κλειστή): Σαν φακός — φωτίζει ένα σημείο με ένταση.`, `• Ανοιχτή: Σαν ανοιχτό φως — φωτίζει πολλά μαζί, χωρίς εστίαση.`, `• Διασπασμένη: Σαν στροβοσκόπιο — πηδά από σκέψη σε σκέψη χωρίς επιστροφή.`], interactive: "three_attention"},
        {title:'Αγκυλωμένη Προσοχή (Hyperfocus)',paragraphs: [`Η αντίθετη ακραία κατάσταση: ο νους κλειδώνει σε ένα σημείο και δεν μπορεί να φύγει. Ο κόσμος γύρω εξαφανίζεται — χώρος, σώμα, χρόνος.`, `Εργαλείο: Χώρος (μαλάκωσε το βλέμμα, νιώσε τον χώρο γύρω) + Σώμα (νιώσε τη βαρύτητα — «σπάει» το τούνελ).`], interactive: "camera_exercise"},
@@ -123,9 +123,9 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
      ],
      exercise:{title:'Άσκηση: Σταθεροποίηση του Φακού',steps:['Κάθισε άνετα. Κλείσε τα μάτια.','Νιώσε το σώμα σου και τον ρυθμό της αναπνοής.','Άνοιξε τα μάτια. Επίλεξε ένα σταθερό σημείο εστίασης.','Κράτησε την προσοχή εκεί με επίγνωση σώματος και αναπνοής.','Αν παρασυρθείς: βάλε ταμπέλα → επέστρεψε απαλά.']},
      insight:'Η επιστροφή της προσοχής δεν είναι αποτυχία — είναι η ίδια η άσκηση.',reflection:'Πού τείνει να «κολλάει» ή να «τρέχει» η προσοχή μου;'},
-    {num:4,title:'Χώρος',sub:'Το Άνοιγμα της Επίγνωσης',tag:'Άνοιγμα',color:'var(--color-axis-space)',hex:'#B5A7D0',icon:'✦',
+    {num:4,title:'Χώρος / Νερό',sub:'Ο Άπειρος Κοσμικός Ωκεανός',tag:'Άνοιγμα',color:'var(--color-axis-space)',hex:'#B5A7D0',icon:'🌌',
      video:'/Basic.mp4',
-     summary:'Ο Χώρος είναι το πιο απελευθερωτικό κέντρο. Μαθαίνουμε να ανοίγουμε την επίγνωση σαν ουρανό.',
+     summary:'Ο Χώρος είναι το στοιχείο του Νερού – ο άπειρος κοσμικός ωκεανός, ο άπειρος χώρος όπως εκπαιδεύεται στο Τάι Τσι. Μαθαίνουμε να υπάρχουμε σε ανοιχτότητα, περιέχοντας τα πάντα χωρίς αντίσταση.',
      theorySections:[
        {title:'Το Αντίδοτο στην Υπερφόρτωση',paragraphs: [`Η Ανοιχτή Προσοχή είναι το πιο ισχυρό εργαλείο ενάντια στην υπερφόρτωση. Το άνοιγμα της προσοχής λειτουργεί ως σήμα ασφάλειας στον εγκέφαλο: «δεν υπάρχει κίνδυνος, υπάρχει χώρος».`, `Η περιφερειακή όραση, η ανοιχτή ακοή, η αίσθηση του χώρου γύρω — όλα αυτά μαζί «σβήνουν» το σήμα συναγερμού.`]},
        {title:'Από την Εστίαση στην Ανοιχτότητα',paragraphs: [`Η μετάβαση γίνεται σε 3 βήματα:`, `1. Εστίασε σε ένα σημείο (Προσοχή).\n2. Μαλάκωσε το βλέμμα — μην κρατάς.\n3. Άφησε τον χώρο να σε αγκαλιάσει — ήχοι, σώμα, αέρας, όλα μαζί.`, `Δεν προσπαθείς να δεις τα πάντα. Αφήνεις τα πάντα να υπάρχουν.`], interactive: "metronomos"},

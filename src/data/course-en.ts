@@ -1,15 +1,15 @@
 // Auto-extracted from learning-to-ride-english.html
 
 export const AXES = [
-    { name: 'Body', icon: '◆', weeks: [1,2] },
-    { name: 'Breath', icon: '◆', weeks: [3,4] },
-    { name: 'Attention', icon: '◆', weeks: [5,6] },
-    { name: 'Space', icon: '◆', weeks: [7,8] },
+    { name: 'Body / Earth', icon: '⛰️', weeks: [1,2] },
+    { name: 'Breath / Sky', icon: '🫁', weeks: [3,4] },
+    { name: 'Attention / Fire', icon: '🔥', weeks: [5,6] },
+    { name: 'Space / Water', icon: '🌌', weeks: [7,8] },
 ];
 
 export const D: Record<number, any> = {
 1: {
-  title: 'Gravity & Axis',
+  title: 'Body / Earth: Gravity & Axis',
   days: [
     { title: 'Gravity vs "Autopilot"', where: 'Anywhere', dur: '1 second', lesson: '<p>Our method is one of "auto-relaxation", not forced concentration. There is no rush, no violence, and no "failure"—everything is part of the learning process, even distraction.</p><p>The Default Mode Network (DMN)—the brain\'s "autopilot"—produces mind wandering. Today we do an experiment: We feel gravity to restore our physical sensation and activate the proprioceptive center. The "autopilot" does not stop permanently with just gravity (that requires open awareness), but it is the first step to return to the Now.</p>', exercise: { title: 'Feel Gravity', steps: ['During the day, remember to:', 'Stop what you are doing for 1 second.', 'Just feel the weight of your body "falling".', 'Gently return, without judgment, if you get distracted.'] }, breathing: '<strong>No requirement</strong><p>We are not doing any breathing exercises today. Just observing.</p>', reflection: 'How did it feel reactivating the sense of gravity?', insight: 'Gravity brings the body back to the present. It is the first anchor.' },
     { title: 'The Axis as Safety', where: 'Anywhere', dur: '1 second', lesson: '<p>We are building a relaxed presence. The tighter you are, the more closed your attention and sense of space will be.</p><p>Today we add the "axis". Apart from gravity pulling you down, there is an imaginary vertical line keeping you upright. This axis is your safety. It holds you stable and open, without the need to tense up.</p>', exercise: { title: '1-Second Pause', steps: ['When you remember during the day:', 'Pause (1 second).', 'Feel gravity pulling you down.', 'Feel the vertical axis keeping you upright and relaxed.'] }, breathing: '<strong>Natural Breath</strong><p>Let your body breathe however it wants to.</p>', reflection: 'Could I feel this "imaginary line" inside me without tensing up?', insight: 'Your axis keeps you upright and aligned, providing structure without tension.' },
@@ -21,7 +21,7 @@ export const D: Record<number, any> = {
   ]
 },
 2: {
-  title: 'Deepening Body Awareness',
+  title: 'Body / Earth: Deepening Awareness',
   days: [
     { title: 'Full Point Scan & Pause', where: 'Quiet place', dur: '10 min', lesson: '<p>The second week starts with a scan of the first week\'s tools: Gravity, Axis, Soles, Pelvis, Arms, Head.</p><p>We pause and observe.</p>', exercise: { title: 'Safety Body Scan', steps: ['Stand or sit comfortably.', 'Start from the soles - feel them. Gradually move up.', 'Feel knees, pelvis, torso (axis).', 'Feel the shoulders, arms (their weight).', 'Feel the neck and head.', 'Pause for 30 seconds feeling the "whole".'] }, breathing: '<strong>Breath 5-5</strong><p>Keep a gentle 5-5 rhythm during the scan.</p>', reflection: 'Is there a specific point that "attracts" my attention more?', insight: 'Clear body mapping reduces the feeling of anxiety.' },
     { title: 'Shoulder Release & Axis', where: 'Anywhere', dur: '5 min', lesson: '<p>Today we focus on a point that holds a lot of tension: the shoulders. We learn to surrender their weight to gravity, while keeping the central axis strong.</p>', exercise: { title: 'Deselecting Tension (Shoulders)', steps: ['Stand or sit with your axis aligned.', 'Bring attention to your shoulders. Notice how you hold them.', 'With an exhale, simply let them drop, surrendering their weight to the earth.', 'The axis remains tall, the shoulders heavily grounded.'] }, breathing: '<strong>Release Exhale</strong><p>Every time you exhale, the shoulders become slightly heavier.</p>', reflection: 'How much tension was I unknowingly holding in my shoulders?', insight: 'True stability (axis) does not require tension.' },
@@ -33,7 +33,7 @@ export const D: Record<number, any> = {
   ]
 },
 3: {
-  title: 'Breath & Body I',
+  title: 'Breath / Sky: The Stream of Life',
   days: [
     { title: 'Introduction to Breath', where: 'Anywhere', dur: '5 min', lesson: '<p>Every day from now on, remember the golden rule: <strong>We start with a short grounding for a few seconds</strong> before any exercise.</p><p>Today we just read the breath chapter. The breath is our anchor.</p>', exercise: { title: 'Observation without interference', steps: ['Grounding in the body (10 seconds).', 'Simply observe: how are you breathing right now?', 'Do not try to change it.', 'We just keep the awareness.'] }, breathing: '<strong>Natural Breath</strong><p>No interference.</p>', reflection: 'Did my breath change as soon as I gave it attention?', insight: 'Observation itself is an act of care.' },
     { title: 'Inner Touch at the Nostrils', where: 'Quiet place', dur: '5 min', lesson: '<p>Breath offers an "inner touch." We feel the air touching us from the inside.</p><p>Today the focal point is the nostrils, as the air enters and exits.</p>', exercise: { title: 'Focus on Nostrils', steps: ['Grounding in the body (10 seconds).', 'Bring your attention to your nostrils.', 'At what exact point do you feel the air?', 'Throughout the day, take small pauses and remember this sensation.'] }, breathing: '<strong>Natural Flow</strong><p>Feel the coolness of the inhale and the warmth of the exhale.</p>', reflection: 'Can I feel the air more strongly in the right or left nostril?', insight: 'Inner touch is the most direct way to ground ourselves in our body.' },
@@ -45,7 +45,7 @@ export const D: Record<number, any> = {
   ]
 },
 4: {
-  title: 'Breath, Movement & Kindness',
+  title: 'Breath / Sky: Movement & Kindness',
   days: [
     { title: 'Review: Nostrils & 5-5', where: 'Quiet place', dur: '5 min', lesson: '<p>We begin the fourth week by mixing the tools from the previous days. Today we remember the inner touch at the nostrils.</p>', exercise: { title: 'Nostrils and Rhythm combined', steps: ['Grounding in the body (10 seconds).', 'Focus initially on the nostrils.', 'Apply a 5-5 rhythm (Inhale 5, Exhale 5) remaining there.', 'Keep your attention on the inner touch.'] }, breathing: '<strong>5-5 at the Nostrils</strong><p>Circular maintenance of attention.</p>', reflection: 'How easy was it to stay at the nostrils?', insight: 'Repetition is the path for the nervous system to learn.' },
     { title: 'Review: Throat & 4-2-7', where: 'Quiet place', dur: '5 min', lesson: '<p>We continue with the throat and the pause that allows deeper relaxation (4-2-7 rhythm).</p>', exercise: { title: 'Throat with prolonged exhale', steps: ['Grounding in the body (10 seconds).', 'Bring your awareness to the throat.', 'Inhale 4 seconds, Hold 2 seconds.', 'Exhale 7 seconds, feeling the air in the throat.'] }, breathing: '<strong>4-2-7 Breath</strong><p>Activating our calming system.</p>', reflection: 'What happened to my body with the long exhale?', insight: 'The longest exhale rhythm is the best regulator.' },
@@ -57,7 +57,7 @@ export const D: Record<number, any> = {
   ]
 },
 5: {
-  title: 'Attention and Focus',
+  title: 'Attention / Fire: Focus & Light',
   days: [
     { title: 'Introduction to Attention', where: 'Anywhere', dur: 'A few minutes', lesson: '<p>Before every exercise: <strong>always feel your axis, gravity, and gently regulate your breath.</strong> This is our foundation.</p><p>Reading: Our attention is the lens that illuminates our experience.</p>', exercise: { title: 'Looking for 7"', steps: ['Grounding, axis, breath. (30 seconds)', 'During the day, take short pauses.', 'Look steadily at any object for 7 seconds.', 'Return to what you were doing.'] }, breathing: '<strong>Gentle Observation 7"</strong><p>Keep your breath calm as you observe.</p>', reflection: 'What did I see in those 7 seconds?', insight: 'Seven seconds of attention are enough to break the autopilot of the day.' },
     { title: 'Alternating Attention', where: 'Anywhere', dur: '5 min', lesson: '<p>We continue to sharpen the "lens" of attention by consciously shifting our focus. Moving the gaze rests the nervous system.</p>', exercise: { title: 'Right - Left', steps: ['Grounding, axis, breath.', 'Choose an object to your right and one to your left.', 'Look at the right object with focus. Feel your breath.', 'Shift your gaze to the left. Feel your breath.', 'Alternate slowly, a few times.'] }, breathing: '<strong>Attention and Rhythm</strong><p>Keep a rhythm (e.g., 5-5) as you alternate your gaze.</p>', reflection: 'Did anything change in my body sensation as I moved my focus?', insight: 'When you direct your attention consciously, you regain control.' },
@@ -69,7 +69,7 @@ export const D: Record<number, any> = {
   ]
 },
 6: {
-  title: 'Establishing Focus',
+  title: 'Attention / Fire: Consolidating Calm',
   days: [
     { title: 'Closed and Open (Review)', where: 'Quiet place', dur: '10 min', lesson: '<p>Entering Week 6, our goal is establishment. We start by strengthening the transition from the single thing (object) to the whole.</p>', exercise: { title: 'Transitioning to Space', steps: ['Always: grounding, breath, axis.', 'Lock your attention on an object across from you.', 'Stay there for a bit.', 'Suddenly soften your focus (open attention) and simply observe the entire scene.', 'Repeat three times.'] }, breathing: '<strong>Rhythm of Transition</strong><p>Concentration in the closed, expansion in the open.</p>', reflection: 'Is the switch from focus to relaxation easier now?', insight: 'The ability to relax is as useful as the ability to concentrate.' },
     { title: 'Thoughts as Objects (Samatha)', where: 'Quiet place', dur: '10 min', lesson: '<p><em>(Samatha Animation)</em>. Imagine your mind as a visual field. Thoughts are simply objects (like clouds or bubbles) that enter this field and pass by. This practice is called Samatha (Calm abiding).</p>', exercise: { title: 'Observing Thoughts', steps: ['Grounding, axis, rhythmic breath.', 'Close your eyes. Imagine the field of your mind.', 'A thought comes. See it as an object.', 'Do not hold it. Watch it cross the field of observation and leave.', 'You remain the steady observer.'] }, breathing: '<strong>Samatha Breath</strong><p>A steady base while the "objects" pass.</p>', reflection: 'Did I manage not to identify with any thought?', insight: 'You are not your thoughts. You are the space in which they happen.' },
@@ -81,7 +81,7 @@ export const D: Record<number, any> = {
   ]
 },
 7: {
-  title: 'The 4 Centers & Open Awareness',
+  title: 'Space / Water: Open Awareness',
   days: [
     { 
       title: 'The 4 Centers & Sky',
@@ -156,7 +156,7 @@ export const D: Record<number, any> = {
   ]
 },
 8: {
-  title: 'Integration: Open Awareness & Mahamudra',
+  title: 'Space / Water: The Infinite Cosmic Ocean (Tai Chi)',
   days: [
     {
       title: 'The Mind is Not Broken (Mahamudra)',

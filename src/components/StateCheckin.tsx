@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../hooks/useLanguage';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Flame, Droplets, Mountain, Wind, Check, ChevronRight } from 'lucide-react';
+import { CatInfinityAvatar } from './CatInfinityAvatar';
 
 export default function StateCheckin({ onComplete }: { onComplete: () => void }) {
   const { language } = useLanguage();
@@ -16,6 +17,8 @@ export default function StateCheckin({ onComplete }: { onComplete: () => void })
     if (state === 'hyper') localStorage.setItem('n_mindfulness_intention', 'anxiety');
     if (state === 'hypo') localStorage.setItem('n_mindfulness_intention', 'focus');
     if (state === 'balanced') localStorage.setItem('n_mindfulness_intention', 'awareness');
+    
+    window.dispatchEvent(new Event('storage'));
   };
 
   const content = {
@@ -73,8 +76,9 @@ export default function StateCheckin({ onComplete }: { onComplete: () => void })
         
         {/* Cat Avatar Header */}
         <div className="flex justify-center mb-6 relative">
-          <div className="w-20 h-20 bg-stone-200/90 rounded-full flex items-center justify-center border border-stone-300 shadow-lg overflow-hidden">
-             <img src="/genfavicon-256.png" alt="Cat Companion" className="w-full h-full object-cover rounded-full" />
+          <div className="w-20 h-20 bg-stone-900 rounded-full flex items-center justify-center border border-stone-800 shadow-lg overflow-hidden relative">
+            <CatInfinityAvatar className="w-16 h-16 drop-shadow-md relative z-10" />
+            <div className="absolute inset-0 bg-teal-500/10 blur-xl rounded-full" />
           </div>
         </div>
 

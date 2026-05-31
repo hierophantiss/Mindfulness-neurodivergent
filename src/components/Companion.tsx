@@ -29,42 +29,8 @@ export default function Companion() {
   const { language } = useLanguage();
 
   useEffect(() => {
-    // Initial welcome message
-    const hasSeen = localStorage.getItem('N_MINDFULNESS_SEEN_COMPANION_TUTORIAL');
-    
-    // Fourfold / Nervous System Micro-tips
-    const quotes = [
-      { 
-        el: "Σώμα: Νιώσε τα πέλματά σου στο πάτωμα. Η βαρύτητα είναι η πιο σίγουρη άγκυρα.", 
-        en: "Body: Feel your feet on the floor. Gravity is your safest anchor." 
-      },
-      { 
-        el: "Αναπνοή: Μια αργή εκπνοή στέλνει σήμα ασφάλειας στο νευρικό σύστημα.", 
-        en: "Breath: A slow exhale signals safety to your nervous system." 
-      },
-      { 
-        el: "Προσοχή: Αν ο νους τρέχει, διάλεξε ένα σταθερό σημείο και κοίταξέ το απαλά.", 
-        en: "Attention: If your mind races, pick a steady point and look at it softly." 
-      },
-      { 
-        el: "Χώρος: Μαλάκωσε το βλέμμα σου (ανοιχτή όραση) και άσε τους ήχους να έρθουν σε σένα.", 
-        en: "Space: Soften your gaze (open sight) and let the ambient sounds come to you." 
-      }
-    ];
-    
-    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-
-    const timer = setTimeout(() => {
-      if (!hasSeen) {
-        setCompanionMessage(language === 'el' ? 'Γεια! Προτείνω να διαβάσεις πρώτα «Η Μέθοδος». Είμαι εδώ για να σε καθοδηγώ.' : 'Hi! I recommend reading "The Method" first. I am here to guide you.');
-      } else {
-        if (Math.random() > 0.3 && !companionMessage) {
-          setCompanionMessage(language === 'el' ? randomQuote.el : randomQuote.en);
-        }
-      }
-    }, 3000);
-
-    return () => clearTimeout(timer);
+    // Initial welcome message removed to prevent sensory overwhelm on first load.
+    // The user will discover the Companion manually without unrequested automatic popups.
   }, [language]);
 
   // Auto-dismiss logic for any message
@@ -238,7 +204,6 @@ export default function Companion() {
         </motion.div>
         {companionData.dailyLogs.length > 0 && <span className="absolute animate-ping top-1 right-1 w-2 h-2 bg-amber-400 rounded-full" />}
       </div>
-      <CompanionSheet />
     </>
   );
 }

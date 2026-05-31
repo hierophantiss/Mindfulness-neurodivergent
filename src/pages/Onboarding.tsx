@@ -122,21 +122,23 @@ export default function Onboarding() {
       id: 'axes',
       content: (
         <div className="flex flex-col items-center text-center space-y-10 w-full max-w-xl mx-auto">
-          <div className="space-y-2">
+          <div className="space-y-3">
             <h2 className="text-3xl font-serif italic text-white tracking-tight">
-              {language === 'el' ? 'Ο Τετραπλός Άξονας' : 'The Fourfold Axis'}
+              {language === 'el' ? 'Τα Τέσσερα Στοιχεία' : 'The Four Elements'}
             </h2>
-            <p className="text-sm text-white/40">
-              {language === 'el' ? 'Τα εργαλεία της επίγνωσής μας' : 'Our tools of awareness'}
+            <p className="text-sm md:text-base text-white/50 max-w-md mx-auto">
+              {language === 'el' 
+                ? 'Μια μέθοδος σταδιακής επανασύνδεσης με τα βασικά στοιχεία: Γη, Ουρανός / Αέρας, Φωτιά και Νερό.' 
+                : 'A gradual reconnection method with the basic elements: Earth, Sky / Air, Fire, and Water.'}
             </p>
           </div>
           
           <div className="grid grid-cols-2 gap-4 w-full">
             {[
-              { icon: Anchor, color: 'text-indigo-400', bg: 'bg-indigo-500/10', title: { el: 'Σώμα', en: 'Body' } },
-              { icon: Wind, color: 'text-teal-400', bg: 'bg-teal-500/10', title: { el: 'Ανάσα', en: 'Breath' } },
-              { icon: Focus, color: 'text-amber-400', bg: 'bg-amber-500/10', title: { el: 'Προσοχή', en: 'Attention' } },
-              { icon: Maximize, color: 'text-rose-400', bg: 'bg-rose-500/10', title: { el: 'Χώρος', en: 'Space' } }
+              { icon: Anchor, color: 'text-indigo-400', bg: 'bg-indigo-500/10', title: { el: 'Σώμα (Γη)', en: 'Body (Earth)' } },
+              { icon: Wind, color: 'text-teal-400', bg: 'bg-teal-500/10', title: { el: 'Ανάσα (Ουρανός)', en: 'Breath (Sky)' } },
+              { icon: Focus, color: 'text-amber-400', bg: 'bg-amber-500/10', title: { el: 'Προσοχή (Φωτιά)', en: 'Focus (Fire)' } },
+              { icon: Maximize, color: 'text-rose-400', bg: 'bg-rose-500/10', title: { el: 'Χώρος (Νερό)', en: 'Space (Water)' } }
             ].map((axis, i) => (
               <motion.div 
                 key={i}
@@ -146,7 +148,7 @@ export default function Onboarding() {
                 className={cn("flex flex-col items-center p-6 rounded-3xl border border-white/5", axis.bg)}
               >
                 <axis.icon size={28} className={axis.color} />
-                <span className="mt-4 font-serif italic text-white/90 text-lg">
+                <span className="mt-4 font-serif italic text-white/90 text-sm md:text-base">
                   {language === 'el' ? axis.title.el : axis.title.en}
                 </span>
               </motion.div>

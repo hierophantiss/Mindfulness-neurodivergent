@@ -319,47 +319,19 @@ export default function NavigationMenu() {
                                  Object.keys(parsed).forEach(k => {
                                    localStorage.setItem(k, parsed[k]);
                                  });
-                                 showToast(language === 'en' ? 'Data imported successfully!' : 'Τα δεδομένα εισήχθησαν!');
-                                 setTimeout(() => window.location.reload(), 1500);
-                               } catch(err) {
-                                 showToast(language === 'en' ? 'Invalid backup file' : 'Άκυρο αρχείο αντιγράφου');
-                               }
-                             };
-                             reader.readAsText(file);
-                           }} 
-                         />
-                       </label>
-                     </div>
-                  </div>
-                </div>
-
-                   <div className="w-full h-px bg-white/5 my-1"></div>
-                   
-                   <div className="flex items-center justify-between">
-                     <div className="flex items-center gap-3">
-                       <div className="w-10 h-10 rounded-full flex items-center justify-center bg-indigo-900/50 text-indigo-300">
-                         <Sparkles size={18} />
-                       </div>
-                       <div className="flex flex-col">
-                         <span className="text-sm font-medium text-zinc-200">
-                           {language === 'en' ? 'App Intention' : 'Τρέχουσες Ανάγκες'}
-                         </span>
-                         <span className="text-[10px] text-zinc-400">
-                           {language === 'en' ? 'Change your main focus' : 'Αλλαγή στόχου'}
-                         </span>
-                       </div>
-                     </div>
-                     <button
-                       onClick={() => {
-                         localStorage.removeItem('hasCompletedOnboarding');
-                         window.location.href = '#/onboarding';
-                         window.location.reload();
-                       }}
-                       className="px-3 py-1.5 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-medium transition-colors"
-                     >
-                       {language === 'en' ? 'Update' : 'Αλλαγή'}
-                      </button>
-                    </div>
+                                                                                                     showToast(language === 'en' ? 'Data imported successfully!' : 'Τα δεδομένα εισήχθησαν!');
+                                  setTimeout(() => window.location.reload(), 1500);
+                                } catch(err) {
+                                  showToast(language === 'en' ? 'Invalid backup file' : 'Άκυρο αρχείο αντιγράφου');
+                                }
+                              };
+                              reader.readAsText(file);
+                            }} 
+                          />
+                        </label>
+                      </div>
+                   </div>
+                 </div>
 
                     <div className="w-full h-px bg-white/5 my-1"></div>
 

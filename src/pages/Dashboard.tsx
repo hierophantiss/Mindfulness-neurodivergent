@@ -11,6 +11,7 @@ import { useAccessibility } from '../hooks/useAccessibility';
 import { useBinauralAudio } from '../hooks/useBinauralAudio';
 import InfoModal from '../components/InfoModal';
 import ProgressHeroCanvas from '../components/ProgressHeroCanvas';
+import StateCheckin from '../components/StateCheckin';
 
 const glassCardClasses = "backdrop-blur-[4px] bg-white/[0.04] border border-white/[0.1] rounded-[16px]";
 
@@ -24,6 +25,31 @@ export default function Dashboard() {
   const [currentDate, setCurrentDate] = useState('');
   const [activeMood, setActiveMood] = useState<number | null>(null);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const [isStateCheckinOpen, setIsStateCheckinOpen] = useState(false);
+  const [intentionState, setIntentionState] = useState(localStorage.getItem('n_mindfulness_intention') || 'autism');
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setIntentionState(localStorage.getItem('n_mindfulness_intention') || 'autism');
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
+  const getIntentionDisplay = () => {
+     switch(intentionState) {
+       case 'anxiety': return { icon: '🌿', el: 'Γείωση', en: 'Grounding' };
+       case 'focus': return { icon: '🔥', el: 'Ενεργοποίηση', en: 'Activation' };
+       case 'awareness': return { icon: '💧', el: 'Ισορροπία', en: 'Balance' };
+       case 'autism': return { icon: '📖', el: 'Μελέτη & Δομή', en: 'Study & Structure' };
+       case 'adhd': return { icon: '⚡', el: 'Εξερεύνηση', en: 'Exploration' };
+       case 'audhd': return { icon: '🧭', el: 'Ολιστική Εστίαση', en: 'Holistic Focus' };
+       default: return { icon: '🌿', el: 'Γείωση', en: 'Grounding' };
+     }
+  };
+
+  const intentionDisplay = getIntentionDisplay();
+
   
   const handleMoodSelect = (moodId: number) => {
     setActiveMood(moodId);
@@ -57,15 +83,8 @@ export default function Dashboard() {
 
   // Show welcome modal on first visit
   useEffect(() => {
-    const hasSeenWelcome = localStorage.getItem('fourfold_has_seen_welcome');
-    if (!hasSeenWelcome) {
-      // Small delay for better UX
-      const timer = setTimeout(() => {
-        setIsInfoOpen(true);
-        localStorage.setItem('fourfold_has_seen_welcome', 'true');
-      }, 500);
-      return () => clearTimeout(timer);
-    }
+    // InfoModal auto-open removed to prevent sensory overwhelm on first load.
+    // The user can open it manually via the info icon.
   }, []);
 
   const audioConfig = useMemo(() => ({
@@ -194,11 +213,26 @@ export default function Dashboard() {
         </div>
 
         {/* 2. Primary Dashboard Header, Quote, and Stats (Always Visible) */}
-        <div className="flex items-center gap-2 mt-2 font-serif italic font-light leading-none">
-          <h1 className="text-[30px]">
-            {greeting}
-          </h1>
-          <Sparkles size={22} className="text-white opacity-80" strokeWidth={1.5} />
+        <div className="flex flex-col gap-2 mt-2">
+          <div className="flex items-center gap-2 font-serif italic font-light leading-none">
+            <h1 className="text-[30px]">
+              {greeting}
+            </h1>
+            <Sparkles size={22} className="text-white opacity-80" strokeWidth={1.5} />
+          </div>
+          
+          <button 
+            onClick={() => setIsStateCheckinOpen(true)}
+            className="self-start rounded-full bg-white/[0.04] border border-white/[0.1] hover:bg-white/10 active:scale-95 transition-all text-xs font-medium px-3 py-1.5 flex items-center gap-2 mt-1"
+          >
+            <span className="text-white/60">
+              {language === 'el' ? 'Σήμερα εστιάζω στην' : 'Today I\'m focused on'}:
+            </span>
+            <span className="text-white flex items-center gap-1.5">
+              <span>{intentionDisplay.icon}</span>
+              <span>{language === 'el' ? intentionDisplay.el : intentionDisplay.en}</span>
+            </span>
+          </button>
         </div>
 
         {/* Hero Visual State Canvas */}
@@ -321,6 +355,13 @@ export default function Dashboard() {
         
       </div>
       <InfoModal isOpen={isInfoOpen} onClose={() => setIsInfoOpen(false)} />
+      {isStateCheckinOpen && (
+        <StateCheckin onComplete={() => { 
+          setIsStateCheckinOpen(false);
+          // Manually pull next state just in case listener missed it
+          setIntentionState(localStorage.getItem('n_mindfulness_intention') || 'autism'); 
+        }} />
+      )}
     </div>
   );
 }
