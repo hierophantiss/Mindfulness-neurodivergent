@@ -339,6 +339,22 @@ export default function RabbitHole() {
         "Στον βαθμό που περνάς χρόνο σε αυτόν τον αγέννητο νου, στον νου που δεν έχει πάρει τη σκληρή μορφή της άποψης, των προτιμήσεων και των δυσαρεσκειών, σε αυτόν τον βαθμό μπορείς να έχεις έναν ευέλικτο, επεκτατικό και ανοιχτό νου.",
         "Συνεχώς επιστρέφεις στον Νου του Γαλάζιου Ουρανού, και καθώς περνάς όλο και περισσότερο χρόνο εκεί, τελικά αυτός γίνεται η μόνιμη κατοικία σου. Σε αυτό το σημείο, νιώθεις ότι έχει συμβεί μια αληθινή μεταστροφή, μια μεταστροφή με μια εντελώς διαφορετική ποιότητα ύπαρξης."
       ]
+    },
+    {
+      id: 'myth-of-freedom-earth',
+      title: language === 'en' ? 'The Touch of the Earth' : 'Το Άγγιγμα της Γης',
+      author: 'Chögyam Trungpa Rinpoche',
+      pages: language === 'en' ? [
+        "As the Buddha's approach to the practice of meditation evolved, he realized that gimmicks are merely neurotic affectations.\n\nHe decided to look for what is simple, what is actually there, to discover the relationship between mind and body, his relationship with the kusha grass mat on which he sat and the bodhi tree above his head.",
+        "He looked into his relationships with everything very simply and directly. It was not especially exciting—there were no flashes of anything—but it was reassuring.",
+        "At the dawn of his enlightenment someone asked the Buddha, 'What are your credentials? How do we know that you are enlightened?'\n\nHe touched his hand to the ground. 'This solid earth is my witness. This solid earth, this same earth, is my witness.'",
+        "Sane and solid and definite, no imaginings, no concepts, no emotions, no frivolity, but being basically what is: this is the awakened state. And this is the example we follow in our meditation practice.\n\n📖 The Myth of Freedom"
+      ] : [
+        "Καθώς η προσέγγιση του Βούδα στην πρακτική του διαλογισμού εξελισσόταν, συνειδητοποίησε ότι τα τεχνάσματα και τα 'κόλπα' είναι απλώς νευρωτικές επιτηδεύσεις.\n\nΑποφάσισε να αναζητήσει αυτό που είναι απλό, αυτό που υπάρχει πραγματικά εκεί, για να ανακαλύψει τη σχέση ανάμεσα στον νου και το σώμα, τη σχέση του με το ψάθινο στρώμα από χορτάρι κούσα πάνω στο οποίο καθόταν και το δέντρο Μπόντι πάνω από το κεφάλι του.",
+        "Κοίταξε τις σχέσεις του με τα πάντα πολύ απλά και άμεσα. Δεν ήταν τίποτα ιδιαίτερα συναρπαστικό —δεν υπήρχαν λάμψεις ή εντυπωσιακά βιώματα— αλλά ήταν καθησυχαστικό.",
+        "Την αυγή της φώτισής του, κάποιος ρώτησε τον Βούδα: «Ποια είναι τα διαπιστευτήριά σου; Πώς ξέρουμε ότι έχεις αφυπνιστεί;»\n\nΕκείνος άγγιξε το χέρι του στο έδαφος. «Αυτή η στέρεη γη είναι ο μάρτυράς μου. Αυτή η στέρεη γη, αυτή η ίδια γη, είναι ο μάρτυράς μου».",
+        "Λογικό, στέρεο και συγκεκριμένο, χωρίς φαντασιώσεις, χωρίς έννοιες, χωρίς συναισθηματισμούς, χωρίς περιττές ελαφρότητες, αλλά το να είσαι ουσιαστικά αυτό που υπάρχει: αυτή είναι η αφυπνισμένη κατάσταση. Και αυτό είναι το παράδειγμα που ακολουθούμε στη διαλογιστική μας πρακτική.\n\n📖 Ο Μύθος της Ελευθερίας"
+      ]
     }
   ];
 

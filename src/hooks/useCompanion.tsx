@@ -4,6 +4,17 @@ import { useLocation } from 'react-router-dom';
 
 const COMPANION_KEY = 'mindful_companion_v5';
 
+const generateAnonymizedID = (): string => {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  return 'xxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+};
+
 const defaultCompanionData = (): CompanionData => ({
   chapterProgress: {},
   programProgress: { week: 0, day: 0, lastVisit: null },
@@ -23,6 +34,7 @@ const defaultCompanionData = (): CompanionData => ({
   questionnaire: undefined,
   chatHistory: [],
   companionModeEnabled: false,
+  userId: generateAnonymizedID()
 });
 
 interface CompanionContextType {
@@ -45,7 +57,11 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       const stored = localStorage.getItem(COMPANION_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
-        return { ...defaultCompanionData(), ...parsed };
+        const merged = { ...defaultCompanionData(), ...parsed };
+        if (!merged.userId) {
+          merged.userId = generateAnonymizedID();
+        }
+        return merged;
       }
     } catch (e) {
       console.warn('Error loading companion data', e);

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useCompanion } from '../hooks/useCompanion';
+import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { CHAPTERS_DATA, CHAPTER_PRACTICES } from '../data/chapters';
 import { MOOD_ROUTES } from '../data/moods';
 import { KNOWLEDGE_CONCEPTS } from '../data/concepts';
@@ -17,8 +18,35 @@ import { CatInfinityAvatar } from './CatInfinityAvatar';
 /* Companion Sheet states/flows */
 type FlowState = 'main' | 'mood' | 'hub' | 'explore' | 'options' | 'guide' | 'questionnaire';
 
+const getDateString = (date: Date): string => {
+  return date.toISOString().split('T')[0];
+};
+
+const calculateStreak = (activityLogs: { timestamp: string }[]): number => {
+  if (activityLogs.length === 0) return 0;
+
+  const activeDays = new Set(activityLogs.map(l => l.timestamp.split('T')[0]));
+  let streak = 0;
+  const today = new Date();
+
+  for (let i = 0; i < 365; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const ds = getDateString(d);
+    if (activeDays.has(ds)) {
+      streak++;
+    } else {
+      // Allow today to be missing (user hasn't practiced yet today)
+      if (i === 0) continue;
+      break;
+    }
+  }
+  return streak;
+};
+
 export default function CompanionSheet() {
   const { sheetVisible, setSheetVisible, companionData, trackActivity, updateCompanionData } = useCompanion();
+  const { logs } = useActivityTracker();
   const { language } = useLanguage();
   const { reduceMotion } = useAccessibility();
   const [flow, setFlow] = useState<FlowState>('main');
@@ -98,6 +126,7 @@ export default function CompanionSheet() {
 
 function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClose: () => void }) {
   const { companionData, updateCompanionData } = useCompanion();
+  const { logs } = useActivityTracker();
   const navigate = useNavigate();
   const { language } = useLanguage();
   const { reduceMotion } = useAccessibility();
@@ -196,10 +225,23 @@ function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClo
   const narrative = getDailyNarrative();
   
   // Calculate Mindful Stats
+  const targetCompletedStreak = calculateStreak(logs);
+  const totalPracticesLogged = logs.length;
+  
+  // Calculate weekly goal progress based on logs in the last 7 days (target: 4 practices)
+  const recent7DaysCount = logs.filter(l => {
+    if (!l.timestamp) return false;
+    const d = new Date(l.timestamp);
+    const diff = Math.abs(new Date().getTime() - d.getTime());
+    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    return days <= 7;
+  }).length;
+  const currentWeeklyGoalPct = Math.min(100, Math.round((recent7DaysCount / 4) * 100));
+
   const mindfulStats = { 
-    streak: Math.max(1, companionData?.dailyLogs?.length || 7), 
-    practices: Math.max(1, (companionData?.programProgress?.day || 0) + 1), 
-    weeklyGoal: 85 
+    streak: targetCompletedStreak, 
+    practices: totalPracticesLogged, 
+    weeklyGoal: currentWeeklyGoalPct 
   };
 
   let message = {

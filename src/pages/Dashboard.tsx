@@ -4,6 +4,7 @@ import { Sparkles, BookOpen, ArrowRight, Heart, Brain, Moon, Zap, ChevronRight, 
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useCompanion } from '../hooks/useCompanion';
+import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { useTime } from '../contexts/TimeContext';
 import { cn } from '../lib/utils';
 import { motion } from 'motion/react';
@@ -15,9 +16,36 @@ import StateCheckin from '../components/StateCheckin';
 
 const glassCardClasses = "backdrop-blur-[4px] bg-white/[0.04] border border-white/[0.1] rounded-[16px]";
 
+const getDateString = (date: Date): string => {
+  return date.toISOString().split('T')[0];
+};
+
+const calculateStreak = (activityLogs: { timestamp: string }[]): number => {
+  if (activityLogs.length === 0) return 0;
+
+  const activeDays = new Set(activityLogs.map(l => l.timestamp.split('T')[0]));
+  let streak = 0;
+  const today = new Date();
+
+  for (let i = 0; i < 365; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const ds = getDateString(d);
+    if (activeDays.has(ds)) {
+      streak++;
+    } else {
+      // Allow today to be missing (user hasn't practiced yet today)
+      if (i === 0) continue;
+      break;
+    }
+  }
+  return streak;
+};
+
 export default function Dashboard() {
   const { language, setLanguage } = useLanguage();
   const { companionData, updateCompanionData, setCompanionMessage } = useCompanion();
+  const { logs } = useActivityTracker();
   const { hour } = useTime();
   const { reduceMotion, toggleReduceMotion } = useAccessibility();
 
@@ -105,7 +133,7 @@ export default function Dashboard() {
     }
   };
   
-  const [mindfulStats, setMindfulStats] = useState({ streak: 7, practices: 3, weeklyGoal: 85 });
+  const [mindfulStats, setMindfulStats] = useState({ streak: 0, practices: 0, weeklyGoal: 0 });
   
   useEffect(() => {
     // Greeting
@@ -128,13 +156,24 @@ export default function Dashboard() {
       min += (bHist.totalMin || 0);
     } catch {}
     
-    // Example: Map some fake data if real logic takes too long, but we keep real structure
+    const targetCompletedStreak = calculateStreak(logs);
+    const totalPracticesLogged = logs.length;
+    
+    const recent7DaysCount = logs.filter(l => {
+      if (!l.timestamp) return false;
+      const d = new Date(l.timestamp);
+      const diff = Math.abs(new Date().getTime() - d.getTime());
+      const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+      return days <= 7;
+    }).length;
+    const currentWeeklyGoalPct = Math.min(100, Math.round((recent7DaysCount / 4) * 100));
+
     setMindfulStats({ 
-      streak: Math.max(1, companionData?.dailyLogs?.length || 7), 
-      practices: Math.max(1, (companionData?.programProgress?.day || 0) + 1), 
-      weeklyGoal: 85 
+      streak: targetCompletedStreak, 
+      practices: totalPracticesLogged, 
+      weeklyGoal: currentWeeklyGoalPct 
     });
-  }, [language, hour, companionData]);
+  }, [language, hour, companionData, logs]);
 
   const activeQuote = { 
     el: "Η επίγνωση είναι η γέφυρα ανάμεσα στο χάος και τη γαλήνη.", 

@@ -99,4 +99,5 @@ export interface CompanionData {
   questionnaire?: QuestionnaireData;
   chatHistory?: ChatMessage[];
   companionModeEnabled?: boolean;
+  userId?: string;
 }

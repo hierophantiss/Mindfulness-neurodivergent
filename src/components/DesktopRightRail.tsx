@@ -1,13 +1,41 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
 import { useCompanion } from '../hooks/useCompanion';
+import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { MessageCircle, Sparkles, Activity, ShieldAlert, Heart, Calendar } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CatInfinityAvatar } from './CatInfinityAvatar';
 
+const getDateString = (date: Date): string => {
+  return date.toISOString().split('T')[0];
+};
+
+const calculateStreak = (activityLogs: { timestamp: string }[]): number => {
+  if (activityLogs.length === 0) return 0;
+
+  const activeDays = new Set(activityLogs.map(l => l.timestamp.split('T')[0]));
+  let streak = 0;
+  const today = new Date();
+
+  for (let i = 0; i < 365; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const ds = getDateString(d);
+    if (activeDays.has(ds)) {
+      streak++;
+    } else {
+      // Allow today to be missing (user hasn't practiced yet today)
+      if (i === 0) continue;
+      break;
+    }
+  }
+  return streak;
+};
+
 export default function DesktopRightRail() {
   const { language } = useLanguage();
   const { companionData, updateCompanionData, setSheetVisible } = useCompanion();
+  const { logs } = useActivityTracker();
 
   const handleCompanionClick = () => {
     setSheetVisible(true);
@@ -15,9 +43,9 @@ export default function DesktopRightRail() {
 
   const hasProgram = (companionData.programProgress?.week || 0) > 0;
   
-  // Calculate mock streaks based on actual companion stats for quick context
-  const streak = Math.max(1, companionData?.dailyLogs?.length || 7);
-  const practices = Math.max(1, (companionData?.programProgress?.day || 0) + 1);
+  // Calculate real stats starting from 0
+  const streak = calculateStreak(logs);
+  const practices = logs.length;
 
   return (
     <aside className="hidden lg:flex w-[280px] xl:w-[320px] flex-col h-full border-l border-white/5 bg-[#0a0d14]/40 z-20 overflow-y-auto pt-8 pb-4 px-5 custom-scrollbar">
