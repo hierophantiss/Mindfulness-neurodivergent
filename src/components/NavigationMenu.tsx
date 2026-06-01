@@ -105,14 +105,6 @@ export default function NavigationMenu() {
     { path: '/journal', icon: <Notebook size={18} />, labelEn: 'Journal', labelEl: 'Ημερολόγιο' },
   ];
 
-  const moreItems = [
-    { path: '/program', icon: '🗺️', labelEn: 'Program', labelEl: 'Πλάνο' },
-    { path: '/rabbithole', icon: '🐇', labelEn: 'Rabbit Hole', labelEl: 'Εξερεύνηση' },
-    { path: '/sanctuary', icon: '🌙', labelEn: 'Sanctuary', labelEl: 'Καταφύγιο' },
-    { path: '/faq', icon: '❓', labelEn: 'FAQ', labelEl: 'Συχνές Ερωτήσεις' },
-    { path: '/method', icon: '∞', labelEn: 'Method', labelEl: 'Η Μέθοδος' },
-  ];
-
   return (
     <>
       <AnimatePresence>
@@ -216,27 +208,7 @@ export default function NavigationMenu() {
                 </button>
               </div>
 
-              <div className="flex-[1] overflow-y-auto py-6 px-6 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto w-full content-start">
-                {moreItems.map((item) => {
-                  return (
-                    <motion.button
-                      key={item.path}
-                      onClick={() => handleNav(item.path)}
-                      whileHover={{ y: -2, scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="flex flex-col items-center gap-3 p-5 rounded-3xl transition-all bg-white/[0.03] hover:bg-white/[0.08] text-zinc-200 border border-white/[0.05] hover:border-white/10"
-                    >
-                      <span className="text-3xl">{item.icon}</span>
-                      <span className="font-medium tracking-wide text-xs text-center">
-                        {language === 'en' ? item.labelEn : item.labelEl}
-                      </span>
-                    </motion.button>
-                  );
-                })}
-              </div>
-
-                {/* Settings / Accessibility & Install Toggles */}
-              <div className="px-6 pb-6 max-w-2xl mx-auto w-full flex flex-col gap-3">
+              <div className="flex-[1] overflow-y-auto pt-6 px-6 pb-6 max-w-2xl mx-auto w-full flex flex-col gap-3">
                 <div className="bg-white/[0.03] border border-white/[0.05] rounded-3xl p-4 flex flex-col gap-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
