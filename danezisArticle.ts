@@ -1,8 +1,8 @@
 export const danezisArticle = {
   id: 'quantum-void-awareness',
   title: {
-    en: 'The Boiling Void: What Physics Calls Empty',
-    el: 'Το Βράζον Κενό: Αυτό που η Φυσική Αποκαλεί Άδειο',
+    en: 'The Seething Void: What Physics Calls Empty',
+    el: 'Το Κοχλάζον Κενό: Αυτό που η Φυσική Αποκαλεί Άδειο',
   },
   author: {
     en: 'Quantum Physics & the 4th Axis',
@@ -21,13 +21,13 @@ Matter and energy are produced by something prior to them. Something imperceptib
 
 That something is called: **the Quantum Void**.`,
 
-    `**The Void That Boils**
+    `**The Seething Void**
 
 When we say "void," we instinctively imagine: nothing. Absence. Emptiness.
 
 Modern physics says the opposite.
 
-As physicist S. Theodhorakis writes: *"The void in modern physics is a void that boils — full of field fluctuations, a soup of virtual particles that are born and die continuously."*
+As physicist S. Theodhorakis writes: *"The void in modern physics is a void that seethes — full of field fluctuations, a soup of virtual particles that are born and die continuously."*
 
 The Quantum Void is not empty. It is the most dynamic thing in existence. It is the womb from which matter emerges, not its absence.
 
@@ -47,7 +47,7 @@ The Void exerts force. The "nothing" acts.
 
 D. Nanopoulos, one of the world's most cited physicists, states it clearly: *"The universe originates from a spontaneous quantum fluctuation of 'nothing' — or more precisely, from the quantum void."*
 
-The cosmos was born from a tremor of the Void.`,
+The cosmos was born from a pulse of the Void.`,
 
     `**The Observer Who Creates**
 
@@ -89,7 +89,7 @@ This can feel like falling. Like losing ground. Like the nervous system has noth
 
 And yet — this is precisely the release that the neurodivergent nervous system most needs. Not more control. More space.
 
-The Quantum Void teaches: what appears to be nothing is the most generative thing in existence. The absence of objects is not absence. It is the ground from which all objects arise.
+The Quantum Void teaches: what appears to be nothing is the most fertile ground in existence. The absence of objects is not absence. It is the ground from which all objects arise.
 
 When you practice Space, you are not doing nothing. You are resting in the field that holds everything.`,
 
@@ -120,11 +120,11 @@ You always were.
 
 Η απάντησή του, βασισμένη στη σύγχρονη φυσική: Όχι.
 
-Η ύλη και η ενέργεια παράγονται από κάτι που τις προηγείται. Κάτι αναίσθητο. Κάτι που οι εξισώσεις περιγράφουν αλλά κανένα όργανο δεν μπορεί να αγγίξει άμεσα.
+Η ύλη και η ενέργεια παράγονται από κάτι που τις προηγείται. Κάτι **ανεπαίσθητο**. Κάτι που οι εξισώσεις περιγράφουν αλλά κανένα όργανο δεν μπορεί να αγγίξει άμεσα.
 
 Αυτό το κάτι ονομάζεται: **Κβαντικό Κενό**.`,
 
-    `**Το Κενό που Βράζει**
+    `**Το Κενό που Κοχλάζει**
 
 Όταν λέμε «κενό», φανταζόμαστε ενστικτωδώς: τίποτα. Απουσία. Ερημιά.
 
@@ -132,7 +132,7 @@ You always were.
 
 Όπως γράφει ο φυσικός Σ. Θεοδωράκης: *«Το κενό στη σύγχρονη Φυσική είναι ένα κενό που κοχλάζει — γεμάτο από διακυμάνσεις πεδίων, μια σούπα από εικονικά σωματίδια που γεννιούνται και πεθαίνουν διαρκώς.»*
 
-Το Κβαντικό Κενό δεν είναι άδειο. Είναι το πιο δυναμικό πράγμα που υπάρχει. Είναι η μήτρα από την οποία αναδύεται η ύλη, όχι η απουσία της.
+Το Κβαντικό Κενό δεν είναι άδειο. Είναι το πιο δυναμικό στοιχείο που υπάρχει. Είναι η μήτρα από την οποία αναδύεται η ύλη, όχι η απουσία της.
 
 Ο Δανέζης το λέει με ακρίβεια: *«Η ύλη είναι απλώς κυμάνσεις του Κενού Χώρου — μεταβολή της καμπύλωσης των σημείων ενός χώρου.»*
 
@@ -150,7 +150,7 @@ You always were.
 
 Ο Δ. Νανόπουλος, ένας από τους πιο αναφερόμενους φυσικούς στον κόσμο, το λέει καθαρά: *«Το σύμπαν προέρχεται από μια αυθόρμητη κβαντική διακύμανση του "τίποτα" — ή καλύτερα από το κβαντικό κενό.»*
 
-Ο κόσμος γεννήθηκε από έναν τρόμο του Κενού.`,
+Ο κόσμος γεννήθηκε από έναν παλμό του Κενού.`,
 
     `**Ο Παρατηρητής που Δημιουργεί**
 
@@ -192,7 +192,7 @@ You always were.
 
 Και όμως — αυτή είναι ακριβώς η απελευθέρωση που ο νευροδιαφορετικός νους χρειάζεται περισσότερο. Όχι περισσότερος έλεγχος. Περισσότερος χώρος.
 
-Το Κβαντικό Κενό διδάσκει: αυτό που φαίνεται τίποτα είναι το πιο γεννητικό πράγμα στην ύπαρξη. Η απουσία αντικειμένων δεν είναι απουσία. Είναι το έδαφος από το οποίο αναδύονται όλα τα αντικείμενα.
+Το Κβαντικό Κενό διδάσκει: αυτό που φαίνεται τίποτα είναι το πιο γόνιμο υπόστρωμα στην ύπαρξη. Η απουσία αντικειμένων δεν είναι απουσία. Είναι το έδαφος από το οποίο αναδύονται όλα τα αντικείμενα.
 
 Όταν εξασκείς τον Χώρο, δεν κάνεις τίποτα. Αναπαύεσαι στο πεδίο που χωράει τα πάντα.`,
 
