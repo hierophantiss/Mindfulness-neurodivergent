@@ -4,9 +4,9 @@ import { danezisArticle } from './danezisArticle';
 const filePath = 'src/pages/RabbitHole.tsx';
 let content = fs.readFileSync(filePath, 'utf8');
 
-const danezisStart = content.indexOf("id: 'danezis-space',");
+const danezisStart = content.indexOf("id: 'quantum-void-awareness',");
 if (danezisStart === -1) {
-    console.error("Could not find danezis-space");
+    console.error("Could not find quantum-void-awareness");
     process.exit(1);
 }
 const beforeDanezis = content.lastIndexOf('{', danezisStart);
