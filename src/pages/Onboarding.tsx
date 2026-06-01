@@ -221,17 +221,55 @@ export default function Onboarding() {
         </div>
 
         {/* Action Button */}
-        <button
-          onClick={nextStep}
-          className="flex items-center gap-3 px-8 py-4 bg-teal-500/10 hover:bg-teal-500/20 text-teal-300 rounded-full border border-teal-500/30 transition-all font-medium group active:scale-95"
-        >
-          <span>
-            {step === steps.length - 1 
-              ? (language === 'el' ? 'Έναρξη' : 'Begin') 
-              : (language === 'el' ? 'Συνέχεια' : 'Continue')}
-          </span>
-          <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-        </button>
+        <div className="flex flex-col items-center gap-4">
+          <button
+            onClick={nextStep}
+            className="flex items-center gap-3 px-8 py-4 bg-teal-500/10 hover:bg-teal-500/20 text-teal-300 rounded-full border border-teal-500/30 transition-all font-medium group active:scale-95"
+          >
+            <span>
+              {step === steps.length - 1 
+                ? (language === 'el' ? 'Έναρξη' : 'Begin') 
+                : (language === 'el' ? 'Συνέχεια' : 'Continue')}
+            </span>
+            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+          </button>
+
+          {step === 0 && (
+            <button
+               onClick={() => {
+                 const input = document.createElement('input');
+                 input.type = 'file';
+                 input.accept = 'application/json';
+                 input.onchange = (e) => {
+                   const file = (e.target as HTMLInputElement).files?.[0];
+                   if (!file) return;
+                   const reader = new FileReader();
+                   reader.onload = (event) => {
+                     try {
+                       const result = event.target?.result as string;
+                       const parsed = JSON.parse(result);
+                       if (parsed && typeof parsed === 'object') {
+                         localStorage.setItem('mindful_companion_v5', JSON.stringify(parsed));
+                         localStorage.setItem('hasCompletedOnboarding', 'true');
+                         localStorage.setItem('hasSeenIntro', 'true');
+                         alert(language === 'el' ? 'Επιτυχής επαναφορά!' : 'Restore successful!');
+                         window.location.href = '/#/dashboard';
+                         window.location.reload();
+                       }
+                     } catch (err) {
+                       alert(language === 'el' ? 'Σφάλμα ανάγνωσης αρχείου.' : 'Error reading backup file.');
+                     }
+                   };
+                   reader.readAsText(file);
+                 };
+                 input.click();
+               }}
+               className="text-[11px] text-white/30 hover:text-white/60 transition-colors uppercase tracking-widest font-bold mt-2"
+            >
+              {language === 'el' ? 'Επαναφορα Δεδομενων (Backup)' : 'Restore from Backup'}
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Ambient background effects */}

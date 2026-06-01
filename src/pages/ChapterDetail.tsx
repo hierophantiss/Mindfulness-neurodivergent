@@ -252,7 +252,7 @@ export default function ChapterDetail() {
                   >
                       {curPage.section.interactive && (
                         <div className="my-12">
-                          <InteractiveRenderer id={curPage.section.interactive} asModal={true} />
+                          <InteractiveRenderer id={curPage.section.interactive} asModal={false} />
                         </div>
                       )}
 
