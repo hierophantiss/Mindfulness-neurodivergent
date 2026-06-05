@@ -65,10 +65,12 @@ async function generate() {
   
   // extract rabbithole articles
   const rabbitholeCode = fs.readFileSync(path.join(ROOT_DIR, 'src', 'pages', 'RabbitHole.tsx'), 'utf-8');
-  const rabbitholeIds: string[] = [];
-  
-  // dzogchen is imported
-  rabbitholeIds.push('dzogchen-tregchod'); // This is the id of dzogchenArticle.id, we can hardcode it or parse
+  const rabbitholeIds: string[] = [
+    'dzogchen-great-perfection',
+    'never-force',
+    'soft-gaze-open-hearing',
+    'polyvagal-middle-way'
+  ];
   
   // Try to match hardcoded ids like id: 'koshas-veils' or id: 'dzogchen-nature-of-mind'
   const rhIdRegex = /id:\s*'([a-zA-Z0-9-]+)'/g;
