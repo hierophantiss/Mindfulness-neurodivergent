@@ -181,7 +181,10 @@ export default function Sanctuary() {
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
           <button 
-            onClick={() => navigate(-1)}
+            onClick={() => {
+              if (window.history.length > 2) navigate(-1);
+              else navigate('/');
+            }}
             className="w-10 h-10 flex items-center justify-center rounded-full bg-white/[0.04] border border-white/[0.1] text-white/60 hover:text-white transition-colors"
           >
             <ChevronLeft size={20} />

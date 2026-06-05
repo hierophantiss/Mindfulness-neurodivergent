@@ -91,13 +91,13 @@ function createBrownNoiseBuffer(ctx: globalThis.AudioContext, duration = 4.0): A
 // ---------------------------------------------------------------------------
 // Helper: safe oscillator start/stop
 // ---------------------------------------------------------------------------
-function startOsc(osc: OscillatorNode): () => void {
-  osc.start();
+function startOsc(osc: OscillatorNode, ctx: globalThis.AudioContext): () => void {
+  osc.start(ctx.currentTime + 0.05);
   return () => { try { osc.stop(); } catch (_) {} };
 }
 
-function startSource(src: AudioBufferSourceNode): () => void {
-  src.start();
+function startSource(src: AudioBufferSourceNode, ctx: globalThis.AudioContext): () => void {
+  src.start(ctx.currentTime + 0.05);
   return () => { try { src.stop(); } catch (_) {} };
 }
 
@@ -131,7 +131,7 @@ function setupRain(ctx: globalThis.AudioContext, dest: AudioNode): () => void {
   bodySrc.connect(bodyFilter);
   bodyFilter.connect(bodyGain);
   bodyGain.connect(dest);
-  stoppers.push(startSource(bodySrc));
+  stoppers.push(startSource(bodySrc, ctx));
 
   // --- Layer 2: high-frequency drip shimmer (white noise, highpass) ---
   const dripBuf = createWhiteNoiseBuffer(ctx, 2.0);
@@ -159,8 +159,8 @@ function setupRain(ctx: globalThis.AudioContext, dest: AudioNode): () => void {
   dripSrc.connect(dripFilter);
   dripFilter.connect(dripGain);
   dripGain.connect(dest);
-  stoppers.push(startSource(dripSrc));
-  stoppers.push(startOsc(shimmerLfo));
+  stoppers.push(startSource(dripSrc, ctx));
+  stoppers.push(startOsc(shimmerLfo, ctx));
 
   // --- Layer 3: low rumble (brown noise, gives weight/depth) ---
   const rumbleBuf = createBrownNoiseBuffer(ctx, 4.0);
@@ -178,7 +178,7 @@ function setupRain(ctx: globalThis.AudioContext, dest: AudioNode): () => void {
   rumbleSrc.connect(rumbleFilter);
   rumbleFilter.connect(rumbleGain);
   rumbleGain.connect(dest);
-  stoppers.push(startSource(rumbleSrc));
+  stoppers.push(startSource(rumbleSrc, ctx));
 
   // --- Layer 4: slow intensity breath LFO on body ---
   const breathLfo = ctx.createOscillator();
@@ -188,7 +188,7 @@ function setupRain(ctx: globalThis.AudioContext, dest: AudioNode): () => void {
   breathDepth.gain.value = 0.12;
   breathLfo.connect(breathDepth);
   breathDepth.connect(bodyGain.gain);
-  stoppers.push(startOsc(breathLfo));
+  stoppers.push(startOsc(breathLfo, ctx));
 
   return () => stoppers.forEach(s => s());
 }
@@ -233,9 +233,9 @@ function setupOcean(ctx: globalThis.AudioContext, dest: AudioNode): () => void {
   swellSrc.connect(swellFilter);
   swellFilter.connect(swellGain);
   swellGain.connect(dest);
-  stoppers.push(startSource(swellSrc));
-  stoppers.push(startOsc(waveLfo));
-  stoppers.push(startOsc(swellVolLfo));
+  stoppers.push(startSource(swellSrc, ctx));
+  stoppers.push(startOsc(waveLfo, ctx));
+  stoppers.push(startOsc(swellVolLfo, ctx));
 
   // --- Layer 2: surface foam (pink noise, bandpass, faster shimmer) ---
   const foamBuf = createPinkNoiseBuffer(ctx, 3.0);
@@ -262,8 +262,8 @@ function setupOcean(ctx: globalThis.AudioContext, dest: AudioNode): () => void {
   foamSrc.connect(foamFilter);
   foamFilter.connect(foamGain);
   foamGain.connect(dest);
-  stoppers.push(startSource(foamSrc));
-  stoppers.push(startOsc(foamLfo));
+  stoppers.push(startSource(foamSrc, ctx));
+  stoppers.push(startOsc(foamLfo, ctx));
 
   return () => stoppers.forEach(s => s());
 }
@@ -309,9 +309,9 @@ function setupWind(ctx: globalThis.AudioContext, dest: AudioNode): () => void {
   baseSrc.connect(baseFilter);
   baseFilter.connect(baseGain);
   baseGain.connect(dest);
-  stoppers.push(startSource(baseSrc));
-  stoppers.push(startOsc(gustLfo));
-  stoppers.push(startOsc(volGustLfo));
+  stoppers.push(startSource(baseSrc, ctx));
+  stoppers.push(startOsc(gustLfo, ctx));
+  stoppers.push(startOsc(volGustLfo, ctx));
 
   // --- Layer 2: high whistle (white noise, narrow highpass) ---
   const whistleBuf = createWhiteNoiseBuffer(ctx, 2.0);
@@ -338,8 +338,8 @@ function setupWind(ctx: globalThis.AudioContext, dest: AudioNode): () => void {
   whistleSrc.connect(whistleFilter);
   whistleFilter.connect(whistleGain);
   whistleGain.connect(dest);
-  stoppers.push(startSource(whistleSrc));
-  stoppers.push(startOsc(whistleLfo));
+  stoppers.push(startSource(whistleSrc, ctx));
+  stoppers.push(startOsc(whistleLfo, ctx));
 
   // --- Layer 3: deep low whoosh (brown noise, adds mountain heaviness) ---
   const deepBuf = createBrownNoiseBuffer(ctx, 5.0);
@@ -357,7 +357,7 @@ function setupWind(ctx: globalThis.AudioContext, dest: AudioNode): () => void {
   deepSrc.connect(deepFilter);
   deepFilter.connect(deepGain);
   deepGain.connect(dest);
-  stoppers.push(startSource(deepSrc));
+  stoppers.push(startSource(deepSrc, ctx));
 
   return () => stoppers.forEach(s => s());
 }
@@ -374,7 +374,7 @@ function setupPinkNoise(ctx: globalThis.AudioContext, dest: AudioNode): () => vo
   fadeIn(gain, ctx, 0.55, 1.5);
   src.connect(gain);
   gain.connect(dest);
-  return startSource(src);
+  return startSource(src, ctx);
 }
 
 function setupBrownNoise(ctx: globalThis.AudioContext, dest: AudioNode): () => void {
@@ -386,7 +386,7 @@ function setupBrownNoise(ctx: globalThis.AudioContext, dest: AudioNode): () => v
   fadeIn(gain, ctx, 0.45, 1.5);
   src.connect(gain);
   gain.connect(dest);
-  return startSource(src);
+  return startSource(src, ctx);
 }
 
 // ---------------------------------------------------------------------------
@@ -508,7 +508,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         lfoDepth.gain.value = 0.35;
         lfo.connect(lfoDepth);
         lfoDepth.connect(pulseGain.gain);
-        lfo.start();
+        lfo.start(ctx.currentTime + 0.05);
         n.stoppers.push(() => { try { lfo.stop(); } catch (_) {} });
       }
 
@@ -530,8 +530,8 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         rightOsc.frequency.value = config.base + config.beat;
         rightOsc.connect(merger, 0, 1);
 
-        leftOsc.start();
-        rightOsc.start();
+        leftOsc.start(ctx.currentTime + 0.05);
+        rightOsc.start(ctx.currentTime + 0.05);
         n.stoppers.push(
           () => { try { leftOsc.stop();  } catch (_) {} },
           () => { try { rightOsc.stop(); } catch (_) {} }

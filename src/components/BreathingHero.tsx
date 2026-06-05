@@ -22,6 +22,7 @@ export function BreathingHero({ phaseIdx, isInhale, isExhale, isHold, durationMs
   // Holds stay at the target of the last breath.
   
   const targetTorsoScale = isInhale ? 1.05 : isExhale ? 0.98 : (phaseIdx === 1 ? 1.05 : 0.98);
+  const expandTarget = isInhale ? "inhale" : isExhale ? "exhale" : (phaseIdx === 1 ? "inhale" : "exhale");
   const targetChestGlow = isInhale ? 1 : isExhale ? 0.2 : (phaseIdx === 1 ? 1 : 0.2);
   const glowColor = isInhale 
     ? 'rgba(56, 189, 248, 0.6)' 
@@ -34,6 +35,33 @@ export function BreathingHero({ phaseIdx, isInhale, isExhale, isHold, durationMs
     ease: "easeInOut" as const 
   };
 
+  const stars = React.useMemo(() => {
+    const list = [];
+    const seedRandom = (str: string) => {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      return () => {
+        const x = Math.sin(hash++) * 10000;
+        return x - Math.floor(x);
+      };
+    };
+    const random = seedRandom("taichi_stars_v2");
+    for (let i = 0; i < 45; i++) {
+      list.push({
+        id: i,
+        cx: random() * 400,
+        cy: random() * 400,
+        r: random() * 1.5 + 0.6,
+        delay: random() * 3,
+        pulseSpeed: random() * 2 + 1,
+        isSparkle: random() > 0.85,
+      });
+    }
+    return list;
+  }, []);
+
   const rainbowStops = [
     { offset: "0%",   color: "#ff0000" },
     { offset: "16%",  color: "#ff7700" },
@@ -44,10 +72,110 @@ export function BreathingHero({ phaseIdx, isInhale, isExhale, isHold, durationMs
     { offset: "100%", color: "#ff0000" },
   ];
 
+  const particles = React.useMemo(() => {
+    const list = [];
+    const seedRandom = (str: string) => {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      return () => {
+        const x = Math.sin(hash++) * 10000;
+        return x - Math.floor(x);
+      };
+    };
+    const random = seedRandom("prana_particles_breathing_v1");
+    for (let i = 0; i < 25; i++) {
+       const baseAngle = random() * Math.PI * 2;
+       list.push({
+         id: i,
+         baseAngle,
+         distInhale: random() * 15 + 30, // gather close to chest
+         distExhale: random() * 70 + 60, // scatter outwards
+         size: random() * 1.5 + 0.5,
+       });
+    }
+    return list;
+  }, []);
+
   return (
-    <div className={`relative w-full aspect-square md:max-w-md mx-auto flex items-center justify-center ${className || ''}`}>
+    <div className={`relative w-full aspect-square bg-[#070b14] rounded-2xl overflow-hidden border border-slate-800 shadow-2xl flex items-center justify-center md:max-w-md mx-auto ${className || ''}`}>
       
-      <svg fill="none" viewBox="0 0 400 400" className="w-[120%] h-[120%] mt-[15%]">
+      {/* Absolute Layer - Subtle star twinkling sky */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 400 400">
+        <defs>
+          <linearGradient id="northern-lights-base" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#020617" />
+            <stop offset="25%" stopColor="#0f172a" />
+            <stop offset="50%" stopColor="#064e3b" />
+            <stop offset="80%" stopColor="#1e3a8a" />
+            <stop offset="100%" stopColor="#020617" />
+          </linearGradient>
+          <radialGradient id="northern-lights-active" cx="50%" cy="50%" r="70%">
+            <stop offset="0%" stopColor="#34d399" stopOpacity="0.6" />
+            <stop offset="40%" stopColor="#818cf8" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="#020617" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+
+        {/* Sky Background */}
+        <rect width="400" height="400" fill="url(#northern-lights-base)" />
+
+        {/* Reactive Environment: Dimming Layer (darkens background slightly during exhale) */}
+        <motion.rect width="400" height="400" fill="#020617" 
+          animate={expandTarget}
+          variants={{
+             inhale: { opacity: 0 },
+             exhale: { opacity: 0.4 }
+          }}
+          transition={transitionConfig}
+        />
+
+        {/* Reactive Environment: Aurora Glow (brightens background during inhale) */}
+        <motion.rect width="400" height="400" fill="url(#northern-lights-active)" 
+          animate={expandTarget}
+          variants={{
+             inhale: { opacity: 1 },
+             exhale: { opacity: 0.2 }
+          }}
+          transition={transitionConfig}
+        />
+
+        {/* Stars */}
+        <motion.g 
+          animate={expandTarget}
+          variants={{
+             inhale: { opacity: 1 },
+             exhale: { opacity: 0.3 }
+          }}
+          transition={transitionConfig}
+        >
+          {stars.map((star) => (
+            <g key={star.id} className="transition-opacity duration-500">
+              {star.isSparkle ? (
+                <motion.path
+                  d={`M ${star.cx - 3} ${star.cy} L ${star.cx + 3} ${star.cy} M ${star.cx} ${star.cy - 3} L ${star.cx} ${star.cy + 3}`}
+                  stroke="#ffffff"
+                  strokeWidth={0.6}
+                  animate={{ opacity: [0.3, 1, 0.3] }}
+                  transition={{ duration: 1.5 * star.pulseSpeed, delay: star.delay, repeat: Infinity, ease: "easeInOut" }}
+                />
+              ) : (
+                <motion.circle
+                  cx={star.cx}
+                  cy={star.cy}
+                  r={star.r}
+                  fill="#ffffff"
+                  animate={{ opacity: [0.2, 1, 0.2] }}
+                  transition={{ duration: 1 * star.pulseSpeed, delay: star.delay, repeat: Infinity, ease: "easeInOut" }}
+                />
+              )}
+            </g>
+          ))}
+        </motion.g>
+      </svg>
+
+      <svg fill="none" viewBox="0 0 400 400" className="w-[120%] h-[120%] mt-[15%] relative z-10 pointer-events-none">
         <defs>
           <linearGradient id="rainbow-infinity-breath" x1="0%" y1="0%" x2="100%" y2="0%">
             {rainbowStops.map((s) => (
@@ -62,6 +190,36 @@ export function BreathingHero({ phaseIdx, isInhale, isExhale, isHold, durationMs
             </feMerge>
           </filter>
         </defs>
+
+        {/* Prana Particles (Gather during inhale, scatter during exhale) */}
+        <motion.g
+          animate={expandTarget}
+          variants={{
+             inhale: { opacity: 0.8 },
+             exhale: { opacity: 0.1 }
+          }}
+          transition={transitionConfig}
+        >
+          {particles.map((p) => {
+             const cxInhale = 200 + p.distInhale * Math.cos(p.baseAngle + 0.5);
+             const cyInhale = 245 + p.distInhale * Math.sin(p.baseAngle + 0.5);
+             const cxExhale = 200 + p.distExhale * Math.cos(p.baseAngle - 0.5);
+             const cyExhale = 245 + p.distExhale * Math.sin(p.baseAngle - 0.5);
+             return (
+                 <motion.circle
+                   key={p.id}
+                   r={p.size}
+                   fill="#fbbf24"
+                   variants={{
+                     inhale: { cx: cxInhale, cy: cyInhale, scale: 0.8 },
+                     exhale: { cx: cxExhale, cy: cyExhale, scale: 1.5 }
+                   }}
+                   animate={expandTarget}
+                   transition={transitionConfig}
+                 />
+             );
+          })}
+        </motion.g>
 
         {/* Subtle breathing aura around the character */}
         <motion.circle
@@ -96,48 +254,64 @@ export function BreathingHero({ phaseIdx, isInhale, isExhale, isHold, durationMs
 
           {/* ── SWAYING WRAPPER ── */}
           <motion.g
-            animate={{ rotate: isSwaying ? [5, -5] : 0, x: isSwaying ? [2, -2] : 0 }}
+            animate={{ rotate: isSwaying ? [6, -6] : 0, x: isSwaying ? [3, -3] : 0 }}
             transition={
               isSwaying
                 ? {
                     repeat: Infinity,
                     repeatType: "mirror",
-                    duration: 1,
-                    ease: "easeInOut",
+                    duration: 1.0,
+                    ease: [0.65, 0, 0.35, 1], // Natural gravity-influenced pendulum easing
                   }
-                : { duration: 0.5 }
+                : { type: "spring", stiffness: 80, damping: 20 }
             }
             style={{ transformOrigin: "200px 290px" }}
           >
             {/* ── UPPER BODY: Animated for breathing ── */}
             <motion.g
-              animate={{ scale: targetTorsoScale, y: targetTorsoScale === 1.05 ? -2 : 2 }}
+              animate={expandTarget}
               transition={transitionConfig}
               style={{ transformOrigin: "200px 290px" }}
+              variants={{
+                exhale: { y: 2 },
+                inhale: { y: -2 }
+              }}
             >
-              {/* TORSO */}
-              <path
-                d="M 184 232 L 216 232 L 214 278 Q 210 294 200 296 Q 190 294 186 278 Z"
+              {/* TORSO morphing */}
+              <motion.path
+                variants={{
+                  exhale: { d: "M 184 232 L 216 232 Q 215 255 214 278 Q 210 294 200 296 Q 190 294 186 278 Q 185 255 184 232 Z" },
+                  inhale: { d: "M 180 229 L 220 229 Q 228 255 215 278 Q 210 294 200 296 Q 190 294 185 278 Q 172 255 180 229 Z" }
+                }}
                 fill="#13161d"
               />
-              <path
-                d="M 190 252 L 210 252 L 211 262 L 189 262 Z"
+              <motion.path
+                variants={{
+                  exhale: { d: "M 190 252 L 210 252 L 211 262 L 189 262 Z" },
+                  inhale: { d: "M 185 250 L 215 250 L 213 260 L 187 260 Z" }
+                }}
                 fill="#1b1e26"
                 stroke="#0b0d12"
                 strokeWidth="0.8"
               />
 
-              {/* Left Arm */}
-              <path
-                d="M 184 236 Q 166 254 161 284"
+              {/* Left Arm morphing */}
+              <motion.path
+                variants={{
+                  exhale: { d: "M 184 236 Q 166 254 161 284" },
+                  inhale: { d: "M 180 233 Q 160 254 161 284" }
+                }}
                 fill="none"
                 stroke="#13161d"
                 strokeWidth="10"
                 strokeLinecap="round"
               />
-              {/* Right Arm */}
-              <path
-                d="M 216 236 Q 234 254 239 284"
+              {/* Right Arm morphing */}
+              <motion.path
+                variants={{
+                  exhale: { d: "M 216 236 Q 234 254 239 284" },
+                  inhale: { d: "M 220 233 Q 240 254 239 284" }
+                }}
                 fill="none"
                 stroke="#13161d"
                 strokeWidth="10"
@@ -154,7 +328,13 @@ export function BreathingHero({ phaseIdx, isInhale, isExhale, isHold, durationMs
               />
 
               {/* ── RAINBOW INFINITY on chest ── */}
-              <g filter="url(#glow-breath)" opacity={0.92}>
+              <motion.g filter="url(#glow-breath)" opacity="0.92"
+                variants={{
+                 exhale: { scale: 0.95 },
+                 inhale: { scale: 1.1 }
+                }}
+                style={{ transformOrigin: "200px 255px" }}
+              >
                 <path
                   d="M 200 255 C 200 248, 188 244, 184 249 C 180 254, 180 260, 184 263 C 188 266, 200 262, 200 255 Z"
                   fill="none"
@@ -169,7 +349,7 @@ export function BreathingHero({ phaseIdx, isInhale, isExhale, isHold, durationMs
                   strokeWidth="2"
                   strokeLinecap="round"
                 />
-              </g>
+              </motion.g>
             </motion.g>
 
             {/* HEAD & HOOD (Slight vertical bobbing) */}

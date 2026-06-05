@@ -13,7 +13,10 @@ export default function Faq() {
       
       <div className="flex items-center gap-4 mb-8">
         <button 
-          onClick={() => navigate(-1)} 
+          onClick={() => {
+            if (window.history.length > 2) navigate(-1);
+            else navigate('/');
+          }} 
           className="w-10 h-10 rounded-full bg-zinc-900/50 border border-zinc-700/50 flex flex-none items-center justify-center text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors shadow-sm"
         >
           <ArrowLeft size={20} />

@@ -49,136 +49,265 @@ export default function TaiChiHero({
     return list;
   }, []);
 
+  // Generate a list of Prana/Aura particles
+  const particles = useMemo(() => {
+    const list = [];
+    const seedRandom = (str: string) => {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      return () => {
+        const x = Math.sin(hash++) * 10000;
+        return x - Math.floor(x);
+      };
+    };
+    const random = seedRandom("prana_particles_v1");
+    // Generate 30 aura flow particles
+    for (let i = 0; i < 30; i++) {
+       list.push({
+         id: `p_${i}`,
+         angle: random() * Math.PI * 2,
+         rBase: random() * 120 + 40,
+         size: random() * 1.5 + 0.5,
+         driftOffset: random() * Math.PI * 2,
+       });
+    }
+    return list;
+  }, []);
+
   const selectedColor = {
     primary: "#fbbf24", // yellow-400
     secondary: "#f59e0b", // amber-500
     glow: "rgba(251, 191, 36, 0.4)",
   };
 
-  // SKELETAL KINEMATICS FOR ARMS (Viewport 400x400)
-  // Calculate dynamic elbow and hand coordinates based on breathForce
-  // We use breathForce (0 to 1) directly to ensure endpoints perfectly match when switching directions.
-  const bf = breathForce;
-  const sweep = Math.sin(bf * Math.PI); // peaks at 0.5 (middle of movement), is 0 at ends
+  // SKELETAL KINEMATICS FOR ARMS (Viewport 400x400) - TRUE BEZIER KINEMATICS
+  // Bezier curve calculations for perfect semicircular/elliptical arcs
+  const calcBezier2D = (p0: {x: number, y: number}, cp: {x: number, y: number}, p1: {x: number, y: number}, t: number) => {
+    const u = 1 - t;
+    return {
+      x: u * u * p0.x + 2 * u * t * cp.x + t * t * p1.x,
+      y: u * u * p0.y + 2 * u * t * cp.y + t * t * p1.y
+    };
+  };
 
+  const calcBezierDerivative2D = (p0: {x: number, y: number}, cp: {x: number, y: number}, p1: {x: number, y: number}, t: number) => {
+    return {
+      x: 2 * (1 - t) * (cp.x - p0.x) + 2 * t * (p1.x - cp.x),
+      y: 2 * (1 - t) * (cp.y - p0.y) + 2 * t * (p1.y - cp.y)
+    };
+  };
+
+  const easeBezier1D = (p0: number, cp: number, p1: number, t: number) => {
+    const u = 1 - t;
+    return u * u * p0 + 2 * u * t * cp + t * t * p1;
+  };
+
+  const bf = breathForce;
   const bowBend = (movementType === "bow" || movementType === "deep-bow-5-5") ? (1 - bf) : 0;
   const torsoBendY = bowBend * 38;
   const leanBackY = movementType === "qigong-lifting-sky" ? (bf * -4) : 0;
 
-  // Modify base shoulders depending on the torso bend
+  // Base shoulders
   const sL = { x: 182, y: 206 + torsoBendY + leanBackY };
   const sR = { x: 218, y: 206 + torsoBendY + leanBackY };
 
-  let eL_base, hL_base, eL_travel_y, hL_travel_y, eL_travel_x, hL_travel_x, eL_sweep_x, hL_sweep_x, baseRotation, rotationFlair;
+  let eL_exhale = {x: 0, y: 0}, eL_inhale = {x: 0, y: 0}, eL_cpRise = {x: 0, y: 0}, eL_cpFall = {x: 0, y: 0};
+  let hL_exhale = {x: 0, y: 0}, hL_inhale = {x: 0, y: 0}, hL_cpRise = {x: 0, y: 0}, hL_cpFall = {x: 0, y: 0};
+  let rotExhale = 0, rotInhale = 0, rotCpRise = 0, rotCpFall = 0;
 
   if (movementType === "qigong-lifting-sky") {
-    // LIFTING THE SKY:
+    // LIFTING THE SKY
     // Exhale (bf -> 0): Hands at chest (prayer)
-    // Inhale (bf -> 1): Arms pushed up into a 'Y' shape, head leans slightly back
-    eL_base = { x: 178, y: 228 };
-    hL_base = { x: 196, y: 215 };
-    
-    eL_travel_x = -10; 
-    eL_travel_y = -35; 
-    hL_travel_x = -35; 
-    hL_travel_y = -65; 
+    // Inhale (bf -> 1): Arms pushed up into 'Y' shape
+    eL_exhale = { x: 178, y: 228 };
+    eL_inhale = { x: 168, y: 193 };
+    hL_exhale = { x: 196, y: 215 };
+    hL_inhale = { x: 161, y: 150 };
 
-    eL_sweep_x = isRising ? -5 : 5;
-    hL_sweep_x = isRising ? -10 : 10;
-    
-    baseRotation = -135 + bf * 60; 
-    rotationFlair = isRising ? -10 * sweep : 10 * sweep;
+    // Rise: Push up straight through the center
+    // Fall: Sweeping wide arc downwards along the sides
+    eL_cpRise = { x: 175, y: 205 };
+    eL_cpFall = { x: 130, y: 210 };
+    hL_cpRise = { x: 180, y: 175 };
+    hL_cpFall = { x: 120, y: 180 };
+
+    rotExhale = -135;
+    rotInhale = -75;
+    rotCpRise = -100;
+    rotCpFall = -60;
 
   } else if (movementType === "be-like-a-flower-5-5") {
-    // BE LIKE A FLOWER:
-    // Exhale (bf -> 0): Arms open horizontally wide (cross)
+    // BE LIKE A FLOWER
+    // Exhale (bf -> 0): Arms open horizontally wide
     // Inhale (bf -> 1): Hands gather back to chest (prayer)
-    eL_base = { x: 145, y: 210 };
-    hL_base = { x: 110, y: 210 };
-    
-    eL_travel_x = 33;  // 145 + 33 = 178
-    eL_travel_y = 18;  // 210 + 18 = 228
-    hL_travel_x = 86;  // 110 + 86 = 196
-    hL_travel_y = 5;   // 210 + 5 = 215
+    eL_exhale = { x: 145, y: 210 };
+    eL_inhale = { x: 178, y: 228 };
+    hL_exhale = { x: 110, y: 210 };
+    hL_inhale = { x: 196, y: 215 };
 
-    eL_sweep_x = 0;
-    hL_sweep_x = isRising ? 5 : -5;
-    
-    baseRotation = -90 - bf * 45; // -90 (left) to -135 (up-left prayer)
-    rotationFlair = isRising ? 10 * sweep : -10 * sweep;
+    // Rise (gather in): Scoop low to gather energy
+    // Fall (bloom out): Push high to bloom outwards
+    eL_cpRise = { x: 155, y: 235 };
+    eL_cpFall = { x: 160, y: 195 };
+    hL_cpRise = { x: 145, y: 245 };
+    hL_cpFall = { x: 160, y: 180 };
+
+    rotExhale = -90;
+    rotInhale = -135;
+    rotCpRise = -115;
+    rotCpFall = -75;
 
   } else if (movementType === "lotus-bloom-5-5" || movementType === "lotus") {
-    // LOTUS MOVEMENT: Starts hands together at chest, opens arms upwards like a lotus flower.
-    eL_base = { x: 178, y: 228 };
-    hL_base = { x: 196, y: 215 }; // Just slightly left of center (200), joining hands
-    
-    eL_travel_x = -25; 
-    eL_travel_y = -25;
-    hL_travel_x = -30;
-    hL_travel_y = -40;
+    // LOTUS MOVEMENT
+    // Exhale: Hands together at chest
+    // Inhale: Opens arms upwards like a lotus
+    eL_exhale = { x: 178, y: 228 };
+    eL_inhale = { x: 153, y: 203 };
+    hL_exhale = { x: 196, y: 215 };
+    hL_inhale = { x: 166, y: 175 };
 
-    // Gentle sweep outwards during the motion
-    eL_sweep_x = isRising ? -8 : 8;
-    hL_sweep_x = isRising ? -20 : 10;
+    // Symmetrical subtle oval
+    eL_cpRise = { x: 160, y: 210 };
+    eL_cpFall = { x: 173, y: 205 };
+    hL_cpRise = { x: 175, y: 190 };
+    hL_cpFall = { x: 188, y: 185 };
 
-    // Fingers start pointing up/right (-135 forms Anjali Mudra), open outwards towards horizontal (-45)
-    baseRotation = -135 + bf * 90;
-    rotationFlair = isRising ? -15 * sweep : 15 * sweep;
+    rotExhale = -135;
+    rotInhale = -45;
+    rotCpRise = -90;
+    rotCpFall = -80;
 
   } else if (movementType === "deep-bow-5-5" || movementType === "bow") {
-    // DEEP BOW: Hands on waist to support the lower back, torso leans forward on exhale.
-    eL_base = { x: 153, y: 232 }; // Bowed down (bf=0), elbows stick out
-    hL_base = { x: 177, y: 242 }; // Hands resting on hips
-    
-    eL_travel_x = 7;       // Standing (bf=1): 160
-    eL_travel_y = -10;     // Standing: 222
-    hL_travel_x = 0;       // Hands stay glued to waist
-    hL_travel_y = 0;
+    // DEEP BOW (Kinematics mostly static relative to torso)
+    eL_exhale = { x: 153, y: 232 };
+    eL_inhale = { x: 160, y: 222 };
+    hL_exhale = { x: 177, y: 242 };
+    hL_inhale = { x: 177, y: 242 };
 
-    eL_sweep_x = 0;
-    hL_sweep_x = 0;
-    
-    baseRotation = 25;     // Fingers pointing downwards and inwards
-    rotationFlair = 0;
+    eL_cpRise = { x: 156, y: 227 };
+    eL_cpFall = { x: 156, y: 227 };
+    hL_cpRise = { x: 177, y: 242 };
+    hL_cpFall = { x: 177, y: 242 };
+
+    rotExhale = 25;
+    rotInhale = 25;
+    rotCpRise = 25;
+    rotCpFall = 25;
 
   } else {
-    // ORIGINAL TAI CHI MOVEMENT (Qi-Flow) extended over head
-    eL_base = { x: 176, y: 220 };
-    hL_base = { x: 182, y: 236 };
-    
-    eL_travel_x = -7;
-    eL_travel_y = -45;
-    hL_travel_x = 13;
-    hL_travel_y = -85;
+    // ORIGINAL TAI CHI MOVEMENT (Qi-Flow)
+    eL_exhale = { x: 176, y: 220 };
+    eL_inhale = { x: 169, y: 175 };
+    hL_exhale = { x: 182, y: 236 };
+    hL_inhale = { x: 195, y: 151 };
 
-    eL_sweep_x = isRising ? -25 : -10;
-    hL_sweep_x = isRising ? -40 : -15;
-    
-    baseRotation = bf * 130; // rotate palms more to face up/inward over head
-    rotationFlair = isRising ? -40 * sweep : 25 * sweep; 
+    // True Elliptical Orbit:
+    // Rise: Sweep outwards (far left)
+    // Fall: Draw downwards directly through the center
+    eL_cpRise = { x: 140, y: 200 };
+    eL_cpFall = { x: 175, y: 195 };
+    hL_cpRise = { x: 125, y: 195 };
+    hL_cpFall = { x: 195, y: 190 };
+
+    rotExhale = 0;
+    rotInhale = 130;
+    rotCpRise = 30; // Palm turns naturally as sweeping out
+    rotCpFall = 100; // Palm faces down pushing center
   }
 
+  // Calculate coordinates on the Bezier path
+  // During inhale (isRising), we use Rise CPs; during exhale, Fall CPs.
+  const isRisePhase = isRising; 
+  let eL_bezier = calcBezier2D(eL_exhale, isRisePhase ? eL_cpRise : eL_cpFall, eL_inhale, bf);
+  let hL_bezier = calcBezier2D(hL_exhale, isRisePhase ? hL_cpRise : hL_cpFall, hL_inhale, bf);
+
+  // KINEMATICS DYNAMICS: Skeletal Constraints (Inverse Kinematics)
+  const MAX_REACH = 72; // Maximum physical 2D arm span
+  let prefUpper = Math.max(1, Math.hypot(eL_bezier.x - sL.x, eL_bezier.y - sL.y));
+  let prefLower = Math.max(1, Math.hypot(hL_bezier.x - eL_bezier.x, hL_bezier.y - eL_bezier.y));
+  
+  let dx = hL_bezier.x - sL.x;
+  let dy = hL_bezier.y - sL.y;
+  let dist = Math.hypot(dx, dy);
+  
+  let hL = { ...hL_bezier };
+  
+  // 1. Enforce Maximum Reach (Anti-Unnatural Extension)
+  if (dist > MAX_REACH) {
+    const scale = MAX_REACH / dist;
+    hL.x = sL.x + dx * scale;
+    hL.y = sL.y + dy * scale;
+    dist = MAX_REACH;
+    dx = hL.x - sL.x;
+    dy = hL.y - sL.y;
+  }
+  
+  const safeDist = Math.max(0.1, dist);
+
+  // Scale up segment lengths if they fall short of reaching the hand
+  if (prefUpper + prefLower < safeDist) {
+    const scale = safeDist / (prefUpper + prefLower);
+    prefUpper *= scale;
+    prefLower *= scale;
+  }
+  
+  // 2. Resolve Joint Angle (Law of Cosines) to reconstruct elbow
+  const angleSH = Math.atan2(dy, dx);
+  const cosAngle = (prefUpper ** 2 + safeDist ** 2 - prefLower ** 2) / (2 * prefUpper * safeDist);
+  const angleInterior = Math.acos(Math.max(-1, Math.min(1, cosAngle)));
+  
+  // Determine bend direction using original Bezier Elbow as a Pole Target
+  const hx = eL_bezier.x - sL.x;
+  const hy = eL_bezier.y - sL.y;
+  const cross = dx * hy - dy * hx;
+  const sign = cross >= 0 ? 1 : -1;
+  const finalAngle = angleSH + sign * angleInterior;
+  
   const eL = {
-    x: eL_base.x + eL_travel_x * bf + eL_sweep_x * sweep,
-    y: eL_base.y + eL_travel_y * bf
-  };
-  const hL = {
-    x: hL_base.x + hL_travel_x * bf + hL_sweep_x * sweep,
-    y: hL_base.y + hL_travel_y * bf
+    x: sL.x + prefUpper * Math.cos(finalAngle),
+    y: sL.y + prefUpper * Math.sin(finalAngle)
   };
 
-  // Pure mathematical symmetry across the vertical center x = 200
-  const eR = {
-    x: 200 + (200 - eL.x),
-    y: eL.y,
-  };
-  const hR = {
-    x: 200 + (200 - hL.x),
-    y: hL.y,
-  };
+  const baseLeftHandRotation = easeBezier1D(rotExhale, isRisePhase ? rotCpRise : rotCpFall, rotInhale, bf);
 
-  const leftHandRotation = baseRotation + rotationFlair;
-  const rightHandRotation = -leftHandRotation; // Symmetric mirroring
+  // KINEMATICS DYNAMICS: Angular Flow (Wrist Tangent)
+  const hL_deriv = calcBezierDerivative2D(hL_exhale, isRisePhase ? hL_cpRise : hL_cpFall, hL_inhale, bf);
+  let vX = hL_deriv.x;
+  let vY = hL_deriv.y;
+  if (!isRisePhase) {
+    vX = -vX; 
+    vY = -vY;
+  }
+  
+  const flowAngleDeg = (Math.atan2(vY, vX) * 180) / Math.PI;
+  let angularFlowRotation = flowAngleDeg - 90; // Fingers slice the air
+
+  let leftHandRotation;
+  if (movementType === "bow" || movementType === "deep-bow-5-5") {
+    leftHandRotation = baseLeftHandRotation;
+  } else {
+    // Smoothed interpolation between Mudra (structure) and Tangent (flow)
+    let diff = angularFlowRotation - baseLeftHandRotation;
+    diff = ((diff + 540) % 360) - 180; 
+
+    // Max aerodynamic trailing feeling happens in the middle of the sweep (bf = 0.5)
+    let aeroBlend = Math.sin(bf * Math.PI); 
+    
+    if (movementType === "qigong-lifting-sky" || movementType === "lotus-bloom-5-5") {
+       aeroBlend *= 0.4; // Strong structural rigidity required
+    } else {
+       aeroBlend *= 0.8; // High aerodynamic plasticity (water sweep)
+    }
+
+    leftHandRotation = baseLeftHandRotation + diff * aeroBlend;
+  }
+
+  // Pure mathematical symmetry across the vertical center (x = 200)
+  const eR = { x: 200 + (200 - eL.x), y: eL.y };
+  const hR = { x: 200 + (200 - hL.x), y: hL.y };
+  const rightHandRotation = -leftHandRotation;
 
   return (
     <div className="relative w-full aspect-square bg-[#070b14] rounded-2xl overflow-hidden border border-slate-800 shadow-2xl flex items-center justify-center">
@@ -186,11 +315,13 @@ export default function TaiChiHero({
       <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 400">
         <defs>
           {/* Main Space Sky Gradient */}
-          <radialGradient id="sky-grad" cx="50%" cy="30%" r="70%">
-            <stop offset="0%" stopColor="#0f192b" />
-            <stop offset="60%" stopColor="#070c16" />
-            <stop offset="100%" stopColor="#030408" />
-          </radialGradient>
+          <linearGradient id="northern-lights-base" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#020617" />
+            <stop offset="25%" stopColor="#0f172a" />
+            <stop offset="50%" stopColor="#064e3b" />
+            <stop offset="80%" stopColor="#1e3a8a" />
+            <stop offset="100%" stopColor="#020617" />
+          </linearGradient>
 
           {/* Central Vertical Beam High Glow Filter */}
           <filter id="beam-glow" x="-50%" y="-10%" width="200%" height="120%">
@@ -241,34 +372,83 @@ export default function TaiChiHero({
             <stop offset="50%" stopColor="#a3923c" />
             <stop offset="100%" stopColor="#645d25" />
           </linearGradient>
+
+          {/* Dawn Glow Overlay Gradient */}
+          <radialGradient id="northern-lights-active" cx="50%" cy="50%" r="70%">
+            <stop offset="0%" stopColor="#34d399" stopOpacity="0.6" />
+            <stop offset="40%" stopColor="#818cf8" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="#020617" stopOpacity="0" />
+          </radialGradient>
+
+          {/* Particle Glow */}
+          <filter id="particle-glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="2" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
         </defs>
 
         {/* Sky Background */}
-        <rect width="400" height="400" fill="url(#sky-grad)" />
+        <rect width="400" height="400" fill="url(#northern-lights-base)" />
+
+        {/* Reactive Environment: Dimming Layer (darkens background during exhale/holdEmpty) */}
+        <rect width="400" height="400" fill="#020617" opacity={0.4 * (1 - bf)} />
+
+        {/* Reactive Environment: Aurora Glow (brightens background during inhale) */}
+        <rect width="400" height="400" fill="url(#northern-lights-active)" opacity={bf} />
 
         {/* Stars */}
-        {stars.map((star) => (
-          <g key={star.id} className="transition-opacity duration-500">
-            {star.isSparkle ? (
-              // Cross Sparkle blinking
-              <path
-                d={`M ${star.cx - 3} ${star.cy} L ${star.cx + 3} ${star.cy} M ${star.cx} ${star.cy - 3} L ${star.cx} ${star.cy + 3}`}
-                stroke="#ffffff"
-                strokeWidth={0.6}
-                opacity={0.3 + 0.7 * Math.abs(Math.sin((Date.now() / 1500) * star.pulseSpeed + star.delay))}
+        <g opacity={0.3 + 0.7 * bf}>
+          {stars.map((star) => (
+            <g key={star.id} className="transition-opacity duration-500">
+              {star.isSparkle ? (
+                // Cross Sparkle blinking
+                <path
+                  d={`M ${star.cx - 3} ${star.cy} L ${star.cx + 3} ${star.cy} M ${star.cx} ${star.cy - 3} L ${star.cx} ${star.cy + 3}`}
+                  stroke="#ffffff"
+                  strokeWidth={0.6}
+                  opacity={0.3 + 0.7 * Math.abs(Math.sin((Date.now() / 1500) * star.pulseSpeed + star.delay))}
+                />
+              ) : (
+                // Round star twinkling
+                <circle
+                  cx={star.cx}
+                  cy={star.cy}
+                  r={star.r}
+                  fill="#ffffff"
+                  opacity={0.2 + 0.8 * Math.abs(Math.sin((Date.now() / 1000) * star.pulseSpeed + star.delay))}
+                />
+              )}
+            </g>
+          ))}
+        </g>
+
+        {/* Prana/Aura Particles */}
+        <g>
+          {particles.map((p) => {
+            // Inhale (bf -> 1): particles gather concentrically (r scales to 0.3)
+            // Exhale (bf -> 0): particles diffuse outwards (r scales to 1.5)
+            const swirl = isRising ? bf * Math.PI : (1 - bf) * Math.PI; 
+            const currentR = p.rBase * (0.3 + (1 - bf) * 1.2);
+            const currentAngle = p.angle + swirl * 0.3 + p.driftOffset;
+            const px = 200 + currentR * Math.cos(currentAngle);
+            const py = 190 + currentR * Math.sin(currentAngle); // Center slightly above chest
+            const opacity = (0.2 + 0.8 * Math.min(1, bf * 1.5)) * (currentR < 180 ? 1 : Math.max(0, 1 - (currentR - 180) / 50)); 
+            return (
+              <circle 
+                key={p.id} 
+                cx={px} 
+                cy={py} 
+                r={p.size} 
+                fill="#fbbf24" 
+                opacity={opacity} 
+                filter="url(#particle-glow)" 
               />
-            ) : (
-              // Round star twinkling
-              <circle
-                cx={star.cx}
-                cy={star.cy}
-                r={star.r}
-                fill="#ffffff"
-                opacity={0.2 + 0.8 * Math.abs(Math.sin((Date.now() / 1000) * star.pulseSpeed + star.delay))}
-              />
-            )}
-          </g>
-        ))}
+            );
+          })}
+        </g>
 
 
 
@@ -516,12 +696,12 @@ export default function TaiChiHero({
           />
 
           {/* LEFT HAND (Simplified Abstract Oval) */}
-          <g transform={`translate(${hL.x}, ${hL.y}) rotate(${leftHandRotation}) scale(0.9)`}>
+          <g transform={`translate(${hL.x}, ${hL.y}) rotate(${leftHandRotation}) scale(0.65)`}>
             <path d="M -3 -2 L 3 -2 C 4 3 3 7 0 8 C -3 7 -4 3 -3 -2 Z" fill="#e5bda3" />
           </g>
 
           {/* RIGHT HAND (Simplified Abstract Oval) */}
-          <g transform={`translate(${hR.x}, ${hR.y}) rotate(${rightHandRotation}) scale(0.9)`}>
+          <g transform={`translate(${hR.x}, ${hR.y}) rotate(${rightHandRotation}) scale(0.65)`}>
             <path d="M -3 -2 L 3 -2 C 4 3 3 7 0 8 C -3 7 -4 3 -3 -2 Z" fill="#e5bda3" />
           </g>
         </g>

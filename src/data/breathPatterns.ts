@@ -58,19 +58,19 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     labels: [
       {
         label: { el: "Εισπνοή", en: "Inhale" },
-        sub: { el: "σήκωσε τα χέρια αργά (4s)", en: "raise arms slowly (4s)" },
+        sub: { el: "εισπνοή (4s)", en: "inhale (4s)" },
       },
       {
         label: { el: "Παύση", en: "Hold" },
-        sub: { el: "κράτα ψηλά (2s)", en: "hold high (2s)" },
+        sub: { el: "κράτημα (2s)", en: "hold (2s)" },
       },
       {
         label: { el: "Εκπνοή", en: "Exhale" },
-        sub: { el: "κατέβασε αργά (6s)", en: "lower slowly (6s)" },
+        sub: { el: "εκπνοή (6s)", en: "exhale (6s)" },
       },
       {
         label: { el: "Παύση", en: "Hold" },
-        sub: { el: "νιώσε το βάρος (1s)", en: "feel the weight (1s)" },
+        sub: { el: "παύση (1s)", en: "hold (1s)" },
       },
     ],
   },
@@ -153,7 +153,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     labels: [
       {
         label: { el: "Εισπνοή", en: "Inhale" },
-        sub: { el: "αναπνοή (4s)", en: "breathe (4s)" },
+        sub: { el: "εισπνοή (4s)", en: "inhale (4s)" },
       },
       {
         label: { el: "Παύση", en: "Hold" },
@@ -468,12 +468,12 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     labels: [
       {
         label: { el: "Εισπνοή", en: "Inhale" },
-        sub: { el: "(4s)", en: "(4s)" },
+        sub: { el: "εισπνοή (4s)", en: "inhale (4s)" },
       },
-      { label: { el: "Παύση", en: "Hold" }, sub: { el: "(2s)", en: "(2s)" } },
+      { label: { el: "Παύση", en: "Hold" }, sub: { el: "παύση (2s)", en: "hold (2s)" } },
       {
         label: { el: "Εκπνοή", en: "Exhale" },
-        sub: { el: "(6s)", en: "(6s)" },
+        sub: { el: "εκπνοή (6s)", en: "exhale (6s)" },
       },
     ],
   },

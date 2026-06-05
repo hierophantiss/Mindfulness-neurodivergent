@@ -170,7 +170,14 @@ export default function PracticeSwaying() {
       {/* Top Bar */}
       <div className="w-full max-w-5xl mx-auto flex justify-between items-center mb-6 z-10 block relative">
         <button 
-          onClick={(e) => { e.stopPropagation(); navigate('/practice'); }} 
+          onClick={(e) => { 
+            e.stopPropagation(); 
+            if (window.history.length > 2) {
+              navigate(-1);
+            } else {
+              navigate('/practice'); 
+            }
+          }} 
           className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 transition-all cursor-pointer"
         >
           <ArrowLeft size={20} />
@@ -189,7 +196,11 @@ export default function PracticeSwaying() {
           
           {/* Subtle Breathing Label overlaying the hero */}
           {isPlaying && (
-            <div className="absolute top-6 w-full flex justify-center pointer-events-none">
+            <div 
+              className="absolute top-6 w-full flex justify-center pointer-events-none"
+              aria-live="polite"
+              aria-atomic="true"
+            >
                <span 
                  className={`text-[11px] uppercase tracking-[0.3em] transition-opacity duration-1000 ${isExhaling ? 'text-teal-400/80' : 'text-amber-400/80'}`}
                  style={{ animation: 'changeOp 2s infinite alternate' }}

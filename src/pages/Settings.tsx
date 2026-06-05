@@ -312,7 +312,10 @@ export default function Settings() {
           {/* Header */}
           <div className="flex items-center justify-between mb-10">
             <button 
-                onClick={() => navigate(-1)}
+                onClick={() => {
+                  if (window.history.length > 2) navigate(-1);
+                  else navigate('/');
+                }}
                 className="p-2 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-white transition-colors"
             >
                 <ChevronLeft size={20} />

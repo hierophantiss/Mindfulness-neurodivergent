@@ -395,7 +395,14 @@ export default function PracticeBreath() {
         running ? "opacity-20 hover:opacity-100 focus-within:opacity-100" : "opacity-100"
       )}>
         <button 
-          onClick={() => navigate(-1)} 
+          onClick={(e) => {
+            e.stopPropagation();
+            if (window.history.length > 2) {
+              navigate(-1);
+            } else {
+              navigate('/practice');
+            }
+          }} 
           className="w-10 h-10 rounded-full bg-zinc-800/50 border border-zinc-700 flex items-center justify-center hover:bg-zinc-700 text-zinc-300 hover:text-white transition-colors"
         >
           <ArrowLeft size={20} />
@@ -622,6 +629,8 @@ export default function PracticeBreath() {
         <div 
           className="absolute left-0 right-0 z-10 flex flex-col items-center justify-center pointer-events-none drop-shadow-lg"
           style={{ bottom: '8%' }}
+          aria-live="polite"
+          aria-atomic="true"
         >
           <h2 className="text-3xl font-medium tracking-wide mb-1 text-white transition-all text-center drop-shadow-md">
             {language === 'en' ? phase.label.en : phase.label.el}
