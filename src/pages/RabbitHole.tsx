@@ -8,17 +8,29 @@ import { cn } from '../lib/utils';
 import { informativeVideos } from '../data/informativeVideos';
 import { dzogchenArticle } from '../data/dzogchenArticle';
 import { neverForceArticle } from '../data/neverForceArticle';
+import { softGazeArticle } from '../data/softGazeArticle';
 
 const formatMarkdown = (text: string) => {
   if (!text) return null;
-  const parts = text.split(/(\*\*.*?\*\*)/g);
+  const boldParts = text.split(/(\*\*.*?\*\*)/g);
   return (
     <>
-      {parts.map((part, index) => {
-        if (part.startsWith('**') && part.endsWith('**')) {
-          return <strong key={index} className="font-bold font-sans text-white uppercase tracking-wider text-[0.8em]">{part.slice(2, -2)}</strong>;
+      {boldParts.map((boldPart, i) => {
+        if (boldPart.startsWith('**') && boldPart.endsWith('**')) {
+          return <strong key={i} className="font-bold text-white">{boldPart.slice(2, -2)}</strong>;
         }
-        return <span key={index}>{part}</span>;
+        
+        const italicParts = boldPart.split(/(\*.*?\*)/g);
+        return (
+          <React.Fragment key={i}>
+            {italicParts.map((itPart, j) => {
+              if (itPart.startsWith('*') && itPart.endsWith('*')) {
+                return <em key={j} className="italic text-white/90">{itPart.slice(1, -1)}</em>;
+              }
+              return <span key={j}>{itPart}</span>;
+            })}
+          </React.Fragment>
+        );
       })}
     </>
   );
@@ -102,6 +114,12 @@ export default function RabbitHole() {
       title: language === 'en' ? dzogchenArticle.title.en : dzogchenArticle.title.el,
       author: language === 'en' ? dzogchenArticle.author.en : dzogchenArticle.author.el,
       pages: language === 'en' ? dzogchenArticle.pagesEn : dzogchenArticle.pagesEl
+    },
+    {
+      id: softGazeArticle.id,
+      title: language === 'en' ? softGazeArticle.title.en : softGazeArticle.title.el,
+      author: language === 'en' ? softGazeArticle.author.en : softGazeArticle.author.el,
+      pages: language === 'en' ? softGazeArticle.pagesEn : softGazeArticle.pagesEl
     },
     {
       id: 'koshas-veils',
