@@ -12,6 +12,39 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../lib/utils';
 import InteractiveRenderer from '../components/InteractiveRenderer';
 
+import { ConceptInfoIcon } from '../components/ConceptInfoOverlay';
+
+const ConceptAnnotatedText = ({ text }: { text: string }) => {
+  const parts = text.split(/(\{\{[^}]+\}\})/g);
+  return (
+    <>
+      {parts.map((part, i) => {
+        const match = part.match(/\{\{([^}]+)\}\}/);
+        if (match) {
+          const conceptId = match[1];
+          return (
+            <span key={i} className="inline-flex items-center align-middle mx-1.5 -translate-y-[2px]">
+              <ConceptInfoIcon conceptId={conceptId} className="w-5 h-5 ml-0" />
+            </span>
+          );
+        }
+        
+        const strongParts = part.split(/(<strong>.*?<\/strong>)/g);
+        return (
+          <React.Fragment key={i}>
+            {strongParts.map((sp, j) => {
+              if (sp.startsWith('<strong>') && sp.endsWith('</strong>')) {
+                return <strong key={j} className="font-medium text-white/95">{sp.slice(8, -9)}</strong>;
+              }
+              return <span key={j}>{sp}</span>;
+            })}
+          </React.Fragment>
+        );
+      })}
+    </>
+  );
+};
+
 const ZenParagraph = ({ text, index }: { text: string, index: number }) => {
   return (
     <motion.div
@@ -22,9 +55,10 @@ const ZenParagraph = ({ text, index }: { text: string, index: number }) => {
       className="relative"
     >
       <div 
-        className="font-sans font-light text-white/80 leading-loose prose-a:text-teal-400/80 hover:prose-a:text-teal-400 transition-colors duration-700"
-        dangerouslySetInnerHTML={{ __html: text }}
-      />
+        className="font-sans font-light text-white/80 leading-loose"
+      >
+        <ConceptAnnotatedText text={text} />
+      </div>
     </motion.div>
   );
 };
@@ -122,23 +156,23 @@ export default function ChapterDetail() {
   const curPage = pages[page];
 
   return (
-    <div className="flex flex-col h-full animate-in fade-in duration-700 max-w-4xl mx-auto px-6">
+    <div className="flex flex-col h-full animate-in fade-in duration-700 max-w-4xl mx-auto px-4 sm:px-6 w-full min-w-0 overflow-x-hidden">
       
       {/* Header Controls */}
-      <header className="flex items-center justify-between pt-6 pb-2 shrink-0">
+      <header className="flex flex-wrap sm:flex-nowrap items-center justify-between pt-6 pb-2 shrink-0 gap-y-4 w-full">
         <button 
           onClick={() => navigate('/chapters')} 
-          className="btn-zen !px-3 !py-3"
+          className="btn-zen !px-3 !py-3 shrink-0"
         >
           <ArrowLeft size={18} />
         </button>
-        <div className="flex flex-col items-center">
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase font-sans">
+        <div className="flex flex-col items-center shrink min-w-0">
+          <div className="flex items-center gap-2 flex-wrap justify-center">
+            <span className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase font-sans whitespace-nowrap">
               {language === 'el' ? 'Κεφάλαιο' : 'Chapter'} {chapter.num}
             </span>
             {CHAPTER_MICRO_CAT[chapter.num] && (
-              <span className="text-[9px] font-bold tracking-widest px-2 py-0.5 rounded-full bg-white/5 text-white/30 border border-white/5 uppercase font-sans">
+              <span className="text-[9px] font-bold tracking-widest px-2 py-0.5 rounded-full bg-white/5 text-white/30 border border-white/5 uppercase font-sans whitespace-nowrap">
                 {CHAPTER_MICRO_CAT[chapter.num]}
               </span>
             )}
@@ -162,20 +196,21 @@ export default function ChapterDetail() {
           onClick={toggleMaster}
           title={language === 'el' ? 'Ηχητικό Τοπίο' : 'Ambient Audio'}
           className={cn(
-            "rounded-full px-4 py-2 border flex items-center gap-2.5 transition-all duration-700 font-sans text-xs tracking-wider",
+            "rounded-full px-3 py-2 border flex items-center justify-center gap-2 transition-all duration-700 font-sans text-[10px] sm:text-xs tracking-wider shrink-0 whitespace-nowrap",
             masterPlaying 
               ? "text-teal-300 bg-teal-500/10 border-teal-500/20" 
               : "text-white/40 bg-white/[0.02] border-white/5 hover:bg-white/[0.05] hover:text-white/70"
           )}
         >
           <Music size={14} className={masterPlaying ? "animate-pulse" : ""} />
-          <span>{language === 'el' ? 'Ανάγνωση με Ήχο' : 'Ambient Reading'}</span>
+          <span className="hidden sm:inline">{language === 'el' ? 'Ανάγνωση με Ήχο' : 'Ambient Reading'}</span>
+          <span className="sm:hidden">{language === 'el' ? 'Ήχος' : 'Audio'}</span>
         </button>
       </header>
 
       {/* Main Content Area */}
       <main 
-        className="flex-1 relative overflow-hidden flex flex-col"
+        className="flex-1 relative overflow-x-hidden flex flex-col w-full"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
@@ -188,9 +223,9 @@ export default function ChapterDetail() {
             animate="center"
             exit="exit"
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="flex-1 overflow-y-auto scrollbar-none flex flex-col"
+            className="flex-1 overflow-y-auto scrollbar-none flex flex-col w-full px-2"
           >
-            <div className="flex-1 flex flex-col justify-start min-h-full pt-4 pb-20 max-w-[65ch] mx-auto w-full">
+            <div className="flex-1 flex flex-col justify-start min-h-full pt-4 pb-20 max-w-[65ch] mx-auto w-full text-center">
             {curPage.type === 'intro' && (
               <div className="space-y-12">
                 <div className="space-y-6 text-center">
@@ -228,17 +263,17 @@ export default function ChapterDetail() {
             )}
 
             {curPage.type === 'theory' && curPage.section && (
-              <article className="space-y-12 md:space-y-16 text-left w-full">
+              <article className="space-y-12 md:space-y-16 text-center w-full break-words">
                 <header className="space-y-4 text-center mt-8">
                   <span className="text-[10px] font-bold tracking-[0.3em] text-teal-400/60 uppercase font-sans block">
                     {language === 'el' ? 'ΘΕΩΡΙΑ' : 'THEORY'}
                   </span>
-                  <h2 className="text-3xl md:text-4xl font-serif text-white/90 italic leading-snug tracking-tight">
+                  <h2 className="text-3xl md:text-4xl font-serif text-white/90 italic leading-snug tracking-tight px-2">
                     {curPage.section.title}
                   </h2>
                 </header>
 
-                <div className="space-y-8 text-base md:text-lg">
+                <div className="space-y-8 text-lg md:text-xl text-center font-light px-2">
                   {curPage.section.paragraphs.map((par: string, p_idx: number) => (
                     <ZenParagraph key={p_idx} text={par} index={p_idx} />
                   ))}
@@ -275,7 +310,7 @@ export default function ChapterDetail() {
                           {CHAPTER_TAKEAWAYS[currentLang][chapter.num]?.slice(0, 3).map((take, idx) => (
                             <li key={idx} className="flex gap-4 items-start text-base md:text-lg text-white/60 font-serif italic leading-relaxed">
                               <span className="text-white/20 mt-1.5">—</span>
-                              {take}
+                              <ConceptAnnotatedText text={take} />
                             </li>
                           ))}
                         </ul>

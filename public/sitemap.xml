@@ -1275,54 +1275,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/en/rabbithole/mahamudra-one-taste</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/mahamudra-one-taste" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/mahamudra-one-taste" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/mahamudra-one-taste" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/rabbithole/mahamudra-one-taste</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/mahamudra-one-taste" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/mahamudra-one-taste" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/mahamudra-one-taste" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/rabbithole/binaural-gateway</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/binaural-gateway" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/binaural-gateway" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/binaural-gateway" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/rabbithole/binaural-gateway</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/binaural-gateway" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/binaural-gateway" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/binaural-gateway" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/rabbithole/open-focus-brain</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/open-focus-brain" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/open-focus-brain" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/open-focus-brain" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/rabbithole/open-focus-brain</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/open-focus-brain" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/open-focus-brain" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/open-focus-brain" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://neurodivergent-mindfulness.org/en/rabbithole/riding-the-wind</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/riding-the-wind" />
     <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/riding-the-wind" />
@@ -1351,6 +1303,70 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/the-goose-is-out" />
     <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/the-goose-is-out" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/the-goose-is-out" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://neurodivergent-mindfulness.org/en/rabbithole/blue-sky-mind</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/blue-sky-mind" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/blue-sky-mind" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/blue-sky-mind" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://neurodivergent-mindfulness.org/el/rabbithole/blue-sky-mind</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/blue-sky-mind" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/blue-sky-mind" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/blue-sky-mind" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://neurodivergent-mindfulness.org/en/rabbithole/myth-of-freedom-earth</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/myth-of-freedom-earth" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/myth-of-freedom-earth" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/myth-of-freedom-earth" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://neurodivergent-mindfulness.org/el/rabbithole/myth-of-freedom-earth</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/myth-of-freedom-earth" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/myth-of-freedom-earth" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/myth-of-freedom-earth" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://neurodivergent-mindfulness.org/en/rabbithole/quantum-void-awareness</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/quantum-void-awareness" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/quantum-void-awareness" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/quantum-void-awareness" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://neurodivergent-mindfulness.org/el/rabbithole/quantum-void-awareness</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/quantum-void-awareness" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/quantum-void-awareness" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/quantum-void-awareness" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://neurodivergent-mindfulness.org/en/rabbithole/forces-of-the-cosmos</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/forces-of-the-cosmos" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/forces-of-the-cosmos" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/forces-of-the-cosmos" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://neurodivergent-mindfulness.org/el/rabbithole/forces-of-the-cosmos</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/forces-of-the-cosmos" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/forces-of-the-cosmos" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/forces-of-the-cosmos" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

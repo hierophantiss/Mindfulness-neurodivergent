@@ -40,6 +40,24 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     related: ['grounding', 'proprioception']
   },
 
+  polyvagal: {
+    el: {
+      title: 'Πολυβαγική Θεωρία',
+      short: 'Η μέση οδός του νευρικού συστήματος.',
+      full: 'Μοντέλο του Δρ. Stephen Porges. Το νευρικό σύστημα έχει 3 καταστάσεις: Συμπαθητικό (ένταση/άγχος, πολύ τεντωμένη χορδή), Ραχιαίο Πνευμονογαστρικό (αποσύνδεση/πάγωμα, πολύ χαλαρή χορδή) και Κοιλιακό Πνευμονογαστρικό (ασφάλεια & σύνδεση, η μέση οδός). Η πρακτική μας (εκπνοή, μαλακό βλέμμα) στέλνει σήματα για μετάβαση στην ασφάλεια.',
+      ndNote: 'Οι νευροδιαφορετικοί συχνά εναλλάσσονται μεταξύ εξάντλησης (dorsal) και υπερδιέγερσης (sympathetic). Δεν μπορείς να μεταβείς στην "ασφάλεια" μόνο με λογική—χρειάζεται σωματική διέγερση του πνευμονογαστρικού.'
+    },
+    en: {
+      title: 'Polyvagal Theory',
+      short: 'The middle way of the nervous system.',
+      full: 'A model by Dr. Stephen Porges. The nervous system has 3 states: Sympathetic (fight/flight, string too tight), Dorsal Vagal (shutdown/freeze, string too loose), and Ventral Vagal (safe & social, the middle way/perfectly tuned). Our practices (long exhale, soft gaze) send cues of safety to move into Ventral Vagal.',
+      ndNote: 'Neurodivergent individuals often ricochet between meltdown (sympathetic) and burnout (dorsal vagal). You cannot "logic" your way to safety—it requires somatic vagal stimulation.'
+    },
+    axis: 'body',
+    chapters: [5, 6, 7],
+    related: ['grounding', 'exhale']
+  },
+
   proprioception: {
     el: {
       title: 'Ιδιοδεκτικότητα',

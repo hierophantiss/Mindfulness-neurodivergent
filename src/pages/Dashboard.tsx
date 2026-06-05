@@ -203,6 +203,13 @@ export default function Dashboard() {
               {currentDate}
             </span>
             <div className="flex items-center gap-2">
+              <Link
+                to="/practice/breath/4-2-6-1"
+                className="flex items-center justify-center h-[28px] px-3 rounded-full bg-rose-500/20 border border-rose-500/30 text-rose-300 hover:bg-rose-500/30 hover:text-rose-200 active:scale-95 transition-all text-xs font-bold tracking-widest"
+                title={language === 'el' ? 'Άμεση Ηρέμηση' : 'Immediate Calm'}
+              >
+                SOS
+              </Link>
               <button
                 onClick={() => setIsInfoOpen(true)}
                 className="w-[28px] h-[28px] flex items-center justify-center rounded-full bg-white/[0.04] border border-white/[0.1] text-white/60 hover:text-white hover:bg-white/10 active:scale-95 transition-all"

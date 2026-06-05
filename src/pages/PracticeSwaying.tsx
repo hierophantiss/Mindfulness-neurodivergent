@@ -5,6 +5,7 @@ import { useLanguage } from "../hooks/useLanguage";
 import SwayingHero from "../components/SwayingHero";
 import { useBinauralAudio } from "../hooks/useBinauralAudio";
 import { PlayPauseOverlay } from "../components/PlayPauseOverlay";
+import { ConceptInfoIcon } from '../components/ConceptInfoOverlay';
 
 export default function PracticeSwaying() {
   const navigate = useNavigate();
@@ -182,9 +183,13 @@ export default function PracticeSwaying() {
         >
           <ArrowLeft size={20} />
         </button>
-        <div className="text-[11px] font-bold tracking-[0.2em] uppercase text-white/40">
-          MINDFUL SWAYING
+        <div className="flex-1 flex justify-center items-center pointer-events-auto">
+          <div className="text-[11px] font-bold tracking-[0.2em] uppercase text-white/40 flex items-center justify-center">
+            MINDFUL SWAYING
+            <ConceptInfoIcon conceptId="polyvagal" className="w-5 h-5 ml-2" />
+          </div>
         </div>
+        <div className="w-10"></div> {/* spacer for centering */}
       </div>
 
       {/* Main Area */}

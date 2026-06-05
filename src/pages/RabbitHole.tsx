@@ -9,18 +9,19 @@ import { informativeVideos } from '../data/informativeVideos';
 import { dzogchenArticle } from '../data/dzogchenArticle';
 import { neverForceArticle } from '../data/neverForceArticle';
 import { softGazeArticle } from '../data/softGazeArticle';
+import { polyvagalArticle } from '../data/polyvagalArticle';
 
 const formatMarkdown = (text: string) => {
   if (!text) return null;
-  const boldParts = text.split(/(\*\*.*?\*\*)/g);
+  const boldParts = text.split(/(\*\*[\s\S]*?\*\*)/g);
   return (
     <>
       {boldParts.map((boldPart, i) => {
         if (boldPart.startsWith('**') && boldPart.endsWith('**')) {
-          return <strong key={i} className="font-bold text-white">{boldPart.slice(2, -2)}</strong>;
+          return <span key={i} className="font-bold text-white tracking-wide mix-blend-plus-lighter" style={{ fontWeight: 800 }}>{boldPart.slice(2, -2)}</span>;
         }
         
-        const italicParts = boldPart.split(/(\*.*?\*)/g);
+        const italicParts = boldPart.split(/(\*[\s\S]*?\*)/g);
         return (
           <React.Fragment key={i}>
             {italicParts.map((itPart, j) => {
@@ -120,6 +121,12 @@ export default function RabbitHole() {
       title: language === 'en' ? softGazeArticle.title.en : softGazeArticle.title.el,
       author: language === 'en' ? softGazeArticle.author.en : softGazeArticle.author.el,
       pages: language === 'en' ? softGazeArticle.pagesEn : softGazeArticle.pagesEl
+    },
+    {
+      id: polyvagalArticle.id,
+      title: language === 'en' ? polyvagalArticle.title.en : polyvagalArticle.title.el,
+      author: language === 'en' ? polyvagalArticle.author.en : polyvagalArticle.author.el,
+      pages: language === 'en' ? polyvagalArticle.pagesEn : polyvagalArticle.pagesEl
     },
     {
       id: 'koshas-veils',

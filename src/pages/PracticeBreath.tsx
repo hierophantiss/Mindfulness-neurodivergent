@@ -16,6 +16,7 @@ import { PlayPauseOverlay } from '../components/PlayPauseOverlay';
 import { useReward } from '../contexts/RewardContext';
 import { useProgress } from '../contexts/ProgressContext';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
+import { ConceptInfoIcon } from '../components/ConceptInfoOverlay';
 
 export default function PracticeBreath() {
   const { id } = useParams();
@@ -403,11 +404,17 @@ export default function PracticeBreath() {
               navigate('/practice');
             }
           }} 
-          className="w-10 h-10 rounded-full bg-zinc-800/50 border border-zinc-700 flex items-center justify-center hover:bg-zinc-700 text-zinc-300 hover:text-white transition-colors"
+          className="w-10 h-10 shrink-0 rounded-full bg-zinc-800/50 border border-zinc-700 flex items-center justify-center hover:bg-zinc-700 text-zinc-300 hover:text-white transition-colors"
         >
           <ArrowLeft size={20} />
         </button>
-        <div className="flex items-center gap-3">
+        <div className="flex-1 flex justify-center items-center pointer-events-auto">
+            <span className="text-zinc-400 text-[13px] font-semibold tracking-wider font-sans ml-3">
+               {language === 'en' ? pattern.title.en : pattern.title.el}
+             </span>
+             <ConceptInfoIcon conceptId={pattern.category === 'breath' ? 'vagus_nerve' : 'proprioception'} className="w-6 h-6 ml-1.5 opacity-60 hover:opacity-100 bg-transparent text-zinc-400 border border-zinc-400/20" />
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
           <button 
             onClick={() => setShowSleepTimer(true)}
             className={cn(

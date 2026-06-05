@@ -48,6 +48,15 @@ const elements: ElementPrompt[] = [
       el: ['Ήταν οι σκέψεις μου βιαστικές ή ήρεμες;', 'Βρήκα χώρο ανάμεσα στις αντιδράσεις μου;', 'Πώς ήταν η ποιότητα της αναπνοής μου;'],
       en: ['Were my thoughts hurried or calm?', 'Did I find space between my reactions?', 'How was the quality of my breath?']
     }
+  },
+  {
+    id: 'polyvagal',
+    icon: '🧭',
+    title: { el: 'Νευρικό Σύστημα', en: 'Nervous System (Polyvagal)' },
+    questions: {
+      el: ['Τί μου λέει το σώμα μου για το πώς νιώθει (Neuroception);', 'Βρίσκομαι σε εγρήγορση/ένταση (Sympathetic) ή σε ηρεμία/σύνδεση (Ventral);', 'Μήπως νιώθω «κλειστός» ή αποσυνδεδεμένος (Dorsal);'],
+      en: ['What is my body telling me about its state (Neuroception)?', 'Am I on high alert/tension (Sympathetic) or calm/connected (Ventral)?', 'Do I feel shut down, numb, or disconnected (Dorsal)?']
+    }
   }
 ];
 
@@ -91,6 +100,15 @@ const QUICK_TEMPLATES: QuickTemplate[] = [
     content: {
       el: 'Μια ιδέα που δεν θέλω να ξεχάσω...\n\n\nΑυτό που με ενέπνευσε σήμερα:\n\n\nΤι θέλω να εξερευνήσω αύριο:\n\n',
       en: 'An idea I do not want to forget...\n\n\nWhat inspired me today:\n\n\nWhat I want to explore tomorrow:\n\n'
+    }
+  },
+  {
+    id: 'polyvagal-quick',
+    icon: '🧭',
+    title: { el: 'Πολυβαγικός Έλεγχος', en: 'Polyvagal Check' },
+    content: {
+      el: 'Έλεγχος Νευρικού Συστήματος (Neuroception)...\n\n1. Τι μου λέει το σώμα μου αυτή τη στιγμή (χαλαρό, σφιγμένο, μουδιασμένο);\n\n\n2. Πού βρίσκομαι (Ventral/Σύνδεση, Sympathetic/Άγχος, Dorsal/Κούραση);\n\n\n3. Τι σήμα ασφαλείας μπορώ να προσφέρω στον εαυτό μου;\n\n',
+      en: 'Nervous System Check (Neuroception)...\n\n1. What is my body telling me right now (relaxed, tense, numb)?\n\n\n2. Where am I (Ventral/Social, Sympathetic/Anxiety, Dorsal/Shutdown)?\n\n\n3. What cue of safety can I offer myself right now?\n\n'
     }
   }
 ];

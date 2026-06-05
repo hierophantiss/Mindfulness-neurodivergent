@@ -6,6 +6,7 @@ import { useProgress } from '../contexts/ProgressContext';
 import { BREATH_PATTERNS, BreathPattern } from '../data/breathPatterns';
 import { cn } from '../lib/utils';
 import { Check } from 'lucide-react';
+import { ConceptInfoIcon } from '../components/ConceptInfoOverlay';
 
 function PatternCard({ p, colorScheme, icon: Icon, onClick, language }: { 
   p: BreathPattern, 
@@ -17,7 +18,7 @@ function PatternCard({ p, colorScheme, icon: Icon, onClick, language }: {
   const isIndigo = colorScheme === 'indigo';
   
   return (
-    <button
+    <div role="button" tabIndex={0}
       onClick={onClick}
       className={cn(
         "group relative border p-6 text-left transition-all duration-300 overflow-hidden flex flex-col shadow-md active:scale-[0.98] hover:shadow-lg hover:-translate-y-0.5 backdrop-blur-sm",
@@ -53,7 +54,7 @@ function PatternCard({ p, colorScheme, icon: Icon, onClick, language }: {
           </span>
         </div>
       </div>
-    </button>
+    </div>
   );
 }
 
@@ -74,20 +75,21 @@ export default function Practice() {
     return (
       <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="flex items-center gap-4">
-          <button 
+          <div role="button" tabIndex={0} 
             onClick={() => setActiveCategory(null)} 
             className="btn-zen !px-3 !py-3"
           >
             <ArrowLeft size={20} />
-          </button>
+          </div>
           <span className="text-[11px] font-bold tracking-[0.2em] text-teal-400 uppercase">
             {language === 'el' ? 'Ρυθμοι Αναπνοης' : 'Breath Rhythms'}
           </span>
         </div>
 
         <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <h2 className="text-4xl md:text-5xl font-serif text-white/90 italic leading-tight">
+          <h2 className="text-4xl md:text-5xl font-serif text-white/90 italic leading-tight flex items-center justify-center md:justify-start">
             {language === 'el' ? 'Αναπνοή & Ύπνος' : 'Breath & Sleep'}
+            <ConceptInfoIcon conceptId="vagus_nerve" />
           </h2>
           <p className="text-lg text-white/50 font-sans leading-relaxed">
             {language === 'el' 
@@ -118,20 +120,21 @@ export default function Practice() {
     return (
       <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="flex items-center gap-4">
-          <button 
+          <div role="button" tabIndex={0} 
             onClick={() => setActiveCategory(null)} 
             className="btn-zen !px-3 !py-3"
           >
             <ArrowLeft size={20} />
-          </button>
+          </div>
           <span className="text-[11px] font-bold tracking-[0.2em] text-indigo-400 uppercase">
             {language === 'el' ? 'Ενσυνειδητη Κινηση' : 'Mindful Movement'}
           </span>
         </div>
 
         <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <h2 className="text-4xl md:text-5xl font-serif text-white/90 italic leading-tight">
+          <h2 className="text-4xl md:text-5xl font-serif text-white/90 italic leading-tight flex items-center justify-center md:justify-start">
             {language === 'el' ? 'Ενσυνείδητη Κίνηση' : 'Mindful Movement'}
+            <ConceptInfoIcon conceptId="proprioception" />
           </h2>
           <p className="text-lg text-white/50 font-sans leading-relaxed">
             {language === 'el' 
@@ -162,20 +165,21 @@ export default function Practice() {
     return (
       <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="flex items-center gap-4">
-          <button 
+          <div role="button" tabIndex={0} 
             onClick={() => setActiveCategory(null)} 
             className="btn-zen !px-3 !py-3"
           >
             <ArrowLeft size={20} />
-          </button>
+          </div>
           <span className="text-[11px] font-bold tracking-[0.2em] text-emerald-400 uppercase">
             {language === 'el' ? 'Πρακτικη Γειωσης' : 'Grounding Practice'}
           </span>
         </div>
 
         <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <h2 className="text-4xl md:text-5xl font-serif text-white/90 italic leading-tight">
+          <h2 className="text-4xl md:text-5xl font-serif text-white/90 italic leading-tight flex items-center justify-center md:justify-start">
             {language === 'el' ? 'Πρακτική Γείωσης' : 'Grounding Practice'}
+            <ConceptInfoIcon conceptId="grounding" />
           </h2>
           <p className="text-lg text-white/50 font-sans leading-relaxed">
             {language === 'el' 
@@ -206,20 +210,21 @@ export default function Practice() {
     return (
       <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="flex items-center gap-4">
-          <button 
+          <div role="button" tabIndex={0} 
             onClick={() => setActiveCategory(null)} 
             className="btn-zen !px-3 !py-3"
           >
             <ArrowLeft size={20} />
-          </button>
+          </div>
           <span className="text-[11px] font-bold tracking-[0.2em] text-sky-400 uppercase">
             {language === 'el' ? 'Αιωρηση' : 'Swaying'}
           </span>
         </div>
 
         <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <h2 className="text-4xl md:text-5xl font-serif text-white/90 italic leading-tight">
+          <h2 className="text-4xl md:text-5xl font-serif text-white/90 italic leading-tight flex items-center justify-center md:justify-start">
             {language === 'el' ? 'Ενσυνείδητη Αιώρηση' : 'Mindful Swaying'}
+            <ConceptInfoIcon conceptId="parasympathetic" />
           </h2>
           <p className="text-lg text-white/50 font-sans leading-relaxed">
             {language === 'el' 
@@ -230,7 +235,7 @@ export default function Practice() {
 
         <div className="max-w-4xl mx-auto w-full pb-12">
           <div className="grid grid-cols-1 gap-6">
-            <button
+            <div role="button" tabIndex={0}
               onClick={() => navigate('/practice/swaying')}
               className={cn(
                 "group relative border p-6 text-left transition-all duration-300 overflow-hidden flex flex-col shadow-md active:scale-[0.98] hover:shadow-lg hover:-translate-y-0.5 backdrop-blur-sm",
@@ -259,7 +264,7 @@ export default function Practice() {
                   </span>
                 </div>
               </div>
-            </button>
+            </div>
           </div>
         </div>
       </div>
@@ -270,20 +275,21 @@ export default function Practice() {
     return (
       <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="flex items-center gap-4">
-          <button 
+          <div role="button" tabIndex={0} 
             onClick={() => setActiveCategory(null)} 
             className="btn-zen !px-3 !py-3"
           >
             <ArrowLeft size={20} />
-          </button>
+          </div>
           <span className="text-[11px] font-bold tracking-[0.2em] text-amber-400 uppercase">
             {language === 'el' ? 'Μικροδοσεις' : 'Microdoses'}
           </span>
         </div>
 
         <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <h2 className="text-4xl md:text-5xl font-serif text-white/90 italic leading-tight">
+          <h2 className="text-4xl md:text-5xl font-serif text-white/90 italic leading-tight flex items-center justify-center md:justify-start">
             {language === 'el' ? 'Αόρατες Μικροδόσεις' : 'Invisible Microdoses'}
+            <ConceptInfoIcon conceptId="neuroplasticity" />
           </h2>
           <p className="text-lg text-white/50 font-sans leading-relaxed">
             {language === 'el' 
@@ -294,7 +300,7 @@ export default function Practice() {
 
         <div className="max-w-4xl mx-auto w-full pb-12">
           <div className="grid grid-cols-1 gap-6">
-            <button
+            <div role="button" tabIndex={0}
               onClick={() => navigate('/practice/microdoses')}
               className={cn(
                 "group relative border p-6 text-left transition-all duration-300 overflow-hidden flex flex-col shadow-md active:scale-[0.98] hover:shadow-lg hover:-translate-y-0.5 backdrop-blur-sm",
@@ -323,7 +329,7 @@ export default function Practice() {
                   </span>
                 </div>
               </div>
-            </button>
+            </div>
           </div>
         </div>
       </div>
@@ -333,12 +339,12 @@ export default function Practice() {
   return (
     <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex items-center gap-4">
-        <button 
+        <div role="button" tabIndex={0} 
           onClick={() => navigate('/dashboard')} 
           className="btn-zen !px-3 !py-3"
         >
           <ArrowLeft size={20} />
-        </button>
+        </div>
         <span className="text-[11px] font-bold tracking-[0.2em] text-indigo-400 uppercase">
           {language === 'el' ? 'Κεντρο Εξασκησης' : 'Practice Hub'}
         </span>
@@ -357,7 +363,7 @@ export default function Practice() {
 
       <div className="grid grid-cols-1 gap-8 pb-12 max-w-4xl mx-auto w-full">
         {/* Grounding Card */}
-        <button
+        <div role="button" tabIndex={0}
           onClick={() => setActiveCategory('grounding')}
           className="group relative block p-8 md:p-10 shape-cloud-1 glass-card transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-emerald-500/20 w-full text-left"
         >
@@ -368,8 +374,9 @@ export default function Practice() {
               <Compass size={36} strokeWidth={1.5} />
             </div>
             <div className="space-y-3 text-center md:text-left flex-1">
-              <h3 className="text-3xl md:text-4xl font-serif text-white/90 italic">
+              <h3 className="text-3xl md:text-4xl font-serif text-white/90 italic flex items-center justify-center md:justify-start gap-2">
                 {language === 'en' ? 'Grounding Practice' : 'Πρακτική Γείωσης'}
+                <ConceptInfoIcon conceptId="grounding" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
               </h3>
               <p className="text-white/50 font-sans max-w-xl text-[15px] md:text-[17px] leading-relaxed">
                 {language === 'en' 
@@ -378,10 +385,10 @@ export default function Practice() {
               </p>
             </div>
           </div>
-        </button>
+        </div>
         
         {/* Breath Rhythms Card */}
-        <button
+        <div role="button" tabIndex={0}
           onClick={() => setActiveCategory('breath')}
           className="group relative block p-8 md:p-10 shape-cloud-2 glass-card transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-teal-500/20 w-full text-left"
         >
@@ -392,8 +399,9 @@ export default function Practice() {
               <Wind size={36} strokeWidth={1.5} />
             </div>
             <div className="space-y-3 text-center md:text-left flex-1">
-              <h3 className="text-3xl md:text-4xl font-serif text-white/90 italic">
+              <h3 className="text-3xl md:text-4xl font-serif text-white/90 italic flex items-center justify-center md:justify-start gap-2">
                 {language === 'en' ? 'Breath & Sleep' : 'Ρυθμοί Αναπνοής & Ύπνου'}
+                <ConceptInfoIcon conceptId="vagus_nerve" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
               </h3>
               <p className="text-white/50 font-sans max-w-xl text-[15px] md:text-[17px] leading-relaxed">
                 {language === 'en' 
@@ -402,10 +410,10 @@ export default function Practice() {
               </p>
             </div>
           </div>
-        </button>
+        </div>
 
         {/* Mindful Movement Card */}
-        <button
+        <div role="button" tabIndex={0}
           onClick={() => setActiveCategory('movement')}
           className="group relative block p-8 md:p-10 shape-cloud-3 glass-card transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-indigo-500/20 w-full text-left"
         >
@@ -416,8 +424,9 @@ export default function Practice() {
               <Activity size={36} strokeWidth={1.5} />
             </div>
             <div className="space-y-3 text-center md:text-left flex-1">
-              <h3 className="text-3xl md:text-4xl font-serif text-white/90 italic">
+              <h3 className="text-3xl md:text-4xl font-serif text-white/90 italic flex items-center justify-center md:justify-start gap-2">
                 {language === 'en' ? 'Mindful Movement' : 'Ενσυνείδητη Κίνηση'}
+                <ConceptInfoIcon conceptId="proprioception" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
               </h3>
               <p className="text-white/50 font-sans max-w-xl text-[15px] md:text-[17px] leading-relaxed">
                 {language === 'en' 
@@ -426,10 +435,10 @@ export default function Practice() {
               </p>
             </div>
           </div>
-        </button>
+        </div>
 
         {/* Swaying Card */}
-        <button
+        <div role="button" tabIndex={0}
           onClick={() => setActiveCategory('swaying')}
           className="group relative block p-8 md:p-10 shape-cloud-4 glass-card transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-sky-500/20 w-full text-left"
         >
@@ -440,8 +449,9 @@ export default function Practice() {
               <Move size={36} strokeWidth={1.5} />
             </div>
             <div className="space-y-3 text-center md:text-left flex-1">
-              <h3 className="text-3xl md:text-4xl font-serif text-white/90 italic">
+              <h3 className="text-3xl md:text-4xl font-serif text-white/90 italic flex items-center justify-center md:justify-start gap-2">
                 {language === 'en' ? 'Mindful Swaying' : 'Ενσυνείδητη Αιώρηση (Swaying)'}
+                <ConceptInfoIcon conceptId="polyvagal" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
               </h3>
               <p className="text-white/50 font-sans max-w-xl text-[15px] md:text-[17px] leading-relaxed">
                 {language === 'en' 
@@ -450,10 +460,10 @@ export default function Practice() {
               </p>
             </div>
           </div>
-        </button>
+        </div>
 
         {/* Microdoses Card */}
-        <button
+        <div role="button" tabIndex={0}
           onClick={() => setActiveCategory('microdoses')}
           className="group relative block p-8 md:p-10 shape-cloud-5 glass-card transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-amber-500/20 w-full text-left"
         >
@@ -464,8 +474,9 @@ export default function Practice() {
               <Zap size={36} strokeWidth={1.5} />
             </div>
             <div className="space-y-3 text-center md:text-left flex-1">
-              <h3 className="text-3xl md:text-4xl font-serif text-white/90 italic">
+              <h3 className="text-3xl md:text-4xl font-serif text-white/90 italic flex items-center justify-center md:justify-start gap-2">
                 {language === 'en' ? 'Invisible Microdoses' : 'Αόρατες Μικροδόσεις'}
+                <ConceptInfoIcon conceptId="neuroplasticity" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
               </h3>
               <p className="text-white/50 font-sans max-w-xl text-[15px] md:text-[17px] leading-relaxed">
                 {language === 'en' 
@@ -474,7 +485,7 @@ export default function Practice() {
               </p>
             </div>
           </div>
-        </button>
+        </div>
       </div>
     </div>
   );
