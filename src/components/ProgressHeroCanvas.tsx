@@ -3,7 +3,6 @@ import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { useLanguage } from '../hooks/useLanguage';
 import { useTime } from '../contexts/TimeContext';
-import { motion } from 'framer-motion';
 
 // ─── Streak & Evolution Logic ───────────────────────────────────────────────
 
@@ -191,7 +190,7 @@ export default function ProgressHeroCanvas() {
       }
 
       const cx = width / 2;
-      const cy = height / 1.85;
+      const cy = height / 2.4;
 
       ctx.save();
 
@@ -454,107 +453,11 @@ export default function ProgressHeroCanvas() {
     };
   }, [stages, reduceMotion, evolutionStage, allActive, isNight]);
 
-  // ─── Bilingual Marquee Messages ──────────────────────────────────────────────
-  const messages = {
-    el: [
-      "Ο νους δεν είναι σπασμένος...",
-      "Καλωσήρθες στον δικό σου ασφαλή χώρο.",
-      "Δοκίμασε mindful movement με binaural ήχους.",
-      "Κάθε αναπνοή είναι μια νέα αρχή.",
-      "Απλά παρατήρησε.",
-      "Η συνέπεια σε μικρές δόσεις είναι αρκετή.",
-      "Το σώμα είναι πάντα εδώ.",
-    ],
-    en: [
-      "Your mind is not broken...",
-      "Welcome to your safe space.",
-      "Try mindful movement with binaural sounds.",
-      "Every breath is a new beginning.",
-      "Simply observe.",
-      "Consistency in small doses is enough.",
-      "The body is always here.",
-    ],
-  };
-
-  const currentMessages = messages[language === 'en' ? 'en' : 'el'];
-
-  // ─── Streak label ─────────────────────────────────────────────────────────────
-  const streakLabel = language === 'en'
-    ? streak > 0 ? `${streak}d streak` : 'Start today'
-    : streak > 0 ? `${streak} μέρες σερί` : 'Ξεκίνα σήμερα';
-
-  const evolutionLabel = language === 'en'
-    ? ['Beginner', 'Practitioner', 'Open Awareness'][evolutionStage]
-    : ['Αρχή', 'Ασκούμενος', 'Ανοιχτή Επίγνωση'][evolutionStage];
-
-  const dayNames = language === 'en'
-    ? ['M', 'T', 'W', 'T', 'F', 'S', 'S']
-    : ['Δ', 'Τ', 'Τ', 'Π', 'Π', 'Σ', 'Κ'];
-
   const bgClass = isNight ? 'bg-[#0A0C10]' : 'bg-[#0B152A]';
 
   return (
-    <div className={`w-full h-[260px] rounded-[16px] ${bgClass} border border-white/[0.05] relative overflow-hidden flex flex-col justify-end transition-colors duration-1000`}>
+    <div className={`w-full h-[360px] rounded-[16px] ${bgClass} border border-white/[0.05] relative overflow-hidden flex flex-col justify-end transition-colors duration-1000`}>
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
-
-      {/* ── Top HUD: 4 axis indicators + streak ── */}
-      <div className="absolute top-3 left-0 right-0 flex items-center justify-between px-4 pointer-events-none">
-        {/* Axis dots */}
-        <div className="flex gap-1.5">
-          <div className={`h-1 w-5 rounded-full transition-colors duration-700 ${stages.grounding ? 'bg-amber-400' : 'bg-white/10'}`} />
-          <div className={`h-1 w-5 rounded-full transition-colors duration-700 ${stages.breathing ? 'bg-sky-400' : 'bg-white/10'}`} />
-          <div className={`h-1 w-5 rounded-full transition-colors duration-700 ${stages.attention ? 'bg-red-400' : 'bg-white/10'}`} />
-          <div className={`h-1 w-5 rounded-full transition-colors duration-700 ${stages.space ? 'bg-white/70' : 'bg-white/10'}`} />
-        </div>
-
-        {/* Streak + Evolution */}
-        <div className="flex items-center gap-2">
-          {streak > 0 && (
-            <span className="text-[10px] font-bold tracking-wider text-amber-400/80 uppercase">
-              🔥 {streakLabel}
-            </span>
-          )}
-          <span className={`text-[9px] font-bold tracking-widest uppercase px-2 py-0.5 rounded-full border ${
-            evolutionStage === 2
-              ? 'text-teal-300 border-teal-500/30 bg-teal-500/10'
-              : evolutionStage === 1
-              ? 'text-emerald-400 border-emerald-500/20 bg-emerald-500/5'
-              : 'text-white/30 border-white/10'
-          }`}>
-            {evolutionLabel}
-          </span>
-        </div>
-      </div>
-
-      {/* ── Weekly Heatmap ── */}
-      <div className="absolute bottom-12 left-0 right-0 flex justify-center gap-1.5 pointer-events-none">
-        {weeklyActivity.map((active, i) => (
-          <div key={i} className="flex flex-col items-center gap-1">
-            <div className={`w-5 h-5 rounded-md transition-all duration-500 ${
-              active
-                ? 'bg-teal-500/70 shadow-[0_0_6px_rgba(20,184,166,0.5)]'
-                : 'bg-white/5 border border-white/10'
-            }`} />
-            <span className="text-[8px] text-white/20 font-mono">{dayNames[i]}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* ── Marquee Ticker ── */}
-      <div
-        className="w-full h-9 border-t border-white/[0.05] bg-black/40 backdrop-blur-sm flex items-center relative overflow-hidden"
-        style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}
-      >
-        <motion.div
-          className="flex whitespace-nowrap gap-12 px-6"
-          animate={{ x: [0, -1000] }}
-          transition={{ repeat: Infinity, repeatType: 'loop', duration: 35, ease: 'linear' }}
-        >
-          {[...currentMessages, ...currentMessages].map((m, i) => (
-            <span key={i} className="text-[11px] font-serif italic text-white/40 tracking-wide">{m}</span>
-          ))}
-        </motion.div>
-      </div>
     </div>
   );
 }

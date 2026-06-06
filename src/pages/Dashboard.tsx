@@ -11,7 +11,7 @@ import { motion } from 'motion/react';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { useBinauralAudio } from '../hooks/useBinauralAudio';
 import InfoModal from '../components/InfoModal';
-import ProgressHeroCanvas from '../components/ProgressHeroCanvas';
+import CoreGeometricState from '../components/CoreGeometricState';
 import StateCheckin from '../components/StateCheckin';
 
 const glassCardClasses = "backdrop-blur-[4px] bg-white/[0.04] border border-white/[0.1] rounded-[16px]";
@@ -281,15 +281,13 @@ export default function Dashboard() {
           </button>
         </div>
 
-        {/* Hero Visual State Canvas */}
-        <div className="mt-2 w-full">
-          <ProgressHeroCanvas />
+        {/* Central Geometric Core */}
+        <div className="mt-6 w-full">
+          <CoreGeometricState />
         </div>
 
-        {/* Removed Quote Card, Streak Row, and Companion Widget and moved them to the Floating Companion Panel as per user request */}
-
         {/* 4. Pathways */}
-        <div className="flex flex-col gap-3 mt-4">
+        <div className="flex flex-col gap-3 mt-8">
           <span className="text-[10px] tracking-[1.5px] text-white/30 font-bold uppercase ml-1 mb-1">
             {language === 'el' ? 'ΤΑ ΜΟΝΟΠΑΤΙΑ ΣΟΥ' : 'YOUR PATHWAYS'}
           </span>
