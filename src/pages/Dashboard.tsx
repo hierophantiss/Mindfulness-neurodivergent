@@ -195,7 +195,7 @@ export default function Dashboard() {
         {/* 1. Header Actions (Always visible) */}
         <div className="flex flex-col gap-1">
           <span className="text-[10px] tracking-[2px] uppercase text-[#4a9eca] font-semibold mb-1">
-            {language === 'el' ? 'ΠΥΛΗ ΕΠΙΓΝΩΣΗΣ' : 'AWARENESS GATEWAY'}
+            {language === 'el' ? 'ΕΝΣΥΝΕΙΔΗΤΟΤΗΤΑ ΓΙΑ ΝΕΥΡΟΔΙΑΦΟΡΕΤΙΚΟΥΣ' : 'MINDFULNESS FOR NEURODIVERGENTS'}
           </span>
           
           <div className="flex items-center justify-between mt-2">

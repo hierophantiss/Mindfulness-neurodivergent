@@ -10,6 +10,7 @@ import { dzogchenArticle } from '../data/dzogchenArticle';
 import { neverForceArticle } from '../data/neverForceArticle';
 import { softGazeArticle } from '../data/softGazeArticle';
 import { polyvagalArticle } from '../data/polyvagalArticle';
+import { platoCaveArticle } from '../data/platoCaveArticle';
 
 const formatMarkdown = (text: string) => {
   if (!text) return null;
@@ -127,6 +128,12 @@ export default function RabbitHole() {
       title: language === 'en' ? polyvagalArticle.title.en : polyvagalArticle.title.el,
       author: language === 'en' ? polyvagalArticle.author.en : polyvagalArticle.author.el,
       pages: language === 'en' ? polyvagalArticle.pagesEn : polyvagalArticle.pagesEl
+    },
+    {
+      id: platoCaveArticle.id,
+      title: language === 'en' ? platoCaveArticle.title.en : platoCaveArticle.title.el,
+      author: language === 'en' ? platoCaveArticle.author.en : platoCaveArticle.author.el,
+      pages: language === 'en' ? platoCaveArticle.pagesEn : platoCaveArticle.pagesEl
     },
     {
       id: 'koshas-veils',
@@ -480,6 +487,17 @@ export default function RabbitHole() {
 
         {/* Reading Area Wrapper */}
         <div className="flex-1 relative flex overflow-hidden">
+          
+          {/* Shadow Animation for Plato's Cave */}
+          {activeArticle === 'plato-cave-neurodivergent' && (
+            <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden mix-blend-screen opacity-20">
+              <div className="absolute inset-0 bg-gradient-to-t from-orange-950/20 to-transparent" />
+              <div className="plato-shadow-1 absolute bottom-[5%] left-[5%] w-[45vw] h-[50vh] bg-amber-900/40 rounded-full blur-[100px] pointer-events-none" />
+              <div className="plato-shadow-2 absolute top-[10%] right-[10%] w-[40vw] h-[60vh] bg-orange-800/30 rounded-full blur-[120px] pointer-events-none" />
+              <div className="plato-shadow-3 absolute bottom-[30%] left-[30%] w-[35vw] h-[45vh] bg-amber-950/40 rounded-full blur-[110px] pointer-events-none" />
+            </div>
+          )}
+
           {/* Invisible Hitboxes (Fixed in the viewer, outside scrolling) */}
           <button 
             className="absolute top-0 left-0 w-[30%] h-full z-10 flex flex-col justify-center items-start pl-2 md:pl-6 group outline-none"
@@ -630,7 +648,7 @@ export default function RabbitHole() {
           </Link>
 
           {articles.map((article) => {
-            const isNew = article.id === 'dzogchen-great-perfection';
+            const isNew = article.id === 'plato-cave-neurodivergent';
             return (
               <button 
                 key={article.id}

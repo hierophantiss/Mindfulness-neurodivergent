@@ -49,3 +49,29 @@
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.2);
 }
+
+@keyframes plato-shadow-drift-1 {
+  0% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+  33% { transform: translate(10vw, -15vh) scale(1.1); opacity: 0.8; }
+  66% { transform: translate(-5vw, 10vh) scale(0.95); opacity: 0.4; }
+  100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+}
+
+@keyframes plato-shadow-drift-2 {
+  0% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+  33% { transform: translate(-15vw, 10vh) scale(0.9); opacity: 0.3; }
+  66% { transform: translate(10vw, -5vh) scale(1.2); opacity: 0.7; }
+  100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+}
+
+@keyframes plato-shadow-drift-3 {
+  0% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+  33% { transform: translate(5vw, 15vh) scale(0.85); opacity: 0.4; }
+  66% { transform: translate(-15vw, -10vh) scale(1.15); opacity: 0.8; }
+  100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+}
+
+.plato-shadow-1 { animation: plato-shadow-drift-1 14s infinite ease-in-out; }
+.plato-shadow-2 { animation: plato-shadow-drift-2 18s infinite ease-in-out reverse; }
+.plato-shadow-3 { animation: plato-shadow-drift-3 22s infinite ease-in-out; }
+

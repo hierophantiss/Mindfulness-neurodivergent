@@ -69,7 +69,8 @@ async function generate() {
     'dzogchen-great-perfection',
     'never-force',
     'soft-gaze-open-hearing',
-    'polyvagal-middle-way'
+    'polyvagal-middle-way',
+    'plato-cave-neurodivergent'
   ];
   
   // Try to match hardcoded ids like id: 'koshas-veils' or id: 'dzogchen-nature-of-mind'
