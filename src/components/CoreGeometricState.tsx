@@ -575,19 +575,17 @@ export default function CoreGeometricState() {
         <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
         
         {/* Subtle Labels Floating Above */}
-        <div className="absolute inset-x-0 inset-y-0 pointer-events-none p-4 flex flex-col justify-between items-center text-[9px] uppercase tracking-[3px] font-medium z-10">
-          <div className={`transition-opacity duration-1000 ${activeAxes.space || activeAxes.spaceSoft ? 'text-teal-400/80' : 'text-white/20'}`}>
+        <div className="absolute inset-0 pointer-events-none text-[9px] uppercase tracking-[3px] font-medium z-10 w-full h-full">
+          <div className={`absolute w-full text-center top-[62px] transition-opacity duration-1000 ${activeAxes.space || activeAxes.spaceSoft ? 'text-teal-400/80 drop-shadow-md' : 'text-white/20'}`}>
             {language === 'el' ? 'Χωρος' : 'Space'}
           </div>
-          <div className="w-full flex justify-between px-8">
-            <div className={`transition-opacity duration-1000 ${activeAxes.attention || activeAxes.attentionSoft ? 'text-amber-400/80' : 'text-white/20'}`}>
-              {language === 'el' ? 'Προσοχη' : 'Attention'}
-            </div>
-            <div className={`transition-opacity duration-1000 ${activeAxes.breath || activeAxes.breathSoft ? 'text-sky-400/80' : 'text-white/20'}`}>
-              {language === 'el' ? 'Αναπνοη' : 'Breath'}
-            </div>
+          <div className={`absolute left-8 md:left-12 top-[32px] transition-opacity duration-1000 ${activeAxes.attention || activeAxes.attentionSoft ? 'text-amber-400/80 drop-shadow-md' : 'text-white/20'}`}>
+            {language === 'el' ? 'Προσοχη' : 'Attention'}
           </div>
-          <div className={`transition-opacity duration-1000 ${activeAxes.body || activeAxes.bodySoft ? 'text-purple-400/80' : 'text-white/20'}`}>
+          <div className={`absolute right-8 md:right-12 top-[80px] transition-opacity duration-1000 ${activeAxes.breath || activeAxes.breathSoft ? 'text-sky-400/80 drop-shadow-md' : 'text-white/20'}`}>
+            {language === 'el' ? 'Αναπνοη' : 'Breath'}
+          </div>
+          <div className={`absolute w-full text-center bottom-4 transition-opacity duration-1000 ${activeAxes.body || activeAxes.bodySoft ? 'text-purple-400/80 drop-shadow-md' : 'text-white/20'}`}>
             {language === 'el' ? 'Βαρυτητα' : 'Gravity'}
           </div>
         </div>
