@@ -10,6 +10,7 @@ export type ActivityCategory =
   | 'rabbithole' 
   | 'chapter' 
   | 'checkin'
+  | 'sanctuary'
   | 'general';
 
 export interface ActivityContextData {

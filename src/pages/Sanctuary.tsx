@@ -5,6 +5,7 @@ import { Waves, Wind, CloudRain, TreePine, Moon, ChevronLeft, Volume2, Timer, In
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { useLanguage } from '../hooks/useLanguage';
+import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { cn } from '../lib/utils';
 import { useBinauralAudio } from '../hooks/useBinauralAudio';
 
@@ -44,6 +45,44 @@ export default function Sanctuary() {
   const [mantraStep, setMantraStep] = useState<number>(0);
   const [activeAttentionStyles, setActiveAttentionStyles] = useState<string[]>([]);
   const [isVoidActive, setIsVoidActive] = useState(false);
+  const { logActivity } = useActivityTracker();
+  const sessionStartTimeRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (activeSound || activeVideo) {
+      if (!sessionStartTimeRef.current) {
+        sessionStartTimeRef.current = Date.now();
+      }
+    } else {
+      if (sessionStartTimeRef.current) {
+        const durationSeconds = Math.floor((Date.now() - sessionStartTimeRef.current) / 1000);
+        if (durationSeconds > 10) {
+          logActivity({
+            category: 'sanctuary',
+            itemId: activeSound || activeVideo || undefined,
+            durationSeconds: durationSeconds
+          });
+        }
+        sessionStartTimeRef.current = null;
+      }
+    }
+  }, [activeSound, activeVideo, logActivity]);
+
+  useEffect(() => {
+    return () => {
+      // Unmount logging
+      if (sessionStartTimeRef.current) {
+        const durationSeconds = Math.floor((Date.now() - sessionStartTimeRef.current) / 1000);
+        if (durationSeconds > 10) {
+          logActivity({
+            category: 'sanctuary',
+            itemId: 'unmount',
+            durationSeconds: durationSeconds
+          });
+        }
+      }
+    };
+  }, [logActivity]);
 
   const bilateralVideos = [
     {
