@@ -31,7 +31,7 @@ export default function PracticeBreath() {
   const basePattern = BREATH_PATTERNS.find(p => p.id === currentPatternId) || BREATH_PATTERNS[0];
   
   const [rhythmOverride, setRhythmOverride] = useState<'default' | '4-7-8' | '5-5-5-5' | '5-5'>('default');
-  const [isSwaying, setIsSwaying] = useState(true);
+  const isSwaying = true;
 
   const pattern = React.useMemo(() => {
     if (basePattern.category !== 'movement' || rhythmOverride === 'default') return basePattern;
@@ -480,34 +480,6 @@ export default function PracticeBreath() {
               <X size={14} />
             </button>
           </div>
-        </div>
-      )}
-
-      {/* Swaying Toggle (Breathing Only) */}
-      {!running && basePattern.category !== 'movement' && (
-        <div className="z-20 w-full mb-4 md:px-0 relative px-4 flex flex-col items-center animate-in fade-in slide-in-from-top-2 duration-500">
-           <span className="text-[11px] font-medium tracking-widest uppercase text-zinc-400 mb-2">
-             {language === 'el' ? 'Κινητικη Διεγερση' : 'Movement Stimming'}
-           </span>
-           <div className="flex flex-wrap justify-center gap-2 max-w-sm">
-             {[
-               { id: true, el: 'Swaying Stimming', en: 'Swaying Stimming' },
-               { id: false, el: 'Ακίνητος', en: 'Stationary' }
-             ].map(opt => (
-               <button
-                 key={opt.id.toString()}
-                 onClick={() => setIsSwaying(opt.id as boolean)}
-                 className={cn(
-                   "px-3 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all",
-                   isSwaying === opt.id 
-                     ? "bg-teal-500/20 text-teal-300 border border-teal-500/50" 
-                     : "bg-zinc-800/50 text-zinc-400 border border-zinc-700/50 hover:bg-zinc-700/50"
-                 )}
-               >
-                 {language === 'el' ? opt.el : opt.en}
-               </button>
-             ))}
-           </div>
         </div>
       )}
 

@@ -33,8 +33,12 @@ export default function DesktopNavigation() {
     { path: '/method', icon: '∞', labelEn: 'Method', labelEl: 'Η Μέθοδος' },
   ];
 
-  const handleNav = (path: string) => {
-    navigate(path);
+  const handleNav = (path: string, external?: boolean) => {
+    if (external) {
+      window.location.href = path;
+    } else {
+      navigate(path);
+    }
   };
 
   return (
@@ -86,11 +90,11 @@ export default function DesktopNavigation() {
           {language === 'el' ? 'Περισσοτερα' : 'More Tools'}
         </p>
         {moreItems.map(item => {
-          const isActive = location.pathname.startsWith(item.path);
+          const isActive = location.pathname.startsWith(item.path.replace('.html', ''));
           return (
             <button
               key={item.path}
-              onClick={() => handleNav(item.path)}
+              onClick={() => handleNav(item.path, item.external)}
               className={cn(
                 "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all font-medium text-[13px] relative group active:scale-[0.98]",
                 isActive 
