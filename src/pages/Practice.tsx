@@ -62,7 +62,7 @@ export default function Practice() {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const { progress } = useProgress();
-  const [activeCategory, setActiveCategory] = useState<'breath' | 'movement' | 'grounding' | 'swaying' | 'microdoses' | null>(null);
+  const [activeCategory, setActiveCategory] = useState<'breath' | 'movement' | 'grounding' | 'microdoses' | null>(null);
   const [lockedCategoryAttempt, setLockedCategoryAttempt] = useState<'grounding' | 'microdoses' | null>(null);
 
   const hasFoundation = progress.completedChapters.length > 0;
@@ -209,71 +209,6 @@ export default function Practice() {
     );
   }
 
-  if (activeCategory === 'swaying') {
-    return (
-      <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <div className="flex items-center gap-4">
-          <div role="button" tabIndex={0} 
-            onClick={() => setActiveCategory(null)} 
-            className="btn-zen !px-3 !py-3"
-          >
-            <ArrowLeft size={20} />
-          </div>
-          <span className="text-[11px] font-bold tracking-[0.2em] text-sky-400 uppercase">
-            {language === 'el' ? 'Αιωρηση' : 'Swaying'}
-          </span>
-        </div>
-
-        <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <h2 className="text-4xl md:text-5xl font-serif text-white/90 italic leading-tight flex items-center justify-center md:justify-start">
-            {language === 'el' ? 'Ενσυνείδητη Αιώρηση' : 'Mindful Swaying'}
-            <ConceptInfoIcon conceptId="parasympathetic" />
-          </h2>
-          <p className="text-lg text-white/50 font-sans leading-relaxed">
-            {language === 'el' 
-              ? 'Μια βαθιά ρυθμική αιώρηση με μετρονόμο για τη γείωση του νευρικού συστήματος.' 
-              : 'A deep rhythmic swaying practice to anchor your nervous system.'}
-          </p>
-        </header>
-
-        <div className="max-w-4xl mx-auto w-full pb-12">
-          <div className="grid grid-cols-1 gap-6">
-            <div role="button" tabIndex={0}
-              onClick={() => navigate('/practice/swaying')}
-              className={cn(
-                "group relative border p-6 text-left transition-all duration-300 overflow-hidden flex flex-col shadow-md active:scale-[0.98] hover:shadow-lg hover:-translate-y-0.5 backdrop-blur-sm",
-                "glass-card hover:bg-[#161922] hover:border-white/10 shape-cloud-2"
-              )}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/[0.02] to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%]"></div>
-              
-              <div className="absolute -top-4 -right-4 p-6 opacity-5 group-hover:opacity-10 group-hover:rotate-12 group-hover:scale-110 transition-all duration-500 pointer-events-none">
-                <Move size={96} className="text-sky-300" />
-              </div>
-
-              <div className="relative z-10 flex flex-col h-full mt-1">
-                <h3 className="text-[22px] md:text-2xl font-serif text-white/90 drop-shadow-sm leading-tight italic mb-1">
-                  {language === 'en' ? 'Mindful Swaying Engine' : 'Κινητήρας Αιώρησης'}
-                </h3>
-                <div className="text-[10px] font-bold uppercase tracking-widest mb-3 drop-shadow-sm text-sky-400/80">
-                  {language === 'en' ? 'Rhythmic Pendulum' : 'Ρυθμικό Εκκρεμές'}
-                </div>
-                <p className="text-[14px] text-white/50 leading-relaxed max-w-[85%] font-sans">
-                  {language === 'en' ? 'Open the minimalist swaying interface with metronome and binaural beats.' : 'Άνοιξε το μινιμαλιστικό περιβάλλον αιώρησης με μετρονόμο και binaural ήχους.'}
-                </p>
-                <div className="mt-6 flex flex-wrap gap-2">
-                  <span className="px-3 py-1.5 border rounded-full text-[10px] font-bold tracking-wide uppercase bg-sky-500/10 border-sky-500/20 text-sky-300">
-                    {language === 'en' ? 'Infinite Loop' : 'Άπειρη Ροή'}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   if (activeCategory === 'microdoses') {
     return (
       <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -413,32 +348,6 @@ export default function Practice() {
               {language === 'en' 
                ? 'Specific techniques to calm the mind.' 
                : 'Στοχευμένοι ρυθμοί αναπνοής για χαλάρωση.'}
-            </p>
-          </div>
-        </div>
-
-        {/* Swaying Card */}
-        <div role="button" tabIndex={0}
-          onClick={() => setActiveCategory('swaying')}
-          className="col-span-1 group relative block p-6 md:p-8 shape-cloud-4 glass-card flex-col flex justify-between min-h-[240px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-sky-500/20 overflow-hidden text-left"
-        >
-          <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-sky-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
-          
-          <div className="flex justify-between items-start mb-8 relative z-10 w-full">
-            <div className="w-14 h-14 shrink-0 shape-cloud-2 bg-sky-400/15 flex items-center justify-center text-sky-400 border border-sky-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
-              <Move size={28} strokeWidth={1.5} />
-            </div>
-            <ConceptInfoIcon conceptId="polyvagal" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
-          </div>
-          
-          <div className="space-y-2 relative z-10 mt-auto w-full">
-            <h3 className="text-2xl font-serif text-white/90 italic leading-tight">
-              {language === 'en' ? 'Mindful Swaying' : 'Ενσυνείδητη Αιώρηση'}
-            </h3>
-            <p className="text-white/50 font-sans text-[14px] leading-relaxed">
-              {language === 'en' 
-               ? 'A rhythmic practice to anchor your nervous system.' 
-               : 'Βαθιά ρυθμική αιώρηση με μετρονόμο για γείωση.'}
             </p>
           </div>
         </div>
