@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { useTime } from '../contexts/TimeContext';
 import { useProgress } from '../contexts/ProgressContext';
+import { useMoonPhase } from '../hooks/useMoonPhase';
+import { useWeather } from '../hooks/useWeather';
 import { cn } from '../lib/utils';
 
 interface Star {
@@ -13,11 +15,23 @@ interface Star {
   blinkOffset: number;
 }
 
+interface Particle {
+  x: number;
+  y: number;
+  size: number;
+  speedX: number;
+  speedY: number;
+  opacity: number;
+}
+
 export function InteractiveBackground() {
-  const { hour } = useTime();
+  const { hour, timeFloat } = useTime();
   const { progress } = useProgress();
+  const moonPhase = useMoonPhase();
+  const weather = useWeather();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const starsRef = useRef<Star[]>([]);
+  const particlesRef = useRef<Particle[]>([]);
   const requestRef = useRef<number>(0);
   
   // Calculate states based on hour
@@ -70,6 +84,29 @@ export function InteractiveBackground() {
     }
   }, [targetStarCount]);
 
+  useEffect(() => {
+    // Initialize or adapt weather particles
+    const targetParticleCount = weather === 'rain' ? 80 : weather === 'snow' ? 60 : 0;
+    
+    if (particlesRef.current.length < targetParticleCount) {
+      const newParticles = [...particlesRef.current];
+      const diff = targetParticleCount - newParticles.length;
+      for (let i = 0; i < diff; i++) {
+        newParticles.push({
+          x: Math.random(),
+          y: Math.random() - 1, // Start slightly above or on screen
+          speedY: weather === 'rain' ? Math.random() * 0.015 + 0.01 : Math.random() * 0.002 + 0.001,
+          speedX: weather === 'snow' ? (Math.random() - 0.5) * 0.001 : 0.0005,
+          size: weather === 'rain' ? Math.random() * 1.5 + 0.5 : Math.random() * 2 + 1,
+          opacity: weather === 'rain' ? Math.random() * 0.15 + 0.05 : Math.random() * 0.3 + 0.1,
+        });
+      }
+      particlesRef.current = newParticles;
+    } else if (particlesRef.current.length > targetParticleCount) {
+      particlesRef.current = particlesRef.current.slice(0, targetParticleCount);
+    }
+  }, [weather]);
+
   // Animation Loop
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -86,7 +123,10 @@ export function InteractiveBackground() {
 
       // Determine star visibility and count based on time of day
       // Increased visibility during day as requested
-      const starOpacityMul = isDay ? 0.5 : (isDusk ? 0.75 : 1.0);
+      let starOpacityMul = isDay ? 0.5 : (isDusk ? 0.75 : 1.0);
+      if (weather === 'cloudy' || weather === 'rain' || weather === 'snow') {
+        starOpacityMul *= 0.3; // Dim stars when cloudy/raining
+      }
 
       for (let i = 0; i < starsRef.current.length; i++) {
         const star = starsRef.current[i];
@@ -112,6 +152,39 @@ export function InteractiveBackground() {
         }
         
         ctx.fill();
+        ctx.closePath();
+      }
+
+      // Draw weather particles
+      for (let i = 0; i < particlesRef.current.length; i++) {
+        const p = particlesRef.current[i];
+        p.y += p.speedY;
+        p.x += p.speedX;
+        
+        if (weather === 'snow') {
+          p.x += Math.sin(time * 2 + i) * 0.0005;
+        }
+
+        // Reset when off screen
+        if (p.y > 1.1) {
+          p.y = -0.1;
+          p.x = Math.random();
+        }
+        if (p.x > 1.1) p.x = -0.1;
+        if (p.x < -0.1) p.x = 1.1;
+
+        ctx.beginPath();
+        if (weather === 'rain') {
+          ctx.moveTo(p.x * canvas.width, p.y * canvas.height);
+          ctx.lineTo((p.x - 0.005) * canvas.width, (p.y - 0.02) * canvas.height);
+          ctx.strokeStyle = `rgba(165, 243, 252, ${p.opacity * (isDay ? 0.3 : 1)})`;
+          ctx.lineWidth = p.size * 0.8;
+          ctx.stroke();
+        } else if (weather === 'snow') {
+          ctx.arc(p.x * canvas.width, p.y * canvas.height, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity * (isDay ? 0.5 : 1)})`;
+          ctx.fill();
+        }
         ctx.closePath();
       }
 
@@ -149,36 +222,42 @@ export function InteractiveBackground() {
         style={{ background: 'linear-gradient(to bottom, #0a1b33 0%, #152c4e 50%, #1a3a6b 100%)' }}
       />
       
-      {/* Dynamic Background Element (Sun or Moon) */}
-      <div 
-        className={cn(
-          "absolute transition-all duration-[4000ms] ease-in-out z-10",
-          // Placement: standard is top right, dusk is lower
-          isDusk ? "top-[55%] right-[10%] md:right-[20%] w-32 h-32 md:w-48 md:h-48" : "top-[10%] right-[10%] md:right-[20%] w-24 h-24 md:w-32 md:h-32",
-          // Opacity controls - increased for day to show change
-          isNight ? "opacity-90" : isDay ? "opacity-40" : "opacity-60" 
-        )}
+      {/* Dynamic Background Element (Celestial Disc) */}
+      <motion.div 
+        className="absolute left-1/2 bottom-[-10%] w-0 h-0 z-10"
+        initial={false}
+        animate={{ rotate: ((timeFloat - 12) / 24) * 360 }}
+        transition={{ ease: "linear", duration: 2 }} 
       >
-        {isNight ? (
-          /* Crescent Moon using CSS clip/mask */
-          <div className="relative w-full h-full">
-             <div className="absolute inset-0 rounded-full bg-slate-200/80 shadow-[0_0_40px_10px_rgba(226,232,240,0.1)] blur-[1px]"></div>
-             <div className="absolute inset-[-10%] rounded-full bg-[#02040a] transform translate-x-[-25%] translate-y-[15%]"></div>
-          </div>
-        ) : (
-          /* Sun with soft radial glow */
-          <div className="relative w-full h-full rounded-full flex items-center justify-center">
-            <div className={cn(
-              "absolute inset-[-200%] md:inset-[-150%] rounded-full opacity-60",
-              isDusk ? "bg-[radial-gradient(circle,rgba(251,146,60,0.4)_0%,transparent_70%)]" : "bg-[radial-gradient(circle,rgba(165,243,252,0.3)_0%,transparent_70%)]"
-            )} />
-            <div className={cn(
-              "w-1/2 h-1/2 rounded-full absolute",
-              isDusk ? "bg-orange-400 blur-[8px]" : "bg-teal-200/50 blur-[12px]"
-            )} />
-          </div>
-        )}
-      </div>
+         {/* Sun */}
+         <div 
+           className="absolute flex items-center justify-center w-24 h-24 md:w-32 md:h-32"
+           style={{ transform: `translate(-50%, -50%) translateY(calc(-0.6 * max(70vw, 70vh)))` }}
+         >
+           <div className="relative w-full h-full rounded-full flex items-center justify-center opacity-70">
+             <div className="absolute inset-[-200%] md:inset-[-150%] rounded-full opacity-40 bg-[radial-gradient(circle,rgba(251,146,60,0.3)_0%,transparent_70%)]" />
+             <div className="absolute inset-[-100%] rounded-full opacity-60 bg-[radial-gradient(circle,rgba(253,224,71,0.3)_0%,transparent_60%)]" />
+             <div className="w-1/2 h-1/2 rounded-full absolute bg-orange-200/60 shadow-[0_0_50px_10px_rgba(251,146,60,0.3)] blur-[8px]" />
+           </div>
+         </div>
+
+         {/* Moon */}
+         <div 
+           className="absolute flex items-center justify-center w-20 h-20 md:w-28 md:h-28"
+           style={{ transform: `translate(-50%, -50%) translateY(calc(0.6 * max(70vw, 70vh))) rotate(180deg)` }}
+         >
+           <div className="relative w-full h-full overflow-hidden rounded-full bg-slate-200/90 shadow-[0_0_40px_10px_rgba(226,232,240,0.15)]">
+              {/* Shadow disc to create moon phases */}
+              <div 
+                className="absolute inset-[0%] rounded-full bg-[#03060c] blur-[2px]"
+                style={{ 
+                  transform: `translateX(${moonPhase <= 0.5 ? (moonPhase / 0.5) * 120 : -120 + ((moonPhase - 0.5) / 0.5) * 120}%) scale(1.05)`,
+                  opacity: 0.95 
+                }} 
+              />
+           </div>
+         </div>
+      </motion.div>
 
       {/* Aurora Borealis Effect - Gentle color hues for night time */ }
       <div 
