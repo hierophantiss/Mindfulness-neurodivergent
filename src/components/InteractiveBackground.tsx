@@ -122,8 +122,13 @@ export function InteractiveBackground() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Determine star visibility and count based on time of day
-      // Increased visibility during day as requested
-      let starOpacityMul = isDay ? 0.5 : (isDusk ? 0.75 : 1.0);
+      // Smooth star dimming based on daylight
+      let diffDay = Math.abs(timeFloat - 12);
+      if (diffDay > 12) diffDay = 24 - diffDay;
+      const dayBrightness = Math.max(0, 1 - diffDay / 6); // 1 at noon, 0 at 6am/6pm
+      
+      let starOpacityMul = 1.0 - (dayBrightness * 0.6); // Dim to 40% at noon
+      
       if (weather === 'cloudy' || weather === 'rain' || weather === 'snow') {
         starOpacityMul *= 0.3; // Dim stars when cloudy/raining
       }
@@ -197,29 +202,61 @@ export function InteractiveBackground() {
     };
   }, [isNight, isDay, isDusk]);
 
+  // Calculate smooth cyclical opacities based on timeFloat (0-24)
+  const getOpacity = (peak: number, spread: number) => {
+    let diff = Math.abs(timeFloat - peak);
+    if (diff > 12) diff = 24 - diff;
+    return Math.max(0, 1 - diff / spread);
+  };
+
+  const dayOpacity = getOpacity(12, 6);       // Peak 12, spread 6 (6 to 18)
+  const duskOpacity = getOpacity(18, 2.5);    // Peak 18, spread 2.5 (15.5 to 20.5)
+  const dawnOpacity = getOpacity(6, 2.5);     // Peak 6, spread 2.5 (3.5 to 8.5)
+  const nightOpacity = getOpacity(0, 7);      // Peak 0, spread 7 (17 to 7)
+
+  // Interpolate sky colors based on time
+  const getSkyGradient = (timeFloat: number) => {
+    const interpolateColor = (c1: number[], c2: number[], factor: number) => {
+      const r = Math.round(c1[0] + (c2[0] - c1[0]) * factor);
+      const g = Math.round(c1[1] + (c2[1] - c1[1]) * factor);
+      const b = Math.round(c1[2] + (c2[2] - c1[2]) * factor);
+      return `rgb(${r}, ${g}, ${b})`;
+    };
+
+    const steps = [
+      { time: 0,  top: [1, 2, 4],     mid: [3, 6, 12],    bot: [5, 8, 20] },
+      { time: 6,  top: [10, 19, 41],  mid: [58, 32, 51],  bot: [153, 74, 40] }, // dawn golden hour
+      { time: 12, top: [10, 27, 51],  mid: [21, 44, 78],  bot: [26, 58, 107] }, // noon
+      { time: 18, top: [5, 10, 20],   mid: [43, 23, 42],  bot: [112, 38, 33] }, // dusk golden hour
+      { time: 24, top: [1, 2, 4],     mid: [3, 6, 12],    bot: [5, 8, 20] },
+    ];
+
+    let c1 = steps[0], c2 = steps[1];
+    for (let i = 0; i < steps.length - 1; i++) {
+      if (timeFloat >= steps[i].time && timeFloat <= steps[i + 1].time) {
+        c1 = steps[i];
+        c2 = steps[i + 1];
+        break;
+      }
+    }
+
+    // Smooth-step interpolation to ease color transitions 
+    let t = (timeFloat - c1.time) / (c2.time - c1.time);
+    let factor = t * t * (3 - 2 * t);
+
+    const top = interpolateColor(c1.top, c2.top, factor);
+    const mid = interpolateColor(c1.mid, c2.mid, factor);
+    const bot = interpolateColor(c1.bot, c2.bot, factor);
+
+    return `linear-gradient(to bottom, ${top} 0%, ${mid} 50%, ${bot} 100%)`;
+  };
+
   return (
     <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#010204]">
-      {/* Layered Backgrounds for smooth transition */}
+      {/* Interpolated Sky Background */}
       <div 
-        className={cn(
-          "absolute inset-0 transition-opacity duration-[4000ms] ease-in-out",
-          isNight ? "opacity-100" : "opacity-0"
-        )}
-        style={{ background: 'linear-gradient(to bottom, #010204 0%, #03060c 50%, #050814 100%)' }}
-      />
-      <div 
-        className={cn(
-          "absolute inset-0 transition-opacity duration-[4000ms] ease-in-out",
-          isDusk ? "opacity-100" : "opacity-0"
-        )}
-        style={{ background: 'linear-gradient(to bottom, #050a14 0%, #0b1528 40%, #1c1423 80%, #2f1b1a 100%)' }}
-      />
-      <div 
-        className={cn(
-          "absolute inset-0 transition-opacity duration-[4000ms] ease-in-out",
-          isDay ? "opacity-100" : "opacity-0"
-        )}
-        style={{ background: 'linear-gradient(to bottom, #0a1b33 0%, #152c4e 50%, #1a3a6b 100%)' }}
+        className="absolute inset-0 transition-all duration-1000"
+        style={{ background: getSkyGradient(timeFloat) }}
       />
       
       {/* Dynamic Background Element (Celestial Disc) */}
@@ -261,10 +298,8 @@ export function InteractiveBackground() {
 
       {/* Aurora Borealis Effect - Gentle color hues for night time */ }
       <div 
-        className={cn(
-          "absolute inset-0 overflow-hidden pointer-events-none z-10 transition-opacity duration-[4000ms] ease-in-out",
-          isNight ? "opacity-50 md:opacity-70" : (isDusk ? "opacity-20" : "opacity-0")
-        )}
+        className="absolute inset-0 overflow-hidden pointer-events-none z-10 transition-opacity ease-linear"
+        style={{ opacity: nightOpacity * 0.7 + duskOpacity * 0.2 + dawnOpacity * 0.2 }}
       >
         <motion.div
            animate={{
