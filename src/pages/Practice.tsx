@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Wind, Zap, ArrowLeft, Move, Compass, Activity } from 'lucide-react';
+import { Wind, Zap, ArrowLeft, Move, Compass, Activity, Lock } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import { useProgress } from '../contexts/ProgressContext';
 import { BREATH_PATTERNS, BreathPattern } from '../data/breathPatterns';
@@ -63,6 +63,9 @@ export default function Practice() {
   const { language } = useLanguage();
   const { progress } = useProgress();
   const [activeCategory, setActiveCategory] = useState<'breath' | 'movement' | 'grounding' | 'swaying' | 'microdoses' | null>(null);
+  const [lockedCategoryAttempt, setLockedCategoryAttempt] = useState<'grounding' | 'microdoses' | null>(null);
+
+  const hasFoundation = progress.completedChapters.length > 0;
 
   const completedBreathsCount = progress.completedBreaths.length;
   
@@ -361,132 +364,208 @@ export default function Practice() {
         </p>
       </header>
 
-      <div className="grid grid-cols-1 gap-8 pb-12 max-w-4xl mx-auto w-full">
-        {/* Grounding Card */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-12 max-w-5xl mx-auto w-full">
+        {/* Mindful Movement Card (Wide) */}
         <div role="button" tabIndex={0}
-          onClick={() => setActiveCategory('grounding')}
-          className="group relative block p-8 md:p-10 shape-cloud-1 glass-card transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-emerald-500/20 w-full text-left"
+          onClick={() => setActiveCategory('movement')}
+          className="md:col-span-2 group relative block p-6 md:p-8 shape-cloud-3 glass-card flex-col flex justify-between min-h-[240px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-indigo-500/20 overflow-hidden text-left"
         >
-          <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 blur-[80px] -mr-32 -mt-32 rounded-full pointer-events-none transition-transform group-hover:scale-150 duration-1000" />
+          <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-indigo-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-8 relative z-10">
-            <div className="w-20 h-20 shrink-0 shape-cloud-2 bg-emerald-400/10 flex items-center justify-center text-emerald-400 border border-emerald-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
-              <Compass size={36} strokeWidth={1.5} />
+          <div className="flex justify-between items-start mb-8 relative z-10 w-full">
+            <div className="w-14 h-14 shrink-0 shape-cloud-5 bg-indigo-400/15 flex items-center justify-center text-indigo-400 border border-indigo-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
+              <Activity size={28} strokeWidth={1.5} />
             </div>
-            <div className="space-y-3 text-center md:text-left flex-1">
-              <h3 className="text-3xl md:text-4xl font-serif text-white/90 italic flex items-center justify-center md:justify-start gap-2">
-                {language === 'en' ? 'Grounding Practice' : 'Πρακτική Γείωσης'}
-                <ConceptInfoIcon conceptId="grounding" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
-              </h3>
-              <p className="text-white/50 font-sans max-w-xl text-[15px] md:text-[17px] leading-relaxed">
-                {language === 'en' 
-                 ? 'A focused practice incorporating gravity, breath, space, and attention.' 
-                 : 'Μια στοχευμένη πρακτική που συνδυάζει βαρύτητα, αναπνοή, χώρο και προσοχή.'}
-              </p>
-            </div>
+            <ConceptInfoIcon conceptId="proprioception" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
           </div>
-        </div>
-        
-        {/* Breath Rhythms Card */}
-        <div role="button" tabIndex={0}
-          onClick={() => setActiveCategory('breath')}
-          className="group relative block p-8 md:p-10 shape-cloud-2 glass-card transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-teal-500/20 w-full text-left"
-        >
-          <div className="absolute bottom-0 right-0 w-64 h-64 bg-teal-500/5 blur-[80px] -mr-32 -mb-32 rounded-full pointer-events-none transition-transform group-hover:scale-150 duration-1000" />
           
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-8 relative z-10">
-            <div className="w-20 h-20 shrink-0 shape-cloud-4 bg-teal-400/10 flex items-center justify-center text-teal-400 border border-teal-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
-              <Wind size={36} strokeWidth={1.5} />
-            </div>
-            <div className="space-y-3 text-center md:text-left flex-1">
-              <h3 className="text-3xl md:text-4xl font-serif text-white/90 italic flex items-center justify-center md:justify-start gap-2">
-                {language === 'en' ? 'Breath & Sleep' : 'Ρυθμοί Αναπνοής & Ύπνου'}
-                <ConceptInfoIcon conceptId="vagus_nerve" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
-              </h3>
-              <p className="text-white/50 font-sans max-w-xl text-[15px] md:text-[17px] leading-relaxed">
-                {language === 'en' 
-                 ? 'Specific breathing techniques to calm the nervous system, prepare for sleep, or find balance.' 
-                 : 'Στοχευμένοι ρυθμοί αναπνοής για χαλάρωση του νευρικού συστήματος, ύπνο και συγκέντρωση.'}
-              </p>
-            </div>
+          <div className="space-y-2 relative z-10 mt-auto w-full">
+            <h3 className="text-2xl md:text-3xl font-serif text-white/90 italic leading-tight">
+              {language === 'en' ? 'Mindful Movement' : 'Ενσυνείδητη Κίνηση'}
+            </h3>
+            <p className="text-white/50 font-sans text-[14px] leading-relaxed max-w-lg">
+              {language === 'en' 
+               ? 'Synch your breath with slow, deliberate physical movements for deep nervous system regulation.' 
+               : 'Συγχρονισμός της αναπνοής με αργές, συνειδητές κινήσεις του σώματος για βαθιά χαλάρωση.'}
+            </p>
           </div>
         </div>
 
-        {/* Mindful Movement Card */}
+        {/* Breath Rhythms Card */}
         <div role="button" tabIndex={0}
-          onClick={() => setActiveCategory('movement')}
-          className="group relative block p-8 md:p-10 shape-cloud-3 glass-card transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-indigo-500/20 w-full text-left"
+          onClick={() => setActiveCategory('breath')}
+          className="col-span-1 group relative block p-6 md:p-8 shape-cloud-2 glass-card flex-col flex justify-between min-h-[240px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-teal-500/20 overflow-hidden text-left"
         >
-          <div className="absolute top-1/2 right-0 w-64 h-64 bg-indigo-500/5 blur-[80px] -mr-32 rounded-full pointer-events-none transition-transform group-hover:scale-150 duration-1000" />
+          <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-teal-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-8 relative z-10">
-            <div className="w-20 h-20 shrink-0 shape-cloud-5 bg-indigo-400/10 flex items-center justify-center text-indigo-400 border border-indigo-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
-              <Activity size={36} strokeWidth={1.5} />
+          <div className="flex justify-between items-start mb-8 relative z-10 w-full">
+            <div className="w-14 h-14 shrink-0 shape-cloud-4 bg-teal-400/15 flex items-center justify-center text-teal-400 border border-teal-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
+              <Wind size={28} strokeWidth={1.5} />
             </div>
-            <div className="space-y-3 text-center md:text-left flex-1">
-              <h3 className="text-3xl md:text-4xl font-serif text-white/90 italic flex items-center justify-center md:justify-start gap-2">
-                {language === 'en' ? 'Mindful Movement' : 'Ενσυνείδητη Κίνηση'}
-                <ConceptInfoIcon conceptId="proprioception" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
-              </h3>
-              <p className="text-white/50 font-sans max-w-xl text-[15px] md:text-[17px] leading-relaxed">
-                {language === 'en' 
-                 ? 'Synch your breath with slow, deliberate physical movements.' 
-                 : 'Συγχρονισμός της αναπνοής με αργές, συνειδητές κινήσεις του σώματος για βαθιά χαλάρωση.'}
-              </p>
-            </div>
+            <ConceptInfoIcon conceptId="vagus_nerve" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
+          </div>
+          
+          <div className="space-y-2 relative z-10 mt-auto w-full">
+            <h3 className="text-2xl font-serif text-white/90 italic leading-tight">
+              {language === 'en' ? 'Breath rhythms' : 'Ρυθμοί Αναπνοής'}
+            </h3>
+            <p className="text-white/50 font-sans text-[14px] leading-relaxed">
+              {language === 'en' 
+               ? 'Specific techniques to calm the mind.' 
+               : 'Στοχευμένοι ρυθμοί αναπνοής για χαλάρωση.'}
+            </p>
           </div>
         </div>
 
         {/* Swaying Card */}
         <div role="button" tabIndex={0}
           onClick={() => setActiveCategory('swaying')}
-          className="group relative block p-8 md:p-10 shape-cloud-4 glass-card transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-sky-500/20 w-full text-left"
+          className="col-span-1 group relative block p-6 md:p-8 shape-cloud-4 glass-card flex-col flex justify-between min-h-[240px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-sky-500/20 overflow-hidden text-left"
         >
-          <div className="absolute top-1/2 right-1/2 w-64 h-64 bg-sky-500/5 blur-[80px] -mr-32 -mt-32 rounded-full pointer-events-none transition-transform group-hover:scale-150 duration-1000" />
+          <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-sky-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-8 relative z-10">
-            <div className="w-20 h-20 shrink-0 shape-cloud-2 bg-sky-400/10 flex items-center justify-center text-sky-400 border border-sky-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
-              <Move size={36} strokeWidth={1.5} />
+          <div className="flex justify-between items-start mb-8 relative z-10 w-full">
+            <div className="w-14 h-14 shrink-0 shape-cloud-2 bg-sky-400/15 flex items-center justify-center text-sky-400 border border-sky-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
+              <Move size={28} strokeWidth={1.5} />
             </div>
-            <div className="space-y-3 text-center md:text-left flex-1">
-              <h3 className="text-3xl md:text-4xl font-serif text-white/90 italic flex items-center justify-center md:justify-start gap-2">
-                {language === 'en' ? 'Mindful Swaying' : 'Ενσυνείδητη Αιώρηση (Swaying)'}
-                <ConceptInfoIcon conceptId="polyvagal" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
-              </h3>
-              <p className="text-white/50 font-sans max-w-xl text-[15px] md:text-[17px] leading-relaxed">
-                {language === 'en' 
-                 ? 'A deep rhythmic swaying practice integrating Web Audio metronome to anchor your nervous system.' 
-                 : 'Μια βαθιά ρυθμική αιώρηση με μετρονόμο για τη γείωση του νευρικού συστήματος.'}
-              </p>
+            <ConceptInfoIcon conceptId="polyvagal" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
+          </div>
+          
+          <div className="space-y-2 relative z-10 mt-auto w-full">
+            <h3 className="text-2xl font-serif text-white/90 italic leading-tight">
+              {language === 'en' ? 'Mindful Swaying' : 'Ενσυνείδητη Αιώρηση'}
+            </h3>
+            <p className="text-white/50 font-sans text-[14px] leading-relaxed">
+              {language === 'en' 
+               ? 'A rhythmic practice to anchor your nervous system.' 
+               : 'Βαθιά ρυθμική αιώρηση με μετρονόμο για γείωση.'}
+            </p>
+          </div>
+        </div>
+
+        {/* Grounding Card */}
+        <div role="button" tabIndex={0}
+          onClick={() => hasFoundation ? setActiveCategory('grounding') : setLockedCategoryAttempt('grounding')}
+          className="col-span-1 group relative block p-6 md:p-8 shape-cloud-1 glass-card flex-col flex justify-between min-h-[240px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-emerald-500/20 overflow-hidden text-left"
+        >
+          <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-emerald-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
+          
+          <div className="flex justify-between items-start mb-8 relative z-10 w-full">
+            <div className="w-14 h-14 shrink-0 shape-cloud-2 bg-emerald-400/15 flex items-center justify-center text-emerald-400 border border-emerald-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
+              <Compass size={28} strokeWidth={1.5} />
             </div>
+            
+            <div className="flex items-center gap-2">
+              <ConceptInfoIcon conceptId="grounding" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
+              {!hasFoundation && (
+                <div className="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500/80">
+                  <Lock size={14} />
+                </div>
+              )}
+            </div>
+          </div>
+          
+          <div className="space-y-2 relative z-10 mt-auto w-full">
+            {!hasFoundation && (
+              <div className="text-[9px] uppercase tracking-wider text-amber-500/80 font-bold mb-1">
+                {language === 'el' ? 'Προτεινεται Θεωρια' : 'Theory Recommended'}
+              </div>
+            )}
+            <h3 className="text-2xl font-serif text-white/90 italic leading-tight">
+              {language === 'en' ? 'Grounding' : 'Πρακτική Γείωσης'}
+            </h3>
+            <p className="text-white/50 font-sans text-[14px] leading-relaxed">
+              {language === 'en' 
+               ? 'Incorporate static gravity, space, and attention.' 
+               : 'Στοχευμένη πρακτική εστίασης της προσοχής.'}
+            </p>
           </div>
         </div>
 
         {/* Microdoses Card */}
         <div role="button" tabIndex={0}
-          onClick={() => setActiveCategory('microdoses')}
-          className="group relative block p-8 md:p-10 shape-cloud-5 glass-card transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-amber-500/20 w-full text-left"
+          onClick={() => hasFoundation ? setActiveCategory('microdoses') : setLockedCategoryAttempt('microdoses')}
+          className="col-span-1 group relative block p-6 md:p-8 shape-cloud-5 glass-card flex-col flex justify-between min-h-[240px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-amber-500/20 overflow-hidden text-left"
         >
-          <div className="absolute bottom-0 right-0 w-64 h-64 bg-amber-500/5 blur-[80px] -mr-32 -mb-32 rounded-full pointer-events-none transition-transform group-hover:scale-150 duration-1000" />
+          <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-amber-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-8 relative z-10">
-            <div className="w-20 h-20 shrink-0 shape-cloud-1 bg-amber-400/10 flex items-center justify-center text-amber-400 border border-amber-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
-              <Zap size={36} strokeWidth={1.5} />
+          <div className="flex justify-between items-start mb-8 relative z-10 w-full">
+            <div className="w-14 h-14 shrink-0 shape-cloud-1 bg-amber-400/15 flex items-center justify-center text-amber-400 border border-amber-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
+              <Zap size={28} strokeWidth={1.5} />
             </div>
-            <div className="space-y-3 text-center md:text-left flex-1">
-              <h3 className="text-3xl md:text-4xl font-serif text-white/90 italic flex items-center justify-center md:justify-start gap-2">
-                {language === 'en' ? 'Invisible Microdoses' : 'Αόρατες Μικροδόσεις'}
-                <ConceptInfoIcon conceptId="neuroplasticity" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
-              </h3>
-              <p className="text-white/50 font-sans max-w-xl text-[15px] md:text-[17px] leading-relaxed">
-                {language === 'en' 
-                 ? 'Stealth practices you can do anywhere without being noticed.' 
-                 : 'Αόρατες πρακτικές που γίνονται παντού χωρίς να σε καταλάβει κανείς.'}
-              </p>
+            
+            <div className="flex items-center gap-2">
+              <ConceptInfoIcon conceptId="neuroplasticity" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
+              {!hasFoundation && (
+                <div className="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500/80">
+                  <Lock size={14} />
+                </div>
+              )}
             </div>
+          </div>
+          
+          <div className="space-y-2 relative z-10 mt-auto w-full">
+            {!hasFoundation && (
+              <div className="text-[9px] uppercase tracking-wider text-amber-500/80 font-bold mb-1">
+                {language === 'el' ? 'Προτεινεται Θεωρια' : 'Theory Recommended'}
+              </div>
+            )}
+            <h3 className="text-2xl font-serif text-white/90 italic leading-tight">
+              {language === 'en' ? 'Microdoses' : 'Μικροδόσεις'}
+            </h3>
+            <p className="text-white/50 font-sans text-[14px] leading-relaxed">
+              {language === 'en' 
+               ? 'Stealth practices you can do anywhere unnoticed.' 
+               : 'Αόρατες πρακτικές που γίνονται παντού χωρίς να φανεί.'}
+            </p>
           </div>
         </div>
       </div>
+      
+      {lockedCategoryAttempt && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="bg-[#0a1520] border border-white/10 rounded-[2rem] p-6 max-w-sm w-full shadow-2xl relative">
+            <div className="flex justify-center mb-4">
+              <div className="w-16 h-16 rounded-full bg-amber-500/10 flex items-center justify-center border border-amber-500/20">
+                <Lock size={28} className="text-amber-500/80" />
+              </div>
+            </div>
+            
+            <h3 className="text-2xl font-serif text-white italic text-center mb-2">
+              {language === 'el' ? 'Προτείνεται Θεωρία' : 'Theory Recommended'}
+            </h3>
+            
+            <p className="text-white/60 text-center mb-8 font-sans leading-relaxed text-[15px]">
+              {language === 'el' 
+                ? 'Οι ασκήσεις πνευματικής εξάσκησης είναι πιο αποτελεσματικές αν έχετε ήδη διαβάσει κάποια βασικά στοιχεία. Σας προτείνουμε να διαβάσετε το 1ο Κεφάλαιο του Εγχειριδίου πριν ξεκινήσετε.'
+                : 'Mental exercises are more effective with a foundation. We recommend reading Chapter 1 of the Workbook before you begin.'}
+            </p>
+            
+            <div className="flex flex-col gap-3">
+              <button 
+                onClick={() => {
+                  setLockedCategoryAttempt(null);
+                  navigate('/chapters/1');
+                }}
+                className="w-full py-4 px-6 rounded-2xl bg-white/10 hover:bg-white/15 text-white transition-all active:scale-[0.98] font-medium border border-white/5"
+              >
+                {language === 'el' ? 'Άνοιγμα Κεφαλαίου 1' : 'Open Chapter 1'}
+              </button>
+              
+              <button 
+                onClick={() => {
+                  const cat = lockedCategoryAttempt;
+                  setLockedCategoryAttempt(null);
+                  setActiveCategory(cat as any);
+                }}
+                className="w-full py-4 px-6 rounded-2xl text-white/50 hover:text-white/80 transition-all active:scale-[0.98] text-sm"
+              >
+                {language === 'el' ? 'Θέλω να συνεχίσω ούτως ή άλλως' : 'I want to continue anyway'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
