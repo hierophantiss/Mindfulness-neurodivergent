@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet, useLocation, Navigate } from 'react-router-dom';
+import { useOutlet, useLocation, Navigate } from 'react-router-dom';
 import { cn } from '../lib/utils';
 import Companion from './Companion';
 import NavigationMenu from './NavigationMenu';
@@ -14,6 +14,7 @@ import { SEO } from './SEO';
 export default function Layout() {
   const { t } = useLanguage();
   const location = useLocation();
+  const outlet = useOutlet();
   const mainRef = React.useRef<HTMLElement>(null);
 
   const isPrerendering = typeof window !== 'undefined' && ((window as any).__PRERENDER_INJECTED || navigator.userAgent.includes('jsdom') || navigator.userAgent.includes('HeadlessChrome'));
@@ -53,13 +54,14 @@ export default function Layout() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={location.pathname}
-                initial={{ opacity: 0, scale: 0.98, filter: 'blur(4px)' }}
-                animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-                exit={{ opacity: 0, scale: 0.98, filter: 'blur(4px)' }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
                 className="flex flex-col flex-1 h-full w-full"
               >
-                <Outlet />
+                {/* React Router v6 useOutlet keeps the right context for the unmounting route. */}
+                {outlet ? React.cloneElement(outlet as React.ReactElement, { key: location.pathname }) : null}
               </motion.div>
             </AnimatePresence>
           </div>
