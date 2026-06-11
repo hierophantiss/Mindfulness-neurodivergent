@@ -63,9 +63,7 @@ export default function Dashboard() {
 
   const [greeting, setGreeting] = useState('');
   const [currentDate, setCurrentDate] = useState('');
-  const [activeMood, setActiveMood] = useState<number | null>(null);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
-  const [isStateCheckinOpen, setIsStateCheckinOpen] = useState(false);
   const [intentionState, setIntentionState] = useState(localStorage.getItem('n_mindfulness_intention') || 'autism');
 
   useEffect(() => {
@@ -89,37 +87,6 @@ export default function Dashboard() {
   };
 
   const intentionDisplay = getIntentionDisplay();
-
-  
-  const handleMoodSelect = (moodId: number) => {
-    setActiveMood(moodId);
-    
-    let msgEl = "";
-    let msgEn = "";
-    
-    switch (moodId) {
-      case 1: // 😔
-        msgEl = "Η ακινησία μπορεί να είναι ένα ασφαλές μέρος. Αν θέλεις, μπορείς απλά να νιώσεις τη βαρύτητα στο σώμα σου, χωρίς να αλλάξεις τίποτα.";
-        msgEn = "Stillness can be a safe place. If you'd like, you can simply feel gravity anchoring your body, without needing to change anything.";
-        break;
-      case 2: // 😐
-        msgEl = "Δεν υπάρχει λόγος πίεσης. Ίσως ένας βαθιός, ελεύθερος αναστεναγμός να δημιουργήσει λίγο περισσότερο χώρο.";
-        msgEn = "There is no need to force anything. Perhaps a deep, free sigh might gently create a little more space.";
-        break;
-      case 3: // 🙂
-        msgEl = "Η ανοιχτή προσοχή μοιάζει με τον γαλάζιο ουρανό. Τα φαινόμενα περνούν, ο χώρος παραμένει ελεύθερος.";
-        msgEn = "Open awareness is like the blue sky. Phenomena pass by, but the space remains free.";
-        break;
-      case 4: // 😄
-        msgEl = "Η ζωτικότητα ρέει αβίαστα. Είναι μια όμορφη στιγμή απλώς για να παρατηρήσεις αυτή την ενέργεια καθώς απλώνεται.";
-        msgEn = "Vitality flows effortlessly. It is a beautiful moment just to observe this energy as it expands.";
-        break;
-    }
-    
-    setTimeout(() => {
-    	setCompanionMessage(language === 'el' ? msgEl : msgEn);
-    }, 300); // slight delay for a more natural feel
-  };
 
   // Show welcome modal on first visit
   useEffect(() => {
@@ -278,19 +245,13 @@ export default function Dashboard() {
             </h1>
             <Sparkles size={22} className="text-white opacity-80" strokeWidth={1.5} />
           </div>
-          
-          <button 
-            onClick={() => setIsStateCheckinOpen(true)}
-            className="self-start rounded-full bg-white/[0.04] border border-white/[0.1] hover:bg-white/10 active:scale-95 transition-all text-xs font-medium px-3 py-1.5 flex items-center gap-2 mt-1"
-          >
-            <span className="text-white/60">
-              {language === 'el' ? 'Σήμερα εστιάζω στην' : 'Today I\'m focused on'}:
-            </span>
-            <span className="text-white flex items-center gap-1.5">
-              <span>{intentionDisplay.icon}</span>
-              <span>{language === 'el' ? intentionDisplay.el : intentionDisplay.en}</span>
-            </span>
-          </button>
+        </div>
+
+        {/* State Check-in as Primary Action */}
+        <div className="mt-2 w-full z-20">
+          <StateCheckin inline onComplete={() => {
+             setIntentionState(localStorage.getItem('n_mindfulness_intention') || 'autism'); 
+          }} />
         </div>
 
         {/* Central Geometric Core */}
@@ -444,13 +405,6 @@ export default function Dashboard() {
         
       </div>
       <InfoModal isOpen={isInfoOpen} onClose={() => setIsInfoOpen(false)} />
-      {isStateCheckinOpen && (
-        <StateCheckin onComplete={() => { 
-          setIsStateCheckinOpen(false);
-          // Manually pull next state just in case listener missed it
-          setIntentionState(localStorage.getItem('n_mindfulness_intention') || 'autism'); 
-        }} />
-      )}
     </div>
   );
 }

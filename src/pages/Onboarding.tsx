@@ -6,6 +6,7 @@ import { useLanguage } from '../hooks/useLanguage';
 import { cn } from '../lib/utils';
 import { RainbowInfinity } from '../components/RainbowInfinity';
 import { CatInfinityAvatar } from '../components/CatInfinityAvatar';
+import CoreGeometricState from '../components/CoreGeometricState';
 
 export default function Onboarding() {
   const [step, setStep] = useState(0);
@@ -21,9 +22,8 @@ export default function Onboarding() {
   const handleComplete = () => {
     localStorage.setItem('hasCompletedOnboarding', 'true');
     localStorage.setItem('hasSeenIntro', 'true');
-    // Set intention to audhd by default since we removed the selection
     localStorage.setItem('n_mindfulness_intention', 'audhd');
-    navigate('/dashboard', { replace: true });
+    navigate('/practice/breath/lotus-fourfold', { replace: true }); // Routing to the first grounding practice
   };
 
   const nextStep = () => {
@@ -35,6 +35,67 @@ export default function Onboarding() {
   };
 
   const steps = [
+    {
+      id: 'language',
+      content: (
+        <div className="flex flex-col items-center text-center space-y-12">
+          <div className="space-y-4">
+            <h1 className="text-3xl md:text-4xl font-serif italic text-white tracking-tight">
+              Select Language
+            </h1>
+            <p className="text-white/50 font-sans">Επιλογή Γλώσσας</p>
+          </div>
+          <div className="flex gap-4">
+            <button
+              onClick={() => { setLanguage('el'); nextStep(); }}
+              className="px-8 py-4 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 text-white transition-all active:scale-95"
+            >
+              Ελληνικά
+            </button>
+            <button
+              onClick={() => { setLanguage('en'); nextStep(); }}
+              className="px-8 py-4 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 text-white transition-all active:scale-95"
+            >
+              English
+            </button>
+          </div>
+          
+          <button
+            onClick={() => {
+              const input = document.createElement('input');
+              input.type = 'file';
+              input.accept = 'application/json';
+              input.onchange = (e) => {
+                const file = (e.target as HTMLInputElement).files?.[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                  try {
+                    const result = event.target?.result as string;
+                    const parsed = JSON.parse(result);
+                    if (parsed && typeof parsed === 'object') {
+                      localStorage.setItem('mindful_companion_v5', JSON.stringify(parsed));
+                      localStorage.setItem('hasCompletedOnboarding', 'true');
+                      localStorage.setItem('hasSeenIntro', 'true');
+                      alert('Restore successful!');
+                      window.location.href = '/#/dashboard';
+                      window.location.reload();
+                    }
+                  } catch (err) {
+                    alert('Error reading backup file.');
+                  }
+                };
+                reader.readAsText(file);
+              };
+              input.click();
+            }}
+            className="text-[11px] text-white/30 hover:text-white/60 transition-colors uppercase tracking-widest font-bold mt-12"
+          >
+            ΕΠΑΝΑΦΟΡΑ ΔΕΔΟΜΕΝΩΝ (BACKUP)
+          </button>
+        </div>
+      )
+    },
     {
       id: 'welcome',
       content: (
@@ -48,28 +109,70 @@ export default function Onboarding() {
             </h1>
             <p className="text-lg md:text-xl text-white/60 font-sans max-w-md mx-auto leading-relaxed">
               {language === 'el' 
-                ? 'Στον χώρο ηρεμίας που σχεδιάστηκε για νευροδιαφορετικά άτομα.' 
-                : 'To a space of calm designed for neurodivergent minds.'}
+                ? 'Ένας χώρος που σχεδιάστηκε για νευροδιαφορετικά μυαλά. Δεν χρειάζεται να αδειάσεις το μυαλό σου. Δεν χρειάζεται να είσαι «σωστός». Χρειάζεται μόνο να είσαι εδώ.' 
+                : 'A space designed for neurodivergent minds. You don\'t need to empty your mind. You don\'t need to be "correct". You just need to be here.'}
             </p>
           </div>
         </div>
       )
     },
     {
-      id: 'app-intro',
+      id: 'method',
       content: (
-        <div className="flex flex-col items-center text-center space-y-8 max-w-lg mx-auto">
-          <div className="w-20 h-20 rounded-2xl bg-teal-500/10 flex items-center justify-center border border-teal-500/20 mb-2 mx-auto">
-            <Compass size={32} className="text-teal-400 animate-[spin_30s_linear_infinite]" />
+        <div className="flex flex-col items-center text-center space-y-8 w-full max-w-xl mx-auto">
+          <div className="w-full scale-75 origin-top mb-[-60px]">
+            <CoreGeometricState />
           </div>
-          <div className="space-y-4">
+          <div className="space-y-3 relative z-10">
             <h2 className="text-3xl font-serif italic text-white tracking-tight">
-              {language === 'el' ? 'Ένα Ψηφιακό Καταφύγιο' : 'A Digital Sanctuary'}
+              {language === 'el' ? 'Τέσσερα βήματα. Ένα κάθε φορά.' : 'Four steps. One at a time.'}
             </h2>
-            <p className="text-base text-white/60 font-sans leading-relaxed">
+            <p className="text-base text-white/50 max-w-md mx-auto">
               {language === 'el' 
-                ? 'Η εφαρμογή μας είναι ένας ασφαλής χώρος επιβράδυνσης. Περιλαμβάνει 7 μοναδικά τμήματα: από θεωρία και πρακτικές αναπνοής, κίνησης ή προσοχής, μέχρι το προσωπικό σας Ημερολόγιο και ατμοσφαιρικούς ήχους περιβάλλοντος για χαλάρωση.' 
-                : 'Our application is a safe space for slowing down. It includes 7 unique sections: from theory and practices of breath, movement, or attention, to your personal Journal and atmospheric ambient sounds for complete relaxation.'}
+                ? 'Σώμα · Αναπνοή · Προσοχή · Χώρος\nΚάθε βήμα χτίζει πάνω στο προηγούμενο. Ξεκινάς από τη βαρύτητα — κάτι που είναι πάντα εκεί.' 
+                : 'Body · Breath · Attention · Space\nEach step builds on the previous one. You start with gravity — something that is always there.'}
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4 w-full relative z-10">
+            {[
+              { icon: Anchor, color: 'text-indigo-400', bg: 'bg-indigo-500/10', title: { el: 'Σώμα', en: 'Body' } },
+              { icon: Wind, color: 'text-teal-400', bg: 'bg-teal-500/10', title: { el: 'Αναπνοή', en: 'Breath' } },
+              { icon: Focus, color: 'text-amber-400', bg: 'bg-amber-500/10', title: { el: 'Προσοχή', en: 'Attention' } },
+              { icon: Maximize, color: 'text-rose-400', bg: 'bg-rose-500/10', title: { el: 'Χώρος', en: 'Space' } }
+            ].map((axis, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className={cn("flex flex-col items-center p-4 rounded-3xl border border-white/5", axis.bg)}
+              >
+                <axis.icon size={24} className={axis.color} />
+                <span className="mt-2 font-serif italic text-white/90 text-sm">
+                  {language === 'el' ? axis.title.el : axis.title.en}
+                </span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      )
+    },
+    {
+      id: 'philosophy',
+      content: (
+        <div className="flex flex-col items-center text-center space-y-8">
+          <div className="w-20 h-20 rounded-2xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20 mb-2 mx-auto">
+            <Shield size={32} className="text-indigo-400" />
+          </div>
+          <div className="space-y-4 w-full max-w-lg mx-auto">
+            <h2 className="text-3xl font-serif italic text-white tracking-tight">
+              {language === 'el' ? 'Ο νους σου δεν είναι σπασμένος' : 'Your mind is not broken'}
+            </h2>
+            <p className="text-base text-white/50 font-sans leading-relaxed whitespace-pre-line">
+              {language === 'el' 
+                ? 'Εδώ δεν πολεμάς τις σκέψεις σου.\nΔεν υπάρχει «σωστός» τρόπος να κάνεις αυτές τις ασκήσεις.\nΗ διάσπαση δεν είναι αποτυχία — είναι η ίδια η πρακτική.'
+                : 'Here you do not fight your thoughts.\nThere is no "right" way to do these practices.\nDistraction is not a failure — it is the practice itself.'}
             </p>
           </div>
         </div>
@@ -87,88 +190,35 @@ export default function Onboarding() {
           </div>
           <div className="space-y-4">
             <h2 className="text-3xl font-serif italic text-white tracking-tight">
-              {language === 'el' ? 'Ο Προσωπικός σας Συνοδός' : 'Your Personal Companion'}
+              {language === 'el' ? 'Δεν είσαι μόνος' : 'You are not alone'}
             </h2>
             <p className="text-base text-white/60 font-sans leading-relaxed">
               {language === 'el' 
-                ? 'Στην κάτω δεξιά γωνία κατοικεί ο ψηφιακός σας συνοδός (η μικρή μας γάτα). Παρακολουθεί διακριτικά την πρόοδό σας, σας βοηθά να βρείτε ασκήσεις όταν πιέζεστε και κρατά σταθερό το νήμα της πρακτικής σας στο Πρόγραμμα ή στην Εξερεύνηση.' 
-                : 'Living in the bottom-right corner is your digital companion (our little cat). It quietly tracks your progress, helps you find exercises when you are overwhelmed, and keeps the thread of your practice steady across the Program or Exploration.'}
+                ? 'Στην κάτω γωνία θα βρεις τον συνοδό σου. Δεν μιλά πολύ. Απλώς είναι εκεί.' 
+                : 'In the bottom corner you will find your companion. It doesn\'t speak much. It\'s just there.'}
             </p>
           </div>
         </div>
       )
     },
     {
-      id: 'philosophy',
+      id: 'first-step',
       content: (
-        <div className="flex flex-col items-center text-center space-y-8">
-          <div className="w-20 h-20 rounded-2xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20 mb-2 mx-auto">
-            <Shield size={32} className="text-indigo-400" />
+        <div className="flex flex-col items-center text-center space-y-12">
+          {/* Geometric subtle point */}
+          <div className="relative w-32 h-32 flex items-center justify-center">
+            <div className="absolute w-full h-full bg-indigo-500/10 rounded-full blur-2xl animate-pulse" />
+            <div className="w-4 h-4 bg-indigo-400 rounded-full shadow-[0_0_15px_rgba(129,140,248,0.8)]" />
+            <div className="absolute w-12 h-12 border border-indigo-400/30 rounded-full animate-[ping_3s_ease-in-out_infinite]" />
           </div>
-          <div className="space-y-4 w-full max-w-lg mx-auto">
-            <h2 className="text-3xl font-serif italic text-white tracking-tight">
-              {language === 'el' ? 'Αποενοχοποίηση της Προσοχής' : 'Destigmatizing Attention'}
-            </h2>
-            <p className="text-base text-white/50 font-sans leading-relaxed">
-              {language === 'el' 
-                ? 'Εδώ δεν χρειάζεται να "αδειάσετε το μυαλό σας" ούτε να ελέγξετε τις σκέψεις σας. Μαθαίνουμε να παρατηρούμε με ευγένεια, χωρίς κριτική.'
-                : 'Here you do not need to "empty your mind" or control your thoughts. We learn to observe with kindness, without judgment.'}
-            </p>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: 'axes',
-      content: (
-        <div className="flex flex-col items-center text-center space-y-10 w-full max-w-xl mx-auto">
-          <div className="space-y-3">
-            <h2 className="text-3xl font-serif italic text-white tracking-tight">
-              {language === 'el' ? 'Τα Τέσσερα Στοιχεία' : 'The Four Elements'}
-            </h2>
-            <p className="text-sm md:text-base text-white/50 max-w-md mx-auto">
-              {language === 'el' 
-                ? 'Μια μέθοδος σταδιακής επανασύνδεσης με τα βασικά στοιχεία: Γη, Ουρανός / Αέρας, Φωτιά και Νερό.' 
-                : 'A gradual reconnection method with the basic elements: Earth, Sky / Air, Fire, and Water.'}
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-4 w-full">
-            {[
-              { icon: Anchor, color: 'text-indigo-400', bg: 'bg-indigo-500/10', title: { el: 'Σώμα (Γη)', en: 'Body (Earth)' } },
-              { icon: Wind, color: 'text-teal-400', bg: 'bg-teal-500/10', title: { el: 'Ανάσα (Ουρανός)', en: 'Breath (Sky)' } },
-              { icon: Focus, color: 'text-amber-400', bg: 'bg-amber-500/10', title: { el: 'Προσοχή (Φωτιά)', en: 'Focus (Fire)' } },
-              { icon: Maximize, color: 'text-rose-400', bg: 'bg-rose-500/10', title: { el: 'Χώρος (Νερό)', en: 'Space (Water)' } }
-            ].map((axis, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className={cn("flex flex-col items-center p-6 rounded-3xl border border-white/5", axis.bg)}
-              >
-                <axis.icon size={28} className={axis.color} />
-                <span className="mt-4 font-serif italic text-white/90 text-sm md:text-base">
-                  {language === 'el' ? axis.title.el : axis.title.en}
-                </span>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      )
-    },
-    {
-      id: 'ready',
-      content: (
-        <div className="flex flex-col items-center text-center space-y-8">
           <div className="space-y-4 max-w-md mx-auto">
             <h2 className="text-4xl font-serif italic text-white tracking-tight">
-              {language === 'el' ? 'Είστε έτοιμοι;' : 'Are you ready?'}
+              {language === 'el' ? 'Ξεκίνα από εδώ' : 'Start here'}
             </h2>
-            <p className="text-lg text-white/50 font-sans leading-relaxed">
+            <p className="text-lg text-white/50 font-sans leading-relaxed whitespace-pre-line">
               {language === 'el' 
-                ? 'Κάθε βήμα εδώ είναι προσωπικό. Ακολουθήστε τον δικό σας ρυθμό.'
-                : 'Every step here is personal. Follow your own pace.'}
+                ? 'Νιώσε τη βαρύτητα.\nΠόδια στο πάτωμα. Σώμα στην καρέκλα.\nΑυτή είναι η πρώτη σου άσκηση — και μόλις την έκανες.'
+                : 'Feel the gravity.\nFeet on the floor. Body in the chair.\nThis is your first practice — and you just did it.'}
             </p>
           </div>
         </div>
@@ -179,14 +229,16 @@ export default function Onboarding() {
   return (
     <div className="fixed inset-0 z-[200] bg-[#0a1118] text-white flex flex-col justify-between overflow-hidden">
       
-      {/* Top bar with language toggle for convenience */}
-      <div className="pt-safe px-6 py-6 flex justify-end">
-        <button 
-          onClick={() => setLanguage(language === 'en' ? 'el' : 'en')}
-          className="px-4 py-2 rounded-full border border-white/10 text-xs font-bold tracking-widest text-white/40 hover:bg-white/5 hover:text-white transition-all duration-300 active:scale-95"
-        >
-          {language === 'en' ? 'ΕΛ' : 'EN'}
-        </button>
+      {/* Top bar with language toggle for convenience (hidden on first step) */}
+      <div className="pt-safe px-6 py-6 flex justify-end h-20">
+        {step > 0 && (
+          <button 
+            onClick={() => setLanguage(language === 'en' ? 'el' : 'en')}
+            className="px-4 py-2 rounded-full border border-white/10 text-xs font-bold tracking-widest text-white/40 hover:bg-white/5 hover:text-white transition-all duration-300 active:scale-95"
+          >
+            {language === 'en' ? 'ΕΛ' : 'EN'}
+          </button>
+        )}
       </div>
 
       {/* Main Content Area */}
@@ -206,70 +258,38 @@ export default function Onboarding() {
       </div>
 
       {/* Bottom Controls */}
-      <div className="px-6 pb-20 pt-6 flex flex-col items-center gap-8 z-10 relative">
-        {/* Progress indicators */}
-        <div className="flex gap-3">
-          {steps.map((_, i) => (
-            <div 
-              key={i} 
-              className={cn(
-                "h-1.5 rounded-full transition-all duration-700",
-                i === step ? "w-8 bg-teal-400" : i < step ? "w-2 bg-teal-400/40" : "w-2 bg-white/10"
-              )}
-            />
-          ))}
-        </div>
+      <div className="px-6 pb-20 pt-6 flex flex-col items-center gap-8 z-10 relative h-40 justify-end">
+        {step > 0 && (
+          <>
+            {/* Progress indicators */}
+            <div className="flex gap-3">
+              {steps.slice(1).map((_, i) => (
+                <div 
+                  key={i} 
+                  className={cn(
+                    "h-1.5 rounded-full transition-all duration-700",
+                    i === (step - 1) ? "w-8 bg-teal-400" : i < (step - 1) ? "w-2 bg-teal-400/40" : "w-2 bg-white/10"
+                  )}
+                />
+              ))}
+            </div>
 
-        {/* Action Button */}
-        <div className="flex flex-col items-center gap-4">
-          <button
-            onClick={nextStep}
-            className="flex items-center gap-3 px-8 py-4 bg-teal-500/10 hover:bg-teal-500/20 text-teal-300 rounded-full border border-teal-500/30 transition-all font-medium group active:scale-95"
-          >
-            <span>
-              {step === steps.length - 1 
-                ? (language === 'el' ? 'Έναρξη' : 'Begin') 
-                : (language === 'el' ? 'Συνέχεια' : 'Continue')}
-            </span>
-            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-          </button>
-
-          {step === 0 && (
-            <button
-               onClick={() => {
-                 const input = document.createElement('input');
-                 input.type = 'file';
-                 input.accept = 'application/json';
-                 input.onchange = (e) => {
-                   const file = (e.target as HTMLInputElement).files?.[0];
-                   if (!file) return;
-                   const reader = new FileReader();
-                   reader.onload = (event) => {
-                     try {
-                       const result = event.target?.result as string;
-                       const parsed = JSON.parse(result);
-                       if (parsed && typeof parsed === 'object') {
-                         localStorage.setItem('mindful_companion_v5', JSON.stringify(parsed));
-                         localStorage.setItem('hasCompletedOnboarding', 'true');
-                         localStorage.setItem('hasSeenIntro', 'true');
-                         alert(language === 'el' ? 'Επιτυχής επαναφορά!' : 'Restore successful!');
-                         window.location.href = '/#/dashboard';
-                         window.location.reload();
-                       }
-                     } catch (err) {
-                       alert(language === 'el' ? 'Σφάλμα ανάγνωσης αρχείου.' : 'Error reading backup file.');
-                     }
-                   };
-                   reader.readAsText(file);
-                 };
-                 input.click();
-               }}
-               className="text-[11px] text-white/30 hover:text-white/60 transition-colors uppercase tracking-widest font-bold mt-2"
-            >
-              {language === 'el' ? 'Επαναφορα Δεδομενων (Backup)' : 'Restore from Backup'}
-            </button>
-          )}
-        </div>
+            {/* Action Button */}
+            <div className="flex flex-col items-center gap-4">
+              <button
+                onClick={nextStep}
+                className="flex items-center gap-3 px-8 py-4 bg-teal-500/10 hover:bg-teal-500/20 text-teal-300 rounded-full border border-teal-500/30 transition-all font-medium group active:scale-95"
+              >
+                <span>
+                  {step === steps.length - 1 
+                    ? (language === 'el' ? 'Ξεκινάω' : 'Begin') 
+                    : (language === 'el' ? 'Συνέχεια' : 'Continue')}
+                </span>
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Ambient background effects */}
