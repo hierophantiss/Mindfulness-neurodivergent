@@ -108,7 +108,7 @@ export default function StateCheckin({ onComplete, inline = false }: { onComplet
               exit={{ opacity: 0, x: 20 }}
               className="flex flex-col gap-4 text-center"
             >
-              <h2 className={cn("font-serif text-white/90 italic tracking-tight leading-tight", inline ? "text-xl mb-1" : "text-2xl mb-2")}>
+              <h2 className={cn("font-serif italic tracking-tight leading-tight", inline ? "text-stone-900 dark:text-stone-100 text-xl mb-1" : "text-white/90 text-2xl mb-2")}>
                 {language === 'el' ? 'Πώς νιώθεις το σώμα σου αυτή τη στιγμή;' : 'How does your body feel right now?'}
               </h2>
               
@@ -117,54 +117,54 @@ export default function StateCheckin({ onComplete, inline = false }: { onComplet
                   onClick={() => handleSelect('hyper')}
                   className={cn(
                     "w-full rounded-2xl transition-all text-left flex items-center justify-between group shadow-sm active:scale-[0.98]",
-                    inline ? "p-4 bg-white/5 hover:bg-white/10 border border-white/10" : "p-4 bg-stone-800 hover:bg-stone-700/80 border border-stone-700/80"
+                    inline ? "p-4 bg-white dark:bg-stone-800/80 border border-stone-200 dark:border-stone-700 hover:border-teal-500/50" : "p-4 bg-stone-800 hover:bg-stone-700/80 border border-stone-700/80"
                   )}
                 >
                   <div>
-                    <div className="text-white/90 font-medium mb-1 text-sm md:text-base">
+                    <div className={cn("font-medium mb-1 text-sm md:text-base", inline ? "text-stone-800 dark:text-stone-200" : "text-white/90")}>
                       {language === 'el' ? 'Υπερδιέγερση / Άγχος' : 'Hyperarousal / Anxiety'}
                     </div>
-                    <div className={cn("text-[11px] md:text-xs tracking-wide", inline ? "text-white/50" : "text-stone-400 font-sans")}>
+                    <div className={cn("text-[11px] md:text-xs tracking-wide", inline ? "text-stone-500 dark:text-stone-400" : "text-stone-400 font-sans")}>
                       {language === 'el' ? 'Ένταση, ταχυπαλμία, γρήγορες σκέψεις' : 'Tension, racing heart, fast thoughts'}
                     </div>
                   </div>
-                  <ChevronRight size={18} className={inline ? "text-white/30 group-hover:text-white/60" : "text-stone-500 group-hover:text-stone-300 transition-colors"} />
+                  <ChevronRight size={18} className={inline ? "text-stone-400/50 group-hover:text-stone-500" : "text-stone-500 group-hover:text-stone-300 transition-colors"} />
                 </button>
 
                 <button
                   onClick={() => handleSelect('hypo')}
                   className={cn(
                     "w-full rounded-2xl transition-all text-left flex items-center justify-between group shadow-sm active:scale-[0.98]",
-                    inline ? "p-4 bg-white/5 hover:bg-white/10 border border-white/10" : "p-4 bg-stone-800 hover:bg-stone-700/80 border border-stone-700/80"
+                    inline ? "p-4 bg-white dark:bg-stone-800/80 border border-stone-200 dark:border-stone-700 hover:border-teal-500/50" : "p-4 bg-stone-800 hover:bg-stone-700/80 border border-stone-700/80"
                   )}
                 >
                   <div>
-                    <div className="text-white/90 font-medium mb-1 text-sm md:text-base">
+                    <div className={cn("font-medium mb-1 text-sm md:text-base", inline ? "text-stone-800 dark:text-stone-200" : "text-white/90")}>
                       {language === 'el' ? 'Υποδιέγερση / Μούδιασμα' : 'Hypoarousal / Numbness'}
                     </div>
-                    <div className={cn("text-[11px] md:text-xs tracking-wide", inline ? "text-white/50" : "text-stone-400 font-sans")}>
+                    <div className={cn("text-[11px] md:text-xs tracking-wide", inline ? "text-stone-500 dark:text-stone-400" : "text-stone-400 font-sans")}>
                       {language === 'el' ? 'Κόπωση, ομίχλη, αποσύνδεση' : 'Fatigue, brain fog, disconnection'}
                     </div>
                   </div>
-                  <ChevronRight size={18} className={inline ? "text-white/30 group-hover:text-white/60" : "text-stone-500 group-hover:text-stone-300 transition-colors"} />
+                  <ChevronRight size={18} className={inline ? "text-stone-400/50 group-hover:text-stone-500" : "text-stone-500 group-hover:text-stone-300 transition-colors"} />
                 </button>
 
                 <button
                   onClick={() => handleSelect('balanced')}
                   className={cn(
                     "w-full rounded-2xl transition-all text-left flex items-center justify-between group shadow-sm active:scale-[0.98]",
-                    inline ? "p-4 bg-white/5 hover:bg-white/10 border border-white/10" : "p-4 bg-stone-800 hover:bg-stone-700/80 border border-stone-700/80"
+                    inline ? "p-4 bg-white dark:bg-stone-800/80 border border-stone-200 dark:border-stone-700 hover:border-teal-500/50" : "p-4 bg-stone-800 hover:bg-stone-700/80 border border-stone-700/80"
                   )}
                 >
                   <div>
-                    <div className="text-white/90 font-medium mb-1 text-sm md:text-base">
+                    <div className={cn("font-medium mb-1 text-sm md:text-base", inline ? "text-stone-800 dark:text-stone-200" : "text-white/90")}>
                       {language === 'el' ? 'Ισορροπία / Ηρεμία' : 'Balance / Calm'}
                     </div>
-                    <div className={cn("text-[11px] md:text-xs tracking-wide", inline ? "text-white/50" : "text-stone-400 font-sans")}>
+                    <div className={cn("text-[11px] md:text-xs tracking-wide", inline ? "text-stone-500 dark:text-stone-400" : "text-stone-400 font-sans")}>
                       {language === 'el' ? 'Παρόν, ασφάλεια, συγκέντρωση' : 'Present, safe, focused'}
                     </div>
                   </div>
-                  <ChevronRight size={18} className={inline ? "text-white/30 group-hover:text-white/60" : "text-stone-500 group-hover:text-stone-300 transition-colors"} />
+                  <ChevronRight size={18} className={inline ? "text-stone-400/50 group-hover:text-stone-500" : "text-stone-500 group-hover:text-stone-300 transition-colors"} />
                 </button>
               </div>
             </motion.div>
@@ -179,10 +179,10 @@ export default function StateCheckin({ onComplete, inline = false }: { onComplet
               {selectedState && (
                 <>
                   <div className="text-center">
-                    <h2 className="text-2xl font-serif text-white/90 italic tracking-tight mb-3">
+                    <h2 className={cn("text-2xl font-serif italic tracking-tight mb-3", inline ? "text-stone-900 dark:text-stone-100" : "text-white/90")}>
                       {content[selectedState].title}
                     </h2>
-                    <p className={cn("leading-relaxed px-2", inline ? "text-[13px] text-white/50" : "text-sm text-stone-400 font-sans")}>
+                    <p className={cn("leading-relaxed px-2", inline ? "text-[13px] text-stone-500 dark:text-stone-400" : "text-sm text-stone-400 font-sans")}>
                        {content[selectedState].desc}
                     </p>
                   </div>
@@ -193,7 +193,7 @@ export default function StateCheckin({ onComplete, inline = false }: { onComplet
                         <div className="w-12 h-12 rounded-full bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 shadow-inner">
                           <el.icon size={20} />
                         </div>
-                        <span className={cn("font-medium tracking-wide uppercase", inline ? "text-[10px] text-white/50" : "text-[11px] text-stone-300")}>{el.name}</span>
+                        <span className={cn("font-medium tracking-wide uppercase", inline ? "text-[10px] text-stone-500 dark:text-stone-400" : "text-[11px] text-stone-300")}>{el.name}</span>
                       </div>
                     ))}
                   </div>
@@ -202,7 +202,7 @@ export default function StateCheckin({ onComplete, inline = false }: { onComplet
                     <Link
                       to={content[selectedState].actionPath}
                       onClick={handleComplete}
-                      className="w-full flex items-center justify-center gap-2 p-4 rounded-xl bg-teal-600/20 hover:bg-teal-600/30 text-teal-300 border border-teal-500/30 transition-colors font-medium active:scale-[0.98]"
+                      className={cn("w-full flex items-center justify-center gap-2 p-4 rounded-xl border transition-colors font-medium active:scale-[0.98]", inline ? "bg-teal-600 border-teal-700 hover:bg-teal-700 text-white" : "bg-teal-600/20 hover:bg-teal-600/30 text-teal-300 border-teal-500/30")}
                     >
                       <span className="tracking-wide">{content[selectedState].actionTitle}</span>
                       <ArrowRight size={16} />
@@ -210,8 +210,8 @@ export default function StateCheckin({ onComplete, inline = false }: { onComplet
                     <button
                       onClick={handleComplete}
                       className={cn(
-                        "w-full rounded-xl transition-colors text-xs uppercase tracking-[0.1em]",
-                        inline ? "p-3 text-white/40 hover:text-white border border-white/10 hover:bg-white/5" : "p-4 border border-stone-800/80 text-stone-400 hover:text-stone-300 hover:bg-stone-800"
+                        "w-full rounded-xl transition-colors text-xs uppercase tracking-[0.1em] font-medium p-4",
+                        inline ? "border border-stone-200 dark:border-stone-700 text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-50 dark:hover:bg-stone-800" : "border border-stone-800/80 text-stone-400 hover:text-stone-300 hover:bg-stone-800"
                       )}
                     >
                       {language === 'el' ? 'Παραλειψη & Συνεχεια' : 'Skip & Continue'}

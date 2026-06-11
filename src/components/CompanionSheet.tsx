@@ -14,9 +14,10 @@ import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { cn } from '../lib/utils';
 import { CatInfinityAvatar } from './CatInfinityAvatar';
+import StateCheckin from './StateCheckin';
 
 /* Companion Sheet states/flows */
-type FlowState = 'main' | 'mood' | 'hub' | 'explore' | 'options' | 'guide' | 'questionnaire';
+type FlowState = 'main' | 'mood' | 'hub' | 'explore' | 'options' | 'guide' | 'questionnaire' | 'checkin';
 
 const getDateString = (date: Date): string => {
   return date.toISOString().split('T')[0];
@@ -87,6 +88,15 @@ export default function CompanionSheet() {
       case 'explore': return <ExploreFlow goBack={goBack} onClose={handleClose} />;
       case 'guide': return <GuideFlow goBack={goBack} onClose={handleClose} />;
       case 'questionnaire': return <QuestionnaireFlow goBack={goBack} />;
+      case 'checkin': return (
+        <div className="space-y-6 animate-fade-in text-stone-800 dark:text-stone-200">
+           <div className="flex items-center gap-3 pb-2 border-b border-stone-200 dark:border-stone-800">
+             <button onClick={goBack} className="w-8 h-8 rounded-full bg-stone-200 dark:bg-stone-800 flex items-center justify-center hover:bg-stone-300 dark:hover:bg-stone-700 transition">←</button>
+             <h2 className="font-display text-lg font-medium">{language === 'el' ? 'Νευρικό Σύστημα' : 'Nervous System'}</h2>
+           </div>
+           <StateCheckin inline onComplete={() => { onClose(); }} />
+        </div>
+      );
       default: return <MainFlow navTo={navTo} onClose={handleClose} />;
     }
   };
@@ -448,11 +458,11 @@ function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClo
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-         <button onClick={() => navTo('mood')} className="group flex flex-col items-center gap-2.5 p-4 bg-white dark:bg-stone-800/80 border border-stone-200/80 dark:border-stone-700/80 rounded-3xl hover:border-indigo-200 dark:hover:border-indigo-800 hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-all shadow-sm active:scale-[0.98]">
-            <div className="w-12 h-12 flex items-center justify-center rounded-2xl bg-indigo-100/50 dark:bg-indigo-900/30 text-2xl group-hover:scale-110 transition-transform">💭</div>
+         <button onClick={() => navTo('checkin')} className="group flex flex-col items-center gap-2.5 p-4 bg-white dark:bg-stone-800/80 border border-stone-200/80 dark:border-stone-700/80 rounded-3xl hover:border-indigo-200 dark:hover:border-indigo-800 hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-all shadow-sm active:scale-[0.98]">
+            <div className="w-12 h-12 flex items-center justify-center rounded-2xl bg-indigo-100/50 dark:bg-indigo-900/30 text-2xl group-hover:scale-110 transition-transform">⚖️</div>
             <div className="text-center">
               <span className="font-semibold text-[13px] text-stone-700 dark:text-stone-300 tracking-wide block">{language === 'el' ? 'Πώς νιώθεις;' : 'How do you feel?'}</span>
-              <span className="text-[10px] text-stone-500 opacity-80">{language === 'el' ? 'Άμεσες Λύσεις' : 'Quick Resets'}</span>
+              <span className="text-[10px] text-stone-500 opacity-80">{language === 'el' ? 'Νευρικό Σύστημα' : 'Nervous System'}</span>
             </div>
          </button>
          <button onClick={() => navTo('hub')} className="group flex flex-col items-center gap-2.5 p-4 bg-white dark:bg-stone-800/80 border border-stone-200/80 dark:border-stone-700/80 rounded-3xl hover:border-emerald-200 dark:hover:border-emerald-800 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/20 transition-all shadow-sm active:scale-[0.98]">

@@ -14,7 +14,6 @@ import { useAccessibility } from '../hooks/useAccessibility';
 import { useBinauralAudio } from '../hooks/useBinauralAudio';
 import InfoModal from '../components/InfoModal';
 import CoreGeometricState from '../components/CoreGeometricState';
-import StateCheckin from '../components/StateCheckin';
 
 const glassCardClasses = "backdrop-blur-[4px] bg-white/[0.04] border border-white/[0.1] rounded-[16px]";
 
@@ -245,13 +244,6 @@ export default function Dashboard() {
             </h1>
             <Sparkles size={22} className="text-white opacity-80" strokeWidth={1.5} />
           </div>
-        </div>
-
-        {/* State Check-in as Primary Action */}
-        <div className="mt-2 w-full z-20">
-          <StateCheckin inline onComplete={() => {
-             setIntentionState(localStorage.getItem('n_mindfulness_intention') || 'autism'); 
-          }} />
         </div>
 
         {/* Central Geometric Core */}
