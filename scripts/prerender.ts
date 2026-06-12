@@ -92,6 +92,12 @@ const ARTICLES: Record<string, { en: [string, string]; el: [string, string] }> =
     el: ['Ποτέ Μη Βιάζεσαι – Η Τέχνη της Αβίαστης Πρακτικής | Neurodivergent Mindfulness App',
          'Γιατί η βίαιη πρακτική ενσυνειδητότητας αντιτίθεται για νευροδιαφορετικά άτομα. Η αρχή της αβίαστης πρακτικής.'],
   },
+  'quantum-void-awareness': {
+    en: ['The Seething Void & Quantum Physics | Neurodivergent Mindfulness App',
+         'How modern physics defines the Quantum Void not as emptiness, but as a seething womb of potential. Connecting science with the 4th Axis of Space.'],
+    el: ['Το Κοχλάζον Κενό & Κβαντική Φυσική | Neurodivergent Mindfulness App',
+         'Πώς η σύγχρονη φυσική ορίζει το Κβαντικό Κενό όχι ως απουσία, αλλά ως γενεσιουργό πηγή δυναμικού. Κβαντική Φυσική & ο 4ος Άξονας (Χώρος).'],
+  },
   'tai-chi-cloud-hands': {
     en: ['Cloud Hands Tai Chi Breathing | Neurodivergent Mindfulness App',
          'Animated Tai Chi Cloud Hands with real-time skeletal movement synced to breath cycles and binaural beats. Mindful movement for ADHD and autistic nervous system regulation.'],

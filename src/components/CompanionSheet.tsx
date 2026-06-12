@@ -94,7 +94,7 @@ export default function CompanionSheet() {
              <button onClick={goBack} className="w-8 h-8 rounded-full bg-stone-200 dark:bg-stone-800 flex items-center justify-center hover:bg-stone-300 dark:hover:bg-stone-700 transition">←</button>
              <h2 className="font-display text-lg font-medium">{language === 'el' ? 'Νευρικό Σύστημα' : 'Nervous System'}</h2>
            </div>
-           <StateCheckin inline onComplete={() => { onClose(); }} />
+           <StateCheckin inline onComplete={() => { handleClose(); }} />
         </div>
       );
       default: return <MainFlow navTo={navTo} onClose={handleClose} />;

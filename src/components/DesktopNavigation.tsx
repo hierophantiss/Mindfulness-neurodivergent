@@ -94,7 +94,7 @@ export default function DesktopNavigation() {
           return (
             <button
               key={item.path}
-              onClick={() => handleNav(item.path, item.external)}
+              onClick={() => handleNav(item.path)}
               className={cn(
                 "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all font-medium text-[13px] relative group active:scale-[0.98]",
                 isActive 

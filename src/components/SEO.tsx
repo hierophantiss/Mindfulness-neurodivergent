@@ -75,6 +75,12 @@ const ARTICLES: Record<string, { titleEn: string; titleEl: string; descEn: strin
     descEn: 'Why forcing mindfulness often backfires for neurodivergent people. The principle of effortless practice and how to work with your nervous system, not against it.',
     descEl: 'Γιατί η βίαιη πρακτική ενσυνειδητότητας αντιτίθεται για νευροδιαφορετικά άτομα. Η αρχή της αβίαστης πρακτικής.',
   },
+  'quantum-void-awareness': {
+    titleEn: 'The Seething Void & Quantum Physics | Neurodivergent Mindfulness',
+    titleEl: 'Το Κοχλάζον Κενό & Κβαντική Φυσική | Neurodivergent Mindfulness',
+    descEn: 'How modern physics defines the Quantum Void not as emptiness, but as a seething womb of potential. Connecting science with the 4th Axis of Space.',
+    descEl: 'Πώς η σύγχρονη φυσική ορίζει το Κβαντικό Κενό όχι ως απουσία, αλλά ως γενεσιουργό πηγή δυναμικού. Κβαντική Φυσική & ο 4ος Άξονας (Χώρος).',
+  },
 };
 
 // ── Schema.org helpers ───────────────────────────────────────────────

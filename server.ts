@@ -10,9 +10,14 @@ import { D as D_EN } from "./src/data/course-en";
 import { dzogchenArticle } from "./src/data/dzogchenArticle";
 import { neverForceArticle } from "./src/data/neverForceArticle";
 
-// Read Rabbit Hole articles dynamically
-const rabbitHoleContent = fs.readFileSync(path.join(process.cwd(), 'src/pages/RabbitHole.tsx'), 'utf-8');
-const rabbitHoleArticlesText = rabbitHoleContent.substring(0, 150000); // Pass the file contents safely
+// Read Rabbit Hole articles dynamically safely
+let rabbitHoleArticlesText = "";
+try {
+  const rabbitHoleContent = fs.readFileSync(path.join(process.cwd(), 'src/pages/RabbitHole.tsx'), 'utf-8');
+  rabbitHoleArticlesText = rabbitHoleContent.substring(0, 150000);
+} catch (e) {
+  console.warn("Could not read src/pages/RabbitHole.tsx, skipping for LLM context.");
+}
 
 async function startServer() {
   const app = express();
@@ -170,10 +175,12 @@ async function startServer() {
   });
 
   // Serve public folder statically (supports Accept-Ranges for iOS Safari)
-  app.use(express.static(path.join(process.cwd(), 'public')));
+  app.use(express.static(path.join(process.cwd(), 'public'), { redirect: false }));
 
   // Vite integration
-  if (process.env.NODE_ENV !== 'production') {
+  const isProduction = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test' || fs.existsSync(path.join(process.cwd(), 'dist', 'index.html'));
+
+  if (!isProduction) {
     const vite = await createViteServer({
       server: { 
         middlewareMode: true,
@@ -186,21 +193,33 @@ async function startServer() {
   } else {
     // In production, serve high-performance static files from dist/client
     const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
+    app.use(express.static(distPath, { redirect: false }));
     
     // THE FIX: This catch-all route ensures that any refresh on a sub-route
     // (e.g., /chapters, /practice) correctly returns the main index.html
     // so React Router can handle it on the client side.
-    app.get('*', (req, res, next) => {
-      // If the request looks like an asset (has a file extension) and wasn't found by express.static, return 404
-      if (req.path.match(/\.[a-zA-Z0-9]+$/)) {
-        return next();
-      }
-      
-      const prerenderedPath = path.join(distPath, req.path, 'index.html');
-      if (fs.existsSync(prerenderedPath) && req.path !== '/') {
-        res.sendFile(prerenderedPath);
-      } else {
+    app.get('*all', (req, res, next) => {
+      try {
+        // If the request looks like an asset (has a file extension) and wasn't found by express.static, return 404
+        if (req.path.match(/\.[a-zA-Z0-9]+$/)) {
+          return next();
+        }
+        
+        const prerenderedPath = path.join(distPath, req.path, 'index.html');
+        
+        // Prevent directory traversal just in case (though express req.path is usually safe)
+        if (!prerenderedPath.startsWith(distPath)) {
+          return res.sendFile(path.join(distPath, 'index.html'));
+        }
+
+        if (req.path !== '/' && fs.existsSync(prerenderedPath) && fs.statSync(prerenderedPath).isFile()) {
+          res.sendFile(prerenderedPath);
+        } else {
+          res.sendFile(path.join(distPath, 'index.html'));
+        }
+      } catch (err) {
+        console.error("Wildcard route error:", err);
+        // Fallback to single page container
         res.sendFile(path.join(distPath, 'index.html'));
       }
     });
