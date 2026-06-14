@@ -38,8 +38,11 @@ export default function StateCheckin({ onComplete, inline = false }: { onComplet
         { icon: Mountain, name: language === 'el' ? 'Γη (Σώμα)' : 'Earth' },
         { icon: Droplets, name: language === 'el' ? 'Νερό (Συναίσθημα)' : 'Water' }
       ],
-      actionTitle: language === 'el' ? 'Ανάσα 4-7-8' : '4-7-8 Breathing',
-      actionPath: '/practice/breath/4-7-8'
+      actions: [
+        { title: language === 'el' ? 'Ανάσα 4-7-8' : '4-7-8 Breathing', path: '/practice/breath/4-7-8' },
+        { title: language === 'el' ? 'Tai Chi (Απαλή ροή)' : 'Tai Chi (Cloud Hands)', path: '/practice/breath/tai-chi-cloud-hands' },
+        { title: language === 'el' ? 'Σωματικές δόσεις (Γείωση)' : 'Body microdoses (Grounding)', path: '/practice/microdoses?tab=body' }
+      ]
     },
     hypo: {
       title: language === 'el' ? 'Χρειάζεσαι Ενεργοποίηση' : 'You Need Mild Activation',
@@ -50,8 +53,11 @@ export default function StateCheckin({ onComplete, inline = false }: { onComplet
         { icon: Flame, name: language === 'el' ? 'Φωτιά (Εστίαση)' : 'Fire' },
         { icon: Wind, name: language === 'el' ? 'Αέρας (Χώρος)' : 'Air' }
       ],
-      actionTitle: language === 'el' ? 'Box Breathing' : 'Box Breathing',
-      actionPath: '/practice/breath/box-breathing'
+      actions: [
+        { title: language === 'el' ? 'Box Breathing' : 'Box Breathing', path: '/practice/breath/box-breathing' },
+        { title: language === 'el' ? 'Tai Chi Καθιστοί (Ροή)' : 'Seated Tai Chi (Flow)', path: '/practice/breath/tai-chi-cloud-hands' },
+        { title: language === 'el' ? 'Δόσεις προσοχής' : 'Focus microdoses', path: '/practice/microdoses?tab=focus' }
+      ]
     },
     balanced: {
       title: language === 'el' ? 'Είσαι σε Ισορροπία' : 'You are in Balance',
@@ -61,8 +67,10 @@ export default function StateCheckin({ onComplete, inline = false }: { onComplet
       elements: [
         { icon: Check, name: language === 'el' ? 'Ρυθμισμένο' : 'Regulated' }
       ],
-      actionTitle: language === 'el' ? 'Κουνελότρυπα' : 'The Rabbit Hole',
-      actionPath: '/rabbithole'
+      actions: [
+        { title: language === 'el' ? 'Κουνελότρυπα' : 'The Rabbit Hole', path: '/rabbithole' },
+        { title: language === 'el' ? 'Ανοιχτή επίγνωση (Microdose)' : 'Open awareness (Micro)', path: '/practice/microdoses?tab=space' }
+      ]
     }
   };
 
@@ -199,14 +207,22 @@ export default function StateCheckin({ onComplete, inline = false }: { onComplet
                   </div>
 
                   <div className="flex flex-col gap-3 mt-2">
-                    <Link
-                      to={content[selectedState].actionPath}
-                      onClick={handleComplete}
-                      className={cn("w-full flex items-center justify-center gap-2 p-4 rounded-xl border transition-colors font-medium active:scale-[0.98]", inline ? "bg-teal-600 border-teal-700 hover:bg-teal-700 text-white" : "bg-teal-600/20 hover:bg-teal-600/30 text-teal-300 border-teal-500/30")}
-                    >
-                      <span className="tracking-wide">{content[selectedState].actionTitle}</span>
-                      <ArrowRight size={16} />
-                    </Link>
+                    {content[selectedState].actions.map((action, idx) => (
+                      <Link
+                        key={idx}
+                        to={action.path}
+                        onClick={handleComplete}
+                        className={cn(
+                          "w-full flex items-center justify-between p-4 rounded-xl border transition-colors font-medium active:scale-[0.98]",
+                           idx === 0 
+                             ? (inline ? "bg-teal-600 border-teal-700 hover:bg-teal-700 text-white" : "bg-teal-600/20 hover:bg-teal-600/30 text-teal-300 border-teal-500/30")
+                             : (inline ? "bg-stone-100 hover:bg-stone-200 border-stone-200 dark:bg-stone-800 dark:border-stone-700 dark:text-stone-200" : "bg-stone-800 hover:bg-stone-700/80 border-stone-700 text-stone-300")
+                        )}
+                      >
+                        <span className="tracking-wide">{action.title}</span>
+                        <ArrowRight size={16} className={idx === 0 ? "" : "opacity-60"} />
+                      </Link>
+                    ))}
                     <button
                       onClick={handleComplete}
                       className={cn(
