@@ -201,16 +201,18 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       title: 'Hyperfocus (Αγκυλωμένη Προσοχή)',
       short: 'Ο νους κλειδώνει σε ένα σημείο — εξαφανίζονται χώρος, σώμα, χρόνος.',
       full: 'Η αντίθετη ακραία κατάσταση από τη διάσπαση: ο νους κλειδώνει σε ένα σημείο και δεν μπορεί να φύγει. Ο κόσμος γύρω εξαφανίζεται. Μπορεί να είναι παραγωγικό αλλά και εξουθενωτικό — ειδικά όταν δεν το ελέγχεις.',
-      ndNote: 'Εργαλείο σπασίματος: Χώρος (μαλάκωσε το βλέμμα) + Σώμα (νιώσε τη βαρύτητα). Αυτός ο συνδυασμός «σπάει» το τούνελ.'
+      ndNote: 'Εργαλείο σπασίματος: Χώρος (μαλάκωσε το βλέμμα) + Σώμα (νιώσε τη βαρύτητα). Αυτός ο συνδυασμός «σπάει» το τούνελ.',
+      science: 'Ashinoff & Abu-Akel (2019) Psychological Research (Doi: 10.1007/s00426-019-01245-8)'
     },
     en: {
       title: 'Hyperfocus (Locked Attention)',
       short: 'The mind locks on one point — space, body, time disappear.',
       full: 'The opposite extreme from scattering: the mind locks onto one point and cannot leave. The world around disappears. It can be productive but also exhausting — especially when uncontrolled.',
-      ndNote: 'Breaking tool: Space (soften gaze) + Body (feel gravity). This combination "breaks" the tunnel.'
+      ndNote: 'Breaking tool: Space (soften gaze) + Body (feel gravity). This combination "breaks" the tunnel.',
+      science: 'Ashinoff & Abu-Akel (2019) Psychological Research (Doi: 10.1007/s00426-019-01245-8)'
     },
     axis: 'attention',
-    chapters: [3, 5],
+    chapters: [3, 5, 10],
     related: ['attention_modes', 'open_awareness', 'grounding']
   },
 
@@ -674,5 +676,65 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     axis: 'space',
     chapters: [4, 10],
     related: ['open_awareness', 'sky_metaphor', 'neuroplasticity']
+  },
+
+  ashinoff_2019: {
+    el: {
+      title: 'Μελέτη Hyperfocus • Ashinoff & Abu-Akel (2019)',
+      short: 'Η μελέτη του Hyperfocus ως κατάσταση πλήρους απορρόφησης σε νευροδιαφορετικούς πληθυσμούς (ADHD/Αυτισμός).',
+      full: 'Αυτή η συστηματική ανασκόπηση («Hyperfocus: the forgotten frontier of attention») ορίζει το Hyperfocus ως μια έντονη κατάσταση ολικής γνωστικής απορρόφησης, όπου το άτομο «κλειδώνει» σε μια δραστηριότητα και αποσυνδέεται από εξωτερικά ερεθίσματα.\n\nΗ μελέτη αποδεικνύει ότι δεν πρόκειται για έλλειμμα προσοχής, αλλά για μια μοναδική λειτουργική κατάσταση που εμφανίζεται συστηματικά σε ADHD και αυτιστικούς πληθυσμούς, συνδυάζοντας υψηλή εσωτερική ανταμοιβή με προσωρινή απώλεια της περιφερειακής επίγνωσης.',
+      ndNote: 'Αποτελεί την επιστημονική απόδειξη ότι ο νευροδιαφορετικός νους λειτουργεί με τον κανόνα «όλα ή τίποτα» (all-or-nothing attention). Η μέθοδός μας χρησιμοποιεί την Ανοιχτή Επίγνωση (Open Gaze & Soft Hearing) για να επιτρέψει στο νευρικό σύστημα να βγαίνει ομαλά από το hyperfocus χωρίς να προκαλείται αισθητηριακό σοκ.',
+      science: 'Ashinoff, B. K., & Abu-Akel, A. (2019). Psychological Research. (Doi: 10.1007/s00426-019-01245-8)'
+    },
+    en: {
+      title: 'Hyperfocus Frontier Study (Ashinoff & Abu-Akel, 2019)',
+      short: 'Investigating hyperfocus as a state of deep absorption and stimulus-gating in ADHD and Autism.',
+      full: 'This cornerstone review ("Hyperfocus: the forgotten frontier of attention") establishes hyperfocus as a clinical and neurodivergent phenomenon characterized by deep, non-referential cognitive absorption, a narrowed attentional spotlight, and enhanced stimulus-filtering.\n\nRather than an attention deficit, it represents a unique attentional mode common in ADHD and autistic profiles, featuring robust internal reward loops and physical "locked-in" sensory gates.',
+      ndNote: 'This research highlights how neurodivergent brains manage attention under an all-or-nothing paradigm. Our practices utilize peripheral vision (Soft Gaze) and ambient hearing to transition the nervous system gently out of exhausting focus tunnels without triggering sensory friction.',
+      science: 'Ashinoff, B. K., & Abu-Akel, A. (2019). Psychological Research. (Doi: 10.1007/s00426-019-01245-8)'
+    },
+    axis: 'attention',
+    chapters: [3, 5, 10],
+    related: ['hyperfocus', 'attention_modes', 'open_awareness']
+  },
+
+  brewer_2011: {
+    el: {
+      title: 'DMN & Διαλογισμός • Brewer et al. (2011)',
+      short: 'Η επιστημονική απόδειξη ότι ο διαλογισμός μειώνει τη δραστηριότητα και τη συνδεσιμότητα του Default Mode Network (DMN).',
+      full: 'Αυτή η κορυφαία μελέτη fMRI ("Meditation experience is associated with differences in default mode network activity and connectivity") απέδειξε ότι οι έμπειροι διαλογιστές εμφανίζουν σημαντικά μειωμένη δραστηριότητα στις κύριες περιοχές του Default Mode Network (τον οπίσθιο προσαγώγιο φλοιό και τον μέσο προμετωπιαίο φλοιό) τόσο κατά τη διάρκεια διαφορετικών ειδών διαλογισμού όσο και κατά την ηρεμία.\n\nΗ μελέτη αποκαλύπτει επίσης αυξημένη συνδεσιμότητα μεταξύ του DMN και περιοχών γνωστικού ελέγχου, υποδεικνύοντας ένα νέο νευρωνικό πρότυπο όπου ο εγκέφαλος παρακολουθεί και αποτρέπει ενεργά τη νοητική περιπλάνηση.',
+      ndNote: 'Για νευροδιαφορετικούς πληθυσμούς με υπερδραστήριο ή άτυπο DMN, η μελέτη αυτή αποτελεί θεμελιώδη άγκυρα. Δείχνει ότι η εστίαση στις άμεσες σωματικές εμπειρίες (Experiential Focus) είναι η πιο αποτελεσματική μέθοδος για τη «σίγαση» της εσωτερικής φλυαρίας και του μηρυκασμού.',
+      science: 'Brewer, J. A., Worhunsky, P. D., Gray, J. R., Weber, J., Tang, Y., & Kober, H. (2011). PNAS. (Doi: 10.1073/pnas.1112029108)'
+    },
+    en: {
+      title: 'DMN Connectivity & Meditation (Brewer et al., 2011)',
+      short: 'Scientific proof that meditation practice reduces default mode network (DMN) activity and functional connectivity.',
+      full: 'This landmark neuroimaging research ("Meditation experience is associated with differences in default mode network activity and connectivity") demonstrated that mindfulness practitioners show significantly decreased activation in the main hubs of the Default Mode Network (the posterior cingulate and medial prefrontal cortices) during active practice and resting state.\n\nIt also uncovered increased co-activation between the DMN and executive control regions, pointing to an optimized neural network that monitors and gently redirects mind-wandering in real-time.',
+      ndNote: 'For neurodivergent individuals experiencing hyper-rumination or sensory processing fatigue associated with DMN hyperactivity, Brewer\'s findings offer clinical reassurance. It validates that gentle somatic redirection is a reproducible method for quietening chaotic internal mental environments.',
+      science: 'Brewer, J. A., Worhunsky, P. D., Gray, J. R., Weber, J., Tang, Y., & Kober, H. (2011). PNAS. (Doi: 10.1073/pnas.1112029108)'
+    },
+    axis: 'all',
+    chapters: [1, 5, 10],
+    related: ['dmn', 'grounding', 'neuroplasticity']
+  },
+
+  gibson_1979: {
+    el: {
+      title: 'Οικολογική Προσέγγιση της Αντίληψης • J. J. Gibson (1979)',
+      short: 'Η αντίληψη του χώρου δεν είναι αφηρημένος υπολογισμός, αλλά ορίζεται από το «έδαφος» που στηρίζει το σώμα.',
+      full: 'Η θεμελιώδης θεωρία του James J. Gibson («The Ecological Approach to Visual Perception») υποστηρίζει ότι το σώμα και το φυσικό του περιβάλλον αποτελούν ένα αδιάσπαστο, δυναμικό σύστημα. Η αντίληψη του χώρου και της απόστασης δεν γίνεται μέσω αφηρημένων τρισδιάστατων υπολογισμών στον εγκέφαλο, αλλά βασίζεται στη συνεχή, υποστηρικτική επιφάνεια του εδάφους (ground), η οποία μας συνδέει σωματικά με τον κόσμο.\n\nΤο έδαφος προσφέρει "affordances" (δυνατότητες δράσης) — το αίσθημα ότι η επιφάνεια μας κρατά και μας επιτρέπει να σταθούμε και να κινηθούμε με ασφάλεια.',
+      ndNote: 'Αυτό εξηγεί γιατί η «Γείωση» (Grounding) δεν είναι απλώς μια νοητική άσκηση χαλάρωσης, αλλά μια βαθιά οικολογική και σωματική ανάγκη. Ο νους ηρεμεί μόνο όταν το σώμα νιώσει ότι ο χώρος γύρω του το «κρατάει» (έδαφος/βαρύτητα). Η σύνδεση σώματος και χώρου είναι αδιάσπαστη.',
+      science: 'Gibson, J. J. (1979/2014) "The Ecological Approach to Visual Perception" (Doi: 10.4324/9781315740218)'
+    },
+    en: {
+      title: 'Ecological Space Perception • J. J. Gibson (1979)',
+      short: 'Space perception is not an abstract calculation but is fundamentally defined by the ground supporting the body.',
+      full: 'James J. Gibson\'s groundbreaking theory of Ecological Psychology ("The Ecological Approach to Visual Perception") demonstrates that the body and its surrounding environment form an inseparable, cooperative system.\n\nHe argues that space and depth are not abstract intellectual measurements computed internally by the brain; instead, they are perceived directly via the continuous, solid surface of the ground. The ground provides crucial "affordances" — immediate possibilities for action like standing, stepping, or resting, signaling somatic survival and safety.',
+      ndNote: 'This validates our core thesis: True grounding is not just a mental visualization but an ecological necessity. The body and space work together dynamically; the nervous system can decompress and release focused attention only when it explicitly registers that the immediate physical ground is holding us.',
+      science: 'Gibson, J. J. (1979/2014) "The Ecological Approach to Visual Perception" (Doi: 10.4324/9781315740218)'
+    },
+    axis: 'body',
+    chapters: [1, 4, 10],
+    related: ['grounding', 'gravity', 'proprioception', 'open_awareness']
   }
 };

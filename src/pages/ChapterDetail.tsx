@@ -16,6 +16,7 @@ import { ConceptInfoIcon, ConceptModal } from '../components/ConceptInfoOverlay'
 
 const CHAPTER_CONCEPTS_MAP: Record<number, { id: string; labelEn: string; labelEl: string; icon: string }[]> = {
   1: [
+    { id: 'gibson_1979', labelEn: 'Gibson (1979) • Ecological Ground', labelEl: 'Gibson (1979) • Οικολογικό Έδαφος', icon: '🌲' },
     { id: 'gibson_2019', labelEn: 'Gibson (2019) • Interoception', labelEl: 'Μελέτη Gibson (2019) • Δια-αίσθηση', icon: '🔬' },
     { id: 'zylowska_2007', labelEn: 'Zylowska (2007) • ADHD', labelEl: 'Μελέτη Zylowska (2007) • ΔΕΠΥ', icon: '🔬' },
     { id: 'grounding', labelEn: 'Grounding & Gravity', labelEl: 'Γείωση & Βαρύτητα', icon: '⛰️' },

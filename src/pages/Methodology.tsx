@@ -20,16 +20,22 @@ const T = {
         citation: 'Farb et al. (2007). Social Cognitive and Affective Neuroscience. Doi: 10.1093/scan/nsm030'
       },
       {
+        icon: Brain,
+        title: 'Ρύθμιση Συνδεσιμότητας DMN (Brewer et al., 2011)',
+        desc: 'Η ιστορική μελέτη νευροαπεικόνισης του Brewer απέδειξε ότι οι έμπειροι διαλογιστές παρουσιάζουν σημαντικά χαμηλότερη δραστηριότητα και αλλαγές στη συνδεσιμότητα του Default Mode Network (DMN). Αυτό βοηθά στη μείωση του μηρυκασμού και της συνεχούς εσωτερικής φλυαρίας, δημιουργώντας ένα βέλτιστο πρότυπο διαχείρισης της προσοχής.',
+        citation: 'Brewer et al. (2011). PNAS. Doi: 10.1073/pnas.1112029108'
+      },
+      {
         icon: Waves,
         title: 'Πολυβαγική Θεωρία & Ασφάλεια (Porges, 1995/2011)',
         desc: 'Το νευρικό σύστημα χάνει την ισορροπία του όταν νιώθει απειλή. Μέσω της αργής, ελεγχόμενης εκπνοής (Ventral Vagus stimulation), στέλνουμε σήματα βιολογικής ασφάλειας απευθείας στο στέλεχος του εγκεφάλου, παρακάμπτοντας τη λογική ανάλυση που συχνά οδηγεί σε πνευματικό μηρυκασμό.',
-        citation: 'Stephen Porges, PhD (1995). Psychophysiology. Doi: 10.1469/j.1469-8986.1995.tb03320.x'
+        citation: 'Stephen Porges, PhD (1995). Psychophysiology. Doi: 10.1111/j.1469-8986.1995.tb03320.x'
       },
       {
         icon: Activity,
         title: 'Brainwave Entrainment (Oster 1973, Lane 1998)',
         desc: 'Τα διωτικά κύματα (Binaural Beats) που χρησιμοποιούμε στο Sanctuary και τις ασκήσεις αναπνοής συντονίζουν τη νευρωνική δραστηριότητα (Neural Entrainment) μειώνοντας το αισθητηριακό overload. Λειτουργούν ως μια «ακουστική κουβέρτα βάρους», ηρεμώντας το συμπαθητικό σύστημα.',
-        citation: 'Lane et al. (1998). Physiology & Behavior. Doi: 10.1016/s0031-9384(97)00436-8'
+        citation: 'Lane et al. (1998). Physiology & Behavior. Doi: 10.1016/S0031-9384(97)00436-8'
       },
       {
         icon: Sparkles,
@@ -42,6 +48,18 @@ const T = {
         title: 'Γνωστική Βελτίωση στο ADHD (Zylowska et al., 2007)',
         desc: 'Η κλινική μελέτη της Zylowska απέδειξε ότι ένα ειδικά προσαρμοσμένο πρόγραμμα ενσυνειδητότητας για ενήλικες και εφήβους με ADHD βελτιώνει σημαντικά τις εκτελεστικές λειτουργίες του εγκεφάλου, τη συγκέντρωση και τη συναισθηματική ρύθμιση.',
         citation: 'Zylowska et al. (2007). Journal of Attention Disorders. Doi: 10.1177/1087054707308502'
+      },
+      {
+        icon: Sparkles,
+        title: 'Μελέτη Hyperfocus (Ashinoff & Abu-Akel, 2019)',
+        desc: 'Η συστηματική αυτή έρευνα ορίζει το hyperfocus ως κατάσταση ολικής γνωστικής απορρόφησης χαρακτηριστικό των ADHD & Αυτιστικών προφίλ. Επιβεβαιώνει ότι δεν πρόκειται για "έλλειμμα" προσοχής, αλλά για "all-or-nothing" ρύθμιση, η οποία εξισορροπείται με τις τεχνικές Soft Gaze.',
+        citation: 'Ashinoff & Abu-Akel (2019). Psychological Research. Doi: 10.1007/s00426-019-01245-8'
+      },
+      {
+        icon: Heart,
+        title: 'Οικολογική Αντίληψη & Έδαφος (James J. Gibson, 1979)',
+        desc: 'Η οικολογική προσέγγιση του Gibson αποδεικνύει ότι το σώμα και ο χώρος αποτελούν ένα ενιαίο σύστημα. Η αντίληψη του χώρου δεν είναι αφηρημένος υπολογισμός, αλλά βασίζεται στο «έδαφος» που στηρίζει φυσικά το σώμα, παρέχοντας άμεση σωματική ασφάλεια (affordances).',
+        citation: 'James J. Gibson (1979). Psychology Press. Doi: 10.4324/9781315740218'
       }
     ],
     
@@ -64,16 +82,22 @@ const T = {
         citation: 'Farb et al. (2007). Social Cognitive and Affective Neuroscience. Doi: 10.1093/scan/nsm030'
       },
       {
+        icon: Brain,
+        title: 'DMN Connectivity & Meditation (Brewer et al., 2011)',
+        desc: 'Brewer\'s landmark neuroimaging study showed that meditation significantly alters the activation and functional connectivity of the Default Mode Network (DMN). This decreases unconscious mind-wandering and redirects active cognitive resources to gentle attention monitoring.',
+        citation: 'Brewer et al. (2011). PNAS. Doi: 10.1073/pnas.1112029108'
+      },
+      {
         icon: Waves,
         title: 'Polyvagal Theory & Somatic Safety (Porges, 1995/2011)',
         desc: 'The nervous system cannot integrate training while in threat states. By utilizing targeted somatic tools like deep, extended exhales (Ventral Vagal activation) and slow swaying, we send physical safety signals directly to the brainstem, bypassing cognitive loops.',
-        citation: 'Stephen Porges, PhD (1995). Psychophysiology. Doi: 10.1469/j.1469-8986.1995.tb03320.x'
+        citation: 'Stephen Porges, PhD (1995). Psychophysiology. Doi: 10.1111/j.1469-8986.1995.tb03320.x'
       },
       {
         icon: Activity,
         title: 'Brainwave Entrainment (Oster 1973, Lane 1998)',
         desc: 'The binaural auditory beats embedded in our Sanctuary and breathing sessions promote Neural Entrainment, actively syncing target brainwaves to reduce sensory overload. They act as an "acoustic weighted blanket" that calms the sympathetic nervous system.',
-        citation: 'Lane et al. (1998). Physiology & Behavior. Doi: 10.1016/s0031-9384(97)00436-8'
+        citation: 'Lane et al. (1998). Physiology & Behavior. Doi: 10.1016/S0031-9384(97)00436-8'
       },
       {
         icon: Sparkles,
@@ -86,6 +110,18 @@ const T = {
         title: 'Clinical ADHD Feasibility (Zylowska et al., 2007)',
         desc: 'Zylowska\'s clinical research proved that tailored mindfulness training for adults and adolescents with ADHD is highly feasible, improving core executive functions, working memory, and emotional self-regulation.',
         citation: 'Zylowska et al. (2007). Journal of Attention Disorders. Doi: 10.1177/1087054707308502'
+      },
+      {
+        icon: Sparkles,
+        title: 'Hyperfocus Frontier (Ashinoff & Abu-Akel, 2019)',
+        desc: 'This seminal review details hyperfocus as a state of intense cognitive absorption and sensory gating typical of ADHD & Autistic profiles. Rather than a deficit, it represents an all-or-nothing attentional lock, modulated via our Soft Gaze somatic protocols.',
+        citation: 'Ashinoff & Abu-Akel (2019). Psychological Research. Doi: 10.1007/s00426-019-01245-8'
+      },
+      {
+        icon: Heart,
+        title: 'Ecological Space & Ground (James J. Gibson, 1979)',
+        desc: 'Gibson\'s ecological approach proves that the body and space function as an inseparable, dynamic system. Space perception is deeply grounded in the literal physical surface supporting the body, offering direct cues of physical safety (affordances).',
+        citation: 'James J. Gibson (1979). Psychology Press. Doi: 10.4324/9781315740218'
       }
     ],
     

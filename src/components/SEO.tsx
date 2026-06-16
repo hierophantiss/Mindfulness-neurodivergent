@@ -186,6 +186,57 @@ const SCHOLARLY_CITATIONS = [
       "@type": "Periodical",
       "name": "Physiology & Behavior"
     }
+  },
+  {
+    "@type": "ScholarlyArticle",
+    "@id": "https://doi.org/10.1007/s00426-019-01245-8",
+    "name": "Hyperfocus: the forgotten frontier of attention",
+    "headline": "Hyperfocus: the forgotten frontier of attention",
+    "sameAs": "https://doi.org/10.1007/s00426-019-01245-8",
+    "identifier": "doi:10.1007/s00426-019-01245-8",
+    "datePublished": "2019",
+    "author": {
+      "@type": "Person",
+      "name": "Brandon K. Ashinoff"
+    },
+    "isPartOf": {
+      "@type": "Periodical",
+      "name": "Psychological Research"
+    }
+  },
+  {
+    "@type": "ScholarlyArticle",
+    "@id": "https://doi.org/10.1073/pnas.1112029108",
+    "name": "Meditation experience is associated with differences in default mode network activity and connectivity",
+    "headline": "Meditation experience is associated with differences in default mode network activity and connectivity",
+    "sameAs": "https://doi.org/10.1073/pnas.1112029108",
+    "identifier": "doi:10.1073/pnas.1112029108",
+    "datePublished": "2011",
+    "author": {
+      "@type": "Person",
+      "name": "Judson A. Brewer"
+    },
+    "isPartOf": {
+      "@type": "Periodical",
+      "name": "Proceedings of the National Academy of Sciences (PNAS)"
+    }
+  },
+  {
+    "@type": "ScholarlyArticle",
+    "@id": "https://doi.org/10.4324/9781315740218",
+    "name": "The Ecological Approach to Visual Perception",
+    "headline": "The Ecological Approach to Visual Perception",
+    "sameAs": "https://doi.org/10.4324/9781315740218",
+    "identifier": "doi:10.4324/9781315740218",
+    "datePublished": "1979",
+    "author": {
+      "@type": "Person",
+      "name": "James J. Gibson"
+    },
+    "isPartOf": {
+      "@type": "Book",
+      "name": "Psychology Press"
+    }
   }
 ];
 
