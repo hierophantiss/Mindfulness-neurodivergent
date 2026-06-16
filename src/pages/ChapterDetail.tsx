@@ -29,11 +29,14 @@ const CHAPTER_CONCEPTS_MAP: Record<number, { id: string; labelEn: string; labelE
     { id: 'pattern_4261', labelEn: '4-2-6-1 Breath', labelEl: 'Αναπνοή 4-2-6-1', icon: '🌬️' }
   ],
   3: [
+    { id: 'farb_2007', labelEn: 'Farb (2007) • Neural Self-Reference', labelEl: 'Μελέτη Farb (2007) • Αυτοαναφορά', icon: '🔬' },
     { id: 'zylowska_2007', labelEn: 'ADHD Cognitive Practice', labelEl: 'ΔΕΠΥ & Γνωστική Πρακτική', icon: '🔬' },
     { id: 'gentle_return', labelEn: 'The Gentle Return', labelEl: 'Η Απαλή Επιστροφή', icon: '🔥' },
     { id: 'attention_modes', labelEn: 'Attentional Flashlight', labelEl: 'Φακός της Προσοχής', icon: '🔦' }
   ],
   4: [
+    { id: 'davidson_2004', labelEn: 'Lutz & Davidson (2004) • Gamma Coherence', labelEl: 'Μελέτη Lutz & Davidson (2004) • Κύματα Gamma', icon: '🔬' },
+    { id: 'farb_2007', labelEn: 'Farb (2007) • Experiential Focus', labelEl: 'Μελέτη Farb (2007) • Βιωματική Εστίαση', icon: '🔬' },
     { id: 'open_awareness', labelEn: 'Open Awareness', labelEl: 'Ανοιχτή Επίγνωση', icon: '🌌' },
     { id: 'sky_metaphor', labelEn: 'Dzogchen (Rigpa)', labelEl: 'Dzogchen (Ρίγκπα)', icon: '🪷' },
     { id: 'peripheral_vision', labelEn: 'Peripheral Gaze', labelEl: 'Περιφερειακή Όραση', icon: '👁️' }
@@ -50,6 +53,8 @@ const CHAPTER_CONCEPTS_MAP: Record<number, { id: string; labelEn: string; labelE
     { id: 'parasympathetic', labelEn: 'Active Recovery', labelEl: 'Ενεργή Ανάκαμψη', icon: '🌿' }
   ],
   7: [
+    { id: 'polyvagal', labelEn: 'Porges (1995) • Polyvagal Theory', labelEl: 'Θεωρία Porges (1995) • Πολυβαγική', icon: '🛡️' },
+    { id: 'binaural_beats', labelEn: 'Lane (1998) • Binaural Beats', labelEl: 'Μελέτη Lane (1998) • Διωτικά Κύματα', icon: '🔬' },
     { id: 'sos', labelEn: 'Somatic Crisis Protocol', labelEl: 'Πρωτόκολλο Κρίσης SOS', icon: '🚨' },
     { id: 'vagus_nerve', labelEn: 'Slow Exhale Vagus', labelEl: 'Πνευμονογαστρική Εκπνοή', icon: '🌬️' },
     { id: 'trauma', labelEn: 'Trauma-Informed Anchor', labelEl: 'Trauma-Informed Άγκυρα', icon: '🛡️' }
@@ -66,8 +71,12 @@ const CHAPTER_CONCEPTS_MAP: Record<number, { id: string; labelEn: string; labelE
   ],
   10: [
     { id: 'zylowska_2007', labelEn: 'Clinical ADHD Study', labelEl: 'Κλινική Μελέτη ΔΕΠΥ', icon: '🔬' },
+    { id: 'farb_2007', labelEn: 'Farb Neural Modes fMRI Study', labelEl: 'Μελέτη fMRI Farb • Νευρικοί Τρόποι', icon: '🔬' },
     { id: 'gibson_2019', labelEn: 'Gibson Insula Study', labelEl: 'Μελέτη Gibson για τη Νήσο', icon: '🔬' },
     { id: 'cearns_2022', labelEn: 'Clark 280,000 Session Dose', labelEl: 'Μελέτη Clarkson 280k Συνεδριών', icon: '🔬' },
+    { id: 'polyvagal', labelEn: 'Porges Vagal Safety Model', labelEl: 'Μοντέλο Vagal Porges (Πολυβαγική)', icon: '🛡️' },
+    { id: 'davidson_2004', labelEn: 'Lutz/Davidson Monk Gamma Coherence', labelEl: 'Μελέτη Lutz/Davidson • Κύματα Gamma Μοναχών', icon: '🔬' },
+    { id: 'binaural_beats', labelEn: 'Oster (1973) Brainwave Entrainment', labelEl: 'Μελέτη Oster (1973) • Διωτικά Κύματα', icon: '🔬' },
     { id: 'vagus_nerve', labelEn: 'Vagal Regulation', labelEl: 'Πνευμονογαστρική Ρύθμιση', icon: '⚡' },
     { id: 'proprioception', labelEn: 'Proprioception (Craig)', labelEl: 'Ιδιοδεκτικότητα (Craig)', icon: '🧠' },
     { id: 'sky_metaphor', labelEn: 'Dzogchen (Rigpa/Mahamudra)', labelEl: 'Dzogchen (Ρίγκπα/Μαχαμούντρα)', icon: '🪷' },

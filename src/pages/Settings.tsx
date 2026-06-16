@@ -329,6 +329,39 @@ export default function Settings() {
           </div>
 
           <div className="space-y-8">
+            {/* Evidence-Based Science Badge */}
+            <motion.div 
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
+              onClick={() => navigate('/methodology')}
+              className="relative p-5 rounded-3xl bg-gradient-to-r from-teal-500/10 to-emerald-500/10 border border-teal-500/20 shadow-lg cursor-pointer group overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/5 rounded-full blur-2xl group-hover:bg-teal-500/10 transition-all duration-500" />
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-teal-500/15 border border-teal-500/20 flex items-center justify-center text-teal-300 shadow-inner shrink-0 group-hover:scale-105 transition-transform duration-300">
+                  <ShieldCheck size={24} className="animate-pulse" />
+                </div>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] font-mono font-bold tracking-widest text-teal-400 uppercase bg-teal-500/20 px-2 py-0.5 rounded-full">
+                      {language === 'el' ? 'ΕΓΚΥΡΟΤΗΤΑ' : 'EVIDENCE'}
+                    </span>
+                    <span className="text-[10px] font-sans font-medium text-teal-300/80">
+                      • Peer-Reviewed
+                    </span>
+                  </div>
+                  <h2 className="text-[16px] font-serif italic text-white/95 group-hover:text-teal-200 transition-colors">
+                    {language === 'el' ? 'Επιστημονικά Θεμελιωμένο' : 'Evidence-Based Method'}
+                  </h2>
+                  <p className="text-[12px] text-white/50 leading-relaxed font-sans">
+                    {language === 'el' 
+                      ? 'Κλινικά τεκμηριωμένη προσέγγιση προσαρμοσμένη στη νευροδιαφορετικότητα (ADHD, Αυτισμός).' 
+                      : 'Clinically grounded approach tailored specifically for neurodivergent minds (ADHD, Autism).'}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
             {sections.map((section, idx) => (
               <div key={idx} className="space-y-3">
                 <h3 className="text-[10px] uppercase font-black tracking-[0.2em] text-white/20 px-1">

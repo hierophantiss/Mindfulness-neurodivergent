@@ -31,6 +31,7 @@ export default function DesktopNavigation() {
     { path: '/sanctuary', icon: '🌙', labelEn: 'Sanctuary', labelEl: 'Καταφύγιο' },
     { path: '/faq', icon: '❓', labelEn: 'FAQ', labelEl: 'Συχνές Ερωτήσεις' },
     { path: '/method', icon: '∞', labelEn: 'Method', labelEl: 'Η Μέθοδος' },
+    { path: '/methodology', icon: '🔬', labelEn: 'Science', labelEl: 'Επιστήμη' },
   ];
 
   const handleNav = (path: string, external?: boolean) => {

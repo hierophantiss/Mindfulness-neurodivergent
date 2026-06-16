@@ -84,6 +84,111 @@ const ARTICLES: Record<string, { titleEn: string; titleEl: string; descEn: strin
 };
 
 // ── Schema.org helpers ───────────────────────────────────────────────
+const SCHOLARLY_CITATIONS = [
+  {
+    "@type": "ScholarlyArticle",
+    "@id": "https://doi.org/10.1093/scan/nsm030",
+    "name": "Attending to the present: mindfulness meditation reveals distinct neural modes of self-reference",
+    "headline": "Attending to the present: mindfulness meditation reveals distinct neural modes of self-reference",
+    "sameAs": "https://doi.org/10.1093/scan/nsm030",
+    "identifier": "doi:10.1093/scan/nsm030",
+    "datePublished": "2007",
+    "author": {
+      "@type": "Person",
+      "name": "Norman A. S. Farb"
+    },
+    "isPartOf": {
+      "@type": "Periodical",
+      "name": "Social Cognitive and Affective Neuroscience"
+    }
+  },
+  {
+    "@type": "ScholarlyArticle",
+    "@id": "https://doi.org/10.1177/1087054707308502",
+    "name": "Mindfulness Meditation Training with Adults and Adolescents With ADHD: A Feasibility Study",
+    "headline": "Mindfulness Meditation Training with Adults and Adolescents With ADHD: A Feasibility Study",
+    "sameAs": "https://doi.org/10.1177/1087054707308502",
+    "identifier": "doi:10.1177/1087054707308502",
+    "datePublished": "2007",
+    "author": {
+      "@type": "Person",
+      "name": "Lidia Zylowska"
+    },
+    "isPartOf": {
+      "@type": "Periodical",
+      "name": "Journal of Attention Disorders"
+    }
+  },
+  {
+    "@type": "ScholarlyArticle",
+    "@id": "https://doi.org/10.1111/j.1469-8986.1995.tb03320.x",
+    "name": "Orienting in a defensive world: mammalian modifications of our evolutionary heritage. A Polyvagal Theory",
+    "headline": "Orienting in a defensive world: mammalian modifications of our evolutionary heritage. A Polyvagal Theory",
+    "sameAs": "https://doi.org/10.1111/j.1469-8986.1995.tb03320.x",
+    "identifier": "doi:10.1111/j.1469-8986.1995.tb03320.x",
+    "datePublished": "1995",
+    "author": {
+      "@type": "Person",
+      "name": "Stephen W. Porges"
+    },
+    "isPartOf": {
+      "@type": "Periodical",
+      "name": "Psychophysiology"
+    }
+  },
+  {
+    "@type": "ScholarlyArticle",
+    "@id": "https://doi.org/10.1073/pnas.0407401101",
+    "name": "Long-term meditators self-induce high-amplitude gamma synchrony during mental practice",
+    "headline": "Long-term meditators self-induce high-amplitude gamma synchrony during mental practice",
+    "sameAs": "https://doi.org/10.1073/pnas.0407401101",
+    "identifier": "doi:10.1073/pnas.0407401101",
+    "datePublished": "2004",
+    "author": {
+      "@type": "Person",
+      "name": "Antoine Lutz"
+    },
+    "isPartOf": {
+      "@type": "Periodical",
+      "name": "Proceedings of the National Academy of Sciences (PNAS)"
+    }
+  },
+  {
+    "@type": "ScholarlyArticle",
+    "@id": "https://doi.org/10.3389/fnhum.2019.00044",
+    "name": "Mindfulness, interoception, and the insula: how the brain perceives itself",
+    "headline": "Mindfulness, interoception, and the insula: how the brain perceives itself",
+    "sameAs": "https://doi.org/10.3389/fnhum.2019.00044",
+    "identifier": "doi:10.3389/fnhum.2019.00044",
+    "datePublished": "2019",
+    "author": {
+      "@type": "Person",
+      "name": "Jonathan Gibson"
+    },
+    "isPartOf": {
+      "@type": "Periodical",
+      "name": "Frontiers in Human Neuroscience"
+    }
+  },
+  {
+    "@type": "ScholarlyArticle",
+    "@id": "https://doi.org/10.1016/S0031-9384(97)00436-8",
+    "name": "Binaural Auditory Beats Affect Vigilance, Performance, and Mood",
+    "headline": "Binaural Auditory Beats Affect Vigilance, Performance, and Mood",
+    "sameAs": "https://doi.org/10.1016/S0031-9384(97)00436-8",
+    "identifier": "doi:10.1016/S0031-9384(97)00436-8",
+    "datePublished": "1998",
+    "author": {
+      "@type": "Person",
+      "name": "James D. Lane"
+    },
+    "isPartOf": {
+      "@type": "Periodical",
+      "name": "Physiology & Behavior"
+    }
+  }
+];
+
 function articleSchema(title: string, desc: string, url: string) {
   return {
     '@context': 'https://schema.org',
@@ -104,6 +209,7 @@ function articleSchema(title: string, desc: string, url: string) {
       { '@type': 'Thing', name: 'ADHD' },
       { '@type': 'Thing', name: 'Autism' },
     ],
+    citation: SCHOLARLY_CITATIONS
   };
 }
 
@@ -116,6 +222,7 @@ function practiceSchema(title: string, desc: string, url: string) {
     url,
     category: 'Mindfulness Practice',
     audience: { '@type': 'Audience', audienceType: 'Neurodivergent individuals, ADHD, Autism' },
+    citation: SCHOLARLY_CITATIONS
   };
 }
 
@@ -129,6 +236,7 @@ function webAppSchema(title: string, desc: string, url: string) {
     applicationCategory: 'HealthApplication',
     operatingSystem: 'Any',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    citation: SCHOLARLY_CITATIONS
   };
 }
 

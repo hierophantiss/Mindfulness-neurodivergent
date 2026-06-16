@@ -19,6 +19,7 @@ import Journal from './pages/Journal';
 import Faq from './pages/Faq';
 import GenericExercise from './pages/GenericExercise';
 import Method from './pages/Method';
+import Methodology from './pages/Methodology';
 import RabbitHole from './pages/RabbitHole';
 import Onboarding from './pages/Onboarding';
 import Sanctuary from './pages/Sanctuary';
@@ -51,6 +52,7 @@ function AppContent() {
           <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Navigate to="/" replace />} />
           <Route path="method" element={<Method />} />
+          <Route path="methodology" element={<Methodology />} />
           <Route path="rabbithole" element={<RabbitHole />} />
           <Route path="rabbithole/:articleId" element={<RabbitHole />} />
           <Route path="chapters" element={<Chapters />} />

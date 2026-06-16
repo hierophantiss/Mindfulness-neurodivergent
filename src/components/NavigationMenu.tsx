@@ -210,6 +210,32 @@ export default function NavigationMenu() {
 
               <div className="flex-[1] overflow-y-auto pt-6 px-6 pb-6 max-w-2xl mx-auto w-full flex flex-col gap-3">
                 <div className="bg-white/[0.03] border border-white/[0.05] rounded-3xl p-4 flex flex-col gap-4">
+                  
+                  {/* Evidence-Based Science Link */}
+                  <div className="flex items-center justify-between">
+                     <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center bg-teal-500/10 text-teal-400">
+                        <Sparkles size={18} />
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium text-zinc-200">
+                          {language === 'en' ? 'Evidence-Based' : 'Επιστημονική Θεμελίωση'}
+                        </span>
+                        <span className="text-[10px] text-teal-400">
+                          {language === 'en' ? 'Peer-Reviewed Science References' : 'Επιστημονικές αναφορές'}
+                        </span>
+                      </div>
+                     </div>
+                     <button 
+                       onClick={() => handleNav('/methodology')}
+                       className="px-3 py-1.5 bg-teal-500/15 hover:bg-teal-500/25 rounded-lg text-xs font-medium text-teal-300 transition-colors"
+                     >
+                       {language === 'en' ? 'Science' : 'Επιστήμη'}
+                     </button>
+                  </div>
+                  
+                  <div className="w-full h-px bg-white/5 my-1" />
+
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white/[0.05] text-zinc-300">

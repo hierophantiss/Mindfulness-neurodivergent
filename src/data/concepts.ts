@@ -45,16 +45,18 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       title: 'Πολυβαγική Θεωρία',
       short: 'Η μέση οδός του νευρικού συστήματος.',
       full: 'Μοντέλο του Δρ. Stephen Porges. Το νευρικό σύστημα έχει 3 καταστάσεις: Συμπαθητικό (ένταση/άγχος, πολύ τεντωμένη χορδή), Ραχιαίο Πνευμονογαστρικό (αποσύνδεση/πάγωμα, πολύ χαλαρή χορδή) και Κοιλιακό Πνευμονογαστρικό (ασφάλεια & σύνδεση, η μέση οδός). Η πρακτική μας (εκπνοή, μαλακό βλέμμα) στέλνει σήματα για μετάβαση στην ασφάλεια.',
-      ndNote: 'Οι νευροδιαφορετικοί συχνά εναλλάσσονται μεταξύ εξάντλησης (dorsal) και υπερδιέγερσης (sympathetic). Δεν μπορείς να μεταβείς στην "ασφάλεια" μόνο με λογική—χρειάζεται σωματική διέγερση του πνευμονογαστρικού.'
+      ndNote: 'Οι νευροδιαφορετικοί συχνά εναλλάσσονται μεταξύ εξάντλησης (dorsal) και υπερδιέγερσης (sympathetic). Δεν μπορείς να μεταβείς στην "ασφάλεια" μόνο με λογική—χρειάζεται σωματική διέγερση του πνευμονογαστρικού.',
+      science: 'Stephen Porges, PhD (1995/2011) "Orienting in a defensive world: mammalian modifications of our evolutionary heritage. A Polyvagal Theory" (Doi: 10.1469/j.1469-8986.1995.tb03320.x)'
     },
     en: {
       title: 'Polyvagal Theory',
       short: 'The middle way of the nervous system.',
       full: 'A model by Dr. Stephen Porges. The nervous system has 3 states: Sympathetic (fight/flight, string too tight), Dorsal Vagal (shutdown/freeze, string too loose), and Ventral Vagal (safe & social, the middle way/perfectly tuned). Our practices (long exhale, soft gaze) send cues of safety to move into Ventral Vagal.',
-      ndNote: 'Neurodivergent individuals often ricochet between meltdown (sympathetic) and burnout (dorsal vagal). You cannot "logic" your way to safety—it requires somatic vagal stimulation.'
+      ndNote: 'Neurodivergent individuals often ricochet between meltdown (sympathetic) and burnout (dorsal vagal). You cannot "logic" your way to safety—it requires somatic vagal stimulation.',
+      science: 'Stephen Porges, PhD (1995/2011) "Orienting in a defensive world: mammalian modifications of our evolutionary heritage. A Polyvagal Theory" (Doi: 10.1469/j.1469-8986.1995.tb03320.x)'
     },
     axis: 'body',
-    chapters: [5, 6, 7],
+    chapters: [5, 6, 7, 10],
     related: ['grounding', 'exhale']
   },
 
@@ -612,5 +614,65 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     axis: 'attention',
     chapters: [5, 6, 8, 10],
     related: ['neuroplasticity']
+  },
+
+  farb_2007: {
+    el: {
+      title: 'Μελέτη Νευρωνικών Τρόπων Αυτοαναφοράς (Farb et al., 2007)',
+      short: 'Η ενσυνειδητότητα ενεργοποιεί την παρούσα, αισθητηριακή εμπειρία (experiential focus) και απενεργοποιεί την αφηρημένη αυτοαναφορικότητα (narrative focus) του DMN.',
+      full: 'Αυτή η θεμελιώδης μελέτη fMRI («Attending to the present: mindfulness meditation reveals distinct neural modes of self-reference») απέδειξε ότι υπάρχουν δύο διακριτοί τρόποι με τους οποίους αντιλαμβανόμαστε τον εαυτό μας στον εγκέφαλο:\n\n1. Narrative Focus (Αφηγηματική Εστίαση): Συνδέεται με το Default Mode Network (mPFC), όπου ο νους αναλύει, κρίνει, κάνει σενάρια, ασκεί αυτοκριτική και μηρυκάζει το παρελθόν ή το μέλλον ως μια συνεχή «ιστορία» του εαυτού.\n\n2. Experiential Focus (Βιωματική Εστίαση): Συνδέεται με τη Νήσο (Insula) και τον Σωματοαισθητικό φλοιό, όπου ο νους βιώνει άμεσα τις σωματικές αισθήσεις, την αναπνοή και την αίσθηση του χρόνου στο παρόν, αποσυνδεδεμένος από την ανάγκη για περιγραφή.\n\nΗ εξάσκηση στην ενσυνειδητότητα εκπαιδεύει τον εγκέφαλο να μεταβαίνει από την κουραστική αφηγηματική αυτοαναφορικότητα στην άμεση βιωματική εμπειρία, προσφέροντας βαθιά νευρολογική ανακούφιση.',
+      ndNote: 'Για νευροδιαφορετικούς (ιδιαίτερα με ADHD ή αυτιστικό masking), ο αφηγηματικός τρόπος (Narrative) είναι συνήθως υπερδραστήριος, γεμάτος εσωτερικούς κανόνες και έντονη αυτοκριτική. Η σκόπιμη εστίαση στην άμεση αισθητηριακή εμπειρία (Experiential) — όπως η βαρύτητα, ο ήχος, ή ο αέρας στα ρουθούνια — λειτουργεί ως νευρολογικός «διακόπτης» (shortcut) που απενεργοποιεί προσωρινά το DMN και σβήνει ακαριαία την κουραστική εσωτερική φλυαρία.',
+      science: 'Farb et al. (2007) Social Cognitive and Affective Neuroscience (Doi: 10.1093/scan/nsm030)'
+    },
+    en: {
+      title: 'Neural Modes of Self-Reference Study (Farb et al., 2007)',
+      short: 'Mindfulness activates real-time sensory experience (experiential focus) while silencing the narrative autopilot (narrative focus) of the DMN.',
+      full: 'This seminal fMRI research ("Attending to the present: mindfulness meditation reveals distinct neural modes of self-reference") demonstrated that there are two distinct neural pathways for processing the self:\n\n1. Narrative Focus: Centered in the Default Mode Network (mPFC), where the mind analyzes, judges, creates self-narratives, and ruminates on past or future.\n\n2. Experiential Focus: Centered in the Insula and Somatosensory Cortex, where the mind directly experiences somatic sensations, physical breathing, and the present moment in real-time without conceptual filters.\n\nMindfulness training trains the brain to shift from exhausting narrative self-talk to direct, non-conceptual sensory experiencing, providing immediate neurological relief.',
+      ndNote: 'For neurodivergent brains (specifically ADHD or autistic masking), the Narrative mode is often hyperactive and loaded with self-criticism. Directing attention to immediate somatic feedback (Experiential) — like gravity, sound, or the temperature of air — acts as a neural shortcut that suspends the DMN and turns down the volume of intellectual rumination.',
+      science: 'Farb et al. (2007) Social Cognitive and Affective Neuroscience (Doi: 10.1093/scan/nsm030)'
+    },
+    axis: 'attention',
+    chapters: [3, 4, 10],
+    related: ['interoception', 'dmn', 'attention_modes', 'open_awareness']
+  },
+
+  binaural_beats: {
+    el: {
+      title: 'Διωτικά Κύματα (Binaural Beats)',
+      short: 'Η μέθοδος του Brainwave Entrainment για νευρική ρύθμιση και εστίαση.',
+      full: 'Όταν δύο ελαφρώς διαφορετικές συχνότητες ήχου αναπαράγονται ταυτόχρονα σε κάθε αυτί (π.χ. 300 Hz αριστερά, 310 Hz δεξιά), ο εγκέφαλος αντιλαμβάνεται μια τρίτη συχνότητα που ισούται με τη διαφορά τους (10 Hz). Αυτό το φαινόμενο, που ονομάζεται Brainwave Entrainment, συντονίζει τη δραστηριότητα των εγκεφαλικών κυμάτων με τη συχνότητα-στόχο (π.χ. συχνότητα Theta για χαλάρωση ή Alpha για ανοιχτή επίγνωση).',
+      ndNote: 'Για νευροδιαφορετικούς (ιδιαίτερα με ADHD ή αισθητηριακή υπερευαισθησία), τα διωτικά κύματα (Binaural Beats) λειτουργούν ως «ακουστική κουβέρτα». Καλύπτουν τον ενοχλητικό θόρυβο περιβάλλοντος ενώ παράλληλα ρυθμίζουν άμεσα τη συχνότητα του εγκεφάλου, επιτρέποντας την είσοδο σε βαθιές καταστάσεις χαλάρωσης ή εστίασης χωρίς την ανάγκη για λογική προσπάθεια.',
+      science: 'Oster (1973) "Auditory beats in the brain" (Scientific American) & Lane et al. (1998) Physiology & Behavior (Doi: 10.1016/s0031-9384(97)00436-8)'
+    },
+    en: {
+      title: 'Binaural Beats & Brainwave Entrainment',
+      short: 'The method of sound entrainment for neural regulation and focus.',
+      full: 'When two slightly different sound frequencies are played into each ear simultaneously (e.g., 300 Hz standard left and 310 Hz right), the brain perceives a third phantom frequency equal to their difference (10 Hz). This phenomenon, called Brainwave Entrainment, coordinates neural oscillations across cortical areas to sync with target brainwaves (like Theta waves for deep relaxation or Alpha waves for open awareness).',
+      ndNote: 'For neurodivergent brains (especially those with ADHD or sensory processing sensitivities), binaural beats act as an "acoustic weighted blanket." They mask erratic background noise while directly entraining neural oscillations, letting you sink into deep calm without forcing intellectual effort.',
+      science: 'Oster (1973) "Auditory beats in the brain" (Scientific American) & Lane et al. (1998) Physiology & Behavior (Doi: 10.1016/s0031-9384(97)00436-8)'
+    },
+    axis: 'all',
+    chapters: [7, 10],
+    related: ['parasympathetic', 'vagus_nerve']
+  },
+
+  davidson_2004: {
+    el: {
+      title: 'Υψηλού Πλάτους Κύματα Gamma (Lutz, Davidson et al., 2004)',
+      short: 'Η ανοιχτή επίγνωση (open awareness) αυξάνει τον συντονισμό των κυμάτων Gamma και Alpha, δημιουργώντας νοητική ευρυχωρία.',
+      full: 'Αυτή η ιστορική μελέτη ("Long-term meditators self-induce high-amplitude gamma synchrony during mental practice") σε προχωρημένους Θιβετανούς μοναχούς έδειξε ότι ο ανοιχτός διαλογισμός (open awareness) παράγει εξαιρετικά υψηλά επίπεδα συγχρονισμού κυμάτων Gamma (25-42 Hz) και Alpha (8-12 Hz) στον εγκέφαλο.\n\nΑυτός ο συντονισμός συνδέεται με τη βέλτιστη γνωστική λειτουργία, την ολοκλήρωση απομακρυσμένων εγκεφαλικών περιοχών και την "Aha!" κατάσταση δημιουργικής επίλυσης προβλημάτων. Αντί για στενή εστίαση, ο εγκέφαλος βρίσκεται σε κατάσταση συνειδητής ευρυχωρίας.',
+      ndNote: 'Στον νευροδιαφορετικό εγκέφαλο (όπου συχνά υπάρχει έντονη τοπική υπερσύνδεση αλλά μειωμένος μακρινός συντονισμός), η ανοιχτή επίγνωση (Open Awareness) βοηθά στη γεφύρωση απομακρυσμένων περιοχών. Αυτός ο διευρυμένος Alpha-Gamma συγχρονισμός προσφέρει μια βαθιά αίσθηση "άπλας" και ησυχίας από την εσωτερική κριτική φωνή.',
+      science: 'Lutz, Greischar, Rawlings, Richard, Davidson (2004) PNAS (Doi: 10.1073/pnas.0407401101) & Davidson & Lutz (2008) IEEE Signal Process Mag (Doi: 10.1109/msp.2008.915525)'
+    },
+    en: {
+      title: 'High-Amplitude Gamma Synchrony (Lutz, Davidson et al., 2004)',
+      short: 'Open awareness increases Alpha and Gamma brainwave coherence, inducing neural spaciousness and cognitive integration.',
+      full: 'This landmark EEG study ("Long-term meditators self-induce high-amplitude gamma synchrony during mental practice") on deep contemplative practitioners showed that non-referential open awareness generates unprecedented levels of large-scale neural synchrony in the Gamma (25–42 Hz) and Alpha bands.\n\nThis high-amplitude coherence represents active cognitive integration, sensory binding, and the classic "Aha!" state of creative intuition. Instead of a narrow beam of focus, the entire cortex operates under a unified field of effortless awareness.',
+      ndNote: 'For neurodivergent individuals (often navigating local hyper-connectivity combined with long-range dysregulation), training in Open Awareness (Aesthetic Space/4th Axis) builds robust global coherence. It creates an expansive mental playground where sensory streams coexist peacefully instead of competing for attention.',
+      science: 'Lutz, Greischar, Rawlings, Richard, Davidson (2004) PNAS (Doi: 10.1073/pnas.0407401101) & Davidson & Lutz (2008) IEEE Signal Process Mag (Doi: 10.1109/msp.2008.915525)'
+    },
+    axis: 'space',
+    chapters: [4, 10],
+    related: ['open_awareness', 'sky_metaphor', 'neuroplasticity']
   }
 };
