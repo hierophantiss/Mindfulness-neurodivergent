@@ -37,6 +37,7 @@ export interface AudioContextProps {
 
 interface SynthNodes {
   masterGain?: GainNode;
+  breathGain?: GainNode;
   compressor?: DynamicsCompressorNode;
   stoppers: Array<() => void>;
   sessionId: number;
@@ -103,6 +104,7 @@ function startSource(src: AudioBufferSourceNode, ctx: globalThis.AudioContext): 
 
 /** Fade a gain node in from 0 to target over fadeTime seconds. */
 function fadeIn(gain: GainNode, ctx: globalThis.AudioContext, target: number, fadeTime = 2.0) {
+  gain.gain.value = 0;
   gain.gain.cancelScheduledValues(ctx.currentTime);
   gain.gain.setValueAtTime(0, ctx.currentTime);
   gain.gain.linearRampToValueAtTime(target, ctx.currentTime + fadeTime);
@@ -444,12 +446,16 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     const n = nodesRef.current;
     n.stoppers.forEach(s => s());
     n.stoppers    = [];
+    if (n.breathGain) {
+      try { n.breathGain.disconnect(); } catch (e) {}
+    }
     if (n.masterGain) {
       try { n.masterGain.disconnect(); } catch (e) {}
     }
     if (n.compressor) {
       try { n.compressor.disconnect(); } catch (e) {}
     }
+    n.breathGain  = undefined;
     n.masterGain  = undefined;
     n.compressor  = undefined;
   }, []);
@@ -495,15 +501,22 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       n.masterGain = masterGain;
       n.compressor = compressor;
 
+      // ---- Breath gain (independent breathing modulation) ----
+      const breathGain = ctx.createGain();
+      breathGain.gain.value = 0.3; // safe starting baseline (armPos = 0)
+      breathGain.gain.setValueAtTime(0.3, ctx.currentTime);
+      breathGain.connect(masterGain);
+      n.breathGain = breathGain;
+
       // ---- Pulse LFO ----
       const pulseGain = ctx.createGain();
       pulseGain.gain.value = 1.0;
-      pulseGain.connect(masterGain);
+      pulseGain.connect(breathGain);
 
       if (!config.disableSynth && config.pulse) {
         const lfo      = ctx.createOscillator();
         lfo.type            = config.pulseType ?? 'sine';
-        lfo.frequency.value = config.pulse;
+        lfo.frequency.setValueAtTime(config.pulse, ctx.currentTime);
         const lfoDepth = ctx.createGain();
         lfoDepth.gain.value = 0.35;
         lfo.connect(lfoDepth);
@@ -515,19 +528,28 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       // ---- Binaural oscillators ----
       if (!config.disableSynth && config.base > 0) {
         const merger = ctx.createChannelMerger(2);
-        merger.connect(pulseGain);
+        
+        // Solid ramp-in for binaural oscillators to prevent any initial popping
+        const synthGain = ctx.createGain();
+        synthGain.gain.value = 0;
+        synthGain.gain.setValueAtTime(0, ctx.currentTime);
+        synthGain.gain.linearRampToValueAtTime(1.0, ctx.currentTime + 1.5);
+        
+        merger.connect(synthGain);
+        synthGain.connect(pulseGain);
+
         if (ctx.destination.channelCount >= 2) {
           ctx.destination.channelInterpretation = 'speakers';
         }
 
         const leftOsc  = ctx.createOscillator();
         leftOsc.type            = config.carrierType ?? 'sine';
-        leftOsc.frequency.value = config.base;
+        leftOsc.frequency.setValueAtTime(config.base, ctx.currentTime);
         leftOsc.connect(merger, 0, 0);
 
         const rightOsc = ctx.createOscillator();
         rightOsc.type            = config.carrierType ?? 'sine';
-        rightOsc.frequency.value = config.base + config.beat;
+        rightOsc.frequency.setValueAtTime(config.base + config.beat, ctx.currentTime);
         rightOsc.connect(merger, 0, 1);
 
         leftOsc.start(ctx.currentTime + 0.05);
@@ -539,12 +561,12 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       }
 
       // ---- Ambient layers ----
-      // KEY FIX: ambientGain connects directly to masterGain with a simple
+      // KEY FIX: ambientGain connects to breathGain with a simple
       // stable value. Each layer handles its own fade-in internally.
       if (config.ambientLayers?.length) {
         const ambientGain = ctx.createGain();
         ambientGain.gain.setValueAtTime(0.5, ctx.currentTime); // stable, no conflict
-        ambientGain.connect(masterGain);
+        ambientGain.connect(breathGain);
 
         const layerMap: Record<
           string,
@@ -591,9 +613,9 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const updateArmPos = useCallback((armPos: number) => {
     const n   = nodesRef.current;
     const ctx = webAudioCtxRef.current;
-    if (!n.masterGain || !ctx) return;
-    const target = (0.3 + armPos * 0.7) * globalVolumeRef.current * masterVolumeRef.current * 0.5;
-    n.masterGain.gain.setTargetAtTime(target, ctx.currentTime, 0.1);
+    if (!n.breathGain || !ctx) return;
+    const target = 0.3 + armPos * 0.7;
+    n.breathGain.gain.setTargetAtTime(target, ctx.currentTime, 0.1);
   }, []);
 
   const toggleMaster = useCallback(() => setMasterPlaying(p => !p), []);

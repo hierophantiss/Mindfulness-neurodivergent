@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Wind, Zap, ArrowLeft, Move, Compass, Activity, Lock } from 'lucide-react';
+import { Wind, Zap, ArrowLeft, Move, Compass, Activity, Lock, BookOpen, ChevronDown, ChevronUp } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import { useProgress } from '../contexts/ProgressContext';
 import { BREATH_PATTERNS, BreathPattern } from '../data/breathPatterns';
@@ -64,22 +64,79 @@ export default function Practice() {
   const { progress } = useProgress();
   const [activeCategory, setActiveCategory] = useState<'breath' | 'movement' | 'grounding' | 'microdoses' | null>(null);
   const [lockedCategoryAttempt, setLockedCategoryAttempt] = useState<'grounding' | 'microdoses' | null>(null);
+  const [activeSomatic, setActiveSomatic] = useState<'all' | 'seated' | 'quick' | 'audio'>('all');
 
   const hasFoundation = progress.completedChapters.length > 0;
 
   const completedBreathsCount = progress.completedBreaths.length;
   
+  // Somatic filter dynamic matches
+  const matchesSomaticFilter = (p: BreathPattern): boolean => {
+    if (activeSomatic === 'all') return true;
+    if (activeSomatic === 'seated') {
+      return p.category === 'breath' || p.category === 'grounding' || p.id.includes('lotus') || p.id.includes('bow') || p.id === 'tilopa-rest';
+    }
+    if (activeSomatic === 'quick') {
+      return p.totalCycleDurationMs < 14000 || p.id === 'sos-breath' || p.id.includes('resonant') || p.id === '4-2-6-1';
+    }
+    if (activeSomatic === 'audio') {
+      return !!p.hasBinaural;
+    }
+    return true;
+  };
+
   // Filter patterns
   const movementExercises = BREATH_PATTERNS.filter(p => p.category === 'movement');
   const breathExercises = BREATH_PATTERNS.filter(p => p.category === 'breath');
   const groundingExercises = BREATH_PATTERNS.filter(p => p.category === 'grounding');
 
+  const activeCategoryWithReset = (cat: 'breath' | 'movement' | 'grounding' | 'microdoses' | null) => {
+    setActiveSomatic('all');
+    setActiveCategory(cat);
+  };
+
+  const renderSomaticFilters = () => (
+    <div className="max-w-4xl mx-auto w-full border-b border-white/5 pb-6" id="somatic-filters-container">
+      <span className="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em] pl-1 block mb-3">
+        {language === 'el' ? 'Φιλτράρισμα με βάση το Σύστημά σου' : 'Somatic Capacity Filters'}
+      </span>
+      <div className="flex flex-wrap gap-2 md:gap-3">
+        {[
+          { id: 'all', label: { el: 'Όλα', en: 'Show All' } },
+          { id: 'seated', label: { el: 'Σε Κάθισμα', en: 'Seated Only' } },
+          { id: 'quick', label: { el: 'Κάτω από 5λ', en: 'Quick < 5min' } },
+          { id: 'audio', label: { el: 'Με Ήχο / Δόνηση', en: 'Audio Sync' } },
+        ].map((item) => {
+          const isActive = activeSomatic === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => setActiveSomatic(item.id as any)}
+              className={cn(
+                "px-4 py-2 border rounded-full text-xs font-semibold tracking-wide transition-all duration-300 flex items-center gap-2 cursor-pointer",
+                isActive 
+                  ? "bg-teal-500/10 border-teal-500/40 text-teal-300 shadow-[0_0_12px_rgba(20,184,166,0.15)]"
+                  : "glass-card border-white/5 text-white/60 hover:border-white/10 hover:text-white"
+              )}
+              id={`somatic-btn-${item.id}`}
+            >
+              {isActive && <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />}
+              <span className="font-medium">{language === 'el' ? item.label.el : item.label.en}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+
   if (activeCategory === 'breath') {
+    const filteredBreaths = breathExercises.filter(matchesSomaticFilter);
+
     return (
       <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="flex items-center gap-4">
           <div role="button" tabIndex={0} 
-            onClick={() => setActiveCategory(null)} 
+            onClick={() => activeCategoryWithReset(null)} 
             className="btn-zen !px-3 !py-3"
           >
             <ArrowLeft size={20} />
@@ -101,109 +158,136 @@ export default function Practice() {
           </p>
         </header>
 
+        {renderSomaticFilters()}
+
         <div className="max-w-4xl mx-auto w-full pb-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {breathExercises.map(p => (
-              <PatternCard
-                key={p.id}
-                p={p}
-                colorScheme="orange"
-                icon={Wind}
-                onClick={() => navigate(`/practice/breath/${p.id}`)}
-                language={language}
-              />
-            ))}
-          </div>
+          {filteredBreaths.length === 0 ? (
+            <div className="py-12 text-center text-white/40 font-sans border border-white/5 rounded-2xl bg-white/[0.01]" id="no-filtered-breaths">
+              {language === 'el' 
+                ? 'Δεν βρέθηκαν ασκήσεις αναπνοής με αυτά τα φίλτρα.' 
+                : 'No breath exercises found with the active filters.'}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {filteredBreaths.map(p => (
+                <PatternCard
+                  key={p.id}
+                  p={p}
+                  colorScheme="orange"
+                  icon={Wind}
+                  onClick={() => navigate(`/practice/breath/${p.id}`)}
+                  language={language}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     );
   }
 
   if (activeCategory === 'movement') {
+    const filteredMovements = movementExercises.filter(matchesSomaticFilter);
+    const filteredGrounding = groundingExercises.filter(matchesSomaticFilter);
+
     return (
       <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="flex items-center gap-4">
           <div role="button" tabIndex={0} 
-            onClick={() => setActiveCategory(null)} 
+            onClick={() => activeCategoryWithReset(null)} 
             className="btn-zen !px-3 !py-3"
           >
             <ArrowLeft size={20} />
           </div>
           <span className="text-[11px] font-bold tracking-[0.2em] text-indigo-400 uppercase">
-            {language === 'el' ? 'Ενσυνειδητη Κινηση' : 'Mindful Movement'}
+            {language === 'el' ? 'Κινητικη Ενσυνειδητοτητα & Ται Τσι' : 'Mindful Movement & Tai Chi'}
           </span>
         </div>
 
         <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <h2 className="text-4xl md:text-5xl font-serif text-white/90 italic leading-tight flex items-center justify-center md:justify-start">
-            {language === 'el' ? 'Ενσυνείδητη Κίνηση' : 'Mindful Movement'}
-            <ConceptInfoIcon conceptId="proprioception" />
+          <h2 className="text-4xl md:text-5xl font-serif text-white/90 italic leading-tight flex items-center justify-center md:justify-start flex-wrap gap-2">
+            <span>{language === 'el' ? 'Κινητική Ενσυνειδητότητα & Τάι Τσι' : 'Mindful Movement & Tai Chi'}</span>
+            <span className="inline-flex gap-1 items-center" onClick={(e) => e.stopPropagation()}>
+              <ConceptInfoIcon conceptId="proprioception" />
+              <ConceptInfoIcon conceptId="movement_vs_breathwork" className="w-6 h-6 ml-0.5 text-indigo-400 hover:text-indigo-300 hover:bg-indigo-400/10" />
+            </span>
           </h2>
           <p className="text-lg text-white/50 font-sans leading-relaxed">
             {language === 'el' 
-              ? 'Αρμονία κίνησης και αναπνοής για βαθιά γείωση.' 
-              : 'Harmony of movement and breath for deep grounding.'}
+              ? 'Μεταφέρετε την εστίαση από το νου στο σώμα μέσα από απαλές, ρυθμικές κινήσεις και ροές.' 
+              : 'Shift priority from thoughts to sensory presence with gentle somatic movements and flows.'}
           </p>
         </header>
 
-        <div className="max-w-4xl mx-auto w-full pb-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {movementExercises.map(p => (
-              <PatternCard
-                key={p.id}
-                p={p}
-                colorScheme="indigo"
-                icon={Activity}
-                onClick={() => navigate(`/practice/breath/${p.id}`)}
-                language={language}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
+        {renderSomaticFilters()}
 
-  if (activeCategory === 'grounding') {
-    return (
-      <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <div className="flex items-center gap-4">
-          <div role="button" tabIndex={0} 
-            onClick={() => setActiveCategory(null)} 
-            className="btn-zen !px-3 !py-3"
-          >
-            <ArrowLeft size={20} />
-          </div>
-          <span className="text-[11px] font-bold tracking-[0.2em] text-emerald-400 uppercase">
-            {language === 'el' ? 'Πρακτικη Γειωσης' : 'Grounding Practice'}
-          </span>
-        </div>
+        <div className="max-w-4xl mx-auto w-full space-y-12 pb-12">
+          {filteredMovements.length === 0 && filteredGrounding.length === 0 ? (
+            <div className="py-12 text-center text-white/40 font-sans border border-white/5 rounded-2xl bg-white/[0.01]" id="no-filtered-movements">
+              {language === 'el' 
+                ? 'Δεν βρέθηκαν κινητικές ασκήσεις με αυτά τα φίλτρα.' 
+                : 'No movement exercises found with the active filters.'}
+            </div>
+          ) : (
+            <>
+              {/* Section 1: Basic movements */}
+              {filteredMovements.length > 0 && (
+                <div className="space-y-4">
+                  <div className="border-b border-white/5 pb-2">
+                    <h3 className="text-xl font-serif italic text-indigo-400 leading-tight">
+                      {language === 'el' ? 'Βασικές Κινήσεις (Τάι Τσι & Qigong)' : 'Core Movements (Tai Chi & Qigong)'}
+                    </h3>
+                    <p className="text-sm text-white/40 mt-1">
+                      {language === 'el' ? 'Απλές μεμονωμένες κινήσεις για άμεση σωματική επαναφορά.' : 'Single deliberate physical movements for instant somatic resets.'}
+                    </p>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                    {filteredMovements.map(p => (
+                      <PatternCard
+                        key={p.id}
+                        p={p}
+                        colorScheme="indigo"
+                        icon={Activity}
+                        onClick={() => navigate(`/practice/breath/${p.id}`)}
+                        language={language}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
 
-        <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <h2 className="text-4xl md:text-5xl font-serif text-white/90 italic leading-tight flex items-center justify-center md:justify-start">
-            {language === 'el' ? 'Πρακτική Γείωσης' : 'Grounding Practice'}
-            <ConceptInfoIcon conceptId="grounding" />
-          </h2>
-          <p className="text-lg text-white/50 font-sans leading-relaxed">
-            {language === 'el' 
-              ? 'Συνδυασμός κίνησης, βαρύτητας και αναπνοής. Η Ροή και ο Λωτός σε 4 ρυθμούς.' 
-              : 'Combining motion, gravity, and breath. Flow and Lotus in 4 rhythms.'}
-          </p>
-        </header>
-
-        <div className="max-w-4xl mx-auto w-full pb-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {groundingExercises.map(p => (
-              <PatternCard
-                key={p.id}
-                p={p}
-                colorScheme="indigo"
-                icon={Compass}
-                onClick={() => navigate(`/practice/breath/${p.id}`)}
-                language={language}
-              />
-            ))}
-          </div>
+              {/* Section 2: Advanced Flows (Tai Chi & Lotus) */}
+              {filteredGrounding.length > 0 && (
+                <div className="space-y-4">
+                  <div className="border-b border-white/5 pb-2 flex justify-between items-end">
+                    <div>
+                      <h3 className="text-xl font-serif italic text-emerald-400 leading-tight">
+                        {language === 'el' ? 'Σύνθετες Ροές (Τάι Τσι & Λωτός)' : 'Rhythmic Flows (Tai Chi & Lotus)'}
+                      </h3>
+                      <p className="text-sm text-white/40 mt-1">
+                        {language === 'el' ? 'Ολοκληρωμένοι αναπνευστικοί ρυθμοί συγχρονισμένοι με τρισδιάστατες ροές.' : 'Fully animated breathing geometries synced with spatial flows.'}
+                      </p>
+                    </div>
+                    <ConceptInfoIcon conceptId="grounding" className="mb-1" />
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                    {filteredGrounding.map(p => (
+                      <PatternCard
+                        key={p.id}
+                        p={p}
+                        colorScheme="indigo"
+                        icon={Compass}
+                        onClick={() => navigate(`/practice/breath/${p.id}`)}
+                        language={language}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
+          )}
         </div>
       </div>
     );
@@ -299,11 +383,11 @@ export default function Practice() {
         </p>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-12 max-w-5xl mx-auto w-full">
-        {/* Mindful Movement Card (Wide) */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-12 max-w-5xl mx-auto w-full">
+        {/* Mindful Movement & Tai Chi Card */}
         <div role="button" tabIndex={0}
           onClick={() => setActiveCategory('movement')}
-          className="md:col-span-2 group relative block p-6 md:p-8 shape-cloud-3 glass-card flex-col flex justify-between min-h-[240px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-indigo-500/20 overflow-hidden text-left"
+          className="col-span-1 group relative block p-6 md:p-8 shape-cloud-3 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-indigo-500/20 overflow-hidden text-left"
         >
           <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-indigo-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           
@@ -311,17 +395,20 @@ export default function Practice() {
             <div className="w-14 h-14 shrink-0 shape-cloud-5 bg-indigo-400/15 flex items-center justify-center text-indigo-400 border border-indigo-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
               <Activity size={28} strokeWidth={1.5} />
             </div>
-            <ConceptInfoIcon conceptId="proprioception" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
+            <div className="flex gap-1.5" onClick={(e) => e.stopPropagation()}>
+              <ConceptInfoIcon conceptId="proprioception" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
+              <ConceptInfoIcon conceptId="movement_vs_breathwork" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5 text-indigo-400 hover:text-indigo-300" />
+            </div>
           </div>
           
           <div className="space-y-2 relative z-10 mt-auto w-full">
-            <h3 className="text-2xl md:text-3xl font-serif text-white/90 italic leading-tight">
-              {language === 'en' ? 'Mindful Movement' : 'Ενσυνείδητη Κίνηση'}
+            <h3 className="text-2xl font-serif text-white/90 italic leading-tight">
+              {language === 'en' ? 'Movement & Tai Chi' : 'Κίνηση & Τάι Τσι'}
             </h3>
-            <p className="text-white/50 font-sans text-[14px] leading-relaxed max-w-lg">
+            <p className="text-white/50 font-sans text-[14px] leading-relaxed">
               {language === 'en' 
-               ? 'Synch your breath with slow, deliberate physical movements for deep nervous system regulation.' 
-               : 'Συγχρονισμός της αναπνοής με αργές, συνειδητές κινήσεις του σώματος για βαθιά χαλάρωση.'}
+               ? 'Slow somatic actions & animated visual flows (Tai Chi / Lotus) for deep grounding.' 
+               : 'Αργές σωματικές κινήσεις & τρισδιάστατες οπτικές ροές (Τάι Τσι / Λωτός) για βαθιά γείωση.'}
             </p>
           </div>
         </div>
@@ -329,7 +416,7 @@ export default function Practice() {
         {/* Breath Rhythms Card */}
         <div role="button" tabIndex={0}
           onClick={() => setActiveCategory('breath')}
-          className="col-span-1 group relative block p-6 md:p-8 shape-cloud-2 glass-card flex-col flex justify-between min-h-[240px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-teal-500/20 overflow-hidden text-left"
+          className="col-span-1 group relative block p-6 md:p-8 shape-cloud-2 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-teal-500/20 overflow-hidden text-left"
         >
           <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-teal-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           
@@ -346,47 +433,8 @@ export default function Practice() {
             </h3>
             <p className="text-white/50 font-sans text-[14px] leading-relaxed">
               {language === 'en' 
-               ? 'Specific techniques to calm the mind.' 
-               : 'Στοχευμένοι ρυθμοί αναπνοής για χαλάρωση.'}
-            </p>
-          </div>
-        </div>
-
-        {/* Grounding Card */}
-        <div role="button" tabIndex={0}
-          onClick={() => hasFoundation ? setActiveCategory('grounding') : setLockedCategoryAttempt('grounding')}
-          className="col-span-1 group relative block p-6 md:p-8 shape-cloud-1 glass-card flex-col flex justify-between min-h-[240px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-emerald-500/20 overflow-hidden text-left"
-        >
-          <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-emerald-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
-          
-          <div className="flex justify-between items-start mb-8 relative z-10 w-full">
-            <div className="w-14 h-14 shrink-0 shape-cloud-2 bg-emerald-400/15 flex items-center justify-center text-emerald-400 border border-emerald-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
-              <Compass size={28} strokeWidth={1.5} />
-            </div>
-            
-            <div className="flex items-center gap-2">
-              <ConceptInfoIcon conceptId="grounding" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
-              {!hasFoundation && (
-                <div className="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500/80">
-                  <Lock size={14} />
-                </div>
-              )}
-            </div>
-          </div>
-          
-          <div className="space-y-2 relative z-10 mt-auto w-full">
-            {!hasFoundation && (
-              <div className="text-[9px] uppercase tracking-wider text-amber-500/80 font-bold mb-1">
-                {language === 'el' ? 'Προτεινεται Θεωρια' : 'Theory Recommended'}
-              </div>
-            )}
-            <h3 className="text-2xl font-serif text-white/90 italic leading-tight">
-              {language === 'en' ? 'Grounding' : 'Πρακτική Γείωσης'}
-            </h3>
-            <p className="text-white/50 font-sans text-[14px] leading-relaxed">
-              {language === 'en' 
-               ? 'Incorporate static gravity, space, and attention.' 
-               : 'Στοχευμένη πρακτική εστίασης της προσοχής.'}
+               ? 'Specific breathing techniques to regulate and calm the central nervous system.' 
+               : 'Στοχευμένοι ρυθμοί αναπνοής για ηρεμία και ρύθμιση του νευρικού συστήματος.'}
             </p>
           </div>
         </div>
@@ -430,7 +478,7 @@ export default function Practice() {
           </div>
         </div>
       </div>
-      
+
       {lockedCategoryAttempt && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-300">
           <div className="bg-[#0a1520] border border-white/10 rounded-[2rem] p-6 max-w-sm w-full shadow-2xl relative">

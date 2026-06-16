@@ -9,6 +9,8 @@ import { D as D_EL } from "./src/data/course-el";
 import { D as D_EN } from "./src/data/course-en";
 import { dzogchenArticle } from "./src/data/dzogchenArticle";
 import { neverForceArticle } from "./src/data/neverForceArticle";
+import { MICRODOSES_EXERCISES } from "./src/data/microdoses";
+import { BREATH_PATTERNS } from "./src/data/breathPatterns";
 
 // Read Rabbit Hole articles dynamically safely
 let rabbitHoleArticlesText = "";
@@ -79,6 +81,17 @@ async function startServer() {
         Dzogchen Article: ${JSON.stringify(dzogchenArticle)}
         Never Force Article: ${JSON.stringify(neverForceArticle)}
         Rabbit Hole Articles: ${rabbitHoleArticlesText}
+        Breathing Exercises List: ${JSON.stringify(BREATH_PATTERNS.map(p => ({ id: p.id, title: p.title, subtitle: p.subtitle, desc: p.desc, category: p.category, path: `/practice/breath/${p.id}` })))}
+        Microdoses Practices List: ${JSON.stringify(MICRODOSES_EXERCISES.map(p => ({ id: p.id, title: p.title, type: p.type, dur: p.dur, desc: p.desc, path: p.link })))}
+
+        EXERCISES RECOMMENDATION RULES:
+        Όταν ο χρήστης εκφράζει μια συγκεκριμένη σωματική ή νευρολογική κατάσταση (π.χ. ένταση, άγχος, υπερδιέγερση, αποσύνδεση, ανάγκη για παύση), πρότεινε απαλά (gentle invitation) 1 συγκεκριμένη άσκηση αναπνοής ή microdose που ταιριάζει ακριβώς στην ανάγκη του, αναφέροντας το όνομά της και την απλή οδηγία της. 
+        Για παράδειγμα:
+        - Αν νιώθει ένταση στο σώμα/άγχος: "Απελευθέρωση Ώμων" (Shoulder Drop), "Μαλακή Κοιλιά" (Soft Belly), ή "Αναπνοή 4-2-7" (Calm).
+        - Αν ο νους τρέχει/υπερδιέγερση: "Οπτική Άγκυρα 7"" (Visual Anchor) ή "Τριπλή Άγκυρα".
+        - Αν νιώθει αποσυνδεδεμένος/θολός: "Παρατήρηση Επαφής" (Contact Observation) ή "Βύθιση στη Βαρύτητα".
+        - Αν θέλει στιγμιαία παύση: "Στιγμιαία Παύση" (Short Moment) ή "Ξεκούραση (Tilopa)".
+        Κάνε την πρόταση εξαιρετικά απαλή, ποιητική, χωρίς επιβολή.
 
         USER CONTEXT:
         - Language: ${language}

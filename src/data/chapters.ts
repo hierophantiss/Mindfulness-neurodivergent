@@ -76,9 +76,30 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
      theorySections:[{title:"The Logic of Stages",paragraphs: ["Stage 1 → Body (Grounding)\nStage 2 → Breath (Regulation)\nStage 3 → Attention (Concentration)\nStage 4 → Space (Open Awareness)"]},{title:"The Attitude Behind the Steps",paragraphs: ["Before you begin the stages, remember: softness is not optional — it is the method itself. Every time you return without judgment, every time you accept distraction as part of the process — you practice kindness. Not as an idea, but as an action.", "Self-criticism activates the same neural circuits as an external threat. The gentle return calms them. This is the way: not fighting the autopilot, but giving it space to settle.", "Treat yourself as you would treat a struggling friend."], interactive: "journey"}],
      exercise:{title:"Complete Exercise",steps:["STAGE 1 — Grounding: Sit comfortably. Feel the contact points.","STAGE 2 — Breath: Close your eyes. Inhale nose → lungs → belly.","STAGE 3 — Attention: Open eyes. Fixed point. Label thoughts if they come.","STAGE 4 — Space: Soften the gaze. Feel everything together."]},
      insight:"Presence does not take hours. It starts with victories of a few seconds.",reflection:"Which stage feels most natural to me?"},
-    {num:10,title:"Science & Wisdom",sub:"The Background",tag:"Depth",color:"var(--lav)",hex:"#B5A7D0",icon:"🔭",
-     summary:"Science and spirituality agree — balance begins in the body.",
-     theorySections:[{title:"Neuroscience",paragraphs: ["• Proprioception: The sense of gravity activates the proprioceptive system — Craig (2002) Nature Reviews Neuroscience.", "• Vagus Nerve: Slow exhalation activates the vagus nerve, reducing heart rate — Gerritsen & Band (2018).", "• Default Mode Network: Mindfulness reduces DMN activity — Brewer et al. (2011) PNAS.", "• Prefrontal Cortex: Focused attention strengthens the PFC — the foundation of self-regulation.", "• Neuroplasticity: 8 weeks of practice measurably change brain structure — Hölzel et al. (2011)."]},{title:"Spiritual Traditions",paragraphs: ["• Satipatthana Sutta (Theravada): The Four Foundations — body, feeling, mind, phenomena — correspond to the four axes.", "• Samatha & Vipassana: Calm abiding (focus) → insight (openness) — the classic progression from the 3rd to the 4th axis.", "• Dzogchen (Nyingma): Rigpa — the natural state of open awareness. The 4th axis (Space) corresponds to the nature of the mind.", "• Sufism (Inayatiyya): Breath as the bridge between matter and spirit. Rhythm as a path to presence.", "• Tai Chi / Qi Gong: Grounding through movement — gravity as teacher. The vertical axis as foundation."]}],
+    {num:10,title:"Science & Tradition",sub:"Theoretical Backing",tag:"Roots",color:"var(--lav)",hex:"#B5A7D0",icon:"🔬",
+     summary:"Scientific and historical foundations of the Fourfold Axis method.",
+     theorySections:[
+       {title:"Neuroscience",paragraphs: [
+         "The Fourfold Axis is backed by robust neuroscience. Learn more about the core mechanisms:",
+         "• Proprioception: The sense of gravity activates the proprioceptive system{{proprioception}} — Craig (2002).",
+         "• Vagus Nerve: Slow exhalation activates the vagus nerve{{vagus_nerve}} and parasympathetic nervous system, lowering heart rate — Gerritsen & Band (2018).",
+         "• Default Mode Network: Mindfulness reduces the active DMN{{dmn}} to quiet mind-wandering and self-criticism — Brewer et al. (2011).",
+         "• Neuroplasticity: Regular practice alters brain morphology{{neuroplasticity}}, strengthening your prefrontal cortex — Hölzel et al. (2011)."
+       ]},
+       {title:"Clinical Research Studies",paragraphs: [
+         "To adapt mindfulness safely for neurodivergence, we rely on three pillars of clinical evidence:",
+         "• ADHD & Mindfulness: Adapted, sensory-rich, and flexible practices are highly feasible and neurocognitively beneficial{{zylowska_2007}} — Zylowska et al. (2007).",
+         "• Interoceptive Anchoring: Active somatic and physical anchoring regulates the insular cortex while avoiding anxiety{{gibson_2019}} — Gibson (2019).",
+         "• Microdosing & Practice Habit: A longitudinal study of 280,000+ sessions shows small, consistent doses of focus are far superior to longer sessions for adherence{{cearns_2022}} — Cearns & Clark (2022)."
+       ]},
+       {title:"Spiritual Traditions",paragraphs: [
+         "• Satipatthana Sutta (Theravada): The Four Foundations — body, feeling, mind, phenomena — correspond to the four axes.",
+         "• Samatha & Vipassana: Calm abiding (focus) → insight (openness) — the classic progression from the 3rd to the 4th axis.",
+         "• Dzogchen (Nyingma): Rigpa — the natural state of open awareness{{open_awareness}}. The 4th axis (Space) corresponds to the nature of the mind.",
+         "• Sufism (Inayatiyya): Breath as the bridge between matter and spirit. Rhythm as a path to presence.",
+         "• Tai Chi / Qi Gong: Grounding through movement — gravity as teacher. The vertical axis as foundation."
+       ]}
+     ],
      exercise:{title:"Reflection: My Practice",steps:["Which of the 4 centers comes to you most naturally?","Where do you struggle the most?","What has changed since you started?"]},
      insight:"Your brain can change. Every practice builds new neural pathways.",reflection:"What do I carry from this practice?"}
   ],
@@ -162,12 +183,33 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
      insight:'Στόχος: να επιστρέφεις στο «τώρα» σε λίγα δευτερόλεπτα.',reflection:'Τι παρατήρησα σήμερα;'},
     {num:9,title:'Τα Τέσσερα Στάδια',sub:'Οδηγός Βήμα-Βήμα',tag:'Βήματα',color:'var(--gold)',hex:'#C8922A',icon:'👣',
      summary:'Η πλήρης, διαδοχική άσκηση του Τετραπλού Άξονα.',
-     theorySections:[{title:'Η Λογική των Σταδίων',paragraphs: [`Στάδιο 1 → Σώμα (Γείωση)\nΣτάδιο 2 → Αναπνοή (Ρύθμιση)\nΣτάδιο 3 → Προσοχή (Συγκέντρωση)\nΣτάδιο 4 → Χώρος (Ανοιχτή Επίγνωση)`]},{title:'Η Στάση Πίσω από τα Βήματα',paragraphs: [`Πριν ξεκινήσεις τα στάδια, θυμήσου: η απαλότητα δεν είναι προαιρετική — είναι η ίδια η μέθοδος. Κάθε φορά που επιστρέφεις χωρίς κριτική, κάθε φορά που δέχεσαι τη διάσπαση ως μέρος της διαδικασίας — εξασκείς καλοσύνη. Όχι ως ιδέα, ως πράξη.`, `Η αυτοκριτική ενεργοποιεί τα ίδια νευρικά κυκλώματα με τον εξωτερικό κίνδυνο. Η απαλή επιστροφή{{gentle_return}} τα ηρεμεί. Αυτός είναι ο δρόμος: όχι πολεμώντας τον αυτόματο πιλότο, αλλά δίνοντάς του χώρο να ηρεμήσει.`, `Μεταχειρίσου τον εαυτό σου όπως θα μεταχειριζόσουν έναν φίλο που δυσκολεύεται{{kindness}}.`]}],
+     theorySections:[{title:'Η Λογική των Σταδίων',paragraphs: [`Στάδιο 1 → Σώμα (Γείωση)\nΣτάδιο 2 → Αναπνοή (Ρύθμιση)\nΣτάδιο 3 → Προσοχή (Συγκέντρωση)\nΣτάδιο 4 → Χώρος (Ανοιχτή Επίγνωση)`]},{title:'Η Στάση Πίσω από τα Βήματα',paragraphs: [`Πριν ξεκινήσεις τα στάδια, θυμήσου: η απαλότητα δεν είναι προαιρετική — είναι η ίδια η μέθοδος. Κάθε φορά που επιστρέφεις χωρίς κριτική, κάθε φορά που δέχεσαι τη διάσπαση ως μέρος της διαδικασίας — εξασκείς καλοσύνη. Όχι ως ιδέα, ως πράξη.`, `Η αυτοκριτική ενεργοποιεί τα ίδια νευρικά κυκλώματα με τον εξωτερικό κίνδυνο. Η απαλή επιστροφή{{gentle_return}} τα ηρεμεί. Αυτός είναι ο δρόμος: όχι πολεμώντας τον αυτόματο πιλότο, αλλά dίνοντάς του χώρο να ηρεμήσει.`, `Μεταχειρίσου τον εαυτό σου όπως θα μεταχειριζόσουν έναν φίλο που δυσκολεύεται{{kindness}}.`]}],
      exercise:{title:'Ολοκληρωμένη Άσκηση',steps:['ΣΤΑΔΙΟ 1 — Γείωση: Κάθισε άνετα. Νιώσε τα σημεία επαφής.','ΣΤΑΔΙΟ 2 — Αναπνοή: Κλείσε τα μάτια. Εισπνοή από τη μύτη → πνεύμονες → κοιλιά.','ΣΤΑΔΙΟ 3 — Προσοχή: Άνοιξε τα μάτια. Σταθερό σημείο. Ταμπέλα αν έρθουν σκέψεις.','ΣΤΑΔΙΟ 4 — Χώρος: Μαλάκωσε το βλέμμα. Νιώσε όλα μαζί.']},
      insight:'Η παρουσία δεν χρειάζεται ώρες. Ξεκινά με νίκες λίγων δευτερολέπτων.',reflection:'Ποιο στάδιο μου είναι πιο φυσικό;'},
     {num:10,title:'Επιστήμη & Σοφία',sub:'Το Υπόβαθρο',tag:'Βάθος',color:'var(--lav)',hex:'#B5A7D0',icon:'🔭',
      summary:'Η επιστήμη και η πνευματικότητα συμφωνούν — η ισορροπία ξεκινά από το σώμα.',
-     theorySections:[{title:'Νευροεπιστήμη',paragraphs: [`• Ιδιοδεκτικότητα: Η αίσθηση βαρύτητας ενεργοποιεί το ιδιοδεκτικό σύστημα{{proprioception}} — Craig (2002) Nature Reviews Neuroscience.`, `• Πνευμονογαστρικό νεύρο: Η αργή εκπνοή ενεργοποιεί το vagus nerve{{vagus_nerve}}, μειώνει καρδιακό ρυθμό — Gerritsen & Band (2018).`, `• Default Mode Network: Η ενσυνειδητότητα μειώνει τη δραστηριότητα του DMN{{dmn}} — Brewer et al. (2011) PNAS.`, `• Προμετωπιαίος Φλοιός: Η εστιασμένη προσοχή ενισχύει τον PFC — θεμέλιο της αυτορρύθμισης.`, `• Νευροπλαστικότητα: 8 εβδομάδες πρακτικής αλλάζουν μετρήσιμα τη δομή του εγκεφάλου{{neuroplasticity}} — Hölzel et al. (2011).`]},{title:'Πνευματικές Παραδόσεις',paragraphs: [`• Satipatthana Sutta (Θεραβάντα): Τα Τέσσερα Θεμέλια — σώμα, αίσθηση, νους, φαινόμενα — αντιστοιχούν στους τέσσερις άξονες.`, `• Samatha & Vipassana: Γαλήνια παραμονή (εστίαση) → ενόραση (ανοιχτότητα) — η κλασική διαδρομή από τον 3ο στον 4ο άξονα.`, `• Dzogchen (Nyingma): Rigpa — η φυσική κατάσταση ανοιχτής επίγνωσης{{open_awareness}}. Ο 4ος άξονας (Χώρος) αντιστοιχεί στη φύση του νου.`, `• Σουφισμός (Inayatiyya): Η αναπνοή ως γέφυρα μεταξύ ύλης και πνεύματος. Ο ρυθμός ως δρόμος προς την παρουσία.`, `• Tai Chi / Qi Gong: Γείωση μέσω κίνησης — η βαρύτητα ως δάσκαλος. Ο κατακόρυφος άξονας ως θεμέλιο.`]}],
+     theorySections:[
+       {title:'Νευροεπιστήμη',paragraphs: [
+         `• Ιδιοδεκτικότητα: Η αίσθηση βαρύτητας ενεργοποιεί το ιδιοδεκτικό σύστημα{{proprioception}} — Craig (2002) Nature Reviews Neuroscience.`,
+         `• Πνευμονογαστρικό νεύρο: Η αργή εκπνοή ενεργοποιεί το vagus nerve{{vagus_nerve}}, μειώνει καρδιακό ρυθμό — Gerritsen & Band (2018).`,
+         `• Default Mode Network: Η ενσυνειδητότητα μειώνει τη δραστηριότητα του DMN{{dmn}} — Brewer et al. (2011) PNAS.`,
+         `• Προμετωπιαίος Φλοιός: Η εστιασμένη προσοχή ενισχύει τον PFC — θεμέλιο της αυτορρύθμισης.`,
+         `• Νευροπλαστικότητα: 8 εβδομάδες πρακτικής αλλάζουν μετρήσιμα τη δομή του εγκεφάλου{{neuroplasticity}} — Hölzel et al. (2011).`
+       ]},
+       {title:'Κλινικές Μελέτες Έρευνας',paragraphs: [
+         `Για να προσαρμόσουμε την ενσυνειδητότητα με ασφάλεια στη νευροδιαφορετικότητα, βασιζόμαστε σε τρεις πυλώνες κλινικής τεκμηρίωσης:`,
+         `• ΔΕΠΥ & Προσαρμοσμένη Ενσυνειδητότητα: Οι σύντομες, ευέλικτες και αισθητηριακά πλούσιες πρακτικές είναι εξαιρετικά αποτελεσματικές και εφαρμόσιμες{{zylowska_2007}} — Zylowska et al. (2007).`,
+         `• Σωματική Αγκύρωση & Δια-αίσθηση: Η ενεργή σωματική εστίαση (αντί για την παθητική παρατήρηση) ρυθμίζει τη Νήσο χωρίς να πυροδοτεί άγχος{{gibson_2019}} — Gibson (2019).`,
+         `• Μικροδόσεις & Συνήθεια Πρακτικής: Μια τεράστια μελέτη σε 280.000+ συνεδρίες αποδεικνύει ότι οι σύντομες, καθημερινές «μικροδόσεις» είναι ανώτερες των μεγάλων σπάνιων συνεδριών για τη συμμόρφωση και τη μείωση του άγχους{{cearns_2022}} — Cearns & Clark (2022).`
+       ]},
+       {title:'Πνευματικές Παραδόσεις',paragraphs: [
+         `• Satipatthana Sutta (Θεραβάντα): Τα Τέσσερα Θεμέλια — σώμα, αίσθηση, νους, φαινόμενα — αντιστοιχούν στους τέσσερις άξονες.`,
+         `• Samatha & Vipassana: Γαλήνια παραμονή (εστίαση) → ενόραση (ανοιχτότητα) — η κλασική διαδρομή από τον 3ο στον 4ο άξονα.`,
+         `• Dzogchen (Nyingma): Rigpa — η φυσική κατάσταση ανοιχτής επίγνωσης{{open_awareness}}. Ο 4ος άξονας (Χώρος) αντιστοιχεί στη φύση του νου.`,
+         `• Σουφισμός (Inayatiyya): Η αναπνοή ως γέφυρα μεταξύ ύλης και πνεύματος. Ο ρυθμός ως δρόμος προς την παρουσία.`,
+         `• Tai Chi / Qi Gong: Γείωση μέσω κίνησης — η βαρύτητα ως δάσκαλος. Ο κατακόρυφος άξονας ως θεμέλιο.`
+       ]}
+     ],
      exercise:{title:'Αναστοχασμός: Η διαδρομή μου',steps:['Ποιο από τα 4 κέντρα σου έρχεται πιο φυσικά;','Πού δυσκολεύεσαι περισσότερο;','Τι έχει αλλάξει από τότε που ξεκίνησες;']},
      insight:'Ο εγκέφαλός σου μπορεί να αλλάξει. Κάθε πρακτική χτίζει νέους νευρωνικούς διαδρόμους.',reflection:'Τι κουβαλάω από αυτή την πρακτική;'}
   ]

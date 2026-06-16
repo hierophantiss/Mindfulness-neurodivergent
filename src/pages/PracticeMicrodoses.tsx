@@ -1,14 +1,70 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Zap, Focus, Anchor, Box, ArrowLeft } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../hooks/useLanguage';
+import { MICRODOSES_EXERCISES } from '../data/microdoses';
+import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 
 export default function PracticeMicrodoses() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { language } = useLanguage();
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'all');
+  const [activeSpeed, setActiveSpeed] = useState<'all' | 'sos' | 'brief' | 'deep'>('all');
+  const [activeSomatic, setActiveSomatic] = useState<'all' | 'stealth' | 'seated' | 'vibration'>('all');
+  
+  const { logs } = useActivityTracker();
+
+  // Safely memoize completed exercises from journal_history
+  const completedFromJournal = useMemo(() => {
+    try {
+      const hStr = localStorage.getItem('journal_history');
+      if (hStr) {
+        const h = JSON.parse(hStr);
+        return new Set(h.sessions?.map((s: any) => s.type) || []);
+      }
+    } catch (e) {}
+    return new Set<string>();
+  }, [logs]);
+
+  // Determine if a specific microdose is completed
+  const isCompleted = (exId: string): boolean => {
+    if (completedFromJournal.has(exId)) return true;
+    
+    // Check logs for match on exId or normalized ID (such as 5-5)
+    const normalizedId = exId === 'rhythm-5-5' ? '5-5' : exId === 'breath-4-2-7' ? '4-2-7-1' : exId;
+    if (logs && logs.some((log: any) => log.itemId === exId || log.itemId === normalizedId)) return true;
+    
+    return false;
+  };
+
+  const matchesSomaticFilter = (exId: string, filterId: string): boolean => {
+    if (filterId === 'all') return true;
+    
+    const stealthIds = [
+      'axis-pause', 'soft-belly', 'unlocked-knees', 'shoulder-drop', 
+      'hand-weight', 'jaw-release', 'rhythm-5-5', 'nostril-touch', 
+      'stealth-breath', 'breath-path', 'anchor-7-sec', 'alternate-focus', 
+      'gentle-return', 'eye-horizon', 'short-moment', 'open-presence'
+    ];
+    
+    const seatedIds = [
+      'contact-observe', 'pelvis-root', 'gravity-sink', 'breath-4-2-7', 
+      'triple-anchor', 'samatha-micro', 'sky-gazing-micro', 'tilopa-rest', 
+      'spacious-metta', 'silence-background'
+    ];
+    
+    const vibrationIds = [
+      'humming-vibration', 'ocean-breath', 'one-sound'
+    ];
+
+    if (filterId === 'stealth') return stealthIds.includes(exId);
+    if (filterId === 'seated') return seatedIds.includes(exId);
+    if (filterId === 'vibration') return vibrationIds.includes(exId);
+    
+    return true;
+  };
 
   useEffect(() => {
     if (searchParams.get('tab')) {
@@ -29,289 +85,40 @@ export default function PracticeMicrodoses() {
     { id: 'space', label: { el: 'Χώρος', en: 'Space' }, color: 'text-indigo-400' }
   ];
 
-  const exercises = [
-    // Body (Axis 1)
-    {
-      id: 'axis-pause',
-      title: { el: '1 Δευτερόλεπτο (Άξονας)', en: '1 Second (Axis)' },
-      type: 'body',
-      dur: { el: '1 δευτ.', en: '1 sec' },
-      desc: { el: 'Σταμάτα τα πάντα. Νιώσε τη βαρύτητα και τον άξονά σου για 1 δευτερόλεπτο.', en: 'Stop everything. Feel gravity and your axis for 1 second.' },
-      icon: <Anchor size={28} strokeWidth={1.5} />,
-      link: '/practice/body/axis-pause'
-    },
-    {
-      id: 'soft-belly',
-      title: { el: 'Μαλακή Κοιλιά', en: 'Soft Belly' },
-      type: 'body',
-      dur: { el: '30 δευτ.', en: '30 sec' },
-      desc: { el: 'Άφησε την κοιλιά να χαλαρώσει εντελώς. Στέλνει άμεσο σήμα ασφάλειας στο νευρικό σύστημα.', en: 'Let your belly relax completely. Sends an immediate safety signal to the nervous system.' },
-      icon: <Anchor size={28} strokeWidth={1.5} />,
-      link: '/practice/body/soft-belly'
-    },
-    {
-      id: 'unlocked-knees',
-      title: { el: 'Ξεκλείδωτα Γόνατα', en: 'Unlocked Knees' },
-      type: 'body',
-      dur: { el: '15 δευτ.', en: '15 sec' },
-      desc: { el: 'Λύγισε ελάχιστα τα γόνατα την ώρα που στέκεσαι. Επιτρέπει στο βάρος να ρεύσει προς τη γη.', en: 'Slightly bend your knees while standing. Allows weight to flow to the earth.' },
-      icon: <Anchor size={28} strokeWidth={1.5} />,
-      link: '/practice/body/unlocked-knees'
-    },
-    {
-      id: 'contact-observe',
-      title: { el: 'Παρατήρηση Επαφής', en: 'Contact Observation' },
-      type: 'body',
-      dur: { el: '1 λεπτό', en: '1 minute' },
-      desc: { el: 'Απευθείας γείωση στο παρόν παρατηρώντας τα σημεία επαφής με τη γη (πέλματα ή λεκάνη).', en: 'Direct grounding in the present by observing points of contact with the earth.' },
-      icon: <Anchor size={28} strokeWidth={1.5} />,
-      link: '/practice/body/contact-observe'
-    },
-    {
-      id: 'shoulder-drop',
-      title: { el: 'Απελευθέρωση Ώμων', en: 'Shoulder Drop' },
-      type: 'body',
-      dur: { el: '15 δευτ.', en: '15 sec' },
-      desc: { el: 'Άφησε με μια εκπνοή τους ώμους να βυθιστούν προς τα κάτω, κρατώντας τον άξονα ψηλό.', en: 'With one exhale, let shoulders sink down, keeping your axis tall.' },
-      icon: <Anchor size={28} strokeWidth={1.5} />,
-      link: '/practice/body/shoulder-drop'
-    },
-    {
-      id: 'hand-weight',
-      title: { el: 'Το Βάρος των Χεριών', en: 'Hand Weight' },
-      type: 'body',
-      dur: { el: '20 δευτ.', en: '20 sec' },
-      desc: { el: 'Νιώσε το βάρος των χεριών σου να "κρέμεται" από τους ώμους. Αδράνεια.', en: 'Feel the weight of your hands "hanging" from your shoulders. Inertia.' },
-      icon: <Anchor size={28} strokeWidth={1.5} />,
-      link: '/practice/body/hand-weight'
-    },
-    {
-      id: 'pelvis-root',
-      title: { el: 'Η Λεκάνη ως Γλάστρα', en: 'Pelvis as a Pot' },
-      type: 'body',
-      dur: { el: '30 δευτ.', en: '30 sec' },
-      desc: { el: 'Νιώσε τη λεκάνη σου ως τη σταθερή βάση όπου "ριζώνει" ο άξονάς σου. Βάθος και ασφάλεια.', en: 'Feel your pelvis as the stable base where your axis "roots". Depth and security.' },
-      icon: <Anchor size={28} strokeWidth={1.5} />,
-      link: '/practice/body/pelvis-root'
-    },
-    {
-      id: 'jaw-release',
-      title: { el: 'Χαλάρωση Γνάθου', en: 'Jaw Release' },
-      type: 'body',
-      dur: { el: '10 δευτ.', en: '10 sec' },
-      desc: { el: 'Άφησε την κάτω γνάθο να κρεμάσει ελαφρά. Ξεκλειδώνει την ένταση από όλο το σώμα.', en: 'Let your lower jaw hang slightly. Unlocks tension from the entire body.' },
-      icon: <Anchor size={28} strokeWidth={1.5} />,
-      link: '/practice/body/jaw-release'
-    },
-    {
-      id: 'gravity-sink',
-      title: { el: 'Βύθιση στη Βαρύτητα', en: 'Gravity Sink' },
-      type: 'body',
-      dur: { el: '15 δευτ.', en: '15 sec' },
-      desc: { el: 'Φαντάσου το σώμα σου να βυθίζεται 1 χιλιοστό μέσα στο έδαφος. Παράδοση.', en: 'Imagine your body sinking 1 millimeter into the ground. Surrender.' },
-      icon: <Anchor size={28} strokeWidth={1.5} />,
-      link: '/practice/body/gravity-sink'
-    },
-
-    // Breath (Axis 2)
-    {
-      id: 'rhythm-5-5',
-      title: { el: 'Αναπνοή 5-5', en: 'Breath 5-5' },
-      type: 'breath',
-      dur: { el: '1-2 λεπτά', en: '1-2 minutes' },
-      desc: { el: 'Συμμετρία (5 εισπνοή - 5 εκπνοή). Ρυθμίζει το νευρικό σύστημα χωρίς εντοπισμό.', en: 'Symmetry (5 in - 5 out). Regulates the nervous system invisibly.' },
-      icon: <Zap size={28} strokeWidth={1.5} />,
-      link: '/practice/breath/rhythm-5-5'
-    },
-    {
-      id: 'nostril-touch',
-      title: { el: 'Εσωτερική Αφή', en: 'Internal Touch' },
-      type: 'breath',
-      dur: { el: '30 δευτ.', en: '30 sec' },
-      desc: { el: 'Νιώσε τη δροσιά του αέρα στα ρουθούνια. Η πιο λεπτή σωματική αίσθηση.', en: 'Feel the coolness of the air at the nostrils. The most subtle physical sensation.' },
-      icon: <Zap size={28} strokeWidth={1.5} />,
-      link: '/practice/breath/nostril-focus'
-    },
-    {
-      id: 'stealth-breath',
-      title: { el: 'Αόρατη Αναπνοή (Παύση)', en: 'Invisible Breath (Pause)' },
-      type: 'breath',
-      dur: { el: '1 λεπτό', en: '1 minute' },
-      desc: { el: 'Παρατήρησε την απαλή παύση ανάμεσα στην εισπνοή και την εκπνοή. Εκεί υπάρχει η ησυχία.', en: 'Observe the soft pause between inhale and exhale. Stillness lies there.' },
-      icon: <Zap size={28} strokeWidth={1.5} />,
-      link: '/practice/breath/breath-observation'
-    },
-    {
-      id: 'breath-path',
-      title: { el: 'Η Διαδρομή του Αέρα', en: 'The Path of Air' },
-      type: 'breath',
-      dur: { el: '45 δευτ.', en: '45 sec' },
-      desc: { el: 'Ακολούθησε τη διαδρομή: Μύτη - Λαιμός - Πνευμόνια. Και πάλι πίσω. Ο νους μετακινείται με τη ροή.', en: 'Follow the flow: Nose - Throat - Lungs. And back again. The mind rests with the flow.' },
-      icon: <Zap size={28} strokeWidth={1.5} />,
-      link: '/practice/breath/breath-path'
-    },
-    {
-      id: 'humming-vibration',
-      title: { el: 'Ηχητική Δόνηση (Humming)', en: 'Vocal Vibration (Humming)' },
-      type: 'breath',
-      dur: { el: '1 λεπτό', en: '1 minute' },
-      desc: { el: 'Βγάλε έναν ανεπαίσθητο ήχο "Mmm" στην εκπνοή. Το εσωτερικό μασάζ του νευρικού συστήματος.', en: 'Make a subtle "Mmm" sound on the exhale. The internal massage of the nervous system.' },
-      icon: <Zap size={28} strokeWidth={1.5} />,
-      link: '/practice/breath/vocal-vibration'
-    },
-    {
-      id: 'breath-4-2-7',
-      title: { el: 'Αναπνοή 4-2-7 (Ηρεμία)', en: 'Breath 4-2-7 (Calm)' },
-      type: 'breath',
-      dur: { el: '1 λεπτό', en: '1 minute' },
-      desc: { el: '4 εισπνοή, 2 κράτημα, 7 εκπνοή. Ο ταχύτερος τρόπος να ηρεμήσεις το νευρικό σύστημα.', en: '4 in, 2 hold, 7 out. The fastest way to calm the nervous system.' },
-      icon: <Zap size={28} strokeWidth={1.5} />,
-      link: '/practice/breath/breath-4-2-7'
-    },
-    {
-      id: 'ocean-breath',
-      title: { el: 'Ήχος Ωκεανού', en: 'Ocean Breath' },
-      type: 'breath',
-      dur: { el: '30 δευτ.', en: '30 sec' },
-      desc: { el: 'Δημιούργησε έναν απαλό ψίθυρο στο λαιμό την ώρα που αναπνέεις. Σαν το κύμα της θάλασσας.', en: 'Create a soft whisper in the throat while breathing. Like the ocean wave.' },
-      icon: <Zap size={28} strokeWidth={1.5} />,
-      link: '/practice/breath/ocean-breath'
-    },
-
-    // Focus (Axis 3)
-    {
-      id: 'anchor-7-sec',
-      title: { el: 'Οπτική Άγκυρα 7"', en: 'Visual Anchor 7"' },
-      type: 'focus',
-      dur: { el: '7 δευτ.', en: '7 sec' },
-      desc: { el: 'Κλείδωσε το βλέμμα σου σε ένα απολύτως σταθερό σημείο για 7 δευτερόλεπτα. Σπάει τον αυτόματο πιλότο.', en: 'Lock your gaze on a completely still point for 7 seconds. Breaks the autopilot.' },
-      icon: <Focus size={28} strokeWidth={1.5} />,
-      link: '/practice/focus/anchor-7-sec'
-    },
-    {
-      id: 'triple-anchor',
-      title: { el: 'Τριπλή Άγκυρα', en: 'Triple Anchor' },
-      type: 'focus',
-      dur: { el: '1 λεπτό', en: '1 minute' },
-      desc: { el: 'Νιώσε ταυτόχρονα: Πέλματα (Γη), Αναπνοή (Αέρας) και ένα Σημείο (Χώρος). Παρουσία.', en: 'Feel simultaneously: Feet (Earth), Breath (Air), and a Point (Space). Presence.' },
-      icon: <Focus size={28} strokeWidth={1.5} />,
-      link: '/practice/focus/triple-anchor'
-    },
-    {
-      id: 'alternate-focus',
-      title: { el: 'Εναλλάξ Εστίαση', en: 'Alternate Focus' },
-      type: 'focus',
-      dur: { el: '30 δευτ.', en: '30 sec' },
-      desc: { el: 'Μετάφερε το βλέμμα αργά ανάμεσα σε δύο αντικείμενα. Ξεκουράζει αμέσως το μυαλό.', en: 'Shift gaze slowly between two objects. Instantly rests the mind.' },
-      icon: <Focus size={28} strokeWidth={1.5} />,
-      link: '/practice/focus/alternate-focus'
-    },
-    {
-      id: 'gentle-return',
-      title: { el: 'Η Απαλή Επιστροφή', en: 'Gentle Return' },
-      type: 'focus',
-      dur: { el: 'Συνεχές', en: 'Continuous' },
-      desc: { el: 'Όταν ο "ελέφαντας" της σκέψης φύγει, φέρτον πίσω στο σώμα με το απαλό λάσο της πρόθεσης.', en: 'When the "elephant" of thought wanders, bring it back to the body with the gentle lasso of intention.' },
-      icon: <Focus size={28} strokeWidth={1.5} />,
-      link: '/practice/focus/gentle-return'
-    },
-    {
-      id: 'eye-horizon',
-      title: { el: 'Άγκυρα στο Ύψος των Ματιών', en: 'Eye Level Anchor' },
-      type: 'focus',
-      dur: { el: '1 λεπτό', en: '1 minute' },
-      desc: { el: 'Κράτα το βλέμμα στο ύψος των ματιών. Ούτε πάνω ούτε κάτω. Η οριζόντια σταθερότητα του νου.', en: 'Keep your gaze at eye level. Neither up nor down. The horizontal stability of the mind.' },
-      icon: <Focus size={28} strokeWidth={1.5} />,
-      link: '/practice/focus/eye-level'
-    },
-    {
-      id: 'samatha-micro',
-      title: { el: 'Σκέψεις σαν Σύννεφα', en: 'Thoughts as Clouds' },
-      type: 'focus',
-      dur: { el: '1 λεπτό', en: '1 minute' },
-      desc: { el: 'Δες τις σκέψεις σου σαν αντικείμενα που διασχίζουν τον ουρανό, χωρίς να τις ακολουθείς.', en: 'Watch your thoughts like objects crossing the sky, without following them.' },
-      icon: <Focus size={28} strokeWidth={1.5} />,
-      link: '/practice/focus/samatha-micro'
-    },
-    {
-      id: 'one-sound',
-      title: { el: 'Ο Ένας Ήχος', en: 'The One Sound' },
-      type: 'focus',
-      dur: { el: '20 δευτ.', en: '20 sec' },
-      desc: { el: 'Απομόνωσε έναν μόνο ήχο από το περιβάλλον και δώσε του όλη σου την προσοχή.', en: 'Isolate a single sound from the environment and give it your full attention.' },
-      icon: <Focus size={28} strokeWidth={1.5} />,
-      link: '/practice/focus/one-sound'
-    },
-    {
-      id: 'sensory-54321',
-      title: { el: '5 Αισθήσεις (Micro)', en: '5 Senses (Micro)' },
-      type: 'focus',
-      dur: { el: '1 λεπτό', en: '1 minute' },
-      desc: { el: 'Παρατήρησε γρήγορα: 3 πράγματα που βλέπεις, 2 που ακούς, 1 που νιώθεις στο δέρμα.', en: 'Quickly notice: 3 things you see, 2 you hear, 1 you feel on your skin.' },
-      icon: <Focus size={28} strokeWidth={1.5} />,
-      link: '/practice/focus/sensory-micro'
-    },
-
-    // Space (Axis 4)
-    {
-      id: 'short-moment',
-      title: { el: 'Στιγμιαία Παύση', en: 'Short Moment' },
-      type: 'space',
-      dur: { el: '5 δευτ.', en: '5 sec' },
-      desc: { el: 'Για 5 δευτερόλεπτα, άφησε τα πάντα ακριβώς όπως είναι. Μια στιγμή ανάπαυσης.', en: 'For 5 seconds, let everything be exactly as it is. A moment of rest.' },
-      icon: <Box size={28} strokeWidth={1.5} />,
-      link: '/practice/space/short-moment'
-    },
-    {
-      id: 'sky-gazing-micro',
-      title: { el: 'Βλέμμα στον Ουρανό', en: 'Sky Gazing' },
-      type: 'space',
-      dur: { el: '30 δευτ.', en: '30 sec' },
-      desc: { el: 'Κοίταξε τον ουρανό, απορροφώντας την αίσθηση του μεγάλου, ανοιχτού χώρου.', en: 'Look at the sky, absorbing the feeling of vast, open space.' },
-      icon: <Box size={28} strokeWidth={1.5} />,
-      link: '/practice/space/sky-clouds'
-    },
-    {
-      id: 'tilopa-rest',
-      title: { el: 'Ξεκούραση (Tilopa)', en: 'Rest (Tilopa)' },
-      type: 'space',
-      dur: { el: '10 δευτ.', en: '10 sec' },
-      desc: { el: 'Μην αναπολείς, μην φαντάζεσαι, μην εξετάζεις, μην ελέγχεις. Απλά ξεκουράσου.', en: 'Do not recall, do not imagine, do not examine, do not control. Just rest.' },
-      icon: <Box size={28} strokeWidth={1.5} />,
-      link: '/practice/space/tilopa-rest'
-    },
-    {
-      id: 'spacious-metta',
-      title: { el: 'Ευρύχωρη Καλοσύνη', en: 'Spacious Kindness' },
-      type: 'space',
-      dur: { el: '1 λεπτό', en: '1 minute' },
-      desc: { el: 'Νιώσε την καρδιά σου να ανοίγει σαν τον ουρανό, χωρώντας τα πάντα με αποδοχή.', en: 'Feel your heart open like the sky, holding everything with acceptance.' },
-      icon: <Box size={28} strokeWidth={1.5} />,
-      link: '/practice/space/metta-expansion'
-    },
-    {
-      id: 'silence-background',
-      title: { el: 'Η Σιωπή πίσω από τα πάντα', en: 'Silence in the Background' },
-      type: 'space',
-      dur: { el: '30 δευτ.', en: '30 sec' },
-      desc: { el: 'Άκουσε τους ήχους, αλλά πρόσεξε τη σιωπή που τους φιλοξενεί όλους.', en: 'Listen to the sounds, but notice the silence that hosts them all.' },
-      icon: <Box size={28} strokeWidth={1.5} />,
-      link: '/practice/space/silence-background'
-    },
-    {
-      id: 'open-presence',
-      title: { el: 'Ανοιχτό Βλέμμα', en: 'Open Gaze' },
-      type: 'space',
-      dur: { el: '30 δευτ.', en: '30 sec' },
-      desc: { el: 'Μαλάκωσε το βλέμμα (zoom out), επιτρέποντας στην περιφερειακή σου όραση να ανοίξει.', en: 'Soften your gaze (zoom out), allowing your peripheral vision to open up.' },
-      icon: <Box size={28} strokeWidth={1.5} />,
-      link: '/practice/space/soft-eyes'
+  const getIcon = (name: string) => {
+    switch (name) {
+      case 'Anchor': return <Anchor size={28} strokeWidth={1.5} />;
+      case 'Zap': return <Zap size={28} strokeWidth={1.5} />;
+      case 'Focus': return <Focus size={28} strokeWidth={1.5} />;
+      case 'Box': return <Box size={28} strokeWidth={1.5} />;
+      default: return <Anchor size={28} strokeWidth={1.5} />;
     }
-  ];
+  };
 
-  const filteredExercises = activeTab === 'all' 
-    ? exercises 
-    : exercises.filter(e => e.type === activeTab);
+  const exercises = MICRODOSES_EXERCISES.map(ex => ({
+    ...ex,
+    icon: getIcon(ex.iconName)
+  }));
+
+  const filteredExercises = exercises.filter(e => {
+    // 1. Category Filter
+    if (activeTab !== 'all' && e.type !== activeTab) return false;
+    
+    // 2. Speed / Duration Filter
+    const secs = e.maxSeconds;
+    if (activeSpeed === 'sos') return secs <= 15;
+    if (activeSpeed === 'brief') return secs > 15 && secs <= 45;
+    if (activeSpeed === 'deep') return secs > 45;
+    
+    // 3. Somatic Filter
+    if (!matchesSomaticFilter(e.id, activeSomatic)) return false;
+
+    return true;
+  });
+
+  // Calculate Daily Core Exercise dynamically (deterministic based on day of month)
+  const dailyIndex = new Date().getDate() % exercises.length;
+  const suggestedExercise = exercises[dailyIndex];
 
   const getTypeColor = (type: string) => {
     switch(type) {
@@ -324,13 +131,14 @@ export default function PracticeMicrodoses() {
   };
 
   return (
-    <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20 max-w-7xl mx-auto px-1">
       
       {/* Header Controls */}
       <div className="flex items-center gap-4">
         <button 
           onClick={() => navigate('/practice')} 
           className="btn-zen !px-3 !py-3"
+          id="btn-back-practice"
         >
           <ArrowLeft size={20} />
         </button>
@@ -339,86 +147,294 @@ export default function PracticeMicrodoses() {
         </span>
       </div>
 
-      <header className="space-y-4 max-w-2xl">
-        <h2 className="text-5xl md:text-6xl font-serif text-white/90 italic leading-tight">
+      <header className="space-y-3 max-w-2xl">
+        <h2 className="text-4xl md:text-5xl font-serif text-white/90 italic leading-tight">
           {language === 'el' ? 'Αόρατη Εξάσκηση' : 'Invisible Practice'}
         </h2>
-        <p className="text-lg text-white/50 font-sans leading-relaxed">
+        <p className="text-base text-white/50 font-sans leading-relaxed">
           {language === 'el' 
-            ? 'Πρακτικές που γίνονται παντού, χωρίς να σε καταλάβει κανείς. Για κάθε στιγμή της ημέρας.' 
-            : 'Practices you can do anywhere, without anyone noticing. For every moment of the day.'}
+            ? 'Πρακτικές που γίνονται παντού, χωρίς να σε καταλάβει κανείς. Ιδανικές για στιγμές έντασης ή δημόσιους χώρους.' 
+            : 'Practices you can do anywhere, without anyone noticing. Perfect for overstimulation or public spaces.'}
         </p>
       </header>
 
-      {/* Modern Filter Tabs */}
-      <div className="flex overflow-x-auto gap-4 pb-2 scrollbar-none sticky top-0 z-20 -mx-6 px-6 bg-black/40 backdrop-blur-md/80 backdrop-blur-xl py-4 border-b border-white/5">
-        {categories.map(cat => {
-          const isActive = activeTab === cat.id;
-          const color = getTypeColor(cat.id);
+      {/* 🌟 ADHD Decision Relief: Daily Core Suggestion */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-teal-500/[0.04] to-indigo-500/[0.02] border border-teal-500/20 rounded-2xl p-6 flex flex-col md:flex-row gap-6 justify-between items-start md:items-center max-w-4xl shadow-lg shadow-teal-950/20" id="decision-relief-banner">
+        {/* Soft elegant pulsing glow in the bg */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-teal-500/5 rounded-full blur-3xl pointer-events-none animate-pulse duration-[8000ms]" />
+        
+        <div className="space-y-3 relative z-10 flex-1">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-teal-500/10 text-teal-300 tracking-wider uppercase border border-teal-500/15 animate-pulse">
+              ✨ {language === 'el' ? 'ΑΝΑΚΟΥΦΙΣΗ ΑΠΟΦΑΣΗΣ' : 'DECISION RELIEF'}
+            </span>
+            <span className="text-[10px] text-white/40 tracking-wider">
+              {language === 'el' ? 'Πρόταση της Ημέρας' : 'Suggested Daily Core'}
+            </span>
+            {isCompleted(suggestedExercise.id) && (
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/15 tracking-wider uppercase">
+                <span className="w-1 h-1 rounded-full bg-emerald-400 shadow-[0_0_4px_rgba(52,211,153,0.6)]" />
+                {language === 'el' ? 'ΟΛΟΚΛΗΡΩΘΗΚΕ' : 'COMPLETED'}
+              </span>
+            )}
+          </div>
+          
+          <h3 className="text-2xl md:text-3xl font-serif text-white/9 drop-shadow-sm leading-tight italic">
+            {language === 'el' ? suggestedExercise.title.el : suggestedExercise.title.en}
+          </h3>
+          
+          <p className="text-sm text-white/50 leading-relaxed font-sans max-w-2xl">
+            {language === 'el' 
+              ? 'Εάν νιώθεις πίεση ή υπερδιέγερση, μην ψάχνεις ανάμεσα στις κάρτες. Ξεκίνα απευθείας με αυτή την απλή άσκηση.' 
+              : 'If choosing feels overwhelming right now, bypass the cards completely. Try this direct, single-focus practice.'}
+          </p>
+          
+          <div className="flex flex-wrap gap-4 items-center pt-1 text-xs">
+            <span className="flex items-center gap-1.5 text-teal-400 font-semibold">
+              <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-ping" />
+              {language === 'el' ? `Διάρκεια: ${suggestedExercise.dur.el}` : `Duration: ${suggestedExercise.dur.en}`}
+            </span>
+            <span className="text-white/30">•</span>
+            <span className="text-white/45 font-sans">
+              {language === 'el' ? suggestedExercise.desc.el : suggestedExercise.desc.en}
+            </span>
+          </div>
+        </div>
+        
+        <Link 
+          to={suggestedExercise.link}
+          className="relative z-10 w-full md:w-auto btn-zen !px-6 !py-3 bg-teal-500/10 border-teal-400/30 text-teal-300 hover:bg-teal-500 hover:text-white hover:shadow-[0_0_20px_rgba(20,184,166,0.25)] transition-all duration-300 text-center text-xs font-bold uppercase tracking-widest whitespace-nowrap shrink-0"
+        >
+          {language === 'el' ? 'Έναρξη Άσκησης' : 'Start Practice'}
+        </Link>
+      </div>
 
-          return (
-            <button
-              key={cat.id}
-              onClick={() => setTab(cat.id)}
-              className={cn(
-                "px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 whitespace-nowrap border",
-                isActive 
-                  ? `bg-${color}-500/20 border-${color}-400/30 text-${color}-300` 
-                  : "bg-white/5 border-white/5 text-white/40 hover:text-white"
-              )}
-            >
-              {language === 'en' ? cat.label.en : cat.label.el}
-            </button>
-          );
-        })}
+      {/* Somatic Quick Filters */}
+      <div className="space-y-3" id="somatic-needs-section">
+        <span className="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em] pl-1 block">
+          {language === 'el' ? 'Φιλτράρισμα με βάση το Σύστημά σου' : 'Filter by Somatic State'}
+        </span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          {[
+            { 
+              id: 'all', 
+              label: { el: 'Όλα τα Συστήματα', en: 'All States' }, 
+              desc: { el: 'Εμφάνιση όλων των πρακτικών', en: 'Show all microdoses' },
+              color: 'teal'
+            },
+            { 
+              id: 'stealth', 
+              label: { el: 'Αόρατο & Παντού', en: 'Stealth & Anywhere' }, 
+              desc: { el: 'Ασκήσεις με ανοιχτά μάτια, ιδανικές για δημόσιους χώρους', en: 'Discreet practices perfect for work or public settings' },
+              color: 'emerald'
+            },
+            { 
+              id: 'seated', 
+              label: { el: 'Σταθερότητα & Κάθισμα', en: 'Seated & Grounded' }, 
+              desc: { el: 'Βαθιά γείωση, ιδανικές για όταν κάθεστε ή είστε στο σπίτι', en: 'Deeper relaxation while sitting comfortably' },
+              color: 'indigo'
+            },
+            { 
+              id: 'vibration', 
+              label: { el: 'Με Ήχο ή Δόνηση', en: 'Voice & Vibration' }, 
+              desc: { el: 'Απαλοί ήχοι/εκπνοές για διέγερση του πνευμονογαστρικού', en: 'Subtle humming or sighing to massage the vagus nerve' },
+              color: 'amber'
+            }
+          ].map((sf) => {
+            const isActive = activeSomatic === sf.id;
+            const color = sf.color;
+            
+            return (
+              <button
+                key={sf.id}
+                onClick={() => {
+                  setActiveSomatic(sf.id as any);
+                }}
+                className={cn(
+                  "group text-left p-4 rounded-xl border transition-all duration-300 relative overflow-hidden",
+                  isActive 
+                    ? `bg-${color}-500/[0.04] border-${color}-400/40 shadow-sm shadow-${color}-500/5` 
+                    : "bg-white/[0.02] border-white/5 hover:border-white/10 hover:bg-white/[0.03]"
+                )}
+                id={`somatic-filter-${sf.id}`}
+              >
+                {/* Visual active cue */}
+                {isActive && (
+                  <div className={cn("absolute top-0 left-0 bottom-0 w-1", `bg-${color}-50` || `bg-${color}-500`)} style={{ backgroundColor: `var(--tw-color-${color}-500)` }} />
+                )}
+                
+                <h4 className={cn(
+                  "text-xs font-bold uppercase tracking-wider transition-colors",
+                  isActive ? `text-${color}-300` : "text-white/70 group-hover:text-white"
+                )}>
+                  {language === 'el' ? sf.label.el : sf.label.en}
+                </h4>
+                <p className="text-[11px] text-white/40 leading-relaxed font-sans mt-1 group-hover:text-white/50 transition-colors">
+                  {language === 'el' ? sf.desc.el : sf.desc.en}
+                </p>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Dual Filters Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2 sticky top-0 z-20 bg-black/40 backdrop-blur-xl py-4 -mx-6 px-6 border-b border-white/5">
+        {/* Category Filter */}
+        <div className="space-y-2">
+          <span className="text-[9px] font-bold text-white/30 uppercase tracking-widest pl-1">
+            {language === 'el' ? 'Κατηγορία Άξονα' : 'Axis Category'}
+          </span>
+          <div className="flex overflow-x-auto gap-2 pb-1 scrollbar-none">
+            {categories.map(cat => {
+              const isActive = activeTab === cat.id;
+              const color = getTypeColor(cat.id);
+
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setTab(cat.id)}
+                  className={cn(
+                    "px-3 py-1.5 rounded-lg text-[11px] font-bold uppercase tracking-widest transition-all duration-300 whitespace-nowrap border",
+                    isActive 
+                      ? `bg-${color}-500/15 border-${color}-400/40 text-${color}-300` 
+                      : "bg-white/5 border-white/5 text-white/40 hover:text-white"
+                  )}
+                  id={`cat-filter-${cat.id}`}
+                >
+                  {language === 'en' ? cat.label.en : cat.label.el}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Speed / Duration Filter */}
+        <div className="space-y-2">
+          <span className="text-[9px] font-bold text-white/30 uppercase tracking-widest pl-1">
+            {language === 'el' ? 'Ταχύτητα & Διάρκεια' : 'Speed & Duration'}
+          </span>
+          <div className="flex overflow-x-auto gap-2 pb-1 scrollbar-none">
+            {[
+              { id: 'all', label: { el: 'Όλες οι Διάρκειες', en: 'All Durations' }, icon: null, color: 'white' },
+              { id: 'sos', label: { el: 'Αστραπιαία (< 15δ)', en: 'Instant (< 15s)' }, icon: <Zap size={13} className="text-amber-400" />, color: 'amber' },
+              { id: 'brief', label: { el: 'Σύντομα (< 45δ)', en: 'Brief (< 45s)' }, icon: <Focus size={13} className="text-teal-400" />, color: 'teal' },
+              { id: 'deep', label: { el: 'Βαθιά (1λ+)', en: 'Deep Reset (1m+)' }, icon: <Anchor size={13} className="text-indigo-400" />, color: 'indigo' }
+            ].map(speed => {
+              const isActive = activeSpeed === speed.id;
+              const color = speed.color;
+
+              return (
+                <button
+                  key={speed.id}
+                  onClick={() => setActiveSpeed(speed.id as any)}
+                  className={cn(
+                    "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold uppercase tracking-widest transition-all duration-300 whitespace-nowrap border",
+                    isActive 
+                      ? speed.id === 'all' 
+                        ? 'bg-white/10 border-white/25 text-white' 
+                        : `bg-${color}-500/15 border-${color}-400/40 text-${color}-300`
+                      : "bg-white/5 border-white/5 text-white/40 hover:text-white pointer-events-auto"
+                  )}
+                  id={`speed-filter-${speed.id}`}
+                >
+                  {speed.icon}
+                  {language === 'en' ? speed.label.en : speed.label.el}
+                </button>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="microdoses-grid">
         {filteredExercises.map((ex, idx) => {
           const color = getTypeColor(ex.type);
+          const isSuggested = ex.id === suggestedExercise.id;
+          const completed = isCompleted(ex.id);
+
           return (
             <Link
               to={ex.link}
               key={ex.id}
+              id={`microdose-card-${ex.id}`}
               className={cn(
-"group relative block glass-card hover:border-white/10 hover:bg-white/[0.04] p-8 transition-all duration-300 active:scale-[0.98]",
+                "group relative flex gap-4 glass-card hover:border-white/10 hover:bg-white/[0.04] p-4 transition-all duration-300 active:scale-[0.98] border overflow-hidden items-start",
+                isSuggested 
+                  ? "ring-1 ring-teal-500/30 border-teal-500/40 shadow-[0_0_15px_rgba(20,184,166,0.15)] bg-teal-500/[0.01]" 
+                  : completed
+                    ? "border-emerald-500/15 bg-emerald-500/[0.005] shadow-[0_0_10px_rgba(16,185,129,0.05)]"
+                    : "border-white/5",
                 `shape-cloud-${(idx % 5) + 1}`
               )}
             >
+              {/* Colored Side Accent Line for super quick visual sorting */}
               <div 
-                className={`absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-700 pointer-events-none`}
-                style={{ background: `radial-gradient(circle at 70% 30%, var(--tw-color-${color}-500), transparent 80%)` }}
+                className={cn(
+                  "absolute left-0 top-0 bottom-0 w-1 transition-all duration-300", 
+                  `bg-${color}-500/30 group-hover:bg-${color}-500`
+                )} 
+              />
+
+              <div 
+                className="absolute inset-0 opacity-0 group-hover:opacity-[0.12] transition-opacity duration-700 pointer-events-none"
+                style={{ background: `radial-gradient(circle at 80% 20%, var(--tw-color-${color}-500), transparent 70%)` }}
               />
               
-              <div className="flex flex-col gap-6 relative z-10">
-                <div className={cn(
-                  "w-14 h-14 rounded-2xl flex items-center justify-center border transition-all duration-500 group-hover:scale-110",
-                  `bg-${color}-400/10 text-${color}-300 border-${color}-400/20`
-                )}>
-                  {ex.icon}
-                </div>
-                
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className={cn("text-[10px] font-bold uppercase tracking-widest", `text-${color}-400`)}>
+              {/* Snug Icon Left Block */}
+              <div className={cn(
+                "w-11 h-11 rounded-lg shrink-0 flex items-center justify-center border transition-all duration-500 group-hover:scale-105",
+                `bg-${color}-400/10 text-${color}-300 border-${color}-400/15`
+              )}>
+                {React.cloneElement(ex.icon as React.ReactElement<any>, { size: 20, strokeWidth: 1.5 })}
+              </div>
+              
+              {/* Snug Text Right Block */}
+              <div className="flex-1 min-w-0 pr-1 space-y-1">
+                <div className="flex justify-between items-center gap-2">
+                  <div className="flex items-center gap-1.5">
+                    <span className={cn("text-[9px] font-bold uppercase tracking-widest", `text-${color}-400`)}>
                       {language === 'en' ? ex.type : ex.type === 'body' ? 'ΣΩΜΑ' : ex.type === 'breath' ? 'ΑΝΑΠΝΟΗ' : ex.type === 'focus' ? 'ΠΡΟΣΟΧΗ' : 'ΧΩΡΟΣ'}
                     </span>
-                    <span className="text-[10px] text-white/30 font-bold tracking-widest uppercase">
-                      {language === 'en' ? ex.dur.en : ex.dur.el}
-                    </span>
+                    {isSuggested && (
+                      <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[8px] font-bold bg-teal-400/10 text-teal-300 border border-teal-400/20 uppercase tracking-wider animate-pulse">
+                        ✨ {language === 'el' ? 'Πρόταση' : 'Suggested'}
+                      </span>
+                    )}
                   </div>
-                  <h3 className="text-2xl font-serif text-white/90 italic transition-colors">
-                    {language === 'en' ? ex.title.en : ex.title.el}
-                  </h3>
-                  <p className="text-sm text-white/50 font-sans leading-relaxed">
-                    {language === 'en' ? ex.desc.en : ex.desc.el}
-                  </p>
+                  <span className="text-[9px] text-white/30 font-semibold tracking-wider uppercase shrink-0">
+                    {language === 'en' ? ex.dur.en : ex.dur.el}
+                  </span>
                 </div>
+                
+                <h3 className="text-base font-serif text-white/95 italic leading-tight group-hover:text-white transition-colors truncate flex items-center gap-1.5">
+                  <span className="truncate">{language === 'en' ? ex.title.en : ex.title.el}</span>
+                  {completed && (
+                    <span 
+                      className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 shadow-[0_0_6px_rgba(52,211,153,0.7)] animate-pulse" 
+                      title={language === 'el' ? 'Ολοκληρώθηκε' : 'Completed'}
+                    />
+                  )}
+                </h3>
+                
+                <p className="text-[12px] text-white/45 leading-normal font-sans group-hover:text-white/60 transition-colors line-clamp-2">
+                  {language === 'en' ? ex.desc.en : ex.desc.el}
+                </p>
               </div>
             </Link>
           );
         })}
+
+        {filteredExercises.length === 0 && (
+          <div className="col-span-full text-center py-12 border border-dashed border-white/5 rounded-2xl bg-white/[0.01]">
+            <p className="text-sm text-white/40">
+              {language === 'el' 
+                ? 'Δεν βρέθηκαν μικροδόσεις με αυτά τα φίλτρα.' 
+                : 'No microdoses found with these criteria.'}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

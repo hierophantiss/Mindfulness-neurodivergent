@@ -534,5 +534,83 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     axis: 'all',
     chapters: [1, 5, 7, 9],
     related: ['kindness', 'echo', 'self_criticism', 'grounding']
+  },
+
+  movement_vs_breathwork: {
+    el: {
+      title: 'Κίνηση vs Αναπνοή (Τάι Τσι)',
+      short: 'Γιατί η κίνηση είναι η ιδανική εναλλακτική της αναπνοής.',
+      full: 'Για πολλούς νευροδιαφορετικούς (ιδιαίτερα με ΔΕΠΥ ή αυτισμό), η άμεση εστίαση στην αναπνοή μπορεί να προκαλέσει άγχος (υπερεστίαση ή αεροφαγία). Η ενσυνείδητη κίνηση, όπως το Τάι Τσι, μεταφέρει την εστίαση από τους πνεύμονες στους μύες, τις αρθρώσεις και το δέρμα (ιδιοδεκτικότητα / proprioception). Αυτό απελευθερώνει τον εγκέφαλο από την πίεση της «σωστής αναπνοής» ενώ προσφέρει άμεση νευρική ρύθμιση.',
+      ndNote: 'Αν η αναπνοή σου προκαλεί ανησυχία, η κίνηση είναι η δική σου πύλη γείωσης. Το Τάι Τσι προσφέρει απτά σωματικά σήματα (βάρος, ροή, ισορροπία) που ενεργοποιούν το παρασυμπαθητικό σύστημα αβίαστα.'
+    },
+    en: {
+      title: 'Movement vs. Breathwork (Tai Chi)',
+      short: 'Why mindful movement is the ideal alternative to breathwork.',
+      full: 'For many neurodivergent individuals (specifically with ADHD or Autism), focusing directly on the breath can trigger sensory anxiety or performance pressure. Mindful movement, such as Tai Chi, shifts focus away from the lungs to the muscles, joints, and skin (proprioception). This frees the brain from the friction of \'breathing correctly\' while delivering deep somatic regulation through visual and physical flow.',
+      ndNote: 'If breathwork causes dread, movement is your ultimate grounding tool. Tai Chi offers tangible physical feedback (weight shifts, spatial flow, balance) that triggers the parasympathetic system effortlessly.'
+    },
+    axis: 'body',
+    chapters: [1, 5, 10],
+    related: ['proprioception', 'grounding', 'vagus_nerve']
+  },
+
+  zylowska_2007: {
+    el: {
+      title: 'Μελέτη ADHD & Mindfulness (Zylowska et al., 2007)',
+      short: 'Η προσαρμοσμένη και ευέλικτη πρακτική είναι πιο αποτελεσματική για νευροδιαφορετικούς.',
+      full: 'Αυτή η πρωτοποριακή μελέτη ("Mindfulness Meditation Training with Adults and Adolescents With ADHD") απέδειξε ότι οι ευέλικτες, προσαρμοσμένες πρακτικές (αντί για άκαμπτο, μεγάλης διάρκειας διαλογισμό) είναι εξαιρετικά αποτελεσματικές για νευροδιαφορετικά άτομα. Βοηθούν σημαντικά στη βελτίωση της προσοχής, στη μείωση της υπερκινητικότητας και στη βελτίωση της συναισθηματικής ρύθμισης, προσφέροντας μικρά, προσιτά βήματα.',
+      ndNote: 'Η έρευνα επιβεβαιώνει ότι αν ο νους σου διασπάται, η «απαλή επιστροφή» (και όχι η τέλεια συγκέντρωση) είναι αυτή που αναδιοργανώνει τον εγκέφαλο. Τα 577+ citations και η υψηλή επιστημονική αποδοχή της μελέτης δικαιώνουν την ανάγκη για φιλικό προς τη ΔΕΠΥ σχεδιασμό.',
+      science: 'Zylowska et al. (2007) Journal of Attention Disorders (577+ citations, Doi: 10.1177/1087054707308502)'
+    },
+    en: {
+      title: 'ADHD & Mindfulness Study (Zylowska et al., 2007)',
+      short: 'Flexible, adapted practices are highly effective for neurodivergent attention.',
+      full: 'This seminal study ("Mindfulness Meditation Training with Adults and Adolescents With ADHD: A Feasibility and Behavioral Study") proved that flexible, adapted practices (rather than rigid, long-duration meditation) are highly effective for neurodivergent individuals. It shows significant improvements in attention, reduction in hyperactivity, and better emotional regulation when practices are accessible and short.',
+      ndNote: 'The research validates that if your mind wanders, the "gentle return" (rather than perfect focus) is what reorganizes the brain. The study\'s 577+ citations and high scientific prestige justify our ADHD-friendly, microdose-oriented design.',
+      science: 'Zylowska et al. (2007) Journal of Attention Disorders (577+ citations, Doi: 10.1177/1087054707308502)'
+    },
+    axis: 'attention',
+    chapters: [1, 3, 5, 10],
+    related: ['gentle_return', 'attention_modes', 'neuroplasticity']
+  },
+
+  gibson_2019: {
+    el: {
+      title: 'Μελέτη Δια-αίσθησης & Σώματος (Gibson, 2019)',
+      short: 'Η δια-αίσθηση (interoception) και η σύνδεση με το σώμα είναι η βάση της αυτορύθμισης.',
+      full: 'Η έρευνα ("Mindfulness, Interoception, and the Body: A Contemporary Perspective") δείχνει ότι η ενσυνειδητότητα και ο διαλογισμός επηρεάζουν άμεσα τη Νήσο του εγκεφάλου (insular cortex), η οποία είναι το κέντρο ελέγχου της δια-αίσθησης. Η μελέτη προτείνει ότι η γείωση στο φυσικό σώμα (βαρύτητα, αναπνοή) παρέχει μια σταθερή άγκυρα. Επίσης, τονίζει ότι η αύξηση της σωματικής επίγνωσης χωρίς ρυθμιστικά εργαλεία μπορεί να αυξήσει το άγχος (ειδικά σε άτομα με ιστορικό τραύματος/υπερδιέγερσης), άρα η πρακτική πρέπει να είναι πάντα ήπια, προστατευτική και "trauma-informed".',
+      ndNote: 'Αυτός είναι ο λόγος που η δική μας μέθοδος ξεκινάει πάντα με τη Βαρύτητα και τη Γείωση (σταθερές εξωτερικές/σωματικές δυνάμεις) και προσφέρει ρυθμούς αναπνοής και κίνησης για ρύθμιση, αντί για απλή παθητική παρατήρηση.',
+      science: 'Jonathan Gibson (2019) Frontiers in Psychology (Volume 10, Article 2012, Doi: 10.3389/fpsyg.2019.02012)'
+    },
+    en: {
+      title: 'Interoception & Insula Study (Gibson, 2019)',
+      short: 'Interoception and landing in the body are the neurological foundation of self-regulation.',
+      full: 'This contemporary research ("Mindfulness, Interoception, and the Body: A Contemporary Perspective") demonstrates that meditative practices directly modulate the insular cortex (insula) — the primary hub for interoceptive awareness. It highlights that anchoring scientific findings and mindfulness in the concrete, somatic body provides a stable, adaptive focus. It warns that increasing somatic sensitivity without emotional regulation tools can trigger anxiety (especially with trauma history), demanding that practices remain protective and trauma-informed.',
+      ndNote: 'This is precisely why our approach starts with gravity and grounding (undeniable physical anchors) and pairs attention with rhythm (breathing/movement) rather than asking for passive, hypervigilant observation.',
+      science: 'Jonathan Gibson (2019) Frontiers in Psychology (Vol 10, Art 2012, Doi: 10.3389/fpsyg.2019.02012)'
+    },
+    axis: 'body',
+    chapters: [1, 2, 7, 10],
+    related: ['interoception', 'grounding', 'trauma', 'vagus_nerve']
+  },
+
+  cearns_2022: {
+    el: {
+      title: 'Μελέτη Μεγέθους Δόσης & Συμπεριφοράς (Cearns & Clark, 2022)',
+      short: 'Οι σύντομες καθημερινές «μικροδόσεις» είναι πιο αποτελεσματικές από τις σπάνιες μεγάλες συνεδρίες.',
+      full: 'Αυτή η τεράστια διαχρονική μελέτη ("The Effects of Dose, Practice Habits, and Objects of Focus on Digital Meditation Effectiveness and Adherence") ανέλυσε τα δεδομένα από 280.000+ ψηφιακές συνεδρίες σε 103 χώρες. Απέδειξε ότι η «δόση» (dose) και η συνέπεια σε σύντομες καθημερινές πρακτικές είναι ο πιο καθοριστικός παράγοντας για τη μακροχρόνια τήρηση (adherence) και τη μείωση του άγχους, ενώ η υπερβολικά μεγάλη διάρκεια προκαλεί κούραση και εγκατάλειψη.',
+      ndNote: 'Αυτό δικαιώνει απόλυτα τη φιλοσοφία των «Μικροδόσεων» της εφαρμογής μας. Δεν χρειάζεται να κάθεσαι με τις ώρες. 2-3 λεπτά καθημερινής, στοχευμένης σωματικής γείωσης έχουν πολύ μεγαλύτερη νευροπλαστική αξία.',
+      science: 'Cearns & Clark (2022) JMIR (Doi: 10.2196/43358, Μελέτη 280.000+ συνεδριών)'
+    },
+    en: {
+      title: 'Digital Meditation Dose Study (Cearns & Clark, 2022)',
+      short: 'Short, consistent "microdoses" are far more effective than long, irregular sessions.',
+      full: 'This massive longitudinal study ("The Effects of Dose, Practice Habits, and Objects of Focus on Digital Meditation Effectiveness and Adherence") analyzed 280,000+ sessions across 103 countries. It proved that regular, small practice "doses" are the single most significant driver of long-term adherence and psychological benefits. In contrast, rigid, lengthy sessions decrease engagement and cause beginners to quit.',
+      ndNote: 'This is the absolute scientific justification of our "Microdoses" and "invisible doses" feature. You do not need to spend hours meditating. Just 2-3 minutes of somatic anchoring per day builds much stronger neural pathways.',
+      science: 'Cearns & Clark (2022) JMIR (Doi: 10.2196/43358, 280,000+ sessions studied)'
+    },
+    axis: 'attention',
+    chapters: [5, 6, 8, 10],
+    related: ['neuroplasticity']
   }
 };

@@ -39,53 +39,59 @@ export function ConceptModal({ isOpen, onClose, conceptId }: { isOpen: boolean, 
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
           />
           
           <motion.div
-            initial={{ scale: 0.95, opacity: 0, y: 10 }}
+            initial={{ scale: 0.95, opacity: 0, y: 15 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.95, opacity: 0, y: 10 }}
-            className="relative w-full max-w-sm bg-[#0a1518] rounded-3xl border border-white/10 overflow-hidden shadow-2xl z-10"
+            exit={{ scale: 0.95, opacity: 0, y: 15 }}
+            className="relative w-full max-w-md bg-[#0a151b] rounded-3xl border border-white/10 shadow-2xl z-10 max-h-[82vh] flex flex-col overflow-hidden"
           >
-            <div className="p-6">
-              <div className="flex justify-between items-start mb-4">
-                <div className="flex items-center gap-2">
-                  <Lightbulb size={16} className="text-teal-400" />
-                  <span className="text-[10px] font-bold tracking-widest uppercase text-teal-400/80">
-                    {language === 'el' ? 'ΝΕΥΡΟΕΠΙΣΤΗΜΗ & ΠΡΑΚΤΙΚΗ' : 'NEUROSCIENCE & PRACTICE'}
-                  </span>
-                </div>
-                <button 
-                  onClick={onClose}
-                  className="text-white/40 hover:text-white transition-colors"
-                >
-                  <X size={18} />
-                </button>
+            {/* Sticky/Fixed Modal Header */}
+            <div className="px-6 py-4 flex justify-between items-center border-b border-white/5 bg-black/20 shrink-0">
+              <div className="flex items-center gap-2">
+                <Lightbulb size={15} className="text-teal-400 animate-pulse" />
+                <span className="text-[10px] font-bold tracking-widest uppercase text-teal-400 font-mono">
+                  {language === 'el' ? 'ΝΕΥΡΟΕΠΙΣΤΗΜΗ & ΠΡΑΚΤΙΚΗ' : 'NEUROSCIENCE & PRACTICE'}
+                </span>
               </div>
+              <button 
+                onClick={onClose}
+                className="text-white/40 hover:text-white hover:bg-white/5 p-1 rounded-full transition-all focus:outline-none"
+                aria-label="Close"
+              >
+                <X size={18} />
+              </button>
+            </div>
+            
+            {/* Scrollable Content Body */}
+            <div className="p-6 overflow-y-auto space-y-4 flex-1 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+              <h3 className="text-xl font-serif text-white mb-1 leading-tight font-medium">{concept[l].title}</h3>
               
-              <h3 className="text-xl font-serif text-white mb-2 leading-tight">{concept[l].title}</h3>
-              <p className="text-sm text-teal-100/80 font-medium mb-4 pb-4 border-b border-white/10">
+              <p className="text-sm text-teal-200/80 font-medium pb-4 border-b border-white/5 leading-relaxed">
                 {concept[l].short}
               </p>
               
-              <p className="text-[15px] text-white/80 leading-relaxed mb-5">
-                {concept[l].full}
-              </p>
+              <div className="text-[15px] text-white/80 leading-relaxed font-sans space-y-3">
+                {concept[l].full.split('\n\n').map((paragraph, idx) => (
+                  <p key={idx}>{paragraph}</p>
+                ))}
+              </div>
               
               {concept[l].ndNote && (
-                <div className="bg-white/5 rounded-2xl p-4 border border-white/5 mb-4">
-                  <p className="text-[13px] text-amber-100/90 leading-relaxed">
-                    <span className="font-bold text-amber-500/80 block mb-1 uppercase tracking-wider text-[10px]">ND Note</span>
+                <div className="bg-white/[0.03] rounded-2xl p-4 border border-white/[0.04]">
+                  <p className="text-[13px] text-amber-100/90 leading-relaxed font-sans">
+                    <span className="font-bold text-amber-500/80 block mb-1.5 uppercase tracking-wider text-[10px] font-mono">ND Note</span>
                     {concept[l].ndNote}
                   </p>
                 </div>
               )}
               
               {concept[l].science && (
-                <div className="flex gap-2 items-start opacity-60">
-                  <Beaker size={12} className="mt-0.5 shrink-0" />
-                  <p className="text-[11px] leading-tight font-mono">{concept[l].science}</p>
+                <div className="flex gap-2 items-start opacity-75 bg-black/10 p-3 rounded-xl border border-white/5">
+                  <Beaker size={13} className="mt-0.5 shrink-0 text-indigo-400" />
+                  <p className="text-[11px] leading-relaxed font-mono text-indigo-200/90">{concept[l].science}</p>
                 </div>
               )}
             </div>

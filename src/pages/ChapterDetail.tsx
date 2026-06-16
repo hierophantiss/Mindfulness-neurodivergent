@@ -12,7 +12,68 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../lib/utils';
 import InteractiveRenderer from '../components/InteractiveRenderer';
 
-import { ConceptInfoIcon } from '../components/ConceptInfoOverlay';
+import { ConceptInfoIcon, ConceptModal } from '../components/ConceptInfoOverlay';
+
+const CHAPTER_CONCEPTS_MAP: Record<number, { id: string; labelEn: string; labelEl: string; icon: string }[]> = {
+  1: [
+    { id: 'gibson_2019', labelEn: 'Gibson (2019) • Interoception', labelEl: 'Μελέτη Gibson (2019) • Δια-αίσθηση', icon: '🔬' },
+    { id: 'zylowska_2007', labelEn: 'Zylowska (2007) • ADHD', labelEl: 'Μελέτη Zylowska (2007) • ΔΕΠΥ', icon: '🔬' },
+    { id: 'grounding', labelEn: 'Grounding & Gravity', labelEl: 'Γείωση & Βαρύτητα', icon: '⛰️' },
+    { id: 'proprioception', labelEn: 'Proprioception', labelEl: 'Ιδιοδεκτικότητα', icon: '🧠' },
+    { id: 'movement_vs_breathwork', labelEn: 'Tai Chi & Movement', labelEl: 'Τάι Τσι & Κίνηση', icon: '🪷' },
+  ],
+  2: [
+    { id: 'vagus_nerve', labelEn: 'Vagus Nerve Activation', labelEl: 'Ενεργοποίηση Πνευμονογαστρικού', icon: '⚡' },
+    { id: 'parasympathetic', labelEn: 'Parasympathetic Response', labelEl: 'Παρασυμπαθητικό Σύστημα', icon: '🌿' },
+    { id: 'interoception', labelEn: 'Inner Touch', labelEl: 'Εσωτερική Αφή', icon: '🫁' },
+    { id: 'pattern_4261', labelEn: '4-2-6-1 Breath', labelEl: 'Αναπνοή 4-2-6-1', icon: '🌬️' }
+  ],
+  3: [
+    { id: 'zylowska_2007', labelEn: 'ADHD Cognitive Practice', labelEl: 'ΔΕΠΥ & Γνωστική Πρακτική', icon: '🔬' },
+    { id: 'gentle_return', labelEn: 'The Gentle Return', labelEl: 'Η Απαλή Επιστροφή', icon: '🔥' },
+    { id: 'attention_modes', labelEn: 'Attentional Flashlight', labelEl: 'Φακός της Προσοχής', icon: '🔦' }
+  ],
+  4: [
+    { id: 'open_awareness', labelEn: 'Open Awareness', labelEl: 'Ανοιχτή Επίγνωση', icon: '🌌' },
+    { id: 'sky_metaphor', labelEn: 'Dzogchen (Rigpa)', labelEl: 'Dzogchen (Ρίγκπα)', icon: '🪷' },
+    { id: 'peripheral_vision', labelEn: 'Peripheral Gaze', labelEl: 'Περιφερειακή Όραση', icon: '👁️' }
+  ],
+  5: [
+    { id: 'zylowska_2007', labelEn: 'ADHD Adaptation', labelEl: 'ΔΕΠΥ & Προσαρμογή', icon: '🔬' },
+    { id: 'cearns_2022', labelEn: 'Habit & Adherence', labelEl: 'Μελέτη Cearns (2022) • Δόση', icon: '📊' },
+    { id: 'hyperfocus', labelEn: 'Hyperfocus Breakthrough', labelEl: 'Απελευθέρωση Hyperfocus', icon: '🧠' },
+    { id: 'amygdala', labelEn: 'Amygdala (No Self-Criticism)', labelEl: 'Αμυγδαλή (Όχι Αυτοκριτική)', icon: '🛡️' }
+  ],
+  6: [
+    { id: 'cearns_2022', labelEn: 'Consistency & Microdosing', labelEl: 'Συνέπεια & Μικροδόσεις', icon: '⚡' },
+    { id: 'peripheral_vision', labelEn: 'Peripheral Safety Sign', labelEl: 'Περιφερειακό Σήμα Ασφάλειας', icon: '👁️' },
+    { id: 'parasympathetic', labelEn: 'Active Recovery', labelEl: 'Ενεργή Ανάκαμψη', icon: '🌿' }
+  ],
+  7: [
+    { id: 'sos', labelEn: 'Somatic Crisis Protocol', labelEl: 'Πρωτόκολλο Κρίσης SOS', icon: '🚨' },
+    { id: 'vagus_nerve', labelEn: 'Slow Exhale Vagus', labelEl: 'Πνευμονογαστρική Εκπνοή', icon: '🌬️' },
+    { id: 'trauma', labelEn: 'Trauma-Informed Anchor', labelEl: 'Trauma-Informed Άγκυρα', icon: '🛡️' }
+  ],
+  8: [
+    { id: 'cearns_2022', labelEn: 'Dose & Practice Adherence', labelEl: 'Δόση & Τήρηση Πρακτικής', icon: '🔬' },
+    { id: 'sky_metaphor', labelEn: 'The Spacious Containment', labelEl: 'Ανοιχτός Χώρος', icon: '🌌' },
+    { id: 'vagus_nerve', labelEn: 'Physiological Brake', labelEl: 'Φυσιολογικό Φρένο', icon: '⚡' }
+  ],
+  9: [
+    { id: 'gentle_return', labelEn: 'Non-Judgmental Practice', labelEl: 'Μη-επικριτική Επιστροφή', icon: '🔥' },
+    { id: 'grounding', labelEn: 'Somatic Stability', labelEl: 'Σωματική Σταθερότητα', icon: '⛰️' },
+    { id: 'trauma', labelEn: 'Internal Safe Space', labelEl: 'Εσωτερικός Ασφαλής Χώρος', icon: '🛡️' }
+  ],
+  10: [
+    { id: 'zylowska_2007', labelEn: 'Clinical ADHD Study', labelEl: 'Κλινική Μελέτη ΔΕΠΥ', icon: '🔬' },
+    { id: 'gibson_2019', labelEn: 'Gibson Insula Study', labelEl: 'Μελέτη Gibson για τη Νήσο', icon: '🔬' },
+    { id: 'cearns_2022', labelEn: 'Clark 280,000 Session Dose', labelEl: 'Μελέτη Clarkson 280k Συνεδριών', icon: '🔬' },
+    { id: 'vagus_nerve', labelEn: 'Vagal Regulation', labelEl: 'Πνευμονογαστρική Ρύθμιση', icon: '⚡' },
+    { id: 'proprioception', labelEn: 'Proprioception (Craig)', labelEl: 'Ιδιοδεκτικότητα (Craig)', icon: '🧠' },
+    { id: 'sky_metaphor', labelEn: 'Dzogchen (Rigpa/Mahamudra)', labelEl: 'Dzogchen (Ρίγκπα/Μαχαμούντρα)', icon: '🪷' },
+    { id: 'movement_vs_breathwork', labelEn: 'Somatic Movement (Tai Chi)', labelEl: 'Σωματική Κίνηση (Τάι Τσι)', icon: '🪷' }
+  ]
+};
 
 const ConceptAnnotatedText = ({ text }: { text: string }) => {
   const parts = text.split(/(\{\{[^}]+\}\})/g);
@@ -79,6 +140,7 @@ export default function ChapterDetail() {
   const [direction, setDirection] = useState(1);
   const touchStartX = useRef(0);
   const [visibleParagraphs, setVisibleParagraphs] = useState(1);
+  const [activeConceptId, setActiveConceptId] = useState<string | null>(null);
 
   const pages = [];
   if (chapter) {
@@ -342,6 +404,34 @@ export default function ChapterDetail() {
                         </li>
                       ))}
                     </ul>
+
+                    {/* Evidence & Foundations Section */}
+                    {CHAPTER_CONCEPTS_MAP[chapter.num] && CHAPTER_CONCEPTS_MAP[chapter.num].length > 0 && (
+                      <div className="pt-8 border-t border-white/5 space-y-4">
+                        <div className="flex items-center gap-2 text-teal-400">
+                          <span className="text-[10px] font-bold tracking-widest uppercase font-mono">
+                            {language === 'el' ? '🔬 Επιστημονική & Παραδοσιακή Θεμελίωση' : '🔬 Scientific & Traditional Foundations'}
+                          </span>
+                        </div>
+                        <p className="text-xs text-white/40 leading-relaxed font-sans max-w-2xl">
+                          {language === 'el'
+                            ? 'Αυτή η άσκηση συνδέεται με κλινικές έρευνες, νευρολογικές εξηγήσεις και αρχαίες παραδόσεις. Επιλέξτε μια πηγή για να δείτε DOIs και περιλήψεις:'
+                            : 'This practice is backed by clinical studies, neurobiological evidence, and contemplative lineages. Select a reference to explore DOIs and research summaries:'}
+                        </p>
+                        <div className="flex flex-wrap gap-2 pt-2">
+                          {CHAPTER_CONCEPTS_MAP[chapter.num].map((concept) => (
+                            <button
+                              key={concept.id}
+                              onClick={() => setActiveConceptId(concept.id)}
+                              className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.02] border border-white/5 text-[12px] text-white/60 hover:text-teal-300 hover:bg-teal-500/10 hover:border-teal-500/20 active:scale-95 transition-all duration-300"
+                            >
+                              <span>{concept.icon}</span>
+                              <span className="font-serif italic font-medium">{language === 'el' ? concept.labelEl : concept.labelEn}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -406,6 +496,11 @@ export default function ChapterDetail() {
         </AnimatePresence>
       </main>
 
+      <ConceptModal 
+        isOpen={!!activeConceptId} 
+        conceptId={activeConceptId || ''} 
+        onClose={() => setActiveConceptId(null)} 
+      />
     </div>
   );
 }

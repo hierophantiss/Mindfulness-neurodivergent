@@ -4,6 +4,7 @@ import { BREATH_PATTERNS, BreathPattern } from '../data/breathPatterns';
 import { ArrowLeft, Activity, Wind } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../hooks/useLanguage';
+import { ConceptInfoIcon } from '../components/ConceptInfoOverlay';
 
 function PatternCard({ p, colorScheme, icon: Icon, onClick, language }: { 
   p: BreathPattern, 
@@ -116,8 +117,12 @@ export default function PracticeMovement() {
       </div>
 
       {/* Mindful Movement Section */}
-      <h2 id="movement" className="text-2xl font-serif italic text-indigo-400 mb-6 px-2 drop-shadow-sm scroll-mt-24">
-        {language === 'el' ? 'Ενσυνείδητη Κίνηση' : 'Mindful Movement'}
+      <h2 id="movement" className="text-2xl font-serif italic text-indigo-400 mb-6 px-2 drop-shadow-sm scroll-mt-24 flex items-center gap-2">
+        <span>{language === 'el' ? 'Ενσυνείδητη Κίνηση & Τάι Τσι' : 'Mindful Movement & Tai Chi'}</span>
+        <span className="inline-flex gap-1 items-center" onClick={(e) => e.stopPropagation()}>
+          <ConceptInfoIcon conceptId="proprioception" className="w-5 h-5 opacity-60 hover:opacity-100" />
+          <ConceptInfoIcon conceptId="movement_vs_breathwork" className="w-5 h-5 text-indigo-400 hover:text-indigo-300 opacity-60 hover:opacity-100" />
+        </span>
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-safe mb-8">
         {movementExercises.map(p => (
