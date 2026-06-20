@@ -105,11 +105,11 @@ const SCHOLARLY_CITATIONS = [
   {
     "@type": "ScholarlyArticle",
     "@id": "https://doi.org/10.1177/1087054707308502",
-    "name": "Mindfulness Meditation Training with Adults and Adolescents With ADHD: A Feasibility Study",
-    "headline": "Mindfulness Meditation Training with Adults and Adolescents With ADHD: A Feasibility Study",
+    "name": "Mindfulness meditation training in adults and adolescents with ADHD: A feasibility study",
+    "headline": "Mindfulness meditation training in adults and adolescents with ADHD: A feasibility study",
     "sameAs": "https://doi.org/10.1177/1087054707308502",
     "identifier": "doi:10.1177/1087054707308502",
-    "datePublished": "2007",
+    "datePublished": "2008",
     "author": {
       "@type": "Person",
       "name": "Lidia Zylowska"
