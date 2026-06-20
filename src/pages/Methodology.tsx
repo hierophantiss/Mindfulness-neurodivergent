@@ -45,9 +45,9 @@ const T = {
       },
       {
         icon: CheckCircle,
-        title: 'Γνωστική Βελτίωση στο ADHD (Zylowska et al., 2007)',
-        desc: 'Η κλινική μελέτη της Zylowska απέδειξε ότι ένα ειδικά προσαρμοσμένο πρόγραμμα ενσυνειδητότητας για ενήλικες και εφήβους με ADHD βελτιώνει σημαντικά τις εκτελεστικές λειτουργίες του εγκεφάλου, τη συγκέντρωση και τη συναισθηματική ρύθμιση.',
-        citation: 'Zylowska et al. (2007). Journal of Attention Disorders. Doi: 10.1177/1087054707308502'
+        title: 'Γνωστική Βελτίωση στο ADHD (Zylowska et al., 2008)',
+        desc: 'Το μοναδικό peer-reviewed πρόγραμμα 8 εβδομάδων ενσυνειδητότητας ειδικά για ΔΕΠΥ — βρήκε βελτιώσεις στην προσοχή, τη γνωστική αναστολή, το άγχος και τα καταθλιπτικά συμπτώματα.',
+        citation: 'Zylowska, L., Ackerman, D. L., Yang, M. H., Futrell, J. L., Horton, N. L., Hale, T. S., Pataki, C., & Smalley, S. L. (2008). Mindfulness meditation training in adults and adolescents with ADHD: A feasibility study. Journal of Attention Disorders, 11(6), 737–746. https://doi.org/10.1177/1087054707308502'
       },
       {
         icon: Sparkles,
@@ -107,9 +107,9 @@ const T = {
       },
       {
         icon: CheckCircle,
-        title: 'Clinical ADHD Feasibility (Zylowska et al., 2007)',
-        desc: 'Zylowska\'s clinical research proved that tailored mindfulness training for adults and adolescents with ADHD is highly feasible, improving core executive functions, working memory, and emotional self-regulation.',
-        citation: 'Zylowska et al. (2007). Journal of Attention Disorders. Doi: 10.1177/1087054707308502'
+        title: 'Clinical ADHD Feasibility (Zylowska et al., 2008)',
+        desc: 'The only peer-reviewed 8-week mindfulness program designed specifically for ADHD — demonstrating key improvements in attention, cognitive inhibition, anxiety, and depressive symptoms.',
+        citation: 'Zylowska, L., Ackerman, D. L., Yang, M. H., Futrell, J. L., Horton, N. L., Hale, T. S., Pataki, C., & Smalley, S. L. (2008). Mindfulness meditation training in adults and adolescents with ADHD: A feasibility study. Journal of Attention Disorders, 11(6), 737–746. https://doi.org/10.1177/1087054707308502'
       },
       {
         icon: Sparkles,

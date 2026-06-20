@@ -324,23 +324,22 @@ export default function PracticeBreath() {
     setPhaseSeconds(1);
     phaseStartRef.current = Date.now();
     
-    // Haptic feedback logic
+    // Haptic feedback logic: only at the onset of Inhalation or Exhalation
     if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
-      const prevIdx = (idx - 1 + pattern.labels.length) % pattern.labels.length;
-      const prevLabel = pattern.labels[prevIdx].label.en;
-      
-      if (prevLabel === 'Inhale') {
-        // Reached peak of inhale (full expansion)
-        navigator.vibrate([30, 40, 30]);
-      } else if (prevLabel === 'Exhale') {
-        // Reached peak of exhale (full contraction)
-        navigator.vibrate([40]);
-      } else {
-        // Generic phase change
-        navigator.vibrate(20);
+      const labelEn = p.label?.en || p.text || '';
+      const labelEl = p.label?.el || '';
+      const isInhale = labelEn.toLowerCase() === 'inhale' || labelEl === 'Εισπνοή';
+      const isExhale = labelEn.toLowerCase() === 'exhale' || labelEl === 'Εκπνοή';
+
+      if (isInhale) {
+        // Single gentle distinct vibration for inhale onset
+        navigator.vibrate(55);
+      } else if (isExhale) {
+        // Double gentle pulse for exhale onset
+        navigator.vibrate([40, 60, 40]);
       }
     }
-  }, [pattern]);
+  }, []);
 
   // Update seconds counter during phase
   useEffect(() => {
@@ -379,6 +378,18 @@ export default function PracticeBreath() {
   const beatTypeName = pattern.audioConfig?.beat ? getBeatTypeName(pattern.audioConfig.beat) : 'Theta';
   const beatRangeStr = beatTypeName === 'Delta' ? '1-4 Hz' : beatTypeName === 'Theta' ? '4-8 Hz' : '8-14 Hz';
   
+  const maxSeconds = Math.round((pattern.phases[phaseIdx]?.dur || 4000) / 1000);
+
+  const getDisplaySub = (subText: string, currentSec: number, totalSec: number) => {
+    if (!running) return subText;
+    const match = subText.match(/\((\d+)s\)/);
+    if (match) {
+      const matchTotal = match[1];
+      return subText.replace(/\((\d+)s\)/, `(${currentSec}/${matchTotal}s)`);
+    }
+    return subText;
+  };
+
   return (
     <div className="flex flex-col flex-1 bg-[#061114] -mx-4 -mt-4 -mb-8 px-4 pt-4 pb-8 md:-mx-8 md:-mt-8 md:-mb-8 md:px-8 md:pt-8 md:pb-8 overflow-hidden relative font-sans text-zinc-100">
       
@@ -596,7 +607,7 @@ export default function PracticeBreath() {
                     ) : isExhale ? (
                       <span className="text-emerald-400">{phaseSeconds}</span>
                     ) : (
-                      <span className="text-amber-300 transform -translate-y-1 inline-block">-</span>
+                      <span className="text-amber-300">{phaseSeconds}</span>
                     )
                   ) : null}
                 </div>
@@ -615,7 +626,9 @@ export default function PracticeBreath() {
             {language === 'en' ? phase.label.en : phase.label.el}
           </h2>
           <p className="text-zinc-200/90 italic tracking-wide text-[13px] text-center drop-shadow-md pb-2">
-            {language === 'en' ? phase.sub.en : phase.sub.el}
+            {language === 'en' 
+              ? getDisplaySub(phase.sub.en, phaseSeconds, maxSeconds) 
+              : getDisplaySub(phase.sub.el, phaseSeconds, maxSeconds)}
           </p>
         </div>
 
