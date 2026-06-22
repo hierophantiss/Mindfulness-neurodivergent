@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Wind, Zap, ArrowLeft, Move, Compass, Activity, Lock, BookOpen, ChevronDown, ChevronUp, Volume2 } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import { useProgress } from '../contexts/ProgressContext';
@@ -60,9 +60,26 @@ function PatternCard({ p, colorScheme, icon: Icon, onClick, language }: {
 
 export default function Practice() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { language } = useLanguage();
   const { progress } = useProgress();
-  const [activeCategory, setActiveCategory] = useState<'breath' | 'movement' | 'grounding' | 'microdoses' | 'vocal' | null>(null);
+  
+  const initialCategory = ['breath', 'movement', 'grounding', 'microdoses', 'vocal'].includes(searchParams.get('category') || '') 
+    ? (searchParams.get('category') as 'breath' | 'movement' | 'grounding' | 'microdoses' | 'vocal') 
+    : null;
+
+  const [activeCategory, setActiveCategory] = useState<'breath' | 'movement' | 'grounding' | 'microdoses' | 'vocal' | null>(initialCategory);
+
+  // Update URL search params when category changes (optional, but good for linking)
+  const handleCategoryChange = (cat: 'breath' | 'movement' | 'grounding' | 'microdoses' | 'vocal' | null) => {
+    setActiveCategory(cat);
+    if (cat) {
+      setSearchParams({ category: cat }, { replace: true });
+    } else {
+      setSearchParams({}, { replace: true });
+    }
+  };
+
   const [lockedCategoryAttempt, setLockedCategoryAttempt] = useState<'grounding' | 'microdoses' | null>(null);
   const [activeSomatic, setActiveSomatic] = useState<'all' | 'seated' | 'quick' | 'audio'>('all');
 
@@ -93,7 +110,7 @@ export default function Practice() {
 
   const activeCategoryWithReset = (cat: 'breath' | 'movement' | 'grounding' | 'microdoses' | 'vocal' | null) => {
     setActiveSomatic('all');
-    setActiveCategory(cat);
+    handleCategoryChange(cat);
   };
 
   const renderSomaticFilters = () => (
@@ -356,7 +373,7 @@ export default function Practice() {
       <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="flex items-center gap-4">
           <div role="button" tabIndex={0} 
-            onClick={() => setActiveCategory(null)} 
+            onClick={() => handleCategoryChange(null)} 
             className="btn-zen !px-3 !py-3"
           >
             <ArrowLeft size={20} />
@@ -444,7 +461,7 @@ export default function Practice() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-12 max-w-5xl mx-auto w-full">
         {/* Mindful Movement & Tai Chi Card */}
         <div role="button" tabIndex={0}
-          onClick={() => setActiveCategory('movement')}
+          onClick={() => handleCategoryChange('movement')}
           className="col-span-1 group relative block p-6 md:p-8 shape-cloud-3 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-indigo-500/20 overflow-hidden text-left"
         >
           <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-indigo-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
@@ -473,7 +490,7 @@ export default function Practice() {
 
         {/* Breath Rhythms Card */}
         <div role="button" tabIndex={0}
-          onClick={() => setActiveCategory('breath')}
+          onClick={() => handleCategoryChange('breath')}
           className="col-span-1 group relative block p-6 md:p-8 shape-cloud-2 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-teal-500/20 overflow-hidden text-left"
         >
           <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-teal-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
@@ -499,7 +516,7 @@ export default function Practice() {
 
         {/* Vocal & Chanting Resonance Card */}
         <div role="button" tabIndex={0}
-          onClick={() => setActiveCategory('vocal')}
+          onClick={() => handleCategoryChange('vocal')}
           className="col-span-1 group relative block p-6 md:p-8 shape-cloud-4 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-violet-500/20 overflow-hidden text-left"
         >
           <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-violet-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
@@ -525,7 +542,7 @@ export default function Practice() {
 
         {/* Microdoses Card */}
         <div role="button" tabIndex={0}
-          onClick={() => hasFoundation ? setActiveCategory('microdoses') : setLockedCategoryAttempt('microdoses')}
+          onClick={() => hasFoundation ? handleCategoryChange('microdoses') : setLockedCategoryAttempt('microdoses')}
           className="col-span-1 group relative block p-6 md:p-8 shape-cloud-5 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-amber-500/20 overflow-hidden text-left"
         >
           <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-amber-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
@@ -597,7 +614,7 @@ export default function Practice() {
                 onClick={() => {
                   const cat = lockedCategoryAttempt;
                   setLockedCategoryAttempt(null);
-                  setActiveCategory(cat as any);
+                  handleCategoryChange(cat as any);
                 }}
                 className="w-full py-4 px-6 rounded-2xl text-white/50 hover:text-white/80 transition-all active:scale-[0.98] text-sm"
               >
