@@ -357,9 +357,14 @@ export const SEO: React.FC = () => {
       const ptitle = lang === 'en' ? pattern.title.en : pattern.title.el;
       const psub   = lang === 'en' ? pattern.subtitle.en : pattern.subtitle.el;
       title = `${ptitle} – ${psub} | Neurodivergent Mindfulness`;
+      const isVocal = pattern.category === 'vocal';
       description = lang === 'en'
-        ? `Guided breathwork: ${ptitle}. ${psub}. A neurodivergent-friendly breathing exercise for ADHD and autism nervous system regulation.`
-        : `Καθοδηγούμενη αναπνοή: ${ptitle}. ${psub}. Ρύθμιση νευρικού συστήματος για ΔΕΠΥ και αυτισμό.`;
+        ? isVocal
+          ? `Guided chanting & vocal resonance: ${ptitle}. ${psub}. A neurodivergent-friendly somatic exercise for ADHD and autism vagus nerve regulation.`
+          : `Guided breathwork: ${ptitle}. ${psub}. A neurodivergent-friendly breathing exercise for ADHD and autism nervous system regulation.`
+        : isVocal
+          ? `Καθοδηγούμενο ψάλσιμο και φωνητική αντήχηση: ${ptitle}. ${psub}. Σωματική άσκηση διέγερσης του πνευμονογαστρικού για ΔΕΠΥ και αυτισμό.`
+          : `Καθοδηγούμενη αναπνοή: ${ptitle}. ${psub}. Ρύθμιση νευρικού συστήματος για ΔΕΠΥ και αυτισμό.`;
       schema = practiceSchema(title, description, `${BASE_URL}${path}`);
     }
 
@@ -369,6 +374,7 @@ export const SEO: React.FC = () => {
       body: { en: 'Body', el: 'Σώμα' },
       focus: { en: 'Attention', el: 'Προσοχή' },
       space: { en: 'Space', el: 'Χώρος' },
+      vocal: { en: 'Vocal Resonance', el: 'Φωνητική Αντήχηση' },
     };
     const cat = catName[params.category] || { en: params.category, el: params.category };
     title = lang === 'en'
@@ -385,8 +391,8 @@ export const SEO: React.FC = () => {
       ? 'Mindfulness Practices for ADHD & Autism | Neurodivergent Mindfulness'
       : 'Πρακτικές Ενσυνειδητότητας για ΔΕΠΥ & Αυτισμό | Neurodivergent Mindfulness';
     description = lang === 'en'
-      ? 'Guided breathwork, grounding, body, attention and space exercises. Sensory-friendly mindfulness tools designed for neurodivergent nervous systems.'
-      : 'Καθοδηγούμενη αναπνοή, γείωση, σώμα, προσοχή και ασκήσεις χώρου. Εργαλεία ενσυνειδητότητας για νευροδιαφορετικά νευρικά συστήματα.';
+      ? 'Guided breathwork, grounding, chanting, vocal resonance, body, and space exercises. Sensory-friendly mindfulness tools designed for neurodivergent nervous systems.'
+      : 'Καθοδηγούμενη αναπνοή, γείωση, ψάλσιμο, φωνητική αντήχηση, σώμα και ασκήσεις χώρου. Εργαλεία ενσυνειδητότητας για νευροδιαφορετικά νευρικά συστήματα.';
     schema = webAppSchema(title, description, `${BASE_URL}${path}`);
 
   // ── Program ──────────────────────────────────────────────────────
