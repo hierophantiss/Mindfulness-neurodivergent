@@ -2,7 +2,7 @@ import { PhaseDef, PhaseLabel, AudioConfig } from "./types-breath";
 
 export interface BreathPattern {
   id: string;
-  category: "breath" | "movement" | "grounding";
+  category: "breath" | "movement" | "grounding" | "vocal";
   visualizer?: "taichi" | "lotus";
   hasBinaural?: boolean;
   title: { el: string; en: string };
@@ -627,5 +627,134 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "κλείσιμο (2s)", en: "close (2s)" } },
       { label: { el: "Παύση", en: "Hold" }, sub: { el: "κέντρο (2s)", en: "center (2s)" } },
     ]
+  },
+  {
+    id: "bhramari-humming",
+    category: "vocal",
+    hasBinaural: true,
+    title: {
+      el: "Bhramari — Ψάλσιμο",
+      en: "Bhramari — Humming"
+    },
+    subtitle: {
+      el: "Ενεργοποίηση Πνευμονογαστρικού",
+      en: "Vagal Nerve Activation"
+    },
+    desc: {
+      el: "Εισπνοή από τη μύτη, γέμισμα από κάτω προς τα πάνω. Στην εκπνοή: κλείσε το στόμα και άρχισε το «μμμ». Καθώς αδειάζεις, άνοιξε ελαφρά το στόμα — ο ήχος ανοίγει φυσικά σε «μααα». Νιώσε τη δόνηση στη μύτη, τον λαιμό, το στήθος. Στο τέλος της τελευταίας εκπνοής — μείνε. Νιώσε τη δόνηση που παραμένει. Δεν υπάρχει τέλειο ψάλσιμο — καλλιεργείται με την άσκηση. (Trivedi et al., 2023)",
+      en: "Inhale through the nose, filling from bottom to top. On the exhale: close your mouth and begin humming 'mmm'. As you empty, open your mouth slightly — the sound naturally opens to 'maaa'. Feel the vibration in your nose, throat, chest. At the end of the last exhale — stay. Feel the vibration that remains. There is no perfect humming — it grows with practice. (Trivedi et al., 2023)"
+    },
+    totalCycleDurationMs: 15000,
+    audioConfig: {
+      base: 128,
+      beat: 4,
+      pulse: 4,
+      ambientLayers: ["rain"],
+    },
+    phases: [
+      { dur: 4000, armFrom: 0, armTo: 1 },
+      { dur: 1000, armFrom: 1, armTo: 1 },
+      { dur: 10000, armFrom: 1, armTo: 0 },
+    ],
+    labels: [
+      {
+        label: { el: "Εισπνοή", en: "Inhale" },
+        sub: { el: "από τη μύτη, γέμισμα (4s)", en: "through nose, fill (4s)" }
+      },
+      {
+        label: { el: "Παύση", en: "Hold" },
+        sub: { el: "προετοιμασία (1s)", en: "prepare (1s)" }
+      },
+      {
+        label: { el: "«μμμ → μααα»", en: "«mmm → maaa»" },
+        sub: { el: "ψάλσιμο μέχρι τέλος (10s)", en: "hum until empty (10s)" }
+      },
+    ],
+  },
+  {
+    id: "aum-resonance",
+    category: "vocal",
+    hasBinaural: true,
+    title: {
+      el: "Α-Ο-Μ — Σωματική Αντήχηση",
+      en: "A-U-M — Somatic Resonance"
+    },
+    subtitle: {
+      el: "Καρδιακή & Κοιλιακή Ενεργοποίηση",
+      en: "Heart & Belly Stimulation"
+    },
+    desc: {
+      el: "Εισπνοή 4s, Παύση 1s, Ψάλσιμο «Α-Ο-Μ» 11s. Ξεκίνησε με το «Ααα» από την κοιλιά/λεκάνη, ανέβασε τον ήχο στο στήθος με το «Οοο» και κλείσε με το «Μμμ» δονώντας το κεφάλι και τον κόλπο της μύτης. Η φυσική αυτή δόνηση της φωνής διεγείρει το πνευμονογαστρικό νεύρο κατά μήκος των σωματικών κέντρων, προάγοντας άμεσο αίσθημα ασφάλειας και γαλήνης.",
+      en: "Inhale 4s, Hold 1s, Chanting 'A-U-M' 11s. Begin with 'Aaa' from your belly/pelvis, raise the sound to the chest with 'Ooo', and close with 'Mmm' vibrating your head and nasal cavities. This vocal resonance physically stimulates the vagus nerve along the somatic pathway, invoking deep calm and a sense of safety."
+    },
+    totalCycleDurationMs: 16000,
+    audioConfig: {
+      base: 136.1, // Earth frequency Ohm tone
+      beat: 2,
+      pulse: 2,
+      ambientLayers: ["wind"],
+    },
+    phases: [
+      { dur: 4000, armFrom: 0, armTo: 1 },
+      { dur: 1000, armFrom: 1, armTo: 1 },
+      { dur: 11000, armFrom: 1, armTo: 0 },
+    ],
+    labels: [
+      {
+        label: { el: "Εισπνοή", en: "Inhale" },
+        sub: { el: "απαλά από τη μύτη (4s)", en: "gently through nose (4s)" }
+      },
+      {
+        label: { el: "Παύση", en: "Hold" },
+        sub: { el: "ευθυγράμμιση (1s)", en: "align and center (1s)" }
+      },
+      {
+        label: { el: "«Α-Ο-Μ »", en: "«A-U-M »" },
+        sub: { el: "ψέλνοντας «Α-Ο-Μ» (11s)", en: "chanting 'A-U-M' (11s)" }
+      },
+    ],
+  },
+  {
+    id: "satanama-resonance",
+    category: "vocal",
+    hasBinaural: true,
+    title: {
+      el: "SA-TA-NA-MA — Ρύθμιση ADHD",
+      en: "SA-TA-NA-MA — Focus Chanting"
+    },
+    subtitle: {
+      el: "Νευρολογική Συγκέντρωση",
+      en: "Neurological Integration"
+    },
+    desc: {
+      el: "Εισπνοή 4s, Παύση 2s, Ψάλσιμο «SA-TA-NA-MA» 12s. Καθώς ψέλνεις κάθε συλλαβή, πίεζε διαδοχικά τον αντίχειρά σου με τον δείκτη (SA), τον μέσο (TA), τον παράμεσο (NA) και τον μικρό (MA). Ο συνδυασμός της φωνητικής αντήχησης με τη λεπτή κινητική άσκηση των δακτύλων ενεργοποιεί τον μετωπιαίο λοβό, ρυθμίζοντας την προσοχή και προσφέροντας σταθερότητα στον νευροδιαφορετικό νου.",
+      en: "Inhale 4s, Hold 2s, Chanting 'SA-TA-NA-MA' 12s. As you pronounce each syllable, press your thumb firmly against your index (SA), middle (TA), ring (NA), and baby (MA) finger. This blend of vocal resonance and tactile finger-tapping stimulates the frontal lobe, anchoring attention and centering the neurodivergent mind."
+    },
+    totalCycleDurationMs: 18000,
+    audioConfig: {
+      base: 220, // Musical A3 chord, very organizing for cognitive focus
+      beat: 3,
+      pulse: 3,
+      ambientLayers: ["ocean"],
+    },
+    phases: [
+      { dur: 4000, armFrom: 0, armTo: 1 },
+      { dur: 2000, armFrom: 1, armTo: 1 },
+      { dur: 12000, armFrom: 1, armTo: 0 },
+    ],
+    labels: [
+      {
+        label: { el: "Εισπνοή", en: "Inhale" },
+        sub: { el: "βαθιά, ήρεμα (4s)", en: "deeply, calmly (4s)" }
+      },
+      {
+        label: { el: "Παύση", en: "Hold" },
+        sub: { el: "επίγνωση νου (2s)", en: "thought-awareness (2s)" }
+      },
+      {
+        label: { el: "«SA-TA-NA-MA»", en: "«SA-TA-NA-MA»" },
+        sub: { el: "ψαλμός και πίεση δακτύλων (12s)", en: "chant and tap fingers (12s)" }
+      },
+    ],
   }
 ];

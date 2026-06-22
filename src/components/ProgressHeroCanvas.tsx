@@ -79,7 +79,7 @@ export default function ProgressHeroCanvas() {
     let grounding = false, breathing = false, attention = false, space = false;
     summary.activities.forEach(act => {
       if (act.category === 'grounding' || act.category === 'movement' || act.category === 'swaying') grounding = true;
-      if (act.category === 'breath') breathing = true;
+      if (act.category === 'breath' || act.category === 'vocal') breathing = true;
       if (act.category === 'checkin' || act.category === 'microdose') attention = true;
       if (act.category === 'journal' || act.category === 'chapter' || act.category === 'rabbithole') space = true;
     });

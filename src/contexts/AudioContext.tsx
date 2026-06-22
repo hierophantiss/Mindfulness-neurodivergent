@@ -19,6 +19,7 @@ export interface AudioConfig {
   pulseType?: 'sine';
   disableSynth?: boolean;
   ambientLayers?: ('rain' | 'ocean' | 'wind' | 'brown' | 'pink')[];
+  id?: string;
 }
 
 export interface AudioContextProps {
@@ -33,12 +34,15 @@ export interface AudioContextProps {
   stopAudio: () => void;
   setGlobalVolume: (v: number) => void;
   updateArmPos: (armPos: number) => void;
+  updatePhase: (idx: number, label: string) => void;
 }
 
 interface SynthNodes {
   masterGain?: GainNode;
   breathGain?: GainNode;
   compressor?: DynamicsCompressorNode;
+  vocalGain?: GainNode;
+  vocalLowpass?: BiquadFilterNode;
   stoppers: Array<() => void>;
   sessionId: number;
 }
@@ -455,9 +459,17 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     if (n.compressor) {
       try { n.compressor.disconnect(); } catch (e) {}
     }
+    if (n.vocalGain) {
+      try { n.vocalGain.disconnect(); } catch (e) {}
+    }
+    if (n.vocalLowpass) {
+      try { n.vocalLowpass.disconnect(); } catch (e) {}
+    }
     n.breathGain  = undefined;
     n.masterGain  = undefined;
     n.compressor  = undefined;
+    n.vocalGain   = undefined;
+    n.vocalLowpass = undefined;
   }, []);
 
   // ---- startAudio ----
@@ -584,6 +596,69 @@ export function AudioProvider({ children }: { children: ReactNode }) {
           if (fn) n.stoppers.push(fn(ctx, ambientGain));
         }
       }
+
+      // ---- Vocal Humming Guide Tone ----
+      if (config.id === 'bhramari-humming' || config.id === 'aum-resonance' || config.id === 'satanama-resonance') {
+        const vocalGain = ctx.createGain();
+        vocalGain.gain.setValueAtTime(0, ctx.currentTime);
+        vocalGain.connect(masterGain);
+        n.vocalGain = vocalGain;
+
+        const vocalLowpass = ctx.createBiquadFilter();
+        vocalLowpass.type = 'lowpass';
+        vocalLowpass.frequency.setValueAtTime(240, ctx.currentTime);
+        vocalLowpass.Q.setValueAtTime(2.5, ctx.currentTime); // resonance
+        vocalLowpass.connect(vocalGain);
+        n.vocalLowpass = vocalLowpass;
+
+        // Warm fundamental triangle oscillator representing vocal throat tone
+        const vOsc1 = ctx.createOscillator();
+        vOsc1.type = 'triangle';
+        vOsc1.frequency.setValueAtTime(config.base || 128, ctx.currentTime);
+
+        // Bright saw oscillator representing vocal cords, highly filtered at low vol
+        const vOsc2 = ctx.createOscillator();
+        vOsc2.type = 'sawtooth';
+        vOsc2.frequency.setValueAtTime((config.base || 128) * 2 + 0.35, ctx.currentTime); // slight pitch offset
+        const vOsc2Gain = ctx.createGain();
+        vOsc2Gain.gain.setValueAtTime(0.18, ctx.currentTime);
+        vOsc2.connect(vOsc2Gain);
+        vOsc2Gain.connect(vocalLowpass);
+        vOsc1.connect(vocalLowpass);
+
+        // Deep sub-bass sinusoid representing chest cavity resonance
+        const subOsc = ctx.createOscillator();
+        subOsc.type = 'sine';
+        subOsc.frequency.setValueAtTime((config.base || 128) / 2, ctx.currentTime);
+        const subGain = ctx.createGain();
+        subGain.gain.setValueAtTime(0.24, ctx.currentTime);
+        subOsc.connect(subGain);
+        subGain.connect(vocalLowpass);
+
+        // Vibrato synthesis representing warm, relaxed vocal chords flutter
+        const vibratoLfo = ctx.createOscillator();
+        vibratoLfo.type = 'sine';
+        vibratoLfo.frequency.setValueAtTime(4.8, ctx.currentTime); // natural singing vibrato range
+        const vibratoDepth = ctx.createGain();
+        vibratoDepth.gain.setValueAtTime(1.8, ctx.currentTime); // vibrato width
+
+        vibratoLfo.connect(vibratoDepth);
+        vibratoDepth.connect(vOsc1.frequency);
+        vibratoDepth.connect(vOsc2.frequency);
+
+        // Start all generators
+        vOsc1.start(ctx.currentTime + 0.05);
+        vOsc2.start(ctx.currentTime + 0.05);
+        subOsc.start(ctx.currentTime + 0.05);
+        vibratoLfo.start(ctx.currentTime + 0.05);
+
+        n.stoppers.push(
+          () => { try { vOsc1.stop(); } catch (_) {} },
+          () => { try { vOsc2.stop(); } catch (_) {} },
+          () => { try { subOsc.stop(); } catch (_) {} },
+          () => { try { vibratoLfo.stop(); } catch (_) {} }
+        );
+      }
     } catch (e) {
       console.error('[AudioProvider] startAudio failed:', e);
     }
@@ -613,9 +688,41 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const updateArmPos = useCallback((armPos: number) => {
     const n   = nodesRef.current;
     const ctx = webAudioCtxRef.current;
-    if (!n.breathGain || !ctx) return;
-    const target = 0.3 + armPos * 0.7;
-    n.breathGain.gain.setTargetAtTime(target, ctx.currentTime, 0.1);
+    if (!ctx) return;
+
+    if (n.breathGain) {
+      const target = 0.3 + armPos * 0.7;
+      n.breathGain.gain.setTargetAtTime(target, ctx.currentTime, 0.1);
+    }
+
+    // Dynamic Formant Morphing during Exhale ("mmm" -> "maaa")
+    // When breathing out (from full lung/1.0 to empty/0.0), voice frequency content increases
+    if (n.vocalLowpass && n.vocalGain) {
+      // Sweep lowpass cutoff between 200Hz (armPos=1.0) and 480Hz (armPos=0.0)
+      const targetCutoff = 480 - armPos * 280;
+      n.vocalLowpass.frequency.setTargetAtTime(targetCutoff, ctx.currentTime, 0.15);
+    }
+  }, []);
+
+  // ---- updatePhase ----
+  const updatePhase = useCallback((idx: number, label: string) => {
+    const n   = nodesRef.current;
+    const ctx = webAudioCtxRef.current;
+    if (!ctx) return;
+
+    if (n.vocalGain) {
+      if (idx === 2) {
+        // Exhale / Humming phase is active - fade voice guide in nicely
+        n.vocalGain.gain.cancelScheduledValues(ctx.currentTime);
+        n.vocalGain.gain.setValueAtTime(n.vocalGain.gain.value, ctx.currentTime);
+        n.vocalGain.gain.linearRampToValueAtTime(0.38, ctx.currentTime + 0.8);
+      } else {
+        // Other phases (Inhale / Hold) - fade voice guide out so user silent exhales or holds
+        n.vocalGain.gain.cancelScheduledValues(ctx.currentTime);
+        n.vocalGain.gain.setValueAtTime(n.vocalGain.gain.value, ctx.currentTime);
+        n.vocalGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.6);
+      }
+    }
   }, []);
 
   const toggleMaster = useCallback(() => setMasterPlaying(p => !p), []);
@@ -634,7 +741,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       value={{
         masterPlaying, masterVolume, toggleMaster, setMasterVolume,
         stopAll, isPlaying, volume, startAudio, stopAudio,
-        setGlobalVolume, updateArmPos,
+        setGlobalVolume, updateArmPos, updatePhase,
       }}
     >
       {children}

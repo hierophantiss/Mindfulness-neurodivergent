@@ -202,7 +202,10 @@ export default function PracticeBreath() {
     }
   }, [pattern.id]);
 
-  const { startAudio, stopAudio, updateArmPos, isPlaying, setGlobalVolume } = useBinauralAudio(pattern.audioConfig);
+  const { startAudio, stopAudio, updateArmPos, updatePhase, isPlaying, setGlobalVolume } = useBinauralAudio({
+    ...pattern.audioConfig,
+    id: pattern.id
+  });
 
   useEffect(() => {
     setGlobalVolume(globalVolume);
@@ -323,6 +326,10 @@ export default function PracticeBreath() {
     setPhaseIdx(idx);
     setPhaseSeconds(1);
     phaseStartRef.current = Date.now();
+
+    if (updatePhase) {
+      updatePhase(idx, p.label?.en || p.text || '');
+    }
     
     // Haptic feedback logic: only at the onset of Inhalation or Exhalation
     if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
@@ -596,6 +603,8 @@ export default function PracticeBreath() {
                       durationMs={running ? (pattern.phases[phaseIdx]?.dur || 2000) : 4000}
                       className="w-full h-full"
                       isSwaying={isSwaying}
+                      isHumming={pattern.category === 'vocal'}
+                      armPos={running ? smoothArmPos : 1.0}
                     />
                   )}
                 </motion.div>

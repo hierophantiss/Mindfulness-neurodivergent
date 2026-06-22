@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Wind, Zap, ArrowLeft, Move, Compass, Activity, Lock, BookOpen, ChevronDown, ChevronUp } from 'lucide-react';
+import { Wind, Zap, ArrowLeft, Move, Compass, Activity, Lock, BookOpen, ChevronDown, ChevronUp, Volume2 } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import { useProgress } from '../contexts/ProgressContext';
 import { BREATH_PATTERNS, BreathPattern } from '../data/breathPatterns';
@@ -62,7 +62,7 @@ export default function Practice() {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const { progress } = useProgress();
-  const [activeCategory, setActiveCategory] = useState<'breath' | 'movement' | 'grounding' | 'microdoses' | null>(null);
+  const [activeCategory, setActiveCategory] = useState<'breath' | 'movement' | 'grounding' | 'microdoses' | 'vocal' | null>(null);
   const [lockedCategoryAttempt, setLockedCategoryAttempt] = useState<'grounding' | 'microdoses' | null>(null);
   const [activeSomatic, setActiveSomatic] = useState<'all' | 'seated' | 'quick' | 'audio'>('all');
 
@@ -74,7 +74,7 @@ export default function Practice() {
   const matchesSomaticFilter = (p: BreathPattern): boolean => {
     if (activeSomatic === 'all') return true;
     if (activeSomatic === 'seated') {
-      return p.category === 'breath' || p.category === 'grounding' || p.id.includes('lotus') || p.id.includes('bow') || p.id === 'tilopa-rest';
+      return p.category === 'breath' || p.category === 'grounding' || p.category === 'vocal' || p.id.includes('lotus') || p.id.includes('bow') || p.id === 'tilopa-rest';
     }
     if (activeSomatic === 'quick') {
       return p.totalCycleDurationMs < 14000 || p.id === 'sos-breath' || p.id.includes('resonant') || p.id === '4-2-6-1';
@@ -89,8 +89,9 @@ export default function Practice() {
   const movementExercises = BREATH_PATTERNS.filter(p => p.category === 'movement');
   const breathExercises = BREATH_PATTERNS.filter(p => p.category === 'breath');
   const groundingExercises = BREATH_PATTERNS.filter(p => p.category === 'grounding');
+  const vocalExercises = BREATH_PATTERNS.filter(p => p.category === 'vocal');
 
-  const activeCategoryWithReset = (cat: 'breath' | 'movement' | 'grounding' | 'microdoses' | null) => {
+  const activeCategoryWithReset = (cat: 'breath' | 'movement' | 'grounding' | 'microdoses' | 'vocal' | null) => {
     setActiveSomatic('all');
     setActiveCategory(cat);
   };
@@ -128,6 +129,63 @@ export default function Practice() {
       </div>
     </div>
   );
+
+  if (activeCategory === 'vocal') {
+    const filteredVocals = vocalExercises.filter(matchesSomaticFilter);
+
+    return (
+      <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="flex items-center gap-4">
+          <div role="button" tabIndex={0} 
+            onClick={() => activeCategoryWithReset(null)} 
+            className="btn-zen !px-3 !py-3"
+          >
+            <ArrowLeft size={20} />
+          </div>
+          <span className="text-[11px] font-bold tracking-[0.2em] text-violet-400 uppercase">
+            {language === 'el' ? 'ΨΑΛΣΙΜΟ & ΑΝΤΗΧΗΣΗ' : 'CHANTING & VOCAL RESONANCE'}
+          </span>
+        </div>
+
+        <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
+          <h2 className="text-4xl md:text-5xl font-serif text-white/90 italic leading-tight flex items-center justify-center md:justify-start">
+            {language === 'el' ? 'Ψάλσιμο & Αντήχηση' : 'Chanting & Resonance'}
+            <ConceptInfoIcon conceptId="vagus_nerve" />
+          </h2>
+          <p className="text-lg text-white/50 font-sans leading-relaxed">
+            {language === 'el' 
+              ? 'Φωνητικές ασκήσεις με αντήχηση και δονήσεις για βαθιά ενεργοποίηση του πνευμονογαστρικού νεύρου.' 
+              : 'Vocal exercises using physical resonance and acoustic vibrations for deep vagal nerve stimulation and calm.'}
+          </p>
+        </header>
+
+        {renderSomaticFilters()}
+
+        <div className="max-w-4xl mx-auto w-full pb-12">
+          {filteredVocals.length === 0 ? (
+            <div className="py-12 text-center text-white/40 font-sans border border-white/5 rounded-2xl bg-white/[0.01]" id="no-filtered-vocals">
+              {language === 'el' 
+                ? 'Δεν βρέθηκαν ασκήσεις ψαλσίματος με αυτά τα φίλτρα.' 
+                : 'No chanting exercises found with the active filters.'}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {filteredVocals.map(p => (
+                <PatternCard
+                  key={p.id}
+                  p={p}
+                  colorScheme="indigo"
+                  icon={Volume2}
+                  onClick={() => navigate(`/practice/breath/${p.id}`)}
+                  language={language}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   if (activeCategory === 'breath') {
     const filteredBreaths = breathExercises.filter(matchesSomaticFilter);
@@ -383,7 +441,7 @@ export default function Practice() {
         </p>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-12 max-w-5xl mx-auto w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-12 max-w-5xl mx-auto w-full">
         {/* Mindful Movement & Tai Chi Card */}
         <div role="button" tabIndex={0}
           onClick={() => setActiveCategory('movement')}
@@ -439,10 +497,36 @@ export default function Practice() {
           </div>
         </div>
 
+        {/* Vocal & Chanting Resonance Card */}
+        <div role="button" tabIndex={0}
+          onClick={() => setActiveCategory('vocal')}
+          className="col-span-1 group relative block p-6 md:p-8 shape-cloud-4 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-violet-500/20 overflow-hidden text-left"
+        >
+          <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-violet-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
+          
+          <div className="flex justify-between items-start mb-8 relative z-10 w-full">
+            <div className="w-14 h-14 shrink-0 shape-cloud-2 bg-violet-400/15 flex items-center justify-center text-violet-400 border border-violet-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
+              <Volume2 size={28} strokeWidth={1.5} />
+            </div>
+            <ConceptInfoIcon conceptId="vagus_nerve" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
+          </div>
+          
+          <div className="space-y-2 relative z-10 mt-auto w-full">
+            <h3 className="text-2xl font-serif text-white/90 italic leading-tight">
+              {language === 'en' ? 'Chanting & Resonance' : 'Ψάλσιμο & Αντήχηση'}
+            </h3>
+            <p className="text-white/50 font-sans text-[14px] leading-relaxed">
+              {language === 'en' 
+               ? 'Vocal vibrations & vagus nerve stimulation (Bhramari, AUM, SaTaNaMa).' 
+               : 'Φωνητικές δονήσεις & διέγερση του πνευμονογαστρικού (Bhramari, ΑΟΜ, SaTaNaMa).'}
+            </p>
+          </div>
+        </div>
+
         {/* Microdoses Card */}
         <div role="button" tabIndex={0}
           onClick={() => hasFoundation ? setActiveCategory('microdoses') : setLockedCategoryAttempt('microdoses')}
-          className="col-span-1 group relative block p-6 md:p-8 shape-cloud-5 glass-card flex-col flex justify-between min-h-[240px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-amber-500/20 overflow-hidden text-left"
+          className="col-span-1 group relative block p-6 md:p-8 shape-cloud-5 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-amber-500/20 overflow-hidden text-left"
         >
           <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-amber-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           

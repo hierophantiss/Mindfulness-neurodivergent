@@ -9,9 +9,21 @@ interface BreathingHeroProps {
   durationMs: number;
   className?: string;
   isSwaying?: boolean;
+  isHumming?: boolean;
+  armPos?: number;
 }
 
-export function BreathingHero({ phaseIdx, isInhale, isExhale, isHold, durationMs, className, isSwaying = false }: BreathingHeroProps) {
+export function BreathingHero({ 
+  phaseIdx, 
+  isInhale, 
+  isExhale, 
+  isHold, 
+  durationMs, 
+  className, 
+  isSwaying = false,
+  isHumming = false,
+  armPos = 1.0
+}: BreathingHeroProps) {
   // Breathing logic for the animation
   // When inhaling, the torso scales up and an inner glow expands.
   // When exhaling, the torso scales down and the glow shrinks.
@@ -97,6 +109,33 @@ export function BreathingHero({ phaseIdx, isInhale, isExhale, isHold, durationMs
     }
     return list;
   }, []);
+
+  const somaticParticles = React.useMemo(() => {
+    const list = [];
+    for (let i = 0; i < 20; i++) {
+      list.push({
+        id: i,
+        phaseOffset: i / 20,
+        size: 1.5 + (i % 3) * 0.8,
+        swayAmplitude: 1.5 + (i % 2) * 2.5,
+      });
+    }
+    return list;
+  }, []);
+
+  // Dynamic vocal sound epicenter representing the vibrating resonance (Bhramari)
+  const vocalCx = 199;
+  // Vocal center shifts from head (208) to chest (250) to belly (290) as armPos drops from 1.0 down to 0.0
+  const vocalCy = 208 + (1.0 - armPos) * 82;
+
+  // Resonance color base
+  const resonanceColor = armPos > 0.65 
+    ? "rgba(167, 139, 250, 0.45)" // Violet head vibration
+    : "rgba(52, 211, 153, 0.5)";  // Emerald chest/belly vibration
+
+  const resonanceGlow = armPos > 0.65 
+    ? "#818cf8" 
+    : "#34d399";
 
   return (
     <div className={`relative w-full aspect-square bg-[#070b14] rounded-2xl overflow-hidden border border-slate-800 shadow-2xl flex items-center justify-center md:max-w-md mx-auto ${className || ''}`}>
@@ -383,7 +422,152 @@ export function BreathingHero({ phaseIdx, isInhale, isExhale, isHold, durationMs
             </motion.g>
           </motion.g>
 
+          {/* Vocal Resonance (Bhramari) Dynamic Humming Ripples */}
+          {isHumming && isExhale && (
+            <g>
+              {/* Central Energy / Somatic Spinal Pathway */}
+              <motion.line
+                x1="199"
+                y1="198"
+                x2="199"
+                y2="295"
+                stroke={resonanceColor}
+                strokeWidth="1.5"
+                strokeDasharray="3 4"
+                strokeOpacity="0.45"
+                filter="blur(0.5px)"
+              />
+
+              {/* Somatic Flow: Liquid fireflies flowing along the spine */}
+              {somaticParticles.map((p) => {
+                const startY = 198;
+                const endY = 295;
+                const amplitude = p.swayAmplitude;
+                return (
+                  <motion.circle
+                    key={p.id}
+                    r={p.size}
+                    fill={resonanceGlow}
+                    filter="blur(0.5px)"
+                    animate={{
+                      cy: [startY, endY],
+                      cx: [
+                        199 - amplitude,
+                        199 + amplitude,
+                        199 - amplitude
+                      ],
+                      opacity: [0, 0.85, 0.85, 0],
+                      scale: [0.75, 1.3, 0.75],
+                    }}
+                    transition={{
+                      duration: 3.4,
+                      repeat: Infinity,
+                      ease: "linear",
+                      delay: p.phaseOffset * -3.4, // Stagger perfectly in reverse delay
+                    }}
+                  />
+                );
+              })}
+
+              {/* Concentric expanding soundwaves */}
+              {[0, 1, 2].map((i) => (
+                <motion.circle
+                  key={i}
+                  cx={vocalCx}
+                  cy={vocalCy}
+                  r={25 + i * 22}
+                  fill="none"
+                  stroke={resonanceColor}
+                  strokeWidth={2 - i * 0.5}
+                  filter="blur(2px)"
+                  animate={{
+                    scale: [0.8, 1.6, 2.2],
+                    opacity: [0.9, 0.45, 0],
+                  }}
+                  transition={{
+                    duration: 2.8,
+                    repeat: Infinity,
+                    delay: i * 0.9,
+                    ease: "easeOut"
+                  }}
+                />
+              ))}
+              
+              {/* Bracket sound waves vibrating left and right */}
+              <motion.path
+                d={`M ${vocalCx - 18} ${vocalCy - 8} Q ${vocalCx - 28} ${vocalCy} ${vocalCx - 18} ${vocalCy + 8}`}
+                stroke={resonanceColor}
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                fill="none"
+                animate={{ scale: [0.9, 1.4, 0.9], opacity: [0.4, 1, 0.4] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <motion.path
+                d={`M ${vocalCx + 18} ${vocalCy - 8} Q ${vocalCx + 28} ${vocalCy} ${vocalCx + 18} ${vocalCy + 8}`}
+                stroke={resonanceColor}
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                fill="none"
+                animate={{ scale: [0.9, 1.4, 0.9], opacity: [0.4, 1, 0.4] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+              />
+
+              {/* Epicenter Core vibrating at high-frequency */}
+              <motion.circle
+                cx={vocalCx}
+                cy={vocalCy}
+                r="7"
+                fill={resonanceGlow}
+                filter="blur(1px)"
+                animate={{
+                  scale: [1, 1.35, 1],
+                  opacity: [0.75, 1, 0.75]
+                }}
+                transition={{
+                  duration: 0.5,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              />
+            </g>
+          )}
+
       </svg>
+
+      {/* Floating Glassmorphic Vocal Aura Resonance Badge */}
+      {isHumming && isExhale && (
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -15 }}
+          className="absolute bottom-4 left-4 right-4 z-20 mx-auto max-w-[280px] bg-zinc-950/80 backdrop-blur-md border border-zinc-800/80 rounded-xl px-3 py-2.5 flex items-center gap-3 shadow-xl"
+        >
+          {/* Active Color Beacon indicating upper vs lower body locus */}
+          <div className="relative flex items-center justify-center">
+            <span className="absolute inline-flex h-2.5 w-2.5 rounded-full opacity-75 animate-ping" style={{ backgroundColor: resonanceGlow }} />
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5" style={{ backgroundColor: resonanceGlow }} />
+          </div>
+          
+          <div className="flex-1 min-w-0">
+            <p className="text-[10px] font-sans font-bold tracking-wider uppercase text-zinc-400">
+              {armPos > 0.65 ? 'HEAD / ΚΕΦΑΛΙ' : 'CHEST-BELLY / ΣΤΗΘΟΣ-ΚΟΙΛΙΑ'}
+            </p>
+            <div className="flex items-baseline gap-1.5 mt-0.5">
+              <span className="text-sm font-semibold tracking-wide" style={{ color: resonanceGlow }}>
+                {armPos > 0.65 ? '« μμμ... »' : '« μααα... »'}
+              </span>
+              <span className="text-[11px] font-medium text-zinc-300 truncate">
+                {armPos > 0.65 
+                  ? 'Δόνηση στο κεφάλι' 
+                  : 'Δόνηση στο στήθος & κοιλιά'
+                }
+              </span>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
     </div>
   );
 }

@@ -64,7 +64,7 @@ export default function AxesProgressRing({ className = '' }: AxesProgressRingPro
 
     recentLogs.forEach(act => {
       if (['grounding', 'movement', 'swaying'].includes(act.category)) counts.body++;
-      if (act.category === 'breath') counts.breath++;
+      if (['breath', 'vocal'].includes(act.category)) counts.breath++;
       if (['checkin', 'microdose', 'journal'].includes(act.category)) counts.attention++;
       if (['rabbithole', 'chapter'].includes(act.category)) counts.space++;
     });

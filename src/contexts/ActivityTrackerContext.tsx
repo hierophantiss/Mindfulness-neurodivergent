@@ -5,6 +5,7 @@ export type ActivityCategory =
   | 'grounding' 
   | 'movement' 
   | 'swaying' 
+  | 'vocal'
   | 'microdose'
   | 'journal' 
   | 'rabbithole' 
