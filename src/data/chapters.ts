@@ -25,7 +25,17 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
        {title:"Inner Touch",paragraphs: ["The breath is not just air — it is touch. Feel the air in the nostrils, the expansion of the chest, the soft movement of the belly. This inner touch activates interoception{{interoception}} — the bridge between body and consciousness."], interactive: "eswterikhafh"},
        {title:"The Axis: Unquestionable Here & Ceaseless Flow",paragraphs: ["Body + Breath together form the vertical axis: gravity gives us the 'Here' (vertical stability), the breath the 'Now' (horizontal flow). This cross — Stability x Rhythm — is the foundation upon which attention is built."]},
        {title:"The Breath as an Indicator",paragraphs: ["If it is tight or shallow → tension. If it is slow and deep → relaxation. The breath is the indicator of our mental state."]},
-       {title:"Regulation in Intense Anxiety",paragraphs: ["In moments of intense anxiety, we let the exhale{{slow_exhale}} come out through the mouth, slightly slower and more prolonged. The slow exhale activates the vagus nerve{{vagus_nerve}} — the 'brake' of the nervous system."]}
+       {title:"Regulation in Intense Anxiety",paragraphs: ["In moments of intense anxiety, we let the exhale{{slow_exhale}} come out through the mouth, slightly slower and more prolonged. The slow exhale activates the vagus nerve{{vagus_nerve}} — the 'brake' of the nervous system."]},
+       {
+         title: "Vocal Breath & Chanting",
+         paragraphs: [
+           "Producing sound (like humming) creates a vibration that massages the vagus nerve, calming the body. Sound naturally elongates the exhalation without effort."
+         ],
+         actionLink: {
+           url: "/practice?category=vocal",
+           label: "✨ Explore 'Chanting & Resonance' Practices"
+         }
+       }
      ],
      exercise:{title:"Exercise: The Active Return",steps:["Stand comfortably. Feel the gravity.","Turn your attention to the inhalation and exhalation.","Feel the air touching the nostrils.","On the exhale, let the belly contract gently.","If you feel anxious, let the exhalation come out slowly through the mouth."]},
      insight:"I observe without intervening. Every breath is a new beginning.",reflection:"How was my breath? (fast/slow, shallow/deep, tight/free)"},
@@ -133,7 +143,17 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
        {title:'Εσωτερική Αφή',paragraphs: [`Η αναπνοή δεν είναι μόνο αέρας — είναι αφή. Νιώσε τον αέρα στα ρουθούνια, τη διαστολή του στήθους, τη μαλακή κίνηση της κοιλιάς. Αυτή η εσωτερική αφή ενεργοποιεί τη δια-αίσθηση{{interoception}} (interoception) — τη γέφυρα μεταξύ σώματος και συνείδησης.`], interactive: "eswterikhafh"},
        {title:'Ο Άξονας: Αναμφίβολο Εδώ & Αδιάκοπη Ροή',paragraphs: [`Σώμα + Αναπνοή μαζί σχηματίζουν τον κατακόρυφο άξονα: η βαρύτητα μάς δίνει το «Εδώ» (κάθετη σταθερότητα), η αναπνοή το «Τώρα» (οριζόντια ροή). Αυτός ο σταυρός — Σταθερότητα x Ρυθμός — είναι η βάση πάνω στην οποία χτίζεται η προσοχή.`]},
        {title:'Η Αναπνοή ως Δείκτης',paragraphs: [`Αν είναι σφιγμένη ή ρηχή → ένταση. Αν είναι αργή και βαθιά → χαλάρωση. Η αναπνοή είναι ο δείκτης της ψυχικής μας κατάστασης.`]},
-       {title:'Ρύθμιση σε Έντονο Άγχος',paragraphs: [`Σε στιγμές έντονου άγχους, αφήνουμε την εκπνοή{{slow_exhale}} να βγαίνει από το στόμα, λίγο πιο αργά και παρατεταμένα. Η αργή εκπνοή ενεργοποιεί το πνευμονογαστρικό νεύρο{{vagus_nerve}} — το «φρένο» του νευρικού συστήματος.`]}
+       {title:'Ρύθμιση σε Έντονο Άγχος',paragraphs: [`Σε στιγμές έντονου άγχους, αφήνουμε την εκπνοή{{slow_exhale}} να βγαίνει από το στόμα, λίγο πιο αργά και παρατεταμένα. Η αργή εκπνοή ενεργοποιεί το πνευμονογαστρικό νεύρο{{vagus_nerve}} — το «φρένο» του νευρικού συστήματος.`]},
+       {
+         title: 'Ηχητική Αναπνοή (Ψάλσιμο)',
+         paragraphs: [
+           'Η παραγωγή ήχου (όπως το humming) δημιουργεί δόνηση που κάνει μασάζ στο πνευμονογαστρικό νεύρο, ηρεμώντας το σώμα. Ο ήχος επιμηκύνει φυσικά την εκπνοή χωρίς κόπο.'
+         ],
+         actionLink: {
+           url: '/practice?category=vocal',
+           label: '✨ Εξερεύνησε τις πρακτικές «Ψάλσιμο & Αντήχηση» (Humming)'
+         }
+       }
      ],
      exercise:{title:'Άσκηση: Η Ενεργή Επιστροφή',steps:['Στάσου άνετα. Νιώσε τη βαρύτητα.','Στρέψε την προσοχή στην εισπνοή και εκπνοή.','Νιώσε τον αέρα που αγγίζει τα ρουθούνια.','Στην εκπνοή, άφησε την κοιλιά να μαζευτεί ήπια.','Αν νιώθεις άγχος, άφησε την εκπνοή να βγαίνει αργά από το στόμα.']},
      insight:'Παρατηρώ χωρίς να επεμβαίνω. Κάθε αναπνοή είναι μια νέα αρχή.',reflection:'Πώς ήταν η αναπνοή μου; (γρήγορη/αργή, ρηχή/βαθιά, σφιγμένη/ελεύθερη)'},

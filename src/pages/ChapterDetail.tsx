@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { CHAPTERS_DATA } from '../data/chapters';
 import { CHAPTER_TAKEAWAYS, CHAPTER_MICRO_CAT } from '../data/takeaways';
 import { ArrowLeft, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, Check, Zap, Sparkles, Music } from 'lucide-react';
@@ -349,6 +349,23 @@ export default function ChapterDetail() {
                   {curPage.section.paragraphs.map((par: string, p_idx: number) => (
                     <ZenParagraph key={p_idx} text={par} index={p_idx} />
                   ))}
+                  
+                  {curPage.section.actionLink && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.3, duration: 0.8 }}
+                      className="pt-6 flex justify-center"
+                    >
+                      <Link 
+                        to={curPage.section.actionLink.url}
+                        className="text-white/90 font-medium inline-block p-4 px-6 bg-white/[0.05] hover:bg-white/[0.1] rounded-2xl border border-white/10 hover:border-white/20 transition-all duration-300"
+                      >
+                        {curPage.section.actionLink.label}
+                      </Link>
+                    </motion.div>
+                  )}
                   
                   <motion.div 
                     initial={{ opacity: 0 }}

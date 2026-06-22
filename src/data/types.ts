@@ -32,6 +32,10 @@ export interface TheorySection {
   paragraphs: string[];
   image?: string;
   interactive?: string;
+  actionLink?: {
+    url: string;
+    label: string;
+  };
 }
 
 export interface Chapter {
