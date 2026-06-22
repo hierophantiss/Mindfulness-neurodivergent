@@ -605,6 +605,7 @@ export default function PracticeBreath() {
                       isSwaying={isSwaying}
                       isHumming={pattern.category === 'vocal'}
                       armPos={running ? smoothArmPos : 1.0}
+                      patternId={pattern.id}
                     />
                   )}
                 </motion.div>

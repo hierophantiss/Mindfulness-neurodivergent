@@ -715,27 +715,27 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     ],
   },
   {
-    id: "satanama-resonance",
+    id: "a-major-resonance",
     category: "vocal",
-    hasBinaural: true,
+    hasBinaural: false,
     title: {
-      el: "SA-TA-NA-MA — Ρύθμιση ADHD",
-      en: "SA-TA-NA-MA — Focus Chanting"
+      el: "Α Ματζόρε — Ρύθμιση Καρδιάς",
+      en: "A Major — Heart Resonance"
     },
     subtitle: {
-      el: "Νευρολογική Συγκέντρωση",
-      en: "Neurological Integration"
+      el: "Αντήχηση στο Στήθος",
+      en: "Chest Resonance"
     },
     desc: {
-      el: "Εισπνοή 4s, Παύση 2s, Ψάλσιμο «SA-TA-NA-MA» 12s. Καθώς ψέλνεις κάθε συλλαβή, πίεζε διαδοχικά τον αντίχειρά σου με τον δείκτη (SA), τον μέσο (TA), τον παράμεσο (NA) και τον μικρό (MA). Ο συνδυασμός της φωνητικής αντήχησης με τη λεπτή κινητική άσκηση των δακτύλων ενεργοποιεί τον μετωπιαίο λοβό, ρυθμίζοντας την προσοχή και προσφέροντας σταθερότητα στον νευροδιαφορετικό νου.",
-      en: "Inhale 4s, Hold 2s, Chanting 'SA-TA-NA-MA' 12s. As you pronounce each syllable, press your thumb firmly against your index (SA), middle (TA), ring (NA), and baby (MA) finger. This blend of vocal resonance and tactile finger-tapping stimulates the frontal lobe, anchoring attention and centering the neurodivergent mind."
+      el: "Εισπνοή 4s, Παύση 2s, Ψάλσιμο «ΑΑΑ» 12s σε συγχορδία Λα Ματζόρε (A Major). Η ομαλή, συνεχόμενη φωνητική παραγωγή του φωνήεντος «Α» ρυθμίζει το νευρικό σύστημα και δημιουργεί ένα πεδίο προστασίας και ανάτασης γύρω από την καρδιακή περιοχή.",
+      en: "Inhale 4s, Hold 2s, Chanting «AAA» 12s in an A Major focal tune. The smooth, continuous vocalization of the «A» vowel regulates the nervous system and creates a lifting field around the heart center."
     },
     totalCycleDurationMs: 18000,
     audioConfig: {
-      base: 220, // Musical A3 chord, very organizing for cognitive focus
+      base: 220, // Musical A3
       beat: 3,
       pulse: 3,
-      ambientLayers: ["ocean"],
+      ambientLayers: ["green"],
     },
     phases: [
       { dur: 4000, armFrom: 0, armTo: 1 },
@@ -749,11 +749,188 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       },
       {
         label: { el: "Παύση", en: "Hold" },
-        sub: { el: "επίγνωση νου (2s)", en: "thought-awareness (2s)" }
+        sub: { el: "επίγνωση καρδιάς (2s)", en: "heart awareness (2s)" }
       },
       {
-        label: { el: "«SA-TA-NA-MA»", en: "«SA-TA-NA-MA»" },
-        sub: { el: "ψαλμός και πίεση δακτύλων (12s)", en: "chant and tap fingers (12s)" }
+        label: { el: "«ΑΑΑ...»", en: "«AAA...»" },
+        sub: { el: "φωνητική αντήχηση στο στήθος (12s)", en: "vocal resonance in chest (12s)" }
+      },
+    ],
+  },
+  {
+    id: "c-major-resonance",
+    category: "vocal",
+    hasBinaural: false,
+    title: {
+      el: "Ντο Ματζόρε — Ρύθμιση Γείωσης",
+      en: "C Major — Grounding Resonance"
+    },
+    subtitle: {
+      el: "Αντήχηση στη Βάση",
+      en: "Root Resonance"
+    },
+    desc: {
+      el: "Εισπνοή 4s, Παύση 2s, Ψάλσιμο «ΟΥΟΥΟΥ» 12s σε συγχορδία Ντο Ματζόρε (C Major). Αυτή η βαθιά τονικότητα υποστηρίζει την αίσθηση ασφάλειας και γείωσης (Root Chakra), δημιουργώντας μια ζεστή, περιβάλλουσα υποστήριξη.",
+      en: "Inhale 4s, Hold 2s, Chanting «UUU» 12s in a C Major focal tune. This deep tonality supports the feeling of safety and grounding, building a warm, enveloping foundation."
+    },
+    totalCycleDurationMs: 18000,
+    audioConfig: {
+      base: 130.81, // Musical C3
+      beat: 3,
+      pulse: 3,
+      ambientLayers: ["brown"],
+    },
+    phases: [
+      { dur: 4000, armFrom: 0, armTo: 1 },
+      { dur: 2000, armFrom: 1, armTo: 1 },
+      { dur: 12000, armFrom: 1, armTo: 0 },
+    ],
+    labels: [
+      {
+        label: { el: "Εισπνοή", en: "Inhale" },
+        sub: { el: "βαθιά, ήρεμα (4s)", en: "deeply, calmly (4s)" }
+      },
+      {
+        label: { el: "Παύση", en: "Hold" },
+        sub: { el: "επίγνωση βάσης (2s)", en: "root awareness (2s)" }
+      },
+      {
+        label: { el: "«ΟΥΟΥΟΥ...»", en: "«UUU...»" },
+        sub: { el: "βαθιά αντήχηση στην κοιλιά (12s)", en: "deep resonance in belly (12s)" }
+      },
+    ],
+  },
+  {
+    id: "throat-chakra-humming",
+    category: "vocal",
+    hasBinaural: false,
+    title: {
+      el: "Λαιμός & Έκφραση (G Major)",
+      en: "Throat Chakra (G Major)"
+    },
+    subtitle: {
+      el: "Αντήχηση Vishuddha",
+      en: "Vishuddha Resonance"
+    },
+    desc: {
+      el: "Εισπνοή 4s, Παύση 2s, Ψάλσιμο «ΧΑΜ» 12s σε συγχορδία Σολ Ματζόρε (G Major). Απελευθερώνει την ένταση από την περιοχή του λαιμού και των ώμων, ενισχύοντας την καθαρή αυτοέκφραση και την ηρεμία του πνευμονογαστρικού νεύρου.",
+      en: "Inhale 4s, Hold 2s, Chanting 'HAM' 12s in a G Major focal tune. Releases tension from the throat and shoulder area, promoting clear self-expression and vagus nerve sedation."
+    },
+    totalCycleDurationMs: 18000,
+    audioConfig: {
+      base: 196.00, // Musical G3
+      beat: 4,
+      pulse: 4,
+      ambientLayers: ["green", "wind"],
+    },
+    phases: [
+      { dur: 4000, armFrom: 0, armTo: 1 },
+      { dur: 2000, armFrom: 1, armTo: 1 },
+      { dur: 12000, armFrom: 1, armTo: 0 },
+    ],
+    labels: [
+      {
+        label: { el: "Εισπνοή", en: "Inhale" },
+        sub: { el: "άντληση αέρα (4s)", en: "drawing breath (4s)" }
+      },
+      {
+        label: { el: "Παύση", en: "Hold" },
+        sub: { el: "επίγνωση λαιμού (2s)", en: "throat awareness (2s)" }
+      },
+      {
+        label: { el: "«ΧΑΜ / ΜΜΜ...»", en: "«HAM / MMM...»" },
+        sub: { el: "δόνηση στο λαιμό (12s)", en: "vibration in throat (12s)" }
+      },
+    ],
+  },
+  {
+    id: "om-pure-resonance",
+    category: "vocal",
+    hasBinaural: true,
+    title: {
+      el: "Καθαρό OM (136.1 Hz)",
+      en: "Pure Om (136.1 Hz)"
+    },
+    subtitle: {
+      el: "Αντήχηση Ajna (Τρίτο Μάτι)",
+      en: "Ajna / Third Eye Resonance"
+    },
+    desc: {
+      el: "Εισπνοή 4s, Παύση 2s, Ψάλσιμο «ΟΜ / ΜΜΜ» 12s. Συντονισμένο στα 136.1 Hz (Συχνότητα της Γης). Αυτή η συνεχής αντήχηση ηρεμεί τις σκέψεις και εστιάζει την προσοχή στο κέντρο του μετώπου.",
+      en: "Inhale 4s, Hold 2s, Chanting 'OM / MMM' 12s. Tuned to 136.1 Hz (Earth frequency). This continuous resonance quiets the mind and focuses attention entirely at the center of the forehead."
+    },
+    totalCycleDurationMs: 18000,
+    audioConfig: {
+      base: 136.1, // Earth / Om frequency
+      beat: 3,
+      pulse: 3,
+      ambientLayers: ["ocean", "brown"],
+    },
+    phases: [
+      { dur: 4000, armFrom: 0, armTo: 1 },
+      { dur: 2000, armFrom: 1, armTo: 1 },
+      { dur: 12000, armFrom: 1, armTo: 0 },
+    ],
+    labels: [
+      {
+        label: { el: "Εισπνοή", en: "Inhale" },
+        sub: { el: "μαζεύοντας ενέργεια (4s)", en: "gathering energy (4s)" }
+      },
+      {
+        label: { el: "Παύση", en: "Hold" },
+        sub: { el: "στο τρίτο μάτι (2s)", en: "at the third eye (2s)" }
+      },
+      {
+        label: { el: "«ΟΜ / ΜΜΜ...»", en: "«OM / MMM...»" },
+        sub: { el: "καθαρή δόνηση κεφαλής (12s)", en: "pure head resonance (12s)" }
+      },
+    ],
+  },
+  {
+    id: "om-resonance-throat",
+    category: "vocal",
+    hasBinaural: true,
+    title: {
+      el: "Αντήχηση ΟΜ (Throat Chakra)",
+      en: "Om Throat Resonance"
+    },
+    subtitle: {
+      el: "Ρύθμιση Μακράς Διάρκειας",
+      en: "Long Duration Tuning"
+    },
+    desc: {
+      el: "Εισπνοή 4s, Παύση 2s, 14s βαθύ ΟΜ (μετάβαση από O σε M). Εστιάζει στο τσάκρα του λαιμού, χρησιμοποιώντας παρατεταμένη φωνή για βαθιά ηρεμία και ενεργοποίηση του πνευμονογαστρικού.",
+      en: "Inhale 4s, Hold 2s, 14s deep OM (transition from O to M). Centers on the throat chakra, using prolonged vocalization for deep sedation and vagal tone."
+    },
+    totalCycleDurationMs: 20000,
+    audioConfig: {
+      base: 136.1,
+      beat: 4,
+      pulse: 4,
+      ambientLayers: ["ocean", "green"],
+    },
+    phases: [
+      { dur: 4000, armFrom: 0, armTo: 1 },
+      { dur: 2000, armFrom: 1, armTo: 1 },
+      { dur: 7000, armFrom: 1, armTo: 0.4 },
+      { dur: 7000, armFrom: 0.4, armTo: 0 },
+    ],
+    labels: [
+      {
+        label: { el: "Εισπνοή", en: "Inhale" },
+        sub: { el: "βαθιά (4s)", en: "deeply (4s)" }
+      },
+      {
+        label: { el: "Παύση", en: "Hold" },
+        sub: { el: "απαλά (2s)", en: "softly (2s)" }
+      },
+      {
+        label: { el: "«ΟΟΟ...»", en: "«OOO...»" },
+        sub: { el: "ανοιχτός λαιμός (7s)", en: "open throat (7s)" }
+      },
+      {
+        label: { el: "«ΜΜΜ...»", en: "«MMM...»" },
+        sub: { el: "κλειστά χείλη (7s)", en: "closed lips (7s)" }
       },
     ],
   }

@@ -11,6 +11,7 @@ interface BreathingHeroProps {
   isSwaying?: boolean;
   isHumming?: boolean;
   armPos?: number;
+  patternId?: string;
 }
 
 export function BreathingHero({ 
@@ -22,7 +23,8 @@ export function BreathingHero({
   className, 
   isSwaying = false,
   isHumming = false,
-  armPos = 1.0
+  armPos = 1.0,
+  patternId
 }: BreathingHeroProps) {
   // Breathing logic for the animation
   // When inhaling, the torso scales up and an inner glow expands.
@@ -123,19 +125,88 @@ export function BreathingHero({
     return list;
   }, []);
 
-  // Dynamic vocal sound epicenter representing the vibrating resonance (Bhramari)
+  // Dynamic vocal sound epicenter representing the vibrating resonance (Bhramari / AUM)
   const vocalCx = 199;
-  // Vocal center shifts from head (208) to chest (250) to belly (290) as armPos drops from 1.0 down to 0.0
-  const vocalCy = 208 + (1.0 - armPos) * 82;
+  
+  // Choose locus height, colors, and labels based on patternId and exhalation progress
+  let vocalCy = 208;
+  let resonanceColor = "rgba(167, 139, 250, 0.45)"; // Violet default (head)
+  let resonanceGlow = "#a78bfa";
+  let resonanceLabel = "HEAD / ΚΕΦΑΛΙ";
+  let resonanceSyllable = "« μμμ... »";
+  let resonanceDesc = "Δόνηση στο κεφάλι & ρινική κοιλότητα";
 
-  // Resonance color base
-  const resonanceColor = armPos > 0.65 
-    ? "rgba(167, 139, 250, 0.45)" // Violet head vibration
-    : "rgba(52, 211, 153, 0.5)";  // Emerald chest/belly vibration
+  if (isHumming) {
+    if (patternId === 'aum-resonance') {
+      // Linear shift from belly to head (ascending energy) as armPos drops from 1.0 down to 0.0
+      vocalCy = 200 + armPos * 90;
 
-  const resonanceGlow = armPos > 0.65 
-    ? "#818cf8" 
-    : "#34d399";
+      if (armPos > 0.65) {
+        resonanceColor = "rgba(234, 179, 8, 0.45)"; // saffron gold (belly/sacral block)
+        resonanceGlow = "#eab308";
+        resonanceLabel = "BELLY / ΚΟΙΛΙΑ";
+        resonanceSyllable = "« ααα... »";
+        resonanceDesc = "Δόνηση στην κοιλιά & λεκάνη";
+      } else if (armPos >= 0.3) {
+        resonanceColor = "rgba(20, 184, 166, 0.5)"; // turquoise (chest/heart/throat block)
+        resonanceGlow = "#14b8a6";
+        resonanceLabel = "CHEST & THROAT / ΣΤΗΘΟΣ & ΛΑΙΜΟΣ";
+        resonanceSyllable = "« οοο... »";
+        resonanceDesc = "Δόνηση στο στήθος & λαιμό";
+      } else {
+        resonanceColor = "rgba(167, 139, 250, 0.45)"; // soft violet (throat/head block)
+        resonanceGlow = "#a78bfa";
+        resonanceLabel = "HEAD / ΚΕΦΑΛΙ";
+        resonanceSyllable = "« μμμ... »";
+        resonanceDesc = "Δόνηση στο κεφάλι & ρινική κοιλότητα";
+      }
+    } else if (patternId === 'a-major-resonance') {
+      // Heart / Chest resonance
+      vocalCy = 250;
+      resonanceColor = "rgba(244, 63, 94, 0.45)"; // Rose/Red for heart
+      resonanceGlow = "#f43f5e";
+      resonanceLabel = "HEART / ΚΑΡΔΙΑ";
+      resonanceSyllable = "« ΑΑΑ... »";
+      resonanceDesc = "Δόνηση & Ανάταση Στήθους";
+    } else if (patternId === 'c-major-resonance') {
+      // Root / Belly resonance
+      vocalCy = 300; // Lower belly area
+      resonanceColor = "rgba(239, 68, 68, 0.45)"; // Red base
+      resonanceGlow = "#ef4444";
+      resonanceLabel = "ROOT / ΒΑΣΗ";
+      resonanceSyllable = "« ΟΥΟΥΟΥ... »";
+      resonanceDesc = "Βαθιά Δόνηση Γείωσης";
+    } else if (patternId === 'throat-chakra-humming') {
+      vocalCy = 210; // Throat area
+      resonanceColor = "rgba(56, 189, 248, 0.45)"; // Light blue for throat
+      resonanceGlow = "#38bdf8";
+      resonanceLabel = "THROAT / ΛΑΙΜΟΣ";
+      resonanceSyllable = "« ΧΑΜ... »";
+      resonanceDesc = "Καθαρή Έκφραση (Vishuddha)";
+    } else if (patternId === 'om-pure-resonance') {
+      vocalCy = 180; // Third eye area
+      resonanceColor = "rgba(129, 140, 248, 0.5)"; // Indigo
+      resonanceGlow = "#818cf8";
+      resonanceLabel = "THIRD EYE / ΤΡΙΤΟ ΜΑΤΙ";
+      resonanceSyllable = "« ΟΜ... »";
+      resonanceDesc = "Συγκέντρωση στο Κέντρο του Μετώπου";
+    } else if (patternId === 'om-resonance-throat') {
+      vocalCy = 210; // Throat area
+      resonanceColor = "rgba(56, 189, 248, 0.45)"; // Light blue for throat
+      resonanceGlow = "#38bdf8";
+      resonanceLabel = "THROAT / ΛΑΙΜΟΣ";
+      resonanceSyllable = armPos > 0.4 ? "« ΟΟΟ... »" : "« ΜΜΜ... »";
+      resonanceDesc = "Παρατεταμένη Ρύθμιση ΟΜ";
+    } else {
+      // bhramari-humming or default: pure Head nasal hum
+      vocalCy = 208;
+      resonanceColor = "rgba(167, 139, 250, 0.45)";
+      resonanceGlow = "#a78bfa";
+      resonanceLabel = "HEAD / ΚΕΦΑΛΙ";
+      resonanceSyllable = "« μμμ... »";
+      resonanceDesc = "Δόνηση στο κεφάλι & ρινική κοιλότητα";
+    }
+  }
 
   return (
     <div className={`relative w-full aspect-square bg-[#070b14] rounded-2xl overflow-hidden border border-slate-800 shadow-2xl flex items-center justify-center md:max-w-md mx-auto ${className || ''}`}>
@@ -229,6 +300,32 @@ export function BreathingHero({
             </feMerge>
           </filter>
         </defs>
+
+        {(patternId === 'a-major-resonance' || patternId === 'c-major-resonance' || patternId === 'throat-chakra-humming' || patternId === 'om-pure-resonance' || patternId === 'om-resonance-throat') && isHumming && (
+          <g>
+            {Array.from({ length: 16 }).map((_, i) => {
+              const angleX = Math.cos((i * Math.PI) / 8);
+              const angleY = Math.sin((i * Math.PI) / 8);
+              
+              const x2 = vocalCx + angleX * (300 * (1.1 - armPos));
+              const y2 = vocalCy + angleY * (300 * (1.1 - armPos));
+
+              return (
+                <line 
+                  key={i}
+                  x1={vocalCx} 
+                  y1={vocalCy} 
+                  x2={x2} 
+                  y2={y2} 
+                  stroke={resonanceGlow} 
+                  strokeWidth="2"
+                  opacity={(1.0 - armPos) * 0.4} 
+                  strokeLinecap="round"
+                />
+              )
+            })}
+          </g>
+        )}
 
         {/* Prana Particles (Gather during inhale, scatter during exhale) */}
         <motion.g
@@ -541,7 +638,7 @@ export function BreathingHero({
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -15 }}
-          className="absolute bottom-4 left-4 right-4 z-20 mx-auto max-w-[280px] bg-zinc-950/80 backdrop-blur-md border border-zinc-800/80 rounded-xl px-3 py-2.5 flex items-center gap-3 shadow-xl"
+          className="absolute bottom-4 left-4 right-4 z-20 mx-auto max-w-[285px] bg-zinc-950/85 backdrop-blur-md border border-zinc-800/80 rounded-xl px-3 py-2.5 flex items-center gap-3 shadow-xl"
         >
           {/* Active Color Beacon indicating upper vs lower body locus */}
           <div className="relative flex items-center justify-center">
@@ -551,17 +648,14 @@ export function BreathingHero({
           
           <div className="flex-1 min-w-0">
             <p className="text-[10px] font-sans font-bold tracking-wider uppercase text-zinc-400">
-              {armPos > 0.65 ? 'HEAD / ΚΕΦΑΛΙ' : 'CHEST-BELLY / ΣΤΗΘΟΣ-ΚΟΙΛΙΑ'}
+              {resonanceLabel}
             </p>
             <div className="flex items-baseline gap-1.5 mt-0.5">
               <span className="text-sm font-semibold tracking-wide" style={{ color: resonanceGlow }}>
-                {armPos > 0.65 ? '« μμμ... »' : '« μααα... »'}
+                {resonanceSyllable}
               </span>
               <span className="text-[11px] font-medium text-zinc-300 truncate">
-                {armPos > 0.65 
-                  ? 'Δόνηση στο κεφάλι' 
-                  : 'Δόνηση στο στήθος & κοιλιά'
-                }
+                {resonanceDesc}
               </span>
             </div>
           </div>

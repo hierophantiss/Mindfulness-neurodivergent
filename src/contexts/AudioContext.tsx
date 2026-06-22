@@ -43,6 +43,14 @@ interface SynthNodes {
   compressor?: DynamicsCompressorNode;
   vocalGain?: GainNode;
   vocalLowpass?: BiquadFilterNode;
+  formantF1?: BiquadFilterNode;
+  formantF2?: BiquadFilterNode;
+  formantF3?: BiquadFilterNode;
+  vOsc1Gain?: GainNode;
+  vOsc2Gain?: GainNode;
+  vOsc3Gain?: GainNode;
+  subGain?: GainNode;
+  currentConfig?: AudioConfig;
   stoppers: Array<() => void>;
   sessionId: number;
 }
@@ -383,6 +391,27 @@ function setupPinkNoise(ctx: globalThis.AudioContext, dest: AudioNode): () => vo
   return startSource(src, ctx);
 }
 
+function setupGreenNoise(ctx: globalThis.AudioContext, dest: AudioNode): () => void {
+  const buf = createPinkNoiseBuffer(ctx, 4.0);
+  const src = ctx.createBufferSource();
+  src.buffer = buf;
+  src.loop   = true;
+  
+  // Green noise: mid-range nature-like frequencies
+  const bandpass = ctx.createBiquadFilter();
+  bandpass.type = 'bandpass';
+  bandpass.frequency.value = 1200; // Centered at 1.2kHz
+  bandpass.Q.value = 0.5; // Wide range
+  
+  const gain = ctx.createGain();
+  fadeIn(gain, ctx, 0.35, 2.0);
+  
+  src.connect(bandpass);
+  bandpass.connect(gain);
+  gain.connect(dest);
+  return startSource(src, ctx);
+}
+
 function setupBrownNoise(ctx: globalThis.AudioContext, dest: AudioNode): () => void {
   const buf = createBrownNoiseBuffer(ctx, 4.0);
   const src = ctx.createBufferSource();
@@ -465,11 +494,32 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     if (n.vocalLowpass) {
       try { n.vocalLowpass.disconnect(); } catch (e) {}
     }
+    if (n.formantF1) {
+      try { n.formantF1.disconnect(); } catch (e) {}
+    }
+    if (n.formantF2) {
+      try { n.formantF2.disconnect(); } catch (e) {}
+    }
+    if (n.formantF3) {
+      try { n.formantF3.disconnect(); } catch (e) {}
+    }
+    if (n.vOsc1Gain) { try { n.vOsc1Gain.disconnect(); } catch(e) {} }
+    if (n.vOsc2Gain) { try { n.vOsc2Gain.disconnect(); } catch(e) {} }
+    if (n.vOsc3Gain) { try { n.vOsc3Gain.disconnect(); } catch(e) {} }
+    if (n.subGain) { try { n.subGain.disconnect(); } catch(e) {} }
     n.breathGain  = undefined;
     n.masterGain  = undefined;
     n.compressor  = undefined;
     n.vocalGain   = undefined;
     n.vocalLowpass = undefined;
+    n.formantF1   = undefined;
+    n.formantF2   = undefined;
+    n.formantF3   = undefined;
+    n.vOsc1Gain   = undefined;
+    n.vOsc2Gain   = undefined;
+    n.vOsc3Gain   = undefined;
+    n.subGain     = undefined;
+    n.currentConfig = undefined;
   }, []);
 
   // ---- startAudio ----
@@ -482,6 +532,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
 
     n.sessionId += 1;
     hardStop();
+    n.currentConfig = config;
 
     setIsPlaying(true);
     setMasterPlaying(true);
@@ -589,6 +640,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
           wind:  setupWind,
           pink:  setupPinkNoise,
           brown: setupBrownNoise,
+          green: setupGreenNoise,
         };
 
         for (const layer of config.ambientLayers) {
@@ -598,7 +650,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       }
 
       // ---- Vocal Humming Guide Tone ----
-      if (config.id === 'bhramari-humming' || config.id === 'aum-resonance' || config.id === 'satanama-resonance') {
+      if (['bhramari-humming', 'aum-resonance', 'satanama-resonance', 'a-major-resonance', 'c-major-resonance', 'throat-chakra-humming', 'om-pure-resonance', 'om-resonance-throat'].includes(config.id)) {
         const vocalGain = ctx.createGain();
         vocalGain.gain.setValueAtTime(0, ctx.currentTime);
         vocalGain.connect(masterGain);
@@ -606,34 +658,74 @@ export function AudioProvider({ children }: { children: ReactNode }) {
 
         const vocalLowpass = ctx.createBiquadFilter();
         vocalLowpass.type = 'lowpass';
-        vocalLowpass.frequency.setValueAtTime(240, ctx.currentTime);
-        vocalLowpass.Q.setValueAtTime(2.5, ctx.currentTime); // resonance
+        vocalLowpass.frequency.setValueAtTime(1400, ctx.currentTime);
+        vocalLowpass.Q.setValueAtTime(1.0, ctx.currentTime);
         vocalLowpass.connect(vocalGain);
         n.vocalLowpass = vocalLowpass;
+
+        const formantF1 = ctx.createBiquadFilter();
+        formantF1.type = 'peaking';
+        formantF1.frequency.setValueAtTime(750, ctx.currentTime); // default "A"
+        formantF1.Q.setValueAtTime(3.0, ctx.currentTime); // Reduced to avoid mic feedback ringing
+        formantF1.gain.setValueAtTime(10, ctx.currentTime);
+        formantF1.connect(vocalLowpass);
+        n.formantF1 = formantF1;
+
+        const formantF2 = ctx.createBiquadFilter();
+        formantF2.type = 'peaking';
+        formantF2.frequency.setValueAtTime(1150, ctx.currentTime); // default "A"
+        formantF2.Q.setValueAtTime(3.5, ctx.currentTime);
+        formantF2.gain.setValueAtTime(8, ctx.currentTime);
+        formantF2.connect(formantF1);
+        n.formantF2 = formantF2;
+
+        const formantF3 = ctx.createBiquadFilter();
+        formantF3.type = 'peaking';
+        formantF3.frequency.setValueAtTime(2600, ctx.currentTime); // "Singer's formant" for presence
+        formantF3.Q.setValueAtTime(2.0, ctx.currentTime);
+        formantF3.gain.setValueAtTime(6, ctx.currentTime);
+        formantF3.connect(formantF2);
+        n.formantF3 = formantF3;
 
         // Warm fundamental triangle oscillator representing vocal throat tone
         const vOsc1 = ctx.createOscillator();
         vOsc1.type = 'triangle';
         vOsc1.frequency.setValueAtTime(config.base || 128, ctx.currentTime);
+        const vOsc1Gain = ctx.createGain();
+        vOsc1Gain.gain.setValueAtTime(0.6, ctx.currentTime);
+        vOsc1.connect(vOsc1Gain);
+        vOsc1Gain.connect(formantF3);
+        n.vOsc1Gain = vOsc1Gain;
 
-        // Bright saw oscillator representing vocal cords, highly filtered at low vol
+        // Rich fundamental sawtooth representing the main vocal cord buzz
         const vOsc2 = ctx.createOscillator();
         vOsc2.type = 'sawtooth';
-        vOsc2.frequency.setValueAtTime((config.base || 128) * 2 + 0.35, ctx.currentTime); // slight pitch offset
+        vOsc2.frequency.setValueAtTime((config.base || 128) + 0.5, ctx.currentTime); // slight detune at fundamental
         const vOsc2Gain = ctx.createGain();
-        vOsc2Gain.gain.setValueAtTime(0.18, ctx.currentTime);
+        vOsc2Gain.gain.setValueAtTime(0.3, ctx.currentTime); // rich harmonic base
         vOsc2.connect(vOsc2Gain);
-        vOsc2Gain.connect(vocalLowpass);
-        vOsc1.connect(vocalLowpass);
+        vOsc2Gain.connect(formantF3);
+        n.vOsc2Gain = vOsc2Gain;
+
+        // An octave up sawtooth for top-end sizzle and brightness
+        const vOsc3 = ctx.createOscillator();
+        vOsc3.type = 'sawtooth';
+        vOsc3.frequency.setValueAtTime((config.base || 128) * 2 + 0.35, ctx.currentTime); 
+        const vOsc3Gain = ctx.createGain();
+        vOsc3Gain.gain.setValueAtTime(0.15, ctx.currentTime); 
+        vOsc3.connect(vOsc3Gain);
+        vOsc3Gain.connect(formantF3);
+        n.vOsc3Gain = vOsc3Gain;
 
         // Deep sub-bass sinusoid representing chest cavity resonance
         const subOsc = ctx.createOscillator();
         subOsc.type = 'sine';
         subOsc.frequency.setValueAtTime((config.base || 128) / 2, ctx.currentTime);
         const subGain = ctx.createGain();
-        subGain.gain.setValueAtTime(0.24, ctx.currentTime);
+        subGain.gain.setValueAtTime(0.28, ctx.currentTime);
         subOsc.connect(subGain);
-        subGain.connect(vocalLowpass);
+        subGain.connect(formantF3);
+        n.subGain = subGain;
 
         // Vibrato synthesis representing warm, relaxed vocal chords flutter
         const vibratoLfo = ctx.createOscillator();
@@ -649,12 +741,14 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         // Start all generators
         vOsc1.start(ctx.currentTime + 0.05);
         vOsc2.start(ctx.currentTime + 0.05);
+        vOsc3.start(ctx.currentTime + 0.05);
         subOsc.start(ctx.currentTime + 0.05);
         vibratoLfo.start(ctx.currentTime + 0.05);
 
         n.stoppers.push(
           () => { try { vOsc1.stop(); } catch (_) {} },
           () => { try { vOsc2.stop(); } catch (_) {} },
+          () => { try { vOsc3.stop(); } catch (_) {} },
           () => { try { subOsc.stop(); } catch (_) {} },
           () => { try { vibratoLfo.stop(); } catch (_) {} }
         );
@@ -695,12 +789,209 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       n.breathGain.gain.setTargetAtTime(target, ctx.currentTime, 0.1);
     }
 
-    // Dynamic Formant Morphing during Exhale ("mmm" -> "maaa")
-    // When breathing out (from full lung/1.0 to empty/0.0), voice frequency content increases
-    if (n.vocalLowpass && n.vocalGain) {
-      // Sweep lowpass cutoff between 200Hz (armPos=1.0) and 480Hz (armPos=0.0)
-      const targetCutoff = 480 - armPos * 280;
-      n.vocalLowpass.frequency.setTargetAtTime(targetCutoff, ctx.currentTime, 0.15);
+    // Dynamic Formant Morphing depending on the active exercise
+    if (n.vocalLowpass && n.formantF1 && n.formantF2 && n.vocalGain) {
+      const exerciseId = n.currentConfig?.id;
+
+      if (exerciseId === 'aum-resonance') {
+        // High-fidelity A-O-M morphing based on arm position (1.0 = start/Aaa to 0.0 = end/Mmm)
+        let targetF1 = 750;
+        let targetF2 = 1150;
+        let targetF3 = 2600;
+        let targetLP = 1400;
+        let targetG1 = 12;
+        let targetG2 = 10;
+        let targetG3 = 8;
+        
+        // Oscillator crossfading
+        let targetOsc1 = 0.6; // Triangle (fundamental)
+        let targetOsc2 = 0.24; // Sawtooth (vocal cords)
+        let targetOsc3 = 0.15; // Sawtooth octave up (sizzle)
+        let targetSub = 0.28; // Sine (chest)
+
+        if (armPos > 0.65) {
+          // "Aaa" state (Thoracic, Open, Bright)
+          targetF1 = 750; targetF2 = 1150; targetF3 = 2800;
+          targetLP = 1800;
+          targetG1 = 12; targetG2 = 10; targetG3 = 12;
+          targetOsc1 = 0.5; targetOsc2 = 0.4; targetOsc3 = 0.2; targetSub = 0.35;
+        } else if (armPos >= 0.3) {
+          // "Ooo" state (Rounded, Mid-chest)
+          const t = (armPos - 0.3) / 0.35; // 0 to 1
+          targetF1 = 480 + t * 270;
+          targetF2 = 850 + t * 300;
+          targetF3 = 2400 + t * 400;
+          targetLP = 1000 + t * 800;
+          targetG1 = 12 - t * 2;
+          targetG2 = 9 - t * 1;
+          targetG3 = 4 + t * 8;
+          targetOsc1 = 0.65 - t * 0.15;
+          targetOsc2 = 0.20 + t * 0.20;
+          targetOsc3 = 0.05 + t * 0.15;
+          targetSub = 0.40 - t * 0.05;
+        } else {
+          // "Mmm" state (Nasal, Closed lips, Head resonance)
+          const t = armPos / 0.3; // 0 to 1
+          targetF1 = 220 + t * 260;
+          targetF2 = 320 + t * 530;
+          targetF3 = 1800 + t * 600;
+          targetLP = 240 + t * 760;
+          targetG1 = 14 - t * 2; // Reduced down from 16 to avoid pure sub feedback
+          targetG2 = -12 + t * 21; // Muffle F2
+          targetG3 = -20 + t * 24; // Muffle F3 completely
+          targetOsc1 = 0.85 - t * 0.20;
+          targetOsc2 = 0.05 + t * 0.15;
+          targetOsc3 = 0.0 + t * 0.05;
+          targetSub = 0.20 + t * 0.20;
+        }
+
+        // Apply smooth target transitions to prevent clipping/pops
+        n.formantF1.frequency.setTargetAtTime(targetF1, ctx.currentTime, 0.15);
+        n.formantF2.frequency.setTargetAtTime(targetF2, ctx.currentTime, 0.15);
+        if (n.formantF3) n.formantF3.frequency.setTargetAtTime(targetF3, ctx.currentTime, 0.15);
+        
+        n.vocalLowpass.frequency.setTargetAtTime(targetLP, ctx.currentTime, 0.15);
+        
+        n.formantF1.gain.setTargetAtTime(targetG1, ctx.currentTime, 0.15);
+        n.formantF2.gain.setTargetAtTime(targetG2, ctx.currentTime, 0.15);
+        if (n.formantF3) n.formantF3.gain.setTargetAtTime(targetG3, ctx.currentTime, 0.15);
+        
+        if (n.vOsc1Gain) n.vOsc1Gain.gain.setTargetAtTime(targetOsc1, ctx.currentTime, 0.15);
+        if (n.vOsc2Gain) n.vOsc2Gain.gain.setTargetAtTime(targetOsc2, ctx.currentTime, 0.15);
+        if (n.vOsc3Gain) n.vOsc3Gain.gain.setTargetAtTime(targetOsc3, ctx.currentTime, 0.15);
+        if (n.subGain) n.subGain.gain.setTargetAtTime(targetSub, ctx.currentTime, 0.15);
+
+      } else if (exerciseId === 'om-resonance-throat') {
+        // High-fidelity O-M morphing based on arm position (1.0 = start Ooo to 0.0 = end Mmm)
+        // Maps 1.0 -> 0.4 (Ooo) and 0.4 -> 0.0 (Mmm)
+        let targetF1 = 480;
+        let targetF2 = 850;
+        let targetF3 = 2400;
+        let targetLP = 1000;
+        let targetG1 = 12;
+        let targetG2 = 9;
+        let targetG3 = 4;
+        let targetOsc1 = 0.65;
+        let targetOsc2 = 0.20;
+        let targetOsc3 = 0.05;
+        let targetSub = 0.40;
+
+        if (armPos >= 0.4) {
+          // "Ooo" state (Rounded, Mid-chest/Throat) remains stable or slight morph
+          const t = (armPos - 0.4) / 0.6; // 0 to 1
+          targetF1 = 480 + t * 50;
+          targetF2 = 850 + t * 50;
+          targetF3 = 2400;
+          targetLP = 1000 + t * 200;
+        } else {
+          // "Mmm" state (Nasal, Closed lips, Head resonance)
+          const t = armPos / 0.4; // 0 to 1
+          targetF1 = 220 + t * 260; // 220 to 480
+          targetF2 = 320 + t * 530; // 320 to 850
+          targetF3 = 1800 + t * 600; // 1800 to 2400
+          targetLP = 240 + t * 760; // 240 to 1000
+          targetG1 = 14 - t * 2; // 14 to 12
+          targetG2 = -12 + t * 21; // -12 to 9
+          targetG3 = -20 + t * 24; // -20 to 4
+          targetOsc1 = 0.85 - t * 0.20; // 0.85 to 0.65
+          targetOsc2 = 0.05 + t * 0.15; // 0.05 to 0.20
+          targetOsc3 = 0.0 + t * 0.05; // 0 to 0.05
+          targetSub = 0.20 + t * 0.20; // 0.20 to 0.40
+        }
+
+        n.formantF1.frequency.setTargetAtTime(targetF1, ctx.currentTime, 0.15);
+        n.formantF2.frequency.setTargetAtTime(targetF2, ctx.currentTime, 0.15);
+        if (n.formantF3) n.formantF3.frequency.setTargetAtTime(targetF3, ctx.currentTime, 0.15);
+        
+        n.vocalLowpass.frequency.setTargetAtTime(targetLP, ctx.currentTime, 0.15);
+        
+        n.formantF1.gain.setTargetAtTime(targetG1, ctx.currentTime, 0.15);
+        n.formantF2.gain.setTargetAtTime(targetG2, ctx.currentTime, 0.15);
+        if (n.formantF3) n.formantF3.gain.setTargetAtTime(targetG3, ctx.currentTime, 0.15);
+        
+        if (n.vOsc1Gain) n.vOsc1Gain.gain.setTargetAtTime(targetOsc1, ctx.currentTime, 0.15);
+        if (n.vOsc2Gain) n.vOsc2Gain.gain.setTargetAtTime(targetOsc2, ctx.currentTime, 0.15);
+        if (n.vOsc3Gain) n.vOsc3Gain.gain.setTargetAtTime(targetOsc3, ctx.currentTime, 0.15);
+        if (n.subGain) n.subGain.gain.setTargetAtTime(targetSub, ctx.currentTime, 0.15);
+
+      } else if (exerciseId === 'a-major-resonance') {
+        // Bright, open "Aaa" vocal tone layout - purely sustained A Major
+        // Swell logic to make the "Aaa" feel incredibly grand, rich, and expanding
+        // armPos goes 1.0 (start exhale) down to 0.0
+        
+        // We calculate some envelope based on the armPos (highest at armPos=0.5, i.e. middle of exhale)
+        const swell = Math.sin(armPos * Math.PI); // 0 at 0.0, 1 at 0.5, 0 at 1.0
+        
+        n.formantF1.frequency.setTargetAtTime(750 + swell * 50, ctx.currentTime, 0.2);
+        n.formantF2.frequency.setTargetAtTime(1150 + swell * 100, ctx.currentTime, 0.2);
+        if (n.formantF3) n.formantF3.frequency.setTargetAtTime(2600 + swell * 200, ctx.currentTime, 0.2);
+        
+        n.vocalLowpass.frequency.setTargetAtTime(1800 + swell * 400, ctx.currentTime, 0.2); // Open up the lowpass
+        
+        // Reduced peak gains slightly to remove metallic 'mic feedback'
+        n.formantF1.gain.setTargetAtTime(12 + swell * 2, ctx.currentTime, 0.2);
+        n.formantF2.gain.setTargetAtTime(10 + swell * 2, ctx.currentTime, 0.2);
+        if (n.formantF3) n.formantF3.gain.setTargetAtTime(8 + swell * 2, ctx.currentTime, 0.2);
+        
+        if (n.vOsc1Gain) n.vOsc1Gain.gain.setTargetAtTime(0.5 + swell * 0.2, ctx.currentTime, 0.2);
+        if (n.vOsc2Gain) n.vOsc2Gain.gain.setTargetAtTime(0.35 + swell * 0.25, ctx.currentTime, 0.2);
+        if (n.vOsc3Gain) n.vOsc3Gain.gain.setTargetAtTime(0.1 + swell * 0.15, ctx.currentTime, 0.2); // More sizzle in the middle
+        if (n.subGain) n.subGain.gain.setTargetAtTime(0.3 + swell * 0.15, ctx.currentTime, 0.2);
+
+      } else if (exerciseId === 'c-major-resonance') {
+        // Deep, rounded "Uuu" (Ουου) vocal tone layout - C Major
+        // Very grounded, sub-heavy, narrower formants.
+        const swell = Math.sin(armPos * Math.PI);
+        
+        n.formantF1.frequency.setTargetAtTime(350 + swell * 50, ctx.currentTime, 0.2);
+        n.formantF2.frequency.setTargetAtTime(750 + swell * 100, ctx.currentTime, 0.2);
+        if (n.formantF3) n.formantF3.frequency.setTargetAtTime(2200, ctx.currentTime, 0.2);
+        
+        n.vocalLowpass.frequency.setTargetAtTime(1000 + swell * 200, ctx.currentTime, 0.2);
+        
+        n.formantF1.gain.setTargetAtTime(14 + swell * 2, ctx.currentTime, 0.2);
+        n.formantF2.gain.setTargetAtTime(6 + swell * 2, ctx.currentTime, 0.2);
+        if (n.formantF3) n.formantF3.gain.setTargetAtTime(-4, ctx.currentTime, 0.2);
+        
+        if (n.vOsc1Gain) n.vOsc1Gain.gain.setTargetAtTime(0.7, ctx.currentTime, 0.2); // Heavy fundamental
+        if (n.vOsc2Gain) n.vOsc2Gain.gain.setTargetAtTime(0.15 + swell * 0.1, ctx.currentTime, 0.2); // Mild saw
+        if (n.vOsc3Gain) n.vOsc3Gain.gain.setTargetAtTime(0.02 + swell * 0.03, ctx.currentTime, 0.2); // Very little sizzle
+        if (n.subGain) n.subGain.gain.setTargetAtTime(0.5 + swell * 0.2, ctx.currentTime, 0.2); // Very strong sub
+
+      } else if (exerciseId === 'throat-chakra-humming') {
+        const swell = Math.sin(armPos * Math.PI);
+        n.formantF1.frequency.setTargetAtTime(600 + swell * 50, ctx.currentTime, 0.2);
+        n.formantF2.frequency.setTargetAtTime(950 + swell * 100, ctx.currentTime, 0.2);
+        if (n.formantF3) n.formantF3.frequency.setTargetAtTime(2400, ctx.currentTime, 0.2);
+        
+        n.vocalLowpass.frequency.setTargetAtTime(1400 + swell * 200, ctx.currentTime, 0.2);
+        
+        n.formantF1.gain.setTargetAtTime(12 + swell * 2, ctx.currentTime, 0.2);
+        n.formantF2.gain.setTargetAtTime(8 + swell * 2, ctx.currentTime, 0.2);
+        if (n.formantF3) n.formantF3.gain.setTargetAtTime(-2, ctx.currentTime, 0.2);
+        
+        if (n.vOsc1Gain) n.vOsc1Gain.gain.setTargetAtTime(0.6, ctx.currentTime, 0.2); 
+        if (n.vOsc2Gain) n.vOsc2Gain.gain.setTargetAtTime(0.25 + swell * 0.1, ctx.currentTime, 0.2);
+        if (n.vOsc3Gain) n.vOsc3Gain.gain.setTargetAtTime(0.05 + swell * 0.05, ctx.currentTime, 0.2); 
+        if (n.subGain) n.subGain.gain.setTargetAtTime(0.2 + swell * 0.1, ctx.currentTime, 0.2);
+
+      } else {
+        // bhramari-humming, om-pure-resonance, or default: deep nasal warm "Mmm" hum
+        n.formantF1.frequency.setTargetAtTime(220, ctx.currentTime, 0.2);
+        n.formantF2.frequency.setTargetAtTime(320, ctx.currentTime, 0.2);
+        if (n.formantF3) n.formantF3.frequency.setTargetAtTime(1800, ctx.currentTime, 0.2);
+        
+        n.vocalLowpass.frequency.setTargetAtTime(240, ctx.currentTime, 0.2);
+        
+        n.formantF1.gain.setTargetAtTime(14, ctx.currentTime, 0.2);
+        n.formantF2.gain.setTargetAtTime(-12, ctx.currentTime, 0.2);
+        if (n.formantF3) n.formantF3.gain.setTargetAtTime(-20, ctx.currentTime, 0.2);
+        
+        if (n.vOsc1Gain) n.vOsc1Gain.gain.setTargetAtTime(0.85, ctx.currentTime, 0.2);
+        if (n.vOsc2Gain) n.vOsc2Gain.gain.setTargetAtTime(0.02, ctx.currentTime, 0.2);
+        if (n.vOsc3Gain) n.vOsc3Gain.gain.setTargetAtTime(0.0, ctx.currentTime, 0.2);
+        if (n.subGain) n.subGain.gain.setTargetAtTime(0.15, ctx.currentTime, 0.2);
+      }
     }
   }, []);
 
@@ -715,12 +1006,12 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         // Exhale / Humming phase is active - fade voice guide in nicely
         n.vocalGain.gain.cancelScheduledValues(ctx.currentTime);
         n.vocalGain.gain.setValueAtTime(n.vocalGain.gain.value, ctx.currentTime);
-        n.vocalGain.gain.linearRampToValueAtTime(0.38, ctx.currentTime + 0.8);
+        n.vocalGain.gain.setTargetAtTime(0.85, ctx.currentTime, 0.6); // Very smooth slow attack exponent
       } else {
         // Other phases (Inhale / Hold) - fade voice guide out so user silent exhales or holds
         n.vocalGain.gain.cancelScheduledValues(ctx.currentTime);
         n.vocalGain.gain.setValueAtTime(n.vocalGain.gain.value, ctx.currentTime);
-        n.vocalGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.6);
+        n.vocalGain.gain.setTargetAtTime(0, ctx.currentTime, 0.4); // Smooth gentle decay
       }
     }
   }, []);
