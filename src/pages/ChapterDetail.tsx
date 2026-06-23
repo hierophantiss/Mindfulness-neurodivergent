@@ -100,12 +100,15 @@ const ConceptAnnotatedText = ({ text }: { text: string }) => {
           );
         }
         
-        const strongParts = part.split(/(<strong>.*?<\/strong>)/g);
+        const strongParts = part.split(/(<strong>.*?<\/strong>|\*\*.*?\*\*)/g);
         return (
           <React.Fragment key={i}>
             {strongParts.map((sp, j) => {
               if (sp.startsWith('<strong>') && sp.endsWith('</strong>')) {
-                return <strong key={j} className="font-medium text-white/95">{sp.slice(8, -9)}</strong>;
+                return <strong key={j} className="font-semibold text-white/95">{sp.slice(8, -9)}</strong>;
+              }
+              if (sp.startsWith('**') && sp.endsWith('**')) {
+                return <strong key={j} className="font-semibold text-white/95">{sp.slice(2, -2)}</strong>;
               }
               return <span key={j}>{sp}</span>;
             })}

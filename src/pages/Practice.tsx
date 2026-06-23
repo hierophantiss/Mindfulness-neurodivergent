@@ -294,6 +294,40 @@ export default function Practice() {
           </p>
         </header>
 
+        <div className="max-w-4xl mx-auto w-full mb-8 font-sans text-white/80 bg-white/[0.02] border border-white/5 rounded-2xl p-6 md:p-8 space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-700">
+          <div>
+            <h3 className="text-xl md:text-2xl font-serif text-indigo-300 italic mb-4">{language === 'el' ? 'Πριν Ξεκινήσεις' : 'Before You Start'}</h3>
+            <p className="mb-6">{language === 'el' ? 'Το Tai Chi ξεκινά πριν την πρώτη κίνηση.' : 'Tai Chi begins before the first movement.'}</p>
+            <ul className="space-y-4 text-[15px] leading-relaxed">
+              <li>
+                <strong className="text-indigo-200">{language === 'el' ? 'Στάση:' : 'Posture:'}</strong> {language === 'el' ? 'Στάσου με τα πόδια στο πλάτος των ώμων. Γόνατα ελαφρά λυγισμένα — όχι κλειδωμένα, ποτέ σφιχτά. Σπονδυλική στήλη ίσια και ελεύθερη — σαν να κρέμεσαι από μια αόρατη κλωστή στην κορυφή του κεφαλιού. Πέλματα σταθερά στο έδαφος, βάρος ίσα κατανεμημένο.' : 'Stand with your feet shoulder-width apart. Knees slightly bent — not locked, never tight. Spine straight and free — as if suspended by an invisible thread at the top of your head. Feet planted firmly on the ground, weight distributed evenly.'}
+              </li>
+              <li>
+                <strong className="text-indigo-200">{language === 'el' ? 'Χέρια:' : 'Hands:'}</strong> {language === 'el' ? 'Κατεβαίνουν φυσικά στα πλάγια ή μπροστά στη λεκάνη. Δάχτυλα χαλαρά — ούτε σφιγμένα ούτε τεντωμένα.' : 'Let them drop naturally to the sides or in front of your pelvis. Fingers relaxed — neither clenched nor tense.'}
+              </li>
+              <li>
+                <strong className="text-indigo-200">{language === 'el' ? 'Βλέμμα:' : 'Gaze:'}</strong> {language === 'el' ? 'Μαλακό, μισάνοιχτο. Κοιτάς μπροστά χωρίς να εστιάζεις πουθενά. Αυτό είναι ήδη ο 4ος Άξονας.' : 'Soft, half-open. Look forward without focusing anywhere. This is already the 4th Axis.'}
+              </li>
+              <li>
+                <strong className="text-indigo-200">{language === 'el' ? 'Αναπνοή:' : 'Breath:'}</strong> {language === 'el' ? 'Μια βαθιά εισπνοή από τη μύτη — άφησε την κοιλιά να φουσκώσει. Μια αργή εκπνοή από το στόμα. Το σώμα χαλαρώνει με κάθε εκπνοή.' : 'Take a deep inhale through your nose — let your belly rise. A slow exhale through your mouth. The body relaxes with every exhale.'}
+              </li>
+            </ul>
+            <p className="mt-6 font-medium text-indigo-300 italic">{language === 'el' ? 'Τώρα είσαι έτοιμος.' : 'Now you are ready.'}</p>
+          </div>
+
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+
+          <div>
+            <h3 className="text-xl md:text-2xl font-serif text-indigo-300 italic mb-4">{language === 'el' ? 'Η Αρχή' : 'The Principle'}</h3>
+            <p className="mb-2 leading-relaxed">
+              {language === 'el' ? 'Το Tai Chi δεν είναι γυμναστική — είναι συντονισμός. Η κίνηση και η αναπνοή είναι αδιαχώριστες. Η βαρύτητα είναι ο δάσκαλος, η αναπνοή ο ρυθμός, η προσοχή ακολουθεί φυσικά.' : 'Tai Chi is not a workout — it is coordination. Movement and breath are inseparable. Gravity is the teacher, breath is the rhythm, attention follows naturally.'}
+            </p>
+            <p className="leading-relaxed">
+              {language === 'el' ? 'Καμία κίνηση δεν είναι λάθος — μόνο πιο ή λιγότερο συνειδητή.' : 'No movement is wrong — only more or less conscious.'}
+            </p>
+          </div>
+        </div>
+
         {renderSomaticFilters()}
 
         <div className="max-w-4xl mx-auto w-full space-y-12 pb-12">
