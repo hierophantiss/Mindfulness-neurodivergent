@@ -40,17 +40,17 @@ export default function CoreGeometricState() {
       logsArray.some(l => categories.includes(l.category));
 
     return {
-      body: check(todayLogs, ['grounding', 'movement', 'swaying']),
-      bodySoft: check(recentLogs, ['grounding', 'movement', 'swaying']),
+      body: check(todayLogs, ['grounding', 'movement', 'swaying', 'yoga']),
+      bodySoft: check(recentLogs, ['grounding', 'movement', 'swaying', 'yoga']),
       
-      breath: check(todayLogs, ['breath']),
-      breathSoft: check(recentLogs, ['breath']),
+      breath: check(todayLogs, ['breath', 'vocal']),
+      breathSoft: check(recentLogs, ['breath', 'vocal']),
       
       attention: check(todayLogs, ['checkin', 'microdose', 'journal']),
       attentionSoft: check(recentLogs, ['checkin', 'microdose', 'journal']),
       
-      space: check(todayLogs, ['rabbithole', 'chapter', 'sanctuary']),
-      spaceSoft: check(recentLogs, ['rabbithole', 'chapter', 'sanctuary']),
+      space: check(todayLogs, ['rabbithole', 'chapter', 'sanctuary', 'vocal']),
+      spaceSoft: check(recentLogs, ['rabbithole', 'chapter', 'sanctuary', 'vocal']),
     };
   }, [logs]);
 

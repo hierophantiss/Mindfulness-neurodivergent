@@ -280,16 +280,16 @@ export function InteractiveBackground() {
 
          {/* Moon */}
          <div 
-           className="absolute flex items-center justify-center w-20 h-20 md:w-28 md:h-28"
+           className="absolute flex items-center justify-center w-20 h-20 md:w-28 md:h-28 opacity-30 blur-[2px]"
            style={{ transform: `translate(-50%, -50%) translateY(calc(0.6 * max(70vw, 70vh))) rotate(180deg)` }}
          >
-           <div className="relative w-full h-full overflow-hidden rounded-full bg-slate-200/90 shadow-[0_0_40px_10px_rgba(226,232,240,0.15)]">
+           <div className="relative w-full h-full overflow-hidden rounded-full bg-slate-300/40 shadow-[0_0_60px_10px_rgba(226,232,240,0.05)]">
               {/* Shadow disc to create moon phases */}
               <div 
-                className="absolute inset-[0%] rounded-full bg-[#03060c] blur-[2px]"
+                className="absolute inset-[0%] rounded-full bg-[#03060c] blur-[3px]"
                 style={{ 
                   transform: `translateX(${moonPhase <= 0.5 ? (moonPhase / 0.5) * 120 : -120 + ((moonPhase - 0.5) / 0.5) * 120}%) scale(1.05)`,
-                  opacity: 0.95 
+                  opacity: 0.98 
                 }} 
               />
            </div>
