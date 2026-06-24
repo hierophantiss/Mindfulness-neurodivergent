@@ -15,32 +15,10 @@ import { useBinauralAudio } from '../hooks/useBinauralAudio';
 import InfoModal from '../components/InfoModal';
 import CoreGeometricState from '../components/CoreGeometricState';
 
-const glassCardClasses = "backdrop-blur-[4px] bg-white/[0.04] border border-white/[0.1] rounded-[16px]";
+const glassCardClasses = "backdrop-blur-xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] hover:border-white/[0.08] transition-all duration-500 rounded-[24px]";
 
 const getDateString = (date: Date): string => {
   return date.toISOString().split('T')[0];
-};
-
-const calculateStreak = (activityLogs: { timestamp: string }[]): number => {
-  if (activityLogs.length === 0) return 0;
-
-  const activeDays = new Set(activityLogs.map(l => l.timestamp.split('T')[0]));
-  let streak = 0;
-  const today = new Date();
-
-  for (let i = 0; i < 365; i++) {
-    const d = new Date(today);
-    d.setDate(today.getDate() - i);
-    const ds = getDateString(d);
-    if (activeDays.has(ds)) {
-      streak++;
-    } else {
-      // Allow today to be missing (user hasn't practiced yet today)
-      if (i === 0) continue;
-      break;
-    }
-  }
-  return streak;
 };
 
 export default function Dashboard() {
@@ -63,35 +41,6 @@ export default function Dashboard() {
   const [greeting, setGreeting] = useState('');
   const [currentDate, setCurrentDate] = useState('');
   const [isInfoOpen, setIsInfoOpen] = useState(false);
-  const [intentionState, setIntentionState] = useState(localStorage.getItem('n_mindfulness_intention') || 'autism');
-
-  useEffect(() => {
-    const handleStorageChange = () => {
-      setIntentionState(localStorage.getItem('n_mindfulness_intention') || 'autism');
-    };
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, []);
-
-  const getIntentionDisplay = () => {
-     switch(intentionState) {
-       case 'anxiety': return { icon: '🌿', el: 'Γείωση', en: 'Grounding' };
-       case 'focus': return { icon: '🔥', el: 'Ενεργοποίηση', en: 'Activation' };
-       case 'awareness': return { icon: '💧', el: 'Ισορροπία', en: 'Balance' };
-       case 'autism': return { icon: '📖', el: 'Μελέτη & Δομή', en: 'Study & Structure' };
-       case 'adhd': return { icon: '⚡', el: 'Εξερεύνηση', en: 'Exploration' };
-       case 'audhd': return { icon: '🧭', el: 'Ολιστική Εστίαση', en: 'Holistic Focus' };
-       default: return { icon: '🌿', el: 'Γείωση', en: 'Grounding' };
-     }
-  };
-
-  const intentionDisplay = getIntentionDisplay();
-
-  // Show welcome modal on first visit
-  useEffect(() => {
-    // InfoModal auto-open removed to prevent sensory overwhelm on first load.
-    // The user can open it manually via the info icon.
-  }, []);
 
   const audioConfig = useMemo(() => ({
     base: 136.1, // Ohm
@@ -111,13 +60,11 @@ export default function Dashboard() {
     }
   };
   
-  const [mindfulStats, setMindfulStats] = useState({ streak: 0, practices: 0, weeklyGoal: 0 });
-  
   useEffect(() => {
     // Greeting
-    if (hour < 12) {
+    if (hour >= 6 && hour < 12) {
       setGreeting(language === 'el' ? `Καλημέρα` : `Good Morning`);
-    } else if (hour < 18) {
+    } else if (hour >= 12 && hour < 18) {
       setGreeting(language === 'el' ? `Καλό απόγευμα` : `Good Afternoon`);
     } else {
       setGreeting(language === 'el' ? `Καλό βράδυ` : `Good Evening`);
@@ -126,83 +73,55 @@ export default function Dashboard() {
     // Date
     const options: Intl.DateTimeFormatOptions = { weekday: 'long', day: 'numeric', month: 'long' };
     setCurrentDate(new Date().toLocaleDateString(language === 'el' ? 'el-GR' : 'en-US', options));
-
-    // Stats
-    let min = 0;
-    try {
-      const bHist = JSON.parse(localStorage.getItem('breath_history') || '{}');
-      min += (bHist.totalMin || 0);
-    } catch {}
-    
-    const targetCompletedStreak = calculateStreak(logs);
-    const totalPracticesLogged = logs.length;
-    
-    const recent7DaysCount = logs.filter(l => {
-      if (!l.timestamp) return false;
-      const d = new Date(l.timestamp);
-      const diff = Math.abs(new Date().getTime() - d.getTime());
-      const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-      return days <= 7;
-    }).length;
-    const currentWeeklyGoalPct = Math.min(100, Math.round((recent7DaysCount / 4) * 100));
-
-    setMindfulStats({ 
-      streak: targetCompletedStreak, 
-      practices: totalPracticesLogged, 
-      weeklyGoal: currentWeeklyGoalPct 
-    });
-  }, [language, hour, companionData, logs]);
-
-  const activeQuote = { 
-    el: "Η επίγνωση είναι η γέφυρα ανάμεσα στο χάος και τη γαλήνη.", 
-    en: "Awareness is the bridge between chaos and tranquility." 
-  };
-
-  const moods = [
-    { id: 1, emoji: '😔' },
-    { id: 2, emoji: '😐' },
-    { id: 3, emoji: '🙂' },
-    { id: 4, emoji: '😄' },
-  ];
+  }, [language, hour]);
 
   return (
     <div className="relative w-full min-h-screen bg-transparent overflow-x-hidden text-white font-sans selection:bg-[#4a9eca]/30 selection:text-white pb-28">
       
-      <div className="relative z-10 w-full max-w-lg mx-auto px-5 pt-10 flex flex-col gap-6">
+      <div className="relative z-10 w-full max-w-lg mx-auto px-5 pt-12 flex flex-col gap-10">
         
-        {/* 1. Header Actions (Always visible) */}
-        <div className="flex flex-col gap-1">
-          <span className="text-[10px] tracking-[2px] uppercase text-[#4a9eca] font-semibold mb-1">
-            {language === 'el' ? 'ΕΝΣΥΝΕΙΔΗΤΟΤΗΤΑ ΓΙΑ ΝΕΥΡΟΔΙΑΦΟΡΕΤΙΚΟΥΣ' : 'MINDFULNESS FOR NEURODIVERGENTS'}
-          </span>
+        {/* 1. Header Actions */}
+        <div className="flex flex-col gap-2">
+          <motion.span 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="text-[10px] tracking-[0.2em] uppercase text-white/40 font-medium mb-1"
+          >
+            {language === 'el' ? 'ΕΝΣΥΝΕΙΔΗΤΟΤΗΤΑ ΓΙΑ ΝΕΥΡΟΔΙΑΦΟΡΕΤΙΚΟΥΣ' : 'NEURODIVERGENT MINDFULNESS'}
+          </motion.span>
           
-          <div className="flex items-center justify-between mt-2">
-            <span className="text-[13px] text-white/50 tracking-wide font-light">
-              {currentDate}
-            </span>
-            <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between">
+            <motion.h1 
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, delay: 0.1 }}
+              className="text-[32px] md:text-[36px] font-serif italic font-light leading-none flex items-center gap-3 text-white/95"
+            >
+              {greeting}
+            </motion.h1>
+
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 0.3 }}
+              className="flex items-center gap-2"
+            >
               <Link
                 to="/practice/breath/4-2-6-1"
-                className="flex items-center justify-center h-[28px] px-3 rounded-full bg-rose-500/20 border border-rose-500/30 text-rose-300 hover:bg-rose-500/30 hover:text-rose-200 active:scale-95 transition-all text-xs font-bold tracking-widest"
+                className="flex items-center justify-center h-[32px] px-4 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-300 hover:bg-rose-500/20 active:scale-95 transition-all text-xs font-medium tracking-widest"
                 title={language === 'el' ? 'Άμεση Ηρέμηση' : 'Immediate Calm'}
               >
                 SOS
               </Link>
-              <button
-                onClick={() => setIsInfoOpen(true)}
-                className="w-[28px] h-[28px] flex items-center justify-center rounded-full bg-white/[0.04] border border-white/[0.1] text-white/60 hover:text-white hover:bg-white/10 active:scale-95 transition-all"
-                title={language === 'el' ? 'Πληροφορίες' : 'Info'}
-              >
-                <Info size={14} />
-              </button>
               
               <button
                 onClick={toggleAudio}
                 className={cn(
-                  "w-[28px] h-[28px] flex items-center justify-center rounded-full border transition-all active:scale-95",
+                  "w-[32px] h-[32px] flex items-center justify-center rounded-full border transition-all active:scale-95",
                   isPlaying
                     ? "bg-teal-500/20 border-teal-400/40 text-teal-300 relative overflow-hidden"
-                    : "bg-white/[0.04] border-white/[0.1] text-white/60 hover:text-white hover:bg-white/10"
+                    : "bg-white/[0.02] border-white/[0.1] text-white/60 hover:text-white hover:bg-white/10"
                 )}
                 title={language === 'el' ? 'Ηχητικό Τοπίο' : 'Ambient Audio'}
               >
@@ -212,188 +131,181 @@ export default function Dashboard() {
                 {isPlaying ? <Waves size={14} className="animate-pulse relative z-10" /> : <Play size={14} />}
               </button>
 
-              <button
-                onClick={toggleReduceMotion}
-                className={cn(
-                  "w-[28px] h-[28px] flex items-center justify-center rounded-full border transition-all active:scale-95",
-                  reduceMotion
-                    ? "bg-rose-500/20 border-rose-400/40 text-rose-300"
-                    : "bg-white/[0.04] border-white/[0.1] text-white/60 hover:text-white hover:bg-white/10"
-                )}
-                title={language === 'el' ? 'Μείωση Κίνησης' : 'Reduce Motion'}
-              >
-                {reduceMotion ? <EyeOff size={14} /> : <Eye size={14} />}
-              </button>
-
               <button 
                 onClick={() => setLanguage(language === 'el' ? 'en' : 'el')}
-                className="flex items-center gap-1.5 px-2 py-0.5 h-[28px] rounded-full bg-white/[0.04] border border-white/[0.1] text-xs font-medium text-[#4a9eca] active:scale-95 transition-transform hover:bg-white/10 hover:text-white"
+                className="flex items-center justify-center w-[32px] h-[32px] rounded-full bg-white/[0.02] border border-white/[0.1] text-[10px] font-medium text-white/60 active:scale-95 transition-transform hover:bg-white/10 hover:text-white"
               >
-                <div className="w-[4px] h-[4px] rounded-full bg-[#4a9eca]" />
                 {language === 'el' ? 'EN' : 'EL'}
               </button>
-            </div>
+            </motion.div>
           </div>
+          <motion.span 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="text-[13px] text-white/30 tracking-wide font-light mt-1"
+          >
+            {currentDate}
+          </motion.span>
         </div>
 
-        {/* 2. Primary Dashboard Header, Quote, and Stats (Always Visible) */}
-        <div className="flex flex-col gap-2 mt-2">
-          <div className="flex items-center gap-2 font-serif italic font-light leading-none">
-            <h1 className="text-[30px]">
-              {greeting}
-            </h1>
-            <Sparkles size={22} className="text-white opacity-80" strokeWidth={1.5} />
-          </div>
-        </div>
-
-        {/* Central Geometric Core */}
-        <div className="mt-6 w-full">
+        {/* 2. Central Geometric Core */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.5, delay: 0.2, ease: "easeOut" }}
+          className="w-full mt-2"
+        >
           <CoreGeometricState />
-        </div>
+        </motion.div>
 
-        {/* 4. Pathways */}
-        <div className="flex flex-col gap-3 mt-8">
-          <span className="text-[10px] tracking-[1.5px] text-white/30 font-bold uppercase ml-1 mb-1">
-            {language === 'el' ? 'ΤΑ ΜΟΝΟΠΑΤΙΑ ΣΟΥ' : 'YOUR PATHWAYS'}
-          </span>
-
-          {/* Reading (Hero) */}
-          <Link to="/chapters" className={cn(glassCardClasses, "p-5 flex flex-col justify-end group cursor-pointer active:scale-[0.98] transition-transform relative overflow-hidden min-h-[160px]")}>
-            <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-[#e99b37]/15 blur-[60px] rounded-full pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
-            
-            <div className="flex justify-between items-start w-full relative z-10 mb-auto">
-              <div className="w-12 h-12 rounded-[16px] bg-[#e99b37]/15 flex items-center justify-center text-[#e99b37] border border-[#e99b37]/20 shadow-[0_4px_20px_rgba(233,155,55,0.15)]">
-                <BookOpen size={24} strokeWidth={1.5} />
-              </div>
-              <ChevronRight size={20} className="text-white/30 group-hover:text-white/80 transition-colors mt-2" />
-            </div>
-            
-            <div className="flex flex-col gap-1.5 relative z-10 mt-6">
-              <span className="text-[10px] uppercase tracking-[0.15em] text-white/50 font-medium">
-                {language === 'el' ? 'ΤΟ ΕΓΧΕΙΡΙΔΙΟ ΤΗΣ ΠΑΡΟΥΣΙΑΣ' : 'THE PRESENCE WORKBOOK'}
-              </span>
-              <h3 className="text-[26px] font-serif italic text-white/95 leading-none mb-1">
-                {language === 'el' ? 'Διάβασμα' : 'Reading'}
-              </h3>
-              <div className="flex items-center gap-3">
-                <div className="flex-1 max-w-[120px] h-[2px] bg-white/10 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-[#e99b37]/60 rounded-full transition-all duration-1000 ease-out" 
-                    style={{ width: `${(completedChapters / totalChapters) * 100}%` }} 
-                  />
+        {/* 3. The Core Modules (Bento Grid) */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.4 }}
+          className="flex flex-col gap-4 mt-4"
+        >
+          {/* Program - The main actionable item */}
+          <Link to="/program" className={cn(glassCardClasses, "p-6 flex flex-col justify-center group cursor-pointer active:scale-[0.98] relative overflow-hidden")}>
+            <div className="absolute top-0 right-0 w-48 h-48 bg-teal-500/5 blur-[50px] rounded-full pointer-events-none -mr-10 -mt-10 transition-opacity group-hover:bg-teal-500/10" />
+            <div className="flex items-start justify-between w-full relative z-10">
+              <div className="flex items-start gap-5">
+                <div className="w-14 h-14 rounded-2xl bg-white/[0.03] border border-white/[0.05] flex items-center justify-center text-white/70 group-hover:text-teal-300 transition-colors shadow-sm">
+                  <Calendar size={24} strokeWidth={1} />
                 </div>
-                <span className="text-[10px] text-[#e99b37]/80 font-medium">
-                  {isWorkbookDone 
-                    ? (language === 'el' ? 'Ολοκληρώθηκε' : 'Completed') 
-                    : (language === 'el' ? `Κεφάλαιο ${nextChapter}` : `Chapter ${nextChapter}`)}
-                </span>
-              </div>
-            </div>
-          </Link>
-
-          {/* Program */}
-          <Link to="/program" className={cn(glassCardClasses, "p-4 flex flex-col justify-center group cursor-pointer active:scale-[0.98] transition-transform relative overflow-hidden")}>
-            <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/10 blur-[40px] rounded-full pointer-events-none -mr-10 -mt-10" />
-            <div className="flex items-center justify-between w-full relative z-10">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-[14px] bg-teal-500/10 flex items-center justify-center text-teal-400">
-                  <Calendar size={20} strokeWidth={1.5} />
-                </div>
-                <div className="flex flex-col gap-1">
-                  <h3 className="text-[17px] font-serif italic text-white/90">
-                    {language === 'el' ? 'Πρόγραμμα' : 'Program'}
-                  </h3>
-                  <span className="text-[10px] uppercase tracking-wider text-white/40 font-medium">
-                    {language === 'el' ? 'ΜΕΛΕΤΗ 8 ΕΒΔΟΜΑΔΩΝ' : '8-WEEK STUDY'}
+                <div className="flex flex-col gap-2 mt-1">
+                  <span className="text-[10px] uppercase tracking-[0.15em] text-white/40 font-medium">
+                    {language === 'el' ? '8 ΕΒΔΟΜΑΔΕΣ' : '8 WEEKS'}
                   </span>
+                  <h3 className="text-2xl font-serif italic text-white/90 leading-none">
+                    {language === 'el' ? 'Το Πρόγραμμα' : 'The Program'}
+                  </h3>
                 </div>
               </div>
-              <ChevronRight size={18} className="text-white/20 group-hover:text-white/60 transition-colors" />
+              <div className="w-8 h-8 rounded-full border border-white/5 flex items-center justify-center group-hover:bg-white/5 transition-colors mt-2">
+                <ChevronRight size={16} className="text-white/30 group-hover:text-white/80 transition-colors" />
+              </div>
             </div>
             {completedLessons > 0 && (
-              <div className="mt-3 flex items-center gap-2 relative z-10 pl-[64px] pr-2">
-                <div className="flex-1 h-[2px] bg-white/5 rounded-full overflow-hidden">
+              <div className="mt-6 flex flex-col gap-2 relative z-10 pl-[76px] pr-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-[10px] text-white/40">{language === 'el' ? 'Πρόοδος' : 'Progress'}</span>
+                  <span className="text-[10px] text-white/50">{lessonProgressPct}%</span>
+                </div>
+                <div className="w-full h-[2px] bg-white/5 rounded-full overflow-hidden">
                   <div 
                     className="h-full bg-teal-500/40 rounded-full transition-all duration-1000 ease-out" 
                     style={{ width: `${Math.max(1, lessonProgressPct)}%` }} 
                   />
                 </div>
-                <span className="text-[9px] text-teal-400/60 font-medium">{lessonProgressPct}%</span>
               </div>
             )}
           </Link>
+
+          {/* Reading */}
+          <Link to="/chapters" className={cn(glassCardClasses, "p-6 flex flex-col justify-end group cursor-pointer active:scale-[0.98] relative overflow-hidden min-h-[160px]")}>
+            <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-[#e99b37]/5 blur-[60px] rounded-full pointer-events-none transition-opacity group-hover:bg-[#e99b37]/10" />
+            
+            <div className="flex justify-between items-start w-full relative z-10 mb-auto">
+              <div className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-white/[0.05] flex items-center justify-center text-white/70 group-hover:text-[#e99b37] transition-colors">
+                <BookOpen size={20} strokeWidth={1} />
+              </div>
+              <div className="w-8 h-8 rounded-full border border-white/5 flex items-center justify-center group-hover:bg-white/5 transition-colors">
+                <ChevronRight size={16} className="text-white/30 group-hover:text-white/80 transition-colors" />
+              </div>
+            </div>
+            
+            <div className="flex flex-col gap-2 relative z-10 mt-8">
+              <span className="text-[10px] uppercase tracking-[0.15em] text-white/40 font-medium">
+                {language === 'el' ? 'ΤΟ ΕΓΧΕΙΡΙΔΙΟ' : 'THE WORKBOOK'}
+              </span>
+              <div className="flex items-end justify-between">
+                <h3 className="text-2xl font-serif italic text-white/90 leading-none">
+                  {language === 'el' ? 'Η Μέθοδος' : 'The Method'}
+                </h3>
+                <span className="text-[11px] text-white/40">
+                  {isWorkbookDone 
+                    ? (language === 'el' ? 'Ολοκληρώθηκε' : 'Completed') 
+                    : `${completedChapters}/${totalChapters}`}
+                </span>
+              </div>
+            </div>
+          </Link>
           
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4">
             {/* Exercises */}
-            <Link to="/practice" className={cn(glassCardClasses, "p-4 aspect-square flex flex-col justify-between group cursor-pointer active:scale-[0.98] transition-transform relative overflow-hidden")}>
-              <div className="absolute top-[-20%] left-[-20%] w-32 h-32 bg-[#4a9eca]/15 blur-[40px] rounded-full pointer-events-none" />
+            <Link to="/practice" className={cn(glassCardClasses, "p-5 aspect-square flex flex-col justify-between group cursor-pointer active:scale-[0.98] relative overflow-hidden")}>
+              <div className="absolute bottom-[-20%] right-[-20%] w-32 h-32 bg-[#4a9eca]/5 blur-[40px] rounded-full pointer-events-none transition-opacity group-hover:bg-[#4a9eca]/15" />
               
-              <div className="flex justify-between items-start w-full relative z-10">
-                <div className="w-10 h-10 rounded-xl bg-[#4a9eca]/15 flex items-center justify-center text-[#4a9eca] border border-[#4a9eca]/20">
-                  <Target size={18} strokeWidth={1.5} />
-                </div>
+              <div className="w-10 h-10 rounded-2xl bg-white/[0.03] border border-white/[0.05] flex items-center justify-center text-white/70 group-hover:text-[#4a9eca] transition-colors">
+                <Target size={18} strokeWidth={1} />
               </div>
   
               <div className="flex flex-col gap-1 relative z-10 mt-auto">
-                <span className="text-[9px] uppercase tracking-[0.1em] text-white/40 font-medium leading-[1.3] pr-2">
-                  {language === 'el' ? 'ΑΝΑΠΝΟΗ & ΚΙΝΗΣΗ' : 'BREATH & MOVEMENT'}
+                <span className="text-[9px] uppercase tracking-[0.15em] text-white/40 font-medium leading-[1.3]">
+                  {language === 'el' ? 'ΑΣΚΗΣΕΙΣ' : 'EXERCISES'}
                 </span>
-                <h3 className="text-[18px] font-serif italic text-white/90 mt-0.5">
-                  {language === 'el' ? 'Εξάσκηση' : 'Practice'}
+                <h3 className="text-xl font-serif italic text-white/90 mt-1">
+                  {language === 'el' ? 'Πρακτική' : 'Practice'}
                 </h3>
               </div>
             </Link>
   
             {/* Audio / Sanctuary */}
-            <Link to="/sanctuary" className={cn(glassCardClasses, "p-4 aspect-square flex flex-col justify-between group cursor-pointer active:scale-[0.98] transition-transform relative overflow-hidden")}>
-               <div className="absolute top-[-20%] left-[-20%] w-32 h-32 bg-stone-500/15 blur-[40px] rounded-full pointer-events-none" />
+            <Link to="/sanctuary" className={cn(glassCardClasses, "p-5 aspect-square flex flex-col justify-between group cursor-pointer active:scale-[0.98] relative overflow-hidden")}>
+               <div className="absolute bottom-[-20%] right-[-20%] w-32 h-32 bg-stone-500/10 blur-[40px] rounded-full pointer-events-none transition-opacity group-hover:bg-stone-500/20" />
               
-              <div className="flex justify-between items-start w-full relative z-10">
-                <div className="w-10 h-10 rounded-xl bg-stone-500/15 flex items-center justify-center text-stone-400 border border-stone-500/20">
-                  <Moon size={18} strokeWidth={1.5} />
-                </div>
+              <div className="w-10 h-10 rounded-2xl bg-white/[0.03] border border-white/[0.05] flex items-center justify-center text-white/70 group-hover:text-stone-300 transition-colors">
+                <Moon size={18} strokeWidth={1} />
               </div>
   
               <div className="flex flex-col gap-1 relative z-10 mt-auto">
-                <span className="text-[9px] uppercase tracking-[0.1em] text-white/40 font-medium leading-[1.3] pr-2">
-                  {language === 'el' ? 'ΗΧΗΤΙΚΑ ΤΟΠΙΑ & ΗΡΕΜΙΑ' : 'SOUNDSCAPES & CALM'}
+                <span className="text-[9px] uppercase tracking-[0.15em] text-white/40 font-medium leading-[1.3]">
+                  {language === 'el' ? 'ΗΡΕΜΙΑ' : 'CALM'}
                 </span>
-                <h3 className="text-[18px] font-serif italic text-white/90 mt-0.5">
+                <h3 className="text-xl font-serif italic text-white/90 mt-1">
                   {language === 'el' ? 'Καταφύγιο' : 'Sanctuary'}
                 </h3>
               </div>
             </Link>
           </div>
 
-          {/* Rabbit Hole (Shared) */}
-          <Link to="/rabbithole" className={cn(glassCardClasses, "p-4 w-full flex items-center justify-between group cursor-pointer active:scale-[0.98] transition-transform relative overflow-hidden")}>
-             <div className="absolute top-0 right-0 w-32 h-32 bg-[#a374d5]/10 blur-[40px] rounded-full pointer-events-none -mr-10 -mt-10" />
+          {/* Rabbit Hole */}
+          <Link to="/rabbithole" className={cn(glassCardClasses, "p-5 flex items-center justify-between group cursor-pointer active:scale-[0.98] relative overflow-hidden mt-2")}>
+             <div className="absolute top-0 right-0 w-32 h-32 bg-[#a374d5]/5 blur-[40px] rounded-full pointer-events-none -mr-10 -mt-10 transition-opacity group-hover:bg-[#a374d5]/15" />
             <div className="flex items-center gap-4 relative z-10">
-              <div className="w-12 h-12 rounded-[14px] bg-[#a374d5]/10 flex items-center justify-center text-[#a374d5]">
-                <Telescope size={20} strokeWidth={1.5} />
+              <div className="w-10 h-10 rounded-2xl bg-white/[0.03] border border-white/[0.05] flex items-center justify-center text-white/70 group-hover:text-[#a374d5] transition-colors">
+                <Telescope size={18} strokeWidth={1} />
               </div>
-              <div className="flex flex-col gap-1">
-                <h3 className="text-[17px] font-serif italic text-white/90">
+              <div className="flex flex-col gap-0.5">
+                <span className="text-[9px] uppercase tracking-[0.15em] text-white/40 font-medium">
+                  {language === 'el' ? 'ΕΞΕΡΕΥΝΗΣΗ' : 'EXPLORATION'}
+                </span>
+                <h3 className="text-lg font-serif italic text-white/90">
                   {language === 'el' ? 'Η Κουνελότρυπα' : 'The Rabbit Hole'}
                 </h3>
-                <span className="text-[10px] uppercase tracking-wider text-white/40 font-medium">
-                  {language === 'el' ? 'ΒΑΘΥΤΕΡΗ ΕΞΕΡΕΥΝΗΣΗ' : 'DEEPER EXPLORATION'}
-                </span>
               </div>
             </div>
-            <ChevronRight size={18} className="text-white/20 group-hover:text-white/60 transition-colors relative z-10" />
+            <ChevronRight size={16} className="text-white/20 group-hover:text-white/60 transition-colors relative z-10" />
           </Link>
-        </div>
+        </motion.div>
         
-        {/* 7. Privacy Policy */}
-        <div className="mt-8 text-center px-4">
-          <p className="text-[11px] text-white/30 leading-relaxed font-light">
-            {language === 'el' 
-              ? 'Πολιτική Απορρήτου: Όλα τα δεδομένα σας (πρόοδος, ρυθμίσεις) αποθηκεύονται αποκλειστικά και τοπικά στη συσκευή σας. Δεν συλλέγουμε, δεν παρακολουθούμε και δεν μεταφέρουμε προσωπικές πληροφορίες.'
-              : 'Privacy Policy: All your data (progress, settings) is stored exclusively and locally on your device. We do not collect, track, or transfer any personal information.'}
-          </p>
-        </div>
+        {/* Footer info */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.8 }}
+          className="mt-6 flex flex-col items-center justify-center gap-4 px-4 text-center"
+        >
+          <button
+            onClick={() => setIsInfoOpen(true)}
+            className="flex items-center gap-2 text-[11px] text-white/30 hover:text-white/60 transition-colors"
+          >
+            <Info size={12} />
+            <span>{language === 'el' ? 'Σχετικά με την εφαρμογή' : 'About the app'}</span>
+          </button>
+        </motion.div>
         
       </div>
       <InfoModal isOpen={isInfoOpen} onClose={() => setIsInfoOpen(false)} />

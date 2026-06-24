@@ -67,20 +67,19 @@ export default function CoreGeometricState() {
     let aW = 0, aH = 0, aCx = 0, aCy = 0;
     
     // Background Particles
-    const aAP = Array.from({length: 30}).map(() => ({
+    const aAP = Array.from({length: 40}).map(() => ({
       x: Math.random() * 2000, 
       y: Math.random() * 2000, 
-      vx: (Math.random() - 0.5) * 0.18, 
-      vy: (Math.random() - 0.5) * 0.12, 
-      sz: 0.4 + Math.random() * 1.3, 
-      al: 0.04 + Math.random() * 0.1, 
+      vx: (Math.random() - 0.5) * 0.1, 
+      vy: (Math.random() - 0.5) * 0.1, 
+      sz: 0.5 + Math.random() * 1.0, 
+      al: 0.1 + Math.random() * 0.2, 
       ph: Math.random() * Math.PI * 2
     }));
 
     const resize = () => {
       const parent = canvas.parentElement;
       if (parent) {
-        // High DPI setup
         const d = Math.min(window.devicePixelRatio || 1, 2);
         aW = parent.clientWidth;
         aH = parent.clientHeight;
@@ -387,7 +386,6 @@ export default function CoreGeometricState() {
       }
     }
 
-    // Active components logic
     const renderLoop = (ts: number) => {
       const dt = Math.min((ts - aLastT) / 1000, 0.05);
       aLastT = ts;
@@ -395,28 +393,20 @@ export default function CoreGeometricState() {
       
       ctx.clearRect(0, 0, aW, aH);
 
-      // Render calm background
-      const grd = ctx.createRadialGradient(aCx, aCy - 20, 0, aCx, aCy, Math.max(aW, aH) * 0.75);
-      grd.addColorStop(0, 'rgb(20,25,32)');
-      grd.addColorStop(1, 'rgb(5,8,12)');
-      ctx.fillStyle = grd;
-      ctx.fillRect(0, 0, aW, aH);
-
-      // Particles
+      // Render subtle drifting particles (Space dust) without the harsh gradient background
       aAP.forEach(p => {
-        p.x += p.vx + Math.sin(aTime * 0.2 + p.ph) * 0.04;
-        p.y += p.vy + Math.cos(aTime * 0.15 + p.ph) * 0.03;
+        p.x += p.vx + Math.sin(aTime * 0.2 + p.ph) * 0.02;
+        p.y += p.vy + Math.cos(aTime * 0.15 + p.ph) * 0.02;
         if (p.x < 0) p.x = aW; if (p.x > aW) p.x = 0;
         if (p.y < 0) p.y = aH; if (p.y > aH) p.y = 0;
-        const pa = p.al * (0.7 + Math.sin(aTime * 0.5 + p.ph) * 0.3);
+        const pa = p.al * (0.3 + Math.sin(aTime * 0.5 + p.ph) * 0.7);
         ctx.beginPath(); ctx.arc(p.x, p.y, p.sz, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(200,195,185,${pa})`; ctx.fill();
+        ctx.fillStyle = `rgba(255,255,255,${pa})`; ctx.fill();
       });
 
       const bp = Math.sin(aTime * 0.45);
       
       // Determine overall arm energy level (for lifting hands)
-      // Base is 0. If multiple, increase to 0.15
       let activeCount = 0;
       if (activeAxes.body || activeAxes.bodySoft) activeCount++;
       if (activeAxes.breath || activeAxes.breathSoft) activeCount++;
@@ -564,35 +554,35 @@ export default function CoreGeometricState() {
   }, [activeAxes, reduceMotion]);
 
   return (
-    <div className="w-full flex flex-col items-center justify-center p-4 bg-[#0B0F17] rounded-[16px] border border-white/[0.03] overflow-hidden relative">
+    <div className="w-full flex flex-col items-center justify-center py-4 relative">
       <div className="mb-2 z-10 w-full text-center">
-        <span className="text-[12px] uppercase tracking-[4px] text-white/40 font-serif italic">
+        <span className="text-[12px] uppercase tracking-[4px] text-white/40 font-serif italic drop-shadow-lg">
           {language === 'el' ? 'Κεντρο Ισορροπιας' : 'Center of Balance'}
         </span>
       </div>
 
-      <div className="relative w-full h-[160px] rounded-xl overflow-hidden shadow-inner flex justify-center items-center">
+      <div className="relative w-full h-[200px] flex justify-center items-center">
         <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
         
         {/* Subtle Labels Floating Above */}
         <div className="absolute inset-0 pointer-events-none text-[9px] uppercase tracking-[3px] font-medium z-10 w-full h-full">
-          <div className={`absolute w-full text-center top-[52px] transition-opacity duration-1000 ${activeAxes.space || activeAxes.spaceSoft ? 'text-teal-400/80 drop-shadow-md' : 'text-white/20'}`}>
+          <div className={`absolute w-full text-center top-[30px] transition-opacity duration-1000 ${activeAxes.space || activeAxes.spaceSoft ? 'text-teal-400/80 drop-shadow-md' : 'text-white/20'}`}>
             {language === 'el' ? 'Χωρος' : 'Space'}
           </div>
-          <div className={`absolute left-8 md:left-12 top-[16px] transition-opacity duration-1000 ${activeAxes.attention || activeAxes.attentionSoft ? 'text-amber-400/80 drop-shadow-md' : 'text-white/20'}`}>
+          <div className={`absolute left-4 md:left-12 top-[60px] transition-opacity duration-1000 ${activeAxes.attention || activeAxes.attentionSoft ? 'text-amber-400/80 drop-shadow-md' : 'text-white/20'}`}>
             {language === 'el' ? 'Προσοχη' : 'Attention'}
           </div>
-          <div className={`absolute right-8 md:right-12 top-[80px] transition-opacity duration-1000 ${activeAxes.breath || activeAxes.breathSoft ? 'text-sky-400/80 drop-shadow-md' : 'text-white/20'}`}>
+          <div className={`absolute right-4 md:right-12 top-[120px] transition-opacity duration-1000 ${activeAxes.breath || activeAxes.breathSoft ? 'text-sky-400/80 drop-shadow-md' : 'text-white/20'}`}>
             {language === 'el' ? 'Αναπνοη' : 'Breath'}
           </div>
-          <div className={`absolute w-full text-center bottom-4 transition-opacity duration-1000 ${activeAxes.body || activeAxes.bodySoft ? 'text-purple-400/80 drop-shadow-md' : 'text-white/20'}`}>
+          <div className={`absolute w-full text-center bottom-[10px] transition-opacity duration-1000 ${activeAxes.body || activeAxes.bodySoft ? 'text-purple-400/80 drop-shadow-md' : 'text-white/20'}`}>
             {language === 'el' ? 'Βαρυτητα' : 'Gravity'}
           </div>
         </div>
       </div>
       
       <div className="mt-2 flex flex-wrap justify-center gap-4 text-center px-4 z-10">
-        <span className="text-[11px] text-white/40 leading-relaxed max-w-md font-serif italic text-center">
+        <span className="text-[11px] text-white/40 leading-relaxed max-w-md font-serif italic text-center drop-shadow-lg">
           {language === 'el' 
             ? 'Κάθε άσκηση ζωντανεύει τον δικό της άξονα. Όσο εξασκείσαι, τόσο το πεδίο εμβαθύνει.'
             : 'Each practice sustains its axis. As you practice, the field deepens.'}
