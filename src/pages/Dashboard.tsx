@@ -15,7 +15,7 @@ import { useBinauralAudio } from '../hooks/useBinauralAudio';
 import InfoModal from '../components/InfoModal';
 import CoreGeometricState from '../components/CoreGeometricState';
 
-const glassCardClasses = "backdrop-blur-xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] hover:border-white/[0.08] transition-all duration-500 rounded-[24px]";
+const glassCardClasses = "backdrop-blur-3xl bg-gradient-to-br from-white/[0.04] to-transparent border border-white/[0.04] shadow-[0_8px_32px_rgba(0,0,0,0.12)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.02)] hover:shadow-[0_16px_48px_rgba(0,0,0,0.2)] hover:bg-white/[0.06] hover:border-white/[0.08] transition-all duration-700 rounded-[28px]";
 
 const getDateString = (date: Date): string => {
   return date.toISOString().split('T')[0];
@@ -75,9 +75,25 @@ export default function Dashboard() {
     setCurrentDate(new Date().toLocaleDateString(language === 'el' ? 'el-GR' : 'en-US', options));
   }, [language, hour]);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15, delayChildren: 0.4 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30, filter: 'blur(8px)' },
+    show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+  };
+
   return (
     <div className="relative w-full min-h-screen bg-transparent overflow-x-hidden text-white font-sans selection:bg-[#4a9eca]/30 selection:text-white pb-28">
       
+      {/* Ambient background glow for the grid */}
+      <div className="absolute top-[40%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-teal-900/10 blur-[120px] rounded-full pointer-events-none" />
+
       <div className="relative z-10 w-full max-w-lg mx-auto px-5 pt-12 flex flex-col gap-10">
         
         {/* 1. Header Actions */}
@@ -161,125 +177,134 @@ export default function Dashboard() {
 
         {/* 3. The Core Modules (Bento Grid) */}
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.4 }}
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
           className="flex flex-col gap-4 mt-4"
         >
           {/* Program - The main actionable item */}
-          <Link to="/program" className={cn(glassCardClasses, "p-6 flex flex-col justify-center group cursor-pointer active:scale-[0.98] relative overflow-hidden")}>
-            <div className="absolute top-0 right-0 w-48 h-48 bg-teal-500/5 blur-[50px] rounded-full pointer-events-none -mr-10 -mt-10 transition-opacity group-hover:bg-teal-500/10" />
-            <div className="flex items-start justify-between w-full relative z-10">
-              <div className="flex items-start gap-5">
-                <div className="w-14 h-14 rounded-2xl bg-white/[0.03] border border-white/[0.05] flex items-center justify-center text-white/70 group-hover:text-teal-300 transition-colors shadow-sm">
-                  <Calendar size={24} strokeWidth={1} />
+          <motion.div variants={itemVariants}>
+            <Link to="/program" className={cn(glassCardClasses, "p-6 flex flex-col justify-center group cursor-pointer active:scale-[0.98] relative overflow-hidden")}>
+              <div className="absolute top-0 right-0 w-48 h-48 bg-teal-500/5 blur-[50px] rounded-full pointer-events-none -mr-10 -mt-10 transition-opacity duration-700 group-hover:bg-teal-500/15" />
+              <div className="flex items-start justify-between w-full relative z-10">
+                <div className="flex items-start gap-5">
+                  <div className="w-14 h-14 rounded-2xl bg-white/[0.02] border border-white/[0.04] flex items-center justify-center text-white/50 group-hover:text-teal-300 transition-colors duration-500 shadow-sm">
+                    <Calendar size={22} strokeWidth={1} />
+                  </div>
+                  <div className="flex flex-col gap-2 mt-1">
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-white/40 font-medium group-hover:text-white/60 transition-colors">
+                      {language === 'el' ? '8 ΕΒΔΟΜΑΔΕΣ' : '8 WEEKS'}
+                    </span>
+                    <h3 className="text-2xl font-serif italic text-white/90 leading-none group-hover:text-white transition-colors">
+                      {language === 'el' ? 'Το Πρόγραμμα' : 'The Program'}
+                    </h3>
+                  </div>
                 </div>
-                <div className="flex flex-col gap-2 mt-1">
-                  <span className="text-[10px] uppercase tracking-[0.15em] text-white/40 font-medium">
-                    {language === 'el' ? '8 ΕΒΔΟΜΑΔΕΣ' : '8 WEEKS'}
-                  </span>
-                  <h3 className="text-2xl font-serif italic text-white/90 leading-none">
-                    {language === 'el' ? 'Το Πρόγραμμα' : 'The Program'}
-                  </h3>
-                </div>
-              </div>
-              <div className="w-8 h-8 rounded-full border border-white/5 flex items-center justify-center group-hover:bg-white/5 transition-colors mt-2">
-                <ChevronRight size={16} className="text-white/30 group-hover:text-white/80 transition-colors" />
-              </div>
-            </div>
-            {completedLessons > 0 && (
-              <div className="mt-6 flex flex-col gap-2 relative z-10 pl-[76px] pr-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-[10px] text-white/40">{language === 'el' ? 'Πρόοδος' : 'Progress'}</span>
-                  <span className="text-[10px] text-white/50">{lessonProgressPct}%</span>
-                </div>
-                <div className="w-full h-[2px] bg-white/5 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-teal-500/40 rounded-full transition-all duration-1000 ease-out" 
-                    style={{ width: `${Math.max(1, lessonProgressPct)}%` }} 
-                  />
+                <div className="w-8 h-8 rounded-full border border-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors duration-500 mt-2">
+                  <ChevronRight size={16} className="text-white/30 group-hover:text-white/80 transition-colors" />
                 </div>
               </div>
-            )}
-          </Link>
+              {completedLessons > 0 && (
+                <div className="mt-6 flex flex-col gap-2 relative z-10 pl-[76px] pr-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[10px] text-white/40 tracking-wider">{language === 'el' ? 'Πρόοδος' : 'Progress'}</span>
+                    <span className="text-[10px] text-white/50 font-mono">{lessonProgressPct}%</span>
+                  </div>
+                  <div className="w-full h-[2px] bg-white/[0.03] rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-teal-500/40 rounded-full transition-all duration-1000 ease-out" 
+                      style={{ width: `${Math.max(1, lessonProgressPct)}%` }} 
+                    />
+                  </div>
+                </div>
+              )}
+            </Link>
+          </motion.div>
 
           {/* Reading */}
-          <Link to="/chapters" className={cn(glassCardClasses, "p-6 flex flex-col justify-end group cursor-pointer active:scale-[0.98] relative overflow-hidden min-h-[160px]")}>
-            <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-[#e99b37]/5 blur-[60px] rounded-full pointer-events-none transition-opacity group-hover:bg-[#e99b37]/10" />
-            
-            <div className="flex justify-between items-start w-full relative z-10 mb-auto">
-              <div className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-white/[0.05] flex items-center justify-center text-white/70 group-hover:text-[#e99b37] transition-colors">
-                <BookOpen size={20} strokeWidth={1} />
+          <motion.div variants={itemVariants}>
+            <Link to="/chapters" className={cn(glassCardClasses, "p-6 flex flex-col justify-end group cursor-pointer active:scale-[0.98] relative overflow-hidden min-h-[160px]")}>
+              <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-[#e99b37]/5 blur-[60px] rounded-full pointer-events-none transition-opacity duration-700 group-hover:bg-[#e99b37]/15" />
+              
+              <div className="flex justify-between items-start w-full relative z-10 mb-auto">
+                <div className="w-12 h-12 rounded-2xl bg-white/[0.02] border border-white/[0.04] flex items-center justify-center text-white/50 group-hover:text-[#e99b37] transition-colors duration-500 shadow-sm">
+                  <BookOpen size={20} strokeWidth={1} />
+                </div>
+                <div className="w-8 h-8 rounded-full border border-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors duration-500">
+                  <ChevronRight size={16} className="text-white/30 group-hover:text-white/80 transition-colors" />
+                </div>
               </div>
-              <div className="w-8 h-8 rounded-full border border-white/5 flex items-center justify-center group-hover:bg-white/5 transition-colors">
-                <ChevronRight size={16} className="text-white/30 group-hover:text-white/80 transition-colors" />
-              </div>
-            </div>
-            
-            <div className="flex flex-col gap-2 relative z-10 mt-8">
-              <span className="text-[10px] uppercase tracking-[0.15em] text-white/40 font-medium">
-                {language === 'el' ? 'ΤΟ ΕΓΧΕΙΡΙΔΙΟ' : 'THE WORKBOOK'}
-              </span>
-              <div className="flex items-end justify-between">
-                <h3 className="text-2xl font-serif italic text-white/90 leading-none">
-                  {language === 'el' ? 'Η Μέθοδος' : 'The Method'}
-                </h3>
-                <span className="text-[11px] text-white/40">
-                  {isWorkbookDone 
-                    ? (language === 'el' ? 'Ολοκληρώθηκε' : 'Completed') 
-                    : `${completedChapters}/${totalChapters}`}
+              
+              <div className="flex flex-col gap-2 relative z-10 mt-8">
+                <span className="text-[10px] uppercase tracking-[0.2em] text-white/40 font-medium group-hover:text-white/60 transition-colors">
+                  {language === 'el' ? 'ΤΟ ΕΓΧΕΙΡΙΔΙΟ' : 'THE WORKBOOK'}
                 </span>
+                <div className="flex items-end justify-between">
+                  <h3 className="text-2xl font-serif italic text-white/90 leading-none group-hover:text-white transition-colors">
+                    {language === 'el' ? 'Η Μέθοδος' : 'The Method'}
+                  </h3>
+                  <span className="text-[11px] text-white/40 font-mono tracking-wider">
+                    {isWorkbookDone 
+                      ? (language === 'el' ? 'Ολοκληρώθηκε' : 'Completed') 
+                      : `${completedChapters}/${totalChapters}`}
+                  </span>
+                </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+          </motion.div>
           
           <div className="grid grid-cols-2 gap-4">
             {/* Exercises */}
-            <Link to="/practice" className={cn(glassCardClasses, "p-5 aspect-square flex flex-col justify-between group cursor-pointer active:scale-[0.98] relative overflow-hidden")}>
-              <div className="absolute bottom-[-20%] right-[-20%] w-32 h-32 bg-[#4a9eca]/5 blur-[40px] rounded-full pointer-events-none transition-opacity group-hover:bg-[#4a9eca]/15" />
-              
-              <div className="w-10 h-10 rounded-2xl bg-white/[0.03] border border-white/[0.05] flex items-center justify-center text-white/70 group-hover:text-[#4a9eca] transition-colors">
-                <Target size={18} strokeWidth={1} />
-              </div>
-  
-              <div className="flex flex-col gap-1 relative z-10 mt-auto">
-                <span className="text-[9px] uppercase tracking-[0.15em] text-white/40 font-medium leading-[1.3]">
-                  {language === 'el' ? 'ΑΣΚΗΣΕΙΣ' : 'EXERCISES'}
-                </span>
-                <h3 className="text-xl font-serif italic text-white/90 mt-1">
-                  {language === 'el' ? 'Πρακτική' : 'Practice'}
-                </h3>
-              </div>
-            </Link>
-  
+            <motion.div variants={itemVariants} className="h-full">
+              <Link to="/practice" className={cn(glassCardClasses, "p-5 h-full aspect-square flex flex-col justify-between group cursor-pointer active:scale-[0.98] relative overflow-hidden")}>
+                <div className="absolute bottom-[-20%] right-[-20%] w-32 h-32 bg-[#4a9eca]/5 blur-[40px] rounded-full pointer-events-none transition-opacity duration-700 group-hover:bg-[#4a9eca]/20" />
+                
+                <div className="w-10 h-10 rounded-2xl bg-white/[0.02] border border-white/[0.04] flex items-center justify-center text-white/50 group-hover:text-[#4a9eca] transition-colors duration-500 shadow-sm">
+                  <Target size={18} strokeWidth={1} />
+                </div>
+    
+                <div className="flex flex-col gap-1 relative z-10 mt-auto">
+                  <span className="text-[9px] uppercase tracking-[0.2em] text-white/40 font-medium leading-[1.3] group-hover:text-white/60 transition-colors">
+                    {language === 'el' ? 'ΑΣΚΗΣΕΙΣ' : 'EXERCISES'}
+                  </span>
+                  <h3 className="text-xl font-serif italic text-white/90 mt-1 group-hover:text-white transition-colors">
+                    {language === 'el' ? 'Πρακτική' : 'Practice'}
+                  </h3>
+                </div>
+              </Link>
+            </motion.div>
+    
             {/* Audio / Sanctuary */}
-            <Link to="/sanctuary" className={cn(glassCardClasses, "p-5 aspect-square flex flex-col justify-between group cursor-pointer active:scale-[0.98] relative overflow-hidden")}>
-               <div className="absolute bottom-[-20%] right-[-20%] w-32 h-32 bg-stone-500/10 blur-[40px] rounded-full pointer-events-none transition-opacity group-hover:bg-stone-500/20" />
-              
-              <div className="w-10 h-10 rounded-2xl bg-white/[0.03] border border-white/[0.05] flex items-center justify-center text-white/70 group-hover:text-stone-300 transition-colors">
-                <Moon size={18} strokeWidth={1} />
-              </div>
-  
-              <div className="flex flex-col gap-1 relative z-10 mt-auto">
-                <span className="text-[9px] uppercase tracking-[0.15em] text-white/40 font-medium leading-[1.3]">
-                  {language === 'el' ? 'ΗΡΕΜΙΑ' : 'CALM'}
-                </span>
-                <h3 className="text-xl font-serif italic text-white/90 mt-1">
-                  {language === 'el' ? 'Καταφύγιο' : 'Sanctuary'}
-                </h3>
-              </div>
-            </Link>
+            <motion.div variants={itemVariants} className="h-full">
+              <Link to="/sanctuary" className={cn(glassCardClasses, "p-5 h-full aspect-square flex flex-col justify-between group cursor-pointer active:scale-[0.98] relative overflow-hidden")}>
+                 <div className="absolute bottom-[-20%] right-[-20%] w-32 h-32 bg-stone-500/10 blur-[40px] rounded-full pointer-events-none transition-opacity duration-700 group-hover:bg-stone-500/25" />
+                
+                <div className="w-10 h-10 rounded-2xl bg-white/[0.02] border border-white/[0.04] flex items-center justify-center text-white/50 group-hover:text-stone-300 transition-colors duration-500 shadow-sm">
+                  <Moon size={18} strokeWidth={1} />
+                </div>
+    
+                <div className="flex flex-col gap-1 relative z-10 mt-auto">
+                  <span className="text-[9px] uppercase tracking-[0.2em] text-white/40 font-medium leading-[1.3] group-hover:text-white/60 transition-colors">
+                    {language === 'el' ? 'ΗΡΕΜΙΑ' : 'CALM'}
+                  </span>
+                  <h3 className="text-xl font-serif italic text-white/90 mt-1 group-hover:text-white transition-colors">
+                    {language === 'el' ? 'Καταφύγιο' : 'Sanctuary'}
+                  </h3>
+                </div>
+              </Link>
+            </motion.div>
           </div>
 
           {/* Rabbit Hole */}
-          <Link to="/rabbithole" className={cn(glassCardClasses, "p-5 flex items-center justify-between group cursor-pointer active:scale-[0.98] relative overflow-hidden mt-2")}>
-             <div className="absolute top-0 right-0 w-32 h-32 bg-[#a374d5]/5 blur-[40px] rounded-full pointer-events-none -mr-10 -mt-10 transition-opacity group-hover:bg-[#a374d5]/15" />
-            <div className="flex items-center gap-4 relative z-10">
-              <div className="w-10 h-10 rounded-2xl bg-white/[0.03] border border-white/[0.05] flex items-center justify-center text-white/70 group-hover:text-[#a374d5] transition-colors">
-                <Telescope size={18} strokeWidth={1} />
-              </div>
-              <div className="flex flex-col gap-0.5">
-                <span className="text-[9px] uppercase tracking-[0.15em] text-white/40 font-medium">
+          <motion.div variants={itemVariants}>
+            <Link to="/rabbithole" className={cn(glassCardClasses, "p-5 flex items-center justify-between group cursor-pointer active:scale-[0.98] relative overflow-hidden mt-2")}>
+               <div className="absolute top-0 right-0 w-32 h-32 bg-[#a374d5]/5 blur-[40px] rounded-full pointer-events-none -mr-10 -mt-10 transition-opacity duration-700 group-hover:bg-[#a374d5]/20" />
+              <div className="flex items-center gap-4 relative z-10">
+                <div className="w-10 h-10 rounded-2xl bg-white/[0.02] border border-white/[0.04] flex items-center justify-center text-white/50 group-hover:text-[#a374d5] transition-colors duration-500 shadow-sm">
+                  <Telescope size={18} strokeWidth={1} />
+                </div>
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-[9px] uppercase tracking-[0.2em] text-white/40 font-medium group-hover:text-white/60 transition-colors">
                   {language === 'el' ? 'ΕΞΕΡΕΥΝΗΣΗ' : 'EXPLORATION'}
                 </span>
                 <h3 className="text-lg font-serif italic text-white/90">
@@ -289,6 +314,7 @@ export default function Dashboard() {
             </div>
             <ChevronRight size={16} className="text-white/20 group-hover:text-white/60 transition-colors relative z-10" />
           </Link>
+          </motion.div>
         </motion.div>
         
         {/* Footer info */}
