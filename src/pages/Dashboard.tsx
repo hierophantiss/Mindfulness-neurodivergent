@@ -15,7 +15,9 @@ import { useBinauralAudio } from '../hooks/useBinauralAudio';
 import InfoModal from '../components/InfoModal';
 import CoreGeometricState from '../components/CoreGeometricState';
 
-const glassCardClasses = "backdrop-blur-3xl bg-gradient-to-br from-white/[0.04] to-transparent border border-white/[0.04] shadow-[0_8px_32px_rgba(0,0,0,0.12)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.02)] hover:shadow-[0_16px_48px_rgba(0,0,0,0.2)] hover:bg-white/[0.06] hover:border-white/[0.08] transition-all duration-700 rounded-[28px]";
+const glassCardClasses = "backdrop-blur-2xl bg-gradient-to-b from-white/[0.08] to-white/[0.01] border border-white/[0.02] border-t-white/[0.12] border-l-white/[0.08] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.15),inset_0_0_24px_rgba(255,255,255,0.02)] hover:shadow-[0_16px_48px_-12px_rgba(0,0,0,0.6),inset_0_1px_2px_rgba(255,255,255,0.2),inset_0_0_24px_rgba(255,255,255,0.05)] hover:bg-gradient-to-b hover:from-white/[0.12] hover:to-white/[0.02] hover:-translate-y-1 transition-all duration-500 rounded-[28px]";
+const innerIconClasses = "rounded-2xl bg-gradient-to-b from-white/[0.06] to-transparent border border-white/[0.02] border-t-white/[0.1] shadow-[0_4px_12px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.08)] flex items-center justify-center text-white/50 transition-colors duration-500";
+const actionButtonClasses = "w-8 h-8 rounded-full bg-gradient-to-b from-white/[0.04] to-transparent border border-white/[0.02] border-t-white/[0.1] shadow-[0_2px_8px_rgba(0,0,0,0.2)] flex items-center justify-center group-hover:from-white/[0.08] group-hover:border-t-white/[0.15] group-hover:shadow-[0_4px_12px_rgba(0,0,0,0.3)] transition-all duration-500";
 
 const getDateString = (date: Date): string => {
   return date.toISOString().split('T')[0];
@@ -188,7 +190,7 @@ export default function Dashboard() {
               <div className="absolute top-0 right-0 w-48 h-48 bg-teal-500/5 blur-[50px] rounded-full pointer-events-none -mr-10 -mt-10 transition-opacity duration-700 group-hover:bg-teal-500/15" />
               <div className="flex items-start justify-between w-full relative z-10">
                 <div className="flex items-start gap-5">
-                  <div className="w-14 h-14 rounded-2xl bg-white/[0.02] border border-white/[0.04] flex items-center justify-center text-white/50 group-hover:text-teal-300 transition-colors duration-500 shadow-sm">
+                  <div className={cn(innerIconClasses, "w-14 h-14 group-hover:text-teal-300")}>
                     <Calendar size={22} strokeWidth={1} />
                   </div>
                   <div className="flex flex-col gap-2 mt-1">
@@ -200,7 +202,7 @@ export default function Dashboard() {
                     </h3>
                   </div>
                 </div>
-                <div className="w-8 h-8 rounded-full border border-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors duration-500 mt-2">
+                <div className={cn(actionButtonClasses, "mt-2")}>
                   <ChevronRight size={16} className="text-white/30 group-hover:text-white/80 transition-colors" />
                 </div>
               </div>
@@ -227,10 +229,10 @@ export default function Dashboard() {
               <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-[#e99b37]/5 blur-[60px] rounded-full pointer-events-none transition-opacity duration-700 group-hover:bg-[#e99b37]/15" />
               
               <div className="flex justify-between items-start w-full relative z-10 mb-auto">
-                <div className="w-12 h-12 rounded-2xl bg-white/[0.02] border border-white/[0.04] flex items-center justify-center text-white/50 group-hover:text-[#e99b37] transition-colors duration-500 shadow-sm">
+                <div className={cn(innerIconClasses, "w-12 h-12 group-hover:text-[#e99b37]")}>
                   <BookOpen size={20} strokeWidth={1} />
                 </div>
-                <div className="w-8 h-8 rounded-full border border-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors duration-500">
+                <div className={actionButtonClasses}>
                   <ChevronRight size={16} className="text-white/30 group-hover:text-white/80 transition-colors" />
                 </div>
               </div>
@@ -259,7 +261,7 @@ export default function Dashboard() {
               <Link to="/practice" className={cn(glassCardClasses, "p-5 h-full aspect-square flex flex-col justify-between group cursor-pointer active:scale-[0.98] relative overflow-hidden")}>
                 <div className="absolute bottom-[-20%] right-[-20%] w-32 h-32 bg-[#4a9eca]/5 blur-[40px] rounded-full pointer-events-none transition-opacity duration-700 group-hover:bg-[#4a9eca]/20" />
                 
-                <div className="w-10 h-10 rounded-2xl bg-white/[0.02] border border-white/[0.04] flex items-center justify-center text-white/50 group-hover:text-[#4a9eca] transition-colors duration-500 shadow-sm">
+                <div className={cn(innerIconClasses, "w-10 h-10 group-hover:text-[#4a9eca]")}>
                   <Target size={18} strokeWidth={1} />
                 </div>
     
@@ -279,7 +281,7 @@ export default function Dashboard() {
               <Link to="/sanctuary" className={cn(glassCardClasses, "p-5 h-full aspect-square flex flex-col justify-between group cursor-pointer active:scale-[0.98] relative overflow-hidden")}>
                  <div className="absolute bottom-[-20%] right-[-20%] w-32 h-32 bg-stone-500/10 blur-[40px] rounded-full pointer-events-none transition-opacity duration-700 group-hover:bg-stone-500/25" />
                 
-                <div className="w-10 h-10 rounded-2xl bg-white/[0.02] border border-white/[0.04] flex items-center justify-center text-white/50 group-hover:text-stone-300 transition-colors duration-500 shadow-sm">
+                <div className={cn(innerIconClasses, "w-10 h-10 group-hover:text-stone-300")}>
                   <Moon size={18} strokeWidth={1} />
                 </div>
     
@@ -300,7 +302,7 @@ export default function Dashboard() {
             <Link to="/rabbithole" className={cn(glassCardClasses, "p-5 flex items-center justify-between group cursor-pointer active:scale-[0.98] relative overflow-hidden mt-2")}>
                <div className="absolute top-0 right-0 w-32 h-32 bg-[#a374d5]/5 blur-[40px] rounded-full pointer-events-none -mr-10 -mt-10 transition-opacity duration-700 group-hover:bg-[#a374d5]/20" />
               <div className="flex items-center gap-4 relative z-10">
-                <div className="w-10 h-10 rounded-2xl bg-white/[0.02] border border-white/[0.04] flex items-center justify-center text-white/50 group-hover:text-[#a374d5] transition-colors duration-500 shadow-sm">
+                <div className={cn(innerIconClasses, "w-10 h-10 group-hover:text-[#a374d5]")}>
                   <Telescope size={18} strokeWidth={1} />
                 </div>
                 <div className="flex flex-col gap-0.5">
