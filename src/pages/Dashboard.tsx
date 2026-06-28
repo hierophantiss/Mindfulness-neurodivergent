@@ -15,6 +15,8 @@ import { useBinauralAudio } from '../hooks/useBinauralAudio';
 import InfoModal from '../components/InfoModal';
 import CoreGeometricState from '../components/CoreGeometricState';
 
+import { AFFIRMATIONS } from '../data/affirmations';
+
 const baseCardClasses = "backdrop-blur-xl border border-white/[0.04] border-t-white/[0.08] border-l-white/[0.06] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.05)] hover:shadow-[0_16px_48px_-12px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(255,255,255,0.1)] hover:-translate-y-1 transition-all duration-500 rounded-[28px]";
 const innerIconClasses = "rounded-2xl bg-gradient-to-b from-white/[0.06] to-transparent border border-white/[0.02] border-t-white/[0.1] shadow-[0_4px_12px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.08)] flex items-center justify-center text-white/50 transition-colors duration-500";
 const actionButtonClasses = "w-8 h-8 rounded-full bg-gradient-to-b from-white/[0.04] to-transparent border border-white/[0.02] border-t-white/[0.1] shadow-[0_2px_8px_rgba(0,0,0,0.2)] flex items-center justify-center group-hover:from-white/[0.08] group-hover:border-t-white/[0.15] group-hover:shadow-[0_4px_12px_rgba(0,0,0,0.3)] transition-all duration-500";
@@ -22,6 +24,13 @@ const actionButtonClasses = "w-8 h-8 rounded-full bg-gradient-to-b from-white/[0
 const getDateString = (date: Date): string => {
   return date.toISOString().split('T')[0];
 };
+
+function getDayOfYear(date: Date) {
+  const start = new Date(date.getFullYear(), 0, 0);
+  const diff = date.getTime() - start.getTime();
+  const oneDay = 1000 * 60 * 60 * 24;
+  return Math.floor(diff / oneDay);
+}
 
 export default function Dashboard() {
   const { language, setLanguage } = useLanguage();
@@ -43,6 +52,14 @@ export default function Dashboard() {
   const [greeting, setGreeting] = useState('');
   const [currentDate, setCurrentDate] = useState('');
   const [isInfoOpen, setIsInfoOpen] = useState(false);
+
+  const affirmation = useMemo(() => {
+    // using hour as dependency to re-calculate if day rolls over while app is open
+    const _ = hour; 
+    const now = new Date();
+    const dayOfYear = getDayOfYear(now);
+    return AFFIRMATIONS[dayOfYear % AFFIRMATIONS.length];
+  }, [hour]);
 
   const audioConfig = useMemo(() => ({
     base: 136.1, // Ohm
@@ -175,6 +192,19 @@ export default function Dashboard() {
           className="w-full mt-2"
         >
           <CoreGeometricState />
+        </motion.div>
+
+        {/* Daily Affirmation */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.4 }}
+          className={cn(baseCardClasses, "p-5 bg-[#1a1f26]/40 text-center relative overflow-hidden")}
+        >
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-[40px] rounded-full pointer-events-none -mr-10 -mt-10" />
+          <p className="text-sm md:text-[15px] font-sans font-light tracking-wide text-white/80 leading-relaxed max-w-sm mx-auto relative z-10 italic">
+            "{language === 'el' ? affirmation.el : affirmation.en}"
+          </p>
         </motion.div>
 
         {/* 3. The Core Modules (Bento Grid) */}
