@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { ArrowLeft, Play, Pause, Settings2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../hooks/useLanguage";
+import { useActivityTracker } from "../contexts/ActivityTrackerContext";
 import SwayingHero from "../components/SwayingHero";
 import { useBinauralAudio } from "../hooks/useBinauralAudio";
 import { PlayPauseOverlay } from "../components/PlayPauseOverlay";
@@ -10,6 +11,7 @@ import { ConceptInfoIcon } from '../components/ConceptInfoOverlay';
 export default function PracticeSwaying() {
   const navigate = useNavigate();
   const { language: lang } = useLanguage();
+  const { logActivity } = useActivityTracker();
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [tempo, setTempo] = useState(1000); // 600 to 2000 ms
@@ -130,13 +132,37 @@ export default function PracticeSwaying() {
   }, [isPlaying]);
 
   const handleTogglePlayback = () => {
-    if (!isPlaying) {
+    if (isPlaying) {
+      // Pause - log activity if duration > 10 seconds
+      if (elapsedSeconds > 10) {
+        logActivity({
+          category: 'swaying',
+          itemId: 'practice-swaying',
+          durationSeconds: elapsedSeconds,
+          completed: true
+        });
+      }
+    } else {
       setElapsedSeconds(0);
       setTickCount(0);
       expectedNextTickRef.current = 0;
     }
     setIsPlaying(!isPlaying);
   };
+
+  // Log on unmount if playing
+  useEffect(() => {
+    return () => {
+      if (isPlaying && elapsedSeconds > 10) {
+        logActivity({
+          category: 'swaying',
+          itemId: 'practice-swaying',
+          durationSeconds: elapsedSeconds,
+          completed: true
+        });
+      }
+    };
+  }, [isPlaying, elapsedSeconds, logActivity]);
 
   // UI Instructions based on elapsed time (only shown when playing)
   let instruction = "";

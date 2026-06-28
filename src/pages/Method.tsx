@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
+import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 
 const T = {
   el: {
@@ -100,7 +101,23 @@ const T = {
 
 export default function Method() {
   const { language } = useLanguage();
+  const { logActivity } = useActivityTracker();
+  const startTimeRef = useRef<number>(Date.now());
   const t = T[language as keyof typeof T];
+
+  useEffect(() => {
+    return () => {
+      const duration = Math.round((Date.now() - startTimeRef.current) / 1000);
+      if (duration >= 15) {
+        logActivity({
+          category: 'rabbithole',
+          itemId: 'method-manual',
+          durationSeconds: duration,
+          completed: true
+        });
+      }
+    };
+  }, [logActivity]);
 
   return (
     <div className="flex flex-col h-full bg-[#0f1117] font-sans animate-in fade-in slide-in-from-bottom-4 duration-500">

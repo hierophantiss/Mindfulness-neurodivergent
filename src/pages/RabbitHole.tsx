@@ -4,6 +4,7 @@ import { BookOpen, ChevronLeft, ChevronRight, X, Play, Youtube, Film, Check, Ski
 import { motion, AnimatePresence } from 'motion/react';
 import { Link, useLocation, useNavigate, useSearchParams, useParams } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
+import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { cn } from '../lib/utils';
 import { informativeVideos } from '../data/informativeVideos';
 import { dzogchenArticle } from '../data/dzogchenArticle';
@@ -54,18 +55,55 @@ export default function RabbitHole() {
   const [mantraStep, setMantraStep] = useState<number>(0);
   const [activeAttentionStyles, setActiveAttentionStyles] = useState<string[]>([]);
   const [isVoidActive, setIsVoidActive] = useState(false);
+  const { logActivity } = useActivityTracker();
   
+  // Track reading time
+  const readingStartTimeRef = useRef<number | null>(null);
+
   const setActiveArticle = (id: string | null) => {
+    // Log previous article if it was open for more than 20 seconds
+    if (activeArticle && readingStartTimeRef.current) {
+      const duration = Math.round((Date.now() - readingStartTimeRef.current) / 1000);
+      if (duration >= 20) {
+        logActivity({
+          category: 'rabbithole',
+          itemId: activeArticle,
+          durationSeconds: duration,
+          completed: true
+        });
+      }
+    }
+
     setActiveArticleState(id);
     setCurrentPage(0);
+    
     if (id) {
+      readingStartTimeRef.current = Date.now();
       if (articleId !== id) {
         navigate(`/rabbithole/${id}`, { replace: true });
       }
     } else {
+      readingStartTimeRef.current = null;
       navigate(`/rabbithole`, { replace: true });
     }
   };
+
+  useEffect(() => {
+    // Log on unmount if an article was being read
+    return () => {
+      if (activeArticle && readingStartTimeRef.current) {
+        const duration = Math.round((Date.now() - readingStartTimeRef.current) / 1000);
+        if (duration >= 20) {
+          logActivity({
+            category: 'rabbithole',
+            itemId: activeArticle,
+            durationSeconds: duration,
+            completed: true
+          });
+        }
+      }
+    };
+  }, [activeArticle, logActivity]);
   
   const [currentPage, setCurrentPage] = useState(0);
 

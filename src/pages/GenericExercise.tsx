@@ -4,6 +4,7 @@ import { ArrowLeft, Play, Pause, Info, Volume2, VolumeX, SkipBack, SkipForward, 
 import { cn } from '../lib/utils';
 import { useLanguage } from '../hooks/useLanguage';
 import { useReward } from '../contexts/RewardContext';
+import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { PlayPauseOverlay } from '../components/PlayPauseOverlay';
 
 const EXERCISES: Record<string, any> = {
@@ -511,6 +512,7 @@ export default function GenericExercise() {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const { triggerReward } = useReward();
+  const { logActivity } = useActivityTracker();
   
   const exercise = id && EXERCISES[id] ? EXERCISES[id] : {
     title: { el: 'Ελεύθερη Πρακτική', en: 'Free Practice' },
@@ -592,12 +594,20 @@ export default function GenericExercise() {
             ts: Date.now()
           });
           h.totalMin = Math.round((h.totalMin || 0) + exercise.duration / 60);
+          
+          // Use activity tracker to notify companion and ring
+          logActivity({
+            category: 'microdose',
+            itemId: id || 'generic',
+            durationSeconds: exercise.duration,
+            completed: true
+          });
         }
         localStorage.setItem('journal_history', JSON.stringify(h));
         triggerReward('program');
       } catch (e) {}
     }
-  }, [elapsed, exercise.duration, id]);
+  }, [elapsed, exercise.duration, id, logActivity]);
 
   const toggleRun = () => {
     if (elapsed >= exercise.duration) {

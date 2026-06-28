@@ -119,7 +119,7 @@ export default function PracticeBreath() {
         const duration = Math.round((Date.now() - sessionStartTimeRef.current) / 1000);
         if (duration >= 15) {
           logActivity({
-            category: 'breath',
+            category: basePattern.category as any || 'breath',
             itemId: currentPatternId,
             durationSeconds: duration,
             completed: currentCyclesRef.current > 2
@@ -128,7 +128,7 @@ export default function PracticeBreath() {
         sessionStartTimeRef.current = null;
       }
     }
-  }, [running, logActivity, currentPatternId]);
+  }, [running, logActivity, currentPatternId, basePattern.category]);
 
   useEffect(() => {
     return () => {
@@ -137,7 +137,7 @@ export default function PracticeBreath() {
         const duration = Math.round((Date.now() - sessionStartTimeRef.current) / 1000);
         if (duration >= 15) {
           logActivity({
-            category: 'breath',
+            category: basePattern.category as any || 'breath',
             itemId: currentPatternId,
             durationSeconds: duration,
             completed: currentCyclesRef.current > 2
@@ -145,7 +145,7 @@ export default function PracticeBreath() {
         }
       }
     };
-  }, [logActivity, currentPatternId]);
+  }, [logActivity, currentPatternId, basePattern.category]);
 
   // Sleep Timer State
   const [showSleepTimer, setShowSleepTimer] = useState(false);

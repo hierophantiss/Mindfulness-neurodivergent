@@ -629,7 +629,7 @@ export default function Practice() {
             
             <p className="text-white/60 text-center mb-8 font-sans leading-relaxed text-[15px]">
               {language === 'el' 
-                ? 'Οι ασκήσεις πνευματικής εξάσκησης είναι πιο αποτελεσματικές αν έχετε ήδη διαβάσει κάποια βασικά στοιχεία. Σας προτείνουμε να διαβάσετε το 1ο Κεφάλαιο του Εγχειριδίου πριν ξεκινήσετε.'
+                ? 'Οι πρακτικές εξάσκησης των τεσσάρων στοιχείων είναι πιο αποτελεσματικές αν έχετε ήδη διαβάσει κάποια βασικά στοιχεία. Σας προτείνουμε να διαβάσετε το 1ο Κεφάλαιο του Εγχειριδίου πριν ξεκινήσετε.'
                 : 'Mental exercises are more effective with a foundation. We recommend reading Chapter 1 of the Workbook before you begin.'}
             </p>
             
