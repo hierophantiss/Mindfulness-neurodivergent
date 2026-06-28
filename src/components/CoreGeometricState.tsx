@@ -520,19 +520,19 @@ export default function CoreGeometricState() {
         <div 
           className={`absolute bottom-12 right-2 md:bottom-14 md:right-4 pointer-events-auto text-[8px] md:text-[9px] uppercase tracking-[2px] font-bold z-10 flex flex-col items-end gap-2 md:gap-3 text-right bg-slate-900/80 backdrop-blur-md p-4 rounded-xl border border-white/10 transition-all duration-300 origin-bottom-right ${showLegend ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
         >
-          <div className={`transition-opacity duration-1000 flex items-center gap-3 ${activeAxes.body || activeAxes.bodySoft ? 'text-purple-400 drop-shadow-[0_0_8px_rgba(192,132,252,0.8)]' : 'text-white'}`}>
+          <div className={`transition-opacity duration-1000 flex items-center gap-3 text-purple-400 ${activeAxes.body || activeAxes.bodySoft ? 'drop-shadow-[0_0_8px_rgba(192,132,252,0.8)] opacity-100' : 'opacity-70'}`}>
             <span>{language === 'el' ? '1 ΒΑΡΥΤΗΤΑ • ΓΗ' : '1 GRAVITY • EARTH'}</span>
-            <div className="w-2 h-2 rounded-sm bg-current rotate-45"></div>
+            <div className="text-[13px] font-mono leading-none font-bold">I</div>
           </div>
-          <div className={`transition-opacity duration-1000 flex items-center gap-3 ${activeAxes.breath || activeAxes.breathSoft ? 'text-sky-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]' : 'text-white'}`}>
+          <div className={`transition-opacity duration-1000 flex items-center gap-3 text-sky-400 ${activeAxes.breath || activeAxes.breathSoft ? 'drop-shadow-[0_0_8px_rgba(56,189,248,0.8)] opacity-100' : 'opacity-70'}`}>
             <span>{language === 'el' ? '2 ΑΝΑΠΝΟΗ • ΑΕΡΑΣ' : '2 BREATH • AIR'}</span>
             <div className="w-2 h-2 rounded-full bg-current"></div>
           </div>
-          <div className={`transition-opacity duration-1000 flex items-center gap-3 ${activeAxes.attention || activeAxes.attentionSoft ? 'text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.8)]' : 'text-white'}`}>
+          <div className={`transition-opacity duration-1000 flex items-center gap-3 text-amber-400 ${activeAxes.attention || activeAxes.attentionSoft ? 'drop-shadow-[0_0_8px_rgba(251,191,36,0.8)] opacity-100' : 'opacity-70'}`}>
             <span>{language === 'el' ? '3 ΠΡΟΣΟΧΗ • ΦΩΤΙΑ' : '3 ATTENTION • FIRE'}</span>
             <div className="w-0 h-0 border-l-[5px] border-r-[5px] border-b-[8px] border-l-transparent border-r-transparent border-b-current"></div>
           </div>
-          <div className={`transition-opacity duration-1000 flex items-center gap-3 ${activeAxes.space || activeAxes.spaceSoft ? 'text-teal-400 drop-shadow-[0_0_8px_rgba(45,212,191,0.8)]' : 'text-white'}`}>
+          <div className={`transition-opacity duration-1000 flex items-center gap-3 text-teal-400 ${activeAxes.space || activeAxes.spaceSoft ? 'drop-shadow-[0_0_8px_rgba(45,212,191,0.8)] opacity-100' : 'opacity-70'}`}>
             <span>{language === 'el' ? '4 ΧΩΡΟΣ • ΝΕΡΟ' : '4 SPACE • WATER'}</span>
             <div className="text-[16px] leading-none -mt-1 font-serif">∞</div>
           </div>
