@@ -15,7 +15,7 @@ export default function Onboarding() {
 
   useEffect(() => {
     if (localStorage.getItem('hasCompletedOnboarding') === 'true') {
-      navigate('/dashboard', { replace: true });
+      navigate('/', { replace: true });
     }
   }, [navigate]);
 
@@ -23,7 +23,7 @@ export default function Onboarding() {
     localStorage.setItem('hasCompletedOnboarding', 'true');
     localStorage.setItem('hasSeenIntro', 'true');
     localStorage.setItem('n_mindfulness_intention', 'audhd');
-    navigate('/practice/breath/lotus-fourfold', { replace: true }); // Routing to the first grounding practice
+    navigate('/', { replace: true });
   };
 
   const nextStep = () => {
@@ -227,7 +227,7 @@ export default function Onboarding() {
   ];
 
   return (
-    <div className="fixed inset-0 z-[200] bg-[#0a1118] text-white flex flex-col overflow-hidden">
+    <div className="fixed inset-0 h-[100dvh] w-full z-[200] bg-[#0a1118] text-white flex flex-col overflow-hidden">
       
       {/* Top bar with language toggle for convenience (hidden on first step) */}
       <div className="px-6 py-4 md:py-6 flex justify-end shrink-0 min-h-[60px] md:min-h-[80px]">
@@ -242,23 +242,25 @@ export default function Onboarding() {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 min-h-0 overflow-y-auto">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={step}
-            initial={{ opacity: 0, scale: 0.95, filter: 'blur(10px)' }}
-            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-            exit={{ opacity: 0, scale: 1.05, filter: 'blur(10px)' }}
-            transition={{ duration: 0.8, ease: [0.25, 1, 0.3, 1] }}
-            className="w-full max-w-2xl py-4"
-          >
-            {steps[step].content}
-          </motion.div>
-        </AnimatePresence>
+      <div className="flex-1 flex flex-col px-6 min-h-0 overflow-y-auto">
+        <div className="my-auto w-full max-w-2xl mx-auto flex flex-col items-center py-8 shrink-0">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={step}
+              initial={{ opacity: 0, scale: 0.95, filter: 'blur(10px)' }}
+              animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+              exit={{ opacity: 0, scale: 1.05, filter: 'blur(10px)' }}
+              transition={{ duration: 0.8, ease: [0.25, 1, 0.3, 1] }}
+              className="w-full"
+            >
+              {steps[step].content}
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
 
       {/* Bottom Controls */}
-      <div className="px-6 pb-8 md:pb-12 pt-4 flex flex-col items-center gap-6 z-10 relative shrink-0">
+      <div className="px-6 pb-6 md:pb-10 pt-4 flex flex-col items-center gap-4 z-10 relative shrink-0">
         {step > 0 && (
           <>
             {/* Progress indicators */}
