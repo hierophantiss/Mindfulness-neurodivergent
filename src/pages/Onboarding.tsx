@@ -119,22 +119,22 @@ export default function Onboarding() {
     {
       id: 'method',
       content: (
-        <div className="flex flex-col items-center text-center space-y-8 w-full max-w-xl mx-auto">
-          <div className="w-full scale-75 origin-top mb-[-60px]">
+        <div className="flex flex-col items-center text-center space-y-4 md:space-y-8 w-full max-w-xl mx-auto mt-4 md:mt-0">
+          <div className="w-full scale-50 md:scale-75 origin-top mb-[-120px] md:mb-[-60px]">
             <CoreGeometricState />
           </div>
-          <div className="space-y-3 relative z-10">
-            <h2 className="text-3xl font-serif italic text-white tracking-tight">
+          <div className="space-y-2 md:space-y-3 relative z-10">
+            <h2 className="text-2xl md:text-3xl font-serif italic text-white tracking-tight">
               {language === 'el' ? 'Τέσσερα βήματα. Ένα κάθε φορά.' : 'Four steps. One at a time.'}
             </h2>
-            <p className="text-base text-white/50 max-w-md mx-auto">
+            <p className="text-sm md:text-base text-white/50 max-w-md mx-auto leading-tight">
               {language === 'el' 
-                ? 'Σώμα · Αναπνοή · Προσοχή · Χώρος\nΚάθε βήμα χτίζει πάνω στο προηγούμενο. Ξεκινάς από τη βαρύτητα — κάτι που είναι πάντα εκεί.' 
-                : 'Body · Breath · Attention · Space\nEach step builds on the previous one. You start with gravity — something that is always there.'}
+                ? 'Σώμα · Αναπνοή · Προσοχή · Χώρος\nΚάθε βήμα χτίζει πάνω στο προηγούμενο.' 
+                : 'Body · Breath · Attention · Space\nEach step builds on the previous one.'}
             </p>
           </div>
           
-          <div className="grid grid-cols-2 gap-4 w-full relative z-10">
+          <div className="grid grid-cols-2 gap-3 md:gap-4 w-full relative z-10 max-w-sm mx-auto">
             {[
               { icon: Anchor, color: 'text-indigo-400', bg: 'bg-indigo-500/10', title: { el: 'Σώμα', en: 'Body' } },
               { icon: Wind, color: 'text-teal-400', bg: 'bg-teal-500/10', title: { el: 'Αναπνοή', en: 'Breath' } },
@@ -146,10 +146,10 @@ export default function Onboarding() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className={cn("flex flex-col items-center p-4 rounded-3xl border border-white/5", axis.bg)}
+                className={cn("flex flex-col items-center p-3 md:p-4 rounded-3xl border border-white/5", axis.bg)}
               >
-                <axis.icon size={24} className={axis.color} />
-                <span className="mt-2 font-serif italic text-white/90 text-sm">
+                <axis.icon size={20} className={axis.color} />
+                <span className="mt-1 md:mt-2 font-serif italic text-white/90 text-xs md:text-sm">
                   {language === 'el' ? axis.title.el : axis.title.en}
                 </span>
               </motion.div>
@@ -227,14 +227,14 @@ export default function Onboarding() {
   ];
 
   return (
-    <div className="fixed inset-0 z-[200] bg-[#0a1118] text-white flex flex-col justify-between overflow-hidden">
+    <div className="fixed inset-0 z-[200] bg-[#0a1118] text-white flex flex-col overflow-hidden">
       
       {/* Top bar with language toggle for convenience (hidden on first step) */}
-      <div className="pt-safe px-6 py-6 flex justify-end h-20">
+      <div className="px-6 py-4 md:py-6 flex justify-end shrink-0 min-h-[60px] md:min-h-[80px]">
         {step > 0 && (
           <button 
             onClick={() => setLanguage(language === 'en' ? 'el' : 'en')}
-            className="px-4 py-2 rounded-full border border-white/10 text-xs font-bold tracking-widest text-white/40 hover:bg-white/5 hover:text-white transition-all duration-300 active:scale-95"
+            className="px-4 py-2 rounded-full border border-white/10 text-xs font-bold tracking-widest text-white/40 hover:bg-white/5 hover:text-white transition-all duration-300 active:scale-95 h-fit"
           >
             {language === 'en' ? 'ΕΛ' : 'EN'}
           </button>
@@ -242,7 +242,7 @@ export default function Onboarding() {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex items-center justify-center px-6">
+      <div className="flex-1 flex flex-col items-center justify-center px-6 min-h-0 overflow-y-auto">
         <AnimatePresence mode="wait">
           <motion.div
             key={step}
@@ -250,7 +250,7 @@ export default function Onboarding() {
             animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
             exit={{ opacity: 0, scale: 1.05, filter: 'blur(10px)' }}
             transition={{ duration: 0.8, ease: [0.25, 1, 0.3, 1] }}
-            className="w-full max-w-2xl"
+            className="w-full max-w-2xl py-4"
           >
             {steps[step].content}
           </motion.div>
@@ -258,7 +258,7 @@ export default function Onboarding() {
       </div>
 
       {/* Bottom Controls */}
-      <div className="px-6 pb-20 pt-6 flex flex-col items-center gap-8 z-10 relative h-40 justify-end">
+      <div className="px-6 pb-8 md:pb-12 pt-4 flex flex-col items-center gap-6 z-10 relative shrink-0">
         {step > 0 && (
           <>
             {/* Progress indicators */}
