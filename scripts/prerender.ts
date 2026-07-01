@@ -138,6 +138,15 @@ interface RouteMeta {
   description: string;
   schema: object;
   schemaType: 'WebApplication' | 'Article' | 'HowTo' | 'FAQPage';
+  /** Real, crawlable paragraphs injected into <body> for search engines
+   *  and non-JS agents. Falls back to [description] if omitted. */
+  bodyParagraphs?: string[];
+}
+
+/** Strips interactive-widget tokens like {{gravity}} that the live React
+ *  component would normally replace with tooltips/links. */
+function stripInteractiveTokens(text: string): string {
+  return text.replace(/\{\{[^}]+\}\}/g, '');
 }
 
 function getMetaForRoute(route: string): RouteMeta {
@@ -145,15 +154,21 @@ function getMetaForRoute(route: string): RouteMeta {
   const clean = route.replace(/^\/(en|el)/, '') || '/';
   const url = `${BASE_URL}${route}`;
 
+  const homeDescription = lang === 'en'
+    ? 'Free mindfulness app for ADHD & autism. AI companion, animated Tai Chi & Qigong, binaural beats, breathwork, and a 10-chapter workbook — trauma-informed, privacy-first, neurodivergent-made.'
+    : 'Δωρεάν εφαρμογή ενσυνειδητότητας για ΔΕΠΥ & αυτισμό. AI σύντροφος, animated Tai Chi & Qigong, binaural beats, αναπνοή και βιβλίο 10 κεφαλαίων — trauma-informed, χωρίς tracking, από νευροδιαφορετικό.';
+  const homeIntro = lang === 'en'
+    ? 'Built around the Fourfold Axis — Body, Breath, Attention, Space — this is a free, privacy-first companion for grounding, regulation, and open awareness, made by a neurodivergent person for neurodivergent minds.'
+    : 'Χτισμένη γύρω από τον Τετραπλό Άξονα — Σώμα, Αναπνοή, Προσοχή, Χώρος — είναι μια δωρεάν εφαρμογή, χωρίς παρακολούθηση, για γείωση, ρύθμιση και ανοιχτή επίγνωση, φτιαγμένη από νευροδιαφορετικό άτομο για νευροδιαφορετικούς νους.';
+
   const defaults: RouteMeta = {
     title: lang === 'en'
       ? 'Neurodivergent Mindfulness App – Trauma-Informed Practice for ADHD & Autism'
       : 'Neurodivergent Mindfulness App – Ενσυνειδητότητα για ΔΕΠΥ & Αυτισμό',
-    description: lang === 'en'
-      ? 'Free mindfulness app for ADHD & autism. AI companion, animated Tai Chi & Qigong, binaural beats, breathwork, and a 10-chapter workbook — trauma-informed, privacy-first, neurodivergent-made.'
-      : 'Δωρεάν εφαρμογή ενσυνειδητότητας για ΔΕΠΥ & αυτισμό. AI σύντροφος, animated Tai Chi & Qigong, binaural beats, αναπνοή και βιβλίο 10 κεφαλαίων — trauma-informed, χωρίς tracking, από νευροδιαφορετικό.',
+    description: homeDescription,
     schema: {},
     schemaType: 'WebApplication',
+    bodyParagraphs: [homeDescription, homeIntro],
   };
 
   // ── Rabbit Hole list ──
@@ -212,8 +227,18 @@ function getMetaForRoute(route: string): RouteMeta {
         ? `Chapter ${ch.num}: ${ch.title} – ${ch.sub} | Neurodivergent Mindfulness App`
         : `Κεφάλαιο ${ch.num}: ${ch.title} – ${ch.sub} | Neurodivergent Mindfulness App`;
       const d = ch.summary || ch.tldr || defaults.description;
+
+      const bodyParagraphs: string[] = [];
+      if (ch.summary) bodyParagraphs.push(ch.summary);
+      if (ch.tldr && ch.tldr !== ch.summary) bodyParagraphs.push(ch.tldr);
+      for (const section of ch.theorySections ?? []) {
+        for (const p of section.paragraphs ?? []) {
+          bodyParagraphs.push(stripInteractiveTokens(p));
+        }
+      }
+
       return {
-        title: t, description: d, schemaType: 'Article',
+        title: t, description: d, schemaType: 'Article', bodyParagraphs,
         schema: {
           '@context': 'https://schema.org', '@type': 'Article',
           headline: t, description: d, url,
@@ -239,8 +264,18 @@ function getMetaForRoute(route: string): RouteMeta {
         : isMovement
           ? `Κινούμενη ενσυνείδητη κίνηση: ${ptitle}. ${psub}. Animation συγχρονισμένο με αναπνοή και binaural beats. Tai Chi και Qigong για ρύθμιση νευροδιαφορετικού νευρικού συστήματος.`
           : `Καθοδηγούμενη αναπνοή: ${ptitle}. Ρύθμιση νευρικού συστήματος για ΔΕΠΥ και αυτισμό.`;
+
+      const bodyParagraphs: string[] = [d];
+      const pdesc = pattern.desc?.[lang] ?? pattern.desc?.en;
+      if (pdesc && pdesc !== d) bodyParagraphs.push(pdesc);
+      for (const l of pattern.labels ?? []) {
+        const label = l.label?.[lang] ?? l.label?.en;
+        const sub   = l.sub?.[lang] ?? l.sub?.en;
+        if (label) bodyParagraphs.push(sub ? `${label}: ${sub}` : label);
+      }
+
       return {
-        title: t, description: d, schemaType: 'HowTo',
+        title: t, description: d, schemaType: 'HowTo', bodyParagraphs,
         schema: {
           '@context': 'https://schema.org', '@type': 'HowTo',
           name: t, description: d, url,
@@ -329,6 +364,37 @@ function getMetaForRoute(route: string): RouteMeta {
 // ─────────────────────────────────────────────────────────────
 // HTML injection
 // ─────────────────────────────────────────────────────────────
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/**
+ * Real, static, crawlable HTML rendered into <div id="root"> for every
+ * route. main.tsx uses createRoot(...).render(...) (NOT hydrateRoot), so
+ * React fully replaces this content on mount — there is no hydration
+ * mismatch risk. Search engines, social-preview bots, and any crawler
+ * that doesn't execute JS see this instead of an empty div.
+ */
+function buildBodyContent(meta: RouteMeta, h1: string): string {
+  const paragraphs = meta.bodyParagraphs && meta.bodyParagraphs.length > 0
+    ? meta.bodyParagraphs
+    : [meta.description];
+
+  const paragraphsHtml = paragraphs
+    .filter(Boolean)
+    .map(p => `<p>${escapeHtml(p)}</p>`)
+    .join('\n      ');
+
+  return `<div id="root"><div data-prerendered="true">
+      <h1>${escapeHtml(h1)}</h1>
+      ${paragraphsHtml}
+    </div></div>`;
+}
+
 function buildHead(route: string, meta: RouteMeta, baseHtml: string): string {
   const lang = route.startsWith('/en') ? 'en' : 'el';
   const clean = route.replace(/^\/(en|el)/, '') || '/';
@@ -374,6 +440,17 @@ function buildHead(route: string, meta: RouteMeta, baseHtml: string): string {
 
   // Inject full SEO block just before </head>
   html = html.replace('</head>', `${seoBlock}\n</head>`);
+
+  // Derive a clean H1 from the title (strip the trailing site-name suffix)
+  const h1 = meta.title.replace(/\s*[|–]\s*Neurodivergent Mindfulness App\s*$/, '');
+
+  // Replace the empty React mount point with real, crawlable text.
+  // Matches both `<div id="root"></div>` and `<div id="root"/>` variants.
+  html = html.replace(
+    /<div id="root"\s*\/?>(<\/div>)?/,
+    buildBodyContent(meta, h1)
+  );
+
   return html;
 }
 
@@ -395,12 +472,13 @@ async function run() {
   let count = 0;
 
   for (const route of routes) {
-    if (route === '/') continue; // root already has index.html
-
     const meta = getMetaForRoute(route);
     const html = buildHead(route, meta, baseHtml);
 
-    const outDir = path.join(DIST_DIR, route);
+    // '/' writes directly to dist/index.html; every other route gets its
+    // own dist/<route>/index.html so Cloudflare Pages serves it as a
+    // static file for that exact path.
+    const outDir = route === '/' ? DIST_DIR : path.join(DIST_DIR, route);
     const outFile = path.join(outDir, 'index.html');
 
     if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
