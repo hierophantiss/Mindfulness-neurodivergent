@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
 import { Shield, Anchor, Wind, Focus, Maximize, ArrowRight, Heart, Sparkles, Compass, Zap, BookOpen } from 'lucide-react';
@@ -12,6 +12,41 @@ export default function Onboarding() {
   const [step, setStep] = useState(0);
   const navigate = useNavigate();
   const { language, setLanguage } = useLanguage();
+  const [restoreState, setRestoreState] = useState<'idle' | 'success' | 'error'>('idle');
+  const [isHolding, setIsHolding] = useState(false);
+  const [holdProgress, setHoldProgress] = useState(0);
+
+  useEffect(() => {
+    let frame: number;
+    let startTime: number | null = null;
+    let isCompleted = false;
+    
+    if (isHolding) {
+      const duration = 2500;
+      
+      const animate = (time: number) => {
+        if (!startTime) startTime = time;
+        const elapsed = time - startTime;
+        const progress = Math.min((elapsed / duration) * 100, 100);
+        setHoldProgress(progress);
+        
+        if (progress >= 100 && !isCompleted) {
+          isCompleted = true;
+          handleComplete();
+        } else if (!isCompleted) {
+          frame = requestAnimationFrame(animate);
+        }
+      };
+      
+      frame = requestAnimationFrame(animate);
+    } else {
+      setHoldProgress(0);
+    }
+    
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, [isHolding]);
 
   useEffect(() => {
     if (localStorage.getItem('hasCompletedOnboarding') === 'true') {
@@ -43,7 +78,12 @@ export default function Onboarding() {
             <h1 className="text-3xl md:text-4xl font-serif italic text-white tracking-tight">
               Select Language
             </h1>
-            <p className="text-white/50 font-sans">Επιλογή Γλώσσας</p>
+            <p className="text-white/50 font-sans flex flex-col items-center gap-1">
+              <span>Επιλογή Γλώσσας</span>
+              <span className="text-xs text-white/30 mt-4 bg-white/5 px-3 py-1 rounded-full border border-white/5">
+                Takes about 1 minute • Περίπου 1 λεπτό
+              </span>
+            </p>
           </div>
           <div className="flex gap-4">
             <button
@@ -62,6 +102,7 @@ export default function Onboarding() {
           
           <button
             onClick={() => {
+              if (restoreState !== 'idle') return;
               const input = document.createElement('input');
               input.type = 'file';
               input.accept = 'application/json';
@@ -77,21 +118,30 @@ export default function Onboarding() {
                       localStorage.setItem('mindful_companion_v5', JSON.stringify(parsed));
                       localStorage.setItem('hasCompletedOnboarding', 'true');
                       localStorage.setItem('hasSeenIntro', 'true');
-                      alert('Restore successful!');
-                      window.location.href = '/#/dashboard';
-                      window.location.reload();
+                      setRestoreState('success');
+                      setTimeout(() => {
+                        window.location.href = '/';
+                      }, 1500);
                     }
                   } catch (err) {
-                    alert('Error reading backup file.');
+                    setRestoreState('error');
+                    setTimeout(() => setRestoreState('idle'), 3000);
                   }
                 };
                 reader.readAsText(file);
               };
               input.click();
             }}
-            className="text-[11px] text-white/30 hover:text-white/60 transition-colors uppercase tracking-widest font-bold mt-12"
+            className={cn(
+              "text-[11px] hover:text-white/60 transition-colors uppercase tracking-widest font-bold mt-12",
+              restoreState === 'success' ? "text-teal-400" : restoreState === 'error' ? "text-rose-400" : "text-white/30"
+            )}
           >
-            ΕΠΑΝΑΦΟΡΑ ΔΕΔΟΜΕΝΩΝ (BACKUP)
+            {restoreState === 'success' 
+              ? 'ΕΠΑΝΑΦΟΡΑ ΕΠΙΤΥΧΗΣ / SUCCESS' 
+              : restoreState === 'error' 
+              ? 'ΣΦΑΛΜΑ / ERROR' 
+              : 'ΕΠΑΝΑΦΟΡΑ ΔΕΔΟΜΕΝΩΝ (BACKUP)'}
           </button>
         </div>
       )
@@ -127,10 +177,10 @@ export default function Onboarding() {
             <h2 className="text-2xl md:text-3xl font-serif italic text-white tracking-tight">
               {language === 'el' ? 'Τέσσερα βήματα. Ένα κάθε φορά.' : 'Four steps. One at a time.'}
             </h2>
-            <p className="text-sm md:text-base text-white/50 max-w-md mx-auto leading-tight">
+            <p className="text-sm md:text-base text-white/50 max-w-md mx-auto leading-relaxed">
               {language === 'el' 
-                ? 'Σώμα · Αναπνοή · Προσοχή · Χώρος\nΚάθε βήμα χτίζει πάνω στο προηγούμενο.' 
-                : 'Body · Breath · Attention · Space\nEach step builds on the previous one.'}
+                ? 'Σώμα · Αναπνοή · Προσοχή · Χώρος\nΚάθε βήμα χτίζει πάνω στο προηγούμενο.\n\nΚάθε φορά που μπαίνεις, θα σε ρωτάμε απλώς πώς νιώθεις εκείνη τη στιγμή.' 
+                : 'Body · Breath · Attention · Space\nEach step builds on the previous one.\n\nEvery time you enter, we will just ask how you feel in that moment.'}
             </p>
           </div>
           
@@ -217,8 +267,8 @@ export default function Onboarding() {
             </h2>
             <p className="text-lg text-white/50 font-sans leading-relaxed whitespace-pre-line">
               {language === 'el' 
-                ? 'Νιώσε τη βαρύτητα.\nΠόδια στο πάτωμα. Σώμα στην καρέκλα.\nΑυτή είναι η πρώτη σου άσκηση — και μόλις την έκανες.'
-                : 'Feel the gravity.\nFeet on the floor. Body in the chair.\nThis is your first practice — and you just did it.'}
+                ? 'Νιώσε τη βαρύτητα.\nΠόδια στο πάτωμα. Σώμα στην καρέκλα.\n\nΚράτα πατημένο το κουμπί για λίγο.'
+                : 'Feel the gravity.\nFeet on the floor. Body in the chair.\n\nHold the button for a moment.'}
             </p>
           </div>
         </div>
@@ -232,12 +282,20 @@ export default function Onboarding() {
       {/* Top bar with language toggle for convenience (hidden on first step) */}
       <div className="px-6 py-4 md:py-6 flex justify-end shrink-0 min-h-[60px] md:min-h-[80px]">
         {step > 0 && (
-          <button 
-            onClick={() => setLanguage(language === 'en' ? 'el' : 'en')}
-            className="px-4 py-2 rounded-full border border-white/10 text-xs font-bold tracking-widest text-white/40 hover:bg-white/5 hover:text-white transition-all duration-300 active:scale-95 h-fit"
-          >
-            {language === 'en' ? 'ΕΛ' : 'EN'}
-          </button>
+          <div className="flex gap-3">
+            <button 
+              onClick={() => handleComplete()}
+              className="px-4 py-2 rounded-full border border-transparent text-xs font-medium tracking-widest text-white/30 hover:bg-white/5 hover:text-white transition-all duration-300 active:scale-95 h-fit"
+            >
+              {language === 'en' ? 'SKIP' : 'ΠΑΡΑΛΕΙΨΗ'}
+            </button>
+            <button 
+              onClick={() => setLanguage(language === 'en' ? 'el' : 'en')}
+              className="px-4 py-2 rounded-full border border-white/10 text-xs font-bold tracking-widest text-white/40 hover:bg-white/5 hover:text-white transition-all duration-300 active:scale-95 h-fit"
+            >
+              {language === 'en' ? 'ΕΛ' : 'EN'}
+            </button>
+          </div>
         )}
       </div>
 
@@ -278,17 +336,34 @@ export default function Onboarding() {
 
             {/* Action Button */}
             <div className="flex flex-col items-center gap-4">
-              <button
-                onClick={nextStep}
-                className="flex items-center gap-3 px-8 py-4 bg-teal-500/10 hover:bg-teal-500/20 text-teal-300 rounded-full border border-teal-500/30 transition-all font-medium group active:scale-95"
-              >
-                <span>
-                  {step === steps.length - 1 
-                    ? (language === 'el' ? 'Ξεκινάω' : 'Begin') 
-                    : (language === 'el' ? 'Συνέχεια' : 'Continue')}
-                </span>
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </button>
+              {step === steps.length - 1 ? (
+                <button
+                  onMouseDown={() => setIsHolding(true)}
+                  onMouseUp={() => setIsHolding(false)}
+                  onMouseLeave={() => setIsHolding(false)}
+                  onTouchStart={() => setIsHolding(true)}
+                  onTouchEnd={() => setIsHolding(false)}
+                  onContextMenu={(e) => e.preventDefault()}
+                  className="relative overflow-hidden flex items-center justify-center w-24 h-24 rounded-full border border-teal-500/30 bg-teal-500/10 hover:bg-teal-500/20 text-teal-300 transition-all select-none group"
+                  style={{ transform: isHolding ? 'scale(0.95)' : 'scale(1)' }}
+                >
+                  <div 
+                    className="absolute bottom-0 left-0 right-0 bg-teal-500/30 transition-all duration-[40ms] ease-linear"
+                    style={{ height: `${holdProgress}%` }}
+                  />
+                  <span className="relative z-10 font-serif italic text-lg text-center px-2">
+                    {language === 'el' ? 'Νιώσε' : 'Feel'}
+                  </span>
+                </button>
+              ) : (
+                <button
+                  onClick={nextStep}
+                  className="flex items-center gap-3 px-8 py-4 bg-teal-500/10 hover:bg-teal-500/20 text-teal-300 rounded-full border border-teal-500/30 transition-all font-medium group active:scale-95"
+                >
+                  <span>{language === 'el' ? 'Συνέχεια' : 'Continue'}</span>
+                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                </button>
+              )}
             </div>
           </>
         )}

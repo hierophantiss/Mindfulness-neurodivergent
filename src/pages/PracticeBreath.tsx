@@ -714,6 +714,16 @@ export default function PracticeBreath() {
          )}
       </div>
 
+      {currentPatternId === 'sos-breath' && (
+        <div className="mt-8 px-6 text-center z-20 pb-4">
+          <p className="text-[12px] text-zinc-500 font-sans leading-relaxed">
+            {language === 'el' 
+              ? 'Αν αυτό δεν είναι αρκετό αυτή τη στιγμή, δεν είσαι μόνος — 1018 (Κλίμακα, 24ωρη γραμμή) ή 197 (δωρεάν, 24ωρη ψυχοκοινωνική στήριξη).'
+              : 'If this isn\'t enough right now, you are not alone — 111 Option 2 (NHS UK), 988 (US/CA) or 13 11 14 (Lifeline AU).'}
+          </p>
+        </div>
+      )}
+
       {/* Sleep Timer Modal */}
       {showSleepTimer && (
         <div className="absolute inset-0 z-[60] flex items-center justify-center p-4 bg-zinc-950/90 backdrop-blur-md">
