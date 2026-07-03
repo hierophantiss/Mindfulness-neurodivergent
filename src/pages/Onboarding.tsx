@@ -16,37 +16,67 @@ export default function Onboarding() {
   const [isHolding, setIsHolding] = useState(false);
   const [holdProgress, setHoldProgress] = useState(0);
 
+  const isHoldingRef = useRef(isHolding);
+  useEffect(() => {
+    isHoldingRef.current = isHolding;
+  }, [isHolding]);
+
+  const handleCompleteRef = useRef(() => {
+    localStorage.setItem('hasCompletedOnboarding', 'true');
+    localStorage.setItem('hasSeenIntro', 'true');
+    localStorage.setItem('n_mindfulness_intention', 'audhd');
+    navigate('/', { replace: true });
+  });
+
+  useEffect(() => {
+    handleCompleteRef.current = () => {
+      localStorage.setItem('hasCompletedOnboarding', 'true');
+      localStorage.setItem('hasSeenIntro', 'true');
+      localStorage.setItem('n_mindfulness_intention', 'audhd');
+      navigate('/', { replace: true });
+    };
+  }, [navigate]);
+
   useEffect(() => {
     let frame: number;
-    let startTime: number | null = null;
+    let lastTime: number = performance.now();
     let isCompleted = false;
     
-    if (isHolding) {
-      const duration = 2500;
+    const animate = (time: number) => {
+      const delta = time - lastTime;
+      lastTime = time;
       
-      const animate = (time: number) => {
-        if (!startTime) startTime = time;
-        const elapsed = time - startTime;
-        const progress = Math.min((elapsed / duration) * 100, 100);
-        setHoldProgress(progress);
+      setHoldProgress(prev => {
+        if (isCompleted) return prev;
         
-        if (progress >= 100 && !isCompleted) {
-          isCompleted = true;
-          handleComplete();
-        } else if (!isCompleted) {
-          frame = requestAnimationFrame(animate);
+        let newProgress = prev;
+        if (isHoldingRef.current) {
+          // Increase progress (takes 2.5s to reach 100%)
+          newProgress = Math.min(prev + (delta / 2500) * 100, 100);
+        } else {
+          // Decrease progress (takes 2s to drop back to 0%) - allows for dyspraxia slips
+          newProgress = Math.max(prev - (delta / 2000) * 100, 0);
         }
-      };
+        
+        if (newProgress >= 100 && !isCompleted) {
+          isCompleted = true;
+          setTimeout(() => handleCompleteRef.current(), 10);
+        }
+        
+        return newProgress;
+      });
       
-      frame = requestAnimationFrame(animate);
-    } else {
-      setHoldProgress(0);
-    }
+      if (!isCompleted) {
+        frame = requestAnimationFrame(animate);
+      }
+    };
+    
+    frame = requestAnimationFrame(animate);
     
     return () => {
       if (frame) cancelAnimationFrame(frame);
     };
-  }, [isHolding]);
+  }, []);
 
   useEffect(() => {
     if (localStorage.getItem('hasCompletedOnboarding') === 'true') {

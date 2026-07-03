@@ -719,7 +719,7 @@ export default function PracticeBreath() {
           <p className="text-[12px] text-zinc-500 font-sans leading-relaxed">
             {language === 'el' 
               ? 'Αν αυτό δεν είναι αρκετό αυτή τη στιγμή, δεν είσαι μόνος — 1018 (Κλίμακα, 24ωρη γραμμή) ή 197 (δωρεάν, 24ωρη ψυχοκοινωνική στήριξη).'
-              : 'If this isn\'t enough right now, you are not alone — 111 Option 2 (NHS UK), 988 (US/CA) or 13 11 14 (Lifeline AU).'}
+              : 'If this isn\'t enough right now, you are not alone — 1018 (Greece) or visit findahelpline.com for international support.'}
           </p>
         </div>
       )}

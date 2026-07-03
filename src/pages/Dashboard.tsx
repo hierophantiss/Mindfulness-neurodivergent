@@ -143,7 +143,7 @@ export default function Dashboard() {
               className="flex items-center gap-2"
             >
               <Link
-                to="/practice/breath/4-2-6-1"
+                to="/practice/breath/sos-breath"
                 className="flex items-center justify-center h-[32px] px-4 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-300 hover:bg-rose-500/20 active:scale-95 transition-all text-xs font-medium tracking-widest"
                 title={language === 'el' ? 'Άμεση Ηρέμηση' : 'Immediate Calm'}
               >
