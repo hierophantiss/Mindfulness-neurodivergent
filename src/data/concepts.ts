@@ -736,5 +736,63 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     axis: 'body',
     chapters: [1, 4, 10],
     related: ['grounding', 'gravity', 'proprioception', 'open_awareness']
+  },
+
+  mackrous_2019: {
+    el: {
+      title: 'Πρόβλεψη της Βαρύτητας & Παρεγκεφαλίδα • Mackrous et al. (2019)',
+      short: 'Ο εγκέφαλος προβλέπει και υπολογίζει συνεχώς τη βαρύτητα για να ξεχωρίσει τις δικές μας κινήσεις από τις εξωτερικές δυνάμεις.',
+      full: 'Αυτή η μελέτη ("Cerebellar Prediction of the Dynamic Sensory Consequences of Gravity") απέδειξε ότι η παρεγκεφαλίδα (το τμήμα του εγκεφάλου υπεύθυνο για τον συντονισμό και την ισορροπία) δημιουργεί ένα εσωτερικό μοντέλο της βαρύτητας.\n\nΟ εγκέφαλος δεν αντιδρά απλώς παθητικά στη βαρύτητα. Αντίθετα, υπολογίζει δυναμικά και προβλέπει την κατεύθυνση και τη δύναμή της, προκειμένου να διαχωρίσει τις ενεργές (δικές μας) κινήσεις του κεφαλιού από τις παθητικές (εξωτερικές) κινήσεις.',
+      ndNote: 'Η συνειδητή εστίαση στη βαρύτητα δεν είναι μια αφηρημένη ψυχολογική τεχνική. Αξιοποιεί έναν αρχέγονο νευρωνικό υπολογισμό που "αγκυρώνει" τον εγκέφαλο στο χώρο, προσφέροντας άμεση αίσθηση ασφάλειας και παρουσίας σε υπερδιεγερμένα νευρικά συστήματα.',
+      science: 'Mackrous, I., Carriot, J., Jamali, M., & Cullen, K. E. (2019). Current Biology. (Doi: 10.1016/j.cub.2019.07.006)'
+    },
+    en: {
+      title: 'Cerebellar Gravity Prediction • Mackrous et al. (2019)',
+      short: 'The brain continuously predicts and calculates gravity to distinguish self-generated movements from external forces.',
+      full: 'This study ("Cerebellar Prediction of the Dynamic Sensory Consequences of Gravity") demonstrated that the cerebellum (the brain region responsible for motor coordination and balance) constructs a robust internal model of gravity.\n\nThe brain doesn\'t just passively react to gravity. Instead, it dynamically computes and predicts its direction and magnitude to cancel out gravity\'s sensory consequences, thereby distinguishing active (self-generated) head movements from passive (external) ones.',
+      ndNote: 'Consciously focusing on gravity is not an abstract psychological trick. It leverages a primal neural computation that "anchors" the brain in space, providing an immediate sense of safety and presence for hyper-aroused nervous systems.',
+      science: 'Mackrous, I., Carriot, J., Jamali, M., & Cullen, K. E. (2019). Current Biology. (Doi: 10.1016/j.cub.2019.07.006)'
+    },
+    axis: 'body',
+    chapters: [1, 10],
+    related: ['gravity', 'grounding', 'proprioception']
+  },
+  vater_2022: {
+    el: {
+      title: 'Περιφερειακή Όραση & Περιβάλλον • Vater et al. (2022)',
+      short: 'Η περιφερειακή όραση δεν είναι απλώς «θολή». Είναι ένας θεμελιώδης μηχανισμός του εγκεφάλου για την παρακολούθηση του περιβάλλοντος και τη μείωση της αίσθησης εγκλωβισμού.',
+      full: 'Αυτή η συστηματική ανασκόπηση του 2022 ("Peripheral vision in real-world tasks") επιβεβαιώνει ότι η περιφερειακή όραση παίζει κεντρικό ρόλο στην αξιολόγηση του κόσμου γύρω μας και στον προσανατολισμό του σώματος. Αντί να εστιάζει σε μία απειλή, ο εγκέφαλος συγκεντρώνει πληροφορίες ασφάλειας από τον ευρύτερο χώρο.\n\nΌταν μαλακώνουμε το βλέμμα μας (soft gaze), αξιοποιούμε αυτή την ικανότητα του εγκεφάλου για να αποσυμπιέσουμε το νευρικό σύστημα και να μειώσουμε την αίσθηση του περιορισμού ή του "τούνελ" (hyperfocus).',
+      ndNote: 'Για ένα νευρικό σύστημα που κλειδώνει εύκολα, το "άνοιγμα" της περιφερειακής όρασης λειτουργεί ως νευρολογικό φρένο. Δεν χρειάζεται να πιέσετε τον εαυτό σας να χαλαρώσει. Απλώς διευρύνετε την όρασή σας.',
+      science: 'Vater, C., Wolfe, B., & Rosenholtz, R. (2022). Psychonomic Bulletin & Review. (Doi: 10.3758/s13423-022-02117-w)'
+    },
+    en: {
+      title: 'Peripheral Vision in Real-World Tasks • Vater et al. (2022)',
+      short: 'Peripheral vision isn\'t just "blurry" vision. It is a fundamental brain mechanism for monitoring the environment and reducing the feeling of being trapped.',
+      full: 'This 2022 systematic review ("Peripheral vision in real-world tasks") confirms that peripheral vision plays a central role in evaluating the world around us and orienting the body. Instead of focusing on a single threat, the brain gathers safety information from the wider space.\n\nWhen we soften our gaze, we leverage this brain capacity to decompress the nervous system and reduce the feeling of restriction or "tunnel vision" (hyperfocus).',
+      ndNote: 'For a nervous system that easily locks onto stimuli, "opening up" peripheral vision acts as a neurological brake. You don\'t need to force yourself to relax. Just widen your vision.',
+      science: 'Vater, C., Wolfe, B., & Rosenholtz, R. (2022). Psychonomic Bulletin & Review. (Doi: 10.3758/s13423-022-02117-w)'
+    },
+    axis: 'space',
+    chapters: [3, 4],
+    related: ['peripheral_vision', 'open_awareness', 'hyperfocus']
+  },
+  corrigan_2010: {
+    el: {
+      title: 'Παράθυρο Ανοχής & Αυτορρύθμιση • Corrigan et al. (2010)',
+      short: 'Αυτορρύθμιση είναι η ικανότητα επαναφοράς του νευρικού συστήματος από την υπερδιέγερση ή υπολειτουργία σε κατάσταση ισορροπίας.',
+      full: 'Σύμφωνα με το μοντέλο του «Παραθύρου Ανοχής» (Window of Tolerance), το νευρικό σύστημα λειτουργεί βέλτιστα μέσα σε ένα συγκεκριμένο εύρος διέγερσης. Έξω από αυτό, οδηγείται είτε σε υπερδιέγερση (άγχος, πανικός, «τρέξιμο» του νου) είτε σε υποδιέγερση (μούδιασμα, αποσύνδεση, «κλείδωμα»).\n\nΗ αυτορρύθμιση είναι η ικανότητα να αναγνωρίζουμε αυτές τις καταστάσεις και να χρησιμοποιούμε εργαλεία (όπως η γείωση, η αναπνοή και ο χώρος) για να επιστρέψουμε το σύστημα στην ισορροπία του.',
+      ndNote: 'Ο νευροδιαφορετικός νους βγαίνει συχνά εκτός του παραθύρου ανοχής λόγω υπερφόρτωσης (sensory overload). Η μέθοδος του Τετραπλού Άξονα παρέχει τα ακριβή σωματικά εργαλεία για να «φρενάρετε» την υπερδιέγερση (χώρος/εκπνοή) ή να «ξεκολλήσετε» από την υποδιέγερση (γείωση).',
+      science: 'Corrigan, F. M., Fisher, J. J., & Nutt, D. J. (2010). Journal of Psychopharmacology. (Doi: 10.1177/0269881109354930)'
+    },
+    en: {
+      title: 'Window of Tolerance & Self-Regulation • Corrigan et al. (2010)',
+      short: 'Self-regulation is the ability to return your nervous system from overstimulation or under-functioning to a state of balance.',
+      full: 'According to the "Window of Tolerance" model, the nervous system functions optimally within a specific range of arousal. Outside of this window, it is driven either into hyperarousal (anxiety, panic, a racing mind) or hypoarousal (numbness, dissociation, locking).\n\nSelf-regulation is the ability to recognize these states and use tools (like grounding, breathing, and space) to return the system to balance.',
+      ndNote: 'The neurodivergent mind frequently falls outside the window of tolerance due to sensory overload. The Fourfold Axis method provides the exact somatic tools to "brake" hyperarousal (space/exhale) or "unstick" from hypoarousal (grounding).',
+      science: 'Corrigan, F. M., Fisher, J. J., & Nutt, D. J. (2010). Journal of Psychopharmacology. (Doi: 10.1177/0269881109354930)'
+    },
+    axis: 'body',
+    chapters: [2, 5],
+    related: ['grounding', 'open_awareness', 'hyperfocus', 'slow_exhale']
   }
 };

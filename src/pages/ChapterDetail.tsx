@@ -19,11 +19,15 @@ const CHAPTER_CONCEPTS_MAP: Record<number, { id: string; labelEn: string; labelE
     { id: 'gibson_1979', labelEn: 'Gibson (1979) • Ecological Ground', labelEl: 'Gibson (1979) • Οικολογικό Έδαφος', icon: '🌲' },
     { id: 'gibson_2019', labelEn: 'Gibson (2019) • Interoception', labelEl: 'Μελέτη Gibson (2019) • Δια-αίσθηση', icon: '🔬' },
     { id: 'zylowska_2007', labelEn: 'Zylowska (2007) • ADHD', labelEl: 'Μελέτη Zylowska (2007) • ΔΕΠΥ', icon: '🔬' },
+    { id: 'mackrous_2019', labelEn: 'Mackrous (2019) • Gravity Prediction', labelEl: 'Mackrous (2019) • Πρόβλεψη Βαρύτητας', icon: '🔬' },
+    { id: 'vater_2022', labelEn: 'Vater (2022) • Peripheral Vision', labelEl: 'Vater (2022) • Περιφερειακή Όραση', icon: '👁️' },
+    { id: 'corrigan_2010', labelEn: 'Corrigan (2010) • Window of Tolerance', labelEl: 'Corrigan (2010) • Παράθυρο Ανοχής', icon: '⚖️' },
     { id: 'grounding', labelEn: 'Grounding & Gravity', labelEl: 'Γείωση & Βαρύτητα', icon: '⛰️' },
     { id: 'proprioception', labelEn: 'Proprioception', labelEl: 'Ιδιοδεκτικότητα', icon: '🧠' },
     { id: 'movement_vs_breathwork', labelEn: 'Tai Chi & Movement', labelEl: 'Τάι Τσι & Κίνηση', icon: '🪷' },
   ],
   2: [
+    { id: 'corrigan_2010', labelEn: 'Corrigan (2010) • Window of Tolerance', labelEl: 'Μελέτη Corrigan (2010) • Παράθυρο Ανοχής', icon: '⚖️' },
     { id: 'vagus_nerve', labelEn: 'Vagus Nerve Activation', labelEl: 'Ενεργοποίηση Πνευμονογαστρικού', icon: '⚡' },
     { id: 'parasympathetic', labelEn: 'Parasympathetic Response', labelEl: 'Παρασυμπαθητικό Σύστημα', icon: '🌿' },
     { id: 'interoception', labelEn: 'Inner Touch', labelEl: 'Εσωτερική Αφή', icon: '🫁' },
@@ -43,6 +47,8 @@ const CHAPTER_CONCEPTS_MAP: Record<number, { id: string; labelEn: string; labelE
     { id: 'peripheral_vision', labelEn: 'Peripheral Gaze', labelEl: 'Περιφερειακή Όραση', icon: '👁️' }
   ],
   5: [
+    { id: 'corrigan_2010', labelEn: 'Corrigan (2010) • Window of Tolerance', labelEl: 'Μελέτη Corrigan (2010) • Παράθυρο Ανοχής', icon: '⚖️' },
+    { id: 'brewer_2011', labelEn: 'Brewer (2011) • DMN & Mechanical Mind', labelEl: 'Μελέτη Brewer (2011) • DMN', icon: '🧠' },
     { id: 'zylowska_2007', labelEn: 'ADHD Adaptation', labelEl: 'ΔΕΠΥ & Προσαρμογή', icon: '🔬' },
     { id: 'cearns_2022', labelEn: 'Habit & Adherence', labelEl: 'Μελέτη Cearns (2022) • Δόση', icon: '📊' },
     { id: 'hyperfocus', labelEn: 'Hyperfocus Breakthrough', labelEl: 'Απελευθέρωση Hyperfocus', icon: '🧠' },

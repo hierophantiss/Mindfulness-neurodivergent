@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, ShieldCheck, Brain, Waves, Sparkles, Heart, Activity, CheckCircle } from 'lucide-react';
+import { ArrowLeft, ShieldCheck, Brain, Waves, Sparkles, Heart, Activity, CheckCircle, Eye } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 
@@ -13,6 +13,12 @@ const T = {
     philosophyText: 'Οι κλασικές τεχνικές mindfulness συχνά προκαλούν άγχος ή «πάγωμα» (freeze response) σε νευροδιαφορετικά άτομα επειδή απαιτούν άμεση, αναγκαστική ακινησία και παθητική παρατήρηση. Η φιλοσοφία μας επαναπροσδιορίζει την πρακτική μέσω της σωματικής ενσυναισθητικής ρύθμισης (somatic bottom-up regulation):',
     
     pillars: [
+      {
+        icon: ShieldCheck,
+        title: 'Νευροβιολογία της Ενσυνειδητότητας (Calderone et al., 2024)',
+        desc: 'Αυτή η πρόσφατη συστηματική ανασκόπηση (2024) συγκεντρώνει τα κλινικά ευρήματα της τελευταίας δεκαετίας, επιβεβαιώνοντας ότι η ενσυνειδητότητα προκαλεί μετρήσιμες δομικές και λειτουργικές αλλαγές στον εγκέφαλο. Ειδικότερα, τεκμηριώνει την πάχυνση του προμετωπιαίου φλοιού (ρύθμιση προσοχής), τη μείωση του όγκου της αμυγδαλής (μείωση του άγχους) και τη βελτιωμένη συνδεσιμότητα της νήσου (insula - ενδοδεκτικότητα), παρέχοντας ολοκληρωμένη επιστημονική επικύρωση για τις πρακτικές του Sanctuary και του Τετραπλού Άξονα.',
+        citation: 'Calderone et al. (2024). Biomedicines. Doi: 10.3390/biomedicines12112613'
+      },
       {
         icon: Brain,
         title: 'Απενεργοποίηση του DMN (Farb et al., 2007)',
@@ -30,6 +36,12 @@ const T = {
         title: 'Πολυβαγική Θεωρία & Ασφάλεια (Porges, 1995/2011)',
         desc: 'Το νευρικό σύστημα χάνει την ισορροπία του όταν νιώθει απειλή. Μέσω της αργής, ελεγχόμενης εκπνοής (Ventral Vagus stimulation), στέλνουμε σήματα βιολογικής ασφάλειας απευθείας στο στέλεχος του εγκεφάλου, παρακάμπτοντας τη λογική ανάλυση που συχνά οδηγεί σε πνευματικό μηρυκασμό.',
         citation: 'Stephen Porges, PhD (1995). Psychophysiology. Doi: 10.1111/j.1469-8986.1995.tb03320.x'
+      },
+      {
+        icon: Activity,
+        title: 'Παράθυρο Ανοχής & Αυτορρύθμιση (Corrigan et al., 2010)',
+        desc: 'Σύμφωνα με το μοντέλο του Παραθύρου Ανοχής, το αυτόνομο νευρικό σύστημα διαθέτει ένα βέλτιστο εύρος διέγερσης. Έξω από αυτό, οδηγούμαστε σε υπερδιέγερση ή υποδιέγερση. Οι σωματικές πρακτικές του Sanctuary δρουν ως εργαλεία αυτορρύθμισης, επαναφέροντας το σύστημα σε ισορροπία όταν βγαίνει εκτός ορίων λόγω emotional trauma ή overload.',
+        citation: 'Corrigan et al. (2010). Journal of Psychopharmacology. Doi: 10.1177/0269881109354930'
       },
       {
         icon: Activity,
@@ -56,6 +68,18 @@ const T = {
         citation: 'Ashinoff & Abu-Akel (2019). Psychological Research. Doi: 10.1007/s00426-019-01245-8'
       },
       {
+        icon: Brain,
+        title: 'Πρόβλεψη της Βαρύτητας & Παρεγκεφαλίδα (Mackrous et al., 2019)',
+        desc: 'Η μελέτη αποδεικνύει ότι η παρεγκεφαλίδα υπολογίζει δυναμικά και προβλέπει τη βαρύτητα. Το Sanctuary και ο Τετραπλός Άξονας αξιοποιούν αυτόν τον αρχέγονο νευρωνικό υπολογισμό "αγκυρώνοντας" τον εγκέφαλο στο χώρο, προσφέροντας άμεση αίσθηση ασφάλειας στο υπερδιεγερμένο νευρικό σύστημα.',
+        citation: 'Mackrous et al. (2019). Current Biology. Doi: 10.1016/j.cub.2019.07.006'
+      },
+      {
+        icon: Eye,
+        title: 'Περιφερειακή Όραση & Περιβάλλον (Vater et al., 2022)',
+        desc: 'Η περιφερειακή όραση δεν είναι απλώς βοηθητική. Σύμφωνα με τη συστηματική ανασκόπηση, αποτελεί θεμελιώδη μηχανισμό του εγκεφάλου για την παρακολούθηση του περιβάλλοντος και τον προσανατολισμό του σώματος. Το "μαλάκωμα" του βλέμματος (soft gaze) λειτουργεί ως νευρολογικό φρένο που μειώνει την αίσθηση εγκλωβισμού στο υπερδιεγερμένο νευρικό σύστημα.',
+        citation: 'Vater et al. (2022). Psychonomic Bulletin & Review. Doi: 10.3758/s13423-022-02117-w'
+      },
+      {
         icon: Heart,
         title: 'Οικολογική Αντίληψη & Έδαφος (James J. Gibson, 1979)',
         desc: 'Η οικολογική προσέγγιση του Gibson αποδεικνύει ότι το σώμα και ο χώρος αποτελούν ένα ενιαίο σύστημα. Η αντίληψη του χώρου δεν είναι αφηρημένος υπολογισμός, αλλά βασίζεται στο «έδαφος» που στηρίζει φυσικά το σώμα, παρέχοντας άμεση σωματική ασφάλεια (affordances).',
@@ -76,6 +100,12 @@ const T = {
     
     pillars: [
       {
+        icon: ShieldCheck,
+        title: 'Neurobiology of Mindfulness (Calderone et al., 2024)',
+        desc: 'This comprehensive 2024 systematic review synthesizes clinical neuroimaging findings, confirming that mindfulness induces measurable structural and functional neuroplastic changes. It details thickening in the prefrontal cortex (attention regulation), decreased amygdala volume (stress and fear response reduction), and enhanced insular connectivity (interoception), providing ultimate scientific validation for our Sanctuary and Fourfold Axis practices.',
+        citation: 'Calderone et al. (2024). Biomedicines. Doi: 10.3390/biomedicines12112613'
+      },
+      {
         icon: Brain,
         title: 'Silencing the DMN (Farb et al., 2007)',
         desc: 'In ADHD or highly masked brains, the Default Mode Network (DMN - the network behind rumination, mind-wandering, and self-criticism) is often hyperactive. Farb\'s landmark fMRI study demonstrated that shifting to direct somatic pathways (Experiential Focus) silences the DMN, offering immediate neural relief.',
@@ -92,6 +122,12 @@ const T = {
         title: 'Polyvagal Theory & Somatic Safety (Porges, 1995/2011)',
         desc: 'The nervous system cannot integrate training while in threat states. By utilizing targeted somatic tools like deep, extended exhales (Ventral Vagal activation) and slow swaying, we send physical safety signals directly to the brainstem, bypassing cognitive loops.',
         citation: 'Stephen Porges, PhD (1995). Psychophysiology. Doi: 10.1111/j.1469-8986.1995.tb03320.x'
+      },
+      {
+        icon: Activity,
+        title: 'Window of Tolerance & Self-Regulation (Corrigan et al., 2010)',
+        desc: 'According to the Window of Tolerance model, the autonomic nervous system operates optimally within a specific range of arousal. Outside this, it enters hyperarousal or hypoarousal. Our somatic practices act as self-regulation tools, restoring the system to balance when it falls out of the window due to emotional trauma or sensory overload.',
+        citation: 'Corrigan et al. (2010). Journal of Psychopharmacology. Doi: 10.1177/0269881109354930'
       },
       {
         icon: Activity,
@@ -116,6 +152,18 @@ const T = {
         title: 'Hyperfocus Frontier (Ashinoff & Abu-Akel, 2019)',
         desc: 'This seminal review details hyperfocus as a state of intense cognitive absorption and sensory gating typical of ADHD & Autistic profiles. Rather than a deficit, it represents an all-or-nothing attentional lock, modulated via our Soft Gaze somatic protocols.',
         citation: 'Ashinoff & Abu-Akel (2019). Psychological Research. Doi: 10.1007/s00426-019-01245-8'
+      },
+      {
+        icon: Brain,
+        title: 'Cerebellar Gravity Prediction (Mackrous et al., 2019)',
+        desc: 'This study demonstrates that the cerebellum dynamically computes and predicts gravity. Sanctuary and the Fourfold Axis leverage this primal neural computation, "anchoring" the brain in space and providing an immediate sense of safety to a hyper-aroused nervous system.',
+        citation: 'Mackrous et al. (2019). Current Biology. Doi: 10.1016/j.cub.2019.07.006'
+      },
+      {
+        icon: Eye,
+        title: 'Peripheral Vision in Real-World Tasks (Vater et al., 2022)',
+        desc: 'Peripheral vision isn\'t just auxiliary. According to this systematic review, it is a fundamental brain mechanism for monitoring the environment and orienting the body. "Softening" the gaze acts as a neurological brake that reduces the feeling of being trapped in a hyper-aroused nervous system.',
+        citation: 'Vater et al. (2022). Psychonomic Bulletin & Review. Doi: 10.3758/s13423-022-02117-w'
       },
       {
         icon: Heart,

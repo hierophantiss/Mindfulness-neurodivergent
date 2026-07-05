@@ -87,6 +87,74 @@ const ARTICLES: Record<string, { titleEn: string; titleEl: string; descEn: strin
 const SCHOLARLY_CITATIONS = [
   {
     "@type": "ScholarlyArticle",
+    "@id": "https://doi.org/10.3390/biomedicines12112613",
+    "name": "Neurobiological Changes Induced by Mindfulness and Meditation: A Systematic Review",
+    "headline": "Neurobiological Changes Induced by Mindfulness and Meditation: A Systematic Review",
+    "sameAs": "https://doi.org/10.3390/biomedicines12112613",
+    "identifier": "doi:10.3390/biomedicines12112613",
+    "datePublished": "2024",
+    "author": {
+      "@type": "Person",
+      "name": "Andrea Calderone"
+    },
+    "isPartOf": {
+      "@type": "Periodical",
+      "name": "Biomedicines"
+    }
+  },
+  {
+    "@type": "ScholarlyArticle",
+    "@id": "https://doi.org/10.1016/j.cub.2019.07.006",
+    "name": "Cerebellar Prediction of the Dynamic Sensory Consequences of Gravity",
+    "headline": "Cerebellar Prediction of the Dynamic Sensory Consequences of Gravity",
+    "sameAs": "https://doi.org/10.1016/j.cub.2019.07.006",
+    "identifier": "doi:10.1016/j.cub.2019.07.006",
+    "datePublished": "2019",
+    "author": {
+      "@type": "Person",
+      "name": "Isabelle Mackrous"
+    },
+    "isPartOf": {
+      "@type": "Periodical",
+      "name": "Current Biology"
+    }
+  },
+  {
+    "@type": "ScholarlyArticle",
+    "@id": "https://doi.org/10.3758/s13423-022-02117-w",
+    "name": "Peripheral vision in real-world tasks: A systematic review",
+    "headline": "Peripheral vision in real-world tasks: A systematic review",
+    "sameAs": "https://doi.org/10.3758/s13423-022-02117-w",
+    "identifier": "doi:10.3758/s13423-022-02117-w",
+    "datePublished": "2022",
+    "author": {
+      "@type": "Person",
+      "name": "Christian Vater"
+    },
+    "isPartOf": {
+      "@type": "Periodical",
+      "name": "Psychonomic Bulletin & Review"
+    }
+  },
+  {
+    "@type": "ScholarlyArticle",
+    "@id": "https://doi.org/10.1177/0269881109354930",
+    "name": "Autonomic dysregulation and the Window of Tolerance model of the effects of complex emotional trauma",
+    "headline": "Autonomic dysregulation and the Window of Tolerance model of the effects of complex emotional trauma",
+    "sameAs": "https://doi.org/10.1177/0269881109354930",
+    "identifier": "doi:10.1177/0269881109354930",
+    "datePublished": "2010",
+    "author": {
+      "@type": "Person",
+      "name": "FM Corrigan"
+    },
+    "isPartOf": {
+      "@type": "Periodical",
+      "name": "Journal of Psychopharmacology"
+    }
+  },
+  {
+    "@type": "ScholarlyArticle",
     "@id": "https://doi.org/10.1093/scan/nsm030",
     "name": "Attending to the present: mindfulness meditation reveals distinct neural modes of self-reference",
     "headline": "Attending to the present: mindfulness meditation reveals distinct neural modes of self-reference",
