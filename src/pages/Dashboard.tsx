@@ -13,7 +13,7 @@ import { motion } from 'motion/react';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { useBinauralAudio } from '../hooks/useBinauralAudio';
 import InfoModal from '../components/InfoModal';
-import CoreGeometricState from '../components/CoreGeometricState';
+import { CatInfinityAvatar } from '../components/CatInfinityAvatar';
 
 import { AFFIRMATIONS } from '../data/affirmations';
 
@@ -191,7 +191,7 @@ export default function Dashboard() {
           transition={{ duration: 1.5, delay: 0.2, ease: "easeOut" }}
           className="w-full mt-2"
         >
-          <CoreGeometricState />
+          <CatInfinityAvatar className="w-48 h-48 mx-auto" />
         </motion.div>
 
         {/* Daily Affirmation */}

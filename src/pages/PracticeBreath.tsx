@@ -390,15 +390,7 @@ export default function PracticeBreath() {
   
   const maxSeconds = Math.round((pattern.phases[phaseIdx]?.dur || 4000) / 1000);
 
-  const getDisplaySub = (subText: string, currentSec: number, totalSec: number) => {
-    if (!running) return subText;
-    const match = subText.match(/\((\d+)s\)/);
-    if (match) {
-      const matchTotal = match[1];
-      return subText.replace(/\((\d+)s\)/, `(${currentSec}/${matchTotal}s)`);
-    }
-    return subText;
-  };
+
 
   return (
     <div className="flex flex-col flex-1 bg-[#061114] -mx-4 -mt-4 -mb-8 px-4 pt-4 pb-8 md:-mx-8 md:-mt-8 md:-mb-8 md:px-8 md:pt-8 md:pb-8 overflow-hidden relative font-sans text-zinc-100">
@@ -587,7 +579,7 @@ export default function PracticeBreath() {
                   }}
                   transition={{ 
                     duration: running ? (pattern.phases[phaseIdx]?.dur / 1000 || 2) : 4, 
-                    ease: [0.4, 0, 0.2, 1] 
+                    ease: [0.45, 0, 0.55, 1] 
                   }}
                 >
                   {(pattern.category === 'movement' || pattern.visualizer) ? (
@@ -614,37 +606,19 @@ export default function PracticeBreath() {
                   )}
                 </motion.div>
                 
-                <div className="z-10 absolute -top-12 md:top-auto md:-right-4 font-sans font-semibold text-[3.5rem] tabular-nums drop-shadow-md">
-                  {running ? (
-                    isInhale ? (
-                      <span className="text-sky-400">{phaseSeconds}</span>
-                    ) : isExhale ? (
-                      <span className="text-emerald-400">{phaseSeconds}</span>
-                    ) : (
-                      <span className="text-amber-300">{phaseSeconds}</span>
-                    )
-                  ) : null}
+                {/* Phase Text Overlay inside hero card */}
+                <div className="absolute bottom-6 left-0 right-0 z-20 flex justify-center pointer-events-none">
+                  {running && (
+                    <p className={cn("text-2xl tracking-[0.2em] font-mono font-light transition-colors text-center drop-shadow-md", isInhale ? "text-[#7dd3fc]" : isExhale ? "text-[#5eead4]" : "text-[#fcd34d]")}>
+                      {phaseSeconds} <span className="text-lg opacity-50 relative -top-0.5">/ {maxSeconds}</span>
+                    </p>
+                  )}
                 </div>
              </div>
           </div>
         </div>
 
-        {/* Phase Text Overlay (Below the globe) */}
-        <div 
-          className="absolute left-0 right-0 z-10 flex flex-col items-center justify-center pointer-events-none drop-shadow-lg"
-          style={{ bottom: '8%' }}
-          aria-live="polite"
-          aria-atomic="true"
-        >
-          <h2 className="text-3xl font-medium tracking-wide mb-1 text-white transition-all text-center drop-shadow-md">
-            {language === 'en' ? phase.label.en : phase.label.el}
-          </h2>
-          <p className="text-zinc-200/90 italic tracking-wide text-[13px] text-center drop-shadow-md pb-2">
-            {language === 'en' 
-              ? getDisplaySub(phase.sub.en, phaseSeconds, maxSeconds) 
-              : getDisplaySub(phase.sub.el, phaseSeconds, maxSeconds)}
-          </p>
-        </div>
+        
 
         {/* Cycles Counter (Bottom Right) */}
         <div className="absolute bottom-6 right-6 z-10 flex flex-col items-center pointer-events-none">

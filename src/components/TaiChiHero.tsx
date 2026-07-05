@@ -510,7 +510,7 @@ export default function TaiChiHero({
             cy="500"
             r="216"
             fill="none"
-            stroke="#38bdf8"
+            stroke="#7dd3fc"
             strokeWidth="4"
             opacity="0.25"
             filter="url(#earth-glow)"

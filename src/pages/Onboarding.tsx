@@ -6,7 +6,6 @@ import { useLanguage } from '../hooks/useLanguage';
 import { cn } from '../lib/utils';
 import { RainbowInfinity } from '../components/RainbowInfinity';
 import { CatInfinityAvatar } from '../components/CatInfinityAvatar';
-import CoreGeometricState from '../components/CoreGeometricState';
 
 export default function Onboarding() {
   const [step, setStep] = useState(0);
@@ -201,7 +200,7 @@ export default function Onboarding() {
       content: (
         <div className="flex flex-col items-center text-center space-y-4 md:space-y-8 w-full max-w-xl mx-auto mt-4 md:mt-0">
           <div className="w-full scale-50 md:scale-75 origin-top mb-[-120px] md:mb-[-60px]">
-            <CoreGeometricState />
+            <CatInfinityAvatar className="w-64 h-64 mx-auto" />
           </div>
           <div className="space-y-2 md:space-y-3 relative z-10">
             <h2 className="text-2xl md:text-3xl font-serif italic text-white tracking-tight">

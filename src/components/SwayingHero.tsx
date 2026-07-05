@@ -148,7 +148,7 @@ export default function SwayingHero({ tickCount, tempo }: SwayingHeroProps) {
 
         {/* EARTH */}
         <g transform="translate(200, 320) scale(1.8) translate(-200, -283)">
-          <circle cx="200" cy="500" r="216" fill="none" stroke="#38bdf8" strokeWidth="4" opacity="0.15" filter="url(#earth-glow-sway)" />
+          <circle cx="200" cy="500" r="216" fill="none" stroke="#7dd3fc" strokeWidth="4" opacity="0.15" filter="url(#earth-glow-sway)" />
           <circle cx="200" cy="500" r="215" fill="url(#ocean-grad-sway)" stroke="#fed7aa" strokeWidth={0.5} opacity={0.6} />
           <g clipPath="url(#earth-clip-sway)" opacity={0.6}>
             <clipPath id="earth-clip-sway">
@@ -172,7 +172,7 @@ export default function SwayingHero({ tickCount, tempo }: SwayingHeroProps) {
 
           {/* ── FIXED BASE: Legs + cushion ── */}
           <g>
-            <ellipse cx="200" cy="300" rx="35" ry="8" fill="#030408" opacity="0.5" />
+            <ellipse cx="200" cy="300" rx="35" ry="8" fill="#030408" opacity="0.9" />
             {/* Wider, more rounded crossed legs that blend into torso */}
             <path
               d="M 155 288 Q 175 308 200 306 Q 225 308 245 288 Q 248 294 200 310 Q 152 294 155 288"

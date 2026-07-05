@@ -1,5 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '../hooks/useLanguage';
+import { useAccessibility } from '../hooks/useAccessibility';
 
 interface BreathingHeroProps {
   phaseIdx: number;
@@ -14,18 +16,22 @@ interface BreathingHeroProps {
   patternId?: string;
 }
 
-export function BreathingHero({ 
-  phaseIdx, 
-  isInhale, 
-  isExhale, 
-  isHold, 
-  durationMs, 
-  className, 
+export function BreathingHero({
+  language: propLanguage,
+  phaseIdx,
+  isInhale,
+  isExhale,
+  isHold,
+  durationMs,
+  className,
   isSwaying = false,
   isHumming = false,
   armPos = 1.0,
   patternId
-}: BreathingHeroProps) {
+}: BreathingHeroProps & { language?: 'en' | 'el' }) {
+  const { language: contextLanguage } = useLanguage();
+  const { reduceMotion } = useAccessibility();
+  const language = propLanguage || contextLanguage;
   // Breathing logic for the animation
   // When inhaling, the torso scales up and an inner glow expands.
   // When exhaling, the torso scales down and the glow shrinks.
@@ -46,7 +52,7 @@ export function BreathingHero({
 
   const transitionConfig = { 
     duration: durationMs / 1000, 
-    ease: "easeInOut" as const 
+    ease: [0.45, 0, 0.55, 1] as const 
   };
 
   const stars = React.useMemo(() => {
@@ -62,7 +68,7 @@ export function BreathingHero({
       };
     };
     const random = seedRandom("taichi_stars_v2");
-    for (let i = 0; i < 45; i++) {
+    for (let i = 0; i < 15; i++) {
       list.push({
         id: i,
         cx: random() * 400,
@@ -99,14 +105,14 @@ export function BreathingHero({
       };
     };
     const random = seedRandom("prana_particles_breathing_v1");
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < 10; i++) {
        const baseAngle = random() * Math.PI * 2;
        list.push({
          id: i,
          baseAngle,
          distInhale: random() * 15 + 30, // gather close to chest
          distExhale: random() * 70 + 60, // scatter outwards
-         size: random() * 1.5 + 0.5,
+         size: random() * 0.3 + 1.3,
        });
     }
     return list;
@@ -126,85 +132,85 @@ export function BreathingHero({
   }, []);
 
   // Dynamic vocal sound epicenter representing the vibrating resonance (Bhramari / AUM)
-  const vocalCx = 199;
-  
-  // Choose locus height, colors, and labels based on patternId and exhalation progress
-  let vocalCy = 208;
+  let vocalCx = 190;
+  let vocalCy = 185; // Head default
   let resonanceColor = "rgba(167, 139, 250, 0.45)"; // Violet default (head)
   let resonanceGlow = "#a78bfa";
-  let resonanceLabel = "HEAD / ΚΕΦΑΛΙ";
-  let resonanceSyllable = "« μμμ... »";
-  let resonanceDesc = "Δόνηση στο κεφάλι & ρινική κοιλότητα";
+  let resonanceLabel = { en: "HEAD", el: "ΚΕΦΑΛΙ" };
+  let resonanceSyllable = { en: "« mmm... »", el: "« μμμ... »" };
+  let resonanceDesc = { en: "Vibration in head & nasal cavity", el: "Δόνηση στο κεφάλι & ρινική κοιλότητα" };
 
   if (isHumming) {
     if (patternId === 'aum-resonance') {
-      // Linear shift from belly to head (ascending energy) as armPos drops from 1.0 down to 0.0
-      vocalCy = 200 + armPos * 90;
-
-      if (armPos > 0.65) {
+      if (armPos < 0.33) {
+        vocalCx = 190;
+        vocalCy = 275; // Lower belly (A)
         resonanceColor = "rgba(234, 179, 8, 0.45)"; // saffron gold (belly/sacral block)
         resonanceGlow = "#eab308";
-        resonanceLabel = "BELLY / ΚΟΙΛΙΑ";
-        resonanceSyllable = "« ααα... »";
-        resonanceDesc = "Δόνηση στην κοιλιά & λεκάνη";
-      } else if (armPos >= 0.3) {
+        resonanceLabel = { en: "BELLY", el: "ΚΟΙΛΙΑ" };
+        resonanceSyllable = { en: "« aaa... »", el: "« ααα... »" };
+        resonanceDesc = { en: "Vibration in belly & pelvis", el: "Δόνηση στην κοιλιά & λεκάνη" };
+      } else if (armPos < 0.66) {
+        vocalCy = 240; // Chest (U/O)
         resonanceColor = "rgba(20, 184, 166, 0.5)"; // turquoise (chest/heart/throat block)
         resonanceGlow = "#14b8a6";
-        resonanceLabel = "CHEST & THROAT / ΣΤΗΘΟΣ & ΛΑΙΜΟΣ";
-        resonanceSyllable = "« οοο... »";
-        resonanceDesc = "Δόνηση στο στήθος & λαιμό";
+        resonanceLabel = { en: "CHEST & THROAT", el: "ΣΤΗΘΟΣ & ΛΑΙΜΟΣ" };
+        resonanceSyllable = { en: "« ooo... »", el: "« οοο... »" };
+        resonanceDesc = { en: "Vibration in chest & throat", el: "Δόνηση στο στήθος & λαιμό" };
       } else {
+        vocalCy = 205; // Head (M)
         resonanceColor = "rgba(167, 139, 250, 0.45)"; // soft violet (throat/head block)
         resonanceGlow = "#a78bfa";
-        resonanceLabel = "HEAD / ΚΕΦΑΛΙ";
-        resonanceSyllable = "« μμμ... »";
-        resonanceDesc = "Δόνηση στο κεφάλι & ρινική κοιλότητα";
+        resonanceLabel = { en: "HEAD", el: "ΚΕΦΑΛΙ" };
+        resonanceSyllable = { en: "« mmm... »", el: "« μμμ... »" };
+        resonanceDesc = { en: "Vibration in head & nasal cavity", el: "Δόνηση στο κεφάλι & ρινική κοιλότητα" };
       }
     } else if (patternId === 'a-major-resonance') {
       // Heart / Chest resonance
-      vocalCy = 250;
+      vocalCy = 240;
       resonanceColor = "rgba(244, 63, 94, 0.45)"; // Rose/Red for heart
       resonanceGlow = "#f43f5e";
-      resonanceLabel = "HEART / ΚΑΡΔΙΑ";
-      resonanceSyllable = "« ΑΑΑ... »";
-      resonanceDesc = "Δόνηση & Ανάταση Στήθους";
+      resonanceLabel = { en: "HEART", el: "ΚΑΡΔΙΑ" };
+      resonanceSyllable = { en: "« AAA... »", el: "« ΑΑΑ... »" };
+      resonanceDesc = { en: "Chest Vibration & Uplift", el: "Δόνηση & Ανάταση Στήθους" };
     } else if (patternId === 'c-major-resonance') {
       // Root / Belly resonance
-      vocalCy = 300; // Lower belly area
+      vocalCy = 275;
       resonanceColor = "rgba(239, 68, 68, 0.45)"; // Red base
       resonanceGlow = "#ef4444";
-      resonanceLabel = "ROOT / ΒΑΣΗ";
-      resonanceSyllable = "« ΟΥΟΥΟΥ... »";
-      resonanceDesc = "Βαθιά Δόνηση Γείωσης";
+      resonanceLabel = { en: "ROOT", el: "ΒΑΣΗ" };
+      resonanceSyllable = { en: "« OOO... »", el: "« ΟΥΟΥΟΥ... »" };
+      resonanceDesc = { en: "Deep Grounding Vibration", el: "Βαθιά Δόνηση Γείωσης" };
     } else if (patternId === 'throat-chakra-humming') {
-      vocalCy = 210; // Throat area
+      // Throat focus
+      vocalCy = 222;
       resonanceColor = "rgba(56, 189, 248, 0.45)"; // Light blue for throat
       resonanceGlow = "#38bdf8";
-      resonanceLabel = "THROAT / ΛΑΙΜΟΣ";
-      resonanceSyllable = "« ΧΑΜ... »";
-      resonanceDesc = "Καθαρή Έκφραση (Vishuddha)";
+      resonanceLabel = { en: "THROAT", el: "ΛΑΙΜΟΣ" };
+      resonanceSyllable = { en: "« HAM... »", el: "« ΧΑΜ... »" };
+      resonanceDesc = { en: "Clear Expression (Vishuddha)", el: "Καθαρή Έκφραση (Vishuddha)" };
     } else if (patternId === 'om-pure-resonance') {
-      vocalCy = 180; // Third eye area
+      vocalCy = 195; // third eye / middle forehead
       resonanceColor = "rgba(129, 140, 248, 0.5)"; // Indigo
       resonanceGlow = "#818cf8";
-      resonanceLabel = "THIRD EYE / ΤΡΙΤΟ ΜΑΤΙ";
-      resonanceSyllable = "« ΟΜ... »";
-      resonanceDesc = "Συγκέντρωση στο Κέντρο του Μετώπου";
+      resonanceLabel = { en: "THIRD EYE", el: "ΤΡΙΤΟ ΜΑΤΙ" };
+      resonanceSyllable = { en: "« OM... »", el: "« ΟΜ... »" };
+      resonanceDesc = { en: "Focus at Center of Forehead", el: "Συγκέντρωση στο Κέντρο του Μετώπου" };
     } else if (patternId === 'om-resonance-throat') {
-      vocalCy = 210; // Throat area
+      vocalCy = 222;
       resonanceColor = "rgba(56, 189, 248, 0.45)"; // Light blue for throat
       resonanceGlow = "#38bdf8";
-      resonanceLabel = "THROAT / ΛΑΙΜΟΣ";
-      resonanceSyllable = armPos > 0.4 ? "« ΟΟΟ... »" : "« ΜΜΜ... »";
-      resonanceDesc = "Παρατεταμένη Ρύθμιση ΟΜ";
+      resonanceLabel = { en: "THROAT", el: "ΛΑΙΜΟΣ" };
+      resonanceSyllable = armPos > 0.4 ? { en: "« OOO... »", el: "« ΟΟΟ... »" } : { en: "« MMM... »", el: "« ΜΜΜ... »" };
+      resonanceDesc = { en: "Sustained OM Regulation", el: "Παρατεταμένη Ρύθμιση ΟΜ" };
     } else {
-      // bhramari-humming or default: pure Head nasal hum
-      vocalCy = 208;
+      // Default (Bhramari etc)
+      vocalCy = 205; // Head default for humming
       resonanceColor = "rgba(167, 139, 250, 0.45)";
       resonanceGlow = "#a78bfa";
-      resonanceLabel = "HEAD / ΚΕΦΑΛΙ";
-      resonanceSyllable = "« μμμ... »";
-      resonanceDesc = "Δόνηση στο κεφάλι & ρινική κοιλότητα";
+      resonanceLabel = { en: "HEAD", el: "ΚΕΦΑΛΙ" };
+      resonanceSyllable = { en: "« mmm... »", el: "« μμμ... »" };
+      resonanceDesc = { en: "Vibration in head & nasal cavity", el: "Δόνηση στο κεφάλι & ρινική κοιλότητα" };
     }
   }
 
@@ -221,11 +227,7 @@ export function BreathingHero({
             <stop offset="80%" stopColor="#1e3a8a" />
             <stop offset="100%" stopColor="#020617" />
           </linearGradient>
-          <radialGradient id="northern-lights-active" cx="50%" cy="50%" r="70%">
-            <stop offset="0%" stopColor="#34d399" stopOpacity="0.6" />
-            <stop offset="40%" stopColor="#818cf8" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#020617" stopOpacity="0" />
-          </radialGradient>
+          
         </defs>
 
         {/* Sky Background */}
@@ -241,15 +243,7 @@ export function BreathingHero({
           transition={transitionConfig}
         />
 
-        {/* Reactive Environment: Aurora Glow (brightens background during inhale) */}
-        <motion.rect width="400" height="400" fill="url(#northern-lights-active)" 
-          animate={expandTarget}
-          variants={{
-             inhale: { opacity: 1 },
-             exhale: { opacity: 0.2 }
-          }}
-          transition={transitionConfig}
-        />
+        
 
         {/* Stars */}
         <motion.g 
@@ -267,8 +261,8 @@ export function BreathingHero({
                   d={`M ${star.cx - 3} ${star.cy} L ${star.cx + 3} ${star.cy} M ${star.cx} ${star.cy - 3} L ${star.cx} ${star.cy + 3}`}
                   stroke="#ffffff"
                   strokeWidth={0.6}
-                  animate={{ opacity: [0.3, 1, 0.3] }}
-                  transition={{ duration: 1.5 * star.pulseSpeed, delay: star.delay, repeat: Infinity, ease: "easeInOut" }}
+                  animate={{ opacity: reduceMotion ? 0.3 : [0.3, 1, 0.3] }}
+                  transition={{ duration: 1.5 * star.pulseSpeed, delay: star.delay, repeat: reduceMotion ? 0 : Infinity, ease: "easeInOut" }}
                 />
               ) : (
                 <motion.circle
@@ -276,8 +270,8 @@ export function BreathingHero({
                   cy={star.cy}
                   r={star.r}
                   fill="#ffffff"
-                  animate={{ opacity: [0.2, 1, 0.2] }}
-                  transition={{ duration: 1 * star.pulseSpeed, delay: star.delay, repeat: Infinity, ease: "easeInOut" }}
+                  animate={{ opacity: reduceMotion ? 0.2 : [0.2, 1, 0.2] }}
+                  transition={{ duration: 1 * star.pulseSpeed, delay: star.delay, repeat: reduceMotion ? 0 : Infinity, ease: "easeInOut" }}
                 />
               )}
             </g>
@@ -287,11 +281,16 @@ export function BreathingHero({
 
       <svg fill="none" viewBox="0 0 400 400" className="w-[120%] h-[120%] mt-[15%] relative z-10 pointer-events-none">
         <defs>
-          <linearGradient id="rainbow-infinity-breath" x1="0%" y1="0%" x2="100%" y2="0%">
-            {rainbowStops.map((s) => (
-              <stop key={s.offset} offset={s.offset} stopColor={s.color} />
-            ))}
+          
+          <linearGradient id="neuro-infinity-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#f87171" />
+            <stop offset="20%" stopColor="#fb923c" />
+            <stop offset="40%" stopColor="#facc15" />
+            <stop offset="60%" stopColor="#4ade80" />
+            <stop offset="80%" stopColor="#38bdf8" />
+            <stop offset="100%" stopColor="#a78bfa" />
           </linearGradient>
+
           <filter id="glow-breath">
             <feGaussianBlur stdDeviation="3" result="blur" />
             <feMerge>
@@ -330,9 +329,9 @@ export function BreathingHero({
         {/* Prana Particles (Gather during inhale, scatter during exhale) */}
         <motion.g
           animate={expandTarget}
-          variants={{
-             inhale: { opacity: 0.8 },
-             exhale: { opacity: 0.1 }
+          variants={{ 
+             inhale: { opacity: reduceMotion ? 0 : 0.8 }, 
+             exhale: { opacity: reduceMotion ? 0 : 0.1 } 
           }}
           transition={transitionConfig}
         >
@@ -347,8 +346,8 @@ export function BreathingHero({
                    r={p.size}
                    fill="#fbbf24"
                    variants={{
-                     inhale: { cx: cxInhale, cy: cyInhale, scale: 0.8 },
-                     exhale: { cx: cxExhale, cy: cyExhale, scale: 1.5 }
+                     inhale: { cx: reduceMotion ? 200 : cxInhale, cy: reduceMotion ? 245 : cyInhale, scale: reduceMotion ? 1 : 0.8 },
+                     exhale: { cx: reduceMotion ? 200 : cxExhale, cy: reduceMotion ? 245 : cyExhale, scale: reduceMotion ? 1 : 1.5 }
                    }}
                    animate={expandTarget}
                    transition={transitionConfig}
@@ -357,176 +356,74 @@ export function BreathingHero({
           })}
         </motion.g>
 
-        {/* Subtle breathing aura around the character */}
-        <motion.circle
-          cx="200"
-          cy="220"
-          r="95"
-          fill="none"
-          stroke={glowColor}
-          strokeWidth="4"
-          filter="blur(18px)"
-          initial={false}
-          animate={{ scale: targetChestGlow, opacity: targetChestGlow * 0.7 + 0.3 }}
+        
+        {/* Halo behind the figure */}
+        <motion.g
+          animate={expandTarget}
+          variants={{
+             inhale: { scale: reduceMotion ? 1 : 1.12 },
+             exhale: { scale: reduceMotion ? 1 : 0.8 }
+          }}
           transition={transitionConfig}
-        />
-          
-          {/* ── FIXED BASE: Legs + cushion ── */}
-          <g>
-            <ellipse cx="200" cy="300" rx="35" ry="8" fill="#030408" opacity="0.5" />
-            <path
-              d="M 155 288 Q 175 308 200 306 Q 225 308 245 288 Q 248 294 200 310 Q 152 294 155 288"
-              fill="#1b1e26"
-              stroke="#13161b"
-              strokeWidth="0.5"
-            />
-            <path d="M 155 288 Q 170 300 200 298 Q 178 293 155 288" fill="#252a34" />
-            <path d="M 245 288 Q 230 300 200 298 Q 222 293 245 288" fill="#252a34" />
-            
-            {/* Hands on knees */}
-            <ellipse cx="160" cy="291" rx="5" ry="3.2" fill="#e5bda3" transform="rotate(-18 160 291)" />
-            <ellipse cx="240" cy="291" rx="5" ry="3.2" fill="#e5bda3" transform="rotate(18 240 291)" />
-          </g>
+          style={{ transformOrigin: "190px 202px" }}
+        >
+          <circle cx="190" cy="202" r="82" fill="#0e7490" opacity="0.08" />
+          <circle cx="190" cy="202" r="54" fill="#0891b2" opacity="0.10" />
+          <circle cx="190" cy="202" r="34" fill="#164e63" opacity="0.30" />
+        </motion.g>
 
-          {/* ── SWAYING WRAPPER ── */}
+        {/* Ground shadow */}
+        <ellipse cx="190" cy="288" rx="96" ry="9" fill="#020617" opacity="0.85" />
+
+        {/* ── SWAYING WRAPPER FOR BODY ── */}
+        <motion.g
+          animate={{ rotate: (isSwaying && !reduceMotion) ? [6, -6] : 0, x: (isSwaying && !reduceMotion) ? [3, -3] : 0 }}
+          transition={
+            (isSwaying && !reduceMotion)
+              ? {
+                  repeat: Infinity,
+                  repeatType: "mirror",
+                  duration: 1.0,
+                  ease: [0.65, 0, 0.35, 1],
+                }
+              : { type: "spring", stiffness: 80, damping: 20 }
+          }
+          style={{ transformOrigin: "190px 272px" }}
+        >
+          {/* SILHOUETTE Animated for breathing */}
           <motion.g
-            animate={{ rotate: isSwaying ? [6, -6] : 0, x: isSwaying ? [3, -3] : 0 }}
-            transition={
-              isSwaying
-                ? {
-                    repeat: Infinity,
-                    repeatType: "mirror",
-                    duration: 1.0,
-                    ease: [0.65, 0, 0.35, 1], // Natural gravity-influenced pendulum easing
-                  }
-                : { type: "spring", stiffness: 80, damping: 20 }
-            }
-            style={{ transformOrigin: "200px 290px" }}
+            animate={{
+              scaleX: targetTorsoScale,
+              scaleY: targetTorsoScale,
+            }}
+            transition={transitionConfig}
+            style={{ transformOrigin: "190px 272px" }}
           >
-            {/* ── UPPER BODY: Animated for breathing ── */}
-            <motion.g
-              animate={expandTarget}
-              transition={transitionConfig}
-              style={{ transformOrigin: "200px 290px" }}
-              variants={{
-                exhale: { y: 2 },
-                inhale: { y: -2 }
-              }}
-            >
-              {/* TORSO morphing */}
-              <motion.path
-                variants={{
-                  exhale: { d: "M 184 232 L 216 232 Q 215 255 214 278 Q 210 294 200 296 Q 190 294 186 278 Q 185 255 184 232 Z" },
-                  inhale: { d: "M 180 229 L 220 229 Q 228 255 215 278 Q 210 294 200 296 Q 190 294 185 278 Q 172 255 180 229 Z" }
-                }}
-                fill="#13161d"
-              />
-              <motion.path
-                variants={{
-                  exhale: { d: "M 190 252 L 210 252 L 211 262 L 189 262 Z" },
-                  inhale: { d: "M 185 250 L 215 250 L 213 260 L 187 260 Z" }
-                }}
-                fill="#1b1e26"
-                stroke="#0b0d12"
-                strokeWidth="0.8"
-              />
-
-              {/* Left Arm morphing */}
-              <motion.path
-                variants={{
-                  exhale: { d: "M 184 236 Q 166 254 161 284" },
-                  inhale: { d: "M 180 233 Q 160 254 161 284" }
-                }}
-                fill="none"
-                stroke="#13161d"
-                strokeWidth="10"
-                strokeLinecap="round"
-              />
-              {/* Right Arm morphing */}
-              <motion.path
-                variants={{
-                  exhale: { d: "M 216 236 Q 234 254 239 284" },
-                  inhale: { d: "M 220 233 Q 240 254 239 284" }
-                }}
-                fill="none"
-                stroke="#13161d"
-                strokeWidth="10"
-                strokeLinecap="round"
-              />
-
-              {/* Glowing Chest Core matching breath */}
-              <motion.circle 
-                cx="200" cy="260" r="10" 
-                initial={false}
-                animate={{ r: isInhale || isHold ? 18 : 10, fill: glowColor }}
-                transition={transitionConfig}
-                filter="blur(8px)"
-              />
-
-              {/* ── RAINBOW INFINITY on chest ── */}
-              <motion.g filter="url(#glow-breath)" opacity="0.92"
-                variants={{
-                 exhale: { scale: 0.95 },
-                 inhale: { scale: 1.1 }
-                }}
-                style={{ transformOrigin: "200px 255px" }}
-              >
-                <path
-                  d="M 200 255 C 200 248, 188 244, 184 249 C 180 254, 180 260, 184 263 C 188 266, 200 262, 200 255 Z"
-                  fill="none"
-                  stroke="url(#rainbow-infinity-breath)"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M 200 255 C 200 248, 212 244, 216 249 C 220 254, 220 260, 216 263 C 212 266, 200 262, 200 255 Z"
-                  fill="none"
-                  stroke="url(#rainbow-infinity-breath)"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </motion.g>
-            </motion.g>
-
-            {/* HEAD & HOOD (Slight vertical bobbing) */}
-            <motion.g
-              animate={{ y: targetTorsoScale === 1.05 ? -4 : 2 }}
-              transition={transitionConfig}
-              style={{ transformOrigin: "199px 219px" }}
-            >
-              {/* Neck */}
-              <rect x="195" y="219" width="8" height="11" fill="#e5bda3" />
-              {/* Face */}
-              <ellipse cx="199" cy="208" rx="10" ry="12" fill="#e5bda3" />
-              {/* Closed eyes */}
-              <path d="M 192 208 Q 194 210 196 208" fill="none" stroke="#6b4c35" strokeWidth="1" strokeLinecap="round" />
-              <path d="M 202 208 Q 204 210 206 208" fill="none" stroke="#6b4c35" strokeWidth="1" strokeLinecap="round" />
-              {/* Calm smile */}
-              <path d="M 196 215 Q 199 217 202 215" fill="none" stroke="#7e533c" strokeWidth="1" strokeLinecap="round" />
-              
-              {/* Hood outer */}
-              <path
-                d="M 184 228 C 177 214 181 193 191 189 C 195 187 203 187 207 189 C 217 193 221 214 214 228 Z"
-                fill="#13161d"
-                stroke="#000000"
-                strokeWidth="0.5"
-              />
-              {/* Hood inner shadow */}
-              <path
-                d="M 188 226 C 184 213 186 201 193 197 C 197 195 201 195 205 197 C 212 201 214 213 210 226 Z"
-                fill="#0c0e12"
-              />
-            </motion.g>
+            {/* Body */}
+            <path
+              d="M190 150 C 168 154 154 174 150 200 C 147 222 138 238 118 254 C 106 264 108 274 124 278 C 152 285 228 285 256 278 C 272 274 274 264 262 254 C 242 238 233 222 230 200 C 226 174 212 154 190 150 Z"
+              fill="#1e293b"
+              stroke="#7dd3fc"
+              strokeWidth="1"
+              strokeOpacity="0.80"
+            />
+            {/* Head */}
+            <circle cx="190" cy="124" r="21" fill="#1e293b" stroke="#7dd3fc" strokeWidth="1" strokeOpacity="0.80" />
+            {/* Head rim-light */}
+            <path d="M172 112 A 21 21 0 0 1 208 112" stroke="#7dd3fc" strokeWidth="1.2" opacity="0.9" fill="none" />
           </motion.g>
+        </motion.g>
 
-          {/* Vocal Resonance (Bhramari) Dynamic Humming Ripples */}
+        {/* Vocal Resonance (Bhramari) Dynamic Humming Ripples */}
+        {/* We place it here so it's ON TOP of the body, but BEHIND the emblem */}
+
           {isHumming && isExhale && (
             <g>
               {/* Central Energy / Somatic Spinal Pathway */}
               <motion.line
-                x1="199"
+                x1="190"
                 y1="198"
-                x2="199"
+                x2="190"
                 y2="295"
                 stroke={resonanceColor}
                 strokeWidth="1.5"
@@ -549,16 +446,16 @@ export function BreathingHero({
                     animate={{
                       cy: [startY, endY],
                       cx: [
-                        199 - amplitude,
-                        199 + amplitude,
-                        199 - amplitude
+                        190 - amplitude,
+                        190 + amplitude,
+                        190 - amplitude
                       ],
                       opacity: [0, 0.85, 0.85, 0],
                       scale: [0.75, 1.3, 0.75],
                     }}
                     transition={{
                       duration: 3.4,
-                      repeat: Infinity,
+                      repeat: reduceMotion ? 0 : Infinity,
                       ease: "linear",
                       delay: p.phaseOffset * -3.4, // Stagger perfectly in reverse delay
                     }}
@@ -583,7 +480,7 @@ export function BreathingHero({
                   }}
                   transition={{
                     duration: 2.8,
-                    repeat: Infinity,
+                    repeat: reduceMotion ? 0 : Infinity,
                     delay: i * 0.9,
                     ease: "easeOut"
                   }}
@@ -598,8 +495,8 @@ export function BreathingHero({
                 strokeLinecap="round"
                 fill="none"
                 animate={{ scale: [0.9, 1.4, 0.9], opacity: [0.4, 1, 0.4] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              />
+                transition={{ duration: 1.5, repeat: reduceMotion ? 0 : Infinity, ease: "easeInOut" }}
+                />
               <motion.path
                 d={`M ${vocalCx + 18} ${vocalCy - 8} Q ${vocalCx + 28} ${vocalCy} ${vocalCx + 18} ${vocalCy + 8}`}
                 stroke={resonanceColor}
@@ -607,7 +504,7 @@ export function BreathingHero({
                 strokeLinecap="round"
                 fill="none"
                 animate={{ scale: [0.9, 1.4, 0.9], opacity: [0.4, 1, 0.4] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+                transition={{ duration: 1.5, repeat: reduceMotion ? 0 : Infinity, ease: "easeInOut", delay: 0.3 }}
               />
 
               {/* Epicenter Core vibrating at high-frequency */}
@@ -623,15 +520,62 @@ export function BreathingHero({
                 }}
                 transition={{
                   duration: 0.5,
-                  repeat: Infinity,
+                  repeat: reduceMotion ? 0 : Infinity,
                   ease: "easeInOut"
                 }}
               />
             </g>
           )}
 
-      </svg>
 
+        {/* ── SWAYING WRAPPER FOR EMBLEM ── */}
+        <motion.g
+          animate={{ rotate: (isSwaying && !reduceMotion) ? [6, -6] : 0, x: (isSwaying && !reduceMotion) ? [3, -3] : 0 }}
+          transition={
+            (isSwaying && !reduceMotion)
+              ? {
+                  repeat: reduceMotion ? 0 : Infinity,
+                  repeatType: "mirror",
+                  duration: 1.0,
+                  ease: [0.65, 0, 0.35, 1],
+                }
+              : { type: "spring", stiffness: 80, damping: 20 }
+          }
+          style={{ transformOrigin: "190px 272px" }}
+        >
+          <motion.g
+            animate={{
+              scaleX: targetTorsoScale,
+              scaleY: targetTorsoScale,
+            }}
+            transition={transitionConfig}
+            style={{ transformOrigin: "190px 272px" }}
+          >
+            {/* Neurodiversity Infinity Emblem */}
+            <motion.path
+              d="M 190 245 C 190 238, 178 234, 174 239 C 170 244, 170 250, 174 253 C 178 256, 190 252, 190 245 Z"
+              fill="none"
+              stroke="url(#neuro-infinity-grad)"
+              strokeWidth="2"
+              strokeLinecap="round"
+              initial={false}
+              animate={{ opacity: targetChestGlow }}
+              transition={transitionConfig}
+            />
+            <motion.path
+              d="M 190 245 C 190 238, 202 234, 206 239 C 210 244, 210 250, 206 253 C 202 256, 190 252, 190 245 Z"
+              fill="none"
+              stroke="url(#neuro-infinity-grad)"
+              strokeWidth="2"
+              strokeLinecap="round"
+              initial={false}
+              animate={{ opacity: targetChestGlow }}
+              transition={transitionConfig}
+            />
+          </motion.g>
+        </motion.g>
+
+      </svg>
       {/* Floating Glassmorphic Vocal Aura Resonance Badge */}
       {isHumming && isExhale && (
         <motion.div
@@ -648,14 +592,14 @@ export function BreathingHero({
           
           <div className="flex-1 min-w-0">
             <p className="text-[10px] font-sans font-bold tracking-wider uppercase text-zinc-400">
-              {resonanceLabel}
+              {resonanceLabel[language || 'en']}
             </p>
             <div className="flex items-baseline gap-1.5 mt-0.5">
               <span className="text-sm font-semibold tracking-wide" style={{ color: resonanceGlow }}>
-                {resonanceSyllable}
+                {resonanceSyllable[language || 'en']}
               </span>
               <span className="text-[11px] font-medium text-zinc-300 truncate">
-                {resonanceDesc}
+                {resonanceDesc[language || 'en']}
               </span>
             </div>
           </div>
