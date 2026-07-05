@@ -87,6 +87,23 @@ const ARTICLES: Record<string, { titleEn: string; titleEl: string; descEn: strin
 const SCHOLARLY_CITATIONS = [
   {
     "@type": "ScholarlyArticle",
+    "@id": "https://doi.org/10.1097/md.0000000000044308",
+    "name": "Mindfulness-based interventions for adults with ADHD: A systematic review and meta-analysis",
+    "headline": "Mindfulness-based interventions for adults with ADHD: A systematic review and meta-analysis",
+    "sameAs": "https://doi.org/10.1097/md.0000000000044308",
+    "identifier": "doi:10.1097/md.0000000000044308",
+    "datePublished": "2025",
+    "author": {
+      "@type": "Person",
+      "name": "Hwan-Hee Kim"
+    },
+    "isPartOf": {
+      "@type": "Periodical",
+      "name": "Medicine"
+    }
+  },
+  {
+    "@type": "ScholarlyArticle",
     "@id": "https://doi.org/10.3390/biomedicines12112613",
     "name": "Neurobiological Changes Induced by Mindfulness and Meditation: A Systematic Review",
     "headline": "Neurobiological Changes Induced by Mindfulness and Meditation: A Systematic Review",

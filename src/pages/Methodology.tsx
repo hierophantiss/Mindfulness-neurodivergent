@@ -15,6 +15,12 @@ const T = {
     pillars: [
       {
         icon: ShieldCheck,
+        title: 'Αποτελεσματικότητα στην ΔΕΠΥ Ενηλίκων (Kim & Jung, 2025)',
+        desc: 'Σε αυτή τη νέα συστηματική ανασκόπηση (2025), οι επιστήμονες επιβεβαιώνουν ότι οι παρεμβάσεις ενσυνειδητότητας (MBIs) βελτιώνουν στατιστικά σημαντικά τα κεντρικά συμπτώματα της ΔΕΠΥ στους ενήλικες, καθώς και την γενικότερη λειτουργικότητά τους. Αυτό επικυρώνει τη χρήση του Sanctuary ως κλινικά αποτελεσματική παρέμβαση για την διαχείριση της προσοχής.',
+        citation: 'Kim & Jung (2025). Medicine. Doi: 10.1097/md.0000000000044308'
+      },
+      {
+        icon: ShieldCheck,
         title: 'Νευροβιολογία της Ενσυνειδητότητας (Calderone et al., 2024)',
         desc: 'Αυτή η πρόσφατη συστηματική ανασκόπηση (2024) συγκεντρώνει τα κλινικά ευρήματα της τελευταίας δεκαετίας, επιβεβαιώνοντας ότι η ενσυνειδητότητα προκαλεί μετρήσιμες δομικές και λειτουργικές αλλαγές στον εγκέφαλο. Ειδικότερα, τεκμηριώνει την πάχυνση του προμετωπιαίου φλοιού (ρύθμιση προσοχής), τη μείωση του όγκου της αμυγδαλής (μείωση του άγχους) και τη βελτιωμένη συνδεσιμότητα της νήσου (insula - ενδοδεκτικότητα), παρέχοντας ολοκληρωμένη επιστημονική επικύρωση για τις πρακτικές του Sanctuary και του Τετραπλού Άξονα.',
         citation: 'Calderone et al. (2024). Biomedicines. Doi: 10.3390/biomedicines12112613'
@@ -99,6 +105,12 @@ const T = {
     philosophyText: 'Traditional mindfulness techniques can often trigger anxiety or a "freeze response" in neurodivergent individuals because they demand instant, forced stillness and silent, passive observation. Our philosophy rebuilds mindfulness through somatic bottom-up regulation:',
     
     pillars: [
+      {
+        icon: ShieldCheck,
+        title: 'Efficacy in Adult ADHD (Kim & Jung, 2025)',
+        desc: 'In this new systematic review (2025), researchers confirm that mindfulness-based interventions (MBIs) produce statistically significant improvements in core ADHD symptoms and overall functioning in adults. This validates the use of Sanctuary as a clinically effective intervention for attention management.',
+        citation: 'Kim & Jung (2025). Medicine. Doi: 10.1097/md.0000000000044308'
+      },
       {
         icon: ShieldCheck,
         title: 'Neurobiology of Mindfulness (Calderone et al., 2024)',

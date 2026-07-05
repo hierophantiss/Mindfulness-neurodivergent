@@ -578,6 +578,26 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     related: ['gentle_return', 'attention_modes', 'neuroplasticity']
   },
 
+  kim_2025: {
+    el: {
+      title: 'Συστηματική Ανασκόπηση & Μετα-Ανάλυση για ΔΕΠΥ (Kim & Jung, 2025)',
+      short: 'Πρόσφατη έρευνα επιβεβαιώνει την αποτελεσματικότητα των παρεμβάσεων ενσυνειδητότητας (MBIs) στη ΔΕΠΥ ενηλίκων.',
+      full: 'Σε αυτή τη συστηματική ανασκόπηση και μετα-ανάλυση ("Mindfulness-based interventions for adults with ADHD"), αναλύθηκαν ελεγχόμενες κλινικές δοκιμές έως το 2023. Τα αποτελέσματα έδειξαν στατιστικά σημαντικές βελτιώσεις στα βασικά συμπτώματα της ΔΕΠΥ (τόσο από αυτοαναφορές όσο και από παρατηρητές) και στη γενική λειτουργικότητα των ενηλίκων.',
+      ndNote: 'Η μελέτη αυτή του 2025 επικυρώνει απόλυτα τη σύγχρονη κλινική προσέγγιση: Οι πρακτικές ενσυνειδητότητας δεν είναι απλά εργαλεία χαλάρωσης, αλλά αναγνωρισμένες, αποτελεσματικές συμπληρωματικές παρεμβάσεις για τη διαχείριση της προσοχής και της λειτουργικότητας στη νευροδιαφορετικότητα.',
+      science: 'Kim, H.-H., & Jung, N.-H. (2025). Medicine. (Doi: 10.1097/md.0000000000044308)'
+    },
+    en: {
+      title: 'Systematic Review & Meta-analysis for ADHD (Kim & Jung, 2025)',
+      short: 'Recent research confirms the efficacy of Mindfulness-Based Interventions (MBIs) in adult ADHD.',
+      full: 'This 2025 systematic review and meta-analysis ("Mindfulness-based interventions for adults with ADHD") analyzed controlled trials up to 2023. The findings demonstrated statistically significant improvements in core ADHD symptoms (both self-reported and observer-rated) and overall functioning in adults.',
+      ndNote: 'This recent study definitively validates our clinical approach: Mindfulness practices are not merely relaxation tools, but recognized, highly effective complementary interventions for managing attention and improving functional outcomes in neurodivergent individuals.',
+      science: 'Kim, H.-H., & Jung, N.-H. (2025). Medicine. (Doi: 10.1097/md.0000000000044308)'
+    },
+    axis: 'attention',
+    chapters: [5],
+    related: ['zylowska_2007', 'neuroplasticity']
+  },
+
   gibson_2019: {
     el: {
       title: 'Μελέτη Δια-αίσθησης & Σώματος (Gibson, 2019)',
