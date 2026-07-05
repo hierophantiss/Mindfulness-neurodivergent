@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useCompanion } from '../hooks/useCompanion';
 import CompanionSheet from './CompanionSheet';
 import { useLanguage } from '../hooks/useLanguage';
-import { X } from 'lucide-react';
+import { X, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CatInfinityAvatar } from './CatInfinityAvatar';
 
@@ -149,7 +149,7 @@ export default function Companion() {
   return (
     <>
       <div 
-        className={`fixed z-50 flex items-center justify-center w-[56px] h-[56px] rounded-full bg-stone-100/90 dark:bg-stone-900/90 backdrop-blur-md shadow-2xl border border-white/20 dark:border-stone-700/30 cursor-pointer touch-none transition-transform duration-300 ${isDragging ? 'scale-110 opacity-80' : 'hover:scale-110 active:scale-90 shadow-teal-500/10'}`}
+        className={`fixed z-50 flex items-center justify-center w-[56px] h-[56px] rounded-full bg-[#0d0e12]/80 backdrop-blur-md border-2 border-teal-400/40 shadow-[0_0_25px_rgba(20,184,166,0.25)] cursor-pointer touch-none transition-transform duration-300 ${isDragging ? 'scale-110 opacity-80' : 'hover:scale-110 active:scale-90'}`}
         style={{ left: position.x, top: position.y }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
@@ -157,7 +157,7 @@ export default function Companion() {
         onPointerCancel={onPointerUp}
         onClick={handleClick}
       >
-        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-teal-500/5 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 rounded-full bg-teal-500/10 pointer-events-none" />
         <AnimatePresence>
           {companionMessage && (
             <motion.div 
@@ -192,17 +192,23 @@ export default function Companion() {
         </AnimatePresence>
 
         <motion.div 
-          className="relative w-11 h-11 rounded-full overflow-hidden shadow-inner flex items-center justify-center transition-transform duration-300 ring-2 ring-teal-500/20 bg-[#F4F4F5] dark:bg-[#1C1917]"
-          animate={{ y: [0, -4, 0] }}
+          className="relative w-12 h-12 flex items-center justify-center transition-transform duration-300"
+          animate={{ y: [0, -3, 0] }}
           transition={{ 
             repeat: Infinity, 
             duration: 4, 
             ease: "easeInOut" 
           }}
         >
-          <CatInfinityAvatar className="w-10 h-10" />
+          <CatInfinityAvatar className="w-11 h-11" />
         </motion.div>
-        {companionData.dailyLogs.length > 0 && <span className="absolute animate-ping top-1 right-1 w-2 h-2 bg-amber-400 rounded-full" />}
+        
+        {/* Sparkle Floating Badge at top-right */}
+        <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-teal-400 flex items-center justify-center text-stone-950 shadow-[0_0_10px_rgba(20,184,166,0.4)] z-10">
+          <Sparkles size={11} className="animate-pulse" />
+        </div>
+
+        {companionData.dailyLogs.length > 0 && <span className="absolute animate-ping top-1 right-1 w-2 h-2 bg-amber-400 rounded-full z-20" />}
       </div>
     </>
   );

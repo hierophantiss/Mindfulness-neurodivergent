@@ -20,25 +20,56 @@ export function CatInfinityAvatar({ className = 'w-10 h-10' }: { className?: str
       <path d="M 50 70 C 50 75, 45 75, 40 73" stroke="#3f4557" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
       <path d="M 50 70 C 50 75, 55 75, 60 73" stroke="#3f4557" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
 
-      {/* Infinity Mask - Calm Aurora Gradient */}
+      {/* Infinity Mask - Vivid Rainbow Gradient & Glow */}
       <defs>
-        <linearGradient id="auroraGradient" x1="20" y1="50" x2="80" y2="50" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#14b8a6" />   {/* Teal 500 */}
-          <stop offset="33%" stopColor="#0ea5e9" />  {/* Sky 500 */}
-          <stop offset="66%" stopColor="#6366f1" />  {/* Indigo 500 */}
-          <stop offset="100%" stopColor="#a855f7" /> {/* Purple 500 */}
+        <linearGradient id="catRainbowGradient" x1="20" y1="50" x2="80" y2="50" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#ff3b30" />    {/* Vibrant Red */}
+          <stop offset="17%" stopColor="#ff9500" />   {/* Vibrant Orange */}
+          <stop offset="34%" stopColor="#ffcc00" />   {/* Vibrant Yellow */}
+          <stop offset="50%" stopColor="#4cd964" />   {/* Vibrant Green */}
+          <stop offset="67%" stopColor="#5ac8fa" />   {/* Vibrant Sky Blue */}
+          <stop offset="84%" stopColor="#007aff" />   {/* Vibrant Royal Blue */}
+          <stop offset="100%" stopColor="#af52de" />  {/* Vibrant Purple/Violet */}
         </linearGradient>
+        <filter id="catRainbowGlow" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="1.8" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
       </defs>
 
-      {/* The Infinity Mask over the eyes */}
-      <path d="M 50 50 C 40 35, 20 35, 20 50 C 20 65, 40 65, 50 50 C 60 35, 80 35, 80 50 C 80 65, 60 65, 50 50 Z" 
-            fill="url(#auroraGradient)" opacity="0.9" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+      {/* The main glowing Rainbow Infinity mask contour framing the eyes */}
+      <path 
+        d="M 50 50 C 40 35, 20 35, 20 50 C 20 65, 40 65, 50 50 C 60 35, 80 35, 80 50 C 80 65, 60 65, 50 50 Z" 
+        fill="url(#catRainbowGradient)" 
+        fillOpacity="0.12"
+        stroke="url(#catRainbowGradient)" 
+        strokeWidth="2.5" 
+        filter="url(#catRainbowGlow)"
+        opacity="1"
+      />
 
-      {/* Eyes (White spots over the mask) */}
-      <circle cx="35" cy="50" r="3.5" fill="#FFFFFF" />
-      <circle cx="65" cy="50" r="3.5" fill="#FFFFFF" />
-      <circle cx="37" cy="48" r="1.5" fill="#FFFFFF" opacity="0.9"/>
-      <circle cx="67" cy="48" r="1.5" fill="#FFFFFF" opacity="0.9"/>
+      {/* Left Eye: Sclera, Dark Iris, and Glowing Rainbow Infinity Pupil */}
+      <circle cx="35" cy="50" r="8.5" fill="#ffffff" />
+      <circle cx="35" cy="50" r="7" fill="#0d0e12" />
+      <path 
+        d="M 50 50 C 40 35, 20 35, 20 50 C 20 65, 40 65, 50 50 C 60 35, 80 35, 80 50 C 80 65, 60 65, 50 50 Z" 
+        transform="translate(35, 50) scale(0.25) translate(-50, -50)" 
+        fill="url(#catRainbowGradient)" 
+      />
+      <circle cx="38" cy="47" r="1.5" fill="#ffffff" opacity="0.95"/>
+
+      {/* Right Eye: Sclera, Dark Iris, and Glowing Rainbow Infinity Pupil */}
+      <circle cx="65" cy="50" r="8.5" fill="#ffffff" />
+      <circle cx="65" cy="50" r="7" fill="#0d0e12" />
+      <path 
+        d="M 50 50 C 40 35, 20 35, 20 50 C 20 65, 40 65, 50 50 C 60 35, 80 35, 80 50 C 80 65, 60 65, 50 50 Z" 
+        transform="translate(65, 50) scale(0.25) translate(-50, -50)" 
+        fill="url(#catRainbowGradient)" 
+      />
+      <circle cx="68" cy="47" r="1.5" fill="#ffffff" opacity="0.95"/>
       
       {/* Whiskers */}
       <path d="M 25 60 L 10 58 M 25 65 L 10 65 M 25 70 L 15 75" stroke="#3f4557" strokeWidth="1.5" strokeLinecap="round"/>

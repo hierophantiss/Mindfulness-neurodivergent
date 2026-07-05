@@ -13,7 +13,6 @@ import { motion } from 'motion/react';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { useBinauralAudio } from '../hooks/useBinauralAudio';
 import InfoModal from '../components/InfoModal';
-import { CatInfinityAvatar } from '../components/CatInfinityAvatar';
 
 import { AFFIRMATIONS } from '../data/affirmations';
 
@@ -183,16 +182,6 @@ export default function Dashboard() {
             {currentDate}
           </motion.span>
         </div>
-
-        {/* 2. Central Geometric Core */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.5, delay: 0.2, ease: "easeOut" }}
-          className="w-full mt-2"
-        >
-          <CatInfinityAvatar className="w-48 h-48 mx-auto" />
-        </motion.div>
 
         {/* Daily Affirmation */}
         <motion.div
