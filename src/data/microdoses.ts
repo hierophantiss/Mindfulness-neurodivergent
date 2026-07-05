@@ -202,7 +202,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   // Focus (Axis 3)
   {
     id: 'anchor-7-sec',
-    axis: 'breath',
+    axis: 'attention',
     title: { el: 'Οπτική Άγκυρα 7"', en: 'Visual Anchor 7"' },
     type: 'focus',
     dur: { el: '7 δευτ.', en: '7 sec' },
@@ -213,7 +213,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'triple-anchor',
-    axis: 'breath',
+    axis: 'attention',
     title: { el: 'Τριπλή Άγκυρα', en: 'Triple Anchor' },
     type: 'focus',
     dur: { el: '1 λεπτό', en: '1 minute' },
@@ -224,7 +224,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'alternate-focus',
-    axis: 'breath',
+    axis: 'attention',
     title: { el: 'Εναλλάξ Εστίαση', en: 'Alternate Focus' },
     type: 'focus',
     dur: { el: '30 δευτ.', en: '30 sec' },
@@ -236,7 +236,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   {
     id: 'gentle-return',
     evidence: { en: 'Decreases Default Mode Network (DMN) rumination', el: 'Μειώνει τον μηρυκασμό στο Δίκτυο DMN', ref: 'study-farb' },
-    axis: 'breath',
+    axis: 'attention',
     title: { el: 'Η Απαλή Επιστροφή', en: 'Gentle Return' },
     type: 'focus',
     dur: { el: 'Συνεχές', en: 'Continuous' },
@@ -248,7 +248,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   {
     id: 'eye-horizon',
     evidence: { en: 'Soft gaze acts as a neurological brake via peripheral vision', el: 'Το περιφερειακό βλέμμα λειτουργεί ως νευρολογικό φρένο', ref: 'study-vater' },
-    axis: 'breath',
+    axis: 'attention',
     title: { el: 'Άγκυρα στο Ύψος των Ματιών', en: 'Eye Level Anchor' },
     type: 'focus',
     dur: { el: '1 λεπτό', en: '1 minute' },
@@ -260,7 +260,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   {
     id: 'samatha-micro',
     evidence: { en: 'Direct somatic focus silences the rumination network', el: 'Η άμεση σωματική εστίαση σιγάζει το δίκτυο μηρυκασμού', ref: 'study-farb' },
-    axis: 'breath',
+    axis: 'attention',
     title: { el: 'Σκέψεις σαν Σύννεφα', en: 'Thoughts as Clouds' },
     type: 'focus',
     dur: { el: '1 λεπτό', en: '1 minute' },
@@ -271,7 +271,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'one-sound',
-    axis: 'breath',
+    axis: 'attention',
     title: { el: 'Ο Ένας Ήχος', en: 'The One Sound' },
     type: 'focus',
     dur: { el: '20 δευτ.', en: '20 sec' },
@@ -282,7 +282,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'sensory-54321',
-    axis: 'breath',
+    axis: 'attention',
     title: { el: '5 Αισθήσεις (Micro)', en: '5 Senses (Micro)' },
     type: 'focus',
     dur: { el: '1 λεπτό', en: '1 minute' },

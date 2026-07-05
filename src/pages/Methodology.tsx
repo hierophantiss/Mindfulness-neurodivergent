@@ -290,7 +290,8 @@ export default function Methodology() {
             return (
               <div 
                 key={index}
-                className="bg-white/[0.03] border border-white/5 rounded-3xl p-5 hover:bg-white/[0.05] transition-all space-y-3"
+                id={pillar.id}
+                className="bg-white/[0.03] border border-white/5 rounded-3xl p-5 hover:bg-white/[0.05] transition-all space-y-3 scroll-mt-24"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-2xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400">

@@ -530,6 +530,15 @@ function getMetaForRoute(route: string): RouteMeta {
     return { title: t, description: d, schema: {}, schemaType: 'WebApplication', bodyParagraphs };
   }
   
+  const isPrivatePath = clean.startsWith('/dashboard') || 
+                        clean.startsWith('/journal') || 
+                        clean.startsWith('/settings') || 
+                        clean.startsWith('/onboarding');
+                        
+  if (isPrivatePath) {
+    defaults.noindex = true;
+  }
+
   return defaults;
 }
 
