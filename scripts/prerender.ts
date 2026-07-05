@@ -35,6 +35,24 @@ const BASE_URL   = 'https://neurodivergent-mindfulness.org';
 // Article metadata
 // ─────────────────────────────────────────────────────────────
 const ARTICLES: Record<string, { en: [string, string]; el: [string, string] }> = {
+  'blue-sky-mind': {
+    en: ['Blue Sky Mind – Watching Thoughts as Clouds | Neurodivergent Mindfulness App',
+         'A Zen teaching on Blue Sky Mind: letting thoughts pass like clouds instead of running off with them. Open-awareness practice for racing ADHD minds.'],
+    el: ['Ο Νους ως Γαλάζιος Ουρανός – Οι Σκέψεις ως Σύννεφα | Neurodivergent Mindfulness App',
+         'Διδασκαλία Ζεν για τον Νου-Ουρανό: αφήνουμε τις σκέψεις να περνούν σαν σύννεφα. Ανοιχτή επίγνωση για νου με ΔΕΠΥ που τρέχει.']
+  },
+  'forces-of-the-cosmos': {
+    en: ['The Four Forces of the Cosmos & the Fourfold Axis | Neurodivergent Mindfulness App',
+         'Gravity, electromagnetism, weak and strong force mapped to Body, Breath, Attention and Space. Where physics meets contemplative practice for neurodivergent minds.'],
+    el: ['Οι Τέσσερις Δυνάμεις του Σύμπαντος & ο Τετραπλός Άξονας | Neurodivergent Mindfulness App',
+         'Βαρύτητα, ηλεκτρομαγνητισμός, ασθενής και ισχυρή δύναμη σε αντιστοιχία με Σώμα, Αναπνοή, Προσοχή και Χώρο. Η φυσική συναντά τη διαλογιστική πρακτική.']
+  },
+  'myth-of-freedom-earth': {
+    en: ['The Myth of Freedom – Touching the Earth | Neurodivergent Mindfulness App',
+         'Meditation without gimmicks: returning to what is simple and immediate. A grounding-centered reading of the Buddha\'s approach for neurodivergent practitioners.'],
+    el: ['Ο Μύθος της Ελευθερίας – Άγγιγμα της Γης | Neurodivergent Mindfulness App',
+         'Διαλογισμός χωρίς τεχνάσματα: επιστροφή στο απλό και άμεσο. Μια ανάγνωση με κέντρο τη γείωση για νευροδιαφορετικούς ασκούμενους.']
+  },
   'the-goose-is-out': {
     en: ['The Goose is Out | Neurodivergent Mindfulness App',
          'A Zen allegory about masking, identity and liberation for neurodivergent minds. How the ADHD and autistic nervous system can move from narrow focus to open awareness.'],
@@ -151,6 +169,7 @@ interface RouteMeta {
    *  and non-JS agents. Falls back to [description] if omitted. */
   bodyParagraphs?: string[];
   relatedLinks?: { href: string; label: string }[];
+  noindex?: boolean;
 }
 
 /** Strips interactive-widget tokens like {{gravity}} that the live React
@@ -213,7 +232,7 @@ function getMetaForRoute(route: string): RouteMeta {
       'soft-gaze-open-hearing': softGazeArticle,
       'dzogchen-nature-of-mind': dzogchenArticle,
       'never-force': neverForceArticle,
-      'plato-cave-adhd': platoCaveArticle,
+      'plato-cave-neurodivergent': platoCaveArticle,
       'polyvagal-middle-way': polyvagalArticle,
       ...rabbitholeContent
     };
@@ -228,13 +247,15 @@ function getMetaForRoute(route: string): RouteMeta {
       if (art) {
         t = art[lang as 'en'|'el'][0];
         d = art[lang as 'en'|'el'][1];
+        if (!t.includes('Neurodivergent Mindfulness App')) {
+           t = `${t} | Neurodivergent Mindfulness App`;
+        }
       } else if (data) {
         // Fallback to title from data if not in ARTICLES
         t = data.title ? (typeof data.title[lang] === 'string' ? data.title[lang] : (data.title[lang as 'en'|'el'] || data.title.en)) : '';
+        t = `${t} | Neurodivergent Mindfulness App`;
         d = lang === 'en' ? 'An exploration of neurodivergent mindfulness.' : 'Μια εξερεύνηση στην νευροδιαφορετική ενσυνειδητότητα.'; // generic fallback desc
       }
-      
-      t = `${t} | Neurodivergent Mindfulness App`;
       
       let articlePages: string[] = [];
       if (data) {
@@ -495,6 +516,20 @@ function getMetaForRoute(route: string): RouteMeta {
     };
   }
 
+  // ── Sanctuary ──
+  if (clean === '/sanctuary') {
+    const t = lang === 'en'
+      ? 'Sanctuary – Binaural Beats & Ambient Soundscapes for ADHD & Autism'
+      : 'Καταφύγιο – Binaural Beats & Ηχητικά Τοπία για ΔΕΠΥ & Αυτισμό';
+    const d = lang === 'en'
+      ? 'Binaural beats with layered ambient soundscapes — Rain, Ocean, Mountain Wind — for focus, calm and nervous system regulation in ADHD and autism.'
+      : 'Binaural beats με πολυεπίπεδα ηχητικά τοπία — Βροχή, Ωκεανός, Ορεινός Άνεμος — για συγκέντρωση, ηρεμία και ρύθμιση του νευρικού συστήματος.';
+    const bodyParagraphs = lang === 'en' 
+      ? [d, 'Customizable ambient soundscapes including rain, ocean, and mountain wind.', 'Isochronic and binaural beats mapped to specific brainwave frequencies for regulation.']
+      : [d, 'Προσαρμόσιμα ηχητικά τοπία όπως βροχή, ωκεανός και ορεινός άνεμος.', 'Binaural beats ρυθμισμένα σε συγκεκριμένες συχνότητες εγκεφαλικών κυμάτων για ηρεμία.'];
+    return { title: t, description: d, schema: {}, schemaType: 'WebApplication', bodyParagraphs };
+  }
+  
   return defaults;
 }
 
@@ -547,7 +582,7 @@ function buildHead(route: string, meta: RouteMeta, baseHtml: string): string {
   <!-- SEO: prerendered for ${route} -->
   <title>${meta.title}</title>
   <meta name="description" content="${meta.description.replace(/"/g, '&quot;')}" />
-  <meta name="robots" content="index, follow" />
+  <meta name="robots" content="${meta.noindex ? 'noindex, follow' : 'index, follow'}" />
   <meta property="og:title" content="${meta.title.replace(/"/g, '&quot;')}" />
   <meta property="og:description" content="${meta.description.replace(/"/g, '&quot;')}" />
   <meta property="og:url" content="${canonicalUrl}" />

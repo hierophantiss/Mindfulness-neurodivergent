@@ -27,38 +27,6 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/en/onboarding</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/onboarding" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/onboarding" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/onboarding" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/onboarding</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/onboarding" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/onboarding" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/onboarding" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/dashboard</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/dashboard" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/dashboard" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/dashboard" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/dashboard</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/dashboard" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/dashboard" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/dashboard" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://neurodivergent-mindfulness.org/en/method</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/method" />
     <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/method" />
@@ -171,22 +139,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/en/journal</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/journal" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/journal" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/journal" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/journal</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/journal" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/journal" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/journal" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://neurodivergent-mindfulness.org/en/sanctuary</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/sanctuary" />
     <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/sanctuary" />
@@ -199,22 +151,6 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/sanctuary" />
     <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/sanctuary" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/sanctuary" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/settings</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/settings" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/settings" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/settings" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/settings</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/settings" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/settings" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/settings" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

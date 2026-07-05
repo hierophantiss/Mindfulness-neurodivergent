@@ -114,7 +114,12 @@ async function generate() {
     allSitemapUrls.push(`/el${p}`);
   });
 
-  const urls = allSitemapUrls.map(p => {
+  const urls = allSitemapUrls
+    .filter(p => {
+      const pureRoute = p.replace(/^\/(en|el)/, '') || '/';
+      return !['/dashboard', '/journal', '/settings', '/onboarding'].includes(pureRoute);
+    })
+    .map(p => {
     const lang = p.startsWith('/en') ? 'en' : 'el';
     const pureRoute = p.replace(/^\/(en|el)/, '') || '/';
     // When using ampersands in XML loc, encode them

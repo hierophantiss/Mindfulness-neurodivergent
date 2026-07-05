@@ -37,7 +37,6 @@
   "devDependencies": {
     "@firebase/eslint-plugin-security-rules": "^0.0.2",
     "@prerenderer/prerenderer": "^1.2.5",
-    "@prerenderer/renderer-puppeteer": "^1.2.4",
     "@types/express": "^4.17.21",
     "@types/howler": "^2.2.13",
     "@types/node": "^22.14.0",
@@ -51,7 +50,6 @@
     "mp4box": "^2.3.0",
     "pdf-parse": "^2.4.5",
     "pdf2json": "^4.0.3",
-    "puppeteer": "^24.43.0",
     "sharp": "^0.34.5",
     "tailwindcss": "^4.1.14",
     "tsx": "^4.21.0",
