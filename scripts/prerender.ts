@@ -15,6 +15,15 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { CHAPTERS_DATA } from '../src/data/chapters';
 import { BREATH_PATTERNS } from '../src/data/breathPatterns';
+import { softGazeArticle } from '../src/data/softGazeArticle';
+import { dzogchenArticle } from '../src/data/dzogchenArticle';
+import { neverForceArticle } from '../src/data/neverForceArticle';
+import { platoCaveArticle } from '../src/data/platoCaveArticle';
+import { polyvagalArticle } from '../src/data/polyvagalArticle';
+import { rabbitholeContent } from '../src/data/rabbitholeContent';
+import { MICRODOSES_EXERCISES } from '../src/data/microdoses';
+import { KNOWLEDGE_FAQ } from '../src/data/faq';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
@@ -141,13 +150,26 @@ interface RouteMeta {
   /** Real, crawlable paragraphs injected into <body> for search engines
    *  and non-JS agents. Falls back to [description] if omitted. */
   bodyParagraphs?: string[];
+  relatedLinks?: { href: string; label: string }[];
 }
 
 /** Strips interactive-widget tokens like {{gravity}} that the live React
  *  component would normally replace with tooltips/links. */
-function stripInteractiveTokens(text: string): string {
-  return text.replace(/\{\{[^}]+\}\}/g, '');
+
+function stripMarkdown(text: string): string {
+  if (!text) return text;
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '$1') // bold
+    .replace(/\*(.*?)\*/g, '$1')     // italic
+    .replace(/_(.*?)_/g, '$1')       // underscore
+    .replace(/^#+\s+/gm, '')         // headings
+    .replace(/`(.*?)`/g, '$1');      // code
 }
+
+function stripInteractiveTokens(text: string): string {
+  return text.replace(/{{[^}]+}}/g, '');
+}
+
 
 function getMetaForRoute(route: string): RouteMeta {
   const lang = route.startsWith('/en') ? 'en' : 'el';
@@ -185,14 +207,77 @@ function getMetaForRoute(route: string): RouteMeta {
   // ── Rabbit Hole article ──
   const rhMatch = clean.match(/^\/rabbithole\/([a-z0-9-]+)$/);
   if (rhMatch) {
-    const art = ARTICLES[rhMatch[1]];
-    if (art) {
-      const [t, d] = art[lang];
+    const slug = rhMatch[1];
+    
+    const dataMap: Record<string, any> = {
+      'soft-gaze-open-hearing': softGazeArticle,
+      'dzogchen-nature-of-mind': dzogchenArticle,
+      'never-force': neverForceArticle,
+      'plato-cave-adhd': platoCaveArticle,
+      'polyvagal-middle-way': polyvagalArticle,
+      ...rabbitholeContent
+    };
+
+    const art = ARTICLES[slug];
+    const data = dataMap[slug];
+
+    if (art || data) {
+      let t = '';
+      let d = '';
+
+      if (art) {
+        t = art[lang as 'en'|'el'][0];
+        d = art[lang as 'en'|'el'][1];
+      } else if (data) {
+        // Fallback to title from data if not in ARTICLES
+        t = data.title ? (typeof data.title[lang] === 'string' ? data.title[lang] : (data.title[lang as 'en'|'el'] || data.title.en)) : '';
+        d = lang === 'en' ? 'An exploration of neurodivergent mindfulness.' : 'Μια εξερεύνηση στην νευροδιαφορετική ενσυνειδητότητα.'; // generic fallback desc
+      }
+      
+      t = `${t} | Neurodivergent Mindfulness App`;
+      
+      let articlePages: string[] = [];
+      if (data) {
+        if ('pagesEn' in data) {
+           articlePages = lang === 'en' ? data.pagesEn : data.pagesEl;
+        } else {
+           articlePages = lang === 'en' ? data.en : data.el;
+        }
+      }
+      
+      let bodyParagraphs: string[] = [];
+      if (articlePages && articlePages.length > 0) {
+        bodyParagraphs = articlePages
+          .flatMap(page => page.split(/\n\n+/))
+          .map(p => stripMarkdown(stripInteractiveTokens(p)))
+          .filter(Boolean);
+      } else {
+        bodyParagraphs = [d];
+      }
+      
+      const relatedMap: Record<string, {href: string, label: {en: string, el: string}}[]> = {
+        'soft-gaze-open-hearing': [{ href: '/practice', label: { en: 'Try the soft gaze practice', el: 'Δοκίμασε την πρακτική του μαλακού βλέμματος' } }],
+        'polyvagal-middle-way': [{ href: '/practice', label: { en: 'Regulation exercises', el: 'Ασκήσεις ρύθμισης' } }],
+        'binaural-gateway': [{ href: '/sanctuary', label: { en: 'Sanctuary', el: 'Καταφύγιο' } }],
+        'default': [{ href: '/chapters', label: { en: 'Chapters', el: 'Κεφάλαια' } }, { href: '/rabbithole', label: { en: 'Rabbit Hole', el: 'Rabbit Hole' } }]
+      };
+      
+      const related = relatedMap[slug] || relatedMap['default'];
+      const relatedLinks = related.map((r: any) => ({
+        href: `/${lang}${r.href}`,
+        label: r.label[lang as 'en'|'el']
+      }));
+      relatedLinks.push({ href: `/${lang}/rabbithole`, label: lang === 'en' ? 'Back to Rabbit Hole' : 'Επιστροφή στο Rabbit Hole' });
+
       return {
         title: t, description: d, schemaType: 'Article',
+        bodyParagraphs,
+        relatedLinks,
         schema: {
           '@context': 'https://schema.org', '@type': 'Article',
           headline: t, description: d, url,
+          inLanguage: lang,
+          articleBody: bodyParagraphs.slice(0, 2).join(' '),
           author: { '@type': 'Organization', name: 'Neurodivergent Mindfulness App' },
           about: [
             { '@type': 'Thing', name: 'Mindfulness' },
@@ -304,14 +389,47 @@ function getMetaForRoute(route: string): RouteMeta {
   }
 
   // ── Practice hub ──
-  if (clean === '/practice' || clean.startsWith('/practice/')) {
+  if (clean === '/practice') {
     const t = lang === 'en'
-      ? 'Mindfulness Practices for ADHD & Autism | Neurodivergent Mindfulness App'
-      : 'Πρακτικές Ενσυνειδητότητας για ΔΕΠΥ & Αυτισμό | Neurodivergent Mindfulness App';
+      ? 'Mindfulness Practices for ADHD & Autism – Grounding, Breathwork & Open Awareness'
+      : 'Πρακτικές Ενσυνειδητότητας για ΔΕΠΥ & Αυτισμό – Γείωση, Αναπνοή & Ανοιχτή Επίγνωση';
     const d = lang === 'en'
-      ? 'Guided breathwork, grounding, body, attention and space exercises. Sensory-friendly mindfulness tools designed for neurodivergent nervous systems.'
-      : 'Καθοδηγούμενη αναπνοή, γείωση και ασκήσεις για νευροδιαφορετικά νευρικά συστήματα.';
-    return { title: t, description: d, schema: {}, schemaType: 'WebApplication' };
+      ? 'Guided grounding, breathing exercises, attention training and open-awareness practice designed for ADHD and autistic nervous systems. Sensory-friendly, trauma-informed, free.'
+      : 'Καθοδηγούμενη γείωση, ασκήσεις αναπνοής, εκπαίδευση προσοχής και ανοιχτή επίγνωση για νευροδιαφορετικά νευρικά συστήματα. Φιλικό αισθητηριακά, trauma-informed, δωρεάν.';
+    const exerciseDesc = BREATH_PATTERNS.slice(0, 3).map(p => {
+       const title = p.title?.[lang as 'en'|'el'] ?? p.title?.en;
+       const desc = p.desc?.[lang as 'en'|'el'] ?? p.desc?.en;
+       return `${title}: ${desc}`;
+    });
+    return { title: t, description: d, schema: {}, schemaType: 'WebApplication', bodyParagraphs: [d, ...exerciseDesc] };
+  }
+
+  // ── Practice / Movement ──
+  if (clean === '/practice/movement') {
+    const t = lang === 'en'
+      ? 'Mindful Movement for ADHD & Autism – Tai Chi, Qigong & Bilateral Swaying'
+      : 'Ενσυνείδητη Κίνηση για ΔΕΠΥ & Αυτισμό – Tai Chi, Qigong & Αμφίπλευρη Αιώρηση';
+    const d = lang === 'en'
+      ? 'Animated Tai Chi and Qigong forms plus a seated bilateral swaying exercise for nervous system regulation. Dyspraxia-friendly mindful movement for neurodivergent bodies.'
+      : 'Animated φόρμες Tai Chi και Qigong και καθιστή αμφίπλευρη αιώρηση για ρύθμιση του νευρικού συστήματος. Ενσυνείδητη κίνηση φιλική προς τη δυσπραξία.';
+    const bodyParagraphs = [d, "Tai Chi Cloud Hands: Animated skeletal movement synced to breath.", "Qigong Lifting the Sky: Somatic breathwork.", "Seated Bilateral Swaying: Central nervous system regulation."];
+    return { title: t, description: d, schema: {}, schemaType: 'WebApplication', bodyParagraphs };
+  }
+
+  // ── Practice / Microdoses ──
+  if (clean === '/practice/microdoses') {
+    const t = lang === 'en'
+      ? '1-Minute Mindfulness Micro-Practices for ADHD – Quick Grounding Exercises'
+      : 'Μικρο-πρακτικές Ενσυνειδητότητας 1 Λεπτού για ΔΕΠΥ – Γρήγορη Γείωση';
+    const d = lang === 'en'
+      ? 'Ultra-short mindfulness micro-doses for executive dysfunction, transitions and overwhelm. One minute or less — grounding, breath and attention resets for ADHD minds.'
+      : 'Υπερσύντομες μικρο-δόσεις ενσυνειδητότητας για εκτελεστική δυσλειτουργία, μεταβάσεις και υπερφόρτωση. Ένα λεπτό ή λιγότερο — επαναφορά με σώμα, αναπνοή, προσοχή.';
+    const microDesc = MICRODOSES_EXERCISES.slice(0, 3).map(p => {
+       const title = p.title?.[lang as 'en'|'el'] ?? p.title?.en;
+       const desc = p.desc?.[lang as 'en'|'el'] ?? p.desc?.en;
+       return `${title}: ${desc}`;
+    });
+    return { title: t, description: d, schema: {}, schemaType: 'WebApplication', bodyParagraphs: [d, ...microDesc] };
   }
 
   // ── Program ──
@@ -355,7 +473,26 @@ function getMetaForRoute(route: string): RouteMeta {
     const d = lang === 'en'
       ? 'Frequently asked questions about neurodivergent mindfulness, ADHD meditation, autism and breathwork.'
       : 'Συχνές ερωτήσεις για νευροδιαφορετική ενσυνειδητότητα, ΔΕΠΥ, αυτισμό και αναπνοή.';
-    return { title: t, description: d, schema: { '@context': 'https://schema.org', '@type': 'FAQPage' }, schemaType: 'FAQPage' };
+      
+    const mainEntity = Object.values(KNOWLEDGE_FAQ)
+      .flatMap(chap => chap[lang as 'en'|'el'] || [])
+      .map(item => ({
+         '@type': 'Question',
+         name: item.q,
+         acceptedAnswer: { '@type': 'Answer', text: stripMarkdown(item.a) }
+      }));
+      
+    const bodyParagraphs = Object.values(KNOWLEDGE_FAQ)
+      .flatMap(chap => chap[lang as 'en'|'el'] || [])
+      .map(item => `${item.q} — ${stripMarkdown(item.a)}`);
+      
+    return { 
+      title: t, 
+      description: d, 
+      schema: { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity }, 
+      schemaType: 'FAQPage',
+      bodyParagraphs
+    };
   }
 
   return defaults;
@@ -383,11 +520,15 @@ function buildBodyContent(meta: RouteMeta, h1: string): string {
   const paragraphs = meta.bodyParagraphs && meta.bodyParagraphs.length > 0
     ? meta.bodyParagraphs
     : [meta.description];
-
-  const paragraphsHtml = paragraphs
+  let paragraphsHtml = paragraphs
     .filter(Boolean)
     .map(p => `<p>${escapeHtml(p)}</p>`)
     .join('\n      ');
+    
+  if (meta.relatedLinks && meta.relatedLinks.length > 0) {
+    const linksHtml = meta.relatedLinks.map(r => `<li><a href="${r.href}">${escapeHtml(r.label)}</a></li>`).join('');
+    paragraphsHtml += `\n      <ul>${linksHtml}</ul>`;
+  }
 
   return `<div id="root"><div data-prerendered="true">
       <h1>${escapeHtml(h1)}</h1>

@@ -715,498 +715,194 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/body/axis-pause</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/body/axis-pause" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/body/axis-pause" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/body/axis-pause" />
+    <loc>https://neurodivergent-mindfulness.org/en/practice/breath/bhramari-humming</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/bhramari-humming" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/bhramari-humming" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/bhramari-humming" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/body/axis-pause</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/body/axis-pause" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/body/axis-pause" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/body/axis-pause" />
+    <loc>https://neurodivergent-mindfulness.org/el/practice/breath/bhramari-humming</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/bhramari-humming" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/bhramari-humming" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/bhramari-humming" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/body/soft-belly</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/body/soft-belly" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/body/soft-belly" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/body/soft-belly" />
+    <loc>https://neurodivergent-mindfulness.org/en/practice/breath/aum-resonance</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/aum-resonance" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/aum-resonance" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/aum-resonance" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/body/soft-belly</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/body/soft-belly" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/body/soft-belly" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/body/soft-belly" />
+    <loc>https://neurodivergent-mindfulness.org/el/practice/breath/aum-resonance</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/aum-resonance" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/aum-resonance" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/aum-resonance" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/body/unlocked-knees</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/body/unlocked-knees" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/body/unlocked-knees" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/body/unlocked-knees" />
+    <loc>https://neurodivergent-mindfulness.org/en/practice/breath/a-major-resonance</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/a-major-resonance" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/a-major-resonance" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/a-major-resonance" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/body/unlocked-knees</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/body/unlocked-knees" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/body/unlocked-knees" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/body/unlocked-knees" />
+    <loc>https://neurodivergent-mindfulness.org/el/practice/breath/a-major-resonance</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/a-major-resonance" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/a-major-resonance" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/a-major-resonance" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/body/contact-observe</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/body/contact-observe" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/body/contact-observe" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/body/contact-observe" />
+    <loc>https://neurodivergent-mindfulness.org/en/practice/breath/c-major-resonance</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/c-major-resonance" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/c-major-resonance" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/c-major-resonance" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/body/contact-observe</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/body/contact-observe" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/body/contact-observe" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/body/contact-observe" />
+    <loc>https://neurodivergent-mindfulness.org/el/practice/breath/c-major-resonance</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/c-major-resonance" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/c-major-resonance" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/c-major-resonance" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/body/shoulder-drop</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/body/shoulder-drop" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/body/shoulder-drop" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/body/shoulder-drop" />
+    <loc>https://neurodivergent-mindfulness.org/en/practice/breath/throat-chakra-humming</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/throat-chakra-humming" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/throat-chakra-humming" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/throat-chakra-humming" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/body/shoulder-drop</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/body/shoulder-drop" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/body/shoulder-drop" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/body/shoulder-drop" />
+    <loc>https://neurodivergent-mindfulness.org/el/practice/breath/throat-chakra-humming</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/throat-chakra-humming" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/throat-chakra-humming" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/throat-chakra-humming" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/body/hand-weight</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/body/hand-weight" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/body/hand-weight" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/body/hand-weight" />
+    <loc>https://neurodivergent-mindfulness.org/en/practice/breath/om-pure-resonance</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/om-pure-resonance" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/om-pure-resonance" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/om-pure-resonance" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/body/hand-weight</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/body/hand-weight" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/body/hand-weight" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/body/hand-weight" />
+    <loc>https://neurodivergent-mindfulness.org/el/practice/breath/om-pure-resonance</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/om-pure-resonance" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/om-pure-resonance" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/om-pure-resonance" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/body/pelvis-root</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/body/pelvis-root" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/body/pelvis-root" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/body/pelvis-root" />
+    <loc>https://neurodivergent-mindfulness.org/en/practice/breath/om-resonance-throat</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/om-resonance-throat" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/om-resonance-throat" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/om-resonance-throat" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/body/pelvis-root</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/body/pelvis-root" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/body/pelvis-root" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/body/pelvis-root" />
+    <loc>https://neurodivergent-mindfulness.org/el/practice/breath/om-resonance-throat</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/om-resonance-throat" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/om-resonance-throat" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/om-resonance-throat" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/body/jaw-release</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/body/jaw-release" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/body/jaw-release" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/body/jaw-release" />
+    <loc>https://neurodivergent-mindfulness.org/en/rabbithole/dzogchen-great-perfection</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/dzogchen-great-perfection" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/dzogchen-great-perfection" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/dzogchen-great-perfection" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/body/jaw-release</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/body/jaw-release" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/body/jaw-release" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/body/jaw-release" />
+    <loc>https://neurodivergent-mindfulness.org/el/rabbithole/dzogchen-great-perfection</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/dzogchen-great-perfection" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/dzogchen-great-perfection" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/dzogchen-great-perfection" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/body/gravity-sink</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/body/gravity-sink" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/body/gravity-sink" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/body/gravity-sink" />
+    <loc>https://neurodivergent-mindfulness.org/en/rabbithole/never-force</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/never-force" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/never-force" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/never-force" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/body/gravity-sink</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/body/gravity-sink" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/body/gravity-sink" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/body/gravity-sink" />
+    <loc>https://neurodivergent-mindfulness.org/el/rabbithole/never-force</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/never-force" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/never-force" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/never-force" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/breath/rhythm-5-5</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/rhythm-5-5" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/rhythm-5-5" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/rhythm-5-5" />
+    <loc>https://neurodivergent-mindfulness.org/en/rabbithole/soft-gaze-open-hearing</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/soft-gaze-open-hearing" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/soft-gaze-open-hearing" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/soft-gaze-open-hearing" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/breath/rhythm-5-5</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/rhythm-5-5" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/rhythm-5-5" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/rhythm-5-5" />
+    <loc>https://neurodivergent-mindfulness.org/el/rabbithole/soft-gaze-open-hearing</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/soft-gaze-open-hearing" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/soft-gaze-open-hearing" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/soft-gaze-open-hearing" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/breath/nostril-focus</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/nostril-focus" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/nostril-focus" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/nostril-focus" />
+    <loc>https://neurodivergent-mindfulness.org/en/rabbithole/polyvagal-middle-way</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/polyvagal-middle-way" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/polyvagal-middle-way" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/polyvagal-middle-way" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/breath/nostril-focus</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/nostril-focus" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/nostril-focus" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/nostril-focus" />
+    <loc>https://neurodivergent-mindfulness.org/el/rabbithole/polyvagal-middle-way</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/polyvagal-middle-way" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/polyvagal-middle-way" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/polyvagal-middle-way" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/breath/breath-observation</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/breath-observation" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/breath-observation" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/breath-observation" />
+    <loc>https://neurodivergent-mindfulness.org/en/rabbithole/plato-cave-neurodivergent</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/plato-cave-neurodivergent" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/plato-cave-neurodivergent" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/plato-cave-neurodivergent" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/breath/breath-observation</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/breath-observation" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/breath-observation" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/breath-observation" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/breath/breath-path</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/breath-path" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/breath-path" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/breath-path" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/breath/breath-path</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/breath-path" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/breath-path" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/breath-path" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/breath/vocal-vibration</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/vocal-vibration" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/vocal-vibration" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/vocal-vibration" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/breath/vocal-vibration</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/vocal-vibration" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/vocal-vibration" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/vocal-vibration" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/breath/breath-4-2-7</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/breath-4-2-7" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/breath-4-2-7" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/breath-4-2-7" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/breath/breath-4-2-7</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/breath-4-2-7" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/breath-4-2-7" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/breath-4-2-7" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/breath/ocean-breath</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/ocean-breath" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/ocean-breath" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/ocean-breath" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/breath/ocean-breath</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/ocean-breath" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/ocean-breath" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/breath/ocean-breath" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/focus/anchor-7-sec</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/focus/anchor-7-sec" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/focus/anchor-7-sec" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/focus/anchor-7-sec" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/focus/anchor-7-sec</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/focus/anchor-7-sec" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/focus/anchor-7-sec" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/focus/anchor-7-sec" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/focus/triple-anchor</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/focus/triple-anchor" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/focus/triple-anchor" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/focus/triple-anchor" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/focus/triple-anchor</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/focus/triple-anchor" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/focus/triple-anchor" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/focus/triple-anchor" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/focus/alternate-focus</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/focus/alternate-focus" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/focus/alternate-focus" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/focus/alternate-focus" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/focus/alternate-focus</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/focus/alternate-focus" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/focus/alternate-focus" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/focus/alternate-focus" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/focus/gentle-return</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/focus/gentle-return" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/focus/gentle-return" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/focus/gentle-return" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/focus/gentle-return</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/focus/gentle-return" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/focus/gentle-return" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/focus/gentle-return" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/focus/eye-level</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/focus/eye-level" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/focus/eye-level" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/focus/eye-level" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/focus/eye-level</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/focus/eye-level" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/focus/eye-level" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/focus/eye-level" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/focus/samatha-micro</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/focus/samatha-micro" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/focus/samatha-micro" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/focus/samatha-micro" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/focus/samatha-micro</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/focus/samatha-micro" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/focus/samatha-micro" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/focus/samatha-micro" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/focus/one-sound</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/focus/one-sound" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/focus/one-sound" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/focus/one-sound" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/focus/one-sound</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/focus/one-sound" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/focus/one-sound" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/focus/one-sound" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/focus/sensory-micro</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/focus/sensory-micro" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/focus/sensory-micro" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/focus/sensory-micro" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/focus/sensory-micro</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/focus/sensory-micro" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/focus/sensory-micro" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/focus/sensory-micro" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/space/short-moment</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/space/short-moment" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/space/short-moment" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/space/short-moment" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/space/short-moment</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/space/short-moment" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/space/short-moment" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/space/short-moment" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/space/sky-clouds</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/space/sky-clouds" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/space/sky-clouds" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/space/sky-clouds" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/space/sky-clouds</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/space/sky-clouds" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/space/sky-clouds" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/space/sky-clouds" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/space/tilopa-rest</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/space/tilopa-rest" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/space/tilopa-rest" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/space/tilopa-rest" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/space/tilopa-rest</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/space/tilopa-rest" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/space/tilopa-rest" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/space/tilopa-rest" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/space/metta-expansion</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/space/metta-expansion" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/space/metta-expansion" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/space/metta-expansion" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/space/metta-expansion</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/space/metta-expansion" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/space/metta-expansion" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/space/metta-expansion" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/space/silence-background</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/space/silence-background" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/space/silence-background" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/space/silence-background" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/space/silence-background</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/space/silence-background" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/space/silence-background" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/space/silence-background" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/space/soft-eyes</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/space/soft-eyes" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/space/soft-eyes" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/space/soft-eyes" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/space/soft-eyes</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/space/soft-eyes" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/space/soft-eyes" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/practice/space/soft-eyes" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/rabbithole/dzogchen-tregchod</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/dzogchen-tregchod" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/dzogchen-tregchod" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/dzogchen-tregchod" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/rabbithole/dzogchen-tregchod</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/dzogchen-tregchod" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/dzogchen-tregchod" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/dzogchen-tregchod" />
+    <loc>https://neurodivergent-mindfulness.org/el/rabbithole/plato-cave-neurodivergent</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/plato-cave-neurodivergent" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/plato-cave-neurodivergent" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/plato-cave-neurodivergent" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
