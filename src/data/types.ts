@@ -1,4 +1,6 @@
-export interface Axis {
+export type Axis = 'body' | 'breath' | 'attention' | 'space';
+
+export interface AxisDefinition {
   name: string;
   icon: string;
   weeks: number[];

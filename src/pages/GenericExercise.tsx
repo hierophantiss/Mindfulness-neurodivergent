@@ -6,10 +6,13 @@ import { useLanguage } from '../hooks/useLanguage';
 import { useReward } from '../contexts/RewardContext';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { PlayPauseOverlay } from '../components/PlayPauseOverlay';
+import { EvidenceLine } from '../components/EvidenceLine';
+import { MICRODOSES_EXERCISES } from '../data/microdoses';
 
 const EXERCISES: Record<string, any> = {
   // --- ΜΙΚΡΟΔΟΣΕΙΣ ΑΠΟ ΤΟ 8-ΕΒΔΟΜΑΔΟ ΠΡΟΓΡΑΜΜΑ ---
   'axis-pause': {
+    axis: 'body',
     title: { el: '1 Δευτερόλεπτο (Βαρύτητα & Άξονας)', en: '1 Second Pause (Gravity & Axis)' },
     desc: { el: 'Κανείς δεν θα προσέξει τίποτα. Μια στιγμιαία επαναφορά του νευρικού συστήματος.', en: 'No one will notice a thing. A momentary reset of the nervous system.' },
     duration: 60, // 1 min practice (though the pause is 1s)
@@ -30,6 +33,7 @@ const EXERCISES: Record<string, any> = {
     }
   },
   'shoulder-drop': {
+    axis: 'body',
     title: { el: 'Απελευθέρωση Ώμων', en: 'Shoulder Drop' },
     desc: { el: 'Διάλυσε τη συσσωρευμένη ένταση αόρατα, όπου κι αν βρίσκεσαι.', en: 'Dissolve accumulated tension invisibly, wherever you are.' },
     duration: 60, 
@@ -50,6 +54,7 @@ const EXERCISES: Record<string, any> = {
     }
   },
   'rhythm-5-5': {
+    axis: 'breath',
     title: { el: 'Ρυθμική Αναπνοή 5-5', en: 'Rhythmic Breath 5-5' },
     desc: { el: 'Συμμετρία που ηρεμεί άμεσα τον «αυτόματο πιλότο».', en: 'Symmetry that instantly calms the "autopilot".' },
     duration: 120, // 2 mins
@@ -70,6 +75,7 @@ const EXERCISES: Record<string, any> = {
     }
   },
   'anchor-7-sec': {
+    axis: 'attention',
     title: { el: 'Οπτική Άγκυρα 7"', en: 'Visual Anchor 7"' },
     desc: { el: 'Το βλέμμα κλειδώνει, ο νους ησυχάζει.', en: 'Gaze locks, mind quiets.' },
     duration: 60, // 1 min (with 7 sec reps)
@@ -90,6 +96,7 @@ const EXERCISES: Record<string, any> = {
     }
   },
   'alternate-focus': {
+    axis: 'attention',
     title: { el: 'Εναλλάξ Εστίαση', en: 'Alternate Focus' },
     desc: { el: 'Η κίνηση του βλέμματος ξεκουράζει το νευρικό σύστημα.', en: 'Moving your gaze rests the nervous system.' },
     duration: 90, 
@@ -110,6 +117,7 @@ const EXERCISES: Record<string, any> = {
     }
   },
   'samatha-micro': {
+    axis: 'attention',
     title: { el: 'Σκέψεις σαν Σύννεφα', en: 'Thoughts as Clouds' },
     desc: { el: 'Μην πολεμάς τις σκέψεις. Άλλαξε τον τρόπο που τις κοιτάς.', en: "Don't fight thoughts. Change how you look at them." },
     duration: 120, // 2 mins
@@ -130,6 +138,7 @@ const EXERCISES: Record<string, any> = {
     }
   },
   'body-scan': {
+    axis: 'body',
     title: { el: 'Μικρο-Γείωση Σώματος', en: 'Micro Body Grounding' },
     desc: { el: 'Σύντομος έλεγχος του σώματος για άμεση επιστροφή στο εδώ και τώρα.', en: 'Short body check for an immediate return to the here and now.' },
     duration: 180, // 3 minutes
@@ -152,6 +161,7 @@ const EXERCISES: Record<string, any> = {
     }
   },
   'grounding-scan': {
+    axis: 'body',
     title: { el: 'Αίσθηση Γείωσης', en: 'Grounding Sensation' },
     desc: { el: 'Βρες το κέντρο σου και νιώσε τη σταθερότητα του εδάφους.', en: 'Find your center and feel the stability of the ground.' },
     duration: 300, // 5 minutes
@@ -174,6 +184,7 @@ const EXERCISES: Record<string, any> = {
     }
   },
   'sound-focus': {
+    axis: 'attention',
     title: { el: 'Εστίαση στον Ήχο', en: 'Sound Focus' },
     desc: { el: 'Άκουσε τον περιβάλλοντα χώρο χωρίς κριτική, αφήνοντας τους ήχους να έρχονται και να φεύγουν.', en: 'Listen to your surroundings without judgment, letting sounds come and go.' },
     duration: 300, // 5 minutes
@@ -198,6 +209,7 @@ const EXERCISES: Record<string, any> = {
     }
   },
   'contact-observe': {
+    axis: 'body',
     title: { el: 'Παρατήρηση Επαφής (Γείωση)', en: 'Contact Observation (Grounding)' },
     desc: { el: 'Το σώμα είναι η βάση της παρούσας στιγμής. Παρατήρησε τα σημεία που αγγίζουν τη γη.', en: 'The body is the basis of the present moment. Observe the points touching the earth.' },
     duration: 120, // 2 minutes
@@ -220,6 +232,7 @@ const EXERCISES: Record<string, any> = {
     }
   },
   'vertical-axis': {
+    axis: 'body',
     title: { el: 'Ο Κατακόρυφος Άξονας', en: 'The Vertical Axis' },
     desc: { el: 'Ο άξονας σας κρατά. Δεν χρειάζεται να τον "φτιάξετε", αρκεί να τον αναγνωρίσετε.', en: 'Your axis holds you. You do not need to "fix" it, just acknowledge it.' },
     duration: 180, // 3 minutes
@@ -242,6 +255,7 @@ const EXERCISES: Record<string, any> = {
     }
   },
   'gravity-surrender': {
+    axis: 'body',
     title: { el: 'Παράδοση στη Βαρύτητα', en: 'Surrender to Gravity' },
     desc: { el: 'Αφήστε το βάρος σας να πέσει προς τα κάτω. Η γείωση είναι η πρώτη πράξη χαλάρωσης.', en: 'Let your weight drop downwards. Grounding is the first act of relaxation.' },
     duration: 180, // 3 minutes
@@ -264,6 +278,7 @@ const EXERCISES: Record<string, any> = {
     }
   },
   'mindful-swaying': {
+    axis: 'body',
     title: { el: 'Μετρονόμος / Mindful Swaying', en: 'Mindful Swaying / Metronome' },
     desc: { el: 'Η κίνηση ξεκινά από το κέντρο — την κοιλιά. Δεξιά, αριστερά. Ρυθμικά. Συνειδητά. Η παρουσία ζει μέσα στην κίνηση.', en: 'Movement starts from the center — the belly. Right, left. Rhythmic. Conscious. Presence lives within movement.' },
     duration: 300, // 5 minutes
@@ -286,6 +301,7 @@ const EXERCISES: Record<string, any> = {
     }
   },
   'mindful-walking': {
+    axis: 'body',
     title: { el: 'Ενσυνείδητο Περπάτημα', en: 'Mindful Walking' },
     desc: { el: 'Περπατήστε αργά, νιώθοντας τα πέλματα να αγγίζουν τη γη σε κάθε βήμα.', en: 'Walk slowly, feeling the soles touch the earth with each step.' },
     duration: 300, // 5 minutes
@@ -308,6 +324,7 @@ const EXERCISES: Record<string, any> = {
     }
   },
   'breath-observation': {
+    axis: 'breath',
     title: { el: 'Ακρόαση Αναπνοής', en: 'Breath Observation' },
     desc: { el: 'Απλώς παρατήρησε την αναπνοή όπως ακριβώς είναι — ρηχή, βαθιά, γρήγορη.', en: 'Simply observe the breath exactly as it is — shallow, deep, fast.' },
     duration: 300, // 5 minutes
@@ -330,6 +347,7 @@ const EXERCISES: Record<string, any> = {
     }
   },
   'belly-breathing': {
+    axis: 'breath',
     title: { el: 'Αναπνοή Διαφράγματος', en: 'Belly Breathing' },
     desc: { el: 'Η διαφραγματική αναπνοή ενεργοποιεί το παρασυμπαθητικό νευρικό σύστημα (ηρεμία).', en: 'Diaphragmatic breathing activates the parasympathetic nervous system (calm).' },
     duration: 300, // 5 minutes
@@ -352,6 +370,7 @@ const EXERCISES: Record<string, any> = {
     }
   },
   'exhale-rhythm': {
+    axis: 'breath',
     title: { el: 'Ο Ρυθμός της Εκπνοής', en: 'Exhale Rhythm' },
     desc: { el: 'Δώστε έμφαση στη μακριά εκπνοή. Το κλειδί για ενεργοποίηση της χαλάρωσης.', en: 'Emphasize the long exhale. The key to activating relaxation.' },
     duration: 300, // 5 minutes
@@ -374,6 +393,7 @@ const EXERCISES: Record<string, any> = {
     }
   },
   'nadi-shodhana': {
+    axis: 'breath',
     title: { el: 'Αναπνοή Εναλλαγής (Nadi Shodhana)', en: 'Alternate Nostril Breathing' },
     desc: { el: 'Ισορροπεί τα δύο ημισφαίρια του εγκεφάλου. Ιδανικό για πνευματική καθαρότητα.', en: 'Balances the brain hemispheres. Ideal for mental clarity.' },
     duration: 300, // 5 minutes
@@ -396,6 +416,7 @@ const EXERCISES: Record<string, any> = {
     }
   },
   'attention-observation': {
+    axis: 'attention',
     title: { el: 'Παρατήρηση Προσοχής', en: 'Attention Observation' },
     desc: { el: 'Πού πηγαίνει η προσοχή σας φυσικά; Μην την κατευθύνετε, απλώς δείτε.', en: 'Where does your attention go naturally? Do not direct it, just see.' },
     duration: 300, // 5 minutes
@@ -418,6 +439,7 @@ const EXERCISES: Record<string, any> = {
     }
   },
   'fixed-point': {
+    axis: 'attention',
     title: { el: 'Κλειστή Εστίαση (Σταθερό Σημείο)', en: 'Closed Focus (Fixed Point)' },
     desc: { el: 'Μαζέψτε τη δέσμη της προσοχής σε ένα μόνο σημείο.', en: 'Gather the beam of attention to a single point.' },
     duration: 300, // 5 minutes
@@ -440,6 +462,7 @@ const EXERCISES: Record<string, any> = {
     }
   },
   'labeling-technique': {
+    axis: 'attention',
     title: { el: 'Η Τεχνική της Ταμπέλας', en: 'Labeling Technique' },
     desc: { el: 'Όταν μια σκέψη σε τραβάει, βάλε μια απλή ταμπέλα και επέστρεψε.', en: 'When a thought pulls you, put a simple label on it and return.' },
     duration: 300, // 5 minutes
@@ -462,6 +485,7 @@ const EXERCISES: Record<string, any> = {
     }
   },
   'soft-eyes': {
+    axis: 'space',
     title: { el: 'Περιφερειακή Όραση (Μαλακά Μάτια)', en: 'Peripheral Vision (Soft Eyes)' },
     desc: { el: 'Αγκαλιάστε όλο το οπτικό πεδίο χωρίς να εστιάζετε πουθενά συγκεκριμένα.', en: 'Embrace the entire visual field without focusing anywhere specific.' },
     duration: 300, // 5 minutes
@@ -484,6 +508,7 @@ const EXERCISES: Record<string, any> = {
     }
   },
   'sky-clouds': {
+    axis: 'space',
     title: { el: 'Ο Ουρανός και τα Σύννεφα', en: 'The Sky and the Clouds' },
     desc: { el: 'Σκέψεις και αισθήσεις είναι σύννεφα. Εσείς είστε ο ουρανός.', en: 'Thoughts and sensations are clouds. You are the sky.' },
     duration: 420, // 7 minutes
@@ -600,7 +625,8 @@ export default function GenericExercise() {
             category: 'microdose',
             itemId: id || 'generic',
             durationSeconds: exercise.duration,
-            completed: true
+            completed: true,
+            axis: exercise.axis
           });
         }
         localStorage.setItem('journal_history', JSON.stringify(h));

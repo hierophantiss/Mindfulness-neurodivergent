@@ -139,7 +139,8 @@ export default function PracticeSwaying() {
           category: 'swaying',
           itemId: 'practice-swaying',
           durationSeconds: elapsedSeconds,
-          completed: true
+          completed: true,
+          axis: 'body'
         });
       }
     } else {
@@ -158,7 +159,8 @@ export default function PracticeSwaying() {
           category: 'swaying',
           itemId: 'practice-swaying',
           durationSeconds: elapsedSeconds,
-          completed: true
+          completed: true,
+          axis: 'body'
         });
       }
     };

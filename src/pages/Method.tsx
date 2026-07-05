@@ -43,6 +43,16 @@ const T = {
         desc: 'Το φως της προσοχής. Η πράξη της παρατήρησης της διάσπασης και του εκνευρισμού, χωρίς κριτική και χωρίς να αναλύεις τα "γιατί" — αυτή είναι η ίδια η ουσία της άσκησης.'
       }
     ],
+    
+    axesTitle: 'Οι 4 Άξονες',
+    axes: [
+      { id: 'body', icon: 'I', title: 'Σώμα (Γη)', desc: 'Γείωση και αίσθηση του βάρους.' },
+      { id: 'breath', icon: '○', title: 'Αναπνοή (Αέρας)', desc: 'Ρύθμιση του νευρικού συστήματος.' },
+      { id: 'attention', icon: '△', title: 'Προσοχή (Φωτιά)', desc: 'Εστίαση και παρατήρηση.' },
+      { id: 'space', icon: '∞', title: 'Χώρος (Νερό)', desc: 'Ανοιχτή επίγνωση και ξεκούραση.' }
+    ],
+    axesButton: 'Ασκήσεις αυτού του άξονα',
+
     allegoriesTitle: 'Αλληγορίες & Μεταφορές',
     allegory1Title: 'Ο Ελέφαντας, η Μαϊμού και ο "Νευροδιαφορετικός" Ασκητής',
     allegory1Text: 'Σε μια αρχαία διαδρομή της παράδοσης Σαμάθα (περίπου 300 π.Χ.), ένας ασκητής προσπαθεί να δαμάσει τον νου του. Η εικόνα είναι συμβολική: ο νους είναι ένας μαύρος, αφηνιασμένος ελέφαντας (το νευρικό σύστημα σε ταραχή) τον οποίο σέρνει μια υπερκινητική μαϊμού (το DMN που πηδάει από σκέψη σε σκέψη). \n\nΣκέψου το εξής: ένας άνθρωπος πριν από 2.300 χρόνια, μέσα στην ησυχία της φύσης, δεν μπορούσε να μαζέψει το μυαλό του, το οποίο έτρεχε ανεξέλεγκτα με ξεκάθαρα στοιχεία διάσπασης. Κατά την προσωπική μου άποψη, αυτός ο ασκητής —όπως ίσως και ο ίδιος ο Βούδας— ήταν νευροδιαφορετικός. Χρειαζόταν ένα χειροπιαστό σύστημα για να "επιβιώσει" από τον ίδιο του τον νου.\n\nΗ διαφορά από την απλή "αυτοσυγκέντρωση" είναι ότι ο ασκητής χρησιμοποιεί δύο ξεκάθαρα εργαλεία: την Ενσυνειδητότητα / Mindfulness (ως ένα μεταφορικό σκοινί/λάσο) και την Αναπνοή. Κάθε φορά που η μαϊμού παρασέρνει τον ελέφαντα, ο ασκητής δεν χρησιμοποιεί βία ούτε επικρίνει τον εαυτό του. Ρίχνει απλώς απαλά το σκοινί του mindfulness, ρυθμίζει την αναπνοή του και τους επαναφέρει. Σταδιακά, χωρίς μάχη, η μαϊμού ηρεμεί, ο ελέφαντας γίνεται λευκός και γαλήνιος, και ο ασκητής αναπαύεται μαζί τους.',
@@ -89,6 +99,16 @@ const T = {
         desc: 'The light of attention. The act of observing distraction and irritation without judgment or over-analysis—this is the core of the practice.'
       }
     ],
+    
+    axesTitle: 'The 4 Axes',
+    axes: [
+      { id: 'body', icon: 'I', title: 'Body (Earth)', desc: 'Grounding and sensation of weight.' },
+      { id: 'breath', icon: '○', title: 'Breath (Air)', desc: 'Nervous system regulation.' },
+      { id: 'attention', icon: '△', title: 'Attention (Fire)', desc: 'Focus and observation.' },
+      { id: 'space', icon: '∞', title: 'Space (Water)', desc: 'Open awareness and resting.' }
+    ],
+    axesButton: 'Practice this axis',
+
     allegoriesTitle: 'Allegories & Metaphors',
     allegory1Title: 'The Elephant, the Monkey, and the "Neurodivergent" Ascetic',
     allegory1Text: 'In an ancient path of the Samatha tradition (around 300 BC), an ascetic is trying to tame his mind. The imagery is symbolic: the mind is a crazed black elephant (the nervous system in turmoil) led by a hyperactive monkey (the DMN jumping from thought to thought). \n\nConsider this: a person 2,300 years ago, surrounded by the absolute quiet of nature, could not gather his thoughts; his mind raced uncontrollably, showing clear signs of severe distraction. In my personal opinion, this ascetic—and perhaps Buddha himself—was neurodivergent. He needed a practical, tangible system to "survive" his own mind.\n\nThe difference from simple "concentration" is that the ascetic uses two precise tools: Mindfulness (a metaphorical rope or lasso) and the Breath. Every time the monkey leads the elephant astray, the ascetic uses no force and does not criticize himself. He gently throws the rope of mindfulness, regulates his breath, and brings them back. Gradually, without a fight, the monkey calms down, the elephant turns white and peaceful, and the ascetic rests alongside them.',
@@ -113,7 +133,8 @@ export default function Method() {
           category: 'rabbithole',
           itemId: 'method-manual',
           durationSeconds: duration,
-          completed: true
+          completed: true,
+          axis: 'space'
         });
       }
     };
@@ -181,6 +202,43 @@ export default function Method() {
                     {sym.desc}
                   </p>
                 </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        
+        {/* The 4 Axes Section */}
+        <section className="pt-4 border-t border-white/[0.05] mt-8">
+          <h2 className="text-[18px] font-bold text-[#d4d4d8] mb-5 border-b border-white/[0.05] pb-2 uppercase tracking-wide">
+            {t.axesTitle}
+          </h2>
+          <div className="grid gap-4 md:grid-cols-2">
+            {t.axes.map((axis: any, idx: number) => (
+              <div 
+                key={axis.id} 
+                className="bg-white/[0.04] border border-white/[0.05] p-5 rounded-3xl flex flex-col gap-4 hover:bg-white/[0.06] transition-colors"
+                style={{ animationDelay: `${idx * 100}ms` }}
+              >
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl font-mono border border-white/10 bg-white/5 text-teal-400 shrink-0">
+                    {axis.icon}
+                  </div>
+                  <div>
+                    <h3 className="text-[#d4d4d8] font-bold text-[16px] mb-1">
+                      {axis.title}
+                    </h3>
+                    <p className="text-[#d4d4d8]/80 text-[13px] leading-relaxed">
+                      {axis.desc}
+                    </p>
+                  </div>
+                </div>
+                <Link 
+                  to={`/practice?axis=${axis.id}`}
+                  className="mt-auto w-full py-3 px-4 rounded-xl bg-teal-500/10 hover:bg-teal-500/20 text-teal-300 transition-all text-sm font-semibold text-center border border-teal-500/20 active:scale-[0.98]"
+                >
+                  {t.axesButton}
+                </Link>
               </div>
             ))}
           </div>

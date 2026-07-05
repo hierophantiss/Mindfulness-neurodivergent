@@ -39,21 +39,21 @@ export default function CoreGeometricState() {
     const last7Days = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
     const recentLogs = logs.filter(l => new Date(l.timestamp) >= last7Days);
 
-    const check = (logsArray: any[], categories: string[]) => 
-      logsArray.some(l => categories.includes(l.category));
+    const check = (logsArray: any[], axisName: string, fallbackCategories: string[]) => 
+      logsArray.some(l => l.axis === axisName || (!l.axis && fallbackCategories.includes(l.category)));
 
     return {
-      body: check(todayLogs, ['grounding', 'movement', 'swaying', 'yoga']),
-      bodySoft: check(recentLogs, ['grounding', 'movement', 'swaying', 'yoga']),
+      body: check(todayLogs, 'body', ['grounding', 'movement', 'swaying', 'yoga']),
+      bodySoft: check(recentLogs, 'body', ['grounding', 'movement', 'swaying', 'yoga']),
       
-      breath: check(todayLogs, ['breath', 'vocal']),
-      breathSoft: check(recentLogs, ['breath', 'vocal']),
+      breath: check(todayLogs, 'breath', ['breath', 'vocal']),
+      breathSoft: check(recentLogs, 'breath', ['breath', 'vocal']),
       
-      attention: check(todayLogs, ['checkin', 'microdose', 'journal']),
-      attentionSoft: check(recentLogs, ['checkin', 'microdose', 'journal']),
+      attention: check(todayLogs, 'attention', ['checkin', 'microdose', 'journal']),
+      attentionSoft: check(recentLogs, 'attention', ['checkin', 'microdose', 'journal']),
       
-      space: check(todayLogs, ['rabbithole', 'chapter', 'sanctuary', 'vocal']),
-      spaceSoft: check(recentLogs, ['rabbithole', 'chapter', 'sanctuary', 'vocal']),
+      space: check(todayLogs, 'space', ['rabbithole', 'chapter', 'sanctuary', 'vocal']),
+      spaceSoft: check(recentLogs, 'space', ['rabbithole', 'chapter', 'sanctuary', 'vocal']),
     };
   }, [logs]);
 

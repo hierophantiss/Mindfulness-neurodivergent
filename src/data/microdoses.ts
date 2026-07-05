@@ -1,4 +1,7 @@
+import { Axis } from './types';
+
 export interface MicrodoseExercise {
+  axis: Axis;
   id: string;
   title: { el: string; en: string };
   type: 'body' | 'breath' | 'focus' | 'space';
@@ -7,12 +10,15 @@ export interface MicrodoseExercise {
   desc: { el: string; en: string };
   iconName: 'Anchor' | 'Zap' | 'Focus' | 'Box';
   link: string;
+  evidence?: { en: string; el: string; ref: string };
 }
 
 export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   // Body (Axis 1)
   {
     id: 'axis-pause',
+    evidence: { en: 'Anchoring the cerebellum via gravity computation', el: 'Αγκίστρωση της παρεγκεφαλίδας μέσω της βαρύτητας', ref: 'study-mackrous' },
+    axis: 'body',
     title: { el: '1 Δευτερόλεπτο (Άξονας)', en: '1 Second (Axis)' },
     type: 'body',
     dur: { el: '1 δευτ.', en: '1 sec' },
@@ -23,6 +29,8 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'soft-belly',
+    evidence: { en: 'Ventral vagal activation via diaphragm release', el: 'Ενεργοποίηση του κοιλιακού πνευμονογαστρικού νεύρου', ref: 'study-porges' },
+    axis: 'body',
     title: { el: 'Μαλακή Κοιλιά', en: 'Soft Belly' },
     type: 'body',
     dur: { el: '30 δευτ.', en: '30 sec' },
@@ -33,6 +41,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'unlocked-knees',
+    axis: 'body',
     title: { el: 'Ξεκλείδωτα Γόνατα', en: 'Unlocked Knees' },
     type: 'body',
     dur: { el: '15 δευτ.', en: '15 sec' },
@@ -43,6 +52,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'contact-observe',
+    axis: 'body',
     title: { el: 'Παρατήρηση Επαφής', en: 'Contact Observation' },
     type: 'body',
     dur: { el: '1 λεπτό', en: '1 minute' },
@@ -53,6 +63,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'shoulder-drop',
+    axis: 'body',
     title: { el: 'Απελευθέρωση Ώμων', en: 'Shoulder Drop' },
     type: 'body',
     dur: { el: '15 δευτ.', en: '15 sec' },
@@ -63,6 +74,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'hand-weight',
+    axis: 'body',
     title: { el: 'Το Βάρος των Χεριών', en: 'Hand Weight' },
     type: 'body',
     dur: { el: '20 δευτ.', en: '20 sec' },
@@ -73,6 +85,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'pelvis-root',
+    axis: 'body',
     title: { el: 'Η Λεκάνη ως Γλάστρα', en: 'Pelvis as a Pot' },
     type: 'body',
     dur: { el: '30 δευτ.', en: '30 sec' },
@@ -83,6 +96,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'jaw-release',
+    axis: 'body',
     title: { el: 'Χαλάρωση Γνάθου', en: 'Jaw Release' },
     type: 'body',
     dur: { el: '10 δευτ.', en: '10 sec' },
@@ -93,6 +107,8 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'gravity-sink',
+    evidence: { en: 'Ecological grounding provides immediate safety cues', el: 'Η οικολογική γείωση παρέχει άμεσα σήματα ασφαλείας', ref: 'study-gibson' },
+    axis: 'body',
     title: { el: 'Βύθιση στη Βαρύτητα', en: 'Gravity Sink' },
     type: 'body',
     dur: { el: '15 δευτ.', en: '15 sec' },
@@ -105,6 +121,8 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   // Breath (Axis 2)
   {
     id: 'rhythm-5-5',
+    evidence: { en: 'Regulates the window of tolerance through heart rate variability', el: 'Ρυθμίζει το παράθυρο ανοχής μέσω της καρδιακής μεταβλητότητας', ref: 'study-corrigan' },
+    axis: 'breath',
     title: { el: 'Αναπνοή 5-5', en: 'Breath 5-5' },
     type: 'breath',
     dur: { el: '1-2 λεπτά', en: '1-2 minutes' },
@@ -115,6 +133,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'nostril-touch',
+    axis: 'breath',
     title: { el: 'Εσωτερική Αφή', en: 'Internal Touch' },
     type: 'breath',
     dur: { el: '30 δευτ.', en: '30 sec' },
@@ -125,6 +144,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'stealth-breath',
+    axis: 'breath',
     title: { el: 'Αόρατη Αναπνοή (Παύση)', en: 'Invisible Breath (Pause)' },
     type: 'breath',
     dur: { el: '1 λεπτό', en: '1 minute' },
@@ -135,6 +155,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'breath-path',
+    axis: 'breath',
     title: { el: 'Η Διαδρομή του Αέρα', en: 'The Path of Air' },
     type: 'breath',
     dur: { el: '45 δευτ.', en: '45 sec' },
@@ -145,6 +166,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'humming-vibration',
+    axis: 'breath',
     title: { el: 'Ηχητική Δόνηση (Humming)', en: 'Vocal Vibration (Humming)' },
     type: 'breath',
     dur: { el: '1 λεπτό', en: '1 minute' },
@@ -155,6 +177,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'breath-4-2-7',
+    axis: 'breath',
     title: { el: 'Αναπνοή 4-2-7 (Ηρεμία)', en: 'Breath 4-2-7 (Calm)' },
     type: 'breath',
     dur: { el: '1 λεπτό', en: '1 minute' },
@@ -165,6 +188,8 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'ocean-breath',
+    evidence: { en: 'Stimulates vagal tone via vocal cord friction', el: 'Διεγείρει τον πνευμονογαστρικό τόνο μέσω της τριβής', ref: 'study-porges' },
+    axis: 'breath',
     title: { el: 'Ήχος Ωκεανού', en: 'Ocean Breath' },
     type: 'breath',
     dur: { el: '30 δευτ.', en: '30 sec' },
@@ -177,6 +202,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   // Focus (Axis 3)
   {
     id: 'anchor-7-sec',
+    axis: 'breath',
     title: { el: 'Οπτική Άγκυρα 7"', en: 'Visual Anchor 7"' },
     type: 'focus',
     dur: { el: '7 δευτ.', en: '7 sec' },
@@ -187,6 +213,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'triple-anchor',
+    axis: 'breath',
     title: { el: 'Τριπλή Άγκυρα', en: 'Triple Anchor' },
     type: 'focus',
     dur: { el: '1 λεπτό', en: '1 minute' },
@@ -197,6 +224,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'alternate-focus',
+    axis: 'breath',
     title: { el: 'Εναλλάξ Εστίαση', en: 'Alternate Focus' },
     type: 'focus',
     dur: { el: '30 δευτ.', en: '30 sec' },
@@ -207,6 +235,8 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'gentle-return',
+    evidence: { en: 'Decreases Default Mode Network (DMN) rumination', el: 'Μειώνει τον μηρυκασμό στο Δίκτυο DMN', ref: 'study-farb' },
+    axis: 'breath',
     title: { el: 'Η Απαλή Επιστροφή', en: 'Gentle Return' },
     type: 'focus',
     dur: { el: 'Συνεχές', en: 'Continuous' },
@@ -217,6 +247,8 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'eye-horizon',
+    evidence: { en: 'Soft gaze acts as a neurological brake via peripheral vision', el: 'Το περιφερειακό βλέμμα λειτουργεί ως νευρολογικό φρένο', ref: 'study-vater' },
+    axis: 'breath',
     title: { el: 'Άγκυρα στο Ύψος των Ματιών', en: 'Eye Level Anchor' },
     type: 'focus',
     dur: { el: '1 λεπτό', en: '1 minute' },
@@ -227,6 +259,8 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'samatha-micro',
+    evidence: { en: 'Direct somatic focus silences the rumination network', el: 'Η άμεση σωματική εστίαση σιγάζει το δίκτυο μηρυκασμού', ref: 'study-farb' },
+    axis: 'breath',
     title: { el: 'Σκέψεις σαν Σύννεφα', en: 'Thoughts as Clouds' },
     type: 'focus',
     dur: { el: '1 λεπτό', en: '1 minute' },
@@ -237,6 +271,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'one-sound',
+    axis: 'breath',
     title: { el: 'Ο Ένας Ήχος', en: 'The One Sound' },
     type: 'focus',
     dur: { el: '20 δευτ.', en: '20 sec' },
@@ -247,6 +282,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'sensory-54321',
+    axis: 'breath',
     title: { el: '5 Αισθήσεις (Micro)', en: '5 Senses (Micro)' },
     type: 'focus',
     dur: { el: '1 λεπτό', en: '1 minute' },
@@ -259,6 +295,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   // Space (Axis 4)
   {
     id: 'short-moment',
+    axis: 'space',
     title: { el: 'Στιγμιαία Παύση', en: 'Short Moment' },
     type: 'space',
     dur: { el: '5 δευτ.', en: '5 sec' },
@@ -269,6 +306,8 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'sky-gazing-micro',
+    evidence: { en: 'Induces large-scale Alpha-Gamma neural coherence', el: 'Προκαλεί ευρείας κλίμακας νευρικό συγχρονισμό Alpha-Gamma', ref: 'study-lutz' },
+    axis: 'space',
     title: { el: 'Βλέμμα στον Ουρανό', en: 'Sky Gazing' },
     type: 'space',
     dur: { el: '30 δευτ.', en: '30 sec' },
@@ -279,6 +318,8 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'tilopa-rest',
+    evidence: { en: 'Shifts brain resources away from DMN narrative centers', el: 'Απομακρύνει πόρους από τα κέντρα αφήγησης του DMN', ref: 'study-brewer' },
+    axis: 'space',
     title: { el: 'Ξεκούραση (Tilopa)', en: 'Rest (Tilopa)' },
     type: 'space',
     dur: { el: '10 δευτ.', en: '10 sec' },
@@ -289,6 +330,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'spacious-metta',
+    axis: 'space',
     title: { el: 'Ευρύχωρη Καλοσύνη', en: 'Spacious Kindness' },
     type: 'space',
     dur: { el: '1 λεπτό', en: '1 minute' },
@@ -299,6 +341,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'silence-background',
+    axis: 'space',
     title: { el: 'Η Σιωπή πίσω από τα πάντα', en: 'Silence in the Background' },
     type: 'space',
     dur: { el: '30 δευτ.', en: '30 sec' },
@@ -309,6 +352,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'open-presence',
+    axis: 'space',
     title: { el: 'Ανοιχτό Βλέμμα', en: 'Open Gaze' },
     type: 'space',
     dur: { el: '30 δευτ.', en: '30 sec' },

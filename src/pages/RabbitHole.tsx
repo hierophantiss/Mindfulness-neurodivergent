@@ -70,7 +70,8 @@ export default function RabbitHole() {
           category: 'rabbithole',
           itemId: activeArticle,
           durationSeconds: duration,
-          completed: true
+          completed: true,
+          axis: 'space'
         });
       }
     }
@@ -99,7 +100,8 @@ export default function RabbitHole() {
             category: 'rabbithole',
             itemId: activeArticle,
             durationSeconds: duration,
-            completed: true
+            completed: true,
+            axis: 'space'
           });
         }
       }

@@ -1,8 +1,8 @@
 // Auto-extracted from learning-to-ride-greek.html
 
-import { Axis, CourseData } from './types';
+import { AxisDefinition, CourseData } from './types';
 
-export const AXES: Axis[] = [
+export const AXES: AxisDefinition[] = [
     { name: 'Σώμα / Γη', icon: '⛰️', weeks: [1,2] },
     { name: 'Αναπνοή / Ουρανός', icon: '🫁', weeks: [3,4] },
     { name: 'Προσοχή / Φωτιά', icon: '🔥', weeks: [5,6] },

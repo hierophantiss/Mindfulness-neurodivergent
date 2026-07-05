@@ -63,6 +63,17 @@ export default function AxesProgressRing({ className = '' }: AxesProgressRingPro
     const recentLogs = logs.filter(log => new Date(log.timestamp) >= twoWeeksAgo);
 
     recentLogs.forEach(act => {
+      // If act.axis is explicitly provided, use it
+      if ((act as any).axis) {
+        const axis = (act as any).axis;
+        if (axis === 'body') counts.body++;
+        else if (axis === 'breath') counts.breath++;
+        else if (axis === 'attention') counts.attention++;
+        else if (axis === 'space') counts.space++;
+        return;
+      }
+      
+      // Fallback to existing category-based mapping
       if (['grounding', 'movement', 'swaying', 'yoga'].includes(act.category)) counts.body++;
       if (['breath', 'vocal'].includes(act.category)) counts.breath++;
       if (['checkin', 'microdose', 'journal'].includes(act.category)) counts.attention++;

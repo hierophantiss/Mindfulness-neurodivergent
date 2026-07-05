@@ -60,7 +60,8 @@ export default function Sanctuary() {
           logActivity({
             category: 'sanctuary',
             itemId: activeSound || activeVideo || undefined,
-            durationSeconds: durationSeconds
+            durationSeconds: durationSeconds,
+            axis: 'space'
           });
         }
         sessionStartTimeRef.current = null;
@@ -77,7 +78,8 @@ export default function Sanctuary() {
           logActivity({
             category: 'sanctuary',
             itemId: 'unmount',
-            durationSeconds: durationSeconds
+            durationSeconds: durationSeconds,
+            axis: 'space'
           });
         }
       }

@@ -1,6 +1,9 @@
 import { PhaseDef, PhaseLabel, AudioConfig } from "./types-breath";
 
+import { Axis } from './types';
+
 export interface BreathPattern {
+  axis: Axis;
   id: string;
   category: "breath" | "movement" | "grounding" | "vocal";
   visualizer?: "taichi" | "lotus";
@@ -23,11 +26,14 @@ export interface BreathPattern {
   videoInhaleEnd?: number;
   videoExhaleStart?: number;
   videoExhaleEnd?: number;
+  evidence?: { en: string; el: string; ref: string };
 }
 
 export const BREATH_PATTERNS: BreathPattern[] = [
   {
     id: "4-2-6-1",
+    evidence: { en: 'Prolonged exhales directly engage the parasympathetic nervous system', el: 'Οι παρατεταμένες εκπνοές ενεργοποιούν άμεσα το παρασυμπαθητικό σύστημα', ref: 'study-porges' },
+    axis: 'breath',
     category: "breath",
     hasBinaural: true,
     title: { el: "4-2-6-1", en: "4-2-6-1" },
@@ -76,6 +82,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "4-2-7-1",
+    axis: 'breath',
     category: "breath",
     hasBinaural: true,
     title: { el: "4-2-7-1", en: "4-2-7-1" },
@@ -124,6 +131,8 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "4-7-8",
+    evidence: { en: 'Regulates autonomic nervous system via controlled breath retention', el: 'Ρυθμίζει το αυτόνομο νευρικό σύστημα μέσω της ελεγχόμενης κράτησης', ref: 'study-porges' },
+    axis: 'breath',
     category: "breath",
     hasBinaural: true,
     title: { el: "4-7-8", en: "4-7-8" },
@@ -167,6 +176,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "5-5",
+    axis: 'body',
     category: "movement",
     hasBinaural: true,
     title: { el: "Συγχρονισμός 5-5", en: "5-5 Sync" },
@@ -205,6 +215,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "deep-bow-5-5",
+    axis: 'body',
     category: "movement",
     hasBinaural: true,
     title: { el: "Βαθιά Υπόκλιση (5-5)", en: "Deep Bow (5-5)" },
@@ -243,6 +254,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "lotus-bloom-5-5",
+    axis: 'body',
     category: "movement",
     hasBinaural: true,
     title: { el: "Ασκητική Αναπνοή (5-5)", en: "Ascetic Breath (5-5)" },
@@ -279,6 +291,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "be-like-a-flower-5-5",
+    axis: 'body',
     category: "movement",
     hasBinaural: true,
     title: { el: "Χαιρετισμός στο Άπειρο (5-5)", en: "Greeting the Infinite (5-5)" },
@@ -318,6 +331,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "tai-chi-cloud-hands",
+    axis: 'body',
     category: "movement",
     hasBinaural: true,
     title: { el: "Χέρια στα Σύννεφα (Tai Chi)", en: "Cloud Hands (Tai Chi)" },
@@ -354,6 +368,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "qigong-lifting-sky",
+    axis: 'body',
     category: "movement",
     hasBinaural: true,
     title: { el: "Σηκώνοντας τον Ουρανό (Qigong)", en: "Lifting the Sky (Qigong)" },
@@ -393,6 +408,8 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "box-breathing",
+    evidence: { en: 'Restores the autonomic nervous system to the window of tolerance', el: 'Επαναφέρει το αυτόνομο νευρικό σύστημα στο παράθυρο ανοχής', ref: 'study-corrigan' },
+    axis: 'breath',
     category: "breath",
     hasBinaural: true,
     title: { el: "Box Breathing", en: "Box Breathing" },
@@ -444,6 +461,8 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "delta",
+    evidence: { en: 'Binaural beats entrain brainwaves to reduce sensory overload', el: 'Τα binaural beats συγχρονίζουν τα εγκεφαλικά κύματα μειώνοντας την υπερφόρτωση', ref: 'study-lane' },
+    axis: 'breath',
     category: "breath",
     hasBinaural: true,
     title: { el: "Delta", en: "Delta" },
@@ -479,6 +498,8 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "sos-breath",
+    evidence: { en: 'Rapidly shifts the nervous system out of fight-or-flight', el: 'Βγάζει γρήγορα το νευρικό σύστημα από την κατάσταση πάλης-ή-φυγής', ref: 'study-porges' },
+    axis: 'breath',
     category: "breath",
     hasBinaural: true,
     title: { el: "SOS", en: "SOS" },
@@ -521,7 +542,9 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     ],
   },
   {
-    id: "taichi-fourfold", category: "grounding", visualizer: "taichi", hasBinaural: true,
+    id: "taichi-fourfold",
+    evidence: { en: 'Physical movement anchors cerebellar gravity computation', el: 'Η σωματική κίνηση αγκιστρώνει τον υπολογισμό βαρύτητας της παρεγκεφαλίδας', ref: 'study-mackrous' }, category: "grounding", visualizer: "taichi", hasBinaural: true,
+    axis: 'body',
     title: { el: "Ροή: Τετραπλός Άξονας", en: "Flow: Fourfold Axis" },
     subtitle: { el: "Γείωση & Σύνδεση", en: "Grounding & Connection" },
     desc: { el: "Απαλή ενσυνείδητη κίνηση που συνδέει τον ουρανό με τη γη (4.5 - 1 - 5.5 - 1)", en: "Gentle mindful movement connecting heaven and earth (4.5 - 1 - 5.5 - 1)" },
@@ -536,6 +559,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "taichi-box", category: "grounding", visualizer: "taichi", hasBinaural: true,
+    axis: 'body',
     title: { el: "Ροή: Τετράγωνη Αναπνοή", en: "Flow: Box Breathing" },
     subtitle: { el: "Εστίαση & Ηρεμία", en: "Focus & Calm" },
     desc: { el: "Χρησιμοποιείται από Zen δασκάλους για πνευματική ηρεμία (4 - 4 - 4 - 4).", en: "Used by Zen masters for clarity and calm (4 - 4 - 4 - 4)." },
@@ -550,6 +574,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "taichi-resonant", category: "grounding", visualizer: "taichi", hasBinaural: true,
+    axis: 'body',
     title: { el: "Ροή: Συντονισμένη Αναπνοή", en: "Flow: Resonant Breathing" },
     subtitle: { el: "Ισορροπία Συστήματος", en: "System Balance" },
     desc: { el: "Συντονίζει την καρδιακή συχνότητα για μέγιστη χαλάρωση (5 - 0 - 5 - 0).", en: "Saturates heart rate variability to balance the nervous system (5 - 0 - 5 - 0)." },
@@ -562,6 +587,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "taichi-active", category: "grounding", visualizer: "taichi", hasBinaural: true,
+    axis: 'body',
     title: { el: "Ροή: Τονωτική", en: "Flow: Activating" },
     subtitle: { el: "Ενέργεια & Εγρήγορση", en: "Energy & Alertness" },
     desc: { el: "Ένας τονωτικός ρυθμός με σύντομη εκπνοή (4 - 4 - 2 - 2).", en: "An invigorating rhythm with a brief exhalation (4 - 4 - 2 - 2)." },
@@ -576,6 +602,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "lotus-fourfold", category: "grounding", visualizer: "lotus", hasBinaural: true,
+    axis: 'body',
     title: { el: "Λωτός: Τετραπλός Άξονας", en: "Lotus: Fourfold Axis" },
     subtitle: { el: "Γείωση & Σύνδεση", en: "Grounding & Connection" },
     desc: { el: "Εσωτερική συγκέντρωση που ξεδιπλώνεται (4.5 - 1 - 5.5 - 1).", en: "Internal focusing movement that unfolds (4.5 - 1 - 5.5 - 1)." },
@@ -590,6 +617,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "lotus-box", category: "grounding", visualizer: "lotus", hasBinaural: true,
+    axis: 'body',
     title: { el: "Λωτός: Τετράγωνη Αναπνοή", en: "Lotus: Box Breathing" },
     subtitle: { el: "Εστίαση & Ηρεμία", en: "Focus & Calm" },
     desc: { el: "Εστίαση και πνευματική ηρεμία (4 - 4 - 4 - 4).", en: "Focus and mental calm (4 - 4 - 4 - 4)." },
@@ -604,6 +632,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "lotus-resonant", category: "grounding", visualizer: "lotus", hasBinaural: true,
+    axis: 'body',
     title: { el: "Λωτός: Συντονισμένη Αναπνοή", en: "Lotus: Resonant Breathing" },
     subtitle: { el: "Ισορροπία Συστήματος", en: "System Balance" },
     desc: { el: "Συντονίζει την καρδιακή συχνότητα (5 - 0 - 5 - 0).", en: "Saturates heart rate variability (5 - 0 - 5 - 0)." },
@@ -616,6 +645,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "lotus-active", category: "grounding", visualizer: "lotus", hasBinaural: true,
+    axis: 'body',
     title: { el: "Λωτός: Τονωτική", en: "Lotus: Activating" },
     subtitle: { el: "Ενέργεια & Εγρήγορση", en: "Energy & Alertness" },
     desc: { el: "Ένας τονωτικός ρυθμός (4 - 4 - 2 - 2).", en: "An invigorating rhythm (4 - 4 - 2 - 2)." },
@@ -630,6 +660,8 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "bhramari-humming",
+    evidence: { en: 'Vocal cord vibration directly stimulates vagal tone', el: 'Η δόνηση των φωνητικών χορδών διεγείρει άμεσα τον πνευμονογαστρικό τόνο', ref: 'study-porges' },
+    axis: 'breath',
     category: "vocal",
     hasBinaural: true,
     title: {
@@ -673,6 +705,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "aum-resonance",
+    axis: 'breath',
     category: "vocal",
     hasBinaural: true,
     title: {
@@ -716,6 +749,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "a-major-resonance",
+    axis: 'breath',
     category: "vocal",
     hasBinaural: false,
     title: {
@@ -759,6 +793,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "c-major-resonance",
+    axis: 'breath',
     category: "vocal",
     hasBinaural: false,
     title: {
@@ -802,6 +837,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "throat-chakra-humming",
+    axis: 'breath',
     category: "vocal",
     hasBinaural: false,
     title: {
@@ -845,6 +881,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "om-pure-resonance",
+    axis: 'breath',
     category: "vocal",
     hasBinaural: true,
     title: {
@@ -888,6 +925,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "om-resonance-throat",
+    axis: 'breath',
     category: "vocal",
     hasBinaural: true,
     title: {

@@ -1,3 +1,4 @@
+import { Axis } from '../data/types';
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 export type ActivityCategory = 
@@ -21,6 +22,7 @@ export interface ActivityContextData {
   itemId?: string; // Specific ID of the resource (e.g. 'box-breathing')
   durationSeconds?: number; // How long it lasted
   completed?: boolean;
+  axis?: Axis;
 }
 
 export interface DailySummary {

@@ -13,6 +13,7 @@ import { RainbowInfinity } from '../components/RainbowInfinity';
 import { BreathingHero } from '../components/BreathingHero';
 import TaiChiHero from '../components/TaiChiHero';
 import { PlayPauseOverlay } from '../components/PlayPauseOverlay';
+import { EvidenceLine } from '../components/EvidenceLine';
 import { useReward } from '../contexts/RewardContext';
 import { useProgress } from '../contexts/ProgressContext';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
@@ -122,7 +123,8 @@ export default function PracticeBreath() {
             category: basePattern.category as any || 'breath',
             itemId: currentPatternId,
             durationSeconds: duration,
-            completed: currentCyclesRef.current > 2
+            completed: currentCyclesRef.current > 2,
+            axis: basePattern.axis
           });
         }
         sessionStartTimeRef.current = null;
@@ -140,7 +142,8 @@ export default function PracticeBreath() {
             category: basePattern.category as any || 'breath',
             itemId: currentPatternId,
             durationSeconds: duration,
-            completed: currentCyclesRef.current > 2
+            completed: currentCyclesRef.current > 2,
+            axis: basePattern.axis
           });
         }
       }
@@ -476,6 +479,7 @@ export default function PracticeBreath() {
         </div>
       </div>
 
+      {!running && <EvidenceLine evidence={pattern.evidence} language={language} />}
       {/* Info Banner for Binaural Beats */}
       {!running && showBanner && (
         <div className="z-20 w-full mb-4 md:px-0 relative px-4">

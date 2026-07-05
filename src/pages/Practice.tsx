@@ -4,6 +4,7 @@ import { Wind, Zap, ArrowLeft, Move, Compass, Activity, Lock, BookOpen, ChevronD
 import { useLanguage } from '../hooks/useLanguage';
 import { useProgress } from '../contexts/ProgressContext';
 import { BREATH_PATTERNS, BreathPattern } from '../data/breathPatterns';
+import { MICRODOSES_EXERCISES } from '../data/microdoses';
 import { cn } from '../lib/utils';
 import { Check } from 'lucide-react';
 import { ConceptInfoIcon } from '../components/ConceptInfoOverlay';
@@ -108,6 +109,45 @@ export default function Practice() {
   const groundingExercises = BREATH_PATTERNS.filter(p => p.category === 'grounding');
   const vocalExercises = BREATH_PATTERNS.filter(p => p.category === 'vocal');
 
+  const activeAxis = ['body', 'breath', 'attention', 'space'].includes(searchParams.get('axis') || '') ? searchParams.get('axis') as 'body' | 'breath' | 'attention' | 'space' : null;
+
+  
+const axisInfo = {
+  body: { 
+    icon: 'I', 
+    title: { en: 'Gravity • Earth', el: 'Βαρύτητα • Γη' }, 
+    color: 'text-purple-400', 
+    borderColor: 'border-purple-400/20',
+    bgColor: 'bg-purple-400/10',
+    desc: { en: 'Practices that root you down and build somatic awareness.', el: 'Πρακτικές που σας γειώνουν και χτίζουν σωματική επίγνωση.' } 
+  },
+  breath: { 
+    icon: '○', 
+    title: { en: 'Breath • Air', el: 'Αναπνοή • Αέρας' }, 
+    color: 'text-sky-400', 
+    borderColor: 'border-sky-400/20',
+    bgColor: 'bg-sky-400/10',
+    desc: { en: 'Practices that regulate the nervous system through the breath.', el: 'Πρακτικές που ρυθμίζουν το νευρικό σύστημα μέσω της αναπνοής.' } 
+  },
+  attention: { 
+    icon: '△', 
+    title: { en: 'Attention • Fire', el: 'Προσοχή • Φωτιά' }, 
+    color: 'text-amber-400', 
+    borderColor: 'border-amber-400/20',
+    bgColor: 'bg-amber-400/10',
+    desc: { en: 'Practices that sharpen focus and direct mental energy.', el: 'Πρακτικές που οξύνουν την εστίαση και κατευθύνουν τη νοητική ενέργεια.' } 
+  },
+  space: { 
+    icon: '∞', 
+    title: { en: 'Space • Water', el: 'Χώρος • Νερό' }, 
+    color: 'text-teal-400', 
+    borderColor: 'border-teal-400/20',
+    bgColor: 'bg-teal-400/10',
+    desc: { en: 'Practices that cultivate open awareness and deep letting go.', el: 'Πρακτικές που καλλιεργούν ανοιχτή επίγνωση και βαθιά απελευθέρωση.' } 
+  }
+};
+
+
   const activeCategoryWithReset = (cat: 'breath' | 'movement' | 'grounding' | 'microdoses' | 'vocal' | null) => {
     setActiveSomatic('all');
     handleCategoryChange(cat);
@@ -146,6 +186,106 @@ export default function Practice() {
       </div>
     </div>
   );
+
+  
+  if (activeAxis) {
+    const info = axisInfo[activeAxis];
+    const axisBreaths = BREATH_PATTERNS.filter(p => p.axis === activeAxis);
+    const axisMicrodoses = MICRODOSES_EXERCISES.filter(m => m.axis === activeAxis);
+
+    return (
+      <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="flex items-center gap-4">
+          <div role="button" tabIndex={0} 
+            onClick={() => {
+              searchParams.delete('axis');
+              setSearchParams(searchParams);
+            }}
+            className="btn-zen !px-3 !py-3"
+          >
+            <ArrowLeft size={20} />
+          </div>
+          <span className={cn("text-[11px] font-bold tracking-[0.2em] uppercase", info.color)}>
+            {language === 'el' ? 'ΠΡΑΚΤΙΚΗ ΜΕ ΑΞΟΝΑ' : 'PRACTICE BY AXIS'}
+          </span>
+        </div>
+
+        <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
+          <div className="flex items-center justify-center md:justify-start gap-4">
+            <div className={cn("w-14 h-14 shrink-0 rounded-full flex items-center justify-center text-3xl font-mono border", info.bgColor, info.borderColor, info.color)}>
+              {info.icon}
+            </div>
+            <h2 className="text-4xl md:text-5xl font-serif text-white/90 italic leading-tight">
+              {language === 'en' ? info.title.en : info.title.el}
+            </h2>
+          </div>
+          <p className="text-lg text-white/50 font-sans leading-relaxed">
+            {language === 'en' ? info.desc.en : info.desc.el}
+          </p>
+        </header>
+
+        <div className="max-w-4xl mx-auto w-full pb-12 space-y-12">
+          {axisBreaths.length > 0 && (
+            <div className="space-y-6">
+              <h3 className="text-2xl font-serif text-white/80 italic border-b border-white/5 pb-2">
+                {language === 'el' ? 'Βασικές Πρακτικές' : 'Core Practices'}
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {axisBreaths.map(p => (
+                  <PatternCard
+                    key={p.id}
+                    p={p}
+                    colorScheme={activeAxis === 'body' ? 'orange' : 'indigo'}
+                    icon={Compass}
+                    onClick={() => navigate(`/practice/breath/${p.id}`)}
+                    language={language}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {axisMicrodoses.length > 0 && (
+            <div className="space-y-6">
+              <h3 className="text-2xl font-serif text-white/80 italic border-b border-white/5 pb-2">
+                {language === 'el' ? 'Αόρατες Μικροδόσεις' : 'Invisible Microdoses'}
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {axisMicrodoses.map((ex, idx) => (
+                  <Link
+                    to={ex.link}
+                    key={ex.id}
+                    className={cn(
+                      "group relative flex gap-4 glass-card hover:border-white/10 hover:bg-white/[0.04] p-4 transition-all duration-300 active:scale-[0.98] border overflow-hidden items-start",
+                      "border-white/5",
+                      `shape-cloud-${(idx % 5) + 1}`
+                    )}
+                  >
+                    <div className="flex-1 min-w-0 pr-1 space-y-1">
+                      <div className="flex justify-between items-center gap-2">
+                        <span className={cn("text-[9px] font-bold uppercase tracking-widest", info.color)}>
+                          {language === 'en' ? ex.type : ex.type === 'body' ? 'ΣΩΜΑ' : ex.type === 'breath' ? 'ΑΝΑΠΝΟΗ' : ex.type === 'focus' ? 'ΠΡΟΣΟΧΗ' : 'ΧΩΡΟΣ'}
+                        </span>
+                        <span className="text-[9px] text-white/30 font-semibold tracking-wider uppercase shrink-0">
+                          {language === 'en' ? ex.dur.en : ex.dur.el}
+                        </span>
+                      </div>
+                      <h3 className="text-base font-serif text-white/95 italic leading-tight group-hover:text-white transition-colors truncate">
+                        {language === 'en' ? ex.title.en : ex.title.el}
+                      </h3>
+                      <p className="text-[12px] text-white/45 leading-normal font-sans group-hover:text-white/60 transition-colors line-clamp-2">
+                        {language === 'en' ? ex.desc.en : ex.desc.el}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   if (activeCategory === 'vocal') {
     const filteredVocals = vocalExercises.filter(matchesSomaticFilter);
