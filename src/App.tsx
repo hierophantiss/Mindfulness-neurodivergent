@@ -1,32 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter, HashRouter, Routes, Route, useNavigate, Navigate } from 'react-router-dom';
+import React, { Suspense } from 'react';
+import { BrowserRouter, HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { CompanionProvider } from './hooks/useCompanion';
 import Layout from './components/Layout';
 import { InteractiveBackground } from './components/InteractiveBackground';
 import Dashboard from './pages/Dashboard';
-import Chapters from './pages/Chapters';
-import ChapterDetail from './pages/ChapterDetail';
-import Program from './pages/Program';
-import ProgramWeek from './pages/ProgramWeek';
-import Practice from './pages/Practice';
-import PracticeMovement from './pages/PracticeMovement';
-import PracticeMicrodoses from './pages/PracticeMicrodoses';
-import PracticeBreath from './pages/PracticeBreath';
-import PracticeSection from './components/PracticeSection';
-import PracticeSwaying from './pages/PracticeSwaying';
-import Journal from './pages/Journal';
-import Faq from './pages/Faq';
-import GenericExercise from './pages/GenericExercise';
-import Method from './pages/Method';
-import Methodology from './pages/Methodology';
-import RabbitHole from './pages/RabbitHole';
-import Onboarding from './pages/Onboarding';
-import Sanctuary from './pages/Sanctuary';
-import Settings from './pages/Settings';
-import PrintWorkbook from './pages/PrintWorkbook';
 
-import { LanguageProvider, useLanguage } from './hooks/useLanguage';
+import { LanguageProvider } from './hooks/useLanguage';
 import { ThemeProvider } from './hooks/useTheme';
 import { AccessibilityProvider } from './hooks/useAccessibility';
 import { TimeProvider } from './contexts/TimeContext';
@@ -34,6 +14,33 @@ import { RewardProvider } from './contexts/RewardContext';
 import { ProgressProvider } from './contexts/ProgressContext';
 import { AudioProvider } from './contexts/AudioContext';
 import { ActivityTrackerProvider } from './contexts/ActivityTrackerContext';
+
+const Chapters = React.lazy(() => import('./pages/Chapters'));
+const ChapterDetail = React.lazy(() => import('./pages/ChapterDetail'));
+const Program = React.lazy(() => import('./pages/Program'));
+const ProgramWeek = React.lazy(() => import('./pages/ProgramWeek'));
+const Practice = React.lazy(() => import('./pages/Practice'));
+const PracticeMovement = React.lazy(() => import('./pages/PracticeMovement'));
+const PracticeMicrodoses = React.lazy(() => import('./pages/PracticeMicrodoses'));
+const PracticeBreath = React.lazy(() => import('./pages/PracticeBreath'));
+const PracticeSection = React.lazy(() => import('./components/PracticeSection'));
+const PracticeSwaying = React.lazy(() => import('./pages/PracticeSwaying'));
+const Journal = React.lazy(() => import('./pages/Journal'));
+const Faq = React.lazy(() => import('./pages/Faq'));
+const GenericExercise = React.lazy(() => import('./pages/GenericExercise'));
+const Method = React.lazy(() => import('./pages/Method'));
+const Methodology = React.lazy(() => import('./pages/Methodology'));
+const RabbitHole = React.lazy(() => import('./pages/RabbitHole'));
+const Onboarding = React.lazy(() => import('./pages/Onboarding'));
+const Sanctuary = React.lazy(() => import('./pages/Sanctuary'));
+const Settings = React.lazy(() => import('./pages/Settings'));
+const PrintWorkbook = React.lazy(() => import('./pages/PrintWorkbook'));
+
+const FallbackLoader = () => (
+  <div role="status" aria-label="Loading" className="flex items-center justify-center min-h-[50vh] bg-transparent">
+    <div className="w-3 h-3 rounded-full bg-indigo-400/50 animate-pulse"></div>
+  </div>
+);
 
 function AppContent() {
   const isIframe = window.self !== window.top;
@@ -45,6 +52,7 @@ function AppContent() {
     <Router basename={basename}>
       <CompanionProvider>
         <InteractiveBackground />
+        <Suspense fallback={<FallbackLoader />}>
         <Routes>
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/workbook/print" element={<PrintWorkbook />} />
@@ -73,6 +81,7 @@ function AppContent() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
         </Routes>
+        </Suspense>
       </CompanionProvider>
     </Router>
   );
