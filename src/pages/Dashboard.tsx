@@ -15,6 +15,7 @@ import { useBinauralAudio } from '../hooks/useBinauralAudio';
 import InfoModal from '../components/InfoModal';
 
 import { AFFIRMATIONS } from '../data/affirmations';
+import { FourfoldAxisHero } from '../components/FourfoldAxisHero';
 
 const baseCardClasses = "backdrop-blur-xl border border-white/[0.04] border-t-white/[0.08] border-l-white/[0.06] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.05)] hover:shadow-[0_16px_48px_-12px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(255,255,255,0.1)] hover:-translate-y-1 transition-all duration-500 rounded-[28px]";
 const innerIconClasses = "rounded-2xl bg-gradient-to-b from-white/[0.06] to-transparent border border-white/[0.02] border-t-white/[0.1] shadow-[0_4px_12px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.08)] flex items-center justify-center text-white/50 transition-colors duration-500";
@@ -112,7 +113,16 @@ export default function Dashboard() {
       {/* Ambient background glow for the grid */}
       <div className="absolute top-[40%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-teal-900/10 blur-[120px] rounded-full pointer-events-none" />
 
-      <div className="relative z-10 w-full max-w-lg mx-auto px-5 pt-12 flex flex-col gap-10">
+      {/* Main Responsive Container */}
+      <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center lg:items-start justify-center gap-8 lg:gap-16 pt-12">
+
+        {/* Hero Section */}
+        <div className="w-full max-w-xs md:max-w-sm lg:max-w-md lg:sticky lg:top-24 flex-shrink-0 flex justify-center items-center px-4">
+          <FourfoldAxisHero />
+        </div>
+
+        {/* Dashboard Content */}
+        <div className="w-full max-w-lg px-5 flex flex-col gap-10">
 
         {/* 1. Header Actions */}
         <div className="flex flex-col gap-2">
@@ -354,6 +364,7 @@ export default function Dashboard() {
           </button>
         </motion.div>
         
+      </div>
       </div>
       <InfoModal isOpen={isInfoOpen} onClose={() => setIsInfoOpen(false)} />
     </div>

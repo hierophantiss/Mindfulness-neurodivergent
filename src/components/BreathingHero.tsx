@@ -348,7 +348,6 @@ export function BreathingHero({
           </g>
         )}
 
-        {/* Prana Particles (Gather during inhale, scatter during exhale) */}
         <motion.g
           animate={expandTarget}
           variants={{ 
@@ -648,6 +647,52 @@ export function BreathingHero({
             </g>
           </motion.g>
         </motion.g>
+
+        {/* Prana Particles / Space Rays (originate from chest / infinity symbol) */}
+        {isHumming && (
+          <motion.g
+            animate={expandTarget}
+            variants={{
+                inhale: { opacity: reduceMotion ? 0 : 0.6, scale: 0.95 },
+                exhale: { opacity: reduceMotion ? 0 : 1, scale: 1.05 }
+             }}
+            transition={transitionConfig}
+            style={{ transformOrigin: "190px 195px" }}
+          >
+            {[...Array(24)].map((_, i) => {
+              const angle = (i * 15) * (Math.PI / 180);
+              const rStart = 0;
+              const x1 = 190 + Math.cos(angle) * rStart;
+              const y1 = 195 + Math.sin(angle) * rStart;
+              
+              const cp1Dist = 90;
+              const cp1x = 190 + Math.cos(angle + 0.35) * cp1Dist;
+              const cp1y = 195 + Math.sin(angle + 0.35) * cp1Dist;
+
+              const cp2Dist = 190;
+              const cp2x = 190 + Math.cos(angle - 0.35) * cp2Dist;
+              const cp2y = 195 + Math.sin(angle - 0.35) * cp2Dist;
+
+              const farDist = 260;
+              const x2 = 190 + Math.cos(angle) * farDist;
+              const y2 = 195 + Math.sin(angle) * farDist;
+
+              const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#14b8a6', '#06b6d4', '#3b82f6', '#6366f1', '#8b5cf6', '#d946ef'];
+              const color = colors[i % colors.length];
+              return (
+                <path 
+                  key={`ray-${i}`} 
+                  d={`M ${x1},${y1} C ${cp1x},${cp1y} ${cp2x},${cp2y} ${x2},${y2}`}
+                  stroke={color} 
+                  strokeWidth={i % 2 === 0 ? "2.5" : "1"} 
+                  fill="none"
+                  opacity={i % 2 === 0 ? "0.7" : "0.4"} 
+                  filter="url(#beam-glow)"
+                />
+              );
+            })}
+          </motion.g>
+        )}
 
       </svg>
       {/* Floating Glassmorphic Vocal Aura Resonance Badge */}
