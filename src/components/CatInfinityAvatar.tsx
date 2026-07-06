@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useId } from 'react';
 
 export function CatInfinityAvatar({ className = 'w-10 h-10' }: { className?: string }) {
+  const idPrefix = useId().replace(/:/g, '');
+  const gradientId = `catRainbowGradient-${idPrefix}`;
+  const glowId = `catRainbowGlow-${idPrefix}`;
+
   return (
     <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
       {/* Background - Dark theme adapting */}
@@ -22,7 +26,7 @@ export function CatInfinityAvatar({ className = 'w-10 h-10' }: { className?: str
 
       {/* Infinity Mask - Vivid Rainbow Gradient & Glow */}
       <defs>
-        <linearGradient id="catRainbowGradient" x1="20" y1="50" x2="80" y2="50" gradientUnits="userSpaceOnUse">
+        <linearGradient id={gradientId} x1="20" y1="50" x2="80" y2="50" gradientUnits="userSpaceOnUse">
           <stop offset="0%" stopColor="#ff3b30" />    {/* Vibrant Red */}
           <stop offset="17%" stopColor="#ff9500" />   {/* Vibrant Orange */}
           <stop offset="34%" stopColor="#ffcc00" />   {/* Vibrant Yellow */}
@@ -31,7 +35,7 @@ export function CatInfinityAvatar({ className = 'w-10 h-10' }: { className?: str
           <stop offset="84%" stopColor="#007aff" />   {/* Vibrant Royal Blue */}
           <stop offset="100%" stopColor="#af52de" />  {/* Vibrant Purple/Violet */}
         </linearGradient>
-        <filter id="catRainbowGlow" x="-30%" y="-30%" width="160%" height="160%">
+        <filter id={glowId} x="-30%" y="-30%" width="160%" height="160%">
           <feGaussianBlur stdDeviation="1.8" result="blur" />
           <feMerge>
             <feMergeNode in="blur" />
@@ -43,11 +47,11 @@ export function CatInfinityAvatar({ className = 'w-10 h-10' }: { className?: str
       {/* The main glowing Rainbow Infinity mask contour framing the eyes */}
       <path 
         d="M 50 50 C 40 35, 20 35, 20 50 C 20 65, 40 65, 50 50 C 60 35, 80 35, 80 50 C 80 65, 60 65, 50 50 Z" 
-        fill="url(#catRainbowGradient)" 
+        fill={`url(#${gradientId})`} 
         fillOpacity="0.12"
-        stroke="url(#catRainbowGradient)" 
+        stroke={`url(#${gradientId})`} 
         strokeWidth="2.5" 
-        filter="url(#catRainbowGlow)"
+        filter={`url(#${glowId})`}
         opacity="1"
       />
 
@@ -55,9 +59,10 @@ export function CatInfinityAvatar({ className = 'w-10 h-10' }: { className?: str
       <circle cx="35" cy="50" r="8.5" fill="#ffffff" />
       <circle cx="35" cy="50" r="7" fill="#0d0e12" />
       <path 
-        d="M 50 50 C 40 35, 20 35, 20 50 C 20 65, 40 65, 50 50 C 60 35, 80 35, 80 50 C 80 65, 60 65, 50 50 Z" 
-        transform="translate(35, 50) scale(0.25) translate(-50, -50)" 
-        fill="url(#catRainbowGradient)" 
+        d="M 35 50 C 33 46.5, 29 46.5, 29 50 C 29 53.5, 33 53.5, 35 50 C 37 46.5, 41 46.5, 41 50 C 41 53.5, 37 53.5, 35 50 Z" 
+        fill="none"
+        stroke={`url(#${gradientId})`}
+        strokeWidth="1.5"
       />
       <circle cx="38" cy="47" r="1.5" fill="#ffffff" opacity="0.95"/>
 
@@ -65,9 +70,10 @@ export function CatInfinityAvatar({ className = 'w-10 h-10' }: { className?: str
       <circle cx="65" cy="50" r="8.5" fill="#ffffff" />
       <circle cx="65" cy="50" r="7" fill="#0d0e12" />
       <path 
-        d="M 50 50 C 40 35, 20 35, 20 50 C 20 65, 40 65, 50 50 C 60 35, 80 35, 80 50 C 80 65, 60 65, 50 50 Z" 
-        transform="translate(65, 50) scale(0.25) translate(-50, -50)" 
-        fill="url(#catRainbowGradient)" 
+        d="M 65 50 C 63 46.5, 59 46.5, 59 50 C 59 53.5, 63 53.5, 65 50 C 67 46.5, 71 46.5, 71 50 C 71 53.5, 67 53.5, 65 50 Z" 
+        fill="none"
+        stroke={`url(#${gradientId})`}
+        strokeWidth="1.5"
       />
       <circle cx="68" cy="47" r="1.5" fill="#ffffff" opacity="0.95"/>
       

@@ -113,7 +113,7 @@ export default function Dashboard() {
       <div className="absolute top-[40%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-teal-900/10 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-lg mx-auto px-5 pt-12 flex flex-col gap-10">
-        
+
         {/* 1. Header Actions */}
         <div className="flex flex-col gap-2">
           <motion.span 
