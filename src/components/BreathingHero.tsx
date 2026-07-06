@@ -281,6 +281,28 @@ export function BreathingHero({
 
       <svg fill="none" viewBox="0 0 400 400" className="w-[120%] h-[120%] mt-[15%] relative z-10 pointer-events-none">
         <defs>
+          <radialGradient id="ocean-grad" cx="50%" cy="20%" r="90%">
+            <stop offset="0%" stopColor="#0f4c5c" />
+            <stop offset="60%" stopColor="#082c37" />
+            <stop offset="100%" stopColor="#020b0e" />
+          </radialGradient>
+          <linearGradient id="land-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#d9a05b" />
+            <stop offset="50%" stopColor="#a67b43" />
+            <stop offset="100%" stopColor="#543e22" />
+          </linearGradient>
+          <radialGradient id="earth-shading" cx="50%" cy="10%" r="100%">
+            <stop offset="0%" stopColor="#000000" stopOpacity="0" />
+            <stop offset="70%" stopColor="#000000" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#01040a" stopOpacity="0.95" />
+          </radialGradient>
+          <filter id="beam-glow">
+            <feGaussianBlur stdDeviation="4" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
           
           <linearGradient id="neuro-infinity-grad" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="#f87171" />
@@ -357,6 +379,10 @@ export function BreathingHero({
         </motion.g>
 
         
+        {/* Central Energy Beam */}
+        <line x1="190" y1="0" x2="190" y2="420" stroke="#f59e0b" strokeWidth="2.5" filter="url(#beam-glow)" opacity="0.85" />
+        <line x1="190" y1="0" x2="190" y2="420" stroke="#facc15" strokeWidth="0.8" opacity="0.95" />
+
         {/* Halo behind the figure */}
         <motion.g
           animate={expandTarget}
@@ -372,8 +398,32 @@ export function BreathingHero({
           <circle cx="190" cy="202" r="34" fill="#164e63" opacity="0.30" />
         </motion.g>
 
-        {/* Ground shadow */}
-        <ellipse cx="190" cy="288" rx="96" ry="9" fill="#020617" opacity="0.85" />
+        {/* EARTH */}
+        <g id="earth">
+          <circle cx="190" cy="420" r="150" fill="url(#ocean-grad)" />
+          <g clipPath="url(#earth-clip)">
+            <clipPath id="earth-clip">
+              <circle cx="190" cy="420" r="150" />
+            </clipPath>
+            {/* Continents */}
+            <path
+              d="M 100 350 Q 120 320 150 330 T 190 320 T 220 325 T 260 310 T 280 340 L 290 370 Q 250 380 200 370 T 140 370 Z"
+              fill="url(#land-grad)"
+              opacity="0.9"
+            />
+            <path
+              d="M 140 370 Q 160 400 190 410 T 240 400 T 260 430 Q 230 460 200 470 T 150 440 Z"
+              fill="url(#land-grad)"
+              opacity="0.95"
+            />
+            <path
+              d="M 270 320 Q 290 330 310 320 T 330 340 T 310 360 T 280 350 Z"
+              fill="url(#land-grad)"
+              opacity="0.9"
+            />
+            <circle cx="190" cy="420" r="150" fill="url(#earth-shading)" />
+          </g>
+        </g>
 
         {/* ── SWAYING WRAPPER FOR BODY ── */}
         <motion.g
@@ -399,18 +449,37 @@ export function BreathingHero({
             transition={transitionConfig}
             style={{ transformOrigin: "190px 272px" }}
           >
-            {/* Body */}
-            <path
-              d="M190 150 C 168 154 154 174 150 200 C 147 222 138 238 118 254 C 106 264 108 274 124 278 C 152 285 228 285 256 278 C 272 274 274 264 262 254 C 242 238 233 222 230 200 C 226 174 212 154 190 150 Z"
-              fill="#1e293b"
-              stroke="#7dd3fc"
-              strokeWidth="1"
-              strokeOpacity="0.80"
-            />
-            {/* Head */}
-            <circle cx="190" cy="124" r="21" fill="#1e293b" stroke="#7dd3fc" strokeWidth="1" strokeOpacity="0.80" />
-            {/* Head rim-light */}
-            <path d="M172 112 A 21 21 0 0 1 208 112" stroke="#7dd3fc" strokeWidth="1.2" opacity="0.9" fill="none" />
+            {/* LEGS in Lotus Pose */}
+            <g id="legs" fill="#1b202c" stroke="#0e1118" strokeWidth="1.5">
+              <path d="M 190 265 C 160 275, 120 270, 130 250 C 140 230, 160 240, 180 255 Z" />
+              <path d="M 190 265 C 220 275, 260 270, 250 250 C 240 230, 220 240, 200 255 Z" />
+              <path d="M 130 250 Q 160 280 190 270 Q 220 280 250 250 Q 230 225 190 230 Q 150 225 130 250 Z" fill="#202634" />
+            </g>
+
+            {/* TORSO */}
+            <path d="M 155 160 L 225 160 L 245 240 C 245 250, 135 250, 135 240 Z" fill="#202634" stroke="#0e1118" strokeWidth="1.5" />
+            <path d="M 160 225 L 220 225 L 230 245 L 150 245 Z" fill="#1b202c" stroke="#0e1118" strokeWidth="1" />
+
+            {/* ARMS */}
+            <g id="arms">
+               <path d="M 155 160 Q 120 200 145 240 L 175 235" fill="none" stroke="#0e1118" strokeWidth="20" strokeLinecap="round" strokeLinejoin="round" />
+               <path d="M 225 160 Q 260 200 235 240 L 205 235" fill="none" stroke="#0e1118" strokeWidth="20" strokeLinecap="round" strokeLinejoin="round" />
+               <path d="M 155 160 Q 120 200 145 240 L 175 235" fill="none" stroke="#202634" strokeWidth="17" strokeLinecap="round" strokeLinejoin="round" />
+               <path d="M 225 160 Q 260 200 235 240 L 205 235" fill="none" stroke="#202634" strokeWidth="17" strokeLinecap="round" strokeLinejoin="round" />
+            </g>
+
+            {/* HANDS */}
+            <g id="hands">
+               <ellipse cx="180" cy="235" rx="10" ry="6" fill="#e5bda3" transform="rotate(-15 180 235)" />
+               <ellipse cx="200" cy="233" rx="10" ry="6" fill="#e5bda3" transform="rotate(15 200 233)" />
+               <path d="M 185 232 Q 190 228 195 232" fill="none" stroke="#d9b197" strokeWidth="1.5" strokeLinecap="round" />
+            </g>
+
+            {/* HEAD & HOOD */}
+            <g id="head-group" transform="translate(190, 115) scale(1.6) translate(-190, -180)">
+               <path d="M 171 206 C 166 195 168 174 178 166 C 184 161 196 161 202 166 C 212 174 214 195 209 206 Z" fill="#202634" />
+               <path d="M 175 204 C 172 195 174 179 181 173 C 186 169 194 169 199 173 C 206 179 208 195 205 204 Z" fill="#050608" />
+            </g>
           </motion.g>
         </motion.g>
 
@@ -551,27 +620,32 @@ export function BreathingHero({
             transition={transitionConfig}
             style={{ transformOrigin: "190px 272px" }}
           >
-            {/* Neurodiversity Infinity Emblem */}
-            <motion.path
-              d="M 190 245 C 190 238, 178 234, 174 239 C 170 244, 170 250, 174 253 C 178 256, 190 252, 190 245 Z"
-              fill="none"
-              stroke="url(#neuro-infinity-grad)"
-              strokeWidth="2"
-              strokeLinecap="round"
-              initial={false}
-              animate={{ opacity: targetChestGlow }}
-              transition={transitionConfig}
-            />
-            <motion.path
-              d="M 190 245 C 190 238, 202 234, 206 239 C 210 244, 210 250, 206 253 C 202 256, 190 252, 190 245 Z"
-              fill="none"
-              stroke="url(#neuro-infinity-grad)"
-              strokeWidth="2"
-              strokeLinecap="round"
-              initial={false}
-              animate={{ opacity: targetChestGlow }}
-              transition={transitionConfig}
-            />
+            {/* CHEST RAINBOW INFINITY (scaled properly) */}
+            <g transform="translate(190, 195) scale(1.8)">
+              {/* Outer glow around symbol when breathing in */}
+              <motion.path
+                d="M -6.5 0 C -6.5 -3.5 -2.5 -3.5 0 0 C 2.5 3.5 6.5 3.5 6.5 0 C 6.5 -3.5 2.5 -3.5 0 0 C -2.5 3.5 -6.5 3.5 -6.5 0 Z"
+                fill="none"
+                stroke="#fb923c"
+                strokeWidth={1.5}
+                filter="url(#beam-glow)"
+                initial={false}
+                animate={{ opacity: targetChestGlow * 0.8 }}
+                transition={transitionConfig}
+              />
+              {/* Real infinity symbol */}
+              <motion.path
+                d="M -6.5 0 C -6.5 -3.5 -2.5 -3.5 0 0 C 2.5 3.5 6.5 3.5 6.5 0 C 6.5 -3.5 2.5 -3.5 0 0 C -2.5 3.5 -6.5 3.5 -6.5 0 Z"
+                fill="none"
+                stroke="url(#neuro-infinity-grad)"
+                strokeWidth="2.0"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                initial={false}
+                animate={{ opacity: 0.5 + targetChestGlow * 0.5 }}
+                transition={transitionConfig}
+              />
+            </g>
           </motion.g>
         </motion.g>
 
