@@ -8,7 +8,7 @@ import { useBinauralAudio } from '../hooks/useBinauralAudio';
 import { BREATH_PATTERNS } from '../data/breathPatterns';
 import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { RainbowInfinity } from '../components/RainbowInfinity';
 import { BreathingHero } from '../components/BreathingHero';
 import TaiChiHero from '../components/TaiChiHero';

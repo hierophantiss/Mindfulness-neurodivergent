@@ -5,7 +5,7 @@ import { useCompanion } from '../hooks/useCompanion';
 import { D as courseDataEl } from '../data/course-el';
 import { D as courseDataEn } from '../data/course-en';
 import { ArrowLeft, Check, PlayCircle, Clock, MapPin, ChevronLeft, ChevronRight, Wind, BookOpen, Lightbulb } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import CameraAnimation from '../components/CameraAnimation';
 import SamathaAnimation from '../components/SamathaAnimation';
 import { playSound } from '../lib/soundEffects';

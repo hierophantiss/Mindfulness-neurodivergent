@@ -4,7 +4,7 @@ import OpenAwareness from './animations/OpenAwareness';
 import CameraAnimation from './CameraAnimation';
 import SamathaAnimation from './SamathaAnimation';
 import { Maximize2, X, Play } from 'lucide-react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import { useLanguage } from '../hooks/useLanguage';
 
 interface InteractiveRendererProps {
