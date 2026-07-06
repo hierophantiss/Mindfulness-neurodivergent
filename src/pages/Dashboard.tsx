@@ -117,8 +117,19 @@ export default function Dashboard() {
       <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center lg:items-start justify-center gap-8 lg:gap-16 pt-12">
 
         {/* Hero Section */}
-        <div className="w-full max-w-xs md:max-w-sm lg:max-w-md lg:sticky lg:top-24 flex-shrink-0 flex justify-center items-center px-4">
+        <div className="w-full max-w-xs md:max-w-sm lg:max-w-md lg:sticky lg:top-24 flex-shrink-0 flex flex-col justify-center items-center px-4 gap-6">
           <FourfoldAxisHero />
+          
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.6 }}
+            className="text-center px-4"
+          >
+            <p className="text-sm md:text-[15px] font-sans font-light tracking-wide text-white/60 leading-relaxed italic">
+              "{language === 'el' ? affirmation.el : affirmation.en}"
+            </p>
+          </motion.div>
         </div>
 
         {/* Dashboard Content */}
@@ -192,19 +203,6 @@ export default function Dashboard() {
             {currentDate}
           </motion.span>
         </div>
-
-        {/* Daily Affirmation */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.4 }}
-          className={cn(baseCardClasses, "p-5 bg-[#1a1f26]/40 text-center relative overflow-hidden")}
-        >
-          <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-[40px] rounded-full pointer-events-none -mr-10 -mt-10" />
-          <p className="text-sm md:text-[15px] font-sans font-light tracking-wide text-white/80 leading-relaxed max-w-sm mx-auto relative z-10 italic">
-            "{language === 'el' ? affirmation.el : affirmation.en}"
-          </p>
-        </motion.div>
 
         {/* 3. The Core Modules (Bento Grid) */}
         <motion.div 
