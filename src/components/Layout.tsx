@@ -20,7 +20,7 @@ export default function Layout() {
   const isPrerendering = typeof window !== 'undefined' && ((window as any).__PRERENDER_INJECTED || navigator.userAgent.includes('jsdom') || navigator.userAgent.includes('HeadlessChrome'));
   const hasCompletedOnboarding = localStorage.getItem('hasCompletedOnboarding') === 'true' || isPrerendering;
 
-  const PUBLIC_PREFIXES = ['/method', '/methodology', '/rabbithole', '/chapters', '/faq', '/landing_info', '/intro'];
+  const PUBLIC_PREFIXES = ['/method', '/methodology', '/rabbithole', '/chapters', '/faq', '/practice', '/program', '/sanctuary'];
   const path = location.pathname.replace(/^\/(el|en)(?=\/|$)/, '') || '/';
   const isPublic = PUBLIC_PREFIXES.some(p => path === p || path.startsWith(p + '/'));
 
