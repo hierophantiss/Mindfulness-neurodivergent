@@ -16,7 +16,7 @@ export const FourfoldAxisHero: React.FC<FourfoldAxisHeroProps> = ({ activeAxis =
   const [hoveredAxis, setHoveredAxis] = useState<Axis | 'focus' | null>(null);
   const [showInfo, setShowInfo] = useState(false);
 
-  const currentAxis = activeAxis || hoveredAxis;
+  const currentAxis = hoveredAxis || activeAxis;
 
   const axisLabels: Record<string, { en: string; el: string }> = {
     body: { en: 'Gravity • Earth', el: 'Βαρύτητα • Γη' },
@@ -131,24 +131,24 @@ export const FourfoldAxisHero: React.FC<FourfoldAxisHeroProps> = ({ activeAxis =
       {/* 4. FIGURE */}
       <g id="figure" transform="translate(0, 52)">
         {/* Back of hood / shoulders */}
-        <path d="M 115,180 C 115,100 225,100 225,180" fill="#232b3d" />
+        <path d="M 115,180 C 115,100 225,100 225,180" fill="#364157" />
         
         {/* Crossed Legs */}
-        <path d="M 80,276 C 80,230 120,240 170,240 C 220,240 260,230 260,276 C 260,310 220,320 170,320 C 120,320 80,310 80,276 Z" fill="#232b3d" stroke="#1d2331" strokeWidth="2" />
+        <path d="M 80,276 C 80,230 120,240 170,240 C 220,240 260,230 260,276 C 260,310 220,320 170,320 C 120,320 80,310 80,276 Z" fill="#364157" stroke="#2b3447" strokeWidth="2" />
         
         {/* Leg folds */}
-        <path d="M 170,260 C 130,270 100,280 90,290" fill="none" stroke="#181e2b" strokeWidth="6" strokeLinecap="round" />
-        <path d="M 170,260 C 210,270 240,280 250,290" fill="none" stroke="#181e2b" strokeWidth="6" strokeLinecap="round" />
+        <path d="M 170,260 C 130,270 100,280 90,290" fill="none" stroke="#252d3d" strokeWidth="6" strokeLinecap="round" />
+        <path d="M 170,260 C 210,270 240,280 250,290" fill="none" stroke="#252d3d" strokeWidth="6" strokeLinecap="round" />
         
         {/* Torso */}
-        <path d="M 125,170 L 115,260 C 140,265 200,265 225,260 L 215,170 Z" fill="#232b3d" />
+        <path d="M 125,170 L 115,260 C 140,265 200,265 225,260 L 215,170 Z" fill="#364157" />
         
         {/* Arms */}
-        <path d="M 125,170 C 115,220 135,260 170,260" fill="none" stroke="#181e2b" strokeWidth="22" strokeLinecap="round" />
-        <path d="M 215,170 C 225,220 205,260 170,260" fill="none" stroke="#181e2b" strokeWidth="22" strokeLinecap="round" />
+        <path d="M 125,170 C 115,220 135,260 170,260" fill="none" stroke="#252d3d" strokeWidth="22" strokeLinecap="round" />
+        <path d="M 215,170 C 225,220 205,260 170,260" fill="none" stroke="#252d3d" strokeWidth="22" strokeLinecap="round" />
         
-        <path d="M 125,170 C 115,220 135,260 170,260" fill="none" stroke="#232b3d" strokeWidth="18" strokeLinecap="round" />
-        <path d="M 215,170 C 225,220 205,260 170,260" fill="none" stroke="#232b3d" strokeWidth="18" strokeLinecap="round" />
+        <path d="M 125,170 C 115,220 135,260 170,260" fill="none" stroke="#364157" strokeWidth="18" strokeLinecap="round" />
+        <path d="M 215,170 C 225,220 205,260 170,260" fill="none" stroke="#364157" strokeWidth="18" strokeLinecap="round" />
         
         {/* Hands (Dhyana Mudra) */}
         <ellipse cx="170" cy="264" rx="14" ry="8" fill="#e8c9a0" />
@@ -157,7 +157,7 @@ export const FourfoldAxisHero: React.FC<FourfoldAxisHeroProps> = ({ activeAxis =
         <path d="M 161,259 C 165,262 175,262 179,259" fill="none" stroke="#d5b085" strokeWidth="1.5" />
 
         {/* Inner hood shadow */}
-        <path d="M 135,130 C 135,70 205,70 205,130 C 205,165 190,175 170,180 C 150,175 135,165 135,130 Z" fill="#181e2b" />
+        <path d="M 135,130 C 135,70 205,70 205,130 C 205,165 190,175 170,180 C 150,175 135,165 135,130 Z" fill="#252d3d" />
         
         {/* Face */}
         <path d="M 151,118 C 151,98 189,98 189,118 C 189,140 178,148 170,148 C 162,148 151,140 151,118 Z" fill="#e8c9a0" />

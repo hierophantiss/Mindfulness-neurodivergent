@@ -16,6 +16,7 @@ import InfoModal from '../components/InfoModal';
 
 import { AFFIRMATIONS } from '../data/affirmations';
 import { FourfoldAxisHero } from '../components/FourfoldAxisHero';
+import { useAxisBalance } from '../hooks/useAxisBalance';
 
 const baseCardClasses = "backdrop-blur-xl border border-white/[0.04] border-t-white/[0.08] border-l-white/[0.06] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.05)] hover:shadow-[0_16px_48px_-12px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(255,255,255,0.1)] hover:-translate-y-1 transition-all duration-500 rounded-[28px]";
 const innerIconClasses = "rounded-2xl bg-gradient-to-b from-white/[0.06] to-transparent border border-white/[0.02] border-t-white/[0.1] shadow-[0_4px_12px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.08)] flex items-center justify-center text-white/50 transition-colors duration-500";
@@ -52,6 +53,21 @@ export default function Dashboard() {
   const [greeting, setGreeting] = useState('');
   const [currentDate, setCurrentDate] = useState('');
   const [isInfoOpen, setIsInfoOpen] = useState(false);
+
+  const [dismissedDate, setDismissedDate] = useState(() => {
+    return localStorage.getItem('n_mindfulness_axis_invite_dismissed') || '';
+  });
+  
+  const todayStr = new Date().toISOString().split('T')[0];
+  const isDismissedToday = dismissedDate === todayStr;
+  
+  const { quietestAxis, suggestion } = useAxisBalance();
+  const effectiveAxis = isDismissedToday ? null : quietestAxis;
+
+  const handleDismissInvite = () => {
+    localStorage.setItem('n_mindfulness_axis_invite_dismissed', todayStr);
+    setDismissedDate(todayStr);
+  };
 
   const affirmation = useMemo(() => {
     // using hour as dependency to re-calculate if day rolls over while app is open
@@ -118,7 +134,40 @@ export default function Dashboard() {
 
         {/* Hero Section */}
         <div className="w-full max-w-xs md:max-w-sm lg:max-w-md lg:sticky lg:top-24 flex-shrink-0 flex flex-col justify-center items-center px-4 gap-6">
-          <FourfoldAxisHero />
+          <FourfoldAxisHero activeAxis={effectiveAxis} />
+          
+          {suggestion && !isDismissedToday && (
+            <div className="w-full max-w-sm mt-2 rounded-[24px] bg-[#1a1f26]/40 backdrop-blur-xl border border-white/[0.04] p-5 flex flex-col gap-3 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.4)]">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
+                <span className="text-xs tracking-wider uppercase text-white/50">
+                  {language === 'el' ? 'Πρόσκληση της ημέρας' : 'Today\'s invitation'}
+                </span>
+              </div>
+              <div className="flex flex-col gap-1">
+                <h4 className="text-white/90 text-lg font-medium">{language === 'el' ? suggestion.title.el : suggestion.title.en}</h4>
+                <p className="text-white/60 text-sm italic">
+                  {language === 'el' 
+                    ? `Ο άξονας ${quietestAxis === 'body' ? 'Σώμα' : quietestAxis === 'breath' ? 'Αναπνοή' : quietestAxis === 'attention' ? 'Προσοχή' : 'Χώρος'} περιμένει ήσυχα.`
+                    : `The ${quietestAxis === 'body' ? 'Body' : quietestAxis === 'breath' ? 'Breath' : quietestAxis === 'attention' ? 'Attention' : 'Space'} axis is waiting quietly.`}
+                </p>
+              </div>
+              <div className="flex items-center gap-3 mt-2">
+                <Link 
+                  to={suggestion.link}
+                  className="flex-1 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 text-center text-sm font-medium text-white/80 transition-colors"
+                >
+                  {language === 'el' ? 'Δοκίμασέ το' : 'Try it'}
+                </Link>
+                <button 
+                  onClick={handleDismissInvite}
+                  className="flex-1 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 text-center text-sm font-medium text-white/80 transition-colors"
+                >
+                  {language === 'el' ? 'Όχι σήμερα' : 'Not today'}
+                </button>
+              </div>
+            </div>
+          )}
           
           <motion.div
             initial={{ opacity: 0 }}
