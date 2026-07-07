@@ -17,6 +17,7 @@ const mainRoutes = [
   '/onboarding',
   '/dashboard',
   '/method',
+  '/methodology',
   '/rabbithole',
   '/chapters',
   '/program',

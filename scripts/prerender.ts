@@ -1,3 +1,4 @@
+import { METHODOLOGY_DATA } from "../src/data/methodology";
 /**
  * Static HTML Generator — no Puppeteer, no browser required.
  * Works in Cloudflare Pages build environment.
@@ -164,10 +165,11 @@ interface RouteMeta {
   title: string;
   description: string;
   schema: object;
-  schemaType: 'WebApplication' | 'Article' | 'HowTo' | 'FAQPage';
+  schemaType: 'WebApplication' | 'Article' | 'HowTo' | 'FAQPage' | 'MedicalWebPage';
   /** Real, crawlable paragraphs injected into <body> for search engines
    *  and non-JS agents. Falls back to [description] if omitted. */
   bodyParagraphs?: string[];
+  rawHtml?: string;
   relatedLinks?: { href: string; label: string }[];
   noindex?: boolean;
 }
@@ -483,7 +485,60 @@ function getMetaForRoute(route: string): RouteMeta {
     const d = lang === 'en'
       ? 'The Fourfold Axis: Body, Breath, Attention, Space. A trauma-informed mindfulness framework for ADHD and autistic nervous systems — with AI companion, animated movement, binaural beats, and a free 10-chapter workbook.'
       : 'Ο Τετραπλός Άξονας: Σώμα, Αναπνοή, Προσοχή, Χώρος. Πλαίσιο ενσυνειδητότητας για ΔΕΠΥ και αυτισμό — με AI σύντροφο, animated κίνηση, binaural beats και δωρεάν βιβλίο 10 κεφαλαίων.';
-    return { title: t, description: d, schema: {}, schemaType: 'Article' };
+    const linkText = lang === 'en'
+      ? `The method is grounded in 12 published studies — see the <a href="/en/methodology">scientific basis</a>.`
+      : `Η μέθοδος υποστηρίζεται από 12 δημοσιευμένες έρευνες — δείτε την <a href="/el/methodology">επιστημονική βάση</a>.`;
+    const rawHtml = `<p>${escapeHtml(d)}</p>\n<p>${linkText}</p>`;
+    return { title: t, description: d, schema: {}, schemaType: 'Article', rawHtml };
+  }
+
+  if (clean === '/methodology') {
+    const t = lang === 'en'
+      ? 'The Science Behind the Fourfold Axis — 12 Published Studies | Neurodivergent Mindfulness'
+      : 'Η Επιστημονική Βάση του Τετραπλού Άξονα — 12 Δημοσιευμένες Έρευνες | Neurodivergent Mindfulness';
+    const d = lang === 'en'
+      ? 'Our approach is grounded in 12 peer-reviewed neuroscience and clinical studies on ADHD, Autism, and the neurodivergent brain. Read the scientific basis.'
+      : 'Η προσέγγισή μας βασίζεται σε 12 δημοσιευμένες νευροεπιστημονικές και κλινικές έρευνες για τη ΔΕΠΥ, τον Αυτισμό και τον νευροδιαφορετικό εγκέφαλο. Διαβάστε την επιστημονική βάση.';
+    
+    const methodData = METHODOLOGY_DATA[lang as 'en'|'el'];
+    
+    let rawHtml = `<p>${escapeHtml(methodData.intro)}</p>\n`;
+    rawHtml += `<h2>${escapeHtml(methodData.philosophyTitle)}</h2>\n`;
+    rawHtml += `<p>${escapeHtml(methodData.philosophyText)}</p>\n`;
+
+    const citations = methodData.pillars.map(pillar => {
+      let url = undefined;
+      let htmlCitation = escapeHtml(pillar.citation);
+      const doiMatch = pillar.citation.match(/Doi:\s*([^\s]+)/i);
+      if (doiMatch) {
+        url = `https://doi.org/${doiMatch[1]}`;
+        htmlCitation = htmlCitation.replace(/Doi:\s*([^\s]+)/i, `<a href="${url}" rel="noopener">doi.org/${escapeHtml(doiMatch[1])}</a>`);
+      } else {
+        const urlMatch = pillar.citation.match(/https?:\/\/[^\s]+/);
+        if (urlMatch) url = urlMatch[0];
+      }
+
+      rawHtml += `<h3>${escapeHtml(pillar.title)}</h3>\n`;
+      rawHtml += `<p>${escapeHtml(pillar.desc)}</p>\n`;
+      rawHtml += `<p>Citation: ${htmlCitation}</p>\n`;
+
+      return {
+        '@type': 'ScholarlyArticle',
+        name: pillar.citation,
+        description: pillar.desc,
+        ...(url ? { url } : {})
+      };
+    });
+
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': 'MedicalWebPage',
+      name: t,
+      description: d,
+      citation: citations
+    };
+
+    return { title: t, description: d, schema, schemaType: 'MedicalWebPage', rawHtml };
   }
 
   // ── FAQ ──
@@ -561,6 +616,13 @@ function escapeHtml(str: string): string {
  * that doesn't execute JS see this instead of an empty div.
  */
 function buildBodyContent(meta: RouteMeta, h1: string): string {
+  if (meta.rawHtml) {
+    return `<div id="root"><div data-prerendered="true">
+      <h1>${escapeHtml(h1)}</h1>
+      ${meta.rawHtml}
+    </div></div>`;
+  }
+
   const paragraphs = meta.bodyParagraphs && meta.bodyParagraphs.length > 0
     ? meta.bodyParagraphs
     : [meta.description];
