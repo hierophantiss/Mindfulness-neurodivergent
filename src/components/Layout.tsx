@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useOutlet, useLocation, Navigate } from 'react-router-dom';
+import { useOutlet, useLocation, Navigate, Link } from 'react-router-dom';
 import { cn } from '../lib/utils';
 import Companion from './Companion';
 import NavigationMenu from './NavigationMenu';
@@ -12,7 +12,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { SEO } from './SEO';
 
 export default function Layout() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const location = useLocation();
   const outlet = useOutlet();
   const mainRef = React.useRef<HTMLElement>(null);
@@ -20,13 +20,20 @@ export default function Layout() {
   const isPrerendering = typeof window !== 'undefined' && ((window as any).__PRERENDER_INJECTED || navigator.userAgent.includes('jsdom') || navigator.userAgent.includes('HeadlessChrome'));
   const hasCompletedOnboarding = localStorage.getItem('hasCompletedOnboarding') === 'true' || isPrerendering;
 
+  const PUBLIC_PREFIXES = ['/method', '/methodology', '/rabbithole', '/chapters', '/faq', '/landing_info', '/intro'];
+  const path = location.pathname.replace(/^\/(el|en)(?=\/|$)/, '') || '/';
+  const isPublic = PUBLIC_PREFIXES.some(p => path === p || path.startsWith(p + '/'));
+
+  const [onboardingLinkDismissed, setOnboardingLinkDismissed] = useState(false);
+  const showOnboardingLink = !hasCompletedOnboarding && isPublic && path !== '/onboarding' && !onboardingLinkDismissed;
+
   useEffect(() => {
     if (mainRef.current) {
       mainRef.current.scrollTo(0, 0);
     }
   }, [location.pathname]);
 
-  if (!hasCompletedOnboarding && location.pathname !== '/onboarding') {
+  if (!hasCompletedOnboarding && !isPublic && path !== '/onboarding') {
     return <Navigate to="/onboarding" replace />;
   }
 
@@ -50,7 +57,20 @@ export default function Layout() {
         <main id="main-content" ref={mainRef} className={cn(
           "flex-1 relative z-10 w-full flex flex-col overflow-x-hidden scroll-smooth overflow-y-auto px-4 md:px-8 lg:px-12 pt-[env(safe-area-inset-top)] pb-[calc(100px+env(safe-area-inset-bottom))] lg:pb-12"
         )}>
-          <div className="w-full max-w-2xl mx-auto h-full flex flex-col pt-8">
+          {showOnboardingLink && (
+            <div className="w-full max-w-2xl mx-auto pt-4 flex justify-between items-center bg-teal-500/10 border border-teal-500/20 rounded-xl px-4 py-3 mt-4 text-sm text-teal-100">
+              <Link to="/onboarding" className="hover:text-teal-300 transition-colors font-medium">
+                {language === 'el' ? 'Νέος εδώ; Ξεκίνησε από την εισαγωγή' : 'New here? Start with the intro'}
+              </Link>
+              <button 
+                onClick={() => setOnboardingLinkDismissed(true)}
+                className="text-teal-400/60 hover:text-teal-400 transition-colors ml-4 text-xs font-medium uppercase tracking-wider"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+          <div className="w-full max-w-2xl mx-auto h-full flex flex-col pt-4">
             <AnimatePresence mode="wait">
               <motion.div
                 key={location.pathname}
