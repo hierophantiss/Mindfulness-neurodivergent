@@ -14,7 +14,7 @@ export default defineConfig(() => {
         injectRegister: null,           // we register manually in the entry point
         manifest: false,                // keep existing public/manifest.json
         workbox: {
-          globPatterns: ['**/*.{js,css,woff2,svg,ico}'],
+          globPatterns: ['**/*.{js,css,woff2,svg,ico,html}'],
           globIgnores: ['**/*.{mp4,pdf,png,jpg}', 'server.cjs*'],
           navigateFallback: '/index.html',
           navigateFallbackDenylist: [/^\/assets\//, /\.(pdf|mp4|xml|txt|svg|png|jpg)$/],
