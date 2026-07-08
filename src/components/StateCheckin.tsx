@@ -25,6 +25,7 @@ export default function StateCheckin({ onComplete, inline = false }: { onComplet
     if (state === 'hypo') localStorage.setItem('n_mindfulness_intention', 'focus');
     if (state === 'balanced') localStorage.setItem('n_mindfulness_intention', 'awareness');
     
+    localStorage.setItem('n_mindfulness_state', JSON.stringify({ state, ts: Date.now() }));
     window.dispatchEvent(new Event('storage'));
   };
 

@@ -16,7 +16,7 @@ import InfoModal from '../components/InfoModal';
 
 import { AFFIRMATIONS } from '../data/affirmations';
 import { FourfoldAxisHero } from '../components/FourfoldAxisHero';
-import { useAxisBalance } from '../hooks/useAxisBalance';
+import { useSmartSuggestion } from '../hooks/useSmartSuggestion';
 
 const baseCardClasses = "backdrop-blur-xl border border-white/[0.04] border-t-white/[0.08] border-l-white/[0.06] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.05)] hover:shadow-[0_16px_48px_-12px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(255,255,255,0.1)] hover:-translate-y-1 transition-all duration-500 rounded-[28px]";
 const innerIconClasses = "rounded-2xl bg-gradient-to-b from-white/[0.06] to-transparent border border-white/[0.02] border-t-white/[0.1] shadow-[0_4px_12px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.08)] flex items-center justify-center text-white/50 transition-colors duration-500";
@@ -61,7 +61,7 @@ export default function Dashboard() {
   const todayStr = new Date().toISOString().split('T')[0];
   const isDismissedToday = dismissedDate === todayStr;
   
-  const { quietestAxis, suggestion } = useAxisBalance();
+  const { axis: quietestAxis, suggestion, mode, state } = useSmartSuggestion();
   const effectiveAxis = isDismissedToday ? null : quietestAxis;
 
   const handleDismissInvite = () => {
@@ -148,8 +148,16 @@ export default function Dashboard() {
                 <h4 className="text-white/90 text-lg font-medium">{language === 'el' ? suggestion.title.el : suggestion.title.en}</h4>
                 <p className="text-white/60 text-sm italic">
                   {language === 'el' 
-                    ? `Ο άξονας ${quietestAxis === 'body' ? 'Σώμα' : quietestAxis === 'breath' ? 'Αναπνοή' : quietestAxis === 'attention' ? 'Προσοχή' : 'Χώρος'} περιμένει ήσυχα.`
-                    : `The ${quietestAxis === 'body' ? 'Body' : quietestAxis === 'breath' ? 'Breath' : quietestAxis === 'attention' ? 'Attention' : 'Space'} axis is waiting quietly.`}
+                    ? mode === 'state+history' && state === 'hyper'
+                      ? `Το σύστημά σου χρειάζεται γείωση — ο άξονας ${quietestAxis === 'body' ? 'Σώμα' : quietestAxis === 'breath' ? 'Αναπνοή' : quietestAxis === 'attention' ? 'Προσοχή' : 'Χώρος'} περιμένει ήσυχα.`
+                      : mode === 'state+history' && state === 'hypo'
+                      ? `Ώρα για απαλή ενεργοποίηση — ο άξονας ${quietestAxis === 'body' ? 'Σώμα' : quietestAxis === 'breath' ? 'Αναπνοή' : quietestAxis === 'attention' ? 'Προσοχή' : 'Χώρος'} περιμένει ήσυχα.`
+                      : `Ο άξονας ${quietestAxis === 'body' ? 'Σώμα' : quietestAxis === 'breath' ? 'Αναπνοή' : quietestAxis === 'attention' ? 'Προσοχή' : 'Χώρος'} περιμένει ήσυχα.`
+                    : mode === 'state+history' && state === 'hyper'
+                      ? `Your system needs grounding — the ${quietestAxis === 'body' ? 'Body' : quietestAxis === 'breath' ? 'Breath' : quietestAxis === 'attention' ? 'Attention' : 'Space'} axis is waiting quietly.`
+                      : mode === 'state+history' && state === 'hypo'
+                      ? `Time for gentle activation — the ${quietestAxis === 'body' ? 'Body' : quietestAxis === 'breath' ? 'Breath' : quietestAxis === 'attention' ? 'Attention' : 'Space'} axis is waiting quietly.`
+                      : `The ${quietestAxis === 'body' ? 'Body' : quietestAxis === 'breath' ? 'Breath' : quietestAxis === 'attention' ? 'Attention' : 'Space'} axis is waiting quietly.`}
                 </p>
               </div>
               <div className="flex items-center gap-3 mt-2">
