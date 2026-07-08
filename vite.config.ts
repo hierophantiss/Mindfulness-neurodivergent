@@ -1,11 +1,28 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import {defineConfig} from 'vite';
+import { defineConfig } from 'vite';
+import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig(() => {
   return {
-    plugins: [react(), tailwindcss()],
+    plugins: [
+      react(),
+      tailwindcss(),
+      VitePWA({
+        registerType: 'autoUpdate',
+        injectRegister: null,           // we register manually in the entry point
+        manifest: false,                // keep existing public/manifest.json
+        workbox: {
+          globPatterns: ['**/*.{js,css,woff2,svg,ico}'],
+          globIgnores: ['**/*.{mp4,pdf,png,jpg}', 'server.cjs*'],
+          navigateFallback: '/index.html',
+          navigateFallbackDenylist: [/^\/assets\//, /\.(pdf|mp4|xml|txt|svg|png|jpg)$/],
+          maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
+          cleanupOutdatedCaches: true
+        }
+      })
+    ],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),

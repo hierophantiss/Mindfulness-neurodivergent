@@ -4,3 +4,6 @@
 
 /robots.txt
   Content-Type: text/plain; charset=UTF-8
+/sw.js
+  Cache-Control: no-cache
+
