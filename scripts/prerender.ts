@@ -214,6 +214,27 @@ function getMetaForRoute(route: string): RouteMeta {
     bodyParagraphs: [homeDescription, homeIntro],
   };
 
+  if (clean === '/') {
+    defaults.schema = {
+      '@context': 'https://schema.org',
+      '@type': ['WebApplication', 'SoftwareApplication'],
+      name: 'Neurodivergent Mindfulness App',
+      url: BASE_URL + (lang === 'el' ? '/el' : ''),
+      description: homeDescription,
+      applicationCategory: 'HealthApplication',
+      applicationSubCategory: 'Mindfulness & Meditation',
+      operatingSystem: 'Any (Progressive Web App)',
+      browserRequirements: 'Requires JavaScript',
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+      isAccessibleForFree: true,
+      inLanguage: ['el', 'en'],
+      creator: { '@type': 'Person', name: 'Theodoros', description: 'Contemplative practitioner, creator of the Fourfold Axis method' },
+      featureList: lang === 'el'
+        ? 'Τετραπλός Άξονας (Σώμα, Αναπνοή, Προσοχή, Χώρος), Polyvagal check-in, ασκήσεις-μικροδόσεις, ήχοι περιβάλλοντος, λειτουργία offline, χωρίς λογαριασμό, χωρίς παρακολούθηση'
+        : 'Fourfold Axis method (Body, Breath, Attention, Space), Polyvagal check-in, microdose exercises, ambient audio, offline support, no account, no tracking'
+    };
+  }
+
   // ── Rabbit Hole list ──
   if (clean === '/rabbithole') {
     const t = lang === 'en'
