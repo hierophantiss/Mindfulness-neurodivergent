@@ -26,6 +26,13 @@ export const FourfoldAxisHero: React.FC<FourfoldAxisHeroProps> = ({ activeAxis =
     space: { en: 'Space • Infinity', el: 'Χώρος • Άπειρο' }
   };
 
+  const tokens = {
+    body: '#d4b37f',
+    breath: '#7ca7d6',
+    attention: '#e89e6f',
+    space: '#a78bfa'
+  };
+
   // Read reduce-motion preference
   const [reduceMotion, setReduceMotion] = useState(false);
   useEffect(() => {
@@ -70,6 +77,15 @@ export const FourfoldAxisHero: React.FC<FourfoldAxisHeroProps> = ({ activeAxis =
         className="block transition-all duration-500"
       >
       <defs>
+        <linearGradient id="body-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#fef08a" stopOpacity="0.4" />
+          <stop offset="20%" stopColor="#fef08a" stopOpacity="0.8" />
+          <stop offset="45%" stopColor="#f97316" stopOpacity="1" />
+          <stop offset="55%" stopColor="#ef4444" stopOpacity="1" />
+          <stop offset="70%" stopColor="#fef08a" stopOpacity="0.8" />
+          <stop offset="100%" stopColor="#fef08a" stopOpacity="0.4" />
+        </linearGradient>
+
         <linearGradient id="rainbow-grad" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="#ef4444" />
           <stop offset="20%" stopColor="#f97316" />
@@ -79,13 +95,17 @@ export const FourfoldAxisHero: React.FC<FourfoldAxisHeroProps> = ({ activeAxis =
           <stop offset="100%" stopColor="#8b5cf6" />
         </linearGradient>
 
+        <linearGradient id="attention-grad" x1="50%" y1="0%" x2="50%" y2="100%">
+          <stop offset="0%" stopColor={tokens.attention} stopOpacity="1" />
+          <stop offset="100%" stopColor={tokens.attention} stopOpacity="0.15" />
+        </linearGradient>
+
         <clipPath id="earth-clip">
           <circle cx="170" cy="565" r="205" />
         </clipPath>
 
-        {/* Glow Filter for Space Rays */}
-        <filter id="ray-glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="2" result="blur" />
+        <filter id="symbol-glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="3" result="blur" />
           <feMerge>
             <feMergeNode in="blur" />
             <feMergeNode in="SourceGraphic" />
@@ -97,15 +117,31 @@ export const FourfoldAxisHero: React.FC<FourfoldAxisHeroProps> = ({ activeAxis =
             .axis-layer {
               transition: opacity 0.5s ease-in-out;
             }
-            @keyframes pulseRays {
-              0% { transform: scale(0.92) rotate(0deg); opacity: 0.7; }
-              100% { transform: scale(1.05) rotate(2deg); opacity: 1; }
+            @keyframes pulseBreath {
+              0% { transform: scale(1); }
+              50% { transform: scale(1.03); }
+              100% { transform: scale(1); }
+            }
+            .animate-breath {
+              animation: pulseBreath 9s ease-in-out infinite;
+              transform-origin: 170px 180px;
+            }
+            @keyframes slowRotateRays {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
             }
             .space-rays {
-              transform-origin: 170px 245px;
+              transform-origin: 170px 205px;
             }
             .animate-rays {
-              animation: pulseRays 6s ease-in-out infinite alternate;
+              animation: slowRotateRays 30s linear infinite;
+            }
+            @keyframes hueShift {
+              0% { filter: hue-rotate(0deg); }
+              100% { filter: hue-rotate(360deg); }
+            }
+            .animate-space {
+              animation: hueShift 30s linear infinite;
             }
           `}
         </style>
@@ -130,56 +166,50 @@ export const FourfoldAxisHero: React.FC<FourfoldAxisHeroProps> = ({ activeAxis =
 
       {/* 4. FIGURE */}
       <g id="figure" transform="translate(0, 52)">
-        {/* Back of hood / shoulders */}
-        <path d="M 115,180 C 115,100 225,100 225,180" fill="#364157" />
+        {/* Soft shadow under figure */}
+        <ellipse cx="170" cy="320" rx="100" ry="12" fill="#0c121e" opacity="0.5" />
+
+        {/* Back of hood / shoulders - lowered and relaxed */}
+        <path d="M 115,190 C 115,110 225,110 225,190" fill="#2a3a30" />
         
-        {/* Crossed Legs */}
-        <path d="M 80,276 C 80,230 120,240 170,240 C 220,240 260,230 260,276 C 260,310 220,320 170,320 C 120,320 80,310 80,276 Z" fill="#364157" stroke="#2b3447" strokeWidth="2" />
+        {/* Crossed Legs (Widened) */}
+        <path d="M 65,285 C 65,240 110,245 170,245 C 230,245 275,240 275,285 C 275,320 220,330 170,330 C 120,330 65,320 65,285 Z" fill="#2a3a30" />
         
-        {/* Leg folds */}
-        <path d="M 170,260 C 130,270 100,280 90,290" fill="none" stroke="#252d3d" strokeWidth="6" strokeLinecap="round" />
-        <path d="M 170,260 C 210,270 240,280 250,290" fill="none" stroke="#252d3d" strokeWidth="6" strokeLinecap="round" />
+        {/* Leg folds - soft */}
+        <path d="M 170,265 C 130,275 90,295 75,305" fill="none" stroke="#1d2822" strokeWidth="5" strokeLinecap="round" />
+        <path d="M 170,265 C 210,275 250,295 265,305" fill="none" stroke="#1d2822" strokeWidth="5" strokeLinecap="round" />
         
         {/* Torso */}
-        <path d="M 125,170 L 115,260 C 140,265 200,265 225,260 L 215,170 Z" fill="#364157" />
+        <path d="M 120,180 L 110,260 C 140,265 200,265 230,260 L 220,180 Z" fill="#2a3a30" />
         
-        {/* Arms */}
-        <path d="M 125,170 C 115,220 135,260 170,260" fill="none" stroke="#252d3d" strokeWidth="22" strokeLinecap="round" />
-        <path d="M 215,170 C 225,220 205,260 170,260" fill="none" stroke="#252d3d" strokeWidth="22" strokeLinecap="round" />
+        {/* Arms folded - natural drape */}
+        <path d="M 120,180 C 100,240 130,285 170,275" fill="none" stroke="#1d2822" strokeWidth="22" strokeLinecap="round" />
+        <path d="M 220,180 C 240,240 210,285 170,275" fill="none" stroke="#1d2822" strokeWidth="22" strokeLinecap="round" />
         
-        <path d="M 125,170 C 115,220 135,260 170,260" fill="none" stroke="#364157" strokeWidth="18" strokeLinecap="round" />
-        <path d="M 215,170 C 225,220 205,260 170,260" fill="none" stroke="#364157" strokeWidth="18" strokeLinecap="round" />
+        <path d="M 120,180 C 100,240 130,285 170,275" fill="none" stroke="#2a3a30" strokeWidth="18" strokeLinecap="round" />
+        <path d="M 220,180 C 240,240 210,285 170,275" fill="none" stroke="#2a3a30" strokeWidth="18" strokeLinecap="round" />
         
-        {/* Hands (Dhyana Mudra) */}
-        <ellipse cx="170" cy="264" rx="14" ry="8" fill="#e8c9a0" />
-        <path d="M 160,264 C 165,267 175,267 180,264" fill="none" stroke="#d5b085" strokeWidth="1.5" />
-        <ellipse cx="170" cy="259" rx="13" ry="7" fill="#e8c9a0" />
-        <path d="M 161,259 C 165,262 175,262 179,259" fill="none" stroke="#d5b085" strokeWidth="1.5" />
-
-        {/* Inner hood shadow */}
-        <path d="M 135,130 C 135,70 205,70 205,130 C 205,165 190,175 170,180 C 150,175 135,165 135,130 Z" fill="#252d3d" />
+        {/* Hands - Heart Mudra */}
+        <path d="M 148,272 C 158,266 168,266 170,275 C 160,282 148,280 148,272 Z" fill="#dfb18b" />
+        <path d="M 192,272 C 182,266 172,266 170,275 C 180,282 192,280 192,272 Z" fill="#dfb18b" />
+        <path d="M 148,272 C 158,278 170,275 170,275" fill="none" stroke="#cf9c74" strokeWidth="1.5" />
+        <path d="M 192,272 C 182,278 170,275 170,275" fill="none" stroke="#cf9c74" strokeWidth="1.5" />
         
-        {/* Face */}
-        <path d="M 151,118 C 151,98 189,98 189,118 C 189,140 178,148 170,148 C 162,148 151,140 151,118 Z" fill="#e8c9a0" />
-        
-        {/* Eyes (closed) */}
-        <path d="M 156,122 Q 160,125 164,122" fill="none" stroke="#8b6c4b" strokeWidth="1.5" strokeLinecap="round" />
-        <path d="M 176,122 Q 180,125 184,122" fill="none" stroke="#8b6c4b" strokeWidth="1.5" strokeLinecap="round" />
-        
-        {/* Smile */}
-        <path d="M 166,135 Q 170,138 174,135" fill="none" stroke="#8b6c4b" strokeWidth="1.5" strokeLinecap="round" />
+        {/* Inner hood shadow - deeper drape */}
+        <path d="M 135,135 C 135,80 205,80 205,135 C 205,175 190,185 170,190 C 150,185 135,175 135,135 Z" fill="#1d2822" />
       </g>
 
       {/* 5. AXIS LAYERS */}
       
-      {/* a. BODY/GRAVITY */}
+      {/* a. BODY/GRAVITY (behind face, over body) */}
       <g className="axis-layer" style={{ opacity: getOpacity('body'), transition: 'opacity 0.4s ease' }} transform="translate(0, 52)">
-        {/* Soft Earth/Sand Halo */}
-        <line x1="170" y1="98" x2="170" y2="392" stroke="#d4b37f" strokeWidth="6" opacity="0.5" strokeLinecap="round" />
-        <line x1="170" y1="98" x2="170" y2="392" stroke="#f7ecd5" strokeWidth="2" opacity="0.8" strokeLinecap="round" />
+        {/* Glow halo */}
+        <line x1="170" y1="30" x2="170" y2="440" stroke="url(#body-grad)" strokeWidth="6" strokeLinecap="round" filter="url(#symbol-glow)" />
+        {/* Solid core */}
+        <line x1="170" y1="30" x2="170" y2="440" stroke="#fef08a" strokeWidth="2" strokeLinecap="round" opacity="0.8" />
         {/* Hit Area */}
         <line 
-          x1="170" y1="98" x2="170" y2="392" 
+          x1="170" y1="30" x2="170" y2="440" 
           stroke="transparent" strokeWidth="30" 
           className="cursor-pointer"
           onMouseEnter={() => setHoveredAxis('body')}
@@ -188,11 +218,26 @@ export const FourfoldAxisHero: React.FC<FourfoldAxisHeroProps> = ({ activeAxis =
         />
       </g>
 
+      {/* 4.b FACE (over body line) */}
+      <g id="figure-face" transform="translate(0, 52)">
+        {/* Face - warm skin tone */}
+        <path d="M 148,118 C 148,90 192,90 192,118 C 192,142 180,152 170,152 C 160,152 148,142 148,118 Z" fill="#dfb18b" />
+        
+        {/* Eyes (closed) - minimal */}
+        <path d="M 154,124 Q 159,127 164,124" fill="none" stroke="#1d2822" strokeWidth="1.5" strokeLinecap="round" />
+        <path d="M 176,124 Q 181,127 186,124" fill="none" stroke="#1d2822" strokeWidth="1.5" strokeLinecap="round" />
+        
+        {/* Smile - minimal calm */}
+        <path d="M 166,138 Q 170,141 174,138" fill="none" stroke="#1d2822" strokeWidth="1.5" strokeLinecap="round" />
+      </g>
+
       {/* b. BREATH */}
       <g className="axis-layer" style={{ opacity: getOpacity('breath'), transition: 'opacity 0.4s ease' }} transform="translate(0, 52)">
-        {/* Soft Sky/Slate Halo */}
-        <circle cx="170" cy="180" r="145" fill="none" stroke="#7ca7d6" strokeWidth="6" opacity="0.5" />
-        <circle cx="170" cy="180" r="145" fill="none" stroke="#c9e2fa" strokeWidth="2" opacity="0.8" />
+        <g className={!reduceMotion ? 'animate-breath' : ''}>
+          {/* Two concentric rings */}
+          <circle cx="170" cy="180" r="145" fill="none" stroke={tokens.breath} strokeWidth="3" opacity="0.65" filter="url(#symbol-glow)" />
+          <circle cx="170" cy="180" r="135" fill="none" stroke={tokens.breath} strokeWidth="1.5" opacity="0.3" />
+        </g>
         {/* Hit Area */}
         <circle 
           cx="170" cy="180" r="145" 
@@ -204,12 +249,11 @@ export const FourfoldAxisHero: React.FC<FourfoldAxisHeroProps> = ({ activeAxis =
         />
       </g>
 
-      {/* c. FOCUS */}
+      {/* c. FOCUS / ATTENTION */}
       <g className="axis-layer" style={{ opacity: getAttentionOpacity(), transition: 'opacity 0.4s ease' }} transform="translate(0, 52)">
-        {/* Soft Terracotta Halo */}
-        <polygon points="170,118 295,290 45,290" fill="none" stroke="#e89e6f" strokeWidth="6" opacity="0.5" strokeLinejoin="round" />
-        {/* Main Triangle Core */}
-        <polygon points="170,118 295,290 45,290" fill="none" stroke="#fae3d2" strokeWidth="2" opacity="0.8" strokeLinejoin="round" />
+        {/* Apex at third eye: cy = 118. Base corners down. */}
+        <polygon points="170,118 295,290 45,290" fill="none" stroke="url(#attention-grad)" strokeWidth="3" strokeLinejoin="round" filter="url(#symbol-glow)" />
+        <circle cx="170" cy="118" r="4" fill={tokens.attention} filter="url(#symbol-glow)" />
         {/* Main Triangle Hit Area */}
         <polygon 
           points="170,118 295,290 45,290" 
@@ -224,8 +268,8 @@ export const FourfoldAxisHero: React.FC<FourfoldAxisHeroProps> = ({ activeAxis =
       {/* d. SPACE RAYS & INFINITY (on chest) */}
       <g className="axis-layer space-rays" style={{ opacity: getOpacity('space'), transition: 'opacity 0.4s ease' }} transform="translate(0, 52)">
         <g className={(!reduceMotion && isSpaceActive) ? 'animate-rays' : ''}>
-          {[...Array(32)].map((_, i) => {
-            const angle = (i * 11.25) * (Math.PI / 180);
+          {[...Array(12)].map((_, i) => {
+            const angle = (i * 30) * (Math.PI / 180);
             const rStart = 0;
             const x1 = 170 + Math.cos(angle) * rStart;
             const y1 = 205 + Math.sin(angle) * rStart;
@@ -242,42 +286,34 @@ export const FourfoldAxisHero: React.FC<FourfoldAxisHeroProps> = ({ activeAxis =
             const x2 = 170 + Math.cos(angle) * farDist;
             const y2 = 205 + Math.sin(angle) * farDist;
 
-            const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#14b8a6', '#06b6d4', '#3b82f6', '#6366f1', '#8b5cf6', '#d946ef'];
+            const colors = [tokens.body, tokens.breath, tokens.attention, tokens.space];
             const color = colors[i % colors.length];
             return (
               <path 
                 key={i} 
                 d={`M ${x1},${y1} C ${cp1x},${cp1y} ${cp2x},${cp2y} ${x2},${y2}`}
                 stroke={color} 
-                strokeWidth={i % 2 === 0 ? "3" : "1.5"} 
+                strokeWidth="2" 
                 fill="none"
-                opacity={i % 2 === 0 ? "0.6" : "0.4"} 
-                filter="url(#ray-glow)"
+                opacity="0.2" 
               />
             );
           })}
         </g>
         
-        {/* Infinity Glow */}
-        <path 
-          d="M148,205 C148,192 165,192 170,205 C175,218 192,218 192,205 C192,192 175,192 170,205 C165,218 148,218 148,205 Z" 
-          fill="none" 
-          stroke="#ef4444" 
-          strokeWidth="10" 
-          opacity="0.4"
-          filter="url(#ray-glow)"
-          strokeLinecap="round" 
-          strokeLinejoin="round" 
-        />
         {/* Infinity Core */}
-        <path 
-          d="M148,205 C148,192 165,192 170,205 C175,218 192,218 192,205 C192,192 175,192 170,205 C165,218 148,218 148,205 Z" 
-          fill="none" 
-          stroke="url(#rainbow-grad)" 
-          strokeWidth="6.5" 
-          strokeLinecap="round" 
-          strokeLinejoin="round" 
-        />
+        <g style={{ transformOrigin: '170px 205px' }}>
+          <path 
+            d="M148,205 C148,192 165,192 170,205 C175,218 192,218 192,205 C192,192 175,192 170,205 C165,218 148,218 148,205 Z" 
+            fill="none" 
+            stroke="url(#rainbow-grad)" 
+            strokeWidth="5" 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            filter="url(#symbol-glow)"
+          />
+        </g>
+
         {/* Infinity Hit Area */}
         <path 
           d="M148,205 C148,192 165,192 170,205 C175,218 192,218 192,205 C192,192 175,192 170,205 C165,218 148,218 148,205 Z" 
@@ -340,7 +376,7 @@ export const FourfoldAxisHero: React.FC<FourfoldAxisHeroProps> = ({ activeAxis =
               <div className="text-white/80 text-sm font-medium">{language === 'el' ? 'Προσοχή / Φωτιά' : 'Attention / Fire'}</div>
             </div>
             <div className="flex items-center gap-4">
-              <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-300 font-serif text-lg">∞</div>
+              <div className="w-8 h-8 rounded-full bg-[#a78bfa]/20 flex items-center justify-center text-[#c4b5fd] font-serif text-lg">∞</div>
               <div className="text-white/80 text-sm font-medium">{language === 'el' ? 'Χώρος / Άπειρο' : 'Space / Infinity'}</div>
             </div>
           </div>
