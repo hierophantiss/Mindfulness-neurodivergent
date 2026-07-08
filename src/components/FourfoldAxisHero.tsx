@@ -168,9 +168,6 @@ export const FourfoldAxisHero: React.FC<FourfoldAxisHeroProps> = ({ activeAxis =
       <g id="figure" transform="translate(0, 52)">
         {/* Soft shadow under figure */}
         <ellipse cx="170" cy="320" rx="100" ry="12" fill="#0c121e" opacity="0.5" />
-
-        {/* Back of hood / shoulders - lowered and relaxed */}
-        <path d="M 115,190 C 115,110 225,110 225,190" fill="#2a3a30" />
         
         {/* Crossed Legs (Widened) */}
         <path d="M 65,285 C 65,240 110,245 170,245 C 230,245 275,240 275,285 C 275,320 220,330 170,330 C 120,330 65,320 65,285 Z" fill="#2a3a30" />
@@ -179,26 +176,31 @@ export const FourfoldAxisHero: React.FC<FourfoldAxisHeroProps> = ({ activeAxis =
         <path d="M 170,265 C 130,275 90,295 75,305" fill="none" stroke="#1d2822" strokeWidth="5" strokeLinecap="round" />
         <path d="M 170,265 C 210,275 250,295 265,305" fill="none" stroke="#1d2822" strokeWidth="5" strokeLinecap="round" />
         
-        {/* Torso */}
-        <path d="M 120,180 L 110,260 C 140,265 200,265 230,260 L 220,180 Z" fill="#2a3a30" />
+        {/* Torso (slimmer column) */}
+        <path d="M 125,180 L 125,260 C 145,265 195,265 215,260 L 215,180 Z" fill="#2a3a30" />
+        
+        {/* Back of hood / shoulders - natural raised drape */}
+        <path d="M 105,190 C 105,130 130,90 170,90 C 210,90 235,130 235,190 Z" fill="#2a3a30" />
+        
+        {/* Neck opening shadow / inner hood */}
+        <path d="M 142,135 C 142,175 198,175 198,135 Z" fill="#1d2822" />
         
         {/* Arms folded - natural drape */}
-        <path d="M 120,180 C 100,240 130,285 170,275" fill="none" stroke="#1d2822" strokeWidth="22" strokeLinecap="round" />
-        <path d="M 220,180 C 240,240 210,285 170,275" fill="none" stroke="#1d2822" strokeWidth="22" strokeLinecap="round" />
+        <path d="M 115,185 C 95,240 130,285 170,275" fill="none" stroke="#1d2822" strokeWidth="22" strokeLinecap="round" />
+        <path d="M 225,185 C 245,240 210,285 170,275" fill="none" stroke="#1d2822" strokeWidth="22" strokeLinecap="round" />
         
-        <path d="M 120,180 C 100,240 130,285 170,275" fill="none" stroke="#2a3a30" strokeWidth="18" strokeLinecap="round" />
-        <path d="M 220,180 C 240,240 210,285 170,275" fill="none" stroke="#2a3a30" strokeWidth="18" strokeLinecap="round" />
+        <path d="M 115,185 C 95,240 130,285 170,275" fill="none" stroke="#2a3a30" strokeWidth="18" strokeLinecap="round" />
+        <path d="M 225,185 C 245,240 210,285 170,275" fill="none" stroke="#2a3a30" strokeWidth="18" strokeLinecap="round" />
         
         {/* Hands - Heart Mudra */}
-        <path d="M 148,272 C 158,266 168,266 170,275 C 160,282 148,280 148,272 Z" fill="#dfb18b" />
-        <path d="M 192,272 C 182,266 172,266 170,275 C 180,282 192,280 192,272 Z" fill="#dfb18b" />
-        <path d="M 148,272 C 158,278 170,275 170,275" fill="none" stroke="#cf9c74" strokeWidth="1.5" />
-        <path d="M 192,272 C 182,278 170,275 170,275" fill="none" stroke="#cf9c74" strokeWidth="1.5" />
-        
-        {/* Inner hood shadow - deeper drape */}
-        <path d="M 135,135 C 135,80 205,80 205,135 C 205,175 190,185 170,190 C 150,185 135,175 135,135 Z" fill="#1d2822" />
+        <path d="M 145,278 C 145,260 162,260 170,266 C 170,275 165,285 145,278 Z" fill="#dfb18b" />
+        <path d="M 195,278 C 195,260 178,260 170,266 C 170,275 175,285 195,278 Z" fill="#dfb18b" />
+        {/* Heart cut-out (negative space) */}
+        <path d="M 170,268 C 164,264 160,268 162,273 L 170,280 L 178,273 C 180,268 176,264 170,268 Z" fill="#2a3a30" />
+        {/* Finger lines */}
+        <path d="M 148,272 C 153,275 160,278 165,278" fill="none" stroke="#cf9c74" strokeWidth="1.5" strokeLinecap="round" />
+        <path d="M 192,272 C 187,275 180,278 175,278" fill="none" stroke="#cf9c74" strokeWidth="1.5" strokeLinecap="round" />
       </g>
-
       {/* 5. AXIS LAYERS */}
       
       {/* a. BODY/GRAVITY (behind face, over body) */}
@@ -220,17 +222,23 @@ export const FourfoldAxisHero: React.FC<FourfoldAxisHeroProps> = ({ activeAxis =
 
       {/* 4.b FACE (over body line) */}
       <g id="figure-face" transform="translate(0, 52)">
-        {/* Face - warm skin tone */}
-        <path d="M 148,118 C 148,90 192,90 192,118 C 192,142 180,152 170,152 C 160,152 148,142 148,118 Z" fill="#dfb18b" />
+        {/* Neck */}
+        <path d="M 160,140 L 160,165 C 160,170 180,170 180,165 L 180,140 Z" fill="#c3946d" />
+        
+        {/* Face - full oval */}
+        <path d="M 145,122 C 145,100 195,100 195,122 C 195,146 182,154 170,154 C 158,154 145,146 145,122 Z" fill="#dfb18b" />
+        
+        {/* Front Hood Brim (overlapping forehead to create hood shape) */}
+        <path d="M 145,122 C 145,95 195,95 195,122 C 185,114 155,114 145,122 Z" fill="#2a3a30" />
+        <path d="M 145,122 C 145,146 158,154 170,154 C 182,154 195,146 195,122" fill="none" stroke="#2a3a30" strokeWidth="2.5" />
         
         {/* Eyes (closed) - minimal */}
-        <path d="M 154,124 Q 159,127 164,124" fill="none" stroke="#1d2822" strokeWidth="1.5" strokeLinecap="round" />
-        <path d="M 176,124 Q 181,127 186,124" fill="none" stroke="#1d2822" strokeWidth="1.5" strokeLinecap="round" />
+        <path d="M 154,127 Q 159,130 164,127" fill="none" stroke="#1d2822" strokeWidth="1.5" strokeLinecap="round" />
+        <path d="M 176,127 Q 181,130 186,127" fill="none" stroke="#1d2822" strokeWidth="1.5" strokeLinecap="round" />
         
         {/* Smile - minimal calm */}
-        <path d="M 166,138 Q 170,141 174,138" fill="none" stroke="#1d2822" strokeWidth="1.5" strokeLinecap="round" />
+        <path d="M 166,139 Q 170,142 174,139" fill="none" stroke="#1d2822" strokeWidth="1.5" strokeLinecap="round" />
       </g>
-
       {/* b. BREATH */}
       <g className="axis-layer" style={{ opacity: getOpacity('breath'), transition: 'opacity 0.4s ease' }} transform="translate(0, 52)">
         <g className={!reduceMotion ? 'animate-breath' : ''}>
