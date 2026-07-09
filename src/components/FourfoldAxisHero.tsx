@@ -164,6 +164,23 @@ export const FourfoldAxisHero: React.FC<FourfoldAxisHeroProps> = ({ activeAxis =
         </g>
       </g>
 
+      {/* a. BODY/GRAVITY (behind figure) */}
+      <g className="axis-layer" style={{ opacity: getOpacity('body'), transition: 'opacity 0.4s ease' }} transform="translate(0, 52)">
+        {/* Glow halo */}
+        <line x1="170" y1="30" x2="170" y2="440" stroke="url(#body-grad)" strokeWidth="6" strokeLinecap="round" filter="url(#symbol-glow)" />
+        {/* Solid core */}
+        <line x1="170" y1="30" x2="170" y2="440" stroke="#fef08a" strokeWidth="2" strokeLinecap="round" opacity="0.8" />
+        {/* Hit Area */}
+        <line 
+          x1="170" y1="30" x2="170" y2="440" 
+          stroke="transparent" strokeWidth="30" 
+          className="cursor-pointer"
+          onMouseEnter={() => setHoveredAxis('body')}
+          onMouseLeave={() => setHoveredAxis(null)}
+          onClick={() => handleAxisClick('body')}
+        />
+      </g>
+
       {/* 4. FIGURE */}
       <g id="figure" transform="translate(0, 52)">
         {/* Soft shadow under figure */}
@@ -179,8 +196,8 @@ export const FourfoldAxisHero: React.FC<FourfoldAxisHeroProps> = ({ activeAxis =
         {/* Torso (slimmer column) */}
         <path d="M 135,180 L 135,265 C 150,270 190,270 205,265 L 205,180 Z" fill="#2E4034" />
         
-        {/* Back of hood / shoulders - natural raised drape */}
-        <path d="M 115,190 C 115,120 135,90 170,90 C 205,90 225,120 225,190 Z" fill="#2E4034" />
+        {/* Back of hood / shoulders - smaller, snug around head */}
+        <path d="M 125,190 C 130,130 140,105 170,105 C 200,105 210,130 215,190 Z" fill="#2E4034" />
         
         {/* Neck opening shadow / inner hood */}
         <path d="M 144,135 C 144,170 196,170 196,135 Z" fill="#1d2822" />
@@ -203,26 +220,8 @@ export const FourfoldAxisHero: React.FC<FourfoldAxisHeroProps> = ({ activeAxis =
         <path d="M 155,268 C 158,272 163,274 167,274" fill="none" stroke="#cf9c74" strokeWidth="1.2" strokeLinecap="round" />
         <path d="M 185,268 C 182,272 177,274 173,274" fill="none" stroke="#cf9c74" strokeWidth="1.2" strokeLinecap="round" />
       </g>
-      {/* 5. AXIS LAYERS */}
-      
-      {/* a. BODY/GRAVITY (behind face, over body) */}
-      <g className="axis-layer" style={{ opacity: getOpacity('body'), transition: 'opacity 0.4s ease' }} transform="translate(0, 52)">
-        {/* Glow halo */}
-        <line x1="170" y1="30" x2="170" y2="440" stroke="url(#body-grad)" strokeWidth="6" strokeLinecap="round" filter="url(#symbol-glow)" />
-        {/* Solid core */}
-        <line x1="170" y1="30" x2="170" y2="440" stroke="#fef08a" strokeWidth="2" strokeLinecap="round" opacity="0.8" />
-        {/* Hit Area */}
-        <line 
-          x1="170" y1="30" x2="170" y2="440" 
-          stroke="transparent" strokeWidth="30" 
-          className="cursor-pointer"
-          onMouseEnter={() => setHoveredAxis('body')}
-          onMouseLeave={() => setHoveredAxis(null)}
-          onClick={() => handleAxisClick('body')}
-        />
-      </g>
 
-      {/* 4.b FACE (over body line) */}
+      {/* 4.b FACE (over body line previously, now just face) */}
       <g id="figure-face" transform="translate(0, 52)">
         {/* Neck */}
         <path d="M 162,145 L 162,165 C 162,170 178,170 178,165 L 178,145 Z" fill="#c3946d" />
@@ -241,6 +240,7 @@ export const FourfoldAxisHero: React.FC<FourfoldAxisHeroProps> = ({ activeAxis =
         {/* Smile - minimal calm */}
         <path d="M 166,145 Q 170,148 174,145" fill="none" stroke="#1d2822" strokeWidth="1.5" strokeLinecap="round" />
       </g>
+
       {/* b. BREATH */}
       <g className="axis-layer" style={{ opacity: getOpacity('breath'), transition: 'opacity 0.4s ease' }} transform="translate(0, 52)">
         <g className={!reduceMotion ? 'animate-breath' : ''}>
