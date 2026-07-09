@@ -608,7 +608,7 @@ export default function PracticeBreath() {
                 
                 {/* Phase Text Overlay inside hero card */}
                 <div className="absolute bottom-6 left-0 right-0 z-20 flex flex-col items-center justify-center pointer-events-none">
-                  {running && (
+                  {running && pattern.category !== 'vocal' && (
                     <div className="flex flex-col items-center">
                       <p className={cn("text-2xl tracking-[0.2em] font-mono font-light transition-colors text-center drop-shadow-md", isInhale ? "text-[#7dd3fc]" : isExhale ? "text-[#5eead4]" : "text-[#fcd34d]")}>
                         {phaseSeconds} <span className="text-lg opacity-50 relative -top-0.5">/ {maxSeconds}</span>
