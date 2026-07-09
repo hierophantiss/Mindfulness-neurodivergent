@@ -1,4 +1,6 @@
-import React, { useMemo } from 'react';
+const fs = require('fs');
+
+const code = `import React, { useMemo } from 'react';
 import { motion } from 'motion/react';
 import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
@@ -33,7 +35,7 @@ export function BreathingHero({
   const { language: contextLanguage } = useLanguage();
   const language = propLanguage || contextLanguage;
 
-  const breathPhase = phaseIdx === -1 ? 'idle' : isInhale ? 'inhale' : isExhale ? 'exhale' : phaseIdx === 1 ? 'hold' : 'rest';
+  const breathPhase = isInhale ? 'inhale' : isExhale ? 'exhale' : phaseIdx === 1 ? 'hold' : 'rest';
 
   // vocal badge for humming
   const resonanceLabel: Record<string, string> = {
@@ -54,7 +56,7 @@ export function BreathingHero({
   const resonanceGlow = '#8b5cf6';
 
   return (
-    <div className={`relative w-full ${className || ''}`}>
+    <div className={\`relative w-full \${className || ''}\`}>
       <MeditatorFigure 
         showAxisSymbols="breath-focus"
         animationMode="breathing-exercise"
@@ -94,3 +96,7 @@ export function BreathingHero({
     </div>
   );
 }
+`;
+
+fs.writeFileSync('src/components/BreathingHero.tsx', code);
+console.log('Applied patch_breathing_hero');
