@@ -134,54 +134,67 @@ export default function Dashboard() {
 
         {/* Hero Section */}
         <div className="w-full max-w-xs md:max-w-sm lg:max-w-md lg:sticky lg:top-24 flex-shrink-0 flex flex-col justify-center items-center px-4 gap-6 pt-[calc(env(safe-area-inset-top,0px)+1rem)] lg:pt-0">
-          {/* Top Row: Eyebrow + Actions */}
-          <div className="w-full flex items-center justify-between gap-4 mt-2 mb-2 px-2">
-            <motion.span 
+          {/* Top Row: Brand Lockup + SOS */}
+          <div className="w-full flex items-start justify-between gap-2 mt-2 px-1 sm:px-2">
+            <motion.div 
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1 }}
-              className="text-[10px] leading-[1.4] tracking-[0.2em] uppercase text-white/40 font-medium text-left flex-1"
+              className="flex flex-col text-left overflow-hidden shrink min-w-0"
             >
-              {language === 'el' ? 'ΕΝΣΥΝΕΙΔΗΤΟΤΗΤΑ ΓΙΑ ΝΕΥΡΟΔΙΑΦΟΡΕΤΙΚΟΥΣ' : 'NEURODIVERGENT MINDFULNESS'}
-            </motion.span>
+              <span className="text-[18px] min-[375px]:text-[20px] md:text-[22px] leading-tight tracking-normal min-[375px]:tracking-[0.05em] uppercase text-teal-300/90 font-medium truncate">
+                {language === 'el' ? 'ΕΝΣΥΝΕΙΔΗΤΟΤΗΤΑ' : 'MINDFULNESS'}
+              </span>
+              <span className="text-[10px] min-[375px]:text-[11px] md:text-[13px] leading-tight tracking-normal min-[375px]:tracking-[0.05em] md:tracking-[0.1em] uppercase text-white/40 font-medium mt-0.5 whitespace-nowrap overflow-hidden text-ellipsis">
+                {language === 'el' ? 'ΓΙΑ ΝΕΥΡΟΔΙΑΦΟΡΕΤΙΚΟΥΣ' : 'FOR NEURODIVERGENT MINDS'}
+              </span>
+            </motion.div>
             
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.3 }}
-              className="flex items-center gap-2"
+              className="flex flex-col items-end shrink-0 ml-auto"
             >
               <Link
                 to="/practice/breath/sos-breath"
-                className="flex items-center justify-center h-[44px] px-5 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-300 hover:bg-rose-500/20 active:scale-95 transition-all text-[13px] font-medium tracking-widest"
+                className="flex items-center justify-center h-[40px] min-[375px]:h-[44px] px-4 min-[375px]:px-5 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-300 hover:bg-rose-500/20 active:scale-95 transition-all text-[12px] min-[375px]:text-[13px] font-medium tracking-widest shrink-0"
                 title={language === 'el' ? 'Άμεση Ηρέμηση' : 'Immediate Calm'}
               >
                 SOS
               </Link>
-              
-              <button
-                onClick={toggleAudio}
-                className={cn(
-                  "w-[44px] h-[44px] flex items-center justify-center rounded-full border transition-all active:scale-95",
-                  isPlaying
-                    ? "bg-teal-500/20 border-teal-400/40 text-teal-300 relative overflow-hidden"
-                    : "bg-white/[0.02] border-white/[0.1] text-white/60 hover:text-white hover:bg-white/10"
-                )}
-                title={language === 'el' ? 'Ηχητικό Τοπίο' : 'Ambient Audio'}
-              >
-                {isPlaying && (
-                  <div className="absolute inset-0 bg-teal-400/10 animate-pulse" />
-                )}
-                {isPlaying ? <Waves size={16} className="animate-pulse relative z-10" /> : <Play size={16} />}
-              </button>
-              <button 
-                onClick={() => setLanguage(language === 'el' ? 'en' : 'el')}
-                className="flex items-center justify-center w-[44px] h-[44px] rounded-full bg-white/[0.02] border border-white/[0.1] text-[11px] font-medium text-white/60 active:scale-95 transition-transform hover:bg-white/10 hover:text-white"
-              >
-                {language === 'el' ? 'EN' : 'EL'}
-              </button>
             </motion.div>
           </div>
+
+          {/* Second Row: Audio & Lang */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.4 }}
+            className="w-full flex items-center justify-start gap-2 px-2 mb-2"
+          >
+            <button
+              onClick={toggleAudio}
+              className={cn(
+                "w-[44px] h-[44px] flex items-center justify-center rounded-full border transition-all active:scale-95 shrink-0",
+                isPlaying
+                  ? "bg-teal-500/20 border-teal-400/40 text-teal-300 relative overflow-hidden"
+                  : "bg-white/[0.02] border-white/[0.1] text-white/60 hover:text-white hover:bg-white/10"
+              )}
+              title={language === 'el' ? 'Ηχητικό Τοπίο' : 'Ambient Audio'}
+            >
+              {isPlaying && (
+                <div className="absolute inset-0 bg-teal-400/10 animate-pulse" />
+              )}
+              {isPlaying ? <Waves size={16} className="animate-pulse relative z-10" /> : <Play size={16} />}
+            </button>
+            <button 
+              onClick={() => setLanguage(language === 'el' ? 'en' : 'el')}
+              className="flex items-center justify-center w-[44px] h-[44px] rounded-full bg-white/[0.02] border border-white/[0.1] text-[11px] font-medium text-white/60 active:scale-95 transition-transform hover:bg-white/10 hover:text-white shrink-0"
+            >
+              {language === 'el' ? 'EN' : 'EL'}
+            </button>
+          </motion.div>
 
           <FourfoldAxisHero activeAxis={effectiveAxis} />
           
