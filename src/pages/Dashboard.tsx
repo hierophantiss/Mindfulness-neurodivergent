@@ -124,16 +124,16 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="relative w-full min-h-screen bg-transparent overflow-x-hidden text-white font-sans selection:bg-[#4a9eca]/30 selection:text-white pb-28">
+    <div className="relative w-full min-h-screen bg-transparent overflow-x-hidden text-white font-sans selection:bg-[#4a9eca]/30 selection:text-white pb-[calc(5rem+env(safe-area-inset-bottom))]">
       
       {/* Ambient background glow for the grid */}
       <div className="absolute top-[40%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-teal-900/10 blur-[120px] rounded-full pointer-events-none" />
 
       {/* Main Responsive Container */}
-      <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center lg:items-start justify-center gap-8 lg:gap-16 pt-12">
+      <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center lg:items-start justify-center gap-2 lg:gap-16 pt-1 lg:pt-12">
 
         {/* Hero Section */}
-        <div className="w-full max-w-xs md:max-w-sm lg:max-w-md lg:sticky lg:top-24 flex-shrink-0 flex flex-col justify-center items-center px-4 gap-6 pt-[calc(env(safe-area-inset-top,0px)+1rem)] lg:pt-0">
+        <div className="w-full max-w-xs md:max-w-sm lg:max-w-md lg:sticky lg:top-24 flex-shrink-0 flex flex-col justify-center items-center px-4 gap-2 lg:gap-6 pt-[calc(env(safe-area-inset-top,0px)+0.5rem)] lg:pt-0 lg:pb-[calc(5rem+env(safe-area-inset-bottom))]">
           {/* Top Row: Brand Lockup + SOS */}
           <div className="w-full flex items-start justify-between gap-2 mt-2 px-1 sm:px-2">
             <motion.div 
@@ -171,7 +171,7 @@ export default function Dashboard() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="w-full flex items-center justify-start gap-2 px-2 mb-2"
+            className="w-full flex items-center justify-start gap-2 px-2"
           >
             <button
               onClick={toggleAudio}
@@ -196,10 +196,10 @@ export default function Dashboard() {
             </button>
           </motion.div>
 
-          <FourfoldAxisHero activeAxis={effectiveAxis} />
+          <div className="w-[85%] md:w-full mx-auto flex items-center justify-center"><FourfoldAxisHero activeAxis={effectiveAxis} /></div>
           
           {suggestion && !isDismissedToday && (
-            <div className="w-full max-w-sm mt-2 rounded-[24px] bg-[#1a1f26]/40 backdrop-blur-xl border border-white/[0.04] p-5 flex flex-col gap-3 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.4)]">
+            <div className="w-full max-w-sm mt-0 rounded-[24px] bg-[#1a1f26]/40 backdrop-blur-xl border border-white/[0.04] p-4 flex flex-col gap-2 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.4)]">
               <div className="flex items-center gap-2 mb-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
                 <span className="text-xs tracking-wider uppercase text-white/50">
@@ -243,7 +243,7 @@ export default function Dashboard() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.6 }}
-            className="text-center px-4"
+            className="text-center px-4 mt-1 mb-1"
           >
             <p className="text-sm md:text-[15px] font-sans font-light tracking-wide text-white/60 leading-relaxed italic">
               "{language === 'el' ? affirmation.el : affirmation.en}"
@@ -252,7 +252,7 @@ export default function Dashboard() {
         </div>
 
         {/* Dashboard Content */}
-        <div className="w-full max-w-lg px-5 flex flex-col gap-10">
+        <div className="w-full max-w-lg px-5 flex flex-col gap-6">
 
         {/* Greeting & Date */}
         <div className="flex flex-col gap-2">
