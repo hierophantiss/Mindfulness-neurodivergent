@@ -13,6 +13,7 @@ import { softGazeArticle } from '../data/softGazeArticle';
 import { polyvagalArticle } from '../data/polyvagalArticle';
 import { platoCaveArticle } from '../data/platoCaveArticle';
 import { youAreThePathArticle } from '../data/youAreThePathArticle';
+import { waveAndSeaArticle } from '../data/waveAndSeaArticle';
 import { rabbitholeContent } from '../data/rabbitholeContent';
 
 const formatMarkdown = (text: string) => {
@@ -182,6 +183,12 @@ export default function RabbitHole() {
       title: language === 'en' ? youAreThePathArticle.title.en : youAreThePathArticle.title.el,
       author: language === 'en' ? youAreThePathArticle.author.en : youAreThePathArticle.author.el,
       pages: language === 'en' ? youAreThePathArticle.pagesEn : youAreThePathArticle.pagesEl
+    },
+    {
+      id: waveAndSeaArticle.id,
+      title: language === 'en' ? waveAndSeaArticle.title.en : waveAndSeaArticle.title.el,
+      author: language === 'en' ? waveAndSeaArticle.author.en : waveAndSeaArticle.author.el,
+      pages: language === 'en' ? waveAndSeaArticle.pagesEn : waveAndSeaArticle.pagesEl
     },
     {
       id: 'koshas-veils',

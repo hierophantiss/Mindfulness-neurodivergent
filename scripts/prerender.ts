@@ -21,6 +21,8 @@ import { dzogchenArticle } from '../src/data/dzogchenArticle';
 import { neverForceArticle } from '../src/data/neverForceArticle';
 import { platoCaveArticle } from '../src/data/platoCaveArticle';
 import { polyvagalArticle } from '../src/data/polyvagalArticle';
+import { youAreThePathArticle } from '../src/data/youAreThePathArticle';
+import { waveAndSeaArticle } from '../src/data/waveAndSeaArticle';
 import { rabbitholeContent } from '../src/data/rabbitholeContent';
 import { MICRODOSES_EXERCISES } from '../src/data/microdoses';
 import { KNOWLEDGE_FAQ } from '../src/data/faq';
@@ -107,6 +109,18 @@ const ARTICLES: Record<string, { en: [string, string]; el: [string, string] }> =
          'The Sandbox concept: a safe internal space for self-exploration using IFS (Internal Family Systems) and mindfulness. Ideal for neurodivergent self-inquiry.'],
     el: ['Τι σημαίνει Sandbox στην Ενσυνειδητότητα; | Neurodivergent Mindfulness App',
          'Η έννοια του Sandbox: ένας ασφαλής εσωτερικός χώρος για αυτοεξερεύνηση με IFS και ενσυνειδητότητα.'],
+  },
+  'you-are-the-path': {
+    en: ['You Are the Path: The Map, the Territory & the Axis | Neurodivergent Mindfulness App',
+         'The map is not the territory. Korzybski, Gibson and how to enter the map. A guide for neurodivergent minds.'],
+    el: ['Είσαι ο Δρόμος: Ο Χάρτης, το Έδαφος & ο Άξονας | Neurodivergent Mindfulness App',
+         'Ο χάρτης δεν είναι το έδαφος. Κορζίμπσκι, Γκίμπσον και πώς να μπείτε στον χάρτη.']
+  },
+  'wave-and-sea': {
+    en: ['The Wave Is Not the Sea — Until It Lets Go | Neurodivergent Mindfulness App',
+         "The map is not the territory — but who drew your outline? From Korzybski to the wave and the sea: mindfulness, awareness, and the fourfold method's path from regulation to presence."],
+    el: ['Το Κύμα Δεν Είναι η Θάλασσα — Ώσπου να Αφεθεί | Neurodivergent Mindfulness App',
+         "Ο χάρτης δεν είναι το έδαφος — αλλά ποιος σχεδίασε το περίγραμμά σου; Από τον Κορζίμπσκι στο κύμα και τη θάλασσα: ενσυνειδητότητα, συνειδητότητα, και ο δρόμος της τετραπλής μεθόδου από τη ρύθμιση στην παρουσία."]
   },
   'dzogchen-great-perfection': {
     en: ['Dzogchen: The Great Perfection | Neurodivergent Mindfulness App',
@@ -257,6 +271,8 @@ function getMetaForRoute(route: string): RouteMeta {
       'never-force': neverForceArticle,
       'plato-cave-neurodivergent': platoCaveArticle,
       'polyvagal-middle-way': polyvagalArticle,
+      'you-are-the-path': youAreThePathArticle,
+      'wave-and-sea': waveAndSeaArticle,
       ...rabbitholeContent
     };
 
