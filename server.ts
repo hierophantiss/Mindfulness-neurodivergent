@@ -7,19 +7,11 @@ import { GoogleGenAI } from "@google/genai";
 import { CHAPTERS_DATA } from "./src/data/chapters";
 import { D as D_EL } from "./src/data/course-el";
 import { D as D_EN } from "./src/data/course-en";
-import { dzogchenArticle } from "./src/data/dzogchenArticle";
-import { neverForceArticle } from "./src/data/neverForceArticle";
+
+
 import { MICRODOSES_EXERCISES } from "./src/data/microdoses";
 import { BREATH_PATTERNS } from "./src/data/breathPatterns";
 
-// Read Rabbit Hole articles dynamically safely
-let rabbitHoleArticlesText = "";
-try {
-  const rabbitHoleContent = fs.readFileSync(path.join(process.cwd(), 'src/pages/RabbitHole.tsx'), 'utf-8');
-  rabbitHoleArticlesText = rabbitHoleContent.substring(0, 150000);
-} catch (e) {
-  console.warn("Could not read src/pages/RabbitHole.tsx, skipping for LLM context.");
-}
 
 async function startServer() {
   const app = express();
@@ -78,9 +70,6 @@ async function startServer() {
         KNOWLEDGE BASE:
         Course Content: ${JSON.stringify(courseData)}
         Book Content: ${JSON.stringify(chaptersData)}
-        Dzogchen Article: ${JSON.stringify(dzogchenArticle)}
-        Never Force Article: ${JSON.stringify(neverForceArticle)}
-        Rabbit Hole Articles: ${rabbitHoleArticlesText}
         Breathing Exercises List: ${JSON.stringify(BREATH_PATTERNS.map(p => ({ id: p.id, title: p.title, subtitle: p.subtitle, desc: p.desc, category: p.category, path: `/practice/breath/${p.id}` })))}
         Microdoses Practices List: ${JSON.stringify(MICRODOSES_EXERCISES.map(p => ({ id: p.id, title: p.title, type: p.type, dur: p.dur, desc: p.desc, path: p.link })))}
 

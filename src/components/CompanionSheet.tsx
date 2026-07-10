@@ -8,8 +8,9 @@ import { KNOWLEDGE_FAQ } from '../data/faq';
 import { D as D_EL } from '../data/course-el';
 import { D as D_EN } from '../data/course-en';
 import { getCompanionResponse, streamCompanionResponse } from '../services/geminiService';
+import { suggestArticles } from '../utils/suggestArticles';
 import { motion, AnimatePresence } from 'motion/react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { cn } from '../lib/utils';
@@ -1083,6 +1084,23 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
 
       const fullAxis = specificContext ? `${axis} - ${specificContext}` : axis;
 
+      let readingSuggestions: any[] = [];
+      const readingIntentPattern = /(διάβασμα|διαβάσω|άρθρο|άρθρα|μάθω|μάθε|read|article|articles|learn|study|suggest|τι να δω|πού να ψάξω)/i;
+      if (readingIntentPattern.test(userMsg)) {
+         let suggestionAxis = null;
+         if (axis.includes('Body')) suggestionAxis = 'body';
+         else if (axis.includes('Breath')) suggestionAxis = 'breath';
+         else if (axis.includes('Attention')) suggestionAxis = 'attention';
+         else if (axis.includes('Space')) suggestionAxis = 'space';
+         
+         readingSuggestions = suggestArticles({
+            axis: suggestionAxis as any,
+            query: userMsg,
+            language
+         });
+      }
+
+
       // New client-side streaming implementation
       updateCompanionData(prev => ({
         ...prev,
@@ -1121,6 +1139,21 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
           });
         }
       );
+      
+      if (readingSuggestions.length > 0) {
+         const linksMsg = '\n\n' + (language === 'el' ? '📚 Προτεινόμενα άρθρα:' : '📚 Suggested reading:') + '\n' + readingSuggestions.map(s => `[${s.title[language]}](/rabbithole/${s.id})`).join('\n');
+         assistantContent += linksMsg;
+         updateCompanionData(prev => {
+            const newHistory = [...(prev.chatHistory || [])];
+            if (newHistory.length > 0) {
+              newHistory[newHistory.length - 1] = {
+                ...newHistory[newHistory.length - 1],
+                content: assistantContent
+              };
+            }
+            return { ...prev, chatHistory: newHistory };
+         });
+      }
     } catch (err) {
       console.error(err);
       updateCompanionData(prev => ({
@@ -1196,7 +1229,13 @@ function GuideFlow({ goBack, onClose }: { goBack: () => void, onClose: () => voi
                 ? 'bg-teal-700 text-white rounded-tr-none font-medium' 
                 : 'bg-white dark:bg-stone-800/90 text-stone-800 dark:text-stone-100 border border-stone-100 dark:border-stone-700/50 rounded-tl-none font-serif italic text-[16px]'
             }`}>
-              {msg.content}
+              {msg.content.split(/(\[.*?\]\(.*?\))/g).map((part, i) => {
+                const match = part.match(/\[(.*?)\]\((.*?)\)/);
+                if (match) {
+                  return <Link key={i} to={match[2]} onClick={() => setSheetVisible(false)} className="text-teal-500 dark:text-teal-400 font-bold hover:underline underline-offset-2">{match[1]}</Link>;
+                }
+                return <span key={i}>{part}</span>;
+              })}
             </div>
           </div>
         ))}
