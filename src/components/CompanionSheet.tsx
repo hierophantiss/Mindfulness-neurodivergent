@@ -23,27 +23,6 @@ const getDateString = (date: Date): string => {
   return date.toISOString().split('T')[0];
 };
 
-const calculateStreak = (activityLogs: { timestamp: string }[]): number => {
-  if (activityLogs.length === 0) return 0;
-
-  const activeDays = new Set(activityLogs.map(l => l.timestamp.split('T')[0]));
-  let streak = 0;
-  const today = new Date();
-
-  for (let i = 0; i < 365; i++) {
-    const d = new Date(today);
-    d.setDate(today.getDate() - i);
-    const ds = getDateString(d);
-    if (activeDays.has(ds)) {
-      streak++;
-    } else {
-      // Allow today to be missing (user hasn't practiced yet today)
-      if (i === 0) continue;
-      break;
-    }
-  }
-  return streak;
-};
 
 export default function CompanionSheet() {
   const { sheetVisible, setSheetVisible, companionData, trackActivity, updateCompanionData } = useCompanion();
@@ -234,23 +213,14 @@ function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClo
   const narrative = getDailyNarrative();
   
   // Calculate Mindful Stats
-  const targetCompletedStreak = calculateStreak(logs);
   const totalPracticesLogged = logs.length;
   
-  // Calculate weekly goal progress based on logs in the last 7 days (target: 4 practices)
-  const recent7DaysCount = logs.filter(l => {
-    if (!l.timestamp) return false;
-    const d = new Date(l.timestamp);
-    const diff = Math.abs(new Date().getTime() - d.getTime());
-    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-    return days <= 7;
-  }).length;
-  const currentWeeklyGoalPct = Math.min(100, Math.round((recent7DaysCount / 4) * 100));
+  const todayString = getDateString(new Date());
+  const hasPracticedToday = logs.some(l => l.timestamp && l.timestamp.startsWith(todayString));
 
   const mindfulStats = { 
-    streak: targetCompletedStreak, 
     practices: totalPracticesLogged, 
-    weeklyGoal: currentWeeklyGoalPct 
+    hasPracticedToday
   };
 
   let message = {
@@ -375,27 +345,20 @@ function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClo
         </div>
       )}
 
-      {/* Streak Row */}
-      <div className="grid grid-cols-3 gap-2">
+      {/* Stats Row */}
+      <div className="grid grid-cols-2 gap-2">
         <div className="bg-stone-50 dark:bg-stone-800/80 border border-stone-100 dark:border-stone-700 rounded-2xl flex flex-col items-center justify-center py-4 text-center gap-1.5 shadow-sm">
-          <span className="text-lg leading-none">🔥</span>
-          <span className="text-[20px] font-display font-medium text-stone-800 dark:text-stone-200">{mindfulStats.streak}</span>
-          <span className="text-[9px] font-bold tracking-wider text-stone-400 uppercase">
-            {language === 'el' ? 'ΣΕΡΙ' : 'STREAK'}
-          </span>
-        </div>
-        <div className="bg-stone-50 dark:bg-stone-800/80 border border-stone-100 dark:border-stone-700 rounded-2xl flex flex-col items-center justify-center py-4 text-center gap-1.5 shadow-sm">
-          <span className="text-lg leading-none">🧠</span>
+          <span className="text-lg leading-none">🧘</span>
           <span className="text-[20px] font-display font-medium text-stone-800 dark:text-stone-200">{mindfulStats.practices}</span>
           <span className="text-[9px] font-bold tracking-wider text-stone-400 uppercase">
-            {language === 'el' ? 'ΠΡΑΚΤΙΚΕΣ' : 'PRACTICES'}
+            {language === 'el' ? 'Στιγμές παρουσίας' : 'Moments of presence'}
           </span>
         </div>
         <div className="bg-stone-50 dark:bg-stone-800/80 border border-stone-100 dark:border-stone-700 rounded-2xl flex flex-col items-center justify-center py-4 text-center gap-1.5 shadow-sm">
           <span className="text-lg leading-none">🌙</span>
-          <span className="text-[20px] font-display font-medium text-stone-800 dark:text-stone-200">{mindfulStats.weeklyGoal}%</span>
+          <span className="text-[20px] font-display font-medium text-stone-800 dark:text-stone-200">{mindfulStats.hasPracticedToday ? '✓' : '—'}</span>
           <span className="text-[9px] font-bold tracking-wider text-stone-400 uppercase">
-            {language === 'el' ? 'ΣΤΟΧΟΣ' : 'GOAL'}
+            {language === 'el' ? 'ΣΗΜΕΡΑ' : 'TODAY'}
           </span>
         </div>
       </div>

@@ -10,27 +10,6 @@ const getDateString = (date: Date): string => {
   return date.toISOString().split('T')[0];
 };
 
-const calculateStreak = (activityLogs: { timestamp: string }[]): number => {
-  if (activityLogs.length === 0) return 0;
-
-  const activeDays = new Set(activityLogs.map(l => l.timestamp.split('T')[0]));
-  let streak = 0;
-  const today = new Date();
-
-  for (let i = 0; i < 365; i++) {
-    const d = new Date(today);
-    d.setDate(today.getDate() - i);
-    const ds = getDateString(d);
-    if (activeDays.has(ds)) {
-      streak++;
-    } else {
-      // Allow today to be missing (user hasn't practiced yet today)
-      if (i === 0) continue;
-      break;
-    }
-  }
-  return streak;
-};
 
 export default function DesktopRightRail() {
   const { language } = useLanguage();
@@ -44,8 +23,10 @@ export default function DesktopRightRail() {
   const hasProgram = (companionData.programProgress?.week || 0) > 0;
   
   // Calculate real stats starting from 0
-  const streak = calculateStreak(logs);
   const practices = logs.length;
+  
+  const todayString = getDateString(new Date());
+  const hasPracticedToday = logs.some(l => l.timestamp && l.timestamp.startsWith(todayString));
 
   return (
     <aside className="hidden lg:flex w-[280px] xl:w-[320px] flex-col h-full border-l border-white/5 bg-[#0a0d14]/40 z-20 overflow-y-auto pt-8 pb-4 px-5 custom-scrollbar">
@@ -81,15 +62,15 @@ export default function DesktopRightRail() {
 
         <div className="grid grid-cols-2 gap-2">
           <div className="flex flex-col gap-1">
-            <span className="text-xl font-mono text-zinc-100">{streak}</span>
+            <span className="text-xl font-mono text-zinc-100">{practices}</span>
             <span className="text-[10px] text-zinc-500 font-medium">
-              {language === 'en' ? 'Day Streak' : 'Ημέρες Σερί'}
+              {language === 'el' ? 'Στιγμές παρουσίας' : 'Moments of presence'}
             </span>
           </div>
           <div className="flex flex-col gap-1 border-l border-white/5 pl-2">
-            <span className="text-xl font-mono text-zinc-100">{practices}</span>
+            <span className="text-xl font-mono text-zinc-100">{hasPracticedToday ? '✓' : '—'}</span>
             <span className="text-[10px] text-zinc-500 font-medium">
-              {language === 'en' ? 'Practices' : 'Ασκήσεις'}
+              {language === 'el' ? 'Σήμερα' : 'Today'}
             </span>
           </div>
         </div>
