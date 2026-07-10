@@ -9,3 +9,7 @@
 * **Χρώματα**: ΜΟΝΟ από τις CSS μεταβλητές του `src/index.css` (π.χ. `--color-bg: #0f1117`). Ποτέ μη χρησιμοποιείς φωτεινό λευκό (`#fff`) για φόντο.
 * **Δομή**: Vanilla HTML/CSS/JS και React / TS. Responsive first (375px βάση).
 * **UI/UX Καθαρότητα**: Το design πρέπει να είναι premium, ήρεμο και απολύτως καθαρό. Απαγορεύονται τα logs στην οθόνη, τα άχρηστα tech-labels και οτιδήποτε "μοιάζει με AI".
+
+## 3. Repo Hygiene
+* **ΑΥΣΤΗΡΟΣ ΚΑΝΟΝΑΣ**: Never create scratch, patch, or test scripts in the repo root. 
+* **Λύση**: Use a temporary directory outside the repo, or delete such files before committing. Every commit must contain only source, assets, config, and documentation.
