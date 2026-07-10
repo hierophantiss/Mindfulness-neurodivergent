@@ -115,6 +115,15 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
          "• Dzogchen (Nyingma): Rigpa — the natural state of open awareness{{open_awareness}}. The 4th axis (Space) corresponds to the nature of the mind.",
          "• Sufism (Inayatiyya): Breath as the bridge between matter and spirit. Rhythm as a path to presence.",
          "• Tai Chi / Qi Gong: Grounding through movement — gravity as teacher. The vertical axis as foundation."
+       ]},
+       {title:"The Lineage of Transmission",paragraphs: [
+         "This method does not come from books but from lived transmission, in this order:",
+         "• Tai Chi / Qi Gong: The Long Form, taught by Petros Kouropoulos.",
+         "• Sufism (Inayatiyya): Initiation and naming by Dimitris Magriotis, official teacher of the tradition in Greece — years of participation.",
+         "• Dzogchen: First transmission from Chögyal Namkhai Norbu.",
+         "• Karma Kagyu: Refuge at the Karma Kunkhyabling Center of Athens, with a bond to the 17th Karmapa Ogyen Trinley Dorje.",
+         "• Nyingma/Palyul: Refuge from Khenpo Efstathios I. Liakopoulos (Kunzang Trinley Dorje Tsal, †2023), founder of the \"King Menandros\" Center for Buddhist Studies.",
+         "• Transmission from Keith Dowman, and in the last two years two transmissions from Yeshi Namkhai, who continues his father's lineage."
        ]}
      ],
      exercise:{title:"Reflection: My Practice",steps:["Which of the 4 centers comes to you most naturally?","Where do you struggle the most?","What has changed since you started?"]},
@@ -236,6 +245,15 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
          `• Dzogchen (Nyingma): Rigpa — η φυσική κατάσταση ανοιχτής επίγνωσης{{open_awareness}}. Ο 4ος άξονας (Χώρος) αντιστοιχεί στη φύση του νου.`,
          `• Σουφισμός (Inayatiyya): Η αναπνοή ως γέφυρα μεταξύ ύλης και πνεύματος. Ο ρυθμός ως δρόμος προς την παρουσία.`,
          `• Tai Chi / Qi Gong: Γείωση μέσω κίνησης — η βαρύτητα ως δάσκαλος. Ο κατακόρυφος άξονας ως θεμέλιο.`
+       ]},
+       {title:'Η Γραμμή Μετάδοσης',paragraphs: [
+         `Η μέθοδος δεν προέρχεται από βιβλία αλλά από βιωμένη μετάδοση, με αυτή τη σειρά:`,
+         `• Tai Chi / Qi Gong: Η Μεγάλη Φόρμα, από τον Πέτρο Κουρόπουλο.`,
+         `• Σουφισμός (Inayatiyya): Μύηση και ονοματοδοσία από τον Δημήτρη Μαγκριώτη, επίσημο δάσκαλο της παράδοσης στην Ελλάδα — συμμετοχή για χρόνια.`,
+         `• Dzogchen: Πρώτη μετάδοση από τον Chögyal Namkhai Norbu.`,
+         `• Karma Kagyu: Καταφύγιο στο Κέντρο Karma Kunkhyabling Αθηνών, με δεσμό στον 17ο Karmapa Ogyen Trinley Dorje.`,
+         `• Nyingma/Palyul: Καταφύγιο από τον Khenpo Ευστάθιο Η. Λιακόπουλο (Kunzang Trinley Dorje Tsal, †2023), ιδρυτή του Κέντρου Βουδιστικών Μελετών «ο Βασιλεύς Μένανδρος».`,
+         `• Μετάδοση από τον Keith Dowman, και τα δύο τελευταία χρόνια δύο μεταδόσεις από τον Yeshi Namkhai, που συνεχίζει τη γραμμή του πατέρα του.`
        ]}
      ],
      exercise:{title:'Αναστοχασμός: Η διαδρομή μου',steps:['Ποιο από τα 4 κέντρα σου έρχεται πιο φυσικά;','Πού δυσκολεύεσαι περισσότερο;','Τι έχει αλλάξει από τότε που ξεκίνησες;']},
