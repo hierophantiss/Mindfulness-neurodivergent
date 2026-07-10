@@ -147,51 +147,71 @@ export default function RabbitHole() {
     close: language === 'en' ? 'Close' : 'Κλείσιμο',
   };
 
+  
+  const formatDate = (dateStr: string | undefined, lang: string) => {
+    if (!dateStr) return null;
+    const [year, month] = dateStr.split('-');
+    if (lang === 'el') {
+      const elMonths: Record<string, string> = { '05': 'Μάιος', '06': 'Ιούνιος', '07': 'Ιούλιος' };
+      return `${elMonths[month]} ${year}`;
+    }
+    const enMonths: Record<string, string> = { '05': 'May', '06': 'June', '07': 'July' };
+    return `${enMonths[month]} ${year}`;
+  };
+
   const articles = [
     {
       id: neverForceArticle.id,
+      date: '2025-05',
       title: language === 'en' ? neverForceArticle.title.en : neverForceArticle.title.el,
       author: language === 'en' ? neverForceArticle.author.en : neverForceArticle.author.el,
       pages: language === 'en' ? neverForceArticle.pagesEn : neverForceArticle.pagesEl
     },
     {
       id: dzogchenArticle.id,
+      date: '2025-05',
       title: language === 'en' ? dzogchenArticle.title.en : dzogchenArticle.title.el,
       author: language === 'en' ? dzogchenArticle.author.en : dzogchenArticle.author.el,
       pages: language === 'en' ? dzogchenArticle.pagesEn : dzogchenArticle.pagesEl
     },
     {
       id: softGazeArticle.id,
+      date: '2025-06',
       title: language === 'en' ? softGazeArticle.title.en : softGazeArticle.title.el,
       author: language === 'en' ? softGazeArticle.author.en : softGazeArticle.author.el,
       pages: language === 'en' ? softGazeArticle.pagesEn : softGazeArticle.pagesEl
     },
     {
       id: polyvagalArticle.id,
+      date: '2025-06',
       title: language === 'en' ? polyvagalArticle.title.en : polyvagalArticle.title.el,
       author: language === 'en' ? polyvagalArticle.author.en : polyvagalArticle.author.el,
       pages: language === 'en' ? polyvagalArticle.pagesEn : polyvagalArticle.pagesEl
     },
     {
       id: platoCaveArticle.id,
+      date: '2025-06',
       title: language === 'en' ? platoCaveArticle.title.en : platoCaveArticle.title.el,
       author: language === 'en' ? platoCaveArticle.author.en : platoCaveArticle.author.el,
       pages: language === 'en' ? platoCaveArticle.pagesEn : platoCaveArticle.pagesEl
     },
     {
       id: youAreThePathArticle.id,
+      date: '2025-07',
       title: language === 'en' ? youAreThePathArticle.title.en : youAreThePathArticle.title.el,
       author: language === 'en' ? youAreThePathArticle.author.en : youAreThePathArticle.author.el,
       pages: language === 'en' ? youAreThePathArticle.pagesEn : youAreThePathArticle.pagesEl
     },
     {
       id: waveAndSeaArticle.id,
+      date: '2025-07',
       title: language === 'en' ? waveAndSeaArticle.title.en : waveAndSeaArticle.title.el,
       author: language === 'en' ? waveAndSeaArticle.author.en : waveAndSeaArticle.author.el,
       pages: language === 'en' ? waveAndSeaArticle.pagesEn : waveAndSeaArticle.pagesEl
     },
     {
       id: 'koshas-veils',
+      date: '2025-05',
       title: language === 'en' ? 'The Veils of Being' : 'Τα Πέπλα της Ύπαρξης',
       author: language === 'en' ? 'Yoga & 4-fold Axis' : 'Φιλοσοφία του 4πλού Άξονα',
       pages: language === 'en' ? rabbitholeContent['koshas-veils'].en : rabbitholeContent['koshas-veils'].el
@@ -203,49 +223,36 @@ export default function RabbitHole() {
       pages: language === 'en' ? rabbitholeContent['dzogchen-nature-of-mind'].en : rabbitholeContent['dzogchen-nature-of-mind'].el
     },
     {
-      id: 'buddha-autism',
-      title: language === 'en' ? 'Was Buddha on the Spectrum?' : 'Ήταν ο Βούδας στο φάσμα;',
-      author: 'Louise Woodford',
-      pages: language === 'en' ? rabbitholeContent['buddha-autism'].en : rabbitholeContent['buddha-autism'].el
-    },
-    {
       id: 'what-is-sandbox',
+      date: '2025-05',
       title: language === 'en' ? 'What does Sandbox mean?' : 'Τι σημαίνει Sandbox;',
       author: language === 'en' ? 'Core Concept' : 'Βασική Έννοια',
       pages: language === 'en' ? rabbitholeContent['what-is-sandbox'].en : rabbitholeContent['what-is-sandbox'].el
     },
     {
       id: 'riding-the-wind',
+      date: '2025-05',
       title: language === 'en' ? 'Learning to Ride the Wind' : 'Μαθαίνοντας να ιππεύεις τον άνεμο',
       author: language === 'en' ? 'Tsa Lung & Practice' : 'Tsa Lung & Παράδοση',
       pages: language === 'en' ? rabbitholeContent['riding-the-wind'].en : rabbitholeContent['riding-the-wind'].el
     },
     {
       id: 'the-goose-is-out',
+      date: '2025-05',
       title: language === 'en' ? 'The Goose is Out' : 'Η Χήνα Είναι Έξω',
       author: language === 'en' ? 'Mindfulness & Neurodiversity' : 'Ενσυνειδητότητα & Νευροδιαφορετικότητα',
       pages: language === 'en' ? rabbitholeContent['the-goose-is-out'].en : rabbitholeContent['the-goose-is-out'].el
     },
     {
-      id: 'blue-sky-mind',
-      title: language === 'en' ? 'Space - Sky' : 'Χώρος - Ουρανός',
-      author: 'Chögyam Trungpa Rinpoche',
-      pages: language === 'en' ? rabbitholeContent['blue-sky-mind'].en : rabbitholeContent['blue-sky-mind'].el
-    },
-    {
-      id: 'myth-of-freedom-earth',
-      title: language === 'en' ? 'The Touch of the Earth' : 'Το Άγγιγμα της Γης',
-      author: 'Chögyam Trungpa Rinpoche',
-      pages: language === 'en' ? rabbitholeContent['myth-of-freedom-earth'].en : rabbitholeContent['myth-of-freedom-earth'].el
-    },
-    {
       id: 'quantum-void-awareness',
+      date: '2025-06',
       title: language === 'en' ? "The Seething Void: What Physics Calls Empty" : "Το Κοχλάζον Κενό: Αυτό που η Φυσική Αποκαλεί Άδειο",
       author: language === 'en' ? "Quantum Physics & the 4th Axis" : "Κβαντική Φυσική & ο 4ος Άξονας",
       pages: language === 'en' ? rabbitholeContent['quantum-void-awareness'].en : rabbitholeContent['quantum-void-awareness'].el
     },
     {
       id: 'forces-of-the-cosmos',
+      date: '2025-06',
       title: language === 'en' ? 'The Forces of the Cosmos, the Axes of the Mind' : 'Οι Δυνάμεις του Κόσμου, οι Άξονες του Νου',
       author: 'Theodoros Bairaktaris',
       pages: language === 'en' ? rabbitholeContent['forces-of-the-cosmos'].en : rabbitholeContent['forces-of-the-cosmos'].el
@@ -312,6 +319,11 @@ export default function RabbitHole() {
           </button>
           <div className="flex-1 px-4 text-center">
             <h2 className="text-[14px] font-medium font-serif italic text-white/90 truncate">{article.title}</h2>
+            {article.date && (
+              <p className="text-[9px] text-white/30 uppercase tracking-widest mt-0.5">
+                {formatDate(article.date, language)}
+              </p>
+            )}
           </div>
           <div className="w-10 text-xs text-teal-400/80 font-mono text-right font-medium tracking-wide">
             {currentPage + 1}<span className="text-white/20">/{article.pages.length}</span>
@@ -523,7 +535,14 @@ export default function RabbitHole() {
                   </div>
                   <div className="flex-1 pr-12">
                     <h2 className="text-[18px] md:text-[20px] font-serif italic font-medium text-white/90 leading-snug tracking-tight group-hover:text-white transition-colors">{article.title}</h2>
-                    <p className={`text-[9px] md:text-[10px] uppercase tracking-[0.2em] font-bold mt-1.5 ${isNew ? 'text-teal-400/60' : 'text-white/30'}`}>{article.author}</p>
+                    <p className={`text-[9px] md:text-[10px] uppercase tracking-[0.2em] font-bold mt-1.5 ${isNew ? 'text-teal-400/60' : 'text-white/30'}`}>
+                      {article.author}
+                      {article.date && (
+                        <span className="opacity-60 ml-2 before:content-['•'] before:mr-2">
+                          {formatDate(article.date, language)}
+                        </span>
+                      )}
+                    </p>
                   </div>
                 </div>
                 <p className="text-white/40 text-[13px] md:text-[14px] leading-relaxed line-clamp-3 relative z-10 font-sans">

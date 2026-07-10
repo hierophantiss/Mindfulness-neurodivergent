@@ -27,6 +27,7 @@ export const rabbitholeContent: Record<string, { en: string[], el: string[] }> =
   },
   'dzogchen-nature-of-mind': {
     en: [
+        "**Text by Vangelis Vadarma Petropoulos — republished with the author's permission.**",
         "According to Tibetan Buddhism and the Dzogchen tradition, the mind has two aspects. The first is the ordinary, dualistic, and discriminating mind, called 'Sem'.",
         "'Sem' operates in time (past and future), clinging, comparing, and continuously creating inner scenarios. Neurophysiologically, this closely relates to the brain's Default Mode Network (DMN), often accompanied by high Beta waves: a state of chronic tension and subtle alarm.",
         "The other aspect is the Nature of Mind (Rigpa). This is our indestructible, unchanging essence. It is the state of pure, open awareness—observation without an observer.",
@@ -40,6 +41,7 @@ export const rabbitholeContent: Record<string, { en: string[], el: string[] }> =
         "The self is the very source of compassion. We do not need to acquire it from the outside; we only need to let the tension settle and allow our true nature to shine."
       ],
     el: [
+        "**Κείμενο του Βαγγέλη Vadarma Πετρόπουλου — αναδημοσίευση με άδεια του συγγραφέα.**",
         "Σύμφωνα με τον Θιβετιανό Βουδισμό και την παράδοση του Τζοκτσέν (Dzogchen), ο νους έχει δύο όψεις. Η πρώτη είναι ο συνηθισμένος, δυαδικός και διακριτικός νους, τον οποίο αποκαλούν «Σεμ» (Sem).",
         "Ο «Σεμ» λειτουργεί μέσα στο χρόνο, συγκρίνει, κρίνει και προσκολλάται συνεχώς σε νοητικά σενάρια. Νευροφυσιολογικά, λειτουργεί μέσα από το Δίκτυο Προεπιλεγμένης Λειτουργίας (DMN) του εγκεφάλου, εκπέμποντας συχνά υψηλά κύματα Βήτα: μια κατάσταση μόνιμου συναγερμού και χρόνιας έντασης.",
         "Η άλλη όψη είναι η Φύση του Νου (Ρίγκπα). Είναι η άφθαρτη, αμετάβλητη ουσία μας. Η κατάσταση της καθαρής, ολικής ανοιχτής επίγνωσης, όπου υπάρχει παρατήρηση-αντίληψη χωρίς παρατηρητή.",
@@ -53,41 +55,7 @@ export const rabbitholeContent: Record<string, { en: string[], el: string[] }> =
         "Η Φύση του Νου είναι η ίδια η πηγή της συμπόνιας. Δεν χρειάζεται να την αποκτήσουμε, αρκεί μόνο να αφήσουμε την ένταση να καταλαγιάσει ώστε να επιτρέψουμε στη φύση μας να λάμψει."
       ]
   },
-  'buddha-autism': {
-    en: [
-        "Do you find it shocking to imply that the Buddha might have been autistic? Autism is nothing more than a different cognitive and behavioral functioning, often misunderstood because it doesn't meet majority expectations.",
-        "An autistic person is not disordered or lacking in spiritual evolution. I've often wondered: if Buddha Shakyamuni lived today in the West, what 'diagnosis' would he receive?",
-        "He wasn't a follower of crowds; he often moved against social expectations. He avoided intimacy, found peace in solitude, felt a connection with animals, reflected deeply, and held high moral values.",
-        "He was a solitary child, preferring to sit by a tree rather than play with peers. As an adult, he wandered from community to community, unattached socially, absolutely dedicated to awakening.",
-        "He experienced the world with unusually deep internal sensitivity. Does this sound familiar?",
-        "Friendships and connections are created through emotional bridges. Having emotions that are 'all or nothing' makes creating these emotional bridges difficult. If you were to design a condition that deprives you of this connection, it would be autism.",
-        "A large part of our suffering as autistic individuals is caused by the comparing mind and attachment. The Dharma teaches us that the comparing mind is one of the ego's tools to construct identity.",
-        "Through meditation, I learn to observe my thoughts, so when these comparison thoughts arise, I can simply watch them come and go without fighting them.",
-        "Body mindfulness was another great help. Now I recognize that emotions manifest physically in my body, and I can observe those sensations without running away from them.",
-        "Why would I want to be 'ordinary'? If I take four pieces of wood and place a flat board on top, that structure is called a 'table' — a construct of the mind. Just like the table, the 'autistic person' is a concept.",
-        "Environmental activist Greta Thunberg said autism is a superpower. If there is a type of person who can give the spiritual path the unwavering focus it demands, that might just be an autistic person!",
-        "I have decided to show up in life as I imagine the Buddha would: with vulnerable honesty, openly, without masks. If some people find me strange or boring, that is fine.",
-        "For now, I will accept the label 'autistic' — just as I accept the word 'table'. But autism is not what I am in my essence. And, with all due respect, I do not believe it is a disorder.",
-        "If you look for me, you will find me mentally in the forest, with the trees and the animals, reflecting deeply. Because, ultimately, there is nothing — absolutely nothing — that I am missing."
-      ],
-    el: [
-        "Πιστεύετε ότι ο Βούδας ήταν τέλειος, χωρίς καμία «διαταραχή», και σας φαίνεται παράλογο ή σοκαριστικό να υπονοηθεί ότι μπορεί να ήταν αυτιστικός; Αν ναι, τότε ίσως η αντίληψή σας για το τι σημαίνει «αυτισμός» να είναι ελαφρώς παραπλανητική.",
-        "Ο αυτισμός δεν είναι τίποτα περισσότερο από μια διαφορετική γνωστική και συμπεριφορική λειτουργία. Ένα άτομο στο αυτιστικό φάσμα δεν είναι διαταραγμένο ούτε μειονεκτεί σε ό,τι αφορά την πνευματική εξέλιξη.",
-        "Πολλές φορές έχω αναρωτηθεί: αν ο Βούδας Σακιαμούνι ζούσε σήμερα στη Δύση, ποια \"διάγνωση\" θα του αποδιδόταν; Δεν ήταν άνθρωπος που ακολουθούσε τα πλήθη – το αντίθετο μάλιστα: κινούταν κόντρα στις κοινωνικές προσδοκίες.",
-        "Απέφευγε την οικειότητα, έβρισκε γαλήνη στη μοναξιά, ένιωθε συνάφεια με τα ζώα, στοχαζόταν βαθιά, είχε υψηλές ηθικές αξίες. Ήταν μοναχικό παιδί, που προτιμούσε να κάθεται δίπλα σε ένα δέντρο παρά να παίζει με τους συνομηλίκους του.",
-        "Ως ενήλικας, περιπλανιόταν από κοινότητα σε κοινότητα, δεν δεσμευόταν κοινωνικά, ήταν απόλυτα αφοσιωμένος στην αφύπνιση. Βίωνε τον κόσμο με μια ασυνήθιστα βαθιά και ευαίσθητη εσωτερικότητα.\n\nΣας φαίνεται οικείο όλο αυτό;",
-        "Οι φιλίες και οι συνδέσεις δημιουργούνται μέσω συναισθηματικών γεφυρών. Το να έχουμε συναισθήματα που είναι «όλα ή τίποτα» δυσκολεύει τη δημιουργία αυτών των γεφυρών. Έτσι, αν σχεδιάζατε μια συνθήκη που σας στερεί την ευκολία σύνδεσης, αυτή θα ήταν ο αυτισμός.",
-        "Ένα μεγάλο μέρος των δεινών μας ως αυτιστικών ατόμων προκαλείται από τη σύγκριση του νου και την προσκόλληση. Το ντάρμα μας διδάσκει ότι η σύγκριση του νου είναι ένα από τα εργαλεία του εγώ για να κατασκευάσει ταυτότητα.",
-        "Μέσω του διαλογισμού, μαθαίνω να παρατηρώ τις σκέψεις μου, έτσι ώστε όταν προκύπτουν αυτές οι σκέψεις σύγκρισης, να μπορώ απλώς να τις παρακολουθώ να έρχονται και να φεύγουν.",
-        "Η ενσυνειδητότητα του σώματος ήταν μια άλλη μεγάλη βοήθεια. Τώρα αναγνωρίζω ότι τα συναισθήματα εκδηλώνονται φυσικά στο σώμα μου και μπορώ να σταματήσω να τρέχω μακριά από τις αισθήσεις που δεν μου αρέσουν.",
-        "Γιατί να θέλω να γίνω “συνηθισμένος”; Αν πάρω τέσσερα κομμάτια ξύλου και ένα επίπεδο ξύλο, τότε αυτή η δομή ονομάζεται «τραπέζι» — μια κατασκευή του νου. Όπως και το τραπέζι, έτσι και το «αυτιστικό άτομο» είναι μια έννοια.",
-        "Η περιβαλλοντική ακτιβίστρια Γκρέτα Τούνμπεργκ είπε πως ο αυτισμός είναι υπερδύναμη. Αν υπάρχει ένας τύπος ανθρώπου που μπορεί να δώσει στο πνευματικό μονοπάτι την ακλόνητη εστίαση που απαιτεί, τότε αυτός μπορεί να είναι ένα αυτιστικό άτομο!",
-        "Έχω αποφασίσει να εμφανίζομαι στη ζωή όπως φαντάζομαι ότι θα έκανε ο Βούδας: με ευάλωτη ειλικρίνεια, ανοιχτά, χωρίς μάσκες. Αν κάποιοι με βρίσκουν παράξενο ή βαρετό, δεν πειράζει.",
-        "Προς το παρόν, θα αποδεχτώ την ταμπέλα “αυτιστικός” — όπως αποδέχομαι τη λέξη “τραπέζι”. Όμως ο αυτισμός δεν είναι αυτό που είμαι στην ουσία μου. Και, με κάθε σεβασμό, δεν πιστεύω πως είναι διαταραχή.",
-        "Αν με αναζητήσετε, θα με βρείτε νοερά στο δάσος, μαζί με τα δέντρα και τα ζώα, να στοχάζομαι βαθιά. Γιατί, τελικά, δεν υπάρχει τίποτα — απολύτως τίποτα — που να μου λείπει."
-      ]
-  },
-  'what-is-sandbox': {
+'what-is-sandbox': {
     en: [
         "A sandbox is an isolated and safe programming environment (mindfulness/approved space).",
         "Here, you let a process, a thought or a representation of a part of yourself (IFS part) \"execute\" and you monitor what possible warnings or errors the system throws (body, emotions).",
@@ -175,35 +143,7 @@ export const rabbitholeContent: Record<string, { en: string[], el: string[] }> =
         "Μέσα από αυτή την ήπια διαδικασία, δεν παλεύουμε να σπάσουμε βίαια το γυαλί. Αντιθέτως, «χαλαρώνουμε το μπουκάλι». Δημιουργούμε τις κατάλληλες συνθήκες ασφάλειας ώστε ο νους να μπορέσει τελικά να ελευθερωθεί και η χήνα να αναπνεύσει, επιβεβαιώνοντας στον νευροδιαφορετικό άνθρωπο ότι η ουσία του ήταν πάντοτε, εξαρχής, ελεύθερη."
       ]
   },
-  'blue-sky-mind': {
-    en: [
-        "Practice means that everything you do, you act from Blue Sky Mind. You don't run off with your delusions when they arise. Seeing them as clouds, you begin to understand that which stays and that which goes. This Blue Sky Mind observes all of these passing conditions and sees them all clearly, but it isn't any one of those states itself.",
-        "Blue Sky Mind, this unstainable consciousness, Buddha nature. Through practice you develop the strength to not identify with the things that come up and begin to prefer the spaciousness of your unstainable consciousness. The more time you spend as Blue Sky, the less you will want to spend time as clouds.",
-        "To the extent that you spend time in this birthless mind, in the mind that hasn't taken the hard form of opinion, likes, and dislikes, to that extent you can have a flexible, expansive, and open mind.",
-        "You keep returning to Blue Sky Mind and as you spend more and more time there, eventually that becomes your place of residence. At this point it feels like a true turn-around has occurred, one with entirely different quality of being."
-      ],
-    el: [
-        "Η πρακτική σημαίνει ότι καθετί που κάνεις, το πράττεις μέσα από τον Νου του Γαλάζιου Ουρανού. Δεν παρασύρεσαι από τις αυταπάτες σου όταν αυτές αναδύονται. Βλέποντάς τες σαν σύννεφα, αρχίζεις να κατανοείς τι είναι αυτό που μένει και τι είναι αυτό που φεύγει. Αυτός ο Νους του Γαλάζιου Ουρανού παρατηρεί όλες αυτές τις περαστικές συνθήκες και τις βλέπει όλες ξεκάθαρα, αλλά δεν ταυτίζεται με καμία από αυτές τις καταστάσεις.",
-        "Ο Νους του Γαλάζιου Ουρανού, αυτή η αμόλυντη συνειδητότητα, η βουδική φύση. Μέσα από την πρακτική αναπτύσσεις τη δύναμη να μην ταυτίζεσαι με τα πράγματα που προκύπτουν και αρχίζεις να προτιμάς την ευρυχωρία της αμόλυντης συνειδητότητάς σου. Όσο περισσότερο χρόνο περνάς ως Γαλάζιος Ουρανός, τόσο λιγότερο θα θέλεις να περνάς χρόνο ως σύννεφα.",
-        "Στον βαθμό που περνάς χρόνο σε αυτόν τον αγέννητο νου, στον νου που δεν έχει πάρει τη σκληρή μορφή της άποψης, των προτιμήσεων και των δυσαρεσκειών, σε αυτόν τον βαθμό μπορείς να έχεις έναν ευέλικτο, επεκτατικό και ανοιχτό νου.",
-        "Συνεχώς επιστρέφεις στον Νου του Γαλάζιου Ουρανού, και καθώς περνάς όλο και περισσότερο χρόνο εκεί, τελικά αυτός γίνεται η μόνιμη κατοικία σου. Σε αυτό το σημείο, νιώθεις ότι έχει συμβεί μια αληθινή μεταστροφή, μια μεταστροφή με μια εντελώς διαφορετική ποιότητα ύπαρξης."
-      ]
-  },
-  'myth-of-freedom-earth': {
-    en: [
-        "As the Buddha's approach to the practice of meditation evolved, he realized that gimmicks are merely neurotic affectations.\n\nHe decided to look for what is simple, what is actually there, to discover the relationship between mind and body, his relationship with the kusha grass mat on which he sat and the bodhi tree above his head.",
-        "He looked into his relationships with everything very simply and directly. It was not especially exciting—there were no flashes of anything—but it was reassuring.",
-        "At the dawn of his enlightenment someone asked the Buddha, 'What are your credentials? How do we know that you are enlightened?'\n\nHe touched his hand to the ground. 'This solid earth is my witness. This solid earth, this same earth, is my witness.'",
-        "Sane and solid and definite, no imaginings, no concepts, no emotions, no frivolity, but being basically what is: this is the awakened state. And this is the example we follow in our meditation practice.\n\n📖 The Myth of Freedom"
-      ],
-    el: [
-        "Καθώς η προσέγγιση του Βούδα στην πρακτική του διαλογισμού εξελισσόταν, συνειδητοποίησε ότι τα τεχνάσματα και τα 'κόλπα' είναι απλώς νευρωτικές επιτηδεύσεις.\n\nΑποφάσισε να αναζητήσει αυτό που είναι απλό, αυτό που υπάρχει πραγματικά εκεί, για να ανακαλύψει τη σχέση ανάμεσα στον νου και το σώμα, τη σχέση του με το ψάθινο στρώμα από χορτάρι κούσα πάνω στο οποίο καθόταν και το δέντρο Μπόντι πάνω από το κεφάλι του.",
-        "Κοίταξε τις σχέσεις του με τα πάντα πολύ απλά και άμεσα. Δεν ήταν τίποτα ιδιαίτερα συναρπαστικό —δεν υπήρχαν λάμψεις ή εντυπωσιακά βιώματα— αλλά ήταν καθησυχαστικό.",
-        "Την αυγή της φώτισής του, κάποιος ρώτησε τον Βούδα: «Ποια είναι τα διαπιστευτήριά σου; Πώς ξέρουμε ότι έχεις αφυπνιστεί;»\n\nΕκείνος άγγιξε το χέρι του στο έδαφος. «Αυτή η στέρεη γη είναι ο μάρτυράς μου. Αυτή η στέρεη γη, αυτή η ίδια γη, είναι ο μάρτυράς μου».",
-        "Λογικό, στέρεο και συγκεκριμένο, χωρίς φαντασιώσεις, χωρίς έννοιες, χωρίς συναισθηματισμούς, χωρίς περιττές ελαφρότητες, αλλά το να είσαι ουσιαστικά αυτό που υπάρχει: αυτή είναι η αφυπνισμένη κατάσταση. Και αυτό είναι το παράδειγμα που ακολουθούμε στη διαλογιστική μας πρακτική.\n\n📖 Ο Μύθος της Ελευθερίας"
-      ]
-  },
-  'quantum-void-awareness': {
+'quantum-void-awareness': {
     en: [
         "**A Question That Changes Everything**\n\nPhysicist Manos Danezis asks a question that sounds simple but unravels everything we think we know:\n\n*\"Matter and energy — are they truly the primary reality of the universe?\"*\n\nHis answer, grounded in modern physics: No.\n\nMatter and energy are produced by something prior to them. Something imperceptible to the senses. Something the equations describe but no instrument can directly touch.\n\nThat something is called: **the Quantum Void**.",
         "**The Seething Void**\n\nWhen we say \"void,\" we instinctively imagine: nothing. Absence. Emptiness.\n\nModern physics says the opposite.\n\nAs physicist S. Theodhorakis writes: *\"The void in modern physics is a void that seethes — full of field fluctuations, a soup of virtual particles that are born and die continuously.\"*\n\nThe Quantum Void is not empty. It is the most dynamic thing in existence. It is the womb from which matter emerges, not its absence.\n\nDanezis puts it precisely: *\"Matter is simply fluctuations of the Void — changes in the curvature of the points of a space.\"*\n\nA particle is not a \"thing.\" It is a wave. A vibration of the Void itself.",

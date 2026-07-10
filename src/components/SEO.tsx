@@ -27,12 +27,6 @@ const ARTICLES: Record<string, { titleEn: string; titleEl: string; descEn: strin
     descEn: 'The Matryoshka allegory: a journey through the five Koshas from body to pure consciousness. A neurodivergent-friendly yoga philosophy guide.',
     descEl: 'Η αλληγορία της Μπάμπουσκα: διαδρομή μέσα από τα πέντε Koshas από το σώμα στην καθαρή συνείδηση.',
   },
-  'buddha-autism': {
-    titleEn: 'Was Buddha on the Spectrum? | Neurodivergent Mindfulness',
-    titleEl: 'Ήταν ο Βούδας στο φάσμα; | Neurodivergent Mindfulness',
-    descEn: 'An exploration of autism, spirituality, and identity. Could the Buddha\'s traits reflect an autistic cognitive profile? A contemplative and compassionate inquiry.',
-    descEl: 'Εξερεύνηση αυτισμού, πνευματικότητας και ταυτότητας. Μπορούν τα χαρακτηριστικά του Βούδα να αντικατοπτρίζουν αυτιστικό προφίλ;',
-  },
   'mahamudra-one-taste': {
     titleEn: 'Mahamudra: The One Taste | Neurodivergent Mindfulness',
     titleEl: 'Μαχαμουντρα: Η Μία Γεύση | Neurodivergent Mindfulness',

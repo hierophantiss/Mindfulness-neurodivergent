@@ -37,26 +37,31 @@ const BASE_URL   = 'https://neurodivergent-mindfulness.org';
 // ─────────────────────────────────────────────────────────────
 // Article metadata
 // ─────────────────────────────────────────────────────────────
+
+const ARTICLE_DATES: Record<string, string> = {
+  'what-is-sandbox': '2025-05',
+  'koshas-veils': '2025-05',
+  'riding-the-wind': '2025-05',
+  'the-goose-is-out': '2025-05',
+  'forces-of-the-cosmos': '2025-06',
+  'quantum-void-awareness': '2025-06',
+  'soft-gaze-open-hearing': '2025-06',
+  'polyvagal-middle-way': '2025-06',
+  'plato-cave-neurodivergent': '2025-06',
+  'you-are-the-path': '2025-07',
+  'wave-and-sea': '2025-07',
+  'dzogchen-great-perfection': '2025-05',
+  'never-force': '2025-05'
+};
+
 const ARTICLES: Record<string, { en: [string, string]; el: [string, string] }> = {
-  'blue-sky-mind': {
-    en: ['Blue Sky Mind – Watching Thoughts as Clouds | Neurodivergent Mindfulness App',
-         'A Zen teaching on Blue Sky Mind: letting thoughts pass like clouds instead of running off with them. Open-awareness practice for racing ADHD minds.'],
-    el: ['Ο Νους ως Γαλάζιος Ουρανός – Οι Σκέψεις ως Σύννεφα | Neurodivergent Mindfulness App',
-         'Διδασκαλία Ζεν για τον Νου-Ουρανό: αφήνουμε τις σκέψεις να περνούν σαν σύννεφα. Ανοιχτή επίγνωση για νου με ΔΕΠΥ που τρέχει.']
-  },
-  'forces-of-the-cosmos': {
+'forces-of-the-cosmos': {
     en: ['The Four Forces of the Cosmos & the Fourfold Axis | Neurodivergent Mindfulness App',
          'Gravity, electromagnetism, weak and strong force mapped to Body, Breath, Attention and Space. Where physics meets contemplative practice for neurodivergent minds.'],
     el: ['Οι Τέσσερις Δυνάμεις του Σύμπαντος & ο Τετραπλός Άξονας | Neurodivergent Mindfulness App',
          'Βαρύτητα, ηλεκτρομαγνητισμός, ασθενής και ισχυρή δύναμη σε αντιστοιχία με Σώμα, Αναπνοή, Προσοχή και Χώρο. Η φυσική συναντά τη διαλογιστική πρακτική.']
   },
-  'myth-of-freedom-earth': {
-    en: ['The Myth of Freedom – Touching the Earth | Neurodivergent Mindfulness App',
-         'Meditation without gimmicks: returning to what is simple and immediate. A grounding-centered reading of the Buddha\'s approach for neurodivergent practitioners.'],
-    el: ['Ο Μύθος της Ελευθερίας – Άγγιγμα της Γης | Neurodivergent Mindfulness App',
-         'Διαλογισμός χωρίς τεχνάσματα: επιστροφή στο απλό και άμεσο. Μια ανάγνωση με κέντρο τη γείωση για νευροδιαφορετικούς ασκούμενους.']
-  },
-  'the-goose-is-out': {
+'the-goose-is-out': {
     en: ['The Goose is Out | Neurodivergent Mindfulness App',
          'A Zen allegory about masking, identity and liberation for neurodivergent minds. How the ADHD and autistic nervous system can move from narrow focus to open awareness.'],
     el: ['Η Χήνα Είναι Έξω | Neurodivergent Mindfulness App',
@@ -74,13 +79,7 @@ const ARTICLES: Record<string, { en: [string, string]; el: [string, string] }> =
     el: ['Τα Πέπλα της Ύπαρξης – Koshas | Neurodivergent Mindfulness App',
          'Η αλληγορία της Μπάμπουσκα: διαδρομή μέσα από τα πέντε Koshas από το σώμα στην καθαρή συνείδηση.'],
   },
-  'buddha-autism': {
-    en: ['Was Buddha on the Spectrum? | Neurodivergent Mindfulness App',
-         'Could the Buddha\'s traits reflect an autistic cognitive profile? A contemplative inquiry into autism, spirituality, and identity.'],
-    el: ['Ήταν ο Βούδας στο φάσμα; | Neurodivergent Mindfulness App',
-         'Μπορούν τα χαρακτηριστικά του Βούδα να αντικατοπτρίζουν αυτιστικό προφίλ; Εξερεύνηση αυτισμού και πνευματικότητας.'],
-  },
-  'mahamudra-one-taste': {
+'mahamudra-one-taste': {
     en: ['Mahamudra: The One Taste | Neurodivergent Mindfulness App',
          'How the Vajrayana concept of One Taste helps neurodivergent individuals with sensory integration and transforms sensory overwhelm into open awareness.'],
     el: ['Μαχαμουντρα: Η Μία Γεύση | Neurodivergent Mindfulness App',
@@ -339,6 +338,7 @@ function getMetaForRoute(route: string): RouteMeta {
           inLanguage: lang,
           articleBody: bodyParagraphs.slice(0, 2).join(' '),
           author: { '@type': 'Organization', name: 'Neurodivergent Mindfulness App' },
+          ...(ARTICLE_DATES[slug] ? { datePublished: `${ARTICLE_DATES[slug]}-01T00:00:00Z` } : {}),
           about: [
             { '@type': 'Thing', name: 'Mindfulness' },
             { '@type': 'Thing', name: 'Neurodiversity' },

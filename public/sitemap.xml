@@ -923,22 +923,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/en/rabbithole/buddha-autism</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/buddha-autism" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/buddha-autism" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/buddha-autism" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/rabbithole/buddha-autism</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/buddha-autism" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/buddha-autism" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/buddha-autism" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://neurodivergent-mindfulness.org/en/rabbithole/what-is-sandbox</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/what-is-sandbox" />
     <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/what-is-sandbox" />
@@ -983,38 +967,6 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/the-goose-is-out" />
     <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/the-goose-is-out" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/the-goose-is-out" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/rabbithole/blue-sky-mind</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/blue-sky-mind" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/blue-sky-mind" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/blue-sky-mind" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/rabbithole/blue-sky-mind</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/blue-sky-mind" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/blue-sky-mind" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/blue-sky-mind" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/en/rabbithole/myth-of-freedom-earth</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/myth-of-freedom-earth" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/myth-of-freedom-earth" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/myth-of-freedom-earth" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/rabbithole/myth-of-freedom-earth</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/rabbithole/myth-of-freedom-earth" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/rabbithole/myth-of-freedom-earth" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/rabbithole/myth-of-freedom-earth" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
