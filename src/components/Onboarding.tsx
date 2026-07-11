@@ -14,6 +14,9 @@ export default function Onboarding() {
   const { t, language, setLanguage } = useLanguage();
   const { reduceMotion } = useAccessibility();
   
+  // For touch swipe
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+
   const focusRef = useRef<HTMLDivElement>(null);
   const previousActiveElement = useRef<HTMLElement | null>(null);
 
@@ -82,9 +85,7 @@ export default function Onboarding() {
     }
   ];
 
-  // For touch swipe
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-
+  
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchStart(e.targetTouches[0].clientX);
   };
