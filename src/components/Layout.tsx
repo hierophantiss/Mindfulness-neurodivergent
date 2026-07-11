@@ -6,6 +6,7 @@ import NavigationMenu from './NavigationMenu';
 import DesktopNavigation from './DesktopNavigation';
 import DesktopRightRail from './DesktopRightRail';
 import CompanionSheet from './CompanionSheet';
+import Onboarding from './Onboarding';
 import OfflineNotification from './OfflineNotification';
 import { useLanguage } from '../hooks/useLanguage';
 import { motion, AnimatePresence } from 'motion/react';
@@ -33,9 +34,7 @@ export default function Layout() {
     }
   }, [location.pathname]);
 
-  if (!hasCompletedOnboarding && !isPublic && path !== '/onboarding') {
-    return <Navigate to="/onboarding" replace />;
-  }
+  
 
   const isIntroPage = ['/landing_info', '/intro'].includes(location.pathname);
   const hideGlobalNavigation = location.pathname !== '/landing_info';
@@ -57,19 +56,6 @@ export default function Layout() {
         <main id="main-content" ref={mainRef} className={cn(
           "flex-1 relative z-10 w-full flex flex-col overflow-x-hidden scroll-smooth overflow-y-auto px-4 md:px-8 lg:px-12 pt-[env(safe-area-inset-top)] pb-[calc(100px+env(safe-area-inset-bottom))] lg:pb-12"
         )}>
-          {showOnboardingLink && (
-            <div className="w-full max-w-2xl mx-auto pt-4 flex justify-between items-center bg-teal-500/10 border border-teal-500/20 rounded-xl px-4 py-3 mt-4 text-sm text-teal-100">
-              <Link to="/onboarding" className="hover:text-teal-300 transition-colors font-medium">
-                {language === 'el' ? 'Νέος εδώ; Ξεκίνησε από την εισαγωγή' : 'New here? Start with the intro'}
-              </Link>
-              <button 
-                onClick={() => setOnboardingLinkDismissed(true)}
-                className="text-teal-400/60 hover:text-teal-400 transition-colors ml-4 text-xs font-medium uppercase tracking-wider"
-              >
-                ✕
-              </button>
-            </div>
-          )}
           <div className="w-full max-w-2xl mx-auto h-full flex flex-col pt-4">
             <AnimatePresence mode="wait">
               <motion.div
@@ -102,6 +88,7 @@ export default function Layout() {
       </div>
 
       <CompanionSheet />
+      <Onboarding />
     </div>
   );
 }

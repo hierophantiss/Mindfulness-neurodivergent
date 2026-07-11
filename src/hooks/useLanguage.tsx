@@ -32,16 +32,19 @@ const translations: Record<string, Record<Language, string>> = {
   'nav.intro': { el: 'Εισαγωγή', en: 'Intro' },
 
   // Onboarding
-  'onboarding.s1.title': { el: 'Καλώς ήρθες.', en: 'Welcome.' },
-  'onboarding.s1.text': { el: 'Αυτή δεν είναι μια τυπική εφαρμογή mindfulness. Δεν υπάρχει σωστό και λάθος.', en: 'This is not a typical mindfulness app. There is no right or wrong here.' },
-  'onboarding.s2.title': { el: 'Ο νούς σου δεν είναι χαλασμένος.', en: 'Your mind is not broken.' },
-  'onboarding.s2.text': { el: 'Απλώς λειτουργεί διαφορετικά. Θα μάθουμε να τον παρατηρούμε με περιέργεια, χωρίς κριτική.', en: 'It simply functions differently. We will learn to observe it with curiosity, without judgment.' },
-  'onboarding.s3.title': { el: 'Μικρές στιγμές.', en: 'Micro-moments.' },
-  'onboarding.s3.text': { el: 'Η παρουσία δεν χρειάζεται ώρες. Ξεκινά με νίκες λίγων δευτερολέπτων.', en: 'Presence doesn\'t need hours. It starts with victories of just a few seconds.' },
-  'onboarding.skip': { el: 'Παράλειψη', en: 'Skip' },
-  'onboarding.next': { el: 'Συνέχεια', en: 'Next' },
-  'onboarding.start': { el: 'Ας ξεκινήσουμε', en: 'Let\'s begin' },
 
+  'onboarding.s1.title': { el: 'Το μυαλό σου δεν είναι χαλασμένο', en: 'Your mind isn\'t broken' },
+  'onboarding.s1.body': { el: 'Απλά λειτουργεί αλλιώς. Αυτή η εφαρμογή σε βοηθά να μάθεις να ρυθμίζεις το νευρικό σου σύστημα: να ηρεμείς όταν είσαι σε υπερδιέγερση, να ενεργοποιείσαι όταν έχεις «παγώσει». Με σύντομες πρακτικές σχεδιασμένες για νευροδιαφορετικά μυαλά — ADHD, αυτισμό, δυσπραξία.', en: 'It just works differently. This app helps you learn to regulate your nervous system: to calm down when you\'re overstimulated, to re-energize when you\'ve shut down. With short practices designed for neurodivergent minds — ADHD, autism, dyspraxia.' },
+  
+  'onboarding.s2.title': { el: 'Τέσσερις δρόμοι, όχι ένας «σωστός»', en: 'Four paths, no single "right way"' },
+  'onboarding.s2.body': { el: 'Δεν υπάρχει ένας σωστός τρόπος διαλογισμού. Υπάρχουν τέσσερις δρόμοι — Σώμα, Αναπνοή, Προσοχή, Χώρος — και η εφαρμογή σε βοηθά να βρεις ποιος ταιριάζει στην κατάστασή σου τώρα. Πες της πώς νιώθεις, και θα σου προτείνει μια άσκηση 2–5 λεπτών. Όχι 20λεπτες συνεδρίες, όχι ενοχές αν χάσεις μέρες.', en: 'There\'s no one correct way to meditate. There are four paths — Body, Breath, Attention, Space — and the app helps you find the one that fits your state right now. Tell it how you feel, and it suggests a 2–5 minute practice. No 20-minute sessions, no guilt if you miss days.' },
+
+  'onboarding.s3.title': { el: 'Όλα μένουν στη συσκευή σου', en: 'Everything stays on your device' },
+  'onboarding.s3.body': { el: 'Χωρίς λογαριασμό, χωρίς tracking, χωρίς διαφημίσεις, χωρίς AI. Εντελώς δωρεάν. Τα δεδομένα σου είναι δικά σου — μπορείς να τα εξάγεις ή να τα σβήσεις όποτε θέλεις.', en: 'No account, no tracking, no ads, no AI. Completely free. Your data is yours — export it or delete it whenever you want.' },
+
+  'onboarding.next': { el: 'Επόμενο', en: 'Next' },
+  'onboarding.skip': { el: 'Παράλειψη', en: 'Skip' },
+  'onboarding.start': { el: 'Ας ξεκινήσουμε', en: 'Let\'s begin' },
   'home.methodBtn': { el: 'Η Μέθοδος & τα Σύμβολα', en: 'The Method & Symbols' },
   'home.methodBtnSub': { el: 'Ο Ελέφαντας & η Μαϊμού', en: 'The Elephant & The Monkey' },
   'home.rabbitHole': { el: 'Κουνελότρυπα', en: 'Rabbit Hole' },
