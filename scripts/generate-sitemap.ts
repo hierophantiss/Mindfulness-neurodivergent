@@ -14,7 +14,6 @@ const BASE_URL = 'https://neurodivergent-mindfulness.org';
 
 const mainRoutes = [
   '/',
-  '/onboarding',
   '/dashboard',
   '/method',
   '/methodology',
@@ -120,7 +119,7 @@ async function generate() {
   const urls = allSitemapUrls
     .filter(p => {
       const pureRoute = p.replace(/^\/(en|el)/, '') || '/';
-      return !['/dashboard', '/journal', '/settings', '/onboarding'].includes(pureRoute);
+      return !['/dashboard', '/journal', '/settings'].includes(pureRoute);
     })
     .map(p => {
     const lang = p.startsWith('/en') ? 'en' : 'el';

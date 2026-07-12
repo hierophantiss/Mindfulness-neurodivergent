@@ -19,14 +19,9 @@ export default function Layout() {
   const mainRef = React.useRef<HTMLElement>(null);
 
   const isPrerendering = typeof window !== 'undefined' && ((window as any).__PRERENDER_INJECTED || navigator.userAgent.includes('jsdom') || navigator.userAgent.includes('HeadlessChrome'));
-  const hasCompletedOnboarding = localStorage.getItem('hasCompletedOnboarding') === 'true' || isPrerendering;
 
-  const PUBLIC_PREFIXES = ['/method', '/methodology', '/rabbithole', '/chapters', '/faq', '/practice', '/program', '/sanctuary'];
   const path = location.pathname.replace(/^\/(el|en)(?=\/|$)/, '') || '/';
-  const isPublic = PUBLIC_PREFIXES.some(p => path === p || path.startsWith(p + '/'));
 
-  const [onboardingLinkDismissed, setOnboardingLinkDismissed] = useState(false);
-  const showOnboardingLink = !hasCompletedOnboarding && isPublic && path !== '/onboarding' && !onboardingLinkDismissed;
 
   useEffect(() => {
     if (mainRef.current) {

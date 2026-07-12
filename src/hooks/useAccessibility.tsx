@@ -10,7 +10,8 @@ const AccessibilityContext = createContext<AccessibilityContextType | undefined>
 export function AccessibilityProvider({ children }: { children: React.ReactNode }) {
   const [reduceMotion, setReduceMotion] = useState(() => {
     const saved = localStorage.getItem('n_mindfulness_reduce_motion');
-    return saved === 'true';
+    if (saved !== null) return saved === 'true';
+    return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   });
 
   const toggleReduceMotion = () => {

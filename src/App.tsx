@@ -31,7 +31,6 @@ const GenericExercise = React.lazy(() => import('./pages/GenericExercise'));
 const Method = React.lazy(() => import('./pages/Method'));
 const Methodology = React.lazy(() => import('./pages/Methodology'));
 const RabbitHole = React.lazy(() => import('./pages/RabbitHole'));
-const Onboarding = React.lazy(() => import('./pages/Onboarding'));
 const Sanctuary = React.lazy(() => import('./pages/Sanctuary'));
 const Settings = React.lazy(() => import('./pages/Settings'));
 const PrintWorkbook = React.lazy(() => import('./pages/PrintWorkbook'));
@@ -54,7 +53,6 @@ function AppContent() {
         <InteractiveBackground />
         <Suspense fallback={<FallbackLoader />}>
         <Routes>
-        <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/workbook/print" element={<PrintWorkbook />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<Dashboard />} />

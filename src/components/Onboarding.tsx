@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAccessibility } from '../hooks/useAccessibility';
@@ -103,7 +104,7 @@ export default function Onboarding() {
     setTouchStart(null);
   };
 
-  return (
+  const content = (
     <div 
       className="fixed inset-0 z-[9999] bg-[#0a0f18] text-white flex flex-col justify-between overflow-hidden"
       role="dialog"
@@ -143,7 +144,7 @@ export default function Onboarding() {
             initial={reduceMotion ? { opacity: 1 } : { opacity: 0, x: 20 }}
             animate={reduceMotion ? { opacity: 1 } : { opacity: 1, x: 0 }}
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, x: -20 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: reduceMotion ? 0 : 0.3 }}
             className="bg-white/[0.03] border border-white/10 p-8 rounded-3xl backdrop-blur-xl shadow-2xl"
           >
             {screens[step].visual && screens[step].visual}
@@ -189,4 +190,6 @@ export default function Onboarding() {
       </div>
     </div>
   );
+
+  return typeof document !== 'undefined' ? createPortal(content, document.body) : null;
 }

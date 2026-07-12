@@ -624,8 +624,7 @@ function getMetaForRoute(route: string): RouteMeta {
   
   const isPrivatePath = clean.startsWith('/dashboard') || 
                         clean.startsWith('/journal') || 
-                        clean.startsWith('/settings') || 
-                        clean.startsWith('/onboarding');
+                        clean.startsWith('/settings');
                         
   if (isPrivatePath) {
     defaults.noindex = true;
