@@ -27,7 +27,6 @@ export const rabbitholeContent: Record<string, { en: string[], el: string[] }> =
   },
   'dzogchen-nature-of-mind': {
     en: [
-        "**Text by Vangelis Vadarma Petropoulos — republished with the author's permission.**",
         "According to Tibetan Buddhism and the Dzogchen tradition, the mind has two aspects. The first is the ordinary, dualistic, and discriminating mind, called 'Sem'.",
         "'Sem' operates in time (past and future), clinging, comparing, and continuously creating inner scenarios. Neurophysiologically, this closely relates to the brain's Default Mode Network (DMN), often accompanied by high Beta waves: a state of chronic tension and subtle alarm.",
         "The other aspect is the Nature of Mind (Rigpa). This is our indestructible, unchanging essence. It is the state of pure, open awareness—observation without an observer.",
@@ -41,7 +40,6 @@ export const rabbitholeContent: Record<string, { en: string[], el: string[] }> =
         "The self is the very source of compassion. We do not need to acquire it from the outside; we only need to let the tension settle and allow our true nature to shine."
       ],
     el: [
-        "**Κείμενο του Βαγγέλη Vadarma Πετρόπουλου — αναδημοσίευση με άδεια του συγγραφέα.**",
         "Σύμφωνα με τον Θιβετιανό Βουδισμό και την παράδοση του Τζοκτσέν (Dzogchen), ο νους έχει δύο όψεις. Η πρώτη είναι ο συνηθισμένος, δυαδικός και διακριτικός νους, τον οποίο αποκαλούν «Σεμ» (Sem).",
         "Ο «Σεμ» λειτουργεί μέσα στο χρόνο, συγκρίνει, κρίνει και προσκολλάται συνεχώς σε νοητικά σενάρια. Νευροφυσιολογικά, λειτουργεί μέσα από το Δίκτυο Προεπιλεγμένης Λειτουργίας (DMN) του εγκεφάλου, εκπέμποντας συχνά υψηλά κύματα Βήτα: μια κατάσταση μόνιμου συναγερμού και χρόνιας έντασης.",
         "Η άλλη όψη είναι η Φύση του Νου (Ρίγκπα). Είναι η άφθαρτη, αμετάβλητη ουσία μας. Η κατάσταση της καθαρής, ολικής ανοιχτής επίγνωσης, όπου υπάρχει παρατήρηση-αντίληψη χωρίς παρατηρητή.",
