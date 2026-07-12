@@ -266,7 +266,7 @@ function getMetaForRoute(route: string): RouteMeta {
     
     const dataMap: Record<string, any> = {
       'soft-gaze-open-hearing': softGazeArticle,
-      'dzogchen-nature-of-mind': dzogchenArticle,
+      'dzogchen-great-perfection': dzogchenArticle,
       'never-force': neverForceArticle,
       'plato-cave-neurodivergent': platoCaveArticle,
       'polyvagal-middle-way': polyvagalArticle,
