@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useOutlet, useLocation, Navigate, Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useOutlet, useLocation } from 'react-router-dom';
 import { cn } from '../lib/utils';
 import Companion from './Companion';
 import NavigationMenu from './NavigationMenu';
@@ -18,9 +18,7 @@ export default function Layout() {
   const outlet = useOutlet();
   const mainRef = React.useRef<HTMLElement>(null);
 
-  const isPrerendering = typeof window !== 'undefined' && ((window as any).__PRERENDER_INJECTED || navigator.userAgent.includes('jsdom') || navigator.userAgent.includes('HeadlessChrome'));
 
-  const path = location.pathname.replace(/^\/(el|en)(?=\/|$)/, '') || '/';
 
 
   useEffect(() => {

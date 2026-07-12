@@ -1,11 +1,17 @@
 import { describe, it, expect } from 'vitest';
 import { PUBLIC_PREFIXES } from './publicRoutes';
+import prerenderPaths from '../prerender-paths.json';
 
-describe('PUBLIC_PREFIXES regression guard', () => {
-  it('contains every route that must be reachable by first-time visitors', () => {
-    const required = ['/method', '/methodology', '/rabbithole', '/chapters', '/faq', '/practice', '/program', '/sanctuary'];
-    for (const r of required) {
-      expect(PUBLIC_PREFIXES).toContain(r);
+describe('public routes must stay prerendered', () => {
+  it('every public prefix has /el and /en prerendered entries', () => {
+    for (const prefix of PUBLIC_PREFIXES) {
+      for (const lang of ['el', 'en']) {
+        const expected = `/${lang}${prefix}`;
+        const covered = (prerenderPaths as string[]).some(
+          p => p === expected || p.startsWith(expected + '/')
+        );
+        expect(covered, `missing prerender coverage for ${expected}`).toBe(true);
+      }
     }
   });
 });
