@@ -54,6 +54,18 @@ const ARTICLE_DATES: Record<string, string> = {
   'never-force': '2025-05'
 };
 
+const ARTICLE_AUTHORS: Record<string, { name: string; byline?: { en: string; el: string } }> = {
+  'dzogchen-great-perfection': {
+    name: 'Vangelis Vadarma Petropoulos',
+    byline: {
+      en: "Text by Vangelis Vadarma Petropoulos — republished with the author's permission.",
+      el: "Κείμενο του Βαγγέλη Vadarma Πετρόπουλου — αναδημοσίευση με άδεια του συγγραφέα.",
+    },
+  },
+  'never-force': { name: 'Chögyal Namkhai Norbu Rinpoche' },
+  'plato-cave-neurodivergent': { name: 'Theodoros Bairaktaris' },
+};
+
 const ARTICLES: Record<string, { en: [string, string]; el: [string, string] }> = {
 'forces-of-the-cosmos': {
     en: ['The Four Forces of the Cosmos & the Fourfold Axis | Neurodivergent Mindfulness App',
@@ -314,6 +326,11 @@ function getMetaForRoute(route: string): RouteMeta {
         bodyParagraphs = [d];
       }
       
+      const authorInfo = ARTICLE_AUTHORS[slug];
+      if (authorInfo?.byline) {
+        bodyParagraphs = [authorInfo.byline[lang as 'en' | 'el'], ...bodyParagraphs];
+      }
+      
       const relatedMap: Record<string, {href: string, label: {en: string, el: string}}[]> = {
         'soft-gaze-open-hearing': [{ href: '/practice', label: { en: 'Try the soft gaze practice', el: 'Δοκίμασε την πρακτική του μαλακού βλέμματος' } }],
         'polyvagal-middle-way': [{ href: '/practice', label: { en: 'Regulation exercises', el: 'Ασκήσεις ρύθμισης' } }],
@@ -337,7 +354,7 @@ function getMetaForRoute(route: string): RouteMeta {
           headline: t, description: d, url,
           inLanguage: lang,
           articleBody: bodyParagraphs.slice(0, 2).join(' '),
-          author: { '@type': 'Organization', name: 'Neurodivergent Mindfulness App' },
+          author: authorInfo ? { '@type': 'Person', name: authorInfo.name } : { '@type': 'Organization', name: 'Neurodivergent Mindfulness App' },
           ...(ARTICLE_DATES[slug] ? { datePublished: `${ARTICLE_DATES[slug]}-01T00:00:00Z` } : {}),
           about: [
             { '@type': 'Thing', name: 'Mindfulness' },
