@@ -3,8 +3,6 @@ import { BrowserRouter, HashRouter, Routes, Route, Navigate } from 'react-router
 import { HelmetProvider } from 'react-helmet-async';
 import { CompanionProvider } from './hooks/useCompanion';
 import Layout from './components/Layout';
-import { InteractiveBackground } from './components/InteractiveBackground';
-import Dashboard from './pages/Dashboard';
 
 import { LanguageProvider } from './hooks/useLanguage';
 import { ThemeProvider } from './hooks/useTheme';
@@ -15,6 +13,8 @@ import { ProgressProvider } from './contexts/ProgressContext';
 import { AudioProvider } from './contexts/AudioContext';
 import { ActivityTrackerProvider } from './contexts/ActivityTrackerContext';
 
+const InteractiveBackground = React.lazy(() => import('./components/InteractiveBackground').then(m => ({ default: m.InteractiveBackground })));
+const Dashboard = React.lazy(() => import('./pages/Dashboard'));
 const Chapters = React.lazy(() => import('./pages/Chapters'));
 const ChapterDetail = React.lazy(() => import('./pages/ChapterDetail'));
 const Program = React.lazy(() => import('./pages/Program'));
