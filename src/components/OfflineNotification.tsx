@@ -69,7 +69,7 @@ export default function OfflineNotification() {
 
             <button 
               onClick={() => setShowStatus(false)}
-              className="p-1 hover:bg-white/5 rounded-full transition-colors"
+              aria-label="Close" className="p-1 hover:bg-white/5 rounded-full transition-colors focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400"
             >
               <X size={16} />
             </button>

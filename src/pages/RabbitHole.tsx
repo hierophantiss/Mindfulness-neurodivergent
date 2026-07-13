@@ -365,7 +365,7 @@ export default function RabbitHole() {
 
           {/* Invisible Hitboxes (Fixed in the viewer, outside scrolling) */}
           <button 
-            className="absolute top-0 left-0 w-[30%] h-full z-10 flex flex-col justify-center items-start pl-2 md:pl-6 group outline-none"
+            className="absolute top-0 left-0 w-[30%] h-full z-10 flex flex-col justify-center items-start pl-2 md:pl-6 group focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400"
             onClick={(e) => { e.stopPropagation(); handlePrev(); }}
             aria-label="Previous page"
             disabled={currentPage === 0}
@@ -378,7 +378,7 @@ export default function RabbitHole() {
           </button>
           
           <button 
-            className="absolute top-0 right-0 w-[30%] h-full z-10 flex flex-col justify-center items-end pr-2 md:pr-6 group outline-none"
+            className="absolute top-0 right-0 w-[30%] h-full z-10 flex flex-col justify-center items-end pr-2 md:pr-6 group focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400"
             onClick={(e) => { e.stopPropagation(); handleNext(); }}
             aria-label="Next page"
             disabled={currentPage === article.pages.length - 1}
@@ -962,7 +962,7 @@ export default function RabbitHole() {
                           <div className="p-8 rounded-[2.5rem] bg-indigo-500/5 border border-indigo-500/10 hover:bg-indigo-500/10 transition-all group">
                              <button 
                                onClick={() => setVideoStartTime(desc.bridgeTime!)}
-                               className="text-[13px] font-serif italic text-white/80 leading-relaxed text-center group-hover:text-white transition-colors block w-full mb-4 cursor-pointer outline-none"
+                               className="text-[13px] font-serif italic text-white/80 leading-relaxed text-center group-hover:text-white transition-colors block w-full mb-4 cursor-pointer focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400"
                              >
                                 "{desc.bridge}"
                              </button>

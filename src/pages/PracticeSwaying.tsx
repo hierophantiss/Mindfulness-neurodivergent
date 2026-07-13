@@ -309,7 +309,7 @@ export default function PracticeSwaying() {
           
           <button 
             onClick={(e) => { e.stopPropagation(); handleTogglePlayback(); }} 
-            className="w-20 h-20 flex items-center justify-center rounded-full shadow-2xl border transition-all hover:scale-105 active:scale-95 cursor-pointer z-10"
+            aria-label={isPlaying ? "Pause" : "Play"} className="w-20 h-20 flex items-center justify-center rounded-full shadow-2xl border transition-all hover:scale-105 active:scale-95 cursor-pointer z-10 focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-white"
             style={{ backgroundColor: "var(--color-accent, #1D9E75)", borderColor: "rgba(255,255,255,0.1)" }}
           >
             {isPlaying ? (

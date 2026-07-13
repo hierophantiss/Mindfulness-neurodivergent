@@ -1,3 +1,4 @@
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useState } from 'react';
 import { Info, X, Lightbulb, Beaker } from 'lucide-react';
@@ -13,7 +14,7 @@ export function ConceptInfoIcon({ conceptId, className = "w-6 h-6 ml-1" }: { con
     <>
       <button 
         onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsOpen(true); }}
-        className={`inline-flex items-center justify-center rounded-full text-white/40 hover:text-white hover:bg-white/10 transition-all ${className}`}
+        className={`inline-flex items-center justify-center rounded-full text-white/40 hover:text-white hover:bg-white/10 transition-all focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 ${className}`}
         aria-label="More info"
       >
         <Info size={15} />
@@ -26,6 +27,7 @@ export function ConceptInfoIcon({ conceptId, className = "w-6 h-6 ml-1" }: { con
 
 export function ConceptModal({ isOpen, onClose, conceptId }: { isOpen: boolean, onClose: () => void, conceptId: string }) {
     const { reduceMotion } = useAccessibility();
+  const modalRef = useFocusTrap(isOpen, onClose);
   
 
   const { language } = useLanguage();
@@ -47,6 +49,10 @@ export function ConceptModal({ isOpen, onClose, conceptId }: { isOpen: boolean, 
           />
           
           <motion.div
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={`concept-title-${conceptId}`}
             initial={{ scale: 0.95, opacity: 0, y: 15 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 15 }}
@@ -62,7 +68,7 @@ export function ConceptModal({ isOpen, onClose, conceptId }: { isOpen: boolean, 
               </div>
               <button 
                 onClick={onClose}
-                className="text-white/40 hover:text-white hover:bg-white/5 p-1 rounded-full transition-all focus:outline-none"
+                className="text-white/40 hover:text-white hover:bg-white/5 p-1 rounded-full transition-all focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400"
                 aria-label="Close"
               >
                 <X size={18} />
@@ -71,7 +77,7 @@ export function ConceptModal({ isOpen, onClose, conceptId }: { isOpen: boolean, 
             
             {/* Scrollable Content Body */}
             <div className="p-6 overflow-y-auto space-y-4 flex-1 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
-              <h3 className="text-xl font-serif text-white mb-1 leading-tight font-medium">{concept[l].title}</h3>
+              <h3 id={`concept-title-${conceptId}`} className="text-xl font-serif text-white mb-1 leading-tight font-medium">{concept[l].title}</h3>
               
               <p className="text-sm text-teal-200/80 font-medium pb-4 border-b border-white/5 leading-relaxed">
                 {concept[l].short}

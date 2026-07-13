@@ -769,8 +769,9 @@ export default function GenericExercise() {
             
             <button
               onClick={(e) => { e.stopPropagation(); toggleRun(); }}
+              aria-label={running ? "Pause" : "Play"}
               className={cn(
-                "w-20 h-20 rounded-full flex items-center justify-center transition-all shadow-xl",
+                "focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 w-20 h-20 rounded-full flex items-center justify-center transition-all shadow-xl",
                 running 
                   ? "bg-zinc-800 border border-zinc-700 text-white" 
                   : cn("text-pine-900 border-none shadow-[0_0_30px_rgba(0,0,0,0.3)]", theme.bar)

@@ -254,7 +254,7 @@ export default function NavigationMenu() {
                     {/* Toggle Switch */}
                     <button 
                       onClick={toggleReduceMotion}
-                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${reduceMotion ? 'bg-amber-500' : 'bg-white/10'}`}
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 ${reduceMotion ? 'bg-amber-500' : 'bg-white/10'}`}
                     >
                       <span 
                         className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${reduceMotion ? 'translate-x-6' : 'translate-x-1'}`}

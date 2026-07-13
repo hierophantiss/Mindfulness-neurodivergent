@@ -41,7 +41,7 @@ export default function Faq() {
               <div className="space-y-4 w-full">
                 {faqs.map((faq: any, idx: number) => (
                   <details key={idx} className="bg-gradient-to-br from-pine-900/40 to-pine-950/60 border border-zinc-700/30 rounded-2xl p-5 md:p-6 group shadow-sm transition-all duration-300 hover:border-zinc-600/50 backdrop-blur-sm w-full outline-none [&_summary::-webkit-details-marker]:hidden">
-                    <summary className="font-heading font-medium cursor-pointer focus:outline-none list-none flex justify-between items-center text-base md:text-lg text-zinc-100 group-open:text-teal-100 transition-colors w-full">
+                    <summary className="font-heading font-medium cursor-pointer focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 list-none flex justify-between items-center text-base md:text-lg text-zinc-100 group-open:text-teal-100 transition-colors w-full">
                       <span className="pr-6 leading-snug">{faq.q}</span>
                       <span className="text-teal-500/80 group-open:rotate-180 transition-transform duration-500 shrink-0 w-8 h-8 rounded-full bg-zinc-950/50 flex items-center justify-center border border-white/5">↓</span>
                     </summary>

@@ -1,3 +1,4 @@
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import { useAccessibility } from '../hooks/useAccessibility';
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -12,6 +13,7 @@ interface InfoModalProps {
 
 export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
     const { reduceMotion } = useAccessibility();
+  const modalRef = useFocusTrap(isOpen, onClose);
   
 
   const { language } = useLanguage();
@@ -125,6 +127,10 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
       {isOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6 sm:p-4">
           <motion.div
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="info-modal-title"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -147,7 +153,7 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                     {language === 'el' ? 'ΠΛΗΡΟΦΟΡΙΕΣ' : 'INFORMATION'}
                   </span>
                 </div>
-                <h2 className="text-2xl md:text-3xl font-serif text-white italic tracking-tight">
+                <h2 id="info-modal-title" className="text-2xl md:text-3xl font-serif text-white italic tracking-tight">
                   {content.title[l]}
                 </h2>
                 <p className="text-sm text-white/40 leading-relaxed max-w-md">
@@ -156,7 +162,8 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
               </div>
               <button 
                 onClick={onClose}
-                className="w-10 h-10 shrink-0 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-all absolute right-4 top-6 sm:static sm:right-auto sm:top-auto"
+                aria-label="Close modal"
+                className="w-10 h-10 shrink-0 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-all focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 absolute right-4 top-6 sm:static sm:right-auto sm:top-auto"
               >
                 <X size={20} />
               </button>

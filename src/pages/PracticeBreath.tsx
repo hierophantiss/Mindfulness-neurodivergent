@@ -662,7 +662,7 @@ export default function PracticeBreath() {
          <button
            onClick={(e) => { e.stopPropagation(); handleStartToggle(); }}
            className={cn(
-             "flex-1 h-9 rounded-full flex items-center justify-center gap-2 transition-all duration-300 shadow-sm z-20 outline-none active:scale-95",
+             "flex-1 h-9 rounded-full flex items-center justify-center gap-2 transition-all duration-300 shadow-sm z-20 focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 active:scale-95",
              running 
                ? "bg-zinc-800 border border-zinc-700 text-amber-200" 
                : "bg-zinc-700 border border-teal-700/50 text-white"
