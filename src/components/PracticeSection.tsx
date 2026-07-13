@@ -1,3 +1,4 @@
+import { useAccessibility } from '../hooks/useAccessibility';
 import { useState, useEffect, useRef } from "react";
 import {
   Play,
@@ -82,6 +83,9 @@ type SetupStep = 'theme' | 'rhythm' | 'player';
 type MovementType = "taichi" | "lotus";
 
 export default function PracticeSection() {
+    const { reduceMotion } = useAccessibility();
+  
+
   const synthRef = useRef<ZenAudioEngine | null>(null);
   const navigate = useNavigate();
   const { language: lang, setLanguage: setLang } = useLanguage();
@@ -489,7 +493,7 @@ export default function PracticeSection() {
                        initial={{ opacity: 0 }}
                        animate={{ opacity: 1 }}
                        exit={{ opacity: 0 }}
-                       transition={{ duration: 0.3, ease: 'easeInOut' }}
+                       transition={reduceMotion ? { duration: 0.01 } : { duration: 0.3, ease: 'easeInOut' }}
                        className="absolute text-[11px] md:text-xs font-sans tracking-[0.2em] uppercase font-medium text-center whitespace-nowrap"
                        style={{ color: isRising ? 'rgba(125,211,252,0.7)' : (elapsed > inhale + holdFull && elapsed <= inhale + holdFull + exhale) ? 'rgba(94,234,212,0.7)' : 'rgba(252,211,77,0.7)' }}
                      >

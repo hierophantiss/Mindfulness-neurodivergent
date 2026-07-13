@@ -1,3 +1,4 @@
+import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Play, Pause } from 'lucide-react';
@@ -7,6 +8,9 @@ interface PlayPauseOverlayProps {
 }
 
 export function PlayPauseOverlay({ isPlaying }: PlayPauseOverlayProps) {
+    const { reduceMotion } = useAccessibility();
+  
+
   const [show, setShow] = useState(false);
   const [initialMount, setInitialMount] = useState(true);
 
@@ -29,7 +33,7 @@ export function PlayPauseOverlay({ isPlaying }: PlayPauseOverlayProps) {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 1.4 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
+            transition={reduceMotion ? { duration: 0.01 } : { duration: 0.4, ease: "easeOut" }}
             className="w-24 h-24 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center text-white"
           >
             {isPlaying ? (

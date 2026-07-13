@@ -1,3 +1,4 @@
+import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { CHAPTERS_DATA } from '../data/chapters';
@@ -127,12 +128,13 @@ const ConceptAnnotatedText = ({ text }: { text: string }) => {
 };
 
 const ZenParagraph = ({ text, index }: { text: string, index: number }) => {
+    const { reduceMotion } = useAccessibility();
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-10%" }}
-      transition={{ delay: index * 0.05, duration: 1.2, ease: "easeOut" }}
+      transition={reduceMotion ? { duration: 0.01 } : { delay: index * 0.05, duration: 1.2, ease: "easeOut" }}
       className="relative"
     >
       <div 
@@ -145,6 +147,9 @@ const ZenParagraph = ({ text, index }: { text: string, index: number }) => {
 };
 
 export default function ChapterDetail() {
+    const { reduceMotion } = useAccessibility();
+  
+
   const { id } = useParams();
   const navigate = useNavigate();
   const { updateChapterProgress, trackActivity } = useCompanion();
@@ -304,7 +309,7 @@ export default function ChapterDetail() {
             initial="enter"
             animate="center"
             exit="exit"
-            transition={{ duration: 0.4, ease: "easeOut" }}
+            transition={reduceMotion ? { duration: 0.01 } : { duration: 0.4, ease: "easeOut" }}
             className="flex-1 overflow-y-auto scrollbar-none flex flex-col w-full px-2"
           >
             <div className="flex-1 flex flex-col justify-start min-h-full pt-4 pb-20 max-w-[65ch] mx-auto w-full text-center">
@@ -365,7 +370,7 @@ export default function ChapterDetail() {
                       initial={{ opacity: 0, y: 10 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
-                      transition={{ delay: 0.3, duration: 0.8 }}
+                      transition={reduceMotion ? { duration: 0.01 } : { delay: 0.3, duration: 0.8 }}
                       className="pt-6 flex justify-center"
                     >
                       <Link 
@@ -381,7 +386,7 @@ export default function ChapterDetail() {
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
-                    transition={{ delay: 0.2, duration: 1 }}
+                    transition={reduceMotion ? { duration: 0.01 } : { delay: 0.2, duration: 1 }}
                     className="pt-16 space-y-8"
                   >
                       {curPage.section.interactive && (

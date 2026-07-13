@@ -1,3 +1,4 @@
+import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useState } from 'react';
 import GravityThoughts from './animations/GravityThoughts';
 import OpenAwareness from './animations/OpenAwareness';
@@ -13,6 +14,9 @@ interface InteractiveRendererProps {
 }
 
 export default function InteractiveRenderer({ id, asModal }: InteractiveRendererProps) {
+    const { reduceMotion } = useAccessibility();
+  
+
   const [isOpen, setIsOpen] = useState(!asModal);
   const { language } = useLanguage();
 
@@ -96,7 +100,7 @@ export default function InteractiveRenderer({ id, asModal }: InteractiveRenderer
               initial={{ opacity: 0, y: 20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.95 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
+              transition={reduceMotion ? { duration: 0.01 } : { duration: 0.4, ease: "easeOut" }}
               className="relative w-full h-full md:h-auto flex items-center justify-center"
             >
               {content}

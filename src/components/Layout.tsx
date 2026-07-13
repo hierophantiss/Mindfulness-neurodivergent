@@ -1,3 +1,4 @@
+import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useEffect } from 'react';
 import { useOutlet, useLocation } from 'react-router-dom';
 import { cn } from '../lib/utils';
@@ -13,6 +14,9 @@ import { motion, AnimatePresence } from 'motion/react';
 import { SEO } from './SEO';
 
 export default function Layout() {
+    const { reduceMotion } = useAccessibility();
+  
+
   const { t, language } = useLanguage();
   const location = useLocation();
   const outlet = useOutlet();
@@ -56,7 +60,7 @@ export default function Layout() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                transition={reduceMotion ? { duration: 0.01 } : { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
                 className="flex flex-col flex-1 h-full w-full"
               >
                 {/* React Router v6 useOutlet keeps the right context for the unmounting route. */}

@@ -1,3 +1,4 @@
+import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useState } from 'react';
 import { Home, BookOpen, Activity, Notebook, Info, Music, Bell, LogOut, Download, Sparkles, RotateCcw, LayoutGrid, Compass } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -8,6 +9,9 @@ import { cn } from '../lib/utils';
 import { CatInfinityAvatar } from './CatInfinityAvatar';
 
 export default function DesktopNavigation() {
+    const { reduceMotion } = useAccessibility();
+  
+
   const navigate = useNavigate();
   const location = useLocation();
   const { language } = useLanguage();
@@ -60,6 +64,7 @@ export default function DesktopNavigation() {
           {language === 'el' ? 'Βασικη Περιηγηση' : 'Main Menu'}
         </p>
         {mainNavItems.map(item => {
+            const { reduceMotion } = useAccessibility();
           const isActive = location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path));
           return (
             <button
@@ -91,6 +96,7 @@ export default function DesktopNavigation() {
           {language === 'el' ? 'Περισσοτερα' : 'More Tools'}
         </p>
         {moreItems.map(item => {
+            const { reduceMotion } = useAccessibility();
           const isActive = location.pathname.startsWith(item.path.replace('.html', ''));
           return (
             <button

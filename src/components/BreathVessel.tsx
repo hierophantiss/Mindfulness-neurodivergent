@@ -1,3 +1,4 @@
+import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { cn } from '../lib/utils';
@@ -12,6 +13,9 @@ interface BreathVesselProps {
 }
 
 export function BreathVessel({ phaseIdx, isInhale, isExhale, isHold, durationMs, className }: BreathVesselProps) {
+    const { reduceMotion } = useAccessibility();
+  
+
   // Determine target fill percentage based on phase
   // Inhale: 100%
   // Exhale: 0%
@@ -103,7 +107,7 @@ export function BreathVessel({ phaseIdx, isInhale, isExhale, isHold, durationMs,
             x="0" 
             width="100" 
             fill="url(#breathGradient)"
-            filter="url(#glow)"
+            filter={reduceMotion ? undefined : "url(#glow)"}
             initial={false}
             animate={{ 
               y: 200 - (fillLevel * 2), // 0% -> 200 (bottom), 100% -> 0 (top)

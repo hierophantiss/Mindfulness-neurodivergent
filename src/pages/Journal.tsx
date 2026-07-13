@@ -1,3 +1,4 @@
+import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useState, useEffect, useMemo } from 'react';
 import { ArrowLeft, ChevronLeft, ChevronRight, Search, Calendar, X, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -120,6 +121,9 @@ interface JournalEntry {
 }
 
 export default function Journal() {
+    const { reduceMotion } = useAccessibility();
+  
+
   const navigate = useNavigate();
   const { language } = useLanguage();
   

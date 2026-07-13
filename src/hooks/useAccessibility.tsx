@@ -22,6 +22,14 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
     });
   };
 
+  useEffect(() => {
+    if (reduceMotion) {
+      document.documentElement.classList.add('reduce-motion');
+    } else {
+      document.documentElement.classList.remove('reduce-motion');
+    }
+  }, [reduceMotion]);
+
   return (
     <AccessibilityContext.Provider value={{ reduceMotion, toggleReduceMotion }}>
       {children}

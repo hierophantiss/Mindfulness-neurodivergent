@@ -1,9 +1,9 @@
+import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { useTime } from '../contexts/TimeContext';
 import { useProgress } from '../contexts/ProgressContext';
 import { useMoonPhase } from '../hooks/useMoonPhase';
-import { useWeather } from '../hooks/useWeather';
 import { cn } from '../lib/utils';
 
 interface Star {
@@ -25,10 +25,14 @@ interface Particle {
 }
 
 export function InteractiveBackground() {
+    const { reduceMotion } = useAccessibility();
+  
+
   const { hour, timeFloat } = useTime();
   const { progress } = useProgress();
   const moonPhase = useMoonPhase();
-  const weather = useWeather();
+  // Deterministic weather fallback based on time of day
+  const weather = (hour >= 3 && hour <= 4) ? 'rain' : 'clear' as string;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const starsRef = useRef<Star[]>([]);
   const particlesRef = useRef<Particle[]>([]);
@@ -163,8 +167,8 @@ export function InteractiveBackground() {
       // Draw weather particles
       for (let i = 0; i < particlesRef.current.length; i++) {
         const p = particlesRef.current[i];
-        p.y += p.speedY;
-        p.x += p.speedX;
+        if (!reduceMotion) p.y += p.speedY;
+        if (!reduceMotion) p.x += p.speedX;
         
         if (weather === 'snow') {
           p.x += Math.sin(time * 2 + i) * 0.0005;
@@ -200,7 +204,7 @@ export function InteractiveBackground() {
     return () => {
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
     };
-  }, [isNight, isDay, isDusk]);
+  }, [isNight, isDay, isDusk, reduceMotion]);
 
   // Calculate smooth cyclical opacities based on timeFloat (0-24)
   const getOpacity = (peak: number, spread: number) => {
@@ -264,7 +268,7 @@ export function InteractiveBackground() {
         className="absolute left-1/2 bottom-[-10%] w-0 h-0 z-10"
         initial={false}
         animate={{ rotate: ((timeFloat - 12) / 24) * 360 }}
-        transition={{ ease: "linear", duration: 2 }} 
+        transition={reduceMotion ? { duration: 0.01 } : { ease: "linear", duration: 2 }} 
       >
          {/* Sun */}
          <div 
@@ -307,7 +311,7 @@ export function InteractiveBackground() {
                y: ["0%", "-5%", "5%", "0%"],
                scale: [1, 1.1, 0.95, 1],
            }}
-           transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+           transition={reduceMotion ? { duration: 0.01 } : { duration: 25, repeat: Infinity, ease: "easeInOut" }}
            className="absolute -top-[20%] -left-[10%] w-[80%] h-[60%] bg-teal-500/20 blur-[100px] rounded-full mix-blend-screen"
         />
         <motion.div
@@ -316,7 +320,7 @@ export function InteractiveBackground() {
                y: ["0%", "10%", "-5%", "0%"],
                scale: [1, 1.15, 1.05, 1],
            }}
-           transition={{ duration: 30, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+           transition={reduceMotion ? { duration: 0.01 } : { duration: 30, repeat: Infinity, ease: "easeInOut", delay: 2 }}
            className="absolute top-[10%] right-[0%] w-[70%] h-[60%] bg-emerald-400/20 blur-[120px] rounded-full mix-blend-screen"
         />
         <motion.div
@@ -325,7 +329,7 @@ export function InteractiveBackground() {
                y: ["0%", "-10%", "5%", "0%"],
                scale: [1, 1.05, 1.1, 1],
            }}
-           transition={{ duration: 35, repeat: Infinity, ease: "easeInOut", delay: 5 }}
+           transition={reduceMotion ? { duration: 0.01 } : { duration: 35, repeat: Infinity, ease: "easeInOut", delay: 5 }}
            className="absolute bottom-[20%] left-[20%] w-[60%] h-[50%] bg-indigo-500/20 blur-[110px] rounded-full mix-blend-screen"
         />
       </div>

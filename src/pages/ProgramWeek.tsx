@@ -1,3 +1,4 @@
+import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
@@ -13,6 +14,9 @@ import { useReward } from '../contexts/RewardContext';
 import { useProgress } from '../contexts/ProgressContext';
 
 export default function ProgramWeek() {
+    const { reduceMotion } = useAccessibility();
+  
+
   const { weekId } = useParams();
   const navigate = useNavigate();
   const { language } = useLanguage();
@@ -231,7 +235,7 @@ export default function ProgramWeek() {
                 initial="enter"
                 animate="center"
                 exit="exit"
-                transition={{
+                transition={reduceMotion ? { duration: 0.01 } : {
                   x: { type: "spring", stiffness: 300, damping: 30 },
                   opacity: { duration: 0.2 }
                 }}

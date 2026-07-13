@@ -1,3 +1,4 @@
+import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useState, useRef, useEffect } from 'react';
 import { useCompanion } from '../hooks/useCompanion';
 import CompanionSheet from './CompanionSheet';
@@ -22,6 +23,9 @@ export const InfinitySVG = ({ size }: { size: number }) => (
 );
 
 export default function Companion() {
+    const { reduceMotion } = useAccessibility();
+  
+
   const { companionData, updateCompanionData, setSheetVisible, sheetVisible, companionMessage, setCompanionMessage } = useCompanion();
   const [position, setPosition] = useState({ x: window.innerWidth - 68, y: window.innerHeight / 2 - 26 });
   const [isDragging, setIsDragging] = useState(false);
@@ -194,7 +198,7 @@ export default function Companion() {
         <motion.div 
           className="relative w-12 h-12 flex items-center justify-center transition-transform duration-300"
           animate={{ y: [0, -3, 0] }}
-          transition={{ 
+          transition={reduceMotion ? { duration: 0.01 } : { 
             repeat: Infinity, 
             duration: 4, 
             ease: "easeInOut" 

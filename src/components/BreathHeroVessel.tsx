@@ -1,3 +1,4 @@
+import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { cn } from '../lib/utils';
@@ -12,6 +13,9 @@ interface BreathHeroVesselProps {
 }
 
 export function BreathHeroVessel({ phaseIdx, isInhale, isExhale, isHold, durationMs, className }: BreathHeroVesselProps) {
+    const { reduceMotion } = useAccessibility();
+  
+
   const [fillLevel, setFillLevel] = useState(0);
 
   useEffect(() => {
@@ -56,7 +60,7 @@ export function BreathHeroVessel({ phaseIdx, isInhale, isExhale, isHold, duratio
             <rect x="35" y="0" width="30" height="100" rx="15" fill="rgba(255,255,255,0.05)" />
             
             {/* Filling energy */}
-            <g filter="url(#glowDrop)">
+            <g filter={reduceMotion ? undefined : "url(#glowDrop)"}>
               <motion.rect 
                 x="35"
                 width="30"

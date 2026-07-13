@@ -1,3 +1,4 @@
+import { useAccessibility } from '../hooks/useAccessibility';
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Anchor, Wind, Focus, Maximize, Heart, Info, CheckCircle2, BookOpen, Sparkles } from 'lucide-react';
@@ -10,6 +11,9 @@ interface InfoModalProps {
 }
 
 export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
+    const { reduceMotion } = useAccessibility();
+  
+
   const { language } = useLanguage();
 
   const content = {

@@ -1,9 +1,13 @@
+import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useState, useEffect } from 'react';
 import { WifiOff, X, Wifi } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../hooks/useLanguage';
 
 export default function OfflineNotification() {
+    const { reduceMotion } = useAccessibility();
+  
+
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
   const [showStatus, setShowStatus] = useState(false);
   const { language } = useLanguage();

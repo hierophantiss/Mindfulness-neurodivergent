@@ -1,3 +1,4 @@
+import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { BookOpen, ChevronLeft, ChevronRight, X, Play, Youtube, Film, Check, SkipForward, Info } from 'lucide-react';
@@ -43,6 +44,9 @@ const formatMarkdown = (text: string) => {
 };
 
 export default function RabbitHole() {
+    const { reduceMotion } = useAccessibility();
+  
+
   const { articleId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
@@ -613,7 +617,7 @@ export default function RabbitHole() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 3 }}
+                transition={reduceMotion ? { duration: 0.01 } : { duration: 3 }}
                 className="fixed inset-0 pointer-events-none z-0"
               >
                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.08)_0%,transparent_1px)] bg-[length:120px_120px]" />
@@ -679,6 +683,7 @@ export default function RabbitHole() {
               isVoidActive ? "opacity-20 hover:opacity-100" : "opacity-100"
             )}>
               {(() => {
+                          const { reduceMotion } = useAccessibility();
                 const videoData = informativeVideos.find(v => v.id === activeVideo);
                 if (videoData?.description) {
                   const desc = videoData.description[language as 'en'|'el'];
@@ -702,7 +707,7 @@ export default function RabbitHole() {
                               scale: isVoidActive ? [1, 1.5, 1] : 1,
                               opacity: isVoidActive ? [0.5, 1, 0.5] : 1
                             }}
-                            transition={{ duration: 4, repeat: Infinity }}
+                            transition={reduceMotion ? { duration: 0.01 } : { duration: 4, repeat: Infinity }}
                             className={cn("w-3 h-3 rounded-full", isVoidActive ? "bg-white" : "bg-teal-500")} 
                           />
                           {isVoidActive 

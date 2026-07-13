@@ -1,3 +1,4 @@
+import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useState } from 'react';
 import { Info, X, Lightbulb, Beaker } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
@@ -24,6 +25,9 @@ export function ConceptInfoIcon({ conceptId, className = "w-6 h-6 ml-1" }: { con
 }
 
 export function ConceptModal({ isOpen, onClose, conceptId }: { isOpen: boolean, onClose: () => void, conceptId: string }) {
+    const { reduceMotion } = useAccessibility();
+  
+
   const { language } = useLanguage();
   const concept = KNOWLEDGE_CONCEPTS[conceptId];
   

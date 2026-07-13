@@ -1,3 +1,4 @@
+import { useAccessibility } from '../hooks/useAccessibility';
 import { AudioEnabler } from '../components/AudioEnabler';
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -26,6 +27,9 @@ export const sleepTracks: any[] = [
 ];
 
 export default function Sanctuary() {
+    const { reduceMotion } = useAccessibility();
+  
+
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { language } = useLanguage();
@@ -288,7 +292,7 @@ export default function Sanctuary() {
                   scale: isPlaying ? [1, 1.1, 1] : 1,
                   opacity: isPlaying ? [0.4, 0.7, 0.4] : 0.2
                 }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                transition={reduceMotion ? { duration: 0.01 } : { duration: 6, repeat: Infinity, ease: "easeInOut" }}
                 className="absolute inset-0 rounded-full bg-teal-500/10 border border-teal-500/30"
               />
               <div className="absolute inset-0 rounded-full border border-teal-500/10" />
@@ -507,7 +511,7 @@ export default function Sanctuary() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 3 }}
+                transition={reduceMotion ? { duration: 0.01 } : { duration: 3 }}
                 className="fixed inset-0 pointer-events-none z-0"
               >
                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.08)_0%,transparent_1px)] bg-[length:120px_120px]" />

@@ -1,3 +1,4 @@
+import { useAccessibility } from '../hooks/useAccessibility';
 import { motion } from "motion/react";
 import { useMemo } from "react";
 
@@ -7,6 +8,9 @@ interface SwayingHeroProps {
 }
 
 export default function SwayingHero({ tickCount, tempo }: SwayingHeroProps) {
+    const { reduceMotion } = useAccessibility();
+  
+
   const stars = useMemo(() => {
     const list = [];
     const seedRandom = (str: string) => {
@@ -203,7 +207,7 @@ export default function SwayingHero({ tickCount, tempo }: SwayingHeroProps) {
               y: targetTranslateY,
               rotate: targetRotation,
             }}
-            transition={{
+            transition={reduceMotion ? { duration: 0.01 } : {
               ...transitionConfig,
               y: yTransitionConfig
             }}

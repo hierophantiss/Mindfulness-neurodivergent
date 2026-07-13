@@ -1,3 +1,4 @@
+import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../hooks/useLanguage';
@@ -7,6 +8,9 @@ import { CatInfinityAvatar } from './CatInfinityAvatar';
 import { cn } from '../lib/utils';
 
 export default function StateCheckin({ onComplete, inline = false }: { onComplete: () => void, inline?: boolean }) {
+    const { reduceMotion } = useAccessibility();
+  
+
   const { language } = useLanguage();
   const [step, setStep] = useState<0 | 1>(0);
   const [selectedState, setSelectedState] = useState<'hyper' | 'hypo' | 'balanced' | null>(null);
@@ -93,7 +97,7 @@ export default function StateCheckin({ onComplete, inline = false }: { onComplet
       <motion.div 
         initial={{ y: 20, scale: 0.95 }}
         animate={{ y: 0, scale: 1 }}
-        transition={{ type: "spring", stiffness: 100, damping: 20 }}
+        transition={reduceMotion ? { duration: 0.01 } : { type: "spring", stiffness: 100, damping: 20 }}
         className={cardClasses}
       >
         <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/10 blur-3xl rounded-full pointer-events-none" />
