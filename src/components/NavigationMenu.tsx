@@ -385,6 +385,33 @@ export default function NavigationMenu() {
                       )}
                     </div>
 
+                {/* Download the Book */}
+                <div className="bg-teal-500/10 border border-teal-500/20 rounded-3xl p-4">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center bg-teal-500/20 text-teal-400">
+                      <BookOpen size={18} />
+                    </div>
+                    <div className="flex flex-col text-left">
+                      <span className="text-sm font-medium text-teal-100">
+                        {language === 'en' ? 'Download the Book' : 'Κατέβασε το βιβλίο'}
+                      </span>
+                      <span className="text-[10px] text-teal-400/80">
+                        {language === 'en' ? 'Free · CC BY-NC-ND 4.0' : 'Δωρεάν · CC BY-NC-ND 4.0'}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <a href="/workbook_el.epub" download
+                       className="flex-1 text-center px-3 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-medium text-teal-100 transition-colors">
+                      EPUB · Kindle
+                    </a>
+                    <a href="/workbook_el.pdf" download
+                       className="flex-1 text-center px-3 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-medium text-teal-100 transition-colors">
+                      PDF · Εκτύπωση
+                    </a>
+                  </div>
+                </div>
+
                 {/* Install App - Always show with manual fallback */}
                 <button 
                   onClick={async () => {

@@ -17,7 +17,7 @@ export default defineConfig(() => {
           globPatterns: ['**/*.{js,css,woff2,svg,ico,html}'],
           globIgnores: ['**/*.{mp4,pdf,png,jpg}', 'server.cjs*'],
           navigateFallback: '/index.html',
-          navigateFallbackDenylist: [/^\/assets\//, /\.(pdf|mp4|xml|txt|svg|png|jpg)$/],
+          navigateFallbackDenylist: [/\.(?:pdf|epub)$/, /^\/workbook_/],
           maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
           cleanupOutdatedCaches: true
         }
