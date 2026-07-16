@@ -139,6 +139,25 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
+          <radialGradient id="figure-aura" cx="50%" cy="45%" r="55%">
+            <stop offset="0%" stopColor="#f5c451" stopOpacity="0.30" />
+            <stop offset="45%" stopColor="#e8a13a" stopOpacity="0.10" />
+            <stop offset="100%" stopColor="#e8a13a" stopOpacity="0" />
+          </radialGradient>
+          <linearGradient id="beam-glow" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#ffe89a" stopOpacity="0" />
+            <stop offset="30%" stopColor="#ffe08a" stopOpacity="0.6" />
+            <stop offset="72%" stopColor="#f5c451" stopOpacity="0.55" />
+            <stop offset="100%" stopColor="#f5c451" stopOpacity="0" />
+          </linearGradient>
+          <radialGradient id="earth-warm" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stopColor="#f0c14b" stopOpacity="0.7" />
+            <stop offset="55%" stopColor="#c98a2e" stopOpacity="0.2" />
+            <stop offset="100%" stopColor="#c98a2e" stopOpacity="0" />
+          </radialGradient>
+          <filter id="soft-blur" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="5" />
+          </filter>
           <style>
             {`
               .axis-layer {
@@ -188,11 +207,16 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
           />
         ))}
 
+        {/* Cover-grade backdrop — warm aura + constant golden beam (behind everything) */}
+        <rect x="158" y="0" width="24" height="440" fill="url(#beam-glow)" filter="url(#soft-blur)" />
+        <ellipse cx="170" cy="215" rx="150" ry="180" fill="url(#figure-aura)" />
+
         {/* 2. EARTH AT THE BOTTOM */}
         {withEarth && (
           <g>
             <circle cx="170" cy="565" r="205" fill="#123b45" />
-            <g clipPath="url(#earth-clip)" fill="#b3a04b" opacity="0.75">
+            <ellipse cx="170" cy="368" rx="175" ry="55" fill="url(#earth-warm)" />
+            <g clipPath="url(#earth-clip)" fill="#c99a3a" opacity="0.9">
               <path d="M 50,380 C 100,360 140,380 180,365 C 220,350 260,380 300,370 L 320,400 C 280,410 240,380 200,410 C 160,440 100,400 50,420 Z" />
               <path d="M 80,420 C 130,410 160,430 200,420 C 240,410 270,430 310,420 L 310,450 L 80,450 Z" />
               <path d="M 230,375 C 240,380 250,375 260,385 C 255,395 240,390 230,375 Z" />
