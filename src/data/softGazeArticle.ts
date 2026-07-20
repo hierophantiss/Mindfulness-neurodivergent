@@ -5,8 +5,8 @@ export const softGazeArticle = {
     el: 'Το Μαλακό Βλέμμα: Μια Πόρτα που Δεν Κλειδώνει',
   },
   author: {
-    en: 'The 4th Axis & Neuroscience',
-    el: 'Ο 4ος Άξονας & Νευροεπιστήμη',
+    en: 'Theodoros Bairaktaris',
+    el: 'Θεόδωρος Μπαϊρακτάρης',
   },
   pagesEn: [
     `**A door that is always open**

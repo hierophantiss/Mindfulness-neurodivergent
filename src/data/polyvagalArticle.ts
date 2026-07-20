@@ -5,8 +5,8 @@ export const polyvagalArticle = {
     el: 'Η Χορδή του Λαούτου και το Πνευμονογαστρικό Νεύρο',
   },
   author: {
-    en: 'Polyvagal Theory & The Middle Way',
-    el: 'Πολυβαγική Θεωρία & Η Μέση Οδός',
+    en: 'Theodoros Bairaktaris',
+    el: 'Θεόδωρος Μπαϊρακτάρης',
   },
   pagesEn: [
     `**The story of the lute string**

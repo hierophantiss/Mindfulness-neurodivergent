@@ -5,8 +5,8 @@ export const youAreThePathArticle = {
     el: 'Είσαι ο Δρόμος: Ο Χάρτης, το Έδαφος & ο Άξονας',
   },
   author: {
-    en: 'Korzybski, Gibson & the 4-fold Axis',
-    el: 'Κορζίμπσκι, Γκίμπσον & ο 4πλός Άξονας',
+    en: 'Theodoros Bairaktaris',
+    el: 'Θεόδωρος Μπαϊρακτάρης',
   },
   pagesEn: [
     `**The man standing outside the map**

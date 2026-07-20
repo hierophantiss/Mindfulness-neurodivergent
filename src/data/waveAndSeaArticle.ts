@@ -5,8 +5,8 @@ export const waveAndSeaArticle = {
     el: 'Το Κύμα Δεν Είναι η Θάλασσα — Ώσπου να Αφεθεί',
   },
   author: {
-    en: 'Mindfulness, Awareness & the 4-fold Axis',
-    el: 'Ενσυνειδητότητα, Συνειδητότητα & ο 4πλός Άξονας',
+    en: 'Theodoros Bairaktaris',
+    el: 'Θεόδωρος Μπαϊρακτάρης',
   },
   pagesEn: [
     `**The warning that stops halfway**
