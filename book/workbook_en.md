@@ -185,6 +185,38 @@ The first step is acceptance. You don't need to control your breath. It is enoug
 
 In moments of intense anxiety or overload, the breath can become an immediate tool for regulation. We let the exhale leave through the mouth, a little slower and longer than usual. We allow the belly to soften and draw gently inward.
 
+### The Winds of Emotion
+
+We saw the breath as a gauge. But there is a second, older reading of that image: **emotions are winds**. They are not ideas in the head — they are weather phenomena in the body and the breath. And that is where we can read them, before we find any words for them.
+
+- **Anger** — a strong, rising wind: it inflates the chest, lifts the breath high and makes it shallow.
+- **Anxiety** — a wind that keeps changing direction: breath erratic, short, without rhythm.
+- **Sadness** — stillness and dampness: the air grows heavy, the breath thins out, with sighs that come on their own.
+- **Numbness** — dense fog in still air: breath so faint it is almost forgotten.
+- **Calm and joy** — a light, steady breeze: breath flowing deep and unforced. The map is not all bad weather.
+
+> If the question "what are you feeling?" brings up a blank, nothing is missing in you. You were always asked to translate the weather into words, without first being taught to observe it.
+
+**First we read the weather.** What wind is this? Where do I feel it in the body? How long has it been blowing? No "why," no stories — only the weather, now. The recognition itself is already regulation: a wind you have seen does not govern you like a wind you deny is blowing.
+
+**Then we accompany the wind.** We will not stop it — and we do not need to. We give it rhythm:
+
+- **At the crest** (anger rising, anxiety spinning out): lengthen the exhale — inhale for 4, exhale for 6. The long exhale is the rider leaning downward — the fastest way to tell the nervous system "we are safe."
+- **Once it eases a little**: balanced breathing — 5 in, 5 out. The erratic air becomes a current.
+- **Humming or chanting** on the exhale, if it suits you: a long exhale with vibration — the body calming the body. If you already hum instinctively under pressure, you knew this before reading it.
+
+### Gusts, Weather Systems, Climate
+
+An honest word, because you deserve one: not all winds obey the same tools.
+
+- **Gusts** (minutes): a sudden flash of irritation, a wave of anxiety. The breath softens them directly.
+- **Weather systems** (days): the anger or pain after a rejection is that kind of wind — it may still be blowing tomorrow, and the day after. If the breathing does not extinguish it, **you have not failed and the tools are not fake** — this wind simply has its own duration. Here the goal changes: not to change the weather, but to keep the vessel sailable while it blows. Eat, sleep, talk to someone, keep re-reading the weather. That is success.
+- **Climate** (years): the long patterns that come from far back. They do not resolve in a day — and for the deepest of them, professional companionship is worth having. But *knowing* your climate changes everything in between: when the wind rises out of proportion to the trigger, you no longer conclude "something is wrong with me" — you recognize "I know this pattern." The pain remains, but the second pain leaves: the confusion and the self-blame.
+
+> None of this means you are broken. It means you have weather — like everyone. Now you also have a map.
+
+> 🔗 **In the Rabbit Hole:** [Learning to Ride the Wind](https://neurodivergent-mindfulness.org/rabbithole/riding-the-wind) — breath and mind as wind and rider in the tsa lung tradition.
+
 ### 🧭 Practice: The Active Return
 
 - **Grounding (Body):** Stand or sit comfortably. Feel gravity, feel your contact with the ground.
@@ -227,6 +259,21 @@ Attention is the third center of consciousness, and the tool that decides where 
 
 Beyond narrow and open attention there is a third state that deserves special care: fixated attention. The beam gets stuck — on an external object, or on some piece of mental content: a thought, a worry. Excessive self-referencing ("why do I feel this way? what does it mean?") is a classic form of fixated attention.
 
+### The Vicious Circles: "If Only" and "Should"
+
+Where exactly does the beam get stuck? Most of the time, on two patterns:
+
+- **"How things could have been"** — the mind replays the past with a different script: if I had said, if I had done, if it had gone otherwise.
+- **"How things should be"** — the mind compares the real to an ideal: this is how the day, the job, other people, I myself, *should* be.
+
+These patterns are circles that lead nowhere — not through weakness, but by construction: they compare the real with something that does not exist, and the non-existent never answers. The beam can run the same orbit for hours without arriving anywhere.
+
+And they do one more thing: **they sustain and enlarge emotions**. Remember the winds of the previous chapter. A wind that would have died down on its own within minutes gets re-inflated by the circle every time it starts to fall — the circle is the wind's bellows. That is why some emotions last for days: it is not the weather blowing, it is us.
+
+The way out is not to analyse the circle — "why am I thinking this?" is itself a circle. The way out is recognizing the orbit: you see that the beam has entered the familiar bend, you give it a label — **"If Only"** or **"Should"** — and you return gently to your anchor point. You do not need to win the argument with the non-existent. It is enough to see that it is an argument with the non-existent.
+
+> If these circles feel deeply familiar, they are not a flaw in your logic — they are the overdrive of a capacity. The mind that runs scenarios is the same mind that simulates, predicts, creates. And the "should" is often not even yours: it is years of other people's expectations speaking in your voice. We do not fight the scenario machine — we learn to see when it is spinning on empty.
+
 ### Fourfold Attention
 
 At this stage, attention becomes fourfold — we hold awareness of four layers at once:
@@ -243,6 +290,8 @@ When a thought pulls at you, simply returning to the breath can be hard. The lab
 - Thinking about what you have to do tomorrow → **"Planning"**
 - Replaying something you said that came out wrong → **"Judging"** or **"Past"**
 - Worrying about something ahead → **"Worry"** or **"Storyline"**
+- Replaying the past with a different script → **"If Only"**
+- Comparing reality to how it ought to be → **"Should"**
 
 ### 🧭 Practice: Steadying the Lens
 
