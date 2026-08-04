@@ -467,17 +467,28 @@ export default function RabbitHole() {
           </button>
         </div>
 
-        <p className="text-white/40 text-sm md:text-base font-serif italic mb-10 text-center px-4 leading-relaxed">
-          {activeTab === 'articles' ? (
-            language === 'en' 
-              ? 'A collection of theoretical pieces, allegories, and insights from across the world charting the human path to the exploration of consciousness.'
-              : 'Μια βιβλιοθήκη με θεωρητικά κείμενα, αλληγορίες και στοχασμούς από όλο τον κόσμο για την ανθρώπινη πορεία προς την εξερεύνηση της συνειδητότητας.'
-          ) : (
-            language === 'en'
-              ? 'Visual insights and philosophical explorations.'
-              : 'Οπτικές αναζητήσεις και φιλοσοφικές εξερευνήσεις.'
+        <div className="flex flex-col items-center justify-center mb-12 text-center px-4 space-y-4 max-w-2xl mx-auto">
+          <p className="text-white/40 text-sm md:text-base font-serif italic leading-relaxed">
+            {activeTab === 'articles' ? (
+              language === 'en' 
+                ? 'A collection of theoretical pieces, allegories, and insights from across the world charting the human path to the exploration of consciousness.'
+                : 'Μια βιβλιοθήκη με θεωρητικά κείμενα, αλληγορίες και στοχασμούς από όλο τον κόσμο για την ανθρώπινη πορεία προς την εξερεύνηση της συνειδητότητας.'
+            ) : (
+              language === 'en'
+                ? 'Visual insights and philosophical explorations.'
+                : 'Οπτικές αναζητήσεις και φιλοσοφικές εξερευνήσεις.'
+            )}
+          </p>
+          {activeTab === 'articles' && (
+            <div className="pt-4 border-t border-white/10">
+              <p className="text-white/70 font-medium text-sm font-serif italic leading-relaxed">
+                {language === 'en'
+                  ? '"These texts are not scientific literature, but philosophical reflections, poetic allegories, and symbolic explorations of the human experience."'
+                  : '«Τα κείμενα αυτά δεν αποτελούν επιστημονικά δοκίμια, αλλά φιλοσοφικούς στοχασμούς, ποιητικές αλληγορίες και συμβολικές εξερευνήσεις της συνείδησης.»'}
+              </p>
+            </div>
           )}
-        </p>
+        </div>
 
         {activeTab === 'articles' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">

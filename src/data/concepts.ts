@@ -345,7 +345,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     },
     axis: 'attention',
     chapters: [5, 8],
-    related: ['mahamudra', 'open_awareness', 'mechanical_mind']
+    related: ['open_awareness', 'mechanical_mind']
   },
 
   elephant_path: {
@@ -359,7 +359,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     en: {
       title: 'The Elephant, the Monkey, and Awareness',
       short: 'The path of neurophysiology through an ancient myth.',
-      full: 'In the ascetic tradition of Samatha, the mind is a wild black elephant (the Nervous System / Vagus Nerve in fight-or-flight). It is led by a monkey (the subconscious DMN). The ascetic (consciousness) uses a lasso (Awareness) to hook it. Every time you realize the mind wandered, you throw the lasso. This process literally builds the Insula cortex of the brain, the area of sensory integration and self-regulation. You are a modern ascetic, and science validates your method.',
+      full: 'In ancient ascetic traditions, the mind is a wild black elephant (the Nervous System / Vagus Nerve in fight-or-flight). It is led by a monkey (the subconscious DMN). The ascetic (consciousness) uses a lasso (Awareness) to hook it. Every time you realize the mind wandered, you throw the lasso. This process literally builds the Insula cortex of the brain, the area of sensory integration and self-regulation. You are a modern ascetic, and science validates your method.',
       ndNote: 'The lasso (awareness) is the "Gentle Return". You do not beat the elephant, you gently guide it back. This builds the neuroplasticity of self-regulation (Insula).',
       science: 'Strengthening the Insular Cortex increases interoceptive capacity and emotional regulation.'
     },

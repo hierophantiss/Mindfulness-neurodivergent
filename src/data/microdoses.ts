@@ -258,7 +258,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
     link: '/practice/focus/eye-level'
   },
   {
-    id: 'samatha-micro',
+    id: 'thoughts-as-objects',
     evidence: { en: 'Direct somatic focus silences the rumination network', el: 'Η άμεση σωματική εστίαση σιγάζει το δίκτυο μηρυκασμού', ref: 'study-farb' },
     axis: 'attention',
     title: { el: 'Σκέψεις σαν Σύννεφα', en: 'Thoughts as Clouds' },
@@ -267,7 +267,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
     maxSeconds: 60,
     desc: { el: 'Δες τις σκέψεις σου σαν αντικείμενα που διασχίζουν τον ουρανό, χωρίς να τις ακολουθείς.', en: 'Watch your thoughts like objects crossing the sky, without following them.' },
     iconName: 'Focus',
-    link: '/practice/focus/samatha-micro'
+    link: '/practice/focus/thoughts-as-objects'
   },
   {
     id: 'one-sound',
