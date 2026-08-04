@@ -314,15 +314,15 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
   // ═══════════════════════════════════════════
   mahamudra: {
     el: {
-      title: 'Ο Νους δεν είναι «Σπασμένος»',
+      title: 'Ο Νους δεν είναι "Σπασμένος" (Mahamudra)',
       short: 'Άσε το λασπώδες νερό να κατακαθίσει από μόνο του.',
-      full: 'Δεν προσπαθούμε να «φτιάξουμε» ένα χαλασμένο νευρικό σύστημα ή να «γίνουμε καλοί». Ο νους δεν είναι σπασμένος· απλώς λειτουργεί σε συνθήκες συναγερμού και απόρριψης. Μια παλιά στοχαστική εικόνα το λέει απλά: αν σταματήσεις να ανακατεύεις το λασπώδες νερό («πρέπει να ηρεμήσω», «είμαι τραυματισμένος»), η λάσπη (οι απόηχοι) κατακάθεται μόνη της. Τότε αποκαλύπτεται η φυσική, έμφυτη καλοσύνη και διαύγειά σου — ο χρυσός που ήταν πάντα εκεί.',
+      full: 'Δεν προσπαθούμε να "φτιάξουμε" ένα χαλασμένο νευρικό σύστημα ή να "γίνουμε καλοί". Ο νους δεν είναι σπασμένος, απλώς λειτουργεί σε συνθήκες πολεμικής κατάστασης και απόρριψης. Η βασική φιλοσοφία της Μαχαμούντρα είναι ότι αν σταματήσεις να ανακατεύεις το λασπώδες νερό («πρέπει να ηρεμήσω», «ήμουν τραυματισμένος»), η λάσπη (οι απόηχοι) κατακάθεται μόνη της. Τότε αποκαλύπτεται η φυσική, έμφυτη καλοσύνη και διαύγειά σου — ο χρυσός που ήταν πάντα εκεί.',
       ndNote: 'Αυτή η προσέγγιση σπάει το trauma-response της συνεχούς «βελτίωσης». Δεν χρειάζεσαι «φτιάξιμο». Χρειάζεσαι παύση.'
     },
     en: {
-      title: 'The Mind is not "Broken"',
+      title: 'The Mind is not "Broken" (Mahamudra)',
       short: 'Let the muddy water settle on its own.',
-      full: 'We do not try to "fix" a broken nervous system or "become good." The mind is not broken; it just operates under conditions of alarm and rejection. An old contemplative image puts it simply: if you stop stirring the muddy water ("I must calm down," "I am traumatized"), the mud (the echoes) settles on its own. Then your natural, innate goodness and clarity is revealed — the gold that was always there.',
+      full: 'We do not try to "fix" a broken nervous system or "become good." The mind is not broken, it just operates under combat conditions and rejection. The core philosophy of Mahamudra is that if you stop stirring the muddy water ("I must calm down," "I am traumatized"), the mud (the echoes) settles on its own. Then your natural, innate goodness and clarity is revealed — the gold that was always there.',
       ndNote: 'This approach breaks the trauma-response of constant "improvement." You do not need "fixing." You need a pause.'
     },
     axis: 'all',
@@ -814,60 +814,5 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     axis: 'body',
     chapters: [2, 5],
     related: ['grounding', 'open_awareness', 'hyperfocus', 'slow_exhale']
-  },
-
-  contact: {
-    el: {
-      title: 'Επαφή',
-      short: 'Το ζωντανό νήμα προς τα σημεία αγκύρωσης — όχι η ενθύμηση.',
-      full: 'Η επαφή είναι η μόνιμη μορφή της πρακτικής στην καθημερινότητα: ένα λεπτό, ζωντανό νήμα προς τα πέλματα, την ανάσα, τον χώρο — που τρέχει κάτω από οτιδήποτε κάνεις. Όχι αντί για τη ζωή σου, μέσα της. Δεν είναι συγκέντρωση και δεν κατασκευάζεται· δεν κοστίζει τίποτα, γιατί η επίγνωση δεν κουράζεται. Το νήμα θα κόβεται — έτσι είναι σχεδιασμένο. Η στιγμή που το προσέχεις («α, είχα φύγει») είναι η γέφυρα· την περνάς (πέλματα, μία εκπνοή, χώρος) και είσαι ξανά σε επαφή. Η ενθύμηση είναι μόνο η στιγμή της γέφυρας. Η επαφή είναι το μέρος από όπου ζεις.',
-      ndNote: 'Δύο δευτερόλεπτα αληθινής επαφής, πολλές φορές τη μέρα, χτίζουν περισσότερα από μία μεγάλη «σωστή» συνεδρία. Η επανάληψη μετράει, όχι η διάρκεια.'
-    },
-    en: {
-      title: 'Contact',
-      short: 'The living thread to your anchor points — not remembering.',
-      full: 'Contact is the everyday, standing form of the practice: a thin, living thread to the soles, the breath, the space around you, running underneath whatever you do. Not instead of your life, inside it. It is not concentration and is not constructed; it costs nothing, because awareness does not tire. The thread will break — that is the design. The moment you notice it broke ("oh, I was gone") is the bridge: you cross it (soles, one exhale, space) and you are in contact again. Remembering is only the bridge-moment. Contact is the place you live from.',
-      ndNote: 'Two seconds of real contact, many times a day, build more than one long "correct" session. Repetition counts, not duration.'
-    },
-    axis: 'all',
-    chapters: [6, 9],
-    related: ['grounding', 'gentle_return', 'open_awareness']
-  },
-
-  reality_tunnel: {
-    el: {
-      title: 'Το Τούνελ Πραγματικότητας',
-      short: 'Το hyperfocus στραμμένο εναντίον σου — και η έξοδος από τα άλλα δύο κέντρα.',
-      full: 'Κάποτε η βάση της σκέψης στενεύει σε ένα τούνελ: ένα hyperfocus που έχει στραφεί εναντίον σου, όταν το αντικείμενό του είναι ένας φόβος, μια πληγή, μια εμμονή. Το τούνελ γίνεται ολόκληρος ο κόσμος. Το κρίσιμο: δεν βγαίνεις από παγίδα φτιαγμένη από προσοχή χρησιμοποιώντας προσοχή — η λειτουργία που κόλλησε δεν μπορεί να είναι και το σωστικό συνεργείο. Η έξοδος περνά από τα άλλα δύο κέντρα. Κάτω, η βαρύτητα: η μόνη βάση που δεν χρειάζεται κατασκευή για να υπάρχει. Γύρω, η επίγνωση: το τούνελ δεν έχει πόρτα στο βάθος, μα ούτε τοίχους ολόγυρα — μια στιγμή χωρίς αντικείμενο, και οι τοίχοι αποκαλύπτονται σύννεφα.',
-      ndNote: 'Το τούνελ δεν είναι εχθρός — είναι η ίδια ικανότητα που σε αφήνει να βουτάς βαθιά σε ό,τι αγαπάς. Δεν το πολεμάς· του δίνεις γη και χώρο, και η προσοχή ελευθερώνεται μόνη της.'
-    },
-    en: {
-      title: 'The Reality Tunnel',
-      short: 'Hyperfocus turned against you — the exit runs through the other two centers.',
-      full: 'Sometimes the base of thought narrows into a tunnel: a hyperfocus turned against you, when its object is a fear, a wound, an obsession. The tunnel becomes the entire world. The crucial point: you cannot exit a trap made of attention by using attention — the faculty that is stuck cannot also be the rescue party. The way out goes through the other two centers. Down, gravity: the one base that needs no construction to exist. Around, awareness: the tunnel has no door at its far end, but no walls around it either — one objectless moment, and the walls are revealed as clouds.',
-      ndNote: 'The tunnel is not the enemy — it is the same capacity that lets you dive deep into what you love. You do not fight it; you give it earth and space, and attention frees itself.'
-    },
-    axis: 'attention',
-    chapters: [5, 6],
-    related: ['hyperfocus', 'grounding', 'open_awareness', 'attention_modes']
-  },
-
-  where_you_stand: {
-    el: {
-      title: 'Πού Πατάς;',
-      short: 'Η σκέψη ως κατασκευασμένη βάση — και η γη ως βάση που δεν κατασκευάζεις.',
-      full: 'Κάθε νους χρειάζεται ένα σημείο να πατήσει, μια βάση από την οποία αντιλαμβάνεται τον κόσμο. Σε πολλούς νευροδιαφορετικούς νόες αυτή η βάση έχει γίνει η ίδια η σκέψη — και του αξίζει τιμή: όταν το σώμα ζει σε συναγερμό, ο νους ήταν το μόνο έδαφος που μπορούσες να ελέγξεις. Μια βάση όμως από σκέψη δεν κρατιέται μόνη της· πρέπει να τη χτίζεις στιγμή τη στιγμή, να ένας λόγος που ο νους δεν σταματά. Η μέθοδος δίνει διαφορετική βάση: η γη σε κρατά χωρίς προσπάθειά σου (σε αντίθεση με τη σκέψη, που την κρατάς εσύ), κι ο ουρανός ανοίγει χωρίς κατασκευή. Η σκέψη δεν σταματά — παύει μόνο να είναι το πάτωμα, και γίνεται καιρός πάνω από έδαφος που δεν χτίζεις εσύ.',
-      ndNote: 'Δεν είναι ότι η σκέψη σου είναι εχθρός ή ψεύτικη. Ήταν η καλύτερη διαθέσιμη βάση τότε. Τώρα υπάρχει καλύτερη — που δεν σου ζητά συνεχή συντήρηση.'
-    },
-    en: {
-      title: 'Where Do You Stand?',
-      short: 'Thought as a constructed base — and the earth as a base you do not build.',
-      full: 'Every mind needs a place to stand, a base from which it perceives the world. For many neurodivergent minds that base has become thought itself — and it deserves honor: when the body lives in alarm, the mind was the only ground you could control. But a base made of thought never holds itself up; you must rebuild it moment by moment, which is one reason the mind never stops. The method offers a different base: the earth holds you without your effort (unlike thought, which you hold up), and the sky opens with no construction. Thought does not stop — it simply stops being the floor, and becomes weather above ground you do not have to build.',
-      ndNote: 'It is not that your thinking is an enemy or false. It was the best available base then. Now there is a better one — one that asks no constant maintenance.'
-    },
-    axis: 'all',
-    chapters: [6],
-    related: ['contact', 'grounding', 'reality_tunnel', 'sky_metaphor']
-  },
-
+  }
 };

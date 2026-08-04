@@ -207,11 +207,6 @@ export default function Companion() {
           <CatInfinityAvatar className="w-11 h-11" />
         </motion.div>
         
-        {/* Sparkle Floating Badge at top-right */}
-        <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-teal-400 flex items-center justify-center text-stone-950 shadow-[0_0_10px_rgba(20,184,166,0.4)] z-10">
-          <Sparkles size={11} className="animate-pulse" />
-        </div>
-
         {companionData.dailyLogs.length > 0 && <span className="absolute animate-ping top-1 right-1 w-2 h-2 bg-amber-400 rounded-full z-20" />}
       </div>
     </>
