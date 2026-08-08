@@ -1,9 +1,0 @@
-/onboarding     /    301
-/en/onboarding  /en  301
-/el/onboarding  /el  301
-/rabbithole/*  /el/rabbithole/:splat  301
-/chapters/*    /el/chapters/:splat    301
-/method        /el/method             301
-/methodology   /el/methodology        301
-/faq           /el/faq                301
-/* /index.html 200
