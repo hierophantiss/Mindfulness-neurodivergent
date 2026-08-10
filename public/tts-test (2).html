@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" /><title>Δοκιμή φωνής (Piper) — diagnostics</title>
+<style>
+  :root{color-scheme:dark} body{font-family:system-ui,sans-serif;background:#0f1a17;color:#e6efe9;margin:0;padding:20px;line-height:1.5}
+  .wrap{max-width:640px;margin:0 auto} h1{font-size:1.2rem} .note{color:#9fb3a9;font-size:.9rem}
+  textarea{width:100%;box-sizing:border-box;min-height:90px;border-radius:12px;border:1px solid #2c3b35;background:#132420;color:#e6efe9;padding:12px;font-size:1rem}
+  label{display:block;margin:14px 0 6px;font-size:.9rem;color:#9fb3a9}
+  select{width:100%;background:#132420;color:#e6efe9;border:1px solid #2c3b35;border-radius:10px;padding:12px;font-size:1rem}
+  .row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+  button{border:none;cursor:pointer;font-weight:600;border-radius:10px;padding:12px 14px;font-size:1rem}
+  .primary{background:#10b981;color:#04110c;flex:1} .ghost{background:#1c2e28;color:#e6efe9}
+  button:disabled{opacity:.5}
+  .bar{height:8px;background:#1c2e28;border-radius:6px;overflow:hidden;margin-top:8px}.bar>i{display:block;height:100%;width:0;background:#10b981;transition:width .2s}
+  #log{margin-top:14px;padding:12px;border-radius:12px;background:#0b1512;border:1px solid #2c3b35;font-size:.82rem;white-space:pre-wrap;font-family:ui-monospace,monospace;max-height:260px;overflow:auto}
+</style>
+</head>
+<body><div class="wrap">
+  <h1>🔊 Δοκιμή φωνής — diagnostics</h1>
+  <p class="note">Δείχνει κάθε βήμα. Αν κολλήσει, στείλε μου τι γράφει το log.</p>
+  <label for="txt">Κείμενο</label>
+  <textarea id="txt">Κάθισε για λίγο. Νιώσε το βάρος του σώματός σου. Η αναπνοή έρχεται και φεύγει μόνη της.</textarea>
+  <label for="voice">Φωνή</label>
+  <select id="voice">
+    <option value="el_GR-rapunzelina-low" selected>Ελληνικά — rapunzelina (low)</option>
+    <option value="en_US-amy-low">English — amy (low)</option>
+  </select>
+  <div class="row">
+    <button id="play" class="primary" disabled>Κατέβασε &amp; Άκου</button>
+    <button id="stop" class="ghost">■ Διακοπή</button>
+  </div>
+  <div class="bar"><i id="prog"></i></div>
+  <div id="log"></div>
+</div>
+
+<script type="module">
+  // Ανακατεύθυνση στο σωστό repo (diffusionstudio -> rhasspy)
+  const _fetch = window.fetch.bind(window);
+  window.fetch = (input, init) => {
+    let url = typeof input === 'string' ? input : (input && input.url);
+    if (url && url.includes('diffusionstudio/piper-voices'))
+      return _fetch(url.replace('diffusionstudio/piper-voices','rhasspy/piper-voices'), init);
+    return _fetch(input, init);
+  };
+
+  const $ = (id)=>document.getElementById(id);
+  const t0 = Date.now();
+  const log = (m)=>{ const s='['+((Date.now()-t0)/1000).toFixed(1)+'s] '+m; $('log').textContent += s+'\n'; $('log').scrollTop=$('log').scrollHeight; };
+  const setProg=(p)=>{ $('prog').style.width=Math.max(0,Math.min(100,p))+'%'; };
+
+  // Πιάσε ΟΛΑ τα σφάλματα (ακόμη κι αυτά που «χάνονται» μέσα στο WASM)
+  window.addEventListener('error', e=>log('❌ error: '+(e.message||e.error)));
+  window.addEventListener('unhandledrejection', e=>log('❌ promise: '+(e.reason && e.reason.message ? e.reason.message : e.reason)));
+
+  let tts=null, audioCtx=null, currentSrc=null;
+
+  function unlockAudio(){ // ΠΡΕΠΕΙ να τρέξει μέσα στο πάτημα (iOS)
+    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==='suspended') audioCtx.resume();
+    log('audio ctx: '+audioCtx.state);
+  }
+  async function playWav(blob){
+    log('decode WAV ('+blob.size+' bytes)…');
+    const buf = await audioCtx.decodeAudioData(await blob.arrayBuffer());
+    const src = audioCtx.createBufferSource();
+    src.buffer=buf; src.connect(audioCtx.destination);
+    src.onended=()=>log('✅ τέλος αναπαραγωγής');
+    if(audioCtx.state==='suspended') await audioCtx.resume();
+    src.start(); currentSrc=src;
+    log('▶ ξεκίνησε αναπαραγωγή ('+buf.duration.toFixed(1)+'s)');
+  }
+  function stop(){ if(currentSrc){ try{currentSrc.stop()}catch(_){} currentSrc=null; } }
+
+  async function run(voiceId, text){
+    stop(); unlockAudio();
+    try{
+      const stored = await tts.stored().catch(()=>[]);
+      log('stored voices: '+JSON.stringify(stored));
+      if(!stored.includes(voiceId)){
+        log('κατέβασμα '+voiceId+'…');
+        await tts.download(voiceId,(p)=>setProg(Math.round(p.loaded*100/(p.total||1))));
+        log('✅ κατέβηκε');
+      } else log('ήδη cached');
+      setProg(100);
+      log('predict… (φωνήματα + inference)');
+      const wav = await Promise.race([
+        tts.predict({text, voiceId}),
+        new Promise((_,rej)=>setTimeout(()=>rej(new Error('TIMEOUT 90s — πιθανό κόλλημα στον phonemizer WASM')),90000))
+      ]);
+      log('✅ predict OK');
+      await playWav(wav);
+    }catch(e){ log('❌ '+(e && e.message ? e.message : e)); }
+  }
+
+  $('play').onclick=()=>run($('voice').value, $('txt').value.trim());
+  $('stop').onclick=stop;
+
+  (async()=>{
+    try{ log('φόρτωση βιβλιοθήκης…'); tts=await import('https://esm.sh/@diffusionstudio/vits-web@1.0.3'); log('✅ βιβλιοθήκη έτοιμη'); $('play').disabled=false; }
+    catch(e){ log('jsDelivr fallback…'); try{ tts=await import('https://cdn.jsdelivr.net/npm/@diffusionstudio/vits-web@1.0.3/+esm'); log('✅ βιβλιοθήκη (jsDelivr)'); $('play').disabled=false; }catch(e2){ log('❌ αποτυχία: '+e2.message); } }
+  })();
+</script>
+</body></html>
