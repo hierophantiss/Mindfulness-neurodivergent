@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="el"><head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" /><title>MMS TTS — δοκιμή runtime</title>
+<style>
+  :root{color-scheme:dark} body{font-family:system-ui,sans-serif;background:#0f1a17;color:#e6efe9;margin:0;padding:20px;line-height:1.5}
+  .wrap{max-width:640px;margin:0 auto} h1{font-size:1.2rem} .note{color:#9fb3a9;font-size:.9rem}
+  textarea{width:100%;box-sizing:border-box;min-height:80px;border-radius:12px;border:1px solid #2c3b35;background:#132420;color:#e6efe9;padding:12px;font-size:1rem}
+  .row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+  button{border:none;cursor:pointer;font-weight:600;border-radius:10px;padding:12px 14px;font-size:1rem}
+  .primary{background:#10b981;color:#04110c;flex:1}.ghost{background:#1c2e28;color:#e6efe9}
+  button:disabled{opacity:.5}
+  .bar{height:8px;background:#1c2e28;border-radius:6px;overflow:hidden;margin-top:8px}.bar>i{display:block;height:100%;width:0;background:#10b981;transition:width .2s}
+  #log{margin-top:14px;padding:12px;border-radius:12px;background:#0b1512;border:1px solid #2c3b35;font-size:.82rem;white-space:pre-wrap;font-family:ui-monospace,monospace;max-height:280px;overflow:auto}
+</style></head>
+<body><div class="wrap">
+  <h1>🔊 MMS — δοκιμή runtime (Αγγλικά)</h1>
+  <p class="note">Αποδεικνύει ότι το transformers.js τρέχει τοπικά στη συσκευή σου. Αγγλικό μοντέλο (υπάρχει έτοιμο). Αν παίξει καθαρά, ο δρόμος για ελληνικό MMS είναι ανοιχτός.</p>
+  <textarea id="txt">Sit for a moment. Feel the weight of your body resting on the ground. The breath comes and goes on its own.</textarea>
+  <div class="row">
+    <button id="play" class="primary" disabled>Φόρτωσε &amp; Άκου</button>
+    <button id="stop" class="ghost">■ Διακοπή</button>
+  </div>
+  <div class="bar"><i id="prog"></i></div>
+  <div id="log"></div>
+</div>
+<script type="module">
+  const $=(id)=>document.getElementById(id);
+  const t0=Date.now();
+  const log=(m)=>{ $('log').textContent+='['+((Date.now()-t0)/1000).toFixed(1)+'s] '+m+'\n'; $('log').scrollTop=$('log').scrollHeight; };
+  const setProg=(p)=>{ $('prog').style.width=Math.max(0,Math.min(100,p))+'%'; };
+  window.addEventListener('error',e=>log('❌ error: '+(e.message||e.error)));
+  window.addEventListener('unhandledrejection',e=>log('❌ promise: '+(e.reason&&e.reason.message?e.reason.message:e.reason)));
+
+  let synth=null, ctx=null, src=null;
+  function unlock(){ if(!ctx) ctx=new (window.AudioContext||window.webkitAudioContext)(); if(ctx.state==='suspended') ctx.resume(); log('audio ctx: '+ctx.state); }
+  function stop(){ if(src){ try{src.stop()}catch(_){} src=null; } }
+  async function play(out){
+    log('ήχος: '+out.audio.length+' samples @ '+out.sampling_rate+'Hz');
+    const buf=ctx.createBuffer(1,out.audio.length,out.sampling_rate);
+    buf.copyToChannel(out.audio,0);
+    src=ctx.createBufferSource(); src.buffer=buf; src.connect(ctx.destination);
+    src.onended=()=>log('✅ τέλος'); if(ctx.state==='suspended') await ctx.resume();
+    src.start(); log('▶ αναπαραγωγή ('+buf.duration.toFixed(1)+'s)');
+  }
+  async function run(text){
+    stop(); unlock();
+    try{
+      if(!synth){
+        log('φόρτωση transformers.js…');
+        const { pipeline, env } = await import('https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2');
+        env.allowLocalModels=false;
+        log('δημιουργία pipeline (κατεβάζει μοντέλο, μία φορά)…');
+        synth = await pipeline('text-to-speech','Xenova/mms-tts-eng',{
+          progress_callback:(p)=>{ if(p && p.status==='progress' && p.total) setProg(Math.round(p.loaded*100/p.total)); }
+        });
+        log('✅ pipeline έτοιμο'); setProg(100);
+      }
+      log('παραγωγή φωνής…');
+      const out = await synth(text);
+      log('✅ παράχθηκε');
+      await play(out);
+    }catch(e){ log('❌ '+(e&&e.message?e.message:e)); }
+  }
+  $('play').onclick=()=>run($('txt').value.trim());
+  $('stop').onclick=stop;
+  $('play').disabled=false; log('έτοιμο — πάτα «Φόρτωσε & Άκου».');
+</script>
+</body></html>
