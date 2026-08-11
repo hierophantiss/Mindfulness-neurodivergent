@@ -1,0 +1,52 @@
+# Μετατρέπει το ελληνικό MMS-TTS της Meta (facebook/mms-tts-ell) σε ONNX
+# συμβατό με transformers.js, και το ανεβάζει στον δικό σου λογαριασμό HuggingFace.
+# Τρέχει στους servers του GitHub — μία φορά. Το log είναι πλήρως αναγνώσιμο για debug.
+
+name: Build Greek TTS model (MMS → ONNX)
+
+on:
+  workflow_dispatch:
+    inputs:
+      hf_repo:
+        description: "Το HuggingFace repo σου, π.χ. to-username-sou/mms-tts-ell"
+        required: true
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Πάρε τον μετατροπέα (transformers.js v2.17.2 — δοκιμασμένος για VITS/MMS)
+        run: git clone --depth 1 --branch 2.17.2 https://github.com/huggingface/transformers.js.git tjs
+
+      - name: Εγκατάσταση εργαλείων μετατροπής
+        run: |
+          cd tjs
+          python -m pip install --upgrade pip
+          pip install -r scripts/requirements.txt
+          pip install "huggingface_hub[cli]"
+
+      - name: Μετατροπή facebook/mms-tts-ell -> ONNX (+ quantized)
+        run: |
+          cd tjs
+          python -m scripts.convert --quantize --model_id facebook/mms-tts-ell
+          echo "=== Αρχεία που παρήχθησαν ==="
+          ls -la models/facebook/mms-tts-ell
+          echo "=== onnx/ ==="
+          ls -la models/facebook/mms-tts-ell/onnx
+          echo "=== Μεγέθη (σημαντικό για το hosting) ==="
+          du -h models/facebook/mms-tts-ell/onnx/*
+
+      - name: Ανέβασμα στο HuggingFace repo σου
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          cd tjs
+          huggingface-cli upload "${{ github.event.inputs.hf_repo }}" models/facebook/mms-tts-ell . \
+            --repo-type model --token "$HF_TOKEN"
+          echo "✅ Έτοιμο: https://huggingface.co/${{ github.event.inputs.hf_repo }}"
+          
