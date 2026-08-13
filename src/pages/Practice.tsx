@@ -373,6 +373,34 @@ const axisInfo = {
           </p>
         </header>
 
+        {/* Warning Banner */}
+        <div className="max-w-4xl mx-auto w-full">
+          <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-5 md:p-6 text-left">
+            <h3 className="text-amber-400 font-semibold mb-3 flex items-center gap-2">
+              <span className="text-xl">⚠️</span>
+              {language === 'el' ? 'Σημαντική Σημείωση για την Ασφάλειά σου' : 'Important Safety Note'}
+            </h3>
+            <div className="space-y-3 text-amber-200/80 text-sm md:text-[15px] leading-relaxed">
+              <p>
+                {language === 'el' 
+                  ? 'Η αναπνοή είναι εργαλείο, όχι καταναγκασμός. Ειδικά στις ασκήσεις που απαιτούν κράτημα της αναπνοής ή πολύ αργή εκπνοή, το νευρικό σύστημα κάποιων ανθρώπων μπορεί να νιώσει πίεση.' 
+                  : 'Breathing is a tool, not a compulsion. Especially in exercises that require holding your breath or a very slow exhale, some people\'s nervous systems may feel pressured.'}
+              </p>
+              <p>
+                {language === 'el' 
+                  ? 'Αν οποιαδήποτε στιγμή νιώσεις δυσφορία, άγχος, ζάλη ή «πνίξιμο», ' 
+                  : 'If at any point you feel discomfort, anxiety, dizziness, or "suffocation", '}
+                <strong className="text-amber-300">
+                  {language === 'el' ? 'σταμάτα αμέσως την άσκηση' : 'stop the exercise immediately'}
+                </strong>
+                {language === 'el' 
+                  ? '. Δεν κάνεις κάτι λάθος. Επίστρεψε στον δικό σου, φυσικό ρυθμό αναπνοής ή άνοιξε τα μάτια σου και απλώς νιώσε το βάρος του σώματός σου στην καρέκλα.' 
+                  : '. You are doing nothing wrong. Return to your own natural breathing rhythm or open your eyes and simply feel the weight of your body on the chair.'}
+              </p>
+            </div>
+          </div>
+        </div>
+
         {renderSomaticFilters()}
 
         <div className="max-w-4xl mx-auto w-full pb-12">
