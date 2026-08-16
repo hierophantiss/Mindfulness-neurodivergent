@@ -401,11 +401,11 @@ export default function NavigationMenu() {
                     </div>
                   </div>
                   <div className="flex gap-2">
-                    <a href="/workbook_el.epub" download
+                    <a href={`/workbook_${language}.epub`} download
                        className="flex-1 text-center px-3 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-medium text-teal-100 transition-colors">
                       EPUB · Kindle
                     </a>
-                    <a href="/workbook_el.pdf" download
+                    <a href={`/workbook_${language}.pdf`} download
                        className="flex-1 text-center px-3 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-medium text-teal-100 transition-colors">
                       PDF · Εκτύπωση
                     </a>
