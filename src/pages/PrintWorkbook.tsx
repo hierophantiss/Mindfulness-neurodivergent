@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
 import { CHAPTERS_DATA } from '../data/chapters';
-import { D as courseEL } from '../data/course-el';
-import { D as courseEN } from '../data/course-en';
+import { COURSE_EL as courseEL } from '../data/course-el';
+import { COURSE_EN as courseEN } from '../data/course-en';
 
 export default function PrintWorkbook() {
   const { language } = useLanguage();

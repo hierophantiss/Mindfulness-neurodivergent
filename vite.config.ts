@@ -18,8 +18,11 @@ export default defineConfig(() => {
           globIgnores: ['**/*.{mp4,pdf,png,jpg}', 'server.cjs*'],
           navigateFallback: '/index.html',
           navigateFallbackDenylist: [/\.(?:pdf|epub)$/, /^\/workbook_/, /^\/animations\//],
+          ignoreURLParametersMatching: [/^utm_/, /^fbclid$/, /^lang$/],
           maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
-          cleanupOutdatedCaches: true
+          cleanupOutdatedCaches: true,
+          clientsClaim: true,
+          skipWaiting: true
         }
       })
     ],

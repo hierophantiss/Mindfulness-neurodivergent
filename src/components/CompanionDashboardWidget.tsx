@@ -3,8 +3,8 @@ import { useLanguage } from '../hooks/useLanguage';
 import { useCompanion } from '../hooks/useCompanion';
 import { cn } from '../lib/utils';
 import { useNavigate } from 'react-router-dom';
-import { D as courseDataEl } from '../data/course-el';
-import { D as courseDataEn } from '../data/course-en';
+import { COURSE_EL as courseDataEl } from '../data/course-el';
+import { COURSE_EN as courseDataEn } from '../data/course-en';
 
 export const CompanionDashboardWidget: React.FC = () => {
   const { language } = useLanguage();

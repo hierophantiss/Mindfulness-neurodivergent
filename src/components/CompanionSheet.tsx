@@ -6,8 +6,8 @@ import { CHAPTERS_DATA, CHAPTER_PRACTICES } from '../data/chapters';
 import { MOOD_ROUTES } from '../data/moods';
 import { KNOWLEDGE_CONCEPTS } from '../data/concepts';
 import { KNOWLEDGE_FAQ } from '../data/faq';
-import { D as D_EL } from '../data/course-el';
-import { D as D_EN } from '../data/course-en';
+import { COURSE_EL as D_EL } from '../data/course-el';
+import { COURSE_EN as D_EN } from '../data/course-en';
 
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';

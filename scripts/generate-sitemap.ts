@@ -8,7 +8,7 @@ const ROOT_DIR = path.join(__dirname, '..');
 
 import { CHAPTERS_DATA } from '../src/data/chapters';
 import { BREATH_PATTERNS } from '../src/data/breathPatterns';
-import { D as courseContentEn } from '../src/data/course-en';
+import { COURSE_EN as courseContentEn } from '../src/data/course-en';
 
 const BASE_URL = 'https://neurodivergent-mindfulness.org';
 
