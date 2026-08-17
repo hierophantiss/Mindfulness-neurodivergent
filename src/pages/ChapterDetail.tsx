@@ -189,6 +189,18 @@ export default function ChapterDetail() {
     updateChapterProgress(chapter.num, pct);
   }, [page, chapter, pages.length, updateChapterProgress]);
 
+
+  const allParagraphs = [];
+  if (chapter) {
+    allParagraphs.push(chapter.title);
+    allParagraphs.push(chapter.summary);
+    if (chapter.tldr) allParagraphs.push(chapter.tldr);
+    chapter.theorySections?.forEach(sec => {
+      allParagraphs.push(sec.title);
+      sec.paragraphs?.forEach(p => allParagraphs.push(p));
+    });
+  }
+
   if (!chapter) {
     return <div className="p-8 text-center text-white/40">{language === 'el' ? 'Κεφάλαιο δεν βρέθηκε.' : 'Chapter not found.'}</div>;
   }
@@ -297,10 +309,11 @@ export default function ChapterDetail() {
 
       {/* Main Content Area */}
       <main 
-        className="flex-1 relative overflow-x-hidden flex flex-col w-full"
+        className="flex-1 relative overflow-x-hidden flex flex-col w-full items-center"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
+        
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
             key={page}
@@ -312,9 +325,9 @@ export default function ChapterDetail() {
             transition={reduceMotion ? { duration: 0.01 } : { duration: 0.4, ease: "easeOut" }}
             className="flex-1 overflow-y-auto scrollbar-none flex flex-col w-full px-2"
           >
-            <div className="flex-1 flex flex-col justify-start min-h-full pt-4 pb-20 max-w-[65ch] mx-auto w-full text-center">
+            <div className="flex-1 flex flex-col justify-start min-h-full pt-4 pb-8 max-w-[65ch] mx-auto w-full text-center">
             {curPage.type === 'intro' && (
-              <div className="space-y-12">
+              <div className="space-y-8">
                 <div className="space-y-6 text-center">
                    <div 
                     className="w-24 h-24 rounded-full flex items-center justify-center text-5xl mx-auto backdrop-blur-md border border-white/5 shadow-inner"
@@ -330,7 +343,7 @@ export default function ChapterDetail() {
                   </p>
                 </div>
 
-                <div className="py-12 space-y-6 relative w-full text-left">
+                <div className="py-6 space-y-6 relative w-full text-left">
                   <div className="space-y-4 text-center">
                     <span className="text-[10px] font-bold tracking-[0.3em] text-teal-400/60 uppercase font-sans">
                       {language === 'el' ? 'ΣΥΝΟΨΗ' : 'SUMMARY'}
@@ -496,7 +509,7 @@ export default function ChapterDetail() {
             )}
 
             {/* In-content Navigation Buttons */}
-            <div className="mt-24 pb-12 flex flex-col items-center gap-8">
+            <div className="mt-8 pb-12 flex flex-col items-center gap-8">
               {page < pages.length - 1 ? (
                 <button
                   onClick={handleNext}

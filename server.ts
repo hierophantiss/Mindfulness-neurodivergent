@@ -1,3 +1,4 @@
+import { GoogleGenAI, Modality } from '@google/genai';
 import express from 'express';
 import fs from 'fs';
 import 'dotenv/config';
@@ -36,18 +37,6 @@ async function startServer() {
   // API health check
   app.get('/api/health', (req, res) => {
     res.json({ status: "ok" });
-  });
-
-  // Gemini API Proxy
-  app.post('/api/audio-log', express.json(), (req, res) => {
-    try {
-      const logLine = `[${new Date().toISOString()}] ${JSON.stringify(req.body)}\n`;
-      fs.appendFileSync('audio-debug.log', logLine);
-      res.json({ status: 'logged' });
-    } catch(e) {
-      console.error(e);
-      res.status(500).json({ error: 'failed' });
-    }
   });
 
   // Serve public folder statically (supports Accept-Ranges for iOS Safari)
