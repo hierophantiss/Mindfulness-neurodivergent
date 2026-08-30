@@ -7,35 +7,23 @@ import { useMoonPhase } from '../hooks/useMoonPhase';
 import { cn } from '../lib/utils';
 
 interface Star {
-  x: number;
-  y: number;
+  // Polar coordinates for celestial dome rotation
+  radius: number; // Normalized 0..1 from center to corner
+  angle: number;  // Initial angle in radians
   size: number;
   opacity: number;
   speed: number;
   blinkOffset: number;
 }
 
-interface Particle {
-  x: number;
-  y: number;
-  size: number;
-  speedX: number;
-  speedY: number;
-  opacity: number;
-}
-
 export function InteractiveBackground() {
-    const { reduceMotion } = useAccessibility();
-  
+  const { reduceMotion } = useAccessibility();
 
   const { hour, timeFloat } = useTime();
   const { progress } = useProgress();
   const moonPhase = useMoonPhase();
-  // Deterministic weather fallback based on time of day
-  const weather = (hour >= 3 && hour <= 4) ? 'rain' : 'clear' as string;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const starsRef = useRef<Star[]>([]);
-  const particlesRef = useRef<Particle[]>([]);
   const requestRef = useRef<number>(0);
   
   // Calculate states based on hour
@@ -43,7 +31,7 @@ export function InteractiveBackground() {
   const isDusk = hour >= 18 && hour < 20;
   const isDay = hour >= 6 && hour < 18;
 
-  const baseStarCount = 100;
+  const baseStarCount = 120;
   const targetStarCount = baseStarCount + (progress.completedLessons?.length || 0) * 12; // 12 stars per lesson
 
   // Initialize canvas and stars
@@ -73,12 +61,14 @@ export function InteractiveBackground() {
       const newStars = [...starsRef.current];
       const diff = targetStarCount - newStars.length;
       for (let i = 0; i < diff; i++) {
+        // Distribute stars evenly across the celestial dome
+        // Using sqrt(random) gives uniform area distribution on a disc
         newStars.push({
-          x: Math.random(), // Store as percentage 0-1
-          y: Math.random(), // Store as percentage 0-1
-          size: Math.random() * 1.8 + 0.1, // Variation in size
-          opacity: Math.random() * 0.7 + 0.3,
-          speed: Math.random() * 0.003 + 0.001,
+          radius: Math.sqrt(Math.random()), 
+          angle: Math.random() * Math.PI * 2,
+          size: Math.random() * 1.6 + 0.2, // Variation in size
+          opacity: Math.random() * 0.6 + 0.4,
+          speed: Math.random() * 0.002 + 0.0008,
           blinkOffset: Math.random() * Math.PI * 2,
         });
       }
@@ -87,29 +77,6 @@ export function InteractiveBackground() {
       starsRef.current = starsRef.current.slice(0, targetStarCount);
     }
   }, [targetStarCount]);
-
-  useEffect(() => {
-    // Initialize or adapt weather particles
-    const targetParticleCount = weather === 'rain' ? 80 : weather === 'snow' ? 60 : 0;
-    
-    if (particlesRef.current.length < targetParticleCount) {
-      const newParticles = [...particlesRef.current];
-      const diff = targetParticleCount - newParticles.length;
-      for (let i = 0; i < diff; i++) {
-        newParticles.push({
-          x: Math.random(),
-          y: Math.random() - 1, // Start slightly above or on screen
-          speedY: weather === 'rain' ? Math.random() * 0.015 + 0.01 : Math.random() * 0.002 + 0.001,
-          speedX: weather === 'snow' ? (Math.random() - 0.5) * 0.001 : 0.0005,
-          size: weather === 'rain' ? Math.random() * 1.5 + 0.5 : Math.random() * 2 + 1,
-          opacity: weather === 'rain' ? Math.random() * 0.15 + 0.05 : Math.random() * 0.3 + 0.1,
-        });
-      }
-      particlesRef.current = newParticles;
-    } else if (particlesRef.current.length > targetParticleCount) {
-      particlesRef.current = particlesRef.current.slice(0, targetParticleCount);
-    }
-  }, [weather]);
 
   // Animation Loop
   useEffect(() => {
@@ -125,75 +92,53 @@ export function InteractiveBackground() {
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Determine star visibility and count based on time of day
-      // Smooth star dimming based on daylight
+      // Determine star visibility based on daylight
       let diffDay = Math.abs(timeFloat - 12);
       if (diffDay > 12) diffDay = 24 - diffDay;
       const dayBrightness = Math.max(0, 1 - diffDay / 6); // 1 at noon, 0 at 6am/6pm
-      
-      let starOpacityMul = 1.0 - (dayBrightness * 0.6); // Dim to 40% at noon
-      
-      if (weather === 'cloudy' || weather === 'rain' || weather === 'snow') {
-        starOpacityMul *= 0.3; // Dim stars when cloudy/raining
-      }
+      const starOpacityMul = 1.0 - (dayBrightness * 0.6); // Dim to 40% at noon
+
+      const centerX = canvas.width * 0.5;
+      const centerY = canvas.height * 0.35; // Celestial pivot (North Star / Celestial Pole) slightly above center
+      const maxRadius = Math.sqrt(centerX * centerX + Math.pow(canvas.height - centerY, 2)) * 1.1;
+
+      // Slow celestial sphere rotation: 1 full rotation every ~600 seconds (or static if reduceMotion)
+      const celestialRotation = reduceMotion ? 0 : time * 0.012;
 
       for (let i = 0; i < starsRef.current.length; i++) {
         const star = starsRef.current[i];
         
-        // Twinkle effect using sine wave
-        const blink = (Math.sin(time * star.speed * 100 + star.blinkOffset) + 1) / 2;
-        const currentOpacity = star.opacity * (0.2 + blink * 0.8) * starOpacityMul;
+        // Calm, steady starlight with very slow and subtle shimmer (no rapid flickering)
+        const blink = (Math.sin(time * star.speed * 12 + star.blinkOffset) + 1) / 2;
+        const currentOpacity = star.opacity * (0.8 + blink * 0.2) * starOpacityMul;
         
-        if (currentOpacity < 0.03) continue; // Performance optimization
+        if (currentOpacity < 0.02) continue;
+
+        // Calculate rotated coordinates on celestial dome
+        const currentAngle = star.angle + celestialRotation;
+        const dist = star.radius * maxRadius;
+        const starX = centerX + Math.cos(currentAngle) * dist;
+        const starY = centerY + Math.sin(currentAngle) * dist;
+
+        // Skip if outside canvas
+        if (starX < -10 || starX > canvas.width + 10 || starY < -10 || starY > canvas.height + 10) {
+          continue;
+        }
 
         ctx.beginPath();
-        // Slightly larger stars blink more noticeably
-        const size = star.size * (0.8 + blink * 0.4);
-        ctx.arc(star.x * canvas.width, star.y * canvas.height, size, 0, Math.PI * 2);
+        const size = star.size * (0.9 + blink * 0.1);
+        ctx.arc(starX, starY, size, 0, Math.PI * 2);
         
-        // Add subtle color variation: mostly white, some teal/blueish
-        if (i % 20 === 0) {
-          ctx.fillStyle = `rgba(165, 243, 252, ${currentOpacity})`; // Cyan-ish
-        } else if (i % 35 === 0) {
-          ctx.fillStyle = `rgba(216, 180, 254, ${currentOpacity})`; // Purple-ish
+        // Soft subtle starlight tones
+        if (i % 25 === 0) {
+          ctx.fillStyle = `rgba(186, 230, 253, ${currentOpacity})`; // Subtle icy/blue
+        } else if (i % 40 === 0) {
+          ctx.fillStyle = `rgba(254, 240, 138, ${currentOpacity})`; // Subtle warm gold
         } else {
           ctx.fillStyle = `rgba(255, 255, 255, ${currentOpacity})`;
         }
         
         ctx.fill();
-        ctx.closePath();
-      }
-
-      // Draw weather particles
-      for (let i = 0; i < particlesRef.current.length; i++) {
-        const p = particlesRef.current[i];
-        if (!reduceMotion) p.y += p.speedY;
-        if (!reduceMotion) p.x += p.speedX;
-        
-        if (weather === 'snow') {
-          p.x += Math.sin(time * 2 + i) * 0.0005;
-        }
-
-        // Reset when off screen
-        if (p.y > 1.1) {
-          p.y = -0.1;
-          p.x = Math.random();
-        }
-        if (p.x > 1.1) p.x = -0.1;
-        if (p.x < -0.1) p.x = 1.1;
-
-        ctx.beginPath();
-        if (weather === 'rain') {
-          ctx.moveTo(p.x * canvas.width, p.y * canvas.height);
-          ctx.lineTo((p.x - 0.005) * canvas.width, (p.y - 0.02) * canvas.height);
-          ctx.strokeStyle = `rgba(165, 243, 252, ${p.opacity * (isDay ? 0.3 : 1)})`;
-          ctx.lineWidth = p.size * 0.8;
-          ctx.stroke();
-        } else if (weather === 'snow') {
-          ctx.arc(p.x * canvas.width, p.y * canvas.height, p.size, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity * (isDay ? 0.5 : 1)})`;
-          ctx.fill();
-        }
         ctx.closePath();
       }
 
@@ -204,7 +149,7 @@ export function InteractiveBackground() {
     return () => {
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
     };
-  }, [isNight, isDay, isDusk, reduceMotion]);
+  }, [timeFloat, reduceMotion]);
 
   // Calculate smooth cyclical opacities based on timeFloat (0-24)
   const getOpacity = (peak: number, spread: number) => {
@@ -213,7 +158,6 @@ export function InteractiveBackground() {
     return Math.max(0, 1 - diff / spread);
   };
 
-  const dayOpacity = getOpacity(12, 6);       // Peak 12, spread 6 (6 to 18)
   const duskOpacity = getOpacity(18, 2.5);    // Peak 18, spread 2.5 (15.5 to 20.5)
   const dawnOpacity = getOpacity(6, 2.5);     // Peak 6, spread 2.5 (3.5 to 8.5)
   const nightOpacity = getOpacity(0, 7);      // Peak 0, spread 7 (17 to 7)
@@ -259,7 +203,7 @@ export function InteractiveBackground() {
     <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#010204]">
       {/* Interpolated Sky Background */}
       <div 
-        className="absolute inset-0 transition-all duration-1000"
+        className="absolute inset-0"
         style={{ background: getSkyGradient(timeFloat) }}
       />
       
@@ -284,60 +228,64 @@ export function InteractiveBackground() {
 
          {/* Moon */}
          <div 
-           className="absolute flex items-center justify-center w-20 h-20 md:w-28 md:h-28 opacity-30 blur-[2px]"
+           className="absolute flex items-center justify-center w-20 h-20 md:w-28 md:h-28 opacity-85"
            style={{ transform: `translate(-50%, -50%) translateY(calc(0.6 * max(70vw, 70vh))) rotate(180deg)` }}
          >
-           <div className="relative w-full h-full overflow-hidden rounded-full bg-slate-300/40 shadow-[0_0_60px_10px_rgba(226,232,240,0.05)]">
-              {/* Shadow disc to create moon phases */}
+           <div className="relative w-full h-full overflow-hidden rounded-full bg-gradient-to-tr from-slate-200 via-slate-100 to-amber-50 shadow-[0_0_50px_12px_rgba(226,232,240,0.22)]">
+              {/* Subtle lunar maria texture */}
+              <div className="absolute top-[25%] left-[20%] w-[35%] h-[35%] rounded-full bg-slate-300/40 blur-[2px]" />
+              <div className="absolute bottom-[20%] right-[25%] w-[45%] h-[40%] rounded-full bg-slate-400/30 blur-[3px]" />
+              
+              {/* Shadow disc to create authentic smooth moon phases */}
               <div 
-                className="absolute inset-[0%] rounded-full bg-[#03060c] blur-[3px]"
+                className="absolute inset-0 rounded-full bg-[#02050c] blur-[2px]"
                 style={{ 
-                  transform: `translateX(${moonPhase <= 0.5 ? (moonPhase / 0.5) * 120 : -120 + ((moonPhase - 0.5) / 0.5) * 120}%) scale(1.05)`,
-                  opacity: 0.98 
+                  transform: `translateX(${moonPhase <= 0.5 ? (moonPhase / 0.5) * 115 : -115 + ((moonPhase - 0.5) / 0.5) * 115}%) scale(1.04)`,
+                  opacity: 0.96 
                 }} 
               />
            </div>
          </div>
       </motion.div>
 
-      {/* Aurora Borealis Effect - Gentle color hues for night time */ }
+      {/* Aurora Borealis (Northern Lights) Effect - Ethereal, steady and gentle ambient light curtains during night */}
       <div 
-        className="absolute inset-0 overflow-hidden pointer-events-none z-10 transition-opacity ease-linear"
-        style={{ opacity: nightOpacity * 0.7 + duskOpacity * 0.2 + dawnOpacity * 0.2 }}
+        className="absolute inset-0 overflow-hidden pointer-events-none z-10"
+        style={{ opacity: Math.min(0.65, nightOpacity * 0.65 + duskOpacity * 0.15 + dawnOpacity * 0.15) }}
       >
         <motion.div
            animate={{
-               x: ["0%", "10%", "-5%", "0%"],
-               y: ["0%", "-5%", "5%", "0%"],
-               scale: [1, 1.1, 0.95, 1],
+               x: ["-4%", "6%", "-3%", "-4%"],
+               y: ["0%", "-4%", "3%", "0%"],
+               scale: [1, 1.08, 0.98, 1],
            }}
-           transition={reduceMotion ? { duration: 0.01 } : { duration: 25, repeat: Infinity, ease: "easeInOut" }}
-           className="absolute -top-[20%] -left-[10%] w-[80%] h-[60%] bg-teal-500/20 blur-[100px] rounded-full mix-blend-screen"
+           transition={reduceMotion ? { duration: 0.01 } : { duration: 28, repeat: Infinity, ease: "easeInOut" }}
+           className="absolute -top-[15%] -left-[10%] w-[85%] h-[55%] bg-gradient-to-r from-emerald-500/20 via-teal-400/25 to-cyan-500/15 blur-[60px] rounded-full"
         />
         <motion.div
            animate={{
-               x: ["0%", "-10%", "5%", "0%"],
-               y: ["0%", "10%", "-5%", "0%"],
-               scale: [1, 1.15, 1.05, 1],
+               x: ["4%", "-6%", "5%", "4%"],
+               y: ["-2%", "6%", "-4%", "-2%"],
+               scale: [1, 1.1, 1.02, 1],
            }}
-           transition={reduceMotion ? { duration: 0.01 } : { duration: 30, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-           className="absolute top-[10%] right-[0%] w-[70%] h-[60%] bg-emerald-400/20 blur-[120px] rounded-full mix-blend-screen"
+           transition={reduceMotion ? { duration: 0.01 } : { duration: 34, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+           className="absolute top-[5%] right-[-5%] w-[80%] h-[60%] bg-gradient-to-r from-teal-400/20 via-emerald-400/25 to-indigo-500/15 blur-[70px] rounded-full"
         />
         <motion.div
            animate={{
-               x: ["0%", "5%", "-10%", "0%"],
-               y: ["0%", "-10%", "5%", "0%"],
+               x: ["0%", "5%", "-6%", "0%"],
+               y: ["0%", "-6%", "5%", "0%"],
                scale: [1, 1.05, 1.1, 1],
            }}
-           transition={reduceMotion ? { duration: 0.01 } : { duration: 35, repeat: Infinity, ease: "easeInOut", delay: 5 }}
-           className="absolute bottom-[20%] left-[20%] w-[60%] h-[50%] bg-indigo-500/20 blur-[110px] rounded-full mix-blend-screen"
+           transition={reduceMotion ? { duration: 0.01 } : { duration: 38, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+           className="absolute top-[18%] left-[15%] w-[70%] h-[45%] bg-gradient-to-r from-indigo-500/15 via-violet-500/20 to-teal-400/15 blur-[70px] rounded-full"
         />
       </div>
 
       {/* The animated stars canvas */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 z-20 pointer-events-none transition-opacity duration-1000"
+        className="absolute inset-0 z-20 pointer-events-none"
       />
 
     </div>

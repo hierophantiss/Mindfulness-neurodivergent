@@ -1,16 +1,8 @@
-import { GoogleGenAI, Modality } from '@google/genai';
 import express from 'express';
 import fs from 'fs';
 import 'dotenv/config';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
-import { CHAPTERS_DATA } from "./src/data/chapters";
-import { D as D_EL } from "./src/data/course-el";
-import { D as D_EN } from "./src/data/course-en";
-
-
-import { MICRODOSES_EXERCISES } from "./src/data/microdoses";
-import { BREATH_PATTERNS } from "./src/data/breathPatterns";
 
 
 async function startServer() {
