@@ -1,0 +1,16 @@
+/onboarding     /    301
+/en/onboarding  /en  301
+/el/onboarding  /el  301
+/rabbithole/*  /el/rabbithole/:splat  301
+/chapters/*    /el/chapters/:splat    301
+/method        /el/method             301
+/methodology   /el/methodology        301
+/faq           /el/faq                301
+/practice        /el/practice          301
+/practice/*      /el/practice/:splat   301
+/program        /el/program           301
+/program/*      /el/program/:splat    301
+/journal        /el/journal           301
+/sanctuary      /el/sanctuary         301
+/settings       /el/settings          301
+/* /index.html 200

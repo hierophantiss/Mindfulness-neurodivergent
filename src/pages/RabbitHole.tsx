@@ -32,7 +32,7 @@ const formatMarkdown = (text: string) => {
           <React.Fragment key={i}>
             {italicParts.map((itPart, j) => {
               if (itPart.startsWith('*') && itPart.endsWith('*')) {
-                return <em key={j} className="italic text-white/90">{itPart.slice(1, -1)}</em>;
+                return <span key={j} className="font-bold text-white tracking-wide mix-blend-plus-lighter" style={{ fontWeight: 800 }}>{itPart.slice(1, -1)}</span>;
               }
               return <span key={j}>{itPart}</span>;
             })}

@@ -108,7 +108,7 @@ const ConceptAnnotatedText = ({ text }: { text: string }) => {
           );
         }
         
-        const strongParts = part.split(/(<strong>.*?<\/strong>|\*\*.*?\*\*)/g);
+        const strongParts = part.split(/(<strong>.*?<\/strong>|\*\*.*?\*\*|\*[^*]+\*)/g);
         return (
           <React.Fragment key={i}>
             {strongParts.map((sp, j) => {
@@ -117,6 +117,9 @@ const ConceptAnnotatedText = ({ text }: { text: string }) => {
               }
               if (sp.startsWith('**') && sp.endsWith('**')) {
                 return <strong key={j} className="font-semibold text-white/95">{sp.slice(2, -2)}</strong>;
+              }
+              if (sp.startsWith('*') && sp.endsWith('*')) {
+                return <strong key={j} className="font-semibold text-white/95">{sp.slice(1, -1)}</strong>;
               }
               return <span key={j}>{sp}</span>;
             })}

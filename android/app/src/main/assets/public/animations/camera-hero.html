@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Άσκηση Κάμερας — Παρουσία & Τετραπλός Άξονας | Camera Exercise with Presence Hero</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,700;1,300&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box} body{background:#050510;overflow:hidden;height:100vh;width:100vw;font-family:'Fraunces',serif;color:#e8e4df;user-select:none}
+  canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:1}
+  .sub-box{position:fixed;bottom:50px;left:50%;transform:translateX(-50%);z-index:10;text-align:center;width:90%;max-width:530px;opacity:0;transition:opacity 1.5s ease;background:rgba(5,5,16,0.6);backdrop-filter:blur(6px);border-radius:20px;padding:12px 16px;border:1px solid rgba(232,228,223,0.08);pointer-events:none}
+  .sub-box.vis{opacity:1} .sub-box .stag{font-size:clamp(0.5rem,0.9vw,0.65rem);letter-spacing:0.3em;text-transform:uppercase;color:rgba(200,180,120,0.65);margin-bottom:5px}
+  .sub-box .main{font-size:clamp(0.7rem,1.4vw,0.9rem);font-weight:400;letter-spacing:0.06em;color:rgba(232,228,223,0.8);line-height:1.7;font-style:italic}
+  .sub-box .sci{font-size:clamp(0.45rem,0.8vw,0.55rem);color:rgba(140,200,180,0.5);margin-top:8px;line-height:1.5}
+  .eng-banner{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:20;background:rgba(10,20,25,0.85);backdrop-filter:blur(4px);border-radius:20px;padding:10px 20px;max-width:85%;text-align:center;font-size:clamp(0.8rem,2.5vw,1rem);font-weight:400;letter-spacing:0.02em;color:#f0f0e8;border-left:3px solid #c8922a;box-shadow:0 4px 12px rgba(0,0,0,0.2);opacity:0;transition:opacity 1.5s ease;pointer-events:none;line-height:1.5;}
+  .eng-banner.vis{opacity:1} .snum{position:fixed;top:20px;right:24px;z-index:10;font-size:0.6rem;letter-spacing:0.3em;color:rgba(232,228,223,0.12)}
+  .ptrack{position:fixed;bottom:0;left:0;width:100%;height:2px;background:rgba(255,255,255,0.03);z-index:10} .pbar{height:100%;background:linear-gradient(90deg,rgba(200,160,80,0.5),rgba(100,180,150,0.5));transition:width 1s ease}
+  .dots{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:10;display:flex;flex-direction:column;gap:12px}
+  .dot{width:6px;height:6px;border-radius:50%;background:rgba(232,228,223,0.1);transition:all .4s ease;cursor:pointer;border:none;padding:0;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center}
+  .dot.active{background:rgba(232,228,223,0.55);transform:scale(1.2)}
+  .ctrls{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);z-index:10;display:flex;gap:8px}
+  .ctrls button{background:rgba(232,228,223,0.06);border:1.5px solid rgba(232,228,223,0.15);color:rgba(232,228,223,0.5);padding:10px 22px;font-family:'Fraunces',serif;font-size:clamp(0.75rem,1.5vw,0.9rem);letter-spacing:0.12em;cursor:pointer;border-radius:28px;transition:all .3s;min-width:48px;min-height:44px}
+  .ctrls button:active{background:rgba(232,228,223,0.18);transform:scale(0.96)}
+  .intro{position:fixed;inset:0;z-index:100;background:#050510;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:opacity 2s ease}
+  .intro.hidden{opacity:0;pointer-events:none}
+  .intro-t{font-size:clamp(1.4rem,4vw,2.4rem);font-weight:300;letter-spacing:0.2em;background:linear-gradient(135deg,#e8e4df,#c8a860);-webkit-background-clip:text;-webkit-text-fill-color:transparent;opacity:0;animation:fi 2s ease 0.5s forwards}
+  .intro-s{font-size:clamp(0.6rem,1.1vw,0.8rem);letter-spacing:0.3em;color:rgba(232,228,223,0.22);margin-top:8px;font-style:italic;opacity:0;animation:fi 2s ease 1.2s forwards}
+  .intro-h{position:absolute;bottom:clamp(40px,8vh,80px);left:50%;transform:translateX(-50%);font-size:clamp(0.85rem,2vw,1.1rem);letter-spacing:0.3em;color:rgba(232,228,223,0.55);text-transform:uppercase;cursor:pointer;padding:14px 36px;border:1.5px solid rgba(232,228,223,0.2);border-radius:30px;background:rgba(232,228,223,0.04);backdrop-filter:blur(4px);transition:all 0.3s;animation:pu 3s ease-in-out infinite;white-space:nowrap}
+  .intro-h:active{background:rgba(232,228,223,0.12);transform:translateX(-50%) scale(0.96)}
+  @keyframes fi{to{opacity:1}} @keyframes pu{0%,100%{opacity:0.1}50%{opacity:0.3}}
+</style>
+</head>
+<body>
+<div class="intro" id="intro"><div class="intro-t">Άσκηση Κάμερας</div><div class="intro-s">Zoom · Wide · Εστίαση · Ανοιχτή Προσοχή</div><div class="intro-h">πάτησε για να ξεκινήσεις</div></div>
+<canvas id="c"></canvas>
+<div class="sub-box" id="sub"><div class="stag" id="stag"></div><div class="main" id="msub"></div><div class="sci" id="ssci"></div></div>
+<div class="eng-banner" id="engBanner"></div><div class="snum" id="sn"></div><div class="ptrack"><div class="pbar" id="pb"></div></div><div class="dots" id="dotsC"></div>
+<div class="ctrls"><button onclick="goTo(cur-1)" aria-label="Previous">◀</button><button id="ab" onclick="togAuto()">▶ auto</button><button onclick="goTo(cur+1)" aria-label="Next">▶</button></div>
+<script>
+const cv = document.getElementById('c'), ctx = cv.getContext('2d'); let W, H, cx, cy; let time = 0, globalAlpha = 0; let cur = 0, tgt = 0, tT = 0, trans = false; let autoP = false, autoTm = null; let lastTimestamp = 0;
+const urlLang = new URLSearchParams(location.search).get('lang'); const isEn = (urlLang === 'en');
+const SCENES = [
+  { tag: 'Σκηνή 1 · Zoom In', tag_en: 'Scene 1 · Zoom In', sub: 'Κράτα το τηλέφωνο μπροστά σου — κάνε zoom.\nΤο σώμα σου δεν είναι σταθερό τρίποδο.\nΠαρατήρησε πόσο τρέμει η εικόνα.', sub_en: 'Hold your phone in front of you — zoom in.\nYour body is not a stable tripod.\nNotice how much the image shakes.', sci: '📷 Η στενή εστίαση αυξάνει τη σωματική αστάθεια — το zoom μεγεθύνει κάθε μικροκίνηση.', sci_en: '📷 Narrow focus increases postural sway — zoom amplifies every micro-movement.', bg: [28,20,30], zoomLabel: '5x', shake: 4.2, showAxis: false, focusMode: false, openMode: false, phoneScale: 1.8 },
+  { tag: 'Σκηνή 2 · Ultra Wide', tag_en: 'Scene 2 · Ultra Wide', sub: 'Βάλε ultra wide — ανοιχτό πλάνο.\nΤο σώμα ακόμα δεν είναι σταθερό τρίποδο.\nΌμως η εικόνα είναι πολύ πιο σταθερή!', sub_en: 'Switch to ultra wide — open frame.\nYour body is still not a stable tripod.\nBut the image looks much more stable!', sci: '📐 Η ευρεία όραση μειώνει τη φαινόμενη αστάθεια.', sci_en: '📐 Wide vision reduces apparent instability.', bg: [18,25,32], zoomLabel: '0.5x', shake: 2.8, showAxis: false, focusMode: false, openMode: false, phoneScale: 0.7 },
+  { tag: 'Σκηνή 3 · Εστιασμένο Βλέμμα', tag_en: 'Scene 3 · Focused Gaze', sub: 'Άνοιξε και λύγισε λίγο τα γόνατα.\nΣτάσου όρθιος — βρες τον άξονα της βαρύτητας.\nΑυτός ο άξονας είναι το σέλφι στικ.\nΕστίασε το βλέμμα σε ένα σημείο.', sub_en: 'Open and slightly bend your knees.\nStand upright — find your gravity axis.\nThis axis is the selfie stick.\nFocus your gaze on a single point.', sci: '🧠 Η εστιασμένη προσοχή αυξάνει την σταθερότητα.', sci_en: '🧠 Focused attention improves stability.', bg: [20,28,25], zoomLabel: '1x', shake: 1.2, showAxis: true, focusMode: true, openMode: false, phoneScale: 1.0 },
+  { tag: 'Σκηνή 4 · Ανοιχτή Προσοχή', tag_en: 'Scene 4 · Open Awareness', sub: 'Μείνε όρθιος, γόνατα ελαφρώς λυγισμένα.\nΜαλάκωσε το βλέμμα — άφησε το πεδίο να ανοίξει.\nΕίσαι ο χώρος που αντιλαμβάνεται.', sub_en: 'Stay upright, knees slightly bent.\nSoften your gaze — let the field open.\nYou are the space that perceives.', sci: '🧘 Η ανοιχτή προσοχή παράγει συγχρονισμένα κύματα Άλφα.', sci_en: '🧘 Open attention produces synchronized Alpha waves.', bg: [12,30,22], zoomLabel: '1x', shake: 0.9, showAxis: true, focusMode: false, openMode: true, phoneScale: 1.0 }
+]; const N = SCENES.length;
+
+function drawJourneyHero(x, y, alpha, sceneParams) {
+  if (alpha <= 0) return;
+  const { zoomLabel, shake, showAxis, focusMode, openMode, phoneScale } = sceneParams;
+  const pulse = 0.5 + 0.5 * Math.sin(time * 1.8), breath = 0.5 + 0.5 * Math.sin(time * 0.9);
+  const shakeX = Math.sin(time * 5.3) * shake * 1.2, shakeY = Math.cos(time * 4.7) * shake * 0.8, rot = Math.sin(time * 4.2) * shake * 0.008;
+  ctx.save(); ctx.translate(x + shakeX, y + shakeY); ctx.rotate(rot);
+  ctx.fillStyle = `rgba(20,25,35,${alpha * 0.25})`; ctx.beginPath(); ctx.ellipse(0, 68, 70 + pulse * 6, 12 + pulse * 2, 0, 0, Math.PI * 2); ctx.fill();
+  if (showAxis) {
+    const gradAxis = ctx.createLinearGradient(0, -148, 0, 70);
+    gradAxis.addColorStop(0, `rgba(210,80,70,0)`); gradAxis.addColorStop(0.5, `rgba(210,80,70,${alpha * 0.85})`); gradAxis.addColorStop(1, `rgba(210,80,70,0)`);
+    ctx.strokeStyle = gradAxis; ctx.lineWidth = 2.8; ctx.beginPath(); ctx.moveTo(0, -148); ctx.lineTo(0, 70); ctx.stroke();
+    ctx.strokeStyle = `rgba(210,80,70,${alpha * 0.1})`; ctx.lineWidth = 14; ctx.beginPath(); ctx.moveTo(0, -148); ctx.lineTo(0, 70); ctx.stroke();
+  }
+  const robeGrad = ctx.createLinearGradient(-28, -82, 28, 30);
+  robeGrad.addColorStop(0, `rgba(48,72,65,${alpha * 0.92})`); robeGrad.addColorStop(0.5, `rgba(68,98,84,${alpha * 0.92})`); robeGrad.addColorStop(1, `rgba(42,65,58,${alpha * 0.92})`);
+  ctx.fillStyle = robeGrad; ctx.beginPath(); ctx.moveTo(-24, 30); ctx.quadraticCurveTo(-28, -48, -26, -82); ctx.lineTo(-22, -100); ctx.lineTo(22, -100); ctx.lineTo(26, -82); ctx.quadraticCurveTo(28, -48, 24, 30); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = `rgba(35,55,48,${alpha * 0.85})`; ctx.beginPath(); ctx.moveTo(-18, 30); ctx.lineTo(-28, 70); ctx.lineTo(-12, 70); ctx.lineTo(-10, 30); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(18, 30); ctx.lineTo(28, 70); ctx.lineTo(12, 70); ctx.lineTo(10, 30); ctx.fill();
+  const hoodGrad = ctx.createLinearGradient(-26, -124, 26, -99);
+  hoodGrad.addColorStop(0, `rgba(50,72,65,${alpha * 0.88})`); hoodGrad.addColorStop(1, `rgba(45,68,60,${alpha * 0.88})`);
+  ctx.fillStyle = hoodGrad; ctx.beginPath(); ctx.moveTo(-24, -88); ctx.quadraticCurveTo(-26, -116, -22, -126); ctx.quadraticCurveTo(0, -140, 22, -126); ctx.quadraticCurveTo(26, -116, 24, -88); ctx.fill();
+  const faceGrad = ctx.createRadialGradient(-3, -116, 2, 0, -114, 17);
+  faceGrad.addColorStop(0, `rgba(230,200,155,${alpha * 0.82})`); faceGrad.addColorStop(1, `rgba(160,125,80,${alpha * 0.65})`);
+  ctx.fillStyle = faceGrad; ctx.beginPath(); ctx.arc(0, -114, 15, -0.3, Math.PI + 0.3); ctx.fill();
+  if (focusMode) {
+    ctx.fillStyle = `rgba(210,200,185,${alpha * 0.65})`; ctx.beginPath(); ctx.arc(-6, -116, 2.5, 0, Math.PI * 2); ctx.fill(); ctx.beginPath(); ctx.arc(6, -116, 2.5, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = `rgba(220,200,100,${alpha * 0.3})`; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(-6, -116); ctx.lineTo(0, 95); ctx.stroke(); ctx.beginPath(); ctx.moveTo(6, -116); ctx.lineTo(0, 95); ctx.stroke();
+    const glowFocus = ctx.createRadialGradient(0, 95, 0, 0, 95, 12 + pulse * 4); glowFocus.addColorStop(0, `rgba(240,220,100,${alpha * 0.35})`); glowFocus.addColorStop(1, 'rgba(240,220,100,0)');
+    ctx.fillStyle = glowFocus; ctx.beginPath(); ctx.arc(0, 95, 12 + pulse * 4, 0, Math.PI * 2); ctx.fill();
+  } else if (openMode) {
+    ctx.strokeStyle = `rgba(210,200,185,${alpha * 0.45})`; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(-9, -115); ctx.quadraticCurveTo(-5, -112, -2, -115); ctx.stroke(); ctx.beginPath(); ctx.moveTo(2, -115); ctx.quadraticCurveTo(5, -112, 9, -115); ctx.stroke();
+    for (let r = 0; r < 3; r++) { const rad = 40 + r * 18; ctx.strokeStyle = `rgba(130,200,160,${alpha * (0.04 - r * 0.01)})`; ctx.beginPath(); ctx.ellipse(0, -114, rad, rad * 0.7, 0, 0, Math.PI * 2); ctx.stroke(); }
+  } else {
+    ctx.fillStyle = `rgba(210,200,185,${alpha * 0.5})`; ctx.beginPath(); ctx.arc(-5.5, -115.5, 1.8, 0, Math.PI * 2); ctx.fill(); ctx.beginPath(); ctx.arc(5.5, -115.5, 1.8, 0, Math.PI * 2); ctx.fill();
+  }
+  const thirdGlow = ctx.createRadialGradient(0, -122, 0, 0, -122, 7); thirdGlow.addColorStop(0, `rgba(255,220,140,${alpha * (0.45 + pulse * 0.2)})`); thirdGlow.addColorStop(1, 'rgba(255,220,140,0)');
+  ctx.fillStyle = thirdGlow; ctx.beginPath(); ctx.arc(0, -122, 6, 0, Math.PI * 2); ctx.fill();
+  const phoneW = 62 * phoneScale, phoneH = 108 * phoneScale, phoneY = -102;
+  ctx.fillStyle = `rgba(28,32,38,${alpha * 0.85})`; ctx.beginPath(); ctx.roundRect(-phoneW/2, phoneY - phoneH/2, phoneW, phoneH, 12); ctx.fill();
+  const screenGlow = ctx.createLinearGradient(-phoneW/3, phoneY - phoneH/3, phoneW/3, phoneY + phoneH/3); screenGlow.addColorStop(0, `rgba(80,180,220,${alpha * 0.5})`); screenGlow.addColorStop(1, `rgba(40,120,160,${alpha * 0.4})`);
+  ctx.fillStyle = screenGlow; ctx.beginPath(); ctx.roundRect(-phoneW/2 + 8, phoneY - phoneH/2 + 12, phoneW - 16, phoneH - 28, 6); ctx.fill();
+  ctx.font = `${Math.max(12, 18 * phoneScale)}px 'Fraunces', monospace`; ctx.fillStyle = `rgba(255,250,210,${alpha * 0.9})`; ctx.fillText(zoomLabel, -8, phoneY + 6);
+  ctx.fillStyle = `rgba(210,180,130,${alpha * 0.85})`; ctx.beginPath(); ctx.ellipse(-phoneW/2 - 4, phoneY + 10, 11, 8, -0.3, 0, Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.ellipse(phoneW/2 + 4, phoneY + 10, 11, 8, 0.3, 0, Math.PI*2); ctx.fill();
+  if (zoomLabel === '5x') { for (let i=0;i<3;i++) { const ringSize = 42 + Math.sin(time*8 + i)*6; ctx.strokeStyle = `rgba(220,120,70,${alpha * 0.2})`; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.ellipse(0, phoneY, ringSize, ringSize*0.7, 0, 0, Math.PI*2); ctx.stroke(); } }
+  const dantienGlow = ctx.createRadialGradient(0, 18, 0, 0, 18, 26 + breath * 10); dantienGlow.addColorStop(0, `rgba(80,200,160,${alpha * 0.2})`); dantienGlow.addColorStop(1, `rgba(80,200,160,0)`);
+  ctx.fillStyle = dantienGlow; ctx.beginPath(); ctx.arc(0, 18, 26 + breath * 10, 0, Math.PI*2); ctx.fill();
+  ctx.restore();
+}
+if (!CanvasRenderingContext2D.prototype.roundRect) { CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) { if (w < 2 * r) r = w / 2; if (h < 2 * r) r = h / 2; this.moveTo(x+r, y); this.lineTo(x+w-r, y); this.quadraticCurveTo(x+w, y, x+w, y+r); this.lineTo(x+w, y+h-r); this.quadraticCurveTo(x+w, y+h, x+w-r, y+h); this.lineTo(x+r, y+h); this.quadraticCurveTo(x, y+h, x, y+h-r); this.lineTo(x, y+r); this.quadraticCurveTo(x, y, x+r, y); return this; }; }
+function drawBg(sf) {
+  const i = Math.floor(sf), fr = sf - i, n = Math.min(i+1, N-1);
+  const rL = SCENES[i].bg[0]*(1-fr) + SCENES[n].bg[0]*fr, gL = SCENES[i].bg[1]*(1-fr) + SCENES[n].bg[1]*fr, bL = SCENES[i].bg[2]*(1-fr) + SCENES[n].bg[2]*fr;
+  const grd = ctx.createRadialGradient(cx, cy-30, 0, cx, cy, Math.max(W,H)*0.7);
+  grd.addColorStop(0, `rgb(${rL|0},${gL|0},${bL|0})`); grd.addColorStop(1, 'rgb(5,5,16)');
+  ctx.fillStyle = grd; ctx.fillRect(0,0,W,H);
+  for(let i=0;i<50;i++) { let px = (Math.sin(time*0.2 + i)*137 + cx) % W, py = (Math.cos(time*0.17 + i)*73 + cy) % H; ctx.fillStyle = `rgba(200,195,185,${0.02 * globalAlpha})`; ctx.beginPath(); ctx.arc(px, py, 1.2, 0, Math.PI*2); ctx.fill(); }
+}
+function drawScene(idx, a) {
+  if(a<=0) return; const params = SCENES[idx];
+  drawJourneyHero(cx-8, cy+28, a * globalAlpha, { zoomLabel: params.zoomLabel, shake: params.shake, showAxis: params.showAxis, focusMode: params.focusMode, openMode: params.openMode, phoneScale: params.phoneScale });
+}
+function resizeCanvas() { const dpr = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + 'px'; cv.style.height = H + 'px'; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); cx = W/2; cy = H/2; }
+resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+function updUI() {
+  const s = SCENES[cur];
+  const primary = isEn ? s.tag_en : s.tag;
+  const secondary = isEn ? s.tag : s.tag_en;
+  const mainSub = isEn ? s.sub_en : s.sub;
+  const altSub = isEn ? s.sub : s.sub_en;
+  const mainSci = isEn ? s.sci_en : s.sci;
+  const altSci = isEn ? s.sci : s.sci_en;
+  document.getElementById('stag').innerHTML = primary + ' · ' + secondary;
+  document.getElementById('msub').innerHTML = mainSub.replace(/\n/g,'<br>') + '<div style="margin-top:6px;font-size:0.75em;color:rgba(180,200,190,0.4);font-style:italic">' + altSub.replace(/\n/g,'<br>') + '</div>';
+  document.getElementById('ssci').innerHTML = mainSci + '<br>' + altSci;
+  document.getElementById('sub').classList.add('vis');
+  const engDiv = document.getElementById('engBanner'); engDiv.innerHTML = altSub.replace(/\n/g,'<br>'); engDiv.classList.add('vis'); document.getElementById('sn').textContent = `${cur+1} / ${N}`; document.getElementById('pb').style.width = `${(cur/(N-1))*100}%`;
+  const dots = document.querySelectorAll('.dot'); dots.forEach((d,i)=> d.classList.toggle('active', i===cur));
+}
+function goTo(i) { if(i<0 || i>=N || i===cur || trans) return; tgt=i; trans=true; tT=0; document.getElementById('sub').classList.remove('vis'); document.getElementById('engBanner').classList.remove('vis'); setTimeout(()=>{ cur=tgt; trans=false; updUI(); }, 1800); }
+function ease(t2){ return t2<0.5?4*t2*t2*t2:1-Math.pow(-2*t2+2,3)/2; }
+function togAuto(){ autoP=!autoP; document.getElementById('ab').innerHTML=autoP?'⏸ pause':'▶ auto'; if(autoP) runA(); else clearTimeout(autoTm); }
+function runA(){ if(!autoP) return; autoTm=setTimeout(()=>{ if(cur<N-1){ goTo(cur+1); setTimeout(runA, 7000); } else { autoP=false; document.getElementById('ab').innerHTML='▶ auto'; } }, 7000); }
+document.getElementById('intro').addEventListener('click',()=>{ document.getElementById('intro').classList.add('hidden'); updUI(); });
+document.addEventListener('keydown',e=>{ if(e.key==='ArrowRight') goTo(cur+1); if(e.key==='ArrowLeft') goTo(cur-1); });
+document.getElementById('dotsC').innerHTML = SCENES.map((_,i)=>`<button class="dot${i===0?' active':''}" onclick="goTo(${i})"></button>`).join('');
+let lastTime = 0;
+function animate(now) { requestAnimationFrame(animate); let dt = Math.min((now - lastTime) / 1000, 0.05); if(dt<0) dt=0.016; lastTime = now; time += dt; if(globalAlpha < 1) globalAlpha = Math.min(1, globalAlpha + dt*0.6); if(trans) tT = Math.min(tT + dt*0.7, 1); ctx.clearRect(0,0,W,H); const sf = trans ? cur + (tgt-cur)*ease(tT) : cur; drawBg(sf); ctx.globalAlpha = 1; if(trans) { const e2 = ease(tT); drawScene(cur, 1-e2); drawScene(tgt, e2); } else { drawScene(cur, 1); } }
+requestAnimationFrame(animate);
+</script>
+</body>
+</html>

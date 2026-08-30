@@ -1,0 +1,1 @@
+import{q as d,r as p}from"./index-DW7gzcrq.js";function m(t){const{startAudio:s,stopAudio:a,isPlaying:u,setGlobalVolume:e,updateArmPos:o,updatePhase:r,volume:i}=d();return{startAudio:p.useCallback(l=>{s(l||t||{base:110,beat:6.3,pulse:.1})},[s,t]),stopAudio:a,isPlaying:u,setGlobalVolume:e,updateArmPos:o,updatePhase:r,volume:i}}export{m as u};
