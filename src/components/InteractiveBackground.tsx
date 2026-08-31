@@ -200,7 +200,7 @@ export function InteractiveBackground() {
   };
 
   return (
-    <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#010204]">
+    <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden bg-[#010204]">
       {/* Interpolated Sky Background */}
       <div 
         className="absolute inset-0"
@@ -228,7 +228,7 @@ export function InteractiveBackground() {
 
          {/* Moon */}
          <div 
-           className="absolute flex items-center justify-center w-20 h-20 md:w-28 md:h-28 opacity-85"
+           className="absolute flex items-center justify-center w-12 h-12 md:w-16 md:h-16 opacity-75"
            style={{ transform: `translate(-50%, -50%) translateY(calc(0.6 * max(70vw, 70vh))) rotate(180deg)` }}
          >
            <div className="relative w-full h-full overflow-hidden rounded-full bg-gradient-to-tr from-slate-200 via-slate-100 to-amber-50 shadow-[0_0_50px_12px_rgba(226,232,240,0.22)]">

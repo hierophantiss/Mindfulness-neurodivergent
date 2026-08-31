@@ -87,7 +87,7 @@ define(['./workbox-7e5eb42b'], (function (workbox) { 'use strict';
     "revision": "a531ec6e4d3410e2c2dc8c5d5a131f71"
   }, {
     "url": "index.html",
-    "revision": "876208a7ab576b18f6e28da06be5c9f5"
+    "revision": "af62be030dc6067378399ffdaeaaa5d0"
   }, {
     "url": "favicon.svg",
     "revision": "8bcbff6645dc3c9a262baa234f857c1e"
@@ -95,157 +95,157 @@ define(['./workbox-7e5eb42b'], (function (workbox) { 'use strict';
     "url": "breathchapter.svg",
     "revision": "4b2ce09361f842d4661216f8bd7687f1"
   }, {
-    "url": "assets/zap-pasacGiK.js",
+    "url": "assets/zap-qLau67WB.js",
     "revision": null
   }, {
-    "url": "assets/youtube-BU_by6YM.js",
+    "url": "assets/youtube-Dq3PEBlO.js",
     "revision": null
   }, {
     "url": "assets/workbox-window.prod.es5-BBnX5xw4.js",
     "revision": null
   }, {
-    "url": "assets/waves-PK-daI3a.js",
+    "url": "assets/waves-CCmDvPu4.js",
     "revision": null
   }, {
-    "url": "assets/volume-x-BYx661qq.js",
+    "url": "assets/volume-x-s_02dz_1.js",
     "revision": null
   }, {
-    "url": "assets/volume-2-CZyQVDpo.js",
+    "url": "assets/volume-2-BPCWGt1s.js",
     "revision": null
   }, {
-    "url": "assets/useBinauralAudio-1Kc-Zm-7.js",
+    "url": "assets/useBinauralAudio-BUw5rhET.js",
     "revision": null
   }, {
-    "url": "assets/target-DN2e7o6B.js",
+    "url": "assets/target-i6nLdmKu.js",
     "revision": null
   }, {
-    "url": "assets/shield-check-B0iHmLzH.js",
+    "url": "assets/shield-check-DodV6Any.js",
     "revision": null
   }, {
-    "url": "assets/play-DDhKE99I.js",
+    "url": "assets/play-2NR5ceKE.js",
     "revision": null
   }, {
-    "url": "assets/pause-b8lL60bm.js",
+    "url": "assets/pause-C6NixkwP.js",
     "revision": null
   }, {
-    "url": "assets/moon-CWUwIePv.js",
+    "url": "assets/moon-CPt0jaT3.js",
     "revision": null
   }, {
     "url": "assets/microdoses-5_Nolbtu.js",
     "revision": null
   }, {
-    "url": "assets/lightbulb-BrNcsWsL.js",
+    "url": "assets/lightbulb-XV3_1VA1.js",
     "revision": null
   }, {
-    "url": "assets/languages-cYxM_1RV.js",
+    "url": "assets/languages-CkhgdpJO.js",
     "revision": null
   }, {
-    "url": "assets/index-DW7gzcrq.js",
+    "url": "assets/index-Pw4Zi0bb.js",
     "revision": null
   }, {
     "url": "assets/index-D4iu8wZ8.css",
     "revision": null
   }, {
-    "url": "assets/heart-BMFP09tB.js",
+    "url": "assets/heart-ChidFg6E.js",
     "revision": null
   }, {
-    "url": "assets/headphones-FFpbtBi1.js",
+    "url": "assets/headphones-CjnxhKca.js",
     "revision": null
   }, {
-    "url": "assets/focus-B02OvGlX.js",
+    "url": "assets/focus-_o1Ubifg.js",
     "revision": null
   }, {
-    "url": "assets/course-en-BkAUipMW.js",
+    "url": "assets/course-en-Bh62V33I.js",
     "revision": null
   }, {
-    "url": "assets/circle-check-BYooStzA.js",
+    "url": "assets/circle-check-DlAdezsC.js",
     "revision": null
   }, {
-    "url": "assets/chevron-left-zJXvQoV7.js",
+    "url": "assets/chevron-left-peKF6ymt.js",
     "revision": null
   }, {
-    "url": "assets/arrow-left-CVFHCg6B.js",
+    "url": "assets/arrow-left-DryT7FCf.js",
     "revision": null
   }, {
-    "url": "assets/TaiChiHero-CSFblPHz.js",
+    "url": "assets/TaiChiHero-CNtV9SfC.js",
     "revision": null
   }, {
-    "url": "assets/Skeleton-D8-0Ef0e.js",
+    "url": "assets/Skeleton-CuWpQQam.js",
     "revision": null
   }, {
-    "url": "assets/Settings-DaDY_1vb.js",
+    "url": "assets/Settings-BR10xRvR.js",
     "revision": null
   }, {
-    "url": "assets/Sanctuary-BCIWLDYk.js",
+    "url": "assets/Sanctuary-CrMKYdcH.js",
     "revision": null
   }, {
-    "url": "assets/SamathaAnimation-B1b5jwYx.js",
+    "url": "assets/SamathaAnimation-DNDsL9Zs.js",
     "revision": null
   }, {
-    "url": "assets/RabbitHole-B-49rCa3.js",
+    "url": "assets/RabbitHole-DXm4fJQg.js",
     "revision": null
   }, {
-    "url": "assets/ProgramWeek-CTdmiqJf.js",
+    "url": "assets/ProgramWeek-D_EXT4ZN.js",
     "revision": null
   }, {
-    "url": "assets/Program-39GHNxzl.js",
+    "url": "assets/Program-BUJ6gBLT.js",
     "revision": null
   }, {
-    "url": "assets/PrintWorkbook-BqiyqO3o.js",
+    "url": "assets/PrintWorkbook-DkiloMJc.js",
     "revision": null
   }, {
-    "url": "assets/PracticeSwaying-HfixY8lc.js",
+    "url": "assets/PracticeSwaying-D3jeDh4P.js",
     "revision": null
   }, {
-    "url": "assets/PracticeSection-D5fTO3h6.js",
+    "url": "assets/PracticeSection-D4plb2j8.js",
     "revision": null
   }, {
-    "url": "assets/PracticeMovement-CjemS8au.js",
+    "url": "assets/PracticeMovement-TnfoUH_K.js",
     "revision": null
   }, {
-    "url": "assets/PracticeMicrodoses-CIsKCY5R.js",
+    "url": "assets/PracticeMicrodoses-CUjsZAyT.js",
     "revision": null
   }, {
-    "url": "assets/PracticeBreath-g-0Ij5qv.js",
+    "url": "assets/PracticeBreath-vbxlYohn.js",
     "revision": null
   }, {
-    "url": "assets/Practice--8QzZ24K.js",
+    "url": "assets/Practice-j7gNoASW.js",
     "revision": null
   }, {
-    "url": "assets/PlayPauseOverlay-CQdNEozU.js",
+    "url": "assets/PlayPauseOverlay-CYWB0F7q.js",
     "revision": null
   }, {
-    "url": "assets/Methodology-CaKWqnY0.js",
+    "url": "assets/Methodology-DDCwviB6.js",
     "revision": null
   }, {
-    "url": "assets/Method-RWkLfbJ2.js",
+    "url": "assets/Method-C7IMBSlA.js",
     "revision": null
   }, {
-    "url": "assets/MeditatorFigure-BgLArEZZ.js",
+    "url": "assets/MeditatorFigure-CdcY7V8i.js",
     "revision": null
   }, {
-    "url": "assets/Journal-CiOJdL09.js",
+    "url": "assets/Journal-CRsT8GNj.js",
     "revision": null
   }, {
-    "url": "assets/InteractiveBackground-C8ugJ7M6.js",
+    "url": "assets/InteractiveBackground-DfwYe4BT.js",
     "revision": null
   }, {
-    "url": "assets/GenericExercise-CMH68Qcq.js",
+    "url": "assets/GenericExercise-BAFERWDd.js",
     "revision": null
   }, {
-    "url": "assets/Faq-Bpc6ssVV.js",
+    "url": "assets/Faq-32Yf8Lf4.js",
     "revision": null
   }, {
-    "url": "assets/Dashboard-B3ga8uxM.js",
+    "url": "assets/Dashboard-B6i1zf-i.js",
     "revision": null
   }, {
-    "url": "assets/ConceptInfoOverlay-DU7c3KDB.js",
+    "url": "assets/ConceptInfoOverlay-C97-dNNU.js",
     "revision": null
   }, {
-    "url": "assets/Chapters-B8kzXdj3.js",
+    "url": "assets/Chapters-Vtxsm6aa.js",
     "revision": null
   }, {
-    "url": "assets/ChapterDetail-_lQVdEhj.js",
+    "url": "assets/ChapterDetail-D52hbA-f.js",
     "revision": null
   }, {
     "url": "animations/treepose.html",
