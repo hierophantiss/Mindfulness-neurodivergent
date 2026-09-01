@@ -17,9 +17,6 @@ import { fileURLToPath } from 'url';
 import { CHAPTERS_DATA } from '../src/data/chapters';
 import { BREATH_PATTERNS } from '../src/data/breathPatterns';
 import { softGazeArticle } from '../src/data/softGazeArticle';
-import { dzogchenArticle } from '../src/data/dzogchenArticle';
-import { neverForceArticle } from '../src/data/neverForceArticle';
-import { platoCaveArticle } from '../src/data/platoCaveArticle';
 import { polyvagalArticle } from '../src/data/polyvagalArticle';
 import { youAreThePathArticle } from '../src/data/youAreThePathArticle';
 import { waveAndSeaArticle } from '../src/data/waveAndSeaArticle';
@@ -278,9 +275,6 @@ function getMetaForRoute(route: string): RouteMeta {
     
     const dataMap: Record<string, any> = {
       'soft-gaze-open-hearing': softGazeArticle,
-      'dzogchen-great-perfection': dzogchenArticle,
-      'never-force': neverForceArticle,
-      'plato-cave-neurodivergent': platoCaveArticle,
       'polyvagal-middle-way': polyvagalArticle,
       'you-are-the-path': youAreThePathArticle,
       'wave-and-sea': waveAndSeaArticle,

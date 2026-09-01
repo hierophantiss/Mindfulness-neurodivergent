@@ -9,30 +9,6 @@ export interface CompanionArticle {
 
 export const companionArticleIndex: CompanionArticle[] = [
   {
-    id: 'never-force',
-    axis: 'attention',
-    title: {
-      en: 'Never Force',
-      el: 'Ποτέ Μη Βιάζεσαι'
-    },
-    summary: {
-      en: 'Why forcing mindfulness often backfires and how to practice effortlessly.',
-      el: 'Γιατί η πίεση στην ενσυνειδητότητα συχνά φέρνει τα αντίθετα αποτελέσματα και η τέχνη της αβίαστης πρακτικής.'
-    }
-  },
-  {
-    id: 'dzogchen-great-perfection',
-    axis: 'space',
-    title: {
-      en: 'Dzogchen: The Great Perfection',
-      el: 'Τζοκτσέν: Η Μεγάλη Τελειότητα'
-    },
-    summary: {
-      en: 'An introduction to Dzogchen, the Tibetan Buddhist path of effortless awareness.',
-      el: 'Μια εισαγωγή στο Τζοκτσέν, τη θιβετιανή βουδιστική οδό της αβίαστης επίγνωσης.'
-    }
-  },
-  {
     id: 'soft-gaze-open-hearing',
     axis: 'attention',
     title: {
@@ -54,18 +30,6 @@ export const companionArticleIndex: CompanionArticle[] = [
     summary: {
       en: 'Understanding the nervous system through Polyvagal theory and finding the middle path.',
       el: 'Κατανόηση του νευρικού συστήματος μέσα από την Πολυβαγική θεωρία και η εύρεση της μέσης οδού.'
-    }
-  },
-  {
-    id: 'plato-cave-neurodivergent',
-    axis: 'attention',
-    title: {
-      en: "Plato's Cave for Neurodivergent Minds",
-      el: 'Το Σπήλαιο του Πλάτωνα για Νευροδιαφορετικούς'
-    },
-    summary: {
-      en: "Plato's allegory of the cave re-imagined for the neurodivergent experience.",
-      el: 'Η αλληγορία του σπηλαίου του Πλάτωνα μέσα από το πρίσμα της νευροδιαφορετικότητας.'
     }
   },
   {
