@@ -23,8 +23,8 @@ export default function Chapters() {
   const chapters = CHAPTERS_DATA[currentLang] || [];
 
   const basisChapters = chapters.filter(c => c.num >= 1 && c.num <= 4);
-  const applicationChapters = chapters.filter(c => c.num >= 5 && c.num <= 7);
-  const depthChapters = chapters.filter(c => c.num >= 8 && c.num <= 10);
+  const applicationChapters = chapters.filter(c => c.num >= 5 && c.num <= 8);
+  const depthChapters = chapters.filter(c => c.num >= 9 && c.num <= 11);
 
   return (
     <div className="flex flex-col relative w-full min-h-full pt-8">

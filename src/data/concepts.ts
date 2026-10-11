@@ -18,7 +18,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       science: 'Craig (2002) Nature Reviews Neuroscience — gravity sense activates the proprioceptive system.'
     },
     axis: 'body',
-    chapters: [1, 6, 7, 8, 9],
+    chapters: [1, 6, 8, 9, 10],
     related: ['gravity', 'proprioception', 'dmn', 'interoception']
   },
 
@@ -36,7 +36,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       ndNote: 'Gravity is always there even if you don\'t feel it "strongly." The intensity of sensation doesn\'t matter — turning attention toward it does.'
     },
     axis: 'body',
-    chapters: [1, 8, 9],
+    chapters: [1, 7, 9, 10],
     related: ['grounding', 'proprioception']
   },
 
@@ -56,7 +56,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       science: 'Stephen Porges, PhD (1995/2011) "Orienting in a defensive world: mammalian modifications of our evolutionary heritage. A Polyvagal Theory" (Doi: 10.1469/j.1469-8986.1995.tb03320.x)'
     },
     axis: 'body',
-    chapters: [5, 6, 7, 10],
+    chapters: [5, 6, 8, 11],
     related: ['grounding', 'exhale']
   },
 
@@ -76,7 +76,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       science: 'Craig (2002) Nature Reviews Neuroscience.'
     },
     axis: 'body',
-    chapters: [1, 10],
+    chapters: [1, 11],
     related: ['grounding', 'gravity', 'interoception']
   },
 
@@ -94,7 +94,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       ndNote: 'Many autistic and ADHD people have atypical interoception. You may not feel your heartbeat, or feel it too intensely. Both are normal for your brain. The method doesn\'t require "correct" sensation — turning attention is enough.'
     },
     axis: 'body',
-    chapters: [1, 2, 10],
+    chapters: [1, 2, 11],
     related: ['proprioception', 'grounding', 'internal_touch']
   },
 
@@ -112,7 +112,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       ndNote: 'Neurodivergent people often carry more echoes due to years of masking, rejection, and feeling that "something is wrong with us." Recognition is the beginning — not analysis.'
     },
     axis: 'body',
-    chapters: [1, 5, 9],
+    chapters: [1, 5, 10],
     related: ['self_criticism', 'kindness', 'trauma']
   },
 
@@ -135,7 +135,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       science: 'Gerritsen & Band (2018) — slow exhale activates vagus nerve, reduces heart rate.'
     },
     axis: 'breath',
-    chapters: [2, 7, 10],
+    chapters: [2, 8, 11],
     related: ['slow_exhale', 'parasympathetic', 'pattern_4261']
   },
 
@@ -153,7 +153,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       ndNote: 'If counting stresses you, don\'t count. Just blow slowly as if extinguishing a candle far away.'
     },
     axis: 'breath',
-    chapters: [2, 6, 7],
+    chapters: [2, 6, 7, 8],
     related: ['vagus_nerve', 'pattern_4261', 'sos']
   },
 
@@ -171,7 +171,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       ndNote: 'If 6-second exhale is hard, start with 4. The goal isn\'t perfection — it\'s rhythm.'
     },
     axis: 'breath',
-    chapters: [2, 8, 9],
+    chapters: [2, 9, 10],
     related: ['vagus_nerve', 'slow_exhale']
   },
 
@@ -212,7 +212,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       science: 'Ashinoff & Abu-Akel (2019) Psychological Research (Doi: 10.1007/s00426-019-01245-8)'
     },
     axis: 'attention',
-    chapters: [3, 5, 10],
+    chapters: [3, 5, 11],
     related: ['attention_modes', 'open_awareness', 'grounding']
   },
 
@@ -230,7 +230,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       ndNote: 'Labeling is extremely effective for ADHD minds that get stuck in worry loops. One single word is enough.'
     },
     axis: 'attention',
-    chapters: [3, 7, 8],
+    chapters: [3, 8, 9],
     related: ['attention_modes', 'gentle_return', 'self_criticism']
   },
 
@@ -248,7 +248,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       ndNote: 'This mindset shift is critical for neurodivergent people. Instead of "I\'m failing because attention leaves," think "every return makes me stronger." This isn\'t comfort — it\'s neuroscience.'
     },
     axis: 'attention',
-    chapters: [3, 5, 9],
+    chapters: [3, 5, 10],
     related: ['attention_modes', 'neuroplasticity', 'kindness']
   },
 
@@ -269,7 +269,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       ndNote: 'Open awareness is an antidote to overload — it gives you space instead of fighting stimuli. Peripheral vision helps: soften your gaze.'
     },
     axis: 'space',
-    chapters: [4, 8, 9],
+    chapters: [4, 9, 10],
     related: ['peripheral_vision', 'sky_metaphor', 'hyperfocus']
   },
 
@@ -287,7 +287,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       ndNote: 'In noisy spaces, peripheral vision transforms stimuli into "clouds" — you let them exist without being overwhelmed.'
     },
     axis: 'space',
-    chapters: [4, 6, 7],
+    chapters: [4, 6, 8],
     related: ['open_awareness', 'sky_metaphor']
   },
 
@@ -305,7 +305,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       ndNote: 'This metaphor changes your relationship with stimuli. Instead of "I must stop them," it becomes "I can hold them." This works better for ND minds.'
     },
     axis: 'space',
-    chapters: [4, 7, 9],
+    chapters: [4, 8, 10],
     related: ['open_awareness', 'peripheral_vision']
   },
 
@@ -326,7 +326,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       ndNote: 'This approach breaks the trauma-response of constant "improvement." You do not need "fixing." You need a pause.'
     },
     axis: 'all',
-    chapters: [1, 9, 10],
+    chapters: [1, 10, 11],
     related: ['kindness', 'echo', 'six_words']
   },
 
@@ -344,7 +344,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       ndNote: 'Ideal antidote for the inner "Mechanical Mind" that constantly tries to make rules on how it "should" meditate.'
     },
     axis: 'attention',
-    chapters: [5, 8],
+    chapters: [5, 9],
     related: ['open_awareness', 'mechanical_mind']
   },
 
@@ -364,7 +364,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       science: 'Strengthening the Insular Cortex increases interoceptive capacity and emotional regulation.'
     },
     axis: 'all',
-    chapters: [5, 9, 10],
+    chapters: [5, 10, 11],
     related: ['gentle_return', 'vagus_nerve', 'dmn', 'neuroplasticity']
   },
 
@@ -384,7 +384,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       science: 'Brewer et al. (2011) PNAS — mindfulness reduces DMN activity.'
     },
     axis: 'all',
-    chapters: [1, 5, 10],
+    chapters: [1, 5, 11],
     related: ['grounding', 'self_criticism', 'neuroplasticity']
   },
 
@@ -402,7 +402,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       ndNote: 'Neurodivergent people have years of self-criticism practice due to external pressure. The voice "you\'re not doing enough" isn\'t yours — it\'s an echo. Recognize it, don\'t follow it.'
     },
     axis: 'all',
-    chapters: [1, 5, 9],
+    chapters: [1, 5, 7, 10],
     related: ['echo', 'kindness', 'dmn', 'amygdala']
   },
 
@@ -420,7 +420,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       ndNote: 'The gentleness of this method isn\'t accidental — it\'s the only attitude that allows the nervous system to calm. Pressure activates the amygdala. Gentleness deactivates it.'
     },
     axis: 'all',
-    chapters: [5, 9],
+    chapters: [5, 7, 10],
     related: ['self_criticism', 'echo', 'gentle_return']
   },
 
@@ -440,7 +440,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       science: 'Hölzel et al. (2011) — 8 weeks of practice measurably change brain structure.'
     },
     axis: 'all',
-    chapters: [10],
+    chapters: [11],
     related: ['gentle_return', 'dmn']
   },
 
@@ -458,7 +458,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       ndNote: 'If you recognize the mechanical mind, it means you\'re already masking. This method doesn\'t ask you to stop — it asks for small refresh pauses.'
     },
     axis: 'all',
-    chapters: [5],
+    chapters: [5, 7],
     related: ['self_criticism', 'echo', 'dmn']
   },
 
@@ -478,7 +478,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       science: 'Gerritsen & Band (2018).'
     },
     axis: 'all',
-    chapters: [2, 7, 10],
+    chapters: [2, 8, 11],
     related: ['vagus_nerve', 'slow_exhale', 'grounding']
   },
 
@@ -496,7 +496,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       ndNote: 'The amygdala may be more reactive in neurodivergent people due to chronic overstimulation. The method doesn\'t ask you to "defeat" the amygdala — it asks you to stop feeding it with self-criticism.'
     },
     axis: 'all',
-    chapters: [5, 10],
+    chapters: [5, 11],
     related: ['self_criticism', 'parasympathetic', 'dmn']
   },
 
@@ -518,7 +518,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       ndNote: 'Requires headphones for binaural beats. Without them, 4-7-8 breathing alone helps significantly.'
     },
     axis: 'all',
-    chapters: [7],
+    chapters: [8],
     related: ['vagus_nerve', 'slow_exhale', 'parasympathetic']
   },
 
@@ -536,7 +536,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       ndNote: 'Neurodivergent people have higher likelihood of traumatic experiences due to stigma, masking, and social exclusion. The method accounts for this at every step.'
     },
     axis: 'all',
-    chapters: [1, 5, 7, 9],
+    chapters: [1, 5, 7, 8, 10],
     related: ['kindness', 'echo', 'self_criticism', 'grounding']
   },
 
@@ -554,7 +554,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       ndNote: 'If breathwork causes dread, movement is your ultimate grounding tool. Tai Chi offers tangible physical feedback (weight shifts, spatial flow, balance) that triggers the parasympathetic system effortlessly.'
     },
     axis: 'body',
-    chapters: [1, 5, 10],
+    chapters: [1, 5, 11],
     related: ['proprioception', 'grounding', 'vagus_nerve']
   },
 
@@ -574,7 +574,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       science: 'Zylowska et al. (2007) Journal of Attention Disorders (577+ citations, Doi: 10.1177/1087054707308502)'
     },
     axis: 'attention',
-    chapters: [1, 3, 5, 10],
+    chapters: [1, 3, 5, 11],
     related: ['gentle_return', 'attention_modes', 'neuroplasticity']
   },
 
@@ -614,7 +614,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       science: 'Jonathan Gibson (2019) Frontiers in Psychology (Vol 10, Art 2012, Doi: 10.3389/fpsyg.2019.02012)'
     },
     axis: 'body',
-    chapters: [1, 2, 7, 10],
+    chapters: [1, 2, 8, 11],
     related: ['interoception', 'grounding', 'trauma', 'vagus_nerve']
   },
 
@@ -634,7 +634,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       science: 'Cearns & Clark (2022) JMIR (Doi: 10.2196/43358, 280,000+ sessions studied)'
     },
     axis: 'attention',
-    chapters: [5, 6, 8, 10],
+    chapters: [5, 6, 9, 11],
     related: ['neuroplasticity']
   },
 
@@ -654,7 +654,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       science: 'Farb et al. (2007) Social Cognitive and Affective Neuroscience (Doi: 10.1093/scan/nsm030)'
     },
     axis: 'attention',
-    chapters: [3, 4, 10],
+    chapters: [3, 4, 11],
     related: ['interoception', 'dmn', 'attention_modes', 'open_awareness']
   },
 
@@ -674,7 +674,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       science: 'Oster (1973) "Auditory beats in the brain" (Scientific American) & Lane et al. (1998) Physiology & Behavior (Doi: 10.1016/s0031-9384(97)00436-8)'
     },
     axis: 'all',
-    chapters: [7, 10],
+    chapters: [8, 11],
     related: ['parasympathetic', 'vagus_nerve']
   },
 
@@ -694,7 +694,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       science: 'Lutz, Greischar, Rawlings, Richard, Davidson (2004) PNAS (Doi: 10.1073/pnas.0407401101) & Davidson & Lutz (2008) IEEE Signal Process Mag (Doi: 10.1109/msp.2008.915525)'
     },
     axis: 'space',
-    chapters: [4, 10],
+    chapters: [4, 11],
     related: ['open_awareness', 'sky_metaphor', 'neuroplasticity']
   },
 
@@ -714,7 +714,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       science: 'Ashinoff, B. K., & Abu-Akel, A. (2019). Psychological Research. (Doi: 10.1007/s00426-019-01245-8)'
     },
     axis: 'attention',
-    chapters: [3, 5, 10],
+    chapters: [3, 5, 11],
     related: ['hyperfocus', 'attention_modes', 'open_awareness']
   },
 
@@ -734,7 +734,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       science: 'Brewer, J. A., Worhunsky, P. D., Gray, J. R., Weber, J., Tang, Y., & Kober, H. (2011). PNAS. (Doi: 10.1073/pnas.1112029108)'
     },
     axis: 'all',
-    chapters: [1, 5, 10],
+    chapters: [1, 5, 11],
     related: ['dmn', 'grounding', 'neuroplasticity']
   },
 
@@ -754,7 +754,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       science: 'Gibson, J. J. (1979/2014) "The Ecological Approach to Visual Perception" (Doi: 10.4324/9781315740218)'
     },
     axis: 'body',
-    chapters: [1, 4, 10],
+    chapters: [1, 4, 11],
     related: ['grounding', 'gravity', 'proprioception', 'open_awareness']
   },
 
@@ -774,7 +774,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       science: 'Mackrous, I., Carriot, J., Jamali, M., & Cullen, K. E. (2019). Current Biology. (Doi: 10.1016/j.cub.2019.07.006)'
     },
     axis: 'body',
-    chapters: [1, 10],
+    chapters: [1, 11],
     related: ['gravity', 'grounding', 'proprioception']
   },
   vater_2022: {

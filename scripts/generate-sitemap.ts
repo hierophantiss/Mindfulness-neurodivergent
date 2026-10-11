@@ -10,6 +10,7 @@ import { CHAPTERS_DATA } from '../src/data/chapters';
 import { BREATH_PATTERNS } from '../src/data/breathPatterns';
 import { COURSE_EN as courseContentEn } from '../src/data/course-en';
 import { MICRODOSES_EXERCISES } from '../src/data/microdoses';
+import { rabbitholeContent } from '../src/data/rabbitholeContent';
 
 const BASE_URL = 'https://neurodivergent-mindfulness.org';
 
@@ -63,26 +64,8 @@ async function generate() {
     }
   }
   
-  // extract rabbithole articles
-  const rabbitholeCode = fs.readFileSync(path.join(ROOT_DIR, 'src', 'pages', 'RabbitHole.tsx'), 'utf-8');
-  const rabbitholeIds: string[] = [
-    'dzogchen-great-perfection',
-    'never-force',
-    'soft-gaze-open-hearing',
-    'polyvagal-middle-way',
-    'plato-cave-neurodivergent',
-    'you-are-the-path',
-    'wave-and-sea'
-  ];
-  
-  // Try to match hardcoded ids like id: 'koshas-veils' or id: 'dzogchen-nature-of-mind'
-  const rhIdRegex = /id:\s*'([a-zA-Z0-9-]+)'/g;
-  let rhMatch;
-  while ((rhMatch = rhIdRegex.exec(rabbitholeCode)) !== null) {
-    if (rhMatch[1]) {
-      rabbitholeIds.push(rhMatch[1]);
-    }
-  }
+  // rabbithole articles: one route per entry of the single content source
+  const rabbitholeIds: string[] = Object.keys(rabbitholeContent);
 
   // Deduplicate rabbithole ids
   const uniqueRhIds = [...new Set(rabbitholeIds)];

@@ -42,7 +42,7 @@ export const MOOD_ROUTES: Record<string, any> = {
     },
     actions: [
       { label: { el: '🫁 Αναπνοή 4-7-8', en: '🫁 Breath 4-7-8' }, route: '/practice/breath/4-7-8' },
-      { label: { el: '📋 Πρωτόκολλο Άγχους', en: '📋 Anxiety Protocol' }, route: '/chapters/7' }
+      { label: { el: '📋 Πρωτόκολλο Άγχους', en: '📋 Anxiety Protocol' }, route: '/chapters/8' }
     ]
   },
 

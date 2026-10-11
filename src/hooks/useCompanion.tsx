@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { CompanionData } from '../data/types';
 import { useLocation } from 'react-router-dom';
+import { CHAPTER_SCHEME, migrateChapterProgress, migrateLastChapter } from '../utils/chapterNumbering';
 
 const COMPANION_KEY = 'mindful_companion_v5';
 
@@ -23,6 +24,7 @@ const defaultCompanionData = (): CompanionData => ({
   activeDailyPlan: null,
   lastScreen: 'home',
   lastChapter: null,
+  chapterScheme: CHAPTER_SCHEME,
   firstVisit: new Date().toISOString(),
   lastSeen: null,
   visits: [],
@@ -57,6 +59,11 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       const stored = localStorage.getItem(COMPANION_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
+        if (parsed.chapterScheme !== CHAPTER_SCHEME) {
+          parsed.chapterProgress = migrateChapterProgress(parsed.chapterProgress);
+          parsed.lastChapter = migrateLastChapter(parsed.lastChapter);
+          parsed.chapterScheme = CHAPTER_SCHEME;
+        }
         const merged = { ...defaultCompanionData(), ...parsed };
         if (!merged.userId) {
           merged.userId = generateAnonymizedID();

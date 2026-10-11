@@ -220,7 +220,7 @@ function getMetaForRoute(route: string): RouteMeta {
   const url = `${BASE_URL}${route}`;
 
   const homeDescription = lang === 'en'
-    ? 'Free mindfulness app for ADHD & autism. Gentle Polyvagal state check-in, animated Tai Chi & Qigong, binaural beats, breathwork, and a 10-chapter workbook — trauma-informed, privacy-first, neurodivergent-made.'
+    ? 'Free mindfulness app for ADHD & autism. Gentle Polyvagal state check-in, animated Tai Chi & Qigong, binaural beats, breathwork, and an 11-chapter workbook — trauma-informed, privacy-first, neurodivergent-made.'
     : 'Δωρεάν εφαρμογή ενσυνειδητότητας για ΔΕΠΥ & αυτισμό. Διακριτικό check-in κατάστασης (Polyvagal), animated Tai Chi & Qigong, binaural beats, αναπνοή και βιβλίο 10 κεφαλαίων — trauma-informed, χωρίς tracking, από νευροδιαφορετικό.';
   const homeIntro = lang === 'en'
     ? 'Built around the Fourfold Axis — Body, Breath, Attention, Space — this is a free, privacy-first companion for grounding, regulation, and open awareness, made by a neurodivergent person for neurodivergent minds.'
@@ -364,11 +364,11 @@ function getMetaForRoute(route: string): RouteMeta {
   // ── Chapters list ──
   if (clean === '/chapters') {
     const t = lang === 'en'
-      ? 'Presence Workbook – 10-Chapter Study | Neurodivergent Mindfulness App'
-      : 'Βιβλίο Παρουσίας – 10 Κεφάλαια | Neurodivergent Mindfulness App';
+      ? 'Presence Workbook – 11-Chapter Study | Neurodivergent Mindfulness App'
+      : 'Βιβλίο Παρουσίας – 11 Κεφάλαια | Neurodivergent Mindfulness App';
     const d = lang === 'en'
-      ? 'A 10-chapter guided workbook on the Fourfold Axis: Body, Breath, Attention, Space. Neurodivergent-friendly theory and practice for ADHD and autism.'
-      : '10 κεφάλαια καθοδηγούμενης μελέτης στον Τετραπλό Άξονα: Σώμα, Αναπνοή, Προσοχή, Χώρος για ΔΕΠΥ και αυτισμό.';
+      ? 'An 11-chapter guided workbook on the Fourfold Axis: Body, Breath, Attention, Space. Neurodivergent-friendly theory and practice for ADHD and autism.'
+      : '11 κεφάλαια καθοδηγούμενης μελέτης στον Τετραπλό Άξονα: Σώμα, Αναπνοή, Προσοχή, Χώρος για ΔΕΠΥ και αυτισμό.';
     return { title: t, description: d, schema: {}, schemaType: 'Article' };
   }
 
@@ -531,7 +531,7 @@ function getMetaForRoute(route: string): RouteMeta {
       ? 'The Fourfold Axis Method | Neurodivergent Mindfulness App'
       : 'Η Μέθοδος του Τετραπλού Άξονα | Neurodivergent Mindfulness App';
     const d = lang === 'en'
-      ? 'The Fourfold Axis: Body, Breath, Attention, Space. A trauma-informed mindfulness framework for ADHD and autistic nervous systems — with a gentle Polyvagal state check-in, animated movement, binaural beats, and a free 10-chapter workbook.'
+      ? 'The Fourfold Axis: Body, Breath, Attention, Space. A trauma-informed mindfulness framework for ADHD and autistic nervous systems — with a gentle Polyvagal state check-in, animated movement, binaural beats, and a free 11-chapter workbook.'
       : 'Ο Τετραπλός Άξονας: Σώμα, Αναπνοή, Προσοχή, Χώρος. Πλαίσιο ενσυνειδητότητας για ΔΕΠΥ και αυτισμό — με διακριτικό check-in κατάστασης (Polyvagal), animated κίνηση, binaural beats και δωρεάν βιβλίο 10 κεφαλαίων.';
     const linkText = lang === 'en'
       ? `The method is grounded in 12 published studies — see the <a href="/en/methodology">scientific basis</a>.`

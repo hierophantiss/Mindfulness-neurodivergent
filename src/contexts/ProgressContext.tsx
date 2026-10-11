@@ -1,9 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { CHAPTER_SCHEME, migrateCompletedChapters } from '../utils/chapterNumbering';
 
 interface ProgressData {
   completedLessons: string[]; // "week-day"
   completedBreaths: string[];
   completedChapters: string[];
+  chapterScheme?: number;
 }
 
 interface ProgressContextType {
@@ -24,7 +26,12 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const saved = localStorage.getItem('awareness_progress');
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (parsed.chapterScheme !== CHAPTER_SCHEME) {
+          parsed.completedChapters = migrateCompletedChapters(parsed.completedChapters);
+          parsed.chapterScheme = CHAPTER_SCHEME;
+        }
+        return parsed;
       } catch (e) {
         console.error('Failed to parse progress', e);
       }
@@ -32,7 +39,8 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return {
       completedLessons: [],
       completedBreaths: [],
-      completedChapters: []
+      completedChapters: [],
+      chapterScheme: CHAPTER_SCHEME
     };
   });
 

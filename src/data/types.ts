@@ -93,6 +93,7 @@ export interface CompanionData {
   activeDailyPlan: any | null;
   lastScreen: string;
   lastChapter: number | null;
+  chapterScheme?: number;
   firstVisit: string;
   lastSeen: string | null;
   visits: { date: string; screen: string }[];

@@ -62,23 +62,31 @@ const CHAPTER_CONCEPTS_MAP: Record<number, { id: string; labelEn: string; labelE
     { id: 'parasympathetic', labelEn: 'Active Recovery', labelEl: 'Ενεργή Ανάκαμψη', icon: '🌿' }
   ],
   7: [
+    { id: 'corrigan_2010', labelEn: 'Corrigan (2010) • Window of Tolerance', labelEl: 'Corrigan (2010) • Παράθυρο Ανοχής', icon: '⚖️' },
+    { id: 'gravity', labelEn: 'Gravity', labelEl: 'Βαρύτητα', icon: '⛰️' },
+    { id: 'mechanical_mind', labelEn: 'Mechanical Mind', labelEl: 'Μηχανικός Νους', icon: '⚙️' },
+    { id: 'self_criticism', labelEn: 'Self-Criticism', labelEl: 'Αυτοκριτική', icon: '🪞' },
+    { id: 'kindness', labelEn: 'Kindness', labelEl: 'Καλοσύνη', icon: '🤍' },
+    { id: 'trauma', labelEn: 'Trauma-Informed', labelEl: 'Trauma-Informed', icon: '🛡️' }
+  ],
+  8: [
     { id: 'polyvagal', labelEn: 'Porges (1995) • Polyvagal Theory', labelEl: 'Θεωρία Porges (1995) • Πολυβαγική', icon: '🛡️' },
     { id: 'binaural_beats', labelEn: 'Lane (1998) • Binaural Beats', labelEl: 'Μελέτη Lane (1998) • Διωτικά Κύματα', icon: '🔬' },
     { id: 'sos', labelEn: 'Somatic Crisis Protocol', labelEl: 'Πρωτόκολλο Κρίσης SOS', icon: '🚨' },
     { id: 'vagus_nerve', labelEn: 'Slow Exhale Vagus', labelEl: 'Πνευμονογαστρική Εκπνοή', icon: '🌬️' },
     { id: 'trauma', labelEn: 'Trauma-Informed Anchor', labelEl: 'Trauma-Informed Άγκυρα', icon: '🛡️' }
   ],
-  8: [
+  9: [
     { id: 'cearns_2022', labelEn: 'Dose & Practice Adherence', labelEl: 'Δόση & Τήρηση Πρακτικής', icon: '🔬' },
     { id: 'sky_metaphor', labelEn: 'The Spacious Containment', labelEl: 'Ανοιχτός Χώρος', icon: '🌌' },
     { id: 'vagus_nerve', labelEn: 'Physiological Brake', labelEl: 'Φυσιολογικό Φρένο', icon: '⚡' }
   ],
-  9: [
+  10: [
     { id: 'gentle_return', labelEn: 'Non-Judgmental Practice', labelEl: 'Μη-επικριτική Επιστροφή', icon: '🔥' },
     { id: 'grounding', labelEn: 'Somatic Stability', labelEl: 'Σωματική Σταθερότητα', icon: '⛰️' },
     { id: 'trauma', labelEn: 'Internal Safe Space', labelEl: 'Εσωτερικός Ασφαλής Χώρος', icon: '🛡️' }
   ],
-  10: [
+  11: [
     { id: 'zylowska_2007', labelEn: 'Clinical ADHD Study', labelEl: 'Κλινική Μελέτη ΔΕΠΥ', icon: '🔬' },
     { id: 'farb_2007', labelEn: 'Farb Neural Modes fMRI Study', labelEl: 'Μελέτη fMRI Farb • Νευρικοί Τρόποι', icon: '🔬' },
     { id: 'gibson_2019', labelEn: 'Gibson Insula Study', labelEl: 'Μελέτη Gibson για τη Νήσο', icon: '🔬' },
@@ -141,7 +149,7 @@ const ZenParagraph = ({ text, index }: { text: string, index: number }) => {
       className="relative"
     >
       <div 
-        className="font-sans font-light text-white/80 leading-loose"
+        className="font-sans font-light text-white/80 leading-loose whitespace-pre-line"
       >
         <ConceptAnnotatedText text={text} />
       </div>
