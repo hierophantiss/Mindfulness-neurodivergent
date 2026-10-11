@@ -213,6 +213,32 @@ function stripInteractiveTokens(text: string): string {
   return text.replace(/{{[^}]+}}/g, '');
 }
 
+/** Chapter/article text → plain paragraphs for the static body.
+ *  Removes {{tokens}} and inline HTML (<strong>, <br>), and splits on line
+ *  breaks so numbered steps become separate paragraphs instead of showing
+ *  up as literal "&lt;strong&gt;" text in search results. */
+function toPlainParagraphs(text: string): string[] {
+  if (!text) return [];
+  return stripMarkdown(stripInteractiveTokens(text))
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<[^>]+>/g, '')
+    .split(/\n+/)
+    .map(s => s.replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+}
+
+function toPlainText(text: string): string {
+  return toPlainParagraphs(text).join(' ');
+}
+
+/** First ~155 characters of real text, cut at a word boundary. */
+function excerpt(paragraphs: string[], max = 155): string {
+  const text = paragraphs.join(' ').trim();
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max);
+  return cut.slice(0, cut.lastIndexOf(' ')).replace(/[,;:—–-]\s*$/, '') + '…';
+}
+
 
 function getMetaForRoute(route: string): RouteMeta {
   const lang = route.startsWith('/en') ? 'en' : 'el';
@@ -221,7 +247,7 @@ function getMetaForRoute(route: string): RouteMeta {
 
   const homeDescription = lang === 'en'
     ? 'Free mindfulness app for ADHD & autism. Gentle Polyvagal state check-in, animated Tai Chi & Qigong, binaural beats, breathwork, and an 11-chapter workbook — trauma-informed, privacy-first, neurodivergent-made.'
-    : 'Δωρεάν εφαρμογή ενσυνειδητότητας για ΔΕΠΥ & αυτισμό. Διακριτικό check-in κατάστασης (Polyvagal), animated Tai Chi & Qigong, binaural beats, αναπνοή και βιβλίο 10 κεφαλαίων — trauma-informed, χωρίς tracking, από νευροδιαφορετικό.';
+    : 'Δωρεάν εφαρμογή ενσυνειδητότητας για ΔΕΠΥ & αυτισμό. Διακριτικό check-in κατάστασης (Polyvagal), animated Tai Chi & Qigong, binaural beats, αναπνοή και βιβλίο 11 κεφαλαίων — trauma-informed, χωρίς tracking, από νευροδιαφορετικό.';
   const homeIntro = lang === 'en'
     ? 'Built around the Fourfold Axis — Body, Breath, Attention, Space — this is a free, privacy-first companion for grounding, regulation, and open awareness, made by a neurodivergent person for neurodivergent minds.'
     : 'Χτισμένη γύρω από τον Τετραπλό Άξονα — Σώμα, Αναπνοή, Προσοχή, Χώρος — είναι μια δωρεάν εφαρμογή, χωρίς παρακολούθηση, για γείωση, ρύθμιση και ανοιχτή επίγνωση, φτιαγμένη από νευροδιαφορετικό άτομο για νευροδιαφορετικούς νους.';
@@ -265,7 +291,16 @@ function getMetaForRoute(route: string): RouteMeta {
     const d = lang === 'en'
       ? 'Allegories, articles and philosophical reflections bridging Dzogchen, Mahamudra, neuroscience and neurodivergent experience. Deep reading for ADHD and autistic minds.'
       : 'Αλληγορίες, άρθρα και στοχασμοί που γεφυρώνουν Τζοκτσέν, νευροεπιστήμη και νευροδιαφορετική εμπειρία.';
-    return { title: t, description: d, schema: {}, schemaType: 'Article' };
+    // Every article as a real link (same source as the sitemap).
+    const L = lang as 'en' | 'el';
+    const items = Object.entries(rabbitholeContent).map(([id, a]: [string, any]) => {
+      const title = a.title?.[L] ?? a.title?.en ?? id;
+      const first = toPlainParagraphs((a[L] ?? a.en ?? [])[0] ?? '')[0];
+      return `<li><a href="/${lang}/rabbithole/${id}">${escapeHtml(title)}</a>` +
+        (first ? `<p>${escapeHtml(excerpt([first], 160))}</p>` : '') + `</li>`;
+    }).join('\n      ');
+    const rawHtml = `<p>${escapeHtml(d)}</p>\n      <ul>\n      ${items}\n      </ul>`;
+    return { title: t, description: d, schema: {}, schemaType: 'Article', rawHtml };
   }
 
   // ── Rabbit Hole article ──
@@ -312,12 +347,14 @@ function getMetaForRoute(route: string): RouteMeta {
       
       let bodyParagraphs: string[] = [];
       if (articlePages && articlePages.length > 0) {
-        bodyParagraphs = articlePages
-          .flatMap(page => page.split(/\n\n+/))
-          .map(p => stripMarkdown(stripInteractiveTokens(p)))
-          .filter(Boolean);
+        bodyParagraphs = articlePages.flatMap(page => toPlainParagraphs(page));
       } else {
         bodyParagraphs = [d];
+      }
+      // No hand-written description: use the article's own opening lines
+      // instead of one generic sentence shared by several pages.
+      if (!art && bodyParagraphs.length > 0) {
+        d = excerpt(bodyParagraphs);
       }
       
       const authorInfo = ARTICLE_AUTHORS[slug];
@@ -369,7 +406,16 @@ function getMetaForRoute(route: string): RouteMeta {
     const d = lang === 'en'
       ? 'An 11-chapter guided workbook on the Fourfold Axis: Body, Breath, Attention, Space. Neurodivergent-friendly theory and practice for ADHD and autism.'
       : '11 κεφάλαια καθοδηγούμενης μελέτης στον Τετραπλό Άξονα: Σώμα, Αναπνοή, Προσοχή, Χώρος για ΔΕΠΥ και αυτισμό.';
-    return { title: t, description: d, schema: {}, schemaType: 'Article' };
+    // Every chapter as a real link, so crawlers reach them from the list
+    // page and not only from the sitemap.
+    const chapters = ((CHAPTERS_DATA as any)[lang] ?? []) as any[];
+    const word = lang === 'en' ? 'Chapter' : 'Κεφάλαιο';
+    const items = chapters.map(ch =>
+      `<li><a href="/${lang}/chapters/${ch.num}">${escapeHtml(`${word} ${ch.num}: ${ch.title} – ${ch.sub}`)}</a>` +
+      (ch.summary ? `<p>${escapeHtml(toPlainText(ch.summary))}</p>` : '') + `</li>`
+    ).join('\n      ');
+    const rawHtml = `<p>${escapeHtml(d)}</p>\n      <ol>\n      ${items}\n      </ol>`;
+    return { title: t, description: d, schema: {}, schemaType: 'Article', rawHtml };
   }
 
   // ── Individual chapter ──
@@ -382,22 +428,37 @@ function getMetaForRoute(route: string): RouteMeta {
       const t = lang === 'en'
         ? `Chapter ${ch.num}: ${ch.title} – ${ch.sub} | Neurodivergent Mindfulness App`
         : `Κεφάλαιο ${ch.num}: ${ch.title} – ${ch.sub} | Neurodivergent Mindfulness App`;
-      const d = ch.summary || ch.tldr || defaults.description;
+      const d = toPlainText(ch.summary || ch.tldr || '') || defaults.description;
 
-      const bodyParagraphs: string[] = [];
-      if (ch.summary) bodyParagraphs.push(ch.summary);
-      if (ch.tldr && ch.tldr !== ch.summary) bodyParagraphs.push(ch.tldr);
+      // Static body: summary, then each theory section under its own <h2>,
+      // the exercise as a list, and links to the neighbouring chapters.
+      const p = (s: string) => toPlainParagraphs(s).map(x => `<p>${escapeHtml(x)}</p>`).join('\n      ');
+      const parts: string[] = [];
+      if (ch.summary) parts.push(p(ch.summary));
+      if (ch.tldr && ch.tldr !== ch.summary) parts.push(p(ch.tldr));
       for (const section of ch.theorySections ?? []) {
-        for (const p of section.paragraphs ?? []) {
-          bodyParagraphs.push(stripInteractiveTokens(p));
-        }
+        if (section.title) parts.push(`<h2>${escapeHtml(toPlainText(section.title))}</h2>`);
+        for (const para of section.paragraphs ?? []) parts.push(p(para));
       }
+      if (ch.exercise?.steps?.length) {
+        if (ch.exercise.title) parts.push(`<h2>${escapeHtml(toPlainText(ch.exercise.title))}</h2>`);
+        parts.push(`<ol>${ch.exercise.steps.map((s: string) => `<li>${escapeHtml(toPlainText(s))}</li>`).join('')}</ol>`);
+      }
+      if (ch.insight) parts.push(p(ch.insight));
+      const word = lang === 'en' ? 'Chapter' : 'Κεφάλαιο';
+      const nav: string[] = [];
+      const prev = chapters.find((c: any) => c.num === num - 1);
+      const next = chapters.find((c: any) => c.num === num + 1);
+      if (prev) nav.push(`<li><a href="/${lang}/chapters/${prev.num}">${escapeHtml(`${word} ${prev.num}: ${prev.title}`)}</a></li>`);
+      if (next) nav.push(`<li><a href="/${lang}/chapters/${next.num}">${escapeHtml(`${word} ${next.num}: ${next.title}`)}</a></li>`);
+      nav.push(`<li><a href="/${lang}/chapters">${lang === 'en' ? 'All chapters' : 'Όλα τα κεφάλαια'}</a></li>`);
+      parts.push(`<ul>${nav.join('')}</ul>`);
 
       return {
-        title: t, description: d, schemaType: 'Article', bodyParagraphs,
+        title: t, description: d, schemaType: 'Article', rawHtml: parts.join('\n      '),
         schema: {
           '@context': 'https://schema.org', '@type': 'Article',
-          headline: t, description: d, url,
+          headline: t, description: d, url, inLanguage: lang,
           author: { '@type': 'Organization', name: 'Neurodivergent Mindfulness App' },
         },
       };
@@ -450,6 +511,34 @@ function getMetaForRoute(route: string): RouteMeta {
       space: { en: 'Space',     el: 'Χώρος' },
     };
     const cat = catNames[practiceMatch[1]] ?? { en: practiceMatch[1], el: practiceMatch[1] };
+    // The exercise's own title and description, instead of the URL slug and
+    // one sentence shared by every exercise of the same category.
+    const ex = MICRODOSES_EXERCISES.find(m => m.link === clean);
+    if (ex) {
+      const L = lang as 'en' | 'el';
+      const exTitle = ex.title[L] ?? ex.title.en;
+      const exDesc = ex.desc[L] ?? ex.desc.en;
+      const t = lang === 'en'
+        ? `${exTitle} – ${cat.en} Practice | Neurodivergent Mindfulness App`
+        : `${exTitle} – Πρακτική: ${cat.el} | Neurodivergent Mindfulness App`;
+      const d = lang === 'en'
+        ? `${exDesc} Duration: ${ex.dur.en} · Axis: ${cat.en}.`
+        : `${exDesc} Διάρκεια: ${ex.dur.el} · Άξονας: ${cat.el}.`;
+      const bodyParagraphs = [
+        exDesc,
+        lang === 'en' ? `Duration: ${ex.dur.en}.` : `Διάρκεια: ${ex.dur.el}.`,
+        ...(ex.evidence ? [ex.evidence[L] ?? ex.evidence.en] : []),
+      ];
+      return {
+        title: t, description: d, schemaType: 'HowTo', bodyParagraphs,
+        relatedLinks: [{ href: `/${lang}/practice/microdoses`, label: lang === 'en' ? 'All micro-practices' : 'Όλες οι μικρο-πρακτικές' }],
+        schema: {
+          '@context': 'https://schema.org', '@type': 'HowTo',
+          name: exTitle, description: d, url, inLanguage: lang,
+          step: [{ '@type': 'HowToStep', text: exDesc }],
+        },
+      };
+    }
     const t = lang === 'en'
       ? `${practiceMatch[2].replace(/-/g, ' ')} – ${cat.en} Practice | Neurodivergent Mindfulness App`
       : `${practiceMatch[2].replace(/-/g, ' ')} – Πρακτική ${cat.el} | Neurodivergent Mindfulness App`;
@@ -532,7 +621,7 @@ function getMetaForRoute(route: string): RouteMeta {
       : 'Η Μέθοδος του Τετραπλού Άξονα | Neurodivergent Mindfulness App';
     const d = lang === 'en'
       ? 'The Fourfold Axis: Body, Breath, Attention, Space. A trauma-informed mindfulness framework for ADHD and autistic nervous systems — with a gentle Polyvagal state check-in, animated movement, binaural beats, and a free 11-chapter workbook.'
-      : 'Ο Τετραπλός Άξονας: Σώμα, Αναπνοή, Προσοχή, Χώρος. Πλαίσιο ενσυνειδητότητας για ΔΕΠΥ και αυτισμό — με διακριτικό check-in κατάστασης (Polyvagal), animated κίνηση, binaural beats και δωρεάν βιβλίο 10 κεφαλαίων.';
+      : 'Ο Τετραπλός Άξονας: Σώμα, Αναπνοή, Προσοχή, Χώρος. Πλαίσιο ενσυνειδητότητας για ΔΕΠΥ και αυτισμό — με διακριτικό check-in κατάστασης (Polyvagal), animated κίνηση, binaural beats και δωρεάν βιβλίο 11 κεφαλαίων.';
     const linkText = lang === 'en'
       ? `The method is grounded in 12 published studies — see the <a href="/en/methodology">scientific basis</a>.`
       : `Η μέθοδος υποστηρίζεται από 12 δημοσιευμένες έρευνες — δείτε την <a href="/el/methodology">επιστημονική βάση</a>.`;
@@ -695,27 +784,36 @@ function buildHead(route: string, meta: RouteMeta, baseHtml: string): string {
   const canonicalUrl = `${BASE_URL}${route}`;
   const enUrl = `${BASE_URL}/en${clean === '/' ? '' : clean}`;
   const elUrl = `${BASE_URL}/el${clean === '/' ? '' : clean}`;
+  // The root picks the language from the browser, so it is the x-default of
+  // the home cluster; every other page falls back to its English version.
+  const xDefaultUrl = clean === '/' ? `${BASE_URL}/` : enUrl;
+  const title = escapeHtml(meta.title);
+  const desc = escapeHtml(meta.description);
 
+  // Every tag carries data-seo="prerender" so the client SEO component can
+  // tell that the page already has correct tags for this URL (and remove
+  // them after in-app navigation) instead of adding a second, conflicting set.
   const seoBlock = `
   <!-- SEO: prerendered for ${route} -->
-  <title>${meta.title}</title>
-  <meta name="description" content="${meta.description.replace(/"/g, '&quot;')}" />
-  <meta name="robots" content="${meta.noindex ? 'noindex, follow' : 'index, follow'}" />
-  <meta property="og:title" content="${meta.title.replace(/"/g, '&quot;')}" />
-  <meta property="og:description" content="${meta.description.replace(/"/g, '&quot;')}" />
-  <meta property="og:url" content="${canonicalUrl}" />
-  <meta property="og:image" content="${BASE_URL}/og-image.png" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Neurodivergent Mindfulness App" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="${meta.title.replace(/"/g, '&quot;')}" />
-  <meta name="twitter:description" content="${meta.description.replace(/"/g, '&quot;')}" />
-  <link rel="canonical" href="${canonicalUrl}" />
-  <link rel="alternate" hreflang="en" href="${enUrl}" />
-  <link rel="alternate" hreflang="el" href="${elUrl}" />
-  <link rel="alternate" hreflang="x-default" href="${enUrl}" />
+  <title data-seo="prerender">${title}</title>
+  <meta data-seo="prerender" name="description" content="${desc}" />
+  <meta data-seo="prerender" name="robots" content="${meta.noindex ? 'noindex, follow' : 'index, follow'}" />
+  <meta data-seo="prerender" property="og:title" content="${title}" />
+  <meta data-seo="prerender" property="og:description" content="${desc}" />
+  <meta data-seo="prerender" property="og:url" content="${canonicalUrl}" />
+  <meta data-seo="prerender" property="og:image" content="${BASE_URL}/og-image.png" />
+  <meta data-seo="prerender" property="og:type" content="website" />
+  <meta data-seo="prerender" property="og:locale" content="${lang === 'en' ? 'en_US' : 'el_GR'}" />
+  <meta data-seo="prerender" property="og:site_name" content="Neurodivergent Mindfulness App" />
+  <meta data-seo="prerender" name="twitter:card" content="summary_large_image" />
+  <meta data-seo="prerender" name="twitter:title" content="${title}" />
+  <meta data-seo="prerender" name="twitter:description" content="${desc}" />
+  <link data-seo="prerender" rel="canonical" href="${canonicalUrl}" />
+  <link data-seo="prerender" rel="alternate" hreflang="en" href="${enUrl}" />
+  <link data-seo="prerender" rel="alternate" hreflang="el" href="${elUrl}" />
+  <link data-seo="prerender" rel="alternate" hreflang="x-default" href="${xDefaultUrl}" />
   ${Object.keys(meta.schema).length > 0
-    ? `<script type="application/ld+json">${JSON.stringify(meta.schema)}</script>`
+    ? `<script data-seo="prerender" type="application/ld+json">${JSON.stringify(meta.schema).replace(/</g, '\\u003c')}</script>`
     : ''}
   <!-- /SEO -->`;
 

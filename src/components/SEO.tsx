@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLanguage } from '../hooks/useLanguage';
 import { useLocation, useParams } from 'react-router-dom';
@@ -380,6 +380,9 @@ export const SEO: React.FC = () => {
 
   // Normalise path: strip lang prefix for matching
   const cleanPath = path.replace(/^\/(en|el)/, '') || '/';
+  // Router paths have the /en or /el prefix stripped (it is the basename),
+  // so page URLs are built from the real address bar path.
+  const pageUrl = `${BASE_URL}${window.location.pathname.replace(/\/+$/, '') || '/'}`;
 
   // ── Defaults ────────────────────────────────────────────────────
   let title = lang === 'en'
@@ -388,7 +391,7 @@ export const SEO: React.FC = () => {
   let description = lang === 'en'
     ? 'A mindful sanctuary for neurodivergent individuals. Ground yourself with trauma-informed breathwork, sensory practices, and philosophical reflections for ADHD and autism.'
     : 'Ένα καταφύγιο ενσυνειδητότητας για νευροδιαφορετικά άτομα. Γείωση με ασφαλείς πρακτικές αναπνοής, αισθητηριακή εστίαση για ΔΕΠΥ και αυτισμό.';
-  let schema: object = webAppSchema(title, description, `${BASE_URL}${path}`);
+  let schema: object = webAppSchema(title, description, pageUrl);
 
   // ── Rabbit Hole: article list ────────────────────────────────────
   if (cleanPath === '/rabbithole' && !params.articleId) {
@@ -398,24 +401,24 @@ export const SEO: React.FC = () => {
     description = lang === 'en'
       ? 'Allegories, articles and philosophical reflections bridging Dzogchen, Mahamudra, neuroscience and neurodivergent experience. Deep reading for ADHD and autistic minds.'
       : 'Αλληγορίες, άρθρα και στοχασμοί που γεφυρώνουν Τζοκτσέν, νευροεπιστήμη και νευροδιαφορετική εμπειρία.';
-    schema = articleSchema(title, description, `${BASE_URL}${path}`);
+    schema = articleSchema(title, description, pageUrl);
 
   // ── Rabbit Hole: individual article ─────────────────────────────
   } else if (params.articleId && ARTICLES[params.articleId]) {
     const art = ARTICLES[params.articleId];
     title = lang === 'en' ? art.titleEn : art.titleEl;
     description = lang === 'en' ? art.descEn : art.descEl;
-    schema = articleSchema(title, description, `${BASE_URL}${path}`);
+    schema = articleSchema(title, description, pageUrl);
 
   // ── Chapters: list ───────────────────────────────────────────────
   } else if (cleanPath === '/chapters') {
     title = lang === 'en'
-      ? 'Presence Workbook – 8-Week Study | Neurodivergent Mindfulness'
-      : 'Βιβλίο Παρουσίας – 8 Εβδομάδες Μελέτης | Neurodivergent Mindfulness';
+      ? 'Presence Workbook – 11-Chapter Study | Neurodivergent Mindfulness'
+      : 'Βιβλίο Παρουσίας – 11 Κεφάλαια | Neurodivergent Mindfulness';
     description = lang === 'en'
-      ? 'An 8-week guided study on the Fourfold Axis: Body, Breath, Attention, Space. Neurodivergent-friendly theory and practice for ADHD and autism.'
-      : '8 εβδομάδες καθοδηγούμενης μελέτης στον Τετραπλό Άξονα: Σώμα, Αναπνοή, Προσοχή, Χώρος για ΔΕΠΥ και αυτισμό.';
-    schema = webAppSchema(title, description, `${BASE_URL}${path}`);
+      ? 'An 11-chapter guided workbook on the Fourfold Axis: Body, Breath, Attention, Space. Neurodivergent-friendly theory and practice for ADHD and autism.'
+      : '11 κεφάλαια καθοδηγούμενης μελέτης στον Τετραπλό Άξονα: Σώμα, Αναπνοή, Προσοχή, Χώρος για ΔΕΠΥ και αυτισμό.';
+    schema = webAppSchema(title, description, pageUrl);
 
   // ── Chapters: individual chapter ─────────────────────────────────
   } else if (params.id && cleanPath.startsWith('/chapters/')) {
@@ -426,7 +429,7 @@ export const SEO: React.FC = () => {
         ? `Chapter ${chapter.num}: ${chapter.title} – ${chapter.sub} | Neurodivergent Mindfulness`
         : `Κεφάλαιο ${chapter.num}: ${chapter.title} – ${chapter.sub} | Neurodivergent Mindfulness`;
       description = chapter.summary || chapter.tldr || description;
-      schema = articleSchema(title, description, `${BASE_URL}${path}`);
+      schema = articleSchema(title, description, pageUrl);
     }
 
   // ── Practice: breath exercise ────────────────────────────────────
@@ -444,7 +447,7 @@ export const SEO: React.FC = () => {
         : isVocal
           ? `Καθοδηγούμενο ψάλσιμο και φωνητική αντήχηση: ${ptitle}. ${psub}. Σωματική άσκηση διέγερσης του πνευμονογαστρικού για ΔΕΠΥ και αυτισμό.`
           : `Καθοδηγούμενη αναπνοή: ${ptitle}. ${psub}. Ρύθμιση νευρικού συστήματος για ΔΕΠΥ και αυτισμό.`;
-      schema = practiceSchema(title, description, `${BASE_URL}${path}`);
+      schema = practiceSchema(title, description, pageUrl);
     }
 
   // ── Practice: generic category/id exercise ───────────────────────
@@ -462,7 +465,7 @@ export const SEO: React.FC = () => {
     description = lang === 'en'
       ? `A ${cat.en.toLowerCase()} mindfulness exercise for neurodivergent individuals. Trauma-informed practice supporting ADHD and autistic nervous system regulation.`
       : `Άσκηση ενσυνειδητότητας ${cat.el.toLowerCase()} για νευροδιαφορετικά άτομα. Ρύθμιση νευρικού συστήματος για ΔΕΠΥ και αυτισμό.`;
-    schema = practiceSchema(title, description, `${BASE_URL}${path}`);
+    schema = practiceSchema(title, description, pageUrl);
 
   // ── Practice: hub ────────────────────────────────────────────────
   } else if (cleanPath === '/practice' || cleanPath.startsWith('/practice/')) {
@@ -472,7 +475,7 @@ export const SEO: React.FC = () => {
     description = lang === 'en'
       ? 'Guided breathwork, grounding, chanting, vocal resonance, body, and space exercises. Sensory-friendly mindfulness tools designed for neurodivergent nervous systems.'
       : 'Καθοδηγούμενη αναπνοή, γείωση, ψάλσιμο, φωνητική αντήχηση, σώμα και ασκήσεις χώρου. Εργαλεία ενσυνειδητότητας για νευροδιαφορετικά νευρικά συστήματα.';
-    schema = webAppSchema(title, description, `${BASE_URL}${path}`);
+    schema = webAppSchema(title, description, pageUrl);
 
   // ── Program ──────────────────────────────────────────────────────
   } else if (cleanPath === '/program') {
@@ -482,7 +485,7 @@ export const SEO: React.FC = () => {
     description = lang === 'en'
       ? 'A structured 8-week mindfulness program designed for ADHD and autistic individuals. Body, Breath, Attention, Space – trauma-informed and self-paced.'
       : '8 εβδομάδες δομημένης ενσυνειδητότητας για ΔΕΠΥ και αυτισμό. Σώμα, Αναπνοή, Προσοχή, Χώρος – ασφαλές και με δικό σου ρυθμό.';
-    schema = webAppSchema(title, description, `${BASE_URL}${path}`);
+    schema = webAppSchema(title, description, pageUrl);
 
   } else if (params.weekId && cleanPath.startsWith('/program/week/')) {
     title = lang === 'en'
@@ -491,7 +494,7 @@ export const SEO: React.FC = () => {
     description = lang === 'en'
       ? `Week ${params.weekId} of the 8-week neurodivergent mindfulness program. Guided practices for body, breath, and open awareness.`
       : `Εβδομάδα ${params.weekId} του 8-εβδομαδιαίου προγράμματος. Καθοδηγούμενες πρακτικές για σώμα, αναπνοή και ανοιχτή επίγνωση.`;
-    schema = webAppSchema(title, description, `${BASE_URL}${path}`);
+    schema = webAppSchema(title, description, pageUrl);
 
   // ── Method ───────────────────────────────────────────────────────
   } else if (cleanPath === '/method') {
@@ -501,7 +504,7 @@ export const SEO: React.FC = () => {
     description = lang === 'en'
       ? 'The Fourfold Axis: Body, Breath, Attention, Space. A trauma-informed mindfulness framework adapted for ADHD and autistic nervous systems.'
       : 'Ο Τετραπλός Άξονας: Σώμα, Αναπνοή, Προσοχή, Χώρος. Ένα ασφαλές πλαίσιο ενσυνειδητότητας για ΔΕΠΥ και αυτισμό.';
-    schema = articleSchema(title, description, `${BASE_URL}${path}`);
+    schema = articleSchema(title, description, pageUrl);
 
   // ── FAQ ──────────────────────────────────────────────────────────
   } else if (cleanPath === '/faq') {
@@ -516,14 +519,35 @@ export const SEO: React.FC = () => {
       '@type': 'FAQPage',
       name: title,
       description,
-      url: `${BASE_URL}${path}`,
+      url: pageUrl,
     };
   }
 
-  const canonicalUrl = `${BASE_URL}${path}`;
-  const enPath = path.replace(/^\/(en|el)/, '') || '/';
+  const canonicalUrl = pageUrl;
+  const enPath = cleanPath;
   const enUrl  = `${BASE_URL}/en${enPath === '/' ? '' : enPath}`;
   const elUrl  = `${BASE_URL}/el${enPath === '/' ? '' : enPath}`;
+  const xDefaultUrl = enPath === '/' ? `${BASE_URL}/` : enUrl;
+
+  // Pages built by scripts/prerender.ts already carry the correct tags for
+  // their URL (marked data-seo="prerender"). Adding a second set here would
+  // give search engines two titles, two descriptions and two canonicals
+  // after rendering, so those tags are kept as they are, and replaced only
+  // once the visitor moves to another page or switches language.
+  const prerenderedCanonical = document
+    .querySelector('link[rel="canonical"][data-seo="prerender"]')?.getAttribute('href');
+  const prerenderedLocale = document
+    .querySelector('meta[property="og:locale"][data-seo="prerender"]')?.getAttribute('content');
+  const keepPrerendered = prerenderedCanonical === canonicalUrl
+    && prerenderedLocale === (lang === 'en' ? 'en_US' : 'el_GR');
+
+  useEffect(() => {
+    if (!keepPrerendered) {
+      document.querySelectorAll('[data-seo="prerender"]').forEach((el) => el.remove());
+    }
+  }, [keepPrerendered]);
+
+  if (keepPrerendered) return null;
 
   return (
     <Helmet>
@@ -554,7 +578,7 @@ export const SEO: React.FC = () => {
       <link rel="canonical"                href={canonicalUrl} />
       <link rel="alternate" hrefLang="en"  href={enUrl} />
       <link rel="alternate" hrefLang="el"  href={elUrl} />
-      <link rel="alternate" hrefLang="x-default" href={enUrl} />
+      <link rel="alternate" hrefLang="x-default" href={xDefaultUrl} />
 
       {/* Structured data */}
       <script type="application/ld+json">{JSON.stringify(schema)}</script>

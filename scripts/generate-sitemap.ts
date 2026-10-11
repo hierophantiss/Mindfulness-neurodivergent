@@ -112,7 +112,9 @@ async function generate() {
     const loc = `${BASE_URL}${encodedRoute}`;
     const enUrl = `${BASE_URL}/en${pureRoute === '/' ? '' : pureRoute}`.replace(/&/g, '&amp;');
     const elUrl = `${BASE_URL}/el${pureRoute === '/' ? '' : pureRoute}`.replace(/&/g, '&amp;');
-    const xdefaultUrl = enUrl; // x-default → πραγματική prerendered /en σελίδα (όχι root)
+    // x-default → the English page; for the home cluster, the root itself,
+    // which picks the language from the browser.
+    const xdefaultUrl = pureRoute === '/' ? `${BASE_URL}/` : enUrl;
     
     return `
   <url>
