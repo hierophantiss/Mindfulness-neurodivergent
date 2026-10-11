@@ -81,6 +81,40 @@ const ARTICLES: Record<string, { titleEn: string; titleEl: string; descEn: strin
 const SCHOLARLY_CITATIONS = [
   {
     "@type": "ScholarlyArticle",
+    "@id": "https://doi.org/10.1016/j.tics.2008.01.005",
+    "name": "Attention regulation and monitoring in meditation",
+    "headline": "Attention regulation and monitoring in meditation",
+    "sameAs": "https://doi.org/10.1016/j.tics.2008.01.005",
+    "identifier": "doi:10.1016/j.tics.2008.01.005",
+    "datePublished": "2008",
+    "author": {
+      "@type": "Person",
+      "name": "Antoine Lutz"
+    },
+    "isPartOf": {
+      "@type": "Periodical",
+      "name": "Trends in Cognitive Sciences"
+    }
+  },
+  {
+    "@type": "ScholarlyArticle",
+    "@id": "https://doi.org/10.3390/brainsci14101001",
+    "name": "Mindfulness-Based Interventions for People with Autism Spectrum Disorder: A Systematic Literature Review",
+    "headline": "Mindfulness-Based Interventions for People with Autism Spectrum Disorder: A Systematic Literature Review",
+    "sameAs": "https://doi.org/10.3390/brainsci14101001",
+    "identifier": "doi:10.3390/brainsci14101001",
+    "datePublished": "2024",
+    "author": {
+      "@type": "Person",
+      "name": "Luca Simione"
+    },
+    "isPartOf": {
+      "@type": "Periodical",
+      "name": "Brain Sciences"
+    }
+  },
+  {
+    "@type": "ScholarlyArticle",
     "@id": "https://doi.org/10.1097/md.0000000000044308",
     "name": "Mindfulness-based interventions for adults with ADHD: A systematic review and meta-analysis",
     "headline": "Mindfulness-based interventions for adults with ADHD: A systematic review and meta-analysis",
@@ -154,7 +188,7 @@ const SCHOLARLY_CITATIONS = [
     "headline": "Autonomic dysregulation and the Window of Tolerance model of the effects of complex emotional trauma",
     "sameAs": "https://doi.org/10.1177/0269881109354930",
     "identifier": "doi:10.1177/0269881109354930",
-    "datePublished": "2010",
+    "datePublished": "2011",
     "author": {
       "@type": "Person",
       "name": "FM Corrigan"
@@ -200,11 +234,11 @@ const SCHOLARLY_CITATIONS = [
   },
   {
     "@type": "ScholarlyArticle",
-    "@id": "https://doi.org/10.1111/j.1469-8986.1995.tb03320.x",
+    "@id": "https://doi.org/10.1111/j.1469-8986.1995.tb01213.x",
     "name": "Orienting in a defensive world: mammalian modifications of our evolutionary heritage. A Polyvagal Theory",
     "headline": "Orienting in a defensive world: mammalian modifications of our evolutionary heritage. A Polyvagal Theory",
-    "sameAs": "https://doi.org/10.1111/j.1469-8986.1995.tb03320.x",
-    "identifier": "doi:10.1111/j.1469-8986.1995.tb03320.x",
+    "sameAs": "https://doi.org/10.1111/j.1469-8986.1995.tb01213.x",
+    "identifier": "doi:10.1111/j.1469-8986.1995.tb01213.x",
     "datePublished": "1995",
     "author": {
       "@type": "Person",
@@ -234,11 +268,11 @@ const SCHOLARLY_CITATIONS = [
   },
   {
     "@type": "ScholarlyArticle",
-    "@id": "https://doi.org/10.3389/fnhum.2019.00044",
-    "name": "Mindfulness, interoception, and the insula: how the brain perceives itself",
-    "headline": "Mindfulness, interoception, and the insula: how the brain perceives itself",
-    "sameAs": "https://doi.org/10.3389/fnhum.2019.00044",
-    "identifier": "doi:10.3389/fnhum.2019.00044",
+    "@id": "https://doi.org/10.3389/fpsyg.2019.02012",
+    "name": "Mindfulness, Interoception, and the Body: A Contemporary Perspective",
+    "headline": "Mindfulness, Interoception, and the Body: A Contemporary Perspective",
+    "sameAs": "https://doi.org/10.3389/fpsyg.2019.02012",
+    "identifier": "doi:10.3389/fpsyg.2019.02012",
     "datePublished": "2019",
     "author": {
       "@type": "Person",
@@ -246,7 +280,7 @@ const SCHOLARLY_CITATIONS = [
     },
     "isPartOf": {
       "@type": "Periodical",
-      "name": "Frontiers in Human Neuroscience"
+      "name": "Frontiers in Psychology"
     }
   },
   {

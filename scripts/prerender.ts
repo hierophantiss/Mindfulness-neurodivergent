@@ -623,19 +623,19 @@ function getMetaForRoute(route: string): RouteMeta {
       ? 'The Fourfold Axis: Body, Breath, Attention, Space. A trauma-informed mindfulness framework for ADHD and autistic nervous systems — with a gentle Polyvagal state check-in, animated movement, binaural beats, and a free 11-chapter workbook.'
       : 'Ο Τετραπλός Άξονας: Σώμα, Αναπνοή, Προσοχή, Χώρος. Πλαίσιο ενσυνειδητότητας για ΔΕΠΥ και αυτισμό — με διακριτικό check-in κατάστασης (Polyvagal), animated κίνηση, binaural beats και δωρεάν βιβλίο 11 κεφαλαίων.';
     const linkText = lang === 'en'
-      ? `The method is grounded in 12 published studies — see the <a href="/en/methodology">scientific basis</a>.`
-      : `Η μέθοδος υποστηρίζεται από 12 δημοσιευμένες έρευνες — δείτε την <a href="/el/methodology">επιστημονική βάση</a>.`;
+      ? `The method is grounded in ${METHODOLOGY_DATA.en.pillars.length} published studies — see the <a href="/en/methodology">scientific basis</a>.`
+      : `Η μέθοδος υποστηρίζεται από ${METHODOLOGY_DATA.el.pillars.length} δημοσιευμένες έρευνες — δείτε την <a href="/el/methodology">επιστημονική βάση</a>.`;
     const rawHtml = `<p>${escapeHtml(d)}</p>\n<p>${linkText}</p>`;
     return { title: t, description: d, schema: {}, schemaType: 'Article', rawHtml };
   }
 
   if (clean === '/methodology') {
     const t = lang === 'en'
-      ? 'The Science Behind the Fourfold Axis — 12 Published Studies | Neurodivergent Mindfulness'
-      : 'Η Επιστημονική Βάση του Τετραπλού Άξονα — 12 Δημοσιευμένες Έρευνες | Neurodivergent Mindfulness';
+      ? `The Science Behind the Fourfold Axis — ${METHODOLOGY_DATA.en.pillars.length} Published Studies | Neurodivergent Mindfulness`
+      : `Η Επιστημονική Βάση του Τετραπλού Άξονα — ${METHODOLOGY_DATA.el.pillars.length} Δημοσιευμένες Έρευνες | Neurodivergent Mindfulness`;
     const d = lang === 'en'
-      ? 'Our approach is grounded in 12 peer-reviewed neuroscience and clinical studies on ADHD, Autism, and the neurodivergent brain. Read the scientific basis.'
-      : 'Η προσέγγισή μας βασίζεται σε 12 δημοσιευμένες νευροεπιστημονικές και κλινικές έρευνες για τη ΔΕΠΥ, τον Αυτισμό και τον νευροδιαφορετικό εγκέφαλο. Διαβάστε την επιστημονική βάση.';
+      ? `Our approach is grounded in ${METHODOLOGY_DATA.en.pillars.length} peer-reviewed neuroscience and clinical studies on ADHD, Autism, and the neurodivergent brain. Read the scientific basis.`
+      : `Η προσέγγισή μας βασίζεται σε ${METHODOLOGY_DATA.el.pillars.length} δημοσιευμένες νευροεπιστημονικές και κλινικές έρευνες για τη ΔΕΠΥ, τον Αυτισμό και τον νευροδιαφορετικό εγκέφαλο. Διαβάστε την επιστημονική βάση.`;
     
     const methodData = METHODOLOGY_DATA[lang as 'en'|'el'];
     

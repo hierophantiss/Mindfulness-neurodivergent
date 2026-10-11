@@ -6,3 +6,7 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# build_pdf.py debug output and Python caches
+*_debug.html
+__pycache__/

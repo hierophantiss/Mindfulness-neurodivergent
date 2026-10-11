@@ -201,7 +201,7 @@ Observing the breath teaches us the natural rhythm of existence and the acceptan
 - **PAUSE** — The Moment: existing in the now.
 - **EXHALE** — The Ending: release, acceptance.
 
-> This is crucial for the neurodivergent mind: when we feel an intense emotion, the mind interprets it as permanent. By observing the rhythm of the breath, we learn that every state is passing.
+> This is crucial for the neurodivergent mind: when we feel an intense emotion, it can feel permanent. By observing the rhythm of the breath, we learn that every state is passing.
 
 ### The Act of Observation — Inner Touch
 
@@ -874,19 +874,20 @@ This guide is not merely a book of exercises. For the neurodivergent mind — wh
 
 ### Part A: The Scientific Foundation
 
-**The philosophy of the research.** Classic mindfulness techniques can bring anxiety or "freezing" to neurodivergent people, because they often ask for immediate stillness and passive observation. This method starts from the other end: from the body upward (somatic, bottom-up) — first the nervous system is regulated, then observation comes.
+**The philosophy of the research.** Classic mindfulness techniques can bring anxiety or "freezing" to neurodivergent people, because they often ask for immediate stillness and passive observation. This method starts from the other end: from the body upward (somatic, bottom-up) — first the nervous system is regulated, then observation comes. Research on contemplative traditions describes the same order: stable, focused attention is cultivated first, and open observation comes after.
+*Source: Lutz et al. (2008). Trends in Cognitive Sciences. DOI: 10.1016/j.tics.2008.01.005*
 
 **Body — Grounding & Gravity.** The brain continually computes gravity and the body's relationship to the ground, with the cerebellum playing a central role in this computation. In practice, turning attention to gravity and the points of support gives the nervous system a stable, familiar reference — a sense of "here" that needs no thought.
 *Source: Mackrous et al. (2019). Current Biology. DOI: 10.1016/j.cub.2019.07.006*
 
 **Breath — The Vagus Nerve.** The slow, prolonged exhale activates the "ventral" side of the vagus nerve, which is associated with states of calm and safety. You do not need to "convince" yourself that you are safe; in experience, the exhale sends the signal on its own.
-*Source: Porges (1995/2011). Psychophysiology. DOI: 10.1111/j.1469-8986.1995.tb03320.x*
+*Source: Porges (1995). Psychophysiology. DOI: 10.1111/j.1469-8986.1995.tb01213.x*
 
 **Attention — A Quiet DMN.** The Default Mode Network (DMN) is associated with mind-wandering, rumination, and self-criticism, and is often overactive in neurodivergent brains. Farb and colleagues showed that the shift from "narrative" to direct, experiential attention (what I feel now) is associated with reduced DMN activity. Labeling and returning to sensation are exactly this shift.
 *Source: Farb et al. (2007). Social Cognitive and Affective Neuroscience. DOI: 10.1093/scan/nsm030*
 
-**Space — Open Awareness.** Open, wide awareness is associated with increased synchronization of Alpha and Gamma brainwaves — a pattern observed in experienced meditators. In experience, this feels like "unsticking" from narrow hyperfocus: less exhaustion, more spaciousness.
-*Source: Lutz, Davidson et al. (2004). PNAS. DOI: 10.1073/pnas.0407401101*
+**Space — Open Awareness.** In experienced meditators, increased synchronization of **gamma** brainwaves has been observed during open-awareness practice. Separately, Open Focus research links the widening of attention with a stronger **alpha** rhythm. In experience, both feel like "unsticking" from narrow hyperfocus: less exhaustion, more spaciousness.
+*Source: Lutz et al. (2004). PNAS. DOI: 10.1073/pnas.0407401101*
 
 That these change with repetition rests on **neuroplasticity** — the brain's ability to reorganize itself through practice.
 
@@ -896,10 +897,20 @@ That these change with repetition rests on **neuroplasticity** — the brain's a
 - Neurobiology & neuroplasticity of mindfulness — Calderone et al. (2024). Biomedicines. DOI: 10.3390/biomedicines12112613
 - DMN connectivity & meditation — Brewer et al. (2011). PNAS. DOI: 10.1073/pnas.1112029108
 - 8-week program specifically for ADHD — Zylowska et al. (2008). Journal of Attention Disorders. DOI: 10.1177/1087054707308502
+- Mindfulness in autism: a systematic review, with encouraging results from studies still of low to moderate quality — Simione et al. (2024). Brain Sciences. DOI: 10.3390/brainsci14101001
 - Hyperfocus as "all or nothing" regulation — Ashinoff & Abu-Akel (2019). Psychological Research. DOI: 10.1007/s00426-019-01245-8
 - Peripheral vision & soft gaze — Vater et al. (2022). Psychonomic Bulletin & Review. DOI: 10.3758/s13423-022-02117-w
 - Ecological perception & the ground — Gibson (1979/2014). Psychology Press. DOI: 10.4324/9781315740218
 - Brainwave entrainment (binaural) — Lane et al. (1998). Physiology & Behavior. DOI: 10.1016/S0031-9384(97)00436-8
+
+**For Chapter 7 (avoidance and procrastination):**
+
+- Procrastination as short-term mood regulation — Sirois & Pychyl (2013). Social and Personality Psychology Compass. DOI: 10.1111/spc3.12011
+- Self-forgiveness for procrastinating reduces future procrastination — Wohl, Pychyl & Bennett (2010). Personality and Individual Differences. DOI: 10.1016/j.paid.2010.01.029
+- Stress impairs prefrontal cortex function — Arnsten (2009). Nature Reviews Neuroscience. DOI: 10.1038/nrn2648
+- New learning that changes the link between act and threat (inhibitory learning) — Craske et al. (2014). Behaviour Research and Therapy. DOI: 10.1016/j.brat.2014.04.006
+- The pressure to appear "normal" (camouflaging) — Hull et al. (2017). Journal of Autism and Developmental Disorders. DOI: 10.1007/s10803-017-3166-5
+- Autistic burnout — Raymaker et al. (2020). Autism in Adulthood. DOI: 10.1089/aut.2019.0079
 
 ### Part B: The Spiritual Background
 

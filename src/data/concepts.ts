@@ -8,14 +8,14 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       short: 'Η αίσθηση του σώματος στον χώρο μέσω βαρύτητας.',
       full: 'Η γείωση είναι η πρώτη πράξη χαλάρωσης. Νιώθοντας τη βαρύτητα — τα πέλματα στο πάτωμα, το βάρος στην καρέκλα, τον άξονα της σπονδυλικής στήλης — ενεργοποιείς αισθητηριακά κυκλώματα που ανταγωνίζονται τον «αυτόματο πιλότο» (DMN). Η βαρύτητα είναι η απόδειξη του «Εδώ» — σου δείχνει ακριβώς πού βρίσκεσαι αυτή τη στιγμή.',
       ndNote: 'Αν δεν νιώθεις τα πέλματα (συχνό σε ατυπική δια-αίσθηση), δοκίμασε εξωτερικές αγκυρώσεις: κράτα κάτι βαρύ, πάτα δυνατά στο πάτωμα, ή νιώσε τη θερμοκρασία ενός αντικειμένου.',
-      science: 'Craig (2002) Nature Reviews Neuroscience — η αίσθηση βαρύτητας ενεργοποιεί το ιδιοδεκτικό σύστημα.'
+      science: 'Mackrous et al. (2019) Current Biology — η παρεγκεφαλίδα υπολογίζει διαρκώς τη βαρύτητα και τη σχέση του σώματος με το έδαφος. (Doi: 10.1016/j.cub.2019.07.006)'
     },
     en: {
       title: 'Grounding',
       short: 'The sensation of your body in space through gravity.',
       full: 'Grounding is the first act of relaxation. By feeling gravity — soles on the floor, weight on the chair, the axis of the spine — you activate sensory circuits that compete with the "autopilot" (DMN). Gravity is the proof of "Here" — it shows you exactly where you exist in this moment.',
       ndNote: 'If you can\'t feel your soles (common with atypical interoception), try external anchors: hold something heavy, press feet firmly into the floor, or feel the temperature of an object.',
-      science: 'Craig (2002) Nature Reviews Neuroscience — gravity sense activates the proprioceptive system.'
+      science: 'Mackrous et al. (2019) Current Biology — the cerebellum continually computes gravity and the body\'s relationship to the ground. (Doi: 10.1016/j.cub.2019.07.006)'
     },
     axis: 'body',
     chapters: [1, 6, 8, 9, 10],
@@ -46,14 +46,14 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       short: 'Η μέση οδός του νευρικού συστήματος.',
       full: 'Μοντέλο του Δρ. Stephen Porges. Το νευρικό σύστημα έχει 3 καταστάσεις: Συμπαθητικό (ένταση/άγχος, πολύ τεντωμένη χορδή), Ραχιαίο Πνευμονογαστρικό (αποσύνδεση/πάγωμα, πολύ χαλαρή χορδή) και Κοιλιακό Πνευμονογαστρικό (ασφάλεια & σύνδεση, η μέση οδός). Η πρακτική μας (εκπνοή, μαλακό βλέμμα) στέλνει σήματα για μετάβαση στην ασφάλεια.',
       ndNote: 'Οι νευροδιαφορετικοί συχνά εναλλάσσονται μεταξύ εξάντλησης (dorsal) και υπερδιέγερσης (sympathetic). Δεν μπορείς να μεταβείς στην "ασφάλεια" μόνο με λογική—χρειάζεται σωματική διέγερση του πνευμονογαστρικού.',
-      science: 'Stephen Porges, PhD (1995/2011) "Orienting in a defensive world: mammalian modifications of our evolutionary heritage. A Polyvagal Theory" (Doi: 10.1469/j.1469-8986.1995.tb03320.x)'
+      science: 'Stephen Porges, PhD (1995) "Orienting in a defensive world: mammalian modifications of our evolutionary heritage. A Polyvagal Theory" (Doi: 10.1111/j.1469-8986.1995.tb01213.x)'
     },
     en: {
       title: 'Polyvagal Theory',
       short: 'The middle way of the nervous system.',
       full: 'A model by Dr. Stephen Porges. The nervous system has 3 states: Sympathetic (fight/flight, string too tight), Dorsal Vagal (shutdown/freeze, string too loose), and Ventral Vagal (safe & social, the middle way/perfectly tuned). Our practices (long exhale, soft gaze) send cues of safety to move into Ventral Vagal.',
       ndNote: 'Neurodivergent individuals often ricochet between meltdown (sympathetic) and burnout (dorsal vagal). You cannot "logic" your way to safety—it requires somatic vagal stimulation.',
-      science: 'Stephen Porges, PhD (1995/2011) "Orienting in a defensive world: mammalian modifications of our evolutionary heritage. A Polyvagal Theory" (Doi: 10.1469/j.1469-8986.1995.tb03320.x)'
+      science: 'Stephen Porges, PhD (1995) "Orienting in a defensive world: mammalian modifications of our evolutionary heritage. A Polyvagal Theory" (Doi: 10.1111/j.1469-8986.1995.tb01213.x)'
     },
     axis: 'body',
     chapters: [5, 6, 8, 11],
@@ -564,14 +564,14 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       short: 'Η προσαρμοσμένη και ευέλικτη πρακτική είναι πιο αποτελεσματική για νευροδιαφορετικούς.',
       full: 'Αυτή η πρωτοποριακή μελέτη ("Mindfulness Meditation Training with Adults and Adolescents With ADHD") απέδειξε ότι οι ευέλικτες, προσαρμοσμένες πρακτικές (αντί για άκαμπτο, μεγάλης διάρκειας διαλογισμό) είναι εξαιρετικά αποτελεσματικές για νευροδιαφορετικά άτομα. Βοηθούν σημαντικά στη βελτίωση της προσοχής, στη μείωση της υπερκινητικότητας και στη βελτίωση της συναισθηματικής ρύθμισης, προσφέροντας μικρά, προσιτά βήματα.',
       ndNote: 'Η έρευνα επιβεβαιώνει ότι αν ο νους σου διασπάται, η «απαλή επιστροφή» (και όχι η τέλεια συγκέντρωση) είναι αυτή που αναδιοργανώνει τον εγκέφαλο. Τα 577+ citations και η υψηλή επιστημονική αποδοχή της μελέτης δικαιώνουν την ανάγκη για φιλικό προς τη ΔΕΠΥ σχεδιασμό.',
-      science: 'Zylowska et al. (2007) Journal of Attention Disorders (577+ citations, Doi: 10.1177/1087054707308502)'
+      science: 'Zylowska et al. (2008) Journal of Attention Disorders (Doi: 10.1177/1087054707308502)'
     },
     en: {
       title: 'ADHD & Mindfulness Study (Zylowska et al., 2007)',
       short: 'Flexible, adapted practices are highly effective for neurodivergent attention.',
       full: 'This seminal study ("Mindfulness Meditation Training with Adults and Adolescents With ADHD: A Feasibility and Behavioral Study") proved that flexible, adapted practices (rather than rigid, long-duration meditation) are highly effective for neurodivergent individuals. It shows significant improvements in attention, reduction in hyperactivity, and better emotional regulation when practices are accessible and short.',
       ndNote: 'The research validates that if your mind wanders, the "gentle return" (rather than perfect focus) is what reorganizes the brain. The study\'s 577+ citations and high scientific prestige justify our ADHD-friendly, microdose-oriented design.',
-      science: 'Zylowska et al. (2007) Journal of Attention Disorders (577+ citations, Doi: 10.1177/1087054707308502)'
+      science: 'Zylowska et al. (2008) Journal of Attention Disorders (Doi: 10.1177/1087054707308502)'
     },
     axis: 'attention',
     chapters: [1, 3, 5, 11],
@@ -624,14 +624,14 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       short: 'Οι σύντομες καθημερινές «μικροδόσεις» είναι πιο αποτελεσματικές από τις σπάνιες μεγάλες συνεδρίες.',
       full: 'Αυτή η τεράστια διαχρονική μελέτη ("The Effects of Dose, Practice Habits, and Objects of Focus on Digital Meditation Effectiveness and Adherence") ανέλυσε τα δεδομένα από 280.000+ ψηφιακές συνεδρίες σε 103 χώρες. Απέδειξε ότι η «δόση» (dose) και η συνέπεια σε σύντομες καθημερινές πρακτικές είναι ο πιο καθοριστικός παράγοντας για τη μακροχρόνια τήρηση (adherence) και τη μείωση του άγχους, ενώ η υπερβολικά μεγάλη διάρκεια προκαλεί κούραση και εγκατάλειψη.',
       ndNote: 'Αυτό δικαιώνει απόλυτα τη φιλοσοφία των «Μικροδόσεων» της εφαρμογής μας. Δεν χρειάζεται να κάθεσαι με τις ώρες. 2-3 λεπτά καθημερινής, στοχευμένης σωματικής γείωσης έχουν πολύ μεγαλύτερη νευροπλαστική αξία.',
-      science: 'Cearns & Clark (2022) JMIR (Doi: 10.2196/43358, Μελέτη 280.000+ συνεδριών)'
+      science: 'Cearns & Clark (2023) JMIR (Doi: 10.2196/43358, Μελέτη 280.000+ συνεδριών)'
     },
     en: {
       title: 'Digital Meditation Dose Study (Cearns & Clark, 2022)',
       short: 'Short, consistent "microdoses" are far more effective than long, irregular sessions.',
       full: 'This massive longitudinal study ("The Effects of Dose, Practice Habits, and Objects of Focus on Digital Meditation Effectiveness and Adherence") analyzed 280,000+ sessions across 103 countries. It proved that regular, small practice "doses" are the single most significant driver of long-term adherence and psychological benefits. In contrast, rigid, lengthy sessions decrease engagement and cause beginners to quit.',
       ndNote: 'This is the absolute scientific justification of our "Microdoses" and "invisible doses" feature. You do not need to spend hours meditating. Just 2-3 minutes of somatic anchoring per day builds much stronger neural pathways.',
-      science: 'Cearns & Clark (2022) JMIR (Doi: 10.2196/43358, 280,000+ sessions studied)'
+      science: 'Cearns & Clark (2023) JMIR (Doi: 10.2196/43358, 280,000+ sessions studied)'
     },
     axis: 'attention',
     chapters: [5, 6, 9, 11],
@@ -684,14 +684,14 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       short: 'Η ανοιχτή επίγνωση (open awareness) αυξάνει τον συντονισμό των κυμάτων Gamma και Alpha, δημιουργώντας νοητική ευρυχωρία.',
       full: 'Αυτή η ιστορική μελέτη ("Long-term meditators self-induce high-amplitude gamma synchrony during mental practice") σε προχωρημένους Θιβετανούς μοναχούς έδειξε ότι ο ανοιχτός διαλογισμός (open awareness) παράγει εξαιρετικά υψηλά επίπεδα συγχρονισμού κυμάτων Gamma (25-42 Hz) και Alpha (8-12 Hz) στον εγκέφαλο.\n\nΑυτός ο συντονισμός συνδέεται με τη βέλτιστη γνωστική λειτουργία, την ολοκλήρωση απομακρυσμένων εγκεφαλικών περιοχών και την "Aha!" κατάσταση δημιουργικής επίλυσης προβλημάτων. Αντί για στενή εστίαση, ο εγκέφαλος βρίσκεται σε κατάσταση συνειδητής ευρυχωρίας.',
       ndNote: 'Στον νευροδιαφορετικό εγκέφαλο (όπου συχνά υπάρχει έντονη τοπική υπερσύνδεση αλλά μειωμένος μακρινός συντονισμός), η ανοιχτή επίγνωση (Open Awareness) βοηθά στη γεφύρωση απομακρυσμένων περιοχών. Αυτός ο διευρυμένος Alpha-Gamma συγχρονισμός προσφέρει μια βαθιά αίσθηση "άπλας" και ησυχίας από την εσωτερική κριτική φωνή.',
-      science: 'Lutz, Greischar, Rawlings, Richard, Davidson (2004) PNAS (Doi: 10.1073/pnas.0407401101) & Davidson & Lutz (2008) IEEE Signal Process Mag (Doi: 10.1109/msp.2008.915525)'
+      science: 'Lutz, Greischar, Rawlings, Ricard, Davidson (2004) PNAS (Doi: 10.1073/pnas.0407401101) & Davidson & Lutz (2008) IEEE Signal Process Mag (Doi: 10.1109/msp.2008.915525)'
     },
     en: {
       title: 'High-Amplitude Gamma Synchrony (Lutz, Davidson et al., 2004)',
       short: 'Open awareness increases Alpha and Gamma brainwave coherence, inducing neural spaciousness and cognitive integration.',
       full: 'This landmark EEG study ("Long-term meditators self-induce high-amplitude gamma synchrony during mental practice") on deep contemplative practitioners showed that non-referential open awareness generates unprecedented levels of large-scale neural synchrony in the Gamma (25–42 Hz) and Alpha bands.\n\nThis high-amplitude coherence represents active cognitive integration, sensory binding, and the classic "Aha!" state of creative intuition. Instead of a narrow beam of focus, the entire cortex operates under a unified field of effortless awareness.',
       ndNote: 'For neurodivergent individuals (often navigating local hyper-connectivity combined with long-range dysregulation), training in Open Awareness (Aesthetic Space/4th Axis) builds robust global coherence. It creates an expansive mental playground where sensory streams coexist peacefully instead of competing for attention.',
-      science: 'Lutz, Greischar, Rawlings, Richard, Davidson (2004) PNAS (Doi: 10.1073/pnas.0407401101) & Davidson & Lutz (2008) IEEE Signal Process Mag (Doi: 10.1109/msp.2008.915525)'
+      science: 'Lutz, Greischar, Rawlings, Ricard, Davidson (2004) PNAS (Doi: 10.1073/pnas.0407401101) & Davidson & Lutz (2008) IEEE Signal Process Mag (Doi: 10.1109/msp.2008.915525)'
     },
     axis: 'space',
     chapters: [4, 11],
@@ -802,14 +802,14 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       short: 'Αυτορρύθμιση είναι η ικανότητα επαναφοράς του νευρικού συστήματος από την υπερδιέγερση ή υπολειτουργία σε κατάσταση ισορροπίας.',
       full: 'Σύμφωνα με το μοντέλο του «Παραθύρου Ανοχής» (Window of Tolerance), το νευρικό σύστημα λειτουργεί βέλτιστα μέσα σε ένα συγκεκριμένο εύρος διέγερσης. Έξω από αυτό, οδηγείται είτε σε υπερδιέγερση (άγχος, πανικός, «τρέξιμο» του νου) είτε σε υποδιέγερση (μούδιασμα, αποσύνδεση, «κλείδωμα»).\n\nΗ αυτορρύθμιση είναι η ικανότητα να αναγνωρίζουμε αυτές τις καταστάσεις και να χρησιμοποιούμε εργαλεία (όπως η γείωση, η αναπνοή και ο χώρος) για να επιστρέψουμε το σύστημα στην ισορροπία του.',
       ndNote: 'Ο νευροδιαφορετικός νους βγαίνει συχνά εκτός του παραθύρου ανοχής λόγω υπερφόρτωσης (sensory overload). Η μέθοδος του Τετραπλού Άξονα παρέχει τα ακριβή σωματικά εργαλεία για να «φρενάρετε» την υπερδιέγερση (χώρος/εκπνοή) ή να «ξεκολλήσετε» από την υποδιέγερση (γείωση).',
-      science: 'Corrigan, F. M., Fisher, J. J., & Nutt, D. J. (2010). Journal of Psychopharmacology. (Doi: 10.1177/0269881109354930)'
+      science: 'Corrigan, F. M., Fisher, J. J., & Nutt, D. J. (2011). Journal of Psychopharmacology. (Doi: 10.1177/0269881109354930)'
     },
     en: {
       title: 'Window of Tolerance & Self-Regulation • Corrigan et al. (2010)',
       short: 'Self-regulation is the ability to return your nervous system from overstimulation or under-functioning to a state of balance.',
       full: 'According to the "Window of Tolerance" model, the nervous system functions optimally within a specific range of arousal. Outside of this window, it is driven either into hyperarousal (anxiety, panic, a racing mind) or hypoarousal (numbness, dissociation, locking).\n\nSelf-regulation is the ability to recognize these states and use tools (like grounding, breathing, and space) to return the system to balance.',
       ndNote: 'The neurodivergent mind frequently falls outside the window of tolerance due to sensory overload. The Fourfold Axis method provides the exact somatic tools to "brake" hyperarousal (space/exhale) or "unstick" from hypoarousal (grounding).',
-      science: 'Corrigan, F. M., Fisher, J. J., & Nutt, D. J. (2010). Journal of Psychopharmacology. (Doi: 10.1177/0269881109354930)'
+      science: 'Corrigan, F. M., Fisher, J. J., & Nutt, D. J. (2011). Journal of Psychopharmacology. (Doi: 10.1177/0269881109354930)'
     },
     axis: 'body',
     chapters: [2, 5],

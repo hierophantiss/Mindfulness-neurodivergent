@@ -41,16 +41,16 @@ export const METHODOLOGY_DATA = {
       {
         id: 'study-porges',
         icon: Waves,
-        title: 'Πολυβαγική Θεωρία & Ασφάλεια (Porges, 1995/2011)',
+        title: 'Πολυβαγική Θεωρία & Ασφάλεια (Porges, 1995)',
         desc: 'Το νευρικό σύστημα χάνει την ισορροπία του όταν νιώθει απειλή. Μέσω της αργής, ελεγχόμενης εκπνοής (Ventral Vagus stimulation), στέλνουμε σήματα βιολογικής ασφάλειας απευθείας στο στέλεχος του εγκεφάλου, παρακάμπτοντας τη λογική ανάλυση που συχνά οδηγεί σε πνευματικό μηρυκασμό.',
-        citation: 'Stephen Porges, PhD (1995). Psychophysiology. Doi: 10.1111/j.1469-8986.1995.tb03320.x'
+        citation: 'Stephen Porges, PhD (1995). Psychophysiology. Doi: 10.1111/j.1469-8986.1995.tb01213.x'
       },
       {
         id: 'study-corrigan',
         icon: Activity,
-        title: 'Παράθυρο Ανοχής & Αυτορρύθμιση (Corrigan et al., 2010)',
+        title: 'Παράθυρο Ανοχής & Αυτορρύθμιση (Corrigan et al., 2011)',
         desc: 'Σύμφωνα με το μοντέλο του Παραθύρου Ανοχής, το αυτόνομο νευρικό σύστημα διαθέτει ένα βέλτιστο εύρος διέγερσης. Έξω από αυτό, οδηγούμαστε σε υπερδιέγερση ή υποδιέγερση. Οι σωματικές πρακτικές του Sanctuary δρουν ως εργαλεία αυτορρύθμισης, επαναφέροντας το σύστημα σε ισορροπία όταν βγαίνει εκτός ορίων λόγω emotional trauma ή overload.',
-        citation: 'Corrigan et al. (2010). Journal of Psychopharmacology. Doi: 10.1177/0269881109354930'
+        citation: 'Corrigan, Fisher & Nutt (2011). Journal of Psychopharmacology. Doi: 10.1177/0269881109354930'
       },
       {
         id: 'study-lane',
@@ -62,9 +62,16 @@ export const METHODOLOGY_DATA = {
       {
         id: 'study-lutz',
         icon: Sparkles,
-        title: 'Συντονισμός Alpha & Gamma (Lutz/Davidson, 2004)',
-        desc: 'Η πρακτική της Ανοιχτής Επίγνωσης (Open Awareness / Space Axis) συγχρονίζει απομακρυσμένες εγκεφαλικές περιοχές μέσω κυμάτων Alpha και Gamma υψηλού πλάτους. Αυτό μειώνει τη στενή υπερ-εστίαση που προκαλεί εξάντληση και δημιουργεί νοητική ευρυχωρία.',
-        citation: 'Lutz, Davidson et al. (2004). PNAS. Doi: 10.1073/pnas.0407401101'
+        title: 'Συγχρονισμός Γάμμα σε Έμπειρους Διαλογιστές (Lutz et al., 2004)',
+        desc: 'Σε έμπειρους διαλογιστές, η πρακτική ανοιχτής επίγνωσης συνοδεύτηκε από αυξημένο συγχρονισμό κυμάτων γάμμα υψηλού πλάτους ανάμεσα σε απομακρυσμένες περιοχές του εγκεφάλου. Στην εμπειρία, αυτό μοιάζει με «ξεκόλλημα» από τη στενή υπερεστίαση: λιγότερη εξάντληση, περισσότερη ευρυχωρία.',
+        citation: 'Lutz, Greischar, Rawlings, Ricard & Davidson (2004). PNAS. Doi: 10.1073/pnas.0407401101'
+      },
+      {
+        id: 'study-lutz-2008',
+        icon: Brain,
+        title: 'Πρώτα Σταθερότητα, Μετά Ανοιχτή Παρατήρηση (Lutz et al., 2008)',
+        desc: 'Η ανασκόπηση των Lutz, Slagter, Dunne και Davidson περιγράφει δύο βασικούς τρόπους διαλογισμού: την εστιασμένη προσοχή, που χτίζει σταθερότητα, και την ανοιχτή παρακολούθηση, που παρατηρεί χωρίς να αντιδρά. Στις διαλογιστικές παραδόσεις η εστιασμένη προσοχή καλλιεργείται πρώτα. Η μέθοδος ακολουθεί την ίδια σειρά: πρώτα σώμα και αναπνοή, μετά ανοιχτή επίγνωση.',
+        citation: 'Lutz, Slagter, Dunne & Davidson (2008). Trends in Cognitive Sciences. Doi: 10.1016/j.tics.2008.01.005'
       },
       {
         id: 'study-zylowska',
@@ -72,6 +79,13 @@ export const METHODOLOGY_DATA = {
         title: 'Γνωστική Βελτίωση στο ADHD (Zylowska et al., 2008)',
         desc: 'Το μοναδικό peer-reviewed πρόγραμμα 8 εβδομάδων ενσυνειδητότητας ειδικά για ΔΕΠΥ — βρήκε βελτιώσεις στην προσοχή, τη γνωστική αναστολή, το άγχος και τα καταθλιπτικά συμπτώματα.',
         citation: 'Zylowska, L., Ackerman, D. L., Yang, M. H., Futrell, J. L., Horton, N. L., Hale, T. S., Pataki, C., & Smalley, S. L. (2008). Mindfulness meditation training in adults and adolescents with ADHD: A feasibility study. Journal of Attention Disorders, 11(6), 737–746. https://doi.org/10.1177/1087054707308502'
+      },
+      {
+        id: 'study-simione',
+        icon: ShieldCheck,
+        title: 'Ενσυνειδητότητα στον Αυτισμό (Simione et al., 2024)',
+        desc: 'Συστηματική ανασκόπηση 37 μελετών για παρεμβάσεις ενσυνειδητότητας σε αυτιστικά άτομα, στους γονείς τους και σε επαγγελματίες υγείας. Οι μελέτες έδειξαν λιγότερη ψυχική επιβάρυνση και βελτίωση σε γνωστικές και κοινωνικές δεξιότητες. Οι συγγραφείς σημειώνουν ότι η ποιότητα των μελετών είναι ακόμα χαμηλή έως μέτρια: τα ευρήματα είναι ενθαρρυντικά, όχι οριστικά.',
+        citation: 'Simione, Frolli, Sciattella & Chiarella (2024). Brain Sciences. Doi: 10.3390/brainsci14101001'
       },
       {
         id: 'study-ashinoff',
@@ -146,16 +160,16 @@ export const METHODOLOGY_DATA = {
       {
         id: 'study-porges',
         icon: Waves,
-        title: 'Polyvagal Theory & Somatic Safety (Porges, 1995/2011)',
+        title: 'Polyvagal Theory & Somatic Safety (Porges, 1995)',
         desc: 'The nervous system cannot integrate training while in threat states. By utilizing targeted somatic tools like deep, extended exhales (Ventral Vagal activation) and slow swaying, we send physical safety signals directly to the brainstem, bypassing cognitive loops.',
-        citation: 'Stephen Porges, PhD (1995). Psychophysiology. Doi: 10.1111/j.1469-8986.1995.tb03320.x'
+        citation: 'Stephen Porges, PhD (1995). Psychophysiology. Doi: 10.1111/j.1469-8986.1995.tb01213.x'
       },
       {
         id: 'study-corrigan',
         icon: Activity,
-        title: 'Window of Tolerance & Self-Regulation (Corrigan et al., 2010)',
+        title: 'Window of Tolerance & Self-Regulation (Corrigan et al., 2011)',
         desc: 'According to the Window of Tolerance model, the autonomic nervous system operates optimally within a specific range of arousal. Outside this, it enters hyperarousal or hypoarousal. Our somatic practices act as self-regulation tools, restoring the system to balance when it falls out of the window due to emotional trauma or sensory overload.',
-        citation: 'Corrigan et al. (2010). Journal of Psychopharmacology. Doi: 10.1177/0269881109354930'
+        citation: 'Corrigan, Fisher & Nutt (2011). Journal of Psychopharmacology. Doi: 10.1177/0269881109354930'
       },
       {
         id: 'study-lane',
@@ -167,9 +181,16 @@ export const METHODOLOGY_DATA = {
       {
         id: 'study-lutz',
         icon: Sparkles,
-        title: 'Alpha-Gamma Coherence (Lutz/Davidson, 2004)',
-        desc: 'Open Awareness (our Space Axis) induces global, large-scale neural synchrony in Alpha (8-12 Hz) and Gamma (25-42 Hz) bands. This synchrony bridges isolated brain networks, offering cognitive integration and spaciousness over narrow, exhausting focus.',
-        citation: 'Lutz, Davidson et al. (2004). PNAS. Doi: 10.1073/pnas.0407401101'
+        title: 'Gamma Synchrony in Experienced Meditators (Lutz et al., 2004)',
+        desc: 'In experienced meditators, open-awareness practice was accompanied by increased high-amplitude gamma synchrony between distant brain regions. In experience, this feels like "unsticking" from narrow hyperfocus: less exhaustion, more spaciousness.',
+        citation: 'Lutz, Greischar, Rawlings, Ricard & Davidson (2004). PNAS. Doi: 10.1073/pnas.0407401101'
+      },
+      {
+        id: 'study-lutz-2008',
+        icon: Brain,
+        title: 'Stability First, Then Open Monitoring (Lutz et al., 2008)',
+        desc: 'Lutz, Slagter, Dunne and Davidson describe two core styles of meditation: focused attention, which builds stability, and open monitoring, which observes without reacting. In contemplative traditions, focused attention is cultivated first. The method follows the same order: body and breath first, open awareness after.',
+        citation: 'Lutz, Slagter, Dunne & Davidson (2008). Trends in Cognitive Sciences. Doi: 10.1016/j.tics.2008.01.005'
       },
       {
         id: 'study-zylowska',
@@ -177,6 +198,13 @@ export const METHODOLOGY_DATA = {
         title: 'Clinical ADHD Feasibility (Zylowska et al., 2008)',
         desc: 'The only peer-reviewed 8-week mindfulness program designed specifically for ADHD — demonstrating key improvements in attention, cognitive inhibition, anxiety, and depressive symptoms.',
         citation: 'Zylowska, L., Ackerman, D. L., Yang, M. H., Futrell, J. L., Horton, N. L., Hale, T. S., Pataki, C., & Smalley, S. L. (2008). Mindfulness meditation training in adults and adolescents with ADHD: A feasibility study. Journal of Attention Disorders, 11(6), 737–746. https://doi.org/10.1177/1087054707308502'
+      },
+      {
+        id: 'study-simione',
+        icon: ShieldCheck,
+        title: 'Mindfulness in Autism (Simione et al., 2024)',
+        desc: 'A systematic review of 37 studies on mindfulness-based interventions for autistic people, their parents and healthcare staff. The studies reported less psychological distress and gains in cognitive and social skills. The authors note that study quality is still low to moderate: the findings are encouraging, not conclusive.',
+        citation: 'Simione, Frolli, Sciattella & Chiarella (2024). Brain Sciences. Doi: 10.3390/brainsci14101001'
       },
       {
         id: 'study-ashinoff',
