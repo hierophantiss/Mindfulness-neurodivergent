@@ -7,7 +7,7 @@
 ## Προϋποθέσεις
 
 ```bash
-pip install weasyprint   # για το PDF
+pip install "weasyprint==69.0"   # για το PDF — η 70 βγάζει 0 στους αριθμούς σελίδων του Πίνακα Περιεχομένων
 apt install pandoc       # για το EPUB
 ```
 

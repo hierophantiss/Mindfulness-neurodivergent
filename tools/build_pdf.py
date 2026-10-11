@@ -22,7 +22,8 @@ LABELS = {
         'breath': 'Αναπνοή', 'reflection': 'Αναστοχασμός', 'exercise': 'Άσκηση',
         'day': 'Ημέρα', 'toc': 'Πίνακας Περιεχομένων', 'intro': 'Εισαγωγή',
         'running': 'Οδηγός Ενσυνειδητότητας για Νευροδιαφορετικούς',
-        'pocket': 'ΓΕΙΩΣΗ — ΜΑΚΡΙΑ ΕΚΠΝΟΗ — ΤΑΜΠΕΛΑ — ΑΝΟΙΓΜΑ',
+        'pocket': ['ΓΕΙΩΣΗ — ΜΑΚΡΙΑ ΕΚΠΝΟΗ — ΤΑΜΠΕΛΑ — ΑΝΟΙΓΜΑ',
+                   'ΒΑΡΥΤΗΤΑ — ΑΝΑΠΝΟΗ — ΧΩΡΟΣ — ΕΝΑ ΒΗΜΑ'],
         'jprompt': 'Τι παρατήρησα σήμερα:',
         'rights': '© 2025–2026 · CC BY-NC-ND 4.0 · Δεύτερη έκδοση',
         'author_lbl': 'Συγγραφέας', 'year_lbl': 'Έκδοση', 'year_val': 'Δεύτερη έκδοση, 2026',
@@ -33,7 +34,8 @@ LABELS = {
         'breath': 'Breath', 'reflection': 'Reflection', 'exercise': 'Exercise',
         'day': 'Day', 'toc': 'Table of Contents', 'intro': 'Introduction',
         'running': 'A Mindfulness Guide for Neurodivergent Individuals',
-        'pocket': 'GROUND — LONG EXHALE — LABEL — OPEN',
+        'pocket': ['GROUND — LONG EXHALE — LABEL — OPEN',
+                   'GRAVITY — BREATH — SPACE — ONE STEP'],
         'jprompt': 'What I noticed today:',
         'rights': '© 2025–2026 · CC BY-NC-ND 4.0 · Second edition',
         'author_lbl': 'Author', 'year_lbl': 'Edition', 'year_val': 'Second edition, 2026',
@@ -74,7 +76,7 @@ def inline(text):
 def raw_has(s, *subs):
     return any(x in s for x in subs)
 
-BLOCK_START = re.compile(r'^(#{1,6}\s|-\s|\||\u2610|!\[|-{3,}$)')
+BLOCK_START = re.compile(r'^(#{1,6}\s|-\s|\d+\.\s|\||\u2610|!\[|-{3,}$)')
 
 def unwrap_lines(lines):
     """Ενώνει τις γραμμές κάθε παραγράφου σε μία.
@@ -124,9 +126,9 @@ def unwrap_lines(lines):
             flush_plain(); out.append(''); continue
         if BLOCK_START.match(s):
             flush_plain(); out.append(line); continue
-        # συνέχεια στοιχείου λίστας: γραμμή με εσοχή μετά από «- »
+        # συνέχεια στοιχείου λίστας: γραμμή με εσοχή μετά από «- » ή «1. »
         if (line[:1] in ' \t' and out and not buf
-                and re.match(r'^-\s', out[-1].strip())):
+                and re.match(r'^(-|\d+\.)\s', out[-1].strip())):
             out[-1] = out[-1].rstrip() + ' ' + s
             continue
         buf.append(line)
@@ -237,8 +239,9 @@ def parse_body(lines, L, anchors=None):
                 cls = 'figpair' if len(figs) > 1 else 'figsingle'
                 out.append(f'<div class="{cls}">' + ''.join(figs) + '</div>')
             i += 1; continue
-        if s.startswith('>') and re.sub(r'^>\s*', '', s).strip('*').strip() == L['pocket']:
-            out.append(f'<div class="pocketcard">{html.escape(L["pocket"])}</div>')
+        card = re.sub(r'^>\s*', '', s).strip('*').strip().rstrip('.') if s.startswith('>') else None
+        if card in L['pocket']:
+            out.append(f'<div class="pocketcard">{html.escape(card)}</div>')
             i += 1; continue
         if s.startswith('>'):
             q = []
@@ -303,8 +306,8 @@ def parse_body(lines, L, anchors=None):
             lis = ''.join(f'<li>{inline(it)[0]}</li>' for it in items)
             out.append(f'<ol>{lis}</ol>')
             continue
-        if s.strip('*').strip() == L['pocket']:
-            out.append(f'<div class="pocketcard">{html.escape(L["pocket"])}</div>')
+        if s.strip('*').strip().rstrip('.') in L['pocket']:
+            out.append(f'<div class="pocketcard">{html.escape(s.strip("*").strip().rstrip("."))}</div>')
             i += 1; continue
         md = re.match(r'^\*\*('+L['day']+r'\s+.*?)\*\*\s*$', s)
         if md:

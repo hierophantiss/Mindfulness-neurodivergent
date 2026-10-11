@@ -47,10 +47,11 @@ This work is offered free of charge under the terms of the Creative Commons Attr
 
 - Ch. 5 – The Neurodivergent Mind
 - Ch. 6 – Self-Regulation in Daily Life
-- Ch. 7 – When the Wave Rises
-- Ch. 8 – Presence Worksheet
-- Ch. 9 – The Four Stages: Step-by-Step Guide
-- Ch. 10 – The Background: Science and Wisdom
+- Ch. 7 – The New Driver: Avoidance and Procrastination
+- Ch. 8 – When the Wave Rises
+- Ch. 9 – Presence Worksheet
+- Ch. 10 – The Four Stages: Step-by-Step Guide
+- Ch. 11 – The Background: Science and Wisdom
 
 **Supplementary**
 
@@ -396,7 +397,7 @@ Researchers of mind-wandering call it meta-awareness: the moment the mind notice
 
 This closed, intense focus — the tunnel — is not an enemy. For many of us it is the strongest tool we have: the place where we concentrate, work, create. The issue is not to abandon it, but whether it is *caring for* you while you are inside it: whether it rests on a grounded body and rest — or whether it is burning you.
 
-When left uncared for, without body and breath, the periphery goes dark and the center blurs; there it stops being a source and becomes a trap. (The same in intense anxiety: the mind narrows and magnifies the threat — Chapter 7.) The fourth step does not extinguish the tunnel; it *cares for* it. You open the periphery, you ground, you rest — and you re-enter clear, not burnt. Open awareness does not replace focus; it is the place where focus refills.
+When left uncared for, without body and breath, the periphery goes dark and the center blurs; there it stops being a source and becomes a trap. (The same in intense anxiety: the mind narrows and magnifies the threat — Chapter 8.) The fourth step does not extinguish the tunnel; it *cares for* it. You open the periphery, you ground, you rest — and you re-enter clear, not burnt. Open awareness does not replace focus; it is the place where focus refills.
 
 ### The Space That Dwells in Truth
 
@@ -513,7 +514,7 @@ The bottle is form: the body, the constructed mind, the roles, the identificatio
 
 > **A clear distinction.** Nothing here tells you to take the mask off out there. Where and when is your decision, and it depends on your safety, your work, the people around you — things only you know. What the practice proposes is internal: to stop believing that you *are* the bottle, and to find the places where you can loosen it safely.
 
-And there is a guide for this, a bodily one. The mask is not worn on the face alone — it is worn in the jaw, the shoulders, the breath held a little high. That cost is measurable. It is the same barometer as Chapter 7: when did the jaw start to tighten, when did the breath rise. You do not have to decide anything about your identity in order to notice it.
+And there is a guide for this, a bodily one. The mask is not worn on the face alone — it is worn in the jaw, the shoulders, the breath held a little high. That cost is measurable. It is the same barometer as Chapter 8: when did the jaw start to tighten, when did the breath rise. You do not have to decide anything about your identity in order to notice it.
 
 We do not break the glass. **We loosen the bottle** — we build the conditions of safety so the system can come down out of defence. And there, with nothing added, what was always free becomes visible.
 
@@ -529,7 +530,7 @@ Remember: your thoughts and experiences happen within a wider space of awareness
 
 *Reflection: My own patterns — when does my mind tend to "race"? When does it "lock"? What situations trigger it?*
 
-> ★ Key Point: Defence does not make your thoughts — it selects them. It comes down through signals of safety and through time, not through argument. And the mask was always a function, never an identity.
+> ★ **Key Point:** Defence does not make your thoughts — it selects them. It comes down through signals of safety and through time, not through argument. And the mask was always a function, never an identity.
 
 ---
 
@@ -621,7 +622,101 @@ Light, sound, and textures matter more than you were taught to admit — and adj
 
 ---
 
-## Chapter 7 — When the Wave Rises: Anxiety, Overload
+## Chapter 7 — The New Driver: Avoidance and Procrastination
+
+> **In this chapter**
+> Between a decision and the act there is a small distance. For many neurodivergent people, and for many who carry trauma, that distance becomes an abyss. Here you see how the Fourfold Axis applies to procrastination: what the old driver is, what the mountain is, and how you move when thought and feeling won't obey.
+
+It isn't laziness. And it isn't bridged by thought or by feeling, but by the body: gently, without force, without hurry. This is not a way of functioning without brakes. It is a way of learning to function in small steps, as play and practice at once.
+
+### If You're Stuck Right Now
+
+Start here; the explanation can wait. The Pocket Card in Chapter 8 is for inside the wave. This one is for when you can't begin.
+
+> **GRAVITY — BREATH — SPACE — ONE STEP**
+>
+> (Weight and ground. A slow exhale. The space around you. One movement from the center.)
+
+1. **Gravity.** Feel your weight, the axis, the ground beneath you. Let the tension go. Stay in the now, adding nothing to it and taking nothing away — no future, no past. This is point zero.
+2. **Breath.** One quiet breath, with a slow exhale.
+3. **Space.** See the space you are about to move through.
+4. **One step.** The movement begins gently from the belly and the pelvis, and the limbs follow. One movement at a time, with attention shared among balance, breath and space. What you want to do stays at the edge of the mind; in front of you is only the movement you are making now.
+
+If you feel yourself drifting away or going numb, stop and come back to your weight and the ground. That too is part of the practice, not a failure.
+
+**If you can't feel your body.** With difficulty sensing the body, with disconnection, pain or fatigue, "feel your weight" may find nowhere to land. Nothing is missing in you; use another door: the fabric on your skin, the air on your hands, the farthest sound and the nearest, your gaze moving from the farthest point of the room to the nearest. One point of contact is enough. And if even that doesn't come, "I feel nothing" is itself an observation, and it is enough to stand on.
+
+That is all of it: how to move the body, moment by moment, to do what you decided, without standing on the feeling — which may be absent, bored, or refusing. What follows is the why. Read it once you have settled.
+
+### The Old Driver
+
+Every act needs something to manage it: to say "now," to set an order, to keep the movement going. For many of us that driver has been pressure and anxiety. If it is the only one you know, you start only when it shows up — and it usually shows up at the last minute, with the deadline over your head. Seen this way, procrastination is not laziness: it is waiting for the only driver you know.
+
+And it doesn't bring only pressure. It brings the past: old rejections, old fears, all the pressure you received to function "normally." So you never meet the thing as it is, only as it was all the previous times. But let's be fair: the old driver worked. That is why you don't dismiss it with one decision; you replace it slowly.
+
+### The Mountain
+
+The act itself is rarely hard: getting up, turning on the tap, making a phone call. What makes it hard is the weight the mind adds to it: "it'll take ages," "what if it doesn't come out right." Each such thought is an attempt to control the outcome before the act, and each attempt adds weight, until the thing becomes a mountain. Facing it, you put things off, and putting off brings a moment of relief. That is why you repeat it: the mind learns that the act hurts and avoidance soothes.
+
+So the move is not to find the strength to lift the mountain, but not to let it be built. You don't fight the refusal; you simply don't feed it, keeping your attention on what you are doing now.
+
+### Desire, Intention, and the Will of the Act
+
+The usual advice says "find motivation." But what we call motivation is usually desire: aimed at the result — the clean body, the license in your hand. It lives in mood, and in that moment it may be absent.
+
+Intention is something else: the direction you chose, which stands on its own without needing to be felt again at every step. It stays at the edge of the mind and orients you from there, while your attention takes the next step. When the goal comes to the front, it paralyzes; when it stays at the edge, it guides.
+
+And there is the will of the act — not the kind that clenches. You don't manufacture it by straining: the strength belongs to the body, its vital energy, and you direct it gently with intention. Desire you feel high up, in the chest and the head; this will you feel low, in the belly, where you also feel your center of gravity. Mood and thoughts you may not control. The body, most of the time, you can move. And when even the body won't move, a point of contact remains: not always controllable, but always there.
+
+One kind of will is worth letting go of: the one that wants to decide how reality will be and how it will unfold. You keep the act and let go of the outcome. The outcome, not the act: the act is done whole, now, for now.
+
+### The New Driver
+
+The new driver is mindfulness. It doesn't push you and doesn't frighten you. It is available now, whenever you call on it, and it doesn't need to burn you out to work. It lives in the card's point zero, so the act no longer carries the verdict of all the previous times: you meet it fresh.
+
+Presence is shared among body, breath, thoughts and space, and none of them takes the wheel. That balance is also your safety: the task doesn't swell to fill you, and you don't lose the ground. When there is space around what concerns you, it takes on its real proportions.
+
+The new driver treats you the way you would stand beside a neurodivergent child who is learning: without pressure, without blame, without hurry.
+
+### Big Goals: Information, Not Scenarios
+
+With something big — a driving license, an application — the barrier is also the size. Here one step comes before the card: once, you write down what it involves, with information, not scenarios. What is needed, in what order, whom you ask. A scenario guesses how you will feel and breeds refusal; information simply says what is there. The unknown swells; what is written down shrinks.
+
+Then you put the map at the edge of the mind and work only on the next step. For the license: first you go to the instructor and start working together. Not the lessons, not the exam.
+
+### Play and Practice
+
+Avoidance feeds on the stakes: every act feels like an exam. Play removes the stakes; you aren't being tested, you are trying. Practice adds the other half: no attempt is a verdict. And without hurry doesn't mean slowly; it means without inner agony.
+
+The brakes stay. Not all avoidance is an enemy: avoiding a place that floods you with sensory input, or something that wakes trauma, is protection. This chapter is about avoiding things you chose to do. And when those touch something heavy, go little by little, only as far as you can comfortably bear. Gentleness is not weakness; it is the strong choice, because it doesn't burn the ground you stand on.
+
+### When It Isn't Avoidance
+
+For many neurodivergent people, the difficulty of starting also has a neurological basis. Avoidance and executive dysfunction look the same from outside, but they need different tools.
+
+- **Avoidance:** you think of it and feel weight, fear, shame; the "I don't want to" has an "I'm afraid" inside it. Here, everything you have read applies.
+- **Executive dysfunction:** you want it, you have decided, you feel no resistance — and you simply don't move, as if the command were missing rather than the mood. Gentleness helps, but it isn't enough; something outside you has to hold what the system cannot hold on its own.
+- **Often both:** executive dysfunction brings shame, and shame builds avoidance on top. Then you work with both layers together.
+
+External supports are not a betrayal of the method; they are the Harbor of Chapter 6, applied to starting: a five-minute timer, a list of just three steps, someone beside you doing their own work too (body doubling), a reminder on your phone, a quieter environment.
+
+And if procrastination has become a chronic pattern that costs you work, relationships or health, or if it comes together with depression, active trauma or substance use, talk to a therapist, a psychiatrist, or someone who specializes in neurodivergence. It is not a failure of the practice; it is the same harbor, only larger.
+
+### Why It Changes Over Time
+
+When every start comes with pressure and self-criticism, the act becomes linked with threat and the mind learns to avoid it. Stress research also shows that pressure impairs the prefrontal cortex, where planning and starting take place. When you do things through the body, with your attention on the moment rather than the result, the act slowly stops being linked with threat; what has been recorded changes, and the refusal loosens. And research shows that forgiving yourself for one bout of procrastination reduces the next: gentleness is not a luxury.
+
+The śamatha tradition of calm-abiding meditation describes something similar in its nine stages: effort shrinks, not because you push harder, but because resistance lessens. It is a parallel, not a proof, and a path of years. But it begins in the same place: the body, now.
+
+None of this changes how your brain is made. The method does not cure avoidance; it embraces and supports it. Why it works from the bottom up is explained in Chapter 11.
+
+*Reflection: Bring to mind something you are putting off. Is the act itself hard, or the mountain the mind has built around it? Is it avoidance or executive dysfunction — and how can you tell from the body? What would be the body's first small step, without waiting to want it?*
+
+> ★ **Key Point:** In place of urgency and panic you put the body and its energy, the breath, and your intention. You keep the act, let go of the outcome, and move one step at a time. Avoidance you meet with gentleness; executive dysfunction you also support with tools outside yourself.
+
+---
+
+## Chapter 8 — When the Wave Rises: Anxiety, Overload
 
 > **In this chapter**
 > Two practical protocols — for intense anxiety and for overload — along with what comes before the wave, and what comes after.
@@ -685,10 +780,10 @@ If you keep one thing from this chapter, keep these four words.
 
 ---
 
-## Chapter 8 — Presence Worksheet
+## Chapter 9 — Presence Worksheet
 
 > **In this chapter**
-> A one-page sheet you can fill in. It is the **short** version of the practice, for use inside the day. The full, seated version is Chapter 9; the version for inside the wave is the Pocket Card (Ch. 7).
+> A one-page sheet you can fill in. It is the **short** version of the practice, for use inside the day. The full, seated version is Chapter 10; the version for inside the wave is the Pocket Card (Ch. 8).
 
 **Aim:** To return to the "now" in a few seconds. Do them in order or choose the one you need.
 
@@ -720,10 +815,10 @@ If you keep one thing from this chapter, keep these four words.
 
 ---
 
-## Chapter 9 — The Four Stages: Step-by-Step Guide
+## Chapter 10 — The Four Stages: Step-by-Step Guide
 
 > **In this chapter**
-> The **full**, sequential exercise of the Fourfold Axis, for a quiet moment. It is best done seated, but the steps can be applied at any moment. The short version for inside the day is the Presence Worksheet (Ch. 8); the version for inside the wave is the Pocket Card (Ch. 7).
+> The **full**, sequential exercise of the Fourfold Axis, for a quiet moment. It is best done seated, but the steps can be applied at any moment. The short version for inside the day is the Presence Worksheet (Ch. 9); the version for inside the wave is the Pocket Card (Ch. 8).
 
 ### The Stance Behind the Steps
 
@@ -770,7 +865,7 @@ Treat yourself the way you would treat a friend who is struggling.
 
 ---
 
-## Chapter 10 — The Background: Science and Wisdom
+## Chapter 11 — The Background: Science and Wisdom
 
 > **In this chapter**
 > Where the method rests: what neuroscience says about the body, the breath, attention and space; which contemplative traditions the exercises come from; and who transmitted them.
@@ -881,7 +976,7 @@ The terms of the method, one line each, with where they first appear.
 
 **Axis** *(Ch. 1)* — The imagined vertical line that holds you upright without gripping. Structure without tension.
 
-**Barometer** *(Ch. 7)* — The first, silent signs that precede a wave: jaw, breath, tolerance for sound.
+**Barometer** *(Ch. 8)* — The first, silent signs that precede a wave: jaw, breath, tolerance for sound.
 
 **Closed attention** *(Ch. 3)* — The beam gathers to a single point. The zoom lens.
 
@@ -939,7 +1034,7 @@ The terms of the method, one line each, with where they first appear.
 
 **Vicious circles: "Otherwise" and "Should"** *(Ch. 3)* — The two orbits in which attention gets stuck: replaying the past, and comparing with the ideal.
 
-**Wave** *(Ch. 7)* — An episode of intense anxiety or overload. Weather, not a verdict.
+**Wave** *(Ch. 8)* — An episode of intense anxiety or overload. Weather, not a verdict.
 
 **Winds** *(Ch. 2)* — Emotions, read as weather in the body and the breath, before they are translated into words.
 
@@ -956,7 +1051,7 @@ The "Rabbit Hole" is a collection of optional, deeper texts within the app — c
 **Breath (Ch. 2)**
 
 - **[Learning to Ride the Wind](https://neurodivergent-mindfulness.org/rabbithole/riding-the-wind)** — the breath as a wind you accompany, not control.
-- **[The Lute String and the Vagus Nerve](https://neurodivergent-mindfulness.org/rabbithole/lute-string)** — polyvagal theory and the middle way of the nervous system (also relevant to Ch. 7).
+- **[The Lute String and the Vagus Nerve](https://neurodivergent-mindfulness.org/rabbithole/lute-string)** — polyvagal theory and the middle way of the nervous system (also relevant to Ch. 8).
 
 **Attention (Ch. 3)**
 
@@ -972,7 +1067,7 @@ The "Rabbit Hole" is a collection of optional, deeper texts within the app — c
 
 - **[The Goose Is Out](https://neurodivergent-mindfulness.org/rabbithole/the-goose-is-out)** — the koan of the goose and masking.
 
-**Stages & Tradition (Ch. 9–10)**
+**Stages & Tradition (Ch. 10–11)**
 
 - **[Dzogchen: The Nature of Mind & The Release of Tension](https://neurodivergent-mindfulness.org/rabbithole/dzogchen-nature-of-mind)** — the mechanical mind and the nature of mind, tregchöd as the effortless release of tension, and where kindness comes from.
 - **[The Forces of the Cosmos, the Axes of the Mind](https://neurodivergent-mindfulness.org/rabbithole/forces-of-the-cosmos)** — the elements and the four axes, stated as analogy.
