@@ -414,9 +414,13 @@ export const SEO: React.FC = () => {
 
   // Normalise path: strip lang prefix for matching
   const cleanPath = path.replace(/^\/(en|el)/, '') || '/';
-  // Router paths have the /en or /el prefix stripped (it is the basename),
-  // so page URLs are built from the real address bar path.
-  const pageUrl = `${BASE_URL}${window.location.pathname.replace(/\/+$/, '') || '/'}`;
+  // Router paths have the /en or /el prefix stripped (it is the basename).
+  // Page URLs carry the language being read, so a shared or canonical link
+  // opens that version; the bare root stays the language-neutral entry.
+  const isBareRoot = window.location.pathname.replace(/\/+$/, '') === '';
+  const pageUrl = isBareRoot
+    ? `${BASE_URL}/`
+    : `${BASE_URL}/${lang}${cleanPath === '/' ? '' : cleanPath}`;
 
   // ── Defaults ────────────────────────────────────────────────────
   let title = lang === 'en'

@@ -4,7 +4,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { CompanionProvider } from './hooks/useCompanion';
 import Layout from './components/Layout';
 
-import { LanguageProvider } from './hooks/useLanguage';
+import { LanguageProvider, useLanguage } from './hooks/useLanguage';
 import { ThemeProvider } from './hooks/useTheme';
 import { AccessibilityProvider } from './hooks/useAccessibility';
 import { TimeProvider } from './contexts/TimeContext';
@@ -41,14 +41,43 @@ const FallbackLoader = () => (
   </div>
 );
 
+/**
+ * Keeps the /el or /en prefix of the address bar in step with the language
+ * the person is reading. Switching language used to change only the text,
+ * so a page read in Greek could still sit at /en/... and be shared (or
+ * bookmarked) as the English version. Runs before the router renders, so the
+ * router always starts from the corrected address.
+ */
+function syncLanguagePrefix(language: 'el' | 'en'): string {
+  const { pathname, search, hash } = window.location;
+  const match = pathname.match(/^\/(en|el)(?=\/|$)/);
+  const isInstalledApp =
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(display-mode: standalone)').matches;
+
+  // The bare root is the language-neutral entry (x-default) for search
+  // engines; it only gets a prefix inside the installed app.
+  if (!match && !(pathname === '/' && isInstalledApp)) return '';
+
+  const rest = match ? pathname.slice(match[0].length) : '';
+  const target = `/${language}${rest === '/' ? '' : rest}`;
+  if (target !== pathname) {
+    window.history.replaceState(window.history.state, '', `${target}${search}${hash}`);
+  }
+  return `/${language}`;
+}
+
 function AppContent() {
+  const { language } = useLanguage();
   const isIframe = window.self !== window.top;
   const Router = isIframe ? HashRouter : BrowserRouter;
-  const match = window.location.pathname.match(/^\/(en|el)/);
-  const basename = match ? match[0] : '';
-  
+  const iframeMatch = isIframe ? window.location.pathname.match(/^\/(en|el)/) : null;
+  const basename = isIframe ? (iframeMatch ? iframeMatch[0] : '') : syncLanguagePrefix(language);
+
   return (
-    <Router basename={basename}>
+    // A language switch changes the basename, which remounts the router so it
+    // reads the corrected address. Saved progress reloads from storage.
+    <Router key={basename} basename={basename}>
       <CompanionProvider>
         <InteractiveBackground />
         <Suspense fallback={<FallbackLoader />}>
