@@ -65,15 +65,13 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       title: 'Ιδιοδεκτικότητα',
       short: 'Η αίσθηση της θέσης του σώματος στον χώρο.',
       full: 'Το ιδιοδεκτικό σύστημα σου λέει πού βρίσκεται κάθε μέλος του σώματος χωρίς να κοιτάξεις. Ενεργοποιείται αυτόματα από τη βαρύτητα, τη στάση, και την κίνηση. Όταν εστιάζεις σε αυτή την αίσθηση, ενεργοποιείς κυκλώματα που ανταγωνίζονται τη νοητική περιπλάνηση.',
-      ndNote: 'Πολλοί νευροδιαφορετικοί έχουν ατυπική ιδιοδεκτικότητα — μπορεί να χρειαστεί μεγαλύτερη πίεση (π.χ. βαρύ αντικείμενο, σφιχτό αγκάλιασμα) για να ενεργοποιηθεί.',
-      science: 'Craig (2002) Nature Reviews Neuroscience.'
+      ndNote: 'Πολλοί νευροδιαφορετικοί έχουν ατυπική ιδιοδεκτικότητα — μπορεί να χρειαστεί μεγαλύτερη πίεση (π.χ. βαρύ αντικείμενο, σφιχτό αγκάλιασμα) για να ενεργοποιηθεί.'
     },
     en: {
       title: 'Proprioception',
       short: 'The sense of your body\'s position in space.',
       full: 'The proprioceptive system tells you where each body part is without looking. It\'s automatically activated by gravity, posture, and movement. When you focus on this sensation, you activate circuits that compete with mental wandering.',
-      ndNote: 'Many neurodivergent people have atypical proprioception — you may need stronger input (e.g., heavy object, tight hug) for it to activate.',
-      science: 'Craig (2002) Nature Reviews Neuroscience.'
+      ndNote: 'Many neurodivergent people have atypical proprioception — you may need stronger input (e.g., heavy object, tight hug) for it to activate.'
     },
     axis: 'body',
     chapters: [1, 11],
@@ -681,17 +679,17 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
   davidson_2004: {
     el: {
       title: 'Υψηλού Πλάτους Κύματα Gamma (Lutz, Davidson et al., 2004)',
-      short: 'Η ανοιχτή επίγνωση (open awareness) αυξάνει τον συντονισμό των κυμάτων Gamma και Alpha, δημιουργώντας νοητική ευρυχωρία.',
-      full: 'Αυτή η ιστορική μελέτη ("Long-term meditators self-induce high-amplitude gamma synchrony during mental practice") σε προχωρημένους Θιβετανούς μοναχούς έδειξε ότι ο ανοιχτός διαλογισμός (open awareness) παράγει εξαιρετικά υψηλά επίπεδα συγχρονισμού κυμάτων Gamma (25-42 Hz) και Alpha (8-12 Hz) στον εγκέφαλο.\n\nΑυτός ο συντονισμός συνδέεται με τη βέλτιστη γνωστική λειτουργία, την ολοκλήρωση απομακρυσμένων εγκεφαλικών περιοχών και την "Aha!" κατάσταση δημιουργικής επίλυσης προβλημάτων. Αντί για στενή εστίαση, ο εγκέφαλος βρίσκεται σε κατάσταση συνειδητής ευρυχωρίας.',
+      short: 'Η ανοιχτή επίγνωση (open awareness) συνοδεύεται από αυξημένο συγχρονισμό των κυμάτων Gamma, δημιουργώντας νοητική ευρυχωρία.',
+      full: 'Αυτή η ιστορική μελέτη ("Long-term meditators self-induce high-amplitude gamma synchrony during mental practice") σε προχωρημένους Θιβετανούς μοναχούς έδειξε ότι ο ανοιχτός διαλογισμός (open awareness) παράγει εξαιρετικά υψηλά επίπεδα συγχρονισμού κυμάτων Gamma (25-42 Hz) στον εγκέφαλο.\n\nΑυτός ο συντονισμός συνδέεται με τη βέλτιστη γνωστική λειτουργία, την ολοκλήρωση απομακρυσμένων εγκεφαλικών περιοχών και την "Aha!" κατάσταση δημιουργικής επίλυσης προβλημάτων. Αντί για στενή εστίαση, ο εγκέφαλος βρίσκεται σε κατάσταση συνειδητής ευρυχωρίας.',
       ndNote: 'Στον νευροδιαφορετικό εγκέφαλο (όπου συχνά υπάρχει έντονη τοπική υπερσύνδεση αλλά μειωμένος μακρινός συντονισμός), η ανοιχτή επίγνωση (Open Awareness) βοηθά στη γεφύρωση απομακρυσμένων περιοχών. Αυτός ο διευρυμένος Alpha-Gamma συγχρονισμός προσφέρει μια βαθιά αίσθηση "άπλας" και ησυχίας από την εσωτερική κριτική φωνή.',
-      science: 'Lutz, Greischar, Rawlings, Ricard, Davidson (2004) PNAS (Doi: 10.1073/pnas.0407401101) & Davidson & Lutz (2008) IEEE Signal Process Mag (Doi: 10.1109/msp.2008.915525)'
+      science: 'Lutz, Greischar, Rawlings, Ricard, Davidson (2004) PNAS (Doi: 10.1073/pnas.0407401101)'
     },
     en: {
       title: 'High-Amplitude Gamma Synchrony (Lutz, Davidson et al., 2004)',
-      short: 'Open awareness increases Alpha and Gamma brainwave coherence, inducing neural spaciousness and cognitive integration.',
-      full: 'This landmark EEG study ("Long-term meditators self-induce high-amplitude gamma synchrony during mental practice") on deep contemplative practitioners showed that non-referential open awareness generates unprecedented levels of large-scale neural synchrony in the Gamma (25–42 Hz) and Alpha bands.\n\nThis high-amplitude coherence represents active cognitive integration, sensory binding, and the classic "Aha!" state of creative intuition. Instead of a narrow beam of focus, the entire cortex operates under a unified field of effortless awareness.',
+      short: 'Open awareness is accompanied by increased Gamma brainwave synchrony, inducing neural spaciousness and cognitive integration.',
+      full: 'This landmark EEG study ("Long-term meditators self-induce high-amplitude gamma synchrony during mental practice") on deep contemplative practitioners showed that non-referential open awareness generates unprecedented levels of large-scale neural synchrony in the Gamma (25–42 Hz) band.\n\nThis high-amplitude coherence represents active cognitive integration, sensory binding, and the classic "Aha!" state of creative intuition. Instead of a narrow beam of focus, the entire cortex operates under a unified field of effortless awareness.',
       ndNote: 'For neurodivergent individuals (often navigating local hyper-connectivity combined with long-range dysregulation), training in Open Awareness (Aesthetic Space/4th Axis) builds robust global coherence. It creates an expansive mental playground where sensory streams coexist peacefully instead of competing for attention.',
-      science: 'Lutz, Greischar, Rawlings, Ricard, Davidson (2004) PNAS (Doi: 10.1073/pnas.0407401101) & Davidson & Lutz (2008) IEEE Signal Process Mag (Doi: 10.1109/msp.2008.915525)'
+      science: 'Lutz, Greischar, Rawlings, Ricard, Davidson (2004) PNAS (Doi: 10.1073/pnas.0407401101)'
     },
     axis: 'space',
     chapters: [4, 11],

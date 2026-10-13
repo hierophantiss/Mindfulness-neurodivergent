@@ -100,7 +100,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
      insight:"Keep the act, let go of the outcome, and move one step at a time, without hurry.",reflection:"What am I putting off? Is the act itself hard, or the mountain around it?"},
     {num:8,title:"When the Wave Rises",sub:"Anxiety & Overload",tag:"Support",color:"var(--terra)",hex:"#C07050",icon:"🌊",
      summary:"Two practical protocols for intense anxiety and overload.",
-     theorySections:[{title:"Protocol 1: Intense Anxiety",paragraphs: ["1. Grounding: feel the weight\n2. Breath: 3 deep inhales, slow exhale through mouth{{slow_exhale}}\n3. Label{{labeling}}: 'Worry' or 'Scenario'\n4. Space: open peripheral vision{{peripheral_vision}}"]},{title:"Protocol 2: Overload",paragraphs: ["1. Grounding: feel the soles\n2. Breath: stay in its flow\n3. Attention: a fixed point\n4. Space: soften the gaze — stimuli are clouds"]}],
+     theorySections:[{title:"Protocol 1: Intense Anxiety",paragraphs: ["1. Grounding: feel the weight\n2. Breath: a 4-6 rhythm, with a slow exhale through the mouth{{slow_exhale}}. Do not force the inhale; work only with the exhale\n3. Label{{labeling}}: 'Worry' or 'Scenario'\n4. Space: open peripheral vision{{peripheral_vision}}"]},{title:"Protocol 2: Overload",paragraphs: ["1. Grounding: feel the soles\n2. Breath: stay in its flow\n3. Attention: a fixed point\n4. Space: soften the gaze — stimuli are clouds"]}],
      exercise:{title:"Reflection: My Body's Signals",steps:["What are the early signals when overload begins?","Where do you first feel tension? (jaw, shoulders, chest?)","Which protocol helps you the most?"]},
      insight:"You are not the clouds. You are the sky that holds them.",reflection:"What will I do differently next time?"},
     {num:9,title:"Cheat Sheet",sub:"The Practice of Presence",tag:"Application",color:"var(--teal-dark)",hex:"#1A5F6E",icon:"📋",
@@ -118,7 +118,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
      theorySections:[
        {title:"Neuroscience",paragraphs: [
          "The Fourfold Axis is informed by current neuroscience. Learn more about the core mechanisms:",
-         "• Proprioception: The sense of gravity activates the proprioceptive system{{proprioception}} — Craig (2002).",
+         "• Gravity: the brain continually computes gravity and the body's relationship to the ground, with the cerebellum playing a central role{{proprioception}} — Mackrous et al. (2019) Current Biology.",
          "• Vagus Nerve: Slow exhalation activates the vagus nerve{{vagus_nerve}} and parasympathetic nervous system, lowering heart rate — Gerritsen & Band (2018).",
          "• Default Mode Network: Mindfulness reduces the active DMN{{dmn}} to quiet mind-wandering and self-criticism — Brewer et al. (2011).",
          "• Neuroplasticity: Regular practice is associated with measurable changes in brain structure{{neuroplasticity}} — Hölzel et al. (2011)."
@@ -309,7 +309,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
      summary:'Δύο πρακτικά πρωτόκολλα για έντονο άγχος και υπερφόρτωση.',
      theorySections:[
        {title:'Το Βαρόμετρο: Πριν από την Καταιγίδα',paragraphs: [`Κάθε κύμα προαναγγέλλεται σιωπηλά: ένα σαγόνι που σφίγγει, ανάσα ψηλά στο στήθος, ενόχληση από ήχους. Αυτά είναι τα σημάδια του <strong>βαρόμετρου</strong> σου. Όσο νωρίτερα πιάσεις τον άνεμο, τόσο λιγότερη δύναμη χρειάζεται. Στην αρχή μια εκπνοή αρκεί, στην κορυφή χρειάζεται ολόκληρο πρωτόκολλο.`]},
-       {title:'Πρωτόκολλο 1: Έντονο Άγχος',paragraphs: [`1. Γείωση: νιώσε το βάρος\n2. Αναπνοή: 3 βαθιές εισπνοές, αργή εκπνοή από στόμα{{slow_exhale}}\n3. Ταμπέλα{{labeling}}: «Ανησυχία» ή «Σενάριο»\n4. Χώρος: άνοιξε περιφερειακή όραση`]},
+       {title:'Πρωτόκολλο 1: Έντονο Άγχος',paragraphs: [`1. Γείωση: νιώσε το βάρος\n2. Αναπνοή: ρυθμός 4-6, με αργή εκπνοή από το στόμα{{slow_exhale}}. Μην πιέζεις την εισπνοή· δούλεψε μόνο με την εκπνοή\n3. Ταμπέλα{{labeling}}: «Ανησυχία» ή «Σενάριο»\n4. Χώρος: άνοιξε περιφερειακή όραση`]},
        {title:'Πρωτόκολλο 2: Υπερφόρτωση',paragraphs: [`1. Γείωση: νιώσε τα πέλματα\n2. Αναπνοή: μείνε στη ροή της\n3. Προσοχή: ένα σταθερό σημείο\n4. Χώρος: μαλάκωσε το βλέμμα — τα ερεθίσματα είναι σύννεφα. Δεν είσαι τα σύννεφα, είσαι ο χώρος που τα χωράει.`]},
        {title:'Τι να Μην Κάνεις',paragraphs: [`• Μην προσπαθήσεις να σκεφτείς την έξοδο (το توύνελ δεν λύνεται με σκέψη).\n• Μην αναλύεις («γιατί είμαι έτσι;»).\n• Μην πιέζεις βαθιές εισπνοές, κάνε μόνο αργές εκπνοές.\n• Μην καταπιέζεις τα stims (λίκνισμα, κινήσεις) — είναι η αυτορρύθμιση του σώματος.`]},
        {title:'Μετά το Κύμα',paragraphs: [`Ο νους συχνά γυρίζει να δαγκώσει: «γιατί το άφησα;». Αυτό είναι το «Έπρεπε» με σωσίβιο. Μετά το κύμα χρειάζεσαι νερό, φαγητό, ξεκούραση. Είναι σωματική καταπόνηση. Καμία ανάλυση. Πέρασε καιρός, και κράτησες το σκάφος.`]},
@@ -331,7 +331,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
      summary:'Η επιστήμη και η πνευματικότητα συμφωνούν — η ισορροπία ξεκινά από το σώμα.',
      theorySections:[
        {title:'Νευροεπιστήμη',paragraphs: [
-         `• Ιδιοδεκτικότητα: Η αίσθηση βαρύτητας ενεργοποιεί το ιδιοδεκτικό σύστημα{{proprioception}} — Craig (2002) Nature Reviews Neuroscience.`,
+         `• Βαρύτητα: ο εγκέφαλος υπολογίζει διαρκώς τη βαρύτητα και τη σχέση του σώματος με το έδαφος, με την παρεγκεφαλίδα να παίζει κεντρικό ρόλο{{proprioception}} — Mackrous et al. (2019) Current Biology.`,
          `• Πνευμονογαστρικό νεύρο: Η αργή εκπνοή ενεργοποιεί το vagus nerve{{vagus_nerve}}, μειώνει καρδιακό ρυθμό — Gerritsen & Band (2018).`,
          `• Default Mode Network: Η ενσυνειδητότητα μειώνει τη δραστηριότητα του DMN{{dmn}} — Brewer et al. (2011) PNAS.`,
          `• Προμετωπιαίος Φλοιός: Η εστιασμένη προσοχή εμπλέκει τον PFC, κεντρικό για την αυτορρύθμιση.`,

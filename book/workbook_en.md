@@ -732,7 +732,7 @@ The earlier you catch the wind, the less force it takes: at the first signals, o
 Intense anxiety is a "fight or flight" state that requires an immediate signal of safety to the nervous system, through body and breath.
 
 1. **Grounding (Body)** — Feel the weight of the body, its posture, the tensions — without verbal analysis. Simply notice where you are holding the tension.
-2. **Regulation (Breath)** — Close your eyes and take 3 deep breaths. Let the exhale leave slowly through the mouth, as if gently blowing on a flame.
+2. **Regulation (Breath)** — Close your eyes and move into the 4-6 rhythm. Let the exhale leave slowly through the mouth, as if gently blowing on a flame. Do not force the inhale; work only with the exhale.
 3. **Labeling (Attention)** — If the mind sticks to a scenario, use a label ("Worry," "Scenario") and return to the breath.
 4. **Opening (Space)** — Open your peripheral vision and notice the space around you. Widening reduces the sense of being trapped.
 5. **Movement & Axis** — If you can, walk a little, feeling the soles. Keep the sense of the vertical axis. Open gaze and awareness of space.

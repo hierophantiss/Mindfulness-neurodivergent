@@ -44,7 +44,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'Τι ρόλο παίζει η ιδιοδεκτικότητα;',
-        a: 'Η ιδιοδεκτικότητα (proprioception) είναι η αίσθηση της θέσης του σώματος στον χώρο. Όταν νιώθεις τη βαρύτητα, ενεργοποιείς το ιδιοδεκτικό σύστημα — Craig (2002) Nature Reviews Neuroscience. Αυτή η αίσθηση ανταγωνίζεται το DMN (τον αυτόματο πιλότο) και φέρνει τον νου στο «εδώ» χωρίς προσπάθεια.',
+        a: 'Η ιδιοδεκτικότητα (proprioception) είναι η αίσθηση της θέσης του σώματος στον χώρο. Όταν νιώθεις τη βαρύτητα, ενεργοποιείς το ιδιοδεκτικό σύστημα. Αυτή η αίσθηση ανταγωνίζεται το DMN (τον αυτόματο πιλότο) και φέρνει τον νου στο «εδώ» χωρίς προσπάθεια.',
         tags: ['body', 'proprioception', 'neuroscience'],
         depth: 3,
         relatedConcept: 'proprioception'
@@ -98,7 +98,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'What role does proprioception play?',
-        a: 'Proprioception is the sense of your body\'s position in space. When you feel gravity, you activate the proprioceptive system — Craig (2002) Nature Reviews Neuroscience. This sensation competes with the DMN (the autopilot) and brings the mind to "here" without effort.',
+        a: 'Proprioception is the sense of your body\'s position in space. When you feel gravity, you activate the proprioceptive system. This sensation competes with the DMN (the autopilot) and brings the mind to "here" without effort.',
         tags: ['body', 'proprioception', 'neuroscience'],
         depth: 3,
         relatedConcept: 'proprioception'
@@ -620,7 +620,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
     el: [
       {
         q: 'Τι λέει η νευροεπιστήμη για αυτή τη μέθοδο;',
-        a: '• Η αίσθηση βαρύτητας ενεργοποιεί το ιδιοδεκτικό σύστημα — Craig (2002).\n• Η αργή εκπνοή ενεργοποιεί το vagus nerve — Gerritsen & Band (2018).\n• Η ενσυνειδητότητα μειώνει τη δραστηριότητα του DMN — Brewer et al. (2011) PNAS.\n• 8 εβδομάδες πρακτικής αλλάζουν μετρήσιμα τη δομή του εγκεφάλου — Hölzel et al. (2011).\n• Η εστιασμένη προσοχή εμπλέκει τον προμετωπιαίο φλοιό, κεντρικό για την αυτορρύθμιση.',
+        a: '• Ο εγκέφαλος υπολογίζει διαρκώς τη βαρύτητα, με κεντρικό ρόλο της παρεγκεφαλίδας — Mackrous et al. (2019).\n• Η αργή εκπνοή ενεργοποιεί το vagus nerve — Gerritsen & Band (2018).\n• Η ενσυνειδητότητα μειώνει τη δραστηριότητα του DMN — Brewer et al. (2011) PNAS.\n• 8 εβδομάδες πρακτικής αλλάζουν μετρήσιμα τη δομή του εγκεφάλου — Hölzel et al. (2011).\n• Η εστιασμένη προσοχή εμπλέκει τον προμετωπιαίο φλοιό, κεντρικό για την αυτορρύθμιση.',
         tags: ['science', 'neuroscience', 'evidence', 'references'],
         depth: 3
       },
@@ -641,7 +641,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
     en: [
       {
         q: 'What does neuroscience say about this method?',
-        a: '• Gravity sense activates the proprioceptive system — Craig (2002).\n• Slow exhale activates the vagus nerve — Gerritsen & Band (2018).\n• Mindfulness reduces DMN activity — Brewer et al. (2011) PNAS.\n• 8 weeks of practice measurably change brain structure — Hölzel et al. (2011).\n• Focused attention engages the prefrontal cortex, central to self-regulation.',
+        a: '• The brain continually computes gravity, with the cerebellum playing a central role — Mackrous et al. (2019).\n• Slow exhale activates the vagus nerve — Gerritsen & Band (2018).\n• Mindfulness reduces DMN activity — Brewer et al. (2011) PNAS.\n• 8 weeks of practice measurably change brain structure — Hölzel et al. (2011).\n• Focused attention engages the prefrontal cortex, central to self-regulation.',
         tags: ['science', 'neuroscience', 'evidence', 'references'],
         depth: 3
       },
