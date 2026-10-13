@@ -804,21 +804,21 @@ export const COURSE_EN: Record<number, any> = {
     "title": "Space / Water: Open Awareness",
     "days": [
       {
-        "title": "The 4 Centers & Sky",
+        "title": "The 4 Centers & Open Space",
         "where": "Anywhere / Outdoors",
         "dur": "5-10 minutes",
-        "lesson": "<p>From this week we join the 4 centers (Body, Breath, Attention, Space). We learn \"Open Attention.\"</p><p>Every day: **Sky-gazing.** Take a little time to look at the sky and breathe through it.</p>",
+        "lesson": "<p>From this week we join the 4 centers (Body, Breath, Attention, Space). We learn \"Open Attention.\"</p><p>Every day: **Sky-gazing.** Take a little time to look at the sky and feel the space around you.</p>",
         "exercise": {
           "title": "Sky-Gazing:",
           "steps": [
             "Open your attention a little in the morning, at noon, and in the evening.",
             "A few times a day, look up at the sky.",
-            "Take a deep breath, feeling the vast space."
+            "Let out a slow exhale, feeling the vast space."
           ]
         },
-        "breathing": "<strong>Breath from the Sky</strong><p>Imagine that you breathe from the vast space of the sky.</p>",
+        "breathing": "<strong>Breathing into Space</strong><p>Do not imagine a space; feel the real space around you, and let the exhale spread into it.</p>",
         "reflection": "Could I feel the open attention today?",
-        "insight": "The sky is always there, behind the clouds."
+        "insight": "Space is always there, behind the clouds."
       },
       {
         "title": "Open Attention 3 Times",
@@ -833,7 +833,7 @@ export const COURSE_EN: Record<number, any> = {
             "Evening: Relaxation and observation of the space."
           ]
         },
-        "breathing": "<strong>Breath from the Sky</strong><p></p>",
+        "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
         "reflection": "Did I remember to \"open\" my attention at these 3 moments?",
         "insight": "Small reminders build a continuous state of presence."
       },
@@ -851,7 +851,7 @@ export const COURSE_EN: Record<number, any> = {
             "Open into Space (Sky-Gazing)."
           ]
         },
-        "breathing": "<strong>Breath from the Sky</strong><p></p>",
+        "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
         "reflection": "How do I feel when I join all 4 centers?",
         "insight": "You are not only the body, you are also the space that surrounds it."
       },
@@ -861,14 +861,14 @@ export const COURSE_EN: Record<number, any> = {
         "dur": "A few minutes",
         "lesson": "<p>We consolidate our practice. Reading and practicing now means: Body, Breath, Space, Attention.</p><p>Sky-gazing. Open attention in the morning, at noon, and in the evening.</p>",
         "exercise": {
-          "title": "Sky & 4 Centers:",
+          "title": "Sky-Gazing & 4 Centers:",
           "steps": [
             "We establish a habit: Every morning, noon, evening.",
             "Awareness through the 4 centers at once.",
-            "The Sky is the inspiration of space."
+            "The sky is a pointer to space, not a destination."
           ]
         },
-        "breathing": "<strong>Breath from the Sky</strong><p></p>",
+        "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
         "reflection": "Does open attention feel easier now?",
         "insight": "Attention does not need clenching, it needs opening."
       },
@@ -886,7 +886,7 @@ export const COURSE_EN: Record<number, any> = {
             "Do it several times today."
           ]
         },
-        "breathing": "<strong>Breath from the Sky</strong><p></p>",
+        "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
         "reflection": "Can a 3-second pause bring calm?",
         "insight": "The pause is the door to the \"Now.\""
       },
@@ -898,13 +898,13 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "The \"Open Horizon\":",
           "steps": [
-            "Imagine that your mind is the vast sky.",
+            "Feel the real space around you, with your body grounded.",
             "Your thoughts are clouds passing by.",
             "Do not chase the clouds.",
-            "Remain the sky."
+            "You are the space that holds them."
           ]
         },
-        "breathing": "<strong>Breath from the Sky</strong><p></p>",
+        "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
         "reflection": "Did I manage not to follow a \"cloud\" (thought) today?",
         "insight": "You do not need to clear the sky of clouds. The sky always has room."
       },
@@ -912,7 +912,7 @@ export const COURSE_EN: Record<number, any> = {
         "title": "Interrupting the Autopilot",
         "where": "During an activity",
         "dur": "3 seconds",
-        "lesson": "<p>Morning, noon, evening: Open attention and 4 centers. The sky is still your teacher for the sense of space.</p><p>Today we break the routine with small interruptions. Our mind's \"autopilot\" (the Default Mode Network we mentioned on the first day) feeds on ceaseless, breathless motion. When we cut it, our nervous system does a \"reset.\"</p>",
+        "lesson": "<p>Morning, noon, evening: Open attention and 4 centers. Sky-gazing still shows you the sense of space.</p><p>Today we break the routine with small interruptions. Our mind's \"autopilot\" (the Default Mode Network we mentioned on the first day) feeds on ceaseless, breathless motion. When we cut it, our nervous system does a \"reset.\"</p>",
         "exercise": {
           "title": "Interrupting the Autopilot:",
           "steps": [
@@ -921,7 +921,7 @@ export const COURSE_EN: Record<number, any> = {
             "Simply feel that you \"exist\" without thinking of the next step."
           ]
         },
-        "breathing": "<strong>Breath from the Sky</strong><p></p>",
+        "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
         "reflection": "How many times did I recognize that I was on \"autopilot\"?",
         "insight": "The magic hides between the ordinary movements."
       }
@@ -944,7 +944,7 @@ export const COURSE_EN: Record<number, any> = {
             "Watch the \"mud\" settle without any effort of yours."
           ]
         },
-        "breathing": "<strong>Breath from the Sky</strong><p></p>",
+        "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
         "reflection": "Did I feel relief in understanding that I am not \"broken\"?",
         "insight": "Resistance to emotion stirs the water. Acceptance clears it."
       },
@@ -962,7 +962,7 @@ export const COURSE_EN: Record<number, any> = {
             "Feel your axis and simply \"Rest\" in the Now."
           ]
         },
-        "breathing": "<strong>Breath from the Sky</strong><p></p>",
+        "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
         "reflection": "How did it feel to \"not try\" for a few seconds?",
         "insight": "Sometimes the greatest effort is to stop trying."
       },
@@ -980,7 +980,7 @@ export const COURSE_EN: Record<number, any> = {
             "Return to the soles and the breath. Congratulations, you just built neuroplasticity."
           ]
         },
-        "breathing": "<strong>Breath from the Sky</strong><p></p>",
+        "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
         "reflection": "Did I feel the \"gentle return\" as a safe lasso rather than a punishment?",
         "insight": "Every return of attention is a muscle growing stronger."
       },
@@ -997,7 +997,7 @@ export const COURSE_EN: Record<number, any> = {
             "Feel the silence within which the sound is born."
           ]
         },
-        "breathing": "<strong>Breath from the Sky</strong><p></p>",
+        "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
         "reflection": "Is the silence always there, behind the noise?",
         "insight": "As the sky hosts the clouds, the silence hosts the sounds."
       },
@@ -1014,7 +1014,7 @@ export const COURSE_EN: Record<number, any> = {
             "Imagine it as an empty, open vessel."
           ]
         },
-        "breathing": "<strong>Breath from the Sky</strong><p></p>",
+        "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
         "reflection": "How does the chest feel when it is not compressed?",
         "insight": "Spaciousness in the chest is the biological signature of calm."
       },
@@ -1032,7 +1032,7 @@ export const COURSE_EN: Record<number, any> = {
             "Do not try to control them, simply let them exist."
           ]
         },
-        "breathing": "<strong>Breath from the Sky</strong><p></p>",
+        "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
         "reflection": "How did communication change when I stopped forcing things?",
         "insight": "The best relationship is one that lets both people breathe."
       },
@@ -1042,7 +1042,7 @@ export const COURSE_EN: Record<number, any> = {
         "dur": "Open",
         "lesson": "<p>The last day of the program. Reading and practicing now means joining the 4 centers. Look at the sky. Keep an open attention, and remember: Your mind is not broken.</p>",
         "exercise": {
-          "title": "Life like Sky / Effortless Presence:",
+          "title": "Effortless Presence:",
           "steps": [
             "Open your eyes to the sky.",
             "Feel gravity in the body.",
@@ -1050,7 +1050,7 @@ export const COURSE_EN: Record<number, any> = {
             "Feel that you are this Open Horizon."
           ]
         },
-        "breathing": "<strong>Breath from the Sky</strong><p></p>",
+        "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
         "reflection": "What do I take away from these 8 weeks?",
         "insight": "We are not arriving somewhere. We are simply remembering how to be HERE."
       },

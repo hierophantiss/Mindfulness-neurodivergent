@@ -506,14 +506,14 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     el: {
       title: 'SOS Mode',
       short: 'Τετρα-αισθητηριακή παρέμβαση σε κρίση.',
-      full: 'Αυτιά: theta binaural beats (6 Hz) → βαθιά ηρεμία.\nΜάτια: ηρεμιστικό μπλε-τιρκουάζ φως.\nΣώμα: αναπνοή 4-7-8 (η πιο ηρεμιστική).\nΑφή: haptic ρυθμός.\n\nΌλα μαζί στέλνουν πολλαπλά σήματα ασφάλειας στο νευρικό σύστημα ταυτόχρονα.',
-      ndNote: 'Χρειάζεται ακουστικά για τα binaural beats. Αν δεν έχεις, η αναπνοή 4-7-8 μόνη της βοηθάει σημαντικά.'
+      full: 'Αυτιά: theta binaural beats (6 Hz) → βαθιά ηρεμία.\nΜάτια: ηρεμιστικό μπλε-τιρκουάζ φως.\nΣώμα: αναπνοή 4-7-8 (μεγάλη, αργή εκπνοή).\nΑφή: haptic ρυθμός.\n\nΜαζί δίνουν στο νευρικό σύστημα πολλά ήπια σήματα ηρεμίας ταυτόχρονα.',
+      ndNote: 'Χρειάζεται ακουστικά για τα binaural beats. Αν δεν έχεις, η αναπνοή 4-7-8 μόνη της είναι ήδη μια καλή αρχή.'
     },
     en: {
       title: 'SOS Mode',
       short: 'Quad-sensory intervention during crisis.',
-      full: 'Ears: theta binaural beats (6 Hz) → deep calm.\nEyes: calming blue-teal light.\nBody: 4-7-8 breath (the most calming).\nTouch: haptic rhythm.\n\nAll together send multiple safety signals to the nervous system simultaneously.',
-      ndNote: 'Requires headphones for binaural beats. Without them, 4-7-8 breathing alone helps significantly.'
+      full: 'Ears: theta binaural beats (6 Hz) → deep calm.\nEyes: calming blue-teal light.\nBody: 4-7-8 breath (a long, slow exhale).\nTouch: haptic rhythm.\n\nTogether they give the nervous system several gentle signals of calm at once.',
+      ndNote: 'Requires headphones for binaural beats. Without them, 4-7-8 breathing alone is already a good start.'
     },
     axis: 'all',
     chapters: [8],

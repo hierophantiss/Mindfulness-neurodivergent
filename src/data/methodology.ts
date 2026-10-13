@@ -4,59 +4,59 @@ export const METHODOLOGY_DATA = {
   el: {
     title: 'Επιστημονική Θεμελίωση',
     subtitle: 'Η Νευροεπιστήμη πίσω από τη Μεθοδολογία μας',
-    intro: 'Η προσέγγισή μας δεν βασίζεται σε γενικές οδηγίες χαλάρωσης, αλλά σε σύγχρονα, peer-reviewed ευρήματα της νευροεπιστήμης και της κλινικής έρευνας για τον νευροδιαφορετικό εγκέφαλο (ADHD, Αυτισμός, HSP).',
+    intro: 'Η προσέγγιση δεν βασίζεται σε γενικές οδηγίες χαλάρωσης, αλλά σε δημοσιευμένες έρευνες της νευροεπιστήμης και της κλινικής έρευνας, με επίκεντρο τη ΔΕΠΥ και τον αυτισμό. Η εφαρμογή είναι εργαλείο αυτορρύθμισης, όχι θεραπεία.',
     
     philosophyTitle: 'Φιλοσοφία Έρευνας & Νευροδιαφορετικότητα',
-    philosophyText: 'Οι κλασικές τεχνικές mindfulness συχνά προκαλούν άγχος ή «πάγωμα» (freeze response) σε νευροδιαφορετικά άτομα επειδή απαιτούν άμεση, αναγκαστική ακινησία και παθητική παρατήρηση. Η φιλοσοφία μας επαναπροσδιορίζει την πρακτική μέσω της σωματικής ενσυναισθητικής ρύθμισης (somatic bottom-up regulation):',
+    philosophyText: 'Οι κλασικές τεχνικές ενσυνειδητότητας μπορεί να φέρουν άγχος ή «πάγωμα» σε νευροδιαφορετικά άτομα, επειδή συχνά ζητούν άμεση ακινησία και παθητική παρατήρηση. Αυτή η μέθοδος ξεκινά από την άλλη άκρη: από το σώμα προς τα πάνω (somatic, bottom-up). Πρώτα ρυθμίζεται το νευρικό σύστημα, μετά έρχεται η παρατήρηση:',
     
     pillars: [
       {
         id: 'study-kim-jung',
         icon: ShieldCheck,
-        title: 'Αποτελεσματικότητα στην ΔΕΠΥ Ενηλίκων (Kim & Jung, 2025)',
-        desc: 'Σε αυτή τη νέα συστηματική ανασκόπηση (2025), οι επιστήμονες επιβεβαιώνουν ότι οι παρεμβάσεις ενσυνειδητότητας (MBIs) βελτιώνουν στατιστικά σημαντικά τα κεντρικά συμπτώματα της ΔΕΠΥ στους ενήλικες, καθώς και την γενικότερη λειτουργικότητά τους. Αυτό επικυρώνει τη χρήση του Sanctuary ως κλινικά αποτελεσματική παρέμβαση για την διαχείριση της προσοχής.',
+        title: 'Ενσυνειδητότητα στη ΔΕΠΥ Ενηλίκων (Kim & Jung, 2025)',
+        desc: 'Συστηματική ανασκόπηση και μετα-ανάλυση (2025): οι παρεμβάσεις ενσυνειδητότητας σε ενήλικες με ΔΕΠΥ συνδέθηκαν με βελτίωση στα κεντρικά συμπτώματα και στη λειτουργικότητα. Η εφαρμογή δεν είναι θεραπεία· είναι εργαλείο αυτορρύθμισης που ακολουθεί αυτή την κατεύθυνση της έρευνας.',
         citation: 'Kim & Jung (2025). Medicine. Doi: 10.1097/md.0000000000044308'
       },
       {
         id: 'study-calderone',
         icon: ShieldCheck,
         title: 'Νευροβιολογία της Ενσυνειδητότητας (Calderone et al., 2024)',
-        desc: 'Αυτή η πρόσφατη συστηματική ανασκόπηση (2024) συγκεντρώνει τα κλινικά ευρήματα της τελευταίας δεκαετίας, επιβεβαιώνοντας ότι η ενσυνειδητότητα προκαλεί μετρήσιμες δομικές και λειτουργικές αλλαγές στον εγκέφαλο. Ειδικότερα, τεκμηριώνει την πάχυνση του προμετωπιαίου φλοιού (ρύθμιση προσοχής), τη μείωση του όγκου της αμυγδαλής (μείωση του άγχους) και τη βελτιωμένη συνδεσιμότητα της νήσου (insula - ενδοδεκτικότητα), παρέχοντας ολοκληρωμένη επιστημονική επικύρωση για τις πρακτικές του Sanctuary και του Τετραπλού Άξονα.',
+        desc: 'Συστηματική ανασκόπηση (2024) των ευρημάτων νευροαπεικόνισης: η πρακτική της ενσυνειδητότητας συνδέεται με μετρήσιμες δομικές και λειτουργικές αλλαγές στον εγκέφαλο, σε περιοχές που σχετίζονται με τη ρύθμιση της προσοχής, του στρες και της αίσθησης του σώματος. Ότι αυτά αλλάζουν με την επανάληψη στηρίζεται στη νευροπλαστικότητα.',
         citation: 'Calderone et al. (2024). Biomedicines. Doi: 10.3390/biomedicines12112613'
       },
       {
         id: 'study-farb',
         icon: Brain,
-        title: 'Απενεργοποίηση του DMN (Farb et al., 2007)',
-        desc: 'Σε εγκέφαλους με ADHD ή χρόνιο masking, το Default Mode Network (DMN - το δίκτυο της αυτόματης εσωτερικής φλυαρίας και αυτοκριτικής) είναι υπερδραστήριο. Η μελέτη fMRI του Farb απέδειξε ότι η σκόπιμη εστίαση στην άμεση σωματική αίσθηση (Experiential Focus) απενεργοποιεί ακαριαία το DMN, προσφέροντας άμεση νευρολογική ανακούφιση.',
+        title: 'Βιωματική Προσοχή & DMN (Farb et al., 2007)',
+        desc: 'Το Δίκτυο Προεπιλεγμένης Λειτουργίας (DMN) συνδέεται με τη νοητική περιπλάνηση, τον μηρυκασμό και την αυτοκριτική. Ο Farb και οι συνεργάτες του έδειξαν ότι η στροφή από την «αφηγηματική» στην άμεση, βιωματική προσοχή (τι νιώθω τώρα) σχετίζεται με μειωμένη δραστηριότητα του DMN. Η ετικετοποίηση και η επιστροφή στην αίσθηση είναι ακριβώς αυτή η στροφή.',
         citation: 'Farb et al. (2007). Social Cognitive and Affective Neuroscience. Doi: 10.1093/scan/nsm030'
       },
       {
         id: 'study-brewer',
         icon: Brain,
-        title: 'Ρύθμιση Συνδεσιμότητας DMN (Brewer et al., 2011)',
-        desc: 'Η ιστορική μελέτη νευροαπεικόνισης του Brewer απέδειξε ότι οι έμπειροι διαλογιστές παρουσιάζουν σημαντικά χαμηλότερη δραστηριότητα και αλλαγές στη συνδεσιμότητα του Default Mode Network (DMN). Αυτό βοηθά στη μείωση του μηρυκασμού και της συνεχούς εσωτερικής φλυαρίας, δημιουργώντας ένα βέλτιστο πρότυπο διαχείρισης της προσοχής.',
+        title: 'Συνδεσιμότητα DMN & Διαλογισμός (Brewer et al., 2011)',
+        desc: 'Η μελέτη νευροαπεικόνισης του Brewer βρήκε ότι οι έμπειροι διαλογιστές έχουν χαμηλότερη δραστηριότητα και διαφορετική συνδεσιμότητα στο DMN κατά τον διαλογισμό. Στην εμπειρία, αυτό αντιστοιχεί σε λιγότερο μηρυκασμό και λιγότερη εσωτερική φλυαρία.',
         citation: 'Brewer et al. (2011). PNAS. Doi: 10.1073/pnas.1112029108'
       },
       {
         id: 'study-porges',
         icon: Waves,
         title: 'Πολυβαγική Θεωρία & Ασφάλεια (Porges, 1995)',
-        desc: 'Το νευρικό σύστημα χάνει την ισορροπία του όταν νιώθει απειλή. Μέσω της αργής, ελεγχόμενης εκπνοής (Ventral Vagus stimulation), στέλνουμε σήματα βιολογικής ασφάλειας απευθείας στο στέλεχος του εγκεφάλου, παρακάμπτοντας τη λογική ανάλυση που συχνά οδηγεί σε πνευματικό μηρυκασμό.',
+        desc: 'Η αργή, παρατεταμένη εκπνοή ενεργοποιεί την «κοιλιακή» πλευρά του πνευμονογαστρικού νεύρου, που συνδέεται με καταστάσεις ηρεμίας και ασφάλειας. Η Πολυβαγική Θεωρία χρησιμοποιείται εδώ ως πλαίσιο κατανόησης. Δεν χρειάζεται να «πείσεις» τον εαυτό σου ότι είναι ασφαλής· στην εμπειρία, η εκπνοή στέλνει το σήμα από μόνη της.',
         citation: 'Stephen Porges, PhD (1995). Psychophysiology. Doi: 10.1111/j.1469-8986.1995.tb01213.x'
       },
       {
         id: 'study-corrigan',
         icon: Activity,
         title: 'Παράθυρο Ανοχής & Αυτορρύθμιση (Corrigan et al., 2011)',
-        desc: 'Σύμφωνα με το μοντέλο του Παραθύρου Ανοχής, το αυτόνομο νευρικό σύστημα διαθέτει ένα βέλτιστο εύρος διέγερσης. Έξω από αυτό, οδηγούμαστε σε υπερδιέγερση ή υποδιέγερση. Οι σωματικές πρακτικές του Sanctuary δρουν ως εργαλεία αυτορρύθμισης, επαναφέροντας το σύστημα σε ισορροπία όταν βγαίνει εκτός ορίων λόγω emotional trauma ή overload.',
+        desc: 'Σύμφωνα με το μοντέλο του Παραθύρου Ανοχής, το νευρικό σύστημα λειτουργεί καλύτερα μέσα σε ένα εύρος διέγερσης· έξω από αυτό οδηγείται σε υπερδιέγερση ή σε υποδιέγερση. Οι σωματικές πρακτικές της εφαρμογής είναι εργαλεία αυτορρύθμισης για την επιστροφή σε αυτό το εύρος, όχι επεξεργασία τραύματος.',
         citation: 'Corrigan, Fisher & Nutt (2011). Journal of Psychopharmacology. Doi: 10.1177/0269881109354930'
       },
       {
         id: 'study-lane',
         icon: Activity,
-        title: 'Brainwave Entrainment (Oster 1973, Lane 1998)',
-        desc: 'Τα διωτικά κύματα (Binaural Beats) που χρησιμοποιούμε στο Sanctuary και τις ασκήσεις αναπνοής συντονίζουν τη νευρωνική δραστηριότητα (Neural Entrainment) μειώνοντας το αισθητηριακό overload. Λειτουργούν ως μια «ακουστική κουβέρτα βάρους», ηρεμώντας το συμπαθητικό σύστημα.',
+        title: 'Διωτικά Κύματα (Lane et al., 1998)',
+        desc: 'Η μελέτη του Lane και των συνεργατών του βρήκε ότι τα διωτικά κύματα (binaural beats) επηρέασαν την εγρήγορση, την απόδοση και τη διάθεση. Στην εφαρμογή χρησιμοποιούνται ως ήπια ηχητική υποστήριξη στις ασκήσεις αναπνοής και στον χώρο ήχου, όχι ως θεραπεία.',
         citation: 'Lane et al. (1998). Physiology & Behavior. Doi: 10.1016/S0031-9384(97)00436-8'
       },
       {
@@ -76,8 +76,8 @@ export const METHODOLOGY_DATA = {
       {
         id: 'study-zylowska',
         icon: CheckCircle,
-        title: 'Γνωστική Βελτίωση στο ADHD (Zylowska et al., 2008)',
-        desc: 'Το μοναδικό peer-reviewed πρόγραμμα 8 εβδομάδων ενσυνειδητότητας ειδικά για ΔΕΠΥ — βρήκε βελτιώσεις στην προσοχή, τη γνωστική αναστολή, το άγχος και τα καταθλιπτικά συμπτώματα.',
+        title: 'Πρόγραμμα 8 Εβδομάδων για ΔΕΠΥ (Zylowska et al., 2008)',
+        desc: 'Μελέτη εφικτότητας ενός προγράμματος ενσυνειδητότητας 8 εβδομάδων, σχεδιασμένου ειδικά για ενήλικες και εφήβους με ΔΕΠΥ. Βρήκε βελτιώσεις στην προσοχή, στη γνωστική αναστολή, στο άγχος και στα καταθλιπτικά συμπτώματα. Είναι μικρή, πρώιμη μελέτη χωρίς ομάδα ελέγχου.',
         citation: 'Zylowska, L., Ackerman, D. L., Yang, M. H., Futrell, J. L., Horton, N. L., Hale, T. S., Pataki, C., & Smalley, S. L. (2008). Mindfulness meditation training in adults and adolescents with ADHD: A feasibility study. Journal of Attention Disorders, 11(6), 737–746. https://doi.org/10.1177/1087054707308502'
       },
       {
@@ -90,92 +90,92 @@ export const METHODOLOGY_DATA = {
       {
         id: 'study-ashinoff',
         icon: Sparkles,
-        title: 'Μελέτη Hyperfocus (Ashinoff & Abu-Akel, 2019)',
-        desc: 'Η συστηματική αυτή έρευνα ορίζει το hyperfocus ως κατάσταση ολικής γνωστικής απορρόφησης χαρακτηριστικό των ADHD & Αυτιστικών προφίλ. Επιβεβαιώνει ότι δεν πρόκειται για "έλλειμμα" προσοχής, αλλά για "all-or-nothing" ρύθμιση, η οποία εξισορροπείται με τις τεχνικές Soft Gaze.',
+        title: 'Υπερεστίαση (Ashinoff & Abu-Akel, 2019)',
+        desc: 'Ανασκόπηση που περιγράφει την υπερεστίαση (hyperfocus) ως κατάσταση έντονης απορρόφησης, συχνή στη ΔΕΠΥ και στον αυτισμό: όχι απλή έλλειψη προσοχής, αλλά ρύθμιση «όλα ή τίποτα». Η μέθοδος δεν τη σβήνει· τη φροντίζει, ανοίγοντας την περιφέρεια.',
         citation: 'Ashinoff & Abu-Akel (2019). Psychological Research. Doi: 10.1007/s00426-019-01245-8'
       },
       {
         id: 'study-mackrous',
         icon: Brain,
-        title: 'Πρόβλεψη της Βαρύτητας & Παρεγκεφαλίδα (Mackrous et al., 2019)',
-        desc: 'Η μελέτη αποδεικνύει ότι η παρεγκεφαλίδα υπολογίζει δυναμικά και προβλέπει τη βαρύτητα. Το Sanctuary και ο Τετραπλός Άξονας αξιοποιούν αυτόν τον αρχέγονο νευρωνικό υπολογισμό "αγκυρώνοντας" τον εγκέφαλο στο χώρο, προσφέροντας άμεση αίσθηση ασφάλειας στο υπερδιεγερμένο νευρικό σύστημα.',
+        title: 'Βαρύτητα & Παρεγκεφαλίδα (Mackrous et al., 2019)',
+        desc: 'Ο εγκέφαλος υπολογίζει διαρκώς τη βαρύτητα και τη σχέση του σώματος με το έδαφος, με την παρεγκεφαλίδα να παίζει κεντρικό ρόλο σε αυτόν τον υπολογισμό. Στην πρακτική, η στροφή της προσοχής στη βαρύτητα και στα σημεία στήριξης δίνει στο νευρικό σύστημα μια σταθερή, οικεία αναφορά: μια αίσθηση «εδώ» που δεν χρειάζεται σκέψη.',
         citation: 'Mackrous et al. (2019). Current Biology. Doi: 10.1016/j.cub.2019.07.006'
       },
       {
         id: 'study-vater',
         icon: Eye,
-        title: 'Περιφερειακή Όραση & Περιβάλλον (Vater et al., 2022)',
-        desc: 'Η περιφερειακή όραση δεν είναι απλώς βοηθητική. Σύμφωνα με τη συστηματική ανασκόπηση, αποτελεί θεμελιώδη μηχανισμό του εγκεφάλου για την παρακολούθηση του περιβάλλοντος και τον προσανατολισμό του σώματος. Το "μαλάκωμα" του βλέμματος (soft gaze) λειτουργεί ως νευρολογικό φρένο που μειώνει την αίσθηση εγκλωβισμού στο υπερδιεγερμένο νευρικό σύστημα.',
+        title: 'Περιφερειακή Όραση (Vater et al., 2022)',
+        desc: 'Συστηματική ανασκόπηση για την περιφερειακή όραση σε πραγματικές δραστηριότητες: δεν είναι απλώς βοηθητική, αλλά βασικός τρόπος με τον οποίο παρακολουθούμε το περιβάλλον και προσανατολιζόμαστε. Στην εμπειρία, το μαλάκωμα του βλέμματος μειώνει την αίσθηση εγκλωβισμού.',
         citation: 'Vater et al. (2022). Psychonomic Bulletin & Review. Doi: 10.3758/s13423-022-02117-w'
       },
       {
         id: 'study-gibson',
         icon: Heart,
         title: 'Οικολογική Αντίληψη & Έδαφος (James J. Gibson, 1979)',
-        desc: 'Η οικολογική προσέγγιση του Gibson αποδεικνύει ότι το σώμα και ο χώρος αποτελούν ένα ενιαίο σύστημα. Η αντίληψη του χώρου δεν είναι αφηρημένος υπολογισμός, αλλά βασίζεται στο «έδαφος» που στηρίζει φυσικά το σώμα, παρέχοντας άμεση σωματική ασφάλεια (affordances).',
+        desc: 'Η οικολογική προσέγγιση του Gibson περιγράφει την αντίληψη ως σχέση σώματος και περιβάλλοντος: ο χώρος γίνεται αντιληπτός μέσα από το έδαφος που στηρίζει το σώμα και τις δυνατότητες δράσης που προσφέρει (affordances).',
         citation: 'James J. Gibson (1979). Psychology Press. Doi: 10.4324/9781315740218'
       }
     ],
     
     quote: '«Η ενσυνειδητότητα για το νευροδιαφορετικό μυαλό δεν είναι μια προσπάθεια επιβολής ελέγχου, αλλά η τέχνη του να προσφέρεις στο νευρικό σου σύστημα την κατάλληλη άγκυρα ασφάλειας.»',
-    eeatBadge: '100% Evidence-Based • Peer-Reviewed Science'
+    eeatBadge: 'Βασισμένο σε Δημοσιευμένη Έρευνα • Peer-Reviewed'
   },
   en: {
     title: 'Evidence & Methodology',
     subtitle: 'The Neuroscience of Our Methodology',
-    intro: 'Our approach is not built on generic relaxation advice, but on modern, peer-reviewed neuroscientific insights and clinical research dedicated to the neurodivergent brain (ADHD, Autism, HSP).',
+    intro: 'This approach is not built on generic relaxation advice, but on published neuroscience and clinical research, with a focus on ADHD and autism. The app is a self-regulation tool, not a treatment.',
     
     philosophyTitle: 'Research Philosophy & Neurodivergence',
-    philosophyText: 'Traditional mindfulness techniques can often trigger anxiety or a "freeze response" in neurodivergent individuals because they demand instant, forced stillness and silent, passive observation. Our philosophy rebuilds mindfulness through somatic bottom-up regulation:',
+    philosophyText: 'Classic mindfulness techniques can bring anxiety or "freezing" to neurodivergent people, because they often ask for immediate stillness and passive observation. This method starts from the other end: from the body upwards (somatic, bottom-up). First the nervous system is regulated, then observation comes:',
     
     pillars: [
       {
         id: 'study-kim-jung',
         icon: ShieldCheck,
-        title: 'Efficacy in Adult ADHD (Kim & Jung, 2025)',
-        desc: 'In this new systematic review (2025), researchers confirm that mindfulness-based interventions (MBIs) produce statistically significant improvements in core ADHD symptoms and overall functioning in adults. This validates the use of Sanctuary as a clinically effective intervention for attention management.',
+        title: 'Mindfulness in Adult ADHD (Kim & Jung, 2025)',
+        desc: 'A systematic review and meta-analysis (2025): mindfulness-based interventions for adults with ADHD were associated with improvements in core symptoms and in functioning. The app is not a treatment; it is a self-regulation tool that follows this direction of research.',
         citation: 'Kim & Jung (2025). Medicine. Doi: 10.1097/md.0000000000044308'
       },
       {
         id: 'study-calderone',
         icon: ShieldCheck,
         title: 'Neurobiology of Mindfulness (Calderone et al., 2024)',
-        desc: 'This comprehensive 2024 systematic review synthesizes clinical neuroimaging findings, confirming that mindfulness induces measurable structural and functional neuroplastic changes. It details thickening in the prefrontal cortex (attention regulation), decreased amygdala volume (stress and fear response reduction), and enhanced insular connectivity (interoception), providing ultimate scientific validation for our Sanctuary and Fourfold Axis practices.',
+        desc: 'A systematic review (2024) of neuroimaging findings: mindfulness practice is associated with measurable structural and functional changes in the brain, in areas linked with the regulation of attention, stress and body awareness. That these change with repetition rests on neuroplasticity.',
         citation: 'Calderone et al. (2024). Biomedicines. Doi: 10.3390/biomedicines12112613'
       },
       {
         id: 'study-farb',
         icon: Brain,
-        title: 'Silencing the DMN (Farb et al., 2007)',
-        desc: 'In ADHD or highly masked brains, the Default Mode Network (DMN - the network behind rumination, mind-wandering, and self-criticism) is often hyperactive. Farb\'s landmark fMRI study demonstrated that shifting to direct somatic pathways (Experiential Focus) silences the DMN, offering immediate neural relief.',
+        title: 'Experiential Attention & the DMN (Farb et al., 2007)',
+        desc: 'The Default Mode Network (DMN) is associated with mind-wandering, rumination and self-criticism. Farb and colleagues showed that shifting from "narrative" to direct, experiential attention (what am I feeling now) is linked with reduced DMN activity. Labelling and returning to sensation are exactly this shift.',
         citation: 'Farb et al. (2007). Social Cognitive and Affective Neuroscience. Doi: 10.1093/scan/nsm030'
       },
       {
         id: 'study-brewer',
         icon: Brain,
         title: 'DMN Connectivity & Meditation (Brewer et al., 2011)',
-        desc: 'Brewer\'s landmark neuroimaging study showed that meditation significantly alters the activation and functional connectivity of the Default Mode Network (DMN). This decreases unconscious mind-wandering and redirects active cognitive resources to gentle attention monitoring.',
+        desc: 'Brewer\'s neuroimaging study found that experienced meditators show lower activity and different connectivity in the DMN during meditation. In experience, this corresponds to less rumination and less inner chatter.',
         citation: 'Brewer et al. (2011). PNAS. Doi: 10.1073/pnas.1112029108'
       },
       {
         id: 'study-porges',
         icon: Waves,
-        title: 'Polyvagal Theory & Somatic Safety (Porges, 1995)',
-        desc: 'The nervous system cannot integrate training while in threat states. By utilizing targeted somatic tools like deep, extended exhales (Ventral Vagal activation) and slow swaying, we send physical safety signals directly to the brainstem, bypassing cognitive loops.',
+        title: 'Polyvagal Theory & Safety (Porges, 1995)',
+        desc: 'The slow, prolonged exhale activates the "ventral" side of the vagus nerve, which is associated with states of calm and safety. Polyvagal Theory is used here as a framework for understanding. You do not need to "convince" yourself that you are safe; in experience, the exhale sends the signal by itself.',
         citation: 'Stephen Porges, PhD (1995). Psychophysiology. Doi: 10.1111/j.1469-8986.1995.tb01213.x'
       },
       {
         id: 'study-corrigan',
         icon: Activity,
         title: 'Window of Tolerance & Self-Regulation (Corrigan et al., 2011)',
-        desc: 'According to the Window of Tolerance model, the autonomic nervous system operates optimally within a specific range of arousal. Outside this, it enters hyperarousal or hypoarousal. Our somatic practices act as self-regulation tools, restoring the system to balance when it falls out of the window due to emotional trauma or sensory overload.',
+        desc: 'According to the Window of Tolerance model, the nervous system works best within a range of arousal; outside it, it moves into hyperarousal or hypoarousal. The app\'s somatic practices are self-regulation tools for returning to that range, not trauma processing.',
         citation: 'Corrigan, Fisher & Nutt (2011). Journal of Psychopharmacology. Doi: 10.1177/0269881109354930'
       },
       {
         id: 'study-lane',
         icon: Activity,
-        title: 'Brainwave Entrainment (Oster 1973, Lane 1998)',
-        desc: 'The binaural auditory beats embedded in our Sanctuary and breathing sessions promote Neural Entrainment, actively syncing target brainwaves to reduce sensory overload. They act as an "acoustic weighted blanket" that calms the sympathetic nervous system.',
+        title: 'Binaural Beats (Lane et al., 1998)',
+        desc: 'Lane and colleagues found that binaural beats affected vigilance, performance and mood. In the app they are used as gentle sound support in the breathing exercises and the sound space, not as a treatment.',
         citation: 'Lane et al. (1998). Physiology & Behavior. Doi: 10.1016/S0031-9384(97)00436-8'
       },
       {
@@ -195,8 +195,8 @@ export const METHODOLOGY_DATA = {
       {
         id: 'study-zylowska',
         icon: CheckCircle,
-        title: 'Clinical ADHD Feasibility (Zylowska et al., 2008)',
-        desc: 'The only peer-reviewed 8-week mindfulness program designed specifically for ADHD — demonstrating key improvements in attention, cognitive inhibition, anxiety, and depressive symptoms.',
+        title: 'An 8-Week Programme for ADHD (Zylowska et al., 2008)',
+        desc: 'A feasibility study of an 8-week mindfulness programme designed specifically for adults and adolescents with ADHD. It found improvements in attention, cognitive inhibition, anxiety and depressive symptoms. It is a small, early study without a control group.',
         citation: 'Zylowska, L., Ackerman, D. L., Yang, M. H., Futrell, J. L., Horton, N. L., Hale, T. S., Pataki, C., & Smalley, S. L. (2008). Mindfulness meditation training in adults and adolescents with ADHD: A feasibility study. Journal of Attention Disorders, 11(6), 737–746. https://doi.org/10.1177/1087054707308502'
       },
       {
@@ -209,34 +209,34 @@ export const METHODOLOGY_DATA = {
       {
         id: 'study-ashinoff',
         icon: Sparkles,
-        title: 'Hyperfocus Frontier (Ashinoff & Abu-Akel, 2019)',
-        desc: 'This seminal review details hyperfocus as a state of intense cognitive absorption and sensory gating typical of ADHD & Autistic profiles. Rather than a deficit, it represents an all-or-nothing attentional lock, modulated via our Soft Gaze somatic protocols.',
+        title: 'Hyperfocus (Ashinoff & Abu-Akel, 2019)',
+        desc: 'A review that describes hyperfocus as a state of intense absorption, common in ADHD and autism: not simply a lack of attention, but "all or nothing" regulation. The method does not switch it off; it takes care of it, by opening the periphery.',
         citation: 'Ashinoff & Abu-Akel (2019). Psychological Research. Doi: 10.1007/s00426-019-01245-8'
       },
       {
         id: 'study-mackrous',
         icon: Brain,
-        title: 'Cerebellar Gravity Prediction (Mackrous et al., 2019)',
-        desc: 'This study demonstrates that the cerebellum dynamically computes and predicts gravity. Sanctuary and the Fourfold Axis leverage this primal neural computation, "anchoring" the brain in space and providing an immediate sense of safety to a hyper-aroused nervous system.',
+        title: 'Gravity & the Cerebellum (Mackrous et al., 2019)',
+        desc: 'The brain continually computes gravity and the body\'s relationship to the ground, with the cerebellum playing a central role in this computation. In practice, turning attention to gravity and the points of support gives the nervous system a steady, familiar reference: a sense of "here" that needs no thinking.',
         citation: 'Mackrous et al. (2019). Current Biology. Doi: 10.1016/j.cub.2019.07.006'
       },
       {
         id: 'study-vater',
         icon: Eye,
-        title: 'Peripheral Vision in Real-World Tasks (Vater et al., 2022)',
-        desc: 'Peripheral vision isn\'t just auxiliary. According to this systematic review, it is a fundamental brain mechanism for monitoring the environment and orienting the body. "Softening" the gaze acts as a neurological brake that reduces the feeling of being trapped in a hyper-aroused nervous system.',
+        title: 'Peripheral Vision (Vater et al., 2022)',
+        desc: 'A systematic review of peripheral vision in real-world tasks: it is not merely auxiliary, but a basic way in which we monitor the environment and orient ourselves. In experience, softening the gaze reduces the sense of being trapped.',
         citation: 'Vater et al. (2022). Psychonomic Bulletin & Review. Doi: 10.3758/s13423-022-02117-w'
       },
       {
         id: 'study-gibson',
         icon: Heart,
-        title: 'Ecological Space & Ground (James J. Gibson, 1979)',
-        desc: 'Gibson\'s ecological approach proves that the body and space function as an inseparable, dynamic system. Space perception is deeply grounded in the literal physical surface supporting the body, offering direct cues of physical safety (affordances).',
+        title: 'Ecological Perception & Ground (James J. Gibson, 1979)',
+        desc: 'Gibson\'s ecological approach describes perception as a relationship between body and environment: space is perceived through the ground that supports the body and the possibilities for action it offers (affordances).',
         citation: 'James J. Gibson (1979). Psychology Press. Doi: 10.4324/9781315740218'
       }
     ],
     
     quote: '\"Mindfulness for the neurodivergent brain is not about forcing mental control, but about gracefully offering your nervous system the somatic anchors it needs to feel safe.\"',
-    eeatBadge: '100% Evidence-Based • Peer-Reviewed Science'
+    eeatBadge: 'Grounded in Published Research • Peer-Reviewed'
   }
 };

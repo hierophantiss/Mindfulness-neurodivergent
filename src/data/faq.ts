@@ -21,7 +21,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'Πώς η γείωση βοηθά απέναντι στην αυτοκριτική;',
-        a: 'Το Default Mode Network — ο «αυτόματος πιλότος» — συνδέεται με νοητική περιπλάνηση, αυτοκριτική και επανάληψη παλιών ιστοριών. Κάθε φορά που νιώθεις τη βαρύτητα και τα πόδια σου στο πάτωμα, επαναφέρεις τη σωματική αίσθηση και ενεργοποιείς το ιδιοδεκτικό σου κέντρο. Αν και το DMN δεν παύει οριστικά μόνο με τη βαρύτητα – χρειάζεται υπερ-εστίαση και ανοιχτή επίγνωση βαθύτερα – η γείωση είναι το άμεσο άγκιστρο που μας συνδέει ξανά με το Τώρα, σπάζοντας τον φαύλο κύκλο της σκέψης.',
+        a: 'Το Default Mode Network — ο «αυτόματος πιλότος» — συνδέεται με νοητική περιπλάνηση, αυτοκριτική και επανάληψη παλιών ιστοριών. Κάθε φορά που νιώθεις τη βαρύτητα και τα πόδια σου στο πάτωμα, η προσοχή περνά από την αφήγηση στην άμεση αίσθηση. Αυτή η στροφή σχετίζεται με μειωμένη δραστηριότητα του DMN (Farb et al., 2007). Η γείωση δεν σβήνει τον αυτόματο πιλότο μια για πάντα· είναι το άμεσο άγκιστρο που σε φέρνει ξανά στο τώρα, κάθε φορά.',
         tags: ['body', 'grounding', 'dmn', 'self-criticism', 'neuroscience'],
         depth: 2,
         relatedConcept: 'dmn'
@@ -44,7 +44,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'Τι ρόλο παίζει η ιδιοδεκτικότητα;',
-        a: 'Η ιδιοδεκτικότητα (proprioception) είναι η αίσθηση της θέσης του σώματος στον χώρο. Όταν νιώθεις τη βαρύτητα, ενεργοποιείς το ιδιοδεκτικό σύστημα. Αυτή η αίσθηση ανταγωνίζεται το DMN (τον αυτόματο πιλότο) και φέρνει τον νου στο «εδώ» χωρίς προσπάθεια.',
+        a: 'Η ιδιοδεκτικότητα (proprioception) είναι η αίσθηση της θέσης του σώματος στον χώρο. Όταν νιώθεις τη βαρύτητα, ενεργοποιείς το ιδιοδεκτικό σύστημα. Στην εμπειρία, αυτή η αίσθηση φέρνει τον νου στο «εδώ» χωρίς προσπάθεια.',
         tags: ['body', 'proprioception', 'neuroscience'],
         depth: 3,
         relatedConcept: 'proprioception'
@@ -75,7 +75,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'How does grounding help against self-criticism?',
-        a: 'The Default Mode Network — the "autopilot" — is associated with mental wandering, self-criticism, and replaying old stories. Every time you feel gravity and your feet on the floor, you restore your physical sensation and activate your proprioceptive center. Although the DMN doesn\'t permanently stop with just gravity—that requires hyperfocus and open awareness deeper down—grounding acts as the crucial first anchor that reconnects us to the Now, breaking the vicious cycle of thought.',
+        a: 'The Default Mode Network — the "autopilot" — is associated with mental wandering, self-criticism, and replaying old stories. Every time you feel gravity and your feet on the floor, attention moves from narrative to direct sensation. That shift is associated with reduced DMN activity (Farb et al., 2007). Grounding does not switch the autopilot off for good; it is the immediate anchor that brings you back to now, each time.',
         tags: ['body', 'grounding', 'dmn', 'self-criticism', 'neuroscience'],
         depth: 2,
         relatedConcept: 'dmn'
@@ -98,7 +98,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'What role does proprioception play?',
-        a: 'Proprioception is the sense of your body\'s position in space. When you feel gravity, you activate the proprioceptive system. This sensation competes with the DMN (the autopilot) and brings the mind to "here" without effort.',
+        a: 'Proprioception is the sense of your body\'s position in space. When you feel gravity, you activate the proprioceptive system. In experience, this sensation brings the mind to "here" without effort.',
         tags: ['body', 'proprioception', 'neuroscience'],
         depth: 3,
         relatedConcept: 'proprioception'
@@ -620,7 +620,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
     el: [
       {
         q: 'Τι λέει η νευροεπιστήμη για αυτή τη μέθοδο;',
-        a: '• Ο εγκέφαλος υπολογίζει διαρκώς τη βαρύτητα, με κεντρικό ρόλο της παρεγκεφαλίδας — Mackrous et al. (2019).\n• Η αργή εκπνοή ενεργοποιεί το vagus nerve — Gerritsen & Band (2018).\n• Η ενσυνειδητότητα μειώνει τη δραστηριότητα του DMN — Brewer et al. (2011) PNAS.\n• 8 εβδομάδες πρακτικής αλλάζουν μετρήσιμα τη δομή του εγκεφάλου — Hölzel et al. (2011).\n• Η εστιασμένη προσοχή εμπλέκει τον προμετωπιαίο φλοιό, κεντρικό για την αυτορρύθμιση.',
+        a: '• Ο εγκέφαλος υπολογίζει διαρκώς τη βαρύτητα, με κεντρικό ρόλο της παρεγκεφαλίδας — Mackrous et al. (2019).\n• Η αργή εκπνοή ενεργοποιεί το vagus nerve — Gerritsen & Band (2018).\n• Οι έμπειροι διαλογιστές έχουν χαμηλότερη δραστηριότητα στο DMN — Brewer et al. (2011) PNAS.\n• 8 εβδομάδες πρακτικής αλλάζουν μετρήσιμα τη δομή του εγκεφάλου — Hölzel et al. (2011).\n• Η εστιασμένη προσοχή εμπλέκει τον προμετωπιαίο φλοιό, κεντρικό για την αυτορρύθμιση.',
         tags: ['science', 'neuroscience', 'evidence', 'references'],
         depth: 3
       },
@@ -641,7 +641,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
     en: [
       {
         q: 'What does neuroscience say about this method?',
-        a: '• The brain continually computes gravity, with the cerebellum playing a central role — Mackrous et al. (2019).\n• Slow exhale activates the vagus nerve — Gerritsen & Band (2018).\n• Mindfulness reduces DMN activity — Brewer et al. (2011) PNAS.\n• 8 weeks of practice measurably change brain structure — Hölzel et al. (2011).\n• Focused attention engages the prefrontal cortex, central to self-regulation.',
+        a: '• The brain continually computes gravity, with the cerebellum playing a central role — Mackrous et al. (2019).\n• Slow exhale activates the vagus nerve — Gerritsen & Band (2018).\n• Experienced meditators show lower DMN activity — Brewer et al. (2011) PNAS.\n• 8 weeks of practice measurably change brain structure — Hölzel et al. (2011).\n• Focused attention engages the prefrontal cortex, central to self-regulation.',
         tags: ['science', 'neuroscience', 'evidence', 'references'],
         depth: 3
       },
