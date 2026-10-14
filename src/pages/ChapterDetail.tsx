@@ -1,5 +1,5 @@
 import { useAccessibility } from '../hooks/useAccessibility';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { CHAPTERS_DATA } from '../data/chapters';
 import { CHAPTER_TAKEAWAYS, CHAPTER_MICRO_CAT } from '../data/takeaways';
@@ -12,6 +12,40 @@ import { useAudioMixer } from '../contexts/AudioContext';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
 import InteractiveRenderer from '../components/InteractiveRenderer';
+import ChapterReaderBar from '../components/ChapterReaderBar';
+import { buildChapterSegments } from '../lib/chapterReading';
+import { useSpeechReader, loadReaderSettings, saveReaderSettings, pickVoice, type ReaderSettings } from '../hooks/useSpeechReader';
+
+const READER_POS_KEY = 'n_mindfulness_reader_pos';
+
+function readSavedPositions(): Record<string, string> {
+  try {
+    return JSON.parse(localStorage.getItem(READER_POS_KEY) || '{}') || {};
+  } catch {
+    return {};
+  }
+}
+
+function writeSavedPosition(id: string, key: string | null) {
+  try {
+    const all = readSavedPositions();
+    if (key) all[id] = key;
+    else delete all[id];
+    localStorage.setItem(READER_POS_KEY, JSON.stringify(all));
+  } catch {
+    /* storage unavailable */
+  }
+}
+
+type ReadState = 'active' | 'dim' | undefined;
+
+/** Highlight for the text being read: the current piece lights up, the rest steps back. */
+const readClass = (state: ReadState) =>
+  cn(
+    'rounded-2xl -mx-3 px-3 -my-2 py-2 transition-[opacity,background-color,box-shadow] duration-500',
+    state === 'active' && 'bg-teal-400/[0.06] shadow-[inset_0_0_0_1px_rgba(45,212,191,0.15)]',
+    state === 'dim' && 'opacity-45'
+  );
 
 import { ConceptInfoIcon, ConceptModal } from '../components/ConceptInfoOverlay';
 
@@ -138,7 +172,7 @@ const ConceptAnnotatedText = ({ text }: { text: string }) => {
   );
 };
 
-const ZenParagraph = ({ text, index }: { text: string, index: number }) => {
+const ZenParagraph = ({ text, index, readKey, readState }: { text: string, index: number, readKey?: string, readState?: ReadState }) => {
     const { reduceMotion } = useAccessibility();
   return (
     <motion.div
@@ -149,7 +183,8 @@ const ZenParagraph = ({ text, index }: { text: string, index: number }) => {
       className="relative"
     >
       <div 
-        className="font-sans font-light text-white/80 leading-loose whitespace-pre-line"
+        data-read-key={readKey}
+        className={cn("font-sans font-light text-white/80 leading-loose whitespace-pre-line", readClass(readState))}
       >
         <ConceptAnnotatedText text={text} />
       </div>
@@ -212,6 +247,71 @@ export default function ChapterDetail() {
     });
   }
 
+  // ── Read aloud ────────────────────────────────────────────────
+  const [readerSettings, setReaderSettings] = useState<ReaderSettings>(loadReaderSettings);
+  const takeaways = chapter ? CHAPTER_TAKEAWAYS[currentLang][chapter.num] : undefined;
+  const segments = useMemo(
+    () => (chapter ? buildChapterSegments(chapter, takeaways, currentLang) : []),
+    [chapter, takeaways, currentLang]
+  );
+  const reader = useSpeechReader(segments, currentLang, readerSettings);
+  const readerActive = reader.status !== 'idle';
+  const activeSeg = readerActive ? segments[reader.index] : undefined;
+  const posId = chapter ? `${currentLang}-${chapter.num}` : '';
+  const [savedKey, setSavedKey] = useState<string | undefined>(() => readSavedPositions()[posId]);
+  const lastIndexRef = useRef(0);
+
+  const rs = (key: string): ReadState =>
+    !readerActive ? undefined : activeSeg?.key === key ? 'active' : 'dim';
+
+  const updateReaderSettings = (s: ReaderSettings) => {
+    setReaderSettings(s);
+    saveReaderSettings(s);
+  };
+
+  // Keep the page in step with the reading, and remember where the listener is.
+  useEffect(() => {
+    if (!activeSeg) return;
+    lastIndexRef.current = reader.index;
+    if (activeSeg.page !== page) {
+      setDirection(activeSeg.page > page ? 1 : -1);
+      setPage(activeSeg.page);
+      setVisibleParagraphs(1);
+    }
+    writeSavedPosition(posId, activeSeg.key);
+    setSavedKey(activeSeg.key);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeSeg?.key]);
+
+  // Reaching the end clears the saved place; closing the player keeps it.
+  useEffect(() => {
+    if (reader.status === 'idle' && lastIndexRef.current >= segments.length - 1 && segments.length) {
+      writeSavedPosition(posId, null);
+      setSavedKey(undefined);
+      lastIndexRef.current = 0;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reader.status]);
+
+  // Bring the text being read into view (after the page transition, if any).
+  useEffect(() => {
+    if (!activeSeg || !readerSettings.follow) return;
+    let tries = 0;
+    let timer = 0;
+    const find = () => {
+      const el = document.querySelector<HTMLElement>(`[data-read-key="${activeSeg.key}"]`);
+      if (el) el.scrollIntoView({ block: 'center', behavior: reduceMotion ? 'auto' : 'smooth' });
+      else if (tries++ < 8) timer = window.setTimeout(find, 120);
+    };
+    timer = window.setTimeout(find, 80);
+    return () => window.clearTimeout(timer);
+  }, [activeSeg?.key, readerSettings.follow, reduceMotion]);
+
+  const firstSegmentOfPage = (pg: number) => {
+    const i = segments.findIndex((sg) => sg.page >= pg);
+    return i === -1 ? 0 : i;
+  };
+
   if (!chapter) {
     return <div className="p-8 text-center text-white/40">{language === 'el' ? 'Κεφάλαιο δεν βρέθηκε.' : 'Chapter not found.'}</div>;
   }
@@ -222,11 +322,13 @@ export default function ChapterDetail() {
 
   const handleNext = () => {
     if (page < pages.length - 1) {
+      if (readerActive) reader.jump(firstSegmentOfPage(page + 1));
       setDirection(1);
       setPage(p => p + 1);
       setVisibleParagraphs(1);
       scrollToTop();
     } else {
+      reader.stop();
       updateChapterProgress(chapter.num, 1);
       markChapterComplete(chapter.num);
       triggerReward('program');
@@ -236,6 +338,7 @@ export default function ChapterDetail() {
 
   const handlePrev = () => {
     if (page > 0) {
+      if (readerActive) reader.jump(firstSegmentOfPage(page - 1));
       setDirection(-1);
       setPage(p => p - 1);
       setVisibleParagraphs(1);
@@ -352,12 +455,14 @@ export default function ChapterDetail() {
                   >
                     {chapter.icon}
                   </div>
-                  <h1 className="text-4xl md:text-6xl font-serif text-white/90 italic leading-tight tracking-tight px-4">
-                    {chapter.title}
-                  </h1>
-                  <p className="text-lg md:text-xl text-white/50 leading-relaxed font-sans px-6 font-light">
-                    {chapter.sub}
-                  </p>
+                  <div data-read-key="intro-title" className={readClass(rs('intro-title'))}>
+                    <h1 className="text-4xl md:text-6xl font-serif text-white/90 italic leading-tight tracking-tight px-4">
+                      {chapter.title}
+                    </h1>
+                    <p className="text-lg md:text-xl text-white/50 leading-relaxed font-sans px-6 font-light mt-6">
+                      {chapter.sub}
+                    </p>
+                  </div>
                 </div>
 
                 <div className="py-6 space-y-6 relative w-full text-left">
@@ -365,14 +470,14 @@ export default function ChapterDetail() {
                     <span className="text-[10px] font-bold tracking-[0.3em] text-teal-400/60 uppercase font-sans">
                       {language === 'el' ? 'ΣΥΝΟΨΗ' : 'SUMMARY'}
                     </span>
-                    <p className="text-2xl md:text-3xl text-white/90 font-serif italic leading-[1.6] tracking-tight">
+                    <p data-read-key="intro-summary" className={cn("text-2xl md:text-3xl text-white/90 font-serif italic leading-[1.6] tracking-tight", readClass(rs('intro-summary')))}>
                       {chapter.summary}
                     </p>
                   </div>
                   
                   {chapter.tldr && (
                     <div className="pt-8 border-t border-white/5 text-center text-white/40 text-sm md:text-base font-sans leading-relaxed block px-8">
-                      «{chapter.tldr}»
+                      <div data-read-key="intro-tldr" className={readClass(rs('intro-tldr'))}>«{chapter.tldr}»</div>
                     </div>
                   )}
                 </div>
@@ -385,14 +490,17 @@ export default function ChapterDetail() {
                   <span className="text-[10px] font-bold tracking-[0.3em] text-teal-400/60 uppercase font-sans block">
                     {language === 'el' ? 'ΘΕΩΡΙΑ' : 'THEORY'}
                   </span>
-                  <h2 className="text-3xl md:text-4xl font-serif text-white/90 italic leading-snug tracking-tight px-2">
+                  <h2
+                    data-read-key={`s${curPage.index}-title`}
+                    className={cn("text-3xl md:text-4xl font-serif text-white/90 italic leading-snug tracking-tight px-2", readClass(rs(`s${curPage.index}-title`)))}
+                  >
                     {curPage.section.title}
                   </h2>
                 </header>
 
                 <div className="space-y-8 text-lg md:text-xl text-center font-light px-2">
                   {curPage.section.paragraphs.map((par: string, p_idx: number) => (
-                    <ZenParagraph key={p_idx} text={par} index={p_idx} />
+                    <ZenParagraph key={p_idx} text={par} index={p_idx} readKey={`s${curPage.index}-p${p_idx}`} readState={rs(`s${curPage.index}-p${p_idx}`)} />
                   ))}
                   
                   {curPage.section.actionLink && (
@@ -434,7 +542,14 @@ export default function ChapterDetail() {
                       )}
 
                       {/* Key Takeaways for this section or end of sections */}
-                      <div className="border border-white/[0.03] bg-white/[0.01] rounded-3xl p-8 md:p-10 space-y-8 mt-16">
+                      <div
+                        data-read-key={`s${curPage.index}-key`}
+                        className={cn(
+                          "border border-white/[0.03] bg-white/[0.01] rounded-3xl p-8 md:p-10 space-y-8 mt-16 transition-[opacity,background-color,box-shadow] duration-500",
+                          rs(`s${curPage.index}-key`) === 'active' && 'bg-teal-400/[0.05] shadow-[inset_0_0_0_1px_rgba(45,212,191,0.15)]',
+                          readerActive && activeSeg?.key !== `s${curPage.index}-key` && 'opacity-45'
+                        )}
+                      >
                         <div className="flex items-center gap-3 justify-center text-center">
                           <span className="text-[10px] font-bold tracking-[0.3em] text-white/30 uppercase font-sans">
                             {language === 'el' ? 'ΒΑΣΙΚΑ ΣΗΜΕΙΑ' : 'KEY POINTS'}
@@ -464,11 +579,11 @@ export default function ChapterDetail() {
                           {language === 'el' ? 'ΠΡΑΚΤΙΚΗ ΑΣΚΗΣΗ' : 'PRACTICE EXERCISE'}
                         </span>
                       </div>
-                      <h2 className="text-3xl font-serif text-white/90 italic leading-tight tracking-tight">{chapter.exercise.title}</h2>
+                      <h2 data-read-key="ex-title" className={cn("text-3xl font-serif text-white/90 italic leading-tight tracking-tight", readClass(rs('ex-title')))}>{chapter.exercise.title}</h2>
                     </header>
                     <ul className="space-y-8 pl-4">
                       {chapter.exercise.steps.map((step, idx) => (
-                        <li key={idx} className="flex gap-6 items-start group">
+                        <li key={idx} data-read-key={`ex-step${idx}`} className={cn("flex gap-6 items-start group", readClass(rs(`ex-step${idx}`)))}>
                           <span className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-[10px] font-sans font-bold text-white/40 shrink-0">
                             {idx + 1}
                           </span>
@@ -509,14 +624,28 @@ export default function ChapterDetail() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {chapter.insight && (
-                    <div className="border border-teal-500/10 p-8 rounded-3xl space-y-6 relative group hover:border-teal-500/20 transition-all">
+                    <div
+                      data-read-key="insight"
+                      className={cn(
+                        "border border-teal-500/10 p-8 rounded-3xl space-y-6 relative group hover:border-teal-500/20 transition-all duration-500",
+                        rs('insight') === 'active' && 'bg-teal-400/[0.05] border-teal-400/25',
+                        rs('insight') === 'dim' && 'opacity-45'
+                      )}
+                    >
                       <div className="absolute inset-0 bg-gradient-to-br from-teal-500/[0.02] to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl"></div>
                       <span className="text-[9px] font-bold text-teal-400/60 uppercase tracking-widest relative z-10 block font-sans">{language === 'el' ? 'ΕΠΙΓΝΩΣΗ' : 'INSIGHT'}</span>
                       <p className="text-lg md:text-xl text-white/80 font-serif italic leading-relaxed relative z-10">"{chapter.insight}"</p>
                     </div>
                   )}
                   {chapter.reflection && (
-                    <div className="border border-white/5 bg-white/[0.02] p-8 rounded-3xl space-y-6 relative group hover:bg-white/[0.04] transition-all">
+                    <div
+                      data-read-key="reflection"
+                      className={cn(
+                        "border border-white/5 bg-white/[0.02] p-8 rounded-3xl space-y-6 relative group hover:bg-white/[0.04] transition-all duration-500",
+                        rs('reflection') === 'active' && 'bg-teal-400/[0.05] border-teal-400/25',
+                        rs('reflection') === 'dim' && 'opacity-45'
+                      )}
+                    >
                       <span className="text-[9px] font-bold text-white/40 uppercase tracking-widest relative z-10 block font-sans">{language === 'el' ? 'ΑΝΑΣΤΟΧΑΣΜΟΣ' : 'REFLECTION'}</span>
                       <p className="text-lg md:text-xl text-white/80 font-sans font-light leading-relaxed relative z-10">{chapter.reflection}</p>
                     </div>
@@ -567,6 +696,31 @@ export default function ChapterDetail() {
           </motion.div>
         </AnimatePresence>
       </main>
+
+      {reader.isSupported && segments.length > 0 && (
+        <ChapterReaderBar
+          lang={currentLang}
+          status={reader.status}
+          index={reader.index}
+          total={segments.length}
+          kind={activeSeg?.kind}
+          silence={reader.silence}
+          hasResume={!!savedKey && segments.some((sg) => sg.key === savedKey) && segments[0].key !== savedKey}
+          noVoice={reader.voicesLoaded && reader.voices.length === 0}
+          voices={reader.voices}
+          voiceName={pickVoice(currentLang, reader.voices, currentLang === 'el' ? readerSettings.voiceEl : readerSettings.voiceEn)?.name}
+          settings={readerSettings}
+          reduceMotion={reduceMotion}
+          onStart={() => reader.playFrom(firstSegmentOfPage(page))}
+          onResumeSaved={() => reader.playFrom(Math.max(0, segments.findIndex((sg) => sg.key === savedKey)))}
+          onPause={reader.pause}
+          onResume={reader.resume}
+          onPrev={() => reader.jump(Math.max(0, reader.index - 1))}
+          onNext={() => reader.jump(Math.min(segments.length - 1, reader.index + 1))}
+          onStop={reader.stop}
+          onSettings={updateReaderSettings}
+        />
+      )}
 
       <ConceptModal 
         isOpen={!!activeConceptId} 
