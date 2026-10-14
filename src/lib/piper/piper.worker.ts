@@ -20,6 +20,8 @@ interface ModelConfig {
   espeak: { voice: string };
   inference: { noise_scale: number; length_scale: number; noise_w: number };
   speaker_id_map?: Record<string, number>;
+  /** Size of the model's phoneme table; ids at or above it would crash the model. */
+  num_symbols?: number;
 }
 
 const CACHE = PIPER_CACHE;
@@ -125,7 +127,12 @@ async function ensureVoice(lang: Lang) {
   const model = new Uint8Array(await modelRes.arrayBuffer());
   if (session) await session.ort.release();
   session = null;
-  const s = await ort.InferenceSession.create(model, { executionProviders: ['wasm'] });
+  const s = await ort.InferenceSession.create(model, {
+    executionProviders: ['wasm'],
+    // Phones give WebAssembly little memory: do not keep large reusable buffers between sentences.
+    enableCpuMemArena: false,
+    enableMemPattern: false,
+  });
   session = { lang, ort: s, config };
   return session;
 }
@@ -222,7 +229,10 @@ const stage = async <T,>(n: number, f: () => Promise<T>) => {
 
 async function synth(lang: Lang, text: string) {
   const s = await stage(1, () => ensureVoice(lang));
-  const ids = await stage(2, () => phonemize(text, s.config.espeak.voice));
+  const raw = await stage(2, () => phonemize(text, s.config.espeak.voice));
+  const max = s.config.num_symbols || Infinity;
+  const ids = raw.filter((id) => Number.isInteger(id) && id >= 0 && id < max);
+  if (ids.length < 3) throw new StageError(2, new Error('no usable phonemes'));
   const { noise_scale, length_scale, noise_w } = s.config.inference;
   const feeds: Record<string, ort.Tensor> = {
     input: new ort.Tensor('int64', BigInt64Array.from(ids.map(BigInt)), [1, ids.length]),
@@ -232,7 +242,19 @@ async function synth(lang: Lang, text: string) {
   if (s.config.speaker_id_map && Object.keys(s.config.speaker_id_map).length) {
     feeds.sid = new ort.Tensor('int64', BigInt64Array.from([0n]), [1]);
   }
-  const out = await stage(3, () => s.ort.run(feeds));
+  let out: ort.InferenceSession.OnnxValueMapType;
+  try {
+    out = await s.ort.run(feeds);
+  } catch (e) {
+    // The model may be left unusable (e.g. out of memory): load it fresh next time.
+    try {
+      await s.ort.release();
+    } catch {
+      /* already broken */
+    }
+    session = null;
+    throw new StageError(3, `${(e as Error)?.message || e} [phonemes ${ids.length}, chars ${text.length}]`);
+  }
   const wav = toWav(out.output.data as Float32Array, s.config.audio.sample_rate);
   out.output.dispose?.();
   return wav;

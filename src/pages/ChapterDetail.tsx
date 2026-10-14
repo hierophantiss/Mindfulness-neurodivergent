@@ -713,6 +713,7 @@ export default function ChapterDetail() {
           silence={reader.silence}
           waiting={reader.waiting}
           errorCode={reader.errorCode}
+          errorDetail={reader.errorDetail}
           piper={piper}
           hasResume={!!savedKey && segments.some((sg) => sg.key === savedKey) && segments[0].key !== savedKey}
           settings={readerSettings}

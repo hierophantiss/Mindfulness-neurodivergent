@@ -80,6 +80,8 @@ export function useSpeechReader(
   const [waiting, setWaiting] = useState(false);
   /** Short code of the last failure, shown with a "try again"; cleared when reading resumes. */
   const [errorCode, setErrorCode] = useState<number | null>(null);
+  /** The technical message behind the code, shown only if the listener taps the code. */
+  const [errorDetail, setErrorDetail] = useState('');
 
   useEffect(() => {
     setPiperWaitingListener(setWaiting);
@@ -162,6 +164,7 @@ export function useSpeechReader(
           halt();
           setStatusBoth('paused');
           setErrorCode(e instanceof PiperError ? e.stage : 0);
+          setErrorDetail(`${String((e as Error)?.message || e)} | «${sentences[s].slice(0, 60)}»`);
           return;
         }
         if (token !== tokenRef.current) return;
@@ -284,6 +287,7 @@ export function useSpeechReader(
     silence,
     waiting: waiting && status === 'playing',
     errorCode,
+    errorDetail,
     playFrom,
     pause,
     resume,

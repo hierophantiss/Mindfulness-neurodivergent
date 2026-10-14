@@ -79,6 +79,7 @@ interface Props {
   silence: { until: number; ms: number } | null;
   waiting: boolean;
   errorCode: number | null;
+  errorDetail?: string;
   hasResume: boolean;
   settings: ReaderSettings;
   reduceMotion: boolean;
@@ -117,6 +118,7 @@ export default function ChapterReaderBar(p: Props) {
   const mb = PIPER_VOICES[p.lang].downloadMb;
   const [open, setOpen] = useState(false);
   const [getting, setGetting] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   /** What the tap on "Listen" asked for; it runs by itself once the voice is on the device. */
   const pendingStart = useRef<null | (() => void)>(null);
   const active = p.status !== 'idle';
@@ -288,9 +290,17 @@ export default function ChapterReaderBar(p: Props) {
           </div>
 
           {p.errorCode !== null && (
-            <p className="px-4 pt-3 text-xs text-amber-200/70 font-sans leading-relaxed" role="status">
-              {t.stalled} <span className="text-white/30">({t.code} {p.errorCode})</span>
-            </p>
+            <div className="px-4 pt-3 space-y-1" role="status">
+              <p className="text-xs text-amber-200/70 font-sans leading-relaxed">
+                {t.stalled}{' '}
+                <button type="button" onClick={() => setShowDetail((v) => !v)} className="text-white/30 underline-offset-2 hover:underline">
+                  ({t.code} {p.errorCode})
+                </button>
+              </p>
+              {showDetail && p.errorDetail && (
+                <p className="text-[10px] text-white/35 font-mono break-words select-all">{p.errorDetail}</p>
+              )}
+            </div>
           )}
 
           <div className="flex items-center gap-0.5 px-1.5 py-2">
