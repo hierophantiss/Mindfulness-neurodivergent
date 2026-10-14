@@ -741,7 +741,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
         {
           "title": "1. Body / Base",
           "paragraphs": [
-            "• <strong>Observation:</strong> I stand or sit. I feel my weight. I notice tensions (e.g. the jaw).\n• <strong>Tool:</strong> I imagine an axis from my head down to the earth. I soften my jaw and shoulders{{grounding}}.",
+            "• <strong>Observation:</strong> I stand or sit. I feel my weight. I notice tensions (e.g. the jaw).\n• <strong>Tool:</strong> I feel the axis: from the soles, up through the spine, to the crown of the head. I soften my jaw and shoulders{{grounding}}.",
             "<strong>What did I feel in my body just now?</strong>"
           ]
         },
@@ -1657,7 +1657,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
         {
           "title": "1. Σώμα / Βάση",
           "paragraphs": [
-            "• <strong>Παρατήρηση:</strong> Στέκομαι ή κάθομαι. Νιώθω το βάρος μου. Παρατηρώ εντάσεις (π.χ. σαγόνι).\n• <strong>Εργαλείο:</strong> Φαντάζομαι έναν άξονα από το κεφάλι μέχρι τη γη. Χαλαρώνω σαγόνι και ώμους{{grounding}}.",
+            "• <strong>Παρατήρηση:</strong> Στέκομαι ή κάθομαι. Νιώθω το βάρος μου. Παρατηρώ εντάσεις (π.χ. σαγόνι).\n• <strong>Εργαλείο:</strong> Νιώθω τον άξονα: από τα πέλματα, μέσα από τη σπονδυλική, ως την κορυφή του κεφαλιού. Χαλαρώνω σαγόνι και ώμους{{grounding}}.",
             "<strong>Τι ένιωσα στο σώμα μου τώρα;</strong>"
           ]
         },

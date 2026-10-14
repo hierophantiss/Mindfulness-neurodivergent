@@ -428,8 +428,8 @@ export default function ChapterDetail() {
           )}
         >
           <Music size={14} className={masterPlaying ? "animate-pulse" : ""} />
-          <span className="hidden sm:inline">{language === 'el' ? 'Ανάγνωση με Ήχο' : 'Ambient Reading'}</span>
-          <span className="sm:hidden">{language === 'el' ? 'Ήχος' : 'Audio'}</span>
+          <span className="hidden sm:inline">{language === 'el' ? 'Μουσική υπόκρουση' : 'Background music'}</span>
+          <span className="sm:hidden">{language === 'el' ? 'Μουσική' : 'Music'}</span>
         </button>
       </header>
 

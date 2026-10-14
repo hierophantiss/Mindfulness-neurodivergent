@@ -61,7 +61,7 @@ export const COURSE_EN: Record<number, any> = {
         "title": "Feet and Axis",
         "where": "Anywhere",
         "dur": "5 minutes",
-        "lesson": "<p>We join the sensation of the soles with the axis we learned on Day 2. Imagine that the axis begins at the soles and rises straight up.</p>",
+        "lesson": "<p>We join the sensation of the soles with the axis we learned on Day 2. Feel the weight settle into the soles, and from there the spine rising straight up.</p>",
         "exercise": {
           "title": "Connecting Feet and Axis:",
           "steps": [
@@ -576,7 +576,7 @@ export const COURSE_EN: Record<number, any> = {
         "title": "Visual Anchor",
         "where": "A quiet place",
         "dur": "5 minutes",
-        "lesson": "<p>If you imagine your visual field as a camera, today you focus the \"camera\" exactly at eye level. It is your anchor.</p>",
+        "lesson": "<p>Today your gaze rests exactly at eye level, like a lens settling on one point. It is your anchor.</p>",
         "exercise": {
           "title": "Anchor at the Eyes:",
           "steps": [
@@ -692,12 +692,12 @@ export const COURSE_EN: Record<number, any> = {
         "title": "Thoughts as Objects (Calm)",
         "where": "A quiet place",
         "dur": "10 minutes",
-        "lesson": "<p>Imagine your mind as a visual field. Thoughts are simply objects (like clouds or bubbles) that enter this field and pass through. This practice cultivates Calm — steady observation without being carried away.</p>",
+        "lesson": "<p>The mind is like a field. Thoughts are simply events that enter this field and pass through, like sounds that come and go. This practice cultivates Calm — steady observation without being carried away.</p>",
         "exercise": {
           "title": "Observing Thoughts:",
           "steps": [
             "Grounding, axis, rhythmic breath.",
-            "Close your eyes. Imagine the field of your mind.",
+            "Close your eyes or lower your gaze. Notice what appears: a thought, a sound, a sensation.",
             "A thought comes. See it as an object.",
             "Do not hold it. See it cross the field of observation and leave.",
             "You remain the steady observer."
@@ -1010,8 +1010,8 @@ export const COURSE_EN: Record<number, any> = {
           "title": "Space within the Body:",
           "steps": [
             "Take a small pause.",
-            "Can you imagine that your chest is full of empty space?",
-            "Imagine it as an empty, open vessel."
+            "Can you feel the space inside your chest?",
+            "Can you feel that this space is already there, without doing anything?"
           ]
         },
         "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",

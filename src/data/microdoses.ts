@@ -113,7 +113,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
     type: 'body',
     dur: { el: '15 δευτ.', en: '15 sec' },
     maxSeconds: 15,
-    desc: { el: 'Φαντάσου το σώμα σου να βυθίζεται 1 χιλιοστό μέσα στο έδαφος. Παράδοση.', en: 'Imagine your body sinking 1 millimeter into the ground. Surrender.' },
+    desc: { el: 'Άφησε το σώμα να γίνει λίγο πιο βαρύ, ένα χιλιοστό πιο κάτω, μέσα στο στήριγμα. Παράδοση.', en: 'Let the body grow a little heavier, one millimetre further into the support. Surrender.' },
     iconName: 'Anchor',
     link: '/practice/body/gravity-sink'
   },

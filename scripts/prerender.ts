@@ -887,7 +887,33 @@ async function run() {
     count++;
   }
 
-  console.log(`✅ Prerendered ${count} routes successfully.`);
+  // A real "not found" page. Cloudflare Pages serves a top-level 404.html with
+  // status 404 for any address that matches no file (no SPA catch-all in
+  // _redirects), so unknown URLs are no longer "soft 404s". The page still
+  // boots the app, which shows the same message in the visitor's language.
+  const notFound = baseHtml
+    .replace(/<title>[^<]*<\/title>/g, '')
+    .replace(/<meta name="description"[^>]*>/g, '')
+    .replace(/<meta name="keywords"[^>]*>/g, '')
+    .replace(/<meta name="robots"[^>]*>/g, '')
+    .replace(/<meta property="og:[^"]*"[^>]*>/g, '')
+    .replace(/<meta name="twitter:[^"]*"[^>]*>/g, '')
+    .replace(/<link rel="canonical"[^>]*>/g, '')
+    .replace(/<link rel="alternate"[^>]*>/g, '')
+    .replace('</head>', `  <title data-seo="prerender">Η σελίδα δεν βρέθηκε · Page not found</title>
+  <meta data-seo="prerender" name="robots" content="noindex, follow" />
+</head>`)
+    .replace(
+      /<div id="root"\s*\/?>(<\/div>)?/,
+      `<div id="root"><main style="max-width:36rem;margin:0 auto;padding:4rem 1.5rem;text-align:center">
+  <h1>Αυτή η σελίδα δεν υπάρχει</h1>
+  <p>Ίσως άλλαξε η διεύθυνση. <a href="/el">Στην αρχική</a> · <a href="/el/chapters">Στα κεφάλαια</a></p>
+  <p lang="en">This page does not exist. <a href="/en">Home</a> · <a href="/en/chapters">Chapters</a></p>
+</main></div>`
+    );
+  fs.writeFileSync(path.join(DIST_DIR, '404.html'), notFound, 'utf8');
+
+  console.log(`✅ Prerendered ${count} routes successfully (+ 404.html).`);
 }
 
 run().catch(err => {

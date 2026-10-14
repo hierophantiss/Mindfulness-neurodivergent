@@ -16,6 +16,7 @@ import { ActivityTrackerProvider } from './contexts/ActivityTrackerContext';
 const InteractiveBackground = React.lazy(() => import('./components/InteractiveBackground').then(m => ({ default: m.InteractiveBackground })));
 const Dashboard = React.lazy(() => import('./pages/Dashboard'));
 const Chapters = React.lazy(() => import('./pages/Chapters'));
+const NotFound = React.lazy(() => import('./pages/NotFound'));
 const ChapterDetail = React.lazy(() => import('./pages/ChapterDetail'));
 const Program = React.lazy(() => import('./pages/Program'));
 const ProgramWeek = React.lazy(() => import('./pages/ProgramWeek'));
@@ -105,7 +106,7 @@ function AppContent() {
           <Route path="sanctuary" element={<Sanctuary />} />
           <Route path="settings" element={<Settings />} />
           <Route path="faq" element={<Faq />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
         </Routes>
         </Suspense>

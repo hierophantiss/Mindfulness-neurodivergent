@@ -790,7 +790,7 @@ If you keep one thing from this chapter, keep these four words.
 **1. BODY / BASE**
 
 - *Observation:* I am standing / sitting. I feel my weight. I notice tensions (e.g., jaw).
-- *Tool:* I imagine an axis from the head to the ground. I relax jaw and shoulders.
+- *Tool:* I feel the axis: from the soles, up through the spine, to the crown of the head. I relax jaw and shoulders.
 - *What did I feel in my body just now?*
 
 **2. BREATH / RHYTHM**
@@ -825,8 +825,6 @@ If you keep one thing from this chapter, keep these four words.
 Before you begin the stages, remember: gentleness is not optional — it is the method itself. Every time you return without criticism, every time you accept distraction as part of the process — you practice kindness. Not as an idea, as an act.
 
 Harsh self-criticism appears to engage the same threat-response circuits as external danger. The gentle return settles them. This is the road: not by fighting autopilot, but by giving it room to settle.
-
-Treat yourself the way you would treat a friend who is struggling.
 
 ### Stage 1 — Feel the Earth (Grounding)
 
@@ -985,7 +983,7 @@ What I noticed today:
 
 The terms of the method, one line each, with where they first appear.
 
-**Axis** *(Ch. 1)* — The imagined vertical line that holds you upright without gripping. Structure without tension.
+**Axis** *(Ch. 1)* — The felt vertical line that holds you upright without gripping. Structure without tension.
 
 **Barometer** *(Ch. 8)* — The first, silent signs that precede a wave: jaw, breath, tolerance for sound.
 
