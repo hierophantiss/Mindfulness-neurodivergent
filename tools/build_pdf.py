@@ -181,6 +181,19 @@ def parse_body(lines, L, anchors=None):
             i += 1; continue
         if re.fullmatch(r'-{3,}', s):
             i += 1; continue
+        if s.startswith('|') and s.endswith('|'):
+            # Markdown table: header row, separator row, body rows.
+            rows = []
+            while i < n and lines[i].strip().startswith('|'):
+                r = lines[i].strip()
+                if not re.fullmatch(r'\|[\s:|-]+\|', r):
+                    rows.append([c.strip() for c in r.strip('|').split('|')])
+                i += 1
+            if rows:
+                head = ''.join(f'<th>{inline(c)[0]}</th>' for c in rows[0])
+                body = ''.join('<tr>' + ''.join(f'<td>{inline(c)[0]}</td>' for c in r) + '</tr>' for r in rows[1:])
+                out.append(f'<table class="mdtable"><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table>')
+            continue
         m = re.match(r'^(#{1,3})\s+(.*)$', s)
         if m:
             level = len(m.group(1)); htext = m.group(2).strip()
@@ -509,11 +522,16 @@ figcaption {{ font-size:9.5pt; font-style:italic; color:#5d7480; text-align:cent
 .callout.safety {{ background:#f3e9e4; border-left:3.5pt solid #a8624a; margin-top:1.2cm; }}
 .callout.safety p {{ text-align:left; }}
 
+table.mdtable {{ width:100%; border-collapse:collapse; margin:.5em 0 1.3em 0; font-size:10.3pt; line-height:1.45; }}
+table.mdtable th {{ background:#1f3a4d; color:#fff; text-align:left; font-weight:700; padding:.18cm .25cm; }}
+table.mdtable td {{ border-bottom:1px solid #d9d2bf; padding:.2cm .25cm; vertical-align:top; }}
+table.mdtable tr:nth-child(even) td {{ background:#f6f1e3; }}
 table.axistable {{ width:100%; border-collapse:separate; border-spacing:0 5px; margin:0 0 1.5em 0; }}
 table.axistable td {{ padding:.32cm .4cm; vertical-align:middle; }}
 td.axlabel {{ width:3.2cm; color:#fff; font-weight:800; letter-spacing:.5pt; text-align:center;
      border-radius:6px 0 0 6px; }}
 td.axdesc {{ border-radius:0 6px 6px 0; line-height:1.55; }}
+table.axistable tr, table.mdtable tr {{ break-inside:avoid; page-break-inside:avoid; }}
 .day {{ break-inside:avoid; margin:1.7em 0 .8em 0; padding-top:.35em; border-top:1.5pt solid #e0d3a8; }}
 .day-title {{ font-weight:800; color:#1f3a4d; font-size:13pt; }}
 .day-meta {{ font-style:italic; color:#2e7d80; font-size:10pt; margin-top:.15em; }}

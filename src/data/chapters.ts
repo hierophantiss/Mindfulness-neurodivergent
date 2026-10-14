@@ -234,7 +234,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
           ],
           "actionLink": {
             "url": "/practice/microdoses",
-            "label": "Attention micro-practices"
+            "label": "Attention microdoses"
           }
         },
         {
@@ -334,7 +334,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
           "title": "Short Moments, Many Times",
           "paragraphs": [
             "Awareness does not need duration. You do not need to \"stay\" in the open field for hours, or even for minutes. One moment of recognition is complete, however short; two seconds of open field are two whole seconds, not a failed version of ten minutes.",
-            "What seems to matter is not duration but repetition: many short moments, scattered through the day, build familiarity with the open more steadily than one long, effortful session. The micro-practices and the final weeks of the programme here, in the app, are built on this.",
+            "What seems to matter is not duration but repetition: many short moments, scattered through the day, build familiarity with the open more steadily than one long, effortful session. The microdoses and the final weeks of the programme here, in the app, are built on this.",
             "One condition, always — the golden rule of every exercise in this guide: <strong>opening is safe only on a grounded body.</strong>",
             "<strong>If at some point you feel yourself \"drifting away\"</strong> If, as you open, you feel disconnected or as if you are moving away from yourself, that is not the goal. Open your eyes, feel your soles on the ground and the weight of your body, say where you are right now. You come back to the earth. <strong>First the earth, then the sky.</strong>"
           ]
@@ -373,7 +373,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
           ],
           "actionLink": {
             "url": "/practice/microdoses",
-            "label": "Space micro-practices"
+            "label": "Space microdoses"
           }
         }
       ],
@@ -529,7 +529,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
           ],
           "actionLink": {
             "url": "/practice/microdoses",
-            "label": "Micro-practices for every axis"
+            "label": "Microdoses for every axis"
           }
         },
         {
