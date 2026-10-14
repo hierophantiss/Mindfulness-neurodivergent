@@ -16,6 +16,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     localStorage.removeItem('theme');
     document.body.classList.remove('light-theme');
     document.documentElement.classList.remove('light-theme');
+    document.documentElement.classList.add('dark');
   }, []);
 
   const toggleTheme = () => {}; // No-op

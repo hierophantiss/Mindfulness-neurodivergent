@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;550;600&display=swap');
 @import "tailwindcss";
 
+/* The app is always dark: dark: styles follow the .dark class on <html>,
+   not the phone's light/dark setting. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
