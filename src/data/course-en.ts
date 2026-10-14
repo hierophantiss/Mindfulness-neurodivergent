@@ -53,7 +53,7 @@ export const COURSE_EN: Record<number, any> = {
             "Continue your day."
           ]
         },
-        "breathing": "<strong>Breath (5-5 rhythm)</strong><p>**Optional:** You can begin 5-5 breathing (Inhale 5, Exhale 5) only if it feels comfortable.</p>",
+        "breathing": "<strong>Breath (5-5 rhythm)</strong><p><strong>Optional:</strong> You can begin 5-5 breathing (Inhale 5, Exhale 5) only if it feels comfortable.</p>",
         "reflection": "Did I feel more grounded when I noticed my soles?",
         "insight": "The ground is always there to support you."
       },
@@ -273,7 +273,7 @@ export const COURSE_EN: Record<number, any> = {
         "title": "Introduction to the Breath",
         "where": "Anywhere",
         "dur": "5 minutes",
-        "lesson": "<p>From here on, every day we remember the golden rule: **we begin with a short grounding for a few seconds** before any exercise.</p><p>Today we simply read the chapter on the breath. The breath is our anchor.</p>",
+        "lesson": "<p>From here on, every day we remember the golden rule: <strong>we begin with a short grounding for a few seconds</strong> before any exercise.</p><p>Today we simply read the chapter on the breath. The breath is our anchor.</p>",
         "exercise": {
           "title": "Observation without intervention:",
           "steps": [
@@ -460,7 +460,7 @@ export const COURSE_EN: Record<number, any> = {
         "title": "Sounding Breath (Chanting)",
         "where": "A quiet place",
         "dur": "5 minutes",
-        "lesson": "<p>Producing sound (like humming) creates a vibration that massages the vagus nerve, calming the body.</p><p>It does not need to have any religious tone. Today we will use a note (e.g., \"C\") or simply the letter \"A.\" If you have a mantra of your own from your tradition (optional), you may use it.</p><p>[Explore the \"Chanting & Resonance\" (Humming) practices](https://neurodivergent-mindfulness.org/practice?category=vocal)</p>",
+        "lesson": "<p>Producing sound (like humming) creates a vibration that massages the vagus nerve, calming the body.</p><p>It does not need to have any religious tone. Today we will use a note (e.g., \"C\") or simply the letter \"A.\" If you have a mantra of your own from your tradition (optional), you may use it.</p><p><a href=\"/practice?category=vocal\">Explore the \"Chanting & Resonance\" (Humming) practices</a></p>",
         "exercise": {
           "title": "Vibration with the Sound \"A\":",
           "steps": [
@@ -515,7 +515,7 @@ export const COURSE_EN: Record<number, any> = {
         "title": "Completion: Body, Breath & Kindness",
         "where": "Open space",
         "dur": "10 minutes",
-        "lesson": "<p>Today the second axis is completed. We have connected body, breath, movement, and kindness.</p><p>As we have said, the app contains a series of mindful movements, one for each axis, which you can combine freely after completing the weeks.</p><p>[Explore the \"Chanting & Resonance\" (Humming) practices](https://neurodivergent-mindfulness.org/practice?category=vocal)</p>",
+        "lesson": "<p>Today the second axis is completed. We have connected body, breath, movement, and kindness.</p><p>As we have said, the app contains a series of mindful movements, one for each axis, which you can combine freely after completing the weeks.</p><p><a href=\"/practice?category=vocal\">Explore the \"Chanting & Resonance\" (Humming) practices</a></p>",
         "exercise": {
           "title": "The Final Breathing Practice:",
           "steps": [
@@ -539,7 +539,7 @@ export const COURSE_EN: Record<number, any> = {
         "title": "Introduction to Attention",
         "where": "Anywhere",
         "dur": "A few minutes",
-        "lesson": "<p>In every exercise: **first we feel our axis, gravity, and our breath. We regulate it gently.** This is our base.</p><p>Reading: Our attention is the lens that illuminates our experience.</p>",
+        "lesson": "<p>In every exercise: <strong>first we feel our axis, gravity, and our breath. We regulate it gently.</strong> This is our base.</p><p>Reading: Our attention is the lens that illuminates our experience.</p>",
         "exercise": {
           "title": "Gazing for 7\":",
           "steps": [
@@ -717,7 +717,7 @@ export const COURSE_EN: Record<number, any> = {
           "steps": [
             "During the day: 5-5 breathing exercise (Inhale 5 / Exhale 5).",
             "Breath of calm (small pauses) whenever you need it.",
-            "**Evening Routine:** \"Settling, Slowing Down.\"",
+            "Evening Routine: \"Settling, Slowing Down.\"",
             "Before sleep: grounding in bed, deep exhales, letting the day go."
           ]
         },
@@ -807,7 +807,7 @@ export const COURSE_EN: Record<number, any> = {
         "title": "The 4 Centers & Open Space",
         "where": "Anywhere / Outdoors",
         "dur": "5-10 minutes",
-        "lesson": "<p>From this week we join the 4 centers (Body, Breath, Attention, Space). We learn \"Open Attention.\"</p><p>Every day: **Sky-gazing.** Take a little time to look at the sky and feel the space around you.</p>",
+        "lesson": "<p>From this week we join the 4 centers (Body, Breath, Attention, Space). We learn \"Open Attention.\"</p><p>Every day: <strong>Sky-gazing.</strong> Take a little time to look at the sky and feel the space around you.</p>",
         "exercise": {
           "title": "Sky-Gazing:",
           "steps": [
@@ -876,7 +876,7 @@ export const COURSE_EN: Record<number, any> = {
         "title": "Instant Pause",
         "where": "Anywhere",
         "dur": "2-5 seconds",
-        "lesson": "<p>We enter the last 10 days of the program. In these days, beyond the basic practice (4 centers, sky-gazing, open attention 3x/day), we will use **micro-exercises of seconds.**</p>",
+        "lesson": "<p>We enter the last 10 days of the program. In these days, beyond the basic practice (4 centers, sky-gazing, open attention 3x/day), we will use <strong>micro-exercises of seconds.</strong></p>",
         "exercise": {
           "title": "Instant Pause (Short Moment):",
           "steps": [
@@ -1053,97 +1053,6 @@ export const COURSE_EN: Record<number, any> = {
         "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
         "reflection": "What do I take away from these 8 weeks?",
         "insight": "We are not arriving somewhere. We are simply remembering how to be HERE."
-      },
-      {
-        "title": "Day 1 · Monday",
-        "where": "",
-        "dur": "",
-        "lesson": "<p>☐ Body ☐ Breath ☐ Attention ☐ Space</p><p>What I noticed today:</p>",
-        "exercise": {
-          "title": "",
-          "steps": []
-        },
-        "breathing": "",
-        "reflection": "",
-        "insight": ""
-      },
-      {
-        "title": "Day 2 · Tuesday",
-        "where": "",
-        "dur": "",
-        "lesson": "<p>☐ Body ☐ Breath ☐ Attention ☐ Space</p><p>What I noticed today:</p>",
-        "exercise": {
-          "title": "",
-          "steps": []
-        },
-        "breathing": "",
-        "reflection": "",
-        "insight": ""
-      },
-      {
-        "title": "Day 3 · Wednesday",
-        "where": "",
-        "dur": "",
-        "lesson": "<p>☐ Body ☐ Breath ☐ Attention ☐ Space</p><p>What I noticed today:</p>",
-        "exercise": {
-          "title": "",
-          "steps": []
-        },
-        "breathing": "",
-        "reflection": "",
-        "insight": ""
-      },
-      {
-        "title": "Day 4 · Thursday",
-        "where": "",
-        "dur": "",
-        "lesson": "<p>☐ Body ☐ Breath ☐ Attention ☐ Space</p><p>What I noticed today:</p>",
-        "exercise": {
-          "title": "",
-          "steps": []
-        },
-        "breathing": "",
-        "reflection": "",
-        "insight": ""
-      },
-      {
-        "title": "Day 5 · Friday",
-        "where": "",
-        "dur": "",
-        "lesson": "<p>☐ Body ☐ Breath ☐ Attention ☐ Space</p><p>What I noticed today:</p>",
-        "exercise": {
-          "title": "",
-          "steps": []
-        },
-        "breathing": "",
-        "reflection": "",
-        "insight": ""
-      },
-      {
-        "title": "Day 6 · Saturday",
-        "where": "",
-        "dur": "",
-        "lesson": "<p>☐ Body ☐ Breath ☐ Attention ☐ Space</p><p>What I noticed today:</p>",
-        "exercise": {
-          "title": "",
-          "steps": []
-        },
-        "breathing": "",
-        "reflection": "",
-        "insight": ""
-      },
-      {
-        "title": "Day 7 · Sunday",
-        "where": "",
-        "dur": "",
-        "lesson": "<p>☐ Body ☐ Breath ☐ Attention ☐ Space</p><p>What I noticed today:</p><p># Appendix — The Rabbit Hole</p><p>The \"Rabbit Hole\" is a collection of optional, deeper texts within the app — contemplative and scientific extensions of the method, for anyone who wants to go further. They are all free. Below, organized by chapter.</p><p>**Body (Ch. 1)**</p><p>- **[The Veils of Being](https://neurodivergent-mindfulness.org/rabbithole/koshas-veils)** — the Matryoshka allegory: five veils, from the physical body to pure consciousness.</p><p>**Breath (Ch. 2)**</p><p>- **[Learning to Ride the Wind](https://neurodivergent-mindfulness.org/rabbithole/riding-the-wind)** — the breath as a wind you accompany, not control.</p><p>- **[The Lute String and the Vagus Nerve](https://neurodivergent-mindfulness.org/rabbithole/polyvagal-middle-way)** — polyvagal theory and the middle way of the nervous system (also relevant to Ch. 8).</p><p>**Attention (Ch. 3)**</p><p>- **[The Soft Gaze: A Door That Does Not Lock](https://neurodivergent-mindfulness.org/rabbithole/soft-gaze-open-hearing)** — how peripheral vision and open hearing regulate the nervous system.</p><p>**Space (Ch. 4)**</p><p>- **[The Wave Is Not the Sea — Until It Lets Go](https://neurodivergent-mindfulness.org/rabbithole/wave-and-sea)** — the distinction between mindfulness (△) and awareness (∞).</p><p>- **[You Are the Path: The Map, the Territory & the Axis](https://neurodivergent-mindfulness.org/rabbithole/you-are-the-path)** — map and territory, and the entry into the now through the axis.</p><p>- **[The Seething Void](https://neurodivergent-mindfulness.org/rabbithole/quantum-void-awareness)** — the quantum void and awareness.</p><p>**The Neurodivergent Mind (Ch. 5)**</p><p>- **[The Goose Is Out](https://neurodivergent-mindfulness.org/rabbithole/the-goose-is-out)** — the koan of the goose and masking.</p><p>**Stages & Tradition (Ch. 10–11)**</p><p>- **[The Nature of Mind & The Release of Tension](https://neurodivergent-mindfulness.org/rabbithole/dzogchen-nature-of-mind)** — nature of mind, Trekchö, and neuroscience.</p><p>- **[The Forces of the Cosmos, the Axes of the Mind](https://neurodivergent-mindfulness.org/rabbithole/forces-of-the-cosmos)** — the elements/forces and the four axes.</p><p>**About the App Itself**</p><p>- **[What Does Sandbox Mean?](https://neurodivergent-mindfulness.org/rabbithole/what-is-sandbox)** — the framing of the \"safe space for practice.\"</p><p># Epilogue</p><p>This road has no end. It is a way of standing within life, consciously choosing acceptance at every step.</p><p>Every moment can become a small return to gentleness and openness.</p><p>Mindfulness, in the end, is remembering that within you there already exists an open space that holds you as you are.</p><p>This space asks for nothing and rejects nothing — it simply reminds you that you are present, alive, and whole.</p><p>Keep returning. Consistency in small doses is your own greatest act of care.</p>",
-        "exercise": {
-          "title": "",
-          "steps": []
-        },
-        "breathing": "",
-        "reflection": "",
-        "insight": ""
       }
     ]
   }
