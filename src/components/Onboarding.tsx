@@ -33,6 +33,18 @@ export default function Onboarding() {
     }
   }, []);
 
+  // The companion's "Introduction" button asks to see these screens again.
+  useEffect(() => {
+    const reopen = () => {
+      previousActiveElement.current = document.activeElement as HTMLElement;
+      setStep(0);
+      setIsVisible(true);
+      document.body.style.overflow = 'hidden';
+    };
+    window.addEventListener('show-welcome-modal', reopen);
+    return () => window.removeEventListener('show-welcome-modal', reopen);
+  }, []);
+
   useEffect(() => {
     if (isVisible && focusRef.current) {
       focusRef.current.focus();
@@ -106,7 +118,7 @@ export default function Onboarding() {
 
   const content = (
     <div 
-      className="fixed inset-0 z-[9999] bg-[#0a0f18] text-white flex flex-col justify-between overflow-hidden"
+      className="fixed inset-0 z-[9999] bg-[var(--color-bg,#0f1117)] text-white flex flex-col justify-between overflow-hidden"
       role="dialog"
       aria-modal="true"
       aria-labelledby="onboarding-title"
@@ -116,8 +128,8 @@ export default function Onboarding() {
       ref={focusRef}
     >
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-900/20 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-900/20 rounded-full blur-[120px]" />
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[color-mix(in_srgb,var(--color-accent,#1D9E75)_10%,transparent)] rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[color-mix(in_srgb,var(--color-accent,#1D9E75)_6%,transparent)] rounded-full blur-[120px]" />
       </div>
 
       <div className="flex justify-end p-4 md:p-6 z-10 relative gap-3">
@@ -137,7 +149,7 @@ export default function Onboarding() {
         </button>
       </div>
 
-      <div className="flex-1 flex flex-col justify-center px-6 max-w-2xl mx-auto w-full z-10 relative">
+      <div className="flex-1 min-h-0 overflow-y-auto flex flex-col justify-start pt-[8vh] px-6 max-w-2xl mx-auto w-full z-10 relative">
         <AnimatePresence mode="wait">
           <motion.div
             key={step}
@@ -166,7 +178,7 @@ export default function Onboarding() {
           {screens.map((_, i) => (
             <div 
               key={i} 
-              className={`h-2 rounded-full transition-all duration-300 ${i === step ? 'w-8 bg-blue-400' : 'w-2 bg-white/20'}`} 
+              className={`h-2 rounded-full transition-all duration-300 ${i === step ? 'w-8 bg-[var(--color-accent,#1D9E75)]' : 'w-2 bg-white/20'}`} 
             />
           ))}
         </div>
@@ -183,7 +195,7 @@ export default function Onboarding() {
               handleComplete();
             }
           }}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-4 px-10 rounded-full transition-all active:scale-95 text-lg min-h-[56px]"
+          className="bg-[color-mix(in_srgb,var(--color-accent,#1D9E75)_15%,transparent)] hover:bg-[color-mix(in_srgb,var(--color-accent,#1D9E75)_25%,transparent)] border border-[color-mix(in_srgb,var(--color-accent,#1D9E75)_40%,transparent)] text-[var(--color-accent-light,#27c491)] font-medium py-4 px-10 rounded-full transition-all active:scale-95 text-lg min-h-[56px]"
         >
           {step === screens.length - 1 ? t('onboarding.start') : t('onboarding.next')}
         </button>

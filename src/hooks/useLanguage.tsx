@@ -34,13 +34,13 @@ const translations: Record<string, Record<Language, string>> = {
   // Onboarding
 
   'onboarding.s1.title': { el: 'Το μυαλό σου δεν είναι χαλασμένο', en: 'Your mind isn\'t broken' },
-  'onboarding.s1.body': { el: 'Απλά λειτουργεί αλλιώς. Αυτή η εφαρμογή σε βοηθά να μάθεις να ρυθμίζεις το νευρικό σου σύστημα: να ηρεμείς όταν είσαι σε υπερδιέγερση, να ενεργοποιείσαι όταν έχεις «παγώσει». Με σύντομες πρακτικές σχεδιασμένες για νευροδιαφορετικά μυαλά — ADHD, αυτισμό, δυσπραξία.', en: 'It just works differently. This app helps you learn to regulate your nervous system: to calm down when you\'re overstimulated, to re-energize when you\'ve shut down. With short practices designed for neurodivergent minds — ADHD, autism, dyspraxia.' },
+  'onboarding.s1.body': { el: 'Απλώς λειτουργεί αλλιώς. Εδώ θα βρεις σύντομες πρακτικές αυτορρύθμισης για νευροδιαφορετικά μυαλά, όπως ΔΕΠΥ ή αυτισμό, και για όσους ζουν με τις συνέπειες τραύματος.', en: 'It just works differently. Here you will find short self-regulation practices for neurodivergent minds, such as ADHD or autism, and for anyone living with the impact of trauma.' },
   
-  'onboarding.s2.title': { el: 'Τέσσερις δρόμοι, όχι ένας «σωστός»', en: 'Four paths, no single "right way"' },
-  'onboarding.s2.body': { el: 'Δεν υπάρχει ένας σωστός τρόπος διαλογισμού. Υπάρχουν τέσσερις δρόμοι — Σώμα, Αναπνοή, Προσοχή, Χώρος — και η εφαρμογή σε βοηθά να βρεις ποιος ταιριάζει στην κατάστασή σου τώρα. Πες της πώς νιώθεις, και θα σου προτείνει μια άσκηση 2–5 λεπτών. Όχι 20λεπτες συνεδρίες, όχι ενοχές αν χάσεις μέρες.', en: 'There\'s no one correct way to meditate. There are four paths — Body, Breath, Attention, Space — and the app helps you find the one that fits your state right now. Tell it how you feel, and it suggests a 2–5 minute practice. No 20-minute sessions, no guilt if you miss days.' },
+  'onboarding.s2.title': { el: 'Τέσσερα κέντρα, ένας άξονας', en: 'Four centres, one axis' },
+  'onboarding.s2.body': { el: 'Σώμα, Αναπνοή, Προσοχή, Χώρος. Έρχεσαι σε επαφή με το καθένα και σιγά σιγά τα συντονίζεις. Πες στην εφαρμογή πώς νιώθεις και θα σου προτείνει από πού να ξεκινήσεις, με μια άσκηση 2–5 λεπτών. Χωρίς ενοχές αν χάσεις μέρες.', en: 'Body, Breath, Attention, Space. You come into contact with each one, and little by little you attune them. Tell the app how you feel and it will suggest where to begin, with a 2–5 minute practice. No guilt if you miss days.' },
 
   'onboarding.s3.title': { el: 'Όλα μένουν στη συσκευή σου', en: 'Everything stays on your device' },
-  'onboarding.s3.body': { el: 'Χωρίς λογαριασμό, χωρίς tracking, χωρίς διαφημίσεις, χωρίς AI. Εντελώς δωρεάν. Τα δεδομένα σου είναι δικά σου — μπορείς να τα εξάγεις ή να τα σβήσεις όποτε θέλεις.', en: 'No account, no tracking, no ads, no AI. Completely free. Your data is yours — export it or delete it whenever you want.' },
+  'onboarding.s3.body': { el: 'Χωρίς λογαριασμό, χωρίς tracking, χωρίς διαφημίσεις, χωρίς chatbot. Εντελώς δωρεάν. Τα δεδομένα σου είναι δικά σου — μπορείς να τα εξάγεις ή να τα σβήσεις όποτε θέλεις.', en: 'No account, no tracking, no ads, no chatbot. Completely free. Your data is yours — export it or delete it whenever you want.' },
 
   'onboarding.next': { el: 'Επόμενο', en: 'Next' },
   'onboarding.skip': { el: 'Παράλειψη', en: 'Skip' },
