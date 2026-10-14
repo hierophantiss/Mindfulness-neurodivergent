@@ -1,6 +1,6 @@
 import { AudioEnabler } from '../components/AudioEnabler';
 import React, { useState, useEffect, useMemo } from 'react';
-import { Sparkles, BookOpen, ArrowRight, Heart, Brain, Moon, Zap, ChevronRight, Telescope, Info, Waves, Play, Eye, EyeOff, Cat, Calendar, Target } from 'lucide-react';
+import { Sparkles, BookOpen, ArrowRight, Heart, Brain, Moon, Zap, ChevronRight, Telescope, Info, Waves, Play, Eye, EyeOff, Cat, Calendar, Target, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useCompanion } from '../hooks/useCompanion';
@@ -17,12 +17,16 @@ import InfoModal from '../components/InfoModal';
 import { AFFIRMATIONS } from '../data/affirmations';
 import { FourfoldAxisHero } from '../components/FourfoldAxisHero';
 import { useSmartSuggestion } from '../hooks/useSmartSuggestion';
+import { useInstallApp } from '../hooks/useInstallApp';
 
 const baseCardClasses = "backdrop-blur-xl border border-white/[0.04] border-t-white/[0.08] border-l-white/[0.06] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.05)] hover:shadow-[0_16px_48px_-12px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(255,255,255,0.1)] hover:-translate-y-1 transition-all duration-500 rounded-[28px]";
 const innerIconClasses = "rounded-2xl bg-gradient-to-b from-white/[0.06] to-transparent border border-white/[0.02] border-t-white/[0.1] shadow-[0_4px_12px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.08)] flex items-center justify-center text-white/50 transition-colors duration-500";
 const actionButtonClasses = "w-8 h-8 rounded-full bg-gradient-to-b from-white/[0.04] to-transparent border border-white/[0.02] border-t-white/[0.1] shadow-[0_2px_8px_rgba(0,0,0,0.2)] flex items-center justify-center group-hover:from-white/[0.08] group-hover:border-t-white/[0.15] group-hover:shadow-[0_4px_12px_rgba(0,0,0,0.3)] transition-all duration-500";
 
-const getDateString = (date: Date): string => {
+const footerLinkClasses = "flex items-center gap-1.5 py-2 text-[11px] text-white/30 hover:text-white/60 transition-colors";
+const bookPillClasses = "whitespace-nowrap px-4 py-2 rounded-full border border-white/[0.06] bg-white/[0.03] text-[11px] text-white/55 hover:text-white/80 hover:bg-white/[0.06] transition-colors";
+
+const getDateString =(date: Date): string => {
   return date.toISOString().split('T')[0];
 };
 
@@ -53,6 +57,15 @@ export default function Dashboard() {
   const [greeting, setGreeting] = useState('');
   const [currentDate, setCurrentDate] = useState('');
   const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const [bookOpen, setBookOpen] = useState(false);
+  const [installHint, setInstallHint] = useState<string | null>(null);
+  const { installed, install } = useInstallApp(language);
+
+  useEffect(() => {
+    if (!installHint) return;
+    const t = setTimeout(() => setInstallHint(null), 8000);
+    return () => clearTimeout(t);
+  }, [installHint]);
 
   const [dismissedDate, setDismissedDate] = useState(() => {
     return localStorage.getItem('n_mindfulness_axis_invite_dismissed') || '';
@@ -421,15 +434,61 @@ export default function Dashboard() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.8 }}
-          className="mt-6 flex flex-col items-center justify-center gap-4 px-4 text-center"
+          className="mt-6 mb-6 flex flex-col items-center justify-center gap-3 px-4 text-center"
         >
-          <button
-            onClick={() => setIsInfoOpen(true)}
-            className="flex items-center gap-2 text-[11px] text-white/30 hover:text-white/60 transition-colors"
-          >
-            <Info size={12} />
-            <span>{language === 'el' ? 'Σχετικά με την εφαρμογή' : 'About the app'}</span>
-          </button>
+          <div className="flex items-center justify-center gap-x-5 gap-y-2 flex-wrap">
+            <button
+              onClick={() => { setBookOpen(o => !o); setInstallHint(null); }}
+              aria-expanded={bookOpen}
+              className={cn(footerLinkClasses, bookOpen && "text-white/60")}
+            >
+              <BookOpen size={12} />
+              <span>{language === 'el' ? 'Το βιβλίο' : 'The book'}</span>
+            </button>
+            <button onClick={() => setIsInfoOpen(true)} className={footerLinkClasses}>
+              <Info size={12} />
+              <span>{language === 'el' ? 'Σχετικά' : 'About'}</span>
+            </button>
+            {!installed && (
+              <button
+                onClick={async () => { setBookOpen(false); setInstallHint(await install()); }}
+                className={footerLinkClasses}
+              >
+                <Download size={12} />
+                <span>{language === 'el' ? 'Εγκατάσταση' : 'Install'}</span>
+              </button>
+            )}
+          </div>
+
+          {bookOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex flex-col items-center gap-2"
+            >
+              <div className="flex gap-2">
+                <a href={`/workbook_${language}.pdf`} download className={bookPillClasses}>
+                  {language === 'el' ? 'PDF · εκτύπωση' : 'PDF · print'}
+                </a>
+                <a href={`/workbook_${language}.epub`} download className={bookPillClasses}>
+                  EPUB · e-reader
+                </a>
+              </div>
+              <span className="text-[10px] text-white/25">
+                {language === 'el' ? 'Δωρεάν · CC BY-NC-ND 4.0' : 'Free · CC BY-NC-ND 4.0'}
+              </span>
+            </motion.div>
+          )}
+
+          {installHint && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="max-w-[280px] text-[11px] leading-relaxed text-white/45"
+            >
+              {installHint}
+            </motion.p>
+          )}
         </motion.div>
         
       </div>
