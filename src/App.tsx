@@ -23,7 +23,7 @@ const ProgramWeek = React.lazy(() => import('./pages/ProgramWeek'));
 const Practice = React.lazy(() => import('./pages/Practice'));
 const PracticeMovement = React.lazy(() => import('./pages/PracticeMovement'));
 const PracticeMicrodoses = React.lazy(() => import('./pages/PracticeMicrodoses'));
-const PracticeBreath = React.lazy(() => import('./pages/PracticeBreath'));
+const BreathRoute = React.lazy(() => import('./pages/BreathRoute'));
 const PracticeSection = React.lazy(() => import('./components/PracticeSection'));
 const PracticeSwaying = React.lazy(() => import('./pages/PracticeSwaying'));
 const Journal = React.lazy(() => import('./pages/Journal'));
@@ -100,7 +100,7 @@ function AppContent() {
           <Route path="practice/swaying" element={<PracticeSwaying />} />
           <Route path="practice/movement" element={<PracticeMovement />} />
           <Route path="practice/microdoses" element={<PracticeMicrodoses />} />
-          <Route path="practice/breath/:id" element={<PracticeBreath />} />
+          <Route path="practice/breath/:id" element={<BreathRoute />} />
           <Route path="practice/:category/:id" element={<GenericExercise />} />
           <Route path="journal" element={<Journal />} />
           <Route path="sanctuary" element={<Sanctuary />} />

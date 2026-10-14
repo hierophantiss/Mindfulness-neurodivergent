@@ -1,7 +1,15 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useAxisBalance } from './useAxisBalance';
 import { Axis } from '../data/types';
-import { MICRODOSES_EXERCISES, MicrodoseExercise } from '../data/microdoses';
+import { PRACTICE_CATALOG } from '../data/practiceCatalog';
+
+export interface Suggestion {
+  id: string;
+  axis: Axis;
+  title: { el: string; en: string };
+  link: string;
+  maxSeconds: number;
+}
 
 const getDayOfYear = (date: Date) => {
   const start = new Date(date.getFullYear(), 0, 0);
@@ -12,7 +20,7 @@ const getDayOfYear = (date: Date) => {
 
 export function useSmartSuggestion(): {
   axis: Axis | null;
-  suggestion: MicrodoseExercise | null;
+  suggestion: Suggestion | null;
   mode: 'state+history' | 'history' | null;
   state: 'hyper' | 'hypo' | 'balanced' | null;
 } {
@@ -80,7 +88,17 @@ export function useSmartSuggestion(): {
       return { axis: null, suggestion: null, mode: null, state: null };
     }
 
-    let candidates = MICRODOSES_EXERCISES.filter(m => m.axis === chosenAxis);
+    // Without a check-in: the axis's microdoses. After one: every practice
+    // of that axis marked for the state (microdoses, breathing, movement,
+    // voice, guided).
+    let candidates = PRACTICE_CATALOG
+      .filter(i => i.axis === chosenAxis && (recentState ? i.tags.includes(recentState) : i.kind === 'dose'))
+      .map(i => ({ id: i.id, axis: i.axis, title: i.title, link: i.path, maxSeconds: i.seconds }));
+    if (candidates.length === 0) {
+      candidates = PRACTICE_CATALOG
+        .filter(i => i.axis === chosenAxis && i.kind === 'dose')
+        .map(i => ({ id: i.id, axis: i.axis, title: i.title, link: i.path, maxSeconds: i.seconds }));
+    }
 
     if (recentState === 'hyper') {
       const shortCandidates = candidates.filter(m => m.maxSeconds <= 60);
@@ -89,7 +107,7 @@ export function useSmartSuggestion(): {
       }
     }
 
-    let suggestion: MicrodoseExercise | null = null;
+    let suggestion: Suggestion | null = null;
     if (candidates.length > 0) {
       const index = getDayOfYear(new Date()) % candidates.length;
       suggestion = candidates[index];

@@ -6,20 +6,20 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 import { CatInfinityAvatar } from './CatInfinityAvatar';
 import { cn } from '../lib/utils';
-import { CHECKIN_OPTIONS, AXIS_LABEL, AXIS_COLOR, getCheckinOption, saveCheckinState, type CheckinState } from '../data/stateCheckin';
+import { CHECKIN_OPTIONS, AXIS_LABEL, AXIS_COLOR, getCheckinOption, getCheckinActions, saveCheckinState, type CheckinChoice } from '../data/stateCheckin';
 
 export default function StateCheckin({ onComplete, inline = false }: { onComplete: () => void, inline?: boolean }) {
   const { reduceMotion } = useAccessibility();
   const { language } = useLanguage();
   const lang = language === 'en' ? 'en' : 'el';
-  const [selectedState, setSelectedState] = useState<CheckinState | null>(null);
+  const [selectedState, setSelectedState] = useState<CheckinChoice | null>(null);
 
   const handleComplete = () => {
     onComplete();
     setSelectedState(null);
   };
 
-  const handleSelect = (state: CheckinState) => {
+  const handleSelect = (state: CheckinChoice) => {
     setSelectedState(state);
     saveCheckinState(state);
   };
@@ -33,6 +33,7 @@ export default function StateCheckin({ onComplete, inline = false }: { onComplet
     : "w-full max-w-md bg-stone-900 border border-stone-800 rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden";
 
   const selected = selectedState ? getCheckinOption(selectedState) : null;
+  const actions = React.useMemo(() => (selectedState ? getCheckinActions(selectedState) : []), [selectedState]);
 
   return (
     <motion.div
@@ -123,7 +124,7 @@ export default function StateCheckin({ onComplete, inline = false }: { onComplet
               </div>
 
               <div className="flex flex-col gap-3 mt-2">
-                {selected.actions.map((action, idx) => (
+                {actions.map((action, idx) => (
                   <Link
                     key={action.path + idx}
                     to={action.path}
