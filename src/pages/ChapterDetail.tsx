@@ -15,6 +15,7 @@ import InteractiveRenderer from '../components/InteractiveRenderer';
 import ChapterReaderBar from '../components/ChapterReaderBar';
 import { buildChapterSegments } from '../lib/chapterReading';
 import { useSpeechReader, loadReaderSettings, saveReaderSettings, pickVoice, type ReaderSettings } from '../hooks/useSpeechReader';
+import { usePiperVoice } from '../hooks/usePiperVoice';
 
 const READER_POS_KEY = 'n_mindfulness_reader_pos';
 
@@ -254,7 +255,13 @@ export default function ChapterDetail() {
     () => (chapter ? buildChapterSegments(chapter, takeaways, currentLang) : []),
     [chapter, takeaways, currentLang]
   );
-  const reader = useSpeechReader(segments, currentLang, readerSettings);
+  const piper = usePiperVoice(currentLang);
+  const readerMedia = useMemo(
+    () => (chapter ? { title: chapter.title, artist: currentLang === 'el' ? `Κεφάλαιο ${chapter.num}` : `Chapter ${chapter.num}` } : undefined),
+    [chapter, currentLang]
+  );
+  const reader = useSpeechReader(segments, currentLang, readerSettings, piper.ready, readerMedia);
+  const deviceSpeech = typeof window !== 'undefined' && 'speechSynthesis' in window;
   const readerActive = reader.status !== 'idle';
   const activeSeg = readerActive ? segments[reader.index] : undefined;
   const posId = chapter ? `${currentLang}-${chapter.num}` : '';
@@ -697,7 +704,7 @@ export default function ChapterDetail() {
         </AnimatePresence>
       </main>
 
-      {reader.isSupported && segments.length > 0 && (
+      {(deviceSpeech || piper.supported) && segments.length > 0 && (
         <ChapterReaderBar
           lang={currentLang}
           status={reader.status}
@@ -705,6 +712,9 @@ export default function ChapterDetail() {
           total={segments.length}
           kind={activeSeg?.kind}
           silence={reader.silence}
+          waiting={reader.waiting}
+          piper={piper}
+          deviceSupported={deviceSpeech}
           hasResume={!!savedKey && segments.some((sg) => sg.key === savedKey) && segments[0].key !== savedKey}
           noVoice={reader.voicesLoaded && reader.voices.length === 0}
           voices={reader.voices}

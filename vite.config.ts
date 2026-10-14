@@ -26,6 +26,8 @@ export default defineConfig(() => {
         }
       })
     ],
+    // The Piper voice runs in a module worker (src/lib/piper/piper.worker.ts).
+    worker: { format: 'es' as const },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),

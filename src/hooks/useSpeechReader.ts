@@ -1,20 +1,24 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toSentences, type ReadLang, type ReadSegment, type SegmentKind } from '../lib/chapterReading';
+import { deviceEngine, piperEngine, setPiperWaitingListener, type SpeechEngine } from '../lib/speechEngines';
 
 /**
- * Reads a list of segments aloud with the device's own voices (Web Speech API).
- * Nothing leaves the device. Each segment is spoken sentence by sentence;
- * pause stops the voice and resume restarts the current sentence, which works
- * the same on every browser (native pause/resume is unreliable on Android).
+ * Reads a list of segments aloud, sentence by sentence, with either the
+ * device's own voices (Web Speech API) or the Piper voice downloaded once.
+ * Nothing leaves the device. Pause stops the voice; resume restarts the
+ * current sentence, which behaves the same on every browser.
  */
 
 export type ReaderStatus = 'idle' | 'playing' | 'paused';
+export type EngineId = 'device' | 'piper';
 
 export interface ReaderSettings {
   rate: number;
   follow: boolean;
   voiceEl?: string;
   voiceEn?: string;
+  /** Unset until the listener has chosen a voice the first time. */
+  engine?: EngineId;
 }
 
 const SETTINGS_KEY = 'n_mindfulness_reader_settings';
@@ -75,51 +79,74 @@ export function pickVoice(lang: ReadLang, all: SpeechSynthesisVoice[], preferred
   return [...list].sort((a, b) => score(b) - score(a))[0];
 }
 
-export function useSpeechReader(segments: ReadSegment[], lang: ReadLang, settings: ReaderSettings) {
-  const isSupported = speechSupported();
+export interface ReaderMedia {
+  title: string;
+  artist: string;
+}
+
+export function useSpeechReader(
+  segments: ReadSegment[],
+  lang: ReadLang,
+  settings: ReaderSettings,
+  /** Piper is used only when the listener chose it and the voice is on the device. */
+  piperReady: boolean,
+  media?: ReaderMedia
+) {
   const [status, setStatus] = useState<ReaderStatus>('idle');
   const [index, setIndex] = useState(0);
   /** Set while the reader is silent between exercise steps: when the silence ends. */
   const [silence, setSilence] = useState<{ until: number; ms: number } | null>(null);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+  /** True while the Piper voice is still preparing the sentence (first use can take a few seconds). */
+  const [waiting, setWaiting] = useState(false);
+
+  useEffect(() => {
+    setPiperWaitingListener(setWaiting);
+    return () => setPiperWaitingListener(null);
+  }, []);
+
+  const usePiper = settings.engine === 'piper' && piperReady;
+  const isSupported = speechSupported() || usePiper;
+  const engine: SpeechEngine = usePiper ? piperEngine : deviceEngine;
 
   const indexRef = useRef(0);
   const sentenceRef = useRef(0);
   const tokenRef = useRef(0);
-  const timersRef = useRef<number[]>([]);
-  const utterRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const waitRef = useRef<{ timer: number; resolve: () => void } | null>(null);
   const wakeRef = useRef<{ release: () => Promise<void> } | null>(null);
   const statusRef = useRef<ReaderStatus>('idle');
   const segRef = useRef(segments);
   const settingsRef = useRef(settings);
   const voicesRef = useRef(voices);
+  const engineRef = useRef(engine);
   segRef.current = segments;
   settingsRef.current = settings;
   voicesRef.current = voices;
+  engineRef.current = engine;
 
   useEffect(() => {
-    if (!isSupported) return;
+    if (!speechSupported()) return;
     const synth = window.speechSynthesis;
     const load = () => setVoices(synth.getVoices());
     load();
     synth.addEventListener?.('voiceschanged', load);
     return () => synth.removeEventListener?.('voiceschanged', load);
-  }, [isSupported]);
+  }, []);
 
   const setStatusBoth = (s: ReaderStatus) => {
     statusRef.current = s;
     setStatus(s);
   };
 
-  const clearTimers = () => {
-    timersRef.current.forEach((t) => window.clearTimeout(t));
-    timersRef.current = [];
-    setSilence(null);
-  };
-
-  const later = (fn: () => void, ms: number) => {
-    timersRef.current.push(window.setTimeout(fn, ms));
-  };
+  /** A pause that `halt` can cut short. Resolves true if it ran to the end. */
+  const wait = (ms: number) =>
+    new Promise<boolean>((resolve) => {
+      const timer = window.setTimeout(() => {
+        waitRef.current = null;
+        resolve(true);
+      }, ms);
+      waitRef.current = { timer, resolve: () => resolve(false) };
+    });
 
   const keepAwake = async (on: boolean) => {
     try {
@@ -136,108 +163,107 @@ export function useSpeechReader(segments: ReadSegment[], lang: ReadLang, setting
       wakeRef.current = null;
     }
   };
+  /** The device voice usually stops when the screen goes off; Piper audio keeps playing. */
+  const awake = (on: boolean) => keepAwake(on && engineRef.current === deviceEngine);
 
   const halt = () => {
     tokenRef.current += 1;
-    clearTimers();
-    if (isSupported) window.speechSynthesis.cancel();
-    utterRef.current = null;
+    if (waitRef.current) {
+      window.clearTimeout(waitRef.current.timer);
+      waitRef.current.resolve();
+      waitRef.current = null;
+    }
+    setSilence(null);
+    deviceEngine.cancel();
+    piperEngine.cancel();
   };
 
-  const run = useCallback((token: number) => {
+  /** The next few sentences after the current one, for the engine to prepare. */
+  const upcoming = (i: number, s: number, n: number) => {
+    const out: string[] = [];
     const segs = segRef.current;
-    const i = indexRef.current;
-    if (token !== tokenRef.current) return;
-    if (i >= segs.length) {
-      setStatusBoth('idle');
-      indexRef.current = 0;
-      setIndex(0);
-      keepAwake(false);
-      return;
+    for (let k = i; k < segs.length && out.length < n; k++) {
+      const sentences = toSentences(segs[k].text);
+      for (let j = k === i ? s : 0; j < sentences.length && out.length < n; j++) out.push(sentences[j]);
     }
-    const seg = segs[i];
-    const sentences = toSentences(seg.text);
-    const s = sentenceRef.current;
+    return out;
+  };
 
-    if (s >= sentences.length) {
-      const ms = PAUSE_AFTER[seg.kind];
-      const next = segs[i + 1];
-      const extra = next && next.kind === 'practice' ? PAUSE_BEFORE_PRACTICE : 0;
-      const wait = ms + extra;
-      if (seg.kind === 'step') setSilence({ until: Date.now() + wait, ms: wait });
-      later(() => {
+  const run = useCallback(async (token: number) => {
+    while (token === tokenRef.current) {
+      const segs = segRef.current;
+      const i = indexRef.current;
+      if (i >= segs.length) {
+        setStatusBoth('idle');
+        indexRef.current = 0;
+        setIndex(0);
+        awake(false);
+        return;
+      }
+      const seg = segs[i];
+      const sentences = toSentences(seg.text);
+      const s = sentenceRef.current;
+
+      if (s < sentences.length) {
+        const eng = engineRef.current;
+        eng.prefetch?.(upcoming(i, s + 1, 3), lang);
+        const cfg = settingsRef.current;
+        await eng.speak(sentences[s], {
+          lang,
+          rate: Math.max(0.5, Math.min(1.5, cfg.rate * RATE_FACTOR[seg.kind])),
+          voice: pickVoice(lang, voicesRef.current, lang === 'el' ? cfg.voiceEl : cfg.voiceEn),
+        });
         if (token !== tokenRef.current) return;
-        setSilence(null);
-        indexRef.current = i + 1;
-        sentenceRef.current = 0;
-        setIndex(i + 1);
-        run(token);
-      }, wait);
-      return;
+        sentenceRef.current = s + 1;
+        continue;
+      }
+
+      const next = segs[i + 1];
+      const ms = PAUSE_AFTER[seg.kind] + (next && next.kind === 'practice' ? PAUSE_BEFORE_PRACTICE : 0);
+      if (seg.kind === 'step') setSilence({ until: Date.now() + ms, ms });
+      const full = await wait(ms);
+      if (!full || token !== tokenRef.current) return;
+      setSilence(null);
+      indexRef.current = i + 1;
+      sentenceRef.current = 0;
+      setIndex(i + 1);
     }
-
-    const synth = window.speechSynthesis;
-    const u = new SpeechSynthesisUtterance(sentences[s]);
-    u.lang = lang === 'el' ? 'el-GR' : 'en-GB';
-    const cfg = settingsRef.current;
-    const v = pickVoice(lang, voicesRef.current, lang === 'el' ? cfg.voiceEl : cfg.voiceEn);
-    if (v) {
-      u.voice = v;
-      u.lang = v.lang;
-    }
-    u.rate = Math.max(0.5, Math.min(1.5, cfg.rate * RATE_FACTOR[seg.kind]));
-
-    let done = false;
-    const finish = () => {
-      if (done || token !== tokenRef.current) return;
-      done = true;
-      sentenceRef.current = s + 1;
-      run(token);
-    };
-    u.onend = finish;
-    u.onerror = (e) => {
-      if (e.error === 'interrupted' || e.error === 'canceled') return;
-      finish();
-    };
-    utterRef.current = u; // keeps the utterance alive so `onend` fires (Chrome)
-    synth.speak(u);
-
-    // Some Android voices never fire `onend`; if the voice has gone quiet, move on.
-    const started = Date.now();
-    const watch = () => {
-      if (done || token !== tokenRef.current) return;
-      if (!synth.speaking && !synth.pending && Date.now() - started > 1200) finish();
-      else later(watch, 600);
-    };
-    later(watch, 1500);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]);
+
+  const start = (token: number) => {
+    // Some engines need a moment after cancel before they accept new speech.
+    window.setTimeout(() => run(token), 60);
+  };
 
   const playFrom = useCallback((i: number) => {
     if (!isSupported || !segRef.current.length) return;
     halt();
+    engineRef.current.unlock?.();
     indexRef.current = Math.max(0, Math.min(i, segRef.current.length - 1));
     sentenceRef.current = 0;
     setIndex(indexRef.current);
     setStatusBoth('playing');
-    keepAwake(true);
-    const token = tokenRef.current;
-    // Cancel needs a moment on some engines before a new utterance is accepted.
-    later(() => run(token), 60);
+    awake(true);
+    start(tokenRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSupported, run]);
 
   const pause = useCallback(() => {
     if (statusRef.current !== 'playing') return;
     halt();
     setStatusBoth('paused');
-    keepAwake(false);
+    awake(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const resume = useCallback(() => {
     if (statusRef.current !== 'paused') return;
+    engineRef.current.unlock?.();
     setStatusBoth('playing');
-    keepAwake(true);
-    const token = tokenRef.current;
-    later(() => run(token), 60);
+    awake(true);
+    start(tokenRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [run]);
 
   const stop = useCallback(() => {
@@ -246,7 +272,8 @@ export function useSpeechReader(segments: ReadSegment[], lang: ReadLang, setting
     sentenceRef.current = 0;
     setIndex(0);
     setStatusBoth('idle');
-    keepAwake(false);
+    awake(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const jump = useCallback((i: number) => {
@@ -257,34 +284,62 @@ export function useSpeechReader(segments: ReadSegment[], lang: ReadLang, setting
       sentenceRef.current = 0;
       setIndex(indexRef.current);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playFrom]);
 
-  // A changed rate or voice applies from the next sentence; restart the current one.
+  // A changed rate, voice or engine applies at once: restart the current sentence.
   useEffect(() => {
     if (statusRef.current !== 'playing') return;
     halt();
-    const token = tokenRef.current;
-    later(() => run(token), 60);
+    start(tokenRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [settings.rate, settings.voiceEl, settings.voiceEn]);
+  }, [settings.rate, settings.voiceEl, settings.voiceEn, usePiper]);
 
   // The screen lock is released when the page is hidden; take it again on return.
   useEffect(() => {
     const onVis = () => {
-      if (document.visibilityState === 'visible' && statusRef.current === 'playing') keepAwake(true);
+      if (document.visibilityState === 'visible' && statusRef.current === 'playing') awake(true);
     };
     document.addEventListener('visibilitychange', onVis);
     return () => document.removeEventListener('visibilitychange', onVis);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Lock-screen and headset controls while the Piper voice plays.
+  useEffect(() => {
+    const ms = typeof navigator !== 'undefined' ? navigator.mediaSession : undefined;
+    if (!ms || !usePiper || status === 'idle') return;
+    try {
+      if (media && typeof MediaMetadata !== 'undefined') {
+        ms.metadata = new MediaMetadata({ title: media.title, artist: media.artist, artwork: [{ src: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }] });
+      }
+      ms.playbackState = status === 'playing' ? 'playing' : 'paused';
+      ms.setActionHandler('play', () => resume());
+      ms.setActionHandler('pause', () => pause());
+      ms.setActionHandler('previoustrack', () => jump(Math.max(0, indexRef.current - 1)));
+      ms.setActionHandler('nexttrack', () => jump(Math.min(segRef.current.length - 1, indexRef.current + 1)));
+    } catch {
+      /* some actions are not supported on every browser */
+    }
+    return () => {
+      try {
+        (['play', 'pause', 'previoustrack', 'nexttrack'] as MediaSessionAction[]).forEach((a) => ms.setActionHandler(a, null));
+      } catch {
+        /* ignore */
+      }
+    };
+  }, [usePiper, status, media?.title, media?.artist, pause, resume, jump]);
 
   // New text (another chapter or language) or leaving the page: stop.
   useEffect(() => () => stop(), [segments, stop]);
 
   return {
     isSupported,
+    usingPiper: usePiper,
     status,
     index,
     silence,
+    waiting: waiting && status === 'playing',
     voices: voicesFor(lang, voices),
     voicesLoaded: voices.length > 0,
     playFrom,
