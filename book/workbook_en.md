@@ -931,7 +931,7 @@ The practices this method rests on were not learned from books. They were given 
 
 None of these lineages has endorsed this book, and none bears responsibility for its form. The method is my own distillation of what was given to me.
 
-> **Conclusion:** Science and spirituality agree — balance begins in the body, is regulated by the breath, is stabilized by attention, and expands into a sense of vastness.
+> **Conclusion:** Science and spirituality converge — balance begins in the body, is regulated by the breath, is stabilized by attention, and expands into a sense of vastness.
 
 ### Resources & Further Reading
 
