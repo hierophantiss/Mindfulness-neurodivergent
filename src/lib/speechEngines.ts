@@ -1,70 +1,20 @@
 import type { ReadLang } from './chapterReading';
-import { piperSynth } from './piper/client';
+import { PiperError, piperSynth, resetPiperWorker } from './piper/client';
 
-/** The reader speaks one sentence at a time through one of these. */
+/**
+ * The Piper voice, run on the device and played through one <audio> element,
+ * so it keeps playing with the screen off. There is deliberately no fallback
+ * to the phone's own voice: if Piper fails, the reader pauses and says so.
+ */
+
 export interface SpeakOptions {
   lang: ReadLang;
   rate: number;
-  voice?: SpeechSynthesisVoice | null;
 }
 
-export interface SpeechEngine {
-  /** Resolves when the sentence has been spoken, or was cancelled. */
-  speak(text: string, o: SpeakOptions): Promise<void>;
-  cancel(): void;
-  /** Prepare upcoming sentences while the current one plays. */
-  prefetch?(texts: string[], lang: ReadLang): void;
-  /** Called inside the tap that starts reading, so later playback is allowed (iOS). */
-  unlock?(): void;
-}
-
-// ── The device's own voices (Web Speech API) ─────────────────────────────
-let deviceDone: (() => void) | null = null;
-let deviceUtter: SpeechSynthesisUtterance | null = null;
-
-export const deviceEngine: SpeechEngine = {
-  speak(text, o) {
-    return new Promise<void>((resolve) => {
-      const synth = window.speechSynthesis;
-      let finished = false;
-      let timer = 0;
-      const done = () => {
-        if (finished) return;
-        finished = true;
-        window.clearTimeout(timer);
-        deviceDone = null;
-        resolve();
-      };
-      deviceDone = done;
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = o.voice?.lang || (o.lang === 'el' ? 'el-GR' : 'en-GB');
-      if (o.voice) u.voice = o.voice;
-      u.rate = o.rate;
-      u.onend = done;
-      u.onerror = done;
-      deviceUtter = u; // keeps the utterance alive so `onend` fires (Chrome)
-      synth.speak(u);
-      // Some Android voices never fire `onend`; if the voice has gone quiet, move on.
-      const started = Date.now();
-      const watch = () => {
-        if (finished) return;
-        if (!synth.speaking && !synth.pending && Date.now() - started > 1200) done();
-        else timer = window.setTimeout(watch, 600);
-      };
-      timer = window.setTimeout(watch, 1500);
-    });
-  },
-  cancel() {
-    window.speechSynthesis?.cancel();
-    deviceUtter = null;
-    deviceDone?.();
-  },
-};
-
-// ── Piper, on the device, played through an <audio> element ──────────────
 let audio: HTMLAudioElement | null = null;
-let piperDone: (() => void) | null = null;
-let piperGen = 0;
+let current: (() => void) | null = null;
+let gen = 0;
 
 function getAudio() {
   if (!audio) {
@@ -75,7 +25,7 @@ function getAudio() {
   return audio;
 }
 
-// 0.1 s of silence, used to unlock playback inside the user's tap.
+// 0.1 s of silence, played inside the user's tap so later playback is allowed (iOS).
 let silentUrl = '';
 function silentWav() {
   if (silentUrl) return silentUrl;
@@ -96,52 +46,64 @@ export const setPiperWaitingListener = (fn: ((waiting: boolean) => void) | null)
   onWaiting = fn;
 };
 
-export const piperEngine: SpeechEngine = {
-  async speak(text, o) {
-    const gen = ++piperGen;
+/** Makes the audio for a sentence; after a failure, starts the voice afresh and tries once more. */
+async function make(text: string, lang: ReadLang): Promise<Blob> {
+  try {
+    return await piperSynth(text, lang);
+  } catch {
+    resetPiperWorker();
+    return piperSynth(text, lang);
+  }
+}
+
+export const piperEngine = {
+  /** Resolves when the sentence has been spoken or was cancelled; throws PiperError if the voice failed. */
+  async speak(text: string, o: SpeakOptions): Promise<void> {
+    const my = ++gen;
+    const slow = window.setTimeout(() => my === gen && onWaiting?.(true), 400);
     let blob: Blob;
-    const slow = window.setTimeout(() => gen === piperGen && onWaiting?.(true), 400);
     try {
-      blob = await piperSynth(text, o.lang);
-    } catch {
+      blob = await make(text, o.lang);
+    } catch (e) {
+      if (my !== gen) return;
+      throw e instanceof PiperError ? e : new PiperError(String(e), 0);
+    } finally {
       window.clearTimeout(slow);
       onWaiting?.(false);
-      // The voice could not be used (cleared storage, old device): fall back for this sentence.
-      if (gen !== piperGen) return;
-      return deviceEngine.speak(text, { ...o, voice: null });
     }
-    window.clearTimeout(slow);
-    onWaiting?.(false);
-    if (gen !== piperGen) return;
+    if (my !== gen) return;
     const el = getAudio();
     const url = URL.createObjectURL(blob);
-    await new Promise<void>((resolve) => {
+    await new Promise<void>((resolve, reject) => {
       let finished = false;
-      const done = () => {
+      const end = (err?: PiperError) => {
         if (finished) return;
         finished = true;
-        el.removeEventListener('ended', done);
-        el.removeEventListener('error', done);
-        piperDone = null;
+        el.removeEventListener('ended', ok);
+        el.removeEventListener('error', bad);
+        current = null;
         URL.revokeObjectURL(url);
-        resolve();
+        if (err && my === gen) reject(err);
+        else resolve();
       };
-      piperDone = done;
-      el.addEventListener('ended', done);
-      el.addEventListener('error', done);
+      const ok = () => end();
+      const bad = () => end(new PiperError('audio playback failed', 5));
+      current = ok;
+      el.addEventListener('ended', ok);
+      el.addEventListener('error', bad);
       el.src = url;
       el.defaultPlaybackRate = o.rate;
       el.playbackRate = o.rate;
-      el.play().catch(done);
+      el.play().catch((e: DOMException) => end(new PiperError(e?.name || 'play failed', e?.name === 'NotAllowedError' ? 6 : 5)));
     });
   },
   cancel() {
-    piperGen++;
+    gen++;
     onWaiting?.(false);
     audio?.pause();
-    piperDone?.();
+    current?.();
   },
-  prefetch(texts, lang) {
+  prefetch(texts: string[], lang: ReadLang) {
     texts.forEach((t) => piperSynth(t, lang).catch(() => {}));
   },
   unlock() {

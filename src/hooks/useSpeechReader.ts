@@ -1,24 +1,20 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toSentences, type ReadLang, type ReadSegment, type SegmentKind } from '../lib/chapterReading';
-import { deviceEngine, piperEngine, setPiperWaitingListener, type SpeechEngine } from '../lib/speechEngines';
+import { piperEngine, setPiperWaitingListener } from '../lib/speechEngines';
+import { PiperError } from '../lib/piper/client';
 
 /**
- * Reads a list of segments aloud, sentence by sentence, with either the
- * device's own voices (Web Speech API) or the Piper voice downloaded once.
- * Nothing leaves the device. Pause stops the voice; resume restarts the
- * current sentence, which behaves the same on every browser.
+ * Reads a list of segments aloud, sentence by sentence, with the Piper voice
+ * downloaded once to the device. Nothing leaves the device. Pause stops the
+ * voice; resume restarts the current sentence. If the voice fails, the reader
+ * pauses on that sentence and reports a short code, so it can be resumed.
  */
 
 export type ReaderStatus = 'idle' | 'playing' | 'paused';
-export type EngineId = 'device' | 'piper';
 
 export interface ReaderSettings {
   rate: number;
   follow: boolean;
-  voiceEl?: string;
-  voiceEn?: string;
-  /** Unset until the listener has chosen a voice the first time. */
-  engine?: EngineId;
 }
 
 const SETTINGS_KEY = 'n_mindfulness_reader_settings';
@@ -27,7 +23,11 @@ const DEFAULT_SETTINGS: ReaderSettings = { rate: 0.9, follow: true };
 export function loadReaderSettings(): ReaderSettings {
   try {
     const raw = localStorage.getItem(SETTINGS_KEY);
-    return raw ? { ...DEFAULT_SETTINGS, ...JSON.parse(raw) } : DEFAULT_SETTINGS;
+    const saved = raw ? JSON.parse(raw) : {};
+    return {
+      rate: typeof saved.rate === 'number' ? saved.rate : DEFAULT_SETTINGS.rate,
+      follow: typeof saved.follow === 'boolean' ? saved.follow : DEFAULT_SETTINGS.follow,
+    };
   } catch {
     return DEFAULT_SETTINGS;
   }
@@ -59,26 +59,6 @@ const RATE_FACTOR: Record<SegmentKind, number> = {
 };
 const PAUSE_BEFORE_PRACTICE = 1800;
 
-const speechSupported = () => typeof window !== 'undefined' && 'speechSynthesis' in window;
-
-const QUALITY = /natural|neural|online|enhanced|premium|google/i;
-
-function voicesFor(lang: ReadLang, all: SpeechSynthesisVoice[]) {
-  return all.filter((v) => v.lang.replace('_', '-').toLowerCase().startsWith(lang));
-}
-
-export function pickVoice(lang: ReadLang, all: SpeechSynthesisVoice[], preferred?: string) {
-  const list = voicesFor(lang, all);
-  if (!list.length) return null;
-  const chosen = preferred && list.find((v) => v.name === preferred);
-  if (chosen) return chosen;
-  const score = (v: SpeechSynthesisVoice) =>
-    (QUALITY.test(v.name) ? 2 : 0) +
-    (lang === 'en' && /en[-_]gb/i.test(v.lang) ? 1 : 0) +
-    (v.localService ? 0.5 : 0);
-  return [...list].sort((a, b) => score(b) - score(a))[0];
-}
-
 export interface ReaderMedia {
   title: string;
   artist: string;
@@ -88,50 +68,35 @@ export function useSpeechReader(
   segments: ReadSegment[],
   lang: ReadLang,
   settings: ReaderSettings,
-  /** Piper is used only when the listener chose it and the voice is on the device. */
-  piperReady: boolean,
+  /** The voice is on the device; reading can only start then. */
+  ready: boolean,
   media?: ReaderMedia
 ) {
   const [status, setStatus] = useState<ReaderStatus>('idle');
   const [index, setIndex] = useState(0);
   /** Set while the reader is silent between exercise steps: when the silence ends. */
   const [silence, setSilence] = useState<{ until: number; ms: number } | null>(null);
-  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
-  /** True while the Piper voice is still preparing the sentence (first use can take a few seconds). */
+  /** True while the voice is still preparing the sentence (first use can take a few seconds). */
   const [waiting, setWaiting] = useState(false);
+  /** Short code of the last failure, shown with a "try again"; cleared when reading resumes. */
+  const [errorCode, setErrorCode] = useState<number | null>(null);
 
   useEffect(() => {
     setPiperWaitingListener(setWaiting);
     return () => setPiperWaitingListener(null);
   }, []);
 
-  const usePiper = settings.engine === 'piper' && piperReady;
-  const isSupported = speechSupported() || usePiper;
-  const engine: SpeechEngine = usePiper ? piperEngine : deviceEngine;
-
   const indexRef = useRef(0);
   const sentenceRef = useRef(0);
   const tokenRef = useRef(0);
   const waitRef = useRef<{ timer: number; resolve: () => void } | null>(null);
-  const wakeRef = useRef<{ release: () => Promise<void> } | null>(null);
   const statusRef = useRef<ReaderStatus>('idle');
   const segRef = useRef(segments);
   const settingsRef = useRef(settings);
-  const voicesRef = useRef(voices);
-  const engineRef = useRef(engine);
+  const readyRef = useRef(ready);
   segRef.current = segments;
   settingsRef.current = settings;
-  voicesRef.current = voices;
-  engineRef.current = engine;
-
-  useEffect(() => {
-    if (!speechSupported()) return;
-    const synth = window.speechSynthesis;
-    const load = () => setVoices(synth.getVoices());
-    load();
-    synth.addEventListener?.('voiceschanged', load);
-    return () => synth.removeEventListener?.('voiceschanged', load);
-  }, []);
+  readyRef.current = ready;
 
   const setStatusBoth = (s: ReaderStatus) => {
     statusRef.current = s;
@@ -148,24 +113,6 @@ export function useSpeechReader(
       waitRef.current = { timer, resolve: () => resolve(false) };
     });
 
-  const keepAwake = async (on: boolean) => {
-    try {
-      const nav = navigator as Navigator & {
-        wakeLock?: { request: (type: 'screen') => Promise<{ release: () => Promise<void> }> };
-      };
-      if (on && !wakeRef.current && nav.wakeLock && document.visibilityState === 'visible') {
-        wakeRef.current = await nav.wakeLock.request('screen');
-      } else if (!on && wakeRef.current) {
-        await wakeRef.current.release();
-        wakeRef.current = null;
-      }
-    } catch {
-      wakeRef.current = null;
-    }
-  };
-  /** The device voice usually stops when the screen goes off; Piper audio keeps playing. */
-  const awake = (on: boolean) => keepAwake(on && engineRef.current === deviceEngine);
-
   const halt = () => {
     tokenRef.current += 1;
     if (waitRef.current) {
@@ -174,11 +121,10 @@ export function useSpeechReader(
       waitRef.current = null;
     }
     setSilence(null);
-    deviceEngine.cancel();
     piperEngine.cancel();
   };
 
-  /** The next few sentences after the current one, for the engine to prepare. */
+  /** The next few sentences after the current one, for the voice to prepare. */
   const upcoming = (i: number, s: number, n: number) => {
     const out: string[] = [];
     const segs = segRef.current;
@@ -197,7 +143,6 @@ export function useSpeechReader(
         setStatusBoth('idle');
         indexRef.current = 0;
         setIndex(0);
-        awake(false);
         return;
       }
       const seg = segs[i];
@@ -205,14 +150,20 @@ export function useSpeechReader(
       const s = sentenceRef.current;
 
       if (s < sentences.length) {
-        const eng = engineRef.current;
-        eng.prefetch?.(upcoming(i, s + 1, 3), lang);
-        const cfg = settingsRef.current;
-        await eng.speak(sentences[s], {
-          lang,
-          rate: Math.max(0.5, Math.min(1.5, cfg.rate * RATE_FACTOR[seg.kind])),
-          voice: pickVoice(lang, voicesRef.current, lang === 'el' ? cfg.voiceEl : cfg.voiceEn),
-        });
+        piperEngine.prefetch(upcoming(i, s + 1, 3), lang);
+        try {
+          await piperEngine.speak(sentences[s], {
+            lang,
+            rate: Math.max(0.5, Math.min(1.5, settingsRef.current.rate * RATE_FACTOR[seg.kind])),
+          });
+        } catch (e) {
+          if (token !== tokenRef.current) return;
+          // Stay on this sentence: "try again" resumes exactly here.
+          halt();
+          setStatusBoth('paused');
+          setErrorCode(e instanceof PiperError ? e.stage : 0);
+          return;
+        }
         if (token !== tokenRef.current) return;
         sentenceRef.current = s + 1;
         continue;
@@ -232,36 +183,35 @@ export function useSpeechReader(
   }, [lang]);
 
   const start = (token: number) => {
-    // Some engines need a moment after cancel before they accept new speech.
-    window.setTimeout(() => run(token), 60);
+    window.setTimeout(() => run(token), 30);
   };
 
   const playFrom = useCallback((i: number) => {
-    if (!isSupported || !segRef.current.length) return;
+    // Read through a ref: a start queued during the download runs after `ready` turns true.
+    if (!readyRef.current || !segRef.current.length) return;
     halt();
-    engineRef.current.unlock?.();
+    piperEngine.unlock();
+    setErrorCode(null);
     indexRef.current = Math.max(0, Math.min(i, segRef.current.length - 1));
     sentenceRef.current = 0;
     setIndex(indexRef.current);
     setStatusBoth('playing');
-    awake(true);
     start(tokenRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSupported, run]);
+  }, [run]);
 
   const pause = useCallback(() => {
     if (statusRef.current !== 'playing') return;
     halt();
     setStatusBoth('paused');
-    awake(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const resume = useCallback(() => {
     if (statusRef.current !== 'paused') return;
-    engineRef.current.unlock?.();
+    piperEngine.unlock();
+    setErrorCode(null);
     setStatusBoth('playing');
-    awake(true);
     start(tokenRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [run]);
@@ -271,8 +221,8 @@ export function useSpeechReader(
     indexRef.current = 0;
     sentenceRef.current = 0;
     setIndex(0);
+    setErrorCode(null);
     setStatusBoth('idle');
-    awake(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -287,28 +237,23 @@ export function useSpeechReader(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playFrom]);
 
-  // A changed rate, voice or engine applies at once: restart the current sentence.
+  // A changed speed applies at once: restart the current sentence.
   useEffect(() => {
     if (statusRef.current !== 'playing') return;
     halt();
     start(tokenRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [settings.rate, settings.voiceEl, settings.voiceEn, usePiper]);
+  }, [settings.rate]);
 
-  // The screen lock is released when the page is hidden; take it again on return.
+  // The voice was removed while reading: stop.
   useEffect(() => {
-    const onVis = () => {
-      if (document.visibilityState === 'visible' && statusRef.current === 'playing') awake(true);
-    };
-    document.addEventListener('visibilitychange', onVis);
-    return () => document.removeEventListener('visibilitychange', onVis);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (!ready && statusRef.current !== 'idle') stop();
+  }, [ready, stop]);
 
-  // Lock-screen and headset controls while the Piper voice plays.
+  // Lock-screen and headset controls.
   useEffect(() => {
     const ms = typeof navigator !== 'undefined' ? navigator.mediaSession : undefined;
-    if (!ms || !usePiper || status === 'idle') return;
+    if (!ms || status === 'idle') return;
     try {
       if (media && typeof MediaMetadata !== 'undefined') {
         ms.metadata = new MediaMetadata({ title: media.title, artist: media.artist, artwork: [{ src: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }] });
@@ -328,20 +273,17 @@ export function useSpeechReader(
         /* ignore */
       }
     };
-  }, [usePiper, status, media?.title, media?.artist, pause, resume, jump]);
+  }, [status, media?.title, media?.artist, pause, resume, jump]);
 
   // New text (another chapter or language) or leaving the page: stop.
   useEffect(() => () => stop(), [segments, stop]);
 
   return {
-    isSupported,
-    usingPiper: usePiper,
     status,
     index,
     silence,
     waiting: waiting && status === 'playing',
-    voices: voicesFor(lang, voices),
-    voicesLoaded: voices.length > 0,
+    errorCode,
     playFrom,
     pause,
     resume,

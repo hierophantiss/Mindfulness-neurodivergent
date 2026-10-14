@@ -153,8 +153,17 @@ async function createPhonemizer(): Promise<PhonemizeModule> {
   });
 }
 
+/** espeak-ng keeps memory between runs; a fresh module every so often keeps phones from running out. */
+const RECYCLE_AFTER = 25;
+let phonemizerUses = 0;
+
 async function phonemize(text: string, voice: string, retry = true): Promise<number[]> {
+  if (phonemizerUses >= RECYCLE_AFTER) {
+    phonemizer = null;
+    phonemizerUses = 0;
+  }
   phonemizer ??= createPhonemizer();
+  phonemizerUses++;
   const mod = await phonemizer;
   try {
     return await new Promise<number[]>((resolve, reject) => {
@@ -165,6 +174,7 @@ async function phonemize(text: string, voice: string, retry = true): Promise<num
     });
   } catch (e) {
     phonemizer = null;
+    phonemizerUses = 0;
     if (retry) return phonemize(text, voice, false);
     throw e;
   } finally {
@@ -196,9 +206,23 @@ function toWav(pcm: Float32Array, sampleRate: number): ArrayBuffer {
   return buf;
 }
 
+/** Where a failure happened, so the player can show a short code instead of a technical message. */
+class StageError extends Error {
+  constructor(public stage: number, cause: unknown) {
+    super(String((cause as Error)?.message || cause));
+  }
+}
+const stage = async <T,>(n: number, f: () => Promise<T>) => {
+  try {
+    return await f();
+  } catch (e) {
+    throw e instanceof StageError ? e : new StageError(n, e);
+  }
+};
+
 async function synth(lang: Lang, text: string) {
-  const s = await ensureVoice(lang);
-  const ids = await phonemize(text, s.config.espeak.voice);
+  const s = await stage(1, () => ensureVoice(lang));
+  const ids = await stage(2, () => phonemize(text, s.config.espeak.voice));
   const { noise_scale, length_scale, noise_w } = s.config.inference;
   const feeds: Record<string, ort.Tensor> = {
     input: new ort.Tensor('int64', BigInt64Array.from(ids.map(BigInt)), [1, ids.length]),
@@ -208,8 +232,10 @@ async function synth(lang: Lang, text: string) {
   if (s.config.speaker_id_map && Object.keys(s.config.speaker_id_map).length) {
     feeds.sid = new ort.Tensor('int64', BigInt64Array.from([0n]), [1]);
   }
-  const out = await s.ort.run(feeds);
-  return toWav(out.output.data as Float32Array, s.config.audio.sample_rate);
+  const out = await stage(3, () => s.ort.run(feeds));
+  const wav = toWav(out.output.data as Float32Array, s.config.audio.sample_rate);
+  out.output.dispose?.();
+  return wav;
 }
 
 // One job at a time: the model and the phonemizer are single instances.
@@ -231,7 +257,7 @@ self.onmessage = (e: MessageEvent<Req>) => {
         post({ id: req.id, ok: true, result: wav }, [wav]);
       }
     } catch (err) {
-      post({ id: req.id, ok: false, error: String((err as Error)?.message || err) });
+      post({ id: req.id, ok: false, error: String((err as Error)?.message || err), stage: (err as StageError).stage ?? 0 });
     }
   });
 };

@@ -14,7 +14,7 @@ import { cn } from '../lib/utils';
 import InteractiveRenderer from '../components/InteractiveRenderer';
 import ChapterReaderBar from '../components/ChapterReaderBar';
 import { buildChapterSegments } from '../lib/chapterReading';
-import { useSpeechReader, loadReaderSettings, saveReaderSettings, pickVoice, type ReaderSettings } from '../hooks/useSpeechReader';
+import { useSpeechReader, loadReaderSettings, saveReaderSettings, type ReaderSettings } from '../hooks/useSpeechReader';
 import { usePiperVoice } from '../hooks/usePiperVoice';
 
 const READER_POS_KEY = 'n_mindfulness_reader_pos';
@@ -261,7 +261,6 @@ export default function ChapterDetail() {
     [chapter, currentLang]
   );
   const reader = useSpeechReader(segments, currentLang, readerSettings, piper.ready, readerMedia);
-  const deviceSpeech = typeof window !== 'undefined' && 'speechSynthesis' in window;
   const readerActive = reader.status !== 'idle';
   const activeSeg = readerActive ? segments[reader.index] : undefined;
   const posId = chapter ? `${currentLang}-${chapter.num}` : '';
@@ -704,7 +703,7 @@ export default function ChapterDetail() {
         </AnimatePresence>
       </main>
 
-      {(deviceSpeech || piper.supported) && segments.length > 0 && (
+      {piper.supported && segments.length > 0 && (
         <ChapterReaderBar
           lang={currentLang}
           status={reader.status}
@@ -713,12 +712,9 @@ export default function ChapterDetail() {
           kind={activeSeg?.kind}
           silence={reader.silence}
           waiting={reader.waiting}
+          errorCode={reader.errorCode}
           piper={piper}
-          deviceSupported={deviceSpeech}
           hasResume={!!savedKey && segments.some((sg) => sg.key === savedKey) && segments[0].key !== savedKey}
-          noVoice={reader.voicesLoaded && reader.voices.length === 0}
-          voices={reader.voices}
-          voiceName={pickVoice(currentLang, reader.voices, currentLang === 'el' ? readerSettings.voiceEl : readerSettings.voiceEn)?.name}
           settings={readerSettings}
           reduceMotion={reduceMotion}
           onStart={() => reader.playFrom(firstSegmentOfPage(page))}
