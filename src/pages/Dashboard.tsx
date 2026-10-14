@@ -18,6 +18,7 @@ import { AFFIRMATIONS } from '../data/affirmations';
 import { FourfoldAxisHero } from '../components/FourfoldAxisHero';
 import { useSmartSuggestion } from '../hooks/useSmartSuggestion';
 import { useInstallApp } from '../hooks/useInstallApp';
+import HomeCheckin from '../components/HomeCheckin';
 
 const baseCardClasses = "backdrop-blur-xl border border-white/[0.04] border-t-white/[0.08] border-l-white/[0.06] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.05)] hover:shadow-[0_16px_48px_-12px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(255,255,255,0.1)] hover:-translate-y-1 transition-all duration-500 rounded-[28px]";
 const innerIconClasses = "rounded-2xl bg-gradient-to-b from-white/[0.06] to-transparent border border-white/[0.02] border-t-white/[0.1] shadow-[0_4px_12px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.08)] flex items-center justify-center text-white/50 transition-colors duration-500";
@@ -224,14 +225,14 @@ export default function Dashboard() {
                 <p className="text-white/60 text-sm italic">
                   {language === 'el' 
                     ? mode === 'state+history' && state === 'hyper'
-                      ? `Το σύστημά σου χρειάζεται γείωση — ο άξονας ${quietestAxis === 'body' ? 'Σώμα' : quietestAxis === 'breath' ? 'Αναπνοή' : quietestAxis === 'attention' ? 'Προσοχή' : 'Χώρος'} περιμένει ήσυχα.`
+                      ? `Για την ένταση βοηθάει η γείωση — ο άξονας ${quietestAxis === 'body' ? 'Σώμα' : quietestAxis === 'breath' ? 'Αναπνοή' : quietestAxis === 'attention' ? 'Προσοχή' : 'Χώρος'} περιμένει ήσυχα.`
                       : mode === 'state+history' && state === 'hypo'
-                      ? `Ώρα για απαλή ενεργοποίηση — ο άξονας ${quietestAxis === 'body' ? 'Σώμα' : quietestAxis === 'breath' ? 'Αναπνοή' : quietestAxis === 'attention' ? 'Προσοχή' : 'Χώρος'} περιμένει ήσυχα.`
+                      ? `Για το μούδιασμα βοηθάει μια απαλή ενεργοποίηση — ο άξονας ${quietestAxis === 'body' ? 'Σώμα' : quietestAxis === 'breath' ? 'Αναπνοή' : quietestAxis === 'attention' ? 'Προσοχή' : 'Χώρος'} περιμένει ήσυχα.`
                       : `Ο άξονας ${quietestAxis === 'body' ? 'Σώμα' : quietestAxis === 'breath' ? 'Αναπνοή' : quietestAxis === 'attention' ? 'Προσοχή' : 'Χώρος'} περιμένει ήσυχα.`
                     : mode === 'state+history' && state === 'hyper'
-                      ? `Your system needs grounding — the ${quietestAxis === 'body' ? 'Body' : quietestAxis === 'breath' ? 'Breath' : quietestAxis === 'attention' ? 'Attention' : 'Space'} axis is waiting quietly.`
+                      ? `For tension, grounding helps — the ${quietestAxis === 'body' ? 'Body' : quietestAxis === 'breath' ? 'Breath' : quietestAxis === 'attention' ? 'Attention' : 'Space'} axis is waiting quietly.`
                       : mode === 'state+history' && state === 'hypo'
-                      ? `Time for gentle activation — the ${quietestAxis === 'body' ? 'Body' : quietestAxis === 'breath' ? 'Breath' : quietestAxis === 'attention' ? 'Attention' : 'Space'} axis is waiting quietly.`
+                      ? `For numbness, gentle activation helps — the ${quietestAxis === 'body' ? 'Body' : quietestAxis === 'breath' ? 'Breath' : quietestAxis === 'attention' ? 'Attention' : 'Space'} axis is waiting quietly.`
                       : `The ${quietestAxis === 'body' ? 'Body' : quietestAxis === 'breath' ? 'Breath' : quietestAxis === 'attention' ? 'Attention' : 'Space'} axis is waiting quietly.`}
                 </p>
               </div>
@@ -286,6 +287,15 @@ export default function Dashboard() {
             {currentDate}
           </motion.span>
         </div>
+
+        {/* How do you feel right now? */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.3 }}
+        >
+          <HomeCheckin />
+        </motion.div>
 
         {/* 3. The Core Modules (Bento Grid) */}
         <motion.div 
