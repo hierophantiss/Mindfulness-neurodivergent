@@ -33,7 +33,7 @@ LABELS = {
         'axis': {'BODY':'body','BREATH':'breath','ATTENTION':'attention','SPACE':'space'},
         'breath': 'Breath', 'reflection': 'Reflection', 'exercise': 'Exercise',
         'day': 'Day', 'toc': 'Table of Contents', 'intro': 'Introduction',
-        'running': 'A Mindfulness Guide for Neurodivergent Individuals',
+        'running': 'A Mindfulness Guide for Neurodivergents',
         'pocket': ['GROUND — LONG EXHALE — LABEL — OPEN',
                    'GRAVITY — BREATH — SPACE — ONE STEP'],
         'jprompt': 'What I noticed today:',

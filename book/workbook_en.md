@@ -1,5 +1,5 @@
 ---
-title: "A Mindfulness Guide for Neurodivergent Individuals"
+title: "A Mindfulness Guide for Neurodivergents"
 subtitle: "Presence Practice Workbook"
 author: "Theodoros Bairaktaris"
 date: "2026"
@@ -8,7 +8,7 @@ rights: "© 2025–2026 — CC BY-NC-ND 4.0 — Second edition"
 description: "Based on the Fourfold Axis: Body · Breath · Attention · Space"
 ---
 
-# A Mindfulness Guide for Neurodivergent Individuals
+# A Mindfulness Guide for Neurodivergents
 
 ## Presence Practice Workbook
 
