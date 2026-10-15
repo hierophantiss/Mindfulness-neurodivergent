@@ -7,12 +7,12 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
   "en": [
     {
       "num": 1,
-      "title": "Body / Earth",
+      "title": "Body",
       "sub": "The Stability of \"Here\"",
       "tag": "Here",
       "color": "var(--color-axis-body)",
       "hex": "#7A9E7E",
-      "icon": "⛰️",
+      "icon": "⚓",
       "video": "/Basic.mp4",
       "summary": "The body is the undeniable ground of the present moment. You learn to perceive gravity, your posture and your contact with space, as the starting point of every practice.",
       "tldr": "The body is the only place that is always \"Here\". Gravity is the direct proof of your presence. Feel your weight, and the mind finds somewhere to stand.",
@@ -81,7 +81,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
     },
     {
       "num": 2,
-      "title": "Breath / Air",
+      "title": "Breath",
       "sub": "The Rhythm of Life",
       "tag": "Energy",
       "color": "var(--color-axis-breath)",
@@ -186,12 +186,12 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
     },
     {
       "num": 3,
-      "title": "Attention / Fire",
+      "title": "Attention",
       "sub": "The Lens of Consciousness",
       "tag": "Direction",
       "color": "var(--color-axis-focus)",
       "hex": "#C8922A",
-      "icon": "🔥",
+      "icon": "🔦",
       "video": "/Basic.mp4",
       "summary": "Attention is the lens of the mind: it can focus, open, scatter or get stuck. You learn to recognise where it is and to bring it back gently, without self-criticism.",
       "tldr": "Attention is the lens: it focuses, opens, scatters, gets stuck. You do not scold it; you see it and bring it back gently.",
@@ -269,7 +269,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
     },
     {
       "num": 4,
-      "title": "Space / Water",
+      "title": "Space",
       "sub": "Open Awareness",
       "tag": "Opening",
       "color": "var(--color-axis-space)",
@@ -393,7 +393,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
     },
     {
       "num": 5,
-      "title": "Neurodivergent Mind",
+      "title": "The Neurodivergent Mind",
       "sub": "Defence, Racing, the Mask",
       "tag": "Focusing",
       "color": "var(--teal-med)",
@@ -562,7 +562,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
     {
       "num": 7,
       "title": "The New Driver",
-      "sub": "Avoidance & Procrastination",
+      "sub": "Avoidance and Procrastination",
       "tag": "Starting",
       "color": "var(--teal-med)",
       "hex": "#2E8B9A",
@@ -651,7 +651,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
     {
       "num": 8,
       "title": "When the Wave Rises",
-      "sub": "Anxiety & Overload",
+      "sub": "Anxiety, Overload",
       "tag": "Support",
       "color": "var(--terra)",
       "hex": "#C07050",
@@ -723,7 +723,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
     },
     {
       "num": 9,
-      "title": "Worksheet",
+      "title": "Presence Worksheet",
       "sub": "The Practice of Presence",
       "tag": "Application",
       "color": "var(--teal-dark)",
@@ -845,8 +845,8 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
     },
     {
       "num": 11,
-      "title": "Science & Wisdom",
-      "sub": "The Background",
+      "title": "The Background",
+      "sub": "Science and Wisdom",
       "tag": "Roots",
       "color": "var(--lav)",
       "hex": "#B5A7D0",
@@ -922,12 +922,12 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
   "el": [
     {
       "num": 1,
-      "title": "Σώμα / Γη",
+      "title": "Σώμα",
       "sub": "Η Σταθερότητα του «Εδώ»",
       "tag": "Εδώ",
       "color": "var(--color-axis-body)",
       "hex": "#7A9E7E",
-      "icon": "⛰️",
+      "icon": "⚓",
       "video": "/Basic.mp4",
       "summary": "Το σώμα είναι η αναμφίβολη βάση της παρούσας στιγμής. Μαθαίνεις να αντιλαμβάνεσαι τη βαρύτητα, τη στάση σου και την επαφή με τον χώρο, ως αφετηρία κάθε πρακτικής.",
       "tldr": "Το σώμα είναι το μοναδικό σημείο που είναι πάντα στο «Εδώ». Η βαρύτητα είναι η άμεση απόδειξη της παρουσίας σου. Νιώσε το βάρος σου, και ο νους βρίσκει πού να σταθεί.",
@@ -996,7 +996,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
     },
     {
       "num": 2,
-      "title": "Αναπνοή / Αέρας",
+      "title": "Αναπνοή",
       "sub": "Ο Ρυθμός της Ζωής",
       "tag": "Ενέργεια",
       "color": "var(--color-axis-breath)",
@@ -1101,12 +1101,12 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
     },
     {
       "num": 3,
-      "title": "Προσοχή / Φωτιά",
+      "title": "Προσοχή",
       "sub": "Ο Φακός της Συνείδησης",
       "tag": "Κατεύθυνση",
       "color": "var(--color-axis-focus)",
       "hex": "#C8922A",
-      "icon": "🔥",
+      "icon": "🔦",
       "video": "/Basic.mp4",
       "summary": "Η προσοχή είναι ο φακός του νου: μπορεί να εστιάζει, να ανοίγει, να διασπάται ή να αγκυλώνεται. Μαθαίνεις να αναγνωρίζεις πού βρίσκεται και να την επιστρέφεις απαλά, χωρίς αυτοκριτική.",
       "tldr": "Η προσοχή είναι ο φακός: εστιάζει, ανοίγει, διασπάται, αγκυλώνεται. Δεν τη μαλώνεις· τη βλέπεις και την επιστρέφεις απαλά.",
@@ -1184,7 +1184,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
     },
     {
       "num": 4,
-      "title": "Χώρος / Νερό",
+      "title": "Χώρος",
       "sub": "Η Ανοιχτή Επίγνωση",
       "tag": "Άνοιγμα",
       "color": "var(--color-axis-space)",
@@ -1308,7 +1308,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
     },
     {
       "num": 5,
-      "title": "Νευροδιαφορετικός Νους",
+      "title": "Ο Νευροδιαφορετικός Νους",
       "sub": "Άμυνα, Τρέξιμο, Μάσκα",
       "tag": "Μοτίβα",
       "color": "var(--gold-dark)",
@@ -1386,7 +1386,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
     },
     {
       "num": 6,
-      "title": "Καθημερινή Ζωή",
+      "title": "Στην Καθημερινή Ζωή",
       "sub": "Αυτορρύθμιση",
       "tag": "Ρύθμιση",
       "color": "var(--teal-dark)",
@@ -1478,7 +1478,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
     {
       "num": 7,
       "title": "Ο Νέος Οδηγός",
-      "sub": "Αποφυγή & Αναβολή",
+      "sub": "Αποφυγή και Αναβολή",
       "tag": "Εκκίνηση",
       "color": "var(--teal-med)",
       "hex": "#2E8B9A",
@@ -1567,7 +1567,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
     {
       "num": 8,
       "title": "Όταν το Κύμα Ανεβαίνει",
-      "sub": "Άγχος & Υπερφόρτωση",
+      "sub": "Άγχος, Υπερφόρτωση",
       "tag": "Στήριξη",
       "color": "var(--terra)",
       "hex": "#C07050",
@@ -1639,7 +1639,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
     },
     {
       "num": 9,
-      "title": "Φύλλο Εργασίας",
+      "title": "Φύλλο Εργασίας της Παρουσίας",
       "sub": "Η Πρακτική της Παρουσίας",
       "tag": "Εφαρμογή",
       "color": "var(--teal-dark)",
@@ -1761,8 +1761,8 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
     },
     {
       "num": 11,
-      "title": "Επιστήμη & Σοφία",
-      "sub": "Το Υπόβαθρο",
+      "title": "Το Υπόβαθρο",
+      "sub": "Επιστήμη και Σοφία",
       "tag": "Βάθος",
       "color": "var(--lav)",
       "hex": "#B5A7D0",

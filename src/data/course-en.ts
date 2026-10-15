@@ -1,6 +1,6 @@
 export const COURSE_EN: Record<number, any> = {
   "1": {
-    "title": "Body / Earth: Gravity & Axis",
+    "title": "Body: Gravity & Axis",
     "days": [
       {
         "title": "Gravity vs. \"Autopilot\"",
@@ -132,7 +132,7 @@ export const COURSE_EN: Record<number, any> = {
     ]
   },
   "2": {
-    "title": "Body / Earth: Deeper Realization",
+    "title": "Body: Deeper Realization",
     "days": [
       {
         "title": "Scan of All Points & Pause",
@@ -267,7 +267,7 @@ export const COURSE_EN: Record<number, any> = {
     ]
   },
   "3": {
-    "title": "Breath / Air: The Current of Life",
+    "title": "Breath: The Current of Life",
     "days": [
       {
         "title": "Introduction to the Breath",
@@ -400,7 +400,7 @@ export const COURSE_EN: Record<number, any> = {
     ]
   },
   "4": {
-    "title": "Breath / Air: Movement & Kindness",
+    "title": "Breath: Movement & Kindness",
     "days": [
       {
         "title": "Review: Nostrils & 5-5",
@@ -533,7 +533,7 @@ export const COURSE_EN: Record<number, any> = {
     ]
   },
   "5": {
-    "title": "Attention / Fire: Focus and Light",
+    "title": "Attention: Focus and Light",
     "days": [
       {
         "title": "Introduction to Attention",
@@ -667,7 +667,7 @@ export const COURSE_EN: Record<number, any> = {
     ]
   },
   "6": {
-    "title": "Attention / Fire: Establishing Calm",
+    "title": "Attention: Establishing Calm",
     "days": [
       {
         "title": "Closed and Open Attention",
@@ -801,7 +801,7 @@ export const COURSE_EN: Record<number, any> = {
     ]
   },
   "7": {
-    "title": "Space / Water: Open Awareness",
+    "title": "Space: Open Awareness",
     "days": [
       {
         "title": "The 4 Centers & Open Space",
@@ -928,7 +928,7 @@ export const COURSE_EN: Record<number, any> = {
     ]
   },
   "8": {
-    "title": "Space / Water: The Open Horizon",
+    "title": "Space: The Open Horizon",
     "days": [
       {
         "title": "The Mind Is Not Broken",
