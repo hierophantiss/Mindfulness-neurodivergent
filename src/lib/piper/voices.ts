@@ -15,7 +15,7 @@ export interface PiperVoice {
 
 export const PIPER_VOICES: Record<ReadLang, PiperVoice> = {
   el: { id: 'el_GR-rapunzelina-low', path: 'el/el_GR/rapunzelina/low/el_GR-rapunzelina-low.onnx', downloadMb: 90 },
-  en: { id: 'en_GB-cori-medium', path: 'en/en_GB/cori/medium/en_GB-cori-medium.onnx', downloadMb: 90 },
+  en: { id: 'en_US-hfc_female-medium', path: 'en/en_US/hfc_female/medium/en_US-hfc_female-medium.onnx', downloadMb: 90 },
 };
 
 export const PIPER_MODEL_BASE = 'https://huggingface.co/rhasspy/piper-voices/resolve/main';
@@ -50,5 +50,23 @@ export async function piperIsStored(lang: ReadLang) {
     return hits.every(Boolean);
   } catch {
     return false;
+  }
+}
+
+/**
+ * Removes voice models that are no longer used (e.g. the earlier British
+ * English voice), so a changed voice does not leave ~60 MB behind.
+ * The shared runtime files are kept.
+ */
+export async function pruneOldVoices() {
+  if (typeof caches === 'undefined') return;
+  try {
+    const keep = new Set((Object.keys(PIPER_VOICES) as ReadLang[]).flatMap(l => [piperModelUrl(l), `${piperModelUrl(l)}.json`]));
+    const cache = await caches.open(PIPER_CACHE);
+    for (const req of await cache.keys()) {
+      if (req.url.startsWith(PIPER_MODEL_BASE) && !keep.has(req.url)) await cache.delete(req);
+    }
+  } catch {
+    // nothing to clean, or storage unavailable
   }
 }

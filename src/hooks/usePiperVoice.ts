@@ -1,6 +1,9 @@
 import { useEffect, useSyncExternalStore } from 'react';
 import type { ReadLang } from '../lib/chapterReading';
 import { piperDownload, piperRemove, piperStored, piperSupported } from '../lib/piper/client';
+import { pruneOldVoices } from '../lib/piper/voices';
+
+let pruned = false;
 
 /**
  * Whether the Piper voice for a language is on the device, and its download.
@@ -28,6 +31,7 @@ const subscribe = (l: () => void) => {
 
 async function refresh(lang: ReadLang) {
   if (state[lang].kind === 'downloading') return;
+  if (!pruned) { pruned = true; await pruneOldVoices(); }
   set(lang, (await piperStored(lang)) ? { kind: 'ready' } : { kind: 'absent' });
 }
 
