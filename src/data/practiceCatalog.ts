@@ -128,3 +128,52 @@ export function pickForTag(tag: CheckinTag, kinds: PracticeKind[], exclude: stri
   });
   return out;
 }
+
+// ── Picks that follow what the person actually does ─────────────────────
+
+export type UsageCounts = Record<string, number>;
+
+// Completed practices per id, counting only days before today, so the
+// picks stay the same for the whole day.
+export function usageFromLogs(logs: { itemId?: string; timestamp: string; completed?: boolean }[], now = new Date()): UsageCounts {
+  const today = now.toISOString().slice(0, 10);
+  const counts: UsageCounts = {};
+  for (const l of logs) {
+    if (!l.itemId || l.completed === false || l.timestamp.slice(0, 10) >= today) continue;
+    counts[l.itemId] = (counts[l.itemId] || 0) + 1;
+  }
+  return counts;
+}
+
+// A practice can be logged under its own id or under the id in its path
+// (a microdose that opens a guided exercise).
+const usesOf = (i: CatalogItem, counts: UsageCounts) => {
+  const pathId = i.path.split('/').pop() || '';
+  return (counts[i.id] || 0) + (pathId !== i.id ? counts[pathId] || 0 : 0);
+};
+
+// With history: first the practice done most for this state (the familiar
+// one), then ones not tried yet (gentle discovery). Without history: the
+// daily rotation.
+export function pickWithUsage(
+  tag: CheckinTag, kinds: PracticeKind[], counts: UsageCounts, exclude: string[] = [], day = dayOfYear(),
+): CatalogItem[] {
+  if (!kinds.length) return [];
+  const pool = forTag(tag).filter(i => !exclude.includes(i.path));
+  const used = pool.filter(i => usesOf(i, counts) > 0).sort((a, b) => usesOf(b, counts) - usesOf(a, counts));
+  if (!used.length) return pickForTag(tag, kinds, exclude, day);
+
+  const out: CatalogItem[] = [used[0]];
+  const untried = pool.filter(i => usesOf(i, counts) === 0);
+  const otherKinds = kinds.filter(k => k !== used[0].kind);
+  const wanted = otherKinds.length ? otherKinds : kinds;
+  for (let k = 0; out.length < kinds.length && k < kinds.length * 2; k++) {
+    const kind = wanted[k % wanted.length];
+    let cands = untried.filter(i => i.kind === kind && !out.includes(i));
+    if (!cands.length) cands = untried.filter(i => !out.includes(i));
+    if (!cands.length) cands = pool.filter(i => !out.includes(i));
+    if (!cands.length) break;
+    out.push(cands[(day + k * 7) % cands.length]);
+  }
+  return out;
+}

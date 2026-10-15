@@ -7,27 +7,29 @@ import { useAccessibility } from '../hooks/useAccessibility';
 import { cn } from '../lib/utils';
 import {
   CHECKIN_OPTIONS, AXIS_LABEL, AXIS_COLOR, SOS_PATH, getCheckinOption, getCheckinActions,
-  getAllForChoice, saveCheckinState, readRecentCheckinState, type CheckinChoice,
+  saveCheckinState, readRecentCheckinState, type CheckinChoice,
   CHECKIN_DETAILS, DETAIL_AFTER_USES, readCheckinUses, countCheckinUse,
 } from '../data/stateCheckin';
-import { KIND_LABEL, type PracticeKind } from '../data/practiceCatalog';
+import { usageFromLogs } from '../data/practiceCatalog';
+import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 
-const KIND_ORDER: PracticeKind[] = ['dose', 'breath', 'voice', 'movement', 'guided'];
-
-// One tap from the home page: how do you feel right now?
+// "How do you feel right now?" — one button on the home page that opens
+// the four choices.
 export default function HomeCheckin() {
   const { language } = useLanguage();
   const lang = language === 'en' ? 'en' : 'el';
   const { reduceMotion } = useAccessibility();
   const [selected, setSelected] = useState<CheckinChoice | null>(readRecentCheckinState);
   const [open, setOpen] = useState(false);
-  const [showAll, setShowAll] = useState(false);
+  const [chipsOpen, setChipsOpen] = useState(false);
+  const { logs } = useActivityTracker();
+  const counts = useMemo(() => usageFromLogs(logs), [logs]);
   const [uses, setUses] = useState(readCheckinUses);
   const [detailOpen, setDetailOpen] = useState(false);
   const [detailId, setDetailId] = useState<string | null>(null);
 
   const choose = (id: CheckinChoice) => {
-    setShowAll(false);
+    setChipsOpen(false);
     setDetailOpen(false);
     setDetailId(null);
     if (id === selected) {
@@ -41,23 +43,29 @@ export default function HomeCheckin() {
   };
 
   const opt = selected ? getCheckinOption(selected) : null;
-  const actions = useMemo(() => (selected ? getCheckinActions(selected) : []), [selected]);
-  const groups = useMemo(() => {
-    if (!selected) return [];
-    const all = getAllForChoice(selected);
-    return KIND_ORDER
-      .map(kind => ({ kind, items: all.filter(i => i.kind === kind).sort((a, b) => a.seconds - b.seconds) }))
-      .filter(g => g.items.length);
-  }, [selected]);
-  const total = groups.reduce((n, g) => n + g.items.length, 0);
+  const actions = useMemo(() => (selected ? getCheckinActions(selected, counts) : []), [selected, counts]);
   const details = selected && selected !== 'unsure' && uses > DETAIL_AFTER_USES ? CHECKIN_DETAILS[selected] : undefined;
   const detail = details?.find(d => d.id === detailId);
   const question = lang === 'el' ? 'Πώς νιώθεις τώρα;' : 'How do you feel right now?';
 
   return (
     <div className="flex flex-col gap-3">
-      <span className="text-[13px] text-white/45 tracking-wide">{question}</span>
+      <button
+        onClick={() => setChipsOpen(o => !o)}
+        aria-expanded={chipsOpen}
+        className={cn(
+          "w-full min-h-[48px] px-5 rounded-full border flex items-center justify-between gap-3 text-left transition-colors active:scale-[0.99]",
+          chipsOpen ? "bg-white/[0.05] border-white/[0.12]" : "bg-white/[0.03] border-white/[0.07] hover:bg-white/[0.05]"
+        )}
+      >
+        <span className="text-[14px] text-white/70">
+          {question}
+          {opt && <span className="text-white/90"> · {opt.label[lang]}</span>}
+        </span>
+        <ChevronDown size={16} className={cn("text-white/40 shrink-0 transition-transform", chipsOpen && "rotate-180")} />
+      </button>
 
+      {chipsOpen && (
       <div className="grid grid-cols-2 min-[400px]:grid-cols-4 gap-2" role="group" aria-label={question}>
         {CHECKIN_OPTIONS.map(o => {
           const isSel = o.id === selected;
@@ -81,6 +89,7 @@ export default function HomeCheckin() {
           );
         })}
       </div>
+      )}
 
       <AnimatePresence initial={false}>
         {opt && open && (
@@ -197,41 +206,6 @@ export default function HomeCheckin() {
               </div>
             )}
 
-            {total > 0 && (
-              <button
-                onClick={() => setShowAll(s => !s)}
-                aria-expanded={showAll}
-                className="flex items-center justify-center gap-1.5 py-1 text-[12px] text-white/40 hover:text-white/70 transition-colors"
-              >
-                {showAll
-                  ? (lang === 'el' ? 'Λιγότερες' : 'Fewer')
-                  : (lang === 'el' ? `Όλες οι κατάλληλες ασκήσεις (${total})` : `All suitable practices (${total})`)}
-                <ChevronDown size={14} className={cn("transition-transform", showAll && "rotate-180")} />
-              </button>
-            )}
-
-            {showAll && (
-              <div className="flex flex-col gap-4">
-                {groups.map(g => (
-                  <div key={g.kind} className="flex flex-col gap-1">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-white/35 mb-1">{KIND_LABEL[g.kind][lang]}</span>
-                    {g.items.map(item => (
-                      <Link
-                        key={item.path}
-                        to={item.path}
-                        className="flex items-center justify-between gap-3 py-2 border-b border-white/[0.04] text-[13px] text-white/70 hover:text-white/90 transition-colors"
-                      >
-                        <span className="flex items-center gap-2 min-w-0">
-                          <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: AXIS_COLOR[item.axis] }} />
-                          <span className="min-w-0">{item.title[lang]}</span>
-                        </span>
-                        <span className="text-[11px] text-white/35 shrink-0">{item.dur[lang]}</span>
-                      </Link>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            )}
           </motion.div>
         )}
       </AnimatePresence>

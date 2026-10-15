@@ -4,7 +4,7 @@
 // from the practice catalogue, so every tagged exercise can be offered.
 
 import type { Axis } from './types';
-import { pickForTag, forTag, type CatalogItem, type PracticeKind } from './practiceCatalog';
+import { pickWithUsage, forTag, type CatalogItem, type PracticeKind, type UsageCounts } from './practiceCatalog';
 
 export type CheckinState = 'hyper' | 'hypo' | 'balanced';
 export type CheckinChoice = CheckinState | 'unsure';
@@ -104,11 +104,12 @@ export const getCheckinOption = (id: CheckinChoice) => CHECKIN_OPTIONS.find(o =>
 
 const asAction = (i: CatalogItem): CheckinAction => ({ title: i.title, path: i.path, dur: i.dur });
 
-// The practices shown right away: one per kind (changing daily), then the pinned ones.
-export function getCheckinActions(id: CheckinChoice): CheckinAction[] {
+// The practices shown right away: one per kind, then the pinned ones.
+// With usage counts, the picks follow what the person has done before.
+export function getCheckinActions(id: CheckinChoice, counts: UsageCounts = {}): CheckinAction[] {
   const opt = getCheckinOption(id);
   const pinnedPaths = opt.pinned.map(p => p.path);
-  return [...pickForTag(id, opt.kinds, pinnedPaths).map(asAction), ...opt.pinned];
+  return [...pickWithUsage(id, opt.kinds, counts, pinnedPaths).map(asAction), ...opt.pinned];
 }
 
 // Every practice that suits this choice, for "see all".

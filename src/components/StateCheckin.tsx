@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 import { CatInfinityAvatar } from './CatInfinityAvatar';
 import { cn } from '../lib/utils';
+import { useActivityTracker } from '../contexts/ActivityTrackerContext';
+import { usageFromLogs } from '../data/practiceCatalog';
 import { CHECKIN_OPTIONS, AXIS_LABEL, AXIS_COLOR, getCheckinOption, getCheckinActions, saveCheckinState, type CheckinChoice } from '../data/stateCheckin';
 
 export default function StateCheckin({ onComplete, inline = false }: { onComplete: () => void, inline?: boolean }) {
@@ -33,7 +35,9 @@ export default function StateCheckin({ onComplete, inline = false }: { onComplet
     : "w-full max-w-md bg-stone-900 border border-stone-800 rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden";
 
   const selected = selectedState ? getCheckinOption(selectedState) : null;
-  const actions = React.useMemo(() => (selectedState ? getCheckinActions(selectedState) : []), [selectedState]);
+  const { logs } = useActivityTracker();
+  const counts = React.useMemo(() => usageFromLogs(logs), [logs]);
+  const actions = React.useMemo(() => (selectedState ? getCheckinActions(selectedState, counts) : []), [selectedState, counts]);
 
   return (
     <motion.div
