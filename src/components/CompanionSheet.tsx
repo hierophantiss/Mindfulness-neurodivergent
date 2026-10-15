@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { useCompanion } from '../hooks/useCompanion';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { CHAPTERS_DATA, CHAPTER_PRACTICES } from '../data/chapters';
-import { MOOD_ROUTES } from '../data/moods';
 import { KNOWLEDGE_CONCEPTS } from '../data/concepts';
 import { KNOWLEDGE_FAQ } from '../data/faq';
 import { COURSE_EL as D_EL } from '../data/course-el';
@@ -18,7 +17,7 @@ import { CatInfinityAvatar } from './CatInfinityAvatar';
 import StateCheckin from './StateCheckin';
 
 /* Companion Sheet states/flows */
-type FlowState = 'main' | 'mood' | 'hub' | 'explore' | 'options' | 'questionnaire' | 'checkin';
+type FlowState = 'main' | 'hub' | 'explore' | 'options' | 'questionnaire' | 'checkin';
 
 const getDateString = (date: Date): string => {
   return date.toISOString().split('T')[0];
@@ -63,7 +62,6 @@ export default function CompanionSheet() {
   const renderContent = () => {
     switch (flow) {
       case 'main': return <MainFlow navTo={navTo} onClose={handleClose} />;
-      case 'mood': return <MoodFlow goBack={goBack} onClose={handleClose} navigate={navigate} navTo={navTo} />;
       case 'hub': return <HubFlow goBack={goBack} onClose={handleClose} navigate={navigate} />;
       case 'options': return <OptionsFlow goBack={goBack} onClose={handleClose} />;
       case 'explore': return <ExploreFlow goBack={goBack} onClose={handleClose} />;
@@ -440,117 +438,6 @@ function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClo
               <span className="text-[10px] text-stone-500 opacity-80">{language === 'el' ? 'Εξερεύνηση' : 'Explore'}</span>
             </div>
          </button>
-      </div>
-    </div>
-  );
-}
-
-function MoodFlow({ goBack, onClose, navigate, navTo }: { goBack: () => void, onClose: () => void, navigate: any, navTo: (dest: FlowState) => void }) {
-  const { trackActivity } = useCompanion();
-  const [selectedMoodId, setSelectedMoodId] = useState<string | null>(null);
-  const { language } = useLanguage();
-
-  const handleMoodSelect = (mood: any) => {
-    trackActivity('mood_report', { mood: mood.id });
-    setSelectedMoodId(mood.id);
-  };
-
-  const getLabel = (opt: any) => opt?.[language] || opt?.el || opt;
-
-  if (selectedMoodId) {
-    const route = MOOD_ROUTES[selectedMoodId];
-    if (route) {
-      return (
-         <div className="space-y-6 animate-fade-in text-stone-800 dark:text-stone-200">
-           <div className="flex items-center gap-3 pb-4 border-b border-stone-200 dark:border-stone-800">
-             <button onClick={() => setSelectedMoodId(null)} className="w-8 h-8 rounded-full bg-stone-200 dark:bg-stone-800 flex items-center justify-center">←</button>
-             <h2 className="font-display text-lg font-medium">{getLabel(route.label)}</h2>
-           </div>
-           
-           <div className="space-y-4">
-             <p className="font-medium text-lg leading-snug">{getLabel(route.response?.msg)}</p>
-             
-             {route.response?.task && (
-               <div className="bg-teal-50/50 dark:bg-teal-900/10 border-l-[3px] border-teal-600/60 p-4 rounded-r-2xl">
-                 <p className="font-mono text-sm opacity-90">{getLabel(route.response.task)}</p>
-               </div>
-             )}
-             
-             {route.response?.wisdom && (
-               <p className="text-[15px] italic opacity-60">"{getLabel(route.response.wisdom)}"</p>
-             )}
-           </div>
-
-           <div className="pt-2">
-             <div className={`grid gap-2 ${route.actions.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}>
-               {route.actions.map((act: any, idx: number) => {
-                 const lbl = getLabel(act.label);
-                 const isIconLbl = typeof lbl === 'string' && lbl.includes(' ') && ['🫁', '🆘', '📋', '🧍', '👁', '✦', '🤚', '💛', '🧠', '📖', '🎯', '🌙'].some(emoji => lbl.startsWith(emoji));
-                 return (
-                  <button
-                    key={idx}
-                    onClick={() => {
-                       onClose();
-                       if (act.route) navigate(act.route);
-                    }}
-                    className="flex flex-col items-center justify-center text-center py-4 px-3 rounded-2xl font-semibold text-xs tracking-wider uppercase transition-colors border border-stone-200 dark:border-stone-700 hover:bg-stone-50 dark:hover:bg-stone-800 h-24"
-                  >
-                    {isIconLbl ? (
-                      <>
-                        <span className="text-2xl mb-1">{lbl.split(' ')[0]}</span>
-                        <span>{lbl.split(' ').slice(1).join(' ')}</span>
-                      </>
-                    ) : lbl}
-                  </button>
-                 )
-               })}
-             </div>
-             <button onClick={onClose} className="w-full mt-3 py-4 bg-teal-200/50 hover:bg-teal-200/80 dark:bg-teal-900/40 dark:hover:bg-teal-900/60 text-teal-900 dark:text-teal-100 rounded-2xl font-bold text-[13px] tracking-widest uppercase transition-colors">
-                {language === 'el' ? 'ΣΥΝΕΧΕΙΑ ➔' : 'CONTINUE ➔'}
-             </button>
-           </div>
-         </div>
-      );
-    }
-  }
-
-  const moodsToShow = Object.keys(MOOD_ROUTES);
-
-  return (
-    <div className="space-y-6 animate-fade-in text-stone-800 dark:text-stone-200">
-      <div className="flex items-center gap-3 pb-4 border-b border-stone-200 dark:border-stone-800">
-        <button onClick={goBack} className="w-8 h-8 rounded-full bg-stone-200 dark:bg-stone-800 flex items-center justify-center hover:bg-stone-300 dark:hover:bg-stone-700 transition">←</button>
-        <h2 className="font-display text-lg font-medium tracking-tight">
-          {language === 'el' ? 'Ο Συνοδός' : 'Your Companion'}
-        </h2>
-      </div>
-
-      <div className="flex flex-col gap-3">
-         <button 
-           onClick={() => navTo('questionnaire')}
-           className="flex items-center gap-4 p-4 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-2xl hover:bg-stone-50 dark:hover:bg-stone-700 transition-all shadow-sm active:scale-[0.98]"
-         >
-           <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-stone-100 dark:bg-stone-900 text-xl font-bold">📝</div>
-           <div className="text-left">
-             <div className="font-bold text-[15px] text-stone-800 dark:text-stone-200">{language === 'el' ? 'Προσαρμογή Προγράμματος' : 'Program Customization'}</div>
-             <div className="text-[12px] opacity-80 text-stone-500 dark:text-stone-400">{language === 'el' ? 'Φτιάξε το δικό σου ρυθμό' : 'Set your own pace'}</div>
-           </div>
-         </button>
-      </div>
-      
-      <div className="pt-2 border-t border-stone-200 dark:border-stone-800">
-        <p className="text-[13px] font-medium text-stone-500 dark:text-stone-400 mb-3 ml-1">{language === 'el' ? 'Ή επίλεξε μια διάθεση:' : 'Or pick a mood:'}</p>
-        <div className="grid grid-cols-2 gap-2">
-           {moodsToShow.map(id => {
-             const rt = MOOD_ROUTES[id];
-             return (
-               <button key={id} onClick={() => handleMoodSelect({ id })} className="flex flex-col items-center justify-center gap-1 p-3 bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-2xl hover:border-teal-500 hover:bg-teal-50 dark:hover:bg-teal-900/30 transition-colors text-center w-full">
-                 <span className="text-2xl drop-shadow-sm mb-1">{rt.icon}</span>
-                 <span className="font-medium text-[11px] leading-tight text-stone-600 dark:text-stone-400">{getLabel(rt.label)}</span>
-               </button>
-             )
-           })}
-        </div>
       </div>
     </div>
   );
