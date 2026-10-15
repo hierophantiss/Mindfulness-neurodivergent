@@ -218,7 +218,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
     type: 'focus',
     dur: { el: '1 λεπτό', en: '1 minute' },
     maxSeconds: 60,
-    desc: { el: 'Νιώσε ταυτόχρονα: Πέλματα (Γη), Αναπνοή (Αέρας) και ένα Σημείο (Χώρος). Παρουσία.', en: 'Feel simultaneously: Feet (Earth), Breath (Air), and a Point (Space). Presence.' },
+    desc: { el: 'Νιώσε ταυτόχρονα τρία πράγματα: τα πέλματα, την αναπνοή και ένα σταθερό σημείο μπροστά σου.', en: 'Feel three things at once: your soles, your breath and a steady point in front of you.' },
     iconName: 'Focus',
     link: '/practice/focus/triple-anchor'
   },
@@ -261,11 +261,11 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
     id: 'thoughts-as-objects',
     evidence: { en: 'Direct somatic focus silences the rumination network', el: 'Η άμεση σωματική εστίαση σιγάζει το δίκτυο μηρυκασμού', ref: 'study-farb' },
     axis: 'attention',
-    title: { el: 'Σκέψεις σαν Σύννεφα', en: 'Thoughts as Clouds' },
+    title: { el: 'Σκέψεις που Περνούν', en: 'Passing Thoughts' },
     type: 'focus',
     dur: { el: '1 λεπτό', en: '1 minute' },
     maxSeconds: 60,
-    desc: { el: 'Δες τις σκέψεις σου σαν αντικείμενα που διασχίζουν τον ουρανό, χωρίς να τις ακολουθείς.', en: 'Watch your thoughts like objects crossing the sky, without following them.' },
+    desc: { el: 'Πρόσεξε μια σκέψη να έρχεται και να φεύγει, χωρίς να την ακολουθήσεις. Δώσ\' της μια ταμπέλα («σκέψη») και γύρνα στο σώμα.', en: 'Notice a thought arrive and leave, without following it. Give it a label (“thought”) and come back to the body.' },
     iconName: 'Focus',
     link: '/practice/focus/thoughts-as-objects'
   },
@@ -308,13 +308,13 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
     id: 'sky-gazing-micro',
     evidence: { en: 'Induces large-scale Alpha-Gamma neural coherence', el: 'Προκαλεί ευρείας κλίμακας νευρικό συγχρονισμό Alpha-Gamma', ref: 'study-lutz' },
     axis: 'space',
-    title: { el: 'Βλέμμα στον Ουρανό', en: 'Sky Gazing' },
+    title: { el: 'Βλέμμα στο Μακρινό', en: 'Far Gaze' },
     type: 'space',
     dur: { el: '30 δευτ.', en: '30 sec' },
     maxSeconds: 30,
-    desc: { el: 'Κοίταξε τον ουρανό, απορροφώντας την αίσθηση του μεγάλου, ανοιχτού χώρου.', en: 'Look at the sky, absorbing the feeling of vast, open space.' },
+    desc: { el: 'Κοίτα όσο πιο μακριά μπορείς: έξω από ένα παράθυρο ή στην άκρη του δωματίου. Άφησε το βλέμμα να ανοίξει και νιώσε τον χώρο ανάμεσα σε σένα και σε ό,τι βλέπεις.', en: 'Look as far as you can: out of a window or to the far end of the room. Let your gaze widen and feel the space between you and what you see.' },
     iconName: 'Box',
-    link: '/practice/space/sky-clouds'
+    link: '/practice/space/far-gaze'
   },
   {
     id: 'tilopa-rest',
@@ -335,7 +335,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
     type: 'space',
     dur: { el: '1 λεπτό', en: '1 minute' },
     maxSeconds: 60,
-    desc: { el: 'Νιώσε την καρδιά σου να ανοίγει σαν τον ουρανό, χωρώντας τα πάντα με αποδοχή.', en: 'Feel your heart open like the sky, holding everything with acceptance.' },
+    desc: { el: 'Νιώσε τον χώρο μέσα στο στήθος σου. Άφησέ τον να γίνει λίγο πιο ευρύχωρος, αρκετός για να χωρέσει ό,τι νιώθεις τώρα, όπως είναι.', en: 'Feel the space inside your chest. Let it grow a little roomier, enough to hold whatever you feel right now, as it is.' },
     iconName: 'Box',
     link: '/practice/space/metta-expansion'
   },

@@ -94,4 +94,17 @@ describe('practice catalogue', () => {
     const picks = pickWithUsage('balanced', ['dose', 'movement'], { 'soft-eyes': 3 }, [], 1);
     expect(picks[0].id).toBe('open-presence');
   });
+
+  it('"a few seconds" gives only microdoses up to a minute; "a few minutes" none', () => {
+    for (const id of ['hyper', 'hypo', 'balanced'] as const) {
+      const short = getCheckinActions(id, {}, 'seconds').filter(a => !a.path.endsWith('sos-breath') && a.path !== '/rabbithole');
+      const shortItems = short.map(a => PRACTICE_CATALOG.find(i => i.path === a.path)!);
+      expect(shortItems.every(i => i.kind === 'dose' && i.seconds <= 60), id).toBe(true);
+      const long = getCheckinActions(id, {}, 'minutes').filter(a => !a.path.endsWith('sos-breath') && a.path !== '/rabbithole');
+      const longItems = long.map(a => PRACTICE_CATALOG.find(i => i.path === a.path)!);
+      expect(longItems.every(i => i.kind !== 'dose'), id).toBe(true);
+      expect(short.length).toBeGreaterThan(0);
+      expect(long.length).toBeGreaterThan(0);
+    }
+  });
 });

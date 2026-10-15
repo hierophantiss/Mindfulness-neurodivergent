@@ -8,7 +8,7 @@ import { cn } from '../lib/utils';
 import {
   CHECKIN_OPTIONS, AXIS_LABEL, AXIS_COLOR, SOS_PATH, getCheckinOption, getCheckinActions,
   saveCheckinState, readRecentCheckinState, type CheckinChoice,
-  CHECKIN_DETAILS, DETAIL_AFTER_USES, readCheckinUses, countCheckinUse,
+  CHECKIN_DETAILS, DETAIL_AFTER_USES, readCheckinUses, countCheckinUse, TIME_LABEL, type CheckinTime,
 } from '../data/stateCheckin';
 import { usageFromLogs } from '../data/practiceCatalog';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
@@ -27,11 +27,13 @@ export default function HomeCheckin() {
   const [uses, setUses] = useState(readCheckinUses);
   const [detailOpen, setDetailOpen] = useState(false);
   const [detailId, setDetailId] = useState<string | null>(null);
+  const [time, setTime] = useState<CheckinTime | null>(null);
 
   const choose = (id: CheckinChoice) => {
     setChipsOpen(false);
     setDetailOpen(false);
     setDetailId(null);
+    setTime(null);
     if (id === selected) {
       setOpen(o => !o);
       return;
@@ -43,7 +45,9 @@ export default function HomeCheckin() {
   };
 
   const opt = selected ? getCheckinOption(selected) : null;
-  const actions = useMemo(() => (selected ? getCheckinActions(selected, counts) : []), [selected, counts]);
+  const actions = useMemo(() => (selected ? getCheckinActions(selected, counts, time || undefined) : []), [selected, counts, time]);
+  // The time choice, like the second step, appears only after a few uses.
+  const showTime = selected !== null && selected !== 'unsure' && uses > DETAIL_AFTER_USES;
   const details = selected && selected !== 'unsure' && uses > DETAIL_AFTER_USES ? CHECKIN_DETAILS[selected] : undefined;
   const detail = details?.find(d => d.id === detailId);
   const question = lang === 'el' ? 'Πώς νιώθεις τώρα;' : 'How do you feel right now?';
@@ -114,6 +118,25 @@ export default function HomeCheckin() {
                 </span>
               ))}
             </div>
+
+            {showTime && (
+              <div className="flex items-center gap-2 flex-wrap" role="group" aria-label={lang === 'el' ? 'Πόσο χρόνο έχεις;' : 'How much time do you have?'}>
+                <span className="text-[12px] text-white/40 mr-1">{lang === 'el' ? 'Πόσο χρόνο έχεις;' : 'How much time?'}</span>
+                {(['seconds', 'minutes'] as CheckinTime[]).map(t => (
+                  <button
+                    key={t}
+                    onClick={() => setTime(cur => (cur === t ? null : t))}
+                    aria-pressed={time === t}
+                    className={cn(
+                      "px-3 min-h-[34px] rounded-full border text-[12px] transition-colors",
+                      time === t ? "bg-white/[0.08] border-white/20 text-white/90" : "bg-transparent border-white/[0.08] text-white/55 hover:text-white/80"
+                    )}
+                  >
+                    {TIME_LABEL[t][lang]}
+                  </button>
+                ))}
+              </div>
+            )}
 
             <div className="flex flex-col gap-2">
               {actions.map((a, i) => {

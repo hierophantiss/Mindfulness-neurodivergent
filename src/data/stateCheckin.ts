@@ -105,11 +105,30 @@ export const getCheckinOption = (id: CheckinChoice) => CHECKIN_OPTIONS.find(o =>
 const asAction = (i: CatalogItem): CheckinAction => ({ title: i.title, path: i.path, dur: i.dur });
 
 // The practices shown right away: one per kind, then the pinned ones.
+// "How much time do you have?" — seconds: microdoses up to a minute;
+// minutes: breathing, movement, voice and guided practices.
+export type CheckinTime = 'seconds' | 'minutes';
+
+export const TIME_LABEL: Record<CheckinTime, T> = {
+  seconds: { el: 'Λίγα δευτερόλεπτα', en: 'A few seconds' },
+  minutes: { el: 'Λίγα λεπτά', en: 'A few minutes' },
+};
+
 // With usage counts, the picks follow what the person has done before.
-export function getCheckinActions(id: CheckinChoice, counts: UsageCounts = {}): CheckinAction[] {
+export function getCheckinActions(id: CheckinChoice, counts: UsageCounts = {}, time?: CheckinTime): CheckinAction[] {
   const opt = getCheckinOption(id);
   const pinnedPaths = opt.pinned.map(p => p.path);
-  return [...pickWithUsage(id, opt.kinds, counts, pinnedPaths).map(asAction), ...opt.pinned];
+  if (!opt.kinds.length) return opt.pinned;
+  let kinds = opt.kinds;
+  let keep: (i: CatalogItem) => boolean = () => true;
+  if (time === 'seconds') {
+    kinds = opt.kinds.map(() => 'dose' as PracticeKind);
+    keep = i => i.kind === 'dose' && i.seconds <= 60;
+  } else if (time === 'minutes') {
+    kinds = opt.kinds.map(k => (k === 'dose' ? 'guided' : k));
+    keep = i => i.kind !== 'dose';
+  }
+  return [...pickWithUsage(id, kinds, counts, pinnedPaths, undefined, keep).map(asAction), ...opt.pinned];
 }
 
 // Every practice that suits this choice, for "see all".

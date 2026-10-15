@@ -114,22 +114,24 @@ export const GUIDED_EXERCISES: Record<string, any> = {
   'samatha-micro': {
     evidence: { en: 'Direct somatic focus silences the rumination network (DMN)', el: 'Η άμεση σωματική εστίαση σιγάζει το δίκτυο μηρυκασμού', ref: 'study-farb' },
     axis: 'attention',
-    title: { el: 'Σκέψεις σαν Σύννεφα', en: 'Thoughts as Clouds' },
+    title: { el: 'Σκέψεις που Περνούν', en: 'Passing Thoughts' },
     desc: { el: 'Μην πολεμάς τις σκέψεις. Άλλαξε τον τρόπο που τις κοιτάς.', en: "Don't fight thoughts. Change how you look at them." },
     duration: 120, // 2 mins
     color: 'indigo',
     instructions: {
       el: [
-        "Φαντάσου το μυαλό σου σαν έναν μεγάλο ουρανό.",
-        "Κάθε σκέψη που έρχεται είναι απλώς ένα συννεφάκι.",
-        "Δεν την κρατάς, δεν τη διώχνεις. Την βλέπεις να διασχίζει τον ουρανό.",
-        "Εσύ παραμένεις ο σταθερός, ανοιχτός παρατηρητής."
+        "Κάθισε άνετα και νιώσε το βάρος σου.",
+        "Περίμενε την επόμενη σκέψη, όπως θα περίμενες έναν ήχο.",
+        "Όταν έρθει, δώσ' της μια ταμπέλα: «σκέψη», «σενάριο» ή «ανησυχία».",
+        "Δεν την κρατάς, δεν τη διώχνεις. Πρόσεξε πώς φεύγει μόνη της.",
+        "Γύρνα στο βάρος του σώματος και περίμενε την επόμενη."
       ],
       en: [
-        "Imagine your mind as a vast sky.",
-        "Every thought that comes is just a small cloud.",
-        "You don't hold it, you don't chase it away. Watch it cross the sky.",
-        "You remain the steady, open observer."
+        "Sit comfortably and feel your weight.",
+        "Wait for the next thought, the way you would wait for a sound.",
+        "When it comes, give it a label: “thought”, “scenario” or “worry”.",
+        "You don't hold it, you don't chase it away. Notice how it leaves on its own.",
+        "Come back to the weight of the body and wait for the next one."
       ]
     }
   },
@@ -511,23 +513,23 @@ export const GUIDED_EXERCISES: Record<string, any> = {
   'sky-clouds': {
     evidence: { en: 'Shifts brain resources away from DMN narrative centers', el: 'Απομακρύνει πόρους από τα κέντρα αφήγησης του DMN', ref: 'study-brewer' },
     axis: 'space',
-    title: { el: 'Ο Ουρανός και τα Σύννεφα', en: 'The Sky and the Clouds' },
-    desc: { el: 'Σκέψεις και αισθήσεις είναι σύννεφα. Εσείς είστε ο ουρανός.', en: 'Thoughts and sensations are clouds. You are the sky.' },
+    title: { el: 'Ο Χώρος που Χωράει τα Πάντα', en: 'The Space that Holds Everything' },
+    desc: { el: 'Σκέψεις και αισθήσεις έρχονται και φεύγουν. Ο χώρος που τις χωράει μένει.', en: 'Thoughts and sensations come and go. The space that holds them stays.' },
     duration: 420, // 7 minutes
     color: 'blue',
     instructions: {
       el: [
-        "Πλήρης γείωση + αναπνοή.",
-        "Ανοίξτε περιφερειακή όραση.",
-        "Αφήστε σκέψεις να έρθουν — δεν τις κρατάτε.",
-        "Αναγνωρίστε: αυτές είναι σύννεφα. Εγώ είμαι ο ουρανός.",
-        "Μείνετε σε αυτή την αίσθηση ανοιχτότητας."
+        "Πλήρης γείωση και αναπνοή.",
+        "Άνοιξε την περιφερειακή όραση.",
+        "Άφησε τις σκέψεις να έρθουν — δεν τις κρατάς.",
+        "Πρόσεξε: έρχονται και φεύγουν, ενώ ο χώρος γύρω σου και μέσα σου μένει.",
+        "Μείνε σε αυτή την αίσθηση ανοιχτότητας."
       ],
       en: [
-        "Full grounding + breath.",
-        "Open peripheral vision.",
+        "Full grounding and breath.",
+        "Open your peripheral vision.",
         "Let thoughts come — you don't hold them.",
-        "Acknowledge: these are clouds. I am the sky.",
+        "Notice: they come and go, while the space around you and within you stays.",
         "Stay in this sense of openness."
       ]
     }

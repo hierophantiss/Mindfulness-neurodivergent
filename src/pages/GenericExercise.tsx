@@ -7,6 +7,7 @@ import { useReward } from '../contexts/RewardContext';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { PlayPauseOverlay } from '../components/PlayPauseOverlay';
 import { EvidenceLine } from '../components/EvidenceLine';
+import GuideAfterPractice from '../components/GuideAfterPractice';
 import { MICRODOSES_EXERCISES, type MicrodoseExercise } from '../data/microdoses';
 import { GUIDED_EXERCISES as EXERCISES } from '../data/guidedExercises';
 
@@ -277,6 +278,11 @@ export default function GenericExercise() {
             </button>
           </div>
         </div>
+
+        {/* After the practice: the chapter of the guide behind it */}
+        {!running && exercise.duration > 0 && elapsed >= exercise.duration && (
+          <GuideAfterPractice axis={exercise.axis} language={language} className="w-full mt-4" />
+        )}
 
         {/* Instructions */}
         <div className={cn(

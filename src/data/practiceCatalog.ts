@@ -26,9 +26,7 @@ export interface CatalogItem {
 
 const H: CheckinTag = 'hyper', L: CheckinTag = 'hypo', B: CheckinTag = 'balanced', U: CheckinTag = 'unsure';
 
-// Left without tags on purpose: sky imagery and the elements, which the
-// method no longer uses (sky-gazing-micro, thoughts-as-objects,
-// spacious-metta, samatha-micro, sky-clouds) — and delta, which is for sleep.
+// Left without tags on purpose: delta, which is for sleep.
 export const CHECKIN_TAGS: Record<string, CheckinTag[]> = {
   // microdoses — body
   'axis-pause': [H, B, U], 'soft-belly': [H], 'unlocked-knees': [H], 'contact-observe': [H, L, U],
@@ -40,7 +38,9 @@ export const CHECKIN_TAGS: Record<string, CheckinTag[]> = {
   'anchor-7-sec': [L, B], 'triple-anchor': [L, H], 'alternate-focus': [L], 'gentle-return': [L, B],
   'eye-horizon': [L, H], 'one-sound': [L, H], 'sensory-54321': [L, H, U],
   // microdoses — space
+  'thoughts-as-objects': [H, B],
   'short-moment': [B], 'tilopa-rest': [B], 'silence-background': [B], 'open-presence': [H, B],
+  'sky-gazing-micro': [B, L], 'spacious-metta': [B],
   // breathing patterns
   '4-2-6-1': [H], '4-2-7-1': [H], '4-7-8': [H], 'box-breathing': [L, B], 'sos-breath': [H],
   // movement
@@ -55,7 +55,7 @@ export const CHECKIN_TAGS: Record<string, CheckinTag[]> = {
   'body-scan': [H, B, U], 'grounding-scan': [H, U], 'sound-focus': [L, H], 'vertical-axis': [B, L],
   'gravity-surrender': [H], 'mindful-swaying': [H, L], 'mindful-walking': [L, H], 'belly-breathing': [H],
   'exhale-rhythm': [H], 'nadi-shodhana': [H, B], 'attention-observation': [B], 'fixed-point': [L],
-  'labeling-technique': [H, B],
+  'labeling-technique': [H, B], 'samatha-micro': [H, B], 'sky-clouds': [B],
 };
 
 const AXIS_SEGMENT: Record<Axis, string> = { body: 'body', breath: 'breath', attention: 'focus', space: 'space' };
@@ -119,8 +119,10 @@ export const dayOfYear = (date = new Date()) => {
 
 // One practice of each requested kind for this state, the same all day and
 // a different one tomorrow.
-export function pickForTag(tag: CheckinTag, kinds: PracticeKind[], exclude: string[] = [], day = dayOfYear()): CatalogItem[] {
-  const pool = forTag(tag).filter(i => !exclude.includes(i.path));
+export function pickForTag(
+  tag: CheckinTag, kinds: PracticeKind[], exclude: string[] = [], day = dayOfYear(), keep: (i: CatalogItem) => boolean = () => true,
+): CatalogItem[] {
+  const pool = forTag(tag).filter(i => !exclude.includes(i.path) && keep(i));
   const out: CatalogItem[] = [];
   kinds.forEach((kind, k) => {
     const ofKind = pool.filter(i => i.kind === kind && !out.includes(i));
@@ -157,11 +159,12 @@ const usesOf = (i: CatalogItem, counts: UsageCounts) => {
 // daily rotation.
 export function pickWithUsage(
   tag: CheckinTag, kinds: PracticeKind[], counts: UsageCounts, exclude: string[] = [], day = dayOfYear(),
+  keep: (i: CatalogItem) => boolean = () => true,
 ): CatalogItem[] {
   if (!kinds.length) return [];
-  const pool = forTag(tag).filter(i => !exclude.includes(i.path));
+  const pool = forTag(tag).filter(i => !exclude.includes(i.path) && keep(i));
   const used = pool.filter(i => usesOf(i, counts) > 0).sort((a, b) => usesOf(b, counts) - usesOf(a, counts));
-  if (!used.length) return pickForTag(tag, kinds, exclude, day);
+  if (!used.length) return pickForTag(tag, kinds, exclude, day, keep);
 
   const out: CatalogItem[] = [used[0]];
   const untried = pool.filter(i => usesOf(i, counts) === 0);

@@ -14,6 +14,7 @@ import { BreathingHero } from '../components/BreathingHero';
 import TaiChiHero from '../components/TaiChiHero';
 import { PlayPauseOverlay } from '../components/PlayPauseOverlay';
 import { EvidenceLine } from '../components/EvidenceLine';
+import GuideAfterPractice from '../components/GuideAfterPractice';
 import { useReward } from '../contexts/RewardContext';
 import { useProgress } from '../contexts/ProgressContext';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
@@ -92,6 +93,7 @@ export default function PracticeBreath() {
   const [running, setRunning] = useState(false);
   const [audioEnabled, setAudioEnabled] = useState(false);
   const [cycles, setCycles] = useState(0);
+  const [finished, setFinished] = useState(false);
   const [phase, setPhase] = useState(pattern.labels[0]);
   const [phaseIdx, setPhaseIdx] = useState(0);
 
@@ -294,6 +296,7 @@ export default function PracticeBreath() {
 
   const startSequence = (withAudio: boolean = audioEnabled) => {
     setAudioEnabled(withAudio);
+    setFinished(false);
     setRunning(true);
     if (withAudio) {
       startAudio();
@@ -471,6 +474,9 @@ export default function PracticeBreath() {
         </div>
       </div>
 
+      {!running && (finished || cycles > 2) && (
+        <GuideAfterPractice axis={pattern.axis} language={language} className="z-20 w-full max-w-sm mx-auto mb-4 px-4 md:px-0" />
+      )}
       {!running && <EvidenceLine evidence={pattern.evidence} language={language} />}
       {/* Info Banner for Binaural Beats */}
       {!running && showBanner && (
@@ -687,6 +693,7 @@ export default function PracticeBreath() {
              onClick={() => { 
                triggerReward('breath');
                markBreathComplete(currentPatternId);
+               setFinished(true);
                setRunning(false); 
                setCycles(0); 
                setPhaseIdx(0); 
