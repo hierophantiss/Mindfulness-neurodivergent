@@ -8,6 +8,7 @@ import { cn } from '../lib/utils';
 import {
   CHECKIN_OPTIONS, AXIS_LABEL, AXIS_COLOR, SOS_PATH, getCheckinOption, getCheckinActions,
   getAllForChoice, saveCheckinState, readRecentCheckinState, type CheckinChoice,
+  CHECKIN_DETAILS, DETAIL_AFTER_USES, readCheckinUses, countCheckinUse,
 } from '../data/stateCheckin';
 import { KIND_LABEL, type PracticeKind } from '../data/practiceCatalog';
 
@@ -21,9 +22,14 @@ export default function HomeCheckin() {
   const [selected, setSelected] = useState<CheckinChoice | null>(readRecentCheckinState);
   const [open, setOpen] = useState(false);
   const [showAll, setShowAll] = useState(false);
+  const [uses, setUses] = useState(readCheckinUses);
+  const [detailOpen, setDetailOpen] = useState(false);
+  const [detailId, setDetailId] = useState<string | null>(null);
 
   const choose = (id: CheckinChoice) => {
     setShowAll(false);
+    setDetailOpen(false);
+    setDetailId(null);
     if (id === selected) {
       setOpen(o => !o);
       return;
@@ -31,6 +37,7 @@ export default function HomeCheckin() {
     setSelected(id);
     setOpen(true);
     saveCheckinState(id);
+    setUses(countCheckinUse());
   };
 
   const opt = selected ? getCheckinOption(selected) : null;
@@ -43,6 +50,8 @@ export default function HomeCheckin() {
       .filter(g => g.items.length);
   }, [selected]);
   const total = groups.reduce((n, g) => n + g.items.length, 0);
+  const details = selected && selected !== 'unsure' && uses > DETAIL_AFTER_USES ? CHECKIN_DETAILS[selected] : undefined;
+  const detail = details?.find(d => d.id === detailId);
   const question = lang === 'el' ? 'Πώς νιώθεις τώρα;' : 'How do you feel right now?';
 
   return (
@@ -122,6 +131,71 @@ export default function HomeCheckin() {
                 );
               })}
             </div>
+
+            {details && (
+              <div className="flex flex-col gap-3 pt-1">
+                <button
+                  onClick={() => { setDetailOpen(o => !o); setDetailId(null); }}
+                  aria-expanded={detailOpen}
+                  className="flex items-center justify-center gap-1.5 py-1 text-[12px] text-white/45 hover:text-white/75 transition-colors"
+                >
+                  {lang === 'el' ? 'Πες το πιο συγκεκριμένα' : 'Say it more precisely'}
+                  <ChevronDown size={14} className={cn("transition-transform", detailOpen && "rotate-180")} />
+                </button>
+
+                {detailOpen && (
+                  <div className="grid grid-cols-2 gap-2">
+                    {details.map(d => (
+                      <button
+                        key={d.id}
+                        onClick={() => setDetailId(cur => (cur === d.id ? null : d.id))}
+                        aria-pressed={detailId === d.id}
+                        className={cn(
+                          "min-h-[40px] px-2 rounded-full border text-[12.5px] transition-colors active:scale-[0.97]",
+                          detailId === d.id
+                            ? "bg-white/[0.08] border-white/20 text-white/90"
+                            : "bg-white/[0.02] border-white/[0.07] text-white/55 hover:text-white/80"
+                        )}
+                      >
+                        {d.label[lang]}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {detailOpen && detail && (
+                  <div className="flex flex-col gap-3 pt-1">
+                    <p className="text-[14px] leading-relaxed text-white/80">{detail.msg[lang]}</p>
+                    <p className="text-[13px] leading-relaxed text-white/60 border-l-2 border-white/15 pl-3">{detail.step[lang]}</p>
+                    <div className="flex flex-col gap-2">
+                      {detail.actions.map(a => a.path ? (
+                        <Link
+                          key={a.path}
+                          to={a.path}
+                          className={cn(
+                            "flex items-center justify-between gap-3 px-4 py-3 rounded-xl border text-[14px] transition-colors active:scale-[0.98]",
+                            a.path === SOS_PATH
+                              ? "bg-rose-500/10 border-rose-500/20 text-rose-300 hover:bg-rose-500/20"
+                              : "bg-white/[0.03] border-white/[0.06] text-white/75 hover:bg-white/[0.06]"
+                          )}
+                        >
+                          <span className="min-w-0">{a.title[lang]}</span>
+                          <ArrowRight size={15} className="opacity-60 shrink-0" />
+                        </Link>
+                      ) : (
+                        <button
+                          key="rest"
+                          onClick={() => setOpen(false)}
+                          className="px-4 py-3 rounded-xl border border-white/[0.06] text-[14px] text-white/60 hover:text-white/80 transition-colors"
+                        >
+                          {a.title[lang]}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
 
             {total > 0 && (
               <button

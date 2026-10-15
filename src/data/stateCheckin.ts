@@ -89,8 +89,14 @@ export const CHECKIN_OPTIONS: CheckinOption[] = [
       en: 'It is common not to be sure what you feel. A short look at the body helps: where it touches, where it is tight, where it is quiet. Then, if you like, choose again.',
     },
     axes: ['body'],
-    kinds: ['dose', 'guided'],
-    pinned: [],
+    // Only one practice here: someone unsure of what they feel needs
+    // one clear next step, not a choice.
+    kinds: [],
+    pinned: [{
+      title: { el: 'Παρατήρηση επαφής', en: 'Noticing contact' },
+      path: '/practice/body/contact-observe',
+      dur: { el: '2 λεπτά', en: '2 min' },
+    }],
   },
 ];
 
@@ -106,7 +112,8 @@ export function getCheckinActions(id: CheckinChoice): CheckinAction[] {
 }
 
 // Every practice that suits this choice, for "see all".
-export const getAllForChoice = (id: CheckinChoice) => forTag(id);
+// "Not sure" has no list — one clear step is the point.
+export const getAllForChoice = (id: CheckinChoice) => (id === 'unsure' ? [] : forTag(id));
 
 const INTENTION: Record<CheckinState, string> = { hyper: 'anxiety', hypo: 'focus', balanced: 'awareness' };
 
@@ -135,4 +142,112 @@ export function readRecentCheckinState(): CheckinState | null {
     // ignore
   }
   return null;
+}
+
+// ── Second, optional step: "Say it more precisely" ──────────────────────
+// Only for tension and numbness, at most four each, one concrete step and
+// two practices. Shown only after the check-in has been used a few times,
+// so new users see the simple version first.
+
+export interface CheckinDetail {
+  id: string;
+  label: T;
+  msg: T;
+  step: T;
+  actions: CheckinAction[];   // an action without a path just closes the panel
+}
+
+const SOS_ACTION: CheckinAction = { title: { el: 'SOS', en: 'SOS' }, path: SOS_PATH };
+const CONTACT: CheckinAction = { title: { el: 'Παρατήρηση επαφής', en: 'Noticing contact' }, path: '/practice/body/contact-observe' };
+
+export const CHECKIN_DETAILS: Partial<Record<CheckinState, CheckinDetail[]>> = {
+  hyper: [
+    {
+      id: 'overwhelm',
+      label: { el: 'Υπερφόρτωση', en: 'Overwhelm' },
+      msg: { el: 'Πάρε μια στιγμή. Δεν χρειάζεται να κάνεις τίποτα άλλο.', en: 'Take a moment. You do not need to do anything else.' },
+      step: { el: 'Νιώσε τα πέλματά σου. Μία αργή εκπνοή από το στόμα. Αυτό αρκεί.', en: 'Feel your soles. One slow exhale through the mouth. That is enough.' },
+      actions: [SOS_ACTION, CONTACT],
+    },
+    {
+      id: 'panic',
+      label: { el: 'Πανικός', en: 'Panic' },
+      msg: { el: 'Ο πανικός είναι πολύ έντονος, αλλά περνάει.', en: 'Panic is very intense, but it passes.' },
+      step: { el: 'Εκπνοή από το στόμα, αργά, σαν να σβήνεις ένα κερί μακριά σου.', en: 'Breathe out through the mouth, slowly, as if blowing out a candle far away.' },
+      actions: [SOS_ACTION, { title: { el: 'Μακριά εκπνοή · 4-2-6-1', en: 'Long exhale · 4-2-6-1' }, path: '/practice/breath/4-2-6-1' }],
+    },
+    {
+      id: 'anxiety',
+      label: { el: 'Άγχος', en: 'Anxiety' },
+      msg: { el: 'Υπάρχει πολλή ενέργεια χωρίς κατεύθυνση. Μπορείς να της δώσεις μία.', en: 'There is a lot of energy without direction. You can give it one.' },
+      step: { el: 'Βάρος → Εκπνοή → Ταμπέλα → Χώρος. Αν το σώμα θέλει κίνηση, πάτα δυνατά στο πάτωμα τρεις φορές.', en: 'Weight → Exhale → Label → Space. If the body wants to move, press firmly into the floor three times.' },
+      actions: [
+        { title: { el: 'Πρωτόκολλο · Κεφάλαιο 8', en: 'Protocol · Chapter 8' }, path: '/chapters/8' },
+        { title: { el: 'Λίκνισμα', en: 'Swaying' }, path: '/practice/body/mindful-swaying' },
+      ],
+    },
+    {
+      id: 'selfcritical',
+      label: { el: 'Αυτοκριτική', en: 'Self-criticism' },
+      msg: { el: 'Αυτή η φωνή συχνά είναι παλιός απόηχος, όχι η αλήθεια για σένα.', en: 'That voice is often an old echo, not the truth about you.' },
+      step: { el: 'Πες μέσα σου: «Α, η παλιά φωνή. Δεν χρειάζεται να την ακολουθήσω.»', en: 'Say to yourself: “Ah, the old voice. I do not need to follow it.”' },
+      actions: [
+        { title: { el: 'Κεφάλαιο 5 · Νευροδιαφορετικός νους', en: 'Chapter 5 · Neurodivergent mind' }, path: '/chapters/5' },
+        { title: { el: 'Η τεχνική της ταμπέλας', en: 'The labelling technique' }, path: '/practice/focus/labeling-technique' },
+      ],
+    },
+  ],
+  hypo: [
+    {
+      id: 'tired',
+      label: { el: 'Κούραση', en: 'Tiredness' },
+      msg: { el: 'Η κούραση είναι σήμα. Σεβάσου το.', en: 'Tiredness is a signal. Respect it.' },
+      step: { el: 'Αν θέλεις, τρεις αργές αναπνοές 5-5. Ή απλώς ξεκουράσου.', en: 'If you like, three slow 5-5 breaths. Or simply rest.' },
+      actions: [
+        { title: { el: 'Αναπνοή 5-5', en: '5-5 breathing' }, path: '/practice/breath/rhythm-5-5' },
+        { title: { el: 'Τίποτα, ξεκουράσου', en: 'Nothing, rest' }, path: '' },
+      ],
+    },
+    {
+      id: 'disconnected',
+      label: { el: 'Αποσύνδεση', en: 'Disconnection' },
+      msg: { el: 'Μερικές φορές το σύστημα χαμηλώνει για να προστατευτεί. Δεν φταις εσύ.', en: 'Sometimes the system turns down to protect itself. It is not your fault.' },
+      step: { el: 'Ακούμπησε κάτι με υφή ή θερμοκρασία, όσο σου είναι άνετο. Νιώσε τη βαρύτητα.', en: 'Touch something with texture or temperature, as much as is comfortable. Feel gravity.' },
+      actions: [CONTACT, { title: { el: 'Tai Chi · απαλή ροή', en: 'Tai Chi · gentle flow' }, path: '/practice/breath/tai-chi-cloud-hands' }],
+    },
+    {
+      id: 'scattered',
+      label: { el: 'Διάσπαση', en: 'Scattered' },
+      msg: { el: 'Ο νους τρέχει. Δεν είναι αποτυχία, είναι μοτίβο.', en: 'The mind is racing. It is not failure, it is a pattern.' },
+      step: { el: 'Βάλε ταμπέλα στην επόμενη σκέψη: «Ανησυχία», «Σενάριο» ή «Κριτική».', en: 'Label the next thought: “Worry”, “Scenario” or “Criticism”.' },
+      actions: [
+        { title: { el: 'Οπτική άγκυρα 7"', en: 'Visual anchor 7"' }, path: '/practice/focus/anchor-7-sec' },
+        { title: { el: 'Σταθερό σημείο', en: 'Fixed point' }, path: '/practice/focus/fixed-point' },
+      ],
+    },
+    {
+      id: 'hyperfocus',
+      label: { el: 'Κλείδωμα', en: 'Locked in' },
+      msg: { el: 'Ο νους κλείδωσε. Δεν πειράζει, ήδη το πρόσεξες.', en: 'The mind locked in. That is okay, you already noticed.' },
+      step: { el: 'Μαλάκωσε το βλέμμα. Νιώσε τον χώρο γύρω. Μετά νιώσε τη βαρύτητα.', en: 'Soften your gaze. Feel the space around you. Then feel gravity.' },
+      actions: [
+        { title: { el: 'Ανοιχτό βλέμμα', en: 'Open gaze' }, path: '/practice/space/soft-eyes' },
+        { title: { el: 'Εναλλάξ εστίαση', en: 'Alternating focus' }, path: '/practice/focus/alternate-focus' },
+      ],
+    },
+  ],
+};
+
+// How many times the check-in has been used; the second step appears after 3.
+const USES_KEY = 'n_mindfulness_checkin_uses';
+export const DETAIL_AFTER_USES = 3;
+
+export function readCheckinUses(): number {
+  try { return parseInt(localStorage.getItem(USES_KEY) || '0', 10) || 0; } catch { return 0; }
+}
+
+export function countCheckinUse(): number {
+  const n = readCheckinUses() + 1;
+  try { localStorage.setItem(USES_KEY, String(n)); } catch { /* ignore */ }
+  return n;
 }

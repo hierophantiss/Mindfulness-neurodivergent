@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { PRACTICE_CATALOG, CHECKIN_TAGS, forTag, pickForTag } from './practiceCatalog';
-import { CHECKIN_OPTIONS, getCheckinActions } from './stateCheckin';
+import { CHECKIN_OPTIONS, CHECKIN_DETAILS, getCheckinActions, getAllForChoice } from './stateCheckin';
 import { BREATH_PATTERNS } from './breathPatterns';
 import { GUIDED_EXERCISES } from './guidedExercises';
 import { MICRODOSES_EXERCISES } from './microdoses';
@@ -36,6 +36,7 @@ describe('practice catalogue', () => {
   it('each check-in choice has a practice of every kind it asks for', () => {
     for (const opt of CHECKIN_OPTIONS) {
       expect(pickForTag(opt.id, opt.kinds).length, opt.id).toBe(opt.kinds.length);
+      if (opt.id === 'unsure') continue;
       expect(getCheckinActions(opt.id).length).toBeGreaterThanOrEqual(2);
       expect(forTag(opt.id).length).toBeGreaterThan(2);
     }
@@ -47,7 +48,22 @@ describe('practice catalogue', () => {
     expect(week.size).toBeGreaterThan(1);
   });
 
+  it('"not sure" offers exactly one practice and no list', () => {
+    expect(getCheckinActions('unsure')).toHaveLength(1);
+    expect(getAllForChoice('unsure')).toHaveLength(0);
+  });
+
   it('tension always offers SOS', () => {
     expect(getCheckinActions('hyper').some(a => a.path.endsWith('sos-breath'))).toBe(true);
+  });
+
+  it('the second step has at most four choices, each with a step and real practices', () => {
+    for (const [state, list] of Object.entries(CHECKIN_DETAILS)) {
+      expect(list!.length, state).toBeLessThanOrEqual(4);
+      for (const d of list!) {
+        expect(d.step.el && d.step.en, d.id).toBeTruthy();
+        for (const a of d.actions) if (a.path) expect(opensRealExercise(a.path), `${d.id} → ${a.path}`).toBe(true);
+      }
+    }
   });
 });
