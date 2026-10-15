@@ -1,417 +1,406 @@
-import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useState, useEffect, useMemo } from 'react';
-import { ArrowLeft, ChevronLeft, ChevronRight, Search, Calendar, X, Sparkles } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, ChevronDown, Search, Calendar, X, Heart, Wind, Lightbulb, Compass } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'motion/react';
 import { useLanguage } from '../hooks/useLanguage';
 import { cn } from '../lib/utils';
-import { motion, AnimatePresence } from 'motion/react';
+import type { Axis } from '../data/types';
+import { AXIS_LABEL, AXIS_COLOR, CHECKIN_OPTIONS, getCheckinOption, type CheckinChoice } from '../data/stateCheckin';
 
-interface ElementPrompt {
-  id: string;
-  icon: string;
-  title: Record<'el' | 'en', string>;
-  questions: Record<'el' | 'en', string[]>;
-}
+type Lang = 'el' | 'en';
+type T = Record<Lang, string>;
 
-const elements: ElementPrompt[] = [
-  {
-    id: 'earth',
-    icon: '🪨',
-    title: { el: 'Γη (Σώμα & Γείωση)', en: 'Earth (Body & Grounding)' },
-    questions: {
-      el: ['Ποια σημεία του σώματός μου ήταν σφιγμένα;', 'Ένιωσα τη βαρύτητα και τη σταθερότητα σήμερα;', 'Πώς ήταν η στάση μου;'],
-      en: ['Which parts of my body held tension?', 'Did I feel gravity and stability today?', 'How was my posture?']
-    }
+// The journal follows the book's 7-day practice journal:
+// ☐ Body ☐ Breath ☐ Attention ☐ Space — and "What I noticed today".
+
+const AXES: Axis[] = ['body', 'breath', 'attention', 'space'];
+
+// Questions per axis; the first of each is the book's worksheet question (Ch. 9).
+const AXIS_QUESTIONS: Record<Axis, Record<Lang, string[]>> = {
+  body: {
+    el: ['Τι ένιωσα στο σώμα μου σήμερα;', 'Ποια σημεία του σώματός μου ήταν σφιγμένα;', 'Ένιωσα τη βαρύτητα και τη σταθερότητα;'],
+    en: ['What did I feel in my body today?', 'Which parts of my body held tension?', 'Did I feel gravity and stability?'],
   },
-  {
-    id: 'water',
-    icon: '💧',
-    title: { el: 'Νερό (Ροή & Συναίσθημα)', en: 'Water (Flow & Emotion)' },
-    questions: {
-      el: ['Τι συναισθήματα αναδύθηκαν σήμερα;', 'Ήμουν ευέλικτος στις δυσκολίες;', 'Υπήρξε ροή ή εμπλοκή στην ενέργειά μου;'],
-      en: ['What emotions surfaced today?', 'Was I flexible with difficulties?', 'Was there flow or blockages in my energy?']
-    }
+  breath: {
+    el: ['Πώς άλλαξε η αναπνοή μου;', 'Πότε η αναπνοή μου ήταν γρήγορη ή ρηχή;', 'Τι συναισθήματα πέρασαν σήμερα;'],
+    en: ['How did my breath change?', 'When was my breath fast or shallow?', 'What emotions passed through today?'],
   },
-  {
-    id: 'fire',
-    icon: '🔥',
-    title: { el: 'Φωτιά (Δράση & Εστίαση)', en: 'Fire (Action & Focus)' },
-    questions: {
-      el: ['Πού διοχέτευσα την προσοχή μου;', 'Ήταν η εστίασή μου καθαρή ή διασπασμένη;', 'Τι με κινητοποίησε ή τι με εξάντλησε;'],
-      en: ['Where did I direct my attention?', 'Was my focus clear or scattered?', 'What motivated me or drained me?']
-    }
+  attention: {
+    el: ['Πού ήταν η προσοχή μου;', 'Ήταν η εστίασή μου καθαρή ή διασπασμένη;', 'Τι με κινητοποίησε και τι με εξάντλησε;'],
+    en: ['Where was my attention?', 'Was my focus clear or scattered?', 'What energised me, and what drained me?'],
   },
-  {
-    id: 'air',
-    icon: '💨',
-    title: { el: 'Αέρας (Νους & Χώρος)', en: 'Air (Mind & Space)' },
-    questions: {
-      el: ['Ήταν οι σκέψεις μου βιαστικές ή ήρεμες;', 'Βρήκα χώρο ανάμεσα στις αντιδράσεις μου;', 'Πώς ήταν η ποιότητα της αναπνοής μου;'],
-      en: ['Were my thoughts hurried or calm?', 'Did I find space between my reactions?', 'How was the quality of my breath?']
-    }
+  space: {
+    el: ['Τι άλλαξε όταν άνοιξε ο χώρος;', 'Βρήκα χώρο ανάμεσα σε κάτι που συνέβη και στην αντίδρασή μου;', 'Ήταν οι σκέψεις μου βιαστικές ή ήρεμες;'],
+    en: ['What changed when the space opened?', 'Did I find space between what happened and my reaction?', 'Were my thoughts hurried or calm?'],
   },
-  {
-    id: 'polyvagal',
-    icon: '🧭',
-    title: { el: 'Νευρικό Σύστημα', en: 'Nervous System (Polyvagal)' },
-    questions: {
-      el: ['Τί μου λέει το σώμα μου για το πώς νιώθει (Neuroception);', 'Βρίσκομαι σε εγρήγορση/ένταση (Sympathetic) ή σε ηρεμία/σύνδεση (Ventral);', 'Μήπως νιώθω «κλειστός» ή αποσυνδεδεμένος (Dorsal);'],
-      en: ['What is my body telling me about its state (Neuroception)?', 'Am I on high alert/tension (Sympathetic) or calm/connected (Ventral)?', 'Do I feel shut down, numb, or disconnected (Dorsal)?']
-    }
-  }
-];
+};
 
-const MOODS = [
-  { id: 1, emoji: '😔', label: { el: 'Βαρύ', en: 'Heavy' } },
-  { id: 2, emoji: '😐', label: { el: 'Επίπεδο', en: 'Flat' } },
-  { id: 3, emoji: '🙂', label: { el: 'Ήρεμο', en: 'Calm' } },
-  { id: 4, emoji: '😄', label: { el: 'Θετικό', en: 'Positive' } },
-];
-
-interface QuickTemplate {
-  id: string;
-  icon: string;
-  title: Record<'el' | 'en', string>;
-  content: Record<'el' | 'en', string>;
-}
-
-const QUICK_TEMPLATES: QuickTemplate[] = [
+const QUICK_TEMPLATES: { id: string; icon: typeof Heart; title: T; content: T }[] = [
   {
     id: 'gratitude',
-    icon: '🙏',
+    icon: Heart,
     title: { el: 'Ευγνωμοσύνη', en: 'Gratitude' },
     content: {
       el: 'Σήμερα νιώθω ευγνωμοσύνη για...\n\n1. \n2. \n3. \n\nΑυτό που με έκανε να χαμογελάσω:\n\n',
-      en: 'Today I feel grateful for...\n\n1. \n2. \n3. \n\nWhat made me smile:\n\n'
-    }
+      en: 'Today I feel grateful for...\n\n1. \n2. \n3. \n\nWhat made me smile:\n\n',
+    },
   },
   {
     id: 'frustrations',
-    icon: '🌩️',
-    title: { el: 'Αποσυμπίεση', en: 'Daily Frustrations' },
+    icon: Wind,
+    title: { el: 'Αποσυμπίεση', en: 'Letting off steam' },
     content: {
       el: 'Αυτό που με δυσκόλεψε σήμερα ήταν...\n\n\nΠώς αντέδρασε το σώμα μου σε αυτό:\n\n\nΤι μπορώ να αφήσω να φύγει:\n\n',
-      en: 'What challenged me today was...\n\n\nHow my body reacted to it:\n\n\nWhat I can let go of:\n\n'
-    }
+      en: 'What challenged me today was...\n\n\nHow my body reacted to it:\n\n\nWhat I can let go of:\n\n',
+    },
   },
   {
     id: 'creative',
-    icon: '✨',
-    title: { el: 'Δημιουργική Ροή', en: 'Creative Flow' },
+    icon: Lightbulb,
+    title: { el: 'Δημιουργική ροή', en: 'Creative flow' },
     content: {
       el: 'Μια ιδέα που δεν θέλω να ξεχάσω...\n\n\nΑυτό που με ενέπνευσε σήμερα:\n\n\nΤι θέλω να εξερευνήσω αύριο:\n\n',
-      en: 'An idea I do not want to forget...\n\n\nWhat inspired me today:\n\n\nWhat I want to explore tomorrow:\n\n'
-    }
+      en: 'An idea I do not want to forget...\n\n\nWhat inspired me today:\n\n\nWhat I want to explore tomorrow:\n\n',
+    },
   },
   {
-    id: 'polyvagal-quick',
-    icon: '🧭',
-    title: { el: 'Πολυβαγικός Έλεγχος', en: 'Polyvagal Check' },
+    id: 'body-check',
+    icon: Compass,
+    title: { el: 'Έλεγχος σώματος', en: 'Body check' },
     content: {
-      el: 'Έλεγχος Νευρικού Συστήματος (Neuroception)...\n\n1. Τι μου λέει το σώμα μου αυτή τη στιγμή (χαλαρό, σφιγμένο, μουδιασμένο);\n\n\n2. Πού βρίσκομαι (Ventral/Σύνδεση, Sympathetic/Άγχος, Dorsal/Κούραση);\n\n\n3. Τι σήμα ασφαλείας μπορώ να προσφέρω στον εαυτό μου;\n\n',
-      en: 'Nervous System Check (Neuroception)...\n\n1. What is my body telling me right now (relaxed, tense, numb)?\n\n\n2. Where am I (Ventral/Social, Sympathetic/Anxiety, Dorsal/Shutdown)?\n\n\n3. What cue of safety can I offer myself right now?\n\n'
-    }
-  }
+      el: '1. Τι μου λέει το σώμα μου αυτή τη στιγμή; (χαλαρό, σφιγμένο, μουδιασμένο)\n\n\n2. Είμαι σε ένταση, σε μούδιασμα ή σε ηρεμία;\n\n\n3. Τι μικρό σήμα ασφάλειας μπορώ να δώσω στον εαυτό μου;\n\n',
+      en: '1. What is my body telling me right now? (relaxed, tense, numb)\n\n\n2. Am I in tension, numbness or calm?\n\n\n3. What small cue of safety can I give myself?\n\n',
+    },
+  },
 ];
+
+// Older entries stored a 1–4 mood; they still show in the history.
+const LEGACY_MOODS: Record<number, T> = {
+  1: { el: 'Βαρύ', en: 'Heavy' },
+  2: { el: 'Επίπεδο', en: 'Flat' },
+  3: { el: 'Ήρεμο', en: 'Calm' },
+  4: { el: 'Θετικό', en: 'Positive' },
+};
 
 interface JournalEntry {
   text: string;
-  mood: number | null;
+  mood: number | null;          // legacy
+  state?: CheckinChoice | null; // how I felt
+  axes?: Axis[];                // what I practised
   timestamp: number;
 }
 
-export default function Journal() {
-    const { reduceMotion } = useAccessibility();
-  
+// Dates are the person's local day, so writing after midnight lands on the right day.
+const pad = (n: number) => String(n).padStart(2, '0');
+const toLocalDateStr = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const parseLocalDate = (s: string) => {
+  const [y, m, d] = s.split('-').map(Number);
+  return new Date(y, (m || 1) - 1, d || 1);
+};
 
+const V2 = (date: string) => `journal_v2_${date}`;
+const V1 = (date: string) => `journal_papyrus_${date}`; // oldest format, read only
+
+const EMPTY: JournalEntry = { text: '', mood: null, state: null, axes: [], timestamp: 0 };
+
+function loadEntry(date: string): JournalEntry {
+  try {
+    const v2 = localStorage.getItem(V2(date));
+    if (v2) {
+      const parsed = JSON.parse(v2) as JournalEntry;
+      return { ...EMPTY, ...parsed, axes: parsed.axes || [], state: parsed.state || null };
+    }
+    const v1 = localStorage.getItem(V1(date));
+    if (v1) return { ...EMPTY, text: v1 };
+  } catch {
+    // ignore
+  }
+  return { ...EMPTY };
+}
+
+const isEmptyEntry = (e: JournalEntry) => !e.text.trim() && !e.state && !e.mood && !(e.axes && e.axes.length);
+
+export default function Journal() {
   const navigate = useNavigate();
   const { language } = useLanguage();
-  
+  const lang: Lang = language === 'en' ? 'en' : 'el';
+
   const [currentDate, setCurrentDate] = useState(new Date());
-  const dateStr = currentDate.toISOString().split('T')[0];
-  
-  const [entryText, setEntryText] = useState('');
-  const [activeMood, setActiveMood] = useState<number | null>(null);
-  
+  const dateStr = toLocalDateStr(currentDate);
+  const [entry, setEntry] = useState<JournalEntry>(() => loadEntry(dateStr));
   const [viewState, setViewState] = useState<'edit' | 'history'>('edit');
   const [searchQuery, setSearchQuery] = useState('');
+  const [questionsOpen, setQuestionsOpen] = useState(false);
 
-  // Load Entry
   useEffect(() => {
-    const v2Data = localStorage.getItem(`journal_v2_${dateStr}`);
-    if (v2Data) {
-      try {
-        const parsed = JSON.parse(v2Data) as JournalEntry;
-        setEntryText(parsed.text || '');
-        setActiveMood(parsed.mood || null);
-        return;
-      } catch(e) {}
-    }
-    
-    // Fallback parsing (v1 migration)
-    const v1Data = localStorage.getItem(`journal_papyrus_${dateStr}`);
-    if (v1Data) {
-      setEntryText(v1Data);
-      setActiveMood(null);
-    } else {
-      setEntryText('');
-      setActiveMood(null);
-    }
+    setEntry(loadEntry(dateStr));
   }, [dateStr]);
 
-  // Autosave
-  const saveEntry = (text: string, mood: number | null) => {
-    setEntryText(text);
-    setActiveMood(mood);
-    
-    if (!text.trim() && mood === null) {
-      localStorage.removeItem(`journal_v2_${dateStr}`);
-      return;
+  // Autosave. Both the current and the oldest key are cleared when an entry
+  // is emptied, so a deleted entry never comes back.
+  const save = (patch: Partial<JournalEntry>) => {
+    const next: JournalEntry = { ...entry, ...patch, timestamp: Date.now() };
+    setEntry(next);
+    try {
+      localStorage.removeItem(V1(dateStr));
+      if (isEmptyEntry(next)) localStorage.removeItem(V2(dateStr));
+      else localStorage.setItem(V2(dateStr), JSON.stringify(next));
+    } catch {
+      // storage unavailable
     }
-    
-    const data: JournalEntry = {
-      text,
-      mood,
-      timestamp: Date.now()
-    };
-    localStorage.setItem(`journal_v2_${dateStr}`, JSON.stringify(data));
-    
-    // Maintain v1 backwards compatibility if needed, but not strictly necessary
-    localStorage.setItem(`journal_papyrus_${dateStr}`, text);
   };
 
-  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    saveEntry(e.target.value, activeMood);
+  const toggleAxis = (axis: Axis) => {
+    const axes = entry.axes || [];
+    save({ axes: axes.includes(axis) ? axes.filter(a => a !== axis) : [...axes, axis] });
   };
 
-  const handleMoodSelect = (moodId: number) => {
-    saveEntry(entryText, activeMood === moodId ? null : moodId);
-  };
-
-  const handleFocus = (template: QuickTemplate) => {
-    const textToAdd = template.content[language];
-    const newText = entryText + (entryText ? '\n\n' : '') + textToAdd;
-    saveEntry(newText, activeMood);
-  };
-
-  const addPrompt = (q: string) => {
-    const newText = entryText + (entryText ? '\n\n' : '') + `~ ${q}\n`;
-    saveEntry(newText, activeMood);
-  };
+  const appendText = (add: string) => save({ text: entry.text + (entry.text ? '\n\n' : '') + add });
 
   const changeDate = (days: number) => {
-    const newDate = new Date(currentDate);
-    newDate.setDate(newDate.getDate() + days);
-    setCurrentDate(newDate);
+    const d = new Date(currentDate);
+    d.setDate(d.getDate() + days);
+    setCurrentDate(d);
   };
 
-  const isToday = new Date().toISOString().split('T')[0] === dateStr;
+  const isToday = toLocalDateStr(new Date()) === dateStr;
 
-  // Compile history dynamically
   const allEntries = useMemo(() => {
-    const entries: { date: string, data: JournalEntry }[] = [];
-    const processedDates = new Set<string>();
-
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      
-      if (key?.startsWith('journal_v2_')) {
-        try {
+    const entries: { date: string; data: JournalEntry }[] = [];
+    const seen = new Set<string>();
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key?.startsWith('journal_v2_')) {
           const date = key.replace('journal_v2_', '');
-          const data = JSON.parse(localStorage.getItem(key)!) as JournalEntry;
-          if (data.text.trim() || data.mood) {
-             entries.push({ date, data });
-             processedDates.add(date);
-          }
-        } catch(e) {}
-      } else if (key?.startsWith('journal_papyrus_')) {
-         const date = key.replace('journal_papyrus_', '');
-         if (processedDates.has(date)) continue; // ignore if v2 exists
-         
-         const text = localStorage.getItem(key);
-         if (text?.trim()) {
-           entries.push({ date, data: { text, mood: null, timestamp: 0 } });
-           processedDates.add(date);
-         }
+          const data = loadEntry(date);
+          if (!isEmptyEntry(data)) { entries.push({ date, data }); seen.add(date); }
+        }
       }
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key?.startsWith('journal_papyrus_')) {
+          const date = key.replace('journal_papyrus_', '');
+          if (seen.has(date)) continue;
+          const text = localStorage.getItem(key);
+          if (text?.trim()) entries.push({ date, data: { ...EMPTY, text } });
+        }
+      }
+    } catch {
+      // ignore
     }
-    return entries.sort((a,b) => b.date.localeCompare(a.date));
+    return entries.sort((a, b) => b.date.localeCompare(a.date));
   }, [viewState]);
 
-  const filteredHistory = allEntries.filter(entry => 
-    entry.data.text.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    entry.date.includes(searchQuery)
-  );
+  const q = searchQuery.toLowerCase();
+  const filteredHistory = allEntries.filter(e => e.data.text.toLowerCase().includes(q) || e.date.includes(searchQuery));
+
+  const sectionLabel = "text-[11px] uppercase tracking-[0.15em] text-white/40 font-semibold mb-3 ml-1";
 
   return (
-    <div className="min-h-screen bg-[#0f1117] text-white/80 font-sans">
-      {/* HEADER */}
+    <div className="min-h-screen bg-transparent text-white/80 font-sans">
       <header className="sticky top-0 z-20 flex items-center justify-between px-6 py-6 bg-[#0f1117]/80 backdrop-blur-md border-b border-white/5">
-        <button 
-          onClick={() => viewState === 'history' ? setViewState('edit') : navigate('/')} 
+        <button
+          onClick={() => (viewState === 'history' ? setViewState('edit') : navigate('/'))}
+          aria-label={lang === 'el' ? 'Πίσω' : 'Back'}
           className="w-10 h-10 rounded-full bg-white/[0.03] border border-white/[0.08] flex items-center justify-center text-white/60 hover:text-white hover:bg-white/[0.08] transition-all"
         >
           <ArrowLeft size={18} />
         </button>
-        <span className="font-serif italic text-lg text-white/90">
-          {language === 'el' ? 'Ημερολόγιο' : 'Journal'}
+        <span className="text-lg font-medium tracking-tight text-white/90">
+          {lang === 'el' ? 'Ημερολόγιο' : 'Journal'}
         </span>
-        <button 
+        <button
           onClick={() => setViewState(viewState === 'edit' ? 'history' : 'edit')}
+          aria-label={viewState === 'edit' ? (lang === 'el' ? 'Παλιότερες μέρες' : 'Earlier days') : (lang === 'el' ? 'Κλείσιμο' : 'Close')}
           className={cn(
-             "w-10 h-10 rounded-full flex items-center justify-center transition-all",
-             viewState === 'history' ? "bg-teal-500/20 text-teal-300 border border-teal-500/30" : "bg-white/[0.03] border border-white/[0.08] text-white/60 hover:text-white hover:bg-white/[0.08]"
+            "w-10 h-10 rounded-full flex items-center justify-center transition-all",
+            viewState === 'history' ? "bg-teal-500/20 text-teal-300 border border-teal-500/30" : "bg-white/[0.03] border border-white/[0.08] text-white/60 hover:text-white hover:bg-white/[0.08]"
           )}
         >
           {viewState === 'edit' ? <Calendar size={18} /> : <X size={18} />}
         </button>
       </header>
 
-      {/* CONTENT */}
       {viewState === 'edit' ? (
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl mx-auto px-6 py-8 pb-32">
-           
-           {/* Date Nav */}
-           <div className="flex items-center justify-between mb-10 bg-white/[0.02] p-2 rounded-full border border-white/[0.05]">
-              <button onClick={() => changeDate(-1)} className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/[0.05] text-white/50 hover:text-white transition-colors">
-                <ChevronLeft size={20} />
-              </button>
-              <div className="flex flex-col items-center">
-                <span className="text-sm tracking-[0.15em] uppercase font-semibold text-white/90">
-                  {currentDate.toLocaleDateString(language === 'el' ? 'el-GR' : 'en-US', { day: 'numeric', month: 'long' })}
-                </span>
-                <span className="text-[10px] tracking-wider text-white/40">
-                  {currentDate.getFullYear()}
-                </span>
-              </div>
-              <button onClick={() => changeDate(1)} disabled={isToday} className={cn("w-10 h-10 flex items-center justify-center rounded-full transition-colors", isToday ? "opacity-30 cursor-not-allowed text-white/30" : "hover:bg-white/[0.05] text-white/50 hover:text-white")}>
-                <ChevronRight size={20} />
-              </button>
-           </div>
 
-           {/* Mood Tracker */}
-           <div className="mb-8">
-             <p className="text-[11px] uppercase tracking-[0.15em] text-white/40 font-bold mb-4 ml-2">
-               {language === 'el' ? 'ΔΙΑΘΕΣΗ' : 'MOOD'}
-             </p>
-             <div className="flex gap-3 overflow-x-auto pb-2 custom-scrollbar">
-               {MOODS.map(m => (
-                 <button 
-                   key={m.id}
-                   onClick={() => handleMoodSelect(m.id)}
-                   className={cn(
-                     "flex-1 flex flex-col items-center justify-center gap-2 py-3 px-2 rounded-2xl border transition-all",
-                     activeMood === m.id 
-                       ? "bg-teal-500/10 border-teal-500/30 shadow-[0_0_15px_rgba(20,184,166,0.1)]" 
-                       : "bg-white/[0.02] border-white/[0.05] hover:bg-white/[0.05]"
-                   )}
-                 >
-                   <span className="text-2xl">{m.emoji}</span>
-                   <span className={cn("text-[10px] tracking-wider font-medium text-center", activeMood === m.id ? "text-teal-300" : "text-white/40")}>{m.label[language]}</span>
-                 </button>
-               ))}
-             </div>
-           </div>
+          {/* Date */}
+          <div className="flex items-center justify-between mb-8 bg-white/[0.02] p-2 rounded-full border border-white/[0.05]">
+            <button onClick={() => changeDate(-1)} aria-label={lang === 'el' ? 'Προηγούμενη μέρα' : 'Previous day'} className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/[0.05] text-white/50 hover:text-white transition-colors">
+              <ChevronLeft size={20} />
+            </button>
+            <div className="flex flex-col items-center">
+              <span className="text-sm tracking-[0.15em] uppercase font-semibold text-white/90">
+                {currentDate.toLocaleDateString(lang === 'el' ? 'el-GR' : 'en-GB', { day: 'numeric', month: 'long' })}
+              </span>
+              <span className="text-[10px] tracking-wider text-white/40">
+                {currentDate.toLocaleDateString(lang === 'el' ? 'el-GR' : 'en-GB', { weekday: 'long' })} · {currentDate.getFullYear()}
+              </span>
+            </div>
+            <button onClick={() => changeDate(1)} disabled={isToday} aria-label={lang === 'el' ? 'Επόμενη μέρα' : 'Next day'} className={cn("w-10 h-10 flex items-center justify-center rounded-full transition-colors", isToday ? "opacity-30 cursor-not-allowed text-white/30" : "hover:bg-white/[0.05] text-white/50 hover:text-white")}>
+              <ChevronRight size={20} />
+            </button>
+          </div>
 
-           {/* Quick Templates */}
-           <div className="mb-4 flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
-             {QUICK_TEMPLATES.map(t => (
-               <button
-                 key={t.id}
-                 onClick={() => handleFocus(t)}
-                 className="shrink-0 flex items-center gap-2 bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.08] hover:border-white/[0.1] rounded-full px-4 py-2 transition-colors"
-               >
-                 <span>{t.icon}</span>
-                 <span className="text-xs font-medium tracking-wide text-white/70">{t.title[language]}</span>
-               </button>
-             ))}
-           </div>
+          {/* What I practised — the book's four boxes */}
+          <div className="mb-8">
+            <p className={sectionLabel}>{lang === 'el' ? 'Τι εξάσκησα σήμερα' : 'What I practised today'}</p>
+            <div className="grid grid-cols-2 min-[400px]:grid-cols-4 gap-2" role="group">
+              {AXES.map(axis => {
+                const on = (entry.axes || []).includes(axis);
+                return (
+                  <button
+                    key={axis}
+                    onClick={() => toggleAxis(axis)}
+                    aria-pressed={on}
+                    className={cn(
+                      "min-h-[44px] px-3 rounded-full border flex items-center justify-center gap-2 text-[13px] transition-colors active:scale-[0.97]",
+                      on ? "bg-white/[0.08] border-white/20 text-white/90" : "bg-white/[0.02] border-white/[0.07] text-white/55 hover:text-white/80"
+                    )}
+                  >
+                    <span
+                      className="w-3 h-3 rounded-full border transition-colors"
+                      style={{ borderColor: AXIS_COLOR[axis], backgroundColor: on ? AXIS_COLOR[axis] : 'transparent' }}
+                    />
+                    {AXIS_LABEL[axis][lang]}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
-           {/* Editor */}
-           <div className="relative mb-12">
-             <textarea 
-                value={entryText}
-                onChange={handleTextChange}
-                placeholder={language === 'el' ? 'Άδειασε το μυαλό σου εδώ...' : 'Empty your mind here...'}
-                className="w-full min-h-[40vh] bg-transparent resize-none outline-none text-[16px] md:text-[18px] leading-[1.8] text-white/80 placeholder:text-white/20 font-serif italic py-4"
-             />
-           </div>
+          {/* How I felt — the same words as "How do you feel?" */}
+          <div className="mb-8">
+            <p className={sectionLabel}>{lang === 'el' ? 'Πώς ένιωθα' : 'How I felt'}</p>
+            <div className="grid grid-cols-2 min-[400px]:grid-cols-4 gap-2" role="group">
+              {CHECKIN_OPTIONS.map(o => {
+                const on = entry.state === o.id;
+                return (
+                  <button
+                    key={o.id}
+                    onClick={() => save({ state: on ? null : o.id })}
+                    aria-pressed={on}
+                    className={cn(
+                      "min-h-[44px] px-2 rounded-full border text-[13px] transition-colors active:scale-[0.97]",
+                      on ? "bg-white/[0.08] border-white/20 text-white/90" : "bg-white/[0.02] border-white/[0.07] text-white/55 hover:text-white/80"
+                    )}
+                  >
+                    {o.label[lang]}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
-           {/* Prompts */}
-           <div className="border-t border-white/[0.05] pt-10">
-             <div className="flex items-center gap-2 mb-6 ml-2">
-               <Sparkles size={14} className="text-teal-400" />
-               <h3 className="text-[11px] uppercase tracking-[0.15em] font-bold text-teal-400">
-                 {language === 'el' ? 'ΕΡΕΘΙΣΜΑΤΑ ΓΡΑΦΗΣ' : 'WRITING PROMPTS'}
-               </h3>
-             </div>
-             
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-               {elements.map((el) => (
-                 <div key={el.id} className="p-4 rounded-[1.5rem] bg-white/[0.02] border border-white/[0.05] hover:border-white/[0.1] transition-colors">
-                    <div className="flex items-center gap-3 mb-3 pb-3 border-b border-white/[0.05]">
-                      <span className="text-lg">{el.icon}</span>
-                      <span className="text-xs font-bold tracking-wider text-white/60 uppercase">{el.title[language]}</span>
+          {/* What I noticed */}
+          <div className="mb-3">
+            <p className={sectionLabel}>{lang === 'el' ? 'Τι παρατήρησα σήμερα' : 'What I noticed today'}</p>
+            <p className="text-[12px] text-white/35 ml-1 mb-4">
+              {lang === 'el' ? 'Δεν χρειάζεται να είναι τέλειο. Αρκεί να είναι αληθινό.' : 'It does not need to be perfect. It only needs to be true.'}
+            </p>
+
+            <div className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
+              {QUICK_TEMPLATES.map(t => (
+                <button
+                  key={t.id}
+                  onClick={() => appendText(t.content[lang])}
+                  className="shrink-0 flex items-center gap-2 bg-white/[0.02] border border-white/[0.06] hover:bg-white/[0.06] rounded-full px-4 py-2 transition-colors"
+                >
+                  <t.icon size={14} className="text-white/45" strokeWidth={1.75} />
+                  <span className="text-xs font-medium tracking-wide text-white/70">{t.title[lang]}</span>
+                </button>
+              ))}
+            </div>
+
+            <button
+              onClick={() => setQuestionsOpen(o => !o)}
+              aria-expanded={questionsOpen}
+              className="mt-2 flex items-center gap-1.5 text-[12px] text-white/45 hover:text-white/75 transition-colors ml-1"
+            >
+              {lang === 'el' ? 'Ερωτήσεις για να ξεκινήσεις' : 'Questions to get you started'}
+              <ChevronDown size={14} className={cn("transition-transform", questionsOpen && "rotate-180")} />
+            </button>
+
+            {questionsOpen && (
+              <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3">
+                {AXES.map(axis => (
+                  <div key={axis} className="p-4 rounded-[1.5rem] bg-white/[0.02] border border-white/[0.05]">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="w-2 h-2 rounded-full" style={{ backgroundColor: AXIS_COLOR[axis] }} />
+                      <span className="text-[11px] font-semibold tracking-[0.15em] text-white/55 uppercase">{AXIS_LABEL[axis][lang]}</span>
                     </div>
-                    <div className="flex flex-col gap-2">
-                      {el.questions[language].map((q, i) => (
-                        <button key={i} onClick={() => addPrompt(q)} className="text-left text-sm leading-snug text-white/50 hover:text-white transition-colors py-1.5 px-2 -mx-2 rounded-lg hover:bg-white/[0.04]">
-                          "{q}"
+                    <div className="flex flex-col">
+                      {AXIS_QUESTIONS[axis][lang].map((qq, i) => (
+                        <button key={i} onClick={() => appendText(`~ ${qq}\n`)} className="text-left text-sm leading-snug text-white/55 hover:text-white transition-colors py-2 px-2 -mx-2 rounded-lg hover:bg-white/[0.04]">
+                          {qq}
                         </button>
                       ))}
                     </div>
-                 </div>
-               ))}
-             </div>
-           </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
+          <textarea
+            value={entry.text}
+            onChange={e => save({ text: e.target.value })}
+            aria-label={lang === 'el' ? 'Τι παρατήρησα σήμερα' : 'What I noticed today'}
+            placeholder={lang === 'el' ? 'Άδειασε το μυαλό σου εδώ...' : 'Empty your mind here...'}
+            className="w-full min-h-[40vh] bg-transparent resize-none outline-none text-[16px] md:text-[17px] leading-[1.75] text-white/85 placeholder:text-white/25 font-sans py-4"
+          />
         </motion.div>
       ) : (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-3xl mx-auto px-6 py-8">
-           {/* HISTORY VIEW */}
-           <div className="relative mb-8">
-             <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-white/40">
-               <Search size={16} />
-             </div>
-             <input 
-               type="text" 
-               value={searchQuery}
-               onChange={(e) => setSearchQuery(e.target.value)}
-               placeholder={language === 'el' ? 'Αναζήτηση εγγραφών...' : 'Search entries...'}
-               className="w-full bg-white/[0.03] border border-white/[0.08] rounded-full py-4 pl-12 pr-6 text-sm text-white/90 placeholder:text-white/30 outline-none focus:border-teal-500/50 transition-colors"
-             />
-           </div>
+          <div className="relative mb-8">
+            <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-white/40">
+              <Search size={16} />
+            </div>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              placeholder={lang === 'el' ? 'Αναζήτηση εγγραφών...' : 'Search entries...'}
+              className="w-full bg-white/[0.03] border border-white/[0.08] rounded-full py-4 pl-12 pr-6 text-sm text-white/90 placeholder:text-white/30 outline-none focus:border-teal-500/50 transition-colors"
+            />
+          </div>
 
-           <div className="space-y-4 pb-24">
-             {filteredHistory.length === 0 ? (
-               <div className="text-center text-white/40 py-12 text-sm italic font-serif">
-                 {language === 'el' ? 'Δεν βρέθηκαν εγγραφές.' : 'No entries found.'}
-               </div>
-             ) : (
-               filteredHistory.map((item) => (
-                 <button 
-                   key={item.date} 
-                   onClick={() => {
-                     setCurrentDate(new Date(item.date));
-                     setViewState('edit');
-                   }}
-                   className="w-full text-left p-5 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] transition-all group"
-                 >
-                   <div className="flex items-center justify-between mb-3 border-b border-white/[0.05] pb-3">
-                     <span className="text-xs font-bold tracking-[0.1em] text-white/60 uppercase">
-                       {new Date(item.date).toLocaleDateString(language === 'el' ? 'el-GR' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' })}
-                     </span>
-                     {item.data.mood && (
-                       <span className="text-lg opacity-80">{MOODS.find(m => m.id === item.data.mood)?.emoji}</span>
-                     )}
-                   </div>
-                   <p className="text-sm leading-relaxed text-white/70 font-serif line-clamp-3">
-                     {item.data.text || (language === 'el' ? '(Κενή εγγραφή)' : '(Empty entry)')}
-                   </p>
-                 </button>
-               ))
-             )}
-           </div>
+          <div className="space-y-4 pb-24">
+            {filteredHistory.length === 0 ? (
+              <div className="text-center text-white/40 py-12 text-sm">
+                {lang === 'el' ? 'Δεν βρέθηκαν εγγραφές.' : 'No entries found.'}
+              </div>
+            ) : (
+              filteredHistory.map(item => {
+                const felt = item.data.state
+                  ? getCheckinOption(item.data.state).label[lang]
+                  : item.data.mood ? LEGACY_MOODS[item.data.mood]?.[lang] : null;
+                return (
+                  <button
+                    key={item.date}
+                    onClick={() => { setCurrentDate(parseLocalDate(item.date)); setViewState('edit'); }}
+                    className="w-full text-left p-5 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] transition-all"
+                  >
+                    <div className="flex items-center justify-between gap-3 mb-3 border-b border-white/[0.05] pb-3">
+                      <span className="text-xs font-semibold tracking-[0.1em] text-white/60 uppercase">
+                        {parseLocalDate(item.date).toLocaleDateString(lang === 'el' ? 'el-GR' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+                      </span>
+                      <span className="flex items-center gap-2 shrink-0">
+                        {(item.data.axes || []).map(a => (
+                          <span key={a} className="w-2 h-2 rounded-full" style={{ backgroundColor: AXIS_COLOR[a] }} title={AXIS_LABEL[a][lang]} />
+                        ))}
+                        {felt && <span className="text-[11px] text-white/45 ml-1">{felt}</span>}
+                      </span>
+                    </div>
+                    <p className="text-sm leading-relaxed text-white/70 line-clamp-3">
+                      {item.data.text || (lang === 'el' ? '(Χωρίς κείμενο)' : '(No text)')}
+                    </p>
+                  </button>
+                );
+              })
+            )}
+          </div>
         </motion.div>
       )}
     </div>
