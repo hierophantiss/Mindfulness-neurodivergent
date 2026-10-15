@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { ArrowLeft, ChevronLeft, ChevronRight, ChevronDown, Search, Calendar, X, Heart, Wind, Lightbulb, Compass } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, RefreshCw, Plus, Search, Calendar, X, Heart, Wind, Lightbulb, Compass } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useLanguage } from '../hooks/useLanguage';
 import { cn } from '../lib/utils';
 import type { Axis } from '../data/types';
 import { AXIS_LABEL, AXIS_COLOR, CHECKIN_OPTIONS, getCheckinOption, type CheckinChoice } from '../data/stateCheckin';
+import { PRACTICE_CATALOG, dayOfYear } from '../data/practiceCatalog';
+import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 
 type Lang = 'el' | 'en';
 type T = Record<Lang, string>;
@@ -14,6 +16,7 @@ type T = Record<Lang, string>;
 // ☐ Body ☐ Breath ☐ Attention ☐ Space — and "What I noticed today".
 
 const AXES: Axis[] = ['body', 'breath', 'attention', 'space'];
+const PRACTICE_CATEGORIES = ['breath', 'grounding', 'movement', 'swaying', 'vocal', 'microdose'];
 
 // Questions per axis; the first of each is the book's worksheet question (Ch. 9).
 const AXIS_QUESTIONS: Record<Axis, Record<Lang, string[]>> = {
@@ -86,7 +89,8 @@ interface JournalEntry {
   text: string;
   mood: number | null;          // legacy
   state?: CheckinChoice | null; // how I felt
-  axes?: Axis[];                // what I practised
+  axes?: Axis[];                // what I practised (ticked by hand)
+  axesOff?: Axis[];             // filled in from the practices, then unticked by hand
   timestamp: number;
 }
 
@@ -118,7 +122,10 @@ function loadEntry(date: string): JournalEntry {
   return { ...EMPTY };
 }
 
+// Something the person wrote or ticked (what the history shows).
 const isEmptyEntry = (e: JournalEntry) => !e.text.trim() && !e.state && !e.mood && !(e.axes && e.axes.length);
+// Worth keeping on the device: also a practice unticked by hand.
+const nothingToKeep = (e: JournalEntry) => isEmptyEntry(e) && !(e.axesOff && e.axesOff.length);
 
 export default function Journal() {
   const navigate = useNavigate();
@@ -130,10 +137,29 @@ export default function Journal() {
   const [entry, setEntry] = useState<JournalEntry>(() => loadEntry(dateStr));
   const [viewState, setViewState] = useState<'edit' | 'history'>('edit');
   const [searchQuery, setSearchQuery] = useState('');
-  const [questionsOpen, setQuestionsOpen] = useState(false);
+  const [questionShift, setQuestionShift] = useState(0);
+  const { logs } = useActivityTracker();
+
+  // The practices done on this day, from the app's own record.
+  const dayPractice = useMemo(() => {
+    const axes = new Set<Axis>();
+    const names: { el: string; en: string }[] = [];
+    const seen = new Set<string>();
+    for (const l of logs) {
+      if (!l.timestamp || l.completed === false) continue;
+      if (toLocalDateStr(new Date(l.timestamp)) !== dateStr) continue;
+      const item = l.itemId ? PRACTICE_CATALOG.find(i => i.id === l.itemId || i.path.split('/').pop() === l.itemId) : undefined;
+      const axis = (item?.axis || l.axis) as Axis | undefined;
+      if (!item && !PRACTICE_CATEGORIES.includes(l.category)) continue;
+      if (axis && AXES.includes(axis)) axes.add(axis);
+      if (item && !seen.has(item.id)) { seen.add(item.id); names.push(item.title); }
+    }
+    return { axes: [...axes], names };
+  }, [logs, dateStr]);
 
   useEffect(() => {
     setEntry(loadEntry(dateStr));
+    setQuestionShift(0);
   }, [dateStr]);
 
   // Autosave. Both the current and the oldest key are cleared when an entry
@@ -143,17 +169,32 @@ export default function Journal() {
     setEntry(next);
     try {
       localStorage.removeItem(V1(dateStr));
-      if (isEmptyEntry(next)) localStorage.removeItem(V2(dateStr));
+      if (nothingToKeep(next)) localStorage.removeItem(V2(dateStr));
       else localStorage.setItem(V2(dateStr), JSON.stringify(next));
     } catch {
       // storage unavailable
     }
   };
 
+  // Ticked = ticked by hand, or done in the app that day (unless unticked).
+  const isTicked = (axis: Axis) =>
+    (entry.axes || []).includes(axis) || (dayPractice.axes.includes(axis) && !(entry.axesOff || []).includes(axis));
+  const tickedAxes = AXES.filter(isTicked);
+
   const toggleAxis = (axis: Axis) => {
     const axes = entry.axes || [];
-    save({ axes: axes.includes(axis) ? axes.filter(a => a !== axis) : [...axes, axis] });
+    const off = entry.axesOff || [];
+    if (isTicked(axis)) {
+      save({ axes: axes.filter(a => a !== axis), axesOff: dayPractice.axes.includes(axis) ? [...off, axis] : off });
+    } else {
+      save({ axes: [...axes, axis], axesOff: off.filter(a => a !== axis) });
+    }
   };
+
+  // One question of the day, from the axes practised (or all four); the same
+  // all day, with "another question" for a different one.
+  const questionPool = (tickedAxes.length ? tickedAxes : AXES).flatMap(a => AXIS_QUESTIONS[a][lang].map(q => ({ axis: a, q })));
+  const question = questionPool[(dayOfYear(currentDate) + questionShift) % questionPool.length];
 
   const appendText = (add: string) => save({ text: entry.text + (entry.text ? '\n\n' : '') + add });
 
@@ -248,7 +289,7 @@ export default function Journal() {
             <p className={sectionLabel}>{lang === 'el' ? 'Τι εξάσκησα σήμερα' : 'What I practised today'}</p>
             <div className="grid grid-cols-2 min-[400px]:grid-cols-4 gap-2" role="group">
               {AXES.map(axis => {
-                const on = (entry.axes || []).includes(axis);
+                const on = isTicked(axis);
                 return (
                   <button
                     key={axis}
@@ -269,6 +310,13 @@ export default function Journal() {
               })}
             </div>
           </div>
+
+          {dayPractice.names.length > 0 && (
+            <p className="-mt-5 mb-8 ml-1 text-[12px] leading-relaxed text-white/40">
+              {lang === 'el' ? (isToday ? 'Σήμερα στην εφαρμογή: ' : 'Εκείνη τη μέρα στην εφαρμογή: ') : (isToday ? 'Today in the app: ' : 'That day in the app: ')}
+              <span className="text-white/60">{dayPractice.names.map(n => n[lang]).join(' · ')}</span>
+            </p>
+          )}
 
           {/* How I felt — the same words as "How do you feel?" */}
           <div className="mb-8">
@@ -313,32 +361,25 @@ export default function Journal() {
               ))}
             </div>
 
-            <button
-              onClick={() => setQuestionsOpen(o => !o)}
-              aria-expanded={questionsOpen}
-              className="mt-2 flex items-center gap-1.5 text-[12px] text-white/45 hover:text-white/75 transition-colors ml-1"
-            >
-              {lang === 'el' ? 'Ερωτήσεις για να ξεκινήσεις' : 'Questions to get you started'}
-              <ChevronDown size={14} className={cn("transition-transform", questionsOpen && "rotate-180")} />
-            </button>
-
-            {questionsOpen && (
-              <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3">
-                {AXES.map(axis => (
-                  <div key={axis} className="p-4 rounded-[1.5rem] bg-white/[0.02] border border-white/[0.05]">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="w-2 h-2 rounded-full" style={{ backgroundColor: AXIS_COLOR[axis] }} />
-                      <span className="text-[11px] font-semibold tracking-[0.15em] text-white/55 uppercase">{AXIS_LABEL[axis][lang]}</span>
-                    </div>
-                    <div className="flex flex-col">
-                      {AXIS_QUESTIONS[axis][lang].map((qq, i) => (
-                        <button key={i} onClick={() => appendText(`~ ${qq}\n`)} className="text-left text-sm leading-snug text-white/55 hover:text-white transition-colors py-2 px-2 -mx-2 rounded-lg hover:bg-white/[0.04]">
-                          {qq}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                ))}
+            {question && (
+              <div className="mt-3 p-4 rounded-[1.5rem] bg-white/[0.02] border border-white/[0.06]">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: AXIS_COLOR[question.axis] }} />
+                  <span className="text-[11px] font-semibold tracking-[0.15em] text-white/45 uppercase">
+                    {lang === 'el' ? 'Ερώτηση της ημέρας' : 'Question of the day'}
+                  </span>
+                </div>
+                <p className="text-[15px] leading-relaxed text-white/80">{question.q}</p>
+                <div className="flex items-center gap-4 mt-3">
+                  <button onClick={() => appendText(`~ ${question.q}\n`)} className="flex items-center gap-1.5 whitespace-nowrap text-[12px] text-white/55 hover:text-white/85 transition-colors">
+                    <Plus size={13} /> {lang === 'el' ? 'Γράψε γι\' αυτήν' : 'Write about it'}
+                  </button>
+                  {questionPool.length > 1 && (
+                    <button onClick={() => setQuestionShift(n => n + 1)} className="flex items-center gap-1.5 whitespace-nowrap text-[12px] text-white/40 hover:text-white/75 transition-colors">
+                      <RefreshCw size={12} /> {lang === 'el' ? 'Άλλη ερώτηση' : 'Another question'}
+                    </button>
+                  )}
+                </div>
               </div>
             )}
           </div>
