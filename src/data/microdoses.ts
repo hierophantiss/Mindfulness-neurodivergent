@@ -17,7 +17,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   // Body (Axis 1)
   {
     id: 'axis-pause',
-    evidence: { en: 'Anchoring the cerebellum via gravity computation', el: 'Αγκίστρωση της παρεγκεφαλίδας μέσω της βαρύτητας', ref: 'study-mackrous' },
+    evidence: { en: 'The brain constantly computes gravity; attending to it can steady you', el: 'Ο εγκέφαλος υπολογίζει διαρκώς τη βαρύτητα· η προσοχή σε αυτήν μπορεί να σε σταθεροποιήσει', ref: 'study-mackrous' },
     axis: 'body',
     title: { el: '1 Δευτερόλεπτο (Άξονας)', en: '1 Second (Axis)' },
     type: 'body',
@@ -29,7 +29,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'soft-belly',
-    evidence: { en: 'Ventral vagal activation via diaphragm release', el: 'Ενεργοποίηση του κοιλιακού πνευμονογαστρικού νεύρου', ref: 'study-porges' },
+    evidence: { en: 'A soft belly is linked to the calming, "ventral vagal" side of the nervous system', el: 'Η μαλακή κοιλιά συνδέεται με την ηρεμιστική, «κοιλιακή» πλευρά του πνευμονογαστρικού', ref: 'study-porges' },
     axis: 'body',
     title: { el: 'Μαλακή Κοιλιά', en: 'Soft Belly' },
     type: 'body',
@@ -107,7 +107,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'gravity-sink',
-    evidence: { en: 'Ecological grounding provides immediate safety cues', el: 'Η οικολογική γείωση παρέχει άμεσα σήματα ασφαλείας', ref: 'study-gibson' },
+    evidence: { en: 'Feeling the ground beneath you can act as a cue of safety', el: 'Η αίσθηση του εδάφους κάτω από σένα μπορεί να λειτουργεί ως σήμα ασφάλειας', ref: 'study-gibson' },
     axis: 'body',
     title: { el: 'Βύθιση στη Βαρύτητα', en: 'Gravity Sink' },
     type: 'body',
@@ -121,7 +121,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   // Breath (Axis 2)
   {
     id: 'rhythm-5-5',
-    evidence: { en: 'Regulates the window of tolerance through heart rate variability', el: 'Ρυθμίζει το παράθυρο ανοχής μέσω της καρδιακής μεταβλητότητας', ref: 'study-corrigan' },
+    evidence: { en: 'An even rhythm can help you stay within the window of tolerance', el: 'Ένας ισορροπημένος ρυθμός μπορεί να βοηθήσει να μείνεις μέσα στο παράθυρο ανοχής', ref: 'study-corrigan' },
     axis: 'breath',
     title: { el: 'Αναπνοή 5-5', en: 'Breath 5-5' },
     type: 'breath',
@@ -188,7 +188,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'ocean-breath',
-    evidence: { en: 'Stimulates vagal tone via vocal cord friction', el: 'Διεγείρει τον πνευμονογαστρικό τόνο μέσω της τριβής', ref: 'study-porges' },
+    evidence: { en: 'Breathing with a soft sound in the throat may support vagal tone', el: 'Η αναπνοή με απαλό ήχο στον λαιμό μπορεί να στηρίζει τον πνευμονογαστρικό τόνο', ref: 'study-porges' },
     axis: 'breath',
     title: { el: 'Ήχος Ωκεανού', en: 'Ocean Breath' },
     type: 'breath',
@@ -235,7 +235,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'gentle-return',
-    evidence: { en: 'Decreases Default Mode Network (DMN) rumination', el: 'Μειώνει τον μηρυκασμό στο Δίκτυο DMN', ref: 'study-farb' },
+    evidence: { en: 'Linked to less rumination', el: 'Συνδέεται με λιγότερο μηρυκασμό', ref: 'study-farb' },
     axis: 'attention',
     title: { el: 'Η Απαλή Επιστροφή', en: 'Gentle Return' },
     type: 'focus',
@@ -247,7 +247,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'eye-horizon',
-    evidence: { en: 'Soft gaze acts as a neurological brake via peripheral vision', el: 'Το περιφερειακό βλέμμα λειτουργεί ως νευρολογικό φρένο', ref: 'study-vater' },
+    evidence: { en: 'Peripheral vision may help the body step out of alarm', el: 'Η περιφερειακή όραση μπορεί να βοηθά το σώμα να βγει από την επιφυλακή', ref: 'study-vater' },
     axis: 'attention',
     title: { el: 'Άγκυρα στο Ύψος των Ματιών', en: 'Eye Level Anchor' },
     type: 'focus',
@@ -259,7 +259,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'thoughts-as-objects',
-    evidence: { en: 'Direct somatic focus silences the rumination network', el: 'Η άμεση σωματική εστίαση σιγάζει το δίκτυο μηρυκασμού', ref: 'study-farb' },
+    evidence: { en: 'Direct, sensory attention seems to quiet the rumination network', el: 'Η άμεση, αισθητηριακή προσοχή φαίνεται να ησυχάζει το δίκτυο μηρυκασμού', ref: 'study-farb' },
     axis: 'attention',
     title: { el: 'Σκέψεις που Περνούν', en: 'Passing Thoughts' },
     type: 'focus',
@@ -306,7 +306,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'sky-gazing-micro',
-    evidence: { en: 'Induces large-scale Alpha-Gamma neural coherence', el: 'Προκαλεί ευρείας κλίμακας νευρικό συγχρονισμό Alpha-Gamma', ref: 'study-lutz' },
+    evidence: { en: 'In experienced meditators, objectless meditation was linked to widespread gamma synchrony', el: 'Σε έμπειρους διαλογιστές, ο διαλογισμός χωρίς αντικείμενο συνδέθηκε με ευρύ συγχρονισμό κυμάτων γάμμα', ref: 'study-lutz' },
     axis: 'space',
     title: { el: 'Βλέμμα στο Μακρινό', en: 'Far Gaze' },
     type: 'space',
@@ -318,7 +318,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'tilopa-rest',
-    evidence: { en: 'Shifts brain resources away from DMN narrative centers', el: 'Απομακρύνει πόρους από τα κέντρα αφήγησης του DMN', ref: 'study-brewer' },
+    evidence: { en: 'In experienced meditators, linked to a quieter narrative network (DMN)', el: 'Σε έμπειρους διαλογιστές, συνδέεται με πιο ήσυχο δίκτυο αφήγησης (DMN)', ref: 'study-brewer' },
     axis: 'space',
     title: { el: 'Ξεκούραση (Tilopa)', en: 'Rest (Tilopa)' },
     type: 'space',

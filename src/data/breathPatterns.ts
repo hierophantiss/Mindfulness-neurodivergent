@@ -32,7 +32,7 @@ export interface BreathPattern {
 export const BREATH_PATTERNS: BreathPattern[] = [
   {
     id: "4-2-6-1",
-    evidence: { en: 'Prolonged exhales directly engage the parasympathetic nervous system', el: 'Οι παρατεταμένες εκπνοές ενεργοποιούν άμεσα το παρασυμπαθητικό σύστημα', ref: 'study-porges' },
+    evidence: { en: 'A long exhale is linked to the calming side of the nervous system', el: 'Η μακριά εκπνοή συνδέεται με την ηρεμιστική πλευρά του νευρικού συστήματος', ref: 'study-porges' },
     axis: 'breath',
     category: "breath",
     hasBinaural: true,
@@ -131,7 +131,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "4-7-8",
-    evidence: { en: 'Regulates autonomic nervous system via controlled breath retention', el: 'Ρυθμίζει το αυτόνομο νευρικό σύστημα μέσω της ελεγχόμενης κράτησης', ref: 'study-porges' },
+    evidence: { en: 'Slow breathing with a pause can help regulate the nervous system', el: 'Η αργή αναπνοή με παύση μπορεί να βοηθήσει τη ρύθμιση του νευρικού συστήματος', ref: 'study-porges' },
     axis: 'breath',
     category: "breath",
     hasBinaural: true,
@@ -408,7 +408,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "box-breathing",
-    evidence: { en: 'Restores the autonomic nervous system to the window of tolerance', el: 'Επαναφέρει το αυτόνομο νευρικό σύστημα στο παράθυρο ανοχής', ref: 'study-corrigan' },
+    evidence: { en: 'Can help the nervous system return to the window of tolerance', el: 'Μπορεί να βοηθήσει το νευρικό σύστημα να επιστρέψει στο παράθυρο ανοχής', ref: 'study-corrigan' },
     axis: 'breath',
     category: "breath",
     hasBinaural: true,
@@ -461,7 +461,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "delta",
-    evidence: { en: 'Binaural beats entrain brainwaves to reduce sensory overload', el: 'Τα binaural beats συγχρονίζουν τα εγκεφαλικά κύματα μειώνοντας την υπερφόρτωση', ref: 'study-lane' },
+    evidence: { en: 'Binaural beats may help some people relax', el: 'Τα διωτικά κύματα (binaural beats) μπορεί να βοηθούν κάποιους ανθρώπους να χαλαρώσουν', ref: 'study-lane' },
     axis: 'breath',
     category: "breath",
     hasBinaural: true,
@@ -498,7 +498,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "sos-breath",
-    evidence: { en: 'Rapidly shifts the nervous system out of fight-or-flight', el: 'Βγάζει γρήγορα το νευρικό σύστημα από την κατάσταση πάλης-ή-φυγής', ref: 'study-porges' },
+    evidence: { en: 'A long exhale can help you step out of fight-or-flight', el: 'Η μακριά εκπνοή μπορεί να βοηθήσει να βγεις από την κατάσταση πάλης ή φυγής', ref: 'study-porges' },
     axis: 'breath',
     category: "breath",
     hasBinaural: true,
@@ -543,7 +543,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "taichi-fourfold",
-    evidence: { en: 'Physical movement anchors cerebellar gravity computation', el: 'Η σωματική κίνηση αγκιστρώνει τον υπολογισμό βαρύτητας της παρεγκεφαλίδας', ref: 'study-mackrous' }, category: "grounding", visualizer: "taichi", hasBinaural: true,
+    evidence: { en: 'Moving with gravity helps the body find its balance', el: 'Η κίνηση μαζί με τη βαρύτητα βοηθά το σώμα να βρει την ισορροπία του', ref: 'study-mackrous' }, category: "grounding", visualizer: "taichi", hasBinaural: true,
     axis: 'body',
     title: { el: "Ροή: Τετραπλός Άξονας", en: "Flow: Fourfold Axis" },
     subtitle: { el: "Γείωση & Σύνδεση", en: "Grounding & Connection" },
@@ -660,7 +660,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "bhramari-humming",
-    evidence: { en: 'Vocal cord vibration directly stimulates vagal tone', el: 'Η δόνηση των φωνητικών χορδών διεγείρει άμεσα τον πνευμονογαστρικό τόνο', ref: 'study-porges' },
+    evidence: { en: 'Humming may support vagal tone', el: 'Το βουητό μπορεί να στηρίζει τον πνευμονογαστρικό τόνο', ref: 'study-porges' },
     axis: 'breath',
     category: "vocal",
     hasBinaural: true,

@@ -233,6 +233,7 @@ export default function GenericExercise() {
         )}>
           <h1 className="text-3xl font-medium text-white tracking-wide mb-3">{language === 'en' ? exercise.title.en : exercise.title.el}</h1>
           <p className="text-base md:text-lg text-zinc-300 leading-loose font-normal">{language === 'en' ? exercise.desc.en : exercise.desc.el}</p>
+          {!running && <EvidenceLine evidence={exercise.evidence} language={language} />}
         </div>
 
         {/* Audio Player Controls */}

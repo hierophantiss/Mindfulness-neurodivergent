@@ -4,7 +4,7 @@
 export const GUIDED_EXERCISES: Record<string, any> = {
   // --- ΜΙΚΡΟΔΟΣΕΙΣ ΑΠΟ ΤΟ 8-ΕΒΔΟΜΑΔΟ ΠΡΟΓΡΑΜΜΑ ---
   'axis-pause': {
-    evidence: { en: 'Anchoring the cerebellum via gravity computation', el: 'Αγκίστρωση της παρεγκεφαλίδας μέσω της βαρύτητας', ref: 'study-mackrous' },
+    evidence: { en: 'The brain constantly computes gravity; attending to it can steady you', el: 'Ο εγκέφαλος υπολογίζει διαρκώς τη βαρύτητα· η προσοχή σε αυτήν μπορεί να σε σταθεροποιήσει', ref: 'study-mackrous' },
     axis: 'body',
     title: { el: '1 Δευτερόλεπτο (Βαρύτητα & Άξονας)', en: '1 Second Pause (Gravity & Axis)' },
     desc: { el: 'Κανείς δεν θα προσέξει τίποτα. Μια στιγμιαία επαναφορά του νευρικού συστήματος.', en: 'No one will notice a thing. A momentary reset of the nervous system.' },
@@ -68,7 +68,7 @@ export const GUIDED_EXERCISES: Record<string, any> = {
     }
   },
   'anchor-7-sec': {
-    evidence: { en: 'Improves cognitive inhibition and attention regulation in ADHD', el: 'Βελτιώνει τη γνωστική αναστολή και ρύθμιση της προσοχής στη ΔΕΠΥ', ref: 'study-zylowska' },
+    evidence: { en: 'An 8-week mindfulness programme was linked to better attention in ADHD', el: 'Ένα πρόγραμμα ενσυνειδητότητας 8 εβδομάδων συνδέθηκε με καλύτερη προσοχή στη ΔΕΠΥ', ref: 'study-zylowska' },
     axis: 'attention',
     title: { el: 'Οπτική Άγκυρα 7"', en: 'Visual Anchor 7"' },
     desc: { el: 'Το βλέμμα κλειδώνει, ο νους ησυχάζει.', en: 'Gaze locks, mind quiets.' },
@@ -90,7 +90,7 @@ export const GUIDED_EXERCISES: Record<string, any> = {
     }
   },
   'alternate-focus': {
-    evidence: { en: 'Mindfulness training modulates attention networks in ADHD', el: 'Η ενσυνειδητότητα ρυθμίζει τα δίκτυα προσοχής στη ΔΕΠΥ', ref: 'study-zylowska' },
+    evidence: { en: 'An 8-week mindfulness programme was linked to better attention in ADHD', el: 'Ένα πρόγραμμα ενσυνειδητότητας 8 εβδομάδων συνδέθηκε με καλύτερη προσοχή στη ΔΕΠΥ', ref: 'study-zylowska' },
     axis: 'attention',
     title: { el: 'Εναλλάξ Εστίαση', en: 'Alternate Focus' },
     desc: { el: 'Η κίνηση του βλέμματος ξεκουράζει το νευρικό σύστημα.', en: 'Moving your gaze rests the nervous system.' },
@@ -112,7 +112,7 @@ export const GUIDED_EXERCISES: Record<string, any> = {
     }
   },
   'samatha-micro': {
-    evidence: { en: 'Direct somatic focus silences the rumination network (DMN)', el: 'Η άμεση σωματική εστίαση σιγάζει το δίκτυο μηρυκασμού', ref: 'study-farb' },
+    evidence: { en: 'Direct, sensory attention seems to quiet the rumination network', el: 'Η άμεση, αισθητηριακή προσοχή φαίνεται να ησυχάζει το δίκτυο μηρυκασμού', ref: 'study-farb' },
     axis: 'attention',
     title: { el: 'Σκέψεις που Περνούν', en: 'Passing Thoughts' },
     desc: { el: 'Μην πολεμάς τις σκέψεις. Άλλαξε τον τρόπο που τις κοιτάς.', en: "Don't fight thoughts. Change how you look at them." },
@@ -159,7 +159,7 @@ export const GUIDED_EXERCISES: Record<string, any> = {
     }
   },
   'grounding-scan': {
-    evidence: { en: 'Cerebellar gravity prediction regulates autonomic state', el: 'Η πρόβλεψη βαρύτητας ρυθμίζει το αυτόνομο σύστημα', ref: 'study-mackrous' },
+    evidence: { en: 'Sensing gravity is linked to how the body steadies itself', el: 'Η αίσθηση της βαρύτητας συνδέεται με το πώς σταθεροποιείται το σώμα', ref: 'study-mackrous' },
     axis: 'body',
     title: { el: 'Αίσθηση Γείωσης', en: 'Grounding Sensation' },
     desc: { el: 'Βρες το κέντρο σου και νιώσε τη σταθερότητα του εδάφους.', en: 'Find your center and feel the stability of the ground.' },
@@ -254,7 +254,7 @@ export const GUIDED_EXERCISES: Record<string, any> = {
     }
   },
   'gravity-surrender': {
-    evidence: { en: 'Ecological space perception provides immediate safety cues', el: 'Η οικολογική αντίληψη του χώρου παρέχει σήματα ασφαλείας', ref: 'study-gibson' },
+    evidence: { en: 'Sensing the space around you can act as a cue of safety', el: 'Η αίσθηση του χώρου γύρω σου μπορεί να λειτουργεί ως σήμα ασφάλειας', ref: 'study-gibson' },
     axis: 'body',
     title: { el: 'Παράδοση στη Βαρύτητα', en: 'Surrender to Gravity' },
     desc: { el: 'Αφήστε το βάρος σας να πέσει προς τα κάτω. Η γείωση είναι η πρώτη πράξη χαλάρωσης.', en: 'Let your weight drop downwards. Grounding is the first act of relaxation.' },
@@ -416,7 +416,7 @@ export const GUIDED_EXERCISES: Record<string, any> = {
     }
   },
   'attention-observation': {
-    evidence: { en: 'Reduces mind-wandering by down-regulating the Default Mode Network', el: 'Μειώνει την περιπλάνηση του νου αποδυναμώνοντας το DMN', ref: 'study-farb' },
+    evidence: { en: 'Linked to less mind-wandering', el: 'Συνδέεται με λιγότερη περιπλάνηση του νου', ref: 'study-farb' },
     axis: 'attention',
     title: { el: 'Παρατήρηση Προσοχής', en: 'Attention Observation' },
     desc: { el: 'Πού πηγαίνει η προσοχή σας φυσικά; Μην την κατευθύνετε, απλώς δείτε.', en: 'Where does your attention go naturally? Do not direct it, just see.' },
@@ -440,7 +440,7 @@ export const GUIDED_EXERCISES: Record<string, any> = {
     }
   },
   'fixed-point': {
-    evidence: { en: 'Hyperfocus state regulation and sensory gating', el: 'Ρύθμιση υπερεστίασης (hyperfocus) και αισθητηριακό φιλτράρισμα', ref: 'study-ashinoff' },
+    evidence: { en: 'Hyperfocus as a state to work with, not against', el: 'Η υπερεστίαση ως κατάσταση που δουλεύεις μαζί της, όχι εναντίον της', ref: 'study-ashinoff' },
     axis: 'attention',
     title: { el: 'Κλειστή Εστίαση (Σταθερό Σημείο)', en: 'Closed Focus (Fixed Point)' },
     desc: { el: 'Μαζέψτε τη δέσμη της προσοχής σε ένα μόνο σημείο.', en: 'Gather the beam of attention to a single point.' },
@@ -487,7 +487,7 @@ export const GUIDED_EXERCISES: Record<string, any> = {
     }
   },
   'soft-eyes': {
-    evidence: { en: 'Peripheral vision acts as a neurological brake for the sympathetic system', el: 'Η περιφερειακή όραση φρενάρει το συμπαθητικό σύστημα', ref: 'study-vater' },
+    evidence: { en: 'Peripheral vision may help the body step out of alarm', el: 'Η περιφερειακή όραση μπορεί να βοηθά το σώμα να βγει από την επιφυλακή', ref: 'study-vater' },
     axis: 'space',
     title: { el: 'Περιφερειακή Όραση (Μαλακά Μάτια)', en: 'Peripheral Vision (Soft Eyes)' },
     desc: { el: 'Αγκαλιάστε όλο το οπτικό πεδίο χωρίς να εστιάζετε πουθενά συγκεκριμένα.', en: 'Embrace the entire visual field without focusing anywhere specific.' },
@@ -511,7 +511,7 @@ export const GUIDED_EXERCISES: Record<string, any> = {
     }
   },
   'sky-clouds': {
-    evidence: { en: 'Shifts brain resources away from DMN narrative centers', el: 'Απομακρύνει πόρους από τα κέντρα αφήγησης του DMN', ref: 'study-brewer' },
+    evidence: { en: 'In experienced meditators, linked to a quieter narrative network (DMN)', el: 'Σε έμπειρους διαλογιστές, συνδέεται με πιο ήσυχο δίκτυο αφήγησης (DMN)', ref: 'study-brewer' },
     axis: 'space',
     title: { el: 'Ο Χώρος που Χωράει τα Πάντα', en: 'The Space that Holds Everything' },
     desc: { el: 'Σκέψεις και αισθήσεις έρχονται και φεύγουν. Ο χώρος που τις χωράει μένει.', en: 'Thoughts and sensations come and go. The space that holds them stays.' },

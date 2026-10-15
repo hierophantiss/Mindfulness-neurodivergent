@@ -1,0 +1,52 @@
+// One honest note per study, shown with an asterisk under every
+// "Why this works" line that cites it: who was studied, and what the study
+// did not measure.
+
+type T = { el: string; en: string };
+
+export const STUDY_NOTES: Record<string, T> = {
+  'study-lutz': {
+    el: 'Η μελέτη έγινε σε 8 μοναχούς με πολλά χρόνια πρακτικής, στον διαλογισμό συμπόνιας. Δεν μετρήθηκε σε σύντομη άσκηση σαν αυτή.',
+    en: 'The study was done with 8 monks with many years of practice, during compassion meditation. It was not measured in a short exercise like this one.',
+  },
+  'study-brewer': {
+    el: 'Σε έμπειρους διαλογιστές με χρόνια πρακτικής, σε σύγκριση με αρχάριους.',
+    en: 'In experienced meditators with years of practice, compared with beginners.',
+  },
+  'study-farb': {
+    el: 'Σε ανθρώπους που είχαν ολοκληρώσει πρόγραμμα ενσυνειδητότητας 8 εβδομάδων.',
+    en: 'In people who had completed an 8-week mindfulness programme.',
+  },
+  'study-porges': {
+    el: 'Η Πολυβαγική Θεωρία είναι θεωρητικό πλαίσιο και συζητείται ακόμα στην επιστήμη· δεν μέτρησε αυτή την άσκηση.',
+    en: 'Polyvagal Theory is a theoretical framework and is still debated; it did not measure this exercise.',
+  },
+  'study-corrigan': {
+    el: 'Ανασκόπηση για το μοντέλο του παραθύρου ανοχής, όχι μέτρηση αυτής της άσκησης.',
+    en: 'A review of the window-of-tolerance model, not a measurement of this exercise.',
+  },
+  'study-lane': {
+    el: 'Μικρή μελέτη· τα ευρήματα για τα διωτικά κύματα είναι ακόμα ανάμεικτα.',
+    en: 'A small study; findings on binaural beats are still mixed.',
+  },
+  'study-mackrous': {
+    el: 'Βασική νευροεπιστημονική έρευνα για το πώς ο εγκέφαλος υπολογίζει τη βαρύτητα, όχι μελέτη αυτής της άσκησης.',
+    en: 'Basic neuroscience on how the brain computes gravity, not a study of this exercise.',
+  },
+  'study-gibson': {
+    el: 'Θεωρία της αντίληψης, όχι πειραματική μέτρηση.',
+    en: 'A theory of perception, not an experimental measurement.',
+  },
+  'study-vater': {
+    el: 'Ανασκόπηση για τον ρόλο της περιφερειακής όρασης· δεν μέτρησε το νευρικό σύστημα.',
+    en: 'A review of the role of peripheral vision; it did not measure the nervous system.',
+  },
+  'study-zylowska': {
+    el: 'Μικρή πιλοτική μελέτη (24 ενήλικες και 8 έφηβοι, χωρίς ομάδα ελέγχου), με πρόγραμμα 8 εβδομάδων.',
+    en: 'A small pilot study (24 adults and 8 adolescents, no control group) of an 8-week programme.',
+  },
+  'study-ashinoff': {
+    el: 'Ανασκόπηση που περιγράφει την υπερεστίαση· δεν εξέτασε κάποια άσκηση.',
+    en: 'A review describing hyperfocus; it did not test any exercise.',
+  },
+};

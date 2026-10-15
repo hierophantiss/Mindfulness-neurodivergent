@@ -4,6 +4,7 @@ import { CHECKIN_OPTIONS, CHECKIN_DETAILS, getCheckinActions, getAllForChoice } 
 import { BREATH_PATTERNS } from './breathPatterns';
 import { GUIDED_EXERCISES } from './guidedExercises';
 import { MICRODOSES_EXERCISES } from './microdoses';
+import { STUDY_NOTES } from './studyNotes';
 
 // Mirrors the router: /practice/breath/:id is a pattern if the id is one,
 // otherwise it falls through to the exercise page, which knows guided
@@ -106,5 +107,13 @@ describe('practice catalogue', () => {
       expect(short.length).toBeGreaterThan(0);
       expect(long.length).toBeGreaterThan(0);
     }
+  });
+
+  it('every study cited under "Why this works" has an asterisk note', () => {
+    const refs = new Set<string>();
+    for (const m of MICRODOSES_EXERCISES as any[]) if (m.evidence) refs.add(m.evidence.ref);
+    for (const b of BREATH_PATTERNS as any[]) if (b.evidence) refs.add(b.evidence.ref);
+    for (const g of Object.values(GUIDED_EXERCISES) as any[]) if (g.evidence) refs.add(g.evidence.ref);
+    for (const r of refs) expect(STUDY_NOTES[r], r).toBeTruthy();
   });
 });
