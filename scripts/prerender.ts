@@ -634,7 +634,7 @@ function getMetaForRoute(route: string): RouteMeta {
       ? `The Science Behind the Fourfold Axis — ${METHODOLOGY_DATA.en.pillars.length} Published Studies | Neurodivergent Mindfulness`
       : `Η Επιστημονική Βάση του Τετραπλού Άξονα — ${METHODOLOGY_DATA.el.pillars.length} Δημοσιευμένες Έρευνες | Neurodivergent Mindfulness`;
     const d = lang === 'en'
-      ? `Our approach is grounded in ${METHODOLOGY_DATA.en.pillars.length} peer-reviewed neuroscience and clinical studies on ADHD, Autism, and the neurodivergent brain. Read the scientific basis.`
+      ? `Our approach is grounded in ${METHODOLOGY_DATA.en.pillars.length} published neuroscience and clinical studies on ADHD, Autism, and the neurodivergent brain. Read the scientific basis.`
       : `Η προσέγγισή μας βασίζεται σε ${METHODOLOGY_DATA.el.pillars.length} δημοσιευμένες νευροεπιστημονικές και κλινικές έρευνες για τη ΔΕΠΥ, τον Αυτισμό και τον νευροδιαφορετικό εγκέφαλο. Διαβάστε την επιστημονική βάση.`;
     
     const methodData = METHODOLOGY_DATA[lang as 'en'|'el'];

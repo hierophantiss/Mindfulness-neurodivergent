@@ -219,10 +219,10 @@ export default function NavigationMenu() {
                       </div>
                       <div className="flex flex-col">
                         <span className="text-sm font-medium text-zinc-200">
-                          {language === 'en' ? 'Evidence-Based' : 'Επιστημονική Θεμελίωση'}
+                          {language === 'en' ? 'Research Basis' : 'Επιστημονική Θεμελίωση'}
                         </span>
                         <span className="text-[10px] text-teal-400">
-                          {language === 'en' ? 'Peer-Reviewed Science References' : 'Επιστημονικές αναφορές'}
+                          {language === 'en' ? 'Scientific references' : 'Επιστημονικές αναφορές'}
                         </span>
                       </div>
                      </div>

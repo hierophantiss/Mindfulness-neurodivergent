@@ -106,11 +106,6 @@ export default function Methodology() {
           <p className="text-sm font-serif italic text-teal-200/90 max-w-lg mx-auto leading-relaxed">
             {t.quote}
           </p>
-          <div className="mt-8 flex justify-center gap-2 text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
-            <span>© Awareness Gateway Science Board</span>
-            <span>•</span>
-            <span>Est. 2026</span>
-          </div>
         </section>
 
       </div>

@@ -4,7 +4,7 @@ export const METHODOLOGY_DATA = {
   el: {
     title: 'Επιστημονική Θεμελίωση',
     subtitle: 'Η Νευροεπιστήμη πίσω από τη Μεθοδολογία μας',
-    intro: 'Η προσέγγιση δεν βασίζεται σε γενικές οδηγίες χαλάρωσης, αλλά σε δημοσιευμένες έρευνες της νευροεπιστήμης και της κλινικής έρευνας, με επίκεντρο τη ΔΕΠΥ και τον αυτισμό. Η εφαρμογή είναι εργαλείο αυτορρύθμισης, όχι θεραπεία.',
+    intro: 'Η προσέγγιση δεν βασίζεται σε γενικές οδηγίες χαλάρωσης, αλλά σε δημοσιευμένες έρευνες της νευροεπιστήμης και της κλινικής έρευνας, με επίκεντρο τη ΔΕΠΥ και τον αυτισμό. Καμία μελέτη δεν έχει εξετάσει ακόμα τη μέθοδο ως σύνολο· οι έρευνες στηρίζουν τα κομμάτια της, και για κάθε μία γράφεται σε ποιους έγινε και τι δεν έδειξε. Η εφαρμογή είναι εργαλείο αυτορρύθμισης, όχι θεραπεία.',
     
     philosophyTitle: 'Φιλοσοφία Έρευνας & Νευροδιαφορετικότητα',
     philosophyText: 'Οι κλασικές τεχνικές ενσυνειδητότητας μπορεί να φέρουν άγχος ή «πάγωμα» σε νευροδιαφορετικά άτομα, επειδή συχνά ζητούν άμεση ακινησία και παθητική παρατήρηση. Αυτή η μέθοδος ξεκινά από την άλλη άκρη: από το σώμα προς τα πάνω (somatic, bottom-up). Πρώτα ρυθμίζεται το νευρικό σύστημα, μετά έρχεται η παρατήρηση:',
@@ -39,11 +39,53 @@ export const METHODOLOGY_DATA = {
         citation: 'Brewer et al. (2011). PNAS. Doi: 10.1073/pnas.1112029108'
       },
       {
+        id: 'study-sonuga',
+        icon: Brain,
+        title: 'DMN & ΔΕΠΥ (Sonuga-Barke & Castellanos, 2007)',
+        desc: 'Μια γνωστή υπόθεση για τη ΔΕΠΥ: το DMN δεν ησυχάζει εύκολα όταν χρειάζεται προσοχή, και τη διακόπτει κατά διαστήματα. Εξηγεί τις διακυμάνσεις της προσοχής· είναι υπόθεση, όχι τελικό συμπέρασμα.',
+        citation: 'Sonuga-Barke & Castellanos (2007). Neuroscience & Biobehavioral Reviews. Doi: 10.1016/j.neubiorev.2007.02.005'
+      },
+      {
+        id: 'study-schooler',
+        icon: Sparkles,
+        title: 'Μετα-επίγνωση (Schooler et al., 2011)',
+        desc: 'Ανασκόπηση για την περιπλάνηση του νου: ο νους προσέχει μόνο κατά διαστήματα ότι έχει φύγει. Τη στιγμή που το προσέχει την ονομάζουν μετα-επίγνωση. Η μέθοδος δεν ζητά να την παράγεις· ζητά να την προσέχεις όταν εμφανίζεται.',
+        citation: 'Schooler et al. (2011). Trends in Cognitive Sciences. Doi: 10.1016/j.tics.2011.05.006'
+      },
+      {
+        id: 'study-nolen',
+        icon: Brain,
+        title: 'Μηρυκασμός (Nolen-Hoeksema et al., 2008)',
+        desc: 'Ανασκόπηση της έρευνας για τον μηρυκασμό: η επανάληψη των ίδιων σκέψεων γύρω από το τι πήγε στραβά κρατά και βαθαίνει την πεσμένη διάθεση, ενισχύει την αρνητική σκέψη και δυσκολεύει την επίλυση προβλημάτων. Στη μέθοδο, αυτοί είναι οι φαύλοι κύκλοι του «Αλλιώς» και του «Έπρεπε».',
+        citation: 'Nolen-Hoeksema, Wisco & Lyubomirsky (2008). Perspectives on Psychological Science. Doi: 10.1111/j.1745-6924.2008.00088.x'
+      },
+      {
+        id: 'study-lieberman',
+        icon: Brain,
+        title: 'Το Όνομα στο Συναίσθημα (Lieberman et al., 2007)',
+        desc: 'Μελέτη fMRI: όταν οι συμμετέχοντες έδιναν όνομα στο συναίσθημα που έβλεπαν σε ένα πρόσωπο, η αμυγδαλή αντιδρούσε λιγότερο. Η ταμπέλα της μεθόδου («Ανησυχία», «Σενάριο») πατά στην ίδια αρχή: η αναγνώριση είναι ήδη ρύθμιση.',
+        citation: 'Lieberman et al. (2007). Psychological Science. Doi: 10.1111/j.1467-9280.2007.01916.x'
+      },
+      {
         id: 'study-porges',
         icon: Waves,
         title: 'Πολυβαγική Θεωρία & Ασφάλεια (Porges, 1995)',
-        desc: 'Η αργή, παρατεταμένη εκπνοή ενεργοποιεί την «κοιλιακή» πλευρά του πνευμονογαστρικού νεύρου, που συνδέεται με καταστάσεις ηρεμίας και ασφάλειας. Η Πολυβαγική Θεωρία χρησιμοποιείται εδώ ως πλαίσιο κατανόησης. Δεν χρειάζεται να «πείσεις» τον εαυτό σου ότι είναι ασφαλής· στην εμπειρία, η εκπνοή στέλνει το σήμα από μόνη της.',
+        desc: 'Η Πολυβαγική Θεωρία περιγράφει την «κοιλιακή» πλευρά του πνευμονογαστρικού νεύρου, που συνδέεται με καταστάσεις ηρεμίας και ασφάλειας. Χρησιμοποιείται εδώ ως πλαίσιο κατανόησης· η θεωρία συζητείται ακόμα στην επιστήμη. Τη μακριά εκπνοή την έχει μελετήσει η Balban (2023).',
         citation: 'Stephen Porges, PhD (1995). Psychophysiology. Doi: 10.1111/j.1469-8986.1995.tb01213.x'
+      },
+      {
+        id: 'study-balban',
+        icon: Waves,
+        title: 'Μακριά Εκπνοή (Balban et al., 2023)',
+        desc: 'Τυχαιοποιημένη μελέτη με 108 ενήλικες, 5 λεπτά τη μέρα για 4 εβδομάδες. Η αναπνοή με μακριά εκπνοή βελτίωσε τη θετική διάθεση και επιβράδυνε την αναπνοή περισσότερο από τον διαλογισμό· το άγχος έπεσε σε όλες τις ομάδες. Η τεχνική ήταν διπλή εισπνοή με μακριά εκπνοή, όχι ακριβώς οι ρυθμοί της μεθόδου, με την ίδια όμως αρχή: το εργαλείο είναι η εκπνοή.',
+        citation: 'Balban et al. (2023). Cell Reports Medicine. Doi: 10.1016/j.xcrm.2022.100895'
+      },
+      {
+        id: 'study-homma',
+        icon: Waves,
+        title: 'Αναπνοή & Συναίσθημα (Homma & Masaoka, 2008)',
+        desc: 'Ανασκόπηση για τη σχέση αναπνοής και συναισθήματος: το συναίσθημα αλλάζει τον ρυθμό και το βάθος της αναπνοής, και η αναπνοή επηρεάζει με τη σειρά της το συναίσθημα. Στη μέθοδο, η αναπνοή διαβάζεται σαν καιρός: εκεί φαίνεται ο άνεμος του συναισθήματος, πριν βρεις λέξεις.',
+        citation: 'Homma & Masaoka (2008). Experimental Physiology. Doi: 10.1113/expphysiol.2008.042424'
       },
       {
         id: 'study-corrigan',
@@ -53,17 +95,45 @@ export const METHODOLOGY_DATA = {
         citation: 'Corrigan, Fisher & Nutt (2011). Journal of Psychopharmacology. Doi: 10.1177/0269881109354930'
       },
       {
+        id: 'study-bar-haim',
+        icon: Activity,
+        title: 'Η Προσοχή και η Απειλή (Bar-Haim et al., 2007)',
+        desc: 'Μετα-ανάλυση: στους ανθρώπους με άγχος η προσοχή πηγαίνει πιο εύκολα σε ό,τι μοιάζει με απειλή, ενώ στους ανθρώπους χωρίς άγχος αυτό δεν φαίνεται. Στη μέθοδο: η άμυνα δεν παράγει τις σκέψεις σου, τις επιλέγει.',
+        citation: 'Bar-Haim et al. (2007). Psychological Bulletin. Doi: 10.1037/0033-2909.133.1.1'
+      },
+      {
+        id: 'study-longe',
+        icon: Heart,
+        title: 'Αυτοκριτική & Καθησύχαση (Longe et al., 2010)',
+        desc: 'Μελέτη fMRI: η αυτοκριτική ενεργοποίησε περιοχές που σχετίζονται με τον εντοπισμό λάθους και το φρενάρισμα της συμπεριφοράς· η καθησύχαση του εαυτού, περιοχές παρόμοιες με εκείνες της συμπόνιας για τους άλλους. Η καλοσύνη της μεθόδου δεν είναι πολυτέλεια· είναι ένας άλλος τρόπος να δουλεύει ο νους.',
+        citation: 'Longe et al. (2010). NeuroImage. Doi: 10.1016/j.neuroimage.2009.09.019'
+      },
+      {
+        id: 'study-hull-2021',
+        icon: Heart,
+        title: 'Μασκάρισμα, Άγχος & Κατάθλιψη (Hull et al., 2021)',
+        desc: 'Έρευνα με ερωτηματολόγιο σε αυτιστικούς ενήλικες: το μασκάρισμα (camouflaging) συνδέθηκε με περισσότερο άγχος, κοινωνικό άγχος και κατάθλιψη. Η σχέση ήταν μικρή όταν λογαριάστηκαν η ηλικία και τα αυτιστικά χαρακτηριστικά, και η μελέτη δεν δείχνει αιτία και αποτέλεσμα.',
+        citation: 'Hull et al. (2021). Molecular Autism. Doi: 10.1186/s13229-021-00421-1'
+      },
+      {
+        id: 'study-kinnaird',
+        icon: Heart,
+        title: 'Αλεξιθυμία στον Αυτισμό (Kinnaird et al., 2019)',
+        desc: 'Μετα-ανάλυση 15 μελετών: η δυσκολία να αναγνωρίζεις και να ονομάζεις τι νιώθεις (αλεξιθυμία) βρέθηκε σε περίπου τους μισούς αυτιστικούς ενήλικες, έναντι περίπου 5% των υπολοίπων. Οι μελέτες αφορούσαν κυρίως ενήλικες χωρίς διανοητική αναπηρία. Γι’ αυτό η μέθοδος ξεκινά από το σώμα και την αναπνοή, όχι από τις λέξεις.',
+        citation: 'Kinnaird, Stewart & Tchanturia (2019). European Psychiatry. Doi: 10.1016/j.eurpsy.2018.09.004'
+      },
+      {
         id: 'study-lane',
         icon: Activity,
         title: 'Διωτικά Κύματα (Lane et al., 1998)',
-        desc: 'Η μελέτη του Lane και των συνεργατών του βρήκε ότι τα διωτικά κύματα (binaural beats) επηρέασαν την εγρήγορση, την απόδοση και τη διάθεση. Στην εφαρμογή χρησιμοποιούνται ως ήπια ηχητική υποστήριξη στις ασκήσεις αναπνοής και στον χώρο ήχου, όχι ως θεραπεία.',
+        desc: 'Η μελέτη του Lane και των συνεργατών του βρήκε ότι τα διωτικά κύματα (binaural beats) επηρέασαν την εγρήγορση, την απόδοση και τη διάθεση. Είναι μικρή μελέτη, και τα ευρήματα για τα διωτικά κύματα είναι ακόμα ανάμεικτα. Στην εφαρμογή χρησιμοποιούνται ως ήπια ηχητική υποστήριξη στις ασκήσεις αναπνοής και στον χώρο ήχου, όχι ως θεραπεία.',
         citation: 'Lane et al. (1998). Physiology & Behavior. Doi: 10.1016/S0031-9384(97)00436-8'
       },
       {
         id: 'study-lutz',
         icon: Sparkles,
         title: 'Συγχρονισμός Γάμμα σε Έμπειρους Διαλογιστές (Lutz et al., 2004)',
-        desc: 'Σε έμπειρους διαλογιστές, η πρακτική ανοιχτής επίγνωσης συνοδεύτηκε από αυξημένο συγχρονισμό κυμάτων γάμμα υψηλού πλάτους ανάμεσα σε απομακρυσμένες περιοχές του εγκεφάλου. Στην εμπειρία, αυτό μοιάζει με «ξεκόλλημα» από τη στενή υπερεστίαση: λιγότερη εξάντληση, περισσότερη ευρυχωρία.',
+        desc: 'Σε 8 μοναχούς με δεκάδες χιλιάδες ώρες πρακτικής, ο διαλογισμός της συμπόνιας χωρίς αντικείμενο συνοδεύτηκε από ασυνήθιστα δυνατό συγχρονισμό κυμάτων γάμμα ανάμεσα σε απομακρυσμένες περιοχές του εγκεφάλου. Η μελέτη δεν εξέτασε την ανοιχτή επίγνωση ούτε σύντομη πρακτική· δείχνει ότι η μακρόχρονη πρακτική αλλάζει τη λειτουργία του εγκεφάλου.',
         citation: 'Lutz, Greischar, Rawlings, Ricard & Davidson (2004). PNAS. Doi: 10.1073/pnas.0407401101'
       },
       {
@@ -118,12 +188,12 @@ export const METHODOLOGY_DATA = {
     ],
     
     quote: '«Η ενσυνειδητότητα για το νευροδιαφορετικό μυαλό δεν είναι μια προσπάθεια επιβολής ελέγχου, αλλά η τέχνη του να προσφέρεις στο νευρικό σου σύστημα την κατάλληλη άγκυρα ασφάλειας.»',
-    eeatBadge: 'Βασισμένο σε Δημοσιευμένη Έρευνα • Peer-Reviewed'
+    eeatBadge: 'Βασισμένο σε Δημοσιευμένη Έρευνα'
   },
   en: {
     title: 'Evidence & Methodology',
     subtitle: 'The Neuroscience of Our Methodology',
-    intro: 'This approach is not built on generic relaxation advice, but on published neuroscience and clinical research, with a focus on ADHD and autism. The app is a self-regulation tool, not a treatment.',
+    intro: 'This approach is not built on generic relaxation advice, but on published neuroscience and clinical research, with a focus on ADHD and autism. No study has yet tested the method as a whole; the research supports its parts, and for each study we say who was studied and what it did not show. The app is a self-regulation tool, not a treatment.',
     
     philosophyTitle: 'Research Philosophy & Neurodivergence',
     philosophyText: 'Classic mindfulness techniques can bring anxiety or "freezing" to neurodivergent people, because they often ask for immediate stillness and passive observation. This method starts from the other end: from the body upwards (somatic, bottom-up). First the nervous system is regulated, then observation comes:',
@@ -158,11 +228,53 @@ export const METHODOLOGY_DATA = {
         citation: 'Brewer et al. (2011). PNAS. Doi: 10.1073/pnas.1112029108'
       },
       {
+        id: 'study-sonuga',
+        icon: Brain,
+        title: 'The DMN & ADHD (Sonuga-Barke & Castellanos, 2007)',
+        desc: 'A well-known hypothesis for ADHD: the DMN does not quieten easily when attention is needed, and interrupts it from time to time. It explains fluctuations in attention; it is a hypothesis, not a final conclusion.',
+        citation: 'Sonuga-Barke & Castellanos (2007). Neuroscience & Biobehavioral Reviews. Doi: 10.1016/j.neubiorev.2007.02.005'
+      },
+      {
+        id: 'study-schooler',
+        icon: Sparkles,
+        title: 'Meta-Awareness (Schooler et al., 2011)',
+        desc: 'A review of mind-wandering: the mind only notices from time to time that it has drifted. The moment it notices is called meta-awareness. The method does not ask you to produce it; it asks you to notice it when it appears.',
+        citation: 'Schooler et al. (2011). Trends in Cognitive Sciences. Doi: 10.1016/j.tics.2011.05.006'
+      },
+      {
+        id: 'study-nolen',
+        icon: Brain,
+        title: 'Rumination (Nolen-Hoeksema et al., 2008)',
+        desc: 'A review of research on rumination: going over the same thoughts about what went wrong sustains and deepens low mood, strengthens negative thinking and makes problem-solving harder. In the method, these are the vicious circles of "Otherwise" and "Should".',
+        citation: 'Nolen-Hoeksema, Wisco & Lyubomirsky (2008). Perspectives on Psychological Science. Doi: 10.1111/j.1745-6924.2008.00088.x'
+      },
+      {
+        id: 'study-lieberman',
+        icon: Brain,
+        title: 'Putting Feelings into Words (Lieberman et al., 2007)',
+        desc: 'An fMRI study: when participants named the emotion they saw on a face, the amygdala responded less. The method\'s labels ("Worry", "Scenario") rest on the same principle: recognition is already regulation.',
+        citation: 'Lieberman et al. (2007). Psychological Science. Doi: 10.1111/j.1467-9280.2007.01916.x'
+      },
+      {
         id: 'study-porges',
         icon: Waves,
         title: 'Polyvagal Theory & Safety (Porges, 1995)',
-        desc: 'The slow, prolonged exhale activates the "ventral" side of the vagus nerve, which is associated with states of calm and safety. Polyvagal Theory is used here as a framework for understanding. You do not need to "convince" yourself that you are safe; in experience, the exhale sends the signal by itself.',
+        desc: 'Polyvagal Theory describes the "ventral" side of the vagus nerve, which is associated with states of calm and safety. It is used here as a framework for understanding; the theory is still debated. The long exhale itself has been studied by Balban (2023).',
         citation: 'Stephen Porges, PhD (1995). Psychophysiology. Doi: 10.1111/j.1469-8986.1995.tb01213.x'
+      },
+      {
+        id: 'study-balban',
+        icon: Waves,
+        title: 'The Long Exhale (Balban et al., 2023)',
+        desc: 'A randomised study with 108 adults, 5 minutes a day for 4 weeks. Breathing with a long exhale improved positive mood and slowed breathing more than meditation did; anxiety fell in all groups. The technique was a double inhale with a long exhale, not exactly the method\'s rhythms, but with the same principle: the exhale is the tool.',
+        citation: 'Balban et al. (2023). Cell Reports Medicine. Doi: 10.1016/j.xcrm.2022.100895'
+      },
+      {
+        id: 'study-homma',
+        icon: Waves,
+        title: 'Breathing & Emotion (Homma & Masaoka, 2008)',
+        desc: 'A review of the link between breathing and emotion: emotion changes the rate and depth of breathing, and breathing in turn affects emotion. In the method, the breath is read like weather: that is where the wind of an emotion shows, before you find words.',
+        citation: 'Homma & Masaoka (2008). Experimental Physiology. Doi: 10.1113/expphysiol.2008.042424'
       },
       {
         id: 'study-corrigan',
@@ -172,17 +284,45 @@ export const METHODOLOGY_DATA = {
         citation: 'Corrigan, Fisher & Nutt (2011). Journal of Psychopharmacology. Doi: 10.1177/0269881109354930'
       },
       {
+        id: 'study-bar-haim',
+        icon: Activity,
+        title: 'Attention & Threat (Bar-Haim et al., 2007)',
+        desc: 'A meta-analysis: in anxious people, attention goes more easily to whatever looks like a threat, while in people without anxiety this does not show. In the method: defence does not produce your thoughts; it selects them.',
+        citation: 'Bar-Haim et al. (2007). Psychological Bulletin. Doi: 10.1037/0033-2909.133.1.1'
+      },
+      {
+        id: 'study-longe',
+        icon: Heart,
+        title: 'Self-Criticism & Self-Reassurance (Longe et al., 2010)',
+        desc: 'An fMRI study: self-criticism engaged regions linked with detecting errors and holding behaviour back; self-reassurance engaged regions similar to those of compassion for others. The method\'s kindness is not a luxury; it is another way for the mind to work.',
+        citation: 'Longe et al. (2010). NeuroImage. Doi: 10.1016/j.neuroimage.2009.09.019'
+      },
+      {
+        id: 'study-hull-2021',
+        icon: Heart,
+        title: 'Camouflaging, Anxiety & Depression (Hull et al., 2021)',
+        desc: 'A questionnaire study of autistic adults: camouflaging was linked with more anxiety, social anxiety and depression. The link was small once age and autistic traits were taken into account, and the study does not show cause and effect.',
+        citation: 'Hull et al. (2021). Molecular Autism. Doi: 10.1186/s13229-021-00421-1'
+      },
+      {
+        id: 'study-kinnaird',
+        icon: Heart,
+        title: 'Alexithymia in Autism (Kinnaird et al., 2019)',
+        desc: 'A meta-analysis of 15 studies: difficulty recognising and naming what you feel (alexithymia) was found in about half of autistic adults, compared with about 5% of others. The studies mostly involved adults without intellectual disability. That is why the method starts from the body and the breath, not from words.',
+        citation: 'Kinnaird, Stewart & Tchanturia (2019). European Psychiatry. Doi: 10.1016/j.eurpsy.2018.09.004'
+      },
+      {
         id: 'study-lane',
         icon: Activity,
         title: 'Binaural Beats (Lane et al., 1998)',
-        desc: 'Lane and colleagues found that binaural beats affected vigilance, performance and mood. In the app they are used as gentle sound support in the breathing exercises and the sound space, not as a treatment.',
+        desc: 'Lane and colleagues found that binaural beats affected vigilance, performance and mood. It is a small study, and findings on binaural beats are still mixed. In the app they are used as gentle sound support in the breathing exercises and the sound space, not as a treatment.',
         citation: 'Lane et al. (1998). Physiology & Behavior. Doi: 10.1016/S0031-9384(97)00436-8'
       },
       {
         id: 'study-lutz',
         icon: Sparkles,
         title: 'Gamma Synchrony in Experienced Meditators (Lutz et al., 2004)',
-        desc: 'In experienced meditators, open-awareness practice was accompanied by increased high-amplitude gamma synchrony between distant brain regions. In experience, this feels like "unsticking" from narrow hyperfocus: less exhaustion, more spaciousness.',
+        desc: 'In 8 monks with tens of thousands of hours of practice, objectless compassion meditation was accompanied by unusually strong gamma synchrony between distant brain regions. The study did not test open awareness or short practice; it shows that long-term practice changes how the brain works.',
         citation: 'Lutz, Greischar, Rawlings, Ricard & Davidson (2004). PNAS. Doi: 10.1073/pnas.0407401101'
       },
       {
@@ -237,6 +377,6 @@ export const METHODOLOGY_DATA = {
     ],
     
     quote: '\"Mindfulness for the neurodivergent brain is not about forcing mental control, but about gracefully offering your nervous system the somatic anchors it needs to feel safe.\"',
-    eeatBadge: 'Grounded in Published Research • Peer-Reviewed'
+    eeatBadge: 'Grounded in Published Research'
   }
 };

@@ -344,19 +344,16 @@ export default function Settings() {
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <span className="text-[11px] font-mono font-bold tracking-widest text-teal-400 uppercase bg-teal-500/20 px-2 py-0.5 rounded-full">
-                      {language === 'el' ? 'ΕΓΚΥΡΟΤΗΤΑ' : 'EVIDENCE'}
-                    </span>
-                    <span className="text-[10px] font-sans font-medium text-teal-300/80">
-                      • Peer-Reviewed
+                      {language === 'el' ? 'ΕΡΕΥΝΑ' : 'RESEARCH'}
                     </span>
                   </div>
                   <h2 className="text-[16px] font-serif italic text-white/95 group-hover:text-teal-200 transition-colors">
-                    {language === 'el' ? 'Επιστημονικά Θεμελιωμένο' : 'Evidence-Based Method'}
+                    {language === 'el' ? 'Η Επιστημονική Βάση' : 'The Research Basis'}
                   </h2>
                   <p className="text-[12px] text-white/50 leading-relaxed font-sans">
                     {language === 'el' 
-                      ? 'Κλινικά τεκμηριωμένη προσέγγιση προσαρμοσμένη στη νευροδιαφορετικότητα (ADHD, Αυτισμός).' 
-                      : 'Clinically grounded approach tailored specifically for neurodivergent minds (ADHD, Autism).'}
+                      ? 'Οι μελέτες πίσω από κάθε κομμάτι της μεθόδου, και τι δεν έχουν δείξει ακόμα.' 
+                      : 'The studies behind each part of the method, and what they have not shown yet.'}
                   </p>
                 </div>
               </div>
