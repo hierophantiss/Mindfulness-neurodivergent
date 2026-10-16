@@ -229,7 +229,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
     type: 'focus',
     dur: { el: '30 δευτ.', en: '30 sec' },
     maxSeconds: 30,
-    desc: { el: 'Μετάφερε το βλέμμα αργά ανάμεσα σε δύο αντικείμενα. Ξεκουράζει αμέσως το μυαλό.', en: 'Shift gaze slowly between two objects. Instantly rests the mind.' },
+    desc: { el: 'Μετάφερε το βλέμμα αργά ανάμεσα σε δύο αντικείμενα. Δίνει στο μυαλό μια μικρή ανάσα.', en: 'Shift gaze slowly between two objects. It gives the mind a small rest.' },
     iconName: 'Focus',
     link: '/practice/focus/alternate-focus'
   },

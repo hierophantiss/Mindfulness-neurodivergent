@@ -76,7 +76,7 @@ export const informativeVideos = [
             { time: "01:52", title: "Weight Transfer (Heel-Toes-Weight)", text: "Every step is a conscious choice: heel first, then toes of the 'empty' foot [02:07], then transfer weight." },
             { time: "09:24", title: "The Flow Mantra", text: "Follow the rhythmic mantra: 'Heel, toes, forward, backward, out, tap' [09:26] to anchor your attention." }
           ],
-          tip: "Observe how the rhythmic contact with the earth instantly stills the horizontal monkey mind.",
+          tip: "Observe how the rhythmic contact with the earth helps settle the restless, wandering mind.",
           bridge: "At the end [11:15], pause and observe the clarity and grounding of the present moment.",
           bridgeTime: 675,
           mantra: ["HEEL", "TOES", "FORWARD", "BACKWARD", "OUT", "TAP"]
@@ -88,7 +88,7 @@ export const informativeVideos = [
             { time: "01:52", title: "Η Μεταφορά του Βάρους (Heel-Toes-Weight)", text: "Κάθε βήμα είναι συνειδητή επιλογή: ακουμπάς φτέρνα, μετά δάχτυλα του 'άδειου' ποδιού [02:07] και μετά βάρος." },
             { time: "09:24", title: "Η Μάντρα της Ροής", text: "Ακολούθησε τη ρυθμική μάντρα: «Φτέρνα, δάχτυλα, μπροστά, πίσω, έξω, tap» [09:26] για να γειώσεις την προσοχή." }
           ],
-          tip: "Παρατήρησε πώς η ρυθμική επαφή με τη γη σταματά αμέσως την οριζόντια περιπλάνηση του νου.",
+          tip: "Παρατήρησε πώς η ρυθμική επαφή με τη γη βοηθά τον νου που περιπλανιέται να καταλαγιάσει.",
           bridge: "Στο τέλος [11:15], σταμάτησε και παρατήρησε την καθαρότητα και τη γείωση της παρούσας στιγμής.",
           bridgeTime: 675,
           mantra: ["ΦΤΕΡΝΑ", "ΔΑΧΤΥΛΑ", "ΜΠΡΟΣΤΑ", "ΠΙΣΩ", "ΕΞΩ", "TAP"]
@@ -173,7 +173,7 @@ export const informativeVideos = [
       thumbnail: "https://img.youtube.com/vi/tmgHDEypPAQ/maxresdefault.jpg",
       description: {
         en: {
-          intro: "When you try to focus persistently and narrowly (Narrow Focus), your nervous system unconsciously activates a 'fight or flight' state [01:00]. Open Focus teaches us that by changing how we attend, we can instantly change our biology.",
+          intro: "According to Fehmi, when you try to focus persistently and narrowly (Narrow Focus), your nervous system slips into a 'fight or flight' state without your noticing [01:00]. Open Focus teaches that by changing how we attend, we can also change how the body responds.",
           points: [
             { time: "01:00", title: "Narrow Focus & Stress", text: "Persistent narrow focus increases cortisol and muscle tension, trapping us in a state of chronic alarm." },
             { time: "01:32", title: "Brain Wave Rhythms", text: "Changing focus style slows down brain waves, making them rhythmic and synchronous." },
@@ -190,7 +190,7 @@ export const informativeVideos = [
           ]
         },
         el: {
-          intro: "Όταν προσπαθείς να εστιάσεις επίμονα και στενά (Narrow Focus), το νευρικό σου σύστημα ενεργοποιεί ασυνείδητα την κατάσταση 'μάχης ή φυγής' [01:00]. Η μέθοδος του Open Focus μας διδάσκει ότι αλλάζοντας τον τρόπο που προσέχουμε, αλλάζουμε αμέσως τη βιολογία μας.",
+          intro: "Σύμφωνα με τον Fehmi, όταν προσπαθείς να εστιάσεις επίμονα και στενά (Narrow Focus), το νευρικό σου σύστημα μπαίνει χωρίς να το καταλάβεις σε κατάσταση 'μάχης ή φυγής' [01:00]. Η μέθοδος του Open Focus μάς μαθαίνει ότι, αλλάζοντας τον τρόπο που προσέχουμε, μπορούμε να αλλάξουμε και το πώς αντιδρά το σώμα.",
           points: [
             { time: "01:00", title: "Στενή Προσοχή & Στρες", text: "Η επίμονη στενή εστίαση αυξάνει την κορτιζόλη και την ένταση, παγιδεύοντάς μας σε μια κατάσταση συναγερμού." },
             { time: "01:32", title: "Ρυθμοί Εγκεφαλικών Κυμάτων", text: "Η αλλαγή στυλ προσοχής επιβραδύνει τα εγκεφαλικά κύματα, κάνοντάς τα ρυθμικά και συγχρονισμένα." },

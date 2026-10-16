@@ -979,8 +979,8 @@ Source: Lutz et al. (2008). Trends in Cognitive Sciences. DOI: 10.1016/j.tics.20
 **Body — Grounding & Gravity.** The brain continually computes gravity and the body's relationship to the ground, with the cerebellum playing a central role in this computation. In practice, turning attention to gravity and the points of support gives the nervous system a steady, familiar reference: a sense of "here" that needs no thinking.
 Source: Mackrous et al. (2019). Current Biology. DOI: 10.1016/j.cub.2019.07.006
 
-**Breath — The Vagus Nerve.** The slow, prolonged exhale activates the "ventral" side of the vagus nerve, which is associated with states of calm and safety. You do not need to "convince" yourself that you are safe; in experience, the exhale sends the signal by itself.
-Source: Porges, S. W. (1995). Psychophysiology. DOI: 10.1111/j.1469-8986.1995.tb01213.x
+**Breath — The Vagus Nerve.** The slow, prolonged exhale is linked with the activity of the vagus nerve, which helps the body calm down. In a randomised study, five minutes a day of breathing with a long exhale improved mood and slowed breathing more than meditation did. Porges's Polyvagal Theory offers a framework for this, the "ventral" side of the vagus nerve associated with states of calm and safety, but it is still debated. You do not need to "convince" yourself that you are safe; in experience, the exhale sends the signal by itself.
+Sources: Balban et al. (2023). Cell Reports Medicine. DOI: 10.1016/j.xcrm.2022.100895 · Porges, S. W. (1995). Psychophysiology. DOI: 10.1111/j.1469-8986.1995.tb01213.x
 
 **Attention — A Quiet DMN.** The Default Mode Network (DMN) is associated with mind-wandering, rumination and self-criticism. For ADHD, a well-known hypothesis is that the DMN does not quieten easily when attention is needed, and interrupts it. Farb and colleagues showed that shifting from "narrative" to direct, experiential attention (what am I feeling now) is linked with reduced DMN activity. Labelling and returning to sensation are exactly this shift.
 Sources: Sonuga-Barke & Castellanos (2007). Neuroscience & Biobehavioral Reviews. DOI: 10.1016/j.neubiorev.2007.02.005 · Farb et al. (2007). Social Cognitive and Affective Neuroscience. DOI: 10.1093/scan/nsm030
@@ -1000,13 +1000,12 @@ That these change with repetition rests on **neuroplasticity**, the brain's abil
 - Hyperfocus as "all or nothing" regulation — Ashinoff & Abu-Akel (2019). Psychological Research. DOI: 10.1007/s00426-019-01245-8
 - Peripheral vision & soft gaze — Vater et al. (2022). Psychonomic Bulletin & Review. DOI: 10.3758/s13423-022-02117-w
 - Ecological perception & the ground — Gibson, J. J. (1979/2014). The Ecological Approach to Visual Perception. Psychology Press. DOI: 10.4324/9781315740218
-- Brainwave entrainment (binaural) — Lane et al. (1998). Physiology & Behavior. DOI: 10.1016/S0031-9384(97)00436-8
+- Binaural beats: a small study; findings are still mixed — Lane et al. (1998). Physiology & Behavior. DOI: 10.1016/S0031-9384(97)00436-8
 
 **For Chapters 2–5:**
 
 - Breathing changes with emotion, and emotion with breathing — Homma & Masaoka (2008). Experimental Physiology. DOI: 10.1113/expphysiol.2008.042424
 - Difficulty recognising and naming what you feel (alexithymia) is common in autism — Kinnaird, Stewart & Tchanturia (2019). European Psychiatry. DOI: 10.1016/j.eurpsy.2018.09.004
-- Breathing with a long exhale, 5 minutes a day: better mood, slower breathing — Balban et al. (2023). Cell Reports Medicine. DOI: 10.1016/j.xcrm.2022.100895
 - Naming a feeling reduces the amygdala's response (labelling) — Lieberman et al. (2007). Psychological Science. DOI: 10.1111/j.1467-9280.2007.01916.x
 - Rumination sustains and deepens low mood — Nolen-Hoeksema, Wisco & Lyubomirsky (2008). Perspectives on Psychological Science. DOI: 10.1111/j.1745-6924.2008.00088.x
 - Meta-awareness: the mind only notices from time to time that it has wandered — Schooler et al. (2011). Trends in Cognitive Sciences. DOI: 10.1016/j.tics.2011.05.006

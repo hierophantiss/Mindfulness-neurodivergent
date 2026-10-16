@@ -49,7 +49,7 @@ export const GUIDED_EXERCISES: Record<string, any> = {
   'rhythm-5-5': {
     axis: 'breath',
     title: { el: 'Ρυθμική Αναπνοή 5-5', en: 'Rhythmic Breath 5-5' },
-    desc: { el: 'Συμμετρία που ηρεμεί άμεσα τον «αυτόματο πιλότο».', en: 'Symmetry that instantly calms the "autopilot".' },
+    desc: { el: 'Συμμετρία που βοηθά τον «αυτόματο πιλότο» να ησυχάσει.', en: 'Symmetry that helps the "autopilot" quieten.' },
     duration: 120, // 2 mins
     color: 'teal',
     instructions: {
