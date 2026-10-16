@@ -219,13 +219,13 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       title: 'Ταμπέλα',
       short: 'Βάλε όνομα στη σκέψη → δημιούργησε απόσταση.',
       full: 'Όταν μια σκέψη σε τραβά, βάλε της ταμπέλα: «Ανησυχία», «Σενάριο», «Κριτική», «Παρελθόν». Η ταμπέλα δημιουργεί απόσταση — δεν είσαι η σκέψη, είσαι αυτός που την παρατηρεί. Δεν χρειάζεται ανάλυση — μόνο χαρακτηρισμός. Μετά, επιστροφή στον άξονα.',
-      ndNote: 'Η ταμπέλα είναι εξαιρετικά αποτελεσματική για ADHD νου που «κολλάει» σε loops ανησυχίας. Ένα μόνο λέξη αρκεί.'
+      ndNote: 'Η ταμπέλα βοηθά συχνά έναν νου με ΔΕΠΥ που «κολλάει» σε κύκλους ανησυχίας. Μία λέξη αρκεί.'
     },
     en: {
       title: 'Labeling',
       short: 'Name the thought → create distance.',
       full: 'When a thought pulls you, label it: "Worry," "Scenario," "Criticism," "Past." The label creates distance — you are not the thought, you are the one observing it. No analysis needed — just a name. Then, return to the axis.',
-      ndNote: 'Labeling is extremely effective for ADHD minds that get stuck in worry loops. One single word is enough.'
+      ndNote: 'Labeling often helps ADHD minds that get stuck in worry loops. One word is enough.'
     },
     axis: 'attention',
     chapters: [3, 8, 9],
@@ -558,17 +558,17 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
 
   zylowska_2007: {
     el: {
-      title: 'Μελέτη ADHD & Mindfulness (Zylowska et al., 2007)',
-      short: 'Η προσαρμοσμένη και ευέλικτη πρακτική είναι πιο αποτελεσματική για νευροδιαφορετικούς.',
-      full: 'Αυτή η πρωτοποριακή μελέτη ("Mindfulness Meditation Training with Adults and Adolescents With ADHD") απέδειξε ότι οι ευέλικτες, προσαρμοσμένες πρακτικές (αντί για άκαμπτο, μεγάλης διάρκειας διαλογισμό) είναι εξαιρετικά αποτελεσματικές για νευροδιαφορετικά άτομα. Βοηθούν σημαντικά στη βελτίωση της προσοχής, στη μείωση της υπερκινητικότητας και στη βελτίωση της συναισθηματικής ρύθμισης, προσφέροντας μικρά, προσιτά βήματα.',
-      ndNote: 'Η έρευνα επιβεβαιώνει ότι αν ο νους σου διασπάται, η «απαλή επιστροφή» (και όχι η τέλεια συγκέντρωση) είναι αυτή που αναδιοργανώνει τον εγκέφαλο. Τα 577+ citations και η υψηλή επιστημονική αποδοχή της μελέτης δικαιώνουν την ανάγκη για φιλικό προς τη ΔΕΠΥ σχεδιασμό.',
+      title: 'Μελέτη ΔΕΠΥ & Ενσυνειδητότητα (Zylowska et al., 2008)',
+      short: 'Ένα πρόγραμμα ενσυνειδητότητας προσαρμοσμένο για τη ΔΕΠΥ ήταν εφικτό, και οι συμμετέχοντες ανέφεραν βελτίωση.',
+      full: 'Πιλοτική μελέτη («Mindfulness Meditation Training in Adults and Adolescents With ADHD: A Feasibility Study») με 24 ενήλικες και 8 εφήβους. Το πρόγραμμα κράτησε 8 εβδομάδες και ήταν προσαρμοσμένο για τη ΔΕΠΥ: πιο σύντομες καθίσεις, διαλογισμός με περπάτημα, οπτικά βοηθήματα. Οι περισσότεροι το ολοκλήρωσαν, ανέφεραν λιγότερα συμπτώματα ΔΕΠΥ, λιγότερο άγχος και πεσμένη διάθεση, και τα πήγαν καλύτερα σε ορισμένα τεστ προσοχής.\n\nΔεν υπήρχε ομάδα ελέγχου. Η μελέτη δείχνει λοιπόν ότι μια τέτοια προσέγγιση είναι εφικτή και αξίζει περισσότερη έρευνα, όχι ότι είναι πιο αποτελεσματική από άλλες.',
+      ndNote: 'Να προσαρμόζεται η πρακτική στον νου σου, και όχι ο νους σου στην πρακτική: αυτή είναι και η ιδέα των μικρο-δόσεων και της απαλής επιστροφής.',
       science: 'Zylowska et al. (2008) Journal of Attention Disorders (Doi: 10.1177/1087054707308502)'
     },
     en: {
-      title: 'ADHD & Mindfulness Study (Zylowska et al., 2007)',
-      short: 'Flexible, adapted practices are highly effective for neurodivergent attention.',
-      full: 'This seminal study ("Mindfulness Meditation Training with Adults and Adolescents With ADHD: A Feasibility and Behavioral Study") proved that flexible, adapted practices (rather than rigid, long-duration meditation) are highly effective for neurodivergent individuals. It shows significant improvements in attention, reduction in hyperactivity, and better emotional regulation when practices are accessible and short.',
-      ndNote: 'The research validates that if your mind wanders, the "gentle return" (rather than perfect focus) is what reorganizes the brain. The study\'s 577+ citations and high scientific prestige justify our ADHD-friendly, microdose-oriented design.',
+      title: 'ADHD & Mindfulness Study (Zylowska et al., 2008)',
+      short: 'A mindfulness programme adapted for ADHD was feasible, and participants reported improvements.',
+      full: 'A pilot study ("Mindfulness Meditation Training in Adults and Adolescents With ADHD: A Feasibility Study") with 24 adults and 8 adolescents. The 8-week programme was adapted for ADHD: shorter sittings, walking meditation, visual aids. Most participants completed it, reported fewer ADHD symptoms, less anxiety and low mood, and did better on some attention tests.\n\nThere was no control group. So the study shows that this kind of approach is feasible and worth more research, not that it works better than others.',
+      ndNote: 'Adapting the practice to your mind, rather than your mind to the practice: that is also the idea behind the microdoses and the gentle return.',
       science: 'Zylowska et al. (2008) Journal of Attention Disorders (Doi: 10.1177/1087054707308502)'
     },
     axis: 'attention',
@@ -579,16 +579,16 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
   kim_2025: {
     el: {
       title: 'Συστηματική Ανασκόπηση & Μετα-Ανάλυση για ΔΕΠΥ (Kim & Jung, 2025)',
-      short: 'Πρόσφατη έρευνα επιβεβαιώνει την αποτελεσματικότητα των παρεμβάσεων ενσυνειδητότητας (MBIs) στη ΔΕΠΥ ενηλίκων.',
-      full: 'Σε αυτή τη συστηματική ανασκόπηση και μετα-ανάλυση ("Mindfulness-based interventions for adults with ADHD"), αναλύθηκαν ελεγχόμενες κλινικές δοκιμές έως το 2023. Τα αποτελέσματα έδειξαν στατιστικά σημαντικές βελτιώσεις στα βασικά συμπτώματα της ΔΕΠΥ (τόσο από αυτοαναφορές όσο και από παρατηρητές) και στη γενική λειτουργικότητα των ενηλίκων.',
-      ndNote: 'Η μελέτη αυτή του 2025 επικυρώνει απόλυτα τη σύγχρονη κλινική προσέγγιση: Οι πρακτικές ενσυνειδητότητας δεν είναι απλά εργαλεία χαλάρωσης, αλλά αναγνωρισμένες, αποτελεσματικές συμπληρωματικές παρεμβάσεις για τη διαχείριση της προσοχής και της λειτουργικότητας στη νευροδιαφορετικότητα.',
+      short: 'Μια μετα-ανάλυση βρήκε ότι οι παρεμβάσεις ενσυνειδητότητας μπορεί να βελτιώνουν τα βασικά συμπτώματα της ΔΕΠΥ στους ενήλικες.',
+      full: 'Η συστηματική ανασκόπηση και μετα-ανάλυση («Mindfulness-based interventions for adults with ADHD») συγκέντρωσε 10 ελεγχόμενες μελέτες έως το 2023. Βρήκε μικρή έως μέτρια βελτίωση στα βασικά συμπτώματα της ΔΕΠΥ, τόσο σε αυτοαναφορές όσο και σε εκτιμήσεις παρατηρητών, και στη λειτουργικότητα στην καθημερινή ζωή. Για τη διάθεση και για τις δεξιότητες ενσυνειδητότητας τα αποτελέσματα δεν ήταν σαφή.\n\nΟι συγγραφείς σημειώνουν ότι χρειάζονται περισσότερες και καλύτερες μελέτες, και ότι τα μακροπρόθεσμα αποτελέσματα δεν είναι ακόμα γνωστά.',
+      ndNote: 'Οι συγγραφείς βλέπουν την ενσυνειδητότητα ως συμπληρωματική βοήθεια, όχι ως αντικατάσταση της θεραπείας. Έτσι τη βλέπει και αυτός ο οδηγός.',
       science: 'Kim, H.-H., & Jung, N.-H. (2025). Medicine. (Doi: 10.1097/md.0000000000044308)'
     },
     en: {
       title: 'Systematic Review & Meta-analysis for ADHD (Kim & Jung, 2025)',
-      short: 'Recent research confirms the efficacy of Mindfulness-Based Interventions (MBIs) in adult ADHD.',
-      full: 'This 2025 systematic review and meta-analysis ("Mindfulness-based interventions for adults with ADHD") analyzed controlled trials up to 2023. The findings demonstrated statistically significant improvements in core ADHD symptoms (both self-reported and observer-rated) and overall functioning in adults.',
-      ndNote: 'This recent study definitively validates our clinical approach: Mindfulness practices are not merely relaxation tools, but recognized, highly effective complementary interventions for managing attention and improving functional outcomes in neurodivergent individuals.',
+      short: 'A meta-analysis found that mindfulness-based interventions may improve core ADHD symptoms in adults.',
+      full: 'This systematic review and meta-analysis ("Mindfulness-based interventions for adults with ADHD") pooled 10 controlled trials published up to 2023. It found small-to-moderate improvements in core ADHD symptoms, both self-reported and observer-rated, and in everyday functioning. Results for mood and for mindfulness skills were inconclusive.\n\nThe authors note that more and better studies are needed, and that long-term effects are not yet known.',
+      ndNote: 'The authors see mindfulness as a complementary support, not a replacement for treatment. So does this guide.',
       science: 'Kim, H.-H., & Jung, N.-H. (2025). Medicine. (Doi: 10.1097/md.0000000000044308)'
     },
     axis: 'attention',
@@ -598,17 +598,17 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
 
   gibson_2019: {
     el: {
-      title: 'Μελέτη Δια-αίσθησης & Σώματος (Gibson, 2019)',
-      short: 'Η δια-αίσθηση (interoception) και η σύνδεση με το σώμα είναι η βάση της αυτορύθμισης.',
-      full: 'Η έρευνα ("Mindfulness, Interoception, and the Body: A Contemporary Perspective") δείχνει ότι η ενσυνειδητότητα και ο διαλογισμός επηρεάζουν άμεσα τη Νήσο του εγκεφάλου (insular cortex), η οποία είναι το κέντρο ελέγχου της δια-αίσθησης. Η μελέτη προτείνει ότι η γείωση στο φυσικό σώμα (βαρύτητα, αναπνοή) παρέχει μια σταθερή άγκυρα. Επίσης, τονίζει ότι η αύξηση της σωματικής επίγνωσης χωρίς ρυθμιστικά εργαλεία μπορεί να αυξήσει το άγχος (ειδικά σε άτομα με ιστορικό τραύματος/υπερδιέγερσης), άρα η πρακτική πρέπει να είναι πάντα ήπια, προστατευτική και "trauma-informed".',
-      ndNote: 'Αυτός είναι ο λόγος που η δική μας μέθοδος ξεκινάει πάντα με τη Βαρύτητα και τη Γείωση (σταθερές εξωτερικές/σωματικές δυνάμεις) και προσφέρει ρυθμούς αναπνοής και κίνησης για ρύθμιση, αντί για απλή παθητική παρατήρηση.',
+      title: 'Δια-αίσθηση & Σώμα (Gibson, 2019)',
+      short: 'Η αίσθηση του σώματος από μέσα (δια-αίσθηση) συνδέεται στενά με την αυτορύθμιση.',
+      full: 'Θεωρητικό άρθρο («Mindfulness, Interoception, and the Body: A Contemporary Perspective») που συγκεντρώνει έρευνες για την ενσυνειδητότητα και τη δια-αίσθηση. Περιγράφει πώς η πρακτική συνδέεται με τη Νήσο (insula), μια περιοχή του εγκεφάλου κεντρική για την αίσθηση του σώματος από μέσα, και προτείνει ότι η άγκυρα στο συγκεκριμένο, απτό σώμα δίνει σταθερή εστίαση.\n\nΣημειώνει επίσης ότι περισσότερη σωματική ευαισθησία χωρίς εργαλεία ρύθμισης μπορεί να αυξήσει το άγχος, ιδίως όταν υπάρχει ιστορικό τραύματος. Γι\' αυτό η πρακτική χρειάζεται να μένει ήπια και προστατευτική.',
+      ndNote: 'Γι\' αυτό η μέθοδος ξεκινά από τη βαρύτητα και τη γείωση, κάτι σταθερό και απτό, και δίνει ρυθμό στην αναπνοή και στην κίνηση, αντί να ζητά μόνο παθητική παρατήρηση.',
       science: 'Jonathan Gibson (2019) Frontiers in Psychology (Volume 10, Article 2012, Doi: 10.3389/fpsyg.2019.02012)'
     },
     en: {
-      title: 'Interoception & Insula Study (Gibson, 2019)',
-      short: 'Interoception and landing in the body are the neurological foundation of self-regulation.',
-      full: 'This contemporary research ("Mindfulness, Interoception, and the Body: A Contemporary Perspective") demonstrates that meditative practices directly modulate the insular cortex (insula) — the primary hub for interoceptive awareness. It highlights that anchoring scientific findings and mindfulness in the concrete, somatic body provides a stable, adaptive focus. It warns that increasing somatic sensitivity without emotional regulation tools can trigger anxiety (especially with trauma history), demanding that practices remain protective and trauma-informed.',
-      ndNote: 'This is precisely why our approach starts with gravity and grounding (undeniable physical anchors) and pairs attention with rhythm (breathing/movement) rather than asking for passive, hypervigilant observation.',
+      title: 'Interoception & the Body (Gibson, 2019)',
+      short: 'Sensing the body from the inside (interoception) is closely linked to self-regulation.',
+      full: 'A theoretical article ("Mindfulness, Interoception, and the Body: A Contemporary Perspective") that brings together research on mindfulness and interoception. It describes how practice is linked with the insula, a brain region central to sensing the body from the inside, and suggests that anchoring attention in the concrete, tangible body gives a stable focus.\n\nIt also notes that more bodily sensitivity without regulation tools can increase anxiety, especially with a history of trauma. That is why practice needs to stay gentle and protective.',
+      ndNote: 'This is why the method starts with gravity and grounding, something steady and tangible, and gives breathing and movement a rhythm, rather than asking only for passive observation.',
       science: 'Jonathan Gibson (2019) Frontiers in Psychology (Vol 10, Art 2012, Doi: 10.3389/fpsyg.2019.02012)'
     },
     axis: 'body',
@@ -618,17 +618,17 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
 
   cearns_2022: {
     el: {
-      title: 'Μελέτη Μεγέθους Δόσης & Συμπεριφοράς (Cearns & Clark, 2022)',
-      short: 'Οι σύντομες καθημερινές «μικροδόσεις» είναι πιο αποτελεσματικές από τις σπάνιες μεγάλες συνεδρίες.',
-      full: 'Αυτή η τεράστια διαχρονική μελέτη ("The Effects of Dose, Practice Habits, and Objects of Focus on Digital Meditation Effectiveness and Adherence") ανέλυσε τα δεδομένα από 280.000+ ψηφιακές συνεδρίες σε 103 χώρες. Απέδειξε ότι η «δόση» (dose) και η συνέπεια σε σύντομες καθημερινές πρακτικές είναι ο πιο καθοριστικός παράγοντας για τη μακροχρόνια τήρηση (adherence) και τη μείωση του άγχους, ενώ η υπερβολικά μεγάλη διάρκεια προκαλεί κούραση και εγκατάλειψη.',
-      ndNote: 'Αυτό δικαιώνει απόλυτα τη φιλοσοφία των «Μικροδόσεων» της εφαρμογής μας. Δεν χρειάζεται να κάθεσαι με τις ώρες. 2-3 λεπτά καθημερινής, στοχευμένης σωματικής γείωσης έχουν πολύ μεγαλύτερη νευροπλαστική αξία.',
+      title: 'Δόση & Συνήθειες Πρακτικής (Cearns & Clark, 2023)',
+      short: 'Η τακτική πρακτική, τις περισσότερες μέρες της εβδομάδας, συνδέθηκε με μεγαλύτερο όφελος και με το να συνεχίζει κανείς.',
+      full: 'Διαχρονική μελέτη («The Effects of Dose, Practice Habits, and Objects of Focus on Digital Meditation Effectiveness and Adherence») σε περίπου 10.000 χρήστες μιας εφαρμογής διαλογισμού, με πάνω από 280.000 συνεδρίες σε 103 χώρες. Η διάθεση, η ψυχική ισορροπία και η ανθεκτικότητα βελτιώνονταν όσο συνεχιζόταν η πρακτική. Η πρακτική 4 έως 7 μέρες την εβδομάδα ήταν αυτό που προέβλεπε περισσότερο ότι κάποιος θα συνέχιζε· η διάρκεια της συνεδρίας δεν το προέβλεπε.\n\nΕίναι μελέτη παρατήρησης: δείχνει συσχετίσεις, όχι αιτία και αποτέλεσμα. Ούτε έδειξε ότι οι σύντομες συνεδρίες είναι καλύτερες από τις μεγάλες.',
+      ndNote: 'Αυτό που φαίνεται να μετράει είναι να επιστρέφεις συχνά. Οι μικρο-δόσεις κάνουν την επιστροφή εύκολη· όταν έχεις χρόνο, μια μεγαλύτερη άσκηση είναι κι αυτή καλή.',
       science: 'Cearns & Clark (2023) JMIR (Doi: 10.2196/43358, Μελέτη 280.000+ συνεδριών)'
     },
     en: {
-      title: 'Digital Meditation Dose Study (Cearns & Clark, 2022)',
-      short: 'Short, consistent "microdoses" are far more effective than long, irregular sessions.',
-      full: 'This massive longitudinal study ("The Effects of Dose, Practice Habits, and Objects of Focus on Digital Meditation Effectiveness and Adherence") analyzed 280,000+ sessions across 103 countries. It proved that regular, small practice "doses" are the single most significant driver of long-term adherence and psychological benefits. In contrast, rigid, lengthy sessions decrease engagement and cause beginners to quit.',
-      ndNote: 'This is the absolute scientific justification of our "Microdoses" and "invisible doses" feature. You do not need to spend hours meditating. Just 2-3 minutes of somatic anchoring per day builds much stronger neural pathways.',
+      title: 'Dose & Practice Habits in Digital Meditation (Cearns & Clark, 2023)',
+      short: 'Practising regularly, most days of the week, was linked to greater benefit and to keeping going.',
+      full: 'A longitudinal study ("The Effects of Dose, Practice Habits, and Objects of Focus on Digital Meditation Effectiveness and Adherence") of about 10,000 users of a meditation app, with more than 280,000 sessions across 103 countries. Mood, equanimity and resilience improved as practice continued. Practising 4 to 7 days a week was the strongest predictor of keeping going; session length was not.\n\nIt is an observational study: it shows associations, not cause and effect. Nor did it show that short sessions are better than long ones.',
+      ndNote: 'What seems to matter is coming back often. Microdoses make coming back easy; when you have time, a longer practice is good too.',
       science: 'Cearns & Clark (2023) JMIR (Doi: 10.2196/43358, 280,000+ sessions studied)'
     },
     axis: 'attention',
@@ -639,16 +639,16 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
   farb_2007: {
     el: {
       title: 'Μελέτη Νευρωνικών Τρόπων Αυτοαναφοράς (Farb et al., 2007)',
-      short: 'Η ενσυνειδητότητα ενεργοποιεί την παρούσα, αισθητηριακή εμπειρία (experiential focus) και απενεργοποιεί την αφηρημένη αυτοαναφορικότητα (narrative focus) του DMN.',
-      full: 'Αυτή η θεμελιώδης μελέτη fMRI («Attending to the present: mindfulness meditation reveals distinct neural modes of self-reference») απέδειξε ότι υπάρχουν δύο διακριτοί τρόποι με τους οποίους αντιλαμβανόμαστε τον εαυτό μας στον εγκέφαλο:\n\n1. Narrative Focus (Αφηγηματική Εστίαση): Συνδέεται με το Default Mode Network (mPFC), όπου ο νους αναλύει, κρίνει, κάνει σενάρια, ασκεί αυτοκριτική και μηρυκάζει το παρελθόν ή το μέλλον ως μια συνεχή «ιστορία» του εαυτού.\n\n2. Experiential Focus (Βιωματική Εστίαση): Συνδέεται με τη Νήσο (Insula) και τον Σωματοαισθητικό φλοιό, όπου ο νους βιώνει άμεσα τις σωματικές αισθήσεις, την αναπνοή και την αίσθηση του χρόνου στο παρόν, αποσυνδεδεμένος από την ανάγκη για περιγραφή.\n\nΗ εξάσκηση στην ενσυνειδητότητα εκπαιδεύει τον εγκέφαλο να μεταβαίνει από την κουραστική αφηγηματική αυτοαναφορικότητα στην άμεση βιωματική εμπειρία, προσφέροντας βαθιά νευρολογική ανακούφιση.',
-      ndNote: 'Για νευροδιαφορετικούς (ιδιαίτερα με ADHD ή αυτιστικό masking), ο αφηγηματικός τρόπος (Narrative) είναι συνήθως υπερδραστήριος, γεμάτος εσωτερικούς κανόνες και έντονη αυτοκριτική. Η σκόπιμη εστίαση στην άμεση αισθητηριακή εμπειρία (Experiential) — όπως η βαρύτητα, ο ήχος, ή ο αέρας στα ρουθούνια — λειτουργεί ως νευρολογικός «διακόπτης» (shortcut) που απενεργοποιεί προσωρινά το DMN και σβήνει ακαριαία την κουραστική εσωτερική φλυαρία.',
+      short: 'Η μελέτη ξεχώρισε δύο τρόπους με τους οποίους ο εγκέφαλος επεξεργάζεται τον εαυτό: την αφήγηση και την αίσθηση του παρόντος.',
+      full: 'Μελέτη fMRI («Attending to the present: mindfulness meditation reveals distinct neural modes of self-reference») που ξεχώρισε δύο τρόπους με τους οποίους ο εγκέφαλος επεξεργάζεται τον εαυτό:\n\n1. Αφηγηματική εστίαση (narrative focus): ο νους σχολιάζει, κρίνει και φτιάχνει μια «ιστορία» για τον εαυτό. Συνδέεται με περιοχές του Default Mode Network (μέσος προμετωπιαίος φλοιός).\n\n2. Βιωματική εστίαση (experiential focus): ο νους μένει στις αισθήσεις αυτής της στιγμής. Συνδέεται με τη Νήσο (insula) και τον σωματοαισθητικό φλοιό.\n\nΣε όσους είχαν ολοκληρώσει πρόγραμμα ενσυνειδητότητας 8 εβδομάδων, οι δύο τρόποι ξεχώριζαν πιο καθαρά απ\' ό,τι σε όσους δεν είχαν εξάσκηση. Η μελέτη δείχνει ότι οι δύο τρόποι διακρίνονται, και ότι η εξάσκηση φαίνεται να τους ξεχωρίζει ακόμα περισσότερο.',
+      ndNote: 'Σε πολλούς νευροδιαφορετικούς ανθρώπους η εσωτερική αφήγηση είναι δυνατή και γεμάτη κριτική. Η στροφή στις αισθήσεις (η βαρύτητα, ο ήχος, ο αέρας στα ρουθούνια) δίνει στην προσοχή έναν άλλο τόπο να σταθεί. Η φλυαρία συχνά χαμηλώνει· δεν χρειάζεται να σβήσει.',
       science: 'Farb et al. (2007) Social Cognitive and Affective Neuroscience (Doi: 10.1093/scan/nsm030)'
     },
     en: {
       title: 'Neural Modes of Self-Reference Study (Farb et al., 2007)',
-      short: 'Mindfulness activates real-time sensory experience (experiential focus) while silencing the narrative autopilot (narrative focus) of the DMN.',
-      full: 'This seminal fMRI research ("Attending to the present: mindfulness meditation reveals distinct neural modes of self-reference") demonstrated that there are two distinct neural pathways for processing the self:\n\n1. Narrative Focus: Centered in the Default Mode Network (mPFC), where the mind analyzes, judges, creates self-narratives, and ruminates on past or future.\n\n2. Experiential Focus: Centered in the Insula and Somatosensory Cortex, where the mind directly experiences somatic sensations, physical breathing, and the present moment in real-time without conceptual filters.\n\nMindfulness training trains the brain to shift from exhausting narrative self-talk to direct, non-conceptual sensory experiencing, providing immediate neurological relief.',
-      ndNote: 'For neurodivergent brains (specifically ADHD or autistic masking), the Narrative mode is often hyperactive and loaded with self-criticism. Directing attention to immediate somatic feedback (Experiential) — like gravity, sound, or the temperature of air — acts as a neural shortcut that suspends the DMN and turns down the volume of intellectual rumination.',
+      short: 'The study distinguished two ways the brain processes the self: telling a story, and sensing the present.',
+      full: 'An fMRI study ("Attending to the present: mindfulness meditation reveals distinct neural modes of self-reference") that distinguished two ways the brain processes the self:\n\n1. Narrative focus: the mind comments, judges and builds a "story" about the self. Linked with regions of the Default Mode Network (medial prefrontal cortex).\n\n2. Experiential focus: the mind stays with the sensations of this moment. Linked with the insula and the somatosensory cortex.\n\nIn people who had completed an 8-week mindfulness programme, the two modes were more clearly separated than in people without training. The study suggests that the two modes can be told apart, and that practice seems to separate them further.',
+      ndNote: 'For many neurodivergent people the inner narrative is loud and full of criticism. Turning to the senses (gravity, sound, the air at the nostrils) gives attention another place to rest. The chatter often quietens; it does not have to disappear.',
       science: 'Farb et al. (2007) Social Cognitive and Affective Neuroscience (Doi: 10.1093/scan/nsm030)'
     },
     axis: 'attention',
@@ -659,16 +659,16 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
   binaural_beats: {
     el: {
       title: 'Διωτικά Κύματα (Binaural Beats)',
-      short: 'Η μέθοδος του Brainwave Entrainment για νευρική ρύθμιση και εστίαση.',
-      full: 'Όταν δύο ελαφρώς διαφορετικές συχνότητες ήχου αναπαράγονται ταυτόχρονα σε κάθε αυτί (π.χ. 300 Hz αριστερά, 310 Hz δεξιά), ο εγκέφαλος αντιλαμβάνεται μια τρίτη συχνότητα που ισούται με τη διαφορά τους (10 Hz). Αυτό το φαινόμενο, που ονομάζεται Brainwave Entrainment, συντονίζει τη δραστηριότητα των εγκεφαλικών κυμάτων με τη συχνότητα-στόχο (π.χ. συχνότητα Theta για χαλάρωση ή Alpha για ανοιχτή επίγνωση).',
-      ndNote: 'Για νευροδιαφορετικούς (ιδιαίτερα με ADHD ή αισθητηριακή υπερευαισθησία), τα διωτικά κύματα (Binaural Beats) λειτουργούν ως «ακουστική κουβέρτα». Καλύπτουν τον ενοχλητικό θόρυβο περιβάλλοντος ενώ παράλληλα ρυθμίζουν άμεσα τη συχνότητα του εγκεφάλου, επιτρέποντας την είσοδο σε βαθιές καταστάσεις χαλάρωσης ή εστίασης χωρίς την ανάγκη για λογική προσπάθεια.',
+      short: 'Δύο λίγο διαφορετικοί τόνοι, ένας σε κάθε αυτί, ακούγονται σαν ένας παλμός. Τα ευρήματα για τη διάθεση και την προσοχή είναι ακόμα ανάμεικτα.',
+      full: 'Όταν σε κάθε αυτί φτάνει ένας λίγο διαφορετικός τόνος (π.χ. 300 Hz αριστερά, 310 Hz δεξιά), ακούμε έναν ήπιο παλμό στη διαφορά τους (10 Hz). Το φαινόμενο το περιέγραψε ο Oster το 1973.\n\nΑν ο παλμός αυτός συντονίζει πραγματικά τα εγκεφαλικά κύματα (brainwave entrainment) συζητείται ακόμα. Κάποιες μικρές μελέτες, όπως του Lane και των συνεργατών του (1998), βρήκαν μικρές αλλαγές στην εγρήγορση και στη διάθεση· άλλες δεν βρήκαν.',
+      ndNote: 'Για κάποιους, ο σταθερός ήχος λειτουργεί σαν «ακουστική κουβέρτα»: καλύπτει τον θόρυβο γύρω και κάνει πιο εύκολο να μείνεις. Αν σε ενοχλεί, δεν τον χρειάζεσαι· η πρακτική γίνεται το ίδιο καλά και χωρίς αυτόν.',
       science: 'Oster (1973) "Auditory beats in the brain" (Scientific American) & Lane et al. (1998) Physiology & Behavior (Doi: 10.1016/s0031-9384(97)00436-8)'
     },
     en: {
-      title: 'Binaural Beats & Brainwave Entrainment',
-      short: 'The method of sound entrainment for neural regulation and focus.',
-      full: 'When two slightly different sound frequencies are played into each ear simultaneously (e.g., 300 Hz standard left and 310 Hz right), the brain perceives a third phantom frequency equal to their difference (10 Hz). This phenomenon, called Brainwave Entrainment, coordinates neural oscillations across cortical areas to sync with target brainwaves (like Theta waves for deep relaxation or Alpha waves for open awareness).',
-      ndNote: 'For neurodivergent brains (especially those with ADHD or sensory processing sensitivities), binaural beats act as an "acoustic weighted blanket." They mask erratic background noise while directly entraining neural oscillations, letting you sink into deep calm without forcing intellectual effort.',
+      title: 'Binaural Beats',
+      short: 'Two slightly different tones, one in each ear, are heard as a single beat. Findings on mood and attention are still mixed.',
+      full: 'When each ear hears a slightly different tone (e.g. 300 Hz left, 310 Hz right), we hear a gentle beat at their difference (10 Hz). Oster described the effect in 1973.\n\nWhether this beat really entrains brainwaves (brainwave entrainment) is still debated. Some small studies, such as Lane and colleagues (1998), found small changes in alertness and mood; others found none.',
+      ndNote: 'For some people, a steady sound works like an "acoustic blanket": it covers the noise around and makes it easier to stay. If it bothers you, you do not need it; you can practise just as well without it.',
       science: 'Oster (1973) "Auditory beats in the brain" (Scientific American) & Lane et al. (1998) Physiology & Behavior (Doi: 10.1016/s0031-9384(97)00436-8)'
     },
     axis: 'all',
@@ -678,17 +678,17 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
 
   davidson_2004: {
     el: {
-      title: 'Υψηλού Πλάτους Κύματα Gamma (Lutz, Davidson et al., 2004)',
-      short: 'Η ανοιχτή επίγνωση (open awareness) συνοδεύεται από αυξημένο συγχρονισμό των κυμάτων Gamma, δημιουργώντας νοητική ευρυχωρία.',
-      full: 'Αυτή η ιστορική μελέτη ("Long-term meditators self-induce high-amplitude gamma synchrony during mental practice") σε προχωρημένους Θιβετανούς μοναχούς έδειξε ότι ο ανοιχτός διαλογισμός (open awareness) παράγει εξαιρετικά υψηλά επίπεδα συγχρονισμού κυμάτων Gamma (25-42 Hz) στον εγκέφαλο.\n\nΑυτός ο συντονισμός συνδέεται με τη βέλτιστη γνωστική λειτουργία, την ολοκλήρωση απομακρυσμένων εγκεφαλικών περιοχών και την "Aha!" κατάσταση δημιουργικής επίλυσης προβλημάτων. Αντί για στενή εστίαση, ο εγκέφαλος βρίσκεται σε κατάσταση συνειδητής ευρυχωρίας.',
-      ndNote: 'Στον νευροδιαφορετικό εγκέφαλο (όπου συχνά υπάρχει έντονη τοπική υπερσύνδεση αλλά μειωμένος μακρινός συντονισμός), η ανοιχτή επίγνωση (Open Awareness) βοηθά στη γεφύρωση απομακρυσμένων περιοχών. Αυτός ο διευρυμένος Alpha-Gamma συγχρονισμός προσφέρει μια βαθιά αίσθηση "άπλας" και ησυχίας από την εσωτερική κριτική φωνή.',
+      title: 'Κύματα Γάμμα σε Έμπειρους Διαλογιστές (Lutz, Davidson et al., 2004)',
+      short: 'Οκτώ μοναχοί με πολλά χρόνια πρακτικής έδειξαν ασυνήθιστα δυνατό συγχρονισμό κυμάτων γάμμα στον διαλογισμό της συμπόνιας.',
+      full: 'Μελέτη EEG («Long-term meditators self-induce high-amplitude gamma synchrony during mental practice») σε 8 Θιβετανούς βουδιστές μοναχούς με δεκάδες χιλιάδες ώρες πρακτικής, σε σύγκριση με 10 αρχάριους. Στον διαλογισμό της συμπόνιας χωρίς αντικείμενο, οι μοναχοί έδειξαν πολύ μεγαλύτερο συγχρονισμό στα κύματα γάμμα (25–42 Hz) από τους αρχάριους· μια μικρότερη διαφορά υπήρχε και στην ηρεμία.\n\nΗ μελέτη δείχνει ότι η μακρόχρονη πρακτική συνδέεται με αλλαγές στη λειτουργία του εγκεφάλου. Δεν εξέτασε σύντομη πρακτική, και τα κύματα γάμμα δεν ταυτίζονται με κάποια συγκεκριμένη εμπειρία.',
+      ndNote: 'Δεν χρειάζεται να κυνηγάς κύματα στον εγκέφαλο. Η ευρυχωρία της ανοιχτής επίγνωσης είναι κάτι που το νιώθεις, όχι κάτι που μετράς.',
       science: 'Lutz, Greischar, Rawlings, Ricard, Davidson (2004) PNAS (Doi: 10.1073/pnas.0407401101)'
     },
     en: {
-      title: 'High-Amplitude Gamma Synchrony (Lutz, Davidson et al., 2004)',
-      short: 'Open awareness is accompanied by increased Gamma brainwave synchrony, inducing neural spaciousness and cognitive integration.',
-      full: 'This landmark EEG study ("Long-term meditators self-induce high-amplitude gamma synchrony during mental practice") on deep contemplative practitioners showed that non-referential open awareness generates unprecedented levels of large-scale neural synchrony in the Gamma (25–42 Hz) band.\n\nThis high-amplitude coherence represents active cognitive integration, sensory binding, and the classic "Aha!" state of creative intuition. Instead of a narrow beam of focus, the entire cortex operates under a unified field of effortless awareness.',
-      ndNote: 'For neurodivergent individuals (often navigating local hyper-connectivity combined with long-range dysregulation), training in Open Awareness (Aesthetic Space/4th Axis) builds robust global coherence. It creates an expansive mental playground where sensory streams coexist peacefully instead of competing for attention.',
+      title: 'Gamma Synchrony in Long-Term Meditators (Lutz, Davidson et al., 2004)',
+      short: 'Eight monks with many years of practice showed unusually strong gamma synchrony during compassion meditation.',
+      full: 'An EEG study ("Long-term meditators self-induce high-amplitude gamma synchrony during mental practice") of 8 Tibetan Buddhist monks with tens of thousands of hours of practice, compared with 10 beginners. During objectless compassion meditation, the monks showed far greater gamma synchrony (25–42 Hz) than the beginners; a smaller difference was present at rest as well.\n\nThe study shows that long-term practice is linked with changes in how the brain works. It did not test short practice, and gamma waves do not correspond to any particular experience.',
+      ndNote: 'There is no need to chase brainwaves. The spaciousness of open awareness is something you feel, not something you measure.',
       science: 'Lutz, Greischar, Rawlings, Ricard, Davidson (2004) PNAS (Doi: 10.1073/pnas.0407401101)'
     },
     axis: 'space',
@@ -698,17 +698,17 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
 
   ashinoff_2019: {
     el: {
-      title: 'Μελέτη Hyperfocus • Ashinoff & Abu-Akel (2019)',
-      short: 'Η μελέτη του Hyperfocus ως κατάσταση πλήρους απορρόφησης σε νευροδιαφορετικούς πληθυσμούς (ADHD/Αυτισμός).',
-      full: 'Αυτή η συστηματική ανασκόπηση («Hyperfocus: the forgotten frontier of attention») ορίζει το Hyperfocus ως μια έντονη κατάσταση ολικής γνωστικής απορρόφησης, όπου το άτομο «κλειδώνει» σε μια δραστηριότητα και αποσυνδέεται από εξωτερικά ερεθίσματα.\n\nΗ μελέτη αποδεικνύει ότι δεν πρόκειται για έλλειμμα προσοχής, αλλά για μια μοναδική λειτουργική κατάσταση που εμφανίζεται συστηματικά σε ADHD και αυτιστικούς πληθυσμούς, συνδυάζοντας υψηλή εσωτερική ανταμοιβή με προσωρινή απώλεια της περιφερειακής επίγνωσης.',
-      ndNote: 'Αποτελεί την επιστημονική απόδειξη ότι ο νευροδιαφορετικός νους λειτουργεί με τον κανόνα «όλα ή τίποτα» (all-or-nothing attention). Η μέθοδός μας χρησιμοποιεί την Ανοιχτή Επίγνωση (Open Gaze & Soft Hearing) για να επιτρέψει στο νευρικό σύστημα να βγαίνει ομαλά από το hyperfocus χωρίς να προκαλείται αισθητηριακό σοκ.',
+      title: 'Ανασκόπηση για την Υπερεστίαση • Ashinoff & Abu-Akel (2019)',
+      short: 'Ανασκόπηση για την υπερεστίαση (hyperfocus): μια κατάσταση βαθιάς απορρόφησης που αναφέρεται συχνά στη ΔΕΠΥ και στον αυτισμό.',
+      full: 'Η ανασκόπηση («Hyperfocus: the forgotten frontier of attention») περιγράφει την υπερεστίαση ως έντονη απορρόφηση σε μια δραστηριότητα, όπου ό,τι συμβαίνει γύρω σβήνει από την προσοχή.\n\nΑναφέρεται συχνά από ανθρώπους με ΔΕΠΥ και αυτισμό, αλλά εμφανίζεται και σε άλλους. Οι συγγραφείς σημειώνουν ότι η έρευνα είναι ακόμα λίγη και ότι δεν υπάρχει κοινός ορισμός· τη βλέπουν ως ξεχωριστό τρόπο προσοχής, όχι απλώς ως έλλειμμα.',
+      ndNote: 'Πολλοί νευροδιαφορετικοί άνθρωποι περιγράφουν την προσοχή τους ως «όλα ή τίποτα». Το μαλακό βλέμμα και η ακρόαση του χώρου βοηθούν να βγεις από ένα τούνελ προσοχής σιγά σιγά, χωρίς απότομο ξύπνημα.',
       science: 'Ashinoff, B. K., & Abu-Akel, A. (2019). Psychological Research. (Doi: 10.1007/s00426-019-01245-8)'
     },
     en: {
-      title: 'Hyperfocus Frontier Study (Ashinoff & Abu-Akel, 2019)',
-      short: 'Investigating hyperfocus as a state of deep absorption and stimulus-gating in ADHD and Autism.',
-      full: 'This cornerstone review ("Hyperfocus: the forgotten frontier of attention") establishes hyperfocus as a clinical and neurodivergent phenomenon characterized by deep, non-referential cognitive absorption, a narrowed attentional spotlight, and enhanced stimulus-filtering.\n\nRather than an attention deficit, it represents a unique attentional mode common in ADHD and autistic profiles, featuring robust internal reward loops and physical "locked-in" sensory gates.',
-      ndNote: 'This research highlights how neurodivergent brains manage attention under an all-or-nothing paradigm. Our practices utilize peripheral vision (Soft Gaze) and ambient hearing to transition the nervous system gently out of exhausting focus tunnels without triggering sensory friction.',
+      title: 'Hyperfocus Review (Ashinoff & Abu-Akel, 2019)',
+      short: 'A review of hyperfocus: a state of deep absorption often reported in ADHD and autism.',
+      full: 'The review ("Hyperfocus: the forgotten frontier of attention") describes hyperfocus as intense absorption in an activity, in which whatever happens around fades from attention.\n\nIt is often reported by people with ADHD and autism, but it also occurs in others. The authors note that research is still scarce and there is no shared definition; they see it as a distinct mode of attention, not simply a deficit.',
+      ndNote: 'Many neurodivergent people describe their attention as "all or nothing". A soft gaze and listening to the space help you leave a tunnel of attention slowly, without a jolt.',
       science: 'Ashinoff, B. K., & Abu-Akel, A. (2019). Psychological Research. (Doi: 10.1007/s00426-019-01245-8)'
     },
     axis: 'attention',
@@ -719,16 +719,16 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
   brewer_2011: {
     el: {
       title: 'DMN & Διαλογισμός • Brewer et al. (2011)',
-      short: 'Η επιστημονική απόδειξη ότι ο διαλογισμός μειώνει τη δραστηριότητα και τη συνδεσιμότητα του Default Mode Network (DMN).',
-      full: 'Αυτή η κορυφαία μελέτη fMRI ("Meditation experience is associated with differences in default mode network activity and connectivity") απέδειξε ότι οι έμπειροι διαλογιστές εμφανίζουν σημαντικά μειωμένη δραστηριότητα στις κύριες περιοχές του Default Mode Network (τον οπίσθιο προσαγώγιο φλοιό και τον μέσο προμετωπιαίο φλοιό) τόσο κατά τη διάρκεια διαφορετικών ειδών διαλογισμού όσο και κατά την ηρεμία.\n\nΗ μελέτη αποκαλύπτει επίσης αυξημένη συνδεσιμότητα μεταξύ του DMN και περιοχών γνωστικού ελέγχου, υποδεικνύοντας ένα νέο νευρωνικό πρότυπο όπου ο εγκέφαλος παρακολουθεί και αποτρέπει ενεργά τη νοητική περιπλάνηση.',
-      ndNote: 'Για νευροδιαφορετικούς πληθυσμούς με υπερδραστήριο ή άτυπο DMN, η μελέτη αυτή αποτελεί θεμελιώδη άγκυρα. Δείχνει ότι η εστίαση στις άμεσες σωματικές εμπειρίες (Experiential Focus) είναι η πιο αποτελεσματική μέθοδος για τη «σίγαση» της εσωτερικής φλυαρίας και του μηρυκασμού.',
+      short: 'Οι έμπειροι διαλογιστές έδειξαν λιγότερη δραστηριότητα στο Default Mode Network (DMN) από τους αρχάριους.',
+      full: 'Μελέτη fMRI («Meditation experience is associated with differences in default mode network activity and connectivity») που σύγκρινε έμπειρους διαλογιστές με αρχάριους. Οι έμπειροι έδειξαν λιγότερη δραστηριότητα στις βασικές περιοχές του Default Mode Network (οπίσθιος προσαγώγιος και μέσος προμετωπιαίος φλοιός) σε τρία διαφορετικά είδη διαλογισμού.\n\nΕίχαν επίσης ισχυρότερη σύνδεση ανάμεσα στο DMN και σε περιοχές που ελέγχουν την προσοχή, και στον διαλογισμό και στην ηρεμία. Οι συγγραφείς το ερμηνεύουν ως ένδειξη ότι η πρακτική βοηθά τον νου να προσέχει πότε περιπλανιέται.',
+      ndNote: 'Η μελέτη έγινε σε ανθρώπους με χρόνια πρακτικής, όχι ειδικά σε νευροδιαφορετικούς. Ταιριάζει όμως με αυτό που περιγράφει η μέθοδος: όταν επιστρέφεις απαλά στις αισθήσεις, η περιπλάνηση και ο μηρυκασμός χάνουν λίγη από τη δύναμή τους.',
       science: 'Brewer, J. A., Worhunsky, P. D., Gray, J. R., Weber, J., Tang, Y., & Kober, H. (2011). PNAS. (Doi: 10.1073/pnas.1112029108)'
     },
     en: {
       title: 'DMN Connectivity & Meditation (Brewer et al., 2011)',
-      short: 'Scientific proof that meditation practice reduces default mode network (DMN) activity and functional connectivity.',
-      full: 'This landmark neuroimaging research ("Meditation experience is associated with differences in default mode network activity and connectivity") demonstrated that mindfulness practitioners show significantly decreased activation in the main hubs of the Default Mode Network (the posterior cingulate and medial prefrontal cortices) during active practice and resting state.\n\nIt also uncovered increased co-activation between the DMN and executive control regions, pointing to an optimized neural network that monitors and gently redirects mind-wandering in real-time.',
-      ndNote: 'For neurodivergent individuals experiencing hyper-rumination or sensory processing fatigue associated with DMN hyperactivity, Brewer\'s findings offer clinical reassurance. It validates that gentle somatic redirection is a reproducible method for quietening chaotic internal mental environments.',
+      short: 'Experienced meditators showed less activity in the Default Mode Network (DMN) than beginners.',
+      full: 'An fMRI study ("Meditation experience is associated with differences in default mode network activity and connectivity") comparing experienced meditators with beginners. The experienced group showed less activity in the main hubs of the Default Mode Network (posterior cingulate and medial prefrontal cortex) across three types of meditation.\n\nThey also showed stronger connections between the DMN and regions that control attention, both during meditation and at rest. The authors read this as a sign that practice helps the mind notice when it wanders.',
+      ndNote: 'The study was done with people who had years of practice, not specifically with neurodivergent people. It fits what the method describes, though: when you return gently to the senses, wandering and rumination lose some of their pull.',
       science: 'Brewer, J. A., Worhunsky, P. D., Gray, J. R., Weber, J., Tang, Y., & Kober, H. (2011). PNAS. (Doi: 10.1073/pnas.1112029108)'
     },
     axis: 'all',
@@ -739,16 +739,16 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
   gibson_1979: {
     el: {
       title: 'Οικολογική Προσέγγιση της Αντίληψης • J. J. Gibson (1979)',
-      short: 'Η αντίληψη του χώρου δεν είναι αφηρημένος υπολογισμός, αλλά ορίζεται από το «έδαφος» που στηρίζει το σώμα.',
-      full: 'Η θεμελιώδης θεωρία του James J. Gibson («The Ecological Approach to Visual Perception») υποστηρίζει ότι το σώμα και το φυσικό του περιβάλλον αποτελούν ένα αδιάσπαστο, δυναμικό σύστημα. Η αντίληψη του χώρου και της απόστασης δεν γίνεται μέσω αφηρημένων τρισδιάστατων υπολογισμών στον εγκέφαλο, αλλά βασίζεται στη συνεχή, υποστηρικτική επιφάνεια του εδάφους (ground), η οποία μας συνδέει σωματικά με τον κόσμο.\n\nΤο έδαφος προσφέρει "affordances" (δυνατότητες δράσης) — το αίσθημα ότι η επιφάνεια μας κρατά και μας επιτρέπει να σταθούμε και να κινηθούμε με ασφάλεια.',
-      ndNote: 'Αυτό εξηγεί γιατί η «Γείωση» (Grounding) δεν είναι απλώς μια νοητική άσκηση χαλάρωσης, αλλά μια βαθιά οικολογική και σωματική ανάγκη. Ο νους ηρεμεί μόνο όταν το σώμα νιώσει ότι ο χώρος γύρω του το «κρατάει» (έδαφος/βαρύτητα). Η σύνδεση σώματος και χώρου είναι αδιάσπαστη.',
+      short: 'Για τον Gibson, η αντίληψη του χώρου δεν είναι αφηρημένος υπολογισμός· στηρίζεται στο έδαφος που κρατά το σώμα.',
+      full: 'Η θεωρία του James J. Gibson («The Ecological Approach to Visual Perception») υποστηρίζει ότι το σώμα και το περιβάλλον του λειτουργούν μαζί, σαν ένα σύστημα. Κατά τον Gibson, την απόσταση και τον χώρο δεν τα υπολογίζει ο εγκέφαλος αφηρημένα· τα αντιλαμβανόμαστε άμεσα, πάνω στη συνεχή επιφάνεια του εδάφους.\n\nΤο έδαφος προσφέρει «δυνατότητες δράσης» (affordances): μας κρατά, και μας επιτρέπει να σταθούμε και να κινηθούμε.',
+      ndNote: 'Ταιριάζει με τη γείωση της μεθόδου: δεν είναι μόνο νοητική άσκηση, είναι και η αίσθηση ότι κάτι από κάτω σε κρατά. Η αντίληψη του σώματος και η αντίληψη του χώρου πάνε μαζί.',
       science: 'Gibson, J. J. (1979/2014) "The Ecological Approach to Visual Perception" (Doi: 10.4324/9781315740218)'
     },
     en: {
       title: 'Ecological Space Perception • J. J. Gibson (1979)',
-      short: 'Space perception is not an abstract calculation but is fundamentally defined by the ground supporting the body.',
-      full: 'James J. Gibson\'s groundbreaking theory of Ecological Psychology ("The Ecological Approach to Visual Perception") demonstrates that the body and its surrounding environment form an inseparable, cooperative system.\n\nHe argues that space and depth are not abstract intellectual measurements computed internally by the brain; instead, they are perceived directly via the continuous, solid surface of the ground. The ground provides crucial "affordances" — immediate possibilities for action like standing, stepping, or resting, signaling somatic survival and safety.',
-      ndNote: 'This validates our core thesis: True grounding is not just a mental visualization but an ecological necessity. The body and space work together dynamically; the nervous system can decompress and release focused attention only when it explicitly registers that the immediate physical ground is holding us.',
+      short: 'For Gibson, perceiving space is not an abstract calculation; it rests on the ground that holds the body.',
+      full: 'James J. Gibson\'s theory ("The Ecological Approach to Visual Perception") holds that the body and its environment work together, as one system. For Gibson, distance and space are not computed abstractly by the brain; we perceive them directly, along the continuous surface of the ground.\n\nThe ground offers "affordances", possibilities for action: it holds us, and lets us stand and move.',
+      ndNote: 'This fits the grounding of the method: it is not only a mental exercise, it is also the sense that something underneath is holding you. Perceiving the body and perceiving space go together.',
       science: 'Gibson, J. J. (1979/2014) "The Ecological Approach to Visual Perception" (Doi: 10.4324/9781315740218)'
     },
     axis: 'body',
@@ -759,16 +759,16 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
   mackrous_2019: {
     el: {
       title: 'Πρόβλεψη της Βαρύτητας & Παρεγκεφαλίδα • Mackrous et al. (2019)',
-      short: 'Ο εγκέφαλος προβλέπει και υπολογίζει συνεχώς τη βαρύτητα για να ξεχωρίσει τις δικές μας κινήσεις από τις εξωτερικές δυνάμεις.',
-      full: 'Αυτή η μελέτη ("Cerebellar Prediction of the Dynamic Sensory Consequences of Gravity") απέδειξε ότι η παρεγκεφαλίδα (το τμήμα του εγκεφάλου υπεύθυνο για τον συντονισμό και την ισορροπία) δημιουργεί ένα εσωτερικό μοντέλο της βαρύτητας.\n\nΟ εγκέφαλος δεν αντιδρά απλώς παθητικά στη βαρύτητα. Αντίθετα, υπολογίζει δυναμικά και προβλέπει την κατεύθυνση και τη δύναμή της, προκειμένου να διαχωρίσει τις ενεργές (δικές μας) κινήσεις του κεφαλιού από τις παθητικές (εξωτερικές) κινήσεις.',
-      ndNote: 'Η συνειδητή εστίαση στη βαρύτητα δεν είναι μια αφηρημένη ψυχολογική τεχνική. Αξιοποιεί έναν αρχέγονο νευρωνικό υπολογισμό που "αγκυρώνει" τον εγκέφαλο στο χώρο, προσφέροντας άμεση αίσθηση ασφάλειας και παρουσίας σε υπερδιεγερμένα νευρικά συστήματα.',
+      short: 'Η παρεγκεφαλίδα προβλέπει συνεχώς πώς θα αλλάξει η αίσθηση της βαρύτητας όταν κινούμαστε.',
+      full: 'Μελέτη σε πιθήκους («Cerebellar Prediction of the Dynamic Sensory Consequences of Gravity») που κατέγραψε νευρώνες της παρεγκεφαλίδας, του μέρους του εγκεφάλου που συντονίζει την κίνηση και την ισορροπία. Βρήκε ότι η παρεγκεφαλίδα προβλέπει πώς θα αλλάξει η αίσθηση της βαρύτητας όταν το ζώο γέρνει το κεφάλι του μόνο του, και έτσι ξεχωρίζει τις δικές του κινήσεις από εκείνες που του συμβαίνουν.\n\nΟ εγκέφαλος, δηλαδή, δεν δέχεται απλώς τη βαρύτητα· την παρακολουθεί και την υπολογίζει συνεχώς.',
+      ndNote: 'Η μελέτη δεν εξέτασε την προσοχή ούτε κάποια άσκηση. Δείχνει όμως ότι η βαρύτητα είναι ένα σήμα που ο εγκέφαλος παρακολουθεί ήδη, κάθε στιγμή. Η γείωση απλώς στρέφει την προσοχή σου σε αυτό.',
       science: 'Mackrous, I., Carriot, J., Jamali, M., & Cullen, K. E. (2019). Current Biology. (Doi: 10.1016/j.cub.2019.07.006)'
     },
     en: {
       title: 'Cerebellar Gravity Prediction • Mackrous et al. (2019)',
-      short: 'The brain continuously predicts and calculates gravity to distinguish self-generated movements from external forces.',
-      full: 'This study ("Cerebellar Prediction of the Dynamic Sensory Consequences of Gravity") demonstrated that the cerebellum (the brain region responsible for motor coordination and balance) constructs a robust internal model of gravity.\n\nThe brain doesn\'t just passively react to gravity. Instead, it dynamically computes and predicts its direction and magnitude to cancel out gravity\'s sensory consequences, thereby distinguishing active (self-generated) head movements from passive (external) ones.',
-      ndNote: 'Consciously focusing on gravity is not an abstract psychological trick. It leverages a primal neural computation that "anchors" the brain in space, providing an immediate sense of safety and presence for hyper-aroused nervous systems.',
+      short: 'The cerebellum constantly predicts how the sense of gravity will change as we move.',
+      full: 'A study in monkeys ("Cerebellar Prediction of the Dynamic Sensory Consequences of Gravity") that recorded neurons in the cerebellum, the part of the brain that coordinates movement and balance. It found that the cerebellum predicts how the sense of gravity will change when the animal tilts its own head, and so tells its own movements apart from those that happen to it.\n\nThe brain, in other words, does not just receive gravity; it tracks and computes it all the time.',
+      ndNote: 'The study did not test attention or any exercise. It does show that gravity is a signal the brain already tracks, every moment. Grounding simply turns your attention towards it.',
       science: 'Mackrous, I., Carriot, J., Jamali, M., & Cullen, K. E. (2019). Current Biology. (Doi: 10.1016/j.cub.2019.07.006)'
     },
     axis: 'body',
@@ -778,16 +778,16 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
   vater_2022: {
     el: {
       title: 'Περιφερειακή Όραση & Περιβάλλον • Vater et al. (2022)',
-      short: 'Η περιφερειακή όραση δεν είναι απλώς «θολή». Είναι ένας θεμελιώδης μηχανισμός του εγκεφάλου για την παρακολούθηση του περιβάλλοντος και τη μείωση της αίσθησης εγκλωβισμού.',
-      full: 'Αυτή η συστηματική ανασκόπηση του 2022 ("Peripheral vision in real-world tasks") επιβεβαιώνει ότι η περιφερειακή όραση παίζει κεντρικό ρόλο στην αξιολόγηση του κόσμου γύρω μας και στον προσανατολισμό του σώματος. Αντί να εστιάζει σε μία απειλή, ο εγκέφαλος συγκεντρώνει πληροφορίες ασφάλειας από τον ευρύτερο χώρο.\n\nΌταν μαλακώνουμε το βλέμμα μας (soft gaze), αξιοποιούμε αυτή την ικανότητα του εγκεφάλου για να αποσυμπιέσουμε το νευρικό σύστημα και να μειώσουμε την αίσθηση του περιορισμού ή του "τούνελ" (hyperfocus).',
-      ndNote: 'Για ένα νευρικό σύστημα που κλειδώνει εύκολα, το "άνοιγμα" της περιφερειακής όρασης λειτουργεί ως νευρολογικό φρένο. Δεν χρειάζεται να πιέσετε τον εαυτό σας να χαλαρώσει. Απλώς διευρύνετε την όρασή σας.',
+      short: 'Η περιφερειακή όραση δεν είναι απλώς «θολή». Μας δίνει συνεχώς εικόνα του χώρου γύρω μας.',
+      full: 'Η συστηματική ανασκόπηση του 2022 («Peripheral vision in real-world tasks») δείχνει ότι η περιφερειακή όραση παίζει μεγάλο ρόλο στις καθημερινές δραστηριότητες: στο περπάτημα, στον προσανατολισμό, στο να αντιλαμβανόμαστε τι συμβαίνει γύρω μας χωρίς να το κοιτάμε κατευθείαν.\n\nΗ μέθοδος αξιοποιεί αυτή την ικανότητα: όταν μαλακώνεις το βλέμμα (soft gaze), η προσοχή απλώνεται στον χώρο αντί να στενεύει σε ένα σημείο.',
+      ndNote: 'Για ένα νευρικό σύστημα που κλειδώνει εύκολα, το άνοιγμα της ματιάς μπορεί να μαλακώσει την ένταση. Δεν χρειάζεται να πιέσεις τον εαυτό σου να χαλαρώσει· απλώς άνοιξε τη ματιά σου.',
       science: 'Vater, C., Wolfe, B., & Rosenholtz, R. (2022). Psychonomic Bulletin & Review. (Doi: 10.3758/s13423-022-02117-w)'
     },
     en: {
       title: 'Peripheral Vision in Real-World Tasks • Vater et al. (2022)',
-      short: 'Peripheral vision isn\'t just "blurry" vision. It is a fundamental brain mechanism for monitoring the environment and reducing the feeling of being trapped.',
-      full: 'This 2022 systematic review ("Peripheral vision in real-world tasks") confirms that peripheral vision plays a central role in evaluating the world around us and orienting the body. Instead of focusing on a single threat, the brain gathers safety information from the wider space.\n\nWhen we soften our gaze, we leverage this brain capacity to decompress the nervous system and reduce the feeling of restriction or "tunnel vision" (hyperfocus).',
-      ndNote: 'For a nervous system that easily locks onto stimuli, "opening up" peripheral vision acts as a neurological brake. You don\'t need to force yourself to relax. Just widen your vision.',
+      short: 'Peripheral vision is not just "blurry" vision. It keeps giving us a picture of the space around us.',
+      full: 'This 2022 systematic review ("Peripheral vision in real-world tasks") shows that peripheral vision plays a large role in everyday tasks: walking, finding our way, noticing what is happening around us without looking at it directly.\n\nThe method draws on this: when you soften your gaze, attention spreads into the space instead of narrowing to one point.',
+      ndNote: 'For a nervous system that locks on easily, widening the gaze can soften the tension. You do not need to force yourself to relax; just widen your view.',
       science: 'Vater, C., Wolfe, B., & Rosenholtz, R. (2022). Psychonomic Bulletin & Review. (Doi: 10.3758/s13423-022-02117-w)'
     },
     axis: 'space',
@@ -796,17 +796,17 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
   },
   corrigan_2010: {
     el: {
-      title: 'Παράθυρο Ανοχής & Αυτορρύθμιση • Corrigan et al. (2010)',
+      title: 'Παράθυρο Ανοχής & Αυτορρύθμιση • Corrigan et al. (2011)',
       short: 'Αυτορρύθμιση είναι η ικανότητα επαναφοράς του νευρικού συστήματος από την υπερδιέγερση ή υπολειτουργία σε κατάσταση ισορροπίας.',
-      full: 'Σύμφωνα με το μοντέλο του «Παραθύρου Ανοχής» (Window of Tolerance), το νευρικό σύστημα λειτουργεί βέλτιστα μέσα σε ένα συγκεκριμένο εύρος διέγερσης. Έξω από αυτό, οδηγείται είτε σε υπερδιέγερση (άγχος, πανικός, «τρέξιμο» του νου) είτε σε υποδιέγερση (μούδιασμα, αποσύνδεση, «κλείδωμα»).\n\nΗ αυτορρύθμιση είναι η ικανότητα να αναγνωρίζουμε αυτές τις καταστάσεις και να χρησιμοποιούμε εργαλεία (όπως η γείωση, η αναπνοή και ο χώρος) για να επιστρέψουμε το σύστημα στην ισορροπία του.',
-      ndNote: 'Ο νευροδιαφορετικός νους βγαίνει συχνά εκτός του παραθύρου ανοχής λόγω υπερφόρτωσης (sensory overload). Η μέθοδος του Τετραπλού Άξονα παρέχει τα ακριβή σωματικά εργαλεία για να «φρενάρετε» την υπερδιέγερση (χώρος/εκπνοή) ή να «ξεκολλήσετε» από την υποδιέγερση (γείωση).',
+      full: 'Σύμφωνα με το μοντέλο του «Παραθύρου Ανοχής» (Window of Tolerance), το νευρικό σύστημα λειτουργεί καλύτερα μέσα σε ένα συγκεκριμένο εύρος διέγερσης. Έξω από αυτό, οδηγείται είτε σε υπερδιέγερση (άγχος, πανικός, «τρέξιμο» του νου) είτε σε υποδιέγερση (μούδιασμα, αποσύνδεση, «κλείδωμα»).\n\nΗ αυτορρύθμιση είναι η ικανότητα να αναγνωρίζουμε αυτές τις καταστάσεις και να χρησιμοποιούμε εργαλεία (όπως η γείωση, η αναπνοή και ο χώρος) για να επιστρέψουμε το σύστημα στην ισορροπία του.',
+      ndNote: 'Ο νευροδιαφορετικός νους μπορεί να βγαίνει πιο εύκολα από το παράθυρο ανοχής λόγω υπερφόρτωσης (sensory overload). Η μέθοδος του Τετραπλού Άξονα προσφέρει σωματικά εργαλεία για να «φρενάρεις» την υπερδιέγερση (χώρος, αργή εκπνοή) ή να «ξεκολλήσεις» από την υποδιέγερση (γείωση).',
       science: 'Corrigan, F. M., Fisher, J. J., & Nutt, D. J. (2011). Journal of Psychopharmacology. (Doi: 10.1177/0269881109354930)'
     },
     en: {
-      title: 'Window of Tolerance & Self-Regulation • Corrigan et al. (2010)',
+      title: 'Window of Tolerance & Self-Regulation • Corrigan et al. (2011)',
       short: 'Self-regulation is the ability to return your nervous system from overstimulation or under-functioning to a state of balance.',
-      full: 'According to the "Window of Tolerance" model, the nervous system functions optimally within a specific range of arousal. Outside of this window, it is driven either into hyperarousal (anxiety, panic, a racing mind) or hypoarousal (numbness, dissociation, locking).\n\nSelf-regulation is the ability to recognize these states and use tools (like grounding, breathing, and space) to return the system to balance.',
-      ndNote: 'The neurodivergent mind frequently falls outside the window of tolerance due to sensory overload. The Fourfold Axis method provides the exact somatic tools to "brake" hyperarousal (space/exhale) or "unstick" from hypoarousal (grounding).',
+      full: 'According to the "Window of Tolerance" model, the nervous system works best within a specific range of arousal. Outside of this window, it is driven either into hyperarousal (anxiety, panic, a racing mind) or hypoarousal (numbness, dissociation, locking).\n\nSelf-regulation is the ability to recognize these states and use tools (like grounding, breathing, and space) to return the system to balance.',
+      ndNote: 'The neurodivergent mind can leave the window of tolerance more easily because of sensory overload. The Fourfold Axis method offers bodily tools to "brake" hyperarousal (space, slow exhale) or to "unstick" from hypoarousal (grounding).',
       science: 'Corrigan, F. M., Fisher, J. J., & Nutt, D. J. (2011). Journal of Psychopharmacology. (Doi: 10.1177/0269881109354930)'
     },
     axis: 'body',
