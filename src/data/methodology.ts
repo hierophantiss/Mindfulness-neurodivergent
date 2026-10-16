@@ -184,6 +184,48 @@ export const METHODOLOGY_DATA = {
         title: 'Οικολογική Αντίληψη & Έδαφος (James J. Gibson, 1979)',
         desc: 'Η οικολογική προσέγγιση του Gibson περιγράφει την αντίληψη ως σχέση σώματος και περιβάλλοντος: ο χώρος γίνεται αντιληπτός μέσα από το έδαφος που στηρίζει το σώμα και τις δυνατότητες δράσης που προσφέρει (affordances).',
         citation: 'James J. Gibson (1979). Psychology Press. Doi: 10.4324/9781315740218'
+      },
+      {
+        id: 'study-sirois',
+        icon: Activity,
+        title: 'Η Αναβολή ως Ρύθμιση της Διάθεσης (Sirois & Pychyl, 2013)',
+        desc: 'Θεωρητική ανασκόπηση: η αναβολή δεν είναι κυρίως θέμα διαχείρισης χρόνου, αλλά βραχυπρόθεσμης ρύθμισης της διάθεσης. Αφήνεις κάτι για να γλιτώσεις το δυσάρεστο συναίσθημα τώρα, και το κόστος το πληρώνει ο εαυτός σου αργότερα. Στο Κεφ. 7, γι’ αυτό η δουλειά γίνεται με το σώμα και όχι με περισσότερη πίεση.',
+        citation: 'Sirois & Pychyl (2013). Social and Personality Psychology Compass. Doi: 10.1111/spc3.12011'
+      },
+      {
+        id: 'study-wohl',
+        icon: Heart,
+        title: 'Η Αυτοσυγχώρεση και η Επόμενη Αναβολή (Wohl, Pychyl & Bennett, 2010)',
+        desc: 'Μελέτη σε φοιτητές: όσοι συγχώρεσαν τον εαυτό τους που ανέβαλαν τη μελέτη για την πρώτη εξέταση ανέβαλαν λιγότερο για τη δεύτερη, επειδή ένιωθαν λιγότερα αρνητικά συναισθήματα. Η καλοσύνη απέναντι στον εαυτό δεν σε κάνει πιο χαλαρό· σε βοηθά να ξαναρχίσεις.',
+        citation: 'Wohl, Pychyl & Bennett (2010). Personality and Individual Differences. Doi: 10.1016/j.paid.2010.01.029'
+      },
+      {
+        id: 'study-arnsten',
+        icon: Brain,
+        title: 'Το Στρες και ο Προμετωπιαίος Φλοιός (Arnsten, 2009)',
+        desc: 'Ανασκόπηση, κυρίως από έρευνα σε ζώα: ακόμα και ήπιο στρες που δεν ελέγχεις μπορεί να δυσκολέψει γρήγορα τη λειτουργία του προμετωπιαίου φλοιού, εκεί όπου γίνονται ο σχεδιασμός και η εκκίνηση. Γι’ αυτό η πίεση συχνά κάνει το ξεκίνημα πιο δύσκολο, όχι πιο εύκολο.',
+        citation: 'Arnsten (2009). Nature Reviews Neuroscience. Doi: 10.1038/nrn2648'
+      },
+      {
+        id: 'study-craske',
+        icon: ShieldCheck,
+        title: 'Νέα Μάθηση Απέναντι στην Απειλή (Craske et al., 2014)',
+        desc: 'Ανασκόπηση για τη θεραπεία έκθεσης: ο φόβος δεν σβήνει, αλλά μια νέα μάθηση («έκανα το βήμα και δεν έγινε το χειρότερο») μπαίνει δίπλα του και τον ανταγωνίζεται (ανασταλτική μάθηση, inhibitory learning). Η μέθοδος δεν είναι θεραπεία έκθεσης· τα μικρά βήματα του Κεφ. 7 πατούν όμως στην ίδια ιδέα.',
+        citation: 'Craske et al. (2014). Behaviour Research and Therapy. Doi: 10.1016/j.brat.2014.04.006'
+      },
+      {
+        id: 'study-hull-2017',
+        icon: Heart,
+        title: 'Μασκάρισμα (Hull et al., 2017)',
+        desc: 'Ποιοτική μελέτη με αυτιστικούς ενήλικες για το μασκάρισμα (camouflaging): γιατί το κάνουν, πώς το κάνουν και τι τους κοστίζει. Οι συμμετέχοντες περιέγραψαν εξάντληση, άγχος και την αίσθηση ότι χάνουν τον εαυτό τους.',
+        citation: 'Hull et al. (2017). Journal of Autism and Developmental Disorders. Doi: 10.1007/s10803-017-3166-5'
+      },
+      {
+        id: 'study-raymaker',
+        icon: Heart,
+        title: 'Αυτιστική Εξουθένωση (Raymaker et al., 2020)',
+        desc: 'Ποιοτική μελέτη, με αυτιστικούς ερευνητές μέσα στην ομάδα, που όρισε την αυτιστική εξουθένωση (autistic burnout): χρόνια κούραση, απώλεια δεξιοτήτων και μικρότερη αντοχή στα ερεθίσματα, από τη συσσώρευση πίεσης χωρίς αρκετή στήριξη. Το μασκάρισμα αναφέρθηκε ως ένας από τους παράγοντες.',
+        citation: 'Raymaker et al. (2020). Autism in Adulthood. Doi: 10.1089/aut.2019.0079'
       }
     ],
     
@@ -373,6 +415,48 @@ export const METHODOLOGY_DATA = {
         title: 'Ecological Perception & Ground (James J. Gibson, 1979)',
         desc: 'Gibson\'s ecological approach describes perception as a relationship between body and environment: space is perceived through the ground that supports the body and the possibilities for action it offers (affordances).',
         citation: 'James J. Gibson (1979). Psychology Press. Doi: 10.4324/9781315740218'
+      },
+      {
+        id: 'study-sirois',
+        icon: Activity,
+        title: 'Procrastination as Mood Regulation (Sirois & Pychyl, 2013)',
+        desc: 'A theoretical review: procrastination is mostly not a time-management problem but short-term mood regulation. You put something off to escape an unpleasant feeling now, and your future self pays the cost. That is why Chapter 7 works through the body rather than with more pressure.',
+        citation: 'Sirois & Pychyl (2013). Social and Personality Psychology Compass. Doi: 10.1111/spc3.12011'
+      },
+      {
+        id: 'study-wohl',
+        icon: Heart,
+        title: 'Self-Forgiveness and the Next Delay (Wohl, Pychyl & Bennett, 2010)',
+        desc: 'A study of students: those who forgave themselves for procrastinating before the first exam procrastinated less before the second, because they felt less negative emotion. Kindness towards yourself does not make you slack; it helps you start again.',
+        citation: 'Wohl, Pychyl & Bennett (2010). Personality and Individual Differences. Doi: 10.1016/j.paid.2010.01.029'
+      },
+      {
+        id: 'study-arnsten',
+        icon: Brain,
+        title: 'Stress and the Prefrontal Cortex (Arnsten, 2009)',
+        desc: 'A review, largely of animal research: even mild stress that you cannot control can quickly impair the prefrontal cortex, where planning and starting take place. That is why pressure often makes starting harder, not easier.',
+        citation: 'Arnsten (2009). Nature Reviews Neuroscience. Doi: 10.1038/nrn2648'
+      },
+      {
+        id: 'study-craske',
+        icon: ShieldCheck,
+        title: 'New Learning Against Threat (Craske et al., 2014)',
+        desc: 'A review of exposure therapy: fear is not erased; new learning ("I took the step and the worst did not happen") forms alongside it and competes with it (inhibitory learning). The method is not exposure therapy, but the small steps of Chapter 7 rest on the same idea.',
+        citation: 'Craske et al. (2014). Behaviour Research and Therapy. Doi: 10.1016/j.brat.2014.04.006'
+      },
+      {
+        id: 'study-hull-2017',
+        icon: Heart,
+        title: 'Camouflaging (Hull et al., 2017)',
+        desc: 'A qualitative study with autistic adults about camouflaging: why they do it, how they do it and what it costs them. Participants described exhaustion, anxiety and a sense of losing themselves.',
+        citation: 'Hull et al. (2017). Journal of Autism and Developmental Disorders. Doi: 10.1007/s10803-017-3166-5'
+      },
+      {
+        id: 'study-raymaker',
+        icon: Heart,
+        title: 'Autistic Burnout (Raymaker et al., 2020)',
+        desc: 'A qualitative study, with autistic researchers on the team, that defined autistic burnout: chronic exhaustion, loss of skills and reduced tolerance to stimuli, from accumulated pressure without enough support. Camouflaging was named as one of the factors.',
+        citation: 'Raymaker et al. (2020). Autism in Adulthood. Doi: 10.1089/aut.2019.0079'
       }
     ],
     
