@@ -488,7 +488,7 @@ This is how recollectedness is completed. You were not gathering thoughts about 
 
 ### The Rhythm of Open Attention
 
-The shift from narrow to open also leaves a measurable trace. Les Fehmi's work on Open Focus observed that, when attention spreads out and becomes peripheral, large areas of the brain can synchronise at a slower rhythm: the alpha band, which has been associated with relaxed alertness.
+The shift from narrow to open is also described in Les Fehmi's work on Open Focus. Fehmi describes how, when attention spreads out and becomes peripheral, large areas of the brain tend to synchronise at a slower rhythm: the alpha band, which has been associated with relaxed alertness. This comes from his clinical work, not from a controlled study.
 
 And the quickest way there is not effort, but a question without an object:
 
@@ -615,7 +615,7 @@ We do not break the glass. We loosen the bottle: we create the conditions of saf
 
 ### Kindness as an Exit from Autopilot
 
-Self-criticism is not your truth; it is an echo of words, looks and expectations that were not met. Research shows that intense self-criticism can activate the same threat-response circuits that react to outer danger, with the involvement of the amygdala and stress hormones such as cortisol. Every time you judge yourself harshly, your brain reacts as if you were under attack.
+Self-criticism is not your truth; it is an echo of words, looks and expectations that were not met. Research shows that self-criticism and self-reassurance engage different networks in the brain. Self-criticism engages regions linked with detecting errors and holding behaviour back. Self-reassurance engages regions similar to those active when we show compassion to someone else: when you speak to yourself kindly, you speak to yourself the way you would speak to a friend.
 
 The gentleness of this method is the stance you need to hold towards yourself. Growth here does not mean productivity, but the flowering of your unique potential.
 
@@ -982,11 +982,11 @@ Source: Mackrous et al. (2019). Current Biology. DOI: 10.1016/j.cub.2019.07.006
 **Breath — The Vagus Nerve.** The slow, prolonged exhale activates the "ventral" side of the vagus nerve, which is associated with states of calm and safety. You do not need to "convince" yourself that you are safe; in experience, the exhale sends the signal by itself.
 Source: Porges, S. W. (1995). Psychophysiology. DOI: 10.1111/j.1469-8986.1995.tb01213.x
 
-**Attention — A Quiet DMN.** The Default Mode Network (DMN) is associated with mind-wandering, rumination and self-criticism, and is often overactive in neurodivergent brains. Farb and colleagues showed that shifting from "narrative" to direct, experiential attention (what am I feeling now) is linked with reduced DMN activity. Labelling and returning to sensation are exactly this shift.
-Source: Farb et al. (2007). Social Cognitive and Affective Neuroscience. DOI: 10.1093/scan/nsm030
+**Attention — A Quiet DMN.** The Default Mode Network (DMN) is associated with mind-wandering, rumination and self-criticism. For ADHD, a well-known hypothesis is that the DMN does not quieten easily when attention is needed, and interrupts it. Farb and colleagues showed that shifting from "narrative" to direct, experiential attention (what am I feeling now) is linked with reduced DMN activity. Labelling and returning to sensation are exactly this shift.
+Sources: Sonuga-Barke & Castellanos (2007). Neuroscience & Biobehavioral Reviews. DOI: 10.1016/j.neubiorev.2007.02.005 · Farb et al. (2007). Social Cognitive and Affective Neuroscience. DOI: 10.1093/scan/nsm030
 
-**Space — Open Awareness.** In experienced meditators, increased synchronisation of **gamma** brainwaves has been observed during open-awareness practice. Separately, Open Focus research links the widening of attention with a stronger **alpha** rhythm. In experience, both feel like "unsticking" from narrow hyperfocus: less exhaustion, more spaciousness.
-Source: Lutz et al. (2004). PNAS. DOI: 10.1073/pnas.0407401101
+**Space — Open Awareness.** In monks with tens of thousands of hours of practice, unusually strong synchronisation of **gamma** brainwaves has been observed during objectless compassion meditation. The study did not test open awareness or short practice; it shows that long-term practice changes how the brain works. Les Fehmi, from his clinical work with Open Focus, describes the widening of attention as accompanied by a stronger **alpha** rhythm. Brainwaves do not correspond to any particular experience. In experience, the widening feels like "unsticking" from narrow hyperfocus: less exhaustion, more spaciousness.
+Sources: Lutz et al. (2004). PNAS. DOI: 10.1073/pnas.0407401101 · Fehmi, L. & Robbins, J. (2007). The Open-Focus Brain. Trumpeter Books.
 
 That these change with repetition rests on **neuroplasticity**, the brain's ability to reorganise itself through practice.
 
@@ -1001,6 +1001,18 @@ That these change with repetition rests on **neuroplasticity**, the brain's abil
 - Peripheral vision & soft gaze — Vater et al. (2022). Psychonomic Bulletin & Review. DOI: 10.3758/s13423-022-02117-w
 - Ecological perception & the ground — Gibson, J. J. (1979/2014). The Ecological Approach to Visual Perception. Psychology Press. DOI: 10.4324/9781315740218
 - Brainwave entrainment (binaural) — Lane et al. (1998). Physiology & Behavior. DOI: 10.1016/S0031-9384(97)00436-8
+
+**For Chapters 2–5:**
+
+- Breathing changes with emotion, and emotion with breathing — Homma & Masaoka (2008). Experimental Physiology. DOI: 10.1113/expphysiol.2008.042424
+- Difficulty recognising and naming what you feel (alexithymia) is common in autism — Kinnaird, Stewart & Tchanturia (2019). European Psychiatry. DOI: 10.1016/j.eurpsy.2018.09.004
+- Breathing with a long exhale, 5 minutes a day: better mood, slower breathing — Balban et al. (2023). Cell Reports Medicine. DOI: 10.1016/j.xcrm.2022.100895
+- Naming a feeling reduces the amygdala's response (labelling) — Lieberman et al. (2007). Psychological Science. DOI: 10.1111/j.1467-9280.2007.01916.x
+- Rumination sustains and deepens low mood — Nolen-Hoeksema, Wisco & Lyubomirsky (2008). Perspectives on Psychological Science. DOI: 10.1111/j.1745-6924.2008.00088.x
+- Meta-awareness: the mind only notices from time to time that it has wandered — Schooler et al. (2011). Trends in Cognitive Sciences. DOI: 10.1016/j.tics.2011.05.006
+- With anxiety, attention goes more easily to threat — Bar-Haim et al. (2007). Psychological Bulletin. DOI: 10.1037/0033-2909.133.1.1
+- Camouflaging is linked with anxiety and depression — Hull et al. (2021). Molecular Autism. DOI: 10.1186/s13229-021-00421-1
+- Self-criticism and self-reassurance: different networks in the brain — Longe et al. (2010). NeuroImage. DOI: 10.1016/j.neuroimage.2009.09.019
 
 **For Chapter 7 (avoidance and procrastination):**
 

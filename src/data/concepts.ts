@@ -389,14 +389,16 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
   self_criticism: {
     el: {
       title: 'Αυτοκριτική',
-      short: 'Ενεργοποιεί τα ίδια κυκλώματα με τον εξωτερικό κίνδυνο.',
-      full: 'Η αυτοκριτική ενεργοποιεί την αμυγδαλή και την κορτιζόλη — τα ίδια νευρικά κυκλώματα που ενεργοποιούνται σε εξωτερική απειλή. Κάθε φορά που κρίνεις τον εαυτό σου, ο εγκέφαλος αντιδρά σαν να δέχεσαι επίθεση. Η καλοσύνη δεν είναι πολυτέλεια — είναι νευρολογική ανάγκη.',
+      short: 'Ένας παλιός απόηχος κριτικής· στον εγκέφαλο δουλεύει αλλιώς από την καλοσύνη.',
+      full: 'Η αυτοκριτική και η καθησύχαση του εαυτού ενεργοποιούν διαφορετικά δίκτυα στον εγκέφαλο. Η αυτοκριτική ενεργοποιεί περιοχές που σχετίζονται με τον εντοπισμό λάθους και το φρενάρισμα της συμπεριφοράς. Η καθησύχαση ενεργοποιεί περιοχές παρόμοιες με εκείνες της συμπόνιας για τους άλλους. Η καλοσύνη προς τον εαυτό δεν είναι πολυτέλεια· είναι ένας άλλος τρόπος να δουλεύει ο νους.',
+      science: 'Longe et al. (2010) NeuroImage (Doi: 10.1016/j.neuroimage.2009.09.019)',
       ndNote: 'Οι νευροδιαφορετικοί έχουμε χρόνια εξάσκηση στην αυτοκριτική λόγω εξωτερικής πίεσης. Η φωνή «δεν κάνεις αρκετά» δεν είναι δική σου — είναι απόηχος. Αναγνώρισέ τον, μην τον ακολουθήσεις.'
     },
     en: {
       title: 'Self-Criticism',
-      short: 'Activates the same circuits as external danger.',
-      full: 'Self-criticism activates the amygdala and cortisol — the same neural circuits triggered by external threat. Every time you judge yourself, your brain reacts as if under attack. Kindness isn\'t a luxury — it\'s a neurological necessity.',
+      short: 'An old echo of criticism; in the brain it works differently from kindness.',
+      full: 'Self-criticism and self-reassurance engage different networks in the brain. Self-criticism engages regions linked with detecting errors and holding behaviour back. Self-reassurance engages regions similar to those of compassion for others. Kindness towards yourself is not a luxury; it is another way for the mind to work.',
+      science: 'Longe et al. (2010) NeuroImage (Doi: 10.1016/j.neuroimage.2009.09.019)',
       ndNote: 'Neurodivergent people have years of self-criticism practice due to external pressure. The voice "you\'re not doing enough" isn\'t yours — it\'s an echo. Recognize it, don\'t follow it.'
     },
     axis: 'all',
@@ -409,13 +411,13 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       title: 'Καλοσύνη',
       short: 'Η στάση της μεθόδου — δεν είναι προαιρετική.',
       full: 'Η καλοσύνη δεν διδάσκεται ως ξεχωριστή τεχνική. Είναι η στάση πίσω από κάθε βήμα: ο τρόπος που η μέθοδος δεν σε πιέζει, δεν σε κρίνει, δεν λέει «πρέπει». Κάθε φορά που επιστρέφεις χωρίς κριτική, εξασκείς καλοσύνη. Μεταχειρίσου τον εαυτό σου όπως θα μεταχειριζόσουν έναν φίλο.',
-      ndNote: 'Η απαλότητα αυτής της μεθόδου δεν είναι τυχαία — είναι η μόνη στάση που επιτρέπει στο νευρικό σύστημα να ηρεμήσει. Η πίεση ενεργοποιεί αμυγδαλή. Η απαλότητα την απενεργοποιεί.'
+      ndNote: 'Η απαλότητα αυτής της μεθόδου δεν είναι τυχαία. Στην εμπειρία, η πίεση κρατά το νευρικό σύστημα σε επιφυλακή· η απαλότητα του δίνει χώρο να ηρεμήσει.'
     },
     en: {
       title: 'Kindness',
       short: 'The attitude of the method — not optional.',
       full: 'Kindness isn\'t taught as a separate technique. It\'s the attitude behind every step: the way the method doesn\'t push you, doesn\'t judge you, doesn\'t say "you must." Every time you return without criticism, you practice kindness. Treat yourself as you would treat a struggling friend.',
-      ndNote: 'The gentleness of this method isn\'t accidental — it\'s the only attitude that allows the nervous system to calm. Pressure activates the amygdala. Gentleness deactivates it.'
+      ndNote: 'The gentleness of this method is not accidental. In experience, pressure keeps the nervous system on alert; gentleness gives it room to calm down.'
     },
     axis: 'all',
     chapters: [5, 7, 8, 10],
@@ -425,17 +427,17 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
   neuroplasticity: {
     el: {
       title: 'Νευροπλαστικότητα',
-      short: 'Ο εγκέφαλος αλλάζει δομή με βάση αυτό που κάνεις.',
-      full: '8 εβδομάδες πρακτικής ενσυνειδητότητας αυξάνουν τη φαιά ουσία σε περιοχές μάθησης, μνήμης και συναισθηματικής ρύθμισης — Hölzel et al. (2011). Κάθε «απαλή επιστροφή» χτίζει νέους νευρωνικούς διαδρόμους. Ακόμα και 5 δευτερόλεπτα παρατήρησης ενισχύουν τη νησίδα (insula).',
-      ndNote: 'Αυτό σημαίνει ότι η πρακτική δεν είναι υποκειμενική εμπειρία — αλλάζει κυριολεκτικά τη δομή του εγκεφάλου σου. Για νευροδιαφορετικούς που αισθάνονται «κολλημένοι», αυτό είναι ελπίδα βασισμένη σε επιστήμη.',
-      science: 'Hölzel et al. (2011) — 8 εβδομάδες πρακτικής αλλάζουν μετρήσιμα τη δομή του εγκεφάλου.'
+      short: 'Ο εγκέφαλος αλλάζει με ό,τι επαναλαμβάνεις.',
+      full: 'Σε μια μικρή μελέτη (16 άτομα), 8 εβδομάδες πρακτικής ενσυνειδητότητας συνδέθηκαν με αύξηση της φαιάς ουσίας σε περιοχές που σχετίζονται με τη μάθηση, τη μνήμη και τη ρύθμιση του συναισθήματος — Hölzel et al. (2011). Ο εγκέφαλος αλλάζει με ό,τι επαναλαμβάνεις· κάθε «απαλή επιστροφή» είναι μια μικρή επανάληψη.',
+      ndNote: 'Για νευροδιαφορετικούς που αισθάνονται «κολλημένοι», αυτό σημαίνει ότι η αλλαγή είναι δυνατή: σιγά σιγά, με επανάληψη.',
+      science: 'Hölzel et al. (2011) — μικρή μελέτη, 16 άτομα, 8 εβδομάδες πρακτικής.'
     },
     en: {
       title: 'Neuroplasticity',
-      short: 'The brain changes structure based on what you do.',
-      full: '8 weeks of mindfulness practice increases grey matter in areas of learning, memory, and emotional regulation — Hölzel et al. (2011). Every "gentle return" builds new neural pathways. Even 5 seconds of observation strengthens the insula.',
-      ndNote: 'This means practice isn\'t just subjective experience — it literally changes your brain\'s structure. For neurodivergent people who feel "stuck," this is science-based hope.',
-      science: 'Hölzel et al. (2011) — 8 weeks of practice measurably change brain structure.'
+      short: 'The brain changes with what you repeat.',
+      full: 'In a small study (16 people), 8 weeks of mindfulness practice were linked with increased grey matter in areas involved in learning, memory and emotion regulation — Hölzel et al. (2011). The brain changes with what you repeat; every "gentle return" is a small repetition.',
+      ndNote: 'For neurodivergent people who feel "stuck", this means change is possible: slowly, through repetition.',
+      science: 'Hölzel et al. (2011) — a small study, 16 people, 8 weeks of practice.'
     },
     axis: 'all',
     chapters: [11],
@@ -484,14 +486,14 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     el: {
       title: 'Αμυγδαλή',
       short: 'Το κέντρο συναγερμού του εγκεφάλου.',
-      full: 'Η αμυγδαλή ενεργοποιείται σε αντίληψη κινδύνου — πραγματικού ή φανταστικού. Η αυτοκριτική την ενεργοποιεί όπως ο εξωτερικός κίνδυνος. Η ενσυνειδητότητα, ειδικά 27+ λεπτά ημερησίως, μειώνει μετρήσιμα τη δραστηριότητα και το μέγεθός της.',
-      ndNote: 'Η αμυγδαλή μπορεί να είναι πιο αντιδραστική σε νευροδιαφορετικούς λόγω χρόνιας υπερδιέγερσης. Η μέθοδος δεν ζητά να «νικήσεις» την αμυγδαλή — ζητά να μην την τροφοδοτείς με αυτοκριτική.'
+      full: 'Η αμυγδαλή συμμετέχει στον εντοπισμό κινδύνου, πραγματικού ή φανταστικού. Σε μια μικρή μελέτη, όσοι ένιωθαν λιγότερο στρες μετά από 8 εβδομάδες ενσυνειδητότητας είχαν και μικρότερη πυκνότητα φαιάς ουσίας στην αμυγδαλή — Hölzel et al. (2010).',
+      ndNote: 'Η αμυγδαλή μπορεί να είναι πιο αντιδραστική σε νευροδιαφορετικούς λόγω χρόνιας υπερδιέγερσης. Η μέθοδος δεν ζητά να «νικήσεις» την αμυγδαλή· ζητά να μην την τροφοδοτείς με πίεση.'
     },
     en: {
       title: 'Amygdala',
       short: 'The brain\'s alarm center.',
-      full: 'The amygdala activates when perceiving danger — real or imagined. Self-criticism activates it just like external danger. Mindfulness, especially 27+ minutes daily, measurably reduces its activity and size.',
-      ndNote: 'The amygdala may be more reactive in neurodivergent people due to chronic overstimulation. The method doesn\'t ask you to "defeat" the amygdala — it asks you to stop feeding it with self-criticism.'
+      full: 'The amygdala takes part in detecting danger, real or imagined. In a small study, people who felt less stress after 8 weeks of mindfulness also had lower grey-matter density in the amygdala — Hölzel et al. (2010).',
+      ndNote: 'The amygdala may be more reactive in neurodivergent people due to chronic overstimulation. The method does not ask you to "defeat" the amygdala; it asks you to stop feeding it with pressure.'
     },
     axis: 'all',
     chapters: [5, 11],
