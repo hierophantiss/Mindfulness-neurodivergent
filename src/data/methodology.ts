@@ -126,8 +126,36 @@ export const METHODOLOGY_DATA = {
         id: 'study-lane',
         icon: Activity,
         title: 'Διωτικά Κύματα (Lane et al., 1998)',
-        desc: 'Η μελέτη του Lane και των συνεργατών του βρήκε ότι τα διωτικά κύματα (binaural beats) επηρέασαν την εγρήγορση, την απόδοση και τη διάθεση. Είναι μικρή μελέτη, και τα ευρήματα για τα διωτικά κύματα είναι ακόμα ανάμεικτα. Στην εφαρμογή χρησιμοποιούνται ως ήπια ηχητική υποστήριξη στις ασκήσεις αναπνοής και στον χώρο ήχου, όχι ως θεραπεία.',
+        desc: 'Η μελέτη του Lane και των συνεργατών του βρήκε ότι τα διωτικά κύματα (binaural beats) επηρέασαν την εγρήγορση, την απόδοση και τη διάθεση. Είναι μικρή μελέτη, και τα ευρήματα για τα διωτικά κύματα είναι ακόμα ανάμεικτα. Στην εφαρμογή χρησιμοποιούνται ως ήπια ηχητική υποστήριξη στις ασκήσεις αναπνοής και στο Καταφύγιο, όχι ως θεραπεία.',
         citation: 'Lane et al. (1998). Physiology & Behavior. Doi: 10.1016/S0031-9384(97)00436-8'
+      },
+      {
+        id: 'study-garcia-argibay',
+        icon: Activity,
+        title: 'Διωτικά Κύματα: Μετα-ανάλυση (Garcia-Argibay et al., 2019)',
+        desc: 'Μετα-ανάλυση 22 μελετών: τα διωτικά κύματα είχαν μέτρια επίδραση στο άγχος, στην προσοχή και στη μνήμη και στην αίσθηση του πόνου. Η επίδραση ήταν καλύτερη όταν ο ήχος ακουγόταν πριν από τη δοκιμασία και για περισσότερη ώρα, και άλλαζε ανάλογα με τη συχνότητα. Γι’ αυτό το Καταφύγιο προτείνει να ακούς λίγη ώρα πριν από αυτό που θα κάνεις.',
+        citation: 'Garcia-Argibay, Santed & Reales (2019). Psychological Research. Doi: 10.1007/s00426-018-1066-8'
+      },
+      {
+        id: 'study-ingendoh',
+        icon: Activity,
+        title: 'Συντονίζεται ο Εγκέφαλος; (Ingendoh et al., 2023)',
+        desc: 'Συστηματική ανασκόπηση 14 μελετών με EEG: 5 βρήκαν ότι ο εγκέφαλος «συντονίζεται» στον παλμό, 8 δεν βρήκαν, 1 είχε ανάμεικτα αποτελέσματα. Οι μελέτες διέφεραν πολύ μεταξύ τους. Γι’ αυτό η εφαρμογή δεν λέει ότι ένας ήχος σε φέρνει σε κάποια κατάσταση του εγκεφάλου.',
+        citation: 'Ingendoh, Posny & Heine (2023). PLOS ONE. PMID: 37205669'
+      },
+      {
+        id: 'study-jirakittayakorn',
+        icon: Activity,
+        title: 'Δέλτα 3 Hz & Βαθύς Ύπνος (Jirakittayakorn & Wongsawat, 2018)',
+        desc: 'Σε 23 υγιείς ενήλικες, για μία νύχτα, διωτικός παλμός 3 Hz (τόνοι 250 και 253 Hz) αύξησε τον χρόνο βαθιού ύπνου, χωρίς να κόψει τον ύπνο. Είναι μικρή μελέτη μίας νύχτας. Ο ήχος «Ύπνος» του Καταφυγίου χρησιμοποιεί τις ίδιες ρυθμίσεις.',
+        citation: 'Jirakittayakorn & Wongsawat (2018). Frontiers in Human Neuroscience. Doi: 10.3389/fnhum.2018.00387'
+      },
+      {
+        id: 'study-nigg',
+        icon: Activity,
+        title: 'Λευκός & Ροζ Θόρυβος στη ΔΕΠΥ (Nigg et al., 2024)',
+        desc: 'Μετα-ανάλυση: σε παιδιά και νέους με ΔΕΠΥ ή έντονα συμπτώματα, ο λευκός και ο ροζ θόρυβος βελτίωσαν λίγο την απόδοση σε εργαστηριακές δοκιμασίες προσοχής· σε όσους δεν έχουν ΔΕΠΥ τη χειροτέρεψαν λίγο. Για τον καφέ θόρυβο δεν βρέθηκαν μελέτες. Γι’ αυτό ο ροζ θόρυβος του Καταφυγίου προσφέρεται για συγκέντρωση, και ο καφέ χωρίς κανέναν ισχυρισμό.',
+        citation: 'Nigg, Bruton, Kozlowski, Johnstone & Karalunas (2024). Journal of the American Academy of Child & Adolescent Psychiatry. Doi: 10.1016/j.jaac.2023.12.014'
       },
       {
         id: 'study-lutz',
@@ -357,8 +385,36 @@ export const METHODOLOGY_DATA = {
         id: 'study-lane',
         icon: Activity,
         title: 'Binaural Beats (Lane et al., 1998)',
-        desc: 'Lane and colleagues found that binaural beats affected vigilance, performance and mood. It is a small study, and findings on binaural beats are still mixed. In the app they are used as gentle sound support in the breathing exercises and the sound space, not as a treatment.',
+        desc: 'Lane and colleagues found that binaural beats affected vigilance, performance and mood. It is a small study, and findings on binaural beats are still mixed. In the app they are used as gentle sound support in the breathing exercises and the Sanctuary, not as a treatment.',
         citation: 'Lane et al. (1998). Physiology & Behavior. Doi: 10.1016/S0031-9384(97)00436-8'
+      },
+      {
+        id: 'study-garcia-argibay',
+        icon: Activity,
+        title: 'Binaural Beats: A Meta-Analysis (Garcia-Argibay et al., 2019)',
+        desc: 'A meta-analysis of 22 studies: binaural beats had a medium effect on anxiety, on attention and memory, and on pain perception. The effect was better when the sound was heard before the task and for longer, and it depended on the frequency. That is why the Sanctuary suggests listening for a while before what you are about to do.',
+        citation: 'Garcia-Argibay, Santed & Reales (2019). Psychological Research. Doi: 10.1007/s00426-018-1066-8'
+      },
+      {
+        id: 'study-ingendoh',
+        icon: Activity,
+        title: 'Does the Brain Entrain? (Ingendoh et al., 2023)',
+        desc: 'A systematic review of 14 EEG studies: 5 found that the brain "entrains" to the beat, 8 did not, 1 had mixed results. The studies differed a lot from each other. That is why the app does not say that a sound brings you into a particular brain state.',
+        citation: 'Ingendoh, Posny & Heine (2023). PLOS ONE. PMID: 37205669'
+      },
+      {
+        id: 'study-jirakittayakorn',
+        icon: Activity,
+        title: 'A 3 Hz Delta Beat & Deep Sleep (Jirakittayakorn & Wongsawat, 2018)',
+        desc: 'In 23 healthy adults, over one night, a 3 Hz binaural beat (tones of 250 and 253 Hz) increased time in deep sleep without disturbing sleep. It is a small, one-night study. The Sanctuary\'s "Sleep" sound uses the same settings.',
+        citation: 'Jirakittayakorn & Wongsawat (2018). Frontiers in Human Neuroscience. Doi: 10.3389/fnhum.2018.00387'
+      },
+      {
+        id: 'study-nigg',
+        icon: Activity,
+        title: 'White & Pink Noise in ADHD (Nigg et al., 2024)',
+        desc: 'A meta-analysis: in children and young people with ADHD or high symptoms, white and pink noise slightly improved performance on laboratory attention tasks; in those without ADHD it made it slightly worse. No studies of brown noise were found. That is why the Sanctuary offers pink noise for focus, and brown noise without any claim.',
+        citation: 'Nigg, Bruton, Kozlowski, Johnstone & Karalunas (2024). Journal of the American Academy of Child & Adolescent Psychiatry. Doi: 10.1016/j.jaac.2023.12.014'
       },
       {
         id: 'study-lutz',

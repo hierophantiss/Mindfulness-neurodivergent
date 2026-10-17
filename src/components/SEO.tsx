@@ -36,14 +36,14 @@ const ARTICLES: Record<string, { titleEn: string; titleEl: string; descEn: strin
   'binaural-gateway': {
     titleEn: 'Binaural Beats & The Gateway Experience | Neurodivergent Mindfulness',
     titleEl: 'Binaural Beats & Το Gateway Experience | Neurodivergent Mindfulness',
-    descEn: 'How binaural beats and hemispheric synchronization can support ADHD and autism. The science behind the Monroe Institute\'s Gateway Experience and Alpha waves.',
-    descEl: 'Πώς τα binaural beats και ο συγχρονισμός ημισφαιρίων υποστηρίζουν ΔΕΠΥ και αυτισμό.',
+    descEn: 'Binaural beats and the Monroe Institute\'s Gateway Experience: a practitioner\'s account, and what research does and does not show.',
+    descEl: 'Τα binaural beats και το Gateway Experience του Monroe Institute: μια προσωπική εμπειρία, και τι δείχνει, και τι όχι, η έρευνα.',
   },
   'open-focus-brain': {
     titleEn: 'The Open Focus Brain by Les Fehmi | Neurodivergent Mindfulness',
     titleEl: 'Το Open Focus Brain – Les Fehmi | Neurodivergent Mindfulness',
-    descEn: 'Dr. Les Fehmi\'s Open Focus technique for shifting from narrow anxious attention to synchronous Alpha wave awareness. A powerful tool for ADHD nervous systems.',
-    descEl: 'Η τεχνική Open Focus του Δρ. Fehmi για μετάβαση από τη στενή αγχώδη εστίαση στα συγχρονισμένα κύματα Άλφα.',
+    descEn: 'Dr. Les Fehmi\'s Open Focus: shifting from narrow, anxious attention to wide, open attention.',
+    descEl: 'Η τεχνική Open Focus του Δρ. Fehmi: από τη στενή, αγχώδη εστίαση στην ανοιχτή, ευρεία προσοχή.',
   },
   'riding-the-wind': {
     titleEn: 'Learning to Ride the Wind – Tsa Lung & Nervous System | Neurodivergent Mindfulness',

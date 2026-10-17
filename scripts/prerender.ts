@@ -96,15 +96,15 @@ const ARTICLES: Record<string, { en: [string, string]; el: [string, string] }> =
   },
   'binaural-gateway': {
     en: ['Binaural Beats & The Gateway Experience | Neurodivergent Mindfulness App',
-         'How binaural beats and hemispheric synchronization support ADHD and autism. The science behind the Monroe Institute\'s Gateway Experience and Alpha waves.'],
+         'Binaural beats and the Monroe Institute\'s Gateway Experience: a practitioner\'s account, and what research does and does not show.'],
     el: ['Binaural Beats & Το Gateway Experience | Neurodivergent Mindfulness App',
-         'Πώς τα binaural beats και ο συγχρονισμός ημισφαιρίων υποστηρίζουν ΔΕΠΥ και αυτισμό.'],
+         'Τα binaural beats και το Gateway Experience του Monroe Institute: μια προσωπική εμπειρία, και τι δείχνει, και τι όχι, η έρευνα.'],
   },
   'open-focus-brain': {
     en: ['The Open Focus Brain by Les Fehmi | Neurodivergent Mindfulness App',
-         'Dr. Les Fehmi\'s Open Focus technique for shifting from narrow anxious attention to synchronous Alpha wave awareness. A powerful tool for ADHD nervous systems.'],
+         'Dr. Les Fehmi\'s Open Focus: shifting from narrow, anxious attention to wide, open attention.'],
     el: ['Το Open Focus Brain – Les Fehmi | Neurodivergent Mindfulness App',
-         'Η τεχνική Open Focus του Δρ. Fehmi για μετάβαση από τη στενή αγχώδη εστίαση στα συγχρονισμένα κύματα Άλφα.'],
+         'Η τεχνική Open Focus του Δρ. Fehmi: από τη στενή, αγχώδη εστίαση στην ανοιχτή, ευρεία προσοχή.'],
   },
   'riding-the-wind': {
     en: ['Learning to Ride the Wind – Tsa Lung & Nervous System | Neurodivergent Mindfulness App',
@@ -711,14 +711,14 @@ function getMetaForRoute(route: string): RouteMeta {
   // ── Sanctuary ──
   if (clean === '/sanctuary') {
     const t = lang === 'en'
-      ? 'Sanctuary – Binaural Beats & Ambient Soundscapes for ADHD & Autism'
-      : 'Καταφύγιο – Binaural Beats & Ηχητικά Τοπία για ΔΕΠΥ & Αυτισμό';
+      ? 'Sanctuary – Nature Sounds, Noise & Binaural Beats for ADHD & Autism'
+      : 'Καταφύγιο – Ήχοι Φύσης, Θόρυβος & Binaural Beats για ΔΕΠΥ & Αυτισμό';
     const d = lang === 'en'
-      ? 'Binaural beats with layered ambient soundscapes — Rain, Ocean, Mountain Wind — for focus, calm and nervous system regulation in ADHD and autism.'
-      : 'Binaural beats με πολυεπίπεδα ηχητικά τοπία — Βροχή, Ωκεανός, Ορεινός Άνεμος — για συγκέντρωση, ηρεμία και ρύθμιση του νευρικού συστήματος.';
+      ? 'Rain, ocean and wind, brown and pink noise, a 5-5 breathing wave, and four binaural sounds for sleep, unwinding, calm alertness and focus — with an honest note on what research shows.'
+      : 'Βροχή, ωκεανός και άνεμος, καφέ και ροζ θόρυβος, ένα κύμα αναπνοής 5-5 και τέσσερα binaural για ύπνο, χαλάρωση, ήρεμη εγρήγορση και εστίαση — με τίμια σημείωση για το τι δείχνει η έρευνα.';
     const bodyParagraphs = lang === 'en' 
-      ? [d, 'Customizable ambient soundscapes including rain, ocean, and mountain wind.', 'Isochronic and binaural beats mapped to specific brainwave frequencies for regulation.']
-      : [d, 'Προσαρμόσιμα ηχητικά τοπία όπως βροχή, ωκεανός και ορεινός άνεμος.', 'Binaural beats ρυθμισμένα σε συγκεκριμένες συχνότητες εγκεφαλικών κυμάτων για ηρεμία.'];
+      ? [d, 'Nature sounds and steady noise that play from the speaker, with a sleep timer that fades out.', 'Binaural sounds for headphones, named by use, with what the studies found and did not find.']
+      : [d, 'Ήχοι φύσης και σταθερός θόρυβος που παίζουν από το ηχείο, με χρονοδιακόπτη ύπνου που σβήνει σιγά.', 'Binaural για ακουστικά, ονομασμένα με βάση τη χρήση, με το τι βρήκαν και τι όχι οι μελέτες.'];
     return { title: t, description: d, schema: {}, schemaType: 'WebApplication', bodyParagraphs };
   }
   

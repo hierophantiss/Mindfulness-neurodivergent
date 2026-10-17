@@ -18,7 +18,7 @@ export interface AudioConfig {
   carrierType?: 'sine' | 'triangle' | 'square' | 'sawtooth';
   pulseType?: 'sine';
   disableSynth?: boolean;
-  ambientLayers?: ('rain' | 'ocean' | 'wind' | 'brown' | 'pink')[];
+  ambientLayers?: ('rain' | 'ocean' | 'wind' | 'brown' | 'pink' | 'breath')[];
   id?: string;
 }
 
@@ -32,6 +32,8 @@ export interface AudioContextProps {
   volume: number;
   startAudio: (config: AudioConfig) => void;
   stopAudio: () => void;
+  /** Lowers the sound to silence over `seconds`, then stops it (the end of a sleep timer). */
+  fadeOutAudio: (seconds: number) => void;
   setGlobalVolume: (v: number) => void;
   updateArmPos: (armPos: number) => void;
   updatePhase: (idx: number, label: string) => void;
@@ -377,10 +379,95 @@ function setupWind(ctx: globalThis.AudioContext, dest: AudioNode): () => void {
 }
 
 // ---------------------------------------------------------------------------
+// Seamless loops: the end of the buffer flows into its start, so a steady
+// noise heard on its own has no click where the loop repeats.
+// ---------------------------------------------------------------------------
+function seamless(ctx: globalThis.AudioContext, make: (c: globalThis.AudioContext, d: number) => AudioBuffer, duration: number, fade = 0.5): AudioBuffer {
+  const src  = make(ctx, duration + fade).getChannelData(0);
+  const len  = Math.floor(ctx.sampleRate * duration);
+  const n    = Math.min(Math.floor(ctx.sampleRate * fade), src.length - len);
+  const buf  = ctx.createBuffer(1, len, ctx.sampleRate);
+  const out  = buf.getChannelData(0);
+  out.set(src.subarray(0, len));
+  for (let i = 0; i < n; i++) {
+    const a = i / n;
+    // Equal-power blend of the start with what follows the end.
+    out[i] = src[i] * Math.sqrt(a) + src[len + i] * Math.sqrt(1 - a);
+  }
+  return buf;
+}
+
+// ---------------------------------------------------------------------------
+// BREATH WAVE — a slow wave to breathe with: 5 s rising (in), 5 s falling (out)
+// ---------------------------------------------------------------------------
+export const BREATH_WAVE_SECONDS = 10;
+
+function setupBreathWave(ctx: globalThis.AudioContext, dest: AudioNode): () => void {
+  const stoppers: Array<() => void> = [];
+  const t0 = ctx.currentTime + 0.05;
+
+  // One cycle that starts at its lowest point: -cos(2πft).
+  const shape = ctx.createPeriodicWave(new Float32Array([0, -1]), new Float32Array([0, 0]), { disableNormalization: true });
+  const lfo = ctx.createOscillator();
+  lfo.setPeriodicWave(shape);
+  lfo.frequency.value = 1 / BREATH_WAVE_SECONDS;
+
+  // Body of the wave: brown noise; the filter opens as it comes in.
+  const body = ctx.createBufferSource();
+  body.buffer = seamless(ctx, createBrownNoiseBuffer, 8);
+  body.loop = true;
+  const bodyFilter = ctx.createBiquadFilter();
+  bodyFilter.type = 'lowpass';
+  bodyFilter.frequency.value = 520;
+  const bodySweep = ctx.createGain();
+  bodySweep.gain.value = 300; // 220 Hz … 820 Hz
+  lfo.connect(bodySweep);
+  bodySweep.connect(bodyFilter.frequency);
+
+  const bodyGain = ctx.createGain();
+  bodyGain.gain.value = 0.5;
+  const bodyDepth = ctx.createGain();
+  bodyDepth.gain.value = 0.38; // 0.12 … 0.88
+  lfo.connect(bodyDepth);
+  bodyDepth.connect(bodyGain.gain);
+
+  // Foam on top, strongest at the crest.
+  const foam = ctx.createBufferSource();
+  foam.buffer = seamless(ctx, createPinkNoiseBuffer, 6);
+  foam.loop = true;
+  const foamFilter = ctx.createBiquadFilter();
+  foamFilter.type = 'bandpass';
+  foamFilter.frequency.value = 900;
+  foamFilter.Q.value = 0.7;
+  const foamGain = ctx.createGain();
+  foamGain.gain.value = 0.1;
+  const foamDepth = ctx.createGain();
+  foamDepth.gain.value = 0.09; // 0.01 … 0.19
+  lfo.connect(foamDepth);
+  foamDepth.connect(foamGain.gain);
+
+  // The whole layer fades in once, over the first in-breath.
+  const layer = ctx.createGain();
+  fadeIn(layer, ctx, 1.0, 4.0);
+
+  body.connect(bodyFilter); bodyFilter.connect(bodyGain); bodyGain.connect(layer);
+  foam.connect(foamFilter); foamFilter.connect(foamGain); foamGain.connect(layer);
+  layer.connect(dest);
+
+  body.start(t0); foam.start(t0); lfo.start(t0);
+  stoppers.push(
+    () => { try { body.stop(); } catch (_) {} },
+    () => { try { foam.stop(); } catch (_) {} },
+    () => { try { lfo.stop(); } catch (_) {} },
+  );
+  return () => stoppers.forEach(s => s());
+}
+
+// ---------------------------------------------------------------------------
 // PINK / BROWN standalone
 // ---------------------------------------------------------------------------
 function setupPinkNoise(ctx: globalThis.AudioContext, dest: AudioNode): () => void {
-  const buf = createPinkNoiseBuffer(ctx, 3.0);
+  const buf = seamless(ctx, createPinkNoiseBuffer, 6.0);
   const src = ctx.createBufferSource();
   src.buffer = buf;
   src.loop   = true;
@@ -413,7 +500,7 @@ function setupGreenNoise(ctx: globalThis.AudioContext, dest: AudioNode): () => v
 }
 
 function setupBrownNoise(ctx: globalThis.AudioContext, dest: AudioNode): () => void {
-  const buf = createBrownNoiseBuffer(ctx, 4.0);
+  const buf = seamless(ctx, createBrownNoiseBuffer, 8.0);
   const src = ctx.createBufferSource();
   src.buffer = buf;
   src.loop   = true;
@@ -641,6 +728,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
           pink:  setupPinkNoise,
           brown: setupBrownNoise,
           green: setupGreenNoise,
+          breath: setupBreathWave,
         };
 
         for (const layer of config.ambientLayers) {
@@ -1016,6 +1104,26 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  // ---- fadeOutAudio ----
+  const fadeOutAudio = useCallback((seconds: number) => {
+    setIsPlaying(false);
+    setMasterPlaying(false);
+
+    const n       = nodesRef.current;
+    const ctx     = webAudioCtxRef.current;
+    const session = n.sessionId;
+    if (!n.masterGain || !ctx) { hardStop(); return; }
+
+    const g = n.masterGain.gain;
+    g.cancelScheduledValues(ctx.currentTime);
+    g.setValueAtTime(g.value, ctx.currentTime);
+    g.linearRampToValueAtTime(0, ctx.currentTime + seconds);
+    setTimeout(() => {
+      if (nodesRef.current.sessionId !== session) return;
+      hardStop();
+    }, seconds * 1000 + 200);
+  }, [hardStop]);
+
   const toggleMaster = useCallback(() => setMasterPlaying(p => !p), []);
   const stopAll      = useCallback(() => { setMasterPlaying(false); stopAudio(); }, [stopAudio]);
 
@@ -1031,7 +1139,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     <AudioCtx.Provider
       value={{
         masterPlaying, masterVolume, toggleMaster, setMasterVolume,
-        stopAll, isPlaying, volume, startAudio, stopAudio,
+        stopAll, isPlaying, volume, startAudio, stopAudio, fadeOutAudio,
         setGlobalVolume, updateArmPos, updatePhase,
       }}
     >
