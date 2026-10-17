@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Home, BookOpen, Activity, Notebook, Menu, X, Info, Music, Bell, Compass, LayoutGrid, EyeOff, Eye, Database, User as UserIcon, LogOut, Download, Sparkles, RotateCcw } from 'lucide-react';
+import { Home, BookOpen, Activity, Notebook, Menu, X, Info, Music, Bell, Compass, LayoutGrid, EyeOff, Eye, Database, User as UserIcon, LogOut, Download, Sparkles, RotateCcw, Headphones } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
@@ -410,6 +410,11 @@ export default function NavigationMenu() {
                       {language === 'en' ? 'PDF · Print' : 'PDF · Εκτύπωση'}
                     </a>
                   </div>
+                  <a href={`/audio/mindfulness-guide-${language}.mp3`} download={`mindfulness-guide-${language}.mp3`}
+                     className="mt-2 flex items-center justify-center gap-2 px-3 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-medium text-teal-100 transition-colors">
+                    <Headphones size={13} aria-hidden="true" />
+                    {language === 'en' ? 'Audiobook · MP3 · about 2 hours' : 'Ακουστικό βιβλίο · MP3 · περίπου 2 ώρες'}
+                  </a>
                 </div>
 
                 {/* Install App - Always show with manual fallback */}

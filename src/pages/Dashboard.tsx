@@ -476,12 +476,15 @@ export default function Dashboard() {
               animate={{ opacity: 1, y: 0 }}
               className="flex flex-col items-center gap-2"
             >
-              <div className="flex gap-2">
+              <div className="flex flex-wrap justify-center gap-2">
                 <a href={`/workbook_${language}.pdf`} download className={bookPillClasses}>
                   {language === 'el' ? 'PDF · εκτύπωση' : 'PDF · print'}
                 </a>
                 <a href={`/workbook_${language}.epub`} download className={bookPillClasses}>
                   EPUB · e-reader
+                </a>
+                <a href={`/audio/mindfulness-guide-${language}.mp3`} download={`mindfulness-guide-${language}.mp3`} className={bookPillClasses}>
+                  {language === 'el' ? 'MP3 · ακουστικό' : 'MP3 · audiobook'}
                 </a>
               </div>
               <span className="text-[10px] text-white/25">
