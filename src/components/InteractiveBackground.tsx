@@ -217,7 +217,7 @@ export function InteractiveBackground() {
          {/* Sun */}
          <div 
            className="absolute flex items-center justify-center w-24 h-24 md:w-32 md:h-32"
-           style={{ transform: `translate(-50%, -50%) translateY(calc(-0.6 * max(70vw, 70vh)))` }}
+           style={{ transform: `translate(-50%, -50%) translateY(calc(-1 * max(0.6 * max(70vw, 70vh), 92vh)))` }}
          >
            <div className="relative w-full h-full rounded-full flex items-center justify-center opacity-70">
              <div className="absolute inset-[-200%] md:inset-[-150%] rounded-full opacity-40 bg-[radial-gradient(circle,rgba(251,146,60,0.3)_0%,transparent_70%)]" />
@@ -229,7 +229,7 @@ export function InteractiveBackground() {
          {/* Moon */}
          <div 
            className="absolute flex items-center justify-center w-12 h-12 md:w-16 md:h-16 opacity-75"
-           style={{ transform: `translate(-50%, -50%) translateY(calc(0.6 * max(70vw, 70vh))) rotate(180deg)` }}
+           style={{ transform: `translate(-50%, -50%) translateY(calc(max(0.6 * max(70vw, 70vh), 92vh))) rotate(180deg)` }}
          >
            <div className="relative w-full h-full overflow-hidden rounded-full bg-gradient-to-tr from-slate-200 via-slate-100 to-amber-50 shadow-[0_0_50px_12px_rgba(226,232,240,0.22)]">
               {/* Subtle lunar maria texture */}

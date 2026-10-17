@@ -13,15 +13,14 @@ import {
 import { usageFromLogs } from '../data/practiceCatalog';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 
-// "How do you feel right now?" — one button on the home page that opens
-// the four choices.
+// "How do you feel right now?" — the first thing on the home page, with the
+// four choices always in view.
 export default function HomeCheckin() {
   const { language } = useLanguage();
   const lang = language === 'en' ? 'en' : 'el';
   const { reduceMotion } = useAccessibility();
   const [selected, setSelected] = useState<CheckinChoice | null>(readRecentCheckinState);
   const [open, setOpen] = useState(false);
-  const [chipsOpen, setChipsOpen] = useState(false);
   const { logs } = useActivityTracker();
   const counts = useMemo(() => usageFromLogs(logs), [logs]);
   const [uses, setUses] = useState(readCheckinUses);
@@ -30,7 +29,6 @@ export default function HomeCheckin() {
   const [time, setTime] = useState<CheckinTime | null>(null);
 
   const choose = (id: CheckinChoice) => {
-    setChipsOpen(false);
     setDetailOpen(false);
     setDetailId(null);
     setTime(null);
@@ -54,22 +52,8 @@ export default function HomeCheckin() {
 
   return (
     <div className="flex flex-col gap-3">
-      <button
-        onClick={() => setChipsOpen(o => !o)}
-        aria-expanded={chipsOpen}
-        className={cn(
-          "w-full min-h-[48px] px-5 rounded-full border flex items-center justify-between gap-3 text-left transition-colors active:scale-[0.99]",
-          chipsOpen ? "bg-white/[0.05] border-white/[0.12]" : "bg-white/[0.03] border-white/[0.07] hover:bg-white/[0.05]"
-        )}
-      >
-        <span className="text-[14px] text-white/70">
-          {question}
-          {opt && <span className="text-white/90"> · {opt.label[lang]}</span>}
-        </span>
-        <ChevronDown size={16} className={cn("text-white/40 shrink-0 transition-transform", chipsOpen && "rotate-180")} />
-      </button>
+      <h2 className="text-[15px] text-white/75 pl-1">{question}</h2>
 
-      {chipsOpen && (
       <div className="grid grid-cols-2 min-[400px]:grid-cols-4 gap-2" role="group" aria-label={question}>
         {CHECKIN_OPTIONS.map(o => {
           const isSel = o.id === selected;
@@ -93,7 +77,6 @@ export default function HomeCheckin() {
           );
         })}
       </div>
-      )}
 
       <AnimatePresence initial={false}>
         {opt && open && (

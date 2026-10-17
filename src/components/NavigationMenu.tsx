@@ -14,7 +14,7 @@ export default function NavigationMenu() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const { language } = useLanguage();
+  const { language, setLanguage } = useLanguage();
   const { theme, toggleTheme } = useTheme();
   const { reduceMotion, toggleReduceMotion } = useAccessibility();
   const { masterPlaying, toggleMaster } = useAudioMixer();
@@ -200,6 +200,13 @@ export default function NavigationMenu() {
                 <span className="font-bold text-zinc-200 tracking-wider text-sm uppercase px-4">
                   {language === 'en' ? 'More Options' : 'Περισσότερα'}
                 </span>
+                <button
+                  onClick={() => setLanguage(language === 'el' ? 'en' : 'el')}
+                  aria-label={language === 'el' ? 'Switch to English' : 'Αλλαγή σε Ελληνικά'}
+                  className="ml-auto mr-2 h-9 px-3 rounded-full border border-white/10 text-[12px] font-medium text-zinc-300 hover:bg-white/10 transition-colors"
+                >
+                  {language === 'el' ? 'English' : 'Ελληνικά'}
+                </button>
                 <button 
                   onClick={() => setIsOpen(false)}
                   className="w-10 h-10 rounded-full flex items-center justify-center text-zinc-400 hover:bg-white/10 hover:text-white transition-colors"

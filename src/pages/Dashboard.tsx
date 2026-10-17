@@ -1,6 +1,6 @@
 import { AudioEnabler } from '../components/AudioEnabler';
 import React, { useState, useEffect, useMemo } from 'react';
-import { Sparkles, BookOpen, ArrowRight, Heart, Brain, Moon, Zap, ChevronRight, Telescope, Info, Waves, Play, Eye, EyeOff, Cat, Calendar, Target, Download } from 'lucide-react';
+import { BookOpen, Moon, ChevronRight, ChevronDown, Telescope, Info, Calendar, Download, RotateCcw, Activity, Wind, Volume2, Zap, Compass } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useCompanion } from '../hooks/useCompanion';
@@ -11,12 +11,11 @@ import { CHAPTERS_DATA } from '../data/chapters';
 import { cn } from '../lib/utils';
 import { motion } from 'motion/react';
 import { useAccessibility } from '../hooks/useAccessibility';
-import { useBinauralAudio } from '../hooks/useBinauralAudio';
+import { BREATH_PATTERNS } from '../data/breathPatterns';
 import InfoModal from '../components/InfoModal';
 
 import { AFFIRMATIONS } from '../data/affirmations';
 import { FourfoldAxisHero } from '../components/FourfoldAxisHero';
-import { useSmartSuggestion } from '../hooks/useSmartSuggestion';
 import { useInstallApp } from '../hooks/useInstallApp';
 import HomeCheckin from '../components/HomeCheckin';
 
@@ -39,7 +38,7 @@ function getDayOfYear(date: Date) {
 }
 
 export default function Dashboard() {
-  const { language, setLanguage } = useLanguage();
+  const { language } = useLanguage();
   const { companionData, updateCompanionData, setCompanionMessage } = useCompanion();
   const { logs } = useActivityTracker();
   const { hour } = useTime();
@@ -51,12 +50,47 @@ export default function Dashboard() {
   const nextChapter = Math.min(completedChapters + 1, totalChapters);
   const isWorkbookDone = completedChapters >= totalChapters;
   
+  const lang = language === 'el' ? 'el' : 'en';
+  const chapters = CHAPTERS_DATA[lang] || [];
+  const isDone = (n: number) => progress.completedChapters.includes(String(n));
+  // "Continue": the first chapter not yet completed.
+  const nextChapterData = chapters.find(c => !isDone(c.num)) || chapters[0];
+  const isNewUser = completedChapters === 0 && logs.length === 0;
+  // Your most used practice, to come back to it in one tap.
+  const favouritePractice = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const l of logs) {
+      if (l.itemId && ['breath', 'movement', 'grounding', 'vocal'].includes(l.category)) counts[l.itemId] = (counts[l.itemId] || 0) + 1;
+    }
+    const best = Object.entries(counts).sort((x, y) => y[1] - x[1])[0];
+    return best ? BREATH_PATTERNS.find(p => p.id === best[0]) : undefined;
+  }, [logs]);
+
   const completedLessons = progress.completedLessons.length;
   const totalLessons = 56;
   const lessonProgressPct = Math.round((completedLessons / totalLessons) * 100);
 
+  // "More": closed by default, remembered per device.
+  const [moreOpen, setMoreOpen] = useState(() => {
+    try { return localStorage.getItem('home_more_open') === '1'; } catch { return false; }
+  });
+  const toggleMore = () => setMoreOpen(o => {
+    try { localStorage.setItem('home_more_open', o ? '0' : '1'); } catch { /* ignore */ }
+    return !o;
+  });
+  const el = lang === 'el';
+  const moreLinks = [
+    { to: '/practice?category=breath', icon: Wind, tone: 'text-teal-300', label: el ? 'Αναπνοές' : 'Breathing' },
+    { to: '/practice?category=movement', icon: Activity, tone: 'text-indigo-300', label: el ? 'Κίνηση & Τάι Τσι' : 'Movement & Tai Chi' },
+    { to: '/practice?category=vocal', icon: Volume2, tone: 'text-violet-300', label: el ? 'Ψάλσιμο' : 'Chanting' },
+    { to: '/practice?category=microdoses', icon: Zap, tone: 'text-amber-300', label: el ? 'Μικροδόσεις' : 'Microdoses' },
+    { to: '/sanctuary', icon: Moon, tone: 'text-[#b4abce]', label: el ? 'Καταφύγιο' : 'Sanctuary' },
+    { to: '/program', icon: Calendar, tone: 'text-[#b0c4aa]', label: el ? 'Πρόγραμμα 8 εβδομάδων' : '8-week Program', sub: completedLessons > 0 ? `${lessonProgressPct}%` : undefined },
+    { to: '/rabbithole', icon: Telescope, tone: 'text-[#a695b0]', label: el ? 'Κουνελότρυπα' : 'Rabbit Hole' },
+    { to: '/method', icon: Compass, tone: 'text-[#8ba3ba]', label: el ? 'Η Μέθοδος' : 'The Method' },
+  ];
+
   const [greeting, setGreeting] = useState('');
-  const [currentDate, setCurrentDate] = useState('');
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [bookOpen, setBookOpen] = useState(false);
   const [installHint, setInstallHint] = useState<string | null>(null);
@@ -68,21 +102,6 @@ export default function Dashboard() {
     return () => clearTimeout(t);
   }, [installHint]);
 
-  const [dismissedDate, setDismissedDate] = useState(() => {
-    return localStorage.getItem('n_mindfulness_axis_invite_dismissed') || '';
-  });
-  
-  const todayStr = new Date().toISOString().split('T')[0];
-  const isDismissedToday = dismissedDate === todayStr;
-  
-  const { axis: quietestAxis, suggestion, mode, state } = useSmartSuggestion();
-  const effectiveAxis = isDismissedToday ? null : quietestAxis;
-
-  const handleDismissInvite = () => {
-    localStorage.setItem('n_mindfulness_axis_invite_dismissed', todayStr);
-    setDismissedDate(todayStr);
-  };
-
   const affirmation = useMemo(() => {
     // using hour as dependency to re-calculate if day rolls over while app is open
     const _ = hour; 
@@ -91,25 +110,6 @@ export default function Dashboard() {
     return AFFIRMATIONS[dayOfYear % AFFIRMATIONS.length];
   }, [hour]);
 
-  // The home sound: only the ocean waves, no tones.
-  const audioConfig = useMemo(() => ({
-    base: 0,
-    beat: 0,
-    pulse: 0,
-    disableSynth: true,
-    ambientLayers: ['ocean'] as any[]
-  }), []);
-
-  const { startAudio, stopAudio, isPlaying } = useBinauralAudio(audioConfig);
-
-  const toggleAudio = () => {
-    if (isPlaying) {
-      stopAudio();
-    } else {
-      startAudio();
-    }
-  };
-  
   useEffect(() => {
     // Greeting
     if (hour >= 6 && hour < 12) {
@@ -119,10 +119,6 @@ export default function Dashboard() {
     } else {
       setGreeting(language === 'el' ? `Καλό βράδυ` : `Good Evening`);
     }
-
-    // Date
-    const options: Intl.DateTimeFormatOptions = { weekday: 'long', day: 'numeric', month: 'long' };
-    setCurrentDate(new Date().toLocaleDateString(language === 'el' ? 'el-GR' : 'en-US', options));
   }, [language, hour]);
 
   const containerVariants = {
@@ -155,9 +151,9 @@ export default function Dashboard() {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1 }}
-              className="flex flex-col text-left overflow-hidden shrink min-w-0"
+              className="flex flex-col text-left shrink min-w-0"
             >
-              <span className="text-[18px] min-[375px]:text-[20px] md:text-[22px] leading-tight tracking-normal min-[375px]:tracking-[0.05em] uppercase text-teal-300/90 font-medium truncate">
+              <span className="text-[17px] min-[400px]:text-[20px] md:text-[22px] leading-tight tracking-[0.03em] min-[400px]:tracking-[0.05em] uppercase text-teal-300/90 font-medium whitespace-nowrap">
                 {language === 'el' ? 'ΕΝΣΥΝΕΙΔΗΤΟΤΗΤΑ' : 'MINDFULNESS'}
               </span>
               <span className="text-[10px] min-[375px]:text-[11px] md:text-[13px] leading-tight tracking-normal min-[375px]:tracking-[0.05em] md:tracking-[0.1em] uppercase text-white/40 font-medium mt-0.5 whitespace-nowrap overflow-hidden text-ellipsis">
@@ -181,78 +177,7 @@ export default function Dashboard() {
             </motion.div>
           </div>
 
-          {/* Second Row: Audio & Lang */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.4 }}
-            className="w-full flex items-center justify-start gap-2 px-2"
-          >
-            <button
-              onClick={toggleAudio}
-              className={cn(
-                "w-[44px] h-[44px] flex items-center justify-center rounded-full border transition-all active:scale-95 shrink-0",
-                isPlaying
-                  ? "bg-teal-500/20 border-teal-400/40 text-teal-300 relative overflow-hidden"
-                  : "bg-white/[0.02] border-white/[0.1] text-white/60 hover:text-white hover:bg-white/10"
-              )}
-              title={language === 'el' ? 'Ηχητικό Τοπίο' : 'Ambient Audio'}
-            >
-              {isPlaying && (
-                <div className="absolute inset-0 bg-teal-400/10 animate-pulse" />
-              )}
-              {isPlaying ? <Waves size={16} className="animate-pulse relative z-10" /> : <Play size={16} />}
-            </button>
-            <button 
-              onClick={() => setLanguage(language === 'el' ? 'en' : 'el')}
-              className="flex items-center justify-center w-[44px] h-[44px] rounded-full bg-white/[0.02] border border-white/[0.1] text-[11px] font-medium text-white/60 active:scale-95 transition-transform hover:bg-white/10 hover:text-white shrink-0"
-            >
-              {language === 'el' ? 'EN' : 'EL'}
-            </button>
-          </motion.div>
-
-          <div className="w-[85%] md:w-full mx-auto flex items-center justify-center"><FourfoldAxisHero activeAxis={effectiveAxis} /></div>
-          
-          {suggestion && !isDismissedToday && (
-            <div className="w-full max-w-sm mt-0 rounded-[24px] bg-[#1a1f26]/40 backdrop-blur-xl border border-white/[0.04] p-4 flex flex-col gap-2 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.4)]">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
-                <span className="text-xs tracking-wider uppercase text-white/50">
-                  {language === 'el' ? 'Πρόσκληση της ημέρας' : 'Today\'s invitation'}
-                </span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <h4 className="text-white/90 text-lg font-medium">{language === 'el' ? suggestion.title.el : suggestion.title.en}</h4>
-                <p className="text-white/60 text-sm italic">
-                  {language === 'el' 
-                    ? mode === 'state+history' && state === 'hyper'
-                      ? `Για την ένταση βοηθάει η γείωση — ο άξονας ${quietestAxis === 'body' ? 'Σώμα' : quietestAxis === 'breath' ? 'Αναπνοή' : quietestAxis === 'attention' ? 'Προσοχή' : 'Χώρος'} περιμένει ήσυχα.`
-                      : mode === 'state+history' && state === 'hypo'
-                      ? `Για το μούδιασμα βοηθάει μια απαλή ενεργοποίηση — ο άξονας ${quietestAxis === 'body' ? 'Σώμα' : quietestAxis === 'breath' ? 'Αναπνοή' : quietestAxis === 'attention' ? 'Προσοχή' : 'Χώρος'} περιμένει ήσυχα.`
-                      : `Ο άξονας ${quietestAxis === 'body' ? 'Σώμα' : quietestAxis === 'breath' ? 'Αναπνοή' : quietestAxis === 'attention' ? 'Προσοχή' : 'Χώρος'} περιμένει ήσυχα.`
-                    : mode === 'state+history' && state === 'hyper'
-                      ? `For tension, grounding helps — the ${quietestAxis === 'body' ? 'Body' : quietestAxis === 'breath' ? 'Breath' : quietestAxis === 'attention' ? 'Attention' : 'Space'} axis is waiting quietly.`
-                      : mode === 'state+history' && state === 'hypo'
-                      ? `For numbness, gentle activation helps — the ${quietestAxis === 'body' ? 'Body' : quietestAxis === 'breath' ? 'Breath' : quietestAxis === 'attention' ? 'Attention' : 'Space'} axis is waiting quietly.`
-                      : `The ${quietestAxis === 'body' ? 'Body' : quietestAxis === 'breath' ? 'Breath' : quietestAxis === 'attention' ? 'Attention' : 'Space'} axis is waiting quietly.`}
-                </p>
-              </div>
-              <div className="flex items-center gap-3 mt-2">
-                <Link 
-                  to={suggestion.link}
-                  className="flex-1 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 text-center text-sm font-medium text-white/80 transition-colors"
-                >
-                  {language === 'el' ? 'Δοκίμασέ το' : 'Try it'}
-                </Link>
-                <button 
-                  onClick={handleDismissInvite}
-                  className="flex-1 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 text-center text-sm font-medium text-white/80 transition-colors"
-                >
-                  {language === 'el' ? 'Όχι σήμερα' : 'Not today'}
-                </button>
-              </div>
-            </div>
-          )}
+          <div className="w-[58%] md:w-[80%] mx-auto flex items-center justify-center"><FourfoldAxisHero activeAxis={null} /></div>
           
           <motion.div
             initial={{ opacity: 0 }}
@@ -279,14 +204,6 @@ export default function Dashboard() {
           >
             {greeting}
           </motion.h1>
-          <motion.span 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.2 }}
-            className="text-[13px] text-white/30 tracking-wide font-light mt-1"
-          >
-            {currentDate}
-          </motion.span>
         </div>
 
         {/* How do you feel right now? */}
@@ -298,148 +215,85 @@ export default function Dashboard() {
           <HomeCheckin />
         </motion.div>
 
-        {/* 3. The Core Modules (Bento Grid) */}
-        <motion.div 
+        {/* Continue: one next step */}
+        <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="show"
-          className="flex flex-col gap-4 mt-4"
+          className="flex flex-col gap-3 mt-2"
         >
-          {/* Reading */}
           <motion.div variants={itemVariants}>
-            <Link to="/chapters" className={cn(baseCardClasses, "bg-[#1a2026]/60 hover:bg-[#1a2026]/80 p-6 flex flex-col justify-end group cursor-pointer active:scale-[0.98] relative overflow-hidden min-h-[160px]")}>
-              <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-[#8ba3ba]/5 blur-[60px] rounded-full pointer-events-none transition-opacity duration-700 group-hover:bg-[#8ba3ba]/15" />
-              
-              <div className="flex justify-between items-start w-full relative z-10 mb-auto">
-                <div className={cn(innerIconClasses, "w-12 h-12 text-[#8ba3ba]/60 group-hover:text-[#8ba3ba]")}>
-                  <BookOpen size={20} strokeWidth={1.5} />
-                </div>
-                <div className={actionButtonClasses}>
-                  <ChevronRight size={16} className="text-[#8ba3ba]/30 group-hover:text-[#8ba3ba]/80 transition-colors" />
-                </div>
+            <Link to={`/chapters/${nextChapterData?.num ?? 1}`} className={cn(baseCardClasses, "bg-[#1a2026]/60 hover:bg-[#1a2026]/80 p-5 flex items-center gap-4 group cursor-pointer active:scale-[0.98] relative overflow-hidden")}>
+              <div className="absolute top-[-30%] right-[-10%] w-48 h-48 bg-[#8ba3ba]/5 blur-[50px] rounded-full pointer-events-none" />
+              <div className={cn(innerIconClasses, "w-12 h-12 shrink-0 text-[#8ba3ba]/70 group-hover:text-[#8ba3ba]")}>
+                <BookOpen size={20} strokeWidth={1.5} />
               </div>
-              
-              <div className="flex flex-col gap-2 relative z-10 mt-8">
-                <span className="text-[10px] uppercase tracking-[0.2em] text-[#8ba3ba]/50 font-medium group-hover:text-[#8ba3ba]/70 transition-colors">
-                  {language === 'el' ? 'ΕΓΧΕΙΡΙΔΙΟ' : 'MANUAL'}
+              <div className="flex flex-col gap-1 min-w-0 flex-1 relative z-10">
+                <span className="text-[10px] uppercase tracking-[0.2em] text-[#8ba3ba]/60 font-medium">
+                  {isWorkbookDone
+                    ? (lang === 'el' ? 'Ολοκλήρωσες τον οδηγό' : 'You finished the guide')
+                    : completedChapters === 0
+                      ? (lang === 'el' ? 'Ξεκίνα' : 'Start')
+                      : (lang === 'el' ? 'Συνέχισε' : 'Continue')}
                 </span>
-                <div className="flex items-end justify-between">
-                  <h3 className="text-[17px] font-sans font-medium tracking-tight text-[#8ba3ba] leading-snug group-hover:text-[#9bb8d1] transition-colors pr-4">
-                    {language === 'el' ? 'Μαθαίνω να επιστρέφω — με σώμα, αναπνοή, προσοχή και χώρο.' : 'Learning to return — with body, breath, attention, and space.'}
-                  </h3>
-                  <span className="text-[11px] text-[#8ba3ba]/40 font-mono tracking-wider whitespace-nowrap">
-                    {isWorkbookDone 
-                      ? (language === 'el' ? 'Ολοκληρώθηκε' : 'Completed') 
-                      : `${completedChapters}/${totalChapters}`}
-                  </span>
-                </div>
-              </div>
-            </Link>
-          </motion.div>
-
-          {/* Program - The main actionable item */}
-          <motion.div variants={itemVariants}>
-            <Link to="/program" className={cn(baseCardClasses, "bg-[#1c241c]/60 hover:bg-[#1c241c]/80 p-6 flex flex-col justify-center group cursor-pointer active:scale-[0.98] relative overflow-hidden")}>
-              <div className="absolute top-0 right-0 w-48 h-48 bg-[#9db097]/5 blur-[50px] rounded-full pointer-events-none -mr-10 -mt-10 transition-opacity duration-700 group-hover:bg-[#9db097]/15" />
-              <div className="flex items-start justify-between w-full relative z-10">
-                <div className="flex items-start gap-5">
-                  <div className={cn(innerIconClasses, "w-14 h-14 text-[#9db097]/60 group-hover:text-[#9db097]")}>
-                    <Calendar size={22} strokeWidth={1.5} />
-                  </div>
-                  <div className="flex flex-col gap-2 mt-1">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-[#9db097]/50 font-medium group-hover:text-[#9db097]/70 transition-colors">
-                      {language === 'el' ? '8 ΕΒΔΟΜΑΔΕΣ' : '8 WEEKS'}
-                    </span>
-                    <h3 className="text-2xl font-sans font-semibold tracking-tight text-[#9db097] leading-none group-hover:text-[#b0c4aa] transition-colors">
-                      {language === 'el' ? 'Το Πρόγραμμα' : 'The Program'}
-                    </h3>
-                  </div>
-                </div>
-                <div className={cn(actionButtonClasses, "mt-2")}>
-                  <ChevronRight size={16} className="text-[#9db097]/30 group-hover:text-[#9db097]/80 transition-colors" />
-                </div>
-              </div>
-              {completedLessons > 0 && (
-                <div className="mt-6 flex flex-col gap-2 relative z-10 pl-[76px] pr-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-[10px] text-[#9db097]/40 tracking-wider">{language === 'el' ? 'Πρόοδος' : 'Progress'}</span>
-                    <span className="text-[10px] text-[#9db097]/50 font-mono">{lessonProgressPct}%</span>
-                  </div>
-                  <div className="w-full h-[2px] bg-[#9db097]/10 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-[#9db097]/50 rounded-full transition-all duration-1000 ease-out" 
-                      style={{ width: `${Math.max(1, lessonProgressPct)}%` }} 
-                    />
-                  </div>
-                </div>
-              )}
-            </Link>
-          </motion.div>
-          
-          <div className="grid grid-cols-2 gap-4">
-            {/* Exercises */}
-            <motion.div variants={itemVariants} className="h-full">
-              <Link to="/practice" className={cn(baseCardClasses, "bg-[#2b221d]/60 hover:bg-[#2b221d]/80 p-5 h-full aspect-square flex flex-col justify-between group cursor-pointer active:scale-[0.98] relative overflow-hidden")}>
-                <div className="absolute bottom-[-20%] right-[-20%] w-32 h-32 bg-[#c49b7e]/5 blur-[40px] rounded-full pointer-events-none transition-opacity duration-700 group-hover:bg-[#c49b7e]/15" />
-                
-                <div className={cn(innerIconClasses, "w-10 h-10 text-[#c49b7e]/60 group-hover:text-[#c49b7e]")}>
-                  <Target size={18} strokeWidth={1.5} />
-                </div>
-    
-                <div className="flex flex-col gap-1 relative z-10 mt-auto">
-                  <span className="text-[9px] uppercase tracking-[0.2em] text-[#c49b7e]/50 font-medium leading-[1.3] group-hover:text-[#c49b7e]/70 transition-colors">
-                    {language === 'el' ? 'ΑΣΚΗΣΕΙΣ' : 'EXERCISES'}
-                  </span>
-                  <h3 className="text-xl font-sans font-medium tracking-tight text-[#c49b7e] mt-1 group-hover:text-[#d3a889] transition-colors">
-                    {language === 'el' ? 'Πρακτική' : 'Practice'}
-                  </h3>
-                </div>
-              </Link>
-            </motion.div>
-    
-            {/* Audio / Sanctuary */}
-            <motion.div variants={itemVariants} className="h-full">
-              <Link to="/sanctuary" className={cn(baseCardClasses, "bg-[#242129]/60 hover:bg-[#242129]/80 p-5 h-full aspect-square flex flex-col justify-between group cursor-pointer active:scale-[0.98] relative overflow-hidden")}>
-                 <div className="absolute bottom-[-20%] right-[-20%] w-32 h-32 bg-[#a69eb5]/5 blur-[40px] rounded-full pointer-events-none transition-opacity duration-700 group-hover:bg-[#a69eb5]/15" />
-                
-                <div className={cn(innerIconClasses, "w-10 h-10 text-[#a69eb5]/60 group-hover:text-[#a69eb5]")}>
-                  <Moon size={18} strokeWidth={1.5} />
-                </div>
-    
-                <div className="flex flex-col gap-1 relative z-10 mt-auto">
-                  <span className="text-[9px] uppercase tracking-[0.2em] text-[#a69eb5]/50 font-medium leading-[1.3] group-hover:text-[#a69eb5]/70 transition-colors">
-                    {language === 'el' ? 'ΗΡΕΜΙΑ' : 'CALM'}
-                  </span>
-                  <h3 className="text-xl font-sans font-medium tracking-tight text-[#a69eb5] mt-1 group-hover:text-[#b4abce] transition-colors">
-                    {language === 'el' ? 'Καταφύγιο' : 'Sanctuary'}
-                  </h3>
-                </div>
-              </Link>
-            </motion.div>
-          </div>
-
-          {/* Rabbit Hole */}
-          <motion.div variants={itemVariants}>
-            <Link to="/rabbithole" className={cn(baseCardClasses, "bg-[#241f29]/60 hover:bg-[#241f29]/80 p-5 flex items-center justify-between group cursor-pointer active:scale-[0.98] relative overflow-hidden mt-2")}>
-               <div className="absolute top-0 right-0 w-32 h-32 bg-[#9c8ba6]/5 blur-[40px] rounded-full pointer-events-none -mr-10 -mt-10 transition-opacity duration-700 group-hover:bg-[#9c8ba6]/15" />
-              <div className="flex items-center gap-4 relative z-10">
-                <div className={cn(innerIconClasses, "w-10 h-10 text-[#9c8ba6]/60 group-hover:text-[#9c8ba6]")}>
-                  <Telescope size={18} strokeWidth={1.5} />
-                </div>
-                <div className="flex flex-col gap-0.5">
-                  <span className="text-[9px] uppercase tracking-[0.2em] text-[#9c8ba6]/50 font-medium group-hover:text-[#9c8ba6]/70 transition-colors">
-                  {language === 'el' ? 'ΕΞΕΡΕΥΝΗΣΗ' : 'EXPLORATION'}
-                </span>
-                <h3 className="text-lg font-sans font-medium tracking-tight text-[#9c8ba6] group-hover:text-[#a695b0]">
-                  {language === 'el' ? 'Η Κουνελότρυπα' : 'The Rabbit Hole'}
+                <h3 className="text-[17px] font-medium tracking-tight text-[#9bb8d1] leading-snug">
+                  {lang === 'el' ? 'Κεφάλαιο' : 'Chapter'} {nextChapterData?.num} · {nextChapterData?.title}
                 </h3>
+                {!isNewUser && (
+                  <span className="text-[11px] text-[#8ba3ba]/45 font-mono">{completedChapters}/{totalChapters}</span>
+                )}
               </div>
-            </div>
-            <ChevronRight size={16} className="text-[#9c8ba6]/30 group-hover:text-[#9c8ba6]/80 transition-colors relative z-10" />
-          </Link>
+              <ChevronRight size={18} className="text-[#8ba3ba]/40 group-hover:text-[#8ba3ba]/80 shrink-0 relative z-10" />
+            </Link>
+          </motion.div>
+
+          {favouritePractice && (
+            <motion.div variants={itemVariants}>
+              <Link to={`/practice/breath/${favouritePractice.id}`} className="flex items-center justify-between gap-3 px-5 py-3 rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] text-[14px] text-white/75 transition-colors active:scale-[0.98]">
+                <span className="flex items-center gap-2 min-w-0">
+                  <RotateCcw size={14} className="text-white/40 shrink-0" />
+                  <span className="truncate">{lang === 'el' ? 'Ξανά' : 'Again'}: {favouritePractice.title[lang]}</span>
+                </span>
+                <ChevronRight size={16} className="text-white/35 shrink-0" />
+              </Link>
+            </motion.div>
+          )}
+
+          {/* More: one small button that opens the whole app, for those who want to explore first */}
+          <motion.div variants={itemVariants} className="flex flex-col items-start gap-3 mt-1">
+            <button
+              onClick={toggleMore}
+              aria-expanded={moreOpen}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/[0.03] border border-white/[0.06] text-[13px] text-white/60 hover:text-white/85 hover:bg-white/[0.06] transition-colors active:scale-[0.97]"
+            >
+              {lang === 'el' ? 'Περισσότερα' : 'More'}
+              <ChevronDown size={15} className={cn("transition-transform duration-300", moreOpen && "rotate-180")} />
+            </button>
+            {moreOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: -6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35 }}
+                className="w-full grid grid-cols-2 gap-2"
+              >
+                {moreLinks.map(item => (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    className={cn("flex items-center gap-2.5 px-3.5 py-3 min-h-[56px] rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] transition-colors active:scale-[0.97] min-w-0", item.tone)}
+                  >
+                    <item.icon size={16} strokeWidth={1.5} className="shrink-0 opacity-80" />
+                    <span className="flex flex-col min-w-0">
+                      <span className="text-[13px] leading-tight text-white/75">{item.label}</span>
+                      {item.sub && <span className="text-[10px] font-mono text-white/40 mt-0.5">{item.sub}</span>}
+                    </span>
+                  </Link>
+                ))}
+              </motion.div>
+            )}
           </motion.div>
         </motion.div>
-        
+
         {/* Footer info */}
         <motion.div 
           initial={{ opacity: 0 }}
