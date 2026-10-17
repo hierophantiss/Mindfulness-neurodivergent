@@ -20,6 +20,25 @@ import { useProgress } from '../contexts/ProgressContext';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { ConceptInfoIcon } from '../components/ConceptInfoOverlay';
 
+/** "How it's done": the movement's description, folded so the figure keeps its room. */
+function HowTo({ text, language }: { text: string; language: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <button
+        onClick={(e) => { e.stopPropagation(); setOpen(o => !o); }}
+        aria-expanded={open}
+        className="mt-2 text-[12px] text-teal-300/80 hover:text-teal-200 underline underline-offset-2"
+      >
+        {language === 'el' ? (open ? 'Κλείσιμο' : 'Πώς γίνεται') : (open ? 'Close' : 'How it is done')}
+      </button>
+      {open && (
+        <p className="mt-2 text-[12.5px] text-zinc-300 text-center max-w-sm leading-relaxed">{text}</p>
+      )}
+    </>
+  );
+}
+
 export default function PracticeBreath() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -29,10 +48,16 @@ export default function PracticeBreath() {
   const { markBreathComplete } = useProgress();
   const { logActivity } = useActivityTracker();
   
-  const currentPatternId = id || '4-2-6-1';
+  // "Ascetic Breath" was the Lotus flow at 5-5; old links open that.
+  const ALIASES: Record<string, string> = { 'lotus-bloom-5-5': 'lotus-resonant' };
+  useEffect(() => {
+    if (id && ALIASES[id]) navigate(`/practice/breath/${ALIASES[id]}`, { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+  const currentPatternId = (id && ALIASES[id]) || id || '4-2-6-1';
   const basePattern = BREATH_PATTERNS.find(p => p.id === currentPatternId) || BREATH_PATTERNS[0];
   
-  const [rhythmOverride, setRhythmOverride] = useState<'default' | '4-7-8' | '5-5-5-5' | '5-5'>('default');
+  const [rhythmOverride, setRhythmOverride] = useState<'default' | '5-5' | '4-6' | '4-2-7'>('default');
   const isSwaying = true;
 
   const pattern = React.useMemo(() => {
@@ -42,44 +67,41 @@ export default function PracticeBreath() {
     let newPhases: any[] = [];
     let newLabels: any[] = [];
     
-    if (rhythmOverride === '4-7-8') {
-      dur = 19000;
+    // The book's three rhythms (Chapter 2): 5-5, 4-6, 4-2-7.
+    if (rhythmOverride === '5-5') {
+      dur = 10000;
       newPhases = [
-        { dur: 4000, armFrom: 0, armTo: 1 },
-        { dur: 7000, armFrom: 1, armTo: 1 },
-        { dur: 8000, armFrom: 1, armTo: 0 },
+        { dur: 5000, armFrom: 0, armTo: 1 },
+        { dur: 5000, armFrom: 1, armTo: 0 },
       ];
       newLabels = [
-        { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άντληση (4s)", en: "draw (4s)" } },
-        { label: { el: "Κράτημα", en: "Hold" }, sub: { el: "εστίαση (7s)", en: "focus (7s)" } },
-        { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "απελευθέρωση (8s)", en: "release (8s)" } },
+        { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "εισπνοή (5s)", en: "inhale (5s)" } },
+        { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "εκπνοή (5s)", en: "exhale (5s)" } },
       ];
-    } else if (rhythmOverride === '5-5-5-5') {
-       dur = 20000;
-       newPhases = [
-         { dur: 5000, armFrom: 0, armTo: 1 },
-         { dur: 5000, armFrom: 1, armTo: 1 },
-         { dur: 5000, armFrom: 1, armTo: 0 },
-         { dur: 5000, armFrom: 0, armTo: 0 }
-       ];
-       newLabels = [
-         { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άντληση (5s)", en: "draw (5s)" } },
-         { label: { el: "Κράτημα", en: "Hold" }, sub: { el: "ισορροπία (5s)", en: "balance (5s)" } },
-         { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "απελευθέρωση (5s)", en: "release (5s)" } },
-         { label: { el: "Κράτημα", en: "Hold" }, sub: { el: "κενό (5s)", en: "void (5s)" } },
-       ];
-    } else if (rhythmOverride === '5-5') {
-       dur = 10000;
-       newPhases = [
-         { dur: 5000, armFrom: 0, armTo: 1 },
-         { dur: 5000, armFrom: 1, armTo: 0 }
-       ];
-       newLabels = [
-         { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άντληση (5s)", en: "draw (5s)" } },
-         { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "απελευθέρωση (5s)", en: "release (5s)" } },
-       ];
+    } else if (rhythmOverride === '4-6') {
+      dur = 10000;
+      newPhases = [
+        { dur: 4000, armFrom: 0, armTo: 1 },
+        { dur: 6000, armFrom: 1, armTo: 0 },
+      ];
+      newLabels = [
+        { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "εισπνοή (4s)", en: "inhale (4s)" } },
+        { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "μακριά εκπνοή (6s)", en: "long exhale (6s)" } },
+      ];
+    } else if (rhythmOverride === '4-2-7') {
+      dur = 13000;
+      newPhases = [
+        { dur: 4000, armFrom: 0, armTo: 1 },
+        { dur: 2000, armFrom: 1, armTo: 1 },
+        { dur: 7000, armFrom: 1, armTo: 0 },
+      ];
+      newLabels = [
+        { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "εισπνοή (4s)", en: "inhale (4s)" } },
+        { label: { el: "Κράτημα", en: "Hold" }, sub: { el: "κράτημα (2s)", en: "hold (2s)" } },
+        { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "πολύ μακριά εκπνοή (7s)", en: "very long exhale (7s)" } },
+      ];
     }
-    
+
     return {
        ...basePattern,
        totalCycleDurationMs: dur,
@@ -189,7 +211,9 @@ export default function PracticeBreath() {
   // Audio Warning Modal State
   const [showWarning, setShowWarning] = useState(false);
   const [rememberChoice, setRememberChoice] = useState(true);
-  const [audioPref, setAudioPref] = useState<'with' | 'without' | null>(null);
+  const [audioPref, setAudioPref] = useState<'with' | 'nature' | 'without' | null>(null);
+  /** What plays when sound is on: binaural tones (headphones) or only the nature sound (speaker). */
+  const [soundMode, setSoundMode] = useState<'binaural' | 'nature'>('binaural');
   const [showBanner, setShowBanner] = useState(true);
   const [globalVolume, setGlobalVolumeState] = useState(1);
 
@@ -198,13 +222,11 @@ export default function PracticeBreath() {
     if (localStorage.getItem('hide_binaural_banner') === 'true') {
       setShowBanner(false);
     }
-    const savedPref = localStorage.getItem(`binaural_pref_${pattern.id}`) as 'with' | 'without' | null;
+    let savedPref: 'with' | 'nature' | 'without' | null = null;
+    try { savedPref = localStorage.getItem(`binaural_pref_${pattern.id}`) as typeof savedPref; } catch { /* not stored */ }
     setAudioPref(savedPref);
-    if (savedPref === 'with') {
-      setAudioEnabled(true);
-    } else {
-      setAudioEnabled(false);
-    }
+    setSoundMode(savedPref === 'nature' ? 'nature' : 'binaural');
+    setAudioEnabled(savedPref === 'with' || savedPref === 'nature');
   }, [pattern.id]);
 
   const { startAudio, stopAudio, updateArmPos, updatePhase, isPlaying, setGlobalVolume } = useBinauralAudio({
@@ -215,6 +237,15 @@ export default function PracticeBreath() {
   useEffect(() => {
     setGlobalVolume(globalVolume);
   }, [globalVolume, setGlobalVolume]);
+
+  const natureLayers = pattern.audioConfig?.ambientLayers?.length ? pattern.audioConfig.ambientLayers : ['ocean', 'wind'];
+  const beginSound = (mode: 'binaural' | 'nature' = soundMode) => {
+    if (mode === 'nature') {
+      startAudio({ base: 0, beat: 0, disableSynth: true, ambientLayers: natureLayers, id: pattern.id } as any);
+    } else {
+      startAudio();
+    }
+  };
 
   // Clean up audio on unmount
   useEffect(() => {
@@ -286,7 +317,7 @@ export default function PracticeBreath() {
       // If already running, toggle audio immediately
       if (running) {
         if (nextAudio) {
-          startAudio();
+          beginSound();
         } else {
           stopAudio();
         }
@@ -294,24 +325,26 @@ export default function PracticeBreath() {
     }
   };
 
-  const startSequence = (withAudio: boolean = audioEnabled) => {
+  const startSequence = (withAudio: boolean = audioEnabled, mode: 'binaural' | 'nature' = soundMode) => {
     setAudioEnabled(withAudio);
     setFinished(false);
     setRunning(true);
     if (withAudio) {
-      startAudio();
+      beginSound(mode);
     }
   };
 
-  const savePreferenceAndStart = (withAudio: boolean) => {
+  const savePreferenceAndStart = (choice: 'with' | 'nature' | 'without') => {
+    const withAudio = choice !== 'without';
+    const mode = choice === 'nature' ? 'nature' : 'binaural';
     if (rememberChoice) {
-      const pref = withAudio ? 'with' : 'without';
-      localStorage.setItem(`binaural_pref_${pattern.id}`, pref);
-      setAudioPref(pref);
+      try { localStorage.setItem(`binaural_pref_${pattern.id}`, choice); } catch { /* not stored */ }
     }
+    setAudioPref(choice);
+    setSoundMode(mode);
     setShowWarning(false);
     setAudioEnabled(withAudio);
-    startSequence(withAudio);
+    startSequence(withAudio, mode);
   };
 
   const handleStartToggle = () => {
@@ -383,13 +416,12 @@ export default function PracticeBreath() {
         : 0.6)
     : 0;
 
-  const getBeatTypeName = (beat: number) => {
-    if (beat <= 4) return 'Delta';
-    if (beat <= 8) return 'Theta';
-    return 'Alpha';
-  };
-  const beatTypeName = pattern.audioConfig?.beat ? getBeatTypeName(pattern.audioConfig.beat) : 'Theta';
-  const beatRangeStr = beatTypeName === 'Delta' ? '1-4 Hz' : beatTypeName === 'Theta' ? '4-8 Hz' : '8-14 Hz';
+  const beat = pattern.audioConfig?.beat || 0;
+  const bandName = beat <= 0 ? null
+    : beat < 4 ? (language === 'el' ? 'δέλτα' : 'delta')
+    : beat < 8 ? (language === 'el' ? 'θήτα' : 'theta')
+    : beat < 13 ? (language === 'el' ? 'άλφα' : 'alpha')
+    : (language === 'el' ? 'βήτα' : 'beta');
   
   const maxSeconds = Math.round((pattern.phases[phaseIdx]?.dur || 4000) / 1000);
 
@@ -487,8 +519,8 @@ export default function PracticeBreath() {
             </div>
             <p className="text-[13px] text-zinc-200/90 leading-relaxed font-medium">
               {language === 'el' 
-                ? 'Ενεργοποιήστε τα binaural beats πατώντας το εικονίδιο πάνω δεξιά (απαιτούν ακουστικά).' 
-                : 'Enable binaural beats by tapping the headphones icon on the top right.'}
+                ? 'Για ήχο πάτα τα ακουστικά πάνω δεξιά: binaural με ακουστικά, ή μόνο ήχος φύσης από το ηχείο.'
+                : 'For sound, tap the headphones at the top right: binaural with headphones, or just a nature sound from the speaker.'}
             </p>
             <button
               onClick={() => {
@@ -507,14 +539,14 @@ export default function PracticeBreath() {
       {!running && basePattern.category === 'movement' && (
         <div className="z-20 w-full mb-4 md:px-0 relative px-4 flex flex-col items-center animate-in fade-in slide-in-from-top-2 duration-500">
            <span className="text-[11px] font-medium tracking-widest uppercase text-zinc-400 mb-2">
-             {language === 'el' ? 'Επιλογη Ρυθμου' : 'Rhythm Option'}
+             {language === 'el' ? 'Ρυθμος Αναπνοης' : 'Breathing Rhythm'}
            </span>
            <div className="flex flex-wrap justify-center gap-2 max-w-sm">
              {[
-               { id: 'default', el: 'Προεπιλογή', en: 'Original' },
-               { id: '4-7-8', el: '4-7-8 (Χαλάρωση)', en: '4-7-8 (Relax)' },
-               { id: '5-5-5-5', el: '5-5-5-5 (Κουτί)', en: '5-5-5-5 (Box)' },
-               { id: '5-5', el: '5-5 (Ροή)', en: '5-5 (Flow)' }
+               { id: 'default', el: 'Της κίνησης', en: 'The movement\'s own' },
+               { id: '5-5', el: '5-5', en: '5-5' },
+               { id: '4-6', el: '4-6', en: '4-6' },
+               { id: '4-2-7', el: '4-2-7', en: '4-2-7' }
              ].map(r => (
                <button
                  key={r.id}
@@ -530,6 +562,40 @@ export default function PracticeBreath() {
                </button>
              ))}
            </div>
+        </div>
+      )}
+
+      {/* Flows: the same movement in four rhythms */}
+      {!running && basePattern.visualizer && (
+        <div className="z-20 w-full mb-4 md:px-0 relative px-4 flex flex-col items-center animate-in fade-in slide-in-from-top-2 duration-500">
+          <span className="text-[11px] font-medium tracking-widest uppercase text-zinc-400 mb-2">
+            {language === 'el' ? 'Ρυθμος Αναπνοης' : 'Breathing Rhythm'}
+          </span>
+          <div className="flex flex-wrap justify-center gap-2 max-w-sm">
+            {BREATH_PATTERNS.filter(p => p.visualizer === basePattern.visualizer).map(p => (
+              <button
+                key={p.id}
+                onClick={() => navigate(`/practice/breath/${p.id}`, { replace: true })}
+                aria-pressed={p.id === basePattern.id}
+                className={cn(
+                  "px-3 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all",
+                  p.id === basePattern.id
+                    ? "bg-teal-500/20 text-teal-300 border border-teal-500/50"
+                    : "bg-zinc-800/50 text-zinc-400 border border-zinc-700/50 hover:bg-zinc-700/50"
+                )}
+              >
+                {language === 'el' ? p.rhythmName?.el : p.rhythmName?.en}
+              </button>
+            ))}
+          </div>
+          <HowTo text={language === 'el' ? basePattern.desc.el : basePattern.desc.en} language={language} />
+        </div>
+      )}
+
+      {/* Movements: how to move, before starting */}
+      {!running && basePattern.category === 'movement' && (
+        <div className="z-20 mb-3 -mt-2 px-6 flex flex-col items-center">
+          <HowTo text={language === 'el' ? basePattern.desc.el : basePattern.desc.en} language={language} />
         </div>
       )}
 
@@ -595,6 +661,7 @@ export default function PracticeBreath() {
                       breathStateText=""
                       movementType={pattern.visualizer || pattern.id}
                       rhythmText=""
+                      idle={!running}
                     />
                   ) : (
                     <BreathingHero
@@ -796,22 +863,30 @@ export default function PracticeBreath() {
             </div>
             
             <h3 className="text-lg md:text-xl font-medium text-center text-teal-50 mb-3">
-              {beatTypeName} Waves <br/> <span className="text-sm md:text-base">{language === 'el' ? '(Εσωτερική Ακοή & Γείωση)' : '(Inner Hearing & Grounding)'}</span>
+              {language === 'el' ? 'Ήχος για την άσκηση' : 'Sound for this practice'}
             </h3>
-            
-            <p className="text-zinc-200 text-xs md:text-sm text-center leading-relaxed mb-5">
-              {language === 'el' ? `Τα binaural beats στέλνουν διαφορετική συχνότητα σε κάθε αυτί, δημιουργώντας ήχο στη ζώνη ${beatTypeName} (${beatRangeStr}) που ενισχύει τη χαλάρωση και την ενσυνειδητότητα.` : `Binaural beats send different frequencies to each ear, creating sound in the ${beatTypeName} (${beatRangeStr}) range that enhances relaxation and mindfulness.`}
-            </p>
 
-            <div className="bg-[#1e1700]/30 border border-amber-900/50 p-3 rounded-2xl mb-5">
-              <h4 className="text-amber-500 font-medium text-xs md:text-sm flex items-center gap-2 mb-2">
-                <span className="text-base text-amber-500">⚠️</span> {language === 'el' ? 'Σημαντική ενημέρωση:' : 'Important Notice:'}
-              </h4>
-              <ul className="text-amber-200/80 text-[12px] md:text-[13px] space-y-1.5 list-disc pl-5">
-                <li>{language === 'el' ? 'Απαιτούνται ' : 'Requires '}<strong>{language === 'el' ? 'ακουστικά' : 'headphones'}</strong>{language === 'el' ? ' για σωστή λειτουργία.' : ' to work properly.'}</li>
-                <li>{language === 'el' ? 'Αν έχετε επιληψία, συμβουλευτείτε γιατρό.' : 'If you have epilepsy, consult a doctor.'}</li>
-              </ul>
+            <div className="text-zinc-200 text-xs md:text-sm leading-relaxed mb-4 space-y-2">
+              <p>
+                <strong className="text-teal-200">Binaural</strong>{bandName ? ` (${bandName} ${beat} Hz)` : ''}{language === 'el'
+                  ? ': κάθε αυτί ακούει λίγο διαφορετικό τόνο και ο παλμός σχηματίζεται ανάμεσά τους· θέλουν ακουστικά.'
+                  : ': each ear hears a slightly different tone and the beat forms between them, so they need headphones.'}
+              </p>
+              <p>
+                <strong className="text-teal-200">{language === 'el' ? 'Ήχος φύσης' : 'Nature sound'}</strong>{language === 'el'
+                  ? ': κύματα και άνεμος· παίζει και από το ηχείο.'
+                  : ': waves and wind; plays from the speaker too.'}
+              </p>
+              <p className="text-zinc-400">
+                {language === 'el'
+                  ? 'Και τα δύο δυναμώνουν με την εισπνοή και χαμηλώνουν με την εκπνοή. Τα ευρήματα για τα binaural είναι ακόμα ανάμεικτα· αν ένας ήχος σε ενοχλεί, δεν τον χρειάζεσαι.'
+                  : 'Both grow with the inhale and soften with the exhale. Findings on binaural beats are still mixed; if a sound bothers you, you do not need it.'}
+              </p>
             </div>
+
+            <p className="text-amber-200/80 text-[12px] md:text-[13px] mb-5 text-center">
+              {language === 'el' ? 'Κράτα την ένταση χαμηλά. Αν έχεις επιληψία, ρώτα πρώτα τον γιατρό σου.' : 'Keep the volume low. If you have epilepsy, ask your doctor first.'}
+            </p>
 
             <label className="flex items-start justify-center gap-3 text-xs text-zinc-300 mb-5 cursor-pointer select-none group">
               <div 
@@ -830,17 +905,23 @@ export default function PracticeBreath() {
 
             <div className="flex flex-col gap-2.5">
               <button 
-                onClick={() => savePreferenceAndStart(true)}
+                onClick={() => savePreferenceAndStart('with')}
                 className="w-full bg-zinc-600 hover:bg-zinc-700 border border-zinc-300 text-white font-medium py-3 rounded-full transition-colors flex items-center justify-center gap-2 text-sm tracking-wide"
               >
                 <Headphones size={18} />
-                {language === 'el' ? 'Ξεκίνα με Binaural Beats' : 'Start with Binaural Beats'}
+                {language === 'el' ? 'Με binaural (ακουστικά)' : 'With binaural (headphones)'}
+              </button>
+              <button
+                onClick={() => savePreferenceAndStart('nature')}
+                className="w-full bg-zinc-800 border border-teal-800/60 text-teal-100 font-medium py-2.5 rounded-full transition-colors hover:text-white text-sm"
+              >
+                {language === 'el' ? 'Μόνο ήχος φύσης' : 'Nature sound only'}
               </button>
               <button 
-                onClick={() => savePreferenceAndStart(false)}
+                onClick={() => savePreferenceAndStart('without')}
                 className="w-full bg-zinc-800 border border-zinc-600 text-zinc-300 font-medium py-2.5 rounded-full transition-colors hover:text-white text-sm"
                >
-                {language === 'el' ? 'Ξεκίνα χωρίς ήχο' : 'Start without audio'}
+                {language === 'el' ? 'Χωρίς ήχο' : 'No sound'}
               </button>
               <button 
                 onClick={() => setShowWarning(false)}

@@ -27,6 +27,10 @@ export interface BreathPattern {
   videoExhaleStart?: number;
   videoExhaleEnd?: number;
   evidence?: { en: string; el: string; ref: string };
+  /** Flows: the short name of the rhythm, for the chooser inside the practice. */
+  rhythmName?: { el: string; en: string };
+  /** Movements: whether it needs standing, or can also be done seated. */
+  stance?: 'standing' | 'either';
 }
 
 export const BREATH_PATTERNS: BreathPattern[] = [
@@ -176,22 +180,23 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "5-5",
+    stance: 'either',
     axis: 'body',
     category: "movement",
     hasBinaural: true,
     title: { el: "Συγχρονισμός 5-5", en: "5-5 Sync" },
-    subtitle: { el: "Εστίαση & Ισορροπία", en: "Focus & Balance" },
+    subtitle: { el: "Ισορροπία για Κάθε Μέρα", en: "Everyday Balance" },
     desc: {
-      el: "Συντονίζει τον καρδιακό ρυθμό, προσφέροντας συγκέντρωση.",
-      en: "Coordinates heart rate, offering concentration.",
+      el: "Ο ρυθμός 5-5 του βιβλίου με απλό σήκωμα των χεριών: πέντε δευτερόλεπτα πάνω με την εισπνοή, πέντε κάτω με την εκπνοή.",
+      en: "The book's 5-5 rhythm with a simple raising of the arms: five seconds up with the inhale, five down with the exhale.",
     },
     totalCycleDurationMs: 10000,
     audioConfig: {
       base: 200,
       beat: 10,
-      pulse: 10,
+      pulse: 0,
       ambientLayers: ['ocean', 'wind'],
-    }, // Alpha
+    },
     video: "/Basic.mp4",
     skipIntro: true,
     videoInhaleStart: 0.0,
@@ -215,22 +220,23 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "deep-bow-5-5",
+    stance: 'either',
     axis: 'body',
     category: "movement",
     hasBinaural: true,
     title: { el: "Βαθιά Υπόκλιση (5-5)", en: "Deep Bow (5-5)" },
     subtitle: { el: "Ταπεινότητα & Γείωση", en: "Humility & Grounding" },
     desc: {
-      el: "Απελευθερώνει την ένταση από τη σπονδυλική στήλη.",
-      en: "Releases tension from the spine.",
+      el: "Με την εκπνοή σκύβεις αργά από τη μέση και αφήνεις κεφάλι και χέρια να κρεμαστούν· με την εισπνοή ξαναστήνεσαι, σπόνδυλο σπόνδυλο. Αν ζαλίζεσαι ή πονάει η μέση, σκύψε λιγότερο.",
+      en: "With the exhale, bend slowly from the waist and let your head and arms hang; with the inhale, rise again, one vertebra at a time. If you feel dizzy or your lower back hurts, bend less.",
     },
     totalCycleDurationMs: 10000,
     audioConfig: {
-      base: 180,
-      beat: 8,
-      pulse: 8,
+      base: 200,
+      beat: 10,
+      pulse: 0,
       ambientLayers: ['ocean', 'wind'],
-    }, // Alpha/Theta
+    },
     video: "/animations/deepbow.mp4",
     videoPeak: 0.5,
     videoInhaleStart: 0.5,
@@ -244,30 +250,31 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     labels: [
       {
         label: { el: "Εκπνοή", en: "Exhale" },
-        sub: { el: "υπόκλιση (5s)", en: "bow (5s)" },
+        sub: { el: "σκύψε (5s)", en: "bow (5s)" },
       },
       {
         label: { el: "Εισπνοή", en: "Inhale" },
-        sub: { el: "άνοιγμα (5s)", en: "open (5s)" },
+        sub: { el: "ξαναστήσου (5s)", en: "rise (5s)" },
       },
     ],
   },
   {
     id: "lotus-bloom-5-5",
+    stance: 'either',
     axis: 'body',
     category: "movement",
     hasBinaural: true,
     title: { el: "Ασκητική Αναπνοή (5-5)", en: "Ascetic Breath (5-5)" },
     subtitle: { el: "Ηρεμία & Επίγνωση", en: "Calm & Awareness" },
     desc: {
-      el: "Μια κίνηση που συμβολίζει την εσωτερική εστίαση και την ηρεμία του Ασκητή.",
-      en: "A movement symbolizing inner focus and the serenity of the Ascetic.",
+      el: "Με την εισπνοή τα χέρια ανοίγουν προς τα πάνω σαν λωτός· με την εκπνοή ξαναμαζεύονται μπροστά στο στήθος.",
+      en: "With the inhale the arms open upwards like a lotus; with the exhale they gather again in front of the chest.",
     },
     totalCycleDurationMs: 10000,
     audioConfig: {
-      base: 190,
-      beat: 9,
-      pulse: 9,
+      base: 200,
+      beat: 10,
+      pulse: 0,
       ambientLayers: ['ocean', 'wind'],
     },
     video: "/Basic.mp4",
@@ -281,32 +288,33 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     labels: [
       {
         label: { el: "Εισπνοή", en: "Inhale" },
-        sub: { el: "έκταση (5s)", en: "extend (5s)" },
+        sub: { el: "άνοιξε (5s)", en: "open (5s)" },
       },
       {
         label: { el: "Εκπνοή", en: "Exhale" },
-        sub: { el: "συγκέντρωση (5s)", en: "center (5s)" },
+        sub: { el: "μάζεψε (5s)", en: "gather (5s)" },
       },
     ],
   },
   {
     id: "be-like-a-flower-5-5",
+    stance: 'either',
     axis: 'body',
     category: "movement",
     hasBinaural: true,
     title: { el: "Χαιρετισμός στο Άπειρο (5-5)", en: "Greeting the Infinite (5-5)" },
     subtitle: { el: "Συγχρονισμός & Άνοιγμα", en: "Sync & Openness" },
     desc: {
-      el: "Στην εκπνοή απλώνεις τα χέρια, στην εισπνοή τα μαζεύεις.",
-      en: "On exhale open arms, on inhale gather them.",
+      el: "Με την εκπνοή απλώνεις τα χέρια στο πλάι· με την εισπνοή τα μαζεύεις μπροστά στο στήθος.",
+      en: "With the exhale, open your arms out to the sides; with the inhale, gather them in front of your chest.",
     },
     totalCycleDurationMs: 10000,
     audioConfig: {
       base: 200,
       beat: 10,
-      pulse: 10,
+      pulse: 0,
       ambientLayers: ['ocean', 'wind'],
-    }, // Alpha
+    },
     video: "/Basic.mp4",
     useVideoOnly: false,
     videoPeak: 0.5,
@@ -331,22 +339,23 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "tai-chi-cloud-hands",
+    stance: 'standing',
     axis: 'body',
     category: "movement",
     hasBinaural: true,
-    title: { el: "Χέρια στα Σύννεφα (Tai Chi)", en: "Cloud Hands (Tai Chi)" },
+    title: { el: "Χέρια στα Σύννεφα (Τάι Τσι)", en: "Cloud Hands (Tai Chi)" },
     subtitle: { el: "Ροή & Αρμονία", en: "Flow & Harmony" },
     desc: {
-      el: "Κλασική κίνηση Tai Chi (Yun Shou). Ακολουθήστε την απαλή, συνεχή κίνηση των χεριών σε συγχρονισμό με την αναπνοή σας.",
-      en: "Classic Tai Chi movement (Yun Shou). Follow the gentle, continuous movement of your hands in sync with your breath.",
+      el: "Η κλασική κίνηση Yun Shou. Γόνατα λίγο λυγισμένα. Με την εισπνοή στρίβεις από τη μέση προς τη μία πλευρά, με την εκπνοή προς την άλλη, και το βάρος πηγαίνει από το ένα πόδι στο άλλο. Το πάνω χέρι περνά μπροστά από το πρόσωπο, το κάτω μπροστά από την κοιλιά· στο τέλος κάθε στροφής αλλάζουν θέση, σαν να γυρίζεις μια μπάλα.",
+      en: "The classic Yun Shou movement. Knees slightly bent. With the inhale, turn from the waist to one side; with the exhale, to the other, as your weight moves from one foot to the other. The upper hand passes in front of the face, the lower one in front of the belly; at the end of each turn they change places, as if turning a ball.",
     },
     totalCycleDurationMs: 12000,
     audioConfig: {
-      base: 174,
-      beat: 7,
-      pulse: 7,
+      base: 200,
+      beat: 10,
+      pulse: 0,
       ambientLayers: ['ocean', 'wind'],
-    }, // Theta/Alpha for flow state
+    },
     video: "/Basic.mp4",
     videoPeak: 0.5,
     videoInhaleEnd: 0.5,
@@ -358,32 +367,33 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     labels: [
       {
         label: { el: "Εισπνοή", en: "Inhale" },
-        sub: { el: "άντληση ενέργειας (6s)", en: "draw energy (6s)" },
+        sub: { el: "στρίψε στη μία πλευρά (6s)", en: "turn to one side (6s)" },
       },
       {
         label: { el: "Εκπνοή", en: "Exhale" },
-        sub: { el: "ροή (6s)", en: "flow outwards (6s)" },
+        sub: { el: "στρίψε στην άλλη (6s)", en: "turn to the other (6s)" },
       },
     ],
   },
   {
     id: "qigong-lifting-sky",
+    stance: 'either',
     axis: 'body',
     category: "movement",
     hasBinaural: true,
     title: { el: "Σηκώνοντας τον Ουρανό (Qigong)", en: "Lifting the Sky (Qigong)" },
     subtitle: { el: "Ζωτικότητα & Έκταση", en: "Vitality & Extension" },
     desc: {
-      el: "Απλή άσκηση Qigong που τεντώνει όλο το σώμα, ανοίγει το στήθος και φέρνει οξυγόνο στους πνεύμονες.",
-      en: "Simple Qigong exercise that stretches the whole body, opens the chest and brings oxygen to the lungs.",
+      el: "Η πρώτη κίνηση των Ba Duan Jin (Οκτώ Κομμάτια Μπροκάρ). Με την εισπνοή σπρώχνεις τις παλάμες προς τα πάνω και τεντώνεις όλο το σώμα· κρατάς λίγο· με την εκπνοή τα χέρια κατεβαίνουν στο πλάι.",
+      en: "The first movement of the Ba Duan Jin (Eight Pieces of Brocade). With the inhale, push your palms upwards and stretch your whole body; hold briefly; with the exhale, let your arms come down at the sides.",
     },
     totalCycleDurationMs: 14000,
     audioConfig: {
-      base: 220,
-      beat: 12,
-      pulse: 12,
+      base: 200,
+      beat: 10,
+      pulse: 0,
       ambientLayers: ['ocean', 'wind'],
-    }, // Alpha for alertness 
+    },
     video: "/Basic.mp4",
     useVideoOnly: false,
     phases: [
@@ -402,7 +412,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       },
       {
         label: { el: "Εκπνοή", en: "Exhale" },
-        sub: { el: "κατέβασμα (6s)", en: "lower arms (6s)" },
+        sub: { el: "κατέβασε τα χέρια (6s)", en: "lower your arms (6s)" },
       },
     ],
   },
@@ -547,8 +557,9 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     axis: 'body',
     title: { el: "Ροή: Τετραπλός Άξονας", en: "Flow: Fourfold Axis" },
     subtitle: { el: "Γείωση & Σύνδεση", en: "Grounding & Connection" },
-    desc: { el: "Απαλή ενσυνείδητη κίνηση που συνδέει τον ουρανό με τη γη (4.5 - 1 - 5.5 - 1)", en: "Gentle mindful movement connecting heaven and earth (4.5 - 1 - 5.5 - 1)" },
-    totalCycleDurationMs: 12000, audioConfig: { base: 136.1, beat: 0, ambientLayers: [] },
+    rhythmName: { el: "Τετραπλός Άξονας", en: "Fourfold Axis" },
+    desc: { el: "Ο ρυθμός της μεθόδου: εισπνοή 4,5, παύση 1, εκπνοή 5,5, παύση 1. Τα χέρια ανεβαίνουν με την εισπνοή και κατεβαίνουν με την εκπνοή· στις παύσεις νιώσε το βάρος.", en: "The method's rhythm: inhale 4.5, pause 1, exhale 5.5, pause 1. The arms rise with the inhale and sink with the exhale; in the pauses, feel your weight." },
+    totalCycleDurationMs: 12000, audioConfig: { base: 200, beat: 10, pulse: 0, ambientLayers: ['ocean', 'wind'] },
     phases: [ { dur: 4500, armFrom: 0, armTo: 1 }, { dur: 1000, armFrom: 1, armTo: 1 }, { dur: 5500, armFrom: 1, armTo: 0 }, { dur: 1000, armFrom: 0, armTo: 0 } ],
     labels: [
       { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άνοδος (4.5s)", en: "rise (4.5s)" } },
@@ -562,8 +573,9 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     axis: 'body',
     title: { el: "Ροή: Τετράγωνη Αναπνοή", en: "Flow: Box Breathing" },
     subtitle: { el: "Εστίαση & Ηρεμία", en: "Focus & Calm" },
-    desc: { el: "Χρησιμοποιείται από Zen δασκάλους για πνευματική ηρεμία (4 - 4 - 4 - 4).", en: "Used by Zen masters for clarity and calm (4 - 4 - 4 - 4)." },
-    totalCycleDurationMs: 16000, audioConfig: { base: 136.1, beat: 0, ambientLayers: [] },
+    rhythmName: { el: "Τετράγωνη 4-4-4-4", en: "Box 4-4-4-4" },
+    desc: { el: "Τέσσερα ίσα μέρη των 4 δευτερολέπτων: εισπνοή, κράτημα, εκπνοή, κράτημα. Ένας σταθερός ρυθμός για εστίαση. Αν το κράτημα σε σφίγγει, διάλεξε άλλον ρυθμό.", en: "Four equal parts of 4 seconds: inhale, hold, exhale, hold. A steady rhythm for focus. If holding the breath makes you tense, choose another rhythm." },
+    totalCycleDurationMs: 16000, audioConfig: { base: 200, beat: 10, pulse: 0, ambientLayers: ['ocean', 'wind'] },
     phases: [ { dur: 4000, armFrom: 0, armTo: 1 }, { dur: 4000, armFrom: 1, armTo: 1 }, { dur: 4000, armFrom: 1, armTo: 0 }, { dur: 4000, armFrom: 0, armTo: 0 } ],
     labels: [
       { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άνοδος (4s)", en: "rise (4s)" } },
@@ -577,8 +589,9 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     axis: 'body',
     title: { el: "Ροή: Συντονισμένη Αναπνοή", en: "Flow: Resonant Breathing" },
     subtitle: { el: "Ισορροπία Συστήματος", en: "System Balance" },
-    desc: { el: "Συντονίζει την καρδιακή συχνότητα για μέγιστη χαλάρωση (5 - 0 - 5 - 0).", en: "Saturates heart rate variability to balance the nervous system (5 - 0 - 5 - 0)." },
-    totalCycleDurationMs: 10000, audioConfig: { base: 136.1, beat: 0, ambientLayers: [] },
+    rhythmName: { el: "5-5", en: "5-5" },
+    desc: { el: "Εισπνοή 5, εκπνοή 5, χωρίς παύσεις: ο ρυθμός 5-5 του βιβλίου, για κάθε μέρα.", en: "Inhale 5, exhale 5, with no pauses: the book's 5-5 rhythm, for every day." },
+    totalCycleDurationMs: 10000, audioConfig: { base: 200, beat: 10, pulse: 0, ambientLayers: ['ocean', 'wind'] },
     phases: [ { dur: 5000, armFrom: 0, armTo: 1 }, { dur: 5000, armFrom: 1, armTo: 0 } ],
     labels: [
       { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άνοδος (5s)", en: "rise (5s)" } },
@@ -590,8 +603,9 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     axis: 'body',
     title: { el: "Ροή: Τονωτική", en: "Flow: Activating" },
     subtitle: { el: "Ενέργεια & Εγρήγορση", en: "Energy & Alertness" },
-    desc: { el: "Ένας τονωτικός ρυθμός με σύντομη εκπνοή (4 - 4 - 2 - 2).", en: "An invigorating rhythm with a brief exhalation (4 - 4 - 2 - 2)." },
-    totalCycleDurationMs: 12000, audioConfig: { base: 136.1, beat: 0, ambientLayers: [] },
+    rhythmName: { el: "Τονωτική", en: "Activating" },
+    desc: { el: "Εισπνοή 4, κράτημα 4, σύντομη εκπνοή 2, παύση 2. Για όταν το σώμα είναι βαρύ και θέλεις λίγη ζωντάνια· όχι όταν η ένταση είναι ήδη ψηλά.", en: "Inhale 4, hold 4, short exhale 2, pause 2. For when the body feels heavy and you want a little liveliness; not when tension is already high." },
+    totalCycleDurationMs: 12000, audioConfig: { base: 200, beat: 14, pulse: 0, ambientLayers: ['ocean', 'wind'] },
     phases: [ { dur: 4000, armFrom: 0, armTo: 1 }, { dur: 4000, armFrom: 1, armTo: 1 }, { dur: 2000, armFrom: 1, armTo: 0 }, { dur: 2000, armFrom: 0, armTo: 0 } ],
     labels: [
       { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άνοδος (4s)", en: "rise (4s)" } },
@@ -605,8 +619,9 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     axis: 'body',
     title: { el: "Λωτός: Τετραπλός Άξονας", en: "Lotus: Fourfold Axis" },
     subtitle: { el: "Γείωση & Σύνδεση", en: "Grounding & Connection" },
-    desc: { el: "Εσωτερική συγκέντρωση που ξεδιπλώνεται (4.5 - 1 - 5.5 - 1).", en: "Internal focusing movement that unfolds (4.5 - 1 - 5.5 - 1)." },
-    totalCycleDurationMs: 12000, audioConfig: { base: 136.1, beat: 0, ambientLayers: [] },
+    rhythmName: { el: "Τετραπλός Άξονας", en: "Fourfold Axis" },
+    desc: { el: "Ο ρυθμός της μεθόδου: εισπνοή 4,5, παύση 1, εκπνοή 5,5, παύση 1. Τα χέρια ανοίγουν σαν λωτός με την εισπνοή και κλείνουν στο στήθος με την εκπνοή.", en: "The method's rhythm: inhale 4.5, pause 1, exhale 5.5, pause 1. The arms open like a lotus with the inhale and close at the chest with the exhale." },
+    totalCycleDurationMs: 12000, audioConfig: { base: 200, beat: 10, pulse: 0, ambientLayers: ['ocean', 'wind'] },
     phases: [ { dur: 4500, armFrom: 0, armTo: 1 }, { dur: 1000, armFrom: 1, armTo: 1 }, { dur: 5500, armFrom: 1, armTo: 0 }, { dur: 1000, armFrom: 0, armTo: 0 } ],
     labels: [
       { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άνοιγμα (4.5s)", en: "open (4.5s)" } },
@@ -620,8 +635,9 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     axis: 'body',
     title: { el: "Λωτός: Τετράγωνη Αναπνοή", en: "Lotus: Box Breathing" },
     subtitle: { el: "Εστίαση & Ηρεμία", en: "Focus & Calm" },
-    desc: { el: "Εστίαση και πνευματική ηρεμία (4 - 4 - 4 - 4).", en: "Focus and mental calm (4 - 4 - 4 - 4)." },
-    totalCycleDurationMs: 16000, audioConfig: { base: 136.1, beat: 0, ambientLayers: [] },
+    rhythmName: { el: "Τετράγωνη 4-4-4-4", en: "Box 4-4-4-4" },
+    desc: { el: "Τέσσερα ίσα μέρη των 4 δευτερολέπτων: εισπνοή, κράτημα, εκπνοή, κράτημα. Αν το κράτημα σε σφίγγει, διάλεξε άλλον ρυθμό.", en: "Four equal parts of 4 seconds: inhale, hold, exhale, hold. If holding the breath makes you tense, choose another rhythm." },
+    totalCycleDurationMs: 16000, audioConfig: { base: 200, beat: 10, pulse: 0, ambientLayers: ['ocean', 'wind'] },
     phases: [ { dur: 4000, armFrom: 0, armTo: 1 }, { dur: 4000, armFrom: 1, armTo: 1 }, { dur: 4000, armFrom: 1, armTo: 0 }, { dur: 4000, armFrom: 0, armTo: 0 } ],
     labels: [
       { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άνοιγμα (4s)", en: "open (4s)" } },
@@ -635,8 +651,9 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     axis: 'body',
     title: { el: "Λωτός: Συντονισμένη Αναπνοή", en: "Lotus: Resonant Breathing" },
     subtitle: { el: "Ισορροπία Συστήματος", en: "System Balance" },
-    desc: { el: "Συντονίζει την καρδιακή συχνότητα (5 - 0 - 5 - 0).", en: "Saturates heart rate variability (5 - 0 - 5 - 0)." },
-    totalCycleDurationMs: 10000, audioConfig: { base: 136.1, beat: 0, ambientLayers: [] },
+    rhythmName: { el: "5-5", en: "5-5" },
+    desc: { el: "Εισπνοή 5, εκπνοή 5, χωρίς παύσεις: ο ρυθμός 5-5 του βιβλίου, για κάθε μέρα.", en: "Inhale 5, exhale 5, with no pauses: the book's 5-5 rhythm, for every day." },
+    totalCycleDurationMs: 10000, audioConfig: { base: 200, beat: 10, pulse: 0, ambientLayers: ['ocean', 'wind'] },
     phases: [ { dur: 5000, armFrom: 0, armTo: 1 }, { dur: 5000, armFrom: 1, armTo: 0 } ],
     labels: [
       { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άνοιγμα (5s)", en: "open (5s)" } },
@@ -648,8 +665,9 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     axis: 'body',
     title: { el: "Λωτός: Τονωτική", en: "Lotus: Activating" },
     subtitle: { el: "Ενέργεια & Εγρήγορση", en: "Energy & Alertness" },
-    desc: { el: "Ένας τονωτικός ρυθμός (4 - 4 - 2 - 2).", en: "An invigorating rhythm (4 - 4 - 2 - 2)." },
-    totalCycleDurationMs: 12000, audioConfig: { base: 136.1, beat: 0, ambientLayers: [] },
+    rhythmName: { el: "Τονωτική", en: "Activating" },
+    desc: { el: "Εισπνοή 4, κράτημα 4, σύντομη εκπνοή 2, παύση 2. Για όταν το σώμα είναι βαρύ· όχι όταν η ένταση είναι ήδη ψηλά.", en: "Inhale 4, hold 4, short exhale 2, pause 2. For when the body feels heavy; not when tension is already high." },
+    totalCycleDurationMs: 12000, audioConfig: { base: 200, beat: 14, pulse: 0, ambientLayers: ['ocean', 'wind'] },
     phases: [ { dur: 4000, armFrom: 0, armTo: 1 }, { dur: 4000, armFrom: 1, armTo: 1 }, { dur: 2000, armFrom: 1, armTo: 0 }, { dur: 2000, armFrom: 0, armTo: 0 } ],
     labels: [
       { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άνοιγμα (4s)", en: "open (4s)" } },

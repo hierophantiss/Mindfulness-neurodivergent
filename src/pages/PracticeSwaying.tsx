@@ -71,9 +71,9 @@ export default function PracticeSwaying() {
     if (isPlaying && ambientLayer !== 'none') {
       const isBinaural = ambientLayer === 'binaural';
       startAudio({
-        base: isBinaural ? 110 : 0,
-        beat: isBinaural ? 6.3 : 0, // Theta rhythm for soothing
-        pulse: isBinaural ? 0.1 : undefined,
+        base: isBinaural ? 180 : 0,
+        beat: isBinaural ? 6 : 0, // theta 6 Hz, as "Unwind" in the Sanctuary
+        pulse: 0,
         ambientLayers: isBinaural ? ['ocean', 'wind'] : [ambientLayer as any],
         disableSynth: !isBinaural,
       });
@@ -190,7 +190,7 @@ export default function PracticeSwaying() {
 
   return (
     <div 
-      className="w-full min-h-screen flex flex-col p-4 md:p-8 font-sans animate-fade-in relative cursor-pointer" 
+      className="w-full min-h-screen flex flex-col p-4 pb-28 md:p-8 md:pb-28 font-sans animate-fade-in relative cursor-pointer" 
       style={{ backgroundColor: "var(--color-bg, #0f1117)", color: "var(--color-text, #d4d4d8)" }}
       onClick={handleTogglePlayback}
     >
@@ -207,13 +207,14 @@ export default function PracticeSwaying() {
               navigate('/practice'); 
             }
           }} 
+          aria-label={lang === 'el' ? 'Πίσω' : 'Back'}
           className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 transition-all cursor-pointer"
         >
           <ArrowLeft size={20} />
         </button>
         <div className="flex-1 flex justify-center items-center pointer-events-auto">
           <div className="text-[11px] font-bold tracking-[0.2em] uppercase text-white/40 flex items-center justify-center">
-            MINDFUL SWAYING
+            {lang === 'el' ? 'Λίκνισμα' : 'Swaying'}
             <ConceptInfoIcon conceptId="polyvagal" className="w-5 h-5 ml-2" />
           </div>
         </div>
@@ -245,7 +246,14 @@ export default function PracticeSwaying() {
         </div>
 
         {/* Dynamic Instruction */}
-        <div className="h-16 mt-8 flex items-center justify-center">
+        <div className="h-16 mt-8 flex items-center justify-center px-4">
+          {!isPlaying && !showSettings && (
+            <p className="text-white/55 text-[14px] text-center leading-relaxed max-w-sm">
+              {lang === 'el'
+                ? 'Λικνίσου απαλά δεξιά–αριστερά, όρθια ή καθιστή, με κάθε χτύπο. Εισπνοή προς τη μία πλευρά, εκπνοή πίσω στο κέντρο.'
+                : 'Sway gently left and right, standing or seated, with each beat. Inhale towards one side, exhale back to the centre.'}
+            </p>
+          )}
           {instruction && (
             <p className="text-white/60 font-serif italic text-lg text-center animate-in fade-in zoom-in duration-1000">
               {instruction}
@@ -255,7 +263,7 @@ export default function PracticeSwaying() {
       </div>
 
       {/* Controls Container (Absolute Positioned Settings) */}
-      <div className="w-full max-w-md mx-auto flex flex-col items-center gap-6 pb-8 relative z-30">
+      <div className="w-full max-w-md mx-auto flex flex-col items-center gap-6 pb-8 relative z-30" onClick={(e) => e.stopPropagation()}>
         
         {/* Settings Panel */}
         <div 
@@ -263,7 +271,7 @@ export default function PracticeSwaying() {
         >
           {/* Sounds Grid */}
           <label className="text-[10px] uppercase tracking-[0.2em] text-white/50 mb-3 w-full text-center">
-             {lang === "el" ? "Ηχος & Φυσικοι Ηχοι" : "Background Sounds"}
+             {lang === "el" ? "Ήχος" : "Sound"}
           </label>
           <div className="grid grid-cols-4 gap-2 mb-6 w-full max-w-sm">
              {(['none', 'ocean', 'wind', 'binaural'] as const).map(layer => (
@@ -275,13 +283,13 @@ export default function PracticeSwaying() {
                   {layer === 'none' && (lang === 'el' ? 'Κανένας' : 'None')}
                   {layer === 'ocean' && (lang === 'el' ? 'Ωκεανός' : 'Ocean')}
                   {layer === 'wind' && (lang === 'el' ? 'Αέρας' : 'Wind')}
-                  {layer === 'binaural' && 'Binaural'}
+                  {layer === 'binaural' && (lang === 'el' ? 'Binaural 🎧' : 'Binaural 🎧')}
                 </button>
              ))}
           </div>
 
           <label className="text-[10px] uppercase tracking-[0.2em] text-white/50 mb-3 w-full text-center mt-2">
-             {lang === "el" ? "Ρυθμος (Ταχυτητα) Μετρονομου" : "Metronome Rhythm Tempo"}
+             {lang === "el" ? "Ρυθμός του χτύπου" : "Beat tempo"}
           </label>
           <input
             type="range"
@@ -293,8 +301,8 @@ export default function PracticeSwaying() {
             className="w-full max-w-xs accent-teal-500"
           />
           <div className="flex justify-between w-full max-w-xs mt-1 px-1">
-             <span className="text-[10px] text-white/30">Fast (0.6s)</span>
-             <span className="text-[10px] text-white/30">Slow (2.0s)</span>
+             <span className="text-[10px] text-white/40">{lang === 'el' ? 'Γρήγορα (0,6 δ.)' : 'Fast (0.6 s)'}</span>
+             <span className="text-[10px] text-white/40">{lang === 'el' ? 'Αργά (2 δ.)' : 'Slow (2 s)'}</span>
           </div>
         </div>
 
@@ -302,6 +310,8 @@ export default function PracticeSwaying() {
         <div className="flex items-center gap-6">
           <button 
              onClick={() => setShowSettings(!showSettings)}
+             aria-label={lang === 'el' ? 'Ήχος και ρυθμός' : 'Sound and tempo'}
+             aria-expanded={showSettings}
              className="w-12 h-12 flex items-center justify-center rounded-full bg-white/5 border border-white/5 hover:bg-white/10 transition-colors"
           >
              <Settings2 size={18} className="text-white/60" />
@@ -309,7 +319,7 @@ export default function PracticeSwaying() {
           
           <button 
             onClick={(e) => { e.stopPropagation(); handleTogglePlayback(); }} 
-            aria-label={isPlaying ? "Pause" : "Play"} className="w-20 h-20 flex items-center justify-center rounded-full shadow-2xl border transition-all hover:scale-105 active:scale-95 cursor-pointer z-10 focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-white"
+            aria-label={isPlaying ? (lang === 'el' ? 'Παύση' : 'Pause') : (lang === 'el' ? 'Έναρξη' : 'Play')} className="w-20 h-20 flex items-center justify-center rounded-full shadow-2xl border transition-all hover:scale-105 active:scale-95 cursor-pointer z-10 focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-white"
             style={{ backgroundColor: "var(--color-accent, #1D9E75)", borderColor: "rgba(255,255,255,0.1)" }}
           >
             {isPlaying ? (

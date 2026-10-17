@@ -9,12 +9,13 @@ import { cn } from '../lib/utils';
 import { Check } from 'lucide-react';
 import { ConceptInfoIcon } from '../components/ConceptInfoOverlay';
 
-function PatternCard({ p, colorScheme, icon: Icon, onClick, language }: { 
+function PatternCard({ p, colorScheme, icon: Icon, onClick, language, hideCycle = false }: { 
   p: BreathPattern, 
   colorScheme: 'indigo' | 'orange', 
   icon: any, 
   onClick: () => void,
-  language: 'en' | 'el' 
+  language: 'en' | 'el',
+  hideCycle?: boolean
 }) {
   const isIndigo = colorScheme === 'indigo';
   
@@ -50,9 +51,18 @@ function PatternCard({ p, colorScheme, icon: Icon, onClick, language }: {
               Binaural
             </span>
           )}
+          {!hideCycle && (
           <span className="px-3 py-1.5 border rounded-full text-[10px] font-bold tracking-wide uppercase bg-white/5 border-white/10 text-white/60">
             {Math.round(p.totalCycleDurationMs / 1000)}s {language === 'el' ? 'Κύκλος' : 'Cycle'}
           </span>
+          )}
+          {p.stance && (
+            <span className="px-3 py-1.5 border rounded-full text-[10px] font-bold tracking-wide uppercase bg-white/5 border-white/10 text-white/60">
+              {p.stance === 'standing'
+                ? (language === 'el' ? 'Όρθια' : 'Standing')
+                : (language === 'el' ? 'Όρθια ή καθιστή' : 'Standing or seated')}
+            </span>
+          )}
         </div>
       </div>
     </div>
@@ -430,8 +440,43 @@ const axisInfo = {
   }
 
   if (activeCategory === 'movement') {
-    const filteredMovements = movementExercises.filter(matchesSomaticFilter);
-    const filteredGrounding = groundingExercises.filter(matchesSomaticFilter);
+    // "Ascetic Breath" is the Lotus flow at 5-5, which the Lotus card already holds.
+    const filteredMovements = movementExercises.filter(p => p.id !== 'lotus-bloom-5-5');
+    const flowOf = (id: string) => groundingExercises.find(p => p.id === id)!;
+    const flowCards: BreathPattern[] = [
+      {
+        ...flowOf('taichi-fourfold'),
+        title: { el: 'Ροή Τάι Τσι', en: 'Tai Chi Flow' },
+        subtitle: { el: 'Τέσσερις ρυθμοί', en: 'Four rhythms' },
+        desc: {
+          el: 'Τα χέρια ανεβαίνουν με την εισπνοή και κατεβαίνουν με την εκπνοή. Μέσα διαλέγεις ρυθμό: Τετραπλός Άξονας, Τετράγωνη, 5-5 ή Τονωτική.',
+          en: 'The arms rise with the inhale and sink with the exhale. Inside you choose the rhythm: Fourfold Axis, Box, 5-5 or Activating.',
+        },
+        stance: 'either',
+      },
+      {
+        ...flowOf('lotus-fourfold'),
+        title: { el: 'Λωτός', en: 'Lotus' },
+        subtitle: { el: 'Τέσσερις ρυθμοί', en: 'Four rhythms' },
+        desc: {
+          el: 'Τα χέρια ανοίγουν σαν λωτός με την εισπνοή και κλείνουν στο στήθος με την εκπνοή. Μέσα διαλέγεις ρυθμό.',
+          en: 'The arms open like a lotus with the inhale and close at the chest with the exhale. Inside you choose the rhythm.',
+        },
+        stance: 'either',
+      },
+    ];
+    const swayingCard: BreathPattern = {
+      ...filteredMovements[0],
+      id: 'swaying',
+      title: { el: 'Λίκνισμα', en: 'Swaying' },
+      subtitle: { el: 'Ρυθμός & Ηρεμία', en: 'Rhythm & Calm' },
+      desc: {
+        el: 'Ένα μικρό, ρυθμικό λίκνισμα δεξιά–αριστερά, με τον ρυθμό που σε βολεύει. Το λίκνισμα είναι και φυσικός τρόπος αυτορρύθμισης· δεν χρειάζεται να το κρύβεις.',
+        en: 'A small, rhythmic sway from side to side, at the pace that suits you. Swaying is also a natural way to self-regulate; you do not need to hide it.',
+      },
+      stance: 'either',
+    };
+    const filteredGrounding = flowCards;
 
     return (
       <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -457,30 +502,33 @@ const axisInfo = {
           </h2>
           <p className="text-lg text-white/50 font-sans leading-relaxed">
             {language === 'el' 
-              ? 'Μεταφέρετε την εστίαση από το νου στο σώμα μέσα από απαλές, ρυθμικές κινήσεις και ροές.' 
-              : 'Shift priority from thoughts to sensory presence with gentle somatic movements and flows.'}
+              ? 'Φέρε την προσοχή από τις σκέψεις στο σώμα, με απαλές, ρυθμικές κινήσεις.' 
+              : 'Bring your attention from thoughts to the body, with gentle, rhythmic movements.'}
           </p>
         </header>
 
         <div className="max-w-4xl mx-auto w-full mb-8 font-sans text-white/80 bg-white/[0.02] border border-white/5 rounded-2xl p-6 md:p-8 space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-700">
           <div>
             <h3 className="text-xl md:text-2xl font-serif text-indigo-300 italic mb-4">{language === 'el' ? 'Πριν Ξεκινήσεις' : 'Before You Start'}</h3>
-            <p className="mb-6">{language === 'el' ? 'Το Tai Chi ξεκινά πριν την πρώτη κίνηση.' : 'Tai Chi begins before the first movement.'}</p>
+            <p className="mb-6">{language === 'el' ? 'Το Τάι Τσι ξεκινά πριν από την πρώτη κίνηση.' : 'Tai Chi begins before the first movement.'}</p>
             <ul className="space-y-4 text-[15px] leading-relaxed">
               <li>
                 <strong className="text-indigo-200">{language === 'el' ? 'Στάση:' : 'Posture:'}</strong> {language === 'el' ? 'Στάσου με τα πόδια στο πλάτος των ώμων. Γόνατα ελαφρά λυγισμένα — όχι κλειδωμένα, ποτέ σφιχτά. Σπονδυλική στήλη ίσια και ελεύθερη — σαν να κρέμεσαι από μια αόρατη κλωστή στην κορυφή του κεφαλιού. Πέλματα σταθερά στο έδαφος, βάρος ίσα κατανεμημένο.' : 'Stand with your feet shoulder-width apart. Knees slightly bent — not locked, never tight. Spine straight and free — as if suspended by an invisible thread at the top of your head. Feet planted firmly on the ground, weight distributed evenly.'}
               </li>
               <li>
+                <strong className="text-indigo-200">{language === 'el' ? 'Καθιστά:' : 'Seated:'}</strong> {language === 'el' ? 'Πολλές κινήσεις γίνονται και σε καρέκλα. Πέλματα στο πάτωμα, κάθισε λίγο πιο μπροστά ώστε η πλάτη να στέκεται μόνη της.' : 'Many movements can also be done on a chair. Feet on the floor; sit a little forward so your back holds itself up.'}
+              </li>
+              <li>
                 <strong className="text-indigo-200">{language === 'el' ? 'Χέρια:' : 'Hands:'}</strong> {language === 'el' ? 'Κατεβαίνουν φυσικά στα πλάγια ή μπροστά στη λεκάνη. Δάχτυλα χαλαρά — ούτε σφιγμένα ούτε τεντωμένα.' : 'Let them drop naturally to the sides or in front of your pelvis. Fingers relaxed — neither clenched nor tense.'}
               </li>
               <li>
-                <strong className="text-indigo-200">{language === 'el' ? 'Βλέμμα:' : 'Gaze:'}</strong> {language === 'el' ? 'Μαλακό, μισάνοιχτο. Κοιτάς μπροστά χωρίς να εστιάζεις πουθενά. Αυτό είναι ήδη ο 4ος Άξονας.' : 'Soft, half-open. Look forward without focusing anywhere. This is already the 4th Axis.'}
+                <strong className="text-indigo-200">{language === 'el' ? 'Βλέμμα:' : 'Gaze:'}</strong> {language === 'el' ? 'Μαλακό, μισάνοιχτο. Κοιτάς μπροστά χωρίς να εστιάζεις πουθενά. Αυτό είναι ήδη ο τέταρτος άξονας, ο Χώρος.' : 'Soft, half-open. Look forward without focusing anywhere. This is already the fourth axis, Space.'}
               </li>
               <li>
                 <strong className="text-indigo-200">{language === 'el' ? 'Αναπνοή:' : 'Breath:'}</strong> {language === 'el' ? 'Μια βαθιά εισπνοή από τη μύτη — άφησε την κοιλιά να φουσκώσει. Μια αργή εκπνοή από το στόμα. Το σώμα χαλαρώνει με κάθε εκπνοή.' : 'Take a deep inhale through your nose — let your belly rise. A slow exhale through your mouth. The body relaxes with every exhale.'}
               </li>
             </ul>
-            <p className="mt-6 font-medium text-indigo-300 italic">{language === 'el' ? 'Τώρα είσαι έτοιμος.' : 'Now you are ready.'}</p>
+            <p className="mt-6 font-medium text-indigo-300 italic">{language === 'el' ? 'Τώρα μπορείς να ξεκινήσεις.' : 'Now you can begin.'}</p>
           </div>
 
           <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
@@ -488,7 +536,7 @@ const axisInfo = {
           <div>
             <h3 className="text-xl md:text-2xl font-serif text-indigo-300 italic mb-4">{language === 'el' ? 'Η Αρχή' : 'The Principle'}</h3>
             <p className="mb-2 leading-relaxed">
-              {language === 'el' ? 'Το Tai Chi δεν είναι γυμναστική — είναι συντονισμός. Η κίνηση και η αναπνοή είναι αδιαχώριστες. Η βαρύτητα είναι ο δάσκαλος, η αναπνοή ο ρυθμός, η προσοχή ακολουθεί φυσικά.' : 'Tai Chi is not a workout — it is coordination. Movement and breath are inseparable. Gravity is the teacher, breath is the rhythm, attention follows naturally.'}
+              {language === 'el' ? 'Το Τάι Τσι δεν είναι γυμναστική — είναι συντονισμός. Η κίνηση και η αναπνοή είναι αδιαχώριστες. Η βαρύτητα είναι ο δάσκαλος, η αναπνοή ο ρυθμός, η προσοχή ακολουθεί φυσικά.' : 'Tai Chi is not a workout — it is coordination. Movement and breath are inseparable. Gravity is the teacher, breath is the rhythm, attention follows naturally.'}
             </p>
             <p className="leading-relaxed">
               {language === 'el' ? 'Καμία κίνηση δεν είναι λάθος — μόνο πιο ή λιγότερο συνειδητή.' : 'No movement is wrong — only more or less conscious.'}
@@ -496,7 +544,6 @@ const axisInfo = {
           </div>
         </div>
 
-        {renderSomaticFilters()}
 
         <div className="max-w-4xl mx-auto w-full space-y-12 pb-12">
           {filteredMovements.length === 0 && filteredGrounding.length === 0 ? (
@@ -515,7 +562,7 @@ const axisInfo = {
                       {language === 'el' ? 'Βασικές Κινήσεις (Τάι Τσι & Qigong)' : 'Core Movements (Tai Chi & Qigong)'}
                     </h3>
                     <p className="text-sm text-white/40 mt-1">
-                      {language === 'el' ? 'Απλές μεμονωμένες κινήσεις για άμεση σωματική επαναφορά.' : 'Single deliberate physical movements for instant somatic resets.'}
+                      {language === 'el' ? 'Μία κίνηση, ξανά και ξανά, με την αναπνοή.' : 'One movement, again and again, with the breath.'}
                     </p>
                   </div>
                   
@@ -530,6 +577,14 @@ const axisInfo = {
                         language={language}
                       />
                     ))}
+                    <PatternCard
+                      p={swayingCard}
+                      colorScheme="indigo"
+                      icon={Activity}
+                      onClick={() => navigate('/practice/swaying')}
+                      language={language}
+                      hideCycle
+                    />
                   </div>
                 </div>
               )}
@@ -540,10 +595,10 @@ const axisInfo = {
                   <div className="border-b border-white/5 pb-2 flex justify-between items-end">
                     <div>
                       <h3 className="text-xl font-serif italic text-emerald-400 leading-tight">
-                        {language === 'el' ? 'Σύνθετες Ροές (Τάι Τσι & Λωτός)' : 'Rhythmic Flows (Tai Chi & Lotus)'}
+                        {language === 'el' ? 'Ροές' : 'Flows'}
                       </h3>
                       <p className="text-sm text-white/40 mt-1">
-                        {language === 'el' ? 'Ολοκληρωμένοι αναπνευστικοί ρυθμοί συγχρονισμένοι με τρισδιάστατες ροές.' : 'Fully animated breathing geometries synced with spatial flows.'}
+                        {language === 'el' ? 'Η ίδια κίνηση σε τέσσερις ρυθμούς· τον ρυθμό τον διαλέγεις μέσα στην άσκηση.' : 'The same movement in four rhythms; you choose the rhythm inside the practice.'}
                       </p>
                     </div>
                     <ConceptInfoIcon conceptId="grounding" className="mb-1" />
@@ -558,6 +613,7 @@ const axisInfo = {
                         icon={Compass}
                         onClick={() => navigate(`/practice/breath/${p.id}`)}
                         language={language}
+                        hideCycle
                       />
                     ))}
                   </div>
@@ -684,8 +740,8 @@ const axisInfo = {
             </h3>
             <p className="text-white/50 font-sans text-[14px] leading-relaxed">
               {language === 'en' 
-               ? 'Slow somatic actions & animated visual flows (Tai Chi / Lotus) for deep grounding.' 
-               : 'Αργές σωματικές κινήσεις & τρισδιάστατες οπτικές ροές (Τάι Τσι / Λωτός) για βαθιά γείωση.'}
+               ? 'Slow movements with the breath: Cloud Hands, Qigong, Swaying and the Tai Chi and Lotus flows.' 
+               : 'Αργές κινήσεις με την αναπνοή: Χέρια στα Σύννεφα, Qigong, Λίκνισμα και οι ροές Τάι Τσι και Λωτός.'}
             </p>
           </div>
         </div>

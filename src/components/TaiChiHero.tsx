@@ -12,6 +12,8 @@ interface TaiChiHeroProps {
   breathStateText: string;
   movementType: "taichi" | "lotus" | "bow" | "be-like-a-flower-5-5" | string;
   rhythmText?: string;
+  /** Not running: show the movement's resting pose. */
+  idle?: boolean;
 }
 
 export default function TaiChiHero({
@@ -20,6 +22,7 @@ export default function TaiChiHero({
   breathStateText,
   movementType,
   rhythmText,
+  idle = false,
 }: TaiChiHeroProps) {
   // Generate a list of randomized cosmic stars (twinkling)
   const stars = useMemo(() => {
@@ -305,9 +308,55 @@ export default function TaiChiHero({
   }
 
   // Pure mathematical symmetry across the vertical center (x = 200)
-  const eR = { x: 200 + (200 - eL.x), y: eL.y };
-  const hR = { x: 200 + (200 - hL.x), y: hL.y };
-  const rightHandRotation = -leftHandRotation;
+  let eR = { x: 200 + (200 - eL.x), y: eL.y };
+  let hR = { x: 200 + (200 - hL.x), y: hL.y };
+  let rightHandRotation = -leftHandRotation;
+  let eLf = eL, hLf = hL, leftRot = leftHandRotation;
+
+  // ── CLOUD HANDS (Yun Shou): not mirrored ──
+  // One breath cycle is one full turn: the inhale turns the body to one side,
+  // the exhale to the other. The upper hand passes in front of the face, the
+  // lower in front of the belly; at the end of each turn they change places.
+  const cloudHands = movementType === 'tai-chi-cloud-hands';
+  let bodyShift = 0;
+  if (cloudHands) {
+    const theta = idle ? Math.PI / 2 : (isRising ? Math.PI * bf : Math.PI + Math.PI * (1 - bf));
+    const turn = -Math.cos(theta);          // -1 = turned to screen-left, +1 = screen-right
+    const lift = Math.sin(theta);           // +1 = screen-right hand at the top
+    bodyShift = turn * 6;                   // weight moves from one foot to the other
+    const cx = 200 + bodyShift;
+    const yMid = 214, ry = 28, rx = 44;
+    const handR = { x: cx + rx * turn, y: yMid - ry * lift };
+    const handL = { x: cx + rx * 0.82 * turn, y: yMid + ry * lift };
+
+    const solveArm = (sh: { x: number; y: number }, hand: { x: number; y: number }, out: 1 | -1) => {
+      let dx = hand.x - sh.x, dy = hand.y - sh.y;
+      let d = Math.hypot(dx, dy);
+      // Seen flat, an arm reaching forward looks shorter: keep only a soft bend.
+      const L1 = Math.min(34, Math.max(12, (d / 2) * 1.25)), L2 = L1;
+      const maxD = L1 + L2 - 0.5;
+      const h = d > maxD ? { x: sh.x + (dx * maxD) / d, y: sh.y + (dy * maxD) / d } : hand;
+      dx = h.x - sh.x; dy = h.y - sh.y; d = Math.max(0.1, Math.min(d, maxD));
+      const a = Math.atan2(dy, dx);
+      const b = Math.acos(Math.max(-1, Math.min(1, (L1 * L1 + d * d - L2 * L2) / (2 * L1 * d))));
+      const c1 = { x: sh.x + L1 * Math.cos(a + b), y: sh.y + L1 * Math.sin(a + b) };
+      const c2 = { x: sh.x + L1 * Math.cos(a - b), y: sh.y + L1 * Math.sin(a - b) };
+      // Elbows hang down (and a little outwards), below the hands.
+      const score = (e: { x: number; y: number }) => 0.4 * out * (e.x - sh.x) + (e.y - sh.y);
+      return { elbow: score(c1) >= score(c2) ? c1 : c2, hand: h };
+    };
+    const shL = { x: sL.x + bodyShift, y: sL.y };
+    const shR = { x: sR.x + bodyShift, y: sR.y };
+    const armR = solveArm(shR, handR, 1);
+    const armL = solveArm(shL, handL, -1);
+    eR = armR.elbow; hR = armR.hand;
+    eLf = armL.elbow; hLf = armL.hand;
+    // Upper hand: palm towards the face, fingers up; lower hand: palm down, fingers across.
+    const upR = (lift + 1) / 2;
+    rightHandRotation = 90 + 90 * upR;
+    leftRot = -(90 + 90 * (1 - upR));
+    sL.x = shL.x; sR.x = shR.x;
+  }
 
   return (
     <div className="relative w-full aspect-square bg-[#070b14] rounded-2xl overflow-hidden border border-slate-800 shadow-2xl flex items-center justify-center">
@@ -577,7 +626,7 @@ export default function TaiChiHero({
           </g>
 
           {/* LEGS (Jogger pants, dark charcoal, elegant folds) */}
-          <g id="legs" fill="#1e222a" stroke="#13161b" strokeWidth="0.5">
+          <g id="legs" fill="#1e222a" stroke="#13161b" strokeWidth="0.5" transform={bodyShift ? `translate(0, 283) skewX(${(-Math.atan2(bodyShift, 38) * 180) / Math.PI}) translate(0, -283)` : undefined}>
             {/* Left leg */}
             <path d="M 188 245 L 182 268 L 186 283 L 196 283 L 195 245 Z" />
             {/* Right leg */}
@@ -588,7 +637,7 @@ export default function TaiChiHero({
           </g>
 
           {/* TORSO / HOODIE (Black/Charcoal hoodie, centered) */}
-          <g id="torso" fill="#13161d">
+          <g id="torso" fill="#13161d" transform={bodyShift ? `translate(${bodyShift}, 0)` : undefined}>
             <path d={`M 180 ${206 + torsoBendY + leanBackY} L 220 ${206 + torsoBendY + leanBackY} L 214 248 L 186 248 Z`} />
             {/* Kangaroo Pocket */}
             <path
@@ -601,7 +650,7 @@ export default function TaiChiHero({
           </g>
 
           {/* RAINBOW INFINITY SYMBOL ON CHEST */}
-          <g id="infinity-symbol" transform={`translate(200, ${222 + torsoBendY * 0.6 + leanBackY * 0.6})`}>
+          <g id="infinity-symbol" transform={`translate(${200 + bodyShift}, ${222 + torsoBendY * 0.6 + leanBackY * 0.6})`}>
             {/* Outer glow around symbol when breathing in */}
             <path
               d="M -6.5 0 C -6.5 -3.5 -2.5 -3.5 0 0 C 2.5 3.5 6.5 3.5 6.5 0 C 6.5 -3.5 2.5 -3.5 0 0 C -2.5 3.5 -6.5 3.5 -6.5 0 Z"
@@ -622,7 +671,7 @@ export default function TaiChiHero({
             />
           </g>
 
-          <g id="head-group" transform={`translate(200, ${206 + torsoBendY + leanBackY * 1.5}) scale(${0.85 + bowBend * 0.15}) translate(-200, -206)`}>
+          <g id="head-group" transform={`translate(${200 + bodyShift * 1.15}, ${206 + torsoBendY + leanBackY * 1.5}) scale(${0.85 + bowBend * 0.15}) translate(-200, -206)`}>
             {/* INNER HEAD & FACE peeking from under hood */}
             <g id="face">
               {/* Neck */}
@@ -656,7 +705,7 @@ export default function TaiChiHero({
           {/* LEFT ARM (Shoulder -> Elbow -> Wrist) */}
           {/* Left Arm Sleeve */}
           <path
-            d={`M ${sL.x} ${sL.y} L ${eL.x} ${eL.y} L ${hL.x} ${hL.y}`}
+            d={`M ${sL.x} ${sL.y} L ${eLf.x} ${eLf.y} L ${hLf.x} ${hLf.y}`}
             fill="none"
             stroke="#13161d"
             strokeWidth="9.5"
@@ -665,7 +714,7 @@ export default function TaiChiHero({
           />
           {/* Left Arm Shadow Inner edge */}
           <path
-            d={`M ${sL.x} ${sL.y} L ${eL.x} ${eL.y} L ${hL.x} ${hL.y}`}
+            d={`M ${sL.x} ${sL.y} L ${eLf.x} ${eLf.y} L ${hLf.x} ${hLf.y}`}
             fill="none"
             stroke="#0c0e12"
             strokeWidth="5"
@@ -696,7 +745,7 @@ export default function TaiChiHero({
           />
 
           {/* LEFT HAND (Simplified Abstract Oval) */}
-          <g transform={`translate(${hL.x}, ${hL.y}) rotate(${leftHandRotation}) scale(0.65)`}>
+          <g transform={`translate(${hLf.x}, ${hLf.y}) rotate(${leftRot}) scale(0.65)`}>
             <path d="M -3 -2 L 3 -2 C 4 3 3 7 0 8 C -3 7 -4 3 -3 -2 Z" fill="#e5bda3" />
           </g>
 
