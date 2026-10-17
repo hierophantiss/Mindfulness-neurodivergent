@@ -57,7 +57,8 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: .tts-cache
-          key: tts-${{ hashFiles('book/workbook_el.md', 'book/workbook_en.md', 'tools/audiobook/*.py') }}
+          # A new key every run, so the segments spoken in this run are saved too.
+          key: tts-${{ github.run_id }}
           restore-keys: tts-
 
       - name: Build
