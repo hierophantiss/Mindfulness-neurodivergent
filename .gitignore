@@ -10,3 +10,7 @@ coverage/
 # build_pdf.py debug output and Python caches
 *_debug.html
 __pycache__/
+
+# Audiobook: spoken-segment cache and build output (tools/audiobook)
+.tts-cache/
+audiobook-out/

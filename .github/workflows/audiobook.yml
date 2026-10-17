@@ -1,0 +1,84 @@
+# Builds the audiobook from book/workbook_<lang>.md with Google Text-to-Speech
+# (Chirp 3 HD, voice Sulafat) and attaches the files to a GitHub Release.
+#
+# Run it by hand: Actions → Audiobook → Run workflow.
+# Needs the repository secret GOOGLE_TTS_API_KEY (an API key restricted to the
+# Cloud Text-to-Speech API). Nothing is committed to the repository; the audio
+# goes to the release only.
+#
+# "chapters" builds only some audio chapters (e.g. "1-3"), as a preview in the
+# pre-release "audiobook-preview". Left empty, the whole book goes to the
+# release "audiobook".
+
+name: Audiobook
+
+on:
+  workflow_dispatch:
+    inputs:
+      lang:
+        description: Language
+        type: choice
+        options: [el, en, both]
+        default: el
+      chapters:
+        description: Audio chapters to build, e.g. 1-3 (empty = the whole book)
+        type: string
+        default: ''
+
+permissions:
+  contents: write
+
+concurrency:
+  group: audiobook
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      GOOGLE_TTS_API_KEY: ${{ secrets.GOOGLE_TTS_API_KEY }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the key
+        run: |
+          if [ -z "$GOOGLE_TTS_API_KEY" ]; then
+            echo "::error::Add the repository secret GOOGLE_TTS_API_KEY first (Settings → Secrets and variables → Actions)."
+            exit 1
+          fi
+
+      - name: Install ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
+      # Spoken segments already paid for are reused, so a rerun after a small
+      # change in the book only synthesises the changed text.
+      - uses: actions/cache@v4
+        with:
+          path: .tts-cache
+          key: tts-${{ hashFiles('book/workbook_el.md', 'book/workbook_en.md', 'tools/audiobook/*.py') }}
+          restore-keys: tts-
+
+      - name: Build
+        run: |
+          langs="${{ inputs.lang }}"
+          [ "$langs" = "both" ] && langs="el en"
+          for l in $langs; do
+            python3 tools/audiobook/script.py "$l" "audiobook-out/script_$l.json"
+            python3 tools/audiobook/synth.py "audiobook-out/script_$l.json" "$l" "audiobook-out/$l" \
+              --cache .tts-cache --only "${{ inputs.chapters }}"
+          done
+
+      - name: Attach to the release
+        run: |
+          if [ -n "${{ inputs.chapters }}" ]; then
+            tag=audiobook-preview; title="Audiobook (preview)"; extra=--prerelease
+          else
+            tag=audiobook; title="Audiobook"; extra=
+          fi
+          gh release view "$tag" >/dev/null 2>&1 || \
+            gh release create "$tag" --title "$title" $extra \
+              --notes "Audiobook of the workbook, read by a synthetic voice (Google Chirp 3 HD, Sulafat). CC BY-NC-ND 4.0."
+          gh release upload "$tag" audiobook-out/*/*.mp3 audiobook-out/*/*.m4b --clobber
+          echo "Files: https://github.com/${{ github.repository }}/releases/tag/$tag" >> "$GITHUB_STEP_SUMMARY"
