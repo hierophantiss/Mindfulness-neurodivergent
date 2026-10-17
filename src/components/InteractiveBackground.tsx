@@ -1,6 +1,7 @@
 import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
+import { useLocation } from 'react-router-dom';
 import { useTime } from '../contexts/TimeContext';
 import { useProgress } from '../contexts/ProgressContext';
 import { useMoonPhase } from '../hooks/useMoonPhase';
@@ -25,6 +26,28 @@ export function InteractiveBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const starsRef = useRef<Star[]>([]);
   const requestRef = useRef<number>(0);
+  const celestialRef = useRef<HTMLDivElement>(null);
+
+  // Sun and moon fade as the page scrolls, so they never sit bright behind the content.
+  useEffect(() => {
+    const onScroll = (e: Event) => {
+      const el = celestialRef.current;
+      if (!el) return;
+      const t = e.target;
+      // Only page-level scrolling (the main area, or a page that scrolls on its own), not small inner lists.
+      if (t instanceof Element && t.id !== 'main-content' && t.clientHeight < window.innerHeight * 0.6) return;
+      const top = t instanceof Element ? t.scrollTop : window.scrollY;
+      el.style.opacity = String(1 - Math.min(1, top / 240) * 0.75);
+    };
+    document.addEventListener('scroll', onScroll, { capture: true, passive: true });
+    return () => document.removeEventListener('scroll', onScroll, { capture: true });
+  }, []);
+
+  // A new page starts at the top, so the sky comes back.
+  const { pathname } = useLocation();
+  useEffect(() => {
+    if (celestialRef.current) celestialRef.current.style.opacity = '1';
+  }, [pathname]);
   
   // Calculate states based on hour
   const isNight = hour < 6 || hour >= 20;
@@ -208,6 +231,7 @@ export function InteractiveBackground() {
       />
       
       {/* Dynamic Background Element (Celestial Disc) */}
+      <div ref={celestialRef} className="absolute inset-0 z-10 transition-opacity duration-500">
       <motion.div 
         className="absolute left-1/2 bottom-[-10%] w-0 h-0 z-10"
         initial={false}
@@ -247,6 +271,7 @@ export function InteractiveBackground() {
            </div>
          </div>
       </motion.div>
+      </div>
 
       {/* Aurora Borealis (Northern Lights) Effect - Ethereal, steady and gentle ambient light curtains during night */}
       <div 

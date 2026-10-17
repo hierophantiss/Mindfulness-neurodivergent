@@ -1,6 +1,6 @@
 import { AudioEnabler } from '../components/AudioEnabler';
 import React, { useState, useEffect, useMemo } from 'react';
-import { BookOpen, Moon, ChevronRight, ChevronDown, Telescope, Info, Calendar, Download, RotateCcw, Activity, Wind, Volume2, Zap, Compass } from 'lucide-react';
+import { BookOpen, Moon, ChevronRight, ChevronDown, Telescope, Info, Calendar, Download, RotateCcw, Activity, Compass } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useCompanion } from '../hooks/useCompanion';
@@ -80,14 +80,22 @@ export default function Dashboard() {
   });
   const el = lang === 'el';
   const moreLinks = [
-    { to: '/practice?category=breath', icon: Wind, tone: 'text-teal-300', label: el ? 'Αναπνοές' : 'Breathing' },
-    { to: '/practice?category=movement', icon: Activity, tone: 'text-indigo-300', label: el ? 'Κίνηση & Τάι Τσι' : 'Movement & Tai Chi' },
-    { to: '/practice?category=vocal', icon: Volume2, tone: 'text-violet-300', label: el ? 'Ψάλσιμο' : 'Chanting' },
-    { to: '/practice?category=microdoses', icon: Zap, tone: 'text-amber-300', label: el ? 'Μικροδόσεις' : 'Microdoses' },
-    { to: '/sanctuary', icon: Moon, tone: 'text-[#b4abce]', label: el ? 'Καταφύγιο' : 'Sanctuary' },
-    { to: '/program', icon: Calendar, tone: 'text-[#b0c4aa]', label: el ? 'Πρόγραμμα 8 εβδομάδων' : '8-week Program', sub: completedLessons > 0 ? `${lessonProgressPct}%` : undefined },
-    { to: '/rabbithole', icon: Telescope, tone: 'text-[#a695b0]', label: el ? 'Κουνελότρυπα' : 'Rabbit Hole' },
-    { to: '/method', icon: Compass, tone: 'text-[#8ba3ba]', label: el ? 'Η Μέθοδος' : 'The Method' },
+    { to: '/practice', icon: Activity, tone: 'text-teal-300',
+      label: el ? 'Ασκήσεις' : 'Practices',
+      desc: el ? 'Αναπνοές, κίνηση & Τάι Τσι, ψάλσιμο, μικροδόσεις' : 'Breathing, movement & Tai Chi, chanting, microdoses' },
+    { to: '/sanctuary', icon: Moon, tone: 'text-[#b4abce]',
+      label: el ? 'Καταφύγιο' : 'Sanctuary',
+      desc: el ? 'Ήχοι φύσης και binaural για ύπνο, χαλάρωση ή εστίαση' : 'Nature sounds and binaural beats for sleep, rest or focus' },
+    { to: '/program', icon: Calendar, tone: 'text-[#b0c4aa]',
+      label: el ? 'Πρόγραμμα 8 εβδομάδων' : '8-week Program',
+      desc: el ? 'Ένα μικρό βήμα τη μέρα, με σειρά' : 'One small step a day, in order',
+      sub: completedLessons > 0 ? `${lessonProgressPct}%` : undefined },
+    { to: '/rabbithole', icon: Telescope, tone: 'text-[#a695b0]',
+      label: el ? 'Κουνελότρυπα' : 'Rabbit Hole',
+      desc: el ? 'Πιο βαθιά κείμενα, όταν η πρακτική σταθεροποιηθεί' : 'Deeper texts, for when your practice feels steady' },
+    { to: '/method', icon: Compass, tone: 'text-[#8ba3ba]',
+      label: el ? 'Η Μέθοδος' : 'The Method',
+      desc: el ? 'Τι είναι ο Τετραπλός Άξονας και πώς δουλεύει' : 'What the Fourfold Axis is and how it works' },
   ];
 
   const [greeting, setGreeting] = useState('');
@@ -274,19 +282,23 @@ export default function Dashboard() {
                 initial={{ opacity: 0, y: -6 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.35 }}
-                className="w-full grid grid-cols-2 gap-2"
+                className="w-full flex flex-col gap-2"
               >
                 {moreLinks.map(item => (
                   <Link
                     key={item.to}
                     to={item.to}
-                    className={cn("flex items-center gap-2.5 px-3.5 py-3 min-h-[56px] rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] transition-colors active:scale-[0.97] min-w-0", item.tone)}
+                    className="flex items-center gap-3.5 px-4 py-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] transition-colors active:scale-[0.98]"
                   >
-                    <item.icon size={16} strokeWidth={1.5} className="shrink-0 opacity-80" />
-                    <span className="flex flex-col min-w-0">
-                      <span className="text-[13px] leading-tight text-white/75">{item.label}</span>
-                      {item.sub && <span className="text-[10px] font-mono text-white/40 mt-0.5">{item.sub}</span>}
+                    <item.icon size={18} strokeWidth={1.5} className={cn("shrink-0 opacity-80", item.tone)} />
+                    <span className="flex flex-col min-w-0 flex-1 gap-0.5">
+                      <span className="flex items-baseline gap-2 text-[14px] leading-tight text-white/85">
+                        {item.label}
+                        {item.sub && <span className="text-[11px] font-mono text-white/40">{item.sub}</span>}
+                      </span>
+                      <span className="text-[12px] leading-snug text-white/45">{item.desc}</span>
                     </span>
+                    <ChevronRight size={16} className="text-white/30 shrink-0" />
                   </Link>
                 ))}
               </motion.div>
