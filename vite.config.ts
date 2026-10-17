@@ -17,7 +17,7 @@ export default defineConfig(() => {
           globPatterns: ['**/*.{js,css,woff2,svg,ico,html}'],
           globIgnores: ['**/*.{mp4,pdf,png,jpg}', 'server.cjs*'],
           navigateFallback: '/index.html',
-          navigateFallbackDenylist: [/\.(?:pdf|epub)$/, /^\/workbook_/, /^\/animations\//],
+          navigateFallbackDenylist: [/\.(?:pdf|epub)$/, /^\/workbook_/, /^\/animations\//, /^\/audio\//],
           ignoreURLParametersMatching: [/^utm_/, /^fbclid$/, /^lang$/],
           maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
           cleanupOutdatedCaches: true,
@@ -26,8 +26,6 @@ export default defineConfig(() => {
         }
       })
     ],
-    // The Piper voice runs in a module worker (src/lib/piper/piper.worker.ts).
-    worker: { format: 'es' as const },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),

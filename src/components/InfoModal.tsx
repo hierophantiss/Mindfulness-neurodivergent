@@ -131,8 +131,8 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
     privacy: {
       title: { el: 'Απόρρητο', en: 'Privacy' },
       text: {
-        el: 'Όλα τα δεδομένα σου (πρόοδος, ημερολόγιο, ρυθμίσεις) μένουν μόνο στη συσκευή σου. Δεν συλλέγουμε, δεν παρακολουθούμε και δεν στέλνουμε πουθενά τις πληροφορίες σου. Η σελίδα φορτώνει γραμματοσειρές από τη Google και, αν κατεβάσεις τη φωνή ακρόασης, τα αρχεία της από το Hugging Face και δύο δημόσια δίκτυα αρχείων· αυτές οι υπηρεσίες βλέπουν μόνο ότι ζητήθηκε ένα αρχείο.',
-        en: 'All your data (progress, journal, settings) stays only on your device. We do not collect, track or send your information anywhere. The page loads fonts from Google and, if you download the read-aloud voice, its files from Hugging Face and two public file networks; these services only see that a file was requested.'
+        el: 'Όλα τα δεδομένα σου (πρόοδος, ημερολόγιο, ρυθμίσεις) μένουν μόνο στη συσκευή σου. Δεν συλλέγουμε, δεν παρακολουθούμε και δεν στέλνουμε πουθενά τις πληροφορίες σου. Η σελίδα φορτώνει γραμματοσειρές από τη Google, που βλέπει μόνο ότι ζητήθηκε ένα αρχείο. Ο ήχος της ακρόασης έρχεται από την ίδια τη σελίδα.',
+        en: 'All your data (progress, journal, settings) stays only on your device. We do not collect, track or send your information anywhere. The page loads fonts from Google, which only sees that a file was requested. The read-aloud audio comes from the site itself.'
       }
     }
   };

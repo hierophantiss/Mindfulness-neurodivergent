@@ -15,7 +15,6 @@ import InteractiveRenderer from '../components/InteractiveRenderer';
 import ChapterReaderBar from '../components/ChapterReaderBar';
 import { buildChapterSegments } from '../lib/chapterReading';
 import { useSpeechReader, loadReaderSettings, saveReaderSettings, type ReaderSettings } from '../hooks/useSpeechReader';
-import { usePiperVoice } from '../hooks/usePiperVoice';
 
 const READER_POS_KEY = 'n_mindfulness_reader_pos';
 
@@ -255,12 +254,11 @@ export default function ChapterDetail() {
     () => (chapter ? buildChapterSegments(chapter, takeaways, currentLang) : []),
     [chapter, takeaways, currentLang]
   );
-  const piper = usePiperVoice(currentLang);
   const readerMedia = useMemo(
     () => (chapter ? { title: chapter.title, artist: currentLang === 'el' ? `Κεφάλαιο ${chapter.num}` : `Chapter ${chapter.num}` } : undefined),
     [chapter, currentLang]
   );
-  const reader = useSpeechReader(segments, currentLang, readerSettings, piper.ready, readerMedia);
+  const reader = useSpeechReader(segments, currentLang, readerSettings, chapter ? chapter.num : null, readerMedia);
   const readerActive = reader.status !== 'idle';
   const activeSeg = readerActive ? segments[reader.index] : undefined;
   const posId = chapter ? `${currentLang}-${chapter.num}` : '';
@@ -703,7 +701,7 @@ export default function ChapterDetail() {
         </AnimatePresence>
       </main>
 
-      {piper.supported && segments.length > 0 && (
+      {segments.length > 0 && (
         <ChapterReaderBar
           lang={currentLang}
           status={reader.status}
@@ -714,7 +712,6 @@ export default function ChapterDetail() {
           waiting={reader.waiting}
           errorCode={reader.errorCode}
           errorDetail={reader.errorDetail}
-          piper={piper}
           hasResume={!!savedKey && segments.some((sg) => sg.key === savedKey) && segments[0].key !== savedKey}
           settings={readerSettings}
           reduceMotion={reduceMotion}

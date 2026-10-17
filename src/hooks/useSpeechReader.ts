@@ -1,13 +1,24 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { toSentences, type ReadLang, type ReadSegment, type SegmentKind } from '../lib/chapterReading';
-import { piperEngine, setPiperWaitingListener } from '../lib/speechEngines';
-import { PiperError } from '../lib/piper/client';
+import { BASE_RATE, type ReadLang, type ReadSegment } from '../lib/chapterReading';
+import {
+  audioUrl,
+  forgetOldVoice,
+  getAudio,
+  keepOnDevice,
+  loadTiming,
+  localAudio,
+  type ChapterTiming,
+} from '../lib/chapterAudio';
 
 /**
- * Reads a list of segments aloud, sentence by sentence, with the Piper voice
- * downloaded once to the device. Nothing leaves the device. Pause stops the
- * voice; resume restarts the current sentence. If the voice fails, the reader
- * pauses on that sentence and reports a short code, so it can be resumed.
+ * Reads a chapter aloud with its recorded audio (Sulafat) and a timing map:
+ * the segment being heard is highlighted, the page follows it, and the silence
+ * after an exercise step is shown. One <audio> element plays the whole chapter,
+ * so it keeps going with the screen off and answers the lock-screen controls.
+ *
+ * Error codes shown to the listener: 1 = offline and the chapter is not yet on
+ * the device; 2 = playback failed; 3 = playback was not allowed (tap play
+ * again); 4 = this chapter has no audio yet.
  */
 
 export type ReaderStatus = 'idle' | 'playing' | 'paused';
@@ -41,217 +52,278 @@ export function saveReaderSettings(s: ReaderSettings) {
   }
 }
 
-/** Silence after each kind of segment, in ms. Steps leave time to do the step. */
-const PAUSE_AFTER: Record<SegmentKind, number> = {
-  heading: 900,
-  theory: 700,
-  card: 1400,
-  practice: 2500,
-  step: 7000,
-};
-/** Exercises and cards are read a little slower than the theory. */
-const RATE_FACTOR: Record<SegmentKind, number> = {
-  heading: 1,
-  theory: 1,
-  card: 0.95,
-  practice: 0.92,
-  step: 0.9,
-};
-const PAUSE_BEFORE_PRACTICE = 1800;
-
 export interface ReaderMedia {
   title: string;
   artist: string;
+}
+
+interface Span {
+  t0: number;
+  e: number;
+}
+
+/** Start and end of speech for each segment, in the order of `segments` (null: not in the audio). */
+function align(segments: ReadSegment[], timing: ChapterTiming): (Span | null)[] {
+  const byKey = new Map(timing.segments.map((s) => [s.key, s]));
+  return segments.map((s) => {
+    const t = byKey.get(s.key);
+    return t ? { t0: t.t0, e: t.e } : null;
+  });
 }
 
 export function useSpeechReader(
   segments: ReadSegment[],
   lang: ReadLang,
   settings: ReaderSettings,
-  /** The voice is on the device; reading can only start then. */
-  ready: boolean,
+  /** The chapter whose audio to play; null while there is none. */
+  chapterNum: number | null,
   media?: ReaderMedia
 ) {
   const [status, setStatus] = useState<ReaderStatus>('idle');
   const [index, setIndex] = useState(0);
-  /** Set while the reader is silent between exercise steps: when the silence ends. */
+  /** Set while the reader is silent after an exercise step: when the silence ends. */
   const [silence, setSilence] = useState<{ until: number; ms: number } | null>(null);
-  /** True while the voice is still preparing the sentence (first use can take a few seconds). */
+  /** True while the audio is loading. */
   const [waiting, setWaiting] = useState(false);
-  /** Short code of the last failure, shown with a "try again"; cleared when reading resumes. */
   const [errorCode, setErrorCode] = useState<number | null>(null);
-  /** The technical message behind the code, shown only if the listener taps the code. */
   const [errorDetail, setErrorDetail] = useState('');
 
-  useEffect(() => {
-    setPiperWaitingListener(setWaiting);
-    return () => setPiperWaitingListener(null);
-  }, []);
-
-  const indexRef = useRef(0);
-  const sentenceRef = useRef(0);
-  const tokenRef = useRef(0);
-  const waitRef = useRef<{ timer: number; resolve: () => void } | null>(null);
   const statusRef = useRef<ReaderStatus>('idle');
+  const indexRef = useRef(0);
   const segRef = useRef(segments);
+  const spansRef = useRef<(Span | null)[]>([]);
+  const timingRef = useRef<ChapterTiming | null>(null);
+  const srcRef = useRef<string>('');
+  const localRef = useRef<string | null>(null);
+  const pendingSeek = useRef<number | null>(null);
+  const silenceFor = useRef(-1);
   const settingsRef = useRef(settings);
-  const readyRef = useRef(ready);
   segRef.current = segments;
   settingsRef.current = settings;
-  readyRef.current = ready;
 
   const setStatusBoth = (s: ReaderStatus) => {
     statusRef.current = s;
     setStatus(s);
   };
+  const setIndexBoth = (i: number) => {
+    indexRef.current = i;
+    setIndex(i);
+  };
 
-  /** A pause that `halt` can cut short. Resolves true if it ran to the end. */
-  const wait = (ms: number) =>
-    new Promise<boolean>((resolve) => {
-      const timer = window.setTimeout(() => {
-        waitRef.current = null;
-        resolve(true);
-      }, ms);
-      waitRef.current = { timer, resolve: () => resolve(false) };
+  const rate = () => Math.max(0.5, Math.min(2, settingsRef.current.rate / BASE_RATE));
+
+  // Load the timing map (and the copy on the device, if any) when the chapter opens.
+  useEffect(() => {
+    forgetOldVoice();
+    timingRef.current = null;
+    spansRef.current = [];
+    if (localRef.current) URL.revokeObjectURL(localRef.current);
+    localRef.current = null;
+    if (chapterNum == null) return;
+    let alive = true;
+    loadTiming(lang, chapterNum).then((t) => {
+      if (!alive || !t) return;
+      timingRef.current = t;
+      spansRef.current = align(segRef.current, t);
     });
+    localAudio(lang, chapterNum).then((u) => {
+      if (alive) localRef.current = u;
+      else if (u) URL.revokeObjectURL(u);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [lang, chapterNum]);
 
-  const halt = () => {
-    tokenRef.current += 1;
-    if (waitRef.current) {
-      window.clearTimeout(waitRef.current.timer);
-      waitRef.current.resolve();
-      waitRef.current = null;
+  useEffect(() => {
+    if (timingRef.current) spansRef.current = align(segments, timingRef.current);
+  }, [segments]);
+
+  const failureCode = () =>
+    typeof navigator !== 'undefined' && navigator.onLine === false ? 1 : timingRef.current ? 2 : 4;
+
+  /** The segment playing at time t (the last one that has started). */
+  const segmentAt = (t: number) => {
+    const spans = spansRef.current;
+    let found = -1;
+    for (let i = 0; i < spans.length; i++) {
+      const sp = spans[i];
+      if (sp && sp.t0 <= t + 0.05) found = i;
     }
-    setSilence(null);
-    piperEngine.cancel();
+    return found;
   };
 
-  /** The next few sentences after the current one, for the voice to prepare. */
-  const upcoming = (i: number, s: number, n: number) => {
-    const out: string[] = [];
-    const segs = segRef.current;
-    for (let k = i; k < segs.length && out.length < n; k++) {
-      const sentences = toSentences(segs[k].text);
-      for (let j = k === i ? s : 0; j < sentences.length && out.length < n; j++) out.push(sentences[j]);
-    }
-    return out;
+  const nextStart = (i: number) => {
+    const spans = spansRef.current;
+    for (let k = i + 1; k < spans.length; k++) if (spans[k]) return spans[k]!.t0;
+    return timingRef.current?.duration ?? 0;
   };
 
-  const run = useCallback(async (token: number) => {
-    while (token === tokenRef.current) {
-      const segs = segRef.current;
-      const i = indexRef.current;
-      if (i >= segs.length) {
-        setStatusBoth('idle');
-        indexRef.current = 0;
-        setIndex(0);
-        return;
-      }
-      const seg = segs[i];
-      const sentences = toSentences(seg.text);
-      const s = sentenceRef.current;
+  const seekTo = (i: number) => {
+    const sp = spansRef.current[i];
+    const el = getAudio();
+    const t = sp ? sp.t0 : 0;
+    if (el.readyState >= 1) el.currentTime = t;
+    else pendingSeek.current = t;
+  };
 
-      if (s < sentences.length) {
-        piperEngine.prefetch(upcoming(i, s + 1, 3), lang);
-        try {
-          await piperEngine.speak(sentences[s], {
-            lang,
-            rate: Math.max(0.5, Math.min(1.5, settingsRef.current.rate * RATE_FACTOR[seg.kind])),
-          });
-        } catch (e) {
-          if (token !== tokenRef.current) return;
-          // Stay on this sentence: "try again" resumes exactly here.
-          halt();
-          setStatusBoth('paused');
-          setErrorCode(e instanceof PiperError ? e.stage : 0);
-          setErrorDetail(`${String((e as Error)?.message || e)} | «${sentences[s].slice(0, 60)}»`);
-          return;
-        }
-        if (token !== tokenRef.current) return;
-        sentenceRef.current = s + 1;
-        continue;
+  // Follow the audio: highlight, silences, end.
+  useEffect(() => {
+    const el = getAudio();
+    const onTime = () => {
+      if (statusRef.current === 'idle' || el.src !== srcRef.current) return;
+      const t = el.currentTime;
+      const i = segmentAt(t);
+      if (i >= 0 && i !== indexRef.current) {
+        setIndexBoth(i);
+        setSilence(null);
       }
-
-      const next = segs[i + 1];
-      const ms = PAUSE_AFTER[seg.kind] + (next && next.kind === 'practice' ? PAUSE_BEFORE_PRACTICE : 0);
-      if (seg.kind === 'step') setSilence({ until: Date.now() + ms, ms });
-      const full = await wait(ms);
-      if (!full || token !== tokenRef.current) return;
+      const cur = i >= 0 ? i : indexRef.current;
+      const sp = spansRef.current[cur];
+      const seg = segRef.current[cur];
+      if (sp && seg?.kind === 'step' && t >= sp.e && silenceFor.current !== cur && statusRef.current === 'playing') {
+        silenceFor.current = cur;
+        const ms = Math.max(0, ((nextStart(cur) - t) / rate()) * 1000);
+        setSilence({ until: Date.now() + ms, ms });
+      }
+    };
+    const onMeta = () => {
+      if (pendingSeek.current != null) {
+        el.currentTime = pendingSeek.current;
+        pendingSeek.current = null;
+      }
+    };
+    const onWaiting = () => statusRef.current === 'playing' && setWaiting(true);
+    const onPlaying = () => setWaiting(false);
+    const onEnded = () => {
+      if (el.src !== srcRef.current) return;
       setSilence(null);
-      indexRef.current = i + 1;
-      sentenceRef.current = 0;
-      setIndex(i + 1);
-    }
+      setIndexBoth(Math.max(0, segRef.current.length - 1));
+      setStatusBoth('idle');
+    };
+    const onError = () => {
+      if (statusRef.current === 'idle' || el.src !== srcRef.current) return;
+      setWaiting(false);
+      setStatusBoth('paused');
+      setErrorCode(failureCode());
+      setErrorDetail(`${el.error?.code ?? ''} ${el.error?.message ?? ''}`.trim());
+    };
+    el.addEventListener('timeupdate', onTime);
+    el.addEventListener('loadedmetadata', onMeta);
+    el.addEventListener('waiting', onWaiting);
+    el.addEventListener('playing', onPlaying);
+    el.addEventListener('ended', onEnded);
+    el.addEventListener('error', onError);
+    return () => {
+      el.removeEventListener('timeupdate', onTime);
+      el.removeEventListener('loadedmetadata', onMeta);
+      el.removeEventListener('waiting', onWaiting);
+      el.removeEventListener('playing', onPlaying);
+      el.removeEventListener('ended', onEnded);
+      el.removeEventListener('error', onError);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lang]);
+  }, []);
 
-  const start = (token: number) => {
-    window.setTimeout(() => run(token), 30);
+  /** Starts playback inside the listener's tap (needed on iPhone), then finds the place. */
+  const startAt = (i: number) => {
+    if (chapterNum == null) return;
+    const el = getAudio();
+    const local = localRef.current;
+    const want = local || new URL(audioUrl(lang, chapterNum), window.location.href).href;
+    // Keep the source if this chapter is already loaded (from the network or the device).
+    const loaded = srcRef.current !== '' && el.src === srcRef.current && !el.error;
+    if (!loaded) {
+      el.src = want;
+      srcRef.current = el.src;
+    }
+    el.defaultPlaybackRate = rate();
+    el.playbackRate = rate();
+    silenceFor.current = -1;
+    setSilence(null);
+    seekTo(i);
+    el.play()
+      .then(() => {
+        if (!localRef.current) keepOnDevice(lang, chapterNum);
+        // The map may have arrived after the tap: put the audio in its place now.
+        if (!spansRef.current.length) {
+          loadTiming(lang, chapterNum).then((t) => {
+            if (!t) return;
+            timingRef.current = t;
+            spansRef.current = align(segRef.current, t);
+            if (indexRef.current > 0) seekTo(indexRef.current);
+          });
+        }
+      })
+      .catch((e: DOMException) => {
+        setWaiting(false);
+        setStatusBoth('paused');
+        setErrorCode(e?.name === 'NotAllowedError' ? 3 : failureCode());
+        setErrorDetail(String(e?.name || e));
+      });
   };
 
   const playFrom = useCallback((i: number) => {
-    // Read through a ref: a start queued during the download runs after `ready` turns true.
-    if (!readyRef.current || !segRef.current.length) return;
-    halt();
-    piperEngine.unlock();
+    if (!segRef.current.length || chapterNum == null) return;
+    const k = Math.max(0, Math.min(i, segRef.current.length - 1));
     setErrorCode(null);
-    indexRef.current = Math.max(0, Math.min(i, segRef.current.length - 1));
-    sentenceRef.current = 0;
-    setIndex(indexRef.current);
+    setIndexBoth(k);
     setStatusBoth('playing');
-    start(tokenRef.current);
+    startAt(k);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [run]);
+  }, [lang, chapterNum]);
 
   const pause = useCallback(() => {
     if (statusRef.current !== 'playing') return;
-    halt();
+    getAudio().pause();
+    setSilence(null);
+    setWaiting(false);
     setStatusBoth('paused');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const resume = useCallback(() => {
     if (statusRef.current !== 'paused') return;
-    piperEngine.unlock();
     setErrorCode(null);
     setStatusBoth('playing');
-    start(tokenRef.current);
+    const el = getAudio();
+    if (el.src && el.src === srcRef.current && !el.error) {
+      el.playbackRate = rate();
+      el.play().catch(() => startAt(indexRef.current));
+    } else startAt(indexRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [run]);
+  }, [lang, chapterNum]);
 
   const stop = useCallback(() => {
-    halt();
-    indexRef.current = 0;
-    sentenceRef.current = 0;
-    setIndex(0);
+    const el = getAudio();
+    el.pause();
+    setSilence(null);
+    setWaiting(false);
     setErrorCode(null);
+    setIndexBoth(0);
     setStatusBoth('idle');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const jump = useCallback((i: number) => {
-    if (statusRef.current === 'playing') playFrom(i);
-    else {
-      halt();
-      indexRef.current = Math.max(0, Math.min(i, segRef.current.length - 1));
-      sentenceRef.current = 0;
-      setIndex(indexRef.current);
+    const k = Math.max(0, Math.min(i, segRef.current.length - 1));
+    if (statusRef.current === 'playing') {
+      setIndexBoth(k);
+      silenceFor.current = -1;
+      setSilence(null);
+      seekTo(k);
+    } else {
+      setIndexBoth(k);
+      if (getAudio().src === srcRef.current) seekTo(k);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [playFrom]);
+  }, []);
 
-  // A changed speed applies at once: restart the current sentence.
+  // A changed speed applies at once.
   useEffect(() => {
-    if (statusRef.current !== 'playing') return;
-    halt();
-    start(tokenRef.current);
+    const el = getAudio();
+    el.defaultPlaybackRate = rate();
+    el.playbackRate = rate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [settings.rate]);
-
-  // The voice was removed while reading: stop.
-  useEffect(() => {
-    if (!ready && statusRef.current !== 'idle') stop();
-  }, [ready, stop]);
 
   // Lock-screen and headset controls.
   useEffect(() => {
@@ -278,7 +350,7 @@ export function useSpeechReader(
     };
   }, [status, media?.title, media?.artist, pause, resume, jump]);
 
-  // New text (another chapter or language) or leaving the page: stop.
+  // Another chapter or language, or leaving the page: stop.
   useEffect(() => () => stop(), [segments, stop]);
 
   return {
