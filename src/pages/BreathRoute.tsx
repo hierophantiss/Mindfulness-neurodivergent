@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { BREATH_PATTERNS } from '../data/breathPatterns';
 import PracticeBreath from './PracticeBreath';
 import GenericExercise from './GenericExercise';
@@ -8,6 +8,8 @@ import GenericExercise from './GenericExercise';
 // it is a breath microdose or guided exercise (e.g. rhythm-5-5).
 export default function BreathRoute() {
   const { id } = useParams();
+  // "Delta" was removed: its sound lives on as "Sleep" in the Sanctuary.
+  if (id === 'delta') return <Navigate to="/sanctuary?track=sleep-delta" replace />;
   const isPattern = !id || BREATH_PATTERNS.some(p => p.id === id);
   return isPattern ? <PracticeBreath /> : <GenericExercise />;
 }

@@ -25,6 +25,10 @@ export const STUDY_NOTES: Record<string, T> = {
     el: 'Ανασκόπηση για το μοντέλο του παραθύρου ανοχής, όχι μέτρηση αυτής της άσκησης.',
     en: 'A review of the window-of-tolerance model, not a measurement of this exercise.',
   },
+  'study-balban': {
+    el: '108 ενήλικες, 5 λεπτά τη μέρα για 4 εβδομάδες. Η τεχνική με τη μακριά εκπνοή ήταν διπλή εισπνοή και μακριά εκπνοή, όχι ακριβώς αυτός ο ρυθμός.',
+    en: '108 adults, 5 minutes a day for 4 weeks. The long-exhale technique was a double inhale with a long exhale, not exactly this rhythm.',
+  },
   'study-lane': {
     el: 'Μικρή μελέτη· τα ευρήματα για τα διωτικά κύματα είναι ακόμα ανάμεικτα.',
     en: 'A small study; findings on binaural beats are still mixed.',

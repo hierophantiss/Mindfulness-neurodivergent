@@ -592,8 +592,8 @@ export default function PracticeBreath() {
         </div>
       )}
 
-      {/* Movements: how to move, before starting */}
-      {!running && basePattern.category === 'movement' && (
+      {/* Movements and breaths: how it is done, before starting */}
+      {!running && (basePattern.category === 'movement' || basePattern.category === 'breath') && (
         <div className="z-20 mb-3 -mt-2 px-6 flex flex-col items-center">
           <HowTo text={language === 'el' ? basePattern.desc.el : basePattern.desc.en} language={language} />
         </div>
@@ -792,7 +792,7 @@ export default function PracticeBreath() {
         <div className="mt-8 px-6 text-center z-20 pb-4">
           <p className="text-[12px] text-zinc-500 font-sans leading-relaxed">
             {language === 'el' 
-              ? 'Αν αυτό δεν είναι αρκετό αυτή τη στιγμή, δεν είσαι μόνος — 1018 (Κλίμακα, 24ωρη γραμμή) ή 197 (δωρεάν, 24ωρη ψυχοκοινωνική στήριξη).'
+              ? 'Αν αυτό δεν είναι αρκετό αυτή τη στιγμή, μπορείς να μιλήσεις με κάποιον τώρα — 1018 (Κλίμακα, 24ωρη γραμμή) ή 197 (δωρεάν, 24ωρη ψυχοκοινωνική στήριξη).'
               : 'If this isn\'t enough right now, you are not alone — 1018 (Greece) or visit findahelpline.com for international support.'}
           </p>
         </div>

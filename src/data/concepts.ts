@@ -121,16 +121,16 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     el: {
       title: 'Πνευμονογαστρικό Νεύρο (Vagus)',
       short: 'Το «φρένο» του νευρικού συστήματος.',
-      full: 'Το vagus nerve είναι το μεγαλύτερο νεύρο του παρασυμπαθητικού συστήματος. Η αργή εκπνοή (6+ δευτερόλεπτα) το ενεργοποιεί, μειώνοντας τον καρδιακό ρυθμό και στέλνοντας σήμα ασφάλειας στον εγκέφαλο. Γι\' αυτό η εκπνοή στο μοτίβο 4-2-6-1 είναι η μεγαλύτερη φάση.',
-      ndNote: 'Εκπνοή 6 δευτερολέπτων αρκεί. Δεν χρειάζεται τέλεια εκτέλεση — ακόμα και μια αργή εκπνοή από το στόμα ενεργοποιεί μερικώς το vagus.',
-      science: 'Gerritsen & Band (2018) — αργή εκπνοή ενεργοποιεί vagus nerve, μειώνει καρδιακό ρυθμό.'
+      full: 'Το πνευμονογαστρικό είναι το μεγαλύτερο νεύρο του παρασυμπαθητικού συστήματος, της πλευράς που ηρεμεί. Η αργή, μακριά εκπνοή συνδέεται με τη δράση του: στην εκπνοή ο καρδιακός ρυθμός επιβραδύνεται λίγο. Γι\' αυτό στους ρυθμούς της μεθόδου η εκπνοή είναι πάντα η μεγαλύτερη φάση.',
+      ndNote: 'Δεν χρειάζεται τέλεια εκτέλεση. Ακόμα και μία αργή εκπνοή από το στόμα είναι μια καλή αρχή.',
+      science: 'Gerritsen & Band (2018) — θεωρητικό μοντέλο για το πώς η αναπνοή στις πρακτικές επηρεάζει το πνευμονογαστρικό· όχι μέτρηση αυτής της άσκησης.'
     },
     en: {
       title: 'Vagus Nerve',
       short: 'The "brake" of the nervous system.',
-      full: 'The vagus nerve is the largest nerve of the parasympathetic system. Slow exhale (6+ seconds) activates it, reducing heart rate and sending a safety signal to the brain. That\'s why the exhale in the 4-2-6-1 pattern is the longest phase.',
-      ndNote: 'A 6-second exhale is enough. No perfect execution needed — even a slow mouth exhale partially activates the vagus.',
-      science: 'Gerritsen & Band (2018) — slow exhale activates vagus nerve, reduces heart rate.'
+      full: 'The vagus nerve is the largest nerve of the parasympathetic system, the calming side. A slow, long exhale is linked to its action: on the exhale the heart rate slows a little. That is why in the method\'s rhythms the exhale is always the longest phase.',
+      ndNote: 'No perfect execution needed. Even one slow exhale through the mouth is a good start.',
+      science: 'Gerritsen & Band (2018) — a theoretical model of how breathing in contemplative practice affects the vagus nerve; not a measurement of this exercise.'
     },
     axis: 'breath',
     chapters: [2, 8, 9, 11],
@@ -141,13 +141,13 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     el: {
       title: 'Αργή Εκπνοή',
       short: 'Η βασική τεχνική ρύθμισης του νευρικού συστήματος.',
-      full: 'Η αργή εκπνοή — ιδανικά από το στόμα, 6+ δευτερόλεπτα — ενεργοποιεί το πνευμονογαστρικό νεύρο. Σε στιγμές πανικού, αυτό μόνο αρκεί. Δεν χρειάζεται μοτίβο, δεν χρειάζεται μέτρηση — απλά αφήνεις τον αέρα να βγει πιο αργά απ\' ό,τι μπήκε.',
+      full: 'Η αργή εκπνοή — από το στόμα, πιο αργή από την εισπνοή — είναι το βασικό εργαλείο της ρύθμισης. Σε στιγμές πανικού, μπορεί να αρκεί μόνο αυτή. Δεν χρειάζεται μοτίβο, δεν χρειάζεται μέτρηση — απλά αφήνεις τον αέρα να βγει πιο αργά απ\' ό,τι μπήκε.',
       ndNote: 'Αν η μέτρηση σε αγχώνει, μην μετράς. Απλά φύσα αργά σαν να σβήνεις ένα κερί πολύ μακριά σου.'
     },
     en: {
       title: 'Slow Exhale',
       short: 'The fundamental technique for nervous system regulation.',
-      full: 'Slow exhale — ideally through the mouth, 6+ seconds — activates the vagus nerve. In panic moments, this alone is enough. No pattern needed, no counting — just let the air out slower than it came in.',
+      full: 'A slow exhale — through the mouth, slower than the inhale — is the basic tool of regulation. In moments of panic, it may be enough on its own. No pattern needed, no counting — just let the air out slower than it came in.',
       ndNote: 'If counting stresses you, don\'t count. Just blow slowly as if extinguishing a candle far away.'
     },
     axis: 'breath',
@@ -159,13 +159,13 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     el: {
       title: 'Μοτίβο 4-2-6-1',
       short: 'Το βασικό μοτίβο αναπνοής του Τετραπλού Άξονα.',
-      full: '4 δευτερόλεπτα εισπνοή → 2 δευτερόλεπτα κράτηση → 6 δευτερόλεπτα εκπνοή → 1 δευτερόλεπτο παύση. Η μεγαλύτερη εκπνοή ενεργοποιεί το vagus nerve. Σχεδιασμένο ειδικά για γείωση και παρουσία.',
+      full: '4 δευτερόλεπτα εισπνοή → 2 δευτερόλεπτα κράτηση → 6 δευτερόλεπτα εκπνοή → 1 δευτερόλεπτο παύση. Η εκπνοή είναι η μεγαλύτερη φάση. Σχεδιασμένο για γείωση και παρουσία.',
       ndNote: 'Αν τα 6 δευτερόλεπτα εκπνοής είναι δύσκολα, ξεκίνα με 4. Ο στόχος δεν είναι τελειότητα — είναι ρυθμός.'
     },
     en: {
       title: '4-2-6-1 Pattern',
       short: 'The core breathing pattern of the Fourfold Axis.',
-      full: '4 seconds inhale → 2 seconds hold → 6 seconds exhale → 1 second pause. The longer exhale activates the vagus nerve. Designed specifically for grounding and presence.',
+      full: '4 seconds inhale → 2 seconds hold → 6 seconds exhale → 1 second pause. The exhale is the longest phase. Designed for grounding and presence.',
       ndNote: 'If 6-second exhale is hard, start with 4. The goal isn\'t perfection — it\'s rhythm.'
     },
     axis: 'breath',
@@ -508,14 +508,14 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     el: {
       title: 'SOS Mode',
       short: 'Τετρα-αισθητηριακή παρέμβαση σε κρίση.',
-      full: 'Αυτιά: theta binaural beats (6 Hz) → βαθιά ηρεμία.\nΜάτια: ηρεμιστικό μπλε-τιρκουάζ φως.\nΣώμα: αναπνοή 4-7-8 (μεγάλη, αργή εκπνοή).\nΑφή: haptic ρυθμός.\n\nΜαζί δίνουν στο νευρικό σύστημα πολλά ήπια σήματα ηρεμίας ταυτόχρονα.',
-      ndNote: 'Χρειάζεται ακουστικά για τα binaural beats. Αν δεν έχεις, η αναπνοή 4-7-8 μόνη της είναι ήδη μια καλή αρχή.'
+      full: 'Αυτιά: ήχος θήτα 6 Hz (με ακουστικά) ή μόνο κύματα και άνεμος.\nΜάτια: ήρεμο μπλε-τιρκουάζ φως.\nΣώμα: αναπνοή 4-6, χωρίς κράτημα (μακριά εκπνοή από το στόμα).\nΑφή: ήπια δόνηση στην αρχή κάθε εισπνοής και εκπνοής.\n\nΜαζί δίνουν στο νευρικό σύστημα πολλά ήπια σήματα ηρεμίας ταυτόχρονα.',
+      ndNote: 'Τα binaural θέλουν ακουστικά. Αν δεν έχεις, η αναπνοή 4-6 μόνη της είναι ήδη μια καλή αρχή.'
     },
     en: {
       title: 'SOS Mode',
       short: 'Quad-sensory intervention during crisis.',
-      full: 'Ears: theta binaural beats (6 Hz) → deep calm.\nEyes: calming blue-teal light.\nBody: 4-7-8 breath (a long, slow exhale).\nTouch: haptic rhythm.\n\nTogether they give the nervous system several gentle signals of calm at once.',
-      ndNote: 'Requires headphones for binaural beats. Without them, 4-7-8 breathing alone is already a good start.'
+      full: 'Ears: a theta 6 Hz sound (with headphones) or just waves and wind.\nEyes: a calm blue-teal light.\nBody: 4-6 breathing, no holding (a long exhale through the mouth).\nTouch: a gentle vibration at the start of each inhale and exhale.\n\nTogether they give the nervous system several gentle signals of calm at once.',
+      ndNote: 'Binaural beats need headphones. Without them, 4-6 breathing alone is already a good start.'
     },
     axis: 'all',
     chapters: [8],

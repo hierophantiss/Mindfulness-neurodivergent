@@ -133,8 +133,8 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'Τι μοτίβο αναπνοής να χρησιμοποιήσω;',
-        a: 'Εξαρτάται από τι χρειάζεσαι:\n\n• 4-2-6-1 (Τετραπλός Άξονας): Γείωση & Παρουσία. Η αργή εκπνοή ενεργοποιεί το πνευμονογαστρικό νεύρο.\n• 4-7-8 (Dr. Weil): Βαθιά ηρεμία & ύπνος. Η μεγάλη κράτηση εξισορροπεί.\n• 5-5 (Συνοχή): Εστίαση & ισορροπία. Καρδιακή συνοχή — McCraty et al.',
-        tags: ['breath', 'patterns', 'practical', '4-2-6-1', '4-7-8', '5-5'],
+        a: 'Εξαρτάται από το πού βρίσκεσαι (Κεφάλαιο 2):\n\n• 5-5: καθημερινά, σε ουδέτερη κατάσταση· ισορροπία και σταθεροποίηση.\n• 4-6: στην κορύφωση, όταν ο άνεμος δυναμώνει· η μακρύτερη εκπνοή λέει στο νευρικό σύστημα «είμαστε ασφαλείς».\n• 4-2-7: σε ήσυχη στιγμή, για βαθιά χαλάρωση.\n\nΣτην εφαρμογή υπάρχουν και το 4-2-6-1 (ο ρυθμός του Τετραπλού Άξονα), το 4-7-8 (παραλλαγή του 4-2-7) και η τετράγωνη αναπνοή. Σε όλους, το εργαλείο είναι η εκπνοή, όχι η εισπνοή.',
+        tags: ['breath', 'patterns', 'practical', '5-5', '4-6', '4-2-7', '4-2-6-1', '4-7-8'],
         depth: 1,
         relatedExercise: 'breath_exercise.html'
       },
@@ -153,10 +153,10 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'Τι κάνω σε στιγμή έντονου πανικού;',
-        a: 'Σε στιγμές έντονου άγχους, αφήνουμε την εκπνοή να βγαίνει από το στόμα, λίγο πιο αργά και παρατεταμένα. Αν ο πανικός είναι πολύ έντονος, χρησιμοποίησε το SOS mode — theta binaural beats (6 Hz) + αναπνοή 4-7-8 + ηρεμιστικό φως. Πάτα το ∞ και επίλεξε «Υπερφόρτωση».',
+        a: 'Σε στιγμές έντονου άγχους, αφήνουμε την εκπνοή να βγαίνει από το στόμα, λίγο πιο αργά και παρατεταμένα. Αν ο πανικός είναι πολύ έντονος, πάτα το SOS στην αρχική (ή «Ένταση» στο «Πώς νιώθεις τώρα;»): αναπνοή 4-6 χωρίς κράτημα, με ήρεμο ήχο αν θέλεις. Αν δεν είναι αρκετό, εκεί θα βρεις και τηλέφωνα για βοήθεια.',
         tags: ['breath', 'panic', 'sos', 'crisis', 'practical'],
         depth: 1,
-        relatedChapter: 7
+        relatedChapter: 8
       }
     ],
     en: [
@@ -175,8 +175,8 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'Which breathing pattern should I use?',
-        a: 'It depends on what you need:\n\n• 4-2-6-1 (Fourfold Axis): Grounding & Presence. Slow exhale activates the vagus nerve.\n• 4-7-8 (Dr. Weil): Deep calm & sleep. Long hold balances.\n• 5-5 (Coherence): Focus & balance. Cardiac coherence — McCraty et al.',
-        tags: ['breath', 'patterns', 'practical', '4-2-6-1', '4-7-8', '5-5'],
+        a: 'It depends on where you are (Chapter 2):\n\n• 5-5: every day, in a neutral state; balance and steadiness.\n• 4-6: at the peak, when the wind picks up; the longer exhale tells the nervous system "we are safe".\n• 4-2-7: in a quiet moment, for deep relaxation.\n\nThe app also has 4-2-6-1 (the Fourfold Axis rhythm), 4-7-8 (a variant of 4-2-7) and box breathing. In all of them, the exhale is the tool, not the inhale.',
+        tags: ['breath', 'patterns', 'practical', '5-5', '4-6', '4-2-7', '4-2-6-1', '4-7-8'],
         depth: 1,
         relatedExercise: 'breath_exercise.html'
       },
@@ -195,10 +195,10 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'What do I do in a moment of intense panic?',
-        a: 'In moments of intense anxiety, let the exhale flow out through the mouth, a little slower and more prolonged. If panic is very intense, use SOS mode — theta binaural beats (6 Hz) + 4-7-8 breath + calming light. Tap the ∞ and select "Overwhelm."',
+        a: 'In moments of intense anxiety, let the exhale flow out through the mouth, a little slower and more prolonged. If panic is very intense, tap SOS on the home screen (or "Tension" in "How do you feel right now?"): 4-6 breathing with no holding, with a calm sound if you like. If that is not enough, you will also find helpline numbers there.',
         tags: ['breath', 'panic', 'sos', 'crisis', 'practical'],
         depth: 1,
-        relatedChapter: 7
+        relatedChapter: 8
       }
     ]
   },

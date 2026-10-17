@@ -31,28 +31,111 @@ export interface BreathPattern {
   rhythmName?: { el: string; en: string };
   /** Movements: whether it needs standing, or can also be done seated. */
   stance?: 'standing' | 'either';
+  /** One of the book's three rhythms (Chapter 2). */
+  fromBook?: boolean;
 }
 
 export const BREATH_PATTERNS: BreathPattern[] = [
   {
+    id: "breath-5-5",
+    axis: 'breath',
+    category: "breath",
+    hasBinaural: true,
+    fromBook: true,
+    title: { el: "5-5", en: "5-5" },
+    subtitle: { el: "Καθημερινά", en: "Every day" },
+    desc: {
+      el: "Εισπνοή 5, εκπνοή 5, χωρίς κράτημα. Για κάθε μέρα, σε ουδέτερη κατάσταση: ισορροπία και σταθεροποίηση, ο άστατος αέρας γίνεται ρεύμα. Όταν κοπάσει λίγο ο άνεμος μετά από ένταση, εδώ επιστρέφεις.",
+      en: "Inhale 5, exhale 5, no holding. For every day, in a neutral state: balance and steadiness, the restless air becomes a current. When the wind calms a little after tension, this is where you return.",
+    },
+    totalCycleDurationMs: 10000,
+    audioConfig: {
+      base: 200,
+      beat: 10,
+      pulse: 0,
+      ambientLayers: ['ocean', 'wind'],
+    },
+    video: "/Basic.mp4",
+    skipIntro: true,
+    videoInhaleStart: 0.0,
+    videoInhaleEnd: 0.5,
+    videoExhaleStart: 0.5,
+    videoExhaleEnd: 1.0,
+    phases: [
+      { dur: 5000, armFrom: 0, armTo: 1 },
+      { dur: 5000, armFrom: 1, armTo: 0 },
+    ],
+    labels: [
+      {
+        label: { el: "Εισπνοή", en: "Inhale" },
+        sub: { el: "εισπνοή (5s)", en: "inhale (5s)" },
+      },
+      {
+        label: { el: "Εκπνοή", en: "Exhale" },
+        sub: { el: "εκπνοή (5s)", en: "exhale (5s)" },
+      },
+    ],
+  },
+  {
+    id: "breath-4-6",
+    evidence: { en: 'In a 4-week study, breathing with a long exhale improved mood more than meditation', el: 'Σε μελέτη 4 εβδομάδων, η αναπνοή με μακριά εκπνοή βελτίωσε τη διάθεση περισσότερο από τον διαλογισμό', ref: 'study-balban' },
+    axis: 'breath',
+    category: "breath",
+    hasBinaural: true,
+    fromBook: true,
+    title: { el: "4-6", en: "4-6" },
+    subtitle: { el: "Στην Κορύφωση", en: "At the Peak" },
+    desc: {
+      el: "Εισπνοή 4, εκπνοή 6, χωρίς κράτημα. Όταν ο άνεμος δυναμώνει, θυμός που ανεβαίνει ή άγχος που ξεφεύγει: η μακρύτερη εκπνοή λέει στο νευρικό σύστημα «είμαστε ασφαλείς». Άφησε την εκπνοή να βγαίνει από το στόμα.",
+      en: "Inhale 4, exhale 6, no holding. When the wind picks up, anger rising or anxiety running away: the longer exhale tells the nervous system \"we are safe\". Let the exhale leave through the mouth.",
+    },
+    totalCycleDurationMs: 10000,
+    audioConfig: {
+      base: 200,
+      beat: 6,
+      pulse: 0,
+      ambientLayers: ['ocean', 'wind'],
+    },
+    video: "/Basic.mp4",
+    skipIntro: true,
+    videoInhaleStart: 0.0,
+    videoInhaleEnd: 0.5,
+    videoExhaleStart: 0.5,
+    videoExhaleEnd: 1.0,
+    phases: [
+      { dur: 4000, armFrom: 0, armTo: 1 },
+      { dur: 6000, armFrom: 1, armTo: 0 },
+    ],
+    labels: [
+      {
+        label: { el: "Εισπνοή", en: "Inhale" },
+        sub: { el: "εισπνοή (4s)", en: "inhale (4s)" },
+      },
+      {
+        label: { el: "Εκπνοή", en: "Exhale" },
+        sub: { el: "μακριά εκπνοή (6s)", en: "long exhale (6s)" },
+      },
+    ],
+  },
+  {
     id: "4-2-6-1",
-    evidence: { en: 'A long exhale is linked to the calming side of the nervous system', el: 'Η μακριά εκπνοή συνδέεται με την ηρεμιστική πλευρά του νευρικού συστήματος', ref: 'study-porges' },
+    evidence: { en: 'In a 4-week study, breathing with a long exhale improved mood more than meditation', el: 'Σε μελέτη 4 εβδομάδων, η αναπνοή με μακριά εκπνοή βελτίωσε τη διάθεση περισσότερο από τον διαλογισμό', ref: 'study-balban' },
     axis: 'breath',
     category: "breath",
     hasBinaural: true,
     title: { el: "4-2-6-1", en: "4-2-6-1" },
-    subtitle: { el: "Γείωση & Παρουσία", en: "Grounding & Presence" },
+    subtitle: { el: "Τετραπλός Άξονας", en: "Fourfold Axis" },
     desc: {
-      el: "Μια τεχνική που βοηθάει στην επαναφορά της ηρεμίας και την γείωση στο παρόν.",
-      en: "A technique that helps restore calmness and ground you to the present.",
+      el: "Ο ρυθμός του Τετραπλού Άξονα: εισπνοή 4, κράτημα 2, εκπνοή 6, παύση 1. Η εκπνοή είναι η μεγαλύτερη φάση· στην παύση νιώσε το βάρος του σώματος. Αν το κράτημα σε σφίγγει, προτίμησε το 4-6.",
+      en: "The Fourfold Axis rhythm: inhale 4, hold 2, exhale 6, pause 1. The exhale is the longest phase; in the pause, feel the weight of your body. If holding makes you tense, choose 4-6 instead.",
     },
     totalCycleDurationMs: 13000,
     audioConfig: {
-      base: 180,
+      base: 200,
       beat: 6,
-      pulse: 6,
+      pulse: 0,
       ambientLayers: ['ocean', 'wind'],
-    }, // Theta
+    },
     video: "/Basic.mp4",
     skipIntro: true,
     videoInhaleStart: 0.0,
@@ -86,22 +169,24 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "4-2-7-1",
+    evidence: { en: 'In a 4-week study, breathing with a long exhale improved mood more than meditation', el: 'Σε μελέτη 4 εβδομάδων, η αναπνοή με μακριά εκπνοή βελτίωσε τη διάθεση περισσότερο από τον διαλογισμό', ref: 'study-balban' },
     axis: 'breath',
     category: "breath",
     hasBinaural: true,
-    title: { el: "4-2-7-1", en: "4-2-7-1" },
-    subtitle: { el: "Αόρατη Ηρεμία", en: "Stealth Calm" },
+    fromBook: true,
+    title: { el: "4-2-7", en: "4-2-7" },
+    subtitle: { el: "Βαθιά Χαλάρωση", en: "Deep Relaxation" },
     desc: {
-      el: "Ρυθμός για άμεση μείωση του άγχους. Η παρατεταμένη εκπνοή ενεργοποιεί το πνευμονογαστρικό νεύρο.",
-      en: "Rhythm for immediate anxiety reduction. Prolonged exhalation activates the vagus nerve.",
+      el: "Εισπνοή 4, κράτημα 2, εκπνοή 7. Σε ήσυχη στιγμή, για βαθιά χαλάρωση: παύση και πολύ μακριά εκπνοή, ο πιο έντονος ρυθμιστής από τους τρεις. Δεν χρειάζεται να πιέσεις τον αέρα μέσα· το εργαλείο είναι η εκπνοή.",
+      en: "Inhale 4, hold 2, exhale 7. In a quiet moment, for deep relaxation: a pause and a very long exhale, the strongest regulator of the three. You never need to force the air in; the exhale is the tool.",
     },
-    totalCycleDurationMs: 14000,
+    totalCycleDurationMs: 13000,
     audioConfig: {
-      base: 180,
+      base: 200,
       beat: 6,
-      pulse: 6,
+      pulse: 0,
       ambientLayers: ['ocean', 'wind'],
-    }, 
+    },
     video: "/Basic.mp4",
     skipIntro: true,
     videoInhaleStart: 0.0,
@@ -112,7 +197,6 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       { dur: 4000, armFrom: 0, armTo: 1 },
       { dur: 2000, armFrom: 1, armTo: 1 },
       { dur: 7000, armFrom: 1, armTo: 0 },
-      { dur: 1000, armFrom: 0, armTo: 0 },
     ],
     labels: [
       {
@@ -125,33 +209,29 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       },
       {
         label: { el: "Εκπνοή", en: "Exhale" },
-        sub: { el: "παρατεταμένη εκπνοή (7s)", en: "long exhale (7s)" },
-      },
-      {
-        label: { el: "Παύση", en: "Hold" },
-        sub: { el: "παύση (1s)", en: "hold (1s)" },
+        sub: { el: "πολύ μακριά εκπνοή (7s)", en: "very long exhale (7s)" },
       },
     ],
   },
   {
     id: "4-7-8",
-    evidence: { en: 'Slow breathing with a pause can help regulate the nervous system', el: 'Η αργή αναπνοή με παύση μπορεί να βοηθήσει τη ρύθμιση του νευρικού συστήματος', ref: 'study-porges' },
+    evidence: { en: 'In a 4-week study, breathing with a long exhale improved mood more than meditation', el: 'Σε μελέτη 4 εβδομάδων, η αναπνοή με μακριά εκπνοή βελτίωσε τη διάθεση περισσότερο από τον διαλογισμό', ref: 'study-balban' },
     axis: 'breath',
     category: "breath",
     hasBinaural: true,
     title: { el: "4-7-8", en: "4-7-8" },
-    subtitle: { el: "Βαθιά Ηρεμία & Ύπνος", en: "Deep Calm & Sleep" },
+    subtitle: { el: "Παραλλαγή του 4-2-7", en: "A Variant of 4-2-7" },
     desc: {
-      el: "Ιδανική αναπνοή για χαλάρωση του νευρικού συστήματος και προετοιμασία για ύπνο.",
-      en: "Ideal breath for relaxing the nervous system and preparing for sleep.",
+      el: "Εισπνοή 4, κράτημα 7, εκπνοή 8. Δουλεύει με την ίδια αρχή όπως το 4-2-7, μακριά εκπνοή μετά από παύση, με μεγαλύτερο κράτημα. Πολλοί τη χρησιμοποιούν πριν τον ύπνο. Αν το κράτημα των 7 δευτερολέπτων σε σφίγγει, γύρνα στο 4-2-7.",
+      en: "Inhale 4, hold 7, exhale 8. It works on the same principle as 4-2-7, a long exhale after a pause, with a longer hold. Many people use it before sleep. If the 7-second hold makes you tense, go back to 4-2-7.",
     },
     totalCycleDurationMs: 19000,
     audioConfig: {
-      base: 140,
-      beat: 5,
-      pulse: 5,
+      base: 200,
+      beat: 6,
+      pulse: 0,
       ambientLayers: ['ocean', 'wind'],
-    }, // Theta
+    },
     video: "/Basic.mp4",
     skipIntro: true,
     videoInhaleStart: 0.0,
@@ -418,26 +498,26 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "box-breathing",
-    evidence: { en: 'Can help the nervous system return to the window of tolerance', el: 'Μπορεί να βοηθήσει το νευρικό σύστημα να επιστρέψει στο παράθυρο ανοχής', ref: 'study-corrigan' },
+    evidence: { en: 'In a 4-week study, box breathing was one of the techniques that improved mood; breathing with a long exhale helped more', el: 'Σε μελέτη 4 εβδομάδων, η τετράγωνη αναπνοή ήταν μία από τις τεχνικές που βελτίωσαν τη διάθεση· η αναπνοή με μακριά εκπνοή βοήθησε περισσότερο', ref: 'study-balban' },
     axis: 'breath',
     category: "breath",
     hasBinaural: true,
-    title: { el: "Box Breathing", en: "Box Breathing" },
+    title: { el: "Τετράγωνη Αναπνοή", en: "Box Breathing" },
     subtitle: {
-      el: "Ισορροπία & Έλεγχος (4-4-4-4)",
-      en: "Balance & Control (4-4-4-4)",
+      el: "Εστίαση (4-4-4-4)",
+      en: "Focus (4-4-4-4)",
     },
     desc: {
-      el: "Ρυθμική αναπνοή για ισορροπία του νευρικού συστήματος.",
-      en: "Rhythmic breathing to balance the nervous system.",
+      el: "Τέσσερα ίσα μέρη των 4 δευτερολέπτων: εισπνοή, κράτημα, εκπνοή, κράτημα. Ένας σταθερός ρυθμός που δίνει στο μυαλό κάτι απλό να μετρά. Αν το κράτημα σε σφίγγει, προτίμησε το 5-5.",
+      en: "Four equal parts of 4 seconds: inhale, hold, exhale, hold. A steady rhythm that gives the mind something simple to count. If holding makes you tense, choose 5-5 instead.",
     },
     totalCycleDurationMs: 16000,
     audioConfig: {
-      base: 180,
+      base: 200,
       beat: 10,
-      pulse: 10,
+      pulse: 0,
       ambientLayers: ['ocean', 'wind'],
-    }, // Alpha
+    },
     video: "/Basic.mp4",
     skipIntro: true,
     videoInhaleStart: 0.0,
@@ -465,66 +545,29 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       },
       {
         label: { el: "Παύση", en: "Hold" },
-        sub: { el: "ακινησία (4s)", en: "stillness (4s)" },
-      },
-    ],
-  },
-  {
-    id: "delta",
-    evidence: { en: 'Binaural beats may help some people relax', el: 'Τα διωτικά κύματα (binaural beats) μπορεί να βοηθούν κάποιους ανθρώπους να χαλαρώσουν', ref: 'study-lane' },
-    axis: 'breath',
-    category: "breath",
-    hasBinaural: true,
-    title: { el: "Delta", en: "Delta" },
-    subtitle: { el: "Βαθιά Χαλάρωση & Ύπνος", en: "Deep Relaxation & Sleep" },
-    desc: {
-      el: "Χρησιμοποιεί συχνότητες Delta για βαθιά αναζωογόνηση.",
-      en: "Uses Delta frequencies for deep rejuvenation.",
-    },
-    totalCycleDurationMs: 12000,
-    audioConfig: {
-      base: 100,
-      beat: 2,
-      pulse: 2,
-      ambientLayers: ['ocean', 'wind'],
-    }, // Delta
-    video: "/Basic.mp4",
-    phases: [
-      { dur: 4000, armFrom: 0, armTo: 1 },
-      { dur: 2000, armFrom: 1, armTo: 1 },
-      { dur: 6000, armFrom: 1, armTo: 0 },
-    ],
-    labels: [
-      {
-        label: { el: "Εισπνοή", en: "Inhale" },
-        sub: { el: "εισπνοή (4s)", en: "inhale (4s)" },
-      },
-      { label: { el: "Παύση", en: "Hold" }, sub: { el: "παύση (2s)", en: "hold (2s)" } },
-      {
-        label: { el: "Εκπνοή", en: "Exhale" },
-        sub: { el: "εκπνοή (6s)", en: "exhale (6s)" },
+        sub: { el: "κράτημα (4s)", en: "hold (4s)" },
       },
     ],
   },
   {
     id: "sos-breath",
-    evidence: { en: 'A long exhale can help you step out of fight-or-flight', el: 'Η μακριά εκπνοή μπορεί να βοηθήσει να βγεις από την κατάσταση πάλης ή φυγής', ref: 'study-porges' },
+    evidence: { en: 'In a 4-week study, breathing with a long exhale improved mood more than meditation', el: 'Σε μελέτη 4 εβδομάδων, η αναπνοή με μακριά εκπνοή βελτίωσε τη διάθεση περισσότερο από τον διαλογισμό', ref: 'study-balban' },
     axis: 'breath',
     category: "breath",
     hasBinaural: true,
     title: { el: "SOS", en: "SOS" },
-    subtitle: { el: "Έκτακτη Ηρεμία", en: "Emergency Calm" },
+    subtitle: { el: "Όταν Ανεβαίνει το Κύμα", en: "When the Wave Rises" },
     desc: {
-      el: "Όταν νιώθεις ένταση ή πανικό. Σε βοηθάει να γειώσεις γρήγορα το σώμα σου.",
-      en: "When feeling tension or panic. Helps you ground your body quickly.",
+      el: "Εισπνοή 4, εκπνοή 6, χωρίς κράτημα: ο ρυθμός του βιβλίου για την κορύφωση. Άφησε την εκπνοή να βγαίνει από το στόμα, σαν να σβήνεις ένα κερί μακριά σου, και νιώσε τα πόδια σου στο πάτωμα. Αν η μέτρηση σε αγχώνει, μη μετράς· απλώς βγάλε τον αέρα πιο αργά απ' ό,τι μπήκε.",
+      en: "Inhale 4, exhale 6, no holding: the book's rhythm for the peak. Let the exhale leave through the mouth, as if blowing out a candle far away, and feel your feet on the floor. If counting stresses you, do not count; just let the air out more slowly than it came in.",
     },
-    totalCycleDurationMs: 19000,
+    totalCycleDurationMs: 10000,
     audioConfig: {
-      base: 180,
+      base: 200,
       beat: 6,
-      pulse: 6,
+      pulse: 0,
       ambientLayers: ['ocean', 'wind'],
-    }, // Theta
+    },
     video: "/Basic.mp4",
     skipIntro: true,
     videoInhaleStart: 0.0,
@@ -533,8 +576,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     videoExhaleEnd: 1.0,
     phases: [
       { dur: 4000, armFrom: 0, armTo: 1 },
-      { dur: 7000, armFrom: 1, armTo: 1 },
-      { dur: 8000, armFrom: 1, armTo: 0 },
+      { dur: 6000, armFrom: 1, armTo: 0 },
     ],
     labels: [
       {
@@ -542,12 +584,8 @@ export const BREATH_PATTERNS: BreathPattern[] = [
         sub: { el: "εισπνοή (4s)", en: "inhale (4s)" },
       },
       {
-        label: { el: "Παύση", en: "Hold" },
-        sub: { el: "κράτημα (7s)", en: "hold (7s)" },
-      },
-      {
         label: { el: "Εκπνοή", en: "Exhale" },
-        sub: { el: "απελευθέρωση (8s)", en: "release slowly (8s)" },
+        sub: { el: "αργή εκπνοή από το στόμα (6s)", en: "slow exhale through the mouth (6s)" },
       },
     ],
   },

@@ -56,6 +56,11 @@ function PatternCard({ p, colorScheme, icon: Icon, onClick, language, hideCycle 
             {Math.round(p.totalCycleDurationMs / 1000)}s {language === 'el' ? 'Κύκλος' : 'Cycle'}
           </span>
           )}
+          {p.fromBook && (
+            <span className="px-3 py-1.5 border rounded-full text-[10px] font-bold tracking-wide uppercase bg-teal-500/10 border-teal-500/30 text-teal-200/90">
+              {language === 'el' ? 'Από το βιβλίο · Κεφ. 2' : 'From the book · Ch. 2'}
+            </span>
+          )}
           {p.stance && (
             <span className="px-3 py-1.5 border rounded-full text-[10px] font-bold tracking-wide uppercase bg-white/5 border-white/10 text-white/60">
               {p.stance === 'standing'
@@ -355,7 +360,12 @@ const axisInfo = {
   }
 
   if (activeCategory === 'breath') {
-    const filteredBreaths = breathExercises.filter(matchesSomaticFilter);
+    // The book's three rhythms first (Chapter 2), then the others.
+    const BREATH_ORDER = ['breath-5-5', 'breath-4-6', '4-2-7-1', '4-2-6-1', '4-7-8', 'box-breathing', 'sos-breath'];
+    const filteredBreaths = [...breathExercises].sort((a, b) => {
+      const ia = BREATH_ORDER.indexOf(a.id), ib = BREATH_ORDER.indexOf(b.id);
+      return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+    });
 
     return (
       <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -378,8 +388,8 @@ const axisInfo = {
           </h2>
           <p className="text-lg text-white/50 font-sans leading-relaxed">
             {language === 'el' 
-              ? 'Ειδικοί ρυθμοί για χαλάρωση και ρύθμιση του νευρικού συστήματος.' 
-              : 'Special rhythms for relaxation and nervous system regulation.'}
+              ? 'Οι τρεις ρυθμοί του βιβλίου πρώτα: 5-5 για κάθε μέρα, 4-6 στην κορύφωση, 4-2-7 για βαθιά χαλάρωση. Η εκπνοή είναι το εργαλείο, όχι η εισπνοή.' 
+              : 'The book\'s three rhythms first: 5-5 for every day, 4-6 at the peak, 4-2-7 for deep relaxation. The exhale is the tool, not the inhale.'}
           </p>
         </header>
 
@@ -410,8 +420,6 @@ const axisInfo = {
             </div>
           </div>
         </div>
-
-        {renderSomaticFilters()}
 
         <div className="max-w-4xl mx-auto w-full pb-12">
           {filteredBreaths.length === 0 ? (

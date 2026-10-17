@@ -26,7 +26,6 @@ export interface CatalogItem {
 
 const H: CheckinTag = 'hyper', L: CheckinTag = 'hypo', B: CheckinTag = 'balanced', U: CheckinTag = 'unsure';
 
-// Left without tags on purpose: delta, which is for sleep.
 export const CHECKIN_TAGS: Record<string, CheckinTag[]> = {
   // microdoses — body
   'axis-pause': [H, B, U], 'soft-belly': [H], 'unlocked-knees': [H], 'contact-observe': [H, L, U],
@@ -42,7 +41,7 @@ export const CHECKIN_TAGS: Record<string, CheckinTag[]> = {
   'short-moment': [B], 'tilopa-rest': [B], 'silence-background': [B], 'open-presence': [H, B],
   'sky-gazing-micro': [B, L], 'spacious-metta': [B],
   // breathing patterns
-  '4-2-6-1': [H], '4-2-7-1': [H], '4-7-8': [H], 'box-breathing': [L, B], 'sos-breath': [H],
+  'breath-5-5': [B], 'breath-4-6': [H], '4-2-6-1': [H], '4-2-7-1': [H], '4-7-8': [H], 'box-breathing': [L, B], 'sos-breath': [H],
   // movement
   '5-5': [B, L], 'deep-bow-5-5': [L, B], 'lotus-bloom-5-5': [B], 'be-like-a-flower-5-5': [L, B],
   'tai-chi-cloud-hands': [H, L], 'qigong-lifting-sky': [L],
