@@ -17,7 +17,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useLanguage } from "../hooks/useLanguage";
 import TaiChiHero from "./TaiChiHero";
 import { PlayPauseOverlay } from "./PlayPauseOverlay";
-import { ZenAudioEngine } from "../utils/audio";
+import { useBinauralAudio } from "../hooks/useBinauralAudio";
 
 // Breathing presets definitions
 interface BreathingPreset {
@@ -37,8 +37,8 @@ const PRESETS: BreathingPreset[] = [
     id: "fourfold",
     nameEl: "Ο Τετραπλός Άξονας",
     nameEn: "The Fourfold Axis",
-    descEl: "Απαλή ενσυνείδητη κίνηση που συνδέει τον ουρανό με τη γη, προσφέροντας ελαφριά πίεση στην κοιλιά στο τέλος της εκπνοής.",
-    descEn: "Gentle mindful movement connecting heaven and earth, finishing with soft belly pressure during exhalation.",
+    descEl: "Ο ρυθμός της μεθόδου: εισπνοή 4,5, παύση 1, εκπνοή 5,5, παύση 1, με μια απαλή σύσπαση χαμηλά στην κοιλιά στο τέλος της εκπνοής.",
+    descEn: "The method's rhythm: inhale 4.5, pause 1, exhale 5.5, pause 1, with a gentle draw-in low in the belly at the end of the exhale.",
     inhale: 4.5,
     holdFull: 1.0,
     exhale: 5.5,
@@ -48,8 +48,8 @@ const PRESETS: BreathingPreset[] = [
     id: "box",
     nameEl: "Τετράγωνη Αναπνοή",
     nameEn: "Box Breathing",
-    descEl: "Χρησιμοποιείται από Zen δασκάλους και αθλητές για εστίαση και πνευματική ηρεμία.",
-    descEn: "Used by Zen masters and high-performers to lock deep clarity and calm the mind.",
+    descEl: "Τέσσερα ίσα μέρη των 4 δευτερολέπτων. Ένας σταθερός ρυθμός για εστίαση· αν το κράτημα σε σφίγγει, διάλεξε άλλον.",
+    descEn: "Four equal parts of 4 seconds. A steady rhythm for focus; if holding makes you tense, choose another.",
     inhale: 4.0,
     holdFull: 4.0,
     exhale: 4.0,
@@ -57,10 +57,10 @@ const PRESETS: BreathingPreset[] = [
   },
   {
     id: "resonant",
-    nameEl: "Συντονισμένη",
-    nameEn: "Resonant Breathing",
-    descEl: "Συντονίζει την καρδιακή συχνότητα για μέγιστη χαλάρωση και ισορροπία του νευρικού συστήματος.",
-    descEn: "Saturates heart rate variability to immediately balance the central nervous system.",
+    nameEl: "5-5",
+    nameEn: "5-5",
+    descEl: "Εισπνοή 5, εκπνοή 5, χωρίς παύσεις: ο ρυθμός 5-5 του βιβλίου, για κάθε μέρα.",
+    descEn: "Inhale 5, exhale 5, with no pauses: the book's 5-5 rhythm, for every day.",
     inhale: 5.0,
     holdFull: 0.0,
     exhale: 5.0,
@@ -70,8 +70,8 @@ const PRESETS: BreathingPreset[] = [
     id: "active",
     nameEl: "Τονωτική (4-4-2-2)",
     nameEn: "Activating (4-4-2-2)",
-    descEl: "Ένας τονωτικός ρυθμός που συνδυάζει μεγάλη εισπνοή και κράτημα με σύντομη εκπνοή.",
-    descEn: "An invigorating rhythm combining long inhalation and hold with brief exhalation.",
+    descEl: "Μεγάλη εισπνοή και κράτημα, σύντομη εκπνοή. Για όταν το σώμα είναι βαρύ· όχι όταν η ένταση είναι ήδη ψηλά.",
+    descEn: "A long inhale and hold, a short exhale. For when the body feels heavy; not when tension is already high.",
     inhale: 4.0,
     holdFull: 4.0,
     exhale: 2.0,
@@ -86,7 +86,6 @@ export default function PracticeSection() {
     const { reduceMotion } = useAccessibility();
   
 
-  const synthRef = useRef<ZenAudioEngine | null>(null);
   const navigate = useNavigate();
   const { language: lang, setLanguage: setLang } = useLanguage();
 
@@ -94,12 +93,6 @@ export default function PracticeSection() {
   const [movementType, setMovementType] = useState<MovementType>("taichi");
   const [presetId, setPresetId] = useState<string>("fourfold");
 
-  // Initialize synth safely only once on mount
-  useEffect(() => {
-    if (!synthRef.current) {
-      synthRef.current = new ZenAudioEngine();
-    }
-  }, []);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
 
   const [inhale, setInhale] = useState<number>(4.5);
@@ -107,9 +100,10 @@ export default function PracticeSection() {
   const [exhale, setExhale] = useState<number>(5.5);
   const [holdEmpty, setHoldEmpty] = useState<number>(1.0);
 
+  // Sound: waves and wind (speaker) or binaural (headphones), following the breath.
   const [audioEnabled, setAudioEnabled] = useState<boolean>(false);
-  const [audioVolume, setAudioVolume] = useState<number>(0.3);
-  const [solfeggioFreq, setSolfeggioFreq] = useState<number>(136.1);
+  const [soundKind, setSoundKind] = useState<'nature' | 'binaural'>('nature');
+  const { startAudio, stopAudio, updateArmPos } = useBinauralAudio();
 
   const [elapsed, setElapsed] = useState<number>(0);
   const [totalCycles, setTotalCycles] = useState<number>(0);
@@ -126,39 +120,37 @@ export default function PracticeSection() {
     }
   }, [presetId]);
 
-  useEffect(() => {
-    if (synthRef.current) synthRef.current.setVolume(audioVolume);
-  }, [audioVolume]);
-
-  useEffect(() => {
-    if (synthRef.current) synthRef.current.setFrequency(solfeggioFreq);
-  }, [solfeggioFreq]);
+  const playSound = (kind: 'nature' | 'binaural') => {
+    if (kind === 'binaural') {
+      startAudio({ base: 200, beat: presetId === 'active' ? 14 : 10, pulse: 0, ambientLayers: ['ocean', 'wind'] });
+    } else {
+      startAudio({ base: 0, beat: 0, disableSynth: true, ambientLayers: ['ocean', 'wind'] });
+    }
+  };
 
   const toggleAudio = () => {
-    if (!synthRef.current) return;
     if (audioEnabled) {
-      synthRef.current.stop();
+      stopAudio();
       setAudioEnabled(false);
     } else {
-      synthRef.current.setVolume(audioVolume);
-      synthRef.current.setFrequency(solfeggioFreq);
-      synthRef.current.start();
+      playSound(soundKind);
       setAudioEnabled(true);
     }
   };
 
+  const chooseSound = (kind: 'nature' | 'binaural') => {
+    setSoundKind(kind);
+    if (audioEnabled) playSound(kind);
+  };
+
   useEffect(() => {
-    return () => {
-      if (synthRef.current) {
-        synthRef.current.stop();
-      }
-    };
-  }, []);
+    return () => stopAudio();
+  }, [stopAudio]);
 
   useEffect(() => {
     if (step !== 'player') {
-      if (synthRef.current && audioEnabled) {
-         synthRef.current.stop();
+      if (audioEnabled) {
+         stopAudio();
          setAudioEnabled(false);
       }
       setIsPlaying(false);
@@ -202,8 +194,8 @@ export default function PracticeSection() {
   let isRising = true;
   let phaseTextEl = "Έναρξη";
   let phaseTextEn = "Starting";
-  let phaseQuoteEl = "Χαλαρώστε τους ώμους, συντονιστείτε με τον ρυθμό.";
-  let phaseQuoteEn = "Relax your shoulders, sink into the cosmic rhythm.";
+  let phaseQuoteEl = "Χαλάρωσε τους ώμους και βρες τον ρυθμό.";
+  let phaseQuoteEn = "Relax your shoulders and find the rhythm.";
 
   let phaseNameEl = "";
   let phaseNameEn = "";
@@ -216,8 +208,8 @@ export default function PracticeSection() {
     isRising = true;
     phaseTextEl = "Εισπνοή (Άνοδος)";
     phaseTextEn = "Inhale (Rise)";
-    phaseQuoteEl = "Εισπνεύστε από τον Ουρανό. Νιώστε τον άξονα της σπονδυλικής στήλης να μακραίνει.";
-    phaseQuoteEn = "Inhale from the Sky. Feel your central axis elongate and your posture rise.";
+    phaseQuoteEl = "Εισπνοή. Νιώσε τον άξονα της σπονδυλικής στήλης να μακραίνει.";
+    phaseQuoteEn = "Inhale. Feel the axis of your spine lengthen.";
     
     phaseNameEl = "ΕΙΣΠΝΟΗ";
     phaseNameEn = "INHALE";
@@ -228,8 +220,8 @@ export default function PracticeSection() {
     isRising = true;
     phaseTextEl = "Κράτημα (Προσοχή)";
     phaseTextEn = "Hold (Awareness)";
-    phaseQuoteEl = "Η προσοχή σας διευρύνεται. Αιωρηθείτε στον Χώρο ακίνητοι και ανοιχτοί.";
-    phaseQuoteEn = "Your attention expands. Suspend in Space, remaining still and open.";
+    phaseQuoteEl = "Η προσοχή ανοίγει. Μείνε λίγο εδώ, ήσυχα και ανοιχτά.";
+    phaseQuoteEn = "Attention opens. Stay here a moment, quiet and open.";
     
     phaseNameEl = "ΚΡΑΤΗΜΑ";
     phaseNameEn = "HOLD";
@@ -241,8 +233,8 @@ export default function PracticeSection() {
     isRising = false;
     phaseTextEl = "Εκπνοή (Κάθοδος & Γείωση)";
     phaseTextEn = "Exhale (Sink & Press)";
-    phaseQuoteEl = "Εκπνεύστε και γειωθείτε. Στο τέλος ασκήστε μία απαλή πίεση χαμηλά στην κοιλιά.";
-    phaseQuoteEn = "Exhale and let Gravity sink you. At the end, apply a soft pressure to your belly.";
+    phaseQuoteEl = "Εκπνοή, και άφησε το βάρος να κατέβει. Στο τέλος, μια απαλή σύσπαση χαμηλά στην κοιλιά.";
+    phaseQuoteEn = "Exhale, and let the weight sink. At the end, a gentle draw-in low in the belly.";
     
     phaseNameEl = "ΕΚΠΝΟΗ";
     phaseNameEn = "EXHALE";
@@ -253,8 +245,8 @@ export default function PracticeSection() {
     isRising = false;
     phaseTextEl = "Κράτημα (Βαρύτητα)";
     phaseTextEn = "Hold (Grounding)";
-    phaseQuoteEl = "Νιώστε τη σύνδεση του Σώματος με το κέντρο της Γης.";
-    phaseQuoteEn = "Feel the connection of your Body with the center of the Earth.";
+    phaseQuoteEl = "Νιώσε το βάρος του σώματος και τη γη που σε κρατά.";
+    phaseQuoteEn = "Feel the weight of your body and the ground that holds you.";
     
     phaseNameEl = "ΚΡΑΤΗΜΑ";
     phaseNameEn = "HOLD";
@@ -268,11 +260,10 @@ export default function PracticeSection() {
     ? `${phaseNameEl} ${currentSec} / ${totalPhaseSec}`
     : `${phaseNameEn} ${currentSec} / ${totalPhaseSec}`;
 
+  // The sound grows with the inhale and softens with the exhale.
   useEffect(() => {
-    if (audioEnabled && synthRef.current && step === 'player') {
-      synthRef.current.update(breathForce, isRising);
-    }
-  }, [breathForce, isRising, audioEnabled, step]);
+    if (audioEnabled && step === 'player') updateArmPos(breathForce);
+  }, [breathForce, audioEnabled, step, updateArmPos]);
 
   const secElapsed = Math.floor(elapsed);
   const prevSecRef = useRef(0);
@@ -351,7 +342,7 @@ export default function PracticeSection() {
                 {lang === "el" ? "Η Ροή της Σύνδεσης" : "Grounding Flow"}
               </h3>
               <p className="text-white/50 font-sans text-sm md:text-base leading-relaxed">
-                {lang === "el" ? "Απαλή κίνηση που μιμείται την άμπωτη και την παλίρροια, συνδέοντας τον ουρανό με τη γη." : "Gentle movement mimicking the ebb and flow, connecting sky and earth."}
+                {lang === "el" ? "Τα χέρια ανεβαίνουν με την εισπνοή και κατεβαίνουν με την εκπνοή, σαν παλίρροια." : "The arms rise with the inhale and sink with the exhale, like a tide."}
               </p>
             </button>
 
@@ -368,7 +359,7 @@ export default function PracticeSection() {
                 {lang === "el" ? "Το Άνθος του Λωτού" : "Lotus Blossom"}
               </h3>
               <p className="text-white/50 font-sans text-sm md:text-base leading-relaxed">
-                {lang === "el" ? "Πιο εσωτερική, κεντρική κίνηση συγκέντρωσης που ξεδιπλώνεται από τον πυρήνα προς τα έξω." : "A more internal, centered focusing movement that unfolds from the core."}
+                {lang === "el" ? "Τα χέρια ανοίγουν σαν λωτός με την εισπνοή και κλείνουν στο στήθος με την εκπνοή." : "The arms open like a lotus with the inhale and close at the chest with the exhale."}
               </p>
             </button>
           </div>
@@ -432,7 +423,7 @@ export default function PracticeSection() {
   // STEP 3: PLAYER
   // ------------------------------------
   return (
-    <div className="w-full min-h-screen flex flex-col items-center justify-start p-2 md:p-8 font-sans transition-all duration-300 animate-fade-in relative z-0" style={{ backgroundColor: "var(--color-bg, #0f1117)", color: "var(--color-text, #d4d4d8)" }}>
+    <div className="w-full min-h-screen flex flex-col items-center justify-start p-2 pb-28 md:p-8 md:pb-28 font-sans transition-all duration-300 animate-fade-in relative z-0" style={{ backgroundColor: "var(--color-bg, #0f1117)", color: "var(--color-text, #d4d4d8)" }}>
       
       {/* HUD Bar Overlay */}
       <div className="w-full max-w-5xl flex justify-between items-center mb-2 z-20 px-2 pt-2 md:pt-0">
@@ -445,18 +436,19 @@ export default function PracticeSection() {
         
         {/* Compact Audio Controls Overlay */}
         <div className="flex items-center gap-3 backdrop-blur-md bg-black/30 border border-white/5 p-1.5 rounded-full pr-4">
-           <button onClick={toggleAudio} className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-colors" style={{ backgroundColor: audioEnabled ? "var(--color-accent, #1D9E75)" : "rgba(255, 255, 255, 0.1)" }}>
+           <button onClick={toggleAudio} aria-label={lang === 'el' ? (audioEnabled ? 'Χωρίς ήχο' : 'Με ήχο') : (audioEnabled ? 'Sound off' : 'Sound on')} className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-colors" style={{ backgroundColor: audioEnabled ? "var(--color-accent, #1D9E75)" : "rgba(255, 255, 255, 0.1)" }}>
              {audioEnabled ? <Volume2 size={16} className="text-white" /> : <VolumeX size={16} className="text-white/50" />}
            </button>
            {audioEnabled && (
              <div className="flex gap-2">
-                {[136.1, 432, 528].map(hz => (
+                {([['nature', 'Φύση', 'Nature'], ['binaural', 'Binaural 🎧', 'Binaural 🎧']] as const).map(([kind, el, en]) => (
                   <button 
-                    key={hz} 
-                    onClick={() => setSolfeggioFreq(hz)} 
-                    className={`text-[10px] font-mono font-bold px-2 py-1 rounded transition-colors cursor-pointer ${solfeggioFreq === hz ? 'bg-white/20 text-white' : 'text-white/40 hover:text-white/80'}`}
+                    key={kind} 
+                    onClick={() => chooseSound(kind)} 
+                    aria-pressed={soundKind === kind}
+                    className={`text-[11px] font-semibold px-2 py-1 rounded transition-colors cursor-pointer ${soundKind === kind ? 'bg-white/20 text-white' : 'text-white/40 hover:text-white/80'}`}
                   >
-                    {hz}
+                    {lang === 'el' ? el : en}
                   </button>
                 ))}
              </div>

@@ -91,11 +91,12 @@ export default function Dashboard() {
     return AFFIRMATIONS[dayOfYear % AFFIRMATIONS.length];
   }, [hour]);
 
+  // The home sound: only the ocean waves, no tones.
   const audioConfig = useMemo(() => ({
-    base: 136.1, // Ohm
-    beat: 7.83,  // Schumann
-    pulse: 0.1,  // Slow pulse
-    disableSynth: true, // Only ambient
+    base: 0,
+    beat: 0,
+    pulse: 0,
+    disableSynth: true,
     ambientLayers: ['ocean'] as any[]
   }), []);
 
