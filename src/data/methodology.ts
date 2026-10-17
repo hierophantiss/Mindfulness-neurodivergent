@@ -81,6 +81,13 @@ export const METHODOLOGY_DATA = {
         citation: 'Balban et al. (2023). Cell Reports Medicine. Doi: 10.1016/j.xcrm.2022.100895'
       },
       {
+        id: 'study-trivedi',
+        icon: Waves,
+        title: 'Βουητό & Καρδιακός Ρυθμός (Trivedi et al., 2023)',
+        desc: 'Πιλοτική μελέτη με 23 άτομα και καταγραφή του καρδιακού ρυθμού όλη τη μέρα. Στο απλό βουητό (Bhramari) ο δείκτης στρες ήταν χαμηλότερος απ\' ό,τι στη σωματική δραστηριότητα, στο συναισθηματικό στρες, ακόμα και στον ύπνο. Είναι μικρή μελέτη χωρίς ομάδα σύγκρισης· στηρίζει την ιδέα του βιβλίου ότι η μακριά εκπνοή με δόνηση ηρεμεί το σώμα, χωρίς να την αποδεικνύει.',
+        citation: 'Trivedi et al. (2023). Cureus. Doi: 10.7759/cureus.37527'
+      },
+      {
         id: 'study-homma',
         icon: Waves,
         title: 'Αναπνοή & Συναίσθημα (Homma & Masaoka, 2008)',
@@ -338,6 +345,13 @@ export const METHODOLOGY_DATA = {
         title: 'The Long Exhale (Balban et al., 2023)',
         desc: 'A randomised study with 108 adults, 5 minutes a day for 4 weeks. Breathing with a long exhale improved positive mood and slowed breathing more than meditation did; anxiety fell in all groups. The technique was a double inhale with a long exhale, not exactly the method\'s rhythms, but with the same principle: the exhale is the tool.',
         citation: 'Balban et al. (2023). Cell Reports Medicine. Doi: 10.1016/j.xcrm.2022.100895'
+      },
+      {
+        id: 'study-trivedi',
+        icon: Waves,
+        title: 'Humming & Heart Rhythm (Trivedi et al., 2023)',
+        desc: 'A pilot study with 23 people and all-day heart rhythm recording. During simple humming (Bhramari) the stress index was lower than during physical activity, emotional stress and even sleep. It is a small study with no comparison group; it supports the book\'s idea that a long exhale with vibration calms the body, without proving it.',
+        citation: 'Trivedi et al. (2023). Cureus. Doi: 10.7759/cureus.37527'
       },
       {
         id: 'study-homma',

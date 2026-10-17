@@ -239,12 +239,24 @@ export default function PracticeBreath() {
   }, [globalVolume, setGlobalVolume]);
 
   const natureLayers = pattern.audioConfig?.ambientLayers?.length ? pattern.audioConfig.ambientLayers : ['ocean', 'wind'];
+  const isVocal = basePattern.category === 'vocal';
+  // Chanting: the voice guide hums at a pitch you can chant with (low ≈ C3, high ≈ A3).
+  const [voicePitch, setVoicePitch] = useState<'low' | 'high'>(() => {
+    try { return localStorage.getItem('vocal_pitch') === 'high' ? 'high' : 'low'; } catch { return 'low'; }
+  });
+  const pitchHz = voicePitch === 'high' ? 220 : 130.81;
   const beginSound = (mode: 'binaural' | 'nature' = soundMode) => {
     if (mode === 'nature') {
-      startAudio({ base: 0, beat: 0, disableSynth: true, ambientLayers: natureLayers, id: pattern.id } as any);
+      startAudio({ base: 0, beat: 0, disableSynth: true, ambientLayers: natureLayers } as any);
+    } else if (isVocal) {
+      startAudio({ base: pitchHz, beat: 0, pulse: 0, disableSynth: true, ambientLayers: natureLayers, id: pattern.id } as any);
     } else {
       startAudio();
     }
+  };
+  const choosePitch = (p: 'low' | 'high') => {
+    setVoicePitch(p);
+    try { localStorage.setItem('vocal_pitch', p); } catch { /* not stored */ }
   };
 
   // Clean up audio on unmount
@@ -519,8 +531,8 @@ export default function PracticeBreath() {
             </div>
             <p className="text-[13px] text-zinc-200/90 leading-relaxed font-medium">
               {language === 'el' 
-                ? 'Για ήχο πάτα τα ακουστικά πάνω δεξιά: binaural με ακουστικά, ή μόνο ήχος φύσης από το ηχείο.'
-                : 'For sound, tap the headphones at the top right: binaural with headphones, or just a nature sound from the speaker.'}
+                ? (isVocal ? 'Για ήχο πάτα τα ακουστικά πάνω δεξιά: φωνή-οδηγός για να ψέλνεις μαζί της, ή μόνο ήχος φύσης.' : 'Για ήχο πάτα τα ακουστικά πάνω δεξιά: binaural με ακουστικά, ή μόνο ήχος φύσης από το ηχείο.')
+                : (isVocal ? 'For sound, tap the headphones at the top right: a voice guide to chant with, or just a nature sound.' : 'For sound, tap the headphones at the top right: binaural with headphones, or just a nature sound from the speaker.')}
             </p>
             <button
               onClick={() => {
@@ -566,13 +578,18 @@ export default function PracticeBreath() {
       )}
 
       {/* Flows: the same movement in four rhythms */}
-      {!running && basePattern.visualizer && (
+      {!running && (basePattern.visualizer || basePattern.family) && (
         <div className="z-20 w-full mb-4 md:px-0 relative px-4 flex flex-col items-center animate-in fade-in slide-in-from-top-2 duration-500">
           <span className="text-[11px] font-medium tracking-widest uppercase text-zinc-400 mb-2">
-            {language === 'el' ? 'Ρυθμος Αναπνοης' : 'Breathing Rhythm'}
+            {basePattern.family
+              ? (language === 'el' ? 'Που νιωθεις τη δονηση' : 'Where you feel the vibration')
+              : (language === 'el' ? 'Ρυθμος Αναπνοης' : 'Breathing Rhythm')}
           </span>
           <div className="flex flex-wrap justify-center gap-2 max-w-sm">
-            {BREATH_PATTERNS.filter(p => p.visualizer === basePattern.visualizer).map(p => (
+            {BREATH_PATTERNS
+              .filter(p => basePattern.family ? p.family === basePattern.family : p.visualizer === basePattern.visualizer)
+              .sort((a, b) => (a.familyOrder ?? 0) - (b.familyOrder ?? 0))
+              .map(p => (
               <button
                 key={p.id}
                 onClick={() => navigate(`/practice/breath/${p.id}`, { replace: true })}
@@ -593,6 +610,34 @@ export default function PracticeBreath() {
       )}
 
       {/* Movements and breaths: how it is done, before starting */}
+      {!running && isVocal && (
+        <div className="z-20 w-full mb-3 px-4 flex flex-col items-center">
+          <span className="text-[11px] font-medium tracking-widest uppercase text-zinc-400 mb-2">
+            {language === 'el' ? 'Φωνη-οδηγος' : 'Voice guide'}
+          </span>
+          <div className="flex justify-center gap-2">
+            {([['low', 'Χαμηλή φωνή', 'Low voice'], ['high', 'Ψηλή φωνή', 'High voice']] as const).map(([id, el, en]) => (
+              <button
+                key={id}
+                onClick={() => choosePitch(id)}
+                aria-pressed={voicePitch === id}
+                className={cn(
+                  "px-3 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all",
+                  voicePitch === id
+                    ? "bg-teal-500/20 text-teal-300 border border-teal-500/50"
+                    : "bg-zinc-800/50 text-zinc-400 border border-zinc-700/50 hover:bg-zinc-700/50"
+                )}
+              >
+                {language === 'el' ? el : en}
+              </button>
+            ))}
+          </div>
+          {!basePattern.family && (
+            <HowTo text={language === 'el' ? basePattern.desc.el : basePattern.desc.en} language={language} />
+          )}
+        </div>
+      )}
+
       {!running && (basePattern.category === 'movement' || basePattern.category === 'breath') && (
         <div className="z-20 mb-3 -mt-2 px-6 flex flex-col items-center">
           <HowTo text={language === 'el' ? basePattern.desc.el : basePattern.desc.en} language={language} />
@@ -866,6 +911,20 @@ export default function PracticeBreath() {
               {language === 'el' ? 'Ήχος για την άσκηση' : 'Sound for this practice'}
             </h3>
 
+            {isVocal ? (
+            <div className="text-zinc-200 text-xs md:text-sm leading-relaxed mb-4 space-y-2">
+              <p>
+                <strong className="text-teal-200">{language === 'el' ? 'Φωνή-οδηγός' : 'Voice guide'}</strong>{language === 'el'
+                  ? ': ένα απαλό βουητό που μπαίνει στην εκπνοή, για να ψέλνεις μαζί του. Διάλεξε χαμηλή ή ψηλή φωνή, όποια σου βγαίνει πιο άνετα.'
+                  : ': a soft hum that comes in on the exhale, to chant along with. Choose a low or high voice, whichever is more comfortable for you.'}
+              </p>
+              <p>
+                <strong className="text-teal-200">{language === 'el' ? 'Ήχος φύσης' : 'Nature sound'}</strong>{language === 'el'
+                  ? ': απαλά από κάτω· παίζει και από το ηχείο.'
+                  : ': softly underneath; plays from the speaker too.'}
+              </p>
+            </div>
+            ) : (
             <div className="text-zinc-200 text-xs md:text-sm leading-relaxed mb-4 space-y-2">
               <p>
                 <strong className="text-teal-200">Binaural</strong>{bandName ? ` (${bandName} ${beat} Hz)` : ''}{language === 'el'
@@ -883,9 +942,12 @@ export default function PracticeBreath() {
                   : 'Both grow with the inhale and soften with the exhale. Findings on binaural beats are still mixed; if a sound bothers you, you do not need it.'}
               </p>
             </div>
+            )}
 
             <p className="text-amber-200/80 text-[12px] md:text-[13px] mb-5 text-center">
-              {language === 'el' ? 'Κράτα την ένταση χαμηλά. Αν έχεις επιληψία, ρώτα πρώτα τον γιατρό σου.' : 'Keep the volume low. If you have epilepsy, ask your doctor first.'}
+              {isVocal
+                ? (language === 'el' ? 'Κράτα την ένταση χαμηλά.' : 'Keep the volume low.')
+                : (language === 'el' ? 'Κράτα την ένταση χαμηλά. Αν έχεις επιληψία, ρώτα πρώτα τον γιατρό σου.' : 'Keep the volume low. If you have epilepsy, ask your doctor first.')}
             </p>
 
             <label className="flex items-start justify-center gap-3 text-xs text-zinc-300 mb-5 cursor-pointer select-none group">
@@ -909,7 +971,9 @@ export default function PracticeBreath() {
                 className="w-full bg-zinc-600 hover:bg-zinc-700 border border-zinc-300 text-white font-medium py-3 rounded-full transition-colors flex items-center justify-center gap-2 text-sm tracking-wide"
               >
                 <Headphones size={18} />
-                {language === 'el' ? 'Με binaural (ακουστικά)' : 'With binaural (headphones)'}
+                {isVocal
+                  ? (language === 'el' ? 'Με φωνή-οδηγό' : 'With voice guide')
+                  : (language === 'el' ? 'Με binaural (ακουστικά)' : 'With binaural (headphones)')}
               </button>
               <button
                 onClick={() => savePreferenceAndStart('nature')}

@@ -795,22 +795,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://neurodivergent-mindfulness.org/en/practice/breath/om-resonance-throat</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/om-resonance-throat" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/om-resonance-throat" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/en/practice/breath/om-resonance-throat" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://neurodivergent-mindfulness.org/el/practice/breath/om-resonance-throat</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/breath/om-resonance-throat" />
-    <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/breath/om-resonance-throat" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://neurodivergent-mindfulness.org/en/practice/breath/om-resonance-throat" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://neurodivergent-mindfulness.org/en/practice/body/axis-pause</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://neurodivergent-mindfulness.org/en/practice/body/axis-pause" />
     <xhtml:link rel="alternate" hreflang="el" href="https://neurodivergent-mindfulness.org/el/practice/body/axis-pause" />

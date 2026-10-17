@@ -33,6 +33,9 @@ export interface BreathPattern {
   stance?: 'standing' | 'either';
   /** One of the book's three rhythms (Chapter 2). */
   fromBook?: boolean;
+  /** Practices shown as one card, chosen inside (e.g. where the vibration is felt). */
+  family?: string;
+  familyOrder?: number;
 }
 
 export const BREATH_PATTERNS: BreathPattern[] = [
@@ -716,29 +719,19 @@ export const BREATH_PATTERNS: BreathPattern[] = [
   },
   {
     id: "bhramari-humming",
-    evidence: { en: 'Humming may support vagal tone', el: 'Το βουητό μπορεί να στηρίζει τον πνευμονογαστρικό τόνο', ref: 'study-porges' },
+    evidence: { en: 'In a small study, humming had the lowest stress index of four everyday activities', el: 'Σε μια μικρή μελέτη, το βουητό είχε τον χαμηλότερο δείκτη στρες από τέσσερις καθημερινές δραστηριότητες', ref: 'study-trivedi' },
     axis: 'breath',
     category: "vocal",
-    hasBinaural: true,
-    title: {
-      el: "Bhramari — Ψάλσιμο",
-      en: "Bhramari — Humming"
-    },
-    subtitle: {
-      el: "Ενεργοποίηση Πνευμονογαστρικού",
-      en: "Vagal Nerve Activation"
-    },
+    hasBinaural: false,
+    title: { el: "Βουητό (Bhramari)", en: "Humming (Bhramari)" },
+    subtitle: { el: "Το Βουητό της Μέλισσας", en: "The Bee's Hum" },
     desc: {
-      el: "Εισπνοή από τη μύτη, γέμισμα από κάτω προς τα πάνω. Στην εκπνοή: κλείσε το στόμα και άρχισε το «μμμ». Καθώς αδειάζεις, άνοιξε ελαφρά το στόμα — ο ήχος ανοίγει φυσικά σε «μααα». Νιώσε τη δόνηση στη μύτη, τον λαιμό, το στήθος. Στο τέλος της τελευταίας εκπνοής — μείνε. Νιώσε τη δόνηση που παραμένει. Δεν υπάρχει τέλειο ψάλσιμο — καλλιεργείται με την άσκηση. (Trivedi et al., 2023)",
-      en: "Inhale through the nose, filling from bottom to top. On the exhale: close your mouth and begin humming 'mmm'. As you empty, open your mouth slightly — the sound naturally opens to 'maaa'. Feel the vibration in your nose, throat, chest. At the end of the last exhale — stay. Feel the vibration that remains. There is no perfect humming — it grows with practice. (Trivedi et al., 2023)"
+      el: "Εισπνοή από τη μύτη. Στην εκπνοή, με κλειστά χείλη, βούιξε απαλά «μμμ», σαν μέλισσα, ως το τέλος του αέρα. Νιώσε τη δόνηση στη μύτη, στο πρόσωπο, στο λαιμό. Αν θέλεις, κλείσε απαλά τα αυτιά με τους αντίχειρες· ο ήχος ακούγεται από μέσα. Μετά την τελευταία εκπνοή, μείνε λίγο με τη δόνηση που μένει. Αν σου τελειώνει ο αέρας, σταμάτα νωρίτερα· δεν χρειάζεται να φτάσεις ως το τέλος.",
+      en: "Inhale through the nose. On the exhale, with closed lips, hum softly 'mmm', like a bee, until the air runs out. Feel the vibration in your nose, face and throat. If you like, gently close your ears with your thumbs; the sound is heard from inside. After the last exhale, stay a little with the vibration that remains. If you run out of air, stop earlier; you do not need to reach the end.",
     },
     totalCycleDurationMs: 15000,
-    audioConfig: {
-      base: 128,
-      beat: 4,
-      pulse: 4,
-      ambientLayers: ["rain"],
-    },
+    // The voice guide's pitch is chosen in the practice (low or high voice).
+    audioConfig: { base: 130, beat: 0, pulse: 0, ambientLayers: ["rain"] },
     phases: [
       { dur: 4000, armFrom: 0, armTo: 1 },
       { dur: 1000, armFrom: 1, armTo: 1 },
@@ -747,15 +740,15 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     labels: [
       {
         label: { el: "Εισπνοή", en: "Inhale" },
-        sub: { el: "από τη μύτη, γέμισμα (4s)", en: "through nose, fill (4s)" }
+        sub: { el: "από τη μύτη (4s)", en: "through the nose (4s)" },
       },
       {
         label: { el: "Παύση", en: "Hold" },
-        sub: { el: "προετοιμασία (1s)", en: "prepare (1s)" }
+        sub: { el: "ετοιμάσου (1s)", en: "get ready (1s)" },
       },
       {
-        label: { el: "«μμμ → μααα»", en: "«mmm → maaa»" },
-        sub: { el: "ψάλσιμο μέχρι τέλος (10s)", en: "hum until empty (10s)" }
+        label: { el: "«μμμ...»", en: "«mmm...»" },
+        sub: { el: "βουητό με κλειστά χείλη (10s)", en: "hum with closed lips (10s)" },
       },
     ],
   },
@@ -763,26 +756,16 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     id: "aum-resonance",
     axis: 'breath',
     category: "vocal",
-    hasBinaural: true,
-    title: {
-      el: "Α-Ο-Μ — Σωματική Αντήχηση",
-      en: "A-U-M — Somatic Resonance"
-    },
-    subtitle: {
-      el: "Καρδιακή & Κοιλιακή Ενεργοποίηση",
-      en: "Heart & Belly Stimulation"
-    },
+    hasBinaural: false,
+    title: { el: "Α-Ο-Μ", en: "A-U-M" },
+    subtitle: { el: "Από την Κοιλιά στο Κεφάλι", en: "From Belly to Head" },
     desc: {
-      el: "Εισπνοή 4s, Παύση 1s, Ψάλσιμο «Α-Ο-Μ» 11s. Ξεκίνησε με το «Ααα» από την κοιλιά/λεκάνη, ανέβασε τον ήχο στο στήθος με το «Οοο» και κλείσε με το «Μμμ» δονώντας το κεφάλι και τον κόλπο της μύτης. Η φυσική αυτή δόνηση της φωνής διεγείρει το πνευμονογαστρικό νεύρο κατά μήκος των σωματικών κέντρων, προάγοντας άμεσο αίσθημα ασφάλειας και γαλήνης.",
-      en: "Inhale 4s, Hold 1s, Chanting 'A-U-M' 11s. Begin with 'Aaa' from your belly/pelvis, raise the sound to the chest with 'Ooo', and close with 'Mmm' vibrating your head and nasal cavities. This vocal resonance physically stimulates the vagus nerve along the somatic pathway, invoking deep calm and a sense of safety."
+      el: "Εισπνοή 4, παύση 1, ψάλσιμο 11. Ξεκίνα με «Ααα» και νιώσε τη δόνηση χαμηλά, στην κοιλιά· άφησέ το να γίνει «Οοο» στο στήθος· κλείσε με «Μμμ», με κλειστά χείλη, στο κεφάλι. Αν σου τελειώνει ο αέρας, σταμάτα νωρίτερα· δεν χρειάζεται να φτάσεις ως το τέλος.",
+      en: "Inhale 4, pause 1, chant 11. Begin with 'Aaa' and feel the vibration low, in the belly; let it become 'Ooo' in the chest; close with 'Mmm', lips closed, in the head. If you run out of air, stop earlier; you do not need to reach the end.",
     },
     totalCycleDurationMs: 16000,
-    audioConfig: {
-      base: 136.1, // Earth frequency Ohm tone
-      beat: 2,
-      pulse: 2,
-      ambientLayers: ["wind"],
-    },
+    // The voice guide's pitch is chosen in the practice (low or high voice).
+    audioConfig: { base: 130, beat: 0, pulse: 0, ambientLayers: ["wind"] },
     phases: [
       { dur: 4000, armFrom: 0, armTo: 1 },
       { dur: 1000, armFrom: 1, armTo: 1 },
@@ -791,42 +774,35 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     labels: [
       {
         label: { el: "Εισπνοή", en: "Inhale" },
-        sub: { el: "απαλά από τη μύτη (4s)", en: "gently through nose (4s)" }
+        sub: { el: "απαλά από τη μύτη (4s)", en: "gently through the nose (4s)" },
       },
       {
         label: { el: "Παύση", en: "Hold" },
-        sub: { el: "ευθυγράμμιση (1s)", en: "align and center (1s)" }
+        sub: { el: "ετοιμάσου (1s)", en: "get ready (1s)" },
       },
       {
-        label: { el: "«Α-Ο-Μ »", en: "«A-U-M »" },
-        sub: { el: "ψέλνοντας «Α-Ο-Μ» (11s)", en: "chanting 'A-U-M' (11s)" }
+        label: { el: "«Α-Ο-Μ»", en: "«A-U-M»" },
+        sub: { el: "κοιλιά, στήθος, κεφάλι (11s)", en: "belly, chest, head (11s)" },
       },
     ],
   },
   {
     id: "a-major-resonance",
+    family: "resonance",
+    familyOrder: 2,
+    rhythmName: { el: "Στήθος «Α»", en: "Chest «AH»" },
     axis: 'breath',
     category: "vocal",
     hasBinaural: false,
-    title: {
-      el: "Α Ματζόρε — Ρύθμιση Καρδιάς",
-      en: "A Major — Heart Resonance"
-    },
-    subtitle: {
-      el: "Αντήχηση στο Στήθος",
-      en: "Chest Resonance"
-    },
+    title: { el: "Αντήχηση στο Στήθος", en: "Resonance in the Chest" },
+    subtitle: { el: "«Α»", en: "«AH»" },
     desc: {
-      el: "Εισπνοή 4s, Παύση 2s, Ψάλσιμο «ΑΑΑ» 12s σε συγχορδία Λα Ματζόρε (A Major). Η ομαλή, συνεχόμενη φωνητική παραγωγή του φωνήεντος «Α» ρυθμίζει το νευρικό σύστημα και δημιουργεί ένα πεδίο προστασίας και ανάτασης γύρω από την καρδιακή περιοχή.",
-      en: "Inhale 4s, Hold 2s, Chanting «AAA» 12s in an A Major focal tune. The smooth, continuous vocalization of the «A» vowel regulates the nervous system and creates a lifting field around the heart center."
+      el: "Εισπνοή 4, παύση 2, ψάλσιμο 12. Ένα ανοιχτό, ήρεμο «α»· αν θέλεις, βάλε την παλάμη στο στήθος και νιώσε τη δόνηση κάτω από το χέρι. Αν σου τελειώνει ο αέρας, σταμάτα νωρίτερα· δεν χρειάζεται να φτάσεις ως το τέλος.",
+      en: "Inhale 4, pause 2, chant 12. An open, calm 'ah'; if you like, place your palm on your chest and feel the vibration under your hand. If you run out of air, stop earlier; you do not need to reach the end.",
     },
     totalCycleDurationMs: 18000,
-    audioConfig: {
-      base: 220, // Musical A3
-      beat: 3,
-      pulse: 3,
-      ambientLayers: ["green"],
-    },
+    // The voice guide's pitch is chosen in the practice (low or high voice).
+    audioConfig: { base: 130, beat: 0, pulse: 0, ambientLayers: ["green"] },
     phases: [
       { dur: 4000, armFrom: 0, armTo: 1 },
       { dur: 2000, armFrom: 1, armTo: 1 },
@@ -835,42 +811,35 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     labels: [
       {
         label: { el: "Εισπνοή", en: "Inhale" },
-        sub: { el: "βαθιά, ήρεμα (4s)", en: "deeply, calmly (4s)" }
+        sub: { el: "βαθιά, ήρεμα (4s)", en: "deeply, calmly (4s)" },
       },
       {
         label: { el: "Παύση", en: "Hold" },
-        sub: { el: "επίγνωση καρδιάς (2s)", en: "heart awareness (2s)" }
+        sub: { el: "νιώσε το στήθος (2s)", en: "feel the chest (2s)" },
       },
       {
         label: { el: "«ΑΑΑ...»", en: "«AAA...»" },
-        sub: { el: "φωνητική αντήχηση στο στήθος (12s)", en: "vocal resonance in chest (12s)" }
+        sub: { el: "δόνηση στο στήθος (12s)", en: "vibration in the chest (12s)" },
       },
     ],
   },
   {
     id: "c-major-resonance",
+    family: "resonance",
+    familyOrder: 1,
+    rhythmName: { el: "Κοιλιά «ΟΥ»", en: "Belly «OO»" },
     axis: 'breath',
     category: "vocal",
     hasBinaural: false,
-    title: {
-      el: "Ντο Ματζόρε — Ρύθμιση Γείωσης",
-      en: "C Major — Grounding Resonance"
-    },
-    subtitle: {
-      el: "Αντήχηση στη Βάση",
-      en: "Root Resonance"
-    },
+    title: { el: "Αντήχηση στην Κοιλιά", en: "Resonance in the Belly" },
+    subtitle: { el: "«ΟΥ»", en: "«OO»" },
     desc: {
-      el: "Εισπνοή 4s, Παύση 2s, Ψάλσιμο «ΟΥΟΥΟΥ» 12s σε συγχορδία Ντο Ματζόρε (C Major). Αυτή η βαθιά τονικότητα υποστηρίζει την αίσθηση ασφάλειας και γείωσης (Root Chakra), δημιουργώντας μια ζεστή, περιβάλλουσα υποστήριξη.",
-      en: "Inhale 4s, Hold 2s, Chanting «UUU» 12s in a C Major focal tune. This deep tonality supports the feeling of safety and grounding, building a warm, enveloping foundation."
+      el: "Εισπνοή 4, παύση 2, ψάλσιμο 12. Ένα βαθύ, χαμηλό «ου»· νιώσε τη δόνηση χαμηλά, στην κοιλιά και στη λεκάνη, και το βάρος του σώματος. Αν σου τελειώνει ο αέρας, σταμάτα νωρίτερα· δεν χρειάζεται να φτάσεις ως το τέλος.",
+      en: "Inhale 4, pause 2, chant 12. A deep, low 'oo'; feel the vibration low, in the belly and pelvis, and the weight of your body. If you run out of air, stop earlier; you do not need to reach the end.",
     },
     totalCycleDurationMs: 18000,
-    audioConfig: {
-      base: 130.81, // Musical C3
-      beat: 3,
-      pulse: 3,
-      ambientLayers: ["brown"],
-    },
+    // The voice guide's pitch is chosen in the practice (low or high voice).
+    audioConfig: { base: 130, beat: 0, pulse: 0, ambientLayers: ["brown"] },
     phases: [
       { dur: 4000, armFrom: 0, armTo: 1 },
       { dur: 2000, armFrom: 1, armTo: 1 },
@@ -879,42 +848,35 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     labels: [
       {
         label: { el: "Εισπνοή", en: "Inhale" },
-        sub: { el: "βαθιά, ήρεμα (4s)", en: "deeply, calmly (4s)" }
+        sub: { el: "βαθιά, ήρεμα (4s)", en: "deeply, calmly (4s)" },
       },
       {
         label: { el: "Παύση", en: "Hold" },
-        sub: { el: "επίγνωση βάσης (2s)", en: "root awareness (2s)" }
+        sub: { el: "νιώσε την κοιλιά (2s)", en: "feel the belly (2s)" },
       },
       {
-        label: { el: "«ΟΥΟΥΟΥ...»", en: "«UUU...»" },
-        sub: { el: "βαθιά αντήχηση στην κοιλιά (12s)", en: "deep resonance in belly (12s)" }
+        label: { el: "«ΟΥΟΥΟΥ...»", en: "«OOO...»" },
+        sub: { el: "δόνηση στην κοιλιά (12s)", en: "vibration in the belly (12s)" },
       },
     ],
   },
   {
     id: "throat-chakra-humming",
+    family: "resonance",
+    familyOrder: 3,
+    rhythmName: { el: "Λαιμός «ΧΑΜ»", en: "Throat «HAM»" },
     axis: 'breath',
     category: "vocal",
     hasBinaural: false,
-    title: {
-      el: "Λαιμός & Έκφραση (G Major)",
-      en: "Throat Chakra (G Major)"
-    },
-    subtitle: {
-      el: "Αντήχηση Vishuddha",
-      en: "Vishuddha Resonance"
-    },
+    title: { el: "Αντήχηση στο Λαιμό", en: "Resonance in the Throat" },
+    subtitle: { el: "«ΧΑΜ»", en: "«HAM»" },
     desc: {
-      el: "Εισπνοή 4s, Παύση 2s, Ψάλσιμο «ΧΑΜ» 12s σε συγχορδία Σολ Ματζόρε (G Major). Απελευθερώνει την ένταση από την περιοχή του λαιμού και των ώμων, ενισχύοντας την καθαρή αυτοέκφραση και την ηρεμία του πνευμονογαστρικού νεύρου.",
-      en: "Inhale 4s, Hold 2s, Chanting 'HAM' 12s in a G Major focal tune. Releases tension from the throat and shoulder area, promoting clear self-expression and vagus nerve sedation."
+      el: "Εισπνοή 4, παύση 2, ψάλσιμο 12: ένα σύντομο «χα» που κλείνει σε μακρύ «μμμ». Νιώσε τη δόνηση στο λαιμό και άφησε σαγόνι και ώμους να χαλαρώσουν. Αν σου τελειώνει ο αέρας, σταμάτα νωρίτερα· δεν χρειάζεται να φτάσεις ως το τέλος.",
+      en: "Inhale 4, pause 2, chant 12: a short 'ha' that closes into a long 'mmm'. Feel the vibration in your throat and let your jaw and shoulders soften. If you run out of air, stop earlier; you do not need to reach the end.",
     },
     totalCycleDurationMs: 18000,
-    audioConfig: {
-      base: 196.00, // Musical G3
-      beat: 4,
-      pulse: 4,
-      ambientLayers: ["green", "wind"],
-    },
+    // The voice guide's pitch is chosen in the practice (low or high voice).
+    audioConfig: { base: 130, beat: 0, pulse: 0, ambientLayers: ["green", "wind"] },
     phases: [
       { dur: 4000, armFrom: 0, armTo: 1 },
       { dur: 2000, armFrom: 1, armTo: 1 },
@@ -923,42 +885,35 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     labels: [
       {
         label: { el: "Εισπνοή", en: "Inhale" },
-        sub: { el: "άντληση αέρα (4s)", en: "drawing breath (4s)" }
+        sub: { el: "εισπνοή (4s)", en: "inhale (4s)" },
       },
       {
         label: { el: "Παύση", en: "Hold" },
-        sub: { el: "επίγνωση λαιμού (2s)", en: "throat awareness (2s)" }
+        sub: { el: "νιώσε το λαιμό (2s)", en: "feel the throat (2s)" },
       },
       {
         label: { el: "«ΧΑΜ / ΜΜΜ...»", en: "«HAM / MMM...»" },
-        sub: { el: "δόνηση στο λαιμό (12s)", en: "vibration in throat (12s)" }
+        sub: { el: "δόνηση στο λαιμό (12s)", en: "vibration in the throat (12s)" },
       },
     ],
   },
   {
     id: "om-pure-resonance",
+    family: "resonance",
+    familyOrder: 4,
+    rhythmName: { el: "Κεφάλι «ΜΜΜ»", en: "Head «MMM»" },
     axis: 'breath',
     category: "vocal",
-    hasBinaural: true,
-    title: {
-      el: "Καθαρό OM (136.1 Hz)",
-      en: "Pure Om (136.1 Hz)"
-    },
-    subtitle: {
-      el: "Αντήχηση Ajna (Τρίτο Μάτι)",
-      en: "Ajna / Third Eye Resonance"
-    },
+    hasBinaural: false,
+    title: { el: "Αντήχηση στο Κεφάλι", en: "Resonance in the Head" },
+    subtitle: { el: "«ΟΜ»", en: "«OM»" },
     desc: {
-      el: "Εισπνοή 4s, Παύση 2s, Ψάλσιμο «ΟΜ / ΜΜΜ» 12s. Συντονισμένο στα 136.1 Hz (Συχνότητα της Γης). Αυτή η συνεχής αντήχηση ηρεμεί τις σκέψεις και εστιάζει την προσοχή στο κέντρο του μετώπου.",
-      en: "Inhale 4s, Hold 2s, Chanting 'OM / MMM' 12s. Tuned to 136.1 Hz (Earth frequency). This continuous resonance quiets the mind and focuses attention entirely at the center of the forehead."
+      el: "Εισπνοή 4, παύση 2, ψάλσιμο 12: ένα σύντομο «ο» που κλείνει σε μακρύ «μμμ». Νιώσε τη δόνηση στο κεφάλι, στο μέτωπο, στη μύτη. Αν σου τελειώνει ο αέρας, σταμάτα νωρίτερα· δεν χρειάζεται να φτάσεις ως το τέλος.",
+      en: "Inhale 4, pause 2, chant 12: a short 'o' that closes into a long 'mmm'. Feel the vibration in your head, forehead and nose. If you run out of air, stop earlier; you do not need to reach the end.",
     },
     totalCycleDurationMs: 18000,
-    audioConfig: {
-      base: 136.1, // Earth / Om frequency
-      beat: 3,
-      pulse: 3,
-      ambientLayers: ["ocean", "brown"],
-    },
+    // The voice guide's pitch is chosen in the practice (low or high voice).
+    audioConfig: { base: 130, beat: 0, pulse: 0, ambientLayers: ["ocean", "brown"] },
     phases: [
       { dur: 4000, armFrom: 0, armTo: 1 },
       { dur: 2000, armFrom: 1, armTo: 1 },
@@ -967,65 +922,16 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     labels: [
       {
         label: { el: "Εισπνοή", en: "Inhale" },
-        sub: { el: "μαζεύοντας ενέργεια (4s)", en: "gathering energy (4s)" }
+        sub: { el: "εισπνοή (4s)", en: "inhale (4s)" },
       },
       {
         label: { el: "Παύση", en: "Hold" },
-        sub: { el: "στο τρίτο μάτι (2s)", en: "at the third eye (2s)" }
+        sub: { el: "νιώσε το κεφάλι (2s)", en: "feel the head (2s)" },
       },
       {
         label: { el: "«ΟΜ / ΜΜΜ...»", en: "«OM / MMM...»" },
-        sub: { el: "καθαρή δόνηση κεφαλής (12s)", en: "pure head resonance (12s)" }
+        sub: { el: "δόνηση στο κεφάλι (12s)", en: "vibration in the head (12s)" },
       },
     ],
   },
-  {
-    id: "om-resonance-throat",
-    axis: 'breath',
-    category: "vocal",
-    hasBinaural: true,
-    title: {
-      el: "Αντήχηση ΟΜ (Throat Chakra)",
-      en: "Om Throat Resonance"
-    },
-    subtitle: {
-      el: "Ρύθμιση Μακράς Διάρκειας",
-      en: "Long Duration Tuning"
-    },
-    desc: {
-      el: "Εισπνοή 4s, Παύση 2s, 14s βαθύ ΟΜ (μετάβαση από O σε M). Εστιάζει στο τσάκρα του λαιμού, χρησιμοποιώντας παρατεταμένη φωνή για βαθιά ηρεμία και ενεργοποίηση του πνευμονογαστρικού.",
-      en: "Inhale 4s, Hold 2s, 14s deep OM (transition from O to M). Centers on the throat chakra, using prolonged vocalization for deep sedation and vagal tone."
-    },
-    totalCycleDurationMs: 20000,
-    audioConfig: {
-      base: 136.1,
-      beat: 4,
-      pulse: 4,
-      ambientLayers: ["ocean", "green"],
-    },
-    phases: [
-      { dur: 4000, armFrom: 0, armTo: 1 },
-      { dur: 2000, armFrom: 1, armTo: 1 },
-      { dur: 7000, armFrom: 1, armTo: 0.4 },
-      { dur: 7000, armFrom: 0.4, armTo: 0 },
-    ],
-    labels: [
-      {
-        label: { el: "Εισπνοή", en: "Inhale" },
-        sub: { el: "βαθιά (4s)", en: "deeply (4s)" }
-      },
-      {
-        label: { el: "Παύση", en: "Hold" },
-        sub: { el: "απαλά (2s)", en: "softly (2s)" }
-      },
-      {
-        label: { el: "«ΟΟΟ...»", en: "«OOO...»" },
-        sub: { el: "ανοιχτός λαιμός (7s)", en: "open throat (7s)" }
-      },
-      {
-        label: { el: "«ΜΜΜ...»", en: "«MMM...»" },
-        sub: { el: "κλειστά χείλη (7s)", en: "closed lips (7s)" }
-      },
-    ],
-  }
 ];

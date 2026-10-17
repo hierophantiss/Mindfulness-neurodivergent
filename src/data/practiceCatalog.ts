@@ -49,7 +49,7 @@ export const CHECKIN_TAGS: Record<string, CheckinTag[]> = {
   'lotus-fourfold': [B], 'lotus-box': [L, B], 'lotus-resonant': [B, H], 'lotus-active': [L],
   // voice
   'bhramari-humming': [H], 'aum-resonance': [H, B], 'a-major-resonance': [B], 'c-major-resonance': [H],
-  'throat-chakra-humming': [B], 'om-pure-resonance': [B], 'om-resonance-throat': [B],
+  'throat-chakra-humming': [B], 'om-pure-resonance': [B],
   // guided exercises
   'body-scan': [H, B, U], 'grounding-scan': [H, U], 'sound-focus': [L, H], 'vertical-axis': [B, L],
   'gravity-surrender': [H], 'mindful-swaying': [H, L], 'mindful-walking': [L, H], 'belly-breathing': [H],

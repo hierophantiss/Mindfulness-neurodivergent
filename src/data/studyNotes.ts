@@ -29,6 +29,10 @@ export const STUDY_NOTES: Record<string, T> = {
     el: '108 ενήλικες, 5 λεπτά τη μέρα για 4 εβδομάδες. Η τεχνική με τη μακριά εκπνοή ήταν διπλή εισπνοή και μακριά εκπνοή, όχι ακριβώς αυτός ο ρυθμός.',
     en: '108 adults, 5 minutes a day for 4 weeks. The long-exhale technique was a double inhale with a long exhale, not exactly this rhythm.',
   },
+  'study-trivedi': {
+    el: 'Μικρή πιλοτική μελέτη (23 άτομα), χωρίς ομάδα σύγκρισης· μέτρησε τον καρδιακό ρυθμό στο βουητό και σε τρεις άλλες δραστηριότητες της μέρας.',
+    en: 'A small pilot study (23 people) with no comparison group; it measured heart rhythm during humming and three other daily activities.',
+  },
   'study-lane': {
     el: 'Μικρή μελέτη· τα ευρήματα για τα διωτικά κύματα είναι ακόμα ανάμεικτα.',
     en: 'A small study; findings on binaural beats are still mixed.',

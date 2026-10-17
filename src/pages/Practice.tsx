@@ -303,7 +303,20 @@ const axisInfo = {
   }
 
   if (activeCategory === 'vocal') {
-    const filteredVocals = vocalExercises.filter(matchesSomaticFilter);
+    // Three cards: Humming, A-U-M, and the four body resonances as one card.
+    const resonance = vocalExercises.find(p => p.id === 'c-major-resonance');
+    const filteredVocals: BreathPattern[] = [
+      ...vocalExercises.filter(p => !p.family),
+      ...(resonance ? [{
+        ...resonance,
+        title: { el: 'Αντήχηση στο Σώμα', en: 'Resonance in the Body' },
+        subtitle: { el: 'Κοιλιά · Στήθος · Λαιμός · Κεφάλι', en: 'Belly · Chest · Throat · Head' },
+        desc: {
+          el: 'Ένα φωνήεν, εκεί όπου νιώθεις τη δόνηση: κοιλιά «ΟΥ», στήθος «Α», λαιμός «ΧΑΜ», κεφάλι «ΜΜΜ». Μέσα διαλέγεις πού.',
+          en: 'One vowel, where you feel the vibration: belly «OO», chest «AH», throat «HAM», head «MMM». Inside you choose where.',
+        },
+      }] : []),
+    ];
 
     return (
       <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -326,12 +339,10 @@ const axisInfo = {
           </h2>
           <p className="text-lg text-white/50 font-sans leading-relaxed">
             {language === 'el' 
-              ? 'Φωνητικές ασκήσεις με αντήχηση και δονήσεις για βαθιά ενεργοποίηση του πνευμονογαστρικού νεύρου.' 
-              : 'Vocal exercises using physical resonance and acoustic vibrations for deep vagal nerve stimulation and calm.'}
+              ? 'Βουητό και ψάλσιμο πάνω στην εκπνοή: μακριά εκπνοή με δόνηση. Το σώμα ηρεμεί το σώμα. Αν σου τελειώνει ο αέρας, σταμάτα νωρίτερα· δεν χρειάζεται να φτάσεις ως το τέλος.' 
+              : 'Humming and chanting on the exhale: a long exhale with vibration. The body calms the body. If you run out of air, stop earlier; you do not need to reach the end.'}
           </p>
         </header>
-
-        {renderSomaticFilters()}
 
         <div className="max-w-4xl mx-auto w-full pb-12">
           {filteredVocals.length === 0 ? (

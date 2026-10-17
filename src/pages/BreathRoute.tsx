@@ -10,6 +10,8 @@ export default function BreathRoute() {
   const { id } = useParams();
   // "Delta" was removed: its sound lives on as "Sleep" in the Sanctuary.
   if (id === 'delta') return <Navigate to="/sanctuary?track=sleep-delta" replace />;
+  // "Om Throat Resonance" was folded into A-U-M.
+  if (id === 'om-resonance-throat') return <Navigate to="/practice/breath/aum-resonance" replace />;
   const isPattern = !id || BREATH_PATTERNS.some(p => p.id === id);
   return isPattern ? <PracticeBreath /> : <GenericExercise />;
 }
