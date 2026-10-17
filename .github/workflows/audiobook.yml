@@ -1,27 +1,37 @@
-# Builds the audiobook from book/workbook_<lang>.md with Google Text-to-Speech
-# (Chirp 3 HD, voice Sulafat) and attaches the files to a GitHub Release.
+# Builds the audio with Google Text-to-Speech (Chirp 3 HD, voice Sulafat) and
+# attaches it to GitHub Releases. Nothing audio is committed to the repository.
 #
 # Run it by hand: Actions → Audiobook → Run workflow.
 # Needs the repository secret GOOGLE_TTS_API_KEY (an API key restricted to the
-# Cloud Text-to-Speech API). Nothing is committed to the repository; the audio
-# goes to the release only.
+# Cloud Text-to-Speech API).
 #
-# "chapters" builds only some audio chapters (e.g. "1-3"), as a preview in the
-# pre-release "audiobook-preview". Left empty, the whole book goes to the
-# release "audiobook".
+# What:
+#   app   the chapters of the app's reader: one MP3 and one timing map per
+#         chapter → release "app-audio" (played in the app through /audio/…)
+#   book  the audiobook of the workbook → release "audiobook"
+#         (with "chapters" set: a preview → pre-release "audiobook-preview")
+#   both  the two
+#
+# "chapters" limits the run: for the app, chapter numbers (e.g. 3 or 1-4; the
+# other chapters keep their files); for the book, audio tracks (e.g. 1-3).
 
 name: Audiobook
 
 on:
   workflow_dispatch:
     inputs:
+      target:
+        description: What to build
+        type: choice
+        options: [app, book, both]
+        default: app
       lang:
         description: Language
         type: choice
-        options: [el, en, both]
-        default: el
+        options: [both, el, en]
+        default: both
       chapters:
-        description: Audio chapters to build, e.g. 1-3 (empty = the whole book)
+        description: 'Only these (app = chapter numbers, book = audio tracks), e.g. 1-3. Empty = all'
         type: string
         default: ''
 
@@ -35,10 +45,13 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 240
     env:
       GOOGLE_TTS_API_KEY: ${{ secrets.GOOGLE_TTS_API_KEY }}
       GH_TOKEN: ${{ github.token }}
+      TARGET: ${{ inputs.target }}
+      LANGS: ${{ inputs.lang == 'both' && 'el en' || inputs.lang }}
+      ONLY: ${{ inputs.chapters }}
     steps:
       - uses: actions/checkout@v4
 
@@ -53,7 +66,7 @@ jobs:
         run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
 
       # Spoken segments already paid for are reused, so a rerun after a small
-      # change in the book only synthesises the changed text.
+      # change only synthesises the changed text.
       - uses: actions/cache@v4
         with:
           path: .tts-cache
@@ -61,19 +74,36 @@ jobs:
           key: tts-${{ github.run_id }}
           restore-keys: tts-
 
-      - name: Build
+      # ── App chapters ───────────────────────────────────────────────
+      - uses: actions/setup-node@v4
+        if: env.TARGET != 'book'
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: App chapters
+        if: env.TARGET != 'book'
         run: |
-          langs="${{ inputs.lang }}"
-          [ "$langs" = "both" ] && langs="el en"
-          for l in $langs; do
+          npm ci --no-audit --no-fund
+          npx tsx scripts/export-reading.ts audiobook-out/reading.json
+          python3 tools/audiobook/synth_app.py audiobook-out/reading.json audiobook-out/app \
+            --langs "${LANGS// /,}" --cache .tts-cache --only "$ONLY"
+          gh release view app-audio >/dev/null 2>&1 || \
+            gh release create app-audio --title "App chapter audio" \
+              --notes "Chapter audio for the app's reader (Google Chirp 3 HD, Sulafat): one MP3 and one timing map per chapter. Served by the site at /audio/. CC BY-NC-ND 4.0."
+          gh release upload app-audio audiobook-out/app/*.mp3 audiobook-out/app/*.json --clobber
+          echo "App audio: https://github.com/${{ github.repository }}/releases/tag/app-audio" >> "$GITHUB_STEP_SUMMARY"
+
+      # ── Audiobook ──────────────────────────────────────────────────
+      - name: Audiobook
+        if: env.TARGET != 'app'
+        run: |
+          for l in $LANGS; do
             python3 tools/audiobook/script.py "$l" "audiobook-out/script_$l.json"
             python3 tools/audiobook/synth.py "audiobook-out/script_$l.json" "$l" "audiobook-out/$l" \
-              --cache .tts-cache --only "${{ inputs.chapters }}"
+              --cache .tts-cache --only "$ONLY"
           done
-
-      - name: Attach to the release
-        run: |
-          if [ -n "${{ inputs.chapters }}" ]; then
+          if [ -n "$ONLY" ]; then
             tag=audiobook-preview; title="Audiobook (preview)"; extra=--prerelease
           else
             tag=audiobook; title="Audiobook"; extra=
@@ -81,5 +111,7 @@ jobs:
           gh release view "$tag" >/dev/null 2>&1 || \
             gh release create "$tag" --title "$title" $extra \
               --notes "Audiobook of the workbook, read by a synthetic voice (Google Chirp 3 HD, Sulafat). CC BY-NC-ND 4.0."
-          gh release upload "$tag" audiobook-out/*/*.mp3 audiobook-out/*/*.m4b --clobber
-          echo "Files: https://github.com/${{ github.repository }}/releases/tag/$tag" >> "$GITHUB_STEP_SUMMARY"
+          files=""
+          for l in $LANGS; do files="$files audiobook-out/$l/*.mp3 audiobook-out/$l/*.m4b"; done
+          gh release upload "$tag" $files --clobber
+          echo "Audiobook: https://github.com/${{ github.repository }}/releases/tag/$tag" >> "$GITHUB_STEP_SUMMARY"

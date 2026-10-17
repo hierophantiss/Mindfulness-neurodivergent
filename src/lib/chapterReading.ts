@@ -21,6 +21,46 @@ export interface ReadSegment {
   text: string;
 }
 
+/**
+ * How the reader paces a chapter. The chapter audio (Sulafat, made by
+ * tools/audiobook/synth_app.py from scripts/export-reading.ts) is spoken with
+ * these values, so the app and the audio files stay in step.
+ */
+/** Speed the chapter audio is spoken at; the listener's speed setting is relative to it. */
+export const BASE_RATE = 0.9;
+/** Silence after each kind of segment, in ms. Steps leave time to do the step. */
+export const PAUSE_AFTER: Record<SegmentKind, number> = {
+  heading: 900,
+  theory: 700,
+  card: 1400,
+  practice: 2500,
+  step: 7000,
+};
+/** Extra silence before an exercise title. */
+export const PAUSE_BEFORE_PRACTICE = 1800;
+/** Exercises and cards are read a little slower than the theory. */
+export const RATE_FACTOR: Record<SegmentKind, number> = {
+  heading: 1,
+  theory: 1,
+  card: 0.95,
+  practice: 0.92,
+  step: 0.9,
+};
+
+/**
+ * A short fingerprint of a segment's spoken text (FNV-1a over UTF-8), so the
+ * reader can tell whether the chapter audio still matches the text on screen.
+ * The chapter audio's timing map carries it for every segment.
+ */
+export function textHash(text: string): string {
+  let h = 0x811c9dc5;
+  for (const b of new TextEncoder().encode(text)) {
+    h ^= b;
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  return h.toString(16).padStart(8, '0');
+}
+
 const LABELS: Record<ReadLang, Record<string, string>> = {
   el: {
     keyPoints: 'Βασικά σημεία.',
