@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { audioUrl } from '../lib/chapterAudio';
 import { Helmet } from 'react-helmet-async';
 import { useLanguage } from '../hooks/useLanguage';
 import { useLocation, useParams } from 'react-router-dom';
@@ -19,7 +20,7 @@ const ARTICLES: Record<string, { titleEn: string; titleEl: string; descEn: strin
     titleEn: 'The Nature of Mind & Tregchod | Neurodivergent Mindfulness',
     titleEl: 'Η Φύση του Νου & Η Λύση της Έντασης | Neurodivergent Mindfulness',
     descEn: 'Tibetan Dzogchen philosophy meets modern neuroscience. How releasing tension (Tregchod) helps ADHD and autistic nervous systems find open awareness.',
-    descEl: 'Φιλοσοφία Τζοκτσέν και σύγχρονη νευροεπιστήμη. Πώς η λύση της έντασης βοηθά νευροδιαφορετικά νευρικά συστήματα.',
+    descEl: 'Φιλοσοφία Ντζόγκτσεν και σύγχρονη νευροεπιστήμη. Πώς η λύση της έντασης βοηθά νευροδιαφορετικά νευρικά συστήματα.',
   },
   'koshas-veils': {
     titleEn: 'The Veils of Being – Kosha Framework | Neurodivergent Mindfulness',
@@ -48,8 +49,8 @@ const ARTICLES: Record<string, { titleEn: string; titleEl: string; descEn: strin
   'riding-the-wind': {
     titleEn: 'Learning to Ride the Wind – Tsa Lung & Nervous System | Neurodivergent Mindfulness',
     titleEl: 'Μαθαίνοντας να ιππεύεις τον άνεμο – Tsa Lung | Neurodivergent Mindfulness',
-    descEn: 'Tibetan Tsa Lung, Yoga, Tai Chi and Sufi spinning: how ancient body-breath traditions regulate the neurodivergent nervous system and cultivate open awareness.',
-    descEl: 'Θιβετιανό Tsa Lung, Yoga, Tai Chi και Σούφι: πώς αρχαίες παραδόσεις ρυθμίζουν το νευροδιαφορετικό νευρικό σύστημα.',
+    descEn: 'Tibetan Tsa Lung, Yoga, Tai Chi and Sufi spinning: what ancient traditions of body and breath can offer a neurodivergent mind.',
+    descEl: 'Θιβετιανό Tsa Lung, γιόγκα, Τάι Τσι και Σούφι: τι μπορούν να δώσουν οι αρχαίες παραδόσεις σώματος και αναπνοής σε έναν νευροδιαφορετικό νου.',
   },
   'what-is-sandbox': {
     titleEn: 'What is a Sandbox in Mindfulness? | Neurodivergent Mindfulness',
@@ -59,9 +60,9 @@ const ARTICLES: Record<string, { titleEn: string; titleEl: string; descEn: strin
   },
   'dzogchen-great-perfection': {
     titleEn: 'Dzogchen: The Great Perfection | Neurodivergent Mindfulness',
-    titleEl: 'Τζοκτσέν: Η Μεγάλη Τελειότητα | Neurodivergent Mindfulness',
+    titleEl: 'Ντζόγκτσεν: Η Μεγάλη Τελειότητα | Neurodivergent Mindfulness',
     descEn: 'An introduction to Dzogchen, the Tibetan Buddhist path of effortless awareness. How the Great Perfection teaching applies to neurodivergent minds seeking stillness.',
-    descEl: 'Εισαγωγή στο Τζοκτσέν, τη θιβετιανή βουδιστική οδό της αβίαστης επίγνωσης για νευροδιαφορετικούς νους.',
+    descEl: 'Εισαγωγή στο Ντζόγκτσεν, τη θιβετιανή βουδιστική οδό της αβίαστης επίγνωσης για νευροδιαφορετικούς νους.',
   },
   'never-force': {
     titleEn: 'Never Force – The Art of Effortless Practice | Neurodivergent Mindfulness',
@@ -427,8 +428,8 @@ export const SEO: React.FC = () => {
     ? 'Neurodivergent Mindfulness – Trauma-Informed Practice for ADHD & Autism'
     : 'Neurodivergent Mindfulness – Ενσυνειδητότητα για ΔΕΠΥ & Αυτισμό';
   let description = lang === 'en'
-    ? 'A mindful sanctuary for neurodivergent individuals. Ground yourself with trauma-informed breathwork, sensory practices, and philosophical reflections for ADHD and autism.'
-    : 'Ένα καταφύγιο ενσυνειδητότητας για νευροδιαφορετικά άτομα. Γείωση με ασφαλείς πρακτικές αναπνοής, αισθητηριακή εστίαση για ΔΕΠΥ και αυτισμό.';
+    ? 'Free mindfulness app for ADHD & autism: breathing, Tai Chi & Qigong, binaural sounds, and an 11-chapter workbook you can read or listen to, plus an audiobook. Made by a neurodivergent person; no account, no tracking.'
+    : 'Δωρεάν εφαρμογή ενσυνειδητότητας για ΔΕΠΥ & αυτισμό: αναπνοές, Τάι Τσι & Qigong, binaural, βιβλίο 11 κεφαλαίων που διαβάζεις ή ακούς, και ακουστικό βιβλίο. Από νευροδιαφορετικό άτομο, χωρίς λογαριασμό και παρακολούθηση.';
   let schema: object = webAppSchema(title, description, pageUrl);
 
   // ── Rabbit Hole: article list ────────────────────────────────────
@@ -438,7 +439,7 @@ export const SEO: React.FC = () => {
       : 'Κουνελότρυπα – Φιλοσοφία & Νευροδιαφορετικότητα | Neurodivergent Mindfulness';
     description = lang === 'en'
       ? 'Allegories, articles and philosophical reflections bridging Dzogchen, Mahamudra, neuroscience and neurodivergent experience. Deep reading for ADHD and autistic minds.'
-      : 'Αλληγορίες, άρθρα και στοχασμοί που γεφυρώνουν Τζοκτσέν, νευροεπιστήμη και νευροδιαφορετική εμπειρία.';
+      : 'Αλληγορίες, άρθρα και στοχασμοί που γεφυρώνουν το Ντζόγκτσεν, τη Μαχαμούντρα, τη νευροεπιστήμη και τη νευροδιαφορετική εμπειρία. Για βαθύτερο διάβασμα, όταν η πρακτική σταθεροποιηθεί.';
     schema = articleSchema(title, description, pageUrl);
 
   // ── Rabbit Hole: individual article ─────────────────────────────
@@ -454,8 +455,8 @@ export const SEO: React.FC = () => {
       ? 'Presence Workbook – 11-Chapter Study | Neurodivergent Mindfulness'
       : 'Βιβλίο Παρουσίας – 11 Κεφάλαια | Neurodivergent Mindfulness';
     description = lang === 'en'
-      ? 'An 11-chapter guided workbook on the Fourfold Axis: Body, Breath, Attention, Space. Neurodivergent-friendly theory and practice for ADHD and autism.'
-      : '11 κεφάλαια καθοδηγούμενης μελέτης στον Τετραπλό Άξονα: Σώμα, Αναπνοή, Προσοχή, Χώρος για ΔΕΠΥ και αυτισμό.';
+      ? 'An 11-chapter guided workbook on the Fourfold Axis: Body, Breath, Attention, Space. Read each chapter or listen to it in a natural voice. For ADHD and autism.'
+      : '11 κεφάλαια καθοδηγούμενης μελέτης στον Τετραπλό Άξονα: Σώμα, Αναπνοή, Προσοχή, Χώρος. Κάθε κεφάλαιο το διαβάζεις ή το ακούς με φυσική φωνή. Για ΔΕΠΥ και αυτισμό.';
     schema = webAppSchema(title, description, pageUrl);
 
   // ── Chapters: individual chapter ─────────────────────────────────
@@ -467,7 +468,19 @@ export const SEO: React.FC = () => {
         ? `Chapter ${chapter.num}: ${chapter.title} – ${chapter.sub} | Neurodivergent Mindfulness`
         : `Κεφάλαιο ${chapter.num}: ${chapter.title} – ${chapter.sub} | Neurodivergent Mindfulness`;
       description = chapter.summary || chapter.tldr || description;
-      schema = articleSchema(title, description, pageUrl);
+      const chLang = lang === 'en' ? 'en' : 'el';
+      schema = {
+        ...articleSchema(title, description, pageUrl),
+        // Every chapter can also be listened to, read aloud in a natural voice.
+        accessMode: ['textual', 'auditory'],
+        audio: {
+          '@type': 'AudioObject',
+          name: `${chLang === 'en' ? 'Chapter' : 'Κεφάλαιο'} ${chapter.num}: ${chapter.title}`,
+          contentUrl: `${BASE_URL}${audioUrl(chLang, chapter.num)}`,
+          encodingFormat: 'audio/mpeg',
+          inLanguage: chLang,
+        },
+      };
     }
 
   // ── Practice: breath exercise ────────────────────────────────────
@@ -477,14 +490,10 @@ export const SEO: React.FC = () => {
       const ptitle = lang === 'en' ? pattern.title.en : pattern.title.el;
       const psub   = lang === 'en' ? pattern.subtitle.en : pattern.subtitle.el;
       title = `${ptitle} – ${psub} | Neurodivergent Mindfulness`;
-      const isVocal = pattern.category === 'vocal';
-      description = lang === 'en'
-        ? isVocal
-          ? `Guided chanting & vocal resonance: ${ptitle}. ${psub}. A neurodivergent-friendly somatic exercise for ADHD and autism vagus nerve regulation.`
-          : `Guided breathwork: ${ptitle}. ${psub}. A neurodivergent-friendly breathing exercise for ADHD and autism nervous system regulation.`
-        : isVocal
-          ? `Καθοδηγούμενο ψάλσιμο και φωνητική αντήχηση: ${ptitle}. ${psub}. Σωματική άσκηση διέγερσης του πνευμονογαστρικού για ΔΕΠΥ και αυτισμό.`
-          : `Καθοδηγούμενη αναπνοή: ${ptitle}. ${psub}. Ρύθμιση νευρικού συστήματος για ΔΕΠΥ και αυτισμό.`;
+      // Described with the exercise's own text, which says what you do and claims nothing more.
+      const own = (lang === 'en' ? pattern.desc?.en : pattern.desc?.el) || '';
+      const full = `${ptitle}${psub ? ` – ${psub}` : ''}: ${own}`;
+      description = full.length > 158 ? full.slice(0, 157).replace(/\s+\S*$/, '') + '…' : full;
       schema = practiceSchema(title, description, pageUrl);
     }
 
@@ -501,8 +510,8 @@ export const SEO: React.FC = () => {
       ? `${params.id.replace(/-/g, ' ')} – ${cat.en} Practice | Neurodivergent Mindfulness`
       : `${params.id.replace(/-/g, ' ')} – Πρακτική ${cat.el} | Neurodivergent Mindfulness`;
     description = lang === 'en'
-      ? `A ${cat.en.toLowerCase()} mindfulness exercise for neurodivergent individuals. Trauma-informed practice supporting ADHD and autistic nervous system regulation.`
-      : `Άσκηση ενσυνειδητότητας ${cat.el.toLowerCase()} για νευροδιαφορετικά άτομα. Ρύθμιση νευρικού συστήματος για ΔΕΠΥ και αυτισμό.`;
+      ? `A short ${cat.en.toLowerCase()} practice from the Fourfold Axis, for ADHD and autism.`
+      : `Σύντομη πρακτική (${cat.el}) από τον Τετραπλό Άξονα, για ΔΕΠΥ και αυτισμό.`;
     schema = practiceSchema(title, description, pageUrl);
 
   // ── Practice: hub ────────────────────────────────────────────────
@@ -511,18 +520,18 @@ export const SEO: React.FC = () => {
       ? 'Mindfulness Practices for ADHD & Autism | Neurodivergent Mindfulness'
       : 'Πρακτικές Ενσυνειδητότητας για ΔΕΠΥ & Αυτισμό | Neurodivergent Mindfulness';
     description = lang === 'en'
-      ? 'Guided breathwork, grounding, chanting, vocal resonance, body, and space exercises. Sensory-friendly mindfulness tools designed for neurodivergent nervous systems.'
-      : 'Καθοδηγούμενη αναπνοή, γείωση, ψάλσιμο, φωνητική αντήχηση, σώμα και ασκήσεις χώρου. Εργαλεία ενσυνειδητότητας για νευροδιαφορετικά νευρικά συστήματα.';
+      ? 'The breathing rhythms of the book (5-5, 4-6, 4-2-7) and SOS, Tai Chi and Qigong, swaying, chanting and short microdoses, for ADHD and autism. Free.'
+      : 'Οι ρυθμοί αναπνοής του βιβλίου (5-5, 4-6, 4-2-7) και το SOS, Τάι Τσι και Qigong, Λίκνισμα, ψάλσιμο και σύντομες μικροδόσεις, για ΔΕΠΥ και αυτισμό. Δωρεάν.';
     schema = webAppSchema(title, description, pageUrl);
 
   // ── Program ──────────────────────────────────────────────────────
   } else if (cleanPath === '/program') {
     title = lang === 'en'
-      ? '8-Week Mindfulness Program for Neurodivergent | Neurodivergent Mindfulness'
-      : '8-Εβδομάδων Πρόγραμμα Ενσυνειδητότητας | Neurodivergent Mindfulness';
+      ? '8-Week Mindfulness Program for ADHD & Autism | Neurodivergent Mindfulness'
+      : 'Πρόγραμμα Ενσυνειδητότητας 8 Εβδομάδων για ΔΕΠΥ & Αυτισμό | Neurodivergent Mindfulness';
     description = lang === 'en'
-      ? 'A structured 8-week mindfulness program designed for ADHD and autistic individuals. Body, Breath, Attention, Space – trauma-informed and self-paced.'
-      : '8 εβδομάδες δομημένης ενσυνειδητότητας για ΔΕΠΥ και αυτισμό. Σώμα, Αναπνοή, Προσοχή, Χώρος – ασφαλές και με δικό σου ρυθμό.';
+      ? 'An 8-week mindfulness program for ADHD and autism, one small step a day: Body, Breath, Attention, Space, at your own pace.'
+      : '8 εβδομάδες ενσυνειδητότητας για ΔΕΠΥ και αυτισμό, ένα μικρό βήμα τη μέρα: Σώμα, Αναπνοή, Προσοχή, Χώρος, με τον δικό σου ρυθμό.';
     schema = webAppSchema(title, description, pageUrl);
 
   } else if (params.weekId && cleanPath.startsWith('/program/week/')) {
@@ -540,8 +549,8 @@ export const SEO: React.FC = () => {
       ? 'The Fourfold Axis Method | Neurodivergent Mindfulness'
       : 'Η Μέθοδος του Τετραπλού Άξονα | Neurodivergent Mindfulness';
     description = lang === 'en'
-      ? 'The Fourfold Axis: Body, Breath, Attention, Space. A trauma-informed mindfulness framework adapted for ADHD and autistic nervous systems.'
-      : 'Ο Τετραπλός Άξονας: Σώμα, Αναπνοή, Προσοχή, Χώρος. Ένα ασφαλές πλαίσιο ενσυνειδητότητας για ΔΕΠΥ και αυτισμό.';
+      ? 'The Fourfold Axis: Body, Breath, Attention, Space. A mindfulness method for ADHD and autism that starts from the body, with breathing rhythms, Tai Chi, chanting and a free 11-chapter workbook you can read or listen to.'
+      : 'Ο Τετραπλός Άξονας: Σώμα, Αναπνοή, Προσοχή, Χώρος. Μέθοδος ενσυνειδητότητας για ΔΕΠΥ και αυτισμό που ξεκινά από το σώμα, με ρυθμούς αναπνοής, Τάι Τσι, ψάλσιμο και δωρεάν βιβλίο 11 κεφαλαίων που διαβάζεις ή ακούς.';
     schema = articleSchema(title, description, pageUrl);
 
   // ── FAQ ──────────────────────────────────────────────────────────
