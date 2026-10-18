@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Home, BookOpen, Activity, Notebook, Menu, X, Info, Music, Bell, Compass, LayoutGrid, EyeOff, Eye, Database, User as UserIcon, LogOut, Download, Sparkles, RotateCcw, Headphones } from 'lucide-react';
+import InfoModal from './InfoModal';
+import { Home, BookOpen, Activity, Notebook, Menu, X, Info, Music, Compass, LayoutGrid, EyeOff, Eye, Database, User as UserIcon, LogOut, Download, Sparkles, RotateCcw, Headphones } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
@@ -83,9 +84,11 @@ export default function NavigationMenu() {
     navigate(path);
   };
 
+  // The same "About" as on the home page.
+  const [infoOpen, setInfoOpen] = useState(false);
   const showInfo = () => {
     setIsOpen(false);
-    navigate('/method');
+    setInfoOpen(true);
   };
 
   const showToast = (message: string) => {
@@ -474,7 +477,7 @@ export default function NavigationMenu() {
               <div className="flex justify-center gap-6 items-center p-6 border-t border-white/[0.08] mt-auto pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
                 <button 
                   onClick={showInfo} 
-                  title={language === 'el' ? 'Πληροφορίες' : 'Info'}
+                  title={language === 'el' ? 'Σχετικά' : 'About'}
                   className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 text-zinc-300 hover:bg-white/10 hover:text-white transition-colors border border-white/5"
                 >
                   <Info size={20} />
@@ -486,18 +489,12 @@ export default function NavigationMenu() {
                 >
                   {masterPlaying ? <Music size={20} className="text-teal-400" /> : <Music size={20} />}
                 </button>
-                <button 
-                  onClick={() => showToast(language === 'el' ? 'Λειτουργία σύντομα!' : 'Feature coming soon!')}
-                  title={language === 'el' ? 'Ειδοποιήσεις' : 'Notifications'}
-                  className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 text-zinc-300 hover:bg-white/10 hover:text-white transition-colors border border-white/5"
-                >
-                  <Bell size={20} />
-                </button>
               </div>
             </motion.div>
           </>
         )}
       </AnimatePresence>
+      <InfoModal isOpen={infoOpen} onClose={() => setInfoOpen(false)} />
     </>
   );
 }
