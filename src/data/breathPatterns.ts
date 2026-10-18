@@ -18,14 +18,7 @@ export interface BreathPattern {
     label: { el: string; en: string };
     sub: { el: string; en: string };
   }[];
-  video?: string;
-  useVideoOnly?: boolean;
   skipIntro?: boolean;
-  videoPeak?: number;
-  videoInhaleStart?: number;
-  videoInhaleEnd?: number;
-  videoExhaleStart?: number;
-  videoExhaleEnd?: number;
   evidence?: { en: string; el: string; ref: string };
   /** Flows: the short name of the rhythm, for the chooser inside the practice. */
   rhythmName?: { el: string; en: string };
@@ -58,12 +51,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       pulse: 0,
       ambientLayers: ['ocean', 'wind'],
     },
-    video: "/Basic.mp4",
     skipIntro: true,
-    videoInhaleStart: 0.0,
-    videoInhaleEnd: 0.5,
-    videoExhaleStart: 0.5,
-    videoExhaleEnd: 1.0,
     phases: [
       { dur: 5000, armFrom: 0, armTo: 1 },
       { dur: 5000, armFrom: 1, armTo: 0 },
@@ -99,12 +87,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       pulse: 0,
       ambientLayers: ['ocean', 'wind'],
     },
-    video: "/Basic.mp4",
     skipIntro: true,
-    videoInhaleStart: 0.0,
-    videoInhaleEnd: 0.5,
-    videoExhaleStart: 0.5,
-    videoExhaleEnd: 1.0,
     phases: [
       { dur: 4000, armFrom: 0, armTo: 1 },
       { dur: 6000, armFrom: 1, armTo: 0 },
@@ -139,12 +122,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       pulse: 0,
       ambientLayers: ['ocean', 'wind'],
     },
-    video: "/Basic.mp4",
     skipIntro: true,
-    videoInhaleStart: 0.0,
-    videoInhaleEnd: 0.5,
-    videoExhaleStart: 0.5,
-    videoExhaleEnd: 1.0,
     phases: [
       { dur: 4000, armFrom: 0, armTo: 1 },
       { dur: 2000, armFrom: 1, armTo: 1 },
@@ -190,12 +168,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       pulse: 0,
       ambientLayers: ['ocean', 'wind'],
     },
-    video: "/Basic.mp4",
     skipIntro: true,
-    videoInhaleStart: 0.0,
-    videoInhaleEnd: 0.5,
-    videoExhaleStart: 0.5,
-    videoExhaleEnd: 1.0,
     phases: [
       { dur: 4000, armFrom: 0, armTo: 1 },
       { dur: 2000, armFrom: 1, armTo: 1 },
@@ -235,12 +208,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       pulse: 0,
       ambientLayers: ['ocean', 'wind'],
     },
-    video: "/Basic.mp4",
     skipIntro: true,
-    videoInhaleStart: 0.0,
-    videoInhaleEnd: 0.5,
-    videoExhaleStart: 0.5,
-    videoExhaleEnd: 1.0,
     phases: [
       { dur: 4000, armFrom: 0, armTo: 1 },
       { dur: 7000, armFrom: 1, armTo: 1 },
@@ -280,12 +248,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       pulse: 0,
       ambientLayers: ['ocean', 'wind'],
     },
-    video: "/Basic.mp4",
     skipIntro: true,
-    videoInhaleStart: 0.0,
-    videoInhaleEnd: 0.5,
-    videoExhaleStart: 0.5,
-    videoExhaleEnd: 1.0,
     phases: [
       { dur: 5000, armFrom: 0, armTo: 1 },
       { dur: 5000, armFrom: 1, armTo: 0 },
@@ -320,12 +283,6 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       pulse: 0,
       ambientLayers: ['ocean', 'wind'],
     },
-    video: "/animations/deepbow.mp4",
-    videoPeak: 0.5,
-    videoInhaleStart: 0.5,
-    videoInhaleEnd: 1.0,
-    videoExhaleStart: 0.0,
-    videoExhaleEnd: 0.5,
     phases: [
       { dur: 5000, armFrom: 1, armTo: 0, waistFrom: 0, waistTo: 0.45, headFrom: 0, headTo: 0.2 },
       { dur: 5000, armFrom: 0, armTo: 1, waistFrom: 0.45, waistTo: 0, headFrom: 0.2, headTo: 0 },
@@ -360,10 +317,6 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       pulse: 0,
       ambientLayers: ['ocean', 'wind'],
     },
-    video: "/Basic.mp4",
-    videoPeak: 0.5,
-    videoInhaleEnd: 0.5,
-    videoExhaleStart: 0.5,
     phases: [
       { dur: 5000, armFrom: 0, armTo: 1 },
       { dur: 5000, armFrom: 1, armTo: 0 },
@@ -398,13 +351,6 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       pulse: 0,
       ambientLayers: ['ocean', 'wind'],
     },
-    video: "/Basic.mp4",
-    useVideoOnly: false,
-    videoPeak: 0.5,
-    videoInhaleStart: 0.0,
-    videoInhaleEnd: 0.5,
-    videoExhaleStart: 0.5,
-    videoExhaleEnd: 1.0,
     phases: [
       { dur: 5000, armFrom: 1.0, armTo: 0.0, elbowFrom: -0.2, elbowTo: 1.5, headFrom: 0, headTo: 0.1 },
       { dur: 5000, armFrom: 0.0, armTo: 1.0, elbowFrom: 1.5, elbowTo: -0.2, headFrom: 0.1, headTo: 0 },
@@ -439,10 +385,6 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       pulse: 0,
       ambientLayers: ['ocean', 'wind'],
     },
-    video: "/Basic.mp4",
-    videoPeak: 0.5,
-    videoInhaleEnd: 0.5,
-    videoExhaleStart: 0.5,
     phases: [
       { dur: 6000, armFrom: 0, armTo: 1 },
       { dur: 6000, armFrom: 1, armTo: 0 },
@@ -477,8 +419,6 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       pulse: 0,
       ambientLayers: ['ocean', 'wind'],
     },
-    video: "/Basic.mp4",
-    useVideoOnly: false,
     phases: [
       { dur: 6000, armFrom: 0, armTo: 1 },
       { dur: 2000, armFrom: 1, armTo: 1 },
@@ -521,12 +461,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       pulse: 0,
       ambientLayers: ['ocean', 'wind'],
     },
-    video: "/Basic.mp4",
     skipIntro: true,
-    videoInhaleStart: 0.0,
-    videoInhaleEnd: 0.5,
-    videoExhaleStart: 0.5,
-    videoExhaleEnd: 1.0,
     phases: [
       { dur: 4000, armFrom: 0, armTo: 1 },
       { dur: 4000, armFrom: 1, armTo: 1 },
@@ -571,12 +506,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
       pulse: 0,
       ambientLayers: ['ocean', 'wind'],
     },
-    video: "/Basic.mp4",
     skipIntro: true,
-    videoInhaleStart: 0.0,
-    videoInhaleEnd: 0.5,
-    videoExhaleStart: 0.5,
-    videoExhaleEnd: 1.0,
     phases: [
       { dur: 4000, armFrom: 0, armTo: 1 },
       { dur: 6000, armFrom: 1, armTo: 0 },

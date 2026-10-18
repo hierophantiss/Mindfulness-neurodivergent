@@ -10,7 +10,7 @@ import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { motion, AnimatePresence } from 'motion/react';
 import { RainbowInfinity } from '../components/RainbowInfinity';
-import { BreathingHero } from '../components/BreathingHero';
+import { BreathingHero, PHASE_COLORS } from '../components/BreathingHero';
 import TaiChiHero from '../components/TaiChiHero';
 import { PlayPauseOverlay } from '../components/PlayPauseOverlay';
 import { EvidenceLine } from '../components/EvidenceLine';
@@ -58,7 +58,6 @@ export default function PracticeBreath() {
   const basePattern = BREATH_PATTERNS.find(p => p.id === currentPatternId) || BREATH_PATTERNS[0];
   
   const [rhythmOverride, setRhythmOverride] = useState<'default' | '5-5' | '4-6' | '4-2-7'>('default');
-  const isSwaying = true;
 
   const pattern = React.useMemo(() => {
     if (basePattern.category !== 'movement' || rhythmOverride === 'default') return basePattern;
@@ -120,6 +119,7 @@ export default function PracticeBreath() {
   const [phaseIdx, setPhaseIdx] = useState(0);
 
   const [smoothArmPos, setSmoothArmPos] = useState(0);
+  const [phaseProgress, setPhaseProgress] = useState(0);
 
   // Counter State
   const [phaseSeconds, setPhaseSeconds] = useState(1);
@@ -437,6 +437,18 @@ export default function PracticeBreath() {
   
   const maxSeconds = Math.round((pattern.phases[phaseIdx]?.dur || 4000) / 1000);
 
+  // The whole cycle, step by step: a hold with full lungs is «Κράτημα», with empty lungs «Παύση».
+  const cycleSteps = pattern.phases.map((ph, i) => {
+    // Read the phase from what the breath does (fuller, emptier, or held), not from its label.
+    const kind = ph.armTo > ph.armFrom ? 'inhale' : ph.armTo < ph.armFrom ? 'exhale' : 'hold';
+    const name = kind === 'inhale' ? (language === 'el' ? 'Εισπνοή' : 'Inhale')
+      : kind === 'exhale' ? (language === 'el' ? 'Εκπνοή' : 'Exhale')
+      : ph.armFrom >= 0.5 ? (language === 'el' ? 'Κράτημα' : 'Hold')
+      : (language === 'el' ? 'Παύση' : 'Pause');
+    return { name, seconds: Math.round(ph.dur / 1000), color: PHASE_COLORS[kind] };
+  });
+  const phaseColor = cycleSteps[phaseIdx]?.color || PHASE_COLORS.inhale;
+
 
 
   return (
@@ -653,23 +665,15 @@ export default function PracticeBreath() {
         <div className="absolute inset-0 pointer-events-none z-0">
           <BreathCanvas 
             running={running}
-            audioEnabled={audioEnabled}
-            patternId={pattern.id}
             phases={pattern.phases}
             phaseLabels={pattern.labels}
             cycles={cycles}
-            videoSrc={pattern.video}
-            useVideoOnly={pattern.useVideoOnly}
-            videoPeak={pattern.videoPeak}
-            videoInhaleStart={pattern.videoInhaleStart}
-            videoInhaleEnd={pattern.videoInhaleEnd}
-            videoExhaleStart={pattern.videoExhaleStart}
-            videoExhaleEnd={pattern.videoExhaleEnd}
             onCycleComplete={setCycles}
             onPhaseChange={handlePhaseChange}
-            onTick={(pos) => {
+            onTick={(pos, prog) => {
               if (updateArmPos) updateArmPos(pos);
               setSmoothArmPos(pos);
+              setPhaseProgress(prog);
             }}
           />
         </div>
@@ -687,7 +691,7 @@ export default function PracticeBreath() {
                   className="absolute inset-0 flex items-center justify-center pointer-events-none"
                   initial={{ scale: 1, opacity: 0, filter: 'drop-shadow(0 0 0px rgba(0,0,0,0))' }}
                   animate={{ 
-                    opacity: running ? (isInhale ? 0.6 : isExhale ? 1 : 0.8) : 0.4,
+                    opacity: running ? 1 : 0.55,
                     filter: running ? (isInhale 
                       ? 'drop-shadow(0 0 12px rgba(56, 189, 248, 0.4))' 
                       : isExhale 
@@ -716,49 +720,45 @@ export default function PracticeBreath() {
                       isHold={running ? (!isInhale && !isExhale) : false}
                       durationMs={running ? (pattern.phases[phaseIdx]?.dur || 2000) : 4000}
                       className="w-full h-full"
-                      isSwaying={isSwaying}
                       isHumming={pattern.category === 'vocal'}
-                      armPos={running ? smoothArmPos : 1.0}
+                      armPos={running ? smoothArmPos : 0.35}
+                      progress={running ? phaseProgress : 0}
+                      color={phaseColor}
                       patternId={pattern.id}
                     />
                   )}
                 </motion.div>
                 
-                {/* Phase Text Overlay inside hero card */}
-                <div className="absolute bottom-6 left-0 right-0 z-20 flex flex-col items-center justify-center pointer-events-none">
-                  {running && pattern.category !== 'vocal' && (
-                    <div className="flex flex-col items-center">
-                      <p className={cn("text-2xl tracking-[0.2em] font-mono font-light transition-colors text-center drop-shadow-md", isInhale ? "text-[#7dd3fc]" : isExhale ? "text-[#5eead4]" : "text-[#fcd34d]")}>
-                        {phaseSeconds} <span className="text-lg opacity-50 relative -top-0.5">/ {maxSeconds}</span>
-                      </p>
-                      <div className="relative h-6 mt-1 flex items-center justify-center w-full">
-                        <AnimatePresence>
-                          <motion.div
-                            key={phaseIdx}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.3, ease: 'easeInOut' }}
-                            className={cn(
-                              "absolute text-[11px] md:text-xs font-sans tracking-[0.2em] uppercase font-medium text-center whitespace-nowrap",
-                              isInhale ? "text-[#7dd3fc]/70" : isExhale ? "text-[#5eead4]/70" : "text-[#fcd34d]/70"
-                            )}
-                          >
-                            {isInhale ? (language === 'el' ? 'Εισπνοή' : 'Inhale') : 
-                             isExhale ? (language === 'el' ? 'Εκπνοή' : 'Exhale') : 
-                             phaseIdx === 1 ? (language === 'el' ? 'Κράτημα' : 'Hold') : 
-                             (language === 'el' ? 'Παύση' : 'Rest')}
-                          </motion.div>
-                        </AnimatePresence>
-                      </div>
-                    </div>
-                  )}
-                </div>
              </div>
           </div>
-        </div>
 
-        
+          {/* Where you are: seconds of this phase, and the whole cycle with the current phase lit */}
+          {running && pattern.category !== 'vocal' && (
+            <div className="mt-3 flex flex-col items-center gap-2">
+              <p className="text-2xl tracking-[0.2em] font-mono font-light text-center drop-shadow-md transition-colors duration-500" style={{ color: phaseColor }}>
+                {phaseSeconds} <span className="text-lg opacity-50 relative -top-0.5">/ {maxSeconds}</span>
+              </p>
+              <div className="flex items-center justify-center flex-wrap gap-x-2.5 gap-y-1 px-2">
+                {cycleSteps.map((step, i) => (
+                  <span
+                    key={i}
+                    className={cn(
+                      "flex items-center gap-1 text-[11.5px] whitespace-nowrap transition-all duration-500",
+                      i === phaseIdx ? "font-medium" : "text-white/30"
+                    )}
+                    style={i === phaseIdx ? { color: step.color } : undefined}
+                  >
+                    <span
+                      className="w-1.5 h-1.5 rounded-full transition-all duration-500"
+                      style={{ backgroundColor: step.color, opacity: i === phaseIdx ? 1 : 0.35 }}
+                    />
+                    {step.name} {step.seconds}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* Cycles Counter (Bottom Right) */}
         <div className="absolute bottom-6 right-6 z-10 flex flex-col items-center pointer-events-none">

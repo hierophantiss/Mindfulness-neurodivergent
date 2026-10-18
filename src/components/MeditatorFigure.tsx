@@ -14,6 +14,12 @@ export interface MeditatorFigureProps {
   onAxisClick?: (axis: 'body' | 'breath' | 'attention' | 'space') => void;
   hoveredAxis?: 'body' | 'breath' | 'attention' | 'space' | 'focus' | null;
   activeAxis?: 'body' | 'breath' | 'attention' | 'space' | 'focus' | null;
+  /** No free sway: the breathing exercise moves the figure with the breath instead. */
+  still?: boolean;
+  /** Hide the figure's own breath circle (the exercise draws its own guide). */
+  hideBreathRing?: boolean;
+  /** Hide the starfield and the beam (the exercise sits on the app's own sky). */
+  bare?: boolean;
 }
 
 
@@ -47,7 +53,10 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
   onAxisHover,
   onAxisClick,
   hoveredAxis = null,
-  activeAxis = null
+  activeAxis = null,
+  still = false,
+  hideBreathRing = false,
+  bare = false
 }) => {
   const { reduceMotion } = useAccessibility();
 
@@ -194,7 +203,7 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
         </defs>
 
         {/* 1. Dense Starfield */}
-        {STARFIELD.map((star) => (
+        {!bare && STARFIELD.map((star) => (
           <motion.circle
             key={star.id}
             cx={star.cx}
@@ -208,8 +217,8 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
         ))}
 
         {/* Cover-grade backdrop — warm aura + constant golden beam (behind everything) */}
-        <rect x="158" y="0" width="24" height="440" fill="url(#beam-glow)" filter="url(#soft-blur)" />
-        <ellipse cx="170" cy="215" rx="150" ry="180" fill="url(#figure-aura)" />
+        {!bare && <rect x="158" y="0" width="24" height="440" fill="url(#beam-glow)" filter="url(#soft-blur)" />}
+        {!bare && <ellipse cx="170" cy="215" rx="150" ry="180" fill="url(#figure-aura)" />}
 
         {/* 2. EARTH AT THE BOTTOM */}
         {withEarth && (
@@ -243,12 +252,12 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
         {/* ── SWAYING WRAPPER FOR FIGURE ── */}
         <motion.g
           animate={
-            (!reduceMotion) 
+            (!reduceMotion && !still) 
               ? { rotate: [2, -2], x: [1.5, -1.5] } 
               : { rotate: 0, x: 0 }
           }
           transition={
-            (!reduceMotion)
+            (!reduceMotion && !still)
               ? {
                   repeat: Infinity,
                   repeatType: "mirror",
@@ -391,7 +400,7 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
         </motion.g>
 
         {/* b. BREATH */}
-        {showAxisSymbols !== 'none' && (
+        {showAxisSymbols !== 'none' && !hideBreathRing && (
           <g className="axis-layer" style={{ opacity: getOpacity('breath') }} transform="translate(0, 52)">
             {isExercise ? (
               // Breathing Exercise Mode: Drive circle size from state

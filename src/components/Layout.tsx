@@ -81,7 +81,7 @@ export default function Layout() {
 
       {/* The Floating Companion (Mobile only if we want, or universally if needed) */}
       <div className="lg:hidden">
-        {!isIntroPage && !location.pathname.match(/^\/chapters\/\d+/) && <Companion />}
+        {!isIntroPage && !location.pathname.match(/^\/(chapters\/\d+|practice\/breath\/)/) && <Companion />}
       </div>
 
 
