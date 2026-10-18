@@ -293,8 +293,8 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
               <path d="M 556,702 C 461,708 361,742 315,792 C 273,842 260,942 260,1072 C 260,1212 271,1332 322,1392 L 1018,1392 C 1069,1332 1080,1212 1080,1072 C 1080,942 1067,842 1025,792 C 979,742 879,708 784,702 Z" fill="url(#hoodie)" stroke="none" />
               <path d="M 322,1392 C 271,1332 260,1212 260,1072 C 260,942 273,842 315,792 C 361,742 461,708 556,702" fill="none" />
               <path d="M 1018,1392 C 1069,1332 1080,1212 1080,1072 C 1080,942 1067,842 1025,792 C 979,742 879,708 784,702" fill="none" />
-              <path d="M 404,860 C 388,970 384,1080 399,1162" fill="none" />
-              <path d="M 936,860 C 952,970 956,1080 941,1162" fill="none" />
+              <path d="M 404,860 C 388,970 384,1120 404,1260" fill="none" />
+              <path d="M 936,860 C 952,970 956,1120 936,1260" fill="none" />
 
               {/* The foot resting on the other leg */}
               <path d="M 238,1412 C 262,1376 400,1384 520,1414 C 600,1434 662,1462 664,1490 C 662,1514 610,1512 560,1504 C 470,1490 330,1470 262,1448 C 236,1440 228,1426 238,1412 Z" fill="#d9a777" />
@@ -302,22 +302,22 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
               <path d="M 612,1458 C 626,1472 630,1490 620,1506" fill="none" strokeWidth="8" />
               <path d="M 578,1448 C 590,1462 594,1482 586,1500" fill="none" strokeWidth="8" />
 
-              {/* Forearms */}
-              <path d="M 399,1162 C 417,1160 435,1156 455,1150 L 493,1252 C 428,1302 357,1360 293,1372 C 273,1340 264,1300 266,1262 C 311,1240 364,1202 399,1162 Z" fill="url(#hoodie)" />
-              <path d="M 941,1162 C 923,1160 905,1156 885,1150 L 847,1252 C 912,1302 983,1360 1047,1372 C 1067,1340 1076,1300 1074,1262 C 1029,1240 976,1202 941,1162 Z" fill="url(#hoodie)" />
+              {/* Forearms, from the elbows down to the hands resting on the legs */}
+              <path d="M 404,1260 C 428,1318 458,1378 496,1418 L 518,1496 C 436,1490 350,1462 300,1420 C 280,1380 268,1330 268,1290 C 320,1290 370,1276 404,1260 Z" fill="url(#hoodie)" />
+              <path d="M 936,1260 C 912,1318 882,1378 844,1418 L 822,1496 C 904,1490 990,1462 1040,1420 C 1060,1380 1072,1330 1072,1290 C 1020,1290 970,1276 936,1260 Z" fill="url(#hoodie)" />
 
               {/* The body axis, in front of the hoodie, as on the cover */}
-              <line x1="670" y1="718" x2="670" y2="1160" stroke="#e0473a" strokeWidth="9" style={{ opacity: Math.min(1, getOpacity('body') * 1.5) }} className="axis-layer" />
+              <line x1="670" y1="718" x2="670" y2="1420" stroke="#e0473a" strokeWidth="9" style={{ opacity: Math.min(1, getOpacity('body') * 1.5) }} className="axis-layer" />
 
-              {/* Hands resting together, palms joined */}
-              <path d="M 453,1150 C 534,1112 626,1126 670,1166 L 670,1294 C 608,1316 534,1302 492,1252 Z" fill="#dcaa7b" />
-              <path d="M 887,1150 C 806,1112 714,1126 670,1166 L 670,1294 C 732,1316 806,1302 848,1252 Z" fill="#dcaa7b" />
+              {/* Hands resting together on the legs, palms joined */}
+              <path d="M 494,1418 C 566,1398 640,1406 670,1434 L 670,1524 C 616,1540 556,1528 516,1496 Z" fill="#dcaa7b" />
+              <path d="M 846,1418 C 774,1398 700,1406 670,1434 L 670,1524 C 724,1540 784,1528 824,1496 Z" fill="#dcaa7b" />
               {/* Where the palms meet, and the fingers */}
-              <path d="M 670,1172 L 670,1290" fill="none" strokeWidth="9" />
-              <path d="M 600,1240 C 625,1250 648,1262 664,1276" fill="none" strokeWidth="7" opacity="0.6" />
-              <path d="M 740,1240 C 715,1250 692,1262 676,1276" fill="none" strokeWidth="7" opacity="0.6" />
-              <path d="M 560,1150 C 600,1150 640,1158 664,1176" fill="none" strokeWidth="7" opacity="0.6" />
-              <path d="M 780,1150 C 740,1150 700,1158 676,1176" fill="none" strokeWidth="7" opacity="0.6" />
+              <path d="M 670,1440 L 670,1520" fill="none" strokeWidth="9" />
+              <path d="M 572,1478 C 606,1490 640,1502 664,1512" fill="none" strokeWidth="7" opacity="0.6" />
+              <path d="M 768,1478 C 734,1490 700,1502 676,1512" fill="none" strokeWidth="7" opacity="0.6" />
+              <path d="M 566,1410 C 606,1408 646,1416 664,1436" fill="none" strokeWidth="7" opacity="0.6" />
+              <path d="M 774,1410 C 734,1408 694,1416 676,1436" fill="none" strokeWidth="7" opacity="0.6" />
 
               {/* Hood, draped onto the shoulders */}
               <path d="M 670,183 C 538,183 448,275 436,424 C 425,554 443,660 490,716 L 850,716 C 897,660 915,554 904,424 C 892,275 802,183 670,183 Z" fill="url(#hoodie)" />
