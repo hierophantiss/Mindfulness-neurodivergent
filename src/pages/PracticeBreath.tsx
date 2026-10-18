@@ -760,6 +760,17 @@ export default function PracticeBreath() {
           )}
         </div>
 
+        {/* SOS: the helplines sit at the bottom of the stage, so the figure stays at the same height as in the other breaths */}
+        {currentPatternId === 'sos-breath' && (
+          <div className="absolute bottom-2 left-0 right-0 px-8 text-center z-20 pointer-events-none">
+            <p className="text-[11.5px] text-zinc-500 font-sans leading-relaxed">
+              {language === 'el' 
+                ? 'Αν αυτό δεν είναι αρκετό αυτή τη στιγμή, μπορείς να μιλήσεις με κάποιον τώρα — 1018 (Κλίμακα, 24ωρη γραμμή) ή 197 (δωρεάν, 24ωρη ψυχοκοινωνική στήριξη).'
+                : 'If this isn\'t enough right now, you are not alone — 1018 (Greece) or visit findahelpline.com for international support.'}
+            </p>
+          </div>
+        )}
+
         {/* Cycles Counter (Bottom Right) */}
         <div className="absolute bottom-6 right-6 z-10 flex flex-col items-center pointer-events-none">
           {cycles > 0 && (
@@ -833,15 +844,6 @@ export default function PracticeBreath() {
          )}
       </div>
 
-      {currentPatternId === 'sos-breath' && (
-        <div className="mt-8 px-6 text-center z-20 pb-4">
-          <p className="text-[12px] text-zinc-500 font-sans leading-relaxed">
-            {language === 'el' 
-              ? 'Αν αυτό δεν είναι αρκετό αυτή τη στιγμή, μπορείς να μιλήσεις με κάποιον τώρα — 1018 (Κλίμακα, 24ωρη γραμμή) ή 197 (δωρεάν, 24ωρη ψυχοκοινωνική στήριξη).'
-              : 'If this isn\'t enough right now, you are not alone — 1018 (Greece) or visit findahelpline.com for international support.'}
-          </p>
-        </div>
-      )}
 
       {/* Sleep Timer Modal */}
       {showSleepTimer && (
