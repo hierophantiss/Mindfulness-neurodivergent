@@ -164,6 +164,15 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
             <stop offset="55%" stopColor="#c98a2e" stopOpacity="0.2" />
             <stop offset="100%" stopColor="#c98a2e" stopOpacity="0" />
           </radialGradient>
+          {/* Hoodie shading: lit from the beam above, deeper towards the ground */}
+          <linearGradient id="hoodie" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#36463a" />
+            <stop offset="100%" stopColor="#2a372d" />
+          </linearGradient>
+          <linearGradient id="hoodie-low" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#2e3c31" />
+            <stop offset="100%" stopColor="#222d25" />
+          </linearGradient>
           <filter id="soft-blur" x="-60%" y="-60%" width="220%" height="220%">
             <feGaussianBlur stdDeviation="5" />
           </filter>
@@ -268,64 +277,74 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
           }
           style={{ transformOrigin: "170px 377px" /* Base of the figure */ }}
         >
-          {/* 4. FIGURE */}
+          {/* 4. FIGURE — the meditator of the book cover: hoodie, hood around the face,
+              crossed legs with one foot showing, hands resting with thumbs touching.
+              Drawn in the cover's own proportions (1340 × 1840) and scaled into place. */}
           <g id="figure" transform="translate(0, 52)">
             {/* Soft shadow under figure */}
-            <ellipse cx="170" cy="320" rx="90" ry="12" fill="#0c121e" opacity="0.5" />
-            
-            {/* Crossed Legs (Widened) */}
-            <path d="M 75,285 C 75,245 115,250 170,250 C 225,250 265,245 265,285 C 265,315 215,325 170,325 C 125,325 75,315 75,285 Z" fill="#2E4034" />
-            
-            {/* Leg folds */}
-            <path d="M 170,270 C 135,280 100,295 85,305" fill="none" stroke="#1d2822" strokeWidth="4" strokeLinecap="round" />
-            <path d="M 170,270 C 205,280 240,295 255,305" fill="none" stroke="#1d2822" strokeWidth="4" strokeLinecap="round" />
+            <ellipse cx="170" cy="322" rx="100" ry="10" fill="#0c121e" opacity="0.55" />
+            <g transform="translate(66.8 61) scale(0.154)" stroke="#141a15" strokeWidth="12" strokeLinejoin="round" strokeLinecap="round">
+              {/* Crossed legs */}
+              <path d="M 72,1640 C 43,1560 90,1470 252,1420 C 394,1380 528,1390 670,1400 C 812,1390 946,1380 1088,1420 C 1250,1470 1297,1560 1268,1640 C 1240,1700 1078,1722 670,1722 C 262,1722 100,1700 72,1640 Z" fill="url(#hoodie-low)" />
+              <path d="M 1259,1610 C 1126,1560 888,1530 689,1575" fill="none" />
+              <path d="M 81,1615 C 233,1585 442,1570 642,1600" fill="none" />
 
-            {/* Torso (slimmer column) */}
-            <path d="M 135,180 L 135,265 C 150,270 190,270 205,265 L 205,180 Z" fill="#2E4034" />
-            
-            {/* Back of hood / shoulders - smaller, snug around head */}
-            <path d="M 125,190 C 130,130 140,105 170,105 C 200,105 210,130 215,190 Z" fill="#2E4034" />
-            
-            {/* Neck opening shadow / inner hood */}
-            <path d="M 144,135 C 144,170 196,170 196,135 Z" fill="#1d2822" />
-            
-            {/* Arms folded - natural drape */}
-            <path d="M 125,185 C 110,235 140,275 170,270" fill="none" stroke="#1d2822" strokeWidth="20" strokeLinecap="round" />
-            <path d="M 215,185 C 230,235 200,275 170,270" fill="none" stroke="#1d2822" strokeWidth="20" strokeLinecap="round" />
-            
-            <path d="M 125,185 C 110,235 140,275 170,270" fill="none" stroke="#2E4034" strokeWidth="16" strokeLinecap="round" />
-            <path d="M 215,185 C 230,235 200,275 170,270" fill="none" stroke="#2E4034" strokeWidth="16" strokeLinecap="round" />
+              {/* Hoodie: shoulders and upper arms */}
+              <path d="M 556,702 C 461,708 361,742 315,792 C 273,842 260,942 260,1072 C 260,1212 271,1332 322,1392 L 1018,1392 C 1069,1332 1080,1212 1080,1072 C 1080,942 1067,842 1025,792 C 979,742 879,708 784,702 Z" fill="url(#hoodie)" stroke="none" />
+              <path d="M 322,1392 C 271,1332 260,1212 260,1072 C 260,942 273,842 315,792 C 361,742 461,708 556,702" fill="none" />
+              <path d="M 1018,1392 C 1069,1332 1080,1212 1080,1072 C 1080,942 1067,842 1025,792 C 979,742 879,708 784,702" fill="none" />
+              <path d="M 404,860 C 388,970 384,1080 399,1162" fill="none" />
+              <path d="M 936,860 C 952,970 956,1080 941,1162" fill="none" />
 
-            {/* Hands - Heart Mudra */}
-            <path d="M 152,274 C 145,265 155,255 170,265 C 170,270 160,280 152,274 Z" fill="#dfb18b" />
-            <path d="M 188,274 C 195,265 185,255 170,265 C 170,270 180,280 188,274 Z" fill="#dfb18b" />
-            
-            {/* Negative space inside the hands (heart shape) */}
-            <path d="M 170,266 C 166,262 162,266 166,270 L 170,274 L 174,270 C 178,266 174,262 170,266 Z" fill="#2E4034" />
-            
-            {/* Finger lines */}
-            <path d="M 155,268 C 158,272 163,274 167,274" fill="none" stroke="#cf9c74" strokeWidth="1.2" strokeLinecap="round" />
-            <path d="M 185,268 C 182,272 177,274 173,274" fill="none" stroke="#cf9c74" strokeWidth="1.2" strokeLinecap="round" />
+              {/* The foot resting on the other leg */}
+              <path d="M 238,1412 C 262,1376 400,1384 520,1414 C 600,1434 662,1462 664,1490 C 662,1514 610,1512 560,1504 C 470,1490 330,1470 262,1448 C 236,1440 228,1426 238,1412 Z" fill="#d9a777" />
+              {/* Toes */}
+              <path d="M 612,1458 C 626,1472 630,1490 620,1506" fill="none" strokeWidth="8" />
+              <path d="M 578,1448 C 590,1462 594,1482 586,1500" fill="none" strokeWidth="8" />
+
+              {/* Forearms */}
+              <path d="M 399,1162 C 417,1160 435,1156 455,1150 L 493,1252 C 428,1302 357,1360 293,1372 C 273,1340 264,1300 266,1262 C 311,1240 364,1202 399,1162 Z" fill="url(#hoodie)" />
+              <path d="M 941,1162 C 923,1160 905,1156 885,1150 L 847,1252 C 912,1302 983,1360 1047,1372 C 1067,1340 1076,1300 1074,1262 C 1029,1240 976,1202 941,1162 Z" fill="url(#hoodie)" />
+
+              {/* The body axis, in front of the hoodie, as on the cover */}
+              <line x1="670" y1="718" x2="670" y2="1160" stroke="#e0473a" strokeWidth="9" style={{ opacity: Math.min(1, getOpacity('body') * 1.5) }} className="axis-layer" />
+
+              {/* Hands resting together, palms joined */}
+              <path d="M 453,1150 C 534,1112 626,1126 670,1166 L 670,1294 C 608,1316 534,1302 492,1252 Z" fill="#dcaa7b" />
+              <path d="M 887,1150 C 806,1112 714,1126 670,1166 L 670,1294 C 732,1316 806,1302 848,1252 Z" fill="#dcaa7b" />
+              {/* Where the palms meet, and the fingers */}
+              <path d="M 670,1172 L 670,1290" fill="none" strokeWidth="9" />
+              <path d="M 600,1240 C 625,1250 648,1262 664,1276" fill="none" strokeWidth="7" opacity="0.6" />
+              <path d="M 740,1240 C 715,1250 692,1262 676,1276" fill="none" strokeWidth="7" opacity="0.6" />
+              <path d="M 560,1150 C 600,1150 640,1158 664,1176" fill="none" strokeWidth="7" opacity="0.6" />
+              <path d="M 780,1150 C 740,1150 700,1158 676,1176" fill="none" strokeWidth="7" opacity="0.6" />
+
+              {/* Hood, draped onto the shoulders */}
+              <path d="M 670,183 C 538,183 448,275 436,424 C 425,554 443,660 490,716 L 850,716 C 897,660 915,554 904,424 C 892,275 802,183 670,183 Z" fill="url(#hoodie)" />
+              {/* Inside of the hood */}
+              <path d="M 670,287 C 570,287 498,359 490,459 C 483,577 520,655 580,693 L 760,693 C 820,655 857,577 850,459 C 842,359 770,287 670,287 Z" fill="#1b241d" />
+              {/* Neck */}
+              <path d="M 578,600 L 578,712 L 762,712 L 762,600 Z" fill="#c9966a" />
+              {/* Collar of the hoodie */}
+              <path d="M 545,704 C 600,724 740,724 795,704" fill="none" />
+              {/* Light from the beam on the hood */}
+              <path d="M 468,414 C 490,283 570,211 670,211 C 770,211 850,283 872,414" fill="none" stroke="#f5c451" strokeWidth="10" opacity="0.18" />
+            </g>
           </g>
 
           {/* 4.b FACE */}
           <g id="figure-face" transform="translate(0, 52)">
-            {/* Neck */}
-            <path d="M 162,145 L 162,165 C 162,170 178,170 178,165 L 178,145 Z" fill="#c3946d" />
-            
-            {/* Face - short oval under hood */}
-            <path d="M 148,130 C 148,115 192,115 192,130 C 192,150 182,156 170,156 C 158,156 148,150 148,130 Z" fill="#dfb18b" />
-            
-            {/* Hood covering forehead */}
-            <path d="M 146,128 C 146,110 194,110 194,128 C 185,118 155,118 146,128 Z" fill="#2E4034" />
-            <path d="M 146,128 C 146,152 158,158 170,158 C 182,158 194,152 194,128" fill="none" stroke="#2E4034" strokeWidth="2.5" />
-            
-            {/* Eyes (closed) - minimal */}
-            <path d="M 155,134 Q 159,137 163,134" fill="none" stroke="#1d2822" strokeWidth="1.5" strokeLinecap="round" />
-            <path d="M 177,134 Q 181,137 185,134" fill="none" stroke="#1d2822" strokeWidth="1.5" strokeLinecap="round" />
-            
-            {/* Smile - minimal calm */}
-            <path d="M 166,145 Q 170,148 174,145" fill="none" stroke="#1d2822" strokeWidth="1.5" strokeLinecap="round" />
+            <g transform="translate(66.8 61) scale(0.154)" stroke="#141a15" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M 670,340 C 584,340 527,384 527,479 C 527,583 591,644 670,644 C 749,644 813,583 813,479 C 813,384 756,340 670,340 Z" fill="#dcaa7b" />
+              {/* Shade of the hood on the forehead */}
+              <path d="M 533,435 C 549,366 605,345 670,345 C 735,345 791,366 807,435 C 767,400 719,391 670,391 C 621,391 573,400 533,435 Z" fill="#c9966a" stroke="none" opacity="0.8" />
+              {/* Eyes (closed) */}
+              <path d="M 563,453 Q 601,480 640,456" fill="none" strokeWidth="13" />
+              <path d="M 700,456 Q 739,480 777,453" fill="none" strokeWidth="13" />
+              {/* Nose and smile */}
+              <path d="M 651,526 Q 670,539 689,526" fill="none" strokeWidth="11" />
+              <path d="M 619,577 Q 670,609 721,577" fill="none" strokeWidth="13" />
+            </g>
           </g>
 
           {/* d. SPACE RAYS & INFINITY (on chest) */}
@@ -369,8 +388,13 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
               
               {/* Infinity Core - glow animates if in breathing exercise */}
               <g style={{ transformOrigin: '170px 205px' }}>
+                {/* Dark outline, as on the cover */}
+                <path
+                  d="M144,205 C144,189 162,189 170,205 C178,221 196,221 196,205 C196,189 178,189 170,205 C162,221 144,221 144,205 Z"
+                  fill="none" stroke="#141a15" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" opacity="0.85"
+                />
                 <motion.path 
-                  d="M148,205 C148,192 165,192 170,205 C175,218 192,218 192,205 C192,192 175,192 170,205 C165,218 148,218 148,205 Z" 
+                  d="M144,205 C144,189 162,189 170,205 C178,221 196,221 196,205 C196,189 178,189 170,205 C162,221 144,221 144,205 Z" 
                   fill="none" 
                   stroke="url(#rainbow-grad)" 
                   strokeWidth="5" 
@@ -384,7 +408,7 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
 
               {/* Infinity Hit Area */}
               <path 
-                d="M148,205 C148,192 165,192 170,205 C175,218 192,218 192,205 C192,192 175,192 170,205 C165,218 148,218 148,205 Z" 
+                d="M144,205 C144,189 162,189 170,205 C178,221 196,221 196,205 C196,189 178,189 170,205 C162,221 144,221 144,205 Z" 
                 fill="transparent" 
                 stroke="transparent" 
                 strokeWidth="35" 
