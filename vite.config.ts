@@ -16,6 +16,8 @@ export default defineConfig(() => {
         workbox: {
           globPatterns: ['**/*.{js,css,woff2,svg,ico,html}'],
           globIgnores: ['**/*.{mp4,pdf,png,jpg}', 'server.cjs*'],
+          // The cat companion, so it shows offline too.
+          additionalManifestEntries: [{ url: '/icon-192.png', revision: 'cat-2026-10-19' }],
           navigateFallback: '/index.html',
           navigateFallbackDenylist: [/\.(?:pdf|epub)$/, /^\/workbook_/, /^\/animations\//, /^\/audio\//],
           ignoreURLParametersMatching: [/^utm_/, /^fbclid$/, /^lang$/],

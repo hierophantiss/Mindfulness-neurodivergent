@@ -331,7 +331,7 @@ export function useSpeechReader(
     if (!ms || status === 'idle') return;
     try {
       if (media && typeof MediaMetadata !== 'undefined') {
-        ms.metadata = new MediaMetadata({ title: media.title, artist: media.artist, artwork: [{ src: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }] });
+        ms.metadata = new MediaMetadata({ title: media.title, artist: media.artist, artwork: [{ src: '/icon-512.png', sizes: '512x512', type: 'image/png' }, { src: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }] });
       }
       ms.playbackState = status === 'playing' ? 'playing' : 'paused';
       ms.setActionHandler('play', () => resume());
