@@ -855,7 +855,10 @@ function buildHead(route: string, meta: RouteMeta, baseHtml: string): string {
   <meta data-seo="prerender" property="og:title" content="${title}" />
   <meta data-seo="prerender" property="og:description" content="${desc}" />
   <meta data-seo="prerender" property="og:url" content="${canonicalUrl}" />
-  <meta data-seo="prerender" property="og:image" content="${BASE_URL}/og-image.png" />
+  <meta data-seo="prerender" property="og:image" content="${BASE_URL}/og-image.png?v=2" />
+  <meta data-seo="prerender" property="og:image:width" content="1200" />
+  <meta data-seo="prerender" property="og:image:height" content="630" />
+  <meta data-seo="prerender" property="og:image:alt" content="${lang === 'en' ? 'Neurodivergent Mindfulness – a white cat with the rainbow infinity' : 'Neurodivergent Mindfulness – Ενσυνειδητότητα για Νευροδιαφορετικούς'}" />
   <meta data-seo="prerender" property="og:type" content="website" />
   <meta data-seo="prerender" property="og:locale" content="${lang === 'en' ? 'en_US' : 'el_GR'}" />
   <meta data-seo="prerender" property="og:site_name" content="Neurodivergent Mindfulness App" />
