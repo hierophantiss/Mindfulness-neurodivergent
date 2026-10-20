@@ -29,24 +29,32 @@ export interface ReaderSettings {
 }
 
 const SETTINGS_KEY = 'n_mindfulness_reader_settings';
-const DEFAULT_SETTINGS: ReaderSettings = { rate: 0.9, follow: true };
+/** Starting speed per language: the Greek voice is easier to follow a little slower. */
+const DEFAULT_RATE: Record<ReadLang, number> = { el: 0.8, en: 0.9 };
 
-export function loadReaderSettings(): ReaderSettings {
+/** The speed is kept per language; "follow the text" is shared. */
+export function loadReaderSettings(lang: ReadLang): ReaderSettings {
   try {
     const raw = localStorage.getItem(SETTINGS_KEY);
     const saved = raw ? JSON.parse(raw) : {};
+    const perLang = saved.rates && typeof saved.rates[lang] === 'number' ? saved.rates[lang] : undefined;
+    // An English speed chosen before speeds were kept per language still applies.
+    const legacy = lang === 'en' && typeof saved.rate === 'number' ? saved.rate : undefined;
     return {
-      rate: typeof saved.rate === 'number' ? saved.rate : DEFAULT_SETTINGS.rate,
-      follow: typeof saved.follow === 'boolean' ? saved.follow : DEFAULT_SETTINGS.follow,
+      rate: perLang ?? legacy ?? DEFAULT_RATE[lang],
+      follow: typeof saved.follow === 'boolean' ? saved.follow : true,
     };
   } catch {
-    return DEFAULT_SETTINGS;
+    return { rate: DEFAULT_RATE[lang], follow: true };
   }
 }
 
-export function saveReaderSettings(s: ReaderSettings) {
+export function saveReaderSettings(s: ReaderSettings, lang: ReadLang) {
   try {
-    localStorage.setItem(SETTINGS_KEY, JSON.stringify(s));
+    const raw = localStorage.getItem(SETTINGS_KEY);
+    const saved = raw ? JSON.parse(raw) : {};
+    const rates = { ...(saved.rates || {}), [lang]: s.rate };
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify({ rates, follow: s.follow }));
   } catch {
     /* storage unavailable: settings last for this visit only */
   }

@@ -248,7 +248,9 @@ export default function ChapterDetail() {
   }
 
   // ── Read aloud ────────────────────────────────────────────────
-  const [readerSettings, setReaderSettings] = useState<ReaderSettings>(loadReaderSettings);
+  const [readerSettings, setReaderSettings] = useState<ReaderSettings>(() => loadReaderSettings(currentLang));
+  // Each language keeps its own speed (Greek starts at 0.8).
+  useEffect(() => { setReaderSettings(loadReaderSettings(currentLang)); }, [currentLang]);
   const takeaways = chapter ? CHAPTER_TAKEAWAYS[currentLang][chapter.num] : undefined;
   const segments = useMemo(
     () => (chapter ? buildChapterSegments(chapter, takeaways, currentLang) : []),
@@ -270,7 +272,7 @@ export default function ChapterDetail() {
 
   const updateReaderSettings = (s: ReaderSettings) => {
     setReaderSettings(s);
-    saveReaderSettings(s);
+    saveReaderSettings(s, currentLang);
   };
 
   // Keep the page in step with the reading, and remember where the listener is.
