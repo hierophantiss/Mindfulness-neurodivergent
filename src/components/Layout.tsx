@@ -34,6 +34,10 @@ export default function Layout() {
   
 
   const isIntroPage = ['/landing_info', '/intro'].includes(location.pathname);
+  // On a computer: a practice gets a wider stage, a chapter a slightly wider reading column.
+  const isBreathPlayer = /^\/practice\/breath\//.test(location.pathname);
+  const isWidePractice = isBreathPlayer || /^\/practice\/(swaying|grounding)/.test(location.pathname);
+  const isReading = /^\/chapters\/\d+/.test(location.pathname);
   const hideGlobalNavigation = location.pathname !== '/landing_info';
 
   return (
@@ -44,6 +48,8 @@ export default function Layout() {
         {t('skip_to_content')}
       </a>
       <OfflineNotification />
+      {/* On a computer the breathing practice fills the whole screen with its dark, not a box in the middle */}
+      {isBreathPlayer && <div className="hidden desk:block fixed inset-0 bg-[#061114] pointer-events-none" />}
 
       <div className="flex flex-1 w-full max-w-[1700px] mx-auto overflow-hidden h-full">
         {/* Desktop Left Nav */}
@@ -53,7 +59,7 @@ export default function Layout() {
         <main id="main-content" ref={mainRef} className={cn(
           "flex-1 relative z-10 w-full flex flex-col overflow-x-hidden scroll-smooth overflow-y-auto px-4 md:px-8 lg:px-12 pt-[env(safe-area-inset-top)] pb-[calc(100px+env(safe-area-inset-bottom))] lg:pb-12"
         )}>
-          <div className="w-full max-w-[480px] mx-auto h-full flex flex-col pt-4">
+          <div className={cn("w-full max-w-[480px] mx-auto h-full flex flex-col pt-4", isWidePractice && "desk:max-w-[900px]", isReading && "desk:max-w-[680px]")}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={location.pathname}

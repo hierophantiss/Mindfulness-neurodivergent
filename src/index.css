@@ -16,6 +16,9 @@
   --breakpoint-2xl: 9999px;
 }
 
+/* Large screens only (computers): a few touches on top of the phone layout. */
+@custom-variant desk (@media (min-width: 1024px));
+
 @layer base {
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;

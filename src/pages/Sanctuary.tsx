@@ -10,6 +10,7 @@ import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { cn } from '../lib/utils';
 import { useBinauralAudio } from '../hooks/useBinauralAudio';
 import { BREATH_WAVE_SECONDS } from '../contexts/AudioContext';
+import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
 
 type Layer = 'rain' | 'ocean' | 'wind' | 'brown' | 'pink' | 'breath';
 type Text = { el: string; en: string };
@@ -220,6 +221,9 @@ export default function Sanctuary() {
     play(sleepTracks[(i + dir + sleepTracks.length) % sleepTracks.length].id);
   };
 
+  // Keyboard: Space plays or pauses, the arrows change the sound.
+  useKeyboardShortcuts({ ' ': onMain, ArrowRight: () => step(1), ArrowLeft: () => step(-1) });
+
   const cycleTimer = () => {
     const i = TIMER_STEPS.indexOf(timer as (typeof TIMER_STEPS)[number]);
     const next = TIMER_STEPS[(i + 1) % TIMER_STEPS.length];
@@ -367,7 +371,7 @@ export default function Sanctuary() {
         {/* Player */}
         {activeTab === 'audio' && (
           <div className="flex-1 flex flex-col items-center justify-center py-6 relative">
-            <div className="relative w-56 h-56 flex items-center justify-center mb-8">
+            <div className="relative w-56 h-56 desk:w-72 desk:h-72 flex items-center justify-center mb-8">
               {isBreathWave ? (
                 <div
                   className="absolute inset-0 rounded-full bg-teal-500/10 border border-teal-500/30 flex items-center justify-center"

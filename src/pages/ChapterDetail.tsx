@@ -367,6 +367,15 @@ export default function ChapterDetail() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight') handleNext();
       if (e.key === 'ArrowLeft') handlePrev();
+      // Space starts, pauses or resumes listening (not while typing, not on a focused button).
+      const t = e.target as HTMLElement | null;
+      const typing = t?.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON', 'A'].includes(t?.tagName || '');
+      if (e.key === ' ' && !typing && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        e.preventDefault();
+        if (reader.status === 'playing') reader.pause();
+        else if (reader.status === 'paused') reader.resume();
+        else reader.playFrom(firstSegmentOfPage(page));
+      }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -381,10 +390,10 @@ export default function ChapterDetail() {
   const curPage = pages[page];
 
   return (
-    <div className="flex flex-col min-h-full animate-in fade-in duration-700 max-w-4xl mx-auto px-4 sm:px-6 w-full min-w-0">
+    <div className="flex flex-col min-h-full animate-in fade-in duration-700 max-w-4xl mx-auto px-4 desk:px-6 w-full min-w-0">
       
       {/* Header Controls */}
-      <header className="flex flex-wrap sm:flex-nowrap items-center justify-between pt-6 pb-2 shrink-0 gap-y-4 w-full">
+      <header className="flex flex-wrap desk:flex-nowrap items-center justify-between pt-6 pb-2 shrink-0 gap-y-4 w-full">
         <button 
           onClick={() => navigate('/chapters')} 
           className="btn-zen !px-3 !py-3 shrink-0"
@@ -421,15 +430,15 @@ export default function ChapterDetail() {
           onClick={toggleMaster}
           title={language === 'el' ? 'Ηχητικό Τοπίο' : 'Ambient Audio'}
           className={cn(
-            "rounded-full px-3 py-2 border flex items-center justify-center gap-2 transition-all duration-700 font-sans text-[10px] sm:text-xs tracking-wider shrink-0 whitespace-nowrap",
+            "rounded-full px-3 py-2 border flex items-center justify-center gap-2 transition-all duration-700 font-sans text-[10px] desk:text-xs tracking-wider shrink-0 whitespace-nowrap",
             masterPlaying 
               ? "text-teal-300 bg-teal-500/10 border-teal-500/20" 
               : "text-white/40 bg-white/[0.02] border-white/5 hover:bg-white/[0.05] hover:text-white/70"
           )}
         >
           <Music size={14} className={masterPlaying ? "animate-pulse" : ""} />
-          <span className="hidden sm:inline">{language === 'el' ? 'Μουσική υπόκρουση' : 'Background music'}</span>
-          <span className="sm:hidden">{language === 'el' ? 'Μουσική' : 'Music'}</span>
+          <span className="hidden desk:inline">{language === 'el' ? 'Μουσική υπόκρουση' : 'Background music'}</span>
+          <span className="desk:hidden">{language === 'el' ? 'Μουσική' : 'Music'}</span>
         </button>
       </header>
 
@@ -462,10 +471,10 @@ export default function ChapterDetail() {
                     {chapter.icon}
                   </div>
                   <div data-read-key="intro-title" className={readClass(rs('intro-title'))}>
-                    <h1 className="text-4xl md:text-6xl font-serif text-white/90 italic leading-tight tracking-tight px-4">
+                    <h1 className="text-4xl desk:text-6xl font-serif text-white/90 italic leading-tight tracking-tight px-4">
                       {chapter.title}
                     </h1>
-                    <p className="text-lg md:text-xl text-white/50 leading-relaxed font-sans px-6 font-light mt-6">
+                    <p className="text-lg desk:text-xl text-white/50 leading-relaxed font-sans px-6 font-light mt-6">
                       {chapter.sub}
                     </p>
                   </div>
@@ -476,13 +485,13 @@ export default function ChapterDetail() {
                     <span className="text-[10px] font-bold tracking-[0.3em] text-teal-400/60 uppercase font-sans">
                       {language === 'el' ? 'ΣΥΝΟΨΗ' : 'SUMMARY'}
                     </span>
-                    <p data-read-key="intro-summary" className={cn("text-2xl md:text-3xl text-white/90 font-serif italic leading-[1.6] tracking-tight", readClass(rs('intro-summary')))}>
+                    <p data-read-key="intro-summary" className={cn("text-2xl desk:text-3xl text-white/90 font-serif italic leading-[1.6] tracking-tight", readClass(rs('intro-summary')))}>
                       {chapter.summary}
                     </p>
                   </div>
                   
                   {chapter.tldr && (
-                    <div className="pt-8 border-t border-white/5 text-center text-white/40 text-sm md:text-base font-sans leading-relaxed block px-8">
+                    <div className="pt-8 border-t border-white/5 text-center text-white/40 text-sm desk:text-base font-sans leading-relaxed block px-8">
                       <div data-read-key="intro-tldr" className={readClass(rs('intro-tldr'))}>«{chapter.tldr}»</div>
                     </div>
                   )}
@@ -491,20 +500,20 @@ export default function ChapterDetail() {
             )}
 
             {curPage.type === 'theory' && curPage.section && (
-              <article className="space-y-12 md:space-y-16 text-center w-full break-words">
+              <article className="space-y-12 desk:space-y-16 text-center w-full break-words">
                 <header className="space-y-4 text-center mt-8">
                   <span className="text-[10px] font-bold tracking-[0.3em] text-teal-400/60 uppercase font-sans block">
                     {language === 'el' ? 'ΘΕΩΡΙΑ' : 'THEORY'}
                   </span>
                   <h2
                     data-read-key={`s${curPage.index}-title`}
-                    className={cn("text-3xl md:text-4xl font-serif text-white/90 italic leading-snug tracking-tight px-2", readClass(rs(`s${curPage.index}-title`)))}
+                    className={cn("text-3xl desk:text-4xl font-serif text-white/90 italic leading-snug tracking-tight px-2", readClass(rs(`s${curPage.index}-title`)))}
                   >
                     {curPage.section.title}
                   </h2>
                 </header>
 
-                <div className="space-y-8 text-lg md:text-xl text-center font-light px-2">
+                <div className="space-y-8 text-lg desk:text-xl text-center font-light px-2">
                   {curPage.section.paragraphs.map((par: string, p_idx: number) => (
                     <ZenParagraph key={p_idx} text={par} index={p_idx} readKey={`s${curPage.index}-p${p_idx}`} readState={rs(`s${curPage.index}-p${p_idx}`)} />
                   ))}
@@ -551,7 +560,7 @@ export default function ChapterDetail() {
                       <div
                         data-read-key={`s${curPage.index}-key`}
                         className={cn(
-                          "border border-white/[0.03] bg-white/[0.01] rounded-3xl p-8 md:p-10 space-y-8 mt-16 transition-[opacity,background-color,box-shadow] duration-500",
+                          "border border-white/[0.03] bg-white/[0.01] rounded-3xl p-8 desk:p-10 space-y-8 mt-16 transition-[opacity,background-color,box-shadow] duration-500",
                           rs(`s${curPage.index}-key`) === 'active' && 'bg-teal-400/[0.05] shadow-[inset_0_0_0_1px_rgba(45,212,191,0.15)]',
                           readerActive && activeSeg?.key !== `s${curPage.index}-key` && 'opacity-45'
                         )}
@@ -563,7 +572,7 @@ export default function ChapterDetail() {
                         </div>
                         <ul className="space-y-6">
                           {CHAPTER_TAKEAWAYS[currentLang][chapter.num]?.slice(0, 3).map((take, idx) => (
-                            <li key={idx} className="flex gap-4 items-start text-base md:text-lg text-white/60 font-serif italic leading-relaxed">
+                            <li key={idx} className="flex gap-4 items-start text-base desk:text-lg text-white/60 font-serif italic leading-relaxed">
                               <span className="text-white/20 mt-1.5">—</span>
                               <ConceptAnnotatedText text={take} />
                             </li>
@@ -578,7 +587,7 @@ export default function ChapterDetail() {
             {curPage.type === 'exercise' && (
               <div className="space-y-16 text-left w-full mt-10">
                 {chapter.exercise && (
-                  <div className="border border-white/5 bg-white/[0.01] rounded-[2rem] p-8 md:p-12 space-y-10">
+                  <div className="border border-white/5 bg-white/[0.01] rounded-[2rem] p-8 desk:p-12 space-y-10">
                     <header className="space-y-4 text-center">
                       <div className="flex items-center justify-center gap-4">
                         <span className="text-[10px] font-bold tracking-[0.3em] text-teal-400/60 uppercase font-sans">
@@ -593,7 +602,7 @@ export default function ChapterDetail() {
                           <span className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-[10px] font-sans font-bold text-white/40 shrink-0">
                             {idx + 1}
                           </span>
-                          <span className="text-lg md:text-xl text-white/70 font-sans font-light leading-relaxed group-hover:text-white/90 transition-colors pt-0.5">{step}</span>
+                          <span className="text-lg desk:text-xl text-white/70 font-sans font-light leading-relaxed group-hover:text-white/90 transition-colors pt-0.5">{step}</span>
                         </li>
                       ))}
                     </ul>
@@ -628,7 +637,7 @@ export default function ChapterDetail() {
                   </div>
                 )}
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 desk:grid-cols-2 gap-8">
                   {chapter.insight && (
                     <div
                       data-read-key="insight"
@@ -640,7 +649,7 @@ export default function ChapterDetail() {
                     >
                       <div className="absolute inset-0 bg-gradient-to-br from-teal-500/[0.02] to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl"></div>
                       <span className="text-[9px] font-bold text-teal-400/60 uppercase tracking-widest relative z-10 block font-sans">{language === 'el' ? 'ΕΠΙΓΝΩΣΗ' : 'INSIGHT'}</span>
-                      <p className="text-lg md:text-xl text-white/80 font-serif italic leading-relaxed relative z-10">"{chapter.insight}"</p>
+                      <p className="text-lg desk:text-xl text-white/80 font-serif italic leading-relaxed relative z-10">"{chapter.insight}"</p>
                     </div>
                   )}
                   {chapter.reflection && (
@@ -653,7 +662,7 @@ export default function ChapterDetail() {
                       )}
                     >
                       <span className="text-[9px] font-bold text-white/40 uppercase tracking-widest relative z-10 block font-sans">{language === 'el' ? 'ΑΝΑΣΤΟΧΑΣΜΟΣ' : 'REFLECTION'}</span>
-                      <p className="text-lg md:text-xl text-white/80 font-sans font-light leading-relaxed relative z-10">{chapter.reflection}</p>
+                      <p className="text-lg desk:text-xl text-white/80 font-sans font-light leading-relaxed relative z-10">{chapter.reflection}</p>
                     </div>
                   )}
                 </div>

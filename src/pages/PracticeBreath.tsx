@@ -16,6 +16,7 @@ import { PlayPauseOverlay } from '../components/PlayPauseOverlay';
 import { EvidenceLine } from '../components/EvidenceLine';
 import GuideAfterPractice from '../components/GuideAfterPractice';
 import { useReward } from '../contexts/RewardContext';
+import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
 import { useProgress } from '../contexts/ProgressContext';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { ConceptInfoIcon } from '../components/ConceptInfoOverlay';
@@ -372,6 +373,12 @@ export default function PracticeBreath() {
     }
   };
 
+  // Keyboard: Space starts or pauses, Esc closes the open window.
+  useKeyboardShortcuts({
+    ' ': () => { if (!showWarning && !showSleepTimer) handleStartToggle(); },
+    Escape: () => { setShowWarning(false); setShowSleepTimer(false); },
+  });
+
   const handlePhaseChange = useCallback((p: PhaseLabel, idx: number) => {
     setPhase(p);
     setPhaseIdx(idx);
@@ -683,7 +690,7 @@ export default function PracticeBreath() {
           className="absolute left-0 right-0 z-10 flex flex-col items-center justify-center pointer-events-none drop-shadow-lg"
           style={{ bottom: '22%' }}
         >
-          <div className="relative flex items-center justify-center w-[320px] h-[320px] md:w-[400px] md:h-[400px]">
+          <div className="relative flex items-center justify-center w-[320px] h-[320px] desk:w-[clamp(320px,calc(100vh-420px),520px)] desk:h-[clamp(320px,calc(100vh-420px),520px)]">
              
              {/* Counter Text & Infinity */}
              <div className="z-10 absolute inset-0 flex items-center justify-center">
@@ -735,7 +742,7 @@ export default function PracticeBreath() {
           {/* Where you are: seconds of this phase, and the whole cycle with the current phase lit */}
           {running && pattern.category !== 'vocal' && (
             <div className="mt-3 flex flex-col items-center gap-2">
-              <p className="text-2xl tracking-[0.2em] font-mono font-light text-center drop-shadow-md transition-colors duration-500" style={{ color: phaseColor }}>
+              <p className="text-2xl desk:text-3xl tracking-[0.2em] font-mono font-light text-center drop-shadow-md transition-colors duration-500" style={{ color: phaseColor }}>
                 {phaseSeconds} <span className="text-lg opacity-50 relative -top-0.5">/ {maxSeconds}</span>
               </p>
               <div className="flex items-center justify-center flex-wrap gap-x-2.5 gap-y-1 px-2">
@@ -743,7 +750,7 @@ export default function PracticeBreath() {
                   <span
                     key={i}
                     className={cn(
-                      "flex items-center gap-1 text-[11.5px] whitespace-nowrap transition-all duration-500",
+                      "flex items-center gap-1 text-[11.5px] desk:text-[14px] whitespace-nowrap transition-all duration-500",
                       i === phaseIdx ? "font-medium" : "text-white/30"
                     )}
                     style={i === phaseIdx ? { color: step.color } : undefined}
