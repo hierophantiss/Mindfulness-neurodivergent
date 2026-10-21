@@ -163,7 +163,7 @@ export default function Dashboard() {
             >
               <span className="text-[17px] min-[400px]:text-[20px] md:text-[22px] leading-tight tracking-[0.03em] min-[400px]:tracking-[0.05em] uppercase text-teal-300/90 font-medium whitespace-nowrap">
                 {language === 'el' ? 'ΕΝΣΥΝΕΙΔΗΤΟΤΗΤΑ' : 'MINDFULNESS'}
-              </span>
+              </span>{' '}
               <span className="text-[10px] min-[375px]:text-[11px] md:text-[13px] leading-tight tracking-normal min-[375px]:tracking-[0.05em] md:tracking-[0.1em] uppercase text-white/40 font-medium mt-0.5 whitespace-nowrap overflow-hidden text-ellipsis">
                 {language === 'el' ? 'ΓΙΑ ΝΕΥΡΟΔΙΑΦΟΡΕΤΙΚΟΥΣ' : 'FOR NEURODIVERGENT MINDS'}
               </span>

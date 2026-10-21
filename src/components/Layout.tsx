@@ -4,8 +4,6 @@ import { useOutlet, useLocation } from 'react-router-dom';
 import { cn } from '../lib/utils';
 import Companion from './Companion';
 import NavigationMenu from './NavigationMenu';
-import DesktopNavigation from './DesktopNavigation';
-import DesktopRightRail from './DesktopRightRail';
 import CompanionSheet from './CompanionSheet';
 import Onboarding from './Onboarding';
 import OfflineNotification from './OfflineNotification';
@@ -52,9 +50,6 @@ export default function Layout() {
       {isBreathPlayer && <div className="hidden desk:block fixed inset-0 bg-[#061114] pointer-events-none" />}
 
       <div className="flex flex-1 w-full max-w-[1700px] mx-auto overflow-hidden h-full">
-        {/* Desktop Left Nav */}
-        {hideGlobalNavigation && !isIntroPage && <DesktopNavigation />}
-
         {/* Main Content Area */}
         <main id="main-content" ref={mainRef} className={cn(
           "flex-1 relative z-10 w-full flex flex-col overflow-x-hidden scroll-smooth overflow-y-auto px-4 md:px-8 lg:px-12 pt-[env(safe-area-inset-top)] pb-[calc(100px+env(safe-area-inset-bottom))] lg:pb-12"
@@ -76,8 +71,6 @@ export default function Layout() {
           </div>
         </main>
 
-        {/* Desktop Right Rail */}
-        {hideGlobalNavigation && !isIntroPage && <DesktopRightRail />}
       </div>
 
       {/* Mobile Nav */}

@@ -17,6 +17,14 @@ import { buildChapterSegments } from '../lib/chapterReading';
 import { useSpeechReader, loadReaderSettings, saveReaderSettings, type ReaderSettings } from '../hooks/useSpeechReader';
 
 const READER_POS_KEY = 'n_mindfulness_reader_pos';
+/** The chapter's axis, shown next to "Chapter N" in the reader's language. */
+const AXIS_LABEL: Record<string, { el: string; en: string }> = {
+  body: { el: 'Σώμα', en: 'Body' },
+  breath: { el: 'Αναπνοή', en: 'Breath' },
+  attention: { el: 'Προσοχή', en: 'Attention' },
+  space: { el: 'Χώρος', en: 'Space' },
+  kindness: { el: 'Καλοσύνη', en: 'Kindness' },
+};
 
 function readSavedPositions(): Record<string, string> {
   try {
@@ -404,10 +412,10 @@ export default function ChapterDetail() {
           <div className="flex items-center gap-2 flex-wrap justify-center">
             <span className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase font-sans whitespace-nowrap">
               {language === 'el' ? 'Κεφάλαιο' : 'Chapter'} {chapter.num}
-            </span>
+            </span>{' '}
             {CHAPTER_MICRO_CAT[chapter.num] && (
               <span className="text-[9px] font-bold tracking-widest px-2 py-0.5 rounded-full bg-white/5 text-white/30 border border-white/5 uppercase font-sans whitespace-nowrap">
-                {CHAPTER_MICRO_CAT[chapter.num]}
+                {AXIS_LABEL[CHAPTER_MICRO_CAT[chapter.num]]?.[language === 'el' ? 'el' : 'en'] ?? CHAPTER_MICRO_CAT[chapter.num]}
               </span>
             )}
           </div>

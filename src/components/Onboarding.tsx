@@ -118,6 +118,7 @@ export default function Onboarding() {
 
   const content = (
     <div 
+      data-nosnippet
       className="fixed inset-0 z-[9999] bg-[var(--color-bg,#0f1117)] text-white flex flex-col justify-between overflow-hidden"
       role="dialog"
       aria-modal="true"

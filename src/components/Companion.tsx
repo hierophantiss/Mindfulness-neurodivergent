@@ -154,6 +154,7 @@ export default function Companion() {
   return (
     <>
       <div 
+        data-nosnippet
         className={`fixed z-50 flex items-center justify-center w-[56px] h-[56px] rounded-full bg-[#0d0e12]/80 backdrop-blur-md border-2 border-teal-400/40 shadow-[0_0_25px_rgba(20,184,166,0.25)] cursor-pointer touch-none transition-transform duration-300 ${isDragging ? 'scale-110 opacity-80' : 'hover:scale-110 active:scale-90'}`}
         style={{ left: position.x, top: position.y }}
         onPointerDown={onPointerDown}

@@ -99,7 +99,8 @@ export default function CompanionSheet() {
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed bottom-0 left-0 right-0 max-h-[85dvh] bg-stone-100 dark:bg-stone-900 shadow-2xl rounded-t-3xl border border-stone-200 dark:border-stone-800 z-[9999] flex flex-col overflow-hidden max-w-2xl mx-auto pb-[env(safe-area-inset-bottom)]"
+            data-nosnippet
+            className="fixed bottom-0 left-0 right-0 max-h-[85dvh] bg-stone-100 dark:bg-stone-900 shadow-2xl rounded-t-3xl border border-stone-200 dark:border-stone-800 z-[9999] flex flex-col overflow-hidden max-w-[480px] mx-auto pb-[env(safe-area-inset-bottom)]"
           >
             {/* Grab Handle */}
             <div role="button" aria-label="Close" tabIndex={0} className="flex justify-center p-3 cursor-pointer touch-none focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 focus-visible:bg-white/5 rounded-t-3xl" onClick={handleClose} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClose(); } }}>

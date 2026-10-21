@@ -129,7 +129,7 @@ export default function NavigationMenu() {
       </AnimatePresence>
 
       {/* Bottom Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#070b14]/90 backdrop-blur-2xl border-t border-white/10 pb-[env(safe-area-inset-bottom)] shadow-[0_-10px_40px_rgba(0,0,0,0.3)] desk:bottom-4 desk:mx-auto desk:w-[460px] desk:rounded-full desk:border desk:border-white/10 desk:shadow-[0_10px_40px_rgba(0,0,0,0.45)]">
+      <div data-nosnippet className="fixed bottom-0 left-0 right-0 z-40 bg-[#070b14]/90 backdrop-blur-2xl border-t border-white/10 pb-[env(safe-area-inset-bottom)] shadow-[0_-10px_40px_rgba(0,0,0,0.3)] desk:bottom-4 desk:mx-auto desk:w-[460px] desk:rounded-full desk:border desk:border-white/10 desk:shadow-[0_10px_40px_rgba(0,0,0,0.45)]">
         <div className="flex items-center justify-around px-3 py-2 max-w-md mx-auto">
           {mainNavItems.map((item) => {
             const isActive = location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path));
@@ -201,6 +201,7 @@ export default function NavigationMenu() {
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              data-nosnippet
               className="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-[480px] max-h-[85vh] bg-[#1a1d27]/98 backdrop-blur-2xl border-t border-white/10 z-[9999] shadow-[0_-20px_50px_rgba(0,0,0,0.6)] flex flex-col rounded-t-[2rem]"
             >
               <div className="p-4 flex justify-between items-center border-b border-white/[0.08]">
