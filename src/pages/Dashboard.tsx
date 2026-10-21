@@ -19,6 +19,8 @@ import { FourfoldAxisHero } from '../components/FourfoldAxisHero';
 import { useInstallApp } from '../hooks/useInstallApp';
 import HomeCheckin from '../components/HomeCheckin';
 import { getMoreLinks } from '../data/moreLinks';
+import { readingSpot } from '../lib/readingSpot';
+import { chapterPageLabel } from '../lib/chapterPages';
 
 const baseCardClasses = "backdrop-blur-xl border border-white/[0.04] border-t-white/[0.08] border-l-white/[0.06] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.05)] hover:shadow-[0_16px_48px_-12px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(255,255,255,0.1)] hover:-translate-y-1 transition-all duration-500 rounded-[28px]";
 const innerIconClasses = "rounded-2xl bg-gradient-to-b from-white/[0.06] to-transparent border border-white/[0.02] border-t-white/[0.1] shadow-[0_4px_12px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.08)] flex items-center justify-center text-white/50 transition-colors duration-500";
@@ -48,14 +50,13 @@ export default function Dashboard() {
 
   const totalChapters = CHAPTERS_DATA[language === 'el' ? 'el' : 'en']?.length || 10;
   const completedChapters = progress.completedChapters.length;
-  const nextChapter = Math.min(completedChapters + 1, totalChapters);
-  const isWorkbookDone = completedChapters >= totalChapters;
   
   const lang = language === 'el' ? 'el' : 'en';
   const chapters = CHAPTERS_DATA[lang] || [];
-  const isDone = (n: number) => progress.completedChapters.includes(String(n));
-  // "Continue": the first chapter not yet completed.
-  const nextChapterData = chapters.find(c => !isDone(c.num)) || chapters[0];
+  // "Continue": where you stopped (the same answer the cat gives).
+  const spot = readingSpot(chapters, progress.completedChapters, companionData.chapterProgress, companionData.lastChapter);
+  const midChapter = spot.kind === 'resume' && spot.page > 0;
+  const el = lang === 'el';
   const isNewUser = completedChapters === 0 && logs.length === 0;
   // Your most used practice, to come back to it in one tap.
   const favouritePractice = useMemo(() => {
@@ -214,24 +215,39 @@ export default function Dashboard() {
           className="flex flex-col gap-3 mt-2"
         >
           <motion.div variants={itemVariants}>
-            <Link to={`/chapters/${nextChapterData?.num ?? 1}`} className={cn(baseCardClasses, "bg-[#1a2026]/60 hover:bg-[#1a2026]/80 p-5 flex items-center gap-4 group cursor-pointer active:scale-[0.98] relative overflow-hidden")}>
+            <Link to={spot.href} className={cn(baseCardClasses, "bg-[#1a2026]/60 hover:bg-[#1a2026]/80 p-4 pr-3 flex items-center gap-3.5 group cursor-pointer active:scale-[0.98] relative overflow-hidden")}>
               <div className="absolute top-[-30%] right-[-10%] w-48 h-48 bg-[#8ba3ba]/5 blur-[50px] rounded-full pointer-events-none" />
-              <div className={cn(innerIconClasses, "w-12 h-12 shrink-0 text-[#8ba3ba]/70 group-hover:text-[#8ba3ba]")}>
-                <BookOpen size={20} strokeWidth={1.5} />
+              <div className={cn(innerIconClasses, "w-10 h-10 shrink-0 text-[#8ba3ba]/70 group-hover:text-[#8ba3ba]")}>
+                <BookOpen size={18} strokeWidth={1.5} />
               </div>
               <div className="flex flex-col gap-1 min-w-0 flex-1 relative z-10">
                 <span className="text-[10px] uppercase tracking-[0.2em] text-[#8ba3ba]/60 font-medium">
-                  {isWorkbookDone
-                    ? (lang === 'el' ? 'Ολοκλήρωσες τον οδηγό' : 'You finished the guide')
-                    : completedChapters === 0
-                      ? (lang === 'el' ? 'Ξεκίνα' : 'Start')
-                      : (lang === 'el' ? 'Συνέχισε' : 'Continue')}
+                  {spot.kind === 'done'
+                    ? (el ? 'Ολοκλήρωσες τον οδηγό' : 'You finished the guide')
+                    : spot.kind === 'start'
+                      ? (el ? 'Ξεκίνα' : 'Start')
+                      : spot.kind === 'next'
+                        ? (el ? 'Επόμενο κεφάλαιο' : 'Next chapter')
+                        : (el ? 'Συνέχισε' : 'Continue')}
                 </span>
-                <h3 className="text-[17px] font-medium tracking-tight text-[#9bb8d1] leading-snug">
-                  {lang === 'el' ? 'Κεφάλαιο' : 'Chapter'} {nextChapterData?.num} · {nextChapterData?.title}
+                <h3 className="text-[16px] font-medium tracking-tight text-[#9bb8d1] leading-snug">
+                  {spot.kind === 'done'
+                    ? (el ? 'Όλα τα κεφάλαια' : 'All chapters')
+                    : <>{el ? 'Κεφάλαιο' : 'Chapter'} {spot.chapter?.num} · {spot.chapter?.title}</>}
                 </h3>
-                {!isNewUser && (
-                  <span className="text-[11px] text-[#8ba3ba]/45 font-mono">{completedChapters}/{totalChapters}</span>
+                {midChapter ? (
+                  <>
+                    <span className="text-[12px] leading-snug text-white/45">
+                      {chapterPageLabel(spot.pages[spot.page], lang)} · {el ? `σελίδα ${spot.page + 1} από ${spot.pages.length}` : `page ${spot.page + 1} of ${spot.pages.length}`}
+                    </span>
+                    <span className="mt-1 h-[3px] w-full rounded-full bg-white/[0.06] overflow-hidden" aria-hidden="true">
+                      <span className="block h-full rounded-full bg-[#8ba3ba]/50" style={{ width: `${Math.round(((spot.page + 1) / spot.pages.length) * 100)}%` }} />
+                    </span>
+                  </>
+                ) : !isNewUser && (
+                  <span className="text-[12px] text-white/40">
+                    {el ? `${completedChapters} από ${totalChapters} κεφάλαια` : `${completedChapters} of ${totalChapters} chapters`}
+                  </span>
                 )}
               </div>
               <ChevronRight size={18} className="text-[#8ba3ba]/40 group-hover:text-[#8ba3ba]/80 shrink-0 relative z-10" />

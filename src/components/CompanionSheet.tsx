@@ -9,6 +9,7 @@ import { useProgress } from '../contexts/ProgressContext';
 import { CHAPTERS_DATA } from '../data/chapters';
 import { CHAPTER_TAKEAWAYS } from '../data/takeaways';
 import { chapterPages, chapterPageLabel } from '../lib/chapterPages';
+import { readingSpot, savedPage } from '../lib/readingSpot';
 import { cn } from '../lib/utils';
 import { CatInfinityAvatar } from './CatInfinityAvatar';
 
@@ -49,29 +50,11 @@ export default function CompanionSheet() {
   const cp = companionData.chapterProgress || {};
   const isDone = (n: number) => progress.completedChapters.includes(String(n));
   const read = chapters.filter(c => isDone(c.num) || cp[c.num]);
-  const nextUnread = chapters.find(c => !isDone(c.num));
 
-  // The chapter you were in most recently.
-  const last = useMemo(() => {
-    let best: number | null = null;
-    let bestT = '';
-    for (const k of Object.keys(cp)) {
-      const t = cp[Number(k)]?.lastVisit || '';
-      if (t > bestT) { bestT = t; best = Number(k); }
-    }
-    const num = best ?? companionData.lastChapter;
-    return chapters.find(c => c.num === num);
-  }, [cp, companionData.lastChapter, chapters]);
-
-  const pageOf = (n: number, count: number) => {
-    const p = cp[n];
-    if (!p) return 0;
-    return Math.min(p.page ?? Math.round((p.scrollPct || 0) * Math.max(0, count - 1)), Math.max(0, count - 1));
-  };
-
-  const lastPages = chapterPages(last);
-  const lastPage = last ? pageOf(last.num, lastPages.length) : 0;
-  const lastWhen = whenLabel(last ? cp[last.num]?.lastVisit : undefined, el);
+  // Where you stopped — the same answer as the home page's "Continue".
+  const spot = readingSpot(chapters, progress.completedChapters, cp, companionData.lastChapter);
+  const spotWhen = whenLabel(spot.lastVisit, el);
+  const pageOf = (n: number, count: number) => savedPage(cp[n], count);
 
   // One sentence from a chapter you have read, a different one each day.
   const readKey = read.map(c => c.num).join(',');
@@ -93,51 +76,53 @@ export default function CompanionSheet() {
   const chapterWord = el ? 'Κεφάλαιο' : 'Chapter';
 
   const whereCard = () => {
-    if (!last || read.length === 0) {
+    if (spot.kind === 'start' && read.length === 0) {
       return (
         <div className="flex flex-col gap-3">
           <p className="text-[14px] leading-relaxed text-white/60 px-1">
             {el ? 'Όταν ξεκινήσεις να διαβάζεις, θα θυμάμαι πού σταμάτησες.' : 'When you start reading, I will remember where you stopped.'}
           </p>
-          <Link to="/chapters/1" onClick={close} className={cardClasses}>
+          <Link to={spot.href} onClick={close} className={cardClasses}>
             <BookOpen size={18} strokeWidth={1.5} className="shrink-0 text-[#8ba3ba]" />
             <span className="flex flex-col min-w-0 flex-1 gap-0.5">
               <span className={eyebrow}>{el ? 'Ξεκίνα' : 'Start'}</span>
-              <span className="text-[14px] leading-snug text-[#9bb8d1]">{chapterWord} 1 · {chapters[0]?.title}</span>
+              <span className="text-[14px] leading-snug text-[#9bb8d1]">{chapterWord} {spot.chapter?.num} · {spot.chapter?.title}</span>
             </span>
             <ChevronRight size={16} className="text-white/30 shrink-0" />
           </Link>
         </div>
       );
     }
-    if (isDone(last.num)) {
+    if (spot.kind === 'resume' || spot.kind === 'start') {
       return (
-        <Link to={nextUnread ? `/chapters/${nextUnread.num}` : '/chapters'} onClick={close} className={cardClasses}>
+        <Link to={spot.href} onClick={close} className={cardClasses}>
           <BookOpen size={18} strokeWidth={1.5} className="shrink-0 text-[#8ba3ba]" />
           <span className="flex flex-col min-w-0 flex-1 gap-1">
-            <span className={eyebrow}>
-              {el ? `Τελείωσες το Κεφάλαιο ${last.num}` : `You finished Chapter ${last.num}`}{lastWhen && ` · ${lastWhen}`}
+            <span className={eyebrow}>{el ? 'Σταμάτησες εδώ' : 'You stopped here'}{spotWhen && ` · ${spotWhen}`}</span>
+            <span className="text-[14px] leading-snug text-[#9bb8d1]">{chapterWord} {spot.chapter?.num} · {spot.chapter?.title}</span>
+            <span className="text-[12px] leading-snug text-white/45">
+              {chapterPageLabel(spot.pages[spot.page], lang)} · {el ? `σελίδα ${spot.page + 1} από ${spot.pages.length}` : `page ${spot.page + 1} of ${spot.pages.length}`}
             </span>
-            <span className="text-[14px] leading-snug text-[#9bb8d1]">
-              {nextUnread
-                ? `${el ? 'Επόμενο' : 'Next'}: ${chapterWord} ${nextUnread.num} · ${nextUnread.title}`
-                : (el ? 'Διάβασες όλα τα κεφάλαια' : 'You have read every chapter')}
-            </span>
+            <span className="text-[12px] text-teal-300/80 mt-1">{el ? 'Συνέχισε από εκεί' : 'Continue from there'}</span>
           </span>
           <ChevronRight size={16} className="text-white/30 shrink-0" />
         </Link>
       );
     }
     return (
-      <Link to={`/chapters/${last.num}?p=${lastPage + 1}`} onClick={close} className={cardClasses}>
+      <Link to={spot.href} onClick={close} className={cardClasses}>
         <BookOpen size={18} strokeWidth={1.5} className="shrink-0 text-[#8ba3ba]" />
         <span className="flex flex-col min-w-0 flex-1 gap-1">
-          <span className={eyebrow}>{el ? 'Σταμάτησες εδώ' : 'You stopped here'}{lastWhen && ` · ${lastWhen}`}</span>
-          <span className="text-[14px] leading-snug text-[#9bb8d1]">{chapterWord} {last.num} · {last.title}</span>
-          <span className="text-[12px] leading-snug text-white/45">
-            {chapterPageLabel(lastPages[lastPage], lang)} · {el ? `σελίδα ${lastPage + 1} από ${lastPages.length}` : `page ${lastPage + 1} of ${lastPages.length}`}
+          {spot.finished && (
+            <span className={eyebrow}>
+              {el ? `Τελείωσες το Κεφάλαιο ${spot.finished.num}` : `You finished Chapter ${spot.finished.num}`}{spotWhen && ` · ${spotWhen}`}
+            </span>
+          )}
+          <span className="text-[14px] leading-snug text-[#9bb8d1]">
+            {spot.kind === 'next'
+              ? `${el ? 'Επόμενο' : 'Next'}: ${chapterWord} ${spot.chapter?.num} · ${spot.chapter?.title}`
+              : (el ? 'Διάβασες όλα τα κεφάλαια' : 'You have read every chapter')}
           </span>
-          <span className="text-[12px] text-teal-300/80 mt-1">{el ? 'Συνέχισε από εκεί' : 'Continue from there'}</span>
         </span>
         <ChevronRight size={16} className="text-white/30 shrink-0" />
       </Link>
