@@ -286,10 +286,10 @@ function getMetaForRoute(route: string): RouteMeta {
     ];
     const extras = lang === 'en' ? [
       '“How do you feel right now?” on the home page (Tension · Numbness · Calm · Not sure) leads to one fitting practice; an SOS button opens a calming breath and helplines.',
-      'A practice journal along the four axes, and a cat companion that remembers where you left off and shows the next step. Everything stays on your device: no account, no tracking, and it works offline. In Greek and English.',
+      'A practice journal along the four axes, and a cat companion that remembers what you have read: it brings you back to the page where you stopped, offers one key line for the day from a chapter you read, and keeps the key points of each chapter. Everything stays on your device: no account, no tracking, and it works offline. In Greek and English.',
     ] : [
       'Το «Πώς νιώθεις τώρα;» στην αρχική (Ένταση · Μούδιασμα · Ηρεμία · Δεν ξέρω) σε πηγαίνει σε μία άσκηση που ταιριάζει· το κουμπί SOS ανοίγει μια αναπνοή ηρεμίας και τηλέφωνα βοήθειας.',
-      'Ημερολόγιο πρακτικής με τους τέσσερις άξονες, και μια γάτα-σύντροφος που θυμάται πού έμεινες και σου δείχνει το επόμενο βήμα. Όλα μένουν στη συσκευή σου: χωρίς λογαριασμό, χωρίς παρακολούθηση, και λειτουργεί χωρίς σύνδεση. Στα ελληνικά και στα αγγλικά.',
+      'Ημερολόγιο πρακτικής με τους τέσσερις άξονες, και μια γάτα-σύντροφος που θυμάται τι έχεις διαβάσει: σε γυρίζει στη σελίδα που σταμάτησες, σου θυμίζει μία φράση-κλειδί για τη μέρα από ένα κεφάλαιο που διάβασες, και κρατά τα βασικά σημεία κάθε κεφαλαίου. Όλα μένουν στη συσκευή σου: χωρίς λογαριασμό, χωρίς παρακολούθηση, και λειτουργεί χωρίς σύνδεση. Στα ελληνικά και στα αγγλικά.',
     ];
     defaults.rawHtml = `<p>${escapeHtml(homeDescription)}</p>\n      <p>${escapeHtml(homeIntro)}</p>\n      <ul>\n      ` +
       sections.map(([href, name, text]) => `<li><a href="${href}">${escapeHtml(name)}</a>: ${escapeHtml(text)}</li>`).join('\n      ') +
@@ -309,8 +309,8 @@ function getMetaForRoute(route: string): RouteMeta {
       inLanguage: ['el', 'en'],
       creator: { '@type': 'Person', name: 'Theodoros', description: 'Contemplative practitioner, creator of the Fourfold Axis method' },
       featureList: lang === 'el'
-        ? `Τετραπλός Άξονας (Σώμα, Αναπνοή, Προσοχή, Χώρος), «Πώς νιώθεις τώρα;», κουμπί SOS με τηλέφωνα βοήθειας, ρυθμοί αναπνοής, Τάι Τσι & Qigong, Λίκνισμα, ψάλσιμο, μικροδόσεις, Καταφύγιο με ήχους φύσης και binaural, 11 κεφάλαια με ακρόαση σε φυσική φωνή, ακουστικό βιβλίο (MP3), βιβλίο σε PDF και EPUB, πρόγραμμα 8 εβδομάδων, ημερολόγιο πρακτικής, γάτα-σύντροφος, Κουνελότρυπα, επιστημονική βάση με ${n} μελέτες, συχνές ερωτήσεις, λειτουργία offline, χωρίς λογαριασμό, χωρίς παρακολούθηση`
-        : `Fourfold Axis method (Body, Breath, Attention, Space), "How do you feel right now?" check-in, SOS button with helplines, breathing rhythms, Tai Chi & Qigong, swaying, chanting, microdoses, Sanctuary with nature sounds and binaural beats, 11 chapters with read-aloud in a natural voice, audiobook (MP3), workbook as PDF and EPUB, 8-week program, practice journal, cat companion, Rabbit Hole, scientific basis with ${n} studies, FAQ, offline support, no account, no tracking`,
+        ? `Τετραπλός Άξονας (Σώμα, Αναπνοή, Προσοχή, Χώρος), «Πώς νιώθεις τώρα;», κουμπί SOS με τηλέφωνα βοήθειας, ρυθμοί αναπνοής, Τάι Τσι & Qigong, Λίκνισμα, ψάλσιμο, μικροδόσεις, Καταφύγιο με ήχους φύσης και binaural, 11 κεφάλαια με ακρόαση σε φυσική φωνή, ακουστικό βιβλίο (MP3), βιβλίο σε PDF και EPUB, πρόγραμμα 8 εβδομάδων, ημερολόγιο πρακτικής, γάτα-σύντροφος που θυμάται τι διάβασες, Κουνελότρυπα, επιστημονική βάση με ${n} μελέτες, συχνές ερωτήσεις, λειτουργία offline, χωρίς λογαριασμό, χωρίς παρακολούθηση`
+        : `Fourfold Axis method (Body, Breath, Attention, Space), "How do you feel right now?" check-in, SOS button with helplines, breathing rhythms, Tai Chi & Qigong, swaying, chanting, microdoses, Sanctuary with nature sounds and binaural beats, 11 chapters with read-aloud in a natural voice, audiobook (MP3), workbook as PDF and EPUB, 8-week program, practice journal, cat companion that remembers what you read, Rabbit Hole, scientific basis with ${n} studies, FAQ, offline support, no account, no tracking`,
       // The whole guide as an audiobook (Sulafat voice), downloadable from the app.
       subjectOf: {
         '@type': 'Audiobook',
