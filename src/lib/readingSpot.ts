@@ -25,6 +25,21 @@ export function savedPage(p: CompanionChapterProgress | undefined, count: number
 }
 
 /**
+ * Has this chapter really been read? Finished, or read past its first page —
+ * only opening it does not count.
+ */
+export function hasReadChapter(n: number, completed: string[], progress: Record<number, CompanionChapterProgress> | undefined): boolean {
+  if (completed.includes(String(n))) return true;
+  // scrollPct is how far you ever got (it only grows), so going back to page 1 still counts.
+  return (progress?.[n]?.scrollPct || 0) > 0;
+}
+
+/** The chapters you have read, in book order. */
+export function chaptersRead(chapters: Chapter[], completed: string[], progress: Record<number, CompanionChapterProgress> | undefined): Chapter[] {
+  return chapters.filter(c => hasReadChapter(c.num, completed, progress));
+}
+
+/**
  * Where to continue reading — the same answer for the home page and the cat:
  * the chapter you were in most recently, at the page you left, unless you
  * finished it; then the first chapter you have not finished yet.

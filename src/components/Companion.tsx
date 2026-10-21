@@ -6,6 +6,9 @@ import { useLanguage } from '../hooks/useLanguage';
 import { X, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CatInfinityAvatar } from './CatInfinityAvatar';
+import { useProgress } from '../contexts/ProgressContext';
+import { CHAPTERS_DATA } from '../data/chapters';
+import { chaptersRead } from '../lib/readingSpot';
 
 export const InfinitySVG = ({ size }: { size: number }) => (
   <svg width={size} height={Math.round(size * 0.55)} viewBox="0 0 120 66" fill="none" xmlns="http://www.w3.org/2000/svg" className="inf-svg-glow filter drop-shadow-sm">
@@ -34,6 +37,8 @@ export default function Companion() {
   const [isDragging, setIsDragging] = useState(false);
   const dragRef = useRef<{ startX: number, startY: number, initX: number, initY: number } | null>(null);
   const { language } = useLanguage();
+  const { progress } = useProgress();
+  const hasRead = chaptersRead(CHAPTERS_DATA[language === 'en' ? 'en' : 'el'] || [], progress.completedChapters, companionData.chapterProgress).length > 0;
 
   useEffect(() => {
     // Initial welcome message removed to prevent sensory overwhelm on first load.
@@ -152,6 +157,9 @@ export default function Companion() {
   };
 
   const isRightSide = position.x > window.innerWidth / 2;
+
+  // The cat remembers what you read, so it appears once there is something to remember.
+  if (!hasRead) return null;
 
   return (
     <>

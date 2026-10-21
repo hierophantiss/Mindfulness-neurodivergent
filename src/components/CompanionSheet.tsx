@@ -9,7 +9,7 @@ import { useProgress } from '../contexts/ProgressContext';
 import { CHAPTERS_DATA } from '../data/chapters';
 import { CHAPTER_TAKEAWAYS } from '../data/takeaways';
 import { chapterPages, chapterPageLabel } from '../lib/chapterPages';
-import { readingSpot, savedPage } from '../lib/readingSpot';
+import { readingSpot, savedPage, chaptersRead } from '../lib/readingSpot';
 import { cn } from '../lib/utils';
 import { CatInfinityAvatar } from './CatInfinityAvatar';
 
@@ -49,7 +49,7 @@ export default function CompanionSheet() {
   const chapters = CHAPTERS_DATA[lang] || [];
   const cp = companionData.chapterProgress || {};
   const isDone = (n: number) => progress.completedChapters.includes(String(n));
-  const read = chapters.filter(c => isDone(c.num) || cp[c.num]);
+  const read = chaptersRead(chapters, progress.completedChapters, cp);
 
   // Where you stopped — the same answer as the home page's "Continue".
   const spot = readingSpot(chapters, progress.completedChapters, cp, companionData.lastChapter);
@@ -76,7 +76,7 @@ export default function CompanionSheet() {
   const chapterWord = el ? 'Κεφάλαιο' : 'Chapter';
 
   const whereCard = () => {
-    if (spot.kind === 'start' && read.length === 0) {
+    if (read.length === 0) {
       return (
         <div className="flex flex-col gap-3">
           <p className="text-[14px] leading-relaxed text-white/60 px-1">

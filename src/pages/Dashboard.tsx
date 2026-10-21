@@ -20,7 +20,7 @@ import { useInstallApp } from '../hooks/useInstallApp';
 import HomeCheckin from '../components/HomeCheckin';
 import { CatInfinityAvatar } from '../components/CatInfinityAvatar';
 import { getMoreLinks } from '../data/moreLinks';
-import { readingSpot } from '../lib/readingSpot';
+import { readingSpot, chaptersRead } from '../lib/readingSpot';
 import { chapterPageLabel } from '../lib/chapterPages';
 
 const baseCardClasses = "backdrop-blur-xl border border-white/[0.04] border-t-white/[0.08] border-l-white/[0.06] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.05)] hover:shadow-[0_16px_48px_-12px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(255,255,255,0.1)] hover:-translate-y-1 transition-all duration-500 rounded-[28px]";
@@ -58,7 +58,7 @@ export default function Dashboard() {
   const spot = readingSpot(chapters, progress.completedChapters, companionData.chapterProgress, companionData.lastChapter);
   const midChapter = spot.kind === 'resume' && spot.page > 0;
   // The cat remembers what you read; on the home page it lives in this card.
-  const hasRead = completedChapters > 0 || Object.keys(companionData.chapterProgress || {}).length > 0;
+  const hasRead = chaptersRead(chapters, progress.completedChapters, companionData.chapterProgress).length > 0;
   const el = lang === 'el';
   const isNewUser = completedChapters === 0 && logs.length === 0;
   // Your most used practice, to come back to it in one tap.

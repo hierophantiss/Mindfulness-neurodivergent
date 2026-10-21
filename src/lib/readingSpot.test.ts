@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { CHAPTERS_DATA } from '../data/chapters';
-import { readingSpot } from './readingSpot';
+import { readingSpot, chaptersRead } from './readingSpot';
 import type { CompanionChapterProgress } from '../data/types';
 
 const chapters = CHAPTERS_DATA.el;
@@ -45,5 +45,10 @@ describe('where to continue reading', () => {
     const s = readingSpot(chapters, chapters.map(c => String(c.num)), {});
     expect(s.kind).toBe('done');
     expect(s.href).toBe('/chapters');
+  });
+
+  it('a chapter only opened is not "read"; one read past its first page is', () => {
+    const p = { 3: prog(0, '2026-10-21T10:00:00Z', 0), 4: prog(0, '2026-10-21T11:00:00Z', 0.4) };
+    expect(chaptersRead(chapters, ['1'], p).map(c => c.num)).toEqual([1, 4]);
   });
 });
