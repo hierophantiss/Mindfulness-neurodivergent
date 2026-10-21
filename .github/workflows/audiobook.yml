@@ -11,6 +11,8 @@
 #   book  the audiobook of the workbook → release "audiobook"
 #         (with "chapters" set: a preview → pre-release "audiobook-preview")
 #   both  the two
+#   sample  a short listening sample of the app's Greek reader in a few
+#         versions (tools/audiobook/sample.py) → pre-release "voice-sample"
 #
 # "chapters" limits the run: for the app, chapter numbers (e.g. 3 or 1-4; the
 # other chapters keep their files); for the book, audio tracks (e.g. 1-3).
@@ -23,7 +25,7 @@ on:
       target:
         description: What to build
         type: choice
-        options: [app, book, both]
+        options: [app, book, both, sample]
         default: app
       lang:
         description: Language
@@ -82,7 +84,7 @@ jobs:
           cache: npm
 
       - name: App chapters
-        if: env.TARGET != 'book'
+        if: env.TARGET == 'app' || env.TARGET == 'both'
         run: |
           npm ci --no-audit --no-fund
           npx tsx scripts/export-reading.ts audiobook-out/reading.json
@@ -96,7 +98,7 @@ jobs:
 
       # ── Audiobook ──────────────────────────────────────────────────
       - name: Audiobook
-        if: env.TARGET != 'app'
+        if: env.TARGET == 'book' || env.TARGET == 'both'
         run: |
           for l in $LANGS; do
             python3 tools/audiobook/script.py "$l" "audiobook-out/script_$l.json"
@@ -115,3 +117,17 @@ jobs:
           for l in $LANGS; do files="$files audiobook-out/$l/*.mp3 audiobook-out/$l/*.m4b"; done
           gh release upload "$tag" $files --clobber
           echo "Audiobook: https://github.com/${{ github.repository }}/releases/tag/$tag" >> "$GITHUB_STEP_SUMMARY"
+
+      # ── Listening sample ───────────────────────────────────────────
+      - name: Voice sample
+        if: env.TARGET == 'sample'
+        run: |
+          npm ci --no-audit --no-fund
+          npx tsx scripts/export-reading.ts audiobook-out/reading.json
+          python3 tools/audiobook/sample.py audiobook-out/reading.json audiobook-out/sample \
+            --lang el --cache .tts-cache
+          gh release view voice-sample >/dev/null 2>&1 || \
+            gh release create voice-sample --title "Voice sample" --prerelease \
+              --notes "A page of Chapter 1 as the app's Greek reader would speak it, in a few versions, at the default Greek speed (0.8). 1: as now. 2: pauses that follow the punctuation. 3: as 2, and a short pause at every comma. 4: each paragraph in one go, pauses given as SSML (only if the voice accepted it). 5: as 2, another voice."
+          gh release upload voice-sample audiobook-out/sample/*.mp3 --clobber
+          echo "Voice sample: https://github.com/${{ github.repository }}/releases/tag/voice-sample" >> "$GITHUB_STEP_SUMMARY"
