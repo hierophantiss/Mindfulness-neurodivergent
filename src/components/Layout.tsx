@@ -53,7 +53,7 @@ export default function Layout() {
         <main id="main-content" ref={mainRef} className={cn(
           "flex-1 relative z-10 w-full flex flex-col overflow-x-hidden scroll-smooth overflow-y-auto px-4 md:px-8 lg:px-12 pt-[env(safe-area-inset-top)] pb-[calc(100px+env(safe-area-inset-bottom))] lg:pb-12"
         )}>
-          <div className="w-full max-w-2xl mx-auto h-full flex flex-col pt-4">
+          <div className="w-full max-w-[480px] mx-auto h-full flex flex-col pt-4">
             <AnimatePresence mode="wait">
               <motion.div
                 key={location.pathname}

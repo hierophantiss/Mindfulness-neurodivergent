@@ -27,7 +27,8 @@ export default function Companion() {
   
 
   const { companionData, updateCompanionData, setSheetVisible, sheetVisible, companionMessage, setCompanionMessage } = useCompanion();
-  const [position, setPosition] = useState({ x: window.innerWidth - 68, y: window.innerHeight / 2 - 26 });
+  // On a wide screen the cat sits at the right edge of the centred app, not of the screen.
+  const [position, setPosition] = useState({ x: Math.min(window.innerWidth - 68, window.innerWidth / 2 + 240 - 64), y: window.innerHeight / 2 - 26 });
   const [isDragging, setIsDragging] = useState(false);
   const dragRef = useRef<{ startX: number, startY: number, initX: number, initY: number } | null>(null);
   const { language } = useLanguage();

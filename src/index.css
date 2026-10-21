@@ -5,6 +5,17 @@
    not the phone's light/dark setting. */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* One layout on every screen: the app is designed for the phone, so on a
+   computer it shows the same phone layout, centred, instead of stretching
+   into a wide desktop layout. (The sm/md/lg/xl variants never switch on.) */
+@theme {
+  --breakpoint-sm: 9999px;
+  --breakpoint-md: 9999px;
+  --breakpoint-lg: 9999px;
+  --breakpoint-xl: 9999px;
+  --breakpoint-2xl: 9999px;
+}
+
 @layer base {
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;

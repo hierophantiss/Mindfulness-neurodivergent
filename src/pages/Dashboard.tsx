@@ -152,7 +152,7 @@ export default function Dashboard() {
       <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center lg:items-start justify-center gap-2 lg:gap-16 pt-1 lg:pt-12">
 
         {/* Hero Section */}
-        <div className="w-full max-w-xs md:max-w-sm lg:max-w-md lg:sticky lg:top-24 flex-shrink-0 flex flex-col justify-center items-center px-4 gap-2 lg:gap-6 pt-[calc(env(safe-area-inset-top,0px)+0.5rem)] lg:pt-0 lg:pb-[calc(5rem+env(safe-area-inset-bottom))]">
+        <div className="w-full max-w-sm lg:sticky lg:top-24 flex-shrink-0 flex flex-col justify-center items-center px-4 gap-2 lg:gap-6 pt-[calc(env(safe-area-inset-top,0px)+0.5rem)] lg:pt-0 lg:pb-[calc(5rem+env(safe-area-inset-bottom))]">
           {/* Top Row: Brand Lockup + SOS */}
           <div className="w-full flex items-start justify-between gap-2 mt-2 px-1 sm:px-2">
             <motion.div 
