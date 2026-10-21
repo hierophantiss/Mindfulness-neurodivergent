@@ -35,7 +35,17 @@ const CACHE = 'reader-audio-v1';
 const KEEP_CHAPTERS = 12;
 
 const fileName = (lang: ReadLang, num: number) => `app-${lang}-${String(num).padStart(2, '0')}`;
-export const audioUrl = (lang: ReadLang, num: number) => `/audio/${fileName(lang, num)}.mp3`;
+/**
+ * The chapter's MP3. With `version` (the timing map's duration) the address
+ * changes whenever the audio is made again, so neither the browser nor the copy
+ * on the device can play an old recording against a new timing map.
+ */
+export const audioUrl = (lang: ReadLang, num: number, version?: number | string) =>
+  `/audio/${fileName(lang, num)}.mp3${version != null ? `?v=${version}` : ''}`;
+/** The version of the audio a timing map belongs to. */
+export const audioVersion = (t: ChapterTiming | null | undefined) => (t ? String(t.duration) : undefined);
+const isMp3 = (url: string) => new URL(url, 'https://x').pathname.endsWith('.mp3');
+const samePath = (a: string, b: string) => new URL(a, 'https://x').pathname === new URL(b, 'https://x').pathname;
 const mapUrl = (lang: ReadLang, num: number) => `/audio/${fileName(lang, num)}.json`;
 
 const hasCaches = () => typeof caches !== 'undefined';
@@ -65,10 +75,10 @@ export async function loadTiming(lang: ReadLang, num: number): Promise<ChapterTi
   }
 }
 
-/** A local URL for the chapter's audio if it is already on the device. */
-export async function localAudio(lang: ReadLang, num: number): Promise<string | null> {
+/** A local URL for the chapter's audio if this version of it is already on the device. */
+export async function localAudio(lang: ReadLang, num: number, version: string): Promise<string | null> {
   try {
-    const hit = await (await openCache())?.match(audioUrl(lang, num));
+    const hit = await (await openCache())?.match(audioUrl(lang, num, version));
     return hit ? URL.createObjectURL(await hit.blob()) : null;
   } catch {
     return null;
@@ -78,8 +88,8 @@ export async function localAudio(lang: ReadLang, num: number): Promise<string | 
 const saving = new Set<string>();
 
 /** Keeps the chapter's audio on the device for next time (and for listening offline). */
-export async function keepOnDevice(lang: ReadLang, num: number) {
-  const url = audioUrl(lang, num);
+export async function keepOnDevice(lang: ReadLang, num: number, version: string) {
+  const url = audioUrl(lang, num, version);
   if (saving.has(url)) return;
   saving.add(url);
   try {
@@ -87,9 +97,11 @@ export async function keepOnDevice(lang: ReadLang, num: number) {
     if (!cache || (await cache.match(url))) return;
     const res = await fetch(url);
     if (!res.ok || res.status !== 200) return;
+    // An older recording of the same chapter goes.
+    for (const r of await cache.keys()) if (isMp3(r.url) && samePath(r.url, url)) await cache.delete(r);
     await cache.put(url, res);
     // Oldest chapters go first.
-    const audio = (await cache.keys()).filter((r) => r.url.endsWith('.mp3'));
+    const audio = (await cache.keys()).filter((r) => isMp3(r.url));
     for (const old of audio.slice(0, Math.max(0, audio.length - KEEP_CHAPTERS))) await cache.delete(old);
   } catch {
     /* storage full or offline: it will play from the network next time */

@@ -12,11 +12,11 @@ chapter (by default the first theory pages of Chapter 1) in these versions:
     3-pafseis-kommata   as 2, and every comma is a short pause too
                         (the sentence is spoken in pieces)
     4-ssml              each paragraph spoken in one go, with the pauses given
-                        to the voice as SSML <break> (if the voice accepts it)
+                        to the voice as SSML <break> (what the app uses for Greek)
     5-foni-<name>       as 2, with another Chirp 3 HD voice
 
-Every file is slowed to the listener's default speed for the language
-(Greek 0.8, the audio is made at 0.9), so it sounds as it will in the app.
+Every file plays at the listener's default speed for the language
+(0.9, as the audio is made), so it sounds as it will in the app.
 
     python3 tools/audiobook/sample.py reading.json out/sample [--lang el] [--chapter 1] \
         [--keys s0-title,s0-p0,...] [--voice2 Achernar] [--cache .tts-cache] [--mock]
@@ -24,66 +24,24 @@ Every file is slowed to the listener's default speed for the language
 Uses the same authentication and cache as synth.py.
 """
 import argparse
-import hashlib
 import json
 import re
 import shutil
 import sys
 from pathlib import Path
-from xml.sax.saxutils import escape
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import synth  # noqa: E402
 
 DEFAULT_KEYS = 's0-title,s0-p0,s0-p1,s1-title,s1-p0,s3-p0,s3-p1'
-LISTENER_RATE = {'el': 0.8, 'en': 0.9}
+LISTENER_RATE = {'el': 0.9, 'en': 0.9}
 OLD_GAP_MS = 120
-COMMA_MS = 220
-
-
-def gap_after(sentence):
-    """Silence after a sentence, from the punctuation it ends with."""
-    end = sentence.rstrip(' »"\')')[-1:] if sentence.strip() else ''
-    if end in '?;!':
-        return 650
-    if end == '…':
-        return 700
-    if end == '.':
-        return 550
-    if end in '·:':
-        return 350
-    if end == ',':
-        return 250
-    return 450
+COMMA_MS = synth.COMMA_MS
+gap_after = synth.gap_after
 
 
 def comma_pieces(sentence):
     return [p for p in re.split(r'(?<=,)\s+', sentence) if p.strip()]
-
-
-def speak_ssml(ssml, rate, voice, locale, cache, mock):
-    """One request with SSML input; None if the voice does not accept it."""
-    key = hashlib.sha1(f'{"mock" if mock else voice}|{rate}|ssml|{ssml}'.encode()).hexdigest()
-    path = cache / f'{key}.wav'
-    if path.exists():
-        return path
-    if mock:
-        synth.write_wav(path, synth.mock_frames(re.sub(r'<[^>]+>', '', ssml), rate))
-        return path
-    try:
-        res = synth._call('POST', '/text:synthesize', {
-            'input': {'ssml': ssml},
-            'voice': {'languageCode': locale, 'name': voice},
-            'audioConfig': {'audioEncoding': 'LINEAR16', 'sampleRateHertz': synth.RATE_HZ, 'speakingRate': rate},
-        })
-    except SystemExit as e:  # synth._call exits on an API error
-        print(f'  SSML not accepted: {e}', flush=True)
-        return None
-    import base64
-    tmp = path.with_suffix('.tmp')
-    tmp.write_bytes(base64.b64decode(res['audioContent']))
-    tmp.rename(path)
-    return path
 
 
 def main():
@@ -152,16 +110,9 @@ def main():
         pieces = [sil(300)]
         for s in segs:
             rate = round(base * factor[s['kind']], 3)
-            body = ''
-            for j, sentence in enumerate(s['sentences']):
-                text = escape(sentence).replace(', ', f',<break time="{COMMA_MS}ms"/> ')
-                body += f'<s>{text}</s>'
-                if j < len(s['sentences']) - 1:
-                    body += f'<break time="{gap_after(sentence)}ms"/>'
-            wav = speak_ssml(f'<speak><p>{body}</p></speak>', rate, voice, locale, cache, a.mock)
-            if wav is None:
-                return None
-            pieces += [wav, sil(pause_after[s['kind']])]
+            for ssml in synth.paragraph_ssml(s['sentences']):
+                pieces.append(synth.speak_ssml(ssml, rate, voice, locale, cache, a.mock))
+            pieces.append(sil(pause_after[s['kind']]))
         return pieces
 
     versions = [

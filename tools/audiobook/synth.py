@@ -162,6 +162,67 @@ def speak(text, rate, voice, locale, cache, mock):
     return path
 
 
+# ---------------------------------------------------------------- SSML pauses
+# Chirp 3 HD has no pause tags for Greek, but it takes SSML <break>: a
+# paragraph is spoken in one request (natural intonation) with the pauses
+# we give it.
+COMMA_MS = 220
+
+
+def gap_after(sentence):
+    """Silence after a sentence, from the punctuation it ends with."""
+    end = sentence.rstrip(' »"\')')[-1:] if sentence.strip() else ''
+    if end in '?;!':
+        return 650
+    if end == '…':
+        return 700
+    if end == '.':
+        return 550
+    if end in '·:':
+        return 350
+    if end == ',':
+        return 250
+    return 450
+
+
+def paragraph_ssml(sentences):
+    """One <speak> per piece of at most MAX_CHARS, with breaks after sentences and commas."""
+    from xml.sax.saxutils import escape
+    out, body, size = [], '', 0
+    for j, sentence in enumerate(sentences):
+        if body and size + len(sentence) > MAX_CHARS:
+            out.append(f'<speak><p>{body}</p></speak>')
+            body, size = '', 0
+        text = escape(sentence).replace(', ', f',<break time="{COMMA_MS}ms"/> ')
+        body += f'<s>{text}</s>'
+        size += len(sentence)
+        if j < len(sentences) - 1:
+            body += f'<break time="{gap_after(sentence)}ms"/>'
+    if body:
+        out.append(f'<speak><p>{body}</p></speak>')
+    return out
+
+
+def speak_ssml(ssml, rate, voice, locale, cache, mock):
+    """Speak SSML (cached like speak())."""
+    key = hashlib.sha1(f'{"mock" if mock else voice}|{rate}|ssml|{ssml}'.encode()).hexdigest()
+    path = cache / f'{key}.wav'
+    if path.exists():
+        return path
+    if mock:
+        write_wav(path, mock_frames(re.sub(r'<[^>]+>', '', ssml), rate))
+        return path
+    res = _call('POST', '/text:synthesize', {
+        'input': {'ssml': ssml},
+        'voice': {'languageCode': locale, 'name': voice},
+        'audioConfig': {'audioEncoding': 'LINEAR16', 'sampleRateHertz': RATE_HZ, 'speakingRate': rate},
+    })
+    tmp = path.with_suffix('.tmp')
+    tmp.write_bytes(base64.b64decode(res['audioContent']))
+    tmp.rename(path)
+    return path
+
+
 # ---------------------------------------------------------------- assembly
 def ffmpeg(*args):
     subprocess.run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', *args], check=True)

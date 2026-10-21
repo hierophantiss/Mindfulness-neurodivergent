@@ -128,6 +128,6 @@ jobs:
             --lang el --cache .tts-cache
           gh release view voice-sample >/dev/null 2>&1 || \
             gh release create voice-sample --title "Voice sample" --prerelease \
-              --notes "A page of Chapter 1 as the app's Greek reader would speak it, in a few versions, at the default Greek speed (0.8). 1: as now. 2: pauses that follow the punctuation. 3: as 2, and a short pause at every comma. 4: each paragraph in one go, pauses given as SSML (only if the voice accepted it). 5: as 2, another voice."
+              --notes "A page of Chapter 1 as the app's Greek reader would speak it, in a few versions, at the default speed (0.9). 1: as now. 2: pauses that follow the punctuation. 3: as 2, and a short pause at every comma. 4: each paragraph in one go, pauses given as SSML (only if the voice accepted it). 5: as 2, another voice."
           gh release upload voice-sample audiobook-out/sample/*.mp3 --clobber
           echo "Voice sample: https://github.com/${{ github.repository }}/releases/tag/voice-sample" >> "$GITHUB_STEP_SUMMARY"

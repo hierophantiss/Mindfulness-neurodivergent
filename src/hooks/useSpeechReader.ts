@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { BASE_RATE, type ReadLang, type ReadSegment } from '../lib/chapterReading';
 import {
   audioUrl,
+  audioVersion,
   forgetOldVoice,
   getAudio,
   keepOnDevice,
@@ -29,8 +30,9 @@ export interface ReaderSettings {
 }
 
 const SETTINGS_KEY = 'n_mindfulness_reader_settings';
-/** Starting speed per language: the Greek voice is easier to follow a little slower. */
-const DEFAULT_RATE: Record<ReadLang, number> = { el: 0.8, en: 0.9 };
+/** Starting speed per language: the speed the chapter audio was made at (0.9),
+ *  now that the Greek audio has real pauses (paragraphs spoken with SSML breaks). */
+const DEFAULT_RATE: Record<ReadLang, number> = { el: 0.9, en: 0.9 };
 
 /** The speed is kept per language; "follow the text" is shared. */
 export function loadReaderSettings(lang: ReadLang): ReaderSettings {
@@ -133,10 +135,11 @@ export function useSpeechReader(
       if (!alive || !t) return;
       timingRef.current = t;
       spansRef.current = align(segRef.current, t);
-    });
-    localAudio(lang, chapterNum).then((u) => {
-      if (alive) localRef.current = u;
-      else if (u) URL.revokeObjectURL(u);
+      // The copy on the device is used only if it is the recording this map belongs to.
+      localAudio(lang, chapterNum, audioVersion(t)!).then((u) => {
+        if (alive) localRef.current = u;
+        else if (u) URL.revokeObjectURL(u);
+      });
     });
     return () => {
       alive = false;
@@ -238,7 +241,7 @@ export function useSpeechReader(
     if (chapterNum == null) return;
     const el = getAudio();
     const local = localRef.current;
-    const want = local || new URL(audioUrl(lang, chapterNum), window.location.href).href;
+    const want = local || new URL(audioUrl(lang, chapterNum, audioVersion(timingRef.current)), window.location.href).href;
     // Keep the source if this chapter is already loaded (from the network or the device).
     const loaded = srcRef.current !== '' && el.src === srcRef.current && !el.error;
     if (!loaded) {
@@ -252,7 +255,8 @@ export function useSpeechReader(
     seekTo(i);
     el.play()
       .then(() => {
-        if (!localRef.current) keepOnDevice(lang, chapterNum);
+        const v = audioVersion(timingRef.current);
+        if (!localRef.current && v) keepOnDevice(lang, chapterNum, v);
         // The map may have arrived after the tap: put the audio in its place now.
         if (!spansRef.current.length) {
           loadTiming(lang, chapterNum).then((t) => {
