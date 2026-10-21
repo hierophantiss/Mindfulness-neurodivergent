@@ -18,6 +18,7 @@ import { AFFIRMATIONS } from '../data/affirmations';
 import { FourfoldAxisHero } from '../components/FourfoldAxisHero';
 import { useInstallApp } from '../hooks/useInstallApp';
 import HomeCheckin from '../components/HomeCheckin';
+import { CatInfinityAvatar } from '../components/CatInfinityAvatar';
 import { getMoreLinks } from '../data/moreLinks';
 import { readingSpot } from '../lib/readingSpot';
 import { chapterPageLabel } from '../lib/chapterPages';
@@ -42,7 +43,7 @@ function getDayOfYear(date: Date) {
 
 export default function Dashboard() {
   const { language } = useLanguage();
-  const { companionData, updateCompanionData, setCompanionMessage } = useCompanion();
+  const { companionData, updateCompanionData, setCompanionMessage, setSheetVisible } = useCompanion();
   const { logs } = useActivityTracker();
   const { hour } = useTime();
   const { reduceMotion, toggleReduceMotion } = useAccessibility();
@@ -56,6 +57,8 @@ export default function Dashboard() {
   // "Continue": where you stopped (the same answer the cat gives).
   const spot = readingSpot(chapters, progress.completedChapters, companionData.chapterProgress, companionData.lastChapter);
   const midChapter = spot.kind === 'resume' && spot.page > 0;
+  // The cat remembers what you read; on the home page it lives in this card.
+  const hasRead = completedChapters > 0 || Object.keys(companionData.chapterProgress || {}).length > 0;
   const el = lang === 'el';
   const isNewUser = completedChapters === 0 && logs.length === 0;
   // Your most used practice, to come back to it in one tap.
@@ -169,22 +172,23 @@ export default function Dashboard() {
             </motion.div>
           </div>
 
-          <div className="w-[58%] md:w-[80%] mx-auto flex items-center justify-center"><FourfoldAxisHero activeAxis={null} /></div>
+          {/* Smaller on short screens, so "How do you feel" and "Continue" fit on the first screen */}
+          <div className="w-[min(58%,max(110px,calc(100dvh-530px)))] mx-auto flex items-center justify-center"><FourfoldAxisHero activeAxis={null} /></div>
           
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.6 }}
-            className="text-center px-4 mt-1 mb-1"
+            className="text-center px-4 [@media(max-height:700px)]:hidden"
           >
-            <p className="text-sm md:text-[15px] font-sans font-light tracking-wide text-white/60 leading-relaxed italic">
+            <p className="text-[13px] font-sans font-light tracking-wide text-white/55 leading-snug italic">
               "{language === 'el' ? affirmation.el : affirmation.en}"
             </p>
           </motion.div>
         </div>
 
         {/* Dashboard Content */}
-        <div className="w-full max-w-lg px-5 flex flex-col gap-6">
+        <div className="w-full max-w-lg px-5 flex flex-col gap-5 mt-2">
 
         {/* Greeting & Date */}
         <div className="flex flex-col gap-2">
@@ -192,7 +196,7 @@ export default function Dashboard() {
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.1 }}
-            className="text-[32px] md:text-[36px] font-sans font-medium tracking-tight leading-none text-white/95"
+            className="text-[24px] font-sans font-medium tracking-tight leading-none text-white/90"
           >
             {greeting}
           </motion.h1>
@@ -212,14 +216,12 @@ export default function Dashboard() {
           variants={containerVariants}
           initial="hidden"
           animate="show"
-          className="flex flex-col gap-3 mt-2"
+          className="flex flex-col gap-3"
         >
           <motion.div variants={itemVariants}>
-            <Link to={spot.href} className={cn(baseCardClasses, "bg-[#1a2026]/60 hover:bg-[#1a2026]/80 p-4 pr-3 flex items-center gap-3.5 group cursor-pointer active:scale-[0.98] relative overflow-hidden")}>
+            <div className={cn(baseCardClasses, "bg-[#1a2026]/60 relative overflow-hidden")}>
               <div className="absolute top-[-30%] right-[-10%] w-48 h-48 bg-[#8ba3ba]/5 blur-[50px] rounded-full pointer-events-none" />
-              <div className={cn(innerIconClasses, "w-10 h-10 shrink-0 text-[#8ba3ba]/70 group-hover:text-[#8ba3ba]")}>
-                <BookOpen size={18} strokeWidth={1.5} />
-              </div>
+              <Link to={spot.href} className="flex items-center gap-3 pl-5 pr-3 py-4 group active:scale-[0.99] transition-transform">
               <div className="flex flex-col gap-1 min-w-0 flex-1 relative z-10">
                 <span className="text-[10px] uppercase tracking-[0.2em] text-[#8ba3ba]/60 font-medium">
                   {spot.kind === 'done'
@@ -251,7 +253,18 @@ export default function Dashboard() {
                 )}
               </div>
               <ChevronRight size={18} className="text-[#8ba3ba]/40 group-hover:text-[#8ba3ba]/80 shrink-0 relative z-10" />
-            </Link>
+              </Link>
+              {hasRead && (
+                <button
+                  onClick={() => setSheetVisible(true)}
+                  className="relative z-10 w-full min-h-[44px] flex items-center gap-2.5 pl-5 pr-4 py-2 border-t border-white/[0.05] text-[13px] text-white/55 hover:text-white/80 hover:bg-white/[0.03] transition-colors"
+                >
+                  <CatInfinityAvatar className="w-6 h-6 rounded-full" />
+                  <span className="flex-1 text-left">{el ? 'Τι έχεις διαβάσει' : 'What you have read'}</span>
+                  <ChevronRight size={15} className="text-white/30" />
+                </button>
+              )}
+            </div>
           </motion.div>
 
           {favouritePractice && (
@@ -259,7 +272,7 @@ export default function Dashboard() {
               <Link to={`/practice/breath/${favouritePractice.id}`} className="flex items-center justify-between gap-3 px-5 py-3 rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] text-[14px] text-white/75 transition-colors active:scale-[0.98]">
                 <span className="flex items-center gap-2 min-w-0">
                   <RotateCcw size={14} className="text-white/40 shrink-0" />
-                  <span className="truncate">{lang === 'el' ? 'Ξανά' : 'Again'}: {favouritePractice.title[lang]}</span>
+                  <span className="truncate">{lang === 'el' ? 'Ξανά' : 'Again'}: {/^[\d-]+$/.test(favouritePractice.title[lang]) ? `${lang === 'el' ? 'Αναπνοή' : 'Breath'} ${favouritePractice.title[lang]}` : favouritePractice.title[lang]}</span>
                 </span>
                 <ChevronRight size={16} className="text-white/35 shrink-0" />
               </Link>
@@ -310,7 +323,7 @@ export default function Dashboard() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.8 }}
-          className="mt-6 mb-6 flex flex-col items-center justify-center gap-3 pl-4 pr-16 desk:px-4 text-center"
+          className="mt-6 mb-6 flex flex-col items-center justify-center gap-3 px-4 text-center"
         >
           <div className="flex items-center justify-center gap-x-5 gap-y-2 flex-wrap">
             <button

@@ -80,7 +80,8 @@ export default function Layout() {
 
       {/* The Floating Companion (Mobile only if we want, or universally if needed) */}
       <div className="lg:hidden">
-        {!isIntroPage && !location.pathname.match(/^\/(chapters\/\d+|practice\/breath\/)/) && <Companion />}
+        {/* On the home page the cat lives inside the "Continue" card instead */}
+        {!isIntroPage && location.pathname !== '/' && !location.pathname.match(/^\/(chapters\/\d+|practice\/breath\/)/) && <Companion />}
       </div>
 
 
