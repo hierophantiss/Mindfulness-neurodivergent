@@ -70,6 +70,8 @@ export interface CompanionChapterProgress {
   lastVisit: string;
   completed: boolean;
   visits: number;
+  /** The page you were last on (0-based), so you can come back to it. */
+  page?: number;
 }
 
 export interface QuestionnaireData {

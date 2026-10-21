@@ -43,7 +43,7 @@ interface CompanionContextType {
   companionData: CompanionData;
   updateCompanionData: (updates: Partial<CompanionData> | ((prev: CompanionData) => CompanionData)) => void;
   trackScreen: (screenId: string) => void;
-  updateChapterProgress: (chapterNum: number, progressPct: number) => void;
+  updateChapterProgress: (chapterNum: number, progressPct: number, page?: number) => void;
   trackActivity: (type: string, payload?: any) => void;
   sheetVisible: boolean;
   setSheetVisible: (visible: boolean) => void;
@@ -116,7 +116,7 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     });
   }, []);
 
-  const updateChapterProgress = useCallback((chapterNum: number, progressPct: number) => {
+  const updateChapterProgress = useCallback((chapterNum: number, progressPct: number, page?: number) => {
     setCompanionData(prev => {
       const existing = prev.chapterProgress[chapterNum] || {
         scrollPct: 0,
@@ -139,6 +139,7 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             scrollPct,
             completed,
             lastVisit: new Date().toISOString(),
+            ...(page !== undefined ? { page } : {}),
           }
         }
       };

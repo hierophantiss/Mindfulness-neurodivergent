@@ -1,6 +1,6 @@
 import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useEffect, useState, useRef, useMemo } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { CHAPTERS_DATA } from '../data/chapters';
 import { CHAPTER_TAKEAWAYS, CHAPTER_MICRO_CAT } from '../data/takeaways';
 import { ArrowLeft, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, Check, Zap, Sparkles, Music } from 'lucide-react';
@@ -13,6 +13,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
 import InteractiveRenderer from '../components/InteractiveRenderer';
 import ChapterReaderBar from '../components/ChapterReaderBar';
+import { chapterPages } from '../lib/chapterPages';
 import { buildChapterSegments } from '../lib/chapterReading';
 import { useSpeechReader, loadReaderSettings, saveReaderSettings, type ReaderSettings } from '../hooks/useSpeechReader';
 
@@ -215,22 +216,17 @@ export default function ChapterDetail() {
   const currentLang = language === 'en' && CHAPTERS_DATA['en'] ? 'en' : 'el';
   const chapter = CHAPTERS_DATA[currentLang].find(c => c.num === Number(id));
 
-  const [page, setPage] = useState(0);
+  const pages: any[] = chapterPages(chapter);
+  // "?p=3" opens page 3 — the cat uses it to bring you back where you stopped.
+  const [searchParams] = useSearchParams();
+  const [page, setPage] = useState(() => {
+    const p = Number(searchParams.get('p'));
+    return Number.isFinite(p) && p > 1 ? Math.min(p - 1, Math.max(0, pages.length - 1)) : 0;
+  });
   const [direction, setDirection] = useState(1);
   const touchStartX = useRef(0);
   const [visibleParagraphs, setVisibleParagraphs] = useState(1);
   const [activeConceptId, setActiveConceptId] = useState<string | null>(null);
-
-  const pages = [];
-  if (chapter) {
-    pages.push({ type: 'intro' });
-    chapter.theorySections?.forEach((sec, idx) => {
-      pages.push({ type: 'theory', section: sec, index: idx });
-    });
-    if (chapter.exercise || chapter.insight || chapter.reflection) {
-      pages.push({ type: 'exercise' });
-    }
-  }
 
   useEffect(() => {
     if (!chapter) return;
@@ -240,7 +236,7 @@ export default function ChapterDetail() {
   useEffect(() => {
     if (!chapter || pages.length === 0) return;
     const pct = pages.length > 1 ? page / (pages.length - 1) : 1;
-    updateChapterProgress(chapter.num, pct);
+    updateChapterProgress(chapter.num, pct, page);
   }, [page, chapter, pages.length, updateChapterProgress]);
 
 
@@ -343,7 +339,7 @@ export default function ChapterDetail() {
       scrollToTop();
     } else {
       reader.stop();
-      updateChapterProgress(chapter.num, 1);
+      updateChapterProgress(chapter.num, 1, pages.length - 1);
       markChapterComplete(chapter.num);
       triggerReward('program');
       navigate('/chapters');

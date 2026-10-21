@@ -1,24 +1,40 @@
 import { useFocusTrap } from '../hooks/useFocusTrap';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link, useLocation } from 'react-router-dom';
-import { BookOpen, ChevronRight, X } from 'lucide-react';
+import { BookOpen, Check, ChevronDown, ChevronRight, X } from 'lucide-react';
 import { useCompanion } from '../hooks/useCompanion';
 import { useLanguage } from '../hooks/useLanguage';
 import { useProgress } from '../contexts/ProgressContext';
 import { CHAPTERS_DATA } from '../data/chapters';
+import { CHAPTER_TAKEAWAYS } from '../data/takeaways';
+import { chapterPages, chapterPageLabel } from '../lib/chapterPages';
+import { cn } from '../lib/utils';
 import { CatInfinityAvatar } from './CatInfinityAvatar';
-import HomeCheckin from './HomeCheckin';
 
-// The cat's sheet: only two things, from anywhere in the app —
-// "how do you feel right now?" and the next chapter.
+/** Takeaways carry concept markers ("text{{id}}") for the chapter page; here only the words. */
+const plain = (t: string) => t.replace(/\{\{[^}]*\}\}/g, '');
+
+const dayNumber = (d: Date) => Math.floor(new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime() / 86400000);
+
+function whenLabel(iso: string | undefined, el: boolean): string {
+  if (!iso) return '';
+  const days = dayNumber(new Date()) - dayNumber(new Date(iso));
+  if (days <= 0) return el ? 'σήμερα' : 'today';
+  if (days === 1) return el ? 'χθες' : 'yesterday';
+  return el ? `πριν από ${days} μέρες` : `${days} days ago`;
+}
+
+// The cat remembers what you have read: where you stopped, one thing to keep
+// in mind today, and what each chapter you read was about.
 export default function CompanionSheet() {
-  const { sheetVisible, setSheetVisible } = useCompanion();
+  const { sheetVisible, setSheetVisible, companionData } = useCompanion();
   const { language } = useLanguage();
   const lang = language === 'en' ? 'en' : 'el';
   const el = lang === 'el';
   const { progress } = useProgress();
   const location = useLocation();
+  const [openNum, setOpenNum] = useState<number | null>(null);
 
   const close = () => setSheetVisible(false);
   const modalRef = useFocusTrap(sheetVisible, close);
@@ -29,21 +45,104 @@ export default function CompanionSheet() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
-  // The same next chapter as the home page.
   const chapters = CHAPTERS_DATA[lang] || [];
-  const done = progress.completedChapters;
-  const nextChapter = chapters.find(c => !done.includes(String(c.num))) || chapters[0];
-  const allDone = chapters.length > 0 && done.length >= chapters.length;
-  const chapterLabel = allDone
-    ? (el ? 'Ολοκλήρωσες τον οδηγό' : 'You finished the guide')
-    : done.length === 0 ? (el ? 'Ξεκίνα' : 'Start') : (el ? 'Συνέχισε' : 'Continue');
+  const cp = companionData.chapterProgress || {};
+  const isDone = (n: number) => progress.completedChapters.includes(String(n));
+  const read = chapters.filter(c => isDone(c.num) || cp[c.num]);
+  const nextUnread = chapters.find(c => !isDone(c.num));
+
+  // The chapter you were in most recently.
+  const last = useMemo(() => {
+    let best: number | null = null;
+    let bestT = '';
+    for (const k of Object.keys(cp)) {
+      const t = cp[Number(k)]?.lastVisit || '';
+      if (t > bestT) { bestT = t; best = Number(k); }
+    }
+    const num = best ?? companionData.lastChapter;
+    return chapters.find(c => c.num === num);
+  }, [cp, companionData.lastChapter, chapters]);
+
+  const pageOf = (n: number, count: number) => {
+    const p = cp[n];
+    if (!p) return 0;
+    return Math.min(p.page ?? Math.round((p.scrollPct || 0) * Math.max(0, count - 1)), Math.max(0, count - 1));
+  };
+
+  const lastPages = chapterPages(last);
+  const lastPage = last ? pageOf(last.num, lastPages.length) : 0;
+  const lastWhen = whenLabel(last ? cp[last.num]?.lastVisit : undefined, el);
+
+  // One sentence from a chapter you have read, a different one each day.
+  const readKey = read.map(c => c.num).join(',');
+  const reminder = useMemo(() => {
+    const pool: { num: number; text: string }[] = [];
+    for (const c of read) for (const t of CHAPTER_TAKEAWAYS[lang]?.[c.num] || []) pool.push({ num: c.num, text: plain(t) });
+    if (pool.length === 0) return null;
+    return pool[dayNumber(new Date()) % pool.length];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [readKey, lang]);
 
   const showIntro = () => {
     close();
     window.dispatchEvent(new Event('show-welcome-modal'));
   };
 
-  const rowClasses = "flex items-center gap-3.5 px-4 py-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] transition-colors active:scale-[0.98]";
+  const cardClasses = "flex items-center gap-3.5 px-4 py-4 rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] transition-colors active:scale-[0.98]";
+  const eyebrow = "text-[10px] uppercase tracking-[0.2em] text-[#8ba3ba]/70";
+  const chapterWord = el ? 'Κεφάλαιο' : 'Chapter';
+
+  const whereCard = () => {
+    if (!last || read.length === 0) {
+      return (
+        <div className="flex flex-col gap-3">
+          <p className="text-[14px] leading-relaxed text-white/60 px-1">
+            {el ? 'Όταν ξεκινήσεις να διαβάζεις, θα θυμάμαι πού σταμάτησες.' : 'When you start reading, I will remember where you stopped.'}
+          </p>
+          <Link to="/chapters/1" onClick={close} className={cardClasses}>
+            <BookOpen size={18} strokeWidth={1.5} className="shrink-0 text-[#8ba3ba]" />
+            <span className="flex flex-col min-w-0 flex-1 gap-0.5">
+              <span className={eyebrow}>{el ? 'Ξεκίνα' : 'Start'}</span>
+              <span className="text-[14px] leading-snug text-[#9bb8d1]">{chapterWord} 1 · {chapters[0]?.title}</span>
+            </span>
+            <ChevronRight size={16} className="text-white/30 shrink-0" />
+          </Link>
+        </div>
+      );
+    }
+    if (isDone(last.num)) {
+      return (
+        <Link to={nextUnread ? `/chapters/${nextUnread.num}` : '/chapters'} onClick={close} className={cardClasses}>
+          <BookOpen size={18} strokeWidth={1.5} className="shrink-0 text-[#8ba3ba]" />
+          <span className="flex flex-col min-w-0 flex-1 gap-1">
+            <span className={eyebrow}>
+              {el ? `Τελείωσες το Κεφάλαιο ${last.num}` : `You finished Chapter ${last.num}`}{lastWhen && ` · ${lastWhen}`}
+            </span>
+            <span className="text-[14px] leading-snug text-[#9bb8d1]">
+              {nextUnread
+                ? `${el ? 'Επόμενο' : 'Next'}: ${chapterWord} ${nextUnread.num} · ${nextUnread.title}`
+                : (el ? 'Διάβασες όλα τα κεφάλαια' : 'You have read every chapter')}
+            </span>
+          </span>
+          <ChevronRight size={16} className="text-white/30 shrink-0" />
+        </Link>
+      );
+    }
+    return (
+      <Link to={`/chapters/${last.num}?p=${lastPage + 1}`} onClick={close} className={cardClasses}>
+        <BookOpen size={18} strokeWidth={1.5} className="shrink-0 text-[#8ba3ba]" />
+        <span className="flex flex-col min-w-0 flex-1 gap-1">
+          <span className={eyebrow}>{el ? 'Σταμάτησες εδώ' : 'You stopped here'}{lastWhen && ` · ${lastWhen}`}</span>
+          <span className="text-[14px] leading-snug text-[#9bb8d1]">{chapterWord} {last.num} · {last.title}</span>
+          <span className="text-[12px] leading-snug text-white/45">
+            {chapterPageLabel(lastPages[lastPage], lang)} · {el ? `σελίδα ${lastPage + 1} από ${lastPages.length}` : `page ${lastPage + 1} of ${lastPages.length}`}
+          </span>
+          <span className="text-[12px] text-teal-300/80 mt-1">{el ? 'Συνέχισε από εκεί' : 'Continue from there'}</span>
+        </span>
+        <ChevronRight size={16} className="text-white/30 shrink-0" />
+      </Link>
+    );
+  };
 
   return (
     <AnimatePresence>
@@ -90,20 +189,68 @@ export default function CompanionSheet() {
                 </button>
               </div>
 
-              {/* How do you feel right now? */}
-              <HomeCheckin />
+              {/* Where you stopped */}
+              {whereCard()}
 
-              {/* Continue */}
-              <Link to={`/chapters/${nextChapter?.num ?? 1}`} onClick={close} className={rowClasses}>
-                <BookOpen size={18} strokeWidth={1.5} className="shrink-0 text-[#8ba3ba]" />
-                <span className="flex flex-col min-w-0 flex-1 gap-0.5">
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-[#8ba3ba]/70">{chapterLabel}</span>
-                  <span className="text-[14px] leading-snug text-[#9bb8d1]">
-                    {el ? 'Κεφάλαιο' : 'Chapter'} {nextChapter?.num} · {nextChapter?.title}
-                  </span>
-                </span>
-                <ChevronRight size={16} className="text-white/30 shrink-0" />
-              </Link>
+              {/* Something to keep in mind today */}
+              {reminder && (
+                <figure className="px-1">
+                  <figcaption className="text-[10px] uppercase tracking-[0.2em] text-white/35 mb-2">
+                    {el ? `Για σήμερα · από το Κεφάλαιο ${reminder.num}` : `For today · from Chapter ${reminder.num}`}
+                  </figcaption>
+                  <blockquote className="font-serif italic text-[16px] leading-relaxed text-white/80">
+                    «{reminder.text}»
+                  </blockquote>
+                </figure>
+              )}
+
+              {/* What you have read */}
+              {read.length > 0 && (
+                <section className="flex flex-col gap-2">
+                  <h3 className="flex items-baseline justify-between px-1 text-[13px] text-white/60">
+                    <span>{el ? 'Τι έχεις διαβάσει' : 'What you have read'}</span>
+                    <span className="text-[11px] font-mono text-white/35">{progress.completedChapters.length}/{chapters.length}</span>
+                  </h3>
+                  <ul className="flex flex-col gap-1.5">
+                    {read.map(c => {
+                      const open = openNum === c.num;
+                      const count = chapterPages(c).length;
+                      const takeaways = CHAPTER_TAKEAWAYS[lang]?.[c.num] || [];
+                      return (
+                        <li key={c.num} className="rounded-2xl bg-white/[0.03] border border-white/[0.06] overflow-hidden">
+                          <button
+                            onClick={() => setOpenNum(open ? null : c.num)}
+                            aria-expanded={open}
+                            className="w-full min-h-[48px] flex items-center gap-3 px-4 py-3 text-left hover:bg-white/[0.04] transition-colors"
+                          >
+                            <span className="w-6 text-[12px] font-mono text-white/40 shrink-0">{c.num}</span>
+                            <span className="flex-1 min-w-0 text-[14px] leading-snug text-white/80">{c.title}</span>
+                            {isDone(c.num)
+                              ? <Check size={15} className="text-teal-300/80 shrink-0" aria-label={el ? 'Ολοκληρώθηκε' : 'Finished'} />
+                              : <span className="text-[11px] font-mono text-white/40 shrink-0">{pageOf(c.num, count) + 1}/{count}</span>}
+                            <ChevronDown size={15} className={cn("text-white/30 shrink-0 transition-transform", open && "rotate-180")} />
+                          </button>
+                          {open && (
+                            <div className="px-4 pb-4 pl-[52px] flex flex-col gap-3">
+                              <ul className="flex flex-col gap-2">
+                                {takeaways.map((t, i) => (
+                                  <li key={i} className="text-[13px] leading-relaxed text-white/65 flex gap-2">
+                                    <span className="text-white/30" aria-hidden="true">·</span>
+                                    <span>{plain(t)}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                              <Link to={`/chapters/${c.num}`} onClick={close} className="self-start min-h-[36px] flex items-center gap-1 text-[12px] text-teal-300/80 hover:text-teal-200">
+                                {el ? 'Άνοιξε το κεφάλαιο' : 'Open the chapter'} <ChevronRight size={14} />
+                              </Link>
+                            </div>
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </section>
+              )}
 
               <button
                 onClick={showIntro}
