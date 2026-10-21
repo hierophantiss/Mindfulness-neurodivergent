@@ -317,7 +317,7 @@ function getMetaForRoute(route: string): RouteMeta {
         name: lang === 'el' ? 'Οδηγός Ενσυνειδητότητας για Νευροδιαφορετικούς' : 'A Mindfulness Guide for Neurodivergents',
         inLanguage: lang,
         author: { '@type': 'Person', name: 'Theodoros Bairaktaris' },
-        duration: lang === 'el' ? 'PT1H58M' : 'PT2H11M',
+        duration: lang === 'el' ? 'PT2H27M' : 'PT2H11M',
         encodingFormat: 'audio/mpeg',
         contentUrl: `${BASE_URL}/audio/mindfulness-guide-${lang}.mp3`,
         isAccessibleForFree: true,

@@ -428,7 +428,7 @@ export default function NavigationMenu() {
                   <a href={`/audio/mindfulness-guide-${language}.mp3`} download={`mindfulness-guide-${language}.mp3`}
                      className="mt-2 flex items-center justify-center gap-2 px-3 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-medium text-teal-100 transition-colors">
                     <Headphones size={13} aria-hidden="true" />
-                    {language === 'en' ? 'Audiobook · MP3 · about 2 hours' : 'Ακουστικό βιβλίο · MP3 · περίπου 2 ώρες'}
+                    {language === 'en' ? 'Audiobook · MP3 · about 2 hours' : 'Ακουστικό βιβλίο · MP3 · περίπου 2½ ώρες'}
                   </a>
                 </div>
 
