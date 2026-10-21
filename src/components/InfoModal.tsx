@@ -41,6 +41,7 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
         { el: 'Σχεδιασμένο ειδικά για νευροδιαφορετικούς', en: 'Designed specifically for neurodivergent minds' },
         { el: 'Με φροντίδα για όσους ζουν με τραύμα: σέβεται τα όριά σου', en: 'Trauma-informed: respects your boundaries' },
         { el: 'Λειτουργεί offline — εγκατάσταση στο κινητό', en: 'Works offline — installable on mobile devices' },
+        { el: 'Μια γάτα-σύντροφος θυμάται τι διάβασες και σε γυρίζει εκεί που σταμάτησες', en: 'A cat companion remembers what you read and brings you back where you stopped' },
         { el: 'Τα δεδομένα σου μένουν μόνο στη συσκευή σου', en: 'Your data stays entirely on your device' }
       ]
     },

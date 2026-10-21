@@ -40,7 +40,7 @@ const translations: Record<string, Record<Language, string>> = {
   'onboarding.s2.body': { el: 'Σώμα, Αναπνοή, Προσοχή, Χώρος. Έρχεσαι σε επαφή με το καθένα και σιγά σιγά τα συντονίζεις. Πες στην εφαρμογή πώς νιώθεις και θα σου προτείνει από πού να ξεκινήσεις, με μια άσκηση 2–5 λεπτών. Χωρίς ενοχές αν χάσεις μέρες.', en: 'Body, Breath, Attention, Space. You come into contact with each one, and little by little you attune them. Tell the app how you feel and it will suggest where to begin, with a 2–5 minute practice. No guilt if you miss days.' },
 
   'onboarding.s3.title': { el: 'Όλα μένουν στη συσκευή σου', en: 'Everything stays on your device' },
-  'onboarding.s3.body': { el: 'Χωρίς λογαριασμό, χωρίς tracking, χωρίς διαφημίσεις, χωρίς chatbot. Εντελώς δωρεάν. Τα δεδομένα σου είναι δικά σου — μπορείς να τα εξάγεις ή να τα σβήσεις όποτε θέλεις.', en: 'No account, no tracking, no ads, no chatbot. Completely free. Your data is yours — export it or delete it whenever you want.' },
+  'onboarding.s3.body': { el: 'Χωρίς λογαριασμό, χωρίς tracking, χωρίς διαφημίσεις, χωρίς chatbot. Εντελώς δωρεάν. Όταν αρχίσεις να διαβάζεις, θα εμφανιστεί μια γάτα που θυμάται πού σταμάτησες — κι αυτό μένει μόνο εδώ. Τα δεδομένα σου είναι δικά σου: μπορείς να τα εξάγεις ή να τα σβήσεις όποτε θέλεις.', en: 'No account, no tracking, no ads, no chatbot. Completely free. Once you start reading, a cat will appear that remembers where you stopped — and that stays here too. Your data is yours: export it or delete it whenever you want.' },
 
   'onboarding.next': { el: 'Επόμενο', en: 'Next' },
   'onboarding.skip': { el: 'Παράλειψη', en: 'Skip' },
