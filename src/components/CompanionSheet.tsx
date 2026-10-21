@@ -1,869 +1,170 @@
 import { useFocusTrap } from '../hooks/useFocusTrap';
-import React, { useState, useEffect } from 'react';
-import { useCompanion } from '../hooks/useCompanion';
-import { useActivityTracker } from '../contexts/ActivityTrackerContext';
-import { CHAPTERS_DATA, CHAPTER_PRACTICES } from '../data/chapters';
-import { KNOWLEDGE_CONCEPTS } from '../data/concepts';
-import { KNOWLEDGE_FAQ } from '../data/faq';
-import { COURSE_EL as D_EL } from '../data/course-el';
-import { COURSE_EN as D_EN } from '../data/course-en';
-
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { BookOpen, Calendar, ChevronRight, Wind, X } from 'lucide-react';
+import { useCompanion } from '../hooks/useCompanion';
 import { useLanguage } from '../hooks/useLanguage';
-import { useAccessibility } from '../hooks/useAccessibility';
-import { cn } from '../lib/utils';
+import { useProgress } from '../contexts/ProgressContext';
+import { CHAPTERS_DATA } from '../data/chapters';
+import { SOS_PATH } from '../data/stateCheckin';
+import { getMoreLinks } from '../data/moreLinks';
 import { CatInfinityAvatar } from './CatInfinityAvatar';
-import StateCheckin from './StateCheckin';
+import HomeCheckin from './HomeCheckin';
 
-/* Companion Sheet states/flows */
-type FlowState = 'main' | 'hub' | 'explore' | 'options' | 'questionnaire' | 'checkin';
+const TOTAL_LESSONS = 56;
 
-const getDateString = (date: Date): string => {
-  return date.toISOString().split('T')[0];
-};
-
-
+// The cat's sheet: a quiet shortcut to the same things the home page offers,
+// for when you are somewhere else in the app.
 export default function CompanionSheet() {
-  const { sheetVisible, setSheetVisible, companionData, trackActivity, updateCompanionData } = useCompanion();
-  const { logs } = useActivityTracker();
+  const { sheetVisible, setSheetVisible, companionData } = useCompanion();
   const { language } = useLanguage();
-  const { reduceMotion } = useAccessibility();
-  const [flow, setFlow] = useState<FlowState>('main');
-  const [history, setHistory] = useState<FlowState[]>([]);
-  const navigate = useNavigate();
+  const lang = language === 'en' ? 'en' : 'el';
+  const el = lang === 'el';
+  const { progress } = useProgress();
+  const location = useLocation();
 
-  const handleClose = () => {
+  const close = () => setSheetVisible(false);
+  const modalRef = useFocusTrap(sheetVisible, close);
+
+  // Any link inside the sheet takes you somewhere: the sheet steps aside.
+  useEffect(() => {
     setSheetVisible(false);
-    // reset flow after animation out
-    setTimeout(() => {
-      setFlow('main');
-      setHistory([]);
-    }, 300);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
+
+  // The same next chapter as the home page.
+  const chapters = CHAPTERS_DATA[lang] || [];
+  const done = progress.completedChapters;
+  const nextChapter = chapters.find(c => !done.includes(String(c.num))) || chapters[0];
+  const allDone = chapters.length > 0 && done.length >= chapters.length;
+  const chapterLabel = allDone
+    ? (el ? 'Ολοκλήρωσες τον οδηγό' : 'You finished the guide')
+    : done.length === 0 ? (el ? 'Ξεκίνα' : 'Start') : (el ? 'Συνέχισε' : 'Continue');
+
+  const week = companionData.programProgress?.week || 0;
+  const day = companionData.programProgress?.day || 0;
+  const lessons = progress.completedLessons.length;
+  const moreLinks = getMoreLinks(lang, lessons > 0 ? `${Math.round((lessons / TOTAL_LESSONS) * 100)}%` : undefined);
+
+  const showIntro = () => {
+    close();
+    window.dispatchEvent(new Event('show-welcome-modal'));
   };
 
-  const modalRef = useFocusTrap(sheetVisible, handleClose);
-  const navTo = (dest: FlowState) => {
-    setHistory(prev => [...prev, flow]);
-    setFlow(dest);
-  };
-
-  const goBack = () => {
-    if (history.length > 0) {
-      const prev = history[history.length - 1];
-      setHistory(h => h.slice(0, -1));
-      setFlow(prev);
-    } else {
-      setFlow('main');
-    }
-  };
-
-  // Render varying content based on the flow
-  const renderContent = () => {
-    switch (flow) {
-      case 'main': return <MainFlow navTo={navTo} onClose={handleClose} />;
-      case 'hub': return <HubFlow goBack={goBack} onClose={handleClose} navigate={navigate} />;
-      case 'options': return <OptionsFlow goBack={goBack} onClose={handleClose} />;
-      case 'explore': return <ExploreFlow goBack={goBack} onClose={handleClose} />;
-      case 'questionnaire': return <QuestionnaireFlow goBack={goBack} />;
-      case 'checkin': return (
-        <div className="space-y-6 animate-fade-in text-stone-800 dark:text-stone-200">
-           <div className="flex items-center gap-3 pb-2 border-b border-stone-200 dark:border-stone-800">
-             <button onClick={goBack} className="w-8 h-8 rounded-full bg-stone-200 dark:bg-stone-800 flex items-center justify-center hover:bg-stone-300 dark:hover:bg-stone-700 transition">←</button>
-             <h2 className="font-display text-lg font-medium">{language === 'el' ? 'Νευρικό Σύστημα' : 'Nervous System'}</h2>
-           </div>
-           <StateCheckin inline onComplete={() => { handleClose(); }} />
-        </div>
-      );
-      default: return <MainFlow navTo={navTo} onClose={handleClose} />;
-    }
-  };
+  const rowClasses = "flex items-center gap-3.5 px-4 py-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] transition-colors active:scale-[0.98]";
 
   return (
     <AnimatePresence>
       {sheetVisible && (
         <>
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-stone-900/40 backdrop-blur-sm z-[9998]"
-            onClick={handleClose}
+            className="fixed inset-0 bg-[#0f1117]/70 backdrop-blur-sm z-[9998]"
+            onClick={close}
           />
-          <motion.div 
+          <motion.div
             ref={modalRef}
             role="dialog"
             aria-modal="true"
-            aria-label={language === "el" ? "Οδηγός" : "Companion Sheet"}
+            aria-label={el ? 'Συνοδός' : 'Companion'}
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             data-nosnippet
-            className="fixed bottom-0 left-0 right-0 max-h-[85dvh] bg-stone-100 dark:bg-stone-900 shadow-2xl rounded-t-3xl border border-stone-200 dark:border-stone-800 z-[9999] flex flex-col overflow-hidden max-w-[480px] mx-auto pb-[env(safe-area-inset-bottom)]"
+            className="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-[480px] max-h-[85dvh] bg-[#1a1d27]/98 backdrop-blur-2xl border-t border-white/10 shadow-[0_-20px_50px_rgba(0,0,0,0.6)] rounded-t-[2rem] z-[9999] flex flex-col overflow-hidden pb-[env(safe-area-inset-bottom)] text-white"
           >
-            {/* Grab Handle */}
-            <div role="button" aria-label="Close" tabIndex={0} className="flex justify-center p-3 cursor-pointer touch-none focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 focus-visible:bg-white/5 rounded-t-3xl" onClick={handleClose} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClose(); } }}>
-              <div className="w-10 h-1.5 bg-stone-300 dark:bg-stone-700 rounded-full" />
+            <div className="flex justify-center pt-3 pb-1" aria-hidden="true">
+              <div className="w-10 h-1.5 bg-white/15 rounded-full" />
             </div>
 
-            <div className="flex-1 overflow-y-auto px-5 pb-6">
-              {renderContent()}
+            <div className="flex-1 overflow-y-auto px-5 pb-6 flex flex-col gap-5">
+              {/* Header */}
+              <div className="flex items-center justify-between pt-1">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full overflow-hidden border border-white/10 bg-[#0f1117] flex items-center justify-center">
+                    <CatInfinityAvatar className="w-9 h-9" />
+                  </div>
+                  <h2 className="font-display text-[17px] text-white/90">{el ? 'Συνοδός' : 'Companion'}</h2>
+                </div>
+                <button
+                  onClick={close}
+                  aria-label={el ? 'Κλείσιμο' : 'Close'}
+                  className="w-11 h-11 -mr-2 flex items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-white/25 text-white/50 hover:text-white/85 hover:bg-white/[0.06] transition-colors"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              {/* Continue */}
+              <div className="flex flex-col gap-2">
+                <Link to={`/chapters/${nextChapter?.num ?? 1}`} onClick={close} className={rowClasses}>
+                  <BookOpen size={18} strokeWidth={1.5} className="shrink-0 text-[#8ba3ba]" />
+                  <span className="flex flex-col min-w-0 flex-1 gap-0.5">
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-[#8ba3ba]/70">{chapterLabel}</span>
+                    <span className="text-[14px] leading-snug text-[#9bb8d1]">
+                      {el ? 'Κεφάλαιο' : 'Chapter'} {nextChapter?.num} · {nextChapter?.title}
+                    </span>
+                  </span>
+                  <ChevronRight size={16} className="text-white/30 shrink-0" />
+                </Link>
+
+                {week > 0 && (
+                  <Link to={`/program/week/${week}`} onClick={close} className={rowClasses}>
+                    <Calendar size={18} strokeWidth={1.5} className="shrink-0 text-[#b0c4aa]" />
+                    <span className="flex flex-col min-w-0 flex-1 gap-0.5">
+                      <span className="text-[10px] uppercase tracking-[0.2em] text-[#b0c4aa]/70">{el ? 'Πρόγραμμα' : 'Program'}</span>
+                      <span className="text-[14px] leading-snug text-white/85">
+                        {el ? `Εβδομάδα ${week}, Ημέρα ${day + 1}` : `Week ${week}, Day ${day + 1}`}
+                      </span>
+                    </span>
+                    <ChevronRight size={16} className="text-white/30 shrink-0" />
+                  </Link>
+                )}
+
+                <Link to={SOS_PATH} onClick={close} className={rowClasses}>
+                  <Wind size={18} strokeWidth={1.5} className="shrink-0 text-[#7dd3fc]" />
+                  <span className="flex flex-col min-w-0 flex-1 gap-0.5">
+                    <span className="text-[14px] leading-tight text-white/85">{el ? 'Αναπνοή SOS' : 'SOS Breath'}</span>
+                    <span className="text-[12px] leading-snug text-white/45">{el ? 'Όταν χρειάζεσαι ηρεμία τώρα' : 'When you need calm now'}</span>
+                  </span>
+                  <ChevronRight size={16} className="text-white/30 shrink-0" />
+                </Link>
+              </div>
+
+              {/* How do you feel right now? */}
+              <HomeCheckin />
+
+              {/* The rest of the app */}
+              <div className="flex flex-col gap-2">
+                {moreLinks.map(item => (
+                  <Link key={item.to} to={item.to} onClick={close} className={rowClasses}>
+                    <item.icon size={18} strokeWidth={1.5} className={`shrink-0 opacity-80 ${item.tone}`} />
+                    <span className="flex flex-col min-w-0 flex-1 gap-0.5">
+                      <span className="flex items-baseline gap-2 text-[14px] leading-tight text-white/85">
+                        {item.label}
+                        {item.sub && <span className="text-[11px] font-mono text-white/40">{item.sub}</span>}
+                      </span>
+                      <span className="text-[12px] leading-snug text-white/45">{item.desc}</span>
+                    </span>
+                    <ChevronRight size={16} className="text-white/30 shrink-0" />
+                  </Link>
+                ))}
+              </div>
+
+              <button
+                onClick={showIntro}
+                className="self-center min-h-[44px] px-4 text-[12px] text-white/40 hover:text-white/70 transition-colors"
+              >
+                {el ? 'Δες ξανά την εισαγωγή' : 'See the introduction again'}
+              </button>
             </div>
           </motion.div>
         </>
       )}
     </AnimatePresence>
-  );
-}
-
-function MainFlow({ navTo, onClose }: { navTo: (state: FlowState) => void, onClose: () => void }) {
-  const { companionData, updateCompanionData } = useCompanion();
-  const { logs } = useActivityTracker();
-  const navigate = useNavigate();
-  const { language } = useLanguage();
-  const { reduceMotion } = useAccessibility();
-  useEffect(() => {
-    const handleStorageChange = () => {
-      // Intentionally left blank
-    };
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, []);
-  
-  // Calculate specific dynamic messages
-  const now = new Date();
-  let daysSince = 0;
-  if (companionData.lastSeen) {
-    daysSince = Math.floor((now.getTime() - new Date(companionData.lastSeen).getTime()) / 86400000);
-  }
-
-  // Find resume chapter
-  let resumeChapterNum: number | null = null;
-  let resumeScroll = 0;
-  
-  const progKeys = Object.keys(companionData.chapterProgress);
-  for (let key of progKeys) {
-    const num = parseInt(key);
-    const prog = companionData.chapterProgress[num];
-    if (prog && !prog.completed && prog.scrollPct > 0.05 && prog.scrollPct < 0.95 && prog.scrollPct > resumeScroll) {
-      resumeScroll = prog.scrollPct;
-      resumeChapterNum = num;
-    }
-  }
-
-  let nextChapterNum: number | null = null;
-  const currentLang = language === 'en' && CHAPTERS_DATA['en'] ? 'en' : 'el';
-  const totalChapters = CHAPTERS_DATA[currentLang].length;
-  let completedCount = 0;
-  
-  for (let i = 1; i <= totalChapters; i++) {
-    if (companionData.chapterProgress[i]?.completed) {
-      completedCount++;
-    } else if (!nextChapterNum) {
-      nextChapterNum = i;
-    }
-  }
-
-  // Narrative calculation
-  const getDailyNarrative = () => {
-    let phase = 0;
-    const w = companionData.programProgress?.week || 0;
-    if (w < 2) phase = 0; 
-    else if (w >= 2 && w < 4) phase = 1; 
-    else if (w >= 4 && w < 6) phase = 2; 
-    else if (w >= 6) phase = 3; 
-
-    const elNarratives = [
-      {
-        title: "Γείωση (Σώμα)",
-        text: "Το νευρικό σύστημα ψάχνει για ασφάλεια. Πριν ελέγξουμε τη σκέψη, ας νιώσουμε τη βαρύτητα. Τα πέλματα στο πάτωμα είναι η πρώτη σου άγκυρα."
-      },
-      {
-        title: "Ρύθμιση (Αναπνοή)",
-        text: "Έχοντας βρει το 'Εδώ' στο σώμα, περνάμε στο 'Τώρα'. Η αργή εκπνοή στέλνει σήμα χαλάρωσης στο πνευμονογαστρικό νεύρο (Vagus Nerve)."
-      },
-      {
-        title: "Κατεύθυνση (Προσοχή)",
-        text: "Αν ο νους τρέχει, μην τον πολεμάς. Δώσε του ένα σταθερό σημείο να ακουμπήσει. Σταθεροποίησε την προσοχή σου."
-      },
-      {
-        title: "Άνοιγμα (Χώρος / Ήχος)",
-        text: "Όταν ο νους 'κλειδώνει', η λύση δεν είναι η προσπάθεια, αλλά ο χώρος. Μαλάκωσε το βλέμμα (ανοιχτή όραση), άκου τους ήχους (ανοιχτή ακοή) και άσε το νευρικό σύστημα να αποσυμπιεστεί."
-      }
-    ];
-
-    const enNarratives = [
-      {
-        title: "Grounding (Body)",
-        text: "The nervous system constantly looks for safety. Before controlling thought, feel gravity. Feet on the floor is your first anchor."
-      },
-      {
-        title: "Regulation (Breath)",
-        text: "Having found 'Here' in the body, we move to 'Now'. A slow exhale signals safety to the vagus nerve."
-      },
-      {
-        title: "Direction (Attention)",
-        text: "If the mind races, don't fight it. Give it a steady point to rest on. Gently stabilize your attention."
-      },
-      {
-        title: "Opening (Space / Sound)",
-        text: "When the mind hyperfocuses, the solution is space. Soften your gaze (open sight), let sounds in (open hearing), and allow your nervous system to decompress."
-      }
-    ];
-
-    return language === 'el' ? elNarratives[phase] : enNarratives[phase];
-  };
-
-  const narrative = getDailyNarrative();
-  
-  // Calculate Mindful Stats
-  const totalPracticesLogged = logs.length;
-  
-  const todayString = getDateString(new Date());
-  const hasPracticedToday = logs.some(l => l.timestamp && l.timestamp.startsWith(todayString));
-
-  const mindfulStats = { 
-    practices: totalPracticesLogged, 
-    hasPracticedToday
-  };
-
-  let message = {
-    primary: language === 'el' ? 'Πώς θέλεις να συνεχίσουμε σήμερα;' : 'How do you want to continue today?',
-    secondary: '',
-    actionLabel: language === 'el' ? '📖 Βιβλιοθήκη' : '📖 Library',
-    actionRoute: '/chapters',
-    secondaryActionLabel: language === 'el' ? '🫁 Αναπνοή' : '🫁 Breath',
-    secondaryActionRoute: '/practice/breath/sos-breath'
-  };
-
-  const progW = companionData.programProgress?.week || 0;
-  const progD = companionData.programProgress?.day || 0;
-  const hasProgram = progW > 0;
-
-  if (hasProgram) {
-    message.primary = language === 'el' ? (daysSince >= 1 ? 'Καλώς ήρθες πίσω!' : 'Πώς θέλεις να συνεχίσουμε;') : (daysSince >= 1 ? 'Welcome back!' : 'How do you want to continue?');
-    message.secondary = language === 'el' ? `Πρόγραμμα 8 Εβδομάδων: Εβδομάδα ${progW}, Ημέρα ${progD + 1}` : `8-Week Program: Week ${progW}, Day ${progD + 1}`;
-    message.actionLabel = language === 'el' ? '▶ Συνέχεια' : '▶ Continue';
-    message.actionRoute = `/program/week/${progW}`;
-    
-    if (resumeChapterNum || nextChapterNum) {
-      const chNum = resumeChapterNum || nextChapterNum;
-      message.secondaryActionLabel = String(language === 'el' ? '📖 Βιβλιοθήκη' : '📖 Library');
-      message.secondaryActionRoute = `/chapters/${chNum}`;
-    }
-  } else if (daysSince >= 2) {
-    message.primary = language === 'el' ? 'Καλώς ήρθες πίσω!' : 'Welcome back!';
-    if (resumeChapterNum) {
-      const ch = CHAPTERS_DATA[currentLang][resumeChapterNum - 1];
-      message.secondary = language === 'el' ? `Είχες μείνει στο «${ch?.title}». Θέλεις να συνεχίσεις;` : `You left off at "${ch?.title}". Want to continue?`;
-      message.actionLabel = `${ch?.icon} ${language === 'el' ? 'Συνέχισε' : 'Continue'}`;
-      message.actionRoute = `/chapters/${resumeChapterNum}`;
-    } else if (nextChapterNum) {
-      const ch = CHAPTERS_DATA[currentLang][nextChapterNum - 1];
-      message.secondary = language === 'el' ? `Το επόμενο βήμα: «${ch?.title}»` : `Next step: "${ch?.title}"`;
-      message.actionLabel = `${ch?.icon} ${language === 'el' ? 'Πάμε' : 'Let\'s go'}`;
-      message.actionRoute = `/chapters/${nextChapterNum}`;
-    }
-  } else if (resumeChapterNum) {
-    const ch = CHAPTERS_DATA[currentLang][resumeChapterNum - 1];
-    message.primary = language === 'el' ? `Βρίσκεσαι στο «${ch?.title}»` : `You are on "${ch?.title}"`;
-    message.secondary = language === 'el' ? 'Συνέχισε την ανάγνωση από εκεί που έμεινες.' : 'Continue reading where you left off.';
-    message.actionLabel = `${ch?.icon} ${language === 'el' ? 'Συνέχισε' : 'Continue'}`;
-    message.actionRoute = `/chapters/${resumeChapterNum}`;
-  } else if (completedCount >= totalChapters && !hasProgram) {
-    message.primary = language === 'el' ? 'Ολοκλήρωσες όλα τα κεφάλαια! 🎉' : 'You completed all chapters! 🎉';
-    message.secondary = language === 'el' ? 'Είσαι έτοιμος για το Πρόγραμμα 8 Εβδομάδων.' : 'You are ready for the 8-Week Program.';
-    message.actionLabel = language === 'el' ? '🗓️ Ξεκίνα Πρόγραμμα' : '🗓️ Start Program';
-    message.actionRoute = '/program';
-    message.secondaryActionLabel = language === 'el' ? '🎯 Ασκήσεις' : '🎯 Exercises';
-    message.secondaryActionRoute = '/practice';
-  } else if (nextChapterNum) {
-    const ch = CHAPTERS_DATA[currentLang][nextChapterNum - 1];
-    message.primary = language === 'el' ? `Η πρακτική συνεχίζεται: «${ch?.title}»` : `The practice continues: "${ch?.title}"`;
-    message.secondary = language === 'el' ? `${completedCount}/${totalChapters} κεφάλαια ολοκληρωμένα` : `${completedCount}/${totalChapters} chapters completed`;
-    message.actionLabel = `${ch?.icon} ${language === 'el' ? 'Ξεκίνα' : 'Start'}`;
-    message.actionRoute = `/chapters/${nextChapterNum}`;
-  }
-
-  // Override text if Quiet Mode is turned on
-  if (!companionData.companionModeEnabled) {
-    message.primary = language === 'el' 
-      ? '💤 Ήσυχη Καταγραφή' 
-      : '💤 Quiet Tracker Active';
-      
-    if (hasProgram) {
-      message.secondary = language === 'el'
-        ? `Καταγράφω σιωπηλά την πρόοδό σου. Είσαι στην Εβδομάδα ${progW}, Ημέρα ${progD + 1}. Μπορείς να συνεχίσεις απευθείας προς το επόμενο βήμα:`
-        : `Silently logging your progress. You are currently at Week ${progW}, Day ${progD + 1}. Resume your next lesson immediately:`;
-    } else if (resumeChapterNum) {
-      const ch = CHAPTERS_DATA[currentLang][resumeChapterNum - 1];
-      message.secondary = language === 'el'
-        ? `Θυμάμαι ότι είχες μείνει στο «${ch?.title}». Μπορείς να συνεχίσεις αθόρυβα την ανάγνωση από εδώ:`
-        : `I remember you left off reading at "${ch?.title}". You can resume silently from here:`;
-    } else {
-      message.secondary = language === 'el'
-        ? 'Καταγράφω σιωπηλά την πρόοδό σου στο παρασκήνιο χωρίς να σου αποσπώ την προσοχή. Είμαι εδώ όποτε με χρειαστείς!'
-        : 'Silently tracking your mindfulness milestones in the background. I am always ready whenever you call on me!';
-    }
-  }
-  
-  return (
-    <div className="space-y-6 animate-fade-in text-stone-800 dark:text-stone-200">
-      <div className="flex items-center justify-between pb-3 border-b border-stone-200/60 dark:border-stone-800/60">
-         <div className="flex items-center gap-3">
-           <div className="flex -space-x-1">
-             <div className={`w-6 h-6 rounded-full bg-teal-500/20 mix-blend-multiply dark:mix-blend-lighten ${reduceMotion ? '' : 'animate-pulse'}`} />
-             <div className={`w-6 h-6 rounded-full bg-indigo-500/20 mix-blend-multiply dark:mix-blend-lighten ${reduceMotion ? '' : 'animate-pulse delay-75'}`} />
-           </div>
-           <h2 className="font-display font-medium text-lg leading-none tracking-tight">
-             {companionData.companionModeEnabled 
-               ? (language === 'el' ? 'Συνοδός' : 'Companion')
-               : (language === 'el' ? 'Ήσυχη Καταγραφή' : 'Quiet Tracking')}
-           </h2>
-         </div>
-         <div className="flex items-center gap-1.5">
-            <button onClick={() => navTo('options')} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-stone-200 dark:hover:bg-stone-800 transition text-stone-400 hover:text-stone-700 dark:hover:text-stone-300">⚙️</button>
-            <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-stone-200 dark:hover:bg-stone-800 transition text-stone-400 hover:text-stone-700 dark:hover:text-stone-300">✕</button>
-         </div>
-      </div>
-
-      {companionData.companionModeEnabled && (
-        <div className="relative bg-teal-50 dark:bg-stone-800/50 p-5 rounded-[24px] border border-stone-200/50 dark:border-stone-700/50 shadow-sm overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-[#e99b37]/10 blur-[40px] rounded-full pointer-events-none -mr-10 -mt-10" />
-          
-          <div className="flex items-start gap-4 relative z-10">
-            <div className="w-16 h-16 rounded-full overflow-hidden shrink-0 shadow-sm relative flex items-center justify-center border border-stone-200 dark:border-stone-700 bg-stone-100 dark:bg-stone-800">
-               <CatInfinityAvatar className="w-14 h-14" />
-              <div className="absolute bottom-1 right-1 w-3 h-3 bg-teal-500 rounded-full border-2 border-white dark:border-stone-800" />
-            </div>
-            
-            <div className="flex flex-col gap-1.5 pt-1">
-              <h3 className="text-[13px] font-bold text-[#e99b37] tracking-[1.5px] uppercase">
-                {narrative.title}
-              </h3>
-              <p className="text-[14.5px] text-stone-700 dark:text-stone-300 leading-relaxed font-serif italic pr-2">
-                «{narrative.text}»
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Stats Row */}
-      <div className="grid grid-cols-2 gap-2">
-        <div className="bg-stone-50 dark:bg-stone-800/80 border border-stone-100 dark:border-stone-700 rounded-2xl flex flex-col items-center justify-center py-4 text-center gap-1.5 shadow-sm">
-          <span className="text-lg leading-none">🧘</span>
-          <span className="text-[20px] font-display font-medium text-stone-800 dark:text-stone-200">{mindfulStats.practices}</span>
-          <span className="text-[9px] font-bold tracking-wider text-stone-400 uppercase">
-            {language === 'el' ? 'Στιγμές παρουσίας' : 'Moments of presence'}
-          </span>
-        </div>
-        <div className="bg-stone-50 dark:bg-stone-800/80 border border-stone-100 dark:border-stone-700 rounded-2xl flex flex-col items-center justify-center py-4 text-center gap-1.5 shadow-sm">
-          <span className="text-lg leading-none">🌙</span>
-          <span className="text-[20px] font-display font-medium text-stone-800 dark:text-stone-200">{mindfulStats.hasPracticedToday ? '✓' : '—'}</span>
-          <span className="text-[9px] font-bold tracking-wider text-stone-400 uppercase">
-            {language === 'el' ? 'ΣΗΜΕΡΑ' : 'TODAY'}
-          </span>
-        </div>
-      </div>
-
-      <div className="relative bg-gradient-to-br from-teal-50/80 to-stone-50/40 dark:from-teal-950/30 dark:to-stone-900/40 p-5 rounded-3xl border border-teal-100/50 dark:border-teal-900/30 shadow-sm backdrop-blur-sm overflow-hidden">
-        {/* Decorative blur in background */}
-        <div className="absolute -top-10 -right-10 w-32 h-32 bg-teal-400/10 rounded-full blur-2xl pointer-events-none" />
-        
-        <div className="relative z-10">
-          <p className="font-semibold text-[17px] text-teal-950 dark:text-teal-50 mb-1.5 tracking-tight">{message.primary}</p>
-          {message.secondary && (
-            <p className="text-stone-600 dark:text-stone-300 text-[14px] mb-5 font-medium leading-relaxed">{message.secondary}</p>
-          )}
-          
-          <div className="flex flex-col sm:flex-row gap-2 mt-2">
-            <button 
-              onClick={() => { onClose(); navigate(message.actionRoute); }}
-              className="flex-1 bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-700 text-white shadow-sm py-2.5 px-4 rounded-xl font-medium transition-transform active:scale-[0.98] text-center text-sm"
-            >
-              {message.actionLabel}
-            </button>
-            {message.secondaryActionLabel && (
-              <button 
-                onClick={() => { onClose(); navigate(message.secondaryActionRoute!); }}
-                className="flex-1 bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-200 border border-stone-200 dark:border-stone-700 hover:bg-stone-50 dark:hover:bg-stone-700 py-2.5 px-4 rounded-xl font-medium transition-transform active:scale-[0.98] text-center shadow-sm text-sm"
-              >
-                {message.secondaryActionLabel}
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-stone-50/50 dark:bg-stone-800/20 border border-stone-200/50 dark:border-stone-700/50 p-3 rounded-2xl space-y-3 mb-2">
-        <div className="flex items-center justify-between mb-1 ml-1 pr-1">
-          <span className="text-[10px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-widest">
-            {language === 'el' ? 'ΣΥΝΟΔΟΣ' : 'COMPANION'}
-          </span>
-          <button onClick={() => navTo('options')} className="text-[10px] text-stone-400 hover:text-stone-600 dark:hover:text-stone-300">
-            {language === 'el' ? 'ΡΥΘΜΙΣΕΙΣ' : 'SETTINGS'}
-          </button>
-        </div>
-
-        {/* Companion Mode Switch */}
-        <div className="flex bg-stone-200/50 dark:bg-stone-900/50 p-1 rounded-2xl w-full items-center">
-           <button 
-             onClick={() => updateCompanionData({ companionModeEnabled: true })}
-             className={cn("flex-1 py-2 px-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex justify-center items-center gap-1.5", companionData.companionModeEnabled ? "bg-white dark:bg-stone-700 shadow-sm border border-stone-200 dark:border-stone-600 text-teal-700 dark:text-teal-300" : "text-stone-500 hover:text-stone-700 dark:hover:text-stone-300")}
-           >
-             <span className="text-[14px]">🐱</span> {language === 'el' ? 'Ενεργος' : 'Active'}
-           </button>
-           <button 
-             onClick={() => updateCompanionData({ companionModeEnabled: false })}
-             className={cn("flex-1 py-2 px-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex justify-center items-center gap-1.5", !companionData.companionModeEnabled ? "bg-white dark:bg-stone-700 shadow-sm border border-stone-200 dark:border-stone-600 text-amber-700 dark:text-amber-400" : "text-stone-500 hover:text-stone-700 dark:hover:text-stone-300")}
-           >
-             <span className="text-[14px]">💤</span> {language === 'el' ? 'Ησυχος' : 'Quiet'}
-           </button>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-3">
-         <button onClick={() => navTo('checkin')} className="group flex flex-col items-center gap-2.5 p-4 bg-white dark:bg-stone-800/80 border border-stone-200/80 dark:border-stone-700/80 rounded-3xl hover:border-indigo-200 dark:hover:border-indigo-800 hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-all shadow-sm active:scale-[0.98]">
-            <div className="w-12 h-12 flex items-center justify-center rounded-2xl bg-indigo-100/50 dark:bg-indigo-900/30 text-2xl group-hover:scale-110 transition-transform">⚖️</div>
-            <div className="text-center">
-              <span className="font-semibold text-[13px] text-stone-700 dark:text-stone-300 tracking-wide block">{language === 'el' ? 'Πώς νιώθεις;' : 'How do you feel?'}</span>
-              <span className="text-[10px] text-stone-500 opacity-80">{language === 'el' ? 'Νευρικό Σύστημα' : 'Nervous System'}</span>
-            </div>
-         </button>
-         <button onClick={() => navTo('hub')} className="group flex flex-col items-center gap-2.5 p-4 bg-white dark:bg-stone-800/80 border border-stone-200/80 dark:border-stone-700/80 rounded-3xl hover:border-emerald-200 dark:hover:border-emerald-800 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/20 transition-all shadow-sm active:scale-[0.98]">
-            <div className="w-12 h-12 flex items-center justify-center rounded-2xl bg-emerald-100/50 dark:bg-emerald-900/30 text-2xl group-hover:scale-110 transition-transform">🧭</div>
-            <div className="text-center">
-              <span className="font-semibold text-[13px] text-stone-700 dark:text-stone-300 tracking-wide block">{language === 'el' ? 'Πυξίδα' : 'Compass'}</span>
-              <span className="text-[10px] text-stone-500 opacity-80">{language === 'el' ? 'Εξερεύνηση' : 'Explore'}</span>
-            </div>
-         </button>
-      </div>
-    </div>
-  );
-}
-
-function HubFlow({ goBack, onClose, navigate }: { goBack: () => void, onClose: () => void, navigate: any }) {
-  const { companionData } = useCompanion();
-  const { language } = useLanguage();
-  
-  return (
-    <div className="space-y-6 animate-fade-in">
-      <div className="flex items-center gap-3">
-        <button onClick={goBack} className="w-8 h-8 rounded-full bg-stone-200 dark:bg-stone-800 flex items-center justify-center">←</button>
-        <h2 className="font-display text-lg font-medium">{language === 'el' ? 'Πυξίδα / Προτάσεις' : 'Compass / Suggestions'}</h2>
-      </div>
-
-      <div className="flex flex-col gap-2">
-        <button 
-           onClick={() => { onClose(); navigate(companionData.programProgress?.week > 0 ? `/program/week/${companionData.programProgress.week}` : '/program'); }} 
-           className="p-4 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-2xl text-left hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors w-full relative overflow-hidden"
-        >
-          <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/5 rounded-full blur-2xl pointer-events-none" />
-          <div className="text-xl mb-1 relative z-10">🗓️</div>
-          <div className="font-medium text-stone-900 dark:text-stone-100 relative z-10">{language === 'el' ? 'Πρόγραμμα 8 Εβδομάδων' : '8-Week Program'}</div>
-          <div className="text-xs opacity-70 text-stone-600 dark:text-stone-400 mt-1 relative z-10">
-            {companionData.programProgress?.week > 0 
-              ? `${language === 'el' ? 'Εβδομάδα' : 'Week'} ${companionData.programProgress.week}, ${language === 'el' ? 'Ημέρα' : 'Day'} ${companionData.programProgress.day + 1}` 
-              : (language === 'el' ? 'Ξεκινήστε την πρακτική σας' : 'Start your practice')}
-          </div>
-        </button>
-
-        <button 
-           onClick={() => { onClose(); navigate(`/chapters/${companionData.lastChapter || 1}`); }} 
-           className="p-4 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-2xl text-left hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors w-full"
-        >
-          <div className="text-xl mb-1">📖</div>
-          <div className="font-medium text-stone-900 dark:text-stone-100">{language === 'el' ? 'Συνέχισε το διάβασμα' : 'Continue reading'}</div>
-          <div className="text-xs opacity-70 text-stone-600 dark:text-stone-400 mt-1">{language === 'el' ? 'Είσαι στο Κεφάλαιο ' : 'You are at Chapter '}{companionData.lastChapter || 1}</div>
-        </button>
-
-        <button 
-           onClick={() => { onClose(); navigate(`/practice/breath/sos-breath`); }} 
-           className="p-4 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-2xl text-left hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors w-full"
-        >
-          <div className="text-xl mb-1">🫁</div>
-          <div className="font-medium text-stone-900 dark:text-stone-100">{language === 'el' ? 'Αναπνοή SOS' : 'SOS Breath'}</div>
-          <div className="text-xs opacity-70 text-stone-600 dark:text-stone-400 mt-1">{language === 'el' ? 'Χρειάζομαι ηρεμία τώρα.' : 'I need calm right now.'}</div>
-        </button>
-        
-        <button 
-           onClick={() => { onClose(); navigate(`/practice`); }} 
-           className="p-4 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-2xl text-left hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors w-full"
-        >
-          <div className="text-xl mb-1">🎯</div>
-          <div className="font-medium text-stone-900 dark:text-stone-100">{language === 'el' ? 'Ασκήσεις & Micro-doses' : 'Exercises & Micro-doses'}</div>
-          <div className="text-xs opacity-70 text-stone-600 dark:text-stone-400 mt-1">{language === 'el' ? 'Για βαθύτερη εξάσκηση' : 'For deeper practice'}</div>
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function OptionsFlow({ goBack, onClose }: { goBack: () => void, onClose: () => void }) {
-  const { language } = useLanguage();
-  const { companionData, updateCompanionData } = useCompanion();
-
-  return (
-    <div className="space-y-6 animate-fade-in text-stone-800 dark:text-stone-200">
-      <div className="flex items-center gap-3 pb-4 border-b border-stone-200 dark:border-stone-800">
-        <button onClick={goBack} className="w-8 h-8 rounded-full bg-stone-200 dark:bg-stone-800 flex items-center justify-center hover:bg-stone-300 dark:hover:bg-stone-700 transition">←</button>
-        <h2 className="font-display text-lg font-medium">{language === 'el' ? 'Ρυθμίσεις / Επιλογές' : 'Settings / Options'}</h2>
-      </div>
-
-      <div className="space-y-6">
-         {/* Companion Mode Switcher */}
-         <div className="space-y-3">
-           <span className="text-[11px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-wider ml-1">
-             {language === 'el' ? 'Λειτουργία Συνοδού' : 'Companion Mode'}
-           </span>
-           
-           <div className="grid gap-3">
-             {/* Active Mode (ON) */}
-             <button
-               onClick={() => updateCompanionData({ companionModeEnabled: true })}
-               className={cn(
-                 "flex flex-col text-left p-4 rounded-2xl border-2 transition-all cursor-pointer",
-                 companionData.companionModeEnabled
-                   ? "border-[#e99b37] bg-[#e99b37]/5 dark:bg-[#e99b37]/10 text-stone-900 dark:text-stone-100"
-                   : "border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 text-stone-500 dark:text-stone-400 hover:border-stone-300"
-               )}
-             >
-               <div className="flex items-center justify-between w-full mb-1">
-                 <div className="flex items-center gap-2">
-                   <span className="text-xl">🐱</span>
-                   <span className="font-bold text-[14px]">
-                     {language === 'el' ? 'Ενεργή Λειτουργία (Active)' : 'Active Mode'}
-                   </span>
-                 </div>
-                 {companionData.companionModeEnabled && (
-                   <span className="text-xs bg-[#e99b37] text-white px-2.5 py-0.5 rounded-full font-bold">
-                     {language === 'el' ? 'Ενεργό' : 'Active'}
-                   </span>
-                 )}
-               </div>
-               <p className="text-[13px] leading-relaxed opacity-85 pl-7">
-                 {language === 'el'
-                   ? 'Η γάτα εμφανίζεται στην αρχική σελίδα ως ζεστός συνοδός, προτείνει το επόμενο βήμα και προσφέρει συντροφικότητα.'
-                   : 'The cat appears on the homepage as a warm companion, proposing the next step and offering companionship.'}
-               </p>
-             </button>
-
-             {/* Quiet Mode (OFF) */}
-             <button
-               onClick={() => updateCompanionData({ companionModeEnabled: false })}
-               className={cn(
-                 "flex flex-col text-left p-4 rounded-2xl border-2 transition-all cursor-pointer",
-                 !companionData.companionModeEnabled
-                   ? "border-emerald-600/70 bg-emerald-500/5 dark:bg-emerald-500/10 text-stone-900 dark:text-stone-100"
-                   : "border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 text-stone-500 dark:text-stone-400 hover:border-stone-300"
-               )}
-             >
-               <div className="flex items-center justify-between w-full mb-1">
-                 <div className="flex items-center gap-2">
-                   <span className="text-xl">💤</span>
-                   <span className="font-bold text-[14px]">
-                     {language === 'el' ? 'Ήσυχη Λειτουργία (Quiet)' : 'Quiet Mode'}
-                   </span>
-                 </div>
-                 {!companionData.companionModeEnabled && (
-                   <span className="text-xs bg-emerald-600 text-white px-2.5 py-0.5 rounded-full font-bold">
-                     {language === 'el' ? 'Ήσυχο' : 'Quiet'}
-                   </span>
-                 )}
-               </div>
-               <p className="text-[13px] leading-relaxed opacity-85 pl-7">
-                 {language === 'el'
-                   ? 'Η γάτα αποσύρεται διακριτικά από την αρχική. Συνεχίζει όμως να καταγράφει σιωπηλά την πρόοδό σας και είναι διαθέσιμη όποτε την χρειαστείτε.'
-                   : 'The cat retreats from the main dashboard. It still silently logs your progress and is ready whenever you call on it.'}
-               </p>
-             </button>
-           </div>
-         </div>
-
-         <div className="bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-3xl p-4 flex items-center justify-between mt-6">
-           <div>
-             <div className="font-medium">{language === 'el' ? 'Εισαγωγή' : 'Introduction'}</div>
-             <div className="text-xs opacity-70 mt-1">{language === 'el' ? 'Βασικές αρχές ενσυνειδητότητας' : 'Core principles of mindfulness'}</div>
-           </div>
-           
-           <button 
-              onClick={() => {
-                onClose();
-                localStorage.removeItem('N_MINDFULNESS_SEEN_INTRO');
-                window.dispatchEvent(new Event('show-welcome-modal'));
-              }}
-              className="px-4 py-2 bg-teal-100 dark:bg-teal-900 text-teal-800 dark:text-teal-100 rounded-xl font-medium text-xs uppercase hover:bg-teal-200 dark:hover:bg-teal-800 transition-colors"
-           >
-             {language === 'el' ? 'ΠΡΟΒΟΛΗ' : 'VIEW'}
-           </button>
-         </div>
-      </div>
-    </div>
-  );
-}
-
-function ExploreFlow({ goBack, onClose }: { goBack: () => void, onClose: () => void }) {
-  const { language } = useLanguage();
-  const location = useLocation();
-  const [selectedConcept, setSelectedConcept] = useState<string | null>(null);
-
-  const getLabel = (opt: any) => opt?.[language] || opt?.el || opt;
-  
-  // Determine Relevant Concepts based on location
-  const currentPath = location.pathname;
-  let relevantConcepts: any[] = [];
-  
-  if (currentPath.includes('/chapters/')) {
-    const chapterMatch = currentPath.match(/\/chapters\/(\d+)/);
-    if (chapterMatch) {
-      const chapterNum = parseInt(chapterMatch[1]);
-      relevantConcepts = Object.keys(KNOWLEDGE_CONCEPTS).filter(key => 
-        KNOWLEDGE_CONCEPTS[key].chapters?.includes(chapterNum)
-      ).map(key => ({ id: key, ...KNOWLEDGE_CONCEPTS[key] }));
-    }
-  } else if (currentPath.includes('/practice')) {
-    // If practicing, show concepts mostly related to body/breath
-    relevantConcepts = Object.keys(KNOWLEDGE_CONCEPTS).filter(key => 
-      ['grounding', 'interoception', 'vagus_nerve', 'binaural_beats', 'habituation'].includes(key)
-    ).map(key => ({ id: key, ...KNOWLEDGE_CONCEPTS[key] }));
-  }
-
-  // Fallback: If no specific concepts for this page, show some foundational ones
-  if (relevantConcepts.length === 0) {
-    relevantConcepts = Object.keys(KNOWLEDGE_CONCEPTS).filter(key => 
-      ['neuroplasticity', 'dmn', 'grounding', 'interoception', 'parasympathetic'].includes(key)
-    ).map(key => ({ id: key, ...KNOWLEDGE_CONCEPTS[key] }));
-  }
-
-  return (
-    <div className="space-y-6 animate-fade-in text-stone-800 dark:text-stone-200">
-      <div className="flex items-center gap-3 pb-4 border-b border-stone-200 dark:border-stone-800">
-        <button onClick={goBack} className="w-8 h-8 rounded-full bg-stone-200 dark:bg-stone-800 flex items-center justify-center hover:bg-stone-300 dark:hover:bg-stone-700 transition">←</button>
-        <h2 className="font-display text-lg font-medium">{language === 'el' ? 'Επιστημονικοί Όροι' : 'Scientific Terms'}</h2>
-      </div>
-
-      {!selectedConcept ? (
-        <div className="space-y-4">
-          <p className="text-[14px] text-stone-600 dark:text-stone-400 mb-4 px-1">
-            {language === 'el' 
-              ? 'Λέξεις και έννοιες που σχετίζονται με αυτό που διαβάζεις τώρα.' 
-              : 'Words and concepts related to what you are reading now.'}
-          </p>
-          
-          <div className="space-y-2">
-            {relevantConcepts.map(c => (
-              <button 
-                key={c.id} 
-                onClick={() => setSelectedConcept(c.id)}
-                className="w-full relative group text-left p-4 bg-white dark:bg-stone-800/80 border border-stone-200 dark:border-stone-700/80 hover:border-teal-300 dark:hover:border-teal-700 rounded-3xl transition duration-300 shadow-sm hover:shadow active:scale-[0.99] overflow-hidden flex items-center justify-between"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-teal-50/0 via-teal-50/50 to-teal-50/0 dark:from-teal-900/0 dark:via-teal-900/20 dark:to-teal-900/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                <div className="relative z-10 pr-2">
-                  <div className="font-semibold text-teal-900 dark:text-teal-300 mb-1">{getLabel(c)?.title}</div>
-                  <div className="text-[13px] text-stone-500 dark:text-stone-400 font-medium leading-snug">{getLabel(c)?.short}</div>
-                </div>
-                <div className="relative z-10 w-8 h-8 rounded-full bg-stone-100 dark:bg-stone-700/50 flex items-center justify-center shrink-0 group-hover:bg-teal-100 dark:group-hover:bg-teal-900 transition-colors">
-                   <span className="text-teal-600 dark:text-teal-400 text-xs font-bold">➔</span>
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
-      ) : (
-        <div className="space-y-5 animate-fade-in">
-           <button onClick={() => setSelectedConcept(null)} className="px-4 py-2 bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 rounded-full text-[13px] font-semibold text-stone-700 dark:text-stone-300 transition-colors inline-flex items-center gap-2">
-             <span>←</span> {language === 'el' ? 'Πίσω στη Λίστα' : 'Back to List'}
-           </button>
-           
-           <div className="pt-2">
-             <div className="inline-block px-3 py-1 bg-stone-200/50 dark:bg-stone-800/50 rounded-lg text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-3">
-               {language === 'el' ? 'Ορισμος' : 'Definition'}
-             </div>
-             <h3 className="text-3xl font-display font-medium text-teal-950 dark:text-teal-100 leading-tight mb-4">
-               {getLabel(KNOWLEDGE_CONCEPTS[selectedConcept])?.title}
-             </h3>
-             
-             <p className="text-[16px] text-stone-700 dark:text-stone-300 opacity-95 leading-relaxed whitespace-pre-wrap font-medium">
-               {getLabel(KNOWLEDGE_CONCEPTS[selectedConcept])?.full}
-             </p>
-           </div>
-           
-           {getLabel(KNOWLEDGE_CONCEPTS[selectedConcept])?.ndNote && (
-             <div className="p-5 bg-gradient-to-br from-amber-50 to-orange-50/50 dark:from-amber-950/40 dark:to-orange-950/20 border border-amber-200/60 dark:border-amber-800/50 rounded-2xl md:rounded-3xl mt-6 relative overflow-hidden shadow-sm">
-               <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-amber-400 dark:bg-amber-600"></div>
-               <h4 className="font-bold text-amber-800 dark:text-amber-500 text-[11px] uppercase tracking-widest mb-2 flex items-center gap-2">
-                 <span className="text-base">💡</span>
-                 {language === 'el' ? 'Σημειωση Νευροδιαφορετικοτητας' : 'Neurodivergence Note'}
-               </h4>
-               <p className="text-[14px] font-medium text-amber-950 dark:text-amber-100/80 leading-relaxed">
-                 {getLabel(KNOWLEDGE_CONCEPTS[selectedConcept]).ndNote}
-               </p>
-             </div>
-           )}
-
-           {getLabel(KNOWLEDGE_CONCEPTS[selectedConcept])?.science && (
-             <div className="text-[13px] mt-6 p-4 bg-stone-100 dark:bg-stone-800/50 rounded-2xl md:rounded-3xl flex items-start gap-3 border border-stone-200 dark:border-stone-700/50">
-               <div className="w-8 h-8 rounded-full bg-white dark:bg-stone-700 flex items-center justify-center shrink-0 shadow-sm">
-                 <span className="text-base">🔬</span> 
-               </div>
-               <div className="font-medium text-stone-600 dark:text-stone-400 leading-relaxed pt-1">
-                 {getLabel(KNOWLEDGE_CONCEPTS[selectedConcept]).science}
-               </div>
-             </div>
-           )}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function QuestionnaireFlow({ goBack }: { goBack: () => void }) {
-  const { language } = useLanguage();
-  const { updateCompanionData, companionData } = useCompanion();
-  const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState<any>({
-    intensity: 'standard',
-    focus: [],
-    dailyTime: 10
-  });
-
-  const steps = [
-    {
-      title: language === 'el' ? 'Ποιος είναι ο στόχος σου;' : 'What is your goal?',
-      options: [
-        { id: 'anxiety', label: language === 'el' ? 'Μείωση Άγχους' : 'Reduce Anxiety', icon: '🌊' },
-        { id: 'focus', label: language === 'el' ? 'Καλύτερη Συγκέντρωση' : 'Better Focus', icon: '👁' },
-        { id: 'rest', label: language === 'el' ? 'Ανάπαυση / Ύπνος' : 'Rest / Sleep', icon: '🌙' },
-        { id: 'awareness', label: language === 'el' ? 'Αυτογνωσία' : 'Self-Awareness', icon: '✦' },
-      ],
-      multi: true
-    },
-    {
-      title: language === 'el' ? 'Τι ένταση προτιμάς;' : 'What intensity do you prefer?',
-      options: [
-        { id: 'gentle', label: language === 'el' ? 'Ήπια (Μικρά βήματα)' : 'Gentle (Small steps)', icon: '🌱' },
-        { id: 'standard', label: language === 'el' ? 'Ισορροπημένη' : 'Balanced', icon: '⚖️' },
-        { id: 'deep', label: language === 'el' ? 'Εντατική (Βαθύτερη εξάσκηση)' : 'Intensive (Deeper practice)', icon: '🔥' },
-      ],
-      multi: false
-    },
-    {
-      title: language === 'el' ? 'Πόσο χρόνο μπορείς να διαθέτεις καθημερινά;' : 'How much time can you give daily?',
-      options: [
-        { id: 5, label: language === 'el' ? '5 λεπτά' : '5 minutes', icon: '🕔' },
-        { id: 10, label: language === 'el' ? '10 λεπτά' : '10 minutes', icon: '🕙' },
-        { id: 20, label: language === 'el' ? '20+ λεπτά' : '20+ minutes', icon: '⌛' },
-      ],
-      multi: false
-    }
-  ];
-
-  const [completed, setCompleted] = useState(false);
-
-  const handleNext = () => {
-    if (step < steps.length - 1) {
-      setStep(s => s + 1);
-    } else {
-      updateCompanionData({
-        questionnaire: { ...answers, completed: true }
-      });
-      setCompleted(true);
-    }
-  };
-
-  const toggleOption = (id: any) => {
-    const currentStep = steps[step];
-    if (currentStep.multi) {
-      setAnswers((prev: any) => ({
-        ...prev,
-        focus: prev.focus.includes(id) 
-          ? prev.focus.filter((i: any) => i !== id)
-          : [...prev.focus, id]
-      }));
-    } else {
-      const field = step === 1 ? 'intensity' : 'dailyTime';
-      setAnswers((prev: any) => ({ ...prev, [field]: id }));
-      setTimeout(handleNext, 300);
-    }
-  };
-
-  if (completed) {
-    return (
-      <div className="space-y-6 animate-fade-in py-8 text-center text-stone-800 dark:text-stone-200">
-        <div className="w-20 h-20 bg-teal-500/10 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl shadow-inner">✅</div>
-        <h3 className="text-2xl font-serif italic text-teal-950 dark:text-teal-100 mb-2">
-          {language === 'el' ? 'Το πρόγραμμα ανανεώθηκε!' : 'Program Updated!'}
-        </h3>
-        <p className="text-stone-500 dark:text-stone-400 mb-8 max-w-xs mx-auto">
-          {language === 'el' 
-            ? 'Οι προτάσεις σου έχουν προσαρμοστεί με βάση τις νέες σου προτιμήσεις.' 
-            : 'Your suggestions have been adjusted based on your new preferences.'}
-        </p>
-        <button 
-          onClick={goBack}
-          className="w-full py-4 bg-teal-700 hover:bg-teal-800 text-white rounded-2xl font-bold tracking-widest uppercase transition-all"
-        >
-          {language === 'el' ? 'ΕΠΙΣΤΡΟΦΗ ➔' : 'RETURN ➔'}
-        </button>
-      </div>
-    );
-  }
-
-  const curStep = steps[step];
-
-  return (
-    <div className="space-y-6 animate-fade-in">
-      <div className="flex items-center justify-between pb-4 border-b border-stone-200 dark:border-stone-800">
-        <div className="flex items-center gap-3">
-          <button onClick={goBack} className="w-8 h-8 rounded-full bg-stone-200 dark:bg-stone-800 flex items-center justify-center transition hover:bg-stone-300 dark:hover:bg-stone-700">←</button>
-          <h2 className="font-display text-lg font-medium tracking-tight">{language === 'el' ? 'Προσαρμογή' : 'Customization'}</h2>
-        </div>
-        <div className="text-xs font-bold text-stone-400">{step + 1} / {steps.length}</div>
-      </div>
-
-      <div className="py-2">
-        <h3 className="text-2xl font-display font-medium text-stone-800 dark:text-stone-100 mb-6 leading-tight">
-          {curStep.title}
-        </h3>
-
-        <div className="grid gap-3">
-          {curStep.options.map(opt => {
-            const isSelected = curStep.multi 
-              ? answers.focus.includes(opt.id)
-              : (step === 1 ? answers.intensity === opt.id : answers.dailyTime === opt.id);
-            
-            return (
-              <button
-                key={String(opt.id)}
-                onClick={() => toggleOption(opt.id)}
-                className={`flex items-center justify-between p-5 rounded-2xl border-2 transition-all group ${
-                  isSelected 
-                    ? 'border-teal-500 bg-teal-50 dark:bg-teal-900/20 text-teal-900 dark:text-teal-100' 
-                    : 'border-stone-100 dark:border-stone-800 bg-white dark:bg-stone-900 text-stone-600 dark:text-stone-400 hover:border-stone-200'
-                }`}
-              >
-                <div className="flex items-center gap-4">
-                  <span className="text-2xl group-hover:scale-110 transition-transform">{opt.icon}</span>
-                  <span className="font-bold text-[15px]">{opt.label}</span>
-                </div>
-                {isSelected && <span className="w-6 h-6 rounded-full bg-teal-500 text-white flex items-center justify-center text-xs">✓</span>}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {curStep.multi && (
-        <button 
-          disabled={answers.focus.length === 0}
-          onClick={handleNext}
-          className="w-full py-4 bg-teal-700 hover:bg-teal-800 text-white rounded-2xl font-bold tracking-widest uppercase transition-all disabled:opacity-50 disabled:grayscale"
-        >
-          {language === 'el' ? 'ΕΠΟΜΕΝΟ ➔' : 'NEXT ➔'}
-        </button>
-      )}
-    </div>
   );
 }

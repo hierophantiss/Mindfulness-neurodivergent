@@ -1,6 +1,6 @@
 import { AudioEnabler } from '../components/AudioEnabler';
 import React, { useState, useEffect, useMemo } from 'react';
-import { BookOpen, Moon, ChevronRight, ChevronDown, Telescope, Info, Calendar, Download, RotateCcw, Activity, Compass } from 'lucide-react';
+import { BookOpen, ChevronRight, ChevronDown, Info, Download, RotateCcw } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useCompanion } from '../hooks/useCompanion';
@@ -18,6 +18,7 @@ import { AFFIRMATIONS } from '../data/affirmations';
 import { FourfoldAxisHero } from '../components/FourfoldAxisHero';
 import { useInstallApp } from '../hooks/useInstallApp';
 import HomeCheckin from '../components/HomeCheckin';
+import { getMoreLinks } from '../data/moreLinks';
 
 const baseCardClasses = "backdrop-blur-xl border border-white/[0.04] border-t-white/[0.08] border-l-white/[0.06] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.05)] hover:shadow-[0_16px_48px_-12px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(255,255,255,0.1)] hover:-translate-y-1 transition-all duration-500 rounded-[28px]";
 const innerIconClasses = "rounded-2xl bg-gradient-to-b from-white/[0.06] to-transparent border border-white/[0.02] border-t-white/[0.1] shadow-[0_4px_12px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.08)] flex items-center justify-center text-white/50 transition-colors duration-500";
@@ -78,25 +79,7 @@ export default function Dashboard() {
     try { localStorage.setItem('home_more_open', o ? '0' : '1'); } catch { /* ignore */ }
     return !o;
   });
-  const el = lang === 'el';
-  const moreLinks = [
-    { to: '/practice', icon: Activity, tone: 'text-teal-300',
-      label: el ? 'Ασκήσεις' : 'Practices',
-      desc: el ? 'Αναπνοές, κίνηση & Τάι Τσι, ψάλσιμο, μικροδόσεις' : 'Breathing, movement & Tai Chi, chanting, microdoses' },
-    { to: '/sanctuary', icon: Moon, tone: 'text-[#b4abce]',
-      label: el ? 'Καταφύγιο' : 'Sanctuary',
-      desc: el ? 'Ήχοι φύσης και binaural για ύπνο, χαλάρωση ή εστίαση' : 'Nature sounds and binaural beats for sleep, rest or focus' },
-    { to: '/program', icon: Calendar, tone: 'text-[#b0c4aa]',
-      label: el ? 'Πρόγραμμα 8 εβδομάδων' : '8-week Program',
-      desc: el ? 'Ένα μικρό βήμα τη μέρα, με σειρά' : 'One small step a day, in order',
-      sub: completedLessons > 0 ? `${lessonProgressPct}%` : undefined },
-    { to: '/rabbithole', icon: Telescope, tone: 'text-[#a695b0]',
-      label: el ? 'Κουνελότρυπα' : 'Rabbit Hole',
-      desc: el ? 'Πιο βαθιά κείμενα, όταν η πρακτική σταθεροποιηθεί' : 'Deeper texts, for when your practice feels steady' },
-    { to: '/method', icon: Compass, tone: 'text-[#8ba3ba]',
-      label: el ? 'Η Μέθοδος' : 'The Method',
-      desc: el ? 'Τι είναι ο Τετραπλός Άξονας και πώς δουλεύει' : 'What the Fourfold Axis is and how it works' },
-  ];
+  const moreLinks = getMoreLinks(lang, completedLessons > 0 ? `${lessonProgressPct}%` : undefined);
 
   const [greeting, setGreeting] = useState('');
   const [isInfoOpen, setIsInfoOpen] = useState(false);
