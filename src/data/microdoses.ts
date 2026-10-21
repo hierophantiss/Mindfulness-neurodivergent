@@ -79,7 +79,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
     type: 'body',
     dur: { el: '20 δευτ.', en: '20 sec' },
     maxSeconds: 20,
-    desc: { el: 'Νιώσε το βάρος των χεριών σου να "κρέμεται" από τους ώμους. Αδράνεια.', en: 'Feel the weight of your hands "hanging" from your shoulders. Inertia.' },
+    desc: { el: 'Νιώσε το βάρος των χεριών σου να "κρέμεται" από τους ώμους. Άφησέ τα να ξεκουραστούν.', en: 'Feel the weight of your hands "hanging" from your shoulders. Let them rest.' },
     iconName: 'Anchor',
     link: '/practice/body/hand-weight'
   },
@@ -101,7 +101,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
     type: 'body',
     dur: { el: '10 δευτ.', en: '10 sec' },
     maxSeconds: 10,
-    desc: { el: 'Άφησε την κάτω γνάθο να κρεμάσει ελαφρά. Ξεκλειδώνει την ένταση από όλο το σώμα.', en: 'Let your lower jaw hang slightly. Unlocks tension from the entire body.' },
+    desc: { el: 'Άφησε την κάτω γνάθο να κρεμάσει ελαφρά. Συχνά μαζί της μαλακώνουν το πρόσωπο και ο λαιμός.', en: 'Let your lower jaw hang slightly. Often the face and neck soften with it.' },
     iconName: 'Anchor',
     link: '/practice/body/jaw-release'
   },
@@ -171,7 +171,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
     type: 'breath',
     dur: { el: '1 λεπτό', en: '1 minute' },
     maxSeconds: 60,
-    desc: { el: 'Βγάλε έναν ανεπαίσθητο ήχο "Mmm" στην εκπνοή. Το εσωτερικό μασάζ του νευρικού συστήματος.', en: 'Make a subtle "Mmm" sound on the exhale. The internal massage of the nervous system.' },
+    desc: { el: 'Βγάλε έναν ανεπαίσθητο ήχο "Mmm" στην εκπνοή. Νιώσε τη δόνηση στο πρόσωπο και στο στήθος.', en: 'Make a subtle "Mmm" sound on the exhale. Feel the vibration in your face and chest.' },
     iconName: 'Zap',
     link: '/practice/breath/vocal-vibration'
   },
@@ -182,7 +182,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
     type: 'breath',
     dur: { el: '1 λεπτό', en: '1 minute' },
     maxSeconds: 60,
-    desc: { el: '4 εισπνοή, 2 κράτημα, 7 εκπνοή. Ο ταχύτερος τρόπος να ηρεμήσεις το νευρικό σύστημα.', en: '4 in, 2 hold, 7 out. The fastest way to calm the nervous system.' },
+    desc: { el: '4 εισπνοή, 2 κράτημα, 7 εκπνοή. Η μακριά εκπνοή βοηθά το σώμα να ηρεμήσει.', en: '4 in, 2 hold, 7 out. The long exhale helps the body settle.' },
     iconName: 'Zap',
     link: '/practice/breath/breath-4-2-7'
   },

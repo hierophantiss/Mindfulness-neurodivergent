@@ -124,3 +124,11 @@ describe('tension starts from the body and the breath', () => {
     expect(outward.map(i => i.id)).toEqual([]);
   });
 });
+
+describe('numbness starts with gentle activation', () => {
+  it('offers no open-space practice, and offers the voice', () => {
+    const hypo = forTag('hypo');
+    expect(hypo.filter(i => i.axis === 'space').map(i => i.id)).toEqual([]);
+    expect(hypo.some(i => i.kind === 'voice')).toBe(true);
+  });
+});

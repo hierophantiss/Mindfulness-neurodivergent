@@ -32,34 +32,38 @@ const H: CheckinTag = 'hyper', L: CheckinTag = 'hypo', B: CheckinTag = 'balanced
 // turn attention outwards (a sound in the room, open awareness, watching
 // thoughts) are offered for calm or numbness. "Triple anchor" stays: it starts
 // from the soles and the breath.
+// In numbness (shutdown) it is the other way round: gentle activation from the
+// body (movement, voice) and orienting to the room (what you see and hear) help;
+// a deep turn inwards or an open gaze into the distance can deepen the
+// disconnection (Chapter 4: opening only on a grounded body).
 export const CHECKIN_TAGS: Record<string, CheckinTag[]> = {
   // microdoses — body
   'axis-pause': [H, B, U], 'soft-belly': [H], 'unlocked-knees': [H], 'contact-observe': [H, L, U],
   'shoulder-drop': [H], 'hand-weight': [H], 'pelvis-root': [H, B], 'jaw-release': [H], 'gravity-sink': [H],
   // microdoses — breath
-  'rhythm-5-5': [B, L], 'nostril-touch': [L, B], 'stealth-breath': [H, B], 'breath-path': [L, B],
+  'rhythm-5-5': [B, L], 'nostril-touch': [B], 'stealth-breath': [H, B], 'breath-path': [B],
   'humming-vibration': [H], 'breath-4-2-7': [H], 'ocean-breath': [H],
   // microdoses — attention
-  'anchor-7-sec': [L, B], 'triple-anchor': [L, H], 'alternate-focus': [L], 'gentle-return': [L, B],
+  'anchor-7-sec': [B], 'triple-anchor': [L, H], 'alternate-focus': [B], 'gentle-return': [B],
   'eye-horizon': [L], 'one-sound': [L], 'sensory-54321': [L, U],
   // microdoses — space
   'thoughts-as-objects': [B],
   'short-moment': [B], 'tilopa-rest': [B], 'silence-background': [B], 'open-presence': [B],
-  'sky-gazing-micro': [B, L], 'spacious-metta': [B],
+  'sky-gazing-micro': [B], 'spacious-metta': [B],
   // breathing patterns
-  'breath-5-5': [B], 'breath-4-6': [H], '4-2-6-1': [H], '4-2-7-1': [H], '4-7-8': [H], 'box-breathing': [L, B], 'sos-breath': [H],
+  'breath-5-5': [B], 'breath-4-6': [H], '4-2-6-1': [H], '4-2-7-1': [H], '4-7-8': [], // only a variant of 4-2-7 (17/10): its 7-second hold is not a first step in tension 'box-breathing': [L, B], 'sos-breath': [H],
   // movement
-  '5-5': [B, L], 'deep-bow-5-5': [L, B], 'lotus-bloom-5-5': [B], 'be-like-a-flower-5-5': [L, B],
+  '5-5': [B, L], 'deep-bow-5-5': [L, B], 'lotus-bloom-5-5': [], // removed (17/10): its link opens lotus-resonant 'be-like-a-flower-5-5': [L, B],
   'tai-chi-cloud-hands': [H, L], 'qigong-lifting-sky': [L],
   'taichi-fourfold': [B, H], 'taichi-box': [L, B], 'taichi-resonant': [B, H], 'taichi-active': [L],
   'lotus-fourfold': [B], 'lotus-box': [L, B], 'lotus-resonant': [B, H], 'lotus-active': [L],
   // voice
-  'bhramari-humming': [H], 'aum-resonance': [H, B], 'a-major-resonance': [B], 'c-major-resonance': [H],
+  'bhramari-humming': [H], 'aum-resonance': [H, B, L], 'a-major-resonance': [B, L], 'c-major-resonance': [H],
   'throat-chakra-humming': [B], 'om-pure-resonance': [B],
   // guided exercises
   'body-scan': [H, B, U], 'grounding-scan': [H, U], 'sound-focus': [L], 'vertical-axis': [B, L],
   'gravity-surrender': [H], 'mindful-swaying': [H, L], 'mindful-walking': [L, H], 'belly-breathing': [H],
-  'exhale-rhythm': [H], 'nadi-shodhana': [H, B], 'attention-observation': [B], 'fixed-point': [L],
+  'exhale-rhythm': [H], 'nadi-shodhana': [H, B], 'attention-observation': [B], 'fixed-point': [B],
   'labeling-technique': [B], 'samatha-micro': [B], 'sky-clouds': [B],
 };
 

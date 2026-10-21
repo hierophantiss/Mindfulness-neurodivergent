@@ -59,11 +59,13 @@ export const CHECKIN_OPTIONS: CheckinOption[] = [
     hint: { el: 'Κούραση, ομίχλη, αποσύνδεση', en: 'Tiredness, fog, disconnection' },
     title: { el: 'Απαλή ενεργοποίηση', en: 'Gentle activation' },
     desc: {
-      el: 'Μοιάζει να έχει πέσει η ενέργεια. Βοηθάει λίγη απαλή κίνηση, ένα σταθερό σημείο για την προσοχή και ένα πιο ανοιχτό βλέμμα, χωρίς βιασύνη.',
-      en: 'It sounds like your energy has dropped. It helps to add a little gentle movement, a steady point for attention and a wider gaze, without hurry.',
+      el: 'Μοιάζει να έχει πέσει η ενέργεια. Βοηθάει μια απαλή ενεργοποίηση από το σώμα: λίγη κίνηση, η φωνή, και μια ματιά γύρω σου (τι βλέπεις, τι ακούς), χωρίς βιασύνη.',
+      en: 'It sounds like your energy has dropped. A gentle activation from the body helps: a little movement, your voice, and a look around you (what you see, what you hear), without hurry.',
     },
-    axes: ['attention', 'space'],
-    kinds: ['movement', 'dose', 'guided'],
+    // In shutdown, gentle activation and orienting outwards; not a deep turn
+    // inwards or an open gaze into the distance, which can deepen disconnection.
+    axes: ['body', 'attention'],
+    kinds: ['movement', 'voice', 'dose'],
     pinned: [],
   },
   {
@@ -194,12 +196,12 @@ export const CHECKIN_DETAILS: Partial<Record<CheckinState, CheckinDetail[]>> = {
       label: { el: 'Πανικός', en: 'Panic' },
       msg: { el: 'Ο πανικός είναι πολύ έντονος, αλλά περνάει.', en: 'Panic is very intense, but it passes.' },
       step: { el: 'Εκπνοή από το στόμα, αργά, σαν να σβήνεις ένα κερί μακριά σου.', en: 'Breathe out through the mouth, slowly, as if blowing out a candle far away.' },
-      actions: [SOS_ACTION, { title: { el: 'Μακριά εκπνοή · 4-2-6-1', en: 'Long exhale · 4-2-6-1' }, path: '/practice/breath/4-2-6-1' }],
+      actions: [SOS_ACTION, { title: { el: 'Μακριά εκπνοή · 4-6', en: 'Long exhale · 4-6' }, path: '/practice/breath/breath-4-6' }],
     },
     {
       id: 'anxiety',
       label: { el: 'Άγχος', en: 'Anxiety' },
-      msg: { el: 'Υπάρχει πολλή ενέργεια χωρίς κατεύθυνση. Μπορείς να της δώσεις μία.', en: 'There is a lot of energy without direction. You can give it one.' },
+      msg: { el: 'Υπάρχει πολλή ενέργεια χωρίς κατεύθυνση, και ο νους τρέχει. Μπορείς να της δώσεις μία.', en: 'There is a lot of energy without direction, and the mind races. You can give it one.' },
       step: { el: 'Βάρος → Εκπνοή → Ταμπέλα → Χώρος. Αν το σώμα θέλει κίνηση, πάτα δυνατά στο πάτωμα τρεις φορές.', en: 'Weight → Exhale → Label → Space. If the body wants to move, press firmly into the floor three times.' },
       actions: [
         { title: { el: 'Πρωτόκολλο · Κεφάλαιο 8', en: 'Protocol · Chapter 8' }, path: '/chapters/8' },
@@ -210,7 +212,7 @@ export const CHECKIN_DETAILS: Partial<Record<CheckinState, CheckinDetail[]>> = {
       id: 'selfcritical',
       label: { el: 'Αυτοκριτική', en: 'Self-criticism' },
       msg: { el: 'Αυτή η φωνή συχνά είναι παλιός απόηχος, όχι η αλήθεια για σένα.', en: 'That voice is often an old echo, not the truth about you.' },
-      step: { el: 'Πες μέσα σου: «Α, η παλιά φωνή. Δεν χρειάζεται να την ακολουθήσω.»', en: 'Say to yourself: “Ah, the old voice. I do not need to follow it.”' },
+      step: { el: 'Νιώσε πρώτα τα πέλματά σου. Μετά πες μέσα σου: «Α, η παλιά φωνή. Δεν χρειάζεται να την ακολουθήσω.»', en: 'First feel your soles. Then say to yourself: “Ah, the old voice. I do not need to follow it.”' },
       actions: [
         { title: { el: 'Κεφάλαιο 5 · Νευροδιαφορετικός νους', en: 'Chapter 5 · Neurodivergent mind' }, path: '/chapters/5' },
         { title: { el: 'Η τεχνική της ταμπέλας', en: 'The labelling technique' }, path: '/practice/focus/labeling-technique' },
@@ -236,20 +238,10 @@ export const CHECKIN_DETAILS: Partial<Record<CheckinState, CheckinDetail[]>> = {
       actions: [CONTACT, { title: { el: 'Tai Chi · απαλή ροή', en: 'Tai Chi · gentle flow' }, path: '/practice/breath/tai-chi-cloud-hands' }],
     },
     {
-      id: 'scattered',
-      label: { el: 'Διάσπαση', en: 'Scattered' },
-      msg: { el: 'Ο νους τρέχει. Δεν είναι αποτυχία, είναι μοτίβο.', en: 'The mind is racing. It is not failure, it is a pattern.' },
-      step: { el: 'Βάλε ταμπέλα στην επόμενη σκέψη: «Ανησυχία», «Σενάριο» ή «Κριτική».', en: 'Label the next thought: “Worry”, “Scenario” or “Criticism”.' },
-      actions: [
-        { title: { el: 'Οπτική άγκυρα 7"', en: 'Visual anchor 7"' }, path: '/practice/focus/anchor-7-sec' },
-        { title: { el: 'Σταθερό σημείο', en: 'Fixed point' }, path: '/practice/focus/fixed-point' },
-      ],
-    },
-    {
       id: 'hyperfocus',
       label: { el: 'Κλείδωμα', en: 'Locked in' },
       msg: { el: 'Ο νους κλείδωσε. Δεν πειράζει, ήδη το πρόσεξες.', en: 'The mind locked in. That is okay, you already noticed.' },
-      step: { el: 'Μαλάκωσε το βλέμμα. Νιώσε τον χώρο γύρω. Μετά νιώσε τη βαρύτητα.', en: 'Soften your gaze. Feel the space around you. Then feel gravity.' },
+      step: { el: 'Νιώσε τη βαρύτητα. Μετά μαλάκωσε το βλέμμα και νιώσε τον χώρο γύρω σου.', en: 'Feel gravity. Then soften your gaze and feel the space around you.' },
       actions: [
         { title: { el: 'Ανοιχτό βλέμμα', en: 'Open gaze' }, path: '/practice/space/soft-eyes' },
         { title: { el: 'Εναλλάξ εστίαση', en: 'Alternating focus' }, path: '/practice/focus/alternate-focus' },
