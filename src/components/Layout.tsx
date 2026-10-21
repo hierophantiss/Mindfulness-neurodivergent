@@ -52,7 +52,7 @@ export default function Layout() {
       <div className="flex flex-1 w-full max-w-[1700px] mx-auto overflow-hidden h-full">
         {/* Main Content Area */}
         <main id="main-content" ref={mainRef} className={cn(
-          "flex-1 relative z-10 w-full flex flex-col overflow-x-hidden scroll-smooth overflow-y-auto px-4 md:px-8 lg:px-12 pt-[env(safe-area-inset-top)] pb-[calc(100px+env(safe-area-inset-bottom))] lg:pb-12"
+          "flex-1 relative z-10 w-full flex flex-col overflow-x-hidden scroll-smooth overflow-y-auto px-4 md:px-8 lg:px-12 pt-[env(safe-area-inset-top)] pb-[calc(160px+env(safe-area-inset-bottom))]"
         )}>
           <div className={cn("w-full max-w-[480px] mx-auto h-full flex flex-col pt-4", isWidePractice && "desk:max-w-[900px]", isReading && "desk:max-w-[680px]")}>
             <AnimatePresence mode="wait">

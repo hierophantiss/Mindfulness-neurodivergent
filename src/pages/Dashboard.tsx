@@ -310,7 +310,7 @@ export default function Dashboard() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.8 }}
-          className="mt-6 mb-6 flex flex-col items-center justify-center gap-3 px-4 text-center"
+          className="mt-6 mb-6 flex flex-col items-center justify-center gap-3 pl-4 pr-16 desk:px-4 text-center"
         >
           <div className="flex items-center justify-center gap-x-5 gap-y-2 flex-wrap">
             <button

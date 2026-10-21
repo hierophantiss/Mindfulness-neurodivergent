@@ -27,8 +27,10 @@ export default function Companion() {
   
 
   const { companionData, updateCompanionData, setSheetVisible, sheetVisible, companionMessage, setCompanionMessage } = useCompanion();
-  // On a wide screen the cat sits at the right edge of the centred app, not of the screen.
-  const [position, setPosition] = useState({ x: Math.min(window.innerWidth - 68, window.innerWidth / 2 + 240 - 64), y: window.innerHeight / 2 - 26 });
+  // The cat starts at the bottom right, just above the bottom bar, where it covers
+  // the least of the page (on a wide screen: at the right edge of the centred app).
+  // Once moved, it stays where it was put.
+  const [position, setPosition] = useState({ x: Math.min(window.innerWidth - 68, window.innerWidth / 2 + 240 - 64), y: window.innerHeight - 56 - 85 - 16 });
   const [isDragging, setIsDragging] = useState(false);
   const dragRef = useRef<{ startX: number, startY: number, initX: number, initY: number } | null>(null);
   const { language } = useLanguage();
@@ -209,7 +211,6 @@ export default function Companion() {
           <CatInfinityAvatar className="w-11 h-11" />
         </motion.div>
         
-        {companionData.dailyLogs.length > 0 && <span className="absolute animate-ping top-1 right-1 w-2 h-2 bg-amber-400 rounded-full z-20" />}
       </div>
     </>
   );
