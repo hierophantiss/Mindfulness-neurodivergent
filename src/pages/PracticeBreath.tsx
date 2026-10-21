@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom';
 import { AudioEnabler } from '../components/AudioEnabler';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -21,20 +22,87 @@ import { useProgress } from '../contexts/ProgressContext';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { ConceptInfoIcon } from '../components/ConceptInfoOverlay';
 
-/** "How it's done": the movement's description, folded so the figure keeps its room. */
-function HowTo({ text, language }: { text: string; language: string }) {
+/** Before any breathing: the axis of gravity (Chapter 10, stage 1), then the breath. */
+const GRAVITY_FIRST = {
+  el: 'Κάθισε ή στάσου άνετα, με την πλάτη όρθια αλλά όχι σφιγμένη. Νιώσε τα σημεία επαφής, πέλματα και κάθισμα, άφησε το βάρος να βυθιστεί στη γη και νιώσε τον κατακόρυφο άξονα που σε κρατά.',
+  en: 'Sit or stand comfortably, back upright but not stiff. Feel the points of contact, soles and seat, let your weight sink into the ground and feel the vertical axis that holds you.',
+};
+
+/** A long exhale (5 s or more) ends from the belly, not by squeezing the chest. */
+const BELLY_EXHALE = {
+  el: 'Όταν η εκπνοή είναι μακριά (5, 6, 7 δευτερόλεπτα), προς το τέλος της άσε την κοιλιά να μαζευτεί ήπια προς τα μέσα, ώστε να βγει ο αέρας ως το τέλος. Τον αέρα τον βγάζει η κοιλιά, όχι το σφίξιμο του στήθους· στήθος και ώμοι μένουν μαλακοί. Χωρίς πίεση: ένα απαλό μάζεμα αρκεί.',
+  en: 'When the exhale is long (5, 6, 7 seconds), towards its end let the belly draw gently inwards, so the air leaves to the end. The belly moves the air out, not a squeezed chest; chest and shoulders stay soft. No force: a gentle drawing-in is enough.',
+};
+
+/** Chanting: the long exhale is the sound, and it too ends from the belly. */
+const BELLY_CHANT = {
+  el: 'Προς το τέλος του ψαλσίματος, όταν ο αέρας λιγοστεύει, άσε την κοιλιά να μαζευτεί ήπια προς τα μέσα· τον ήχο τον κρατά η κοιλιά, όχι το σφίξιμο του στήθους. Στήθος και ώμοι μένουν μαλακοί. Χωρίς πίεση.',
+  en: 'Towards the end of the chant, as the air runs low, let the belly draw gently inwards; the belly carries the sound, not a squeezed chest. Chest and shoulders stay soft. No force.',
+};
+
+/** "How it's done": the description, folded so the figure keeps its room.
+ *  For breathing practices it starts from the axis of gravity. */
+function HowTo({ text, language, gravityFirst = false, longExhale = false, chant = false }: { text: string; language: string; gravityFirst?: boolean; longExhale?: boolean; chant?: boolean }) {
   const [open, setOpen] = useState(false);
+  const el = language === 'el';
+  useKeyboardShortcuts({ Escape: () => setOpen(false) }, open);
   return (
     <>
       <button
-        onClick={(e) => { e.stopPropagation(); setOpen(o => !o); }}
+        onClick={(e) => { e.stopPropagation(); setOpen(true); }}
         aria-expanded={open}
         className="mt-2 text-[12px] text-teal-300/80 hover:text-teal-200 underline underline-offset-2"
       >
-        {language === 'el' ? (open ? 'Κλείσιμο' : 'Πώς γίνεται') : (open ? 'Close' : 'How it is done')}
+        {el ? 'Πώς γίνεται' : 'How it is done'}
       </button>
-      {open && (
-        <p className="mt-2 text-[12.5px] text-zinc-300 text-center max-w-sm leading-relaxed">{text}</p>
+      {/* Over the stage, not inside it: on small screens the text would push the start button away. */}
+      {open && typeof document !== 'undefined' && createPortal(
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-[#0f1117]/70 backdrop-blur-sm" onClick={(e) => { e.stopPropagation(); setOpen(false); }}>
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={el ? 'Πώς γίνεται' : 'How it is done'}
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-sm max-h-[80dvh] overflow-y-auto rounded-3xl bg-[#1a1d27] border border-white/10 p-5 shadow-2xl"
+          >
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-[15px] text-white/90">{el ? 'Πώς γίνεται' : 'How it is done'}</h2>
+              <button onClick={() => setOpen(false)} className="min-h-[40px] px-3 -mr-2 text-[13px] text-teal-300/80 hover:text-teal-200">
+                {el ? 'Κλείσιμο' : 'Close'}
+              </button>
+            </div>
+            {!gravityFirst ? (
+              <p className="text-[14px] text-zinc-300 leading-relaxed">{text}</p>
+            ) : (
+              <ol className="flex flex-col gap-3.5 text-left">
+                <li className="flex gap-3">
+                  <span className="shrink-0 w-6 h-6 mt-0.5 rounded-full bg-[#7A9E7E]/20 text-[#9cc0a0] text-[12px] flex items-center justify-center">1</span>
+                  <span className="text-[14px] text-zinc-300 leading-relaxed">
+                    <strong className="font-medium text-zinc-100">{el ? 'Πρώτα ο άξονας της βαρύτητας. ' : 'First, the axis of gravity. '}</strong>
+                    {el ? GRAVITY_FIRST.el : GRAVITY_FIRST.en}
+                  </span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="shrink-0 w-6 h-6 mt-0.5 rounded-full bg-teal-400/15 text-teal-300 text-[12px] flex items-center justify-center">2</span>
+                  <span className="text-[14px] text-zinc-300 leading-relaxed">
+                    <strong className="font-medium text-zinc-100">{chant ? (el ? 'Μετά η αναπνοή και η φωνή. ' : 'Then, breath and voice. ') : (el ? 'Μετά η αναπνοή. ' : 'Then, the breath. ')}</strong>
+                    {text}
+                  </span>
+                </li>
+                {longExhale && (
+                  <li className="flex gap-3">
+                    <span className="shrink-0 w-6 h-6 mt-0.5 rounded-full bg-teal-400/15 text-teal-300 text-[12px] flex items-center justify-center">3</span>
+                    <span className="text-[14px] text-zinc-300 leading-relaxed">
+                      <strong className="font-medium text-zinc-100">{chant ? (el ? 'Η κοιλιά στο ψάλσιμο. ' : 'The belly in the chant. ') : (el ? 'Η κοιλιά στην εκπνοή. ' : 'The belly on the exhale. ')}</strong>
+                      {chant ? (el ? BELLY_CHANT.el : BELLY_CHANT.en) : (el ? BELLY_EXHALE.el : BELLY_EXHALE.en)}
+                    </span>
+                  </li>
+                )}
+              </ol>
+            )}
+          </div>
+        </div>,
+        document.body
       )}
     </>
   );
@@ -624,7 +692,8 @@ export default function PracticeBreath() {
               </button>
             ))}
           </div>
-          <HowTo text={language === 'el' ? basePattern.desc.el : basePattern.desc.en} language={language} />
+          <HowTo text={language === 'el' ? basePattern.desc.el : basePattern.desc.en} language={language}
+            gravityFirst={isVocal} longExhale={isVocal} chant={isVocal} />
         </div>
       )}
 
@@ -652,14 +721,15 @@ export default function PracticeBreath() {
             ))}
           </div>
           {!basePattern.family && (
-            <HowTo text={language === 'el' ? basePattern.desc.el : basePattern.desc.en} language={language} />
+            <HowTo text={language === 'el' ? basePattern.desc.el : basePattern.desc.en} language={language} gravityFirst longExhale chant />
           )}
         </div>
       )}
 
       {!running && (basePattern.category === 'movement' || basePattern.category === 'breath') && (
         <div className="z-20 mb-3 -mt-2 px-6 flex flex-col items-center">
-          <HowTo text={language === 'el' ? basePattern.desc.el : basePattern.desc.en} language={language} />
+          <HowTo text={language === 'el' ? basePattern.desc.el : basePattern.desc.en} language={language} gravityFirst={basePattern.category === 'breath'}
+            longExhale={basePattern.category === 'breath' && basePattern.phases.some(ph => ph.armFrom > ph.armTo && ph.dur >= 5000)} />
         </div>
       )}
 
