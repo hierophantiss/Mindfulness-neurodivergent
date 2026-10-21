@@ -1,18 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Play, Pause, Info, Volume2, VolumeX, SkipBack, SkipForward, Headphones } from 'lucide-react';
+import { ArrowLeft, Play, Pause, RotateCcw } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../hooks/useLanguage';
-import { useReward } from '../contexts/RewardContext';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
-import { PlayPauseOverlay } from '../components/PlayPauseOverlay';
+import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
+import { prepareBell, ringBell } from '../lib/softBell';
 import { EvidenceLine } from '../components/EvidenceLine';
 import GuideAfterPractice from '../components/GuideAfterPractice';
 import { MICRODOSES_EXERCISES, type MicrodoseExercise } from '../data/microdoses';
 import { GUIDED_EXERCISES as EXERCISES } from '../data/guidedExercises';
 
+// A quiet practice: the steps, a timer and a soft bell at the end. The app
+// plays no sound during it, and the page says so, so nobody waits for audio.
 
-const AXIS_COLOR: Record<string, string> = { body: 'emerald', breath: 'teal', attention: 'amber', space: 'indigo' };
+const AXIS_THEME: Record<string, { ring: string; text: string; soft: string; button: string }> = {
+  body: { ring: '#7A9E7E', text: 'text-[#9cc0a0]', soft: 'bg-[#7A9E7E]/15', button: 'bg-[#7A9E7E]' },
+  breath: { ring: '#5eead4', text: 'text-teal-300', soft: 'bg-teal-400/15', button: 'bg-teal-400' },
+  attention: { ring: '#C8922A', text: 'text-[#e0b25a]', soft: 'bg-[#C8922A]/15', button: 'bg-[#C8922A]' },
+  space: { ring: '#B5A7D0', text: 'text-[#c9bde0]', soft: 'bg-[#B5A7D0]/15', button: 'bg-[#B5A7D0]' },
+};
+
+/** Practices whose object is a sound around you: say plainly where the sound comes from. */
+const LISTENING = new Set(['one-sound', 'sound-focus', 'silence-background']);
+
 const toSteps = (text: string) => text.split(/(?<=[.!;·])\s+/).map(t => t.trim()).filter(Boolean);
 
 function microdoseAsExercise(m: MicrodoseExercise) {
@@ -20,294 +31,215 @@ function microdoseAsExercise(m: MicrodoseExercise) {
     axis: m.axis,
     evidence: m.evidence,
     title: m.title,
-    desc: { el: m.dur.el, en: m.dur.en },
+    desc: undefined as { el: string; en: string } | undefined,
+    dur: m.dur,
     duration: Math.max(m.maxSeconds, 10),
-    color: AXIS_COLOR[m.axis] || 'teal',
     instructions: { el: toSteps(m.desc.el), en: toSteps(m.desc.en) },
   };
 }
+
+const formatTime = (seconds: number) => {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m}:${s.toString().padStart(2, '0')}`;
+};
+
+const durationLabel = (s: number, el: boolean) =>
+  s < 60 ? (el ? `${s} δευτ.` : `${s} sec`) : (el ? `${Math.round(s / 60)} λεπτ${Math.round(s / 60) === 1 ? 'ό' : 'ά'}` : `${Math.round(s / 60)} min`);
 
 export default function GenericExercise() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { language } = useLanguage();
-  const { triggerReward } = useReward();
+  const el = language !== 'en';
+  const lang = el ? 'el' : 'en';
   const { logActivity } = useActivityTracker();
-  
+
   // A microdose card links here by its own path; if there is no guided
   // version of it, the microdose itself becomes the exercise.
   const microdose = id && !EXERCISES[id]
     ? MICRODOSES_EXERCISES.find(m => m.link.split('/').pop() === id || m.id === id)
     : undefined;
 
-  const exercise = id && EXERCISES[id] ? EXERCISES[id] : microdose ? microdoseAsExercise(microdose) : {
+  const exercise: any = id && EXERCISES[id] ? EXERCISES[id] : microdose ? microdoseAsExercise(microdose) : {
+    axis: 'breath',
     title: { el: 'Ελεύθερη Πρακτική', en: 'Free Practice' },
-    desc: { el: 'Αφιέρωσε λίγο χρόνο στον εαυτό σου, με χαλαρωτικούς ήχους.', en: 'Take some time for yourself, with relaxing sounds.' },
+    desc: { el: 'Λίγος χρόνος για σένα.', en: 'A little time for yourself.' },
     duration: 300,
-    color: 'teal',
     instructions: {
-      el: [
-        "Κάθισε αναπαυτικά σε έναν ήσυχο χώρο.",
-        "Παρατήρησε την αναπνοή σου χωρίς να προσπαθείς να την αλλάξεις."
-      ],
-      en: [
-        "Sit comfortably in a quiet space.",
-        "Observe your breath without trying to change it."
-      ]
-    }
+      el: ['Κάθισε αναπαυτικά.', 'Παρατήρησε την αναπνοή σου χωρίς να προσπαθείς να την αλλάξεις.'],
+      en: ['Sit comfortably.', 'Observe your breath without trying to change it.'],
+    },
   };
+
+  const theme = AXIS_THEME[exercise.axis] || AXIS_THEME.breath;
+  const steps: string[] = exercise.instructions?.[lang] || [];
+  const total: number = exercise.duration;
 
   const [running, setRunning] = useState(false);
   const [elapsed, setElapsed] = useState(0);
-  const [audioEnabled, setAudioEnabled] = useState(true);
-  const timerRef = useRef<number | null>(null);
   const sessionIdRef = useRef<number>(0);
+  const done = elapsed >= total;
 
-  // Reset state when exercise changes
   useEffect(() => {
     setRunning(false);
     setElapsed(0);
     sessionIdRef.current = 0;
   }, [id]);
 
-  // Track session ID
   useEffect(() => {
-    if (elapsed === 0 && !running) {
-      sessionIdRef.current = 0;
-    } else if (running && sessionIdRef.current === 0) {
-      sessionIdRef.current = Date.now();
-    }
-  }, [running, elapsed]);
-
-  // Fake audio logic for the player UI
-  useEffect(() => {
-    if (running && elapsed < exercise.duration) {
-      timerRef.current = window.setInterval(() => {
-        setElapsed((prev) => {
-          if (prev >= exercise.duration - 1) {
-            setRunning(false);
-            return exercise.duration;
-          }
-          return prev + 1;
-        });
-      }, 1000);
-    } else {
-      if (timerRef.current) clearInterval(timerRef.current);
-    }
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [running, elapsed, exercise.duration]);
-
-  // Handle completion record
-  useEffect(() => {
-    if (elapsed >= exercise.duration && exercise.duration > 0 && sessionIdRef.current !== 0) {
-      try {
-        const hStr = localStorage.getItem('journal_history');
-        const h = hStr ? JSON.parse(hStr) : { sessions: [], totalMin: 0 };
-        const todayStr = new Date().toISOString().split('T')[0];
-        
-        const existingIdx = h.sessions.findIndex((s: any) => s.id === sessionIdRef.current);
-        if (existingIdx >= 0) {
-          // Already recorded for this session ID, don't duplicate
-          h.sessions[existingIdx].ts = Date.now();
-        } else {
-          h.sessions.push({
-            id: sessionIdRef.current,
-            date: todayStr,
-            type: id || 'generic',
-            duration: exercise.duration,
-            ts: Date.now()
-          });
-          h.totalMin = Math.round((h.totalMin || 0) + exercise.duration / 60);
-          
-          // Use activity tracker to notify companion and ring
-          logActivity({
-            category: 'microdose',
-            itemId: microdose?.id || id || 'generic',
-            durationSeconds: exercise.duration,
-            completed: true,
-            axis: exercise.axis
-          });
+    if (!running) return;
+    const t = window.setInterval(() => {
+      setElapsed(prev => {
+        if (prev >= total - 1) {
+          setRunning(false);
+          return total;
         }
-        localStorage.setItem('journal_history', JSON.stringify(h));
-        triggerReward('program');
-      } catch (e) {}
-    }
-  }, [elapsed, exercise.duration, id, logActivity]);
+        return prev + 1;
+      });
+    }, 1000);
+    return () => clearInterval(t);
+  }, [running, total]);
 
-  const toggleRun = () => {
-    if (elapsed >= exercise.duration) {
-      setElapsed(0);
-    }
-    setRunning(!running);
+  // At the end: the soft bell, and the practice goes into the journal once.
+  useEffect(() => {
+    if (!done || total <= 0 || sessionIdRef.current === 0) return;
+    const session = sessionIdRef.current;
+    sessionIdRef.current = 0;
+    try {
+      const h = JSON.parse(localStorage.getItem('journal_history') || 'null') || { sessions: [], totalMin: 0 };
+      h.sessions.push({ id: session, date: new Date().toISOString().split('T')[0], type: id || 'generic', duration: total, ts: Date.now() });
+      h.totalMin = Math.round((h.totalMin || 0) + total / 60);
+      localStorage.setItem('journal_history', JSON.stringify(h));
+    } catch { /* storage unavailable */ }
+    logActivity({ category: 'microdose', itemId: microdose?.id || id || 'generic', durationSeconds: total, completed: true, axis: exercise.axis });
+    ringBell();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [done]);
+
+  const start = () => {
+    // Wake the sound inside the tap, so the bell can ring at the end (iPhone).
+    prepareBell();
+    if (done) setElapsed(0);
+    if (sessionIdRef.current === 0) sessionIdRef.current = Date.now();
+    setRunning(true);
+  };
+  const toggle = () => (running ? setRunning(false) : start());
+  const restart = () => {
+    setRunning(false);
+    setElapsed(0);
+    sessionIdRef.current = 0;
   };
 
-  const formatTime = (seconds: number) => {
-    const m = Math.floor(seconds / 60);
-    const s = seconds % 60;
-    return `${m}:${s.toString().padStart(2, '0')}`;
-  };
+  useKeyboardShortcuts({ ' ': toggle });
 
-  const progressPercent = (elapsed / exercise.duration) * 100;
+  // Which step the time is on (steps share the time evenly).
+  const stepIndex = steps.length ? Math.min(steps.length - 1, Math.floor((elapsed / Math.max(1, total)) * steps.length)) : 0;
+  const current = done ? (el ? 'Τέλος. Πάρε μια στιγμή πριν συνεχίσεις.' : 'Done. Take a moment before you go on.') : steps[stepIndex];
 
-  const getThemeColors = () => {
-    switch(exercise.category) {
-      case 'body': return { bg: 'from-emerald-900/40', accent: 'text-emerald-400', bar: 'bg-emerald-400', light: 'bg-emerald-400/20', id: 'emerald' };
-      case 'breath': return { bg: 'from-orange-900/40', accent: 'text-orange-400', bar: 'bg-orange-400', light: 'bg-orange-400/20', id: 'orange' };
-      case 'focus': return { bg: 'from-amber-900/40', accent: 'text-amber-400', bar: 'bg-amber-400', light: 'bg-amber-400/20', id: 'amber' };
-      case 'space': return { bg: 'from-violet-900/40', accent: 'text-violet-400', bar: 'bg-violet-400', light: 'bg-violet-400/20', id: 'violet' };
-      default: return { bg: 'from-teal-900/40', accent: 'text-teal-400', bar: 'bg-teal-400', light: 'bg-teal-400/20', id: 'teal' };
-    }
-  };
+  const R = 84;
+  const C = 2 * Math.PI * R;
+  const progress = Math.min(1, elapsed / Math.max(1, total));
 
-  const theme = getThemeColors();
+  const note = LISTENING.has(microdose?.id || id || '')
+    ? (el ? 'Η εφαρμογή δεν παίζει ήχο: ο ήχος είναι γύρω σου. Στο τέλος χτυπά ένα απαλό καμπανάκι.' : 'The app plays no sound: the sound is around you. A soft bell rings at the end.')
+    : (el ? 'Σιωπηλή άσκηση: ακολούθησε τα βήματα. Στο τέλος χτυπά ένα απαλό καμπανάκι.' : 'A silent practice: follow the steps. A soft bell rings at the end.');
 
   return (
- <div 
-   className={cn("flex flex-col flex-1 glass-card -mx-4 -mt-4 -mb-8 px-4 pt-4 pb-8 md:-mx-8 md:-mt-8 md:-mb-8 md:px-8 md:pt-8 md:pb-8 overflow-y-auto bg-gradient-to-b to-[#0C1E26] cursor-pointer", theme.bg)}
-   onClick={toggleRun}
- >
-      
-      <PlayPauseOverlay isPlaying={running} />
-
-      {/* Top Nav */}
-      <div className={cn(
-        "flex items-center justify-between mb-4 z-10 w-full mb-8 shrink-0 transition-opacity duration-1000",
-        running ? "opacity-20 hover:opacity-100 focus-within:opacity-100" : "opacity-100"
-      )}>
-        <button 
-          onClick={(e) => {
-            e.stopPropagation();
-            if (window.history.length > 2) {
-              navigate(-1);
-            } else {
-              navigate('/practice');
-            }
-          }}
-          className="w-10 h-10 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-300 hover:bg-zinc-700 hover:text-white transition-colors"
+    <div className="flex flex-col flex-1 w-full">
+      {/* Top */}
+      <div className="flex items-center mb-4 shrink-0">
+        <button
+          onClick={() => (window.history.length > 2 ? navigate(-1) : navigate('/practice'))}
+          aria-label={el ? 'Πίσω' : 'Back'}
+          className="w-11 h-11 rounded-full bg-white/[0.04] border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/[0.08] transition-colors"
         >
           <ArrowLeft size={20} />
         </button>
-        <div className="flex gap-4">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setAudioEnabled(!audioEnabled);
-            }}
-            className={cn(
-              "w-10 h-10 rounded-full border flex items-center justify-center transition-colors shadow-lg",
-              audioEnabled ? "bg-[#183035] border-teal-500 text-teal-400" : "bg-zinc-800/50 border-zinc-700 text-zinc-400"
-            )}
-          >
-            {audioEnabled ? <Volume2 size={18} /> : <VolumeX size={18} />}
-          </button>
-        </div>
       </div>
 
-      <div className="flex-1 flex flex-col items-center w-full max-w-lg mx-auto pb-safe mb-8">
-        
-        {/* Cover Art / Abstract Visual */}
-        <div 
-          className="relative w-64 h-64 md:w-72 md:h-72 mb-10 mt-4 rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden group cursor-pointer"
-          onClick={() => setRunning(!running)}
+      <div className="flex flex-col items-center w-full max-w-md mx-auto text-center">
+        <h1 className="text-[26px] font-medium text-white/95 leading-tight px-2">{exercise.title[lang]}</h1>
+        <p className="mt-1.5 text-[14px] text-white/50">
+          {exercise.dur ? exercise.dur[lang] : durationLabel(total, el)}
+          {exercise.desc && <> · {exercise.desc[lang]}</>}
+        </p>
+        <p className="mt-3 text-[12.5px] leading-snug text-white/45 max-w-xs">{note}</p>
+
+        {/* Timer */}
+        <button
+          onClick={toggle}
+          aria-label={running ? (el ? 'Παύση' : 'Pause') : (el ? 'Ξεκίνα' : 'Start')}
+          className="relative mt-5 w-[clamp(150px,calc(100dvh-460px),200px)] h-[clamp(150px,calc(100dvh-460px),200px)] rounded-full outline-none focus-visible:ring-2 focus-visible:ring-white/25"
         >
-          <div className="absolute inset-0 bg-[#061114] border border-white/5 rounded-[3rem] z-0"></div>
-          
-          <div className="absolute inset-0 z-10 flex items-center justify-center">
-            <video 
-              autoPlay 
-              loop 
-              muted 
-              playsInline 
-              src="/infinity_greeting.mp4" 
-              className={cn("w-full h-full object-cover transition-opacity duration-1000", running ? "opacity-100" : "opacity-60 grayscale-[50%]")}
+          <svg viewBox="0 0 200 200" className="absolute inset-0 w-full h-full -rotate-90" aria-hidden="true">
+            <circle cx="100" cy="100" r={R} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
+            <circle
+              cx="100" cy="100" r={R} fill="none" stroke={theme.ring} strokeWidth="6" strokeLinecap="round"
+              strokeDasharray={C} strokeDashoffset={C * (1 - progress)}
+              style={{ transition: 'stroke-dashoffset 1s linear', opacity: 0.85 }}
             />
-          </div>
-        </div>
+          </svg>
+          <span className="absolute inset-0 flex flex-col items-center justify-center">
+            <span className="text-[34px] font-light tabular-nums text-white/90">{formatTime(Math.max(0, total - elapsed))}</span>
+            <span className="mt-1 text-[11px] uppercase tracking-[0.2em] text-white/40">
+              {done ? (el ? 'Τέλος' : 'Done') : running ? (el ? 'σε εξέλιξη' : 'in progress') : elapsed > 0 ? (el ? 'σε παύση' : 'paused') : (el ? 'έτοιμο' : 'ready')}
+            </span>
+          </span>
+        </button>
 
-        {/* Track Info */}
-        <div className={cn(
-          "w-full text-center px-6 mb-8 transition-opacity duration-1000",
-          running ? "opacity-30 hover:opacity-100" : "opacity-100"
-        )}>
-          <h1 className="text-3xl font-medium text-white tracking-wide mb-3">{language === 'en' ? exercise.title.en : exercise.title.el}</h1>
-          <p className="text-base md:text-lg text-zinc-300 leading-loose font-normal">{language === 'en' ? exercise.desc.en : exercise.desc.el}</p>
-          {!running && <EvidenceLine evidence={exercise.evidence} language={language} />}
-        </div>
-
-        {/* Audio Player Controls */}
-        <div className="w-full px-6 mb-12">
-          {/* Progress Bar */}
-          <div className="relative w-full h-2 rounded-full bg-zinc-800 mb-4 cursor-pointer overflow-hidden">
-             <div 
-               className={cn("absolute top-0 left-0 h-full rounded-full transition-all duration-1000 ease-linear", theme.bar)}
-               style={{ width: `${progressPercent}%` }}
-             ></div>
-          </div>
-          
-          <div className="flex items-center justify-between text-xs text-zinc-500 font-mono tracking-wider mb-8">
-             <span>{formatTime(elapsed)}</span>
-             <span>{formatTime(exercise.duration)}</span>
-          </div>
-
-          {/* Buttons */}
-          <div className="flex items-center justify-center gap-8">
-            <button className="text-zinc-500 hover:text-white transition-colors"
-                onClick={(e) => { e.stopPropagation(); setElapsed(Math.max(0, elapsed - 15)); }}
-            >
-              <SkipBack size={24} />
-            </button>
-            
+        <div className="mt-5 flex items-center gap-3">
+          <button
+            onClick={toggle}
+            className={cn(
+              'min-h-[48px] px-7 rounded-full flex items-center gap-2 text-[15px] font-medium transition-colors active:scale-[0.97]',
+              running ? 'bg-white/[0.06] border border-white/10 text-white/85' : cn(theme.button, 'text-[#0f1117]')
+            )}
+          >
+            {running ? <Pause size={18} className="fill-current" /> : <Play size={18} className="fill-current" />}
+            {running
+              ? (el ? 'Παύση' : 'Pause')
+              : done ? (el ? 'Ξανά' : 'Again')
+              : elapsed > 0 ? (el ? 'Συνέχισε' : 'Continue')
+              : (el ? `Ξεκίνα · ${durationLabel(total, el)}` : `Start · ${durationLabel(total, el)}`)}
+          </button>
+          {elapsed > 0 && !running && !done && (
             <button
-              onClick={(e) => { e.stopPropagation(); toggleRun(); }}
-              aria-label={running ? "Pause" : "Play"}
-              className={cn(
-                "focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 w-20 h-20 rounded-full flex items-center justify-center transition-all shadow-xl",
-                running 
-                  ? "bg-zinc-800 border border-zinc-700 text-white" 
-                  : cn("text-pine-900 border-none shadow-[0_0_30px_rgba(0,0,0,0.3)]", theme.bar)
-              )}
+              onClick={restart}
+              aria-label={el ? 'Από την αρχή' : 'From the start'}
+              className="w-12 h-12 rounded-full bg-white/[0.04] border border-white/10 flex items-center justify-center text-white/60 hover:text-white"
             >
-              {running ? <Pause size={32} className="fill-current" /> : <Play size={36} className="ml-2 fill-current" />}
+              <RotateCcw size={18} />
             </button>
-            
-            <button className="text-zinc-500 hover:text-white transition-colors"
-               onClick={(e) => { e.stopPropagation(); setElapsed(Math.min(exercise.duration, elapsed + 15)); }}
-            >
-              <SkipForward size={24} />
-            </button>
-          </div>
+          )}
         </div>
 
-        {/* After the practice: the chapter of the guide behind it */}
-        {!running && exercise.duration > 0 && elapsed >= exercise.duration && (
-          <GuideAfterPractice axis={exercise.axis} language={language} className="w-full mt-4" />
+        {/* The step to do now */}
+        {current && (
+          <p aria-live="polite" className="mt-6 px-3 text-[18px] leading-relaxed text-white/85 min-h-[3.5em]">{current}</p>
         )}
 
-        {/* Instructions */}
-        <div className={cn(
-          "w-full bg-zinc-800/30 border border-zinc-700/50 rounded-[2rem] p-6 lg:p-8 mt-4 transition-opacity duration-1000",
-          running ? "opacity-30 hover:opacity-100 focus-within:opacity-100" : "opacity-100"
-        )}>
-          <h3 className="text-lg font-medium text-white mb-6 flex items-center gap-3">
-            <Info className={theme.accent} size={20} />
-            {language === 'el' ? 'Οδηγίες' : 'Instructions'}
-          </h3>
-          <ul className="space-y-6">
-            {(language === 'en' ? exercise.instructions.en : exercise.instructions.el)?.map((step: string, idx: number) => (
-              <li key={idx} className="flex gap-4 text-zinc-100">
-                <span className={cn("flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium mt-1", theme.light, theme.accent)}>
-                  {idx + 1}
-                </span>
-                <span className="leading-loose text-[17px] font-normal">{step}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {!running && !done && <EvidenceLine evidence={exercise.evidence} language={language} />}
+
+        {done && <GuideAfterPractice axis={exercise.axis} language={language} className="w-full mt-4" />}
+
+        {/* All the steps */}
+        {steps.length > 1 && (
+          <ol className="w-full mt-6 mb-6 text-left flex flex-col gap-3 rounded-[1.5rem] bg-white/[0.03] border border-white/[0.06] p-5">
+            {steps.map((step, i) => {
+              const now = (running || elapsed > 0) && !done && i === stepIndex;
+              return (
+                <li key={i} className={cn('flex gap-3 transition-opacity', (running || elapsed > 0) && !done && !now ? 'opacity-45' : 'opacity-100')}>
+                  <span className={cn('shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-[13px] font-medium mt-0.5', theme.soft, theme.text)}>
+                    {i + 1}
+                  </span>
+                  <span className="text-[15px] leading-relaxed text-white/80">{step}</span>
+                </li>
+              );
+            })}
+          </ol>
+        )}
       </div>
     </div>
   );
 }
-
-

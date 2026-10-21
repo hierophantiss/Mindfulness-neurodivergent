@@ -26,6 +26,12 @@ export interface CatalogItem {
 
 const H: CheckinTag = 'hyper', L: CheckinTag = 'hypo', B: CheckinTag = 'balanced', U: CheckinTag = 'unsure';
 
+// In tension the method starts from the body and the breath (Chapter 8:
+// weight, long exhale, then a label, then space; Chapter 4: opening only on a
+// grounded body). So "Tension" offers body and breath practices; the ones that
+// turn attention outwards (a sound in the room, open awareness, watching
+// thoughts) are offered for calm or numbness. "Triple anchor" stays: it starts
+// from the soles and the breath.
 export const CHECKIN_TAGS: Record<string, CheckinTag[]> = {
   // microdoses — body
   'axis-pause': [H, B, U], 'soft-belly': [H], 'unlocked-knees': [H], 'contact-observe': [H, L, U],
@@ -35,10 +41,10 @@ export const CHECKIN_TAGS: Record<string, CheckinTag[]> = {
   'humming-vibration': [H], 'breath-4-2-7': [H], 'ocean-breath': [H],
   // microdoses — attention
   'anchor-7-sec': [L, B], 'triple-anchor': [L, H], 'alternate-focus': [L], 'gentle-return': [L, B],
-  'eye-horizon': [L, H], 'one-sound': [L, H], 'sensory-54321': [L, H, U],
+  'eye-horizon': [L], 'one-sound': [L], 'sensory-54321': [L, U],
   // microdoses — space
-  'thoughts-as-objects': [H, B],
-  'short-moment': [B], 'tilopa-rest': [B], 'silence-background': [B], 'open-presence': [H, B],
+  'thoughts-as-objects': [B],
+  'short-moment': [B], 'tilopa-rest': [B], 'silence-background': [B], 'open-presence': [B],
   'sky-gazing-micro': [B, L], 'spacious-metta': [B],
   // breathing patterns
   'breath-5-5': [B], 'breath-4-6': [H], '4-2-6-1': [H], '4-2-7-1': [H], '4-7-8': [H], 'box-breathing': [L, B], 'sos-breath': [H],
@@ -51,10 +57,10 @@ export const CHECKIN_TAGS: Record<string, CheckinTag[]> = {
   'bhramari-humming': [H], 'aum-resonance': [H, B], 'a-major-resonance': [B], 'c-major-resonance': [H],
   'throat-chakra-humming': [B], 'om-pure-resonance': [B],
   // guided exercises
-  'body-scan': [H, B, U], 'grounding-scan': [H, U], 'sound-focus': [L, H], 'vertical-axis': [B, L],
+  'body-scan': [H, B, U], 'grounding-scan': [H, U], 'sound-focus': [L], 'vertical-axis': [B, L],
   'gravity-surrender': [H], 'mindful-swaying': [H, L], 'mindful-walking': [L, H], 'belly-breathing': [H],
   'exhale-rhythm': [H], 'nadi-shodhana': [H, B], 'attention-observation': [B], 'fixed-point': [L],
-  'labeling-technique': [H, B], 'samatha-micro': [H, B], 'sky-clouds': [B],
+  'labeling-technique': [B], 'samatha-micro': [B], 'sky-clouds': [B],
 };
 
 const AXIS_SEGMENT: Record<Axis, string> = { body: 'body', breath: 'breath', attention: 'focus', space: 'space' };

@@ -117,3 +117,10 @@ describe('practice catalogue', () => {
     for (const r of refs) expect(STUDY_NOTES[r], r).toBeTruthy();
   });
 });
+
+describe('tension starts from the body and the breath', () => {
+  it('offers no practice that turns attention outwards', () => {
+    const outward = forTag('hyper').filter(i => (i.axis === 'attention' || i.axis === 'space') && i.id !== 'triple-anchor');
+    expect(outward.map(i => i.id)).toEqual([]);
+  });
+});
