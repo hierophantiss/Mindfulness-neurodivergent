@@ -102,8 +102,10 @@ jobs:
         run: |
           for l in $LANGS; do
             python3 tools/audiobook/script.py "$l" "audiobook-out/script_$l.json"
+            # Greek: paragraphs in one request, with SSML pauses (as in the app).
+            ssml=""; [ "$l" = el ] && ssml=--ssml
             python3 tools/audiobook/synth.py "audiobook-out/script_$l.json" "$l" "audiobook-out/$l" \
-              --cache .tts-cache --only "$ONLY"
+              --cache .tts-cache --only "$ONLY" $ssml
           done
           if [ -n "$ONLY" ]; then
             tag=audiobook-preview; title="Audiobook (preview)"; extra=--prerelease

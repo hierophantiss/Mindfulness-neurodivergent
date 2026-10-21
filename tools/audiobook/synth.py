@@ -185,6 +185,11 @@ def gap_after(sentence):
     return 450
 
 
+def sentences(text):
+    """A paragraph's sentences, cut as the app's reader cuts them (toSentences)."""
+    return [m.strip() for m in re.findall(r'[^.!?;·…]+(?:[.!?;·…]+["»\')]*|$)', text) if m.strip()]
+
+
 def paragraph_ssml(sentences):
     """One <speak> per piece of at most MAX_CHARS, with breaks after sentences and commas."""
     from xml.sax.saxutils import escape
@@ -250,6 +255,8 @@ def main():
     ap.add_argument('--mock', action='store_true')
     ap.add_argument('--workers', type=int, default=4)
     ap.add_argument('--only', default='', help='audio chapters to build, e.g. "1-3" or "2,5" (default: all)')
+    ap.add_argument('--ssml', action='store_true',
+                    help='speak each paragraph in one request with SSML pauses after sentences and commas (used for Greek)')
     a = ap.parse_args()
 
     locale = LOCALE[a.lang]
@@ -275,17 +282,23 @@ def main():
         check_voice(locale, voice)
 
     # 1. Speak every chunk (in parallel; cached chunks are skipped).
+    def requests(text):
+        return paragraph_ssml(sentences(text)) if a.ssml else chunks(text)
+
     jobs = []
     for c in chapters:
         for s in c['segments']:
-            for piece in chunks(s['text']):
+            for piece in requests(s['text']):
                 jobs.append((piece, s['rate']))
     chars = sum(len(t) for t, _ in jobs)
     print(f'{a.lang}: {len(chapters)} chapters, {len(jobs)} requests, {chars} characters ({voice})', flush=True)
     done = [0]
 
     def run(job):
-        p = speak(job[0], job[1], voice, locale, cache, a.mock)
+        if a.ssml:
+            p = speak_ssml(job[0], job[1], voice, locale, cache, a.mock)
+        else:
+            p = speak(job[0], job[1], voice, locale, cache, a.mock)
         done[0] += 1
         if done[0] % 50 == 0:
             print(f'  {done[0]}/{len(jobs)}', flush=True)
@@ -299,11 +312,12 @@ def main():
     for n, c in enumerate(chapters, 1):
         pieces = [silence(600, cache)]
         for s in c['segments']:
-            parts = chunks(s['text'])
+            parts = requests(s['text'])
             for i, piece in enumerate(parts):
                 pieces.append(spoken[(piece, s['rate'])])
                 if i < len(parts) - 1:
-                    pieces.append(silence(GAP_BETWEEN_CHUNKS_MS, cache))
+                    # SSML pieces of one long paragraph meet at a sentence end.
+                    pieces.append(silence(550 if a.ssml else GAP_BETWEEN_CHUNKS_MS, cache))
             pieces.append(silence(s['pause_ms'], cache))
         wav = work / f'{a.lang}-{c["n"]:02d}.wav'
         concat_wav(pieces, wav, work)
