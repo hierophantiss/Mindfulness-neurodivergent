@@ -2,22 +2,18 @@ import { useFocusTrap } from '../hooks/useFocusTrap';
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link, useLocation } from 'react-router-dom';
-import { BookOpen, Calendar, ChevronRight, Wind, X } from 'lucide-react';
+import { BookOpen, ChevronRight, X } from 'lucide-react';
 import { useCompanion } from '../hooks/useCompanion';
 import { useLanguage } from '../hooks/useLanguage';
 import { useProgress } from '../contexts/ProgressContext';
 import { CHAPTERS_DATA } from '../data/chapters';
-import { SOS_PATH } from '../data/stateCheckin';
-import { getMoreLinks } from '../data/moreLinks';
 import { CatInfinityAvatar } from './CatInfinityAvatar';
 import HomeCheckin from './HomeCheckin';
 
-const TOTAL_LESSONS = 56;
-
-// The cat's sheet: a quiet shortcut to the same things the home page offers,
-// for when you are somewhere else in the app.
+// The cat's sheet: only two things, from anywhere in the app —
+// "how do you feel right now?" and the next chapter.
 export default function CompanionSheet() {
-  const { sheetVisible, setSheetVisible, companionData } = useCompanion();
+  const { sheetVisible, setSheetVisible } = useCompanion();
   const { language } = useLanguage();
   const lang = language === 'en' ? 'en' : 'el';
   const el = lang === 'el';
@@ -41,11 +37,6 @@ export default function CompanionSheet() {
   const chapterLabel = allDone
     ? (el ? 'Ολοκλήρωσες τον οδηγό' : 'You finished the guide')
     : done.length === 0 ? (el ? 'Ξεκίνα' : 'Start') : (el ? 'Συνέχισε' : 'Continue');
-
-  const week = companionData.programProgress?.week || 0;
-  const day = companionData.programProgress?.day || 0;
-  const lessons = progress.completedLessons.length;
-  const moreLinks = getMoreLinks(lang, lessons > 0 ? `${Math.round((lessons / TOTAL_LESSONS) * 100)}%` : undefined);
 
   const showIntro = () => {
     close();
@@ -99,61 +90,20 @@ export default function CompanionSheet() {
                 </button>
               </div>
 
-              {/* Continue */}
-              <div className="flex flex-col gap-2">
-                <Link to={`/chapters/${nextChapter?.num ?? 1}`} onClick={close} className={rowClasses}>
-                  <BookOpen size={18} strokeWidth={1.5} className="shrink-0 text-[#8ba3ba]" />
-                  <span className="flex flex-col min-w-0 flex-1 gap-0.5">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-[#8ba3ba]/70">{chapterLabel}</span>
-                    <span className="text-[14px] leading-snug text-[#9bb8d1]">
-                      {el ? 'Κεφάλαιο' : 'Chapter'} {nextChapter?.num} · {nextChapter?.title}
-                    </span>
-                  </span>
-                  <ChevronRight size={16} className="text-white/30 shrink-0" />
-                </Link>
-
-                {week > 0 && (
-                  <Link to={`/program/week/${week}`} onClick={close} className={rowClasses}>
-                    <Calendar size={18} strokeWidth={1.5} className="shrink-0 text-[#b0c4aa]" />
-                    <span className="flex flex-col min-w-0 flex-1 gap-0.5">
-                      <span className="text-[10px] uppercase tracking-[0.2em] text-[#b0c4aa]/70">{el ? 'Πρόγραμμα' : 'Program'}</span>
-                      <span className="text-[14px] leading-snug text-white/85">
-                        {el ? `Εβδομάδα ${week}, Ημέρα ${day + 1}` : `Week ${week}, Day ${day + 1}`}
-                      </span>
-                    </span>
-                    <ChevronRight size={16} className="text-white/30 shrink-0" />
-                  </Link>
-                )}
-
-                <Link to={SOS_PATH} onClick={close} className={rowClasses}>
-                  <Wind size={18} strokeWidth={1.5} className="shrink-0 text-[#7dd3fc]" />
-                  <span className="flex flex-col min-w-0 flex-1 gap-0.5">
-                    <span className="text-[14px] leading-tight text-white/85">{el ? 'Αναπνοή SOS' : 'SOS Breath'}</span>
-                    <span className="text-[12px] leading-snug text-white/45">{el ? 'Όταν χρειάζεσαι ηρεμία τώρα' : 'When you need calm now'}</span>
-                  </span>
-                  <ChevronRight size={16} className="text-white/30 shrink-0" />
-                </Link>
-              </div>
-
               {/* How do you feel right now? */}
               <HomeCheckin />
 
-              {/* The rest of the app */}
-              <div className="flex flex-col gap-2">
-                {moreLinks.map(item => (
-                  <Link key={item.to} to={item.to} onClick={close} className={rowClasses}>
-                    <item.icon size={18} strokeWidth={1.5} className={`shrink-0 opacity-80 ${item.tone}`} />
-                    <span className="flex flex-col min-w-0 flex-1 gap-0.5">
-                      <span className="flex items-baseline gap-2 text-[14px] leading-tight text-white/85">
-                        {item.label}
-                        {item.sub && <span className="text-[11px] font-mono text-white/40">{item.sub}</span>}
-                      </span>
-                      <span className="text-[12px] leading-snug text-white/45">{item.desc}</span>
-                    </span>
-                    <ChevronRight size={16} className="text-white/30 shrink-0" />
-                  </Link>
-                ))}
-              </div>
+              {/* Continue */}
+              <Link to={`/chapters/${nextChapter?.num ?? 1}`} onClick={close} className={rowClasses}>
+                <BookOpen size={18} strokeWidth={1.5} className="shrink-0 text-[#8ba3ba]" />
+                <span className="flex flex-col min-w-0 flex-1 gap-0.5">
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-[#8ba3ba]/70">{chapterLabel}</span>
+                  <span className="text-[14px] leading-snug text-[#9bb8d1]">
+                    {el ? 'Κεφάλαιο' : 'Chapter'} {nextChapter?.num} · {nextChapter?.title}
+                  </span>
+                </span>
+                <ChevronRight size={16} className="text-white/30 shrink-0" />
+              </Link>
 
               <button
                 onClick={showIntro}
