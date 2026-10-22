@@ -6,7 +6,7 @@
 
 - Χωρίς λογαριασμούς, χωρίς παρακολούθηση. Τα δεδομένα μένουν στη συσκευή
   (localStorage).
-- Προσβάσιμη: μεγάλα μεγέθη, γραμματοσειρά OpenDyslexic, σχεδιασμός με
+- Προσβάσιμη: μεγάλα μεγέθη, λιγότερη κίνηση κατ' επιλογή, σχεδιασμός με
   trauma-informed προσέγγιση.
 - Εγκατάσταση ως PWA και λειτουργία χωρίς σύνδεση.
 
@@ -16,8 +16,8 @@
 - React Router για την πλοήγηση, prerender για SEO (διαδρομές στο
   `src/prerender-paths.json`)
 - PWA μέσω `vite-plugin-pwa`
-- Android μέσω Capacitor (`capacitor.config.ts`, φάκελος `android/`)
-- Deploy σε Cloudflare Pages (`public/_headers`, `public/_redirects`, `CNAME`)
+- Android: σχεδιάζεται ως TWA (Trusted Web Activity) για το Play Store
+- Deploy σε Cloudflare Pages (`public/_headers`, `public/_redirects`, `functions/`)
 
 ## Δομή
 
@@ -36,7 +36,7 @@ public/       στατικά αρχεία, PDF/EPUB του βιβλίου, manif
 
 ```bash
 npm install
-npm run dev       # http://localhost:3000
+npm run dev       # http://localhost:5173
 ```
 
 Η εφαρμογή δεν χρειάζεται API keys ή μεταβλητές περιβάλλοντος.
@@ -45,20 +45,11 @@ npm run dev       # http://localhost:3000
 
 | Εντολή | Τι κάνει |
 |---|---|
-| `npm run dev` | Τοπικός server (Express + Vite) στη θύρα 3000 |
-| `npm run build` | Sitemap, build Vite, prerender, και bundle του server |
+| `npm run dev` | Τοπικός server ανάπτυξης (Vite) |
+| `npm run build` | Sitemap, build Vite και prerender |
 | `npm run preview` | Προεπισκόπηση του build |
 | `npm run lint` | Έλεγχος τύπων (`tsc --noEmit`) |
 | `npm test` | Tests (Vitest) |
-
-## Android
-
-```bash
-npm run build
-npx cap sync android
-```
-
-Μετά ανοίγεις το `android/` στο Android Studio.
 
 ## Το βιβλίο (PDF και EPUB)
 

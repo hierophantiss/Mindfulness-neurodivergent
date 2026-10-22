@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://neurodivergent-mindfulness.org/sitemap.xml

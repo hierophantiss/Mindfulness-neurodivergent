@@ -13,7 +13,6 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
       "color": "var(--color-axis-body)",
       "hex": "#7A9E7E",
       "icon": "⚓",
-      "video": "/Basic.mp4",
       "summary": "The body is the undeniable ground of the present moment. You learn to perceive gravity, your posture and your contact with space, as the starting point of every practice.",
       "tldr": "The body is the only place that is always \"Here\". Gravity is the direct proof of your presence. Feel your weight, and the mind finds somewhere to stand.",
       "theorySections": [
@@ -87,7 +86,6 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
       "color": "var(--color-axis-breath)",
       "hex": "#C07050",
       "icon": "🫁",
-      "video": "/Basic.mp4",
       "summary": "The breath connects you with the rhythm of life and teaches the acceptance of impermanence. Every inhale and exhale is a small rehearsal of beginning and ending.",
       "tldr": "The breath is the rhythm that is always with you. You do not correct it; you observe it. The tool is always the exhale.",
       "theorySections": [
@@ -192,7 +190,6 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
       "color": "var(--color-axis-focus)",
       "hex": "#C8922A",
       "icon": "🔦",
-      "video": "/Basic.mp4",
       "summary": "Attention is the lens of the mind: it can focus, open, scatter or get stuck. You learn to recognise where it is and to bring it back gently, without self-criticism.",
       "tldr": "Attention is the lens: it focuses, opens, scatters, gets stuck. You do not scold it; you see it and bring it back gently.",
       "theorySections": [
@@ -275,7 +272,6 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
       "color": "var(--color-axis-space)",
       "hex": "#B5A7D0",
       "icon": "🌌",
-      "video": "/Basic.mp4",
       "summary": "The first three centres were something you do. Space is something that already exists. Here you get to know awareness, the open field in which experience happens, and you learn to rest in it.",
       "tldr": "The first three centres are something you do; Space is something that already exists. Attention is the point, awareness the field. Short moments, many times, always on a grounded body.",
       "theorySections": [
@@ -934,7 +930,6 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
       "color": "var(--color-axis-body)",
       "hex": "#7A9E7E",
       "icon": "⚓",
-      "video": "/Basic.mp4",
       "summary": "Το σώμα είναι η αναμφίβολη βάση της παρούσας στιγμής. Μαθαίνεις να αντιλαμβάνεσαι τη βαρύτητα, τη στάση σου και την επαφή με τον χώρο, ως αφετηρία κάθε πρακτικής.",
       "tldr": "Το σώμα είναι το μοναδικό σημείο που είναι πάντα στο «Εδώ». Η βαρύτητα είναι η άμεση απόδειξη της παρουσίας σου. Νιώσε το βάρος σου, και ο νους βρίσκει πού να σταθεί.",
       "theorySections": [
@@ -1008,7 +1003,6 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
       "color": "var(--color-axis-breath)",
       "hex": "#C07050",
       "icon": "🫁",
-      "video": "/Basic.mp4",
       "summary": "Η αναπνοή σε συνδέει με τον ρυθμό της ζωής και διδάσκει την αποδοχή της παροδικότητας. Κάθε εισπνοή και εκπνοή είναι μια μικρή πρόβα αρχής και τέλους.",
       "tldr": "Η αναπνοή είναι ο ρυθμός που σε συνοδεύει πάντα. Δεν τη διορθώνεις· την παρατηρείς. Το εργαλείο είναι πάντα η εκπνοή.",
       "theorySections": [
@@ -1113,7 +1107,6 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
       "color": "var(--color-axis-focus)",
       "hex": "#C8922A",
       "icon": "🔦",
-      "video": "/Basic.mp4",
       "summary": "Η προσοχή είναι ο φακός του νου: μπορεί να εστιάζει, να ανοίγει, να διασπάται ή να αγκυλώνεται. Μαθαίνεις να αναγνωρίζεις πού βρίσκεται και να την επιστρέφεις απαλά, χωρίς αυτοκριτική.",
       "tldr": "Η προσοχή είναι ο φακός: εστιάζει, ανοίγει, διασπάται, αγκυλώνεται. Δεν τη μαλώνεις· τη βλέπεις και την επιστρέφεις απαλά.",
       "theorySections": [
@@ -1196,7 +1189,6 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
       "color": "var(--color-axis-space)",
       "hex": "#B5A7D0",
       "icon": "🌌",
-      "video": "/Basic.mp4",
       "summary": "Τα τρία πρώτα κέντρα ήταν κάτι που κάνεις. Ο Χώρος είναι κάτι που ήδη υπάρχει. Εδώ γνωρίζεις την επίγνωση, το ανοιχτό πεδίο μέσα στο οποίο συμβαίνει η εμπειρία, και μαθαίνεις να αναπαύεσαι σε αυτό.",
       "tldr": "Τα τρία πρώτα κέντρα είναι κάτι που κάνεις· ο Χώρος είναι κάτι που ήδη υπάρχει. Η προσοχή είναι το σημείο, η επίγνωση το πεδίο. Σύντομες στιγμές, πολλές φορές, πάντα πάνω σε γειωμένο σώμα.",
       "theorySections": [
@@ -1320,7 +1312,6 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
       "color": "var(--gold-dark)",
       "hex": "#B07B1E",
       "icon": "🧠",
-      "video": "/Basic.mp4",
       "summary": "Ο νευροδιαφορετικός νους δεν είναι σπασμένος· έχει διαφορετική λειτουργία. Κατανοείς τις δύο κύριες καταστάσεις (τρέξιμο και κλείδωμα), τη ρύθμιση που βρίσκεται από κάτω τους, και το κόστος της μάσκας.",
       "tldr": "Ο νευροδιαφορετικός νους τρέχει ή κλειδώνει, και από κάτω υπάρχει μια ρύθμιση: η άμυνα. Δεν χαμηλώνει με επιχειρήματα, αλλά με σήματα ασφάλειας και με χρόνο. Η μάσκα ήταν πάντα λειτουργία, ποτέ ταυτότητα.",
       "theorySections": [

@@ -16,10 +16,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { CHAPTERS_DATA } from '../src/data/chapters';
 import { BREATH_PATTERNS } from '../src/data/breathPatterns';
-import { softGazeArticle } from '../src/data/softGazeArticle';
-import { polyvagalArticle } from '../src/data/polyvagalArticle';
-import { youAreThePathArticle } from '../src/data/youAreThePathArticle';
-import { waveAndSeaArticle } from '../src/data/waveAndSeaArticle';
 import { rabbitholeContent } from '../src/data/rabbitholeContent';
 import { MICRODOSES_EXERCISES } from '../src/data/microdoses';
 import { GUIDED_EXERCISES } from '../src/data/guidedExercises';
@@ -351,13 +347,7 @@ function getMetaForRoute(route: string): RouteMeta {
   if (rhMatch) {
     const slug = rhMatch[1];
     
-    const dataMap: Record<string, any> = {
-      'soft-gaze-open-hearing': softGazeArticle,
-      'polyvagal-middle-way': polyvagalArticle,
-      'you-are-the-path': youAreThePathArticle,
-      'wave-and-sea': waveAndSeaArticle,
-      ...rabbitholeContent
-    };
+    const dataMap: Record<string, any> = { ...rabbitholeContent };
 
     const art = ARTICLES[slug];
     const data = dataMap[slug];

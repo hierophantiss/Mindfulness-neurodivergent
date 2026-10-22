@@ -19,7 +19,7 @@ export default defineConfig(() => {
           // The app itself (and the shell page), not the 248 prerendered pages: those
           // are for search engines and load from the network when opened.
           globPatterns: ['**/*.{js,css,woff2,svg,ico}', 'index.html'],
-          globIgnores: ['**/*.{mp4,pdf,png,jpg}', 'server.cjs*', '**/*_debug.html'],
+          globIgnores: ['**/*.{mp4,pdf,png,jpg}', '**/*_debug.html'],
           // The cat companion, so it shows offline too.
           additionalManifestEntries: [{ url: '/icon-192.png', revision: 'cat-2026-10-19' }],
           navigateFallback: '/index.html',
