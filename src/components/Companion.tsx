@@ -1,14 +1,12 @@
 import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useState, useRef, useEffect } from 'react';
 import { useCompanion } from '../hooks/useCompanion';
-import CompanionSheet from './CompanionSheet';
 import { useLanguage } from '../hooks/useLanguage';
 import { X, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CatInfinityAvatar } from './CatInfinityAvatar';
 import { useProgress } from '../contexts/ProgressContext';
-import { CHAPTERS_DATA } from '../data/chapters';
-import { chaptersRead } from '../lib/readingSpot';
+import { hasReadAnything } from '../lib/readingSpot';
 
 export const InfinitySVG = ({ size }: { size: number }) => (
   <svg width={size} height={Math.round(size * 0.55)} viewBox="0 0 120 66" fill="none" xmlns="http://www.w3.org/2000/svg" className="inf-svg-glow filter drop-shadow-sm">
@@ -38,7 +36,7 @@ export default function Companion() {
   const dragRef = useRef<{ startX: number, startY: number, initX: number, initY: number } | null>(null);
   const { language } = useLanguage();
   const { progress } = useProgress();
-  const hasRead = chaptersRead(CHAPTERS_DATA[language === 'en' ? 'en' : 'el'] || [], progress.completedChapters, companionData.chapterProgress).length > 0;
+  const hasRead = hasReadAnything(progress.completedChapters, companionData.chapterProgress);
 
   useEffect(() => {
     // Initial welcome message removed to prevent sensory overwhelm on first load.
@@ -172,6 +170,10 @@ export default function Companion() {
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
         onClick={handleClick}
+        role="button"
+        tabIndex={0}
+        aria-label={language === 'en' ? 'What you have read' : 'Τι έχεις διαβάσει'}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSheetVisible(true); } }}
       >
         <div className="absolute inset-0 rounded-full bg-teal-500/10 pointer-events-none" />
         <AnimatePresence>

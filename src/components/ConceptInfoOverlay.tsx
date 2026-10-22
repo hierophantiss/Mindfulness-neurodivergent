@@ -84,7 +84,7 @@ export function ConceptModal({ isOpen, onClose, conceptId }: { isOpen: boolean, 
               </p>
               
               <div className="text-[15px] text-white/80 leading-relaxed font-sans space-y-3">
-                {concept[l].full.split('\n\n').map((paragraph, idx) => (
+                {concept[l].full.split('\n\n').map((paragraph: string, idx: number) => (
                   <p key={idx}>{paragraph}</p>
                 ))}
               </div>

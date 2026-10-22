@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { tick } from '../lib/sound';
 import { ArrowLeft, Play, Pause, Settings2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../hooks/useLanguage";
@@ -23,45 +24,8 @@ export default function PracticeSwaying() {
   const { startAudio, stopAudio } = useBinauralAudio();
 
 
-  const audioCtxRef = useRef<AudioContext | null>(null);
-
-  // Initialize Web Audio API
-  useEffect(() => {
-    const Ctx = window.AudioContext || (window as any).webkitAudioContext;
-    if (Ctx) {
-      audioCtxRef.current = new Ctx();
-    }
-    return () => {
-      audioCtxRef.current?.close();
-    };
-  }, []);
-
-  const playTick = () => {
-    if (!audioCtxRef.current) return;
-    const ctx = audioCtxRef.current;
-
-    // Resume context if suspended (browser auto-play policy)
-    if (ctx.state === "suspended") {
-      ctx.resume();
-    }
-
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-
-    osc.type = "sine";
-    // very short tick, like a metronome woodblock
-    osc.frequency.setValueAtTime(800, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.05);
-
-    gain.gain.setValueAtTime(0.3, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.02);
-
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-
-    osc.start();
-    osc.stop(ctx.currentTime + 0.05);
-  };
+  // The metronome's tick comes from the app's one audio engine (lib/sound.ts).
+  const playTick = tick;
 
   const expectedNextTickRef = useRef<number>(0);
   const tickTimerRef = useRef<number | NodeJS.Timeout | null>(null);

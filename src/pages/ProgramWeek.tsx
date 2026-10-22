@@ -9,7 +9,6 @@ import { ArrowLeft, Check, PlayCircle, Clock, MapPin, ChevronLeft, ChevronRight,
 import { motion, AnimatePresence } from 'motion/react';
 import CameraAnimation from '../components/CameraAnimation';
 import SamathaAnimation from '../components/SamathaAnimation';
-import { playSound } from '../lib/soundEffects';
 import { useReward } from '../contexts/RewardContext';
 import { useProgress } from '../contexts/ProgressContext';
 
@@ -101,9 +100,8 @@ export default function ProgramWeek() {
   const isCompleted = isLessonComplete(weekNum, activeDay + 1);
 
   const handleComplete = () => {
-    // Play complete sound and show reward
+    // A soft bell marks the finished day
     if (!isCompleted) {
-      playSound('complete');
       triggerReward('program');
       markLessonComplete(weekNum, activeDay + 1);
     }

@@ -6,11 +6,15 @@ import { registerSW } from 'virtual:pwa-register';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { reloadOnceForUpdate } from './lib/lazyWithReload';
 import { setUpdater, markUpdateWaiting } from './lib/appUpdate';
+import { listenForFirstTap } from './lib/sound';
 
 // A piece of the old version is gone after an update: load the new version (once).
 window.addEventListener('vite:preloadError', (event) => {
   if (reloadOnceForUpdate()) event.preventDefault();
 });
+
+// Sound is allowed only after a tap: the first one wakes the audio engine, quietly.
+listenForFirstTap();
 
 if ('serviceWorker' in navigator) {
   const updateSW = registerSW({
@@ -21,6 +25,9 @@ if ('serviceWorker' in navigator) {
   setUpdater(updateSW);
 }
 
+// The text already in the page is a plain version for search engines (see
+// scripts/prerender.ts), not the app itself, so the app replaces it rather than
+// taking it over (hydrating it would not match).
 const root = createRoot(document.getElementById('root')!);
 
 root.render(
@@ -30,10 +37,3 @@ root.render(
     </ErrorBoundary>
   </StrictMode>,
 );
-
-// Fire app-rendered AFTER React has flushed to the DOM.
-// giving react-helmet-async time to inject <title> and <meta> tags so the
-// Puppeteer prerenderer captures the correct SEO metadata per route.
-setTimeout(() => {
-  document.dispatchEvent(new Event('app-rendered'));
-}, 500);

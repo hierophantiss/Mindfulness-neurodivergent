@@ -20,9 +20,66 @@
 @custom-variant desk (@media (min-width: 1024px));
 
 @layer base {
+  /* The app's colours. Use these (never a bright white background). */
+  :root {
+    --color-bg: #0f1117;
+    --color-surface: #1a1d27;
+    --color-accent: #1D9E75;
+    --color-accent-light: #27c491;
+    --color-text: #d4d4d8;
+    --color-text-muted: #71717a;
+  }
+
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
+}
+
+/* Each page arrives with its text already in it (for search engines and for
+   anyone without JavaScript). Until the app takes over, a moment later, that
+   text is shown as a calm, readable page instead of a wall of plain text. */
+:root:has([data-prerendered]) {
+  background-color: var(--color-bg);
+}
+[data-prerendered] {
+  box-sizing: border-box;
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: 56px 22px 72px;
+  color: var(--color-text);
+  font-size: 17px;
+  line-height: 1.7;
+  animation: fadeIn 0.6s ease-out both;
+}
+[data-prerendered] h1 {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.35;
+  margin: 0 0 24px;
+}
+[data-prerendered] h2,
+[data-prerendered] h3 {
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 32px 0 12px;
+}
+[data-prerendered] p,
+[data-prerendered] ul {
+  margin: 0 0 16px;
+}
+[data-prerendered] ul {
+  padding-left: 20px;
+  list-style: disc;
+}
+[data-prerendered] li {
+  margin-bottom: 8px;
+}
+[data-prerendered] a {
+  color: var(--color-accent-light);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .font-serif {

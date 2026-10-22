@@ -75,7 +75,7 @@ export default function Program() {
           ) : (
             weeks.map((weekNum) => {
             const week = courseData[weekNum];
-            const isCompleted = week.days.every((_, i) => isLessonComplete(weekNum, i + 1));
+            const isCompleted = week.days.every((_: unknown, i: number) => isLessonComplete(weekNum, i + 1));
             const isCurrent = curW === weekNum;
             const isLocked = weekNum > curW;
             
@@ -129,7 +129,7 @@ export default function Program() {
                   </div>
 
                   <div className="flex gap-1.5 opacity-80 mt-6 pt-4 border-t border-white/5 relative z-20">
-                    {week.days.map((_, i) => {
+                    {week.days.map((_: unknown, i: number) => {
                       const dayCompleted = isLessonComplete(weekNum, i + 1);
 
                       return (

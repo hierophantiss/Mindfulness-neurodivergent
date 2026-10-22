@@ -24,7 +24,7 @@ export interface MeditatorFigureProps {
 
 
 // Pseudo-random for stable SSR hydration
-const prng = (seed) => () => {
+const prng = (seed: number) => () => {
   let t = seed += 0x6D2B79F5;
   t = Math.imul(t ^ t >>> 15, t | 1);
   t ^= t + Math.imul(t ^ t >>> 7, t | 61);
@@ -113,9 +113,8 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
       <svg 
         viewBox="0 0 340 420" 
         width="100%" 
-        height="auto" 
         role="img"
-        className="block transition-all duration-500"
+        className="block h-auto transition-all duration-500"
       >
         <defs>
           <linearGradient id="body-grad" x1="0%" y1="0%" x2="0%" y2="100%">

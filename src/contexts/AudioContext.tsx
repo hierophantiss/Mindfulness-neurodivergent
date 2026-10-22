@@ -6,6 +6,7 @@ import React, {
   useCallback,
   useRef,
 } from 'react';
+import { getAudioContext } from '../lib/sound';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -551,13 +552,10 @@ export function AudioProvider({ children }: { children: ReactNode }) {
 
   // ---- AudioContext init ----
   const getCtx = (): globalThis.AudioContext => {
-    if (!webAudioCtxRef.current) {
-      const AC = (window as any).AudioContext ?? (window as any).webkitAudioContext;
-      webAudioCtxRef.current = new AC();
-    }
-    if (webAudioCtxRef.current.state === 'suspended') {
-      webAudioCtxRef.current.resume();
-    }
+    // The app's one audio engine, shared with the bells (lib/sound.ts).
+    if (!webAudioCtxRef.current) webAudioCtxRef.current = getAudioContext();
+    else if (webAudioCtxRef.current.state === 'suspended') webAudioCtxRef.current.resume().catch(() => {});
+    if (!webAudioCtxRef.current) throw new Error('Web Audio is not available');
     return webAudioCtxRef.current;
   };
 
@@ -738,7 +736,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       }
 
       // ---- Vocal Humming Guide Tone ----
-      if (['bhramari-humming', 'aum-resonance', 'satanama-resonance', 'a-major-resonance', 'c-major-resonance', 'throat-chakra-humming', 'om-pure-resonance', 'om-resonance-throat'].includes(config.id)) {
+      if (['bhramari-humming', 'aum-resonance', 'satanama-resonance', 'a-major-resonance', 'c-major-resonance', 'throat-chakra-humming', 'om-pure-resonance', 'om-resonance-throat'].includes(config.id ?? '')) {
         const vocalGain = ctx.createGain();
         vocalGain.gain.setValueAtTime(0, ctx.currentTime);
         vocalGain.connect(masterGain);
@@ -1131,7 +1129,6 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   React.useEffect(() => {
     return () => {
       hardStop();
-      webAudioCtxRef.current?.close();
     };
   }, [hardStop]);
 

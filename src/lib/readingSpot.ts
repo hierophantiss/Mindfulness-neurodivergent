@@ -34,6 +34,11 @@ export function hasReadChapter(n: number, completed: string[], progress: Record<
   return (progress?.[n]?.scrollPct || 0) > 0;
 }
 
+/** Has anything been read yet? (No chapter text needed, so the cat can ask it cheaply.) */
+export function hasReadAnything(completed: string[], progress: Record<number, CompanionChapterProgress> | undefined): boolean {
+  return completed.length > 0 || Object.values(progress || {}).some(p => (p?.scrollPct || 0) > 0);
+}
+
 /** The chapters you have read, in book order. */
 export function chaptersRead(chapters: Chapter[], completed: string[], progress: Record<number, CompanionChapterProgress> | undefined): Chapter[] {
   return chapters.filter(c => hasReadChapter(c.num, completed, progress));

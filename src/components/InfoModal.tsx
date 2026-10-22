@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Anchor, Wind, Focus, Maximize, Heart, Info, CheckCircle2, BookOpen, Sparkles, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { AXIS_COLOR } from '../data/stateCheckin';
+import { AXIS_COLOR } from '../data/axisColor';
 
 // Where "Send me a message" goes. One place to change it later.
 const CONTACT_EMAIL = 'bairaktaris.theodoros@gmail.com';

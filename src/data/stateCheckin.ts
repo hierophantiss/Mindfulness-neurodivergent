@@ -30,12 +30,7 @@ export const AXIS_LABEL: Record<Axis, T> = {
   space: { el: 'Χώρος', en: 'Space' },
 };
 
-export const AXIS_COLOR: Record<Axis, string> = {
-  body: 'var(--color-axis-body, #7A9E7E)',
-  breath: 'var(--color-axis-breath, #C07050)',
-  attention: 'var(--color-axis-focus, #C8922A)',
-  space: 'var(--color-axis-space, #B5A7D0)',
-};
+export { AXIS_COLOR } from './axisColor';
 
 export const SOS_PATH = '/practice/breath/sos-breath';
 

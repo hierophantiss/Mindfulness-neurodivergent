@@ -5,7 +5,7 @@ import { cn } from '../lib/utils';
 import { useLanguage } from '../hooks/useLanguage';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
-import { prepareBell, ringBell } from '../lib/softBell';
+import { prepareSound, ringBell } from '../lib/sound';
 import { EvidenceLine } from '../components/EvidenceLine';
 import GuideAfterPractice from '../components/GuideAfterPractice';
 import { MICRODOSES_EXERCISES, type MicrodoseExercise } from '../data/microdoses';
@@ -119,7 +119,7 @@ export default function GenericExercise() {
 
   const start = () => {
     // Wake the sound inside the tap, so the bell can ring at the end (iPhone).
-    prepareBell();
+    prepareSound();
     if (done) setElapsed(0);
     if (sessionIdRef.current === 0) sessionIdRef.current = Date.now();
     setRunning(true);

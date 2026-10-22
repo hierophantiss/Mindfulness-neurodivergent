@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { CHAPTERS_DATA } from '../data/chapters';
-import { readingSpot, chaptersRead } from './readingSpot';
+import { readingSpot, chaptersRead, hasReadAnything } from './readingSpot';
 import type { CompanionChapterProgress } from '../data/types';
 
 const chapters = CHAPTERS_DATA.el;
@@ -50,5 +50,15 @@ describe('where to continue reading', () => {
   it('a chapter only opened is not "read"; one read past its first page is', () => {
     const p = { 3: prog(0, '2026-10-21T10:00:00Z', 0), 4: prog(0, '2026-10-21T11:00:00Z', 0.4) };
     expect(chaptersRead(chapters, ['1'], p).map(c => c.num)).toEqual([1, 4]);
+  });
+
+  it('the cat\'s quick check agrees with the full list', () => {
+    const cases: [string[], Record<number, CompanionChapterProgress>][] = [
+      [[], {}],
+      [[], { 3: prog(0, '2026-10-21T10:00:00Z', 0) }],
+      [[], { 4: prog(0, '2026-10-21T11:00:00Z', 0.4) }],
+      [['2'], {}],
+    ];
+    for (const [done, p] of cases) expect(hasReadAnything(done, p)).toBe(chaptersRead(chapters, done, p).length > 0);
   });
 });

@@ -1,10 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { audioUrl } from '../lib/chapterAudio';
 import { Helmet } from 'react-helmet-async';
 import { useLanguage } from '../hooks/useLanguage';
 import { useLocation, useParams } from 'react-router-dom';
-import { CHAPTERS_DATA } from '../data/chapters';
-import { BREATH_PATTERNS } from '../data/breathPatterns';
+import type { Chapter } from '../data/types';
+
+// The chapter and breath texts are large; they load only on the pages that need
+// them (those pages load the same pieces anyway).
+type Loaded = { chapters?: Record<string, Chapter[]>; breath?: any[] };
+const loaded: Loaded = {};
+function useSeoData(needChapters: boolean, needBreath: boolean): Loaded & { ready: boolean } {
+  const [, bump] = useState(0);
+  useEffect(() => {
+    let alive = true;
+    if (needChapters && !loaded.chapters) import('../data/chapters').then(m => { loaded.chapters = m.CHAPTERS_DATA; if (alive) bump(n => n + 1); }).catch(() => {});
+    if (needBreath && !loaded.breath) import('../data/breathPatterns').then(m => { loaded.breath = m.BREATH_PATTERNS as any[]; if (alive) bump(n => n + 1); }).catch(() => {});
+    return () => { alive = false; };
+  }, [needChapters, needBreath]);
+  return { ...loaded, ready: (!needChapters || !!loaded.chapters) && (!needBreath || !!loaded.breath) };
+}
 
 const BASE_URL = 'https://neurodivergent-mindfulness.org';
 
@@ -415,6 +429,7 @@ export const SEO: React.FC = () => {
 
   // Normalise path: strip lang prefix for matching
   const cleanPath = path.replace(/^\/(en|el)/, '') || '/';
+  const data = useSeoData(!!params.id && cleanPath.startsWith('/chapters/'), !!params.id && cleanPath.startsWith('/practice/breath/'));
   // Router paths have the /en or /el prefix stripped (it is the basename).
   // Page URLs carry the language being read, so a shared or canonical link
   // opens that version; the bare root stays the language-neutral entry.
@@ -461,7 +476,7 @@ export const SEO: React.FC = () => {
 
   // ── Chapters: individual chapter ─────────────────────────────────
   } else if (params.id && cleanPath.startsWith('/chapters/')) {
-    const chapters = CHAPTERS_DATA[lang === 'en' ? 'en' : 'el'] || CHAPTERS_DATA['el'];
+    const chapters = data.chapters?.[lang === 'en' ? 'en' : 'el'] || data.chapters?.['el'];
     const chapter = chapters?.find((c: any) => c.num === Number(params.id));
     if (chapter) {
       title = lang === 'en'
@@ -485,7 +500,7 @@ export const SEO: React.FC = () => {
 
   // ── Practice: breath exercise ────────────────────────────────────
   } else if (params.id && cleanPath.startsWith('/practice/breath/')) {
-    const pattern = (BREATH_PATTERNS as any[]).find((p: any) => p.id === params.id);
+    const pattern = (data.breath || []).find((p: any) => p.id === params.id);
     if (pattern) {
       const ptitle = lang === 'en' ? pattern.title.en : pattern.title.el;
       const psub   = lang === 'en' ? pattern.subtitle.en : pattern.subtitle.el;
@@ -594,7 +609,8 @@ export const SEO: React.FC = () => {
     }
   }, [keepPrerendered]);
 
-  if (keepPrerendered) return null;
+  // Until the page's text has loaded, leave the head as it is.
+  if (keepPrerendered || !data.ready) return null;
 
   return (
     <Helmet>

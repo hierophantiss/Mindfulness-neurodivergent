@@ -1,5 +1,5 @@
 import { useFocusTrap } from '../hooks/useFocusTrap';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link, useLocation } from 'react-router-dom';
 import { BookOpen, Check, ChevronDown, ChevronRight, X } from 'lucide-react';
@@ -41,7 +41,11 @@ export default function CompanionSheet() {
   const modalRef = useFocusTrap(sheetVisible, close);
 
   // Any link inside the sheet takes you somewhere: the sheet steps aside.
+  // (Not when the sheet first appears: it loads only once it is opened.)
+  const shownAt = useRef(location.pathname);
   useEffect(() => {
+    if (shownAt.current === location.pathname) return;
+    shownAt.current = location.pathname;
     setSheetVisible(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);

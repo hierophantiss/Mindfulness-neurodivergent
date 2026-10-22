@@ -4,7 +4,6 @@ import { useOutlet, useLocation } from 'react-router-dom';
 import { cn } from '../lib/utils';
 import Companion from './Companion';
 import NavigationMenu from './NavigationMenu';
-import CompanionSheet from './CompanionSheet';
 import Onboarding from './Onboarding';
 import OfflineNotification from './OfflineNotification';
 import { useLanguage } from '../hooks/useLanguage';
@@ -12,6 +11,13 @@ import { motion, AnimatePresence } from 'motion/react';
 import { SEO } from './SEO';
 import { ErrorBoundary } from './ErrorBoundary';
 import { isUpdateWaiting, applyWaitingUpdate } from '../lib/appUpdate';
+import { lazyWithReload } from '../lib/lazyWithReload';
+import { useCompanion } from '../hooks/useCompanion';
+
+// The cat's sheet needs the text of every chapter, so it loads only once it is
+// first opened (and quietly in the background once the page has settled).
+const loadSheet = () => import('./CompanionSheet');
+const CompanionSheet = lazyWithReload(loadSheet);
 
 export default function Layout() {
     const { reduceMotion } = useAccessibility();
@@ -20,6 +26,13 @@ export default function Layout() {
   const { t, language } = useLanguage();
   const location = useLocation();
   const outlet = useOutlet();
+  const { sheetVisible } = useCompanion();
+  const [sheetWanted, setSheetWanted] = React.useState(false);
+  useEffect(() => { if (sheetVisible) setSheetWanted(true); }, [sheetVisible]);
+  useEffect(() => {
+    const idle = (window as any).requestIdleCallback || ((cb: () => void) => setTimeout(cb, 2500));
+    idle(() => { loadSheet().catch(() => {}); });
+  }, []);
   const mainRef = React.useRef<HTMLElement>(null);
 
 
@@ -94,7 +107,11 @@ export default function Layout() {
       </div>
 
 
-      <CompanionSheet />
+      {(sheetWanted || sheetVisible) && (
+        <React.Suspense fallback={null}>
+          <CompanionSheet />
+        </React.Suspense>
+      )}
       <Onboarding />
     </div>
   );

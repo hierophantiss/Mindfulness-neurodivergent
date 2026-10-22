@@ -1,5 +1,5 @@
 import React, { createContext, useContext, ReactNode, useCallback } from 'react';
-import { playSound } from '../lib/soundEffects';
+import { ringBell } from '../lib/sound';
 
 type RewardType = 'breath' | 'program' | 'journal';
 
@@ -20,7 +20,7 @@ export const useReward = () => {
 // covered the page for seconds, and on phones it could leave the screen dark.
 export const RewardProvider = ({ children }: { children: ReactNode }) => {
   const triggerReward = useCallback((_type: RewardType) => {
-    playSound('complete');
+    ringBell({ soft: true });
   }, []);
 
   return (
