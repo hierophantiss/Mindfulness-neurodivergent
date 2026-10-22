@@ -3,16 +3,31 @@ import {createRoot} from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 import { registerSW } from 'virtual:pwa-register';
+import { ErrorBoundary } from './components/ErrorBoundary';
+import { reloadOnceForUpdate } from './lib/lazyWithReload';
+import { setUpdater, markUpdateWaiting } from './lib/appUpdate';
+
+// A piece of the old version is gone after an update: load the new version (once).
+window.addEventListener('vite:preloadError', (event) => {
+  if (reloadOnceForUpdate()) event.preventDefault();
+});
 
 if ('serviceWorker' in navigator) {
-  registerSW({ immediate: true });
+  const updateSW = registerSW({
+    immediate: true,
+    // A new version is ready: it waits for a calm moment (see appUpdate.ts).
+    onNeedRefresh: markUpdateWaiting,
+  });
+  setUpdater(updateSW);
 }
 
 const root = createRoot(document.getElementById('root')!);
 
 root.render(
   <StrictMode>
-    <App />
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
   </StrictMode>,
 );
 

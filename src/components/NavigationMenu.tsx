@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import InfoModal from './InfoModal';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
+import { downloadBackup, restoreBackup } from '../lib/backup';
 import { Home, BookOpen, Activity, Notebook, Menu, X, Info, Music, Compass, LayoutGrid, EyeOff, Eye, Database, User as UserIcon, LogOut, Download, Sparkles, RotateCcw, Headphones } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -296,20 +297,7 @@ export default function NavigationMenu() {
                      <div className="flex gap-2">
                        <button 
                          onClick={() => {
-                           const data: Record<string, string> = {};
-                           for(let i = 0; i < localStorage.length; i++) {
-                             const key = localStorage.key(i);
-                             if (key && !key.startsWith('vite')) {
-                               data[key] = localStorage.getItem(key) || '';
-                             }
-                           }
-                           const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-                           const url = URL.createObjectURL(blob);
-                           const a = document.createElement('a');
-                           a.href = url;
-                           a.download = `mindfulness-backup-${new Date().toISOString().split('T')[0]}.json`;
-                           a.click();
-                           URL.revokeObjectURL(url);
+                           downloadBackup();
                            showToast(language === 'en' ? 'Data exported!' : 'Τα δεδομένα εξήχθησαν!');
                          }}
                          className="px-3 py-1.5 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-medium transition-colors"
@@ -328,12 +316,9 @@ export default function NavigationMenu() {
                              const reader = new FileReader();
                              reader.onload = (event) => {
                                try {
-                                 const parsed = JSON.parse(event.target?.result as string);
-                                 Object.keys(parsed).forEach(k => {
-                                   localStorage.setItem(k, parsed[k]);
-                                 });
-                                                                                                     showToast(language === 'en' ? 'Data imported successfully!' : 'Τα δεδομένα εισήχθησαν!');
-                                  setTimeout(() => window.location.reload(), 1500);
+                                 restoreBackup(event.target?.result as string);
+                                 showToast(language === 'en' ? 'Data imported successfully!' : 'Τα δεδομένα εισήχθησαν!');
+                                 setTimeout(() => window.location.reload(), 1500);
                                 } catch(err) {
                                   showToast(language === 'en' ? 'Invalid backup file' : 'Άκυρο αρχείο αντιγράφου');
                                 }

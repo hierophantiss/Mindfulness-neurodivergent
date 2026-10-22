@@ -10,6 +10,8 @@ import OfflineNotification from './OfflineNotification';
 import { useLanguage } from '../hooks/useLanguage';
 import { motion, AnimatePresence } from 'motion/react';
 import { SEO } from './SEO';
+import { ErrorBoundary } from './ErrorBoundary';
+import { isUpdateWaiting, applyWaitingUpdate } from '../lib/appUpdate';
 
 export default function Layout() {
     const { reduceMotion } = useAccessibility();
@@ -27,6 +29,11 @@ export default function Layout() {
     if (mainRef.current) {
       mainRef.current.scrollTo(0, 0);
     }
+  }, [location.pathname]);
+
+  // Back on the home page is a calm moment to load a new version, if one waits.
+  useEffect(() => {
+    if (location.pathname === '/' && isUpdateWaiting()) applyWaitingUpdate();
   }, [location.pathname]);
 
   
@@ -65,7 +72,9 @@ export default function Layout() {
                 className="flex flex-col flex-1 h-full w-full"
               >
                 {/* React Router v6 useOutlet keeps the right context for the unmounting route. */}
-                {outlet ? React.cloneElement(outlet as React.ReactElement, { key: location.pathname }) : null}
+                <ErrorBoundary resetKey={location.pathname}>
+                  {outlet ? React.cloneElement(outlet as React.ReactElement, { key: location.pathname }) : null}
+                </ErrorBoundary>
               </motion.div>
             </AnimatePresence>
           </div>

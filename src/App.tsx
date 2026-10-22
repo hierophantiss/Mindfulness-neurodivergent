@@ -3,6 +3,7 @@ import { BrowserRouter, HashRouter, Routes, Route, Navigate } from 'react-router
 import { HelmetProvider } from 'react-helmet-async';
 import { CompanionProvider } from './hooks/useCompanion';
 import Layout from './components/Layout';
+import { lazyWithReload } from './lib/lazyWithReload';
 
 import { LanguageProvider, useLanguage } from './hooks/useLanguage';
 import { ThemeProvider } from './hooks/useTheme';
@@ -13,28 +14,28 @@ import { ProgressProvider } from './contexts/ProgressContext';
 import { AudioProvider } from './contexts/AudioContext';
 import { ActivityTrackerProvider } from './contexts/ActivityTrackerContext';
 
-const InteractiveBackground = React.lazy(() => import('./components/InteractiveBackground').then(m => ({ default: m.InteractiveBackground })));
-const Dashboard = React.lazy(() => import('./pages/Dashboard'));
-const Chapters = React.lazy(() => import('./pages/Chapters'));
-const NotFound = React.lazy(() => import('./pages/NotFound'));
-const ChapterDetail = React.lazy(() => import('./pages/ChapterDetail'));
-const Program = React.lazy(() => import('./pages/Program'));
-const ProgramWeek = React.lazy(() => import('./pages/ProgramWeek'));
-const Practice = React.lazy(() => import('./pages/Practice'));
-const PracticeMovement = React.lazy(() => import('./pages/PracticeMovement'));
-const PracticeMicrodoses = React.lazy(() => import('./pages/PracticeMicrodoses'));
-const BreathRoute = React.lazy(() => import('./pages/BreathRoute'));
-const PracticeSection = React.lazy(() => import('./components/PracticeSection'));
-const PracticeSwaying = React.lazy(() => import('./pages/PracticeSwaying'));
-const Journal = React.lazy(() => import('./pages/Journal'));
-const Faq = React.lazy(() => import('./pages/Faq'));
-const GenericExercise = React.lazy(() => import('./pages/GenericExercise'));
-const Method = React.lazy(() => import('./pages/Method'));
-const Methodology = React.lazy(() => import('./pages/Methodology'));
-const RabbitHole = React.lazy(() => import('./pages/RabbitHole'));
-const Sanctuary = React.lazy(() => import('./pages/Sanctuary'));
-const Settings = React.lazy(() => import('./pages/Settings'));
-const PrintWorkbook = React.lazy(() => import('./pages/PrintWorkbook'));
+const InteractiveBackground = lazyWithReload(() => import('./components/InteractiveBackground').then(m => ({ default: m.InteractiveBackground })));
+const Dashboard = lazyWithReload(() => import('./pages/Dashboard'));
+const Chapters = lazyWithReload(() => import('./pages/Chapters'));
+const NotFound = lazyWithReload(() => import('./pages/NotFound'));
+const ChapterDetail = lazyWithReload(() => import('./pages/ChapterDetail'));
+const Program = lazyWithReload(() => import('./pages/Program'));
+const ProgramWeek = lazyWithReload(() => import('./pages/ProgramWeek'));
+const Practice = lazyWithReload(() => import('./pages/Practice'));
+const PracticeMovement = lazyWithReload(() => import('./pages/PracticeMovement'));
+const PracticeMicrodoses = lazyWithReload(() => import('./pages/PracticeMicrodoses'));
+const BreathRoute = lazyWithReload(() => import('./pages/BreathRoute'));
+const PracticeSection = lazyWithReload(() => import('./components/PracticeSection'));
+const PracticeSwaying = lazyWithReload(() => import('./pages/PracticeSwaying'));
+const Journal = lazyWithReload(() => import('./pages/Journal'));
+const Faq = lazyWithReload(() => import('./pages/Faq'));
+const GenericExercise = lazyWithReload(() => import('./pages/GenericExercise'));
+const Method = lazyWithReload(() => import('./pages/Method'));
+const Methodology = lazyWithReload(() => import('./pages/Methodology'));
+const RabbitHole = lazyWithReload(() => import('./pages/RabbitHole'));
+const Sanctuary = lazyWithReload(() => import('./pages/Sanctuary'));
+const Settings = lazyWithReload(() => import('./pages/Settings'));
+const PrintWorkbook = lazyWithReload(() => import('./pages/PrintWorkbook'));
 
 const FallbackLoader = () => (
   <div role="status" aria-label="Loading" className="flex items-center justify-center min-h-[50vh] bg-transparent">

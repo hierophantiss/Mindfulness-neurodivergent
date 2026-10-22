@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { downloadBackup, restoreBackup } from '../lib/backup';
 import { motion } from 'motion/react';
 import { ChevronLeft, Languages, Activity, Info, LogOut, Sparkles, Moon, Sun, Database, FileText, Download, Bug, ShieldCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -232,17 +233,7 @@ export default function Settings() {
             label: { el: 'Αποθήκευση Δεδομένων (Backup)', en: 'Save Data (Backup)' },
             value: null,
             action: () => {
-              const dataStr = localStorage.getItem('mindful_companion_v5');
-              if (!dataStr) return;
-              const blob = new Blob([dataStr], { type: 'application/json' });
-              const url = URL.createObjectURL(blob);
-              const a = document.createElement('a');
-              a.href = url;
-              a.download = `awareness_backup_${companionData.userId?.substring(0, 8) || 'v5'}.json`;
-              document.body.appendChild(a);
-              a.click();
-              document.body.removeChild(a);
-              URL.revokeObjectURL(url);
+              downloadBackup();
               alert(language === 'el' ? 'Τα δεδομένα σας αποθηκεύτηκαν σε αρχείο.' : 'Your data has been saved to a file.');
             },
             color: 'text-indigo-400'
@@ -262,13 +253,9 @@ export default function Settings() {
                 const reader = new FileReader();
                 reader.onload = (event) => {
                   try {
-                    const result = event.target?.result as string;
-                    const parsed = JSON.parse(result);
-                    if (parsed && typeof parsed === 'object') {
-                      localStorage.setItem('mindful_companion_v5', JSON.stringify(parsed));
-                      alert(language === 'el' ? 'Επιτυχής επαναφορά! Η εφαρμογή θα επανεκκινηθεί.' : 'Restore successful! App will reload.');
-                      window.location.reload();
-                    }
+                    restoreBackup(event.target?.result as string);
+                    alert(language === 'el' ? 'Επιτυχής επαναφορά! Η εφαρμογή θα επανεκκινηθεί.' : 'Restore successful! App will reload.');
+                    window.location.reload();
                   } catch (err) {
                     alert(language === 'el' ? 'Σφάλμα ανάγνωσης αρχείου.' : 'Error reading backup file.');
                   }
