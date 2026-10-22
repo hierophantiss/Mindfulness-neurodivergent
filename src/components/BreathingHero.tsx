@@ -118,7 +118,6 @@ export function BreathingHero({
           withEarth={false}
           breathPhase={breathPhase}
           durationMs={durationMs}
-          still
           hideBreathRing
           bare
         />

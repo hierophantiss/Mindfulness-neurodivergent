@@ -173,7 +173,7 @@ export default function Dashboard() {
           </div>
 
           {/* Smaller on short screens, so "How do you feel" and "Continue" fit on the first screen */}
-          <div className="w-[min(58%,max(110px,calc(100dvh-530px)))] mx-auto flex items-center justify-center"><FourfoldAxisHero activeAxis={null} /></div>
+          <div className="w-[min(58%,max(110px,calc(100dvh-530px)))] mx-auto flex items-center justify-center"><FourfoldAxisHero /></div>
           
           <motion.div
             initial={{ opacity: 0 }}
