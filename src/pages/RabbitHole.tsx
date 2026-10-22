@@ -89,9 +89,13 @@ export default function RabbitHole() {
     }
   };
 
+  // Log on leaving the page if an article was being read (switching articles
+  // is logged in setActiveArticle; this runs only when the page closes).
+  const activeArticleRef = useRef(activeArticle);
+  activeArticleRef.current = activeArticle;
   useEffect(() => {
-    // Log on unmount if an article was being read
     return () => {
+      const activeArticle = activeArticleRef.current;
       if (activeArticle && readingStartTimeRef.current) {
         const duration = Math.round((Date.now() - readingStartTimeRef.current) / 1000);
         if (duration >= 20) {
@@ -105,7 +109,7 @@ export default function RabbitHole() {
         }
       }
     };
-  }, [activeArticle, logActivity]);
+  }, [logActivity]);
   
   const [currentPage, setCurrentPage] = useState(0);
 

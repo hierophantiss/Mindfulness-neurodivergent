@@ -51,9 +51,11 @@ export const CHECKIN_TAGS: Record<string, CheckinTag[]> = {
   'short-moment': [B], 'tilopa-rest': [B], 'silence-background': [B], 'open-presence': [B],
   'sky-gazing-micro': [B], 'spacious-metta': [B],
   // breathing patterns
-  'breath-5-5': [B], 'breath-4-6': [H], '4-2-6-1': [H], '4-2-7-1': [H], '4-7-8': [], // only a variant of 4-2-7 (17/10): its 7-second hold is not a first step in tension 'box-breathing': [L, B], 'sos-breath': [H],
+  // 4-7-8: only a variant of 4-2-7 (17/10); its 7-second hold is not a first step in tension.
+  'breath-5-5': [B], 'breath-4-6': [H], '4-2-6-1': [H], '4-2-7-1': [H], '4-7-8': [], 'box-breathing': [L, B], 'sos-breath': [H],
   // movement
-  '5-5': [B, L], 'deep-bow-5-5': [L, B], 'lotus-bloom-5-5': [], // removed (17/10): its link opens lotus-resonant 'be-like-a-flower-5-5': [L, B],
+  // lotus-bloom-5-5: removed (17/10); its link opens lotus-resonant.
+  '5-5': [B, L], 'deep-bow-5-5': [L, B], 'lotus-bloom-5-5': [], 'be-like-a-flower-5-5': [L, B],
   'tai-chi-cloud-hands': [H, L], 'qigong-lifting-sky': [L],
   'taichi-fourfold': [B, H], 'taichi-box': [L, B], 'taichi-resonant': [B, H], 'taichi-active': [L],
   'lotus-fourfold': [B], 'lotus-box': [L, B], 'lotus-resonant': [B, H], 'lotus-active': [L],

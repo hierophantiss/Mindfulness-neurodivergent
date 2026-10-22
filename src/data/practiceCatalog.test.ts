@@ -1,3 +1,5 @@
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
 import { describe, it, expect } from 'vitest';
 import { PRACTICE_CATALOG, CHECKIN_TAGS, forTag, pickForTag, pickWithUsage, usageFromLogs } from './practiceCatalog';
 import { CHECKIN_OPTIONS, CHECKIN_DETAILS, getCheckinActions, getAllForChoice } from './stateCheckin';
@@ -130,5 +132,13 @@ describe('numbness starts with gentle activation', () => {
     const hypo = forTag('hypo');
     expect(hypo.filter(i => i.axis === 'space').map(i => i.id)).toEqual([]);
     expect(hypo.some(i => i.kind === 'voice')).toBe(true);
+  });
+
+  it('no tag hides inside a comment (a line comment swallows what follows it)', () => {
+    const src = readFileSync(resolve('src/data/practiceCatalog.ts'), 'utf8');
+    const swallowed = src.split('\n').filter(line => /\/\/.*'[\w-]+':\s*\[/.test(line));
+    expect(swallowed).toEqual([]);
+    expect(CHECKIN_TAGS['sos-breath']).toEqual(['hyper']);
+    expect(CHECKIN_TAGS['be-like-a-flower-5-5']).toEqual(['hypo', 'balanced']);
   });
 });

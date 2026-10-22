@@ -74,39 +74,12 @@ export interface CompanionChapterProgress {
   page?: number;
 }
 
-export interface QuestionnaireData {
-  completed: boolean;
-  intensity: 'gentle' | 'standard' | 'deep';
-  focus: string[];
-  dailyTime: number;
-}
-
-export interface ChatMessage {
-  role: 'user' | 'assistant' | 'system';
-  content: string;
-  timestamp: string;
-}
-
 export interface CompanionData {
+  /** How far you read in each chapter, and the page you were on. */
   chapterProgress: Record<number, CompanionChapterProgress>;
   programProgress: { week: number; day: number; lastVisit: string | null };
-  moodHistory: any[];
-  dailyLogs: any[];
-  activeDailyPlan: any | null;
-  lastScreen: string;
   lastChapter: number | null;
   chapterScheme?: number;
-  firstVisit: string;
-  lastSeen: string | null;
-  visits: { date: string; screen: string }[];
-  bubbleCount: number;
+  /** Where you moved the cat to. */
   fabPos: { x: number; y: number } | null;
-  dailyOpen: { date: string; count: number };
-  posResetV3: boolean;
-  introSeen: boolean;
-  onboarded?: boolean;
-  questionnaire?: QuestionnaireData;
-  chatHistory?: ChatMessage[];
-  companionModeEnabled?: boolean;
-  userId?: string;
 }

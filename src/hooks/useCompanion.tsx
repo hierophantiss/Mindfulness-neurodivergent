@@ -1,50 +1,24 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { CompanionData } from '../data/types';
-import { useLocation } from 'react-router-dom';
+import { readJSON, writeJSON } from '../lib/storage';
 import { CHAPTER_SCHEME, migrateChapterProgress, migrateLastChapter } from '../utils/chapterNumbering';
 
 const COMPANION_KEY = 'mindful_companion_v5';
 
-const generateAnonymizedID = (): string => {
-  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
-    return crypto.randomUUID();
-  }
-  return 'xxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-    const r = Math.random() * 16 | 0;
-    const v = c === 'x' ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
-};
-
+// What the cat remembers: how far you read, the programme day, where you put it.
+// (Older versions kept more here: visits, logs, an ID. They are dropped on load.)
 const defaultCompanionData = (): CompanionData => ({
   chapterProgress: {},
   programProgress: { week: 0, day: 0, lastVisit: null },
-  moodHistory: [],
-  dailyLogs: [],
-  activeDailyPlan: null,
-  lastScreen: 'home',
   lastChapter: null,
   chapterScheme: CHAPTER_SCHEME,
-  firstVisit: new Date().toISOString(),
-  lastSeen: null,
-  visits: [],
-  bubbleCount: 0,
   fabPos: null,
-  dailyOpen: { date: '', count: 0 },
-  posResetV3: true,
-  introSeen: false,
-  questionnaire: undefined,
-  chatHistory: [],
-  companionModeEnabled: false,
-  userId: generateAnonymizedID()
 });
 
 interface CompanionContextType {
   companionData: CompanionData;
   updateCompanionData: (updates: Partial<CompanionData> | ((prev: CompanionData) => CompanionData)) => void;
-  trackScreen: (screenId: string) => void;
   updateChapterProgress: (chapterNum: number, progressPct: number, page?: number) => void;
-  trackActivity: (type: string, payload?: any) => void;
   sheetVisible: boolean;
   setSheetVisible: (visible: boolean) => void;
   companionMessage: string | null;
@@ -55,64 +29,30 @@ const CompanionContext = createContext<CompanionContextType | undefined>(undefin
 
 export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [companionData, setCompanionData] = useState<CompanionData>(() => {
-    try {
-      const stored = localStorage.getItem(COMPANION_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (parsed.chapterScheme !== CHAPTER_SCHEME) {
-          parsed.chapterProgress = migrateChapterProgress(parsed.chapterProgress);
-          parsed.lastChapter = migrateLastChapter(parsed.lastChapter);
-          parsed.chapterScheme = CHAPTER_SCHEME;
-        }
-        const merged = { ...defaultCompanionData(), ...parsed };
-        if (!merged.userId) {
-          merged.userId = generateAnonymizedID();
-        }
-        return merged;
-      }
-    } catch (e) {
-      console.warn('Error loading companion data', e);
-    }
-    return defaultCompanionData();
+    const parsed = readJSON<Partial<CompanionData> | null>(COMPANION_KEY, null);
+    if (!parsed || typeof parsed !== 'object') return defaultCompanionData();
+    const d = defaultCompanionData();
+    const migrate = parsed.chapterScheme !== CHAPTER_SCHEME;
+    return {
+      chapterProgress: migrate ? migrateChapterProgress(parsed.chapterProgress) : (parsed.chapterProgress || {}),
+      programProgress: parsed.programProgress || d.programProgress,
+      lastChapter: migrate ? migrateLastChapter(parsed.lastChapter) : (parsed.lastChapter ?? null),
+      chapterScheme: CHAPTER_SCHEME,
+      fabPos: parsed.fabPos ?? null,
+    };
   });
 
   const [sheetVisible, setSheetVisible] = useState(false);
   const [companionMessage, setCompanionMessage] = useState<string | null>(null);
-  const location = useLocation();
 
   useEffect(() => {
-    localStorage.setItem(COMPANION_KEY, JSON.stringify(companionData));
+    writeJSON(COMPANION_KEY, companionData);
   }, [companionData]);
-
-  useEffect(() => {
-    // Automatically track screen changes
-    const path = location.pathname;
-    let screenId = 'home';
-    if (path.startsWith('/chapters')) screenId = 'chapters';
-    else if (path.startsWith('/program')) screenId = 'program';
-    else if (path.startsWith('/practice')) screenId = 'practice';
-    else if (path.startsWith('/journal')) screenId = 'journal';
-    
-    trackScreen(screenId);
-  }, [location.pathname]);
 
   const updateCompanionData = useCallback((updates: Partial<CompanionData> | ((prev: CompanionData) => CompanionData)) => {
     setCompanionData(prev => {
       const next = typeof updates === 'function' ? updates(prev) : { ...prev, ...updates };
       return next;
-    });
-  }, []);
-
-  const trackScreen = useCallback((screenId: string) => {
-    setCompanionData(prev => {
-      const visits = [...prev.visits, { date: new Date().toISOString(), screen: screenId }];
-      if (visits.length > 50) visits.shift();
-      return {
-        ...prev,
-        lastScreen: screenId,
-        lastSeen: new Date().toISOString(),
-        visits
-      };
     });
   }, []);
 
@@ -146,30 +86,11 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     });
   }, []);
 
-  const trackActivity = useCallback((type: string, payload: any = {}) => {
-    setCompanionData(prev => {
-      const entry = {
-        t: new Date().toISOString(),
-        type,
-        data: payload,
-        screen: prev.lastScreen
-      };
-      
-      const dailyLogs = [...prev.dailyLogs, entry];
-      if (dailyLogs.length > 100) dailyLogs.shift();
-      
-      return { ...prev, dailyLogs };
-    });
-  }, []);
-
-
   return (
     <CompanionContext.Provider value={{
       companionData,
       updateCompanionData,
-      trackScreen,
       updateChapterProgress,
-      trackActivity,
       sheetVisible,
       setSheetVisible,
       companionMessage,

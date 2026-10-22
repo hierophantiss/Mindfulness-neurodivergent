@@ -1,9 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { CHAPTER_SCHEME, migrateCompletedChapters } from '../utils/chapterNumbering';
+import { readJSON, writeJSON } from '../lib/storage';
+
+const PROGRESS_KEY = 'awareness_progress';
 
 interface ProgressData {
   completedLessons: string[]; // "week-day"
-  completedBreaths: string[];
   completedChapters: string[];
   chapterScheme?: number;
 }
@@ -11,41 +13,28 @@ interface ProgressData {
 interface ProgressContextType {
   progress: ProgressData;
   markLessonComplete: (week: number, day: number) => void;
-  markBreathComplete: (id: string) => void;
   markChapterComplete: (id: string | number) => void;
   toggleLesson: (week: number, day: number) => void;
   isLessonComplete: (week: number, day: number) => boolean;
-  isBreathComplete: (id: string) => boolean;
   isChapterComplete: (id: string | number) => boolean;
 }
 
 const ProgressContext = createContext<ProgressContextType | undefined>(undefined);
 
 export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // Chapters finished and days of the programme done: the path through the
+  // book, where "how far you are" means something. (Practices are not
+  // "completed": they live in the activity record, lib/activityLog.ts.)
   const [progress, setProgress] = useState<ProgressData>(() => {
-    const saved = localStorage.getItem('awareness_progress');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (parsed.chapterScheme !== CHAPTER_SCHEME) {
-          parsed.completedChapters = migrateCompletedChapters(parsed.completedChapters);
-          parsed.chapterScheme = CHAPTER_SCHEME;
-        }
-        return parsed;
-      } catch (e) {
-        console.error('Failed to parse progress', e);
-      }
-    }
-    return {
-      completedLessons: [],
-      completedBreaths: [],
-      completedChapters: [],
-      chapterScheme: CHAPTER_SCHEME
-    };
+    const saved = readJSON<Partial<ProgressData> & { completedBreaths?: unknown }>(PROGRESS_KEY, {});
+    const list = (v: unknown) => (Array.isArray(v) ? v.map(String) : []);
+    let completedChapters = list(saved.completedChapters);
+    if (saved.chapterScheme !== CHAPTER_SCHEME) completedChapters = migrateCompletedChapters(completedChapters);
+    return { completedLessons: list(saved.completedLessons), completedChapters, chapterScheme: CHAPTER_SCHEME };
   });
 
   useEffect(() => {
-    localStorage.setItem('awareness_progress', JSON.stringify(progress));
+    writeJSON(PROGRESS_KEY, progress);
   }, [progress]);
 
   const markLessonComplete = (week: number, day: number) => {
@@ -71,15 +60,6 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     });
   };
 
-  const markBreathComplete = (id: string) => {
-    if (!progress.completedBreaths.includes(id)) {
-      setProgress(prev => ({
-        ...prev,
-        completedBreaths: [...prev.completedBreaths, id]
-      }));
-    }
-  };
-
   const markChapterComplete = (id: string | number) => {
     const key = String(id);
     if (!progress.completedChapters.includes(key)) {
@@ -93,9 +73,6 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const isLessonComplete = (week: number, day: number) => 
     progress.completedLessons.includes(`${week}-${day}`);
 
-  const isBreathComplete = (id: string) => 
-    progress.completedBreaths.includes(id);
-
   const isChapterComplete = (id: string | number) => 
     progress.completedChapters.includes(String(id));
 
@@ -103,11 +80,9 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     <ProgressContext.Provider value={{ 
       progress, 
       markLessonComplete, 
-      markBreathComplete, 
       markChapterComplete,
       toggleLesson,
       isLessonComplete,
-      isBreathComplete,
       isChapterComplete
     }}>
       {children}

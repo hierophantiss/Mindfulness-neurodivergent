@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { practiceOf } from '../lib/quietAxis';
 import { ArrowLeft, ChevronLeft, ChevronRight, RefreshCw, Plus, Search, Calendar, X, Heart, Wind, Lightbulb, Compass } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
@@ -6,7 +7,7 @@ import { useLanguage } from '../hooks/useLanguage';
 import { cn } from '../lib/utils';
 import type { Axis } from '../data/types';
 import { AXIS_LABEL, AXIS_COLOR, CHECKIN_OPTIONS, getCheckinOption, type CheckinChoice } from '../data/stateCheckin';
-import { PRACTICE_CATALOG, dayOfYear } from '../data/practiceCatalog';
+import { dayOfYear } from '../data/practiceCatalog';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 
 type Lang = 'el' | 'en';
@@ -16,7 +17,6 @@ type T = Record<Lang, string>;
 // ☐ Body ☐ Breath ☐ Attention ☐ Space — and "What I noticed today".
 
 const AXES: Axis[] = ['body', 'breath', 'attention', 'space'];
-const PRACTICE_CATEGORIES = ['breath', 'grounding', 'movement', 'swaying', 'vocal', 'microdose'];
 
 // Questions per axis; the first of each is the book's worksheet question (Ch. 9).
 const AXIS_QUESTIONS: Record<Axis, Record<Lang, string[]>> = {
@@ -146,13 +146,11 @@ export default function Journal() {
     const names: { el: string; en: string }[] = [];
     const seen = new Set<string>();
     for (const l of logs) {
-      if (!l.timestamp || l.completed === false) continue;
-      if (toLocalDateStr(new Date(l.timestamp)) !== dateStr) continue;
-      const item = l.itemId ? PRACTICE_CATALOG.find(i => i.id === l.itemId || i.path.split('/').pop() === l.itemId) : undefined;
-      const axis = (item?.axis || l.axis) as Axis | undefined;
-      if (!item && !PRACTICE_CATEGORIES.includes(l.category)) continue;
-      if (axis && AXES.includes(axis)) axes.add(axis);
-      if (item && !seen.has(item.id)) { seen.add(item.id); names.push(item.title); }
+      if (!l.timestamp || toLocalDateStr(new Date(l.timestamp)) !== dateStr) continue;
+      const p = practiceOf(l);
+      if (!p) continue;
+      if (p.axis) axes.add(p.axis);
+      if (p.item && !seen.has(p.item.id)) { seen.add(p.item.id); names.push(p.item.title); }
     }
     return { axes: [...axes], names };
   }, [logs, dateStr]);

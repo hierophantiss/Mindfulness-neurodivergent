@@ -101,17 +101,10 @@ export default function GenericExercise() {
     return () => clearInterval(t);
   }, [running, total]);
 
-  // At the end: the soft bell, and the practice goes into the journal once.
+  // At the end: the soft bell, and the practice goes into the record once.
   useEffect(() => {
     if (!done || total <= 0 || sessionIdRef.current === 0) return;
-    const session = sessionIdRef.current;
     sessionIdRef.current = 0;
-    try {
-      const h = JSON.parse(localStorage.getItem('journal_history') || 'null') || { sessions: [], totalMin: 0 };
-      h.sessions.push({ id: session, date: new Date().toISOString().split('T')[0], type: id || 'generic', duration: total, ts: Date.now() });
-      h.totalMin = Math.round((h.totalMin || 0) + total / 60);
-      localStorage.setItem('journal_history', JSON.stringify(h));
-    } catch { /* storage unavailable */ }
     logActivity({ category: 'microdose', itemId: microdose?.id || id || 'generic', durationSeconds: total, completed: true, axis: exercise.axis });
     ringBell();
     // eslint-disable-next-line react-hooks/exhaustive-deps

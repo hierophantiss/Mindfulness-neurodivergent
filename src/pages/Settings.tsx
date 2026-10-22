@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { downloadBackup, restoreBackup } from '../lib/backup';
 import { motion } from 'motion/react';
-import { ChevronLeft, Languages, Activity, Info, LogOut, Sparkles, Moon, Sun, Database, FileText, Download, Bug, ShieldCheck } from 'lucide-react';
+import { ChevronLeft, Languages, Activity, Info, LogOut, Sparkles, Sun, Database, FileText, Download, Bug, ShieldCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
-import { useCompanion } from '../hooks/useCompanion';
 import { cn } from '../lib/utils';
 import { RainbowInfinity } from '../components/RainbowInfinity';
 
@@ -13,11 +12,9 @@ export default function Settings() {
   const navigate = useNavigate();
   const { language, setLanguage } = useLanguage();
   const { reduceMotion, toggleReduceMotion } = useAccessibility();
-  const { companionData } = useCompanion();
   const [canInstall, setCanInstall] = useState(false);
   const [showDebug, setShowDebug] = useState(false);
   const [debugLog, setDebugLog] = useState<string[]>([]);
-  const [copied, setCopied] = useState(false);
 
   const addLog = (msg: string) => {
     setDebugLog(prev => [...prev, `${new Date().toLocaleTimeString()}: ${msg}`]);
@@ -195,38 +192,12 @@ export default function Settings() {
           value: reduceMotion ? { el: 'Ενεργό', en: 'Enabled' } : { el: 'Ανενεργό', en: 'Disabled' },
           action: toggleReduceMotion,
           color: 'text-indigo-400'
-        },
-        {
-          id: 'stars',
-          icon: Moon,
-          label: { el: 'Φόντο (Αστέρια)', en: 'Background Stars' },
-          value: { el: 'Αυτόματο', en: 'Automatic' }, // Simulating for now
-          action: () => {},
-          color: 'text-purple-400'
         }
       ]
     },
     {
         title: { el: 'Δεδομένα', en: 'Data' },
         items: [
-          {
-            id: 'anonymity-id',
-            icon: ShieldCheck,
-            label: { el: 'Ανώνυμο Προφίλ (UUID)', en: 'Anonymous Profile (UUID)' },
-            value: copied 
-              ? { el: 'Αντιγράφηκε!', en: 'Copied!' } 
-              : companionData.userId 
-                ? (companionData.userId.substring(0, 13) + '...')
-                : { el: 'Δημιουργία...', en: 'Generating...' },
-            action: () => {
-              if (companionData.userId) {
-                navigator.clipboard.writeText(companionData.userId);
-                setCopied(true);
-                setTimeout(() => setCopied(false), 2000);
-              }
-            },
-            color: 'text-sky-400'
-          },
           {
             id: 'export-data',
             icon: Download,

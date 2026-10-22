@@ -4,6 +4,8 @@
 // Restoring also accepts the older Settings backup, which held only the
 // companion data (one object with chapterProgress, programProgress, ...).
 
+import { RECORD_VERSION_KEY } from './activityLog';
+
 const COMPANION_KEY = 'mindful_companion_v5';
 const SKIP = (key: string) => key.startsWith('vite') || key.startsWith('workbox');
 
@@ -52,5 +54,8 @@ export function restoreBackup(text: string, storage: Storage = localStorage): Ba
   const entries = Object.entries(data).filter(([k, v]) => typeof v === 'string' && !SKIP(k)) as [string, string][];
   if (!entries.length) throw new Error('empty backup');
   for (const [k, v] of entries) storage.setItem(k, v);
+  // A backup from before the one activity record: bring it up to date on the
+  // next start (lib/activityLog.ts folds its older histories in).
+  if (!(RECORD_VERSION_KEY in data)) storage.removeItem(RECORD_VERSION_KEY);
   return 'full';
 }

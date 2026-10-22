@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Zap, Focus, Anchor, Box, ArrowLeft } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../hooks/useLanguage';
 import { MICRODOSES_EXERCISES } from '../data/microdoses';
-import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 
 export default function PracticeMicrodoses() {
   const navigate = useNavigate();
@@ -14,31 +13,6 @@ export default function PracticeMicrodoses() {
   const [activeSpeed, setActiveSpeed] = useState<'all' | 'sos' | 'brief' | 'deep'>('all');
   const [activeSomatic, setActiveSomatic] = useState<'all' | 'stealth' | 'seated' | 'vibration'>('all');
   
-  const { logs } = useActivityTracker();
-
-  // Safely memoize completed exercises from journal_history
-  const completedFromJournal = useMemo(() => {
-    try {
-      const hStr = localStorage.getItem('journal_history');
-      if (hStr) {
-        const h = JSON.parse(hStr);
-        return new Set(h.sessions?.map((s: any) => s.type) || []);
-      }
-    } catch (e) {}
-    return new Set<string>();
-  }, [logs]);
-
-  // Determine if a specific microdose is completed
-  const isCompleted = (exId: string): boolean => {
-    if (completedFromJournal.has(exId)) return true;
-    
-    // Check logs for match on exId or normalized ID (such as 5-5)
-    const normalizedId = exId === 'rhythm-5-5' ? '5-5' : exId === 'breath-4-2-7' ? '4-2-7-1' : exId;
-    if (logs && logs.some((log: any) => log.itemId === exId || log.itemId === normalizedId)) return true;
-    
-    return false;
-  };
-
   const matchesSomaticFilter = (exId: string, filterId: string): boolean => {
     if (filterId === 'all') return true;
     
@@ -171,12 +145,6 @@ export default function PracticeMicrodoses() {
             <span className="text-[10px] text-white/40 tracking-wider">
               {language === 'el' ? 'Πρόταση της Ημέρας' : 'Suggested Daily Core'}
             </span>
-            {isCompleted(suggestedExercise.id) && (
-              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/15 tracking-wider uppercase">
-                <span className="w-1 h-1 rounded-full bg-emerald-400 shadow-[0_0_4px_rgba(52,211,153,0.6)]" />
-                {language === 'el' ? 'ΟΛΟΚΛΗΡΩΘΗΚΕ' : 'COMPLETED'}
-              </span>
-            )}
           </div>
           
           <h3 className="text-2xl md:text-3xl font-serif text-white/9 drop-shadow-sm leading-tight italic">
@@ -352,7 +320,6 @@ export default function PracticeMicrodoses() {
         {filteredExercises.map((ex, idx) => {
           const color = getTypeColor(ex.type);
           const isSuggested = ex.id === suggestedExercise.id;
-          const completed = isCompleted(ex.id);
 
           return (
             <Link
@@ -363,9 +330,7 @@ export default function PracticeMicrodoses() {
                 "group relative flex gap-4 glass-card hover:border-white/10 hover:bg-white/[0.04] p-4 transition-all duration-300 active:scale-[0.98] border overflow-hidden items-start",
                 isSuggested 
                   ? "ring-1 ring-teal-500/30 border-teal-500/40 shadow-[0_0_15px_rgba(20,184,166,0.15)] bg-teal-500/[0.01]" 
-                  : completed
-                    ? "border-emerald-500/15 bg-emerald-500/[0.005] shadow-[0_0_10px_rgba(16,185,129,0.05)]"
-                    : "border-white/5",
+                  : "border-white/5",
                 `shape-cloud-${(idx % 5) + 1}`
               )}
             >
@@ -410,12 +375,6 @@ export default function PracticeMicrodoses() {
                 
                 <h3 className="text-base font-serif text-white/95 italic leading-tight group-hover:text-white transition-colors truncate flex items-center gap-1.5">
                   <span className="truncate">{language === 'en' ? ex.title.en : ex.title.el}</span>
-                  {completed && (
-                    <span 
-                      className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 shadow-[0_0_6px_rgba(52,211,153,0.7)] animate-pulse" 
-                      title={language === 'el' ? 'Ολοκληρώθηκε' : 'Completed'}
-                    />
-                  )}
                 </h3>
                 
                 <p className="text-[12px] text-white/45 leading-normal font-sans group-hover:text-white/60 transition-colors line-clamp-2">

@@ -1,6 +1,6 @@
-// "How do you feel right now?" — shared by the home page row and the
-// companion's check-in. The axes per state match useSmartSuggestion
-// (tension → body/breath, numbness → attention/space). The practices come
+// "How do you feel right now?" on the home page. Tension starts from the body
+// and the breath; numbness from gentle activation (movement, voice) and a look
+// around the room (see the notes in practiceCatalog.ts). The practices come
 // from the practice catalogue, so every tagged exercise can be offered.
 
 import type { Axis } from './types';
@@ -134,7 +134,8 @@ export const getAllForChoice = (id: CheckinChoice) => (id === 'unsure' ? [] : fo
 
 const INTENTION: Record<CheckinState, string> = { hyper: 'anxiety', hypo: 'focus', balanced: 'awareness' };
 
-// Saves the answer; useSmartSuggestion reads it for the next 90 minutes.
+// Saves the answer; the Practice page's quiet-axis hint (lib/quietAxis.ts)
+// reads it for the next 90 minutes.
 // "Not sure" is not a state, so nothing is saved for it.
 export function saveCheckinState(choice: CheckinChoice) {
   if (choice === 'unsure') return;

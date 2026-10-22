@@ -207,7 +207,7 @@ export default function ChapterDetail() {
 
   const { id } = useParams();
   const navigate = useNavigate();
-  const { updateChapterProgress, trackActivity } = useCompanion();
+  const { updateChapterProgress } = useCompanion();
   const { language } = useLanguage();
   const { markChapterComplete } = useProgress();
   const { triggerReward } = useReward();
@@ -227,11 +227,6 @@ export default function ChapterDetail() {
   const touchStartX = useRef(0);
   const [visibleParagraphs, setVisibleParagraphs] = useState(1);
   const [activeConceptId, setActiveConceptId] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!chapter) return;
-    trackActivity('chapter_start', { id: chapter.num });
-  }, [chapter, trackActivity]);
 
   useEffect(() => {
     if (!chapter || pages.length === 0) return;

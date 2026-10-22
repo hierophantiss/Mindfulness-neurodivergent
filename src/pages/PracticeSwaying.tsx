@@ -115,20 +115,24 @@ export default function PracticeSwaying() {
     setIsPlaying(!isPlaying);
   };
 
-  // Log on unmount if playing
+  // Log on leaving the page if it was still playing (once: the values are read
+  // from refs, so the clean-up does not run again every second).
+  const liveRef = useRef({ isPlaying, elapsedSeconds });
+  liveRef.current = { isPlaying, elapsedSeconds };
   useEffect(() => {
     return () => {
-      if (isPlaying && elapsedSeconds > 10) {
+      const { isPlaying: playing, elapsedSeconds: secs } = liveRef.current;
+      if (playing && secs > 10) {
         logActivity({
           category: 'swaying',
           itemId: 'practice-swaying',
-          durationSeconds: elapsedSeconds,
+          durationSeconds: secs,
           completed: true,
           axis: 'body'
         });
       }
     };
-  }, [isPlaying, elapsedSeconds, logActivity]);
+  }, [logActivity]);
 
   // UI Instructions based on elapsed time (only shown when playing)
   let instruction = "";

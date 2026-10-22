@@ -18,7 +18,6 @@ import { EvidenceLine } from '../components/EvidenceLine';
 import GuideAfterPractice from '../components/GuideAfterPractice';
 import { useReward } from '../contexts/RewardContext';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
-import { useProgress } from '../contexts/ProgressContext';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { ConceptInfoIcon } from '../components/ConceptInfoOverlay';
 
@@ -114,7 +113,6 @@ export default function PracticeBreath() {
   const { language } = useLanguage();
   const { reduceMotion } = useAccessibility();
   const { triggerReward } = useReward();
-  const { markBreathComplete } = useProgress();
   const { logActivity } = useActivityTracker();
   
   // "Ascetic Breath" was the Lotus flow at 5-5; old links open that.
@@ -193,7 +191,6 @@ export default function PracticeBreath() {
   // Counter State
   const [phaseSeconds, setPhaseSeconds] = useState(1);
   const phaseStartRef = useRef<number>(Date.now());
-  const sessionIdRef = useRef<number>(0);
   
   // Activity Tracking
   const sessionStartTimeRef = useRef<number | null>(null);
@@ -342,52 +339,6 @@ export default function PracticeBreath() {
     setPhaseIdx(0);
   }, [pattern, stopAudio]);
 
-  // Track session ID for this run
-  useEffect(() => {
-    if (running && sessionIdRef.current === 0) {
-      sessionIdRef.current = Date.now();
-    } else if (!running) {
-      sessionIdRef.current = 0;
-    }
-  }, [running]);
-
-  // Record history
-  useEffect(() => {
-    if (cycles > 0 && sessionIdRef.current !== 0 && (cycles === 1 || cycles % 3 === 0)) {
-      try {
-        const hStr = localStorage.getItem('breath_history');
-        const h = hStr ? JSON.parse(hStr) : { sessions: [], totalMin: 0 };
-        const todayStr = new Date().toISOString().split('T')[0];
-        
-        const totalSeconds = cycles * cycleSeconds;
-        const currentSessionId = sessionIdRef.current;
-        
-        // Use sessionId to find the exact run we are updating
-        const existingIdx = h.sessions.findIndex((s: any) => s.id === currentSessionId);
-        
-        if (existingIdx >= 0) {
-          const oldSeconds = h.sessions[existingIdx].seconds || 0;
-          h.sessions[existingIdx].seconds = totalSeconds;
-          h.sessions[existingIdx].ts = Date.now();
-          // Adjust totalMin differentially
-          h.totalMin = Math.round((h.totalMin || 0) + ((totalSeconds - oldSeconds) / 60));
-        } else {
-          h.sessions.push({
-            id: currentSessionId,
-            date: todayStr,
-            type: pattern.id,
-            seconds: totalSeconds,
-            ts: Date.now()
-          });
-          h.totalMin = Math.round((h.totalMin || 0) + (totalSeconds / 60));
-        }
-        
-        localStorage.setItem('breath_history', JSON.stringify(h));
-      } catch (e) {
-        console.error('Failed to save breath history', e);
-      }
-    }
-  }, [cycles, cycleSeconds, pattern.id]);
 
   const handleAudioToggle = () => {
     if (audioPref === null && !showWarning && !audioEnabled) {
@@ -892,7 +843,6 @@ export default function PracticeBreath() {
            <button
              onClick={() => { 
                triggerReward('breath');
-               markBreathComplete(currentPatternId);
                setFinished(true);
                setRunning(false); 
                setCycles(0); 

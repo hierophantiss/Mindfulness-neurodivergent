@@ -8,6 +8,7 @@ import { MICRODOSES_EXERCISES } from '../data/microdoses';
 import { cn } from '../lib/utils';
 import { Check } from 'lucide-react';
 import { ConceptInfoIcon } from '../components/ConceptInfoOverlay';
+import { QuietAxisHint } from '../components/QuietAxisHint';
 
 function PatternCard({ p, colorScheme, icon: Icon, onClick, language, hideCycle = false }: { 
   p: BreathPattern, 
@@ -101,7 +102,6 @@ export default function Practice() {
 
   const hasFoundation = progress.completedChapters.length > 0;
 
-  const completedBreathsCount = progress.completedBreaths.length;
   
   // Somatic filter dynamic matches
   const matchesSomaticFilter = (p: BreathPattern): boolean => {
@@ -734,6 +734,8 @@ const axisInfo = {
             : 'Choose the practice category that fits your current state.'}
         </p>
       </header>
+
+      <QuietAxisHint />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-12 max-w-5xl mx-auto w-full">
         {/* Mindful Movement & Tai Chi Card */}
