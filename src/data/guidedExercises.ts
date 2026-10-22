@@ -7,7 +7,7 @@ export const GUIDED_EXERCISES: Record<string, any> = {
     evidence: { en: 'The brain constantly computes gravity; attending to it can steady you', el: 'Ο εγκέφαλος υπολογίζει διαρκώς τη βαρύτητα· η προσοχή σε αυτήν μπορεί να σε σταθεροποιήσει', ref: 'study-mackrous' },
     axis: 'body',
     title: { el: '1 Δευτερόλεπτο (Βαρύτητα & Άξονας)', en: '1 Second Pause (Gravity & Axis)' },
-    desc: { el: 'Κανείς δεν θα προσέξει τίποτα. Μια στιγμιαία επαναφορά του νευρικού συστήματος.', en: 'No one will notice a thing. A momentary reset of the nervous system.' },
+    desc: { el: 'Κανείς δεν θα προσέξει τίποτα. Μια στιγμή επαφής με τη βαρύτητα.', en: 'No one will notice a thing. A moment of contact with gravity.' },
     duration: 60, // 1 min practice (though the pause is 1s)
     color: 'emerald',
     instructions: {
@@ -93,7 +93,7 @@ export const GUIDED_EXERCISES: Record<string, any> = {
     evidence: { en: 'An 8-week mindfulness programme was linked to better attention in ADHD', el: 'Ένα πρόγραμμα ενσυνειδητότητας 8 εβδομάδων συνδέθηκε με καλύτερη προσοχή στη ΔΕΠΥ', ref: 'study-zylowska' },
     axis: 'attention',
     title: { el: 'Εναλλάξ Εστίαση', en: 'Alternate Focus' },
-    desc: { el: 'Η κίνηση του βλέμματος ξεκουράζει το νευρικό σύστημα.', en: 'Moving your gaze rests the nervous system.' },
+    desc: { el: 'Η αργή κίνηση του βλέμματος δίνει στο μυαλό μια μικρή ανάσα.', en: 'Moving your gaze slowly gives the mind a small breather.' },
     duration: 90, 
     color: 'amber',
     instructions: {
@@ -349,7 +349,7 @@ export const GUIDED_EXERCISES: Record<string, any> = {
   'belly-breathing': {
     axis: 'breath',
     title: { el: 'Αναπνοή Διαφράγματος', en: 'Belly Breathing' },
-    desc: { el: 'Η διαφραγματική αναπνοή ενεργοποιεί το παρασυμπαθητικό νευρικό σύστημα (ηρεμία).', en: 'Diaphragmatic breathing activates the parasympathetic nervous system (calm).' },
+    desc: { el: 'Αργή αναπνοή με την κοιλιά, χωρίς πίεση· βοηθά πολλούς να ηρεμήσουν.', en: 'Slow breathing with the belly, without force; it helps many people settle.' },
     duration: 300, // 5 minutes
     color: 'sky',
     instructions: {

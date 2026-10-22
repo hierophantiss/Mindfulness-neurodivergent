@@ -16,3 +16,23 @@
 /sanctuary      /el/sanctuary         301
 /settings       /el/settings          301
 /dashboard      /                     301
+
+# Pages that were removed or renamed: send search engines (and old links) to
+# what replaced them, instead of a 404.
+/el/practice/breath/delta                /el/sanctuary?track=sleep-delta        301
+/en/practice/breath/delta                /en/sanctuary?track=sleep-delta        301
+/el/practice/breath/om-resonance-throat  /el/practice/breath/aum-resonance      301
+/en/practice/breath/om-resonance-throat  /en/practice/breath/aum-resonance      301
+/el/practice/breath/lotus-bloom-5-5      /el/practice/breath/lotus-resonant     301
+/en/practice/breath/lotus-bloom-5-5      /en/practice/breath/lotus-resonant     301
+/el/rabbithole/dzogchen-great-perfection /el/rabbithole/dzogchen-nature-of-mind 301
+/en/rabbithole/dzogchen-great-perfection /en/rabbithole/dzogchen-nature-of-mind 301
+/el/rabbithole/soft-gaze-open-hearing    /el/rabbithole/soft-gaze               301
+/en/rabbithole/soft-gaze-open-hearing    /en/rabbithole/soft-gaze               301
+/el/rabbithole/never-force               /el/rabbithole                         301
+/en/rabbithole/never-force               /en/rabbithole                         301
+/el/rabbithole/plato-cave-neurodivergent /el/rabbithole                         301
+/en/rabbithole/plato-cave-neurodivergent /en/rabbithole                         301
+/el/rabbithole/polyvagal-middle-way      /el/rabbithole                         301
+/en/rabbithole/polyvagal-middle-way      /en/rabbithole                         301
+/favicon.svg                             /favicon.ico                           301

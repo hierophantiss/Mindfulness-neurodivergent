@@ -10,6 +10,7 @@ import { CHAPTERS_DATA } from '../src/data/chapters';
 import { BREATH_PATTERNS } from '../src/data/breathPatterns';
 import { COURSE_EN as courseContentEn } from '../src/data/course-en';
 import { MICRODOSES_EXERCISES } from '../src/data/microdoses';
+import { GUIDED_EXERCISES } from '../src/data/guidedExercises';
 import { rabbitholeContent } from '../src/data/rabbitholeContent';
 
 const BASE_URL = 'https://neurodivergent-mindfulness.org';
@@ -41,7 +42,8 @@ async function generate() {
   
   // breath
   if (BREATH_PATTERNS && BREATH_PATTERNS.length) {
-    BREATH_PATTERNS.forEach((b: any) => dynamicPaths.push(`/practice/breath/${b.id}`));
+    // "lotus-bloom-5-5" was removed (it opens lotus-resonant; a 301 in _redirects).
+    BREATH_PATTERNS.filter((b: any) => b.id !== 'lotus-bloom-5-5').forEach((b: any) => dynamicPaths.push(`/practice/breath/${b.id}`));
   }
   
   // microdose / practice exercises (source of truth: src/data/microdoses.ts)
@@ -49,6 +51,15 @@ async function generate() {
     MICRODOSES_EXERCISES.forEach((m: any) => {
       if (m.link && m.link.startsWith('/practice/')) dynamicPaths.push(m.link);
     });
+  }
+
+  // guided exercises the app links to (check-in, program) but no microdose opens:
+  // without a page of their own they were served as 404 to search engines.
+  const SEGMENT: Record<string, string> = { body: 'body', breath: 'breath', attention: 'focus', space: 'space' };
+  const openedByDose = new Set(MICRODOSES_EXERCISES.map((m: any) => m.link.split('/').pop()));
+  for (const [id, g] of Object.entries(GUIDED_EXERCISES) as [string, any][]) {
+    if (openedByDose.has(id) || !g.axis || !SEGMENT[g.axis]) continue;
+    dynamicPaths.push(`/practice/${SEGMENT[g.axis]}/${id}`);
   }
   
   // extract sleep tracks for Sanctuary

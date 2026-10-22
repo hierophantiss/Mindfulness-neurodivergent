@@ -22,6 +22,7 @@ import { youAreThePathArticle } from '../src/data/youAreThePathArticle';
 import { waveAndSeaArticle } from '../src/data/waveAndSeaArticle';
 import { rabbitholeContent } from '../src/data/rabbitholeContent';
 import { MICRODOSES_EXERCISES } from '../src/data/microdoses';
+import { GUIDED_EXERCISES } from '../src/data/guidedExercises';
 import { KNOWLEDGE_FAQ } from '../src/data/faq';
 import { audioUrl } from '../src/lib/chapterAudio';
 
@@ -553,6 +554,7 @@ function getMetaForRoute(route: string): RouteMeta {
   if (practiceMatch) {
     const catNames: Record<string, { en: string; el: string }> = {
       body:  { en: 'Body',      el: 'Σώμα' },
+      breath: { en: 'Breath',   el: 'Αναπνοή' },
       focus: { en: 'Attention', el: 'Προσοχή' },
       space: { en: 'Space',     el: 'Χώρος' },
     };
@@ -582,6 +584,31 @@ function getMetaForRoute(route: string): RouteMeta {
           '@context': 'https://schema.org', '@type': 'HowTo',
           name: exTitle, description: d, url, inLanguage: lang,
           step: [{ '@type': 'HowToStep', text: exDesc }],
+        },
+      };
+    }
+    // A guided exercise: its own title, description and steps.
+    const g: any = GUIDED_EXERCISES[practiceMatch[2]];
+    if (g && g.title) {
+      const L = lang as 'en' | 'el';
+      const gTitle = g.title[L] ?? g.title.en;
+      const gDesc = (g.desc && (g.desc[L] ?? g.desc.en)) || '';
+      const steps: string[] = (g.instructions && (g.instructions[L] ?? g.instructions.en)) || [];
+      const mins = Math.max(1, Math.round((g.duration || 300) / 60));
+      const durText = lang === 'en' ? `${mins} min` : `${mins} λεπτ${mins === 1 ? 'ό' : 'ά'}`;
+      const t = lang === 'en'
+        ? `${gTitle} – ${cat.en} Practice | Neurodivergent Mindfulness App`
+        : `${gTitle} – Πρακτική: ${cat.el} | Neurodivergent Mindfulness App`;
+      const d = lang === 'en'
+        ? `${gDesc} A quiet guided practice, ${durText}.`.trim()
+        : `${gDesc} Σιωπηλή καθοδηγούμενη πρακτική, ${durText}.`.trim();
+      return {
+        title: t, description: d, schemaType: 'HowTo', bodyParagraphs: [gDesc, ...steps].filter(Boolean),
+        relatedLinks: [{ href: `/${lang}/practice`, label: lang === 'en' ? 'All practices' : 'Όλες οι πρακτικές' }],
+        schema: {
+          '@context': 'https://schema.org', '@type': 'HowTo',
+          name: gTitle, description: d, url, inLanguage: lang,
+          step: steps.map(text => ({ '@type': 'HowToStep', text })),
         },
       };
     }
