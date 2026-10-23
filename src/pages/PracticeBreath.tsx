@@ -477,8 +477,9 @@ export default function PracticeBreath() {
 
 
 
+  // The dark stage reaches down to the bottom bar (over the room the other pages keep below their last line).
   return (
-    <div className="flex flex-col flex-1 bg-[#061114] -mx-4 -mt-4 -mb-8 px-4 pt-4 pb-8 md:-mx-8 md:-mt-8 md:-mb-8 md:px-8 md:pt-8 md:pb-8 overflow-hidden relative font-sans text-zinc-100">
+    <div className="flex flex-col flex-1 bg-[#061114] -mx-4 -mt-4 -mb-[calc(2rem+84px)] px-4 pt-4 pb-8 md:-mx-8 md:-mt-8 md:-mb-8 md:px-8 md:pt-8 md:pb-8 overflow-hidden relative font-sans text-zinc-100">
       
       {/* Sleep Mode Overlay */}
       <div 
@@ -708,10 +709,10 @@ export default function PracticeBreath() {
 
         {/* Organic Motion Circle & Counter (Centered exactly in the globe) */}
         <div 
-          className="absolute left-0 right-0 z-10 flex flex-col items-center justify-center pointer-events-none drop-shadow-lg"
-          style={{ bottom: '22%' }}
+          className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none drop-shadow-lg"
         >
-          <div className="relative flex items-center justify-center w-[320px] h-[320px] desk:w-[clamp(320px,calc(100vh-420px),520px)] desk:h-[clamp(320px,calc(100vh-420px),520px)]">
+          {/* Centred in the space it has, and smaller on short screens, so the circle is never cut at the top */}
+          <div className="relative flex items-center justify-center shrink-0 w-[clamp(200px,calc(100dvh-420px),320px)] h-[clamp(200px,calc(100dvh-420px),320px)] desk:w-[clamp(320px,calc(100vh-420px),520px)] desk:h-[clamp(320px,calc(100vh-420px),520px)]">
              
              {/* Counter Text & Infinity */}
              <div className="z-10 absolute inset-0 flex items-center justify-center">
