@@ -1,319 +1,202 @@
 import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useEffect, useRef } from 'react';
-import { motion } from 'motion/react';
-import { useLocation } from 'react-router-dom';
 import { useTime } from '../contexts/TimeContext';
 import { useProgress } from '../contexts/ProgressContext';
-import { useMoonPhase } from '../hooks/useMoonPhase';
-import { cn } from '../lib/utils';
+import { skyStars, starsForScreen, discRadius, starAlpha, auroraStrength, type Star } from '../lib/nightSky';
 
-interface Star {
-  // Polar coordinates for celestial dome rotation
-  radius: number; // Normalized 0..1 from center to corner
-  angle: number;  // Initial angle in radians
-  size: number;
-  opacity: number;
-  speed: number;
-  blinkOffset: number;
+// The sky follows the hour: blue by day, orange at dawn and dusk, dark at night
+// with an aurora. Stars are drawn at the screen's real resolution and do not
+// twinkle; the whole sky turns once an hour, too slowly to notice.
+
+const TINTS: [number, number, number][] = [
+  [238, 242, 255], // white
+  [200, 220, 255], // blue-white
+  [255, 236, 214], // warm
+  [255, 222, 176], // pale gold
+];
+const FRAME_MS = 100;          // ten pictures a second are plenty for something this slow
+const TURN_SECONDS = 3600;     // one turn of the sky
+const POLE_Y = 0.35;           // the point the sky turns around, from the top
+const AURORA_HEIGHT = 0.62;    // share of the screen the aurora may cover, from the top
+const AURORA_SCALE = 3;        // the aurora is drawn small and enlarged: naturally soft
+
+function haloSprite([r, g, b]: [number, number, number]) {
+  const c = document.createElement('canvas');
+  c.width = c.height = 64;
+  const x = c.getContext('2d');
+  if (!x) return c;
+  const grad = x.createRadialGradient(32, 32, 0, 32, 32, 32);
+  grad.addColorStop(0, `rgba(${r},${g},${b},0.55)`);
+  grad.addColorStop(0.25, `rgba(${r},${g},${b},0.16)`);
+  grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
+  x.fillStyle = grad;
+  x.fillRect(0, 0, 64, 64);
+  return c;
+}
+
+// Two curtains of light along the top of the screen. Everything moves on a
+// scale of minutes; nothing flickers.
+const CURTAINS = [
+  { base: 0.6, height: 0.46, gain: 1, phase: 0 },
+  { base: 0.42, height: 0.34, gain: 0.5, phase: 2.1 },
+];
+function drawAurora(ctx: CanvasRenderingContext2D, w: number, h: number, t: number) {
+  ctx.clearRect(0, 0, w, h);
+  ctx.globalCompositeOperation = 'lighter';
+  for (const c of CURTAINS) {
+    const p = c.phase;
+    for (let x = 0; x < w; x++) {
+      const X = (x / w) * 6;
+      const base = c.base + 0.06 * Math.sin(X * 1.1 + t * 0.035 + p) + 0.03 * Math.sin(X * 2.9 - t * 0.021 + p * 2);
+      const height = c.height * (0.8 + 0.2 * Math.sin(X * 0.7 + t * 0.015 + p));
+      const rays = 0.5 + 0.5 * (0.5 * Math.sin(X * 7 + t * 0.06 + p) + 0.3 * Math.sin(X * 15 - t * 0.045) + 0.2 * Math.sin(X * 23 + t * 0.09 + p));
+      const env = Math.pow(0.5 + 0.5 * Math.sin(X * 0.55 + t * 0.012 + p * 3), 1.3);
+      const a = c.gain * (0.55 + 0.45 * Math.pow(rays, 1.4)) * (0.25 + 0.75 * env);
+      if (a < 0.01) continue;
+      const y0 = base * h;                 // the lower edge, brightest
+      const y1 = (base - height) * h;      // the top, fading into violet
+      const below = 0.06 * h;
+      const grad = ctx.createLinearGradient(0, y1, 0, y0 + below);
+      grad.addColorStop(0, 'rgba(167,139,250,0)');
+      grad.addColorStop(0.35, `rgba(167,139,250,${(a * 0.16).toFixed(3)})`);
+      grad.addColorStop(0.62, `rgba(45,212,191,${(a * 0.42).toFixed(3)})`);
+      grad.addColorStop(0.9, `rgba(52,211,153,${(a * 0.9).toFixed(3)})`);
+      grad.addColorStop(1, 'rgba(52,211,153,0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(x, y1, 1, y0 + below - y1);
+    }
+  }
+  ctx.globalCompositeOperation = 'source-over';
 }
 
 export function InteractiveBackground() {
   const { reduceMotion } = useAccessibility();
-
-  const { hour, timeFloat } = useTime();
+  const { timeFloat } = useTime();
   const { progress } = useProgress();
-  const moonPhase = useMoonPhase();
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const starsRef = useRef<Star[]>([]);
-  const requestRef = useRef<number>(0);
-  const celestialRef = useRef<HTMLDivElement>(null);
+  const lessons = progress.completedLessons?.length || 0;
 
-  // Sun and moon fade as the page scrolls, so they never sit bright behind the content.
+  const starCanvas = useRef<HTMLCanvasElement>(null);
+  const auroraCanvas = useRef<HTMLCanvasElement>(null);
+  const hourRef = useRef(timeFloat);
+  const lessonsRef = useRef(lessons);
+  const redraw = useRef<() => void>(() => {});
+  hourRef.current = timeFloat;
+  lessonsRef.current = lessons;
+
   useEffect(() => {
-    const onScroll = (e: Event) => {
-      const el = celestialRef.current;
-      if (!el) return;
-      const t = e.target;
-      // Only page-level scrolling (the main area, or a page that scrolls on its own), not small inner lists.
-      if (t instanceof Element && t.id !== 'main-content' && t.clientHeight < window.innerHeight * 0.6) return;
-      const top = t instanceof Element ? t.scrollTop : window.scrollY;
-      el.style.opacity = String(1 - Math.min(1, top / 240) * 0.75);
-    };
-    document.addEventListener('scroll', onScroll, { capture: true, passive: true });
-    return () => document.removeEventListener('scroll', onScroll, { capture: true });
-  }, []);
+    const sc = starCanvas.current, ac = auroraCanvas.current;
+    const sctx = sc?.getContext('2d'), actx = ac?.getContext('2d');
+    if (!sc || !ac || !sctx || !actx) return;
 
-  // A new page starts at the top, so the sky comes back.
-  const { pathname } = useLocation();
-  useEffect(() => {
-    if (celestialRef.current) celestialRef.current.style.opacity = '1';
-  }, [pathname]);
-  
-  // Calculate states based on hour
-  const isNight = hour < 6 || hour >= 20;
-  const isDusk = hour >= 18 && hour < 20;
-  const isDay = hour >= 6 && hour < 18;
+    const halos = TINTS.map(haloSprite);
+    let W = 0, H = 0, dpr = 1;
+    let stars: Star[] = [];
+    let alphas: number[] = [];
+    let alphaFor = { hour: -1, n: -1 };
 
-  const baseStarCount = 120;
-  const targetStarCount = baseStarCount + (progress.completedLessons?.length || 0) * 12; // 12 stars per lesson
-
-  // Initialize canvas and stars
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    const resize = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 3);
+      W = window.innerWidth; H = window.innerHeight;
+      sc.width = Math.round(W * dpr); sc.height = Math.round(H * dpr);
+      ac.width = Math.ceil(W / AURORA_SCALE); ac.height = Math.ceil((H * AURORA_HEIGHT) / AURORA_SCALE);
+      stars = skyStars(starsForScreen(W, H, H * POLE_Y, lessonsRef.current));
+      alphaFor = { hour: -1, n: -1 };
     };
 
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+    const draw = (now: number) => {
+      const hour = hourRef.current;
+      const wanted = starsForScreen(W, H, H * POLE_Y, lessonsRef.current);
+      if (wanted !== stars.length) stars = skyStars(wanted);
+      if (alphaFor.hour !== hour || alphaFor.n !== stars.length) {
+        alphas = stars.map(s => starAlpha(s.brightness, hour));
+        alphaFor = { hour, n: stars.length };
+      }
+
+      // Stars
+      sctx.setTransform(1, 0, 0, 1, 0, 0);
+      sctx.clearRect(0, 0, sc.width, sc.height);
+      const cx = (W / 2) * dpr, cy = H * POLE_Y * dpr;
+      const maxR = discRadius(W, H, H * POLE_Y) * dpr;
+      const turn = reduceMotion ? 0 : ((now / 1000) % TURN_SECONDS) / TURN_SECONDS * Math.PI * 2;
+      for (let i = 0; i < stars.length; i++) {
+        const alpha = alphas[i];
+        if (alpha < 0.02) continue;
+        const s = stars[i];
+        const a = s.angle + turn, d = s.radius * maxR;
+        const x = cx + Math.cos(a) * d, y = cy + Math.sin(a) * d;
+        if (x < -20 || y < -20 || x > sc.width + 20 || y > sc.height + 20) continue;
+        const r = (0.32 + 1.0 * s.brightness) * dpr;
+        if (s.brightness > 0.6) {
+          const hs = r * 9;
+          sctx.globalAlpha = alpha * 0.5;
+          sctx.drawImage(halos[s.tint], x - hs / 2, y - hs / 2, hs, hs);
+        }
+        const [cr, cg, cb] = TINTS[s.tint];
+        sctx.globalAlpha = alpha;
+        sctx.fillStyle = `rgb(${cr},${cg},${cb})`;
+        sctx.beginPath();
+        sctx.arc(x, y, r, 0, Math.PI * 2);
+        sctx.fill();
+      }
+      sctx.globalAlpha = 1;
+
+      // Aurora
+      const strength = auroraStrength(hour);
+      ac.style.opacity = String(strength * 0.6);
+      if (strength > 0.01) drawAurora(actx, ac.width, ac.height, reduceMotion ? 0 : Date.now() / 1000);
+    };
+
+    resize();
+    let raf = 0, last = 0;
+    const loop = (ts: number) => {
+      if (ts - last >= FRAME_MS) { last = ts; draw(Date.now()); }
+      raf = requestAnimationFrame(loop);
+    };
+    redraw.current = () => draw(Date.now());
+    const onResize = () => { resize(); draw(Date.now()); };
+    window.addEventListener('resize', onResize);
+    if (reduceMotion) draw(Date.now());
+    else raf = requestAnimationFrame(loop);
 
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', onResize);
+      redraw.current = () => {};
     };
-  }, []);
+  }, [reduceMotion]);
 
-  useEffect(() => {
-    // Dynamically adjust star count based on progress
-    if (starsRef.current.length < targetStarCount) {
-      const newStars = [...starsRef.current];
-      const diff = targetStarCount - newStars.length;
-      for (let i = 0; i < diff; i++) {
-        // Distribute stars evenly across the celestial dome
-        // Using sqrt(random) gives uniform area distribution on a disc
-        newStars.push({
-          radius: Math.sqrt(Math.random()), 
-          angle: Math.random() * Math.PI * 2,
-          size: Math.random() * 1.6 + 0.2, // Variation in size
-          opacity: Math.random() * 0.6 + 0.4,
-          speed: Math.random() * 0.002 + 0.0008,
-          blinkOffset: Math.random() * Math.PI * 2,
-        });
-      }
-      starsRef.current = newStars;
-    } else if (starsRef.current.length > targetStarCount) {
-      starsRef.current = starsRef.current.slice(0, targetStarCount);
-    }
-  }, [targetStarCount]);
-
-  // Animation Loop
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let time = 0;
-
-    const animate = () => {
-      time += 0.016;
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Determine star visibility based on daylight
-      let diffDay = Math.abs(timeFloat - 12);
-      if (diffDay > 12) diffDay = 24 - diffDay;
-      const dayBrightness = Math.max(0, 1 - diffDay / 6); // 1 at noon, 0 at 6am/6pm
-      const starOpacityMul = 1.0 - (dayBrightness * 0.6); // Dim to 40% at noon
-
-      const centerX = canvas.width * 0.5;
-      const centerY = canvas.height * 0.35; // Celestial pivot (North Star / Celestial Pole) slightly above center
-      const maxRadius = Math.sqrt(centerX * centerX + Math.pow(canvas.height - centerY, 2)) * 1.1;
-
-      // Slow celestial sphere rotation: 1 full rotation every ~600 seconds (or static if reduceMotion)
-      const celestialRotation = reduceMotion ? 0 : time * 0.012;
-
-      for (let i = 0; i < starsRef.current.length; i++) {
-        const star = starsRef.current[i];
-        
-        // Calm, steady starlight with very slow and subtle shimmer (no rapid flickering)
-        const blink = (Math.sin(time * star.speed * 12 + star.blinkOffset) + 1) / 2;
-        const currentOpacity = star.opacity * (0.8 + blink * 0.2) * starOpacityMul;
-        
-        if (currentOpacity < 0.02) continue;
-
-        // Calculate rotated coordinates on celestial dome
-        const currentAngle = star.angle + celestialRotation;
-        const dist = star.radius * maxRadius;
-        const starX = centerX + Math.cos(currentAngle) * dist;
-        const starY = centerY + Math.sin(currentAngle) * dist;
-
-        // Skip if outside canvas
-        if (starX < -10 || starX > canvas.width + 10 || starY < -10 || starY > canvas.height + 10) {
-          continue;
-        }
-
-        ctx.beginPath();
-        const size = star.size * (0.9 + blink * 0.1);
-        ctx.arc(starX, starY, size, 0, Math.PI * 2);
-        
-        // Soft subtle starlight tones
-        if (i % 25 === 0) {
-          ctx.fillStyle = `rgba(186, 230, 253, ${currentOpacity})`; // Subtle icy/blue
-        } else if (i % 40 === 0) {
-          ctx.fillStyle = `rgba(254, 240, 138, ${currentOpacity})`; // Subtle warm gold
-        } else {
-          ctx.fillStyle = `rgba(255, 255, 255, ${currentOpacity})`;
-        }
-        
-        ctx.fill();
-        ctx.closePath();
-      }
-
-      requestRef.current = requestAnimationFrame(animate);
-    };
-
-    requestRef.current = requestAnimationFrame(animate);
-    return () => {
-      if (requestRef.current) cancelAnimationFrame(requestRef.current);
-    };
-  }, [timeFloat, reduceMotion]);
-
-  // Calculate smooth cyclical opacities based on timeFloat (0-24)
-  const getOpacity = (peak: number, spread: number) => {
-    let diff = Math.abs(timeFloat - peak);
-    if (diff > 12) diff = 24 - diff;
-    return Math.max(0, 1 - diff / spread);
-  };
-
-  const duskOpacity = getOpacity(18, 2.5);    // Peak 18, spread 2.5 (15.5 to 20.5)
-  const dawnOpacity = getOpacity(6, 2.5);     // Peak 6, spread 2.5 (3.5 to 8.5)
-  const nightOpacity = getOpacity(0, 7);      // Peak 0, spread 7 (17 to 7)
-
-  // Interpolate sky colors based on time
-  const getSkyGradient = (timeFloat: number) => {
-    const interpolateColor = (c1: number[], c2: number[], factor: number) => {
-      const r = Math.round(c1[0] + (c2[0] - c1[0]) * factor);
-      const g = Math.round(c1[1] + (c2[1] - c1[1]) * factor);
-      const b = Math.round(c1[2] + (c2[2] - c1[2]) * factor);
-      return `rgb(${r}, ${g}, ${b})`;
-    };
-
-    const steps = [
-      { time: 0,  top: [1, 2, 4],     mid: [3, 6, 12],    bot: [5, 8, 20] },
-      { time: 6,  top: [10, 19, 41],  mid: [58, 32, 51],  bot: [153, 74, 40] }, // dawn golden hour
-      { time: 12, top: [10, 27, 51],  mid: [21, 44, 78],  bot: [26, 58, 107] }, // noon
-      { time: 18, top: [5, 10, 20],   mid: [43, 23, 42],  bot: [112, 38, 33] }, // dusk golden hour
-      { time: 24, top: [1, 2, 4],     mid: [3, 6, 12],    bot: [5, 8, 20] },
-    ];
-
-    let c1 = steps[0], c2 = steps[1];
-    for (let i = 0; i < steps.length - 1; i++) {
-      if (timeFloat >= steps[i].time && timeFloat <= steps[i + 1].time) {
-        c1 = steps[i];
-        c2 = steps[i + 1];
-        break;
-      }
-    }
-
-    // Smooth-step interpolation to ease color transitions 
-    let t = (timeFloat - c1.time) / (c2.time - c1.time);
-    let factor = t * t * (3 - 2 * t);
-
-    const top = interpolateColor(c1.top, c2.top, factor);
-    const mid = interpolateColor(c1.mid, c2.mid, factor);
-    const bot = interpolateColor(c1.bot, c2.bot, factor);
-
-    return `linear-gradient(to bottom, ${top} 0%, ${mid} 50%, ${bot} 100%)`;
-  };
+  // With reduced motion nothing loops, so a new hour or a new lesson redraws once.
+  useEffect(() => { if (reduceMotion) redraw.current(); }, [timeFloat, lessons, reduceMotion]);
 
   return (
     <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden bg-[#010204]">
-      {/* Interpolated Sky Background */}
-      <div 
-        className="absolute inset-0"
-        style={{ background: getSkyGradient(timeFloat) }}
-      />
-      
-      {/* Dynamic Background Element (Celestial Disc) */}
-      <div ref={celestialRef} className="absolute inset-0 z-10 transition-opacity duration-500">
-      <motion.div 
-        className="absolute left-1/2 bottom-[-10%] w-0 h-0 z-10"
-        initial={false}
-        animate={{ rotate: ((timeFloat - 12) / 24) * 360 }}
-        transition={reduceMotion ? { duration: 0.01 } : { ease: "linear", duration: 2 }} 
-      >
-         {/* Sun */}
-         <div 
-           className="absolute flex items-center justify-center w-24 h-24 md:w-32 md:h-32"
-           style={{ transform: `translate(-50%, -50%) translateY(calc(-1 * max(0.6 * max(70vw, 70vh), 92vh)))` }}
-         >
-           <div className="relative w-full h-full rounded-full flex items-center justify-center opacity-70">
-             <div className="absolute inset-[-200%] md:inset-[-150%] rounded-full opacity-40 bg-[radial-gradient(circle,rgba(251,146,60,0.3)_0%,transparent_70%)]" />
-             <div className="absolute inset-[-100%] rounded-full opacity-60 bg-[radial-gradient(circle,rgba(253,224,71,0.3)_0%,transparent_60%)]" />
-             <div className="w-1/2 h-1/2 rounded-full absolute bg-orange-200/60 shadow-[0_0_50px_10px_rgba(251,146,60,0.3)] blur-[8px]" />
-           </div>
-         </div>
-
-         {/* Moon */}
-         <div 
-           className="absolute flex items-center justify-center w-12 h-12 md:w-16 md:h-16 opacity-75"
-           style={{ transform: `translate(-50%, -50%) translateY(calc(max(0.6 * max(70vw, 70vh), 92vh))) rotate(180deg)` }}
-         >
-           <div className="relative w-full h-full overflow-hidden rounded-full bg-gradient-to-tr from-slate-200 via-slate-100 to-amber-50 shadow-[0_0_50px_12px_rgba(226,232,240,0.22)]">
-              {/* Subtle lunar maria texture */}
-              <div className="absolute top-[25%] left-[20%] w-[35%] h-[35%] rounded-full bg-slate-300/40 blur-[2px]" />
-              <div className="absolute bottom-[20%] right-[25%] w-[45%] h-[40%] rounded-full bg-slate-400/30 blur-[3px]" />
-              
-              {/* Shadow disc to create authentic smooth moon phases */}
-              <div 
-                className="absolute inset-0 rounded-full bg-[#02050c] blur-[2px]"
-                style={{ 
-                  transform: `translateX(${moonPhase <= 0.5 ? (moonPhase / 0.5) * 115 : -115 + ((moonPhase - 0.5) / 0.5) * 115}%) scale(1.04)`,
-                  opacity: 0.96 
-                }} 
-              />
-           </div>
-         </div>
-      </motion.div>
-      </div>
-
-      {/* Aurora Borealis (Northern Lights) Effect - Ethereal, steady and gentle ambient light curtains during night */}
-      <div 
-        className="absolute inset-0 overflow-hidden pointer-events-none z-10"
-        style={{ opacity: Math.min(0.65, nightOpacity * 0.65 + duskOpacity * 0.15 + dawnOpacity * 0.15) }}
-      >
-        <motion.div
-           animate={{
-               x: ["-4%", "6%", "-3%", "-4%"],
-               y: ["0%", "-4%", "3%", "0%"],
-               scale: [1, 1.08, 0.98, 1],
-           }}
-           transition={reduceMotion ? { duration: 0.01 } : { duration: 28, repeat: Infinity, ease: "easeInOut" }}
-           className="absolute -top-[15%] -left-[10%] w-[85%] h-[55%] bg-gradient-to-r from-emerald-500/20 via-teal-400/25 to-cyan-500/15 blur-[60px] rounded-full"
-        />
-        <motion.div
-           animate={{
-               x: ["4%", "-6%", "5%", "4%"],
-               y: ["-2%", "6%", "-4%", "-2%"],
-               scale: [1, 1.1, 1.02, 1],
-           }}
-           transition={reduceMotion ? { duration: 0.01 } : { duration: 34, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-           className="absolute top-[5%] right-[-5%] w-[80%] h-[60%] bg-gradient-to-r from-teal-400/20 via-emerald-400/25 to-indigo-500/15 blur-[70px] rounded-full"
-        />
-        <motion.div
-           animate={{
-               x: ["0%", "5%", "-6%", "0%"],
-               y: ["0%", "-6%", "5%", "0%"],
-               scale: [1, 1.05, 1.1, 1],
-           }}
-           transition={reduceMotion ? { duration: 0.01 } : { duration: 38, repeat: Infinity, ease: "easeInOut", delay: 4 }}
-           className="absolute top-[18%] left-[15%] w-[70%] h-[45%] bg-gradient-to-r from-indigo-500/15 via-violet-500/20 to-teal-400/15 blur-[70px] rounded-full"
-        />
-      </div>
-
-      {/* The animated stars canvas */}
+      <div className="absolute inset-0" style={{ background: skyGradient(timeFloat) }} />
       <canvas
-        ref={canvasRef}
-        className="absolute inset-0 z-20 pointer-events-none"
+        ref={auroraCanvas}
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 w-full z-10"
+        style={{ height: `${AURORA_HEIGHT * 100}%`, opacity: 0, filter: 'blur(2px)' }}
       />
-
+      <canvas ref={starCanvas} aria-hidden="true" className="absolute inset-0 w-full h-full z-20" />
     </div>
   );
 }
 
+// Sky colours through the day (unchanged): night, dawn gold, noon blue, dusk gold.
+const SKY_STEPS = [
+  { time: 0,  top: [1, 2, 4],     mid: [3, 6, 12],    bot: [5, 8, 20] },
+  { time: 6,  top: [10, 19, 41],  mid: [58, 32, 51],  bot: [153, 74, 40] },
+  { time: 12, top: [10, 27, 51],  mid: [21, 44, 78],  bot: [26, 58, 107] },
+  { time: 18, top: [5, 10, 20],   mid: [43, 23, 42],  bot: [112, 38, 33] },
+  { time: 24, top: [1, 2, 4],     mid: [3, 6, 12],    bot: [5, 8, 20] },
+];
+function skyGradient(hour: number) {
+  const mix = (c1: number[], c2: number[], f: number) =>
+    `rgb(${c1.map((v, i) => Math.round(v + (c2[i] - v) * f)).join(', ')})`;
+  let i = 0;
+  while (i < SKY_STEPS.length - 2 && hour > SKY_STEPS[i + 1].time) i++;
+  const a = SKY_STEPS[i], b = SKY_STEPS[i + 1];
+  const t = Math.min(1, Math.max(0, (hour - a.time) / (b.time - a.time)));
+  const f = t * t * (3 - 2 * t);
+  return `linear-gradient(to bottom, ${mix(a.top, b.top, f)} 0%, ${mix(a.mid, b.mid, f)} 50%, ${mix(a.bot, b.bot, f)} 100%)`;
+}

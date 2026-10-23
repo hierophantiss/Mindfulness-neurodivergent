@@ -15,7 +15,7 @@ import { BREATH_PATTERNS } from '../data/breathPatterns';
 import InfoModal from '../components/InfoModal';
 
 import { AFFIRMATIONS } from '../data/affirmations';
-import { FourfoldAxisHero } from '../components/FourfoldAxisHero';
+import { BreathMark } from '../components/BreathMark';
 import { useInstallApp } from '../hooks/useInstallApp';
 import HomeCheckin from '../components/HomeCheckin';
 import { CatInfinityAvatar } from '../components/CatInfinityAvatar';
@@ -70,6 +70,9 @@ export default function Dashboard() {
     const best = Object.entries(counts).sort((x, y) => y[1] - x[1])[0];
     return best ? BREATH_PATTERNS.find(p => p.id === best[0]) : undefined;
   }, [logs]);
+
+  // At night the breath circle steps back a little, so the screen is darker before sleep.
+  const nightDim = hour >= 21 || hour < 5;
 
   const completedLessons = progress.completedLessons.length;
   const totalLessons = 56;
@@ -173,18 +176,11 @@ export default function Dashboard() {
           </div>
 
           {/* Smaller on short screens, so "How do you feel" and "Continue" fit on the first screen */}
-          <div className="w-[min(58%,max(110px,calc(100dvh-530px)))] mx-auto flex items-center justify-center"><FourfoldAxisHero /></div>
-          
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.6 }}
-            className="text-center px-4 [@media(max-height:700px)]:hidden"
-          >
-            <p className="text-[13px] font-sans font-light tracking-wide text-white/55 leading-snug italic">
-              "{language === 'el' ? affirmation.el : affirmation.en}"
-            </p>
-          </motion.div>
+          {/* The home picture: the breath circle alone, widening and narrowing at 5-5,
+              with the infinity sign. A picture, not a button. Smaller on short screens. */}
+          <div className={cn("w-[min(40%,max(96px,calc(100dvh-640px)))] mx-auto mt-4 mb-1 transition-opacity duration-1000", nightDim && "opacity-75")}>
+            <BreathMark className="w-full h-auto" infinityScale={0.36} label={language === 'en' ? 'The Fourfold Axis' : 'Ο Τετραπλός Άξονας'} />
+          </div>
         </div>
 
         {/* Dashboard Content */}
@@ -200,6 +196,14 @@ export default function Dashboard() {
           >
             {greeting}
           </motion.h1>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.4 }}
+            className="text-[13px] font-light italic leading-snug text-white/50"
+          >
+            {language === 'el' ? affirmation.el : affirmation.en}
+          </motion.p>
         </div>
 
         {/* How do you feel right now? */}
