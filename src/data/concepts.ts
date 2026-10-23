@@ -6,14 +6,14 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     el: {
       title: 'Γείωση',
       short: 'Η αίσθηση του σώματος στον χώρο μέσω βαρύτητας.',
-      full: 'Η γείωση είναι η πρώτη πράξη χαλάρωσης. Νιώθοντας τη βαρύτητα — τα πέλματα στο πάτωμα, το βάρος στην καρέκλα, τον άξονα της σπονδυλικής στήλης — ενεργοποιείς αισθητηριακά κυκλώματα που ανταγωνίζονται τον «αυτόματο πιλότο» (DMN). Η βαρύτητα είναι η απόδειξη του «Εδώ» — σου δείχνει ακριβώς πού βρίσκεσαι αυτή τη στιγμή.',
+      full: 'Η γείωση είναι η πρώτη πράξη χαλάρωσης. Νιώθοντας τη βαρύτητα — τα πέλματα στο πάτωμα, το βάρος στην καρέκλα, τον άξονα της σπονδυλικής στήλης — η προσοχή περνά από τις σκέψεις στις αισθήσεις του σώματος. Η βαρύτητα είναι η απόδειξη του «Εδώ»: σου δείχνει ακριβώς πού βρίσκεσαι αυτή τη στιγμή.',
       ndNote: 'Αν δεν νιώθεις τα πέλματα (συχνό σε ατυπική δια-αίσθηση), δοκίμασε εξωτερικές αγκυρώσεις: κράτα κάτι βαρύ, πάτα δυνατά στο πάτωμα, ή νιώσε τη θερμοκρασία ενός αντικειμένου.',
       science: 'Mackrous et al. (2019) Current Biology — η παρεγκεφαλίδα υπολογίζει διαρκώς τη βαρύτητα και τη σχέση του σώματος με το έδαφος. (Doi: 10.1016/j.cub.2019.07.006)'
     },
     en: {
       title: 'Grounding',
       short: 'The sensation of your body in space through gravity.',
-      full: 'Grounding is the first act of relaxation. By feeling gravity — soles on the floor, weight on the chair, the axis of the spine — you activate sensory circuits that compete with the "autopilot" (DMN). Gravity is the proof of "Here" — it shows you exactly where you exist in this moment.',
+      full: 'Grounding is the first act of relaxation. By feeling gravity — soles on the floor, weight on the chair, the axis of the spine — attention moves from thoughts to the sensations of the body. Gravity is the proof of "Here": it shows you exactly where you exist in this moment.',
       ndNote: 'If you can\'t feel your soles (common with atypical interoception), try external anchors: hold something heavy, press feet firmly into the floor, or feel the temperature of an object.',
       science: 'Mackrous et al. (2019) Current Biology — the cerebellum continually computes gravity and the body\'s relationship to the ground. (Doi: 10.1016/j.cub.2019.07.006)'
     },
@@ -61,16 +61,16 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
   polyvagal: {
     el: {
       title: 'Πολυβαγική Θεωρία',
-      short: 'Η μέση οδός του νευρικού συστήματος.',
-      full: 'Μοντέλο του Δρ. Stephen Porges. Το νευρικό σύστημα έχει 3 καταστάσεις: Συμπαθητικό (ένταση/άγχος, πολύ τεντωμένη χορδή), Ραχιαίο Πνευμονογαστρικό (αποσύνδεση/πάγωμα, πολύ χαλαρή χορδή) και Κοιλιακό Πνευμονογαστρικό (ασφάλεια & σύνδεση, η μέση οδός). Η πρακτική μας (εκπνοή, μαλακό βλέμμα) στέλνει σήματα για μετάβαση στην ασφάλεια.',
-      ndNote: 'Οι νευροδιαφορετικοί συχνά εναλλάσσονται μεταξύ εξάντλησης (dorsal) και υπερδιέγερσης (sympathetic). Δεν μπορείς να μεταβείς στην "ασφάλεια" μόνο με λογική—χρειάζεται σωματική διέγερση του πνευμονογαστρικού.',
+      short: 'Ένας χάρτης για τρεις καταστάσεις: ένταση, μούδιασμα, ηρεμία.',
+      full: 'Μοντέλο του Stephen Porges (1995). Στην εφαρμογή το χρησιμοποιούμε ως χάρτη τριών καταστάσεων: η ένταση (πολύ τεντωμένη χορδή), το μούδιασμα και η αποσύνδεση (πολύ χαλαρή χορδή), και η ηρεμία με σύνδεση (η μέση οδός). Η θεωρία συζητείται ακόμα στην επιστήμη και κάποια σημεία της αμφισβητούνται· εδώ σε βοηθά να αναγνωρίσεις πού βρίσκεσαι, όχι να εξηγήσεις πώς δουλεύει το νεύρο.',
+      ndNote: 'Πολλοί νευροδιαφορετικοί περνούν από τη μία άκρη στην άλλη, από την ένταση στην εξάντληση. Συχνά η λογική δεν φτάνει για να ηρεμήσεις· το σώμα (η βαρύτητα, η μακριά εκπνοή, η κίνηση) είναι πιο εύκολη πόρτα.',
       science: 'Stephen Porges, PhD (1995) "Orienting in a defensive world: mammalian modifications of our evolutionary heritage. A Polyvagal Theory" (Doi: 10.1111/j.1469-8986.1995.tb01213.x)'
     },
     en: {
       title: 'Polyvagal Theory',
-      short: 'The middle way of the nervous system.',
-      full: 'A model by Dr. Stephen Porges. The nervous system has 3 states: Sympathetic (fight/flight, string too tight), Dorsal Vagal (shutdown/freeze, string too loose), and Ventral Vagal (safe & social, the middle way/perfectly tuned). Our practices (long exhale, soft gaze) send cues of safety to move into Ventral Vagal.',
-      ndNote: 'Neurodivergent individuals often ricochet between meltdown (sympathetic) and burnout (dorsal vagal). You cannot "logic" your way to safety—it requires somatic vagal stimulation.',
+      short: 'A map of three states: tension, numbness, calm.',
+      full: 'A model by Stephen Porges (1995). In the app we use it as a map of three states: tension (a string too tight), numbness and disconnection (a string too loose), and calm with connection (the middle way). The theory is still debated in science and parts of it are disputed; here it helps you recognise where you are, not explain how the nerve works.',
+      ndNote: 'Many neurodivergent people swing from one end to the other, from tension to exhaustion. Logic is often not enough to calm down; the body (gravity, a long exhale, movement) is an easier door.',
       science: 'Stephen Porges, PhD (1995) "Orienting in a defensive world: mammalian modifications of our evolutionary heritage. A Polyvagal Theory" (Doi: 10.1111/j.1469-8986.1995.tb01213.x)'
     },
     axis: 'body',
@@ -82,14 +82,14 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     el: {
       title: 'Ιδιοδεκτικότητα',
       short: 'Η αίσθηση της θέσης του σώματος στον χώρο.',
-      full: 'Το ιδιοδεκτικό σύστημα σου λέει πού βρίσκεται κάθε μέλος του σώματος χωρίς να κοιτάξεις. Ενεργοποιείται αυτόματα από τη βαρύτητα, τη στάση, και την κίνηση. Όταν εστιάζεις σε αυτή την αίσθηση, ενεργοποιείς κυκλώματα που ανταγωνίζονται τη νοητική περιπλάνηση.',
-      ndNote: 'Πολλοί νευροδιαφορετικοί έχουν ατυπική ιδιοδεκτικότητα — μπορεί να χρειαστεί μεγαλύτερη πίεση (π.χ. βαρύ αντικείμενο, σφιχτό αγκάλιασμα) για να ενεργοποιηθεί.'
+      full: 'Το ιδιοδεκτικό σύστημα σου λέει πού βρίσκεται κάθε μέλος του σώματος χωρίς να κοιτάξεις. Δουλεύει μόνο του, με τη βαρύτητα, τη στάση και την κίνηση. Όταν στρέφεις την προσοχή σε αυτή την αίσθηση, η προσοχή έχει κάτι απτό να ακουμπήσει, αντί για τις σκέψεις.',
+      ndNote: 'Πολλοί νευροδιαφορετικοί έχουν διαφορετική ιδιοδεκτικότητα· μπορεί να χρειαστεί περισσότερη πίεση (ένα βαρύ αντικείμενο, ένα σφιχτό αγκάλιασμα) για να τη νιώσουν.'
     },
     en: {
       title: 'Proprioception',
       short: 'The sense of your body\'s position in space.',
-      full: 'The proprioceptive system tells you where each body part is without looking. It\'s automatically activated by gravity, posture, and movement. When you focus on this sensation, you activate circuits that compete with mental wandering.',
-      ndNote: 'Many neurodivergent people have atypical proprioception — you may need stronger input (e.g., heavy object, tight hug) for it to activate.'
+      full: 'The proprioceptive system tells you where each body part is without looking. It works on its own, with gravity, posture and movement. When you turn your attention to this sense, attention has something tangible to rest on instead of thoughts.',
+      ndNote: 'Many neurodivergent people have a different proprioception; you may need more pressure (a heavy object, a tight hug) to feel it.'
     },
     axis: 'body',
     chapters: [1, 11],
@@ -100,13 +100,13 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     el: {
       title: 'Δια-αίσθηση (Interoception)',
       short: 'Η αντίληψη εσωτερικών σωματικών αισθήσεων.',
-      full: 'Η δια-αίσθηση είναι η γέφυρα μεταξύ σώματος και συνείδησης. Περιλαμβάνει την αντίληψη του καρδιακού παλμού, της αναπνοής, της πείνας, της θερμοκρασίας, και του πόνου. Η αναπνοή ως «εσωτερική αφή» — νιώθεις τον αέρα στα ρουθούνια, τη διαστολή του στήθους — ενεργοποιεί αυτό ακριβώς το σύστημα.',
+      full: 'Η δια-αίσθηση είναι η γέφυρα μεταξύ σώματος και συνείδησης. Περιλαμβάνει την αντίληψη του καρδιακού παλμού, της αναπνοής, της πείνας, της θερμοκρασίας, και του πόνου. Η αναπνοή ως «εσωτερική αφή» — νιώθεις τον αέρα στα ρουθούνια, τη διαστολή του στήθους — είναι αυτή ακριβώς η αίσθηση.',
       ndNote: 'Πολλοί αυτιστικοί και ADHD έχουν ατυπική δια-αίσθηση. Μπορεί να μη νιώθεις τον καρδιακό σου παλμό ή να τον νιώθεις υπερβολικά. Και τα δύο είναι φυσιολογικά για τον δικό σου εγκέφαλο. Η μέθοδος δεν απαιτεί «σωστή» αίσθηση — αρκεί η στροφή της προσοχής.'
     },
     en: {
       title: 'Interoception',
       short: 'The perception of internal body sensations.',
-      full: 'Interoception is the bridge between body and consciousness. It includes sensing heartbeat, breathing, hunger, temperature, and pain. Breathing as "internal touch" — feeling air at the nostrils, chest expansion — activates exactly this system.',
+      full: 'Interoception is the bridge between body and consciousness. It includes sensing heartbeat, breathing, hunger, temperature, and pain. Breathing as "internal touch" — feeling air at the nostrils, chest expansion — is exactly this sense.',
       ndNote: 'Many autistic and ADHD people have atypical interoception. You may not feel your heartbeat, or feel it too intensely. Both are normal for your brain. The method doesn\'t require "correct" sensation — turning attention is enough.'
     },
     axis: 'body',
@@ -176,14 +176,14 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
   pattern_4261: {
     el: {
       title: 'Μοτίβο 4-2-6-1',
-      short: 'Το βασικό μοτίβο αναπνοής του Τετραπλού Άξονα.',
-      full: '4 δευτερόλεπτα εισπνοή → 2 δευτερόλεπτα κράτηση → 6 δευτερόλεπτα εκπνοή → 1 δευτερόλεπτο παύση. Η εκπνοή είναι η μεγαλύτερη φάση. Σχεδιασμένο για γείωση και παρουσία.',
+      short: 'Μια παραλλαγή με μακριά εκπνοή και μικρή παύση.',
+      full: '4 δευτερόλεπτα εισπνοή → 2 δευτερόλεπτα κράτηση → 6 δευτερόλεπτα εκπνοή → 1 δευτερόλεπτο παύση. Η εκπνοή είναι η μεγαλύτερη φάση. Οι βασικοί ρυθμοί του βιβλίου είναι το 5-5, το 4-6 και το 4-2-7· αυτός είναι συγγενικός τους.',
       ndNote: 'Αν τα 6 δευτερόλεπτα εκπνοής είναι δύσκολα, ξεκίνα με 4. Ο στόχος δεν είναι τελειότητα — είναι ρυθμός.'
     },
     en: {
       title: '4-2-6-1 Pattern',
-      short: 'The core breathing pattern of the Fourfold Axis.',
-      full: '4 seconds inhale → 2 seconds hold → 6 seconds exhale → 1 second pause. The exhale is the longest phase. Designed for grounding and presence.',
+      short: 'A variation with a long exhale and a short pause.',
+      full: '4 seconds inhale → 2 seconds hold → 6 seconds exhale → 1 second pause. The exhale is the longest phase. The book\'s main rhythms are 5-5, 4-6 and 4-2-7; this one is related to them.',
       ndNote: 'If 6-second exhale is hard, start with 4. The goal isn\'t perfection — it\'s rhythm.'
     },
     axis: 'breath',
@@ -196,16 +196,16 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
   // ═══════════════════════════════════════════
   attention_modes: {
     el: {
-      title: 'Τρεις Μορφές Προσοχής',
-      short: 'Εστιασμένη, ανοιχτή, διασπασμένη.',
-      full: 'Η προσοχή λειτουργεί σε τρεις μορφές:\n• Εστιασμένη (Κλειστή): σαν φακός — φωτίζει ένα σημείο.\n• Ανοιχτή: σαν ανοιχτό φως — φωτίζει πολλά χωρίς εστίαση.\n• Διασπασμένη: σαν στροβοσκόπιο — πηδά χωρίς επιστροφή.\nΣτόχος δεν είναι να μείνεις μόνο στην εστιασμένη — αλλά να αναγνωρίζεις σε ποια βρίσκεσαι.',
-      ndNote: 'Ο ADHD νους πηγαίνει γρήγορα στη διασπασμένη. Ο αυτιστικός νους συχνά κλειδώνει στην εστιασμένη (hyperfocus). Και τα δύο είναι μοτίβα — όχι αδυναμίες.'
+      title: 'Τέσσερις Μορφές Προσοχής',
+      short: 'Κλειστή, ανοιχτή, διασπασμένη, αγκυλωμένη.',
+      full: 'Η προσοχή λειτουργεί σε τέσσερις μορφές:\n• Κλειστή: σαν φακός — η δέσμη μαζεύεται σε ένα σημείο.\n• Ανοιχτή: σαν ανοιχτό φως — φωτίζει πολλά μαζί.\n• Διασπασμένη: σαν μαϊμού — πηδά από κλαδί σε κλαδί.\n• Αγκυλωμένη: η δέσμη κολλάει σε ένα αντικείμενο ή σε μια σκέψη και δεν μπορεί να φύγει.\nΣτόχος δεν είναι να μείνεις μόνο σε μία — αλλά να αναγνωρίζεις σε ποια βρίσκεσαι.',
+      ndNote: 'Ο νους με ΔΕΠΥ πηγαίνει συχνά στη διασπασμένη. Ο αυτιστικός νους συχνά αγκυλώνεται (hyperfocus). Και τα δύο είναι μοτίβα — όχι αδυναμίες.'
     },
     en: {
-      title: 'Three Modes of Attention',
-      short: 'Focused, open, scattered.',
-      full: 'Attention operates in three modes:\n• Focused (Closed): like a flashlight — illuminates one point.\n• Open: like ambient light — illuminates many without focus.\n• Scattered: like a strobe — jumps without returning.\nThe goal isn\'t to stay focused — but to recognize which mode you\'re in.',
-      ndNote: 'The ADHD mind quickly goes scattered. The autistic mind often locks into focused (hyperfocus). Both are patterns — not weaknesses.'
+      title: 'Four Forms of Attention',
+      short: 'Closed, open, scattered, stuck.',
+      full: 'Attention works in four forms:\n• Closed: like a flashlight — the beam gathers on one point.\n• Open: like ambient light — it lights many things at once.\n• Scattered: like a monkey — it jumps from branch to branch.\n• Stuck: the beam locks onto an object or a thought and cannot leave.\nThe goal isn\'t to stay in one — but to recognise which one you\'re in.',
+      ndNote: 'The ADHD mind often goes scattered. The autistic mind often gets stuck (hyperfocus). Both are patterns — not weaknesses.'
     },
     axis: 'attention',
     chapters: [3, 5],
@@ -217,14 +217,14 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       title: 'Hyperfocus (Αγκυλωμένη Προσοχή)',
       short: 'Ο νους κλειδώνει σε ένα σημείο — εξαφανίζονται χώρος, σώμα, χρόνος.',
       full: 'Η αντίθετη ακραία κατάσταση από τη διάσπαση: ο νους κλειδώνει σε ένα σημείο και δεν μπορεί να φύγει. Ο κόσμος γύρω εξαφανίζεται. Μπορεί να είναι παραγωγικό αλλά και εξουθενωτικό — ειδικά όταν δεν το ελέγχεις.',
-      ndNote: 'Εργαλείο σπασίματος: Χώρος (μαλάκωσε το βλέμμα) + Σώμα (νιώσε τη βαρύτητα). Αυτός ο συνδυασμός «σπάει» το τούνελ.',
+      ndNote: 'Για να βγεις από το τούνελ: Χώρος (μαλάκωσε το βλέμμα) και Σώμα (νιώσε τη βαρύτητα). Συχνά αυτός ο συνδυασμός σε βγάζει σιγά σιγά, χωρίς απότομο ξύπνημα.',
       science: 'Ashinoff & Abu-Akel (2019) Psychological Research (Doi: 10.1007/s00426-019-01245-8)'
     },
     en: {
-      title: 'Hyperfocus (Locked Attention)',
+      title: 'Hyperfocus (Stuck Attention)',
       short: 'The mind locks on one point — space, body, time disappear.',
       full: 'The opposite extreme from scattering: the mind locks onto one point and cannot leave. The world around disappears. It can be productive but also exhausting — especially when uncontrolled.',
-      ndNote: 'Breaking tool: Space (soften gaze) + Body (feel gravity). This combination "breaks" the tunnel.',
+      ndNote: 'To come out of the tunnel: Space (soften your gaze) and Body (feel gravity). This combination often brings you out slowly, without a jolt.',
       science: 'Ashinoff & Abu-Akel (2019) Psychological Research (Doi: 10.1007/s00426-019-01245-8)'
     },
     axis: 'attention',
@@ -312,13 +312,13 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       title: 'Η Μεταφορά του Ουρανού',
       short: 'Εσύ δεν είσαι τα σύννεφα — είσαι ο ουρανός που τα χωράει.',
       full: 'Ο ουρανός δεν πιέζεται από τα σύννεφα, δεν αντιδρά, δεν κρίνει. Απλά τα χωράει. Σκέψεις, συναισθήματα, αισθήσεις εμφανίζονται και εξαφανίζονται. Εσύ μένεις. Αυτό δεν είναι ποιητική εικόνα — είναι η εμπειρία του 4ου άξονα. Στη Dzogchen παράδοση λέγεται Rigpa: η φυσική κατάσταση ανοιχτής επίγνωσης.',
-      ndNote: 'Αυτή η μεταφορά αλλάζει τη σχέση σου με τα ερεθίσματα. Αντί «πρέπει να τα σταματήσω», γίνεται «μπορώ να τα χωρέσω». Αυτό λειτουργεί καλύτερα για ND νους.'
+      ndNote: 'Αυτή η μεταφορά αλλάζει τη σχέση σου με τα ερεθίσματα. Αντί «πρέπει να τα σταματήσω», γίνεται «μπορώ να τα χωρέσω». Σε πολλούς νευροδιαφορετικούς αυτή η αλλαγή βοηθά.'
     },
     en: {
       title: 'The Sky Metaphor',
       short: 'You are not the clouds — you are the sky that holds them.',
       full: 'The sky is not burdened by clouds, does not react, does not judge. It simply holds them. Thoughts, emotions, sensations appear and disappear. You remain. This is not a poetic image — it\'s the experience of the 4th axis. In the Dzogchen tradition this is called Rigpa: the natural state of open awareness.',
-      ndNote: 'This metaphor changes your relationship with stimuli. Instead of "I must stop them," it becomes "I can hold them." This works better for ND minds.'
+      ndNote: 'This metaphor changes your relationship with stimuli. Instead of "I must stop them," it becomes "I can hold them." For many neurodivergent people this shift helps.'
     },
     axis: 'space',
     chapters: [4, 8, 9, 10, 11],
@@ -367,37 +367,35 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
   elephant_path: {
     el: {
       title: 'Ο Ελέφαντας, η Μαϊμού και η Επίγνωση',
-      short: 'Το μονοπάτι της νευροφυσιολογίας μέσω ενός αρχαίου μύθου.',
-      full: 'Στην ασκητική παράδοση της Σαμάθα, ο νους είναι ένας αφηνιασμένος μαύρος ελέφαντας (το Νευρικό Σύστημα / Vagus Nerve σε κατάσταση fight-or-flight). Οδηγείται από μια μαϊμού (το υποσυνείδητο DMN). Ο ασκητής (συνείδηση) χρησιμοποιεί ένα λάσο (Επίγνωση) για να τον αγκιστρώσει. Κάθε φορά που συνειδητοποιείς ότι ο νους έφυγε, ρίχνεις το λάσο. Αυτή η διαδικασία θεωρείται ότι ενισχύει τη Νήσο (Insula) του εγκεφάλου, την περιοχή της αισθητηριακής ολοκλήρωσης και αυτορρύθμισης. Είσαι ένας σύγχρονος ασκητής, που δουλεύει με ό,τι δείχνουν τόσο οι στοχαστικές παραδόσεις όσο και η σύγχρονη νευροεπιστήμη.',
-      ndNote: 'Το λάσο (η επίγνωση) είναι η "Απαλή Επιστροφή". Δεν χτυπάς τον ελέφαντα, απλώς τον επαναφέρεις. Έτσι μεγαλώνει η νευροπλαστικότητα της αυτορύθμισης (Insula).',
-      science: 'Η ενδυνάμωση της Νήσου (Insular Cortex) αυξάνει την ικανότητα δια-αίσθησης και συναισθηματικής ρύθμισης.'
+      short: 'Μια παλιά εικόνα για το πώς ησυχάζει ο νους.',
+      full: 'Στην παράδοση της Σαμάθα, ο νους μοιάζει με έναν αφηνιασμένο ελέφαντα, και μπροστά του τρέχει μια μαϊμού: η διάσπαση. Ο ασκητής κρατά ένα λάσο, την επίγνωση. Κάθε φορά που προσέχεις ότι ο νους έφυγε, τον φέρνεις πίσω με το λάσο. Με τον καιρό ο ελέφαντας ησυχάζει και το λάσο χρειάζεται όλο και λιγότερο.',
+      ndNote: 'Το λάσο είναι η «Απαλή Επιστροφή». Δεν χτυπάς τον ελέφαντα, απλώς τον επαναφέρεις.'
     },
     en: {
       title: 'The Elephant, the Monkey, and Awareness',
-      short: 'The path of neurophysiology through an ancient myth.',
-      full: 'In ancient ascetic traditions, the mind is a wild black elephant (the Nervous System / Vagus Nerve in fight-or-flight). It is led by a monkey (the subconscious DMN). The ascetic (consciousness) uses a lasso (Awareness) to hook it. Every time you realize the mind wandered, you throw the lasso. This process is thought to strengthen the insula — a brain area involved in sensory integration and self-regulation. You are a modern ascetic, working with what both contemplative traditions and current neuroscience point toward.',
-      ndNote: 'The lasso (awareness) is the "Gentle Return". You do not beat the elephant, you gently guide it back. This builds the neuroplasticity of self-regulation (Insula).',
-      science: 'Strengthening the Insular Cortex increases interoceptive capacity and emotional regulation.'
+      short: 'An old image of how the mind settles.',
+      full: 'In the Samatha tradition, the mind is like a wild elephant, and a monkey runs ahead of it: distraction. The practitioner holds a lasso, awareness. Each time you notice the mind has wandered, you bring it back with the lasso. Over time the elephant settles and the lasso is needed less and less.',
+      ndNote: 'The lasso is the "Gentle Return". You do not beat the elephant, you simply bring it back.'
     },
     axis: 'all',
     chapters: [5, 10, 11],
-    related: ['gentle_return', 'vagus_nerve', 'dmn', 'neuroplasticity']
+    related: ['gentle_return', 'attention_modes', 'labeling']
   },
 
   dmn: {
     el: {
       title: 'Default Mode Network (DMN)',
       short: 'Ο «αυτόματος πιλότος» — νοητική περιπλάνηση και αυτοκριτική.',
-      full: 'Το DMN είναι ένα δίκτυο εγκεφαλικών περιοχών που ενεργοποιείται αυτόματα όταν δεν εστιάζεις σε κάτι συγκεκριμένο. Συνδέεται με νοητική περιπλάνηση, αυτοκριτική, επανάληψη παλιών ιστοριών, φαντασιώσεις για το μέλλον. Η ενσυνειδητότητα μειώνει τη δραστηριότητά του.',
-      ndNote: 'Στον ADHD νου, το DMN μπορεί να είναι υπερδραστήριο. Γι\' αυτό ο νους «τρέχει» ακόμα κι αν θέλεις ηρεμία. Η γείωση (αίσθηση βαρύτητας) το αντικρούει αισθητηριακά.',
-      science: 'Brewer et al. (2011) PNAS — η ενσυνειδητότητα μειώνει τη δραστηριότητα του DMN.'
+      full: 'Το DMN είναι ένα δίκτυο εγκεφαλικών περιοχών που ενεργοποιείται αυτόματα όταν δεν εστιάζεις σε κάτι συγκεκριμένο. Συνδέεται με νοητική περιπλάνηση, αυτοκριτική, επανάληψη παλιών ιστοριών, φαντασιώσεις για το μέλλον. Σε έμπειρους διαλογιστές βρέθηκε λιγότερο ενεργό απ\' ό,τι σε αρχάριους.',
+      ndNote: 'Μια γνωστή υπόθεση για τη ΔΕΠΥ λέει ότι το DMN δεν ησυχάζει εύκολα όταν χρειάζεται προσοχή, γι\' αυτό ο νους «τρέχει» ακόμα κι όταν θέλεις ηρεμία. Η γείωση δίνει στην προσοχή κάτι απτό αντί για την περιπλάνηση.',
+      science: 'Brewer et al. (2011) PNAS — σε έμπειρους διαλογιστές, λιγότερη δραστηριότητα στο DMN. Για τη ΔΕΠΥ: Sonuga-Barke & Castellanos (2007), υπόθεση.'
     },
     en: {
       title: 'Default Mode Network (DMN)',
       short: 'The "autopilot" — mental wandering and self-criticism.',
-      full: 'The DMN is a brain network that activates automatically when you\'re not focused on something specific. It is associated with mental wandering, self-criticism, replaying old stories, fantasizing about the future. Mindfulness reduces its activity.',
-      ndNote: 'In ADHD brains, the DMN can be overactive. That\'s why the mind "races" even when you want calm. Grounding (gravity sensation) counters it sensorially.',
-      science: 'Brewer et al. (2011) PNAS — mindfulness reduces DMN activity.'
+      full: 'The DMN is a brain network that activates automatically when you\'re not focused on something specific. It is associated with mental wandering, self-criticism, replaying old stories, fantasizing about the future. In experienced meditators it was found less active than in beginners.',
+      ndNote: 'A well-known hypothesis about ADHD says the DMN does not quiet easily when attention is needed, which is why the mind "races" even when you want calm. Grounding gives attention something tangible instead of wandering.',
+      science: 'Brewer et al. (2011) PNAS — less DMN activity in experienced meditators. On ADHD: Sonuga-Barke & Castellanos (2007), a hypothesis.'
     },
     axis: 'all',
     chapters: [1, 5, 11],
@@ -467,13 +465,13 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       title: 'Μηχανικός Νους',
       short: 'Το εσωτερικό σύστημα κανόνων που αντικαθιστά τον αυτοματισμό.',
       full: 'Πολλοί νευροδιαφορετικοί αναπτύσσουν ένα εσωτερικό σύστημα κανόνων — «αν Χ, τότε Υ» — για να λειτουργούν σε κοινωνικές καταστάσεις, στη δουλειά, στην καθημερινότητα. Είναι κουραστικό αλλά εξυπνότατο. Η ενσυνειδητότητα δεν αντικαθιστά τον μηχανικό νου — τον ανακουφίζει. Δίνει στιγμές ανάπαυσης στο σύστημα.',
-      ndNote: 'Αν αναγνωρίζεις τον μηχανικό νου, σημαίνει ότι ήδη κάνεις masking. Αυτή η μέθοδος δεν ζητά να σταματήσεις — ζητά μικρές παύσεις ανανέωσης.'
+      ndNote: 'Αν αναγνωρίζεις τον μηχανικό νου, μπορεί να είναι κι αυτό μια μορφή masking. Η μέθοδος δεν ζητά να σταματήσεις· ζητά μικρές παύσεις ανανέωσης.'
     },
     en: {
       title: 'Mechanical Mind',
       short: 'The internal rule system that replaces missing automaticity.',
       full: 'Many neurodivergent people develop an internal rule system — "if X, then Y" — to function in social situations, at work, in daily life. It\'s exhausting but brilliantly clever. Mindfulness doesn\'t replace the mechanical mind — it relieves it. It gives moments of rest to the system.',
-      ndNote: 'If you recognize the mechanical mind, it means you\'re already masking. This method doesn\'t ask you to stop — it asks for small refresh pauses.'
+      ndNote: 'If you recognise the mechanical mind, it may be a form of masking too. The method doesn\'t ask you to stop; it asks for small refresh pauses.'
     },
     axis: 'all',
     chapters: [1, 5, 7],
@@ -484,15 +482,15 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     el: {
       title: 'Παρασυμπαθητικό Σύστημα',
       short: 'Το σύστημα «ξεκούρασης και ανάκαμψης» — αντίθετο του fight-or-flight.',
-      full: 'Το αυτόνομο νευρικό σύστημα έχει δύο σκέλη: το συμπαθητικό (fight-or-flight, ένταση) και το παρασυμπαθητικό (rest-and-digest, χαλάρωση). Η αργή εκπνοή, η γείωση, και η ανοιχτή επίγνωση ενεργοποιούν το παρασυμπαθητικό.',
-      ndNote: 'Πολλοί νευροδιαφορετικοί ζουν σε χρόνια ενεργοποίηση του συμπαθητικού (fight-or-flight ολημερίς). Αυτή η μέθοδος χτίζει σταδιακά πρόσβαση στο παρασυμπαθητικό.',
+      full: 'Το αυτόνομο νευρικό σύστημα έχει δύο σκέλη: το συμπαθητικό (ένταση, «πάλη ή φυγή») και το παρασυμπαθητικό (ξεκούραση, ανάκαμψη). Η αργή εκπνοή συνδέεται με το δεύτερο: στην εκπνοή ο καρδιακός ρυθμός επιβραδύνεται λίγο. Για τη γείωση και την ανοιχτή επίγνωση, η ηρεμία που φέρνουν είναι εμπειρία της μεθόδου, όχι μέτρηση.',
+      ndNote: 'Πολλοί νευροδιαφορετικοί περιγράφουν ότι νιώθουν σε επιφυλακή όλη μέρα. Η μέθοδος δίνει μικρές, συχνές στιγμές ηρεμίας.',
       science: 'Gerritsen & Band (2018).'
     },
     en: {
       title: 'Parasympathetic System',
       short: 'The "rest and recover" system — opposite of fight-or-flight.',
-      full: 'The autonomic nervous system has two branches: sympathetic (fight-or-flight, tension) and parasympathetic (rest-and-digest, relaxation). Slow exhale, grounding, and open awareness activate the parasympathetic.',
-      ndNote: 'Many neurodivergent people live in chronic sympathetic activation (fight-or-flight all day). This method gradually builds access to the parasympathetic.',
+      full: 'The autonomic nervous system has two branches: the sympathetic (tension, "fight or flight") and the parasympathetic (rest, recovery). A slow exhale is linked to the second: on the exhale the heart rate slows a little. For grounding and open awareness, the calm they bring is the experience of the method, not a measurement.',
+      ndNote: 'Many neurodivergent people describe feeling on alert all day. The method offers small, frequent moments of calm.',
       science: 'Gerritsen & Band (2018).'
     },
     axis: 'all',
@@ -503,15 +501,15 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
   amygdala: {
     el: {
       title: 'Αμυγδαλή',
-      short: 'Το κέντρο συναγερμού του εγκεφάλου.',
+      short: 'Μια περιοχή του εγκεφάλου που συμμετέχει στον εντοπισμό κινδύνου.',
       full: 'Η αμυγδαλή συμμετέχει στον εντοπισμό κινδύνου, πραγματικού ή φανταστικού. Σε μια μικρή μελέτη, όσοι ένιωθαν λιγότερο στρες μετά από 8 εβδομάδες ενσυνειδητότητας είχαν και μικρότερη πυκνότητα φαιάς ουσίας στην αμυγδαλή — Hölzel et al. (2010).',
-      ndNote: 'Η αμυγδαλή μπορεί να είναι πιο αντιδραστική σε νευροδιαφορετικούς λόγω χρόνιας υπερδιέγερσης. Η μέθοδος δεν ζητά να «νικήσεις» την αμυγδαλή· ζητά να μην την τροφοδοτείς με πίεση.'
+      ndNote: 'Η μέθοδος δεν ζητά να «νικήσεις» τον συναγερμό· ζητά να μην τον τροφοδοτείς με πίεση.'
     },
     en: {
       title: 'Amygdala',
-      short: 'The brain\'s alarm center.',
+      short: 'A brain area that takes part in detecting danger.',
       full: 'The amygdala takes part in detecting danger, real or imagined. In a small study, people who felt less stress after 8 weeks of mindfulness also had lower grey-matter density in the amygdala — Hölzel et al. (2010).',
-      ndNote: 'The amygdala may be more reactive in neurodivergent people due to chronic overstimulation. The method does not ask you to "defeat" the amygdala; it asks you to stop feeding it with pressure.'
+      ndNote: 'The method does not ask you to "defeat" the alarm; it asks you not to feed it with pressure.'
     },
     axis: 'all',
     chapters: [5, 11],
@@ -526,13 +524,13 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     el: {
       title: 'SOS Mode',
       short: 'Τετρα-αισθητηριακή παρέμβαση σε κρίση.',
-      full: 'Αυτιά: ήχος θήτα 6 Hz (με ακουστικά) ή μόνο κύματα και άνεμος.\nΜάτια: ήρεμο μπλε-τιρκουάζ φως.\nΣώμα: αναπνοή 4-6, χωρίς κράτημα (μακριά εκπνοή από το στόμα).\nΑφή: ήπια δόνηση στην αρχή κάθε εισπνοής και εκπνοής.\n\nΜαζί δίνουν στο νευρικό σύστημα πολλά ήπια σήματα ηρεμίας ταυτόχρονα.',
+      full: 'Αυτιά: ένας ήπιος ήχος binaural (με ακουστικά) ή μόνο κύματα και άνεμος.\nΜάτια: ήρεμο μπλε-τιρκουάζ φως.\nΣώμα: αναπνοή 4-6, χωρίς κράτημα.\nΑφή: ήπια δόνηση στην αρχή κάθε εισπνοής και εκπνοής.\n\nΜαζί δίνουν στις αισθήσεις πολλά ήπια, σταθερά σημεία να ακουμπήσουν.',
       ndNote: 'Τα binaural θέλουν ακουστικά. Αν δεν έχεις, η αναπνοή 4-6 μόνη της είναι ήδη μια καλή αρχή.'
     },
     en: {
       title: 'SOS Mode',
       short: 'Quad-sensory intervention during crisis.',
-      full: 'Ears: a theta 6 Hz sound (with headphones) or just waves and wind.\nEyes: a calm blue-teal light.\nBody: 4-6 breathing, no holding (a long exhale through the mouth).\nTouch: a gentle vibration at the start of each inhale and exhale.\n\nTogether they give the nervous system several gentle signals of calm at once.',
+      full: 'Ears: a gentle binaural sound (with headphones) or just waves and wind.\nEyes: a calm blue-teal light.\nBody: 4-6 breathing, no holding.\nTouch: a gentle vibration at the start of each inhale and exhale.\n\nTogether they give the senses several gentle, steady places to rest.',
       ndNote: 'Binaural beats need headphones. Without them, 4-6 breathing alone is already a good start.'
     },
     axis: 'all',
@@ -545,13 +543,13 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       title: 'Trauma-Informed Προσέγγιση',
       short: 'Η μέθοδος σέβεται τα όριά σου — πάντα.',
       full: 'Αυτός ο οδηγός είναι trauma-informed:\n• Ξεκινά πάντα από το σώμα — η γείωση δημιουργεί ασφάλεια πρώτα.\n• Δεν ζητά «άδειασμα νου» — η προσοχή επιστρέφει, δεν ελέγχει.\n• Σέβεται τα όρια — αν κάτι φέρνει δυσφορία, σταματάς.\n• Χρησιμοποιεί καλοσύνη αντί κατάκριση.\n• Δεν ζητά κλείσιμο ματιών αν αυτό δεν αισθάνεται ασφαλές.',
-      ndNote: 'Οι νευροδιαφορετικοί έχουν υψηλότερη πιθανότητα τραυματικών εμπειριών λόγω στίγματος, masking, και κοινωνικού αποκλεισμού. Η μέθοδος το λαμβάνει υπόψη σε κάθε βήμα.'
+      ndNote: 'Πολλοί νευροδιαφορετικοί έχουν ζήσει δύσκολες εμπειρίες: στίγμα, masking, αποκλεισμό. Η μέθοδος το λαμβάνει υπόψη σε κάθε βήμα.'
     },
     en: {
       title: 'Trauma-Informed Approach',
       short: 'The method respects your boundaries — always.',
       full: 'This guide is trauma-informed:\n• Always starts with body — grounding creates safety first.\n• Does not ask to "empty mind" — attention returns, it doesn\'t control.\n• Respects boundaries — if something brings discomfort, you stop.\n• Uses kindness instead of judgment.\n• Doesn\'t require closing eyes if that doesn\'t feel safe.',
-      ndNote: 'Neurodivergent people have higher likelihood of traumatic experiences due to stigma, masking, and social exclusion. The method accounts for this at every step.'
+      ndNote: 'Many neurodivergent people have lived through hard experiences: stigma, masking, exclusion. The method takes this into account at every step.'
     },
     axis: 'all',
     chapters: [1, 5, 7, 8, 10],
@@ -562,14 +560,14 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     el: {
       title: 'Κίνηση vs Αναπνοή (Τάι Τσι)',
       short: 'Γιατί η κίνηση είναι η ιδανική εναλλακτική της αναπνοής.',
-      full: 'Για πολλούς νευροδιαφορετικούς (ιδιαίτερα με ΔΕΠΥ ή αυτισμό), η άμεση εστίαση στην αναπνοή μπορεί να προκαλέσει άγχος (υπερεστίαση ή αεροφαγία). Η ενσυνείδητη κίνηση, όπως το Τάι Τσι, μεταφέρει την εστίαση από τους πνεύμονες στους μύες, τις αρθρώσεις και το δέρμα (ιδιοδεκτικότητα / proprioception). Αυτό απελευθερώνει τον εγκέφαλο από την πίεση της «σωστής αναπνοής» ενώ προσφέρει άμεση νευρική ρύθμιση.',
-      ndNote: 'Αν η αναπνοή σου προκαλεί ανησυχία, η κίνηση είναι η δική σου πύλη γείωσης. Το Τάι Τσι προσφέρει απτά σωματικά σήματα (βάρος, ροή, ισορροπία) που ενεργοποιούν το παρασυμπαθητικό σύστημα αβίαστα.'
+      full: 'Για πολλούς νευροδιαφορετικούς, η άμεση εστίαση στην αναπνοή μπορεί να φέρει άγχος: η αναπνοή γίνεται κάτι που «πρέπει» να γίνει σωστά. Η ενσυνείδητη κίνηση, όπως το Τάι Τσι, μεταφέρει την προσοχή από τους πνεύμονες στους μύες, τις αρθρώσεις και το δέρμα (ιδιοδεκτικότητα). Η αναπνοή ακολουθεί την κίνηση μόνη της, χωρίς την πίεση της «σωστής αναπνοής».',
+      ndNote: 'Αν η αναπνοή σου φέρνει ανησυχία, η κίνηση είναι η δική σου πύλη γείωσης. Το Τάι Τσι δίνει απτά σήματα στο σώμα — βάρος, ροή, ισορροπία — να ακουμπήσει η προσοχή.'
     },
     en: {
       title: 'Movement vs. Breathwork (Tai Chi)',
       short: 'Why mindful movement is the ideal alternative to breathwork.',
-      full: 'For many neurodivergent individuals (specifically with ADHD or Autism), focusing directly on the breath can trigger sensory anxiety or performance pressure. Mindful movement, such as Tai Chi, shifts focus away from the lungs to the muscles, joints, and skin (proprioception). This frees the brain from the friction of \'breathing correctly\' while delivering deep somatic regulation through visual and physical flow.',
-      ndNote: 'If breathwork causes dread, movement is your ultimate grounding tool. Tai Chi offers tangible physical feedback (weight shifts, spatial flow, balance) that triggers the parasympathetic system effortlessly.'
+      full: 'For many neurodivergent people, focusing directly on the breath can bring anxiety: breathing becomes something that "must" be done right. Mindful movement, such as Tai Chi, moves attention away from the lungs to the muscles, joints and skin (proprioception). The breath follows the movement on its own, without the pressure of "breathing correctly".',
+      ndNote: 'If the breath brings you unease, movement is your door to grounding. Tai Chi gives the body tangible signals — weight, flow, balance — for attention to rest on.'
     },
     axis: 'body',
     chapters: [1, 5, 8, 11],

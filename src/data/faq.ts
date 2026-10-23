@@ -209,9 +209,9 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
   3: {
     el: [
       {
-        q: 'Ποιες είναι οι τρεις μορφές προσοχής;',
-        a: '• Εστιασμένη (Κλειστή): Σαν φακός — φωτίζει ένα σημείο με ένταση.\n• Ανοιχτή: Σαν ανοιχτό φως — φωτίζει πολλά μαζί, χωρίς εστίαση.\n• Διασπασμένη: Σαν στροβοσκόπιο — πηδά από σκέψη σε σκέψη χωρίς επιστροφή.\n\nΣτόχος δεν είναι να εξαλείψεις τη διάσπαση — αλλά να αναγνωρίζεις σε ποια μορφή βρίσκεσαι.',
-        tags: ['attention', 'modes', 'basics', 'focused', 'open', 'scattered'],
+        q: 'Ποιες είναι οι τέσσερις μορφές προσοχής;',
+        a: '• Κλειστή: Σαν φακός — η δέσμη μαζεύεται σε ένα σημείο.\n• Ανοιχτή: Σαν ανοιχτό φως — φωτίζει πολλά μαζί.\n• Διασπασμένη: Σαν μαϊμού — πηδά από σκέψη σε σκέψη.\n• Αγκυλωμένη: Η δέσμη κολλάει σε ένα αντικείμενο ή σε μια σκέψη και δεν μπορεί να φύγει.\n\nΣτόχος δεν είναι να εξαλείψεις τη διάσπαση — αλλά να αναγνωρίζεις σε ποια μορφή βρίσκεσαι.',
+        tags: ['attention', 'modes', 'basics', 'focused', 'open', 'scattered', 'stuck'],
         depth: 1,
         relatedConcept: 'attention_modes'
       },
@@ -247,9 +247,9 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
     ],
     en: [
       {
-        q: 'What are the three modes of attention?',
-        a: '• Focused (Closed): Like a flashlight — illuminates one point intensely.\n• Open: Like ambient light — illuminates many things at once, without focus.\n• Scattered: Like a strobe — jumps from thought to thought without returning.\n\nThe goal isn\'t to eliminate scattering — but to recognize which mode you\'re in.',
-        tags: ['attention', 'modes', 'basics', 'focused', 'open', 'scattered'],
+        q: 'What are the four forms of attention?',
+        a: '• Closed: Like a flashlight — the beam gathers on one point.\n• Open: Like ambient light — it lights many things at once.\n• Scattered: Like a monkey — it jumps from thought to thought.\n• Stuck: The beam locks onto an object or a thought and cannot leave.\n\nThe goal isn\'t to eliminate scattering — but to recognize which mode you\'re in.',
+        tags: ['attention', 'modes', 'basics', 'focused', 'open', 'scattered', 'stuck'],
         depth: 1,
         relatedConcept: 'attention_modes'
       },
