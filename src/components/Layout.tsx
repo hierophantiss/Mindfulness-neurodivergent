@@ -74,7 +74,9 @@ export default function Layout() {
         <main id="main-content" ref={mainRef} className={cn(
           "flex-1 relative z-10 w-full flex flex-col overflow-x-hidden scroll-smooth overflow-y-auto px-4 md:px-8 lg:px-12 pt-[env(safe-area-inset-top)] pb-[calc(160px+env(safe-area-inset-bottom))]"
         )}>
-          <div className={cn("w-full max-w-[480px] mx-auto h-full flex flex-col pt-4", isWidePractice && "desk:max-w-[900px]", isReading && "desk:max-w-[680px]")}>
+          {/* min-h-full, not h-full: a page taller than the screen must grow this box,
+              so the space kept below it for the bottom bar comes after the last line. */}
+          <div className={cn("w-full max-w-[480px] mx-auto min-h-full shrink-0 flex flex-col pt-4", isWidePractice && "desk:max-w-[900px]", isReading && "desk:max-w-[680px]")}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={location.pathname}
@@ -82,7 +84,7 @@ export default function Layout() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
                 transition={reduceMotion ? { duration: 0.01 } : { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-                className="flex flex-col flex-1 h-full w-full"
+                className="flex flex-col flex-1 w-full"
               >
                 {/* React Router v6 useOutlet keeps the right context for the unmounting route. */}
                 <ErrorBoundary resetKey={location.pathname}>

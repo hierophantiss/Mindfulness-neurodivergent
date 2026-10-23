@@ -150,7 +150,7 @@ export default function Method() {
     <div className="flex flex-col h-full bg-[#0f1117] font-sans animate-in fade-in slide-in-from-bottom-4 duration-500">
       
       {/* Header */}
-      <header className="flex-none flex items-center justify-between px-6 py-5 bg-white/[0.04] border-b border-white/[0.05] sticky top-0 z-10 backdrop-blur-md">
+      <header className="flex-none flex items-center justify-between px-6 py-5 bg-[#191b20] border-b border-white/[0.05] sticky top-0 z-10">
         <Link 
           to="/" 
           className="w-10 h-10 rounded-full bg-white/[0.04] flex items-center justify-center text-[#d4d4d8] hover:bg-white/[0.04] hover:text-white transition-colors active:scale-95"
