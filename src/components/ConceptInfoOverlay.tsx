@@ -6,6 +6,55 @@ import { AnimatePresence, motion } from 'motion/react';
 import { useLanguage } from '../hooks/useLanguage';
 import { KNOWLEDGE_CONCEPTS } from '../data/concepts';
 import { createPortal } from 'react-dom';
+import { Link } from 'react-router-dom';
+import { CHAPTER_TITLES } from '../data/chapterTitles';
+
+// Where in the book each idea is explained (chapter, and the page in the app's
+// reader, 1-based). Without an entry: the first chapter the idea belongs to.
+const READ_MORE: Record<string, { chapter: number; page?: number }> = {
+  gravity: { chapter: 1, page: 3 },
+  axis: { chapter: 1, page: 2 },
+  grounding: { chapter: 1, page: 2 },
+  slow_exhale: { chapter: 2, page: 4 },
+  gentle_return: { chapter: 3 },
+  labeling: { chapter: 3, page: 5 },
+  peripheral_vision: { chapter: 4, page: 2 },
+  open_awareness: { chapter: 4, page: 7 },
+};
+
+/**
+ * Text where [[word|concept]] makes the word tappable: it opens the concept's
+ * small window (used in the short practices, so nobody is asked to do
+ * something the app has not explained).
+ */
+export function ConceptText({ text }: { text: string }) {
+  const parts = text.split(/(\[\[[^\]]+\]\])/g);
+  return (
+    <>
+      {parts.map((part, i) => {
+        const m = part.match(/^\[\[([^|\]]+)\|([^\]]+)\]\]$/);
+        return m ? <ConceptTerm key={i} word={m[1]} conceptId={m[2]} /> : <React.Fragment key={i}>{part}</React.Fragment>;
+      })}
+    </>
+  );
+}
+
+function ConceptTerm({ word, conceptId }: { word: string; conceptId: string }) {
+  const [isOpen, setIsOpen] = useState(false);
+  if (!KNOWLEDGE_CONCEPTS[conceptId]) return <>{word}</>;
+  return (
+    <>
+      <button
+        type="button"
+        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsOpen(true); }}
+        className="inline font-semibold text-white underline decoration-dotted decoration-white/40 underline-offset-4 hover:decoration-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 rounded-sm"
+      >
+        {word}
+      </button>
+      <ConceptModal isOpen={isOpen} onClose={() => setIsOpen(false)} conceptId={conceptId} />
+    </>
+  );
+}
 
 export function ConceptInfoIcon({ conceptId, className = "w-6 h-6 ml-1" }: { conceptId: string, className?: string }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,6 +84,7 @@ export function ConceptModal({ isOpen, onClose, conceptId }: { isOpen: boolean, 
   
   if (!concept) return null;
   const l = language === 'el' ? 'el' : 'en';
+  const readMore = READ_MORE[conceptId] ?? (Array.isArray(concept.chapters) && concept.chapters.length ? { chapter: concept.chapters[0] } : null);
 
   const modal = (
     <AnimatePresence>
@@ -92,12 +142,26 @@ export function ConceptModal({ isOpen, onClose, conceptId }: { isOpen: boolean, 
               {concept[l].ndNote && (
                 <div className="bg-white/[0.03] rounded-2xl p-4 border border-white/[0.04]">
                   <p className="text-[13px] text-amber-100/90 leading-relaxed font-sans">
-                    <span className="font-bold text-amber-500/80 block mb-1.5 uppercase tracking-wider text-[10px] font-mono">ND Note</span>
+                    <span className="font-bold text-amber-500/80 block mb-1.5 uppercase tracking-wider text-[10px] font-mono">{language === 'el' ? 'Για τον νευροδιαφορετικό νου' : 'For the neurodivergent mind'}</span>
                     {concept[l].ndNote}
                   </p>
                 </div>
               )}
               
+              {readMore && (
+                <Link
+                  to={`/chapters/${readMore.chapter}${readMore.page && readMore.page > 1 ? `?p=${readMore.page}` : ''}`}
+                  onClick={onClose}
+                  className="flex items-center justify-between gap-3 rounded-2xl bg-white/[0.04] border border-white/[0.08] px-4 py-3 text-[14px] text-white/85 hover:bg-white/[0.07] transition-colors"
+                >
+                  <span>
+                    {l === 'el' ? 'Διάβασε περισσότερα: ' : 'Read more: '}
+                    <span className="text-white">{l === 'el' ? 'Κεφάλαιο' : 'Chapter'} {readMore.chapter} · {CHAPTER_TITLES[l][readMore.chapter]}</span>
+                  </span>
+                  <span aria-hidden="true" className="text-white/40">→</span>
+                </Link>
+              )}
+
               {concept[l].science && (
                 <div className="flex gap-2 items-start opacity-75 bg-black/10 p-3 rounded-xl border border-white/5">
                   <Beaker size={13} className="mt-0.5 shrink-0 text-indigo-400" />

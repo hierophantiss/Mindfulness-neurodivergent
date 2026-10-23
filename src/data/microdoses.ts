@@ -1,4 +1,5 @@
 import { Axis } from './types';
+import { PRACTICE_TEXTS } from './practiceTexts';
 
 export interface MicrodoseExercise {
   axis: Axis;
@@ -86,7 +87,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   {
     id: 'pelvis-root',
     axis: 'body',
-    title: { el: 'Η Λεκάνη ως Γλάστρα', en: 'Pelvis as a Pot' },
+    title: { el: 'Η Λεκάνη ως Βάση', en: 'The Pelvis as a Base' },
     type: 'body',
     dur: { el: '30 δευτ.', en: '30 sec' },
     maxSeconds: 30,
@@ -151,7 +152,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
     maxSeconds: 60,
     desc: { el: 'Παρατήρησε την απαλή παύση ανάμεσα στην εισπνοή και την εκπνοή. Εκεί υπάρχει η ησυχία.', en: 'Observe the soft pause between inhale and exhale. Stillness lies there.' },
     iconName: 'Zap',
-    link: '/practice/breath/breath-observation'
+    link: '/practice/breath/stealth-breath'
   },
   {
     id: 'breath-path',
@@ -167,7 +168,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   {
     id: 'humming-vibration',
     axis: 'breath',
-    title: { el: 'Ηχητική Δόνηση (Humming)', en: 'Vocal Vibration (Humming)' },
+    title: { el: 'Ηχητική Δόνηση (Βουητό)', en: 'Sound Vibration (Humming)' },
     type: 'breath',
     dur: { el: '1 λεπτό', en: '1 minute' },
     maxSeconds: 60,
@@ -178,7 +179,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   {
     id: 'breath-4-2-7',
     axis: 'breath',
-    title: { el: 'Αναπνοή 4-2-7 (Ηρεμία)', en: 'Breath 4-2-7 (Calm)' },
+    title: { el: 'Αναπνοή 4-2-7', en: 'Breathing 4-2-7' },
     type: 'breath',
     dur: { el: '1 λεπτό', en: '1 minute' },
     maxSeconds: 60,
@@ -261,7 +262,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
     id: 'thoughts-as-objects',
     evidence: { en: 'Direct, sensory attention seems to quiet the rumination network', el: 'Η άμεση, αισθητηριακή προσοχή φαίνεται να ησυχάζει το δίκτυο μηρυκασμού', ref: 'study-farb' },
     axis: 'attention',
-    title: { el: 'Σκέψεις που Περνούν', en: 'Passing Thoughts' },
+    title: { el: 'Σκέψεις που Περνούν (σύντομη)', en: 'Passing Thoughts (short)' },
     type: 'focus',
     dur: { el: '1 λεπτό', en: '1 minute' },
     maxSeconds: 60,
@@ -283,7 +284,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   {
     id: 'sensory-54321',
     axis: 'attention',
-    title: { el: '5 Αισθήσεις (Micro)', en: '5 Senses (Micro)' },
+    title: { el: '5 Αισθήσεις (σύντομη)', en: '5 Senses (short)' },
     type: 'focus',
     dur: { el: '1 λεπτό', en: '1 minute' },
     maxSeconds: 60,
@@ -355,10 +356,20 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
     axis: 'space',
     title: { el: 'Ανοιχτό Βλέμμα', en: 'Open Gaze' },
     type: 'space',
-    dur: { el: '30 δευτ.', en: '30 sec' },
-    maxSeconds: 30,
+    dur: { el: '1 λεπτό', en: '1 min' },
+    maxSeconds: 60,
     desc: { el: 'Μαλάκωσε το βλέμμα (zoom out), επιτρέποντας στην περιφερειακή σου όραση να ανοίξει.', en: 'Soften your gaze (zoom out), allowing your peripheral vision to open up.' },
     iconName: 'Box',
     link: '/practice/space/soft-eyes'
   }
 ];
+
+// The reviewed texts (data/practiceTexts.ts): the card's line and the
+// "Why this works" line.
+for (const m of MICRODOSES_EXERCISES) {
+  const t = PRACTICE_TEXTS[m.id];
+  if (!t) continue;
+  if (t.card) m.desc = t.card;
+  if (t.evidence === null) delete m.evidence;
+  else if (t.evidence) m.evidence = t.evidence;
+}

@@ -57,4 +57,16 @@ export const STUDY_NOTES: Record<string, T> = {
     el: 'Ανασκόπηση που περιγράφει την υπερεστίαση· δεν εξέτασε κάποια άσκηση.',
     en: 'A review describing hyperfocus; it did not test any exercise.',
   },
+  'study-zaccaro': {
+    el: 'Ανασκόπηση 15 μικρών μελετών με διαφορετικούς ρυθμούς κάτω από 10 ανάσες το λεπτό· καμία δεν μέτρησε ακριβώς αυτή την άσκηση.',
+    en: 'A review of 15 small studies with different rhythms under 10 breaths a minute; none measured exactly this exercise.',
+  },
+  'study-schooler': {
+    el: 'Ανασκόπηση για την περιπλάνηση του νου, σε εργαστηριακές δοκιμασίες· δεν μέτρησε αυτή την άσκηση.',
+    en: 'A review of mind-wandering in laboratory tasks; it did not measure this exercise.',
+  },
+  'study-lieberman': {
+    el: 'Μελέτη fMRI με ονόματα σε συναισθήματα προσώπων, όχι σε σκέψεις· η ταμπέλα της μεθόδου πατά στην ίδια αρχή.',
+    en: 'An fMRI study with names given to emotions on faces, not to thoughts; the label of the method rests on the same principle.',
+  },
 };

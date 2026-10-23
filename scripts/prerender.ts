@@ -19,6 +19,7 @@ import { BREATH_PATTERNS } from '../src/data/breathPatterns';
 import { rabbitholeContent } from '../src/data/rabbitholeContent';
 import { MICRODOSES_EXERCISES } from '../src/data/microdoses';
 import { GUIDED_EXERCISES } from '../src/data/guidedExercises';
+import { plainConcepts } from '../src/data/practiceTexts';
 import { KNOWLEDGE_FAQ } from '../src/data/faq';
 import { audioUrl } from '../src/lib/chapterAudio';
 
@@ -562,9 +563,13 @@ function getMetaForRoute(route: string): RouteMeta {
       const d = lang === 'en'
         ? `${exDesc} Duration: ${ex.dur.en} · Axis: ${cat.en}.`
         : `${exDesc} Διάρκεια: ${ex.dur.el} · Άξονας: ${cat.el}.`;
+      // The steps of its page, as they are shown in the app.
+      const page: any = GUIDED_EXERCISES[ex.link.split('/').pop() as string];
+      const exSteps: string[] = ((page?.instructions && (page.instructions[L] ?? page.instructions.en)) || []).map(plainConcepts);
       const bodyParagraphs = [
         exDesc,
-        lang === 'en' ? `Duration: ${ex.dur.en}.` : `Διάρκεια: ${ex.dur.el}.`,
+        lang === 'en' ? `Duration: ${ex.dur.en.replace(/\.$/, '')}.` : `Διάρκεια: ${ex.dur.el.replace(/\.$/, '')}.`,
+        ...exSteps,
         ...(ex.evidence ? [ex.evidence[L] ?? ex.evidence.en] : []),
       ];
       return {
@@ -573,7 +578,7 @@ function getMetaForRoute(route: string): RouteMeta {
         schema: {
           '@context': 'https://schema.org', '@type': 'HowTo',
           name: exTitle, description: d, url, inLanguage: lang,
-          step: [{ '@type': 'HowToStep', text: exDesc }],
+          step: (exSteps.length ? exSteps : [exDesc]).map(text => ({ '@type': 'HowToStep', text })),
         },
       };
     }
@@ -583,7 +588,7 @@ function getMetaForRoute(route: string): RouteMeta {
       const L = lang as 'en' | 'el';
       const gTitle = g.title[L] ?? g.title.en;
       const gDesc = (g.desc && (g.desc[L] ?? g.desc.en)) || '';
-      const steps: string[] = (g.instructions && (g.instructions[L] ?? g.instructions.en)) || [];
+      const steps: string[] = ((g.instructions && (g.instructions[L] ?? g.instructions.en)) || []).map(plainConcepts);
       const mins = Math.max(1, Math.round((g.duration || 300) / 60));
       const durText = lang === 'en' ? `${mins} min` : `${mins} λεπτ${mins === 1 ? 'ό' : 'ά'}`;
       const t = lang === 'en'

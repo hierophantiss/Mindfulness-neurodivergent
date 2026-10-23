@@ -1,6 +1,9 @@
 // Guided exercises opened by /practice/<category>/<id> (GenericExercise).
 // Moved here from the page so the practice catalogue can read them.
 
+import { MICRODOSES_EXERCISES } from './microdoses';
+import { PRACTICE_TEXTS, GRAVITY_STEP } from './practiceTexts';
+
 export const GUIDED_EXERCISES: Record<string, any> = {
   // --- ΜΙΚΡΟΔΟΣΕΙΣ ΑΠΟ ΤΟ 8-ΕΒΔΟΜΑΔΟ ΠΡΟΓΡΑΜΜΑ ---
   'axis-pause': {
@@ -535,3 +538,27 @@ export const GUIDED_EXERCISES: Record<string, any> = {
     }
   }
 };
+
+// The reviewed texts (data/practiceTexts.ts) for every short practice that
+// "How do you feel" offers. A microdose card opens the page named by the end
+// of its link; one without a page of its own gets one here. Every practice
+// starts from gravity: that step is added here, the same for all, after the
+// position (if any).
+for (const [id, t] of Object.entries(PRACTICE_TEXTS)) {
+  const dose = MICRODOSES_EXERCISES.find(m => m.id === id);
+  const pageId = dose ? dose.link.split('/').pop()! : id;
+  const prev = GUIDED_EXERCISES[pageId];
+  const axis = prev?.axis ?? dose?.axis;
+  if (!axis) continue;
+  const steps = (l: 'el' | 'en') => [...(t.setup ? [t.setup[l]] : []), GRAVITY_STEP[l], ...t.steps[l]];
+  const evidence = t.evidence === null ? undefined : t.evidence ?? prev?.evidence ?? dose?.evidence;
+  GUIDED_EXERCISES[pageId] = {
+    ...prev,
+    axis,
+    title: t.title ?? prev?.title ?? dose?.title,
+    desc: t.sub ?? prev?.desc,
+    duration: t.seconds ?? prev?.duration ?? Math.max(dose?.maxSeconds ?? 60, 10),
+    instructions: { el: steps('el'), en: steps('en') },
+    evidence,
+  };
+}

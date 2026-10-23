@@ -7,6 +7,7 @@ import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
 import { prepareSound, ringBell } from '../lib/sound';
 import { EvidenceLine } from '../components/EvidenceLine';
+import { ConceptText } from '../components/ConceptInfoOverlay';
 import GuideAfterPractice from '../components/GuideAfterPractice';
 import { MICRODOSES_EXERCISES, type MicrodoseExercise } from '../data/microdoses';
 import { GUIDED_EXERCISES as EXERCISES } from '../data/guidedExercises';
@@ -57,8 +58,9 @@ export default function GenericExercise() {
 
   // A microdose card links here by its own path; if there is no guided
   // version of it, the microdose itself becomes the exercise.
-  const microdose = id && !EXERCISES[id]
-    ? MICRODOSES_EXERCISES.find(m => m.link.split('/').pop() === id || m.id === id)
+  // (It is logged under the microdose's own id, as the check-in counts it.)
+  const microdose = id
+    ? MICRODOSES_EXERCISES.find(m => m.link.split('/').pop() === id) ?? (!EXERCISES[id] ? MICRODOSES_EXERCISES.find(m => m.id === id) : undefined)
     : undefined;
 
   const exercise: any = id && EXERCISES[id] ? EXERCISES[id] : microdose ? microdoseAsExercise(microdose) : {
@@ -209,7 +211,7 @@ export default function GenericExercise() {
 
         {/* The step to do now */}
         {current && (
-          <p aria-live="polite" className="mt-6 px-3 text-[18px] leading-relaxed text-white/85 min-h-[3.5em]">{current}</p>
+          <p aria-live="polite" className="mt-6 px-3 text-[18px] leading-relaxed text-white/85 min-h-[3.5em]"><ConceptText text={current} /></p>
         )}
 
         {!running && !done && <EvidenceLine evidence={exercise.evidence} language={language} />}
@@ -226,7 +228,7 @@ export default function GenericExercise() {
                   <span className={cn('shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-[13px] font-medium mt-0.5', theme.soft, theme.text)}>
                     {i + 1}
                   </span>
-                  <span className="text-[15px] leading-relaxed text-white/80">{step}</span>
+                  <span className="text-[15px] leading-relaxed text-white/80"><ConceptText text={step} /></span>
                 </li>
               );
             })}

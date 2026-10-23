@@ -81,6 +81,13 @@ export const METHODOLOGY_DATA = {
         citation: 'Balban et al. (2023). Cell Reports Medicine. Doi: 10.1016/j.xcrm.2022.100895'
       },
       {
+        id: 'study-zaccaro',
+        icon: Waves,
+        title: 'Αργή Αναπνοή (Zaccaro et al., 2018)',
+        desc: 'Συστηματική ανασκόπηση 15 μελετών για την αργή αναπνοή, κάτω από 10 ανάσες το λεπτό (το 5-5 της μεθόδου είναι 6). Συνδέθηκε με μεγαλύτερη μεταβλητότητα του καρδιακού ρυθμού, με αίσθημα άνεσης, χαλάρωσης και εγρήγορσης, και με λιγότερο άγχος. Οι μελέτες ήταν μικρές και διέφεραν μεταξύ τους.',
+        citation: 'Zaccaro et al. (2018). Frontiers in Human Neuroscience. Doi: 10.3389/fnhum.2018.00353'
+      },
+      {
         id: 'study-trivedi',
         icon: Waves,
         title: 'Βουητό & Καρδιακός Ρυθμός (Trivedi et al., 2023)',
@@ -345,6 +352,13 @@ export const METHODOLOGY_DATA = {
         title: 'The Long Exhale (Balban et al., 2023)',
         desc: 'A randomised study with 108 adults, 5 minutes a day for 4 weeks. Breathing with a long exhale improved positive mood and slowed breathing more than meditation did; anxiety fell in all groups. The technique was a double inhale with a long exhale, not exactly the method\'s rhythms, but with the same principle: the exhale is the tool.',
         citation: 'Balban et al. (2023). Cell Reports Medicine. Doi: 10.1016/j.xcrm.2022.100895'
+      },
+      {
+        id: 'study-zaccaro',
+        icon: Waves,
+        title: 'Slow Breathing (Zaccaro et al., 2018)',
+        desc: 'A systematic review of 15 studies on slow breathing, under 10 breaths a minute (the method\'s 5-5 is 6). It was linked with higher heart rate variability, with comfort, relaxation and alertness, and with less anxiety. The studies were small and differed from one another.',
+        citation: 'Zaccaro et al. (2018). Frontiers in Human Neuroscience. Doi: 10.3389/fnhum.2018.00353'
       },
       {
         id: 'study-trivedi',

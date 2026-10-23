@@ -22,6 +22,24 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     related: ['gravity', 'proprioception', 'dmn', 'interoception']
   },
 
+  // The vertical axis: named in the short practices, explained in Chapter 1.
+  axis: {
+    el: {
+      title: 'Άξονας',
+      short: 'Η νοητή κάθετη γραμμή που σε κρατά όρθιο.',
+      full: 'Από τη λεκάνη, μέσα από τη σπονδυλική στήλη, ως την κορυφή του κεφαλιού. Δεν τον φτιάχνεις ούτε τον σφίγγεις· τον νιώθεις. Η βαρύτητα σε τραβά προς τα κάτω, ο άξονας σε κρατά όρθιο.',
+      ndNote: 'Αν δεν τον νιώθεις ακόμα, φαντάσου απλώς τη γραμμή. Η αίσθηση έρχεται με την επανάληψη.'
+    },
+    en: {
+      title: 'Axis',
+      short: 'The imagined vertical line that holds you upright.',
+      full: 'From the pelvis, up through the spine, to the crown of the head. You do not build it or tighten it; you feel it. Gravity draws you down, the axis holds you upright.',
+      ndNote: 'If you cannot feel it yet, simply imagine the line. The sensation comes with repetition.'
+    },
+    axis: 'body',
+    chapters: [1]
+  },
+
   gravity: {
     el: {
       title: 'Βαρύτητα',
@@ -140,13 +158,13 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
   slow_exhale: {
     el: {
       title: 'Αργή Εκπνοή',
-      short: 'Η βασική τεχνική ρύθμισης του νευρικού συστήματος.',
+      short: 'Η εκπνοή πιο αργή από την εισπνοή: το βασικό εργαλείο της μεθόδου.',
       full: 'Η αργή εκπνοή — από το στόμα, πιο αργή από την εισπνοή — είναι το βασικό εργαλείο της ρύθμισης. Σε στιγμές πανικού, μπορεί να αρκεί μόνο αυτή. Δεν χρειάζεται μοτίβο, δεν χρειάζεται μέτρηση — απλά αφήνεις τον αέρα να βγει πιο αργά απ\' ό,τι μπήκε.',
       ndNote: 'Αν η μέτρηση σε αγχώνει, μην μετράς. Απλά φύσα αργά σαν να σβήνεις ένα κερί πολύ μακριά σου.'
     },
     en: {
       title: 'Slow Exhale',
-      short: 'The fundamental technique for nervous system regulation.',
+      short: 'The exhale slower than the inhale: the method\'s basic tool.',
       full: 'A slow exhale — through the mouth, slower than the inhale — is the basic tool of regulation. In moments of panic, it may be enough on its own. No pattern needed, no counting — just let the air out slower than it came in.',
       ndNote: 'If counting stresses you, don\'t count. Just blow slowly as if extinguishing a candle far away.'
     },
@@ -236,14 +254,14 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     el: {
       title: 'Απαλή Επιστροφή',
       short: 'Η επιστροφή της προσοχής ΔΕΝ είναι αποτυχία — ΕΙΝΑΙ η άσκηση.',
-      full: 'Κάθε φορά που η προσοχή φεύγει και γυρνάς, κάνεις μια «κάμψη» για τον προμετωπιαίο φλοιό. Ο αριθμός των επιστροφών μετράει — όχι η διάρκεια της εστίασης. 50 επιστροφές σε 5 λεπτά = 50 ασκήσεις. Αυτό είναι η νευροπλαστικότητα σε δράση.',
-      ndNote: 'Αυτή η αλλαγή νοοτροπίας είναι κρίσιμη για νευροδιαφορετικούς. Αντί «αποτυγχάνω γιατί η προσοχή φεύγει», σκέψου «κάθε επιστροφή με δυναμώνει». Αυτό δεν είναι παρηγοριά — είναι νευροεπιστήμη.'
+      full: 'Κάθε φορά που η προσοχή φεύγει και τη φέρνεις πίσω, αυτή η επιστροφή είναι η ίδια η άσκηση. Μετράει ότι γυρνάς, όχι πόση ώρα έμεινες εστιασμένος. Πενήντα επιστροφές σε πέντε λεπτά είναι πενήντα φορές εξάσκηση.',
+      ndNote: 'Αντί «αποτυγχάνω γιατί η προσοχή φεύγει», σκέψου «κάθε επιστροφή είναι εξάσκηση». Ο νους που φεύγει συχνά έχει απλώς περισσότερες ευκαιρίες να γυρίσει.'
     },
     en: {
       title: 'Gentle Return',
       short: 'Returning attention is NOT failure — it IS the practice.',
-      full: 'Every time attention leaves and you return, you\'re doing a "push-up" for the prefrontal cortex. The number of returns matters — not the duration of focus. 50 returns in 5 minutes = 50 exercises. This is neuroplasticity in action.',
-      ndNote: 'This mindset shift is critical for neurodivergent people. Instead of "I\'m failing because attention leaves," think "every return makes me stronger." This isn\'t comfort — it\'s neuroscience.'
+      full: 'Every time attention leaves and you bring it back, that return is the practice itself. What counts is that you come back, not how long you stayed focused. Fifty returns in five minutes are fifty times of practice.',
+      ndNote: 'Instead of "I am failing because my attention leaves", think "every return is practice". A mind that drifts often simply has more chances to come back.'
     },
     axis: 'attention',
     chapters: [3, 4, 5, 10],
@@ -258,13 +276,13 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       title: 'Ανοιχτή Επίγνωση',
       short: 'Η ικανότητα να δέχεσαι τα πάντα χωρίς να κολλάς σε κάτι.',
       full: 'Η ανοιχτή επίγνωση είναι το πιο απελευθερωτικό κέντρο. Αντί να εστιάζεις σε ένα σημείο, αφήνεις τα πάντα να υπάρχουν — ήχους, αισθήσεις, σκέψεις — χωρίς να κρατάς κάτι. Σαν ανοιχτός ουρανός που χωράει τα σύννεφα χωρίς να τα σπρώχνει.',
-      ndNote: 'Η ανοιχτή επίγνωση είναι αντίδοτο στην υπερφόρτωση — σου δίνει χώρο αντί να πολεμάς τα ερεθίσματα. Η περιφερειακή όραση βοηθάει: μαλάκωσε το βλέμμα.'
+      ndNote: 'Σε υπερφόρτωση, η ανοιχτή επίγνωση σου δίνει χώρο αντί να πολεμάς τα ερεθίσματα. Η περιφερειακή όραση βοηθάει: μαλάκωσε το βλέμμα.'
     },
     en: {
       title: 'Open Awareness',
       short: 'The ability to receive everything without clinging.',
       full: 'Open awareness is the most liberating center. Instead of focusing on one point, you let everything exist — sounds, sensations, thoughts — without holding anything. Like an open sky that holds clouds without pushing them.',
-      ndNote: 'Open awareness is an antidote to overload — it gives you space instead of fighting stimuli. Peripheral vision helps: soften your gaze.'
+      ndNote: 'In overload, open awareness gives you space instead of fighting stimuli. Peripheral vision helps: soften your gaze.'
     },
     axis: 'space',
     chapters: [4, 9, 10],
@@ -274,14 +292,14 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
   peripheral_vision: {
     el: {
       title: 'Περιφερειακή Όραση',
-      short: 'Μαλάκωσε το βλέμμα — η περιφέρεια σβήνει τον συναγερμό.',
-      full: 'Η μετάβαση από εστιασμένο σε περιφερειακό βλέμμα στέλνει σήμα ασφάλειας στον εγκέφαλο. Η εστιασμένη όραση λέει «ψάξε κίνδυνο». Η περιφερειακή λέει «δεν υπάρχει κίνδυνος, χαλάρωσε». Γι\' αυτό αυτή η τεχνική είναι τόσο αποτελεσματική σε υπερφόρτωση.',
+      short: 'Το βλέμμα μένει μπροστά· η όραση ανοίγει και στα πλάγια.',
+      full: 'Κοιτάς μπροστά, σε ένα σημείο, και χωρίς να κουνήσεις τα μάτια αφήνεις την όραση να ανοίξει δεξιά και αριστερά, πάνω και κάτω. Η εστιασμένη όραση δείχνει το σημείο· η περιφερειακή δείχνει τον χώρο γύρω του. Είναι βασικός τρόπος με τον οποίο προσανατολιζόμαστε, και πολλοί τη βρίσκουν ήρεμη όταν τα ερεθίσματα είναι πολλά.',
       ndNote: 'Σε θορυβώδη χώρο, η περιφερειακή όραση μετατρέπει τα ερεθίσματα σε «σύννεφα» — τα αφήνεις να υπάρχουν χωρίς να σε κατακλύζουν.'
     },
     en: {
       title: 'Peripheral Vision',
-      short: 'Soften your gaze — the periphery turns off the alarm.',
-      full: 'Shifting from focused to peripheral vision sends a safety signal to the brain. Focused vision says "search for danger." Peripheral says "no danger, relax." That\'s why this technique is so effective during overload.',
+      short: 'Your gaze stays in front; vision opens to the sides as well.',
+      full: 'You look ahead, at one point, and without moving your eyes you let your vision open to the right and left, above and below. Focused vision shows the point; peripheral vision shows the space around it. It is a main way in which we orient ourselves, and many people find it calming when there is too much around them.',
       ndNote: 'In noisy spaces, peripheral vision transforms stimuli into "clouds" — you let them exist without being overwhelmed.'
     },
     axis: 'space',
