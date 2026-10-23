@@ -71,7 +71,7 @@ export default function Dashboard() {
     return best ? BREATH_PATTERNS.find(p => p.id === best[0]) : undefined;
   }, [logs]);
 
-  // At night the breath circle steps back a little, so the screen is darker before sleep.
+  // At night the rings of the breath circle step back a little (the infinity keeps its colours).
   const nightDim = hour >= 21 || hour < 5;
 
   const completedLessons = progress.completedLessons.length;
@@ -178,8 +178,8 @@ export default function Dashboard() {
           {/* Smaller on short screens, so "How do you feel" and "Continue" fit on the first screen */}
           {/* The home picture: the breath circle alone, widening and narrowing at 5-5,
               with the infinity sign. A picture, not a button. Smaller on short screens. */}
-          <div className={cn("w-[min(40%,max(96px,calc(100dvh-640px)))] mx-auto mt-4 mb-1 transition-opacity duration-1000", nightDim && "opacity-75")}>
-            <BreathMark className="w-full h-auto" infinityScale={0.36} label={language === 'en' ? 'The Fourfold Axis' : 'Ο Τετραπλός Άξονας'} />
+          <div className="w-[min(40%,max(96px,calc(100dvh-640px)))] mx-auto mt-4 mb-1">
+            <BreathMark className="w-full h-auto" infinityScale={0.48} dimRing={nightDim} label={language === 'en' ? 'The Fourfold Axis' : 'Ο Τετραπλός Άξονας'} />
           </div>
         </div>
 

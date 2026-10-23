@@ -4,9 +4,11 @@ import { useAccessibility } from '../hooks/useAccessibility';
 /**
  * The breath circle of the meditator picture on its own: two soft rings that
  * widen and narrow at the method's 5-5 (five seconds out, five back), with the
- * infinity sign at the centre.
+ * infinity sign at the centre. The infinity breathes with it: a soft light that
+ * grows on the in-breath and fades on the out-breath. `dimRing` lowers only the
+ * rings (at night), so the sign keeps its colours.
  */
-export function BreathMark({ className = '', label, withInfinity = true, infinityScale = 0.55 }: { className?: string; label?: string; withInfinity?: boolean; infinityScale?: number }) {
+export function BreathMark({ className = '', label, withInfinity = true, infinityScale = 0.55, dimRing = false }: { className?: string; label?: string; withInfinity?: boolean; infinityScale?: number; dimRing?: boolean }) {
   const { reduceMotion } = useAccessibility();
   const id = useId().replace(/:/g, '');
   const INFINITY = 'M144,205 C144,189 162,189 170,205 C178,221 196,221 196,205 C196,189 178,189 170,205 C162,221 144,221 144,205 Z';
@@ -28,17 +30,25 @@ export function BreathMark({ className = '', label, withInfinity = true, infinit
         <style>{`
           @keyframes breathmark { 0%, 100% { transform: scale(0.94); opacity: 0.65; } 50% { transform: scale(1.04); opacity: 1; } }
           .breathmark-pulse { animation: breathmark 10s ease-in-out infinite; transform-origin: 50px 50px; }
+          @keyframes breathmark-glow { 0%, 100% { opacity: 0.12; } 50% { opacity: 0.55; } }
+          .breathmark-glow { animation: breathmark-glow 10s ease-in-out infinite; }
         `}</style>
       </defs>
+      <filter id={`${id}-soft`} x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="3" />
+      </filter>
+      <g opacity={dimRing ? 0.7 : 1}>
       <g className={reduceMotion ? '' : 'breathmark-pulse'}>
         <circle cx="50" cy="50" r="45" fill={`url(#${id}-fill)`} />
         <circle cx="50" cy="50" r="44" fill="none" stroke="#7ca7d6" strokeWidth="1.6" opacity="0.7" />
         <circle cx="50" cy="50" r="40" fill="none" stroke="#7ca7d6" strokeWidth="0.7" opacity="0.3" />
       </g>
+      </g>
       {withInfinity && (
         <g transform={`translate(50 50) scale(${infinityScale}) translate(-170 -205)`} fill="none" strokeLinecap="round" strokeLinejoin="round">
+          <path d={INFINITY} stroke={`url(#${id}-rainbow)`} strokeWidth="10" filter={`url(#${id}-soft)`} className={reduceMotion ? '' : 'breathmark-glow'} opacity={reduceMotion ? 0.3 : undefined} />
           <path d={INFINITY} stroke="#141a15" strokeWidth="8" opacity="0.7" />
-          <path d={INFINITY} stroke={`url(#${id}-rainbow)`} strokeWidth="5" opacity="0.9" />
+          <path d={INFINITY} stroke={`url(#${id}-rainbow)`} strokeWidth="5" />
         </g>
       )}
     </svg>
