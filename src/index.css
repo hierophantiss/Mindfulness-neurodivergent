@@ -9,6 +9,10 @@
    computer it shows the same phone layout, centred, instead of stretching
    into a wide desktop layout. (The sm/md/lg/xl variants never switch on.) */
 @theme {
+  /* "font-sans" is the app's own font (Inter, with full Greek), never the
+     phone's system font: some phones' system fonts place the Greek accent
+     beside the letter ("Αρχική´") instead of on it. */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
   --breakpoint-sm: 9999px;
   --breakpoint-md: 9999px;
   --breakpoint-lg: 9999px;
