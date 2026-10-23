@@ -12,7 +12,7 @@ export const COURSE_EN: Record<number, any> = {
           "steps": [
             "During the day, remember:",
             "Stop what you are doing for 1 second.",
-            "Simply feel the weight of your body \"falling.\"",
+            "Simply feel the weight of your body \"falling,\" and the floor or the seat holding it.",
             "Return gently, without criticism, if you drift."
           ]
         },
@@ -30,8 +30,8 @@ export const COURSE_EN: Record<number, any> = {
           "steps": [
             "When you remember, during the day:",
             "Take a pause (1 second).",
-            "Feel gravity pulling you down.",
-            "Feel the vertical axis keeping you upright and relaxed."
+            "Feel [[gravity|gravity]] pulling you down.",
+            "Feel the vertical [[axis|axis]] keeping you upright and relaxed."
           ]
         },
         "breathing": "<strong>Natural Breath</strong><p>Let your body breathe as it wishes.</p>",
@@ -68,7 +68,7 @@ export const COURSE_EN: Record<number, any> = {
             "Stop for a moment (standing or seated).",
             "Feel your soles.",
             "Let your attention rise gradually up the legs.",
-            "Feel how the legs connect to the axis of the torso."
+            "Feel how the legs connect to the [[axis|axis]] of the torso."
           ]
         },
         "breathing": "<strong>Calm Breath</strong><p>If you wish, keep the 5-5 rhythm.</p>",
@@ -86,7 +86,7 @@ export const COURSE_EN: Record<number, any> = {
             "Sit comfortably or stand upright.",
             "Feel soles and legs.",
             "Raise your attention to the pelvis. Feel its weight if you are seated.",
-            "Feel how your axis grows up through it."
+            "Feel how your [[axis|axis]] grows up through it."
           ]
         },
         "breathing": "<strong>5-5 with Pelvic Awareness</strong><p>Take an inhale of 5\" and feel the air descend all the way to the pelvis. Exhale 5\".</p>",
@@ -101,7 +101,7 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Expanding into Space:",
           "steps": [
-            "Soles, legs, pelvis, axis.",
+            "Soles, legs, pelvis, [[axis|axis]].",
             "Add the arms: feel their weight hanging.",
             "Add the head: it balances perfectly on the axis.",
             "Feel the whole body as one unified, connected whole."
@@ -121,7 +121,7 @@ export const COURSE_EN: Record<number, any> = {
           "steps": [
             "Begin to walk very slowly.",
             "Feel each phase of the step: heel - sole - toes.",
-            "Keep awareness of your axis, your arms, and your head.",
+            "Keep awareness of your [[axis|axis]], your arms, and your head.",
             "Feel how the balance transfers."
           ]
         },
@@ -144,7 +144,7 @@ export const COURSE_EN: Record<number, any> = {
           "steps": [
             "Stand or sit comfortably.",
             "Begin from the soles - feel them. Move up gradually.",
-            "Feel knees, pelvis, the torso (axis).",
+            "Feel knees, pelvis, the torso ([[axis|axis]]).",
             "Feel the shoulders, the arms (their weight).",
             "Feel the neck and the head.",
             "Take a 30-second pause, feeling the \"whole.\""
@@ -162,7 +162,7 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Releasing Tension (Shoulders):",
           "steps": [
-            "Stand or sit with the axis aligned.",
+            "Stand or sit with the [[axis|axis]] aligned.",
             "Bring attention to your shoulders. Feel how you hold them.",
             "With an exhale, simply let them drop, giving their weight to the earth.",
             "The axis stays tall, the shoulders heavily grounded."
@@ -180,10 +180,10 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Head & Neck:",
           "steps": [
-            "Find the central axis.",
+            "Find the central [[axis|axis]].",
             "Bring attention to the neck. Feel that the head balances without effort.",
             "Make small, almost imperceptible movements right and left to \"unlock\" the neck.",
-            "Give the weight to gravity."
+            "Give the weight to [[gravity|gravity]]."
           ]
         },
         "breathing": "<strong>Calm Breath</strong><p>The rhythm of your breath (5-5) supports the axis.</p>",
@@ -222,7 +222,7 @@ export const COURSE_EN: Record<number, any> = {
             "Feel the safety (belly relaxed)."
           ]
         },
-        "breathing": "<strong>5-5 Breath</strong><p>Keep the rhythm (or 4-7-8 if it feels better, for relaxation).</p>",
+        "breathing": "<strong>5-5 Breath</strong><p>Keep the 5-5 rhythm (or 4-6, if you want a longer exhale).</p>",
         "reflection": "Did I feel the difference in \"unlocked\" knees?",
         "insight": "When we \"unlock\" the knees, we allow energy and weight to flow into the earth."
       },
@@ -235,8 +235,8 @@ export const COURSE_EN: Record<number, any> = {
           "title": "Movement and Pause:",
           "steps": [
             "Begin with slow Mindful Walking (3 minutes).",
-            "Stop abruptly. Feel the soles & the axis (1 minute).",
-            "Feel the grounding and find your center again.",
+            "Stop abruptly. Feel the soles & the [[axis|axis]] (1 minute).",
+            "Feel the [[grounding|grounding]] and find your center again.",
             "Return to walking.",
             "Experiment with different walking speeds."
           ]
@@ -253,9 +253,9 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Movement with Rhythm / Metronome:",
           "steps": [
-            "Use an imaginary or real metronome (or the beats from our \"Binaural Beats\").",
+            "Use an imaginary or real metronome (or the tick of Swaying in the app).",
             "Walk in rhythm to the tempo. 1, 2, 1, 2. (3 minutes)",
-            "Stop and find the axis. (1 minute)",
+            "Stop and find the [[axis|axis]]. (1 minute)",
             "Feel the rhythm (metronome) beating within you while you are still.",
             "Repeat, letting the body follow freely."
           ]
@@ -277,7 +277,7 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Observation without intervention:",
           "steps": [
-            "Grounding in the body (10 seconds).",
+            "[[Grounding|grounding]] in the body (10 seconds).",
             "Simply observe: how are you breathing at this moment?",
             "Do not try to change it.",
             "We keep only the awareness."
@@ -295,7 +295,7 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Focus on the Nostrils:",
           "steps": [
-            "Grounding in the body (10 seconds).",
+            "[[Grounding|grounding]] in the body (10 seconds).",
             "Bring your attention to your nostrils.",
             "At exactly which point do you feel the air?",
             "During the day, take small pauses and recall this sensation."
@@ -313,14 +313,14 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Observation at the Throat & Rhythms:",
           "steps": [
-            "Grounding in the body (10 seconds).",
+            "[[Grounding|grounding]] in the body (10 seconds).",
             "Feel the breath passing through your throat.",
             "Begin with a 5-5 rhythm (Inhale 5, Exhale 5).",
             "Then try 4-2-7 (Inhale 4, Hold 2, Exhale 7).",
             "See which rhythm calms you more."
           ]
         },
-        "breathing": "<strong>5-5 and 4-2-7</strong><p>Rhythm immediately changes the function of our control center.</p>",
+        "breathing": "<strong>5-5 and 4-2-7</strong><p>Two rhythms from the book; the long exhale of 4-2-7 is often the one that calms more.</p>",
         "reflection": "Which of the two rhythms felt more natural to me?",
         "insight": "Different rhythms work differently in our nervous system."
       },
@@ -332,7 +332,7 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Belly Breathing:",
           "steps": [
-            "Grounding in the body (10 seconds).",
+            "[[Grounding|grounding]] in the body (10 seconds).",
             "Rest one hand on the belly.",
             "Observe the belly filling (inhale).",
             "At the end, observe the exhale exclusively, as the belly \"empties.\""
@@ -343,16 +343,16 @@ export const COURSE_EN: Record<number, any> = {
         "insight": "A soft belly lets the deep breath heal us."
       },
       {
-        "title": "The Path: Nose - Throat - Lungs",
+        "title": "The Path: Nose - Throat - Chest",
         "where": "A quiet place",
         "dur": "5 minutes",
         "lesson": "<p>Today we join the pieces. The air is a current that travels within us.</p>",
         "exercise": {
           "title": "Tracking the Path:",
           "steps": [
-            "Grounding in the body (10 seconds).",
+            "[[Grounding|grounding]] in the body (10 seconds).",
             "Track a full inhale.",
-            "Nose -> Throat -> Lungs.",
+            "Nose → Throat → Chest.",
             "Track the return during the exhale."
           ]
         },
@@ -368,7 +368,7 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Observing the Pauses:",
           "steps": [
-            "Grounding in the body (10 seconds).",
+            "[[Grounding|grounding]] in the body (10 seconds).",
             "Do a whole-body observation (the entire body breathes).",
             "Notice the small pause at the end of the inhale before you exhale.",
             "Notice the small pause at the end of the exhale before you inhale again.",
@@ -387,7 +387,7 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Opening with the Rhythm of the Breath:",
           "steps": [
-            "Grounding in the body (10 seconds).",
+            "[[Grounding|grounding]] in the body (10 seconds).",
             "As you inhale, open the chest slightly and draw the shoulders back.",
             "As you exhale, relax completely, letting the body return to its neutral posture.",
             "Repeat several times at your own rhythm."
@@ -410,7 +410,7 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Nostrils and Rhythm together:",
           "steps": [
-            "Grounding in the body (10 seconds).",
+            "[[Grounding|grounding]] in the body (10 seconds).",
             "Focus first on the nostrils.",
             "Apply a 5-5 rhythm (Inhale 5, Exhale 5) while staying there.",
             "Keep your attention on the inner touch."
@@ -428,13 +428,13 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Throat with prolonged exhale:",
           "steps": [
-            "Grounding in the body (10 seconds).",
+            "[[Grounding|grounding]] in the body (10 seconds).",
             "Bring your awareness to the throat.",
             "Inhale 4 seconds, Hold 2.",
             "Exhale 7 seconds, feeling the air in the throat."
           ]
         },
-        "breathing": "<strong>4-2-7 Breath</strong><p>We activate the system of calm.</p>",
+        "breathing": "<strong>4-2-7 Breath</strong><p>The long exhale does the work; at its end, the belly draws in gently.</p>",
         "reflection": "What happened in my body with the long exhale?",
         "insight": "The longer exhale rhythm is one of the simplest and most reliable regulators."
       },
@@ -446,7 +446,7 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Belly and Pause:",
           "steps": [
-            "Grounding in the body (10 seconds).",
+            "[[Grounding|grounding]] in the body (10 seconds).",
             "Rest a hand on the belly. Feel it rising.",
             "At the end of the inhale (the rise), notice the natural pause.",
             "At the end of the exhale, notice the natural pause before you draw air again."
@@ -464,7 +464,7 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Vibration with the Sound \"A\":",
           "steps": [
-            "Grounding in the body (10 seconds).",
+            "[[Grounding|grounding]] in the body (10 seconds).",
             "Take a calm inhale.",
             "Exhaling, make a low, prolonged \"Aaah\" or the note C.",
             "Feel the vibration in your throat and chest.",
@@ -483,7 +483,7 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Opening to the Universe:",
           "steps": [
-            "Grounding in the body (10 seconds).",
+            "[[Grounding|grounding]] in the body (10 seconds).",
             "With the inhale, open your arms wide and upward (to the sky). Unfold the chest (heart).",
             "As you open, feel tenderness and kindness toward yourself and toward all.",
             "With the exhale, lower the arms gently to your sides."
@@ -501,7 +501,7 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "The Center of the Heart:",
           "steps": [
-            "Grounding in the body (10 seconds).",
+            "[[Grounding|grounding]] in the body (10 seconds).",
             "Begin the movement: arms open, heart opens.",
             "Think inwardly: \"May I be well. May all be well\" as you inhale from the chest.",
             "The movement becomes a prayer of kindness."
@@ -519,7 +519,7 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "The Final Breathing Practice:",
           "steps": [
-            "Grounding in the body (10 seconds).",
+            "[[Grounding|grounding]] in the body (10 seconds).",
             "Observation of rhythm (5-5) for 2 minutes.",
             "Mindful movement Bow (2 minutes).",
             "Opening the arms to the sky + Kindness (Metta) (2 minutes).",
@@ -543,7 +543,7 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Gazing for 7\":",
           "steps": [
-            "Grounding, axis, breath. (30 seconds)",
+            "[[Grounding|grounding]], [[axis|axis]], breath. (30 seconds)",
             "During the day, take small pauses.",
             "Look steadily at any object for 7 seconds.",
             "Return to what you were doing."
@@ -561,7 +561,7 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Right - Left:",
           "steps": [
-            "Grounding, axis, breath.",
+            "[[Grounding|grounding]], [[axis|axis]], breath.",
             "Choose an object on your right and one on your left.",
             "Look at the right one with focus. Feel your breath.",
             "Move your gaze to the left one. Feel your breath.",
@@ -580,13 +580,13 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Anchor at the Eyes:",
           "steps": [
-            "Grounding, axis, gentle breath.",
+            "[[Grounding|grounding]], [[axis|axis]], gentle breath.",
             "Find a point exactly at eye level.",
             "Stay there. The gaze neither rises nor falls.",
             "Let your attention become one with the point."
           ]
         },
-        "breathing": "<strong>Steady Anchor</strong><p>The steadiness of the gaze calms the thinking.</p>",
+        "breathing": "<strong>Steady Anchor</strong><p>When the gaze steadies, thinking often quiets too.</p>",
         "reflection": "How easy was it not to move my \"camera\" (my gaze)?",
         "insight": "A steady point of reference creates inner stability."
       },
@@ -598,7 +598,7 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Triple Focus:",
           "steps": [
-            "Begin with grounding (feel the soles).",
+            "Begin with [[grounding|grounding]] (feel the soles).",
             "Observe the breath and regulate it.",
             "Focus on an object.",
             "Now try to feel all three at once: Soles - Breath - Object."
@@ -616,9 +616,9 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Switching the Lens:",
           "steps": [
-            "At moments during the day: grounding, breath.",
-            "Focus on a small point (Closed Attention).",
-            "Soften the gaze, see the whole space peripherally (Open Attention).",
+            "At moments during the day: [[grounding|grounding]], breath.",
+            "Focus on a small point ([[Closed Attention|attention_modes]]).",
+            "Without moving your eyes, soften the gaze and let your [[vision|peripheral_vision]] open around the point: right, left, up, down (Open Attention).",
             "Stay in the open attention for a few seconds."
           ]
         },
@@ -634,11 +634,11 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "The 12\" Anchor:",
           "steps": [
-            "Grounding, axis, gentle breath.",
+            "[[Grounding|grounding]], [[axis|axis]], gentle breath.",
             "Body: feel the body in space.",
             "Breath: observe the rhythm.",
             "Focus on a point STEADILY for 12 seconds.",
-            "Do not let the eyes or the mind leave until the 12\" have passed."
+            "If the eyes or the mind drift before the 12\" are up, come back gently and start again."
           ]
         },
         "breathing": "<strong>5-5 in Stability</strong><p>12\" means a little more than one breath cycle.</p>",
@@ -653,11 +653,11 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Melting the Lens:",
           "steps": [
-            "Grounding, axis, gentle breath.",
+            "[[Grounding|grounding]], [[axis|axis]], gentle breath.",
             "Lock attention onto ONE point.",
             "Feel the sharpness of your gaze.",
             "Slowly begin to see the space AROUND the point.",
-            "Allow your attention to become open and peripheral."
+            "Allow your attention to become open and [[peripheral|peripheral_vision]]."
           ]
         },
         "breathing": "<strong>Breath of Release</strong><p>From control to acceptance.</p>",
@@ -677,10 +677,10 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Transition to Space:",
           "steps": [
-            "Always: grounding, breath, axis.",
+            "Always: [[grounding|grounding]], breath, [[axis|axis]].",
             "Lock attention onto an object across from you.",
             "Stay there for a while.",
-            "Abruptly relax the focus (open attention) and simply observe the whole scene.",
+            "Abruptly relax the focus ([[open attention|attention_modes]]) and simply observe the whole scene.",
             "Repeat three times."
           ]
         },
@@ -696,7 +696,7 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Observing Thoughts:",
           "steps": [
-            "Grounding, axis, rhythmic breath.",
+            "[[Grounding|grounding]], [[axis|axis]], rhythmic breath.",
             "Close your eyes or lower your gaze. Notice what appears: a thought, a sound, a sensation.",
             "A thought comes. See it as an object.",
             "Do not hold it. See it cross the field of observation and leave.",
@@ -718,7 +718,7 @@ export const COURSE_EN: Record<number, any> = {
             "During the day: 5-5 breathing exercise (Inhale 5 / Exhale 5).",
             "Breath of calm (small pauses) whenever you need it.",
             "Evening Routine: \"Settling, Slowing Down.\"",
-            "Before sleep: grounding in bed, deep exhales, letting the day go."
+            "Before sleep: [[grounding|grounding]] in bed, deep exhales, letting the day go."
           ]
         },
         "breathing": "<strong>5-5 and Breath of Calm</strong><p>The rhythm of stability.</p>",
@@ -735,7 +735,7 @@ export const COURSE_EN: Record<number, any> = {
           "steps": [
             "When you observe a critical thought (the echo), recognize it.",
             "Do not fight it. Simply let it go, as \"not useful.\"",
-            "In its place, put presence (grounding) with kindness and openness.",
+            "In its place, put presence ([[grounding|grounding]]) with kindness and openness.",
             "You change \"helmsman\": from the subconscious/turmoil, to conscious, open presence."
           ]
         },
@@ -752,7 +752,7 @@ export const COURSE_EN: Record<number, any> = {
           "title": "Replacing with a Mantra:",
           "steps": [
             "When the mind gets trapped in a negative scenario:",
-            "Grounding, axis, rhythmic breath.",
+            "[[Grounding|grounding]], [[axis|axis]], rhythmic breath.",
             "Begin to repeat mentally the phrase/mantra you chose.",
             "Each time the mind goes to the scenario, return gently to the mantra."
           ]
@@ -787,9 +787,9 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Review and Routine:",
           "steps": [
-            "Grounding, axis, gravity.",
+            "[[Grounding|grounding]], [[axis|axis]], [[gravity|gravity]].",
             "Breath of calm (rhythmic 5-5).",
-            "Remember: closed (zoom in) and open attention (zoom out).",
+            "Remember: closed (zoom in) and [[open attention|attention_modes]] (zoom out).",
             "Thoughts as passing objects (Calm and Insight).",
             "We end the week with the evening routine."
           ]
@@ -811,9 +811,10 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Sky-Gazing:",
           "steps": [
+            "Feel [[gravity|gravity]] and the ground that supports you.",
             "Open your attention a little in the morning, at noon, and in the evening.",
             "A few times a day, look up at the sky.",
-            "Let out a slow exhale, feeling the vast space."
+            "Let out a [[slow exhale|slow_exhale]], feeling the vast space."
           ]
         },
         "breathing": "<strong>Breathing into Space</strong><p>Do not imagine a space; feel the real space around you, and let the exhale spread into it.</p>",
@@ -828,7 +829,7 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Open Attention Routine:",
           "steps": [
-            "Morning: 1-2 minutes of open attention. Feel the 4 centers.",
+            "Morning: first feel [[gravity|gravity]], then 1-2 minutes of [[open attention|attention_modes]]. Feel the 4 centers.",
             "Noon: 1-2 minutes of connection again.",
             "Evening: Relaxation and observation of the space."
           ]
@@ -845,7 +846,7 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Unification:",
           "steps": [
-            "Feel the body (Gravity).",
+            "Feel the body ([[Gravity|gravity]]).",
             "Observe the breath.",
             "Focus the attention.",
             "Open into Space (Sky-Gazing)."
@@ -864,7 +865,7 @@ export const COURSE_EN: Record<number, any> = {
           "title": "Sky-Gazing & 4 Centers:",
           "steps": [
             "We establish a habit: Every morning, noon, evening.",
-            "Awareness through the 4 centers at once.",
+            "[[Gravity|gravity]] first; then awareness through the 4 centers at once.",
             "The sky is a pointer to space, not a destination."
           ]
         },
@@ -880,6 +881,7 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Instant Pause (Short Moment):",
           "steps": [
+            "Feel [[gravity|gravity]] for a moment.",
             "For 2-5 seconds, let your thoughts be exactly as they are.",
             "Do not try to change them, do not judge them.",
             "Simply rest in these few seconds.",
@@ -918,7 +920,7 @@ export const COURSE_EN: Record<number, any> = {
           "steps": [
             "As you do something everyday (e.g., washing your hands).",
             "Take a 3-second pause.",
-            "Simply feel that you \"exist\" without thinking of the next step."
+            "Feel your weight in your soles, and simply feel that you \"exist,\" without thinking of the next step."
           ]
         },
         "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
@@ -939,7 +941,7 @@ export const COURSE_EN: Record<number, any> = {
           "title": "Space for Kindness:",
           "steps": [
             "When you feel pressure or resistance, instead of \"fighting\" it...",
-            "Simply accept the situation.",
+            "Feel [[gravity|gravity]], and accept the situation.",
             "Give it free space. Say: \"Let it be exactly as it is.\"",
             "Watch the \"mud\" settle without any effort of yours."
           ]
@@ -959,7 +961,7 @@ export const COURSE_EN: Record<number, any> = {
             "In a moment of respite:",
             "Do not analyze whether you are doing well or badly.",
             "Do not even try to control your breath.",
-            "Feel your axis and simply \"Rest\" in the Now."
+            "Feel your [[axis|axis]] and simply \"Rest\" in the Now."
           ]
         },
         "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
@@ -970,14 +972,15 @@ export const COURSE_EN: Record<number, any> = {
         "title": "The Elephant, the Monkey & the Lasso",
         "where": "Anywhere",
         "dur": "A little while",
-        "lesson": "<p>The ancient tale of the meditating ascetic meets neurophysiology! Your mind is a wild black elephant (the Nervous System), driven by the monkey (the DMN). Your lasso is the \"Gentle Return\" of awareness.</p><p>You do not strike the elephant. You throw the lasso gently and bring it back. This is thought to strengthen the Insular Cortex of your brain.</p>",
+        "lesson": "<p>An old image from the Samatha tradition: your mind is like a wild elephant, and a monkey runs ahead of it: distraction. Your lasso is the \"Gentle Return\" of awareness.</p><p>You do not strike the elephant. You throw the lasso gently and bring it back. Over time the elephant settles, and the lasso is needed less and less.</p>",
         "exercise": {
           "title": "The Modern Ascetic:",
           "steps": [
+            "Feel [[gravity|gravity]].",
             "Take a pause for a few seconds.",
             "Observe the present moment.",
-            "When the \"elephant\" runs off toward anxiety, gently throw the lasso of awareness.",
-            "Return to the soles and the breath. Congratulations, you just built neuroplasticity."
+            "When the \"elephant\" runs off toward anxiety, gently throw the [[lasso|elephant_path]] of awareness.",
+            "Return to the soles and the breath. This return is the practice itself."
           ]
         },
         "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
@@ -992,6 +995,7 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "The Silence behind the Sounds:",
           "steps": [
+            "Feel [[gravity|gravity]] and the ground that supports you.",
             "As you hear any sound...",
             "Try at the same time to notice the silence that exists in the background.",
             "Feel the silence within which the sound is born."
@@ -1009,7 +1013,7 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Space within the Body:",
           "steps": [
-            "Take a small pause.",
+            "Take a small pause and feel [[gravity|gravity]].",
             "Can you feel the space inside your chest?",
             "Can you feel that this space is already there, without doing anything?"
           ]
@@ -1027,7 +1031,7 @@ export const COURSE_EN: Record<number, any> = {
           "title": "Spacious Kindness:",
           "steps": [
             "In a conversation today...",
-            "Feel your axis and your feet.",
+            "Feel your [[axis|axis]] and your feet.",
             "Offer the other person an \"empty space\" of acceptance.",
             "Do not try to control them, simply let them exist."
           ]
@@ -1044,8 +1048,8 @@ export const COURSE_EN: Record<number, any> = {
         "exercise": {
           "title": "Effortless Presence:",
           "steps": [
+            "Feel [[gravity|gravity]] in the body.",
             "Open your eyes to the sky.",
-            "Feel gravity in the body.",
             "Hear the silence behind the sounds.",
             "Feel that you are this Open Horizon."
           ]

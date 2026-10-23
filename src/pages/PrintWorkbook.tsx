@@ -3,6 +3,7 @@ import { useLanguage } from '../hooks/useLanguage';
 import { CHAPTERS_DATA } from '../data/chapters';
 import { COURSE_EL as courseEL } from '../data/course-el';
 import { COURSE_EN as courseEN } from '../data/course-en';
+import { plainConcepts } from '../data/practiceTexts';
 
 export default function PrintWorkbook() {
   const { language } = useLanguage();
@@ -113,7 +114,7 @@ export default function PrintWorkbook() {
                         </h5>
                         <ul className="list-disc pl-5 space-y-2 text-gray-700">
                           {day.exercise.steps.map((step: string, sIdx: number) => (
-                            <li key={sIdx}>{step}</li>
+                            <li key={sIdx}>{plainConcepts(step)}</li>
                           ))}
                         </ul>
                       </div>

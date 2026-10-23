@@ -11,6 +11,7 @@ import CameraAnimation from '../components/CameraAnimation';
 import SamathaAnimation from '../components/SamathaAnimation';
 import { useReward } from '../contexts/RewardContext';
 import { useProgress } from '../contexts/ProgressContext';
+import { ConceptText } from '../components/ConceptInfoOverlay';
 
 export default function ProgramWeek() {
     const { reduceMotion } = useAccessibility();
@@ -267,7 +268,7 @@ export default function ProgramWeek() {
                       {currentDayContent.exercise.steps.map((step: string, idx: number) => (
                         <li key={idx} className="flex gap-4 text-white/90 leading-relaxed items-start">
                           <span className="w-7 h-7 rounded-full bg-amber-500/10 flex items-center justify-center text-xs font-bold text-amber-400 shrink-0 border border-amber-500/20 shadow-inner mt-0.5">{idx + 1}</span>
-                          <span className="text-base sm:text-lg">{step}</span>
+                          <span className="text-base sm:text-lg"><ConceptText text={step} /></span>
                         </li>
                       ))}
                     </ul>
