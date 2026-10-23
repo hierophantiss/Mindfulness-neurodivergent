@@ -1,18 +1,9 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter, HashRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
-import { CompanionProvider } from './hooks/useCompanion';
 import Layout from './components/Layout';
+import { AppProviders } from './components/AppProviders';
 import { lazyWithReload } from './lib/lazyWithReload';
-
-import { LanguageProvider, useLanguage } from './hooks/useLanguage';
-import { ThemeProvider } from './hooks/useTheme';
-import { AccessibilityProvider } from './hooks/useAccessibility';
-import { TimeProvider } from './contexts/TimeContext';
-import { RewardProvider } from './contexts/RewardContext';
-import { ProgressProvider } from './contexts/ProgressContext';
-import { AudioProvider } from './contexts/AudioContext';
-import { ActivityTrackerProvider } from './contexts/ActivityTrackerContext';
+import { useLanguage } from './hooks/useLanguage';
 
 const InteractiveBackground = lazyWithReload(() => import('./components/InteractiveBackground').then(m => ({ default: m.InteractiveBackground })));
 const Dashboard = lazyWithReload(() => import('./pages/Dashboard'));
@@ -78,64 +69,46 @@ function AppContent() {
 
   return (
     // A language switch changes the basename, which remounts the router so it
-    // reads the corrected address. Saved progress reloads from storage.
+    // reads the corrected address (the shared state lives above it, in AppProviders).
     <Router key={basename} basename={basename}>
-      <CompanionProvider>
-        <InteractiveBackground />
-        <Suspense fallback={<FallbackLoader />}>
+      <InteractiveBackground />
+      <Suspense fallback={<FallbackLoader />}>
         <Routes>
-        <Route path="/workbook/print" element={<PrintWorkbook />} />
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="dashboard" element={<Navigate to="/" replace />} />
-          <Route path="method" element={<Method />} />
-          <Route path="methodology" element={<Methodology />} />
-          <Route path="rabbithole" element={<RabbitHole />} />
-          <Route path="rabbithole/:articleId" element={<RabbitHole />} />
-          <Route path="chapters" element={<Chapters />} />
-          <Route path="chapters/:id" element={<ChapterDetail />} />
-          <Route path="program" element={<Program />} />
-          <Route path="program/week/:weekId" element={<ProgramWeek />} />
-          <Route path="practice" element={<Practice />} />
-          <Route path="practice/grounding" element={<PracticeSection />} />
-          <Route path="practice/swaying" element={<PracticeSwaying />} />
-          <Route path="practice/movement" element={<PracticeMovement />} />
-          <Route path="practice/microdoses" element={<PracticeMicrodoses />} />
-          <Route path="practice/breath/:id" element={<BreathRoute />} />
-          <Route path="practice/:category/:id" element={<GenericExercise />} />
-          <Route path="journal" element={<Journal />} />
-          <Route path="sanctuary" element={<Sanctuary />} />
-          <Route path="settings" element={<Settings />} />
-          <Route path="faq" element={<Faq />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
+          <Route path="/workbook/print" element={<PrintWorkbook />} />
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="dashboard" element={<Navigate to="/" replace />} />
+            <Route path="method" element={<Method />} />
+            <Route path="methodology" element={<Methodology />} />
+            <Route path="rabbithole" element={<RabbitHole />} />
+            <Route path="rabbithole/:articleId" element={<RabbitHole />} />
+            <Route path="chapters" element={<Chapters />} />
+            <Route path="chapters/:id" element={<ChapterDetail />} />
+            <Route path="program" element={<Program />} />
+            <Route path="program/week/:weekId" element={<ProgramWeek />} />
+            <Route path="practice" element={<Practice />} />
+            <Route path="practice/grounding" element={<PracticeSection />} />
+            <Route path="practice/swaying" element={<PracticeSwaying />} />
+            <Route path="practice/movement" element={<PracticeMovement />} />
+            <Route path="practice/microdoses" element={<PracticeMicrodoses />} />
+            <Route path="practice/breath/:id" element={<BreathRoute />} />
+            <Route path="practice/:category/:id" element={<GenericExercise />} />
+            <Route path="journal" element={<Journal />} />
+            <Route path="sanctuary" element={<Sanctuary />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="faq" element={<Faq />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
         </Routes>
-        </Suspense>
-      </CompanionProvider>
+      </Suspense>
     </Router>
   );
 }
 
 export default function App() {
   return (
-    <HelmetProvider>
-      <TimeProvider>
-        <LanguageProvider>
-          <ThemeProvider>
-            <RewardProvider>
-              <ProgressProvider>
-                <ActivityTrackerProvider>
-                  <AudioProvider>
-                    <AccessibilityProvider>
-                      <AppContent />
-                    </AccessibilityProvider>
-                  </AudioProvider>
-                </ActivityTrackerProvider>
-              </ProgressProvider>
-            </RewardProvider>
-          </ThemeProvider>
-        </LanguageProvider>
-      </TimeProvider>
-    </HelmetProvider>
+    <AppProviders>
+      <AppContent />
+    </AppProviders>
   );
 }
