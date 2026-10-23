@@ -296,14 +296,16 @@ export default function Sanctuary() {
 
       <AnimatePresence>
         {isDimmed && (
-          <motion.div
+          <motion.button
+            type="button"
+            autoFocus
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsDimmed(false)}
+            onKeyDown={(e) => { if (e.key === 'Escape') setIsDimmed(false); }}
             aria-label={language === 'el' ? 'Πάτα για να φωτίσει η οθόνη' : 'Tap to brighten the screen'}
-            role="button"
-            className="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm"
+            className="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm cursor-default focus:outline-none"
           />
         )}
       </AnimatePresence>

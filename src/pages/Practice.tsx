@@ -10,6 +10,14 @@ import { Check } from 'lucide-react';
 import { ConceptInfoIcon } from '../components/ConceptInfoOverlay';
 import { QuietAxisHint } from '../components/QuietAxisHint';
 
+// Cards that hold their own small buttons (the concept "i") cannot be <button>s
+// themselves, so they get Enter/Space by hand. Keys pressed on the inner
+// buttons are left to them.
+const onPressKey = (press: () => void) => (e: React.KeyboardEvent) => {
+  if (e.target !== e.currentTarget) return;
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); press(); }
+};
+
 function PatternCard({ p, colorScheme, icon: Icon, onClick, language, hideCycle = false }: { 
   p: BreathPattern, 
   colorScheme: 'indigo' | 'orange', 
@@ -21,10 +29,10 @@ function PatternCard({ p, colorScheme, icon: Icon, onClick, language, hideCycle 
   const isIndigo = colorScheme === 'indigo';
   
   return (
-    <div role="button" tabIndex={0}
+    <button type="button"
       onClick={onClick}
       className={cn(
-        "group relative border p-6 text-left transition-all duration-300 overflow-hidden flex flex-col shadow-md active:scale-[0.98] hover:shadow-lg hover:-translate-y-0.5 backdrop-blur-sm",
+        "w-full group relative border p-6 text-left transition-all duration-300 overflow-hidden flex flex-col shadow-md active:scale-[0.98] hover:shadow-lg hover:-translate-y-0.5 backdrop-blur-sm",
         "glass-card hover:bg-[#161922] hover:border-white/10",
         p.id ? `shape-cloud-${(p.id.length % 5) + 1}` : "shape-cloud-1"
       )}
@@ -71,7 +79,7 @@ function PatternCard({ p, colorScheme, icon: Icon, onClick, language, hideCycle 
           )}
         </div>
       </div>
-    </div>
+    </button>
   );
 }
 
@@ -211,15 +219,16 @@ const axisInfo = {
     return (
       <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="flex items-center gap-4">
-          <div role="button" tabIndex={0} 
+          <button type="button"
             onClick={() => {
               searchParams.delete('axis');
               setSearchParams(searchParams);
             }}
             className="btn-zen !px-3 !py-3"
+            aria-label={language === 'el' ? 'Πίσω' : 'Back'}
           >
             <ArrowLeft size={20} />
-          </div>
+          </button>
           <span className={cn("text-[11px] font-bold tracking-[0.2em] uppercase", info.color)}>
             {language === 'el' ? 'ΠΡΑΚΤΙΚΗ ΜΕ ΑΞΟΝΑ' : 'PRACTICE BY AXIS'}
           </span>
@@ -321,12 +330,13 @@ const axisInfo = {
     return (
       <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="flex items-center gap-4">
-          <div role="button" tabIndex={0} 
+          <button type="button"
             onClick={() => activeCategoryWithReset(null)} 
             className="btn-zen !px-3 !py-3"
+            aria-label={language === 'el' ? 'Πίσω' : 'Back'}
           >
             <ArrowLeft size={20} />
-          </div>
+          </button>
           <span className="text-[11px] font-bold tracking-[0.2em] text-violet-400 uppercase">
             {language === 'el' ? 'ΨΑΛΣΙΜΟ & ΑΝΤΗΧΗΣΗ' : 'CHANTING & VOCAL RESONANCE'}
           </span>
@@ -381,12 +391,13 @@ const axisInfo = {
     return (
       <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="flex items-center gap-4">
-          <div role="button" tabIndex={0} 
+          <button type="button"
             onClick={() => activeCategoryWithReset(null)} 
             className="btn-zen !px-3 !py-3"
+            aria-label={language === 'el' ? 'Πίσω' : 'Back'}
           >
             <ArrowLeft size={20} />
-          </div>
+          </button>
           <span className="text-[11px] font-bold tracking-[0.2em] text-teal-400 uppercase">
             {language === 'el' ? 'Ρυθμοι Αναπνοης' : 'Breath Rhythms'}
           </span>
@@ -500,12 +511,13 @@ const axisInfo = {
     return (
       <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="flex items-center gap-4">
-          <div role="button" tabIndex={0} 
+          <button type="button"
             onClick={() => activeCategoryWithReset(null)} 
             className="btn-zen !px-3 !py-3"
+            aria-label={language === 'el' ? 'Πίσω' : 'Back'}
           >
             <ArrowLeft size={20} />
-          </div>
+          </button>
           <span className="text-[11px] font-bold tracking-[0.2em] text-indigo-400 uppercase">
             {language === 'el' ? 'Κινητικη Ενσυνειδητοτητα & Ται Τσι' : 'Mindful Movement & Tai Chi'}
           </span>
@@ -649,12 +661,13 @@ const axisInfo = {
     return (
       <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="flex items-center gap-4">
-          <div role="button" tabIndex={0} 
+          <button type="button"
             onClick={() => handleCategoryChange(null)} 
             className="btn-zen !px-3 !py-3"
+            aria-label={language === 'el' ? 'Πίσω' : 'Back'}
           >
             <ArrowLeft size={20} />
-          </div>
+          </button>
           <span className="text-[11px] font-bold tracking-[0.2em] text-amber-400 uppercase">
             {language === 'el' ? 'Μικροδοσεις' : 'Microdoses'}
           </span>
@@ -674,10 +687,10 @@ const axisInfo = {
 
         <div className="max-w-4xl mx-auto w-full pb-12">
           <div className="grid grid-cols-1 gap-6">
-            <div role="button" tabIndex={0}
+            <button type="button"
               onClick={() => navigate('/practice/microdoses')}
               className={cn(
-                "group relative border p-6 text-left transition-all duration-300 overflow-hidden flex flex-col shadow-md active:scale-[0.98] hover:shadow-lg hover:-translate-y-0.5 backdrop-blur-sm",
+                "w-full group relative border p-6 text-left transition-all duration-300 overflow-hidden flex flex-col shadow-md active:scale-[0.98] hover:shadow-lg hover:-translate-y-0.5 backdrop-blur-sm",
                 "glass-card hover:bg-[#161922] hover:border-white/10 shape-cloud-4"
               )}
             >
@@ -703,7 +716,7 @@ const axisInfo = {
                   </span>
                 </div>
               </div>
-            </div>
+            </button>
           </div>
         </div>
       </div>
@@ -713,12 +726,13 @@ const axisInfo = {
   return (
     <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex items-center gap-4">
-        <div role="button" tabIndex={0} 
+        <button type="button"
           onClick={() => navigate('/dashboard')} 
           className="btn-zen !px-3 !py-3"
+          aria-label={language === 'el' ? 'Πίσω' : 'Back'}
         >
           <ArrowLeft size={20} />
-        </div>
+        </button>
         <span className="text-[11px] font-bold tracking-[0.2em] text-indigo-400 uppercase">
           {language === 'el' ? 'Κεντρο Εξασκησης' : 'Practice Hub'}
         </span>
@@ -741,7 +755,8 @@ const axisInfo = {
         {/* Mindful Movement & Tai Chi Card */}
         <div role="button" tabIndex={0}
           onClick={() => handleCategoryChange('movement')}
-          className="col-span-1 group relative block p-6 md:p-8 shape-cloud-3 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-indigo-500/20 overflow-hidden text-left"
+          onKeyDown={onPressKey(() => handleCategoryChange('movement'))}
+          className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-3 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-indigo-500/20 overflow-hidden text-left"
         >
           <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-indigo-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           
@@ -770,7 +785,8 @@ const axisInfo = {
         {/* Breath Rhythms Card */}
         <div role="button" tabIndex={0}
           onClick={() => handleCategoryChange('breath')}
-          className="col-span-1 group relative block p-6 md:p-8 shape-cloud-2 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-teal-500/20 overflow-hidden text-left"
+          onKeyDown={onPressKey(() => handleCategoryChange('breath'))}
+          className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-2 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-teal-500/20 overflow-hidden text-left"
         >
           <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-teal-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           
@@ -796,7 +812,8 @@ const axisInfo = {
         {/* Vocal & Chanting Resonance Card */}
         <div role="button" tabIndex={0}
           onClick={() => handleCategoryChange('vocal')}
-          className="col-span-1 group relative block p-6 md:p-8 shape-cloud-4 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-violet-500/20 overflow-hidden text-left"
+          onKeyDown={onPressKey(() => handleCategoryChange('vocal'))}
+          className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-4 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-violet-500/20 overflow-hidden text-left"
         >
           <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-violet-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           
@@ -822,7 +839,8 @@ const axisInfo = {
         {/* Microdoses Card */}
         <div role="button" tabIndex={0}
           onClick={() => hasFoundation ? handleCategoryChange('microdoses') : setLockedCategoryAttempt('microdoses')}
-          className="col-span-1 group relative block p-6 md:p-8 shape-cloud-5 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-amber-500/20 overflow-hidden text-left"
+          onKeyDown={onPressKey(() => hasFoundation ? handleCategoryChange('microdoses') : setLockedCategoryAttempt('microdoses'))}
+          className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-5 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-amber-500/20 overflow-hidden text-left"
         >
           <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-amber-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           

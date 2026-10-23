@@ -483,12 +483,12 @@ export const PRACTICE_TEXTS: Record<string, PracticeText> = {
     evidence: null,
   },
   'tilopa-rest': {
-    card: { el: 'Μην αναπολείς, μη φαντάζεσαι, μην εξετάζεις, μην ελέγχεις. Ξεκουράσου.', en: 'Do not recall, do not imagine, do not examine, do not control. Rest.' },
+    card: { el: 'Μην αναπολείς, μη φαντάζεσαι, μη σκέφτεσαι, μην εξετάζεις, μην ελέγχεις. Ξεκουράσου.', en: 'Do not recall, do not imagine, do not think, do not examine, do not control. Rest.' },
     title: { el: 'Ξεκούραση (Tilopa)', en: 'Rest (Tilopa)' },
     sub: { el: 'Οι έξι λέξεις του Tilopa, για δέκα δευτερόλεπτα.', en: 'Tilopa\'s six words, for ten seconds.' },
     steps: {
-      el: ['Μην αναπολείς. Μη φαντάζεσαι. Μην εξετάζεις.', 'Μην ελέγχεις. Μην προσπαθείς. Απλώς ξεκουράσου.'],
-      en: ['Do not recall. Do not imagine. Do not examine.', 'Do not control. Do not try. Simply rest.'],
+      el: ['Μην αναπολείς. Μη φαντάζεσαι. Μη σκέφτεσαι.', 'Μην εξετάζεις. Μην ελέγχεις. Ξεκουράσου.'],
+      en: ['Do not recall. Do not imagine. Do not think.', 'Do not examine. Do not control. Rest.'],
     },
     seconds: 20,
   },

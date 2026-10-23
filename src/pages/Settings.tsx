@@ -288,11 +288,12 @@ export default function Settings() {
 
           <div className="space-y-8">
             {/* Evidence-Based Science Badge */}
-            <motion.div 
+            <motion.button
+              type="button"
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.99 }}
               onClick={() => navigate('/methodology')}
-              className="relative p-5 rounded-3xl bg-gradient-to-r from-teal-500/10 to-emerald-500/10 border border-teal-500/20 shadow-lg cursor-pointer group overflow-hidden"
+              className="w-full text-left block relative p-5 rounded-3xl bg-gradient-to-r from-teal-500/10 to-emerald-500/10 border border-teal-500/20 shadow-lg cursor-pointer group overflow-hidden"
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/5 rounded-full blur-2xl group-hover:bg-teal-500/10 transition-all duration-500" />
               <div className="flex items-start gap-4">
@@ -315,7 +316,7 @@ export default function Settings() {
                   </p>
                 </div>
               </div>
-            </motion.div>
+            </motion.button>
 
             {sections.map((section, idx) => (
               <div key={idx} className="space-y-3">

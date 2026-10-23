@@ -616,6 +616,9 @@ export default function OpenAwareness() {
         <div 
           className="absolute inset-0 z-50 flex flex-col items-center justify-center cursor-pointer backdrop-blur-sm bg-black/60 transition-opacity duration-1000"
           onClick={() => setShowIntro(false)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setShowIntro(false); } }}
         >
           <h3 className="text-3xl md:text-4xl font-light tracking-widest text-transparent bg-clip-text bg-gradient-to-br from-[#e8e4df] to-[#a89880] mb-3 text-center px-4">
             {data.introTitle}

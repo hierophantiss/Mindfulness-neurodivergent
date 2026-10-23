@@ -395,6 +395,9 @@ export default function GravityThoughts() {
         <div 
           className="absolute inset-0 z-50 flex flex-col items-center justify-center p-6 text-center cursor-pointer bg-[#071013] transition-opacity duration-1000"
           onClick={() => setShowIntro(false)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setShowIntro(false); } }}
         >
           <div className="text-3xl md:text-5xl font-light tracking-wider bg-gradient-to-br from-[#f5f2e9] to-[#bde0cf] text-transparent bg-clip-text mb-4 font-serif">
             {data.introTitle}

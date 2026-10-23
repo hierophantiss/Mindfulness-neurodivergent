@@ -981,16 +981,22 @@ export default function PracticeBreath() {
             </p>
 
             <label className="flex items-start justify-center gap-3 text-xs text-zinc-300 mb-5 cursor-pointer select-none group">
-              <div 
+              <input
+                type="checkbox"
+                className="peer sr-only"
+                checked={rememberChoice}
+                onChange={(e) => setRememberChoice(e.target.checked)}
+              />
+              <div
+                aria-hidden="true"
                 className={cn(
-                  "w-5 h-5 shrink-0 rounded border flex items-center justify-center transition-colors",
+                  "w-5 h-5 shrink-0 rounded border flex items-center justify-center transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-teal-400",
                   rememberChoice ? "bg-teal-600 border-teal-500" : "bg-zinc-800 border-zinc-600 group-hover:border-zinc-300"
                 )}
-                onClick={() => setRememberChoice(!rememberChoice)}
               >
                 {rememberChoice && <Check size={14} className="text-white" />}
               </div>
-              <span onClick={() => setRememberChoice(!rememberChoice)} className="mt-0.5 leading-tight">
+              <span className="mt-0.5 leading-tight">
                 {language === 'el' ? 'Να θυμάσαι την επιλογή μου για αυτή την άσκηση' : 'Remember my choice for this exercise'}
               </span>
             </label>
