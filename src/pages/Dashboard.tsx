@@ -170,7 +170,7 @@ export default function Dashboard() {
                 {language === 'el' ? 'ΕΝΣΥΝΕΙΔΗΤΟΤΗΤΑ' : 'MINDFULNESS'}
               </span>{' '}
               <span className="sky-text text-[12px] min-[375px]:text-[13px] leading-tight text-white/65 mt-1">
-                {language === 'el' ? 'Για νευροδιαφορετικούς' : 'For neurodivergent minds'}
+                {language === 'el' ? 'Για νευροδιαφορετικούς' : 'For neurodivergents'}
               </span>
               </span>
             </motion.div>
