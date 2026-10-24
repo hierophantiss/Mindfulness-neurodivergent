@@ -7,6 +7,10 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { reloadOnceForUpdate } from './lib/lazyWithReload';
 import { setUpdater, markUpdateWaiting } from './lib/appUpdate';
 import { listenForFirstTap } from './lib/sound';
+import { applyReadingPrefs, readPref, DYSLEXIC_FONT_KEY, AIRY_TEXT_KEY } from './lib/readingPrefs';
+
+// The reading settings apply before the first picture, so the text does not jump.
+applyReadingPrefs(readPref(DYSLEXIC_FONT_KEY), readPref(AIRY_TEXT_KEY));
 
 // A piece of the old version is gone after an update: load the new version (once).
 window.addEventListener('vite:preloadError', (event) => {

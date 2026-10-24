@@ -49,7 +49,7 @@
   }
 
   body {
-    font-family: 'Inter Variable', 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: var(--font-sans);
   }
 }
 
@@ -102,6 +102,42 @@
 
 .font-serif {
   font-family: 'Cinzel Variable', 'Cinzel', Georgia, serif;
+}
+
+/* Reading settings (Settings → Accessibility; see lib/readingPrefs.ts).
+   Dyslexia-friendly font: OpenDyslexic everywhere, titles too, and no slanted
+   text (it has no italic of its own, and slanted letters are harder to read). */
+html.font-dyslexic {
+  --font-sans: 'OpenDyslexic', 'Inter Variable', 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+html.font-dyslexic .font-serif,
+html.font-dyslexic [data-prerendered] h1 {
+  font-family: var(--font-sans);
+}
+html.font-dyslexic :is(.italic, em, i) {
+  font-style: normal;
+}
+/* The home title (the app's name beside its sign, like a logo) and the SOS
+   button keep their own letters: with the much wider font they would not fit
+   side by side. */
+html.font-dyslexic .keep-font {
+  font-family: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+/* Airy text: the spacing of WCAG 1.4.12 — letters 0.12em, words 0.16em apart —
+   and lines further apart, for everything you read. Buttons, the bottom bar, the
+   home title and SOS keep their own spacing (revert-layer: back to Tailwind's),
+   or they would no longer fit. Outside Tailwind's layers, so it wins over them. */
+html.text-airy body * {
+  letter-spacing: 0.12em;
+  word-spacing: 0.16em;
+}
+html.text-airy :is(button, nav, [role="button"], input, select, textarea, .keep-font),
+html.text-airy :is(button, nav, [role="button"], input, select, textarea, .keep-font) * {
+  letter-spacing: revert-layer;
+  word-spacing: revert-layer;
+}
+html.text-airy :is(p, li, blockquote, dd) {
+  line-height: 1.85;
 }
 
 @keyframes fadeIn {

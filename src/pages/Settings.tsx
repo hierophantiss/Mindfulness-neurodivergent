@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { downloadBackup, restoreBackup } from '../lib/backup';
 import { motion } from 'motion/react';
-import { ChevronLeft, Languages, Activity, Info, LogOut, Sparkles, Sun, Database, FileText, Download, Bug, ShieldCheck } from 'lucide-react';
+import { ChevronLeft, Languages, Activity, Type, LetterText, Info, LogOut, Sparkles, Sun, Database, FileText, Download, Bug, ShieldCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
@@ -11,7 +11,7 @@ import { RainbowInfinity } from '../components/RainbowInfinity';
 export default function Settings() {
   const navigate = useNavigate();
   const { language, setLanguage } = useLanguage();
-  const { reduceMotion, toggleReduceMotion } = useAccessibility();
+  const { reduceMotion, toggleReduceMotion, dyslexicFont, toggleDyslexicFont, airyText, toggleAiryText } = useAccessibility();
   const [canInstall, setCanInstall] = useState(false);
   const [showDebug, setShowDebug] = useState(false);
   const [debugLog, setDebugLog] = useState<string[]>([]);
@@ -191,7 +191,28 @@ export default function Settings() {
           label: { el: 'Μειωμένη Κίνηση', en: 'Reduce Motion' },
           value: reduceMotion ? { el: 'Ενεργό', en: 'Enabled' } : { el: 'Ανενεργό', en: 'Disabled' },
           action: toggleReduceMotion,
+          pressed: reduceMotion,
           color: 'text-indigo-400'
+        },
+        {
+          id: 'dyslexic-font',
+          icon: Type,
+          label: { el: 'Γραμματοσειρά για δυσλεξία', en: 'Dyslexia-friendly font' },
+          hint: { el: 'OpenDyslexic, χωρίς πλάγια γράμματα', en: 'OpenDyslexic, no slanted text' },
+          value: dyslexicFont ? { el: 'Ενεργό', en: 'Enabled' } : { el: 'Ανενεργό', en: 'Disabled' },
+          action: toggleDyslexicFont,
+          pressed: dyslexicFont,
+          color: 'text-sky-300'
+        },
+        {
+          id: 'airy-text',
+          icon: LetterText,
+          label: { el: 'Αραιό κείμενο', en: 'Airy text' },
+          hint: { el: 'Περισσότερος χώρος ανάμεσα σε γράμματα, λέξεις και γραμμές', en: 'More space between letters, words and lines' },
+          value: airyText ? { el: 'Ενεργό', en: 'Enabled' } : { el: 'Ανενεργό', en: 'Disabled' },
+          action: toggleAiryText,
+          pressed: airyText,
+          color: 'text-sky-300'
         }
       ]
     },
@@ -328,19 +349,25 @@ export default function Settings() {
                     <button
                       key={item.id}
                       onClick={item.action}
+                      aria-pressed={'pressed' in item ? item.pressed : undefined}
                       className="w-full flex items-center justify-between p-4 rounded-2xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.05] transition-all group active:scale-[0.98]"
                     >
-                      <div className="flex items-center gap-4">
-                        <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center bg-white/5", item.color)}>
+                      <div className="flex items-center gap-4 min-w-0 text-left">
+                        <div className={cn("w-10 h-10 shrink-0 rounded-xl flex items-center justify-center bg-white/5", item.color)}>
                           <item.icon size={18} />
                         </div>
-                        <span className="text-[14px] font-sans font-medium text-white/80 group-hover:text-white transition-colors">
-                          {language === 'el' ? item.label.el : item.label.en}
+                        <span className="flex flex-col min-w-0 gap-0.5">
+                          <span className="text-[14px] font-sans font-medium text-white/80 group-hover:text-white transition-colors">
+                            {language === 'el' ? item.label.el : item.label.en}
+                          </span>
+                          {'hint' in item && item.hint && (
+                            <span className="text-[12px] leading-snug text-white/50">{language === 'el' ? item.hint.el : item.hint.en}</span>
+                          )}
                         </span>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 shrink-0 pl-2">
                          {item.value && (
-                           <span className="text-[11px] font-sans text-white/30 bg-white/5 px-2 py-1 rounded-lg">
+                           <span className="text-[11px] font-sans text-white/60 bg-white/5 px-2 py-1 rounded-lg">
                              {typeof item.value === 'string' ? item.value : (language === 'el' ? item.value.el : item.value.en)}
                            </span>
                          )}

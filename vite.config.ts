@@ -21,7 +21,9 @@ export default defineConfig(() => {
           globPatterns: ['**/*.{js,css,woff2,svg,ico}', 'index.html'],
           // Fonts: only the Latin and Greek letters go into the offline copy; the
           // rarer alphabets load from the network if a page ever needs them.
-          globIgnores: ['**/*.{mp4,pdf,png,jpg}', '**/*_debug.html', '**/*-{cyrillic,cyrillic-ext,vietnamese,latin-ext,greek-ext}-wght-*.woff2'],
+          globIgnores: ['**/*.{mp4,pdf,png,jpg}', '**/*_debug.html', '**/*-{cyrillic,cyrillic-ext,vietnamese,latin-ext,greek-ext}-wght-*.woff2',
+            // the dyslexia font loads only for those who turn it on
+            '**/opendyslexic-*'],
           // The cat companion, so it shows offline too.
           additionalManifestEntries: [{ url: '/cat-192.png', revision: 'cat-2026-10-19' }],
           navigateFallback: '/index.html',

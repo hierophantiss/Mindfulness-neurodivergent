@@ -1,8 +1,15 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { applyReadingPrefs, readPref, savePref, DYSLEXIC_FONT_KEY, AIRY_TEXT_KEY } from '../lib/readingPrefs';
 
 interface AccessibilityContextType {
   reduceMotion: boolean;
   toggleReduceMotion: () => void;
+  /** OpenDyslexic instead of Inter, everywhere. */
+  dyslexicFont: boolean;
+  toggleDyslexicFont: () => void;
+  /** More space between letters, words and lines. */
+  airyText: boolean;
+  toggleAiryText: () => void;
 }
 
 const AccessibilityContext = createContext<AccessibilityContextType | undefined>(undefined);
@@ -22,6 +29,12 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
     });
   };
 
+  const [dyslexicFont, setDyslexicFont] = useState(() => readPref(DYSLEXIC_FONT_KEY));
+  const [airyText, setAiryText] = useState(() => readPref(AIRY_TEXT_KEY));
+  const toggleDyslexicFont = () => setDyslexicFont(prev => { savePref(DYSLEXIC_FONT_KEY, !prev); return !prev; });
+  const toggleAiryText = () => setAiryText(prev => { savePref(AIRY_TEXT_KEY, !prev); return !prev; });
+  useEffect(() => { applyReadingPrefs(dyslexicFont, airyText); }, [dyslexicFont, airyText]);
+
   useEffect(() => {
     if (reduceMotion) {
       document.documentElement.classList.add('reduce-motion');
@@ -31,7 +44,7 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
   }, [reduceMotion]);
 
   return (
-    <AccessibilityContext.Provider value={{ reduceMotion, toggleReduceMotion }}>
+    <AccessibilityContext.Provider value={{ reduceMotion, toggleReduceMotion, dyslexicFont, toggleDyslexicFont, airyText, toggleAiryText }}>
       {children}
     </AccessibilityContext.Provider>
   );

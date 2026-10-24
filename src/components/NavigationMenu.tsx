@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import InfoModal from './InfoModal';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
 import { downloadBackup, restoreBackup } from '../lib/backup';
-import { Home, BookOpen, Activity, Notebook, Menu, X, Info, Music, Compass, LayoutGrid, EyeOff, Eye, Database, User as UserIcon, LogOut, Download, Sparkles, RotateCcw, Headphones } from 'lucide-react';
+import { Home, BookOpen, Activity, Notebook, Menu, X, Info, Music, Compass, LayoutGrid, EyeOff, Eye, Database, User as UserIcon, LogOut, Download, Sparkles, RotateCcw, Headphones, Type, LetterText } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
@@ -19,7 +19,7 @@ export default function NavigationMenu() {
   const location = useLocation();
   const { language, setLanguage } = useLanguage();
   const { theme, toggleTheme } = useTheme();
-  const { reduceMotion, toggleReduceMotion } = useAccessibility();
+  const { reduceMotion, toggleReduceMotion, dyslexicFont, toggleDyslexicFont, airyText, toggleAiryText } = useAccessibility();
   const { masterPlaying, toggleMaster } = useAudioMixer();
 
   useEffect(() => {
@@ -270,13 +270,50 @@ export default function NavigationMenu() {
                     {/* Toggle Switch */}
                     <button 
                       onClick={toggleReduceMotion}
-                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 ${reduceMotion ? 'bg-amber-500' : 'bg-white/10'}`}
+                      role="switch"
+                      aria-checked={reduceMotion}
+                      aria-label={language === 'en' ? 'Reduce Motion' : 'Μείωση Κίνησης'}
+                      className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 ${reduceMotion ? 'bg-amber-500' : 'bg-white/10'}`}
                     >
                       <span 
                         className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${reduceMotion ? 'translate-x-6' : 'translate-x-1'}`}
                       />
                     </button>
                   </div>
+
+                  {/* Reading: a dyslexia-friendly font and airier text (also in Settings) */}
+                  {[
+                    { on: dyslexicFont, toggle: toggleDyslexicFont, Icon: Type,
+                      label: language === 'en' ? 'Dyslexia-friendly font' : 'Γραμματοσειρά για δυσλεξία',
+                      hint: language === 'en' ? 'OpenDyslexic, no slanted text' : 'OpenDyslexic, χωρίς πλάγια γράμματα' },
+                    { on: airyText, toggle: toggleAiryText, Icon: LetterText,
+                      label: language === 'en' ? 'Airy text' : 'Αραιό κείμενο',
+                      hint: language === 'en' ? 'More space between letters and words' : 'Περισσότερος χώρος ανάμεσα σε γράμματα και λέξεις' },
+                  ].map(({ on, toggle, Icon, label, hint }) => (
+                    <React.Fragment key={label}>
+                      <div className="w-full h-px bg-white/5 my-1" />
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="w-10 h-10 shrink-0 rounded-full flex items-center justify-center bg-white/[0.05] text-zinc-300">
+                            <Icon size={18} />
+                          </div>
+                          <div className="flex flex-col min-w-0">
+                            <span className="text-sm font-medium text-zinc-200">{label}</span>
+                            <span className="text-[10px] text-zinc-400">{hint}</span>
+                          </div>
+                        </div>
+                        <button
+                          onClick={toggle}
+                          role="switch"
+                          aria-checked={on}
+                          aria-label={label}
+                          className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 ${on ? 'bg-amber-500' : 'bg-white/10'}`}
+                        >
+                          <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${on ? 'translate-x-6' : 'translate-x-1'}`} />
+                        </button>
+                      </div>
+                    </React.Fragment>
+                  ))}
                   
                   <div className="w-full h-px bg-white/5 my-1"></div>
                   

@@ -1,0 +1,19 @@
+/* OpenDyslexic, for the "Dyslexia-friendly font" setting (lib/readingPrefs.ts).
+   Two Greek letters come from Inter instead: its "ό" puts the accent beside the
+   letter, and its final "ς" is drawn as a small hook that reads like a mark. */
+@font-face {
+  font-family: 'OpenDyslexic';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('../node_modules/@fontsource/opendyslexic/files/opendyslexic-latin-400-normal.woff2') format('woff2');
+  unicode-range: U+0000-03C1, U+03C3-03CB, U+03CD-10FFFF;
+}
+@font-face {
+  font-family: 'OpenDyslexic';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url('../node_modules/@fontsource/opendyslexic/files/opendyslexic-latin-700-normal.woff2') format('woff2');
+  unicode-range: U+0000-03C1, U+03C3-03CB, U+03CD-10FFFF;
+}

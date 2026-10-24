@@ -176,7 +176,7 @@ export default function Dashboard() {
                 <MethodMark small breathe dim={nightDim} className="w-10 h-10 min-[360px]:w-12 min-[360px]:h-12" />
               </Link>
               <span className="flex flex-col min-w-0">
-              <span className="sky-text text-[15px] max-[359px]:text-[13px] max-[359px]:tracking-normal min-[400px]:text-[17px] leading-tight tracking-[0.02em] min-[400px]:tracking-[0.04em] uppercase text-teal-300/90 font-medium whitespace-nowrap">
+              <span className="keep-font sky-text text-[15px] max-[359px]:text-[13px] max-[359px]:tracking-normal min-[400px]:text-[17px] leading-tight tracking-[0.02em] min-[400px]:tracking-[0.04em] uppercase text-teal-300/90 font-medium whitespace-nowrap">
                 {language === 'el' ? 'ΕΝΣΥΝΕΙΔΗΤΟΤΗΤΑ' : 'MINDFULNESS'}
               </span>{' '}
               <span className="sky-text text-[12px] min-[375px]:text-[13px] leading-tight text-white/65 mt-1">
@@ -188,7 +188,7 @@ export default function Dashboard() {
             <div className="flex flex-col items-end shrink-0 ml-auto">
               <Link
                 to="/practice/breath/sos-breath"
-                className="flex items-center justify-center h-[40px] min-[375px]:h-[44px] px-4 min-[375px]:px-5 rounded-full bg-[#2a1820] border border-rose-500/25 text-rose-300 hover:bg-[#351d28] active:scale-95 transition-all text-[12px] min-[375px]:text-[13px] font-medium tracking-widest shrink-0"
+                className="keep-font flex items-center justify-center h-[40px] min-[375px]:h-[44px] px-4 min-[375px]:px-5 rounded-full bg-[#2a1820] border border-rose-500/25 text-rose-300 hover:bg-[#351d28] active:scale-95 transition-all text-[12px] min-[375px]:text-[13px] font-medium tracking-widest shrink-0"
                 title={language === 'el' ? 'Άμεση Ηρέμηση' : 'Immediate Calm'}
               >
                 SOS
