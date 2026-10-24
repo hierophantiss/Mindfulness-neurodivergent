@@ -46,7 +46,7 @@ export default function ProgramWeek() {
   }, [activeDay]);
 
   if (!week) {
-    return <div className="p-8 text-center text-white/40">
+    return <div className="p-8 text-center text-ink/40">
       {language === 'en' ? 'Week not found.' : 'Εβδομάδα δεν βρέθηκε.'}
     </div>;
   }
@@ -141,7 +141,7 @@ export default function ProgramWeek() {
       <div className="flex items-center gap-4 mb-8">
         <button 
           onClick={() => navigate('/program')} 
-          className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-white/40 hover:bg-white/10 hover:text-white transition-all duration-300 active:scale-[0.98] backdrop-blur-md"
+          className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-ink/40 hover:bg-white/10 hover:text-ink transition-all duration-300 active:scale-[0.98] backdrop-blur-md"
         >
           <ArrowLeft size={20} />
         </button>
@@ -151,7 +151,7 @@ export default function ProgramWeek() {
         <span className="text-teal-500/80 text-[10px] font-bold uppercase tracking-[0.2em] block mb-2">
           {language === 'en' ? 'Week' : 'Εβδομάδα'} {weekNum}
         </span>
-        <h2 className="text-3xl md:text-4xl font-serif text-white tracking-tight mb-8 drop-shadow-sm italic">{week.title}</h2>
+        <h2 className="text-3xl md:text-4xl font-serif text-ink tracking-tight mb-8 drop-shadow-sm italic">{week.title}</h2>
         
         {/* Days Horizontal Scroll */}
         <div className="flex gap-4 overflow-x-auto pb-6 snap-x hide-scrollbar px-1">
@@ -171,16 +171,16 @@ export default function ProgramWeek() {
                 className={`snap-start shrink-0 flex flex-col items-start p-5 rounded-2xl border transition-all duration-300 active:scale-[0.98] ${
                   isLocked ? 'glass-card opacity-50 grayscale cursor-not-allowed min-w-[180px]' :
                   activeDay === idx 
-                    ? 'bg-teal-500/10 border-teal-500/30 text-white min-w-[220px] shadow-sm ring-1 ring-teal-500/20' 
-                    : 'glass-card text-white/50 hover:bg-white/[0.04] min-w-[180px] '
+                    ? 'bg-teal-500/10 border-teal-500/30 text-ink min-w-[220px] shadow-sm ring-1 ring-teal-500/20' 
+                    : 'glass-card text-ink/50 hover:bg-white/[0.04] min-w-[180px] '
                 }`}
               >
                 <div className="w-full flex justify-between items-center mb-2">
-                  <div className={`text-[10px] font-bold uppercase tracking-[0.2em] ${activeDay === idx ? 'text-teal-400 drop-shadow-sm' : 'text-white/30'}`}>
+                  <div className={`text-[10px] font-bold uppercase tracking-[0.2em] ${activeDay === idx ? 'text-teal-400 drop-shadow-sm' : 'text-ink/30'}`}>
                     {language === 'en' ? 'Day' : 'Ημερα'} {idx + 1}
                   </div>
                   {isLocked ? (
-                    <div className="w-4 h-4 rounded-full bg-white/10 text-white/40 flex items-center justify-center">
+                    <div className="w-4 h-4 rounded-full bg-white/10 text-ink/40 flex items-center justify-center">
                       <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                     </div>
                   ) : dayCompleted && (
@@ -189,7 +189,7 @@ export default function ProgramWeek() {
                     </div>
                   )}
                 </div>
-                <h4 className={`font-serif text-lg leading-tight text-left ${activeDay === idx ? 'text-white drop-shadow-sm' : 'text-white/60'}`}>
+                <h4 className={`font-serif text-lg leading-tight text-left ${activeDay === idx ? 'text-ink drop-shadow-sm' : 'text-ink/60'}`}>
                   {isLocked ? (language === 'en' ? 'Locked' : 'Κλειδωμένο') : day.title}
                 </h4>
               </button>
@@ -204,7 +204,7 @@ export default function ProgramWeek() {
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
-        <div className="flex flex-wrap gap-3 mb-6 text-xs text-white/60 font-medium">
+        <div className="flex flex-wrap gap-3 mb-6 text-xs text-ink/60 font-medium">
           <div className="flex items-center gap-2 bg-black/40 backdrop-blur-md/60 px-4 py-2 rounded-full border border-white/5 shadow-inner backdrop-blur-sm">
             <Clock size={14} className="text-amber-400/80" />
             <span>{currentDayContent.dur}</span>
@@ -242,7 +242,7 @@ export default function ProgramWeek() {
              >
                 {currentStepData.id === 'lesson' && (
                   <>
-                    <h3 className="text-2xl md:text-3xl font-serif text-white mb-6 leading-tight drop-shadow-sm flex items-center gap-3">
+                    <h3 className="text-2xl md:text-3xl font-serif text-ink mb-6 leading-tight drop-shadow-sm flex items-center gap-3">
                        <currentStepData.icon className="text-teal-400 opacity-80" size={24} />
                        {currentDayContent.title}
                     </h3>
@@ -251,14 +251,14 @@ export default function ProgramWeek() {
                     {hasCameraZoom && <CameraAnimation mode="zoom" />}
                     {hasSamatha && <SamathaAnimation />}
 
-                    <div className="prose prose-invert max-w-none mb-8 text-white/80 leading-relaxed font-serif text-lg" 
+                    <div className="prose prose-invert max-w-none mb-8 text-ink/80 leading-relaxed font-serif text-lg" 
                          dangerouslySetInnerHTML={{ __html: currentDayContent.lesson }} />
                   </>
                 )}
 
                 {currentStepData.id === 'exercise' && currentDayContent.exercise && (
                   <div className="bg-black/40 backdrop-blur-md/80 border border-white/5 rounded-[2rem] p-6 sm:p-8 mb-6 shadow-2xl backdrop-blur-md">
-                    <h4 className="text-xl md:text-2xl font-serif text-white mb-6 flex items-center gap-3 drop-shadow-sm">
+                    <h4 className="text-xl md:text-2xl font-serif text-ink mb-6 flex items-center gap-3 drop-shadow-sm">
                       <div className="bg-amber-500/20 text-amber-400 p-2 rounded-xl border border-amber-500/20 shadow-inner">
                         <PlayCircle size={24} strokeWidth={2} />
                       </div>
@@ -266,7 +266,7 @@ export default function ProgramWeek() {
                     </h4>
                     <ul className="space-y-4">
                       {currentDayContent.exercise.steps.map((step: string, idx: number) => (
-                        <li key={idx} className="flex gap-4 text-white/90 leading-relaxed items-start">
+                        <li key={idx} className="flex gap-4 text-ink/90 leading-relaxed items-start">
                           <span className="w-7 h-7 rounded-full bg-amber-500/10 flex items-center justify-center text-xs font-bold text-amber-400 shrink-0 border border-amber-500/20 shadow-inner mt-0.5">{idx + 1}</span>
                           <span className="text-base sm:text-lg"><ConceptText text={step} /></span>
                         </li>
@@ -276,7 +276,7 @@ export default function ProgramWeek() {
                 )}
 
                 {currentStepData.id === 'breathing' && currentDayContent.breathing && (
- <div className="glass-card rounded-[2rem] p-6 sm:p-8 mb-6 prose prose-invert max-w-none text-white/80"
+ <div className="glass-card rounded-[2rem] p-6 sm:p-8 mb-6 prose prose-invert max-w-none text-ink/80"
                        dangerouslySetInnerHTML={{ __html: currentDayContent.breathing }} />
                 )}
 
@@ -288,7 +288,7 @@ export default function ProgramWeek() {
                           <div className="w-1.5 h-1.5 rounded-full bg-amber-400/80"></div>
                           <h5 className="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-400/90 drop-shadow-sm">{language === 'el' ? 'Επίγνωση' : 'Insight'}</h5>
                         </div>
-                        <p className="text-white font-medium italic leading-relaxed text-lg sm:text-xl">"{currentDayContent.insight}"</p>
+                        <p className="text-ink font-medium italic leading-relaxed text-lg sm:text-xl">"{currentDayContent.insight}"</p>
                       </div>
                     )}
                     {currentDayContent.reflection && (
@@ -299,7 +299,7 @@ export default function ProgramWeek() {
                             {language === 'en' ? 'Reflection' : 'Αναστοχασμός'}
                           </h5>
                         </div>
-                        <p className="text-white/80 leading-relaxed text-base sm:text-lg">{currentDayContent.reflection}</p>
+                        <p className="text-ink/80 leading-relaxed text-base sm:text-lg">{currentDayContent.reflection}</p>
                       </div>
                     )}
                   </div>
@@ -312,7 +312,7 @@ export default function ProgramWeek() {
           <button
             onClick={goPrevStep}
             disabled={activeStep === 0}
-            className="flex h-12 px-5 rounded-xl bg-white/5 border border-white/5 items-center justify-center gap-2 text-white/50 disabled:opacity-0 disabled:cursor-not-allowed hover:bg-white/[0.08] hover:text-white/90 transition-all duration-300 active:scale-95 font-medium text-sm backdrop-blur-sm"
+            className="flex h-12 px-5 rounded-xl bg-white/5 border border-white/5 items-center justify-center gap-2 text-ink/50 disabled:opacity-0 disabled:cursor-not-allowed hover:bg-white/[0.08] hover:text-ink/90 transition-all duration-300 active:scale-95 font-medium text-sm backdrop-blur-sm"
           >
             <ChevronLeft size={18} />
             <span className="hidden sm:inline">{language === 'el' ? 'Πίσω' : 'Back'}</span>
@@ -324,12 +324,12 @@ export default function ProgramWeek() {
               disabled={isCompleted}
               className={`group flex items-center gap-2 px-6 h-12 rounded-xl font-bold transition-all duration-300 ${
                 isCompleted 
-                  ? 'bg-white/10 text-white/40 cursor-default opacity-80 border border-white/5' 
+                  ? 'bg-white/10 text-ink/40 cursor-default opacity-80 border border-white/5' 
                   : 'bg-teal-500 hover:bg-teal-400 text-black shadow-[0_4px_15px_rgba(20,184,166,0.3)] active:scale-95'
               }`}
             >
               <span>{isCompleted ? (language === 'en' ? 'Completed' : 'Ολοκληρώθηκε') : (language === 'en' ? 'Complete Day' : 'Ολοκλήρωση')}</span>
-              <Check size={18} strokeWidth={3} className={isCompleted ? 'text-white/50' : 'text-black'} />
+              <Check size={18} strokeWidth={3} className={isCompleted ? 'text-ink/50' : 'text-black'} />
             </button>
           ) : (
             <button

@@ -13,6 +13,12 @@
    computer it shows the same phone layout, centred, instead of stretching
    into a wide desktop layout. (The sm/md/lg/xl variants never switch on.) */
 @theme {
+  /* The colour of light text: a soft, slightly warm off-white, never pure
+     white. Pure white on the dark sky is the harshest contrast a screen can
+     make (about 19:1); it glares and seems to bleed into the dark, above all
+     for eyes with astigmatism. This one keeps about 15:1 (WCAG asks 4.5:1,
+     7:1 for the strictest level). Light text is always text-ink (lib/colors.test.ts). */
+  --color-ink: #e8e3d9;
   /* "font-sans" is the app's own font (Inter, with full Greek), never the
      phone's system font: some phones' system fonts place the Greek accent
      beside the letter ("Αρχική´") instead of on it. */
@@ -160,7 +166,7 @@ html.text-airy :is(p, li, blockquote, dd) {
 
 @layer components {
   .btn-zen {
-    @apply p-3 rounded-full bg-white/5 hover:bg-white/10 text-white/50 hover:text-white transition-colors flex items-center justify-center;
+    @apply p-3 rounded-full bg-white/5 hover:bg-white/10 text-ink/50 hover:text-ink transition-colors flex items-center justify-center;
   }
 }
 

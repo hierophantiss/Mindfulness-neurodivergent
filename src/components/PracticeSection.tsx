@@ -320,10 +320,10 @@ export default function PracticeSection() {
 
         <div className="max-w-4xl mx-auto w-full flex-1">
           <header className="text-center md:text-left mb-12">
-            <h2 className="text-4xl md:text-5xl font-serif text-white/90 italic leading-tight mb-4">
+            <h2 className="text-4xl md:text-5xl font-serif text-ink/90 italic leading-tight mb-4">
               {lang === "el" ? "Οπτική Απεικόνιση" : "Visual Theme"}
             </h2>
-            <p className="text-lg text-white/50 font-sans max-w-2xl">
+            <p className="text-lg text-ink/50 font-sans max-w-2xl">
               {lang === "el" ? "Επίλεξε το μοτίβο κίνησης που σε βοηθάει να συγκεντρωθείς και να γειωθείς καλύτερα." : "Choose the movement pattern that helps you center and ground yourself best."}
             </p>
           </header>
@@ -338,10 +338,10 @@ export default function PracticeSection() {
               <div className="w-16 h-16 rounded-2xl bg-teal-500/10 flex items-center justify-center text-teal-400 mb-6 group-hover:scale-110 transition-transform shadow-inner border border-teal-500/20">
                 <Activity size={32} strokeWidth={1.5} />
               </div>
-              <h3 className="text-2xl md:text-3xl font-serif text-white/90 italic mb-3">
+              <h3 className="text-2xl md:text-3xl font-serif text-ink/90 italic mb-3">
                 {lang === "el" ? "Η Ροή της Σύνδεσης" : "Grounding Flow"}
               </h3>
-              <p className="text-white/50 font-sans text-sm md:text-base leading-relaxed">
+              <p className="text-ink/50 font-sans text-sm md:text-base leading-relaxed">
                 {lang === "el" ? "Τα χέρια ανεβαίνουν με την εισπνοή και κατεβαίνουν με την εκπνοή, σαν παλίρροια." : "The arms rise with the inhale and sink with the exhale, like a tide."}
               </p>
             </button>
@@ -355,10 +355,10 @@ export default function PracticeSection() {
               <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 mb-6 group-hover:scale-110 transition-transform shadow-inner border border-indigo-500/20">
                 <Wind size={32} strokeWidth={1.5} />
               </div>
-              <h3 className="text-2xl md:text-3xl font-serif text-white/90 italic mb-3">
+              <h3 className="text-2xl md:text-3xl font-serif text-ink/90 italic mb-3">
                 {lang === "el" ? "Το Άνθος του Λωτού" : "Lotus Blossom"}
               </h3>
-              <p className="text-white/50 font-sans text-sm md:text-base leading-relaxed">
+              <p className="text-ink/50 font-sans text-sm md:text-base leading-relaxed">
                 {lang === "el" ? "Τα χέρια ανοίγουν σαν λωτός με την εισπνοή και κλείνουν στο στήθος με την εκπνοή." : "The arms open like a lotus with the inhale and close at the chest with the exhale."}
               </p>
             </button>
@@ -378,17 +378,17 @@ export default function PracticeSection() {
           <button onClick={() => setStep('theme')} className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 transition-all cursor-pointer">
             <ArrowLeft size={20} />
           </button>
-          <div className="text-[11px] font-bold tracking-[0.2em] uppercase text-white/40">
+          <div className="text-[11px] font-bold tracking-[0.2em] uppercase text-ink/40">
             {movementType === 'taichi' ? (lang === 'el' ? 'ΡΟΗ' : 'FLOW') : (lang === 'el' ? 'ΛΩΤΟΣ' : 'LOTUS')}
           </div>
         </div>
 
         <div className="max-w-4xl mx-auto w-full flex-1">
           <header className="text-center md:text-left mb-10">
-            <h2 className="text-4xl md:text-5xl font-serif text-white/90 italic leading-tight mb-4">
+            <h2 className="text-4xl md:text-5xl font-serif text-ink/90 italic leading-tight mb-4">
               {lang === "el" ? "Ρυθμός Αναπνοής" : "Breathing Rhythm"}
             </h2>
-            <p className="text-lg text-white/50 font-sans max-w-2xl">
+            <p className="text-lg text-ink/50 font-sans max-w-2xl">
               {lang === "el" ? "Επίλεξε το μοτίβο αναπνοής που θα συνοδεύσει την κίνηση." : "Select the breathing pattern to accompany the movement."}
             </p>
           </header>
@@ -401,7 +401,7 @@ export default function PracticeSection() {
                 className="text-left p-6 md:p-8 rounded-[24px] border transition-all duration-300 overflow-hidden cursor-pointer group hover:bg-white/[0.04]"
                 style={{ backgroundColor: "var(--color-surface, #1a1d27)", borderColor: "rgba(255,255,255,0.05)" }}
               >
-                <div className="font-serif text-2xl italic text-white/90 mb-2">{lang === "el" ? p.nameEl : p.nameEn}</div>
+                <div className="font-serif text-2xl italic text-ink/90 mb-2">{lang === "el" ? p.nameEl : p.nameEn}</div>
                 <div className="text-[10px] uppercase font-bold tracking-widest mb-4" style={{ color: "var(--color-accent, #1D9E75)" }}>
                   {lang === "el" 
                     ? `${p.inhale} - ${p.holdFull} - ${p.exhale} - ${p.holdEmpty}`
@@ -437,7 +437,7 @@ export default function PracticeSection() {
         {/* Compact Audio Controls Overlay */}
         <div className="flex items-center gap-3 backdrop-blur-md bg-black/30 border border-white/5 p-1.5 rounded-full pr-4">
            <button onClick={toggleAudio} aria-label={lang === 'el' ? (audioEnabled ? 'Χωρίς ήχο' : 'Με ήχο') : (audioEnabled ? 'Sound off' : 'Sound on')} className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-colors" style={{ backgroundColor: audioEnabled ? "var(--color-accent, #1D9E75)" : "rgba(255, 255, 255, 0.1)" }}>
-             {audioEnabled ? <Volume2 size={16} className="text-white" /> : <VolumeX size={16} className="text-white/50" />}
+             {audioEnabled ? <Volume2 size={16} className="text-ink" /> : <VolumeX size={16} className="text-ink/50" />}
            </button>
            {audioEnabled && (
              <div className="flex gap-2">
@@ -446,7 +446,7 @@ export default function PracticeSection() {
                     key={kind} 
                     onClick={() => chooseSound(kind)} 
                     aria-pressed={soundKind === kind}
-                    className={`text-[11px] font-semibold px-2 py-1 rounded transition-colors cursor-pointer ${soundKind === kind ? 'bg-white/20 text-white' : 'text-white/40 hover:text-white/80'}`}
+                    className={`text-[11px] font-semibold px-2 py-1 rounded transition-colors cursor-pointer ${soundKind === kind ? 'bg-white/20 text-ink' : 'text-ink/40 hover:text-ink/80'}`}
                   >
                     {lang === 'el' ? el : en}
                   </button>
@@ -513,7 +513,7 @@ export default function PracticeSection() {
         <button 
           onClick={(e) => { e.stopPropagation(); setIsPlaying(!isPlaying); }} 
           className="w-20 h-20 flex items-center justify-center rounded-full backdrop-blur cursor-pointer shadow-2xl border hover:scale-105 transition-transform" 
-          style={{ backgroundColor: "var(--color-accent, #1D9E75)", borderColor: "rgba(255,255,255,0.1)", color: "#fff" }}
+          style={{ backgroundColor: "var(--color-accent, #1D9E75)", borderColor: "rgba(255,255,255,0.1)", color: "var(--color-ink)" }}
         >
           {isPlaying ? <Pause className="w-8 h-8 fill-current" /> : <Play className="w-8 h-8 fill-current ml-1" />}
         </button>

@@ -43,17 +43,17 @@ export function QuietAxisHint() {
         className="flex-1 flex items-center gap-3 pl-4 pr-2 py-3.5 rounded-2xl hover:bg-white/[0.04] transition-colors text-left"
       >
         <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: AXIS_COLOR[hint.axis] }} aria-hidden />
-        <span className="flex-1 text-[14px] leading-snug text-white/60">
+        <span className="flex-1 text-[14px] leading-snug text-ink/60">
           {el ? <>Αυτές τις μέρες ένας άξονας έμεινε ήσυχος: {name}. Αν θέλεις, κάτι σύντομο: </> : <>One axis has stayed quiet these days: {name}. If you like, something short: </>}
-          <span className="text-white/90">{p.title[el ? 'el' : 'en']}</span>
-          <span className="text-white/40"> · {p.dur[el ? 'el' : 'en']}</span>
+          <span className="text-ink/90">{p.title[el ? 'el' : 'en']}</span>
+          <span className="text-ink/40"> · {p.dur[el ? 'el' : 'en']}</span>
         </span>
-        <ChevronRight size={16} className="text-white/30 shrink-0" />
+        <ChevronRight size={16} className="text-ink/30 shrink-0" />
       </Link>
       <button
         onClick={hide}
         aria-label={el ? 'Όχι τώρα' : 'Not now'}
-        className="w-11 shrink-0 flex items-center justify-center text-white/30 hover:text-white/60 rounded-2xl"
+        className="w-11 shrink-0 flex items-center justify-center text-ink/30 hover:text-ink/60 rounded-2xl"
       >
         <X size={16} />
       </button>

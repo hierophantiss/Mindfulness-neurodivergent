@@ -23,21 +23,21 @@ export default function GuideAfterPractice({ axis, language, className }: { axis
         to={`/chapters/${ch.n}`}
         className="w-full flex items-center gap-4 p-4 rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:bg-white/[0.06] transition-colors active:scale-[0.99]"
       >
-        <span className="w-10 h-10 rounded-full bg-white/[0.05] flex items-center justify-center text-white/60 shrink-0">
+        <span className="w-10 h-10 rounded-full bg-white/[0.05] flex items-center justify-center text-ink/60 shrink-0">
           <BookOpen size={18} strokeWidth={1.5} />
         </span>
         <span className="flex flex-col gap-0.5 text-left min-w-0 flex-1">
-          <span className="text-[11px] uppercase tracking-[0.15em] text-white/40">
+          <span className="text-[11px] uppercase tracking-[0.15em] text-ink/40">
             {el ? 'Στον οδηγό' : 'In the guide'}
           </span>
-          <span className="text-[14px] text-white/85">
+          <span className="text-[14px] text-ink/85">
             {el ? `Κεφάλαιο ${ch.n} · ${ch.el}` : `Chapter ${ch.n} · ${ch.en}`}
           </span>
-          <span className="text-[12px] text-white/45">
+          <span className="text-[12px] text-ink/45">
             {el ? 'Διάβασε τι κάνει αυτή η πρακτική και γιατί.' : 'Read what this practice does, and why.'}
           </span>
         </span>
-        <ArrowRight size={16} className="text-white/40 shrink-0" />
+        <ArrowRight size={16} className="text-ink/40 shrink-0" />
       </Link>
     </motion.div>
   );

@@ -45,10 +45,10 @@ export default function Chapters() {
                 {language === 'en' ? 'Theory & Practice' : 'Θεωρία & Πρακτική'}
               </span>
             </div>
-            <h2 className="text-5xl md:text-7xl font-sans text-white italic leading-none tracking-tight">
+            <h2 className="text-5xl md:text-7xl font-sans text-ink italic leading-none tracking-tight">
               {language === 'en' ? 'Presence Workbook' : 'Εγχειρίδιο Παρουσίας'}
             </h2>
-            <p className="text-lg text-white/50 font-serif italic max-w-xl mx-auto leading-relaxed mt-2 flex items-center justify-center gap-2">
+            <p className="text-lg text-ink/50 font-serif italic max-w-xl mx-auto leading-relaxed mt-2 flex items-center justify-center gap-2">
               {language === 'el' ? 'Μαθαίνοντας να ιππεύεις τον άνεμο. Ένας οδηγός για την επίγνωση.' : 'Learning to ride the wind. A guide to awareness.'}
               <Link to="/rabbithole" state={{ activeArticle: 'riding-the-wind' }} className="text-teal-400 hover:text-teal-300 transition-colors inline-flex mt-1" title={language === 'en' ? 'Read in Rabbit Hole' : 'Διαβάστε στην Κουνελότρυπα'}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-star fill-current" ><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
@@ -61,7 +61,7 @@ export default function Chapters() {
         <div id="basis" className="space-y-8">
           <div className="flex items-center gap-4">
             <span className="w-12 h-[1px] bg-white/10"></span>
-            <h3 className="text-[11px] font-bold text-white/40 tracking-[0.3em] uppercase">
+            <h3 className="text-[11px] font-bold text-ink/40 tracking-[0.3em] uppercase">
               {language === 'el' ? 'Ο Τετραπλος Αξονας' : 'The Quadruple Axis'}
             </h3>
           </div>
@@ -100,14 +100,14 @@ export default function Chapters() {
                   >
                     {chapter.icon}
                     {isChapterComplete(chapter.num) && (
-                      <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-teal-500 flex items-center justify-center text-white border-2 border-[#12141c] animate-in zoom-in-50 duration-300">
+                      <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-teal-500 flex items-center justify-center text-ink border-2 border-[#12141c] animate-in zoom-in-50 duration-300">
                         <Check size={12} strokeWidth={3} />
                       </div>
                     )}
                   </div>
                   <div>
-                    <h3 className="text-3xl font-heading text-white/90 italic group-hover:text-white transition-colors">{chapter.title}</h3>
-                    <p className="text-sm text-white/50 font-sans mt-2 drop-shadow-sm line-clamp-2">{chapter.sub}</p>
+                    <h3 className="text-3xl font-heading text-ink/90 italic group-hover:text-ink transition-colors">{chapter.title}</h3>
+                    <p className="text-sm text-ink/50 font-sans mt-2 drop-shadow-sm line-clamp-2">{chapter.sub}</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <span 
@@ -119,7 +119,7 @@ export default function Chapters() {
                   </div>
                 </div>
 
-                <div className="absolute top-0 right-0 p-8 text-white/5 group-hover:scale-110 transition-transform duration-1000">
+                <div className="absolute top-0 right-0 p-8 text-ink/5 group-hover:scale-110 transition-transform duration-1000">
                   {chapter.num === 1 && <Mountain size={140} strokeWidth={0.5} />}
                   {chapter.num === 2 && <Wind size={140} strokeWidth={0.5} />}
                   {chapter.num === 3 && <Target size={140} strokeWidth={0.5} />}
@@ -136,7 +136,7 @@ export default function Chapters() {
           <div id="application" className="space-y-8">
             <div className="flex items-center gap-4">
               <span className="w-12 h-[1px] bg-white/10"></span>
-              <h3 className="text-[11px] font-bold text-white/40 tracking-[0.3em] uppercase">
+              <h3 className="text-[11px] font-bold text-ink/40 tracking-[0.3em] uppercase">
                 {language === 'el' ? 'Εφαρμογη' : 'Application'}
               </h3>
             </div>
@@ -164,14 +164,14 @@ export default function Chapters() {
                   >
                     {chapter.icon}
                     {isChapterComplete(chapter.num) && (
-                      <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-teal-500 flex items-center justify-center text-white border border-[#12141c]">
+                      <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-teal-500 flex items-center justify-center text-ink border border-[#12141c]">
                         <Check size={10} strokeWidth={3} />
                       </div>
                     )}
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-serif text-white/90 italic leading-tight group-hover:translate-x-1 transition-transform">{chapter.title}</h3>
-                    <p className="text-[11px] text-white/40 mt-1 uppercase tracking-wider font-bold">{chapter.sub}</p>
+                    <h3 className="text-lg font-serif text-ink/90 italic leading-tight group-hover:translate-x-1 transition-transform">{chapter.title}</h3>
+                    <p className="text-[11px] text-ink/40 mt-1 uppercase tracking-wider font-bold">{chapter.sub}</p>
                   </div>
                 </Link>
               )))}
@@ -182,7 +182,7 @@ export default function Chapters() {
           <div id="depth" className="space-y-8">
             <div className="flex items-center gap-4">
               <span className="w-12 h-[1px] bg-white/10"></span>
-              <h3 className="text-[11px] font-bold text-white/40 tracking-[0.3em] uppercase">
+              <h3 className="text-[11px] font-bold text-ink/40 tracking-[0.3em] uppercase">
                 {language === 'el' ? 'Συνθεση' : 'Depth'}
               </h3>
             </div>
@@ -210,14 +210,14 @@ export default function Chapters() {
                   >
                     {chapter.icon}
                     {isChapterComplete(chapter.num) && (
-                      <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-teal-500 flex items-center justify-center text-white border border-[#12141c]">
+                      <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-teal-500 flex items-center justify-center text-ink border border-[#12141c]">
                         <Check size={10} strokeWidth={3} />
                       </div>
                     )}
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-serif text-white/90 italic leading-tight group-hover:translate-x-1 transition-transform">{chapter.title}</h3>
-                    <p className="text-[11px] text-white/40 mt-1 uppercase tracking-wider font-bold">{chapter.sub}</p>
+                    <h3 className="text-lg font-serif text-ink/90 italic leading-tight group-hover:translate-x-1 transition-transform">{chapter.title}</h3>
+                    <p className="text-[11px] text-ink/40 mt-1 uppercase tracking-wider font-bold">{chapter.sub}</p>
                   </div>
                 </Link>
               )))}
@@ -235,10 +235,10 @@ export default function Chapters() {
             <div className="w-16 h-16 rounded-2xl bg-teal-500/10 text-teal-400 flex items-center justify-center mb-8 border border-teal-500/20 group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(20,184,166,0.3)] transition-all duration-700">
                <BookOpen size={28} strokeWidth={1.5} />
             </div>
-            <h3 className="text-4xl md:text-5xl font-serif text-white/90 italic mb-5 leading-tight">
+            <h3 className="text-4xl md:text-5xl font-serif text-ink/90 italic mb-5 leading-tight">
               {language === 'el' ? 'Πρόγραμμα 8 Εβδομάδων' : '8 Weeks Program'}
             </h3>
-            <p className="text-lg text-white/50 font-sans max-w-md leading-relaxed">
+            <p className="text-lg text-ink/50 font-sans max-w-md leading-relaxed">
               {language === 'el' 
                 ? 'Μια δομημένη πρακτική πορεία για την ενσωμάτωση της επίγνωσης στην καθημερινότητα.' 
                 : 'A structured practical path to integrate awareness into daily life.'}

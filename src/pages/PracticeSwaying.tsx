@@ -181,7 +181,7 @@ export default function PracticeSwaying() {
           <ArrowLeft size={20} />
         </button>
         <div className="flex-1 flex justify-center items-center pointer-events-auto">
-          <div className="text-[11px] font-bold tracking-[0.2em] uppercase text-white/40 flex items-center justify-center">
+          <div className="text-[11px] font-bold tracking-[0.2em] uppercase text-ink/40 flex items-center justify-center">
             {lang === 'el' ? 'Λίκνισμα' : 'Swaying'}
             <ConceptInfoIcon conceptId="polyvagal" className="w-5 h-5 ml-2" />
           </div>
@@ -216,14 +216,14 @@ export default function PracticeSwaying() {
         {/* Dynamic Instruction */}
         <div className="h-16 mt-8 flex items-center justify-center px-4">
           {!isPlaying && !showSettings && (
-            <p className="text-white/55 text-[14px] text-center leading-relaxed max-w-sm">
+            <p className="text-ink/55 text-[14px] text-center leading-relaxed max-w-sm">
               {lang === 'el'
                 ? 'Λικνίσου απαλά δεξιά–αριστερά, όρθια ή καθιστή, με κάθε χτύπο. Εισπνοή προς τη μία πλευρά, εκπνοή πίσω στο κέντρο.'
                 : 'Sway gently left and right, standing or seated, with each beat. Inhale towards one side, exhale back to the centre.'}
             </p>
           )}
           {instruction && (
-            <p className="text-white/60 font-serif italic text-lg text-center animate-in fade-in zoom-in duration-1000">
+            <p className="text-ink/60 font-serif italic text-lg text-center animate-in fade-in zoom-in duration-1000">
               {instruction}
             </p>
           )}
@@ -238,7 +238,7 @@ export default function PracticeSwaying() {
           className={`flex flex-col items-center w-full bg-black/20 backdrop-blur-md rounded-2xl border border-white/5 p-5 transition-all duration-300 overflow-hidden ${showSettings ? "h-[220px] opacity-100 translate-y-0" : "h-0 opacity-0 translate-y-4 pointer-events-none p-0 border-transparent shadow-none"}`}
         >
           {/* Sounds Grid */}
-          <label className="text-[10px] uppercase tracking-[0.2em] text-white/50 mb-3 w-full text-center">
+          <label className="text-[10px] uppercase tracking-[0.2em] text-ink/50 mb-3 w-full text-center">
              {lang === "el" ? "Ήχος" : "Sound"}
           </label>
           <div className="grid grid-cols-4 gap-2 mb-6 w-full max-w-sm">
@@ -246,7 +246,7 @@ export default function PracticeSwaying() {
                 <button
                   key={layer}
                   onClick={() => setAmbientLayer(layer)}
-                  className={`py-2 rounded-xl text-xs font-medium border transition-colors ${ambientLayer === layer ? 'bg-teal-600 border-teal-500 text-white' : 'bg-white/5 border-transparent text-white/50 hover:bg-white/10'}`}
+                  className={`py-2 rounded-xl text-xs font-medium border transition-colors ${ambientLayer === layer ? 'bg-teal-600 border-teal-500 text-ink' : 'bg-white/5 border-transparent text-ink/50 hover:bg-white/10'}`}
                 >
                   {layer === 'none' && (lang === 'el' ? 'Κανένας' : 'None')}
                   {layer === 'ocean' && (lang === 'el' ? 'Ωκεανός' : 'Ocean')}
@@ -256,7 +256,7 @@ export default function PracticeSwaying() {
              ))}
           </div>
 
-          <label className="text-[10px] uppercase tracking-[0.2em] text-white/50 mb-3 w-full text-center mt-2">
+          <label className="text-[10px] uppercase tracking-[0.2em] text-ink/50 mb-3 w-full text-center mt-2">
              {lang === "el" ? "Ρυθμός του χτύπου" : "Beat tempo"}
           </label>
           <input
@@ -269,8 +269,8 @@ export default function PracticeSwaying() {
             className="w-full max-w-xs accent-teal-500"
           />
           <div className="flex justify-between w-full max-w-xs mt-1 px-1">
-             <span className="text-[10px] text-white/40">{lang === 'el' ? 'Γρήγορα (0,6 δ.)' : 'Fast (0.6 s)'}</span>
-             <span className="text-[10px] text-white/40">{lang === 'el' ? 'Αργά (2 δ.)' : 'Slow (2 s)'}</span>
+             <span className="text-[10px] text-ink/40">{lang === 'el' ? 'Γρήγορα (0,6 δ.)' : 'Fast (0.6 s)'}</span>
+             <span className="text-[10px] text-ink/40">{lang === 'el' ? 'Αργά (2 δ.)' : 'Slow (2 s)'}</span>
           </div>
         </div>
 
@@ -282,7 +282,7 @@ export default function PracticeSwaying() {
              aria-expanded={showSettings}
              className="w-12 h-12 flex items-center justify-center rounded-full bg-white/5 border border-white/5 hover:bg-white/10 transition-colors"
           >
-             <Settings2 size={18} className="text-white/60" />
+             <Settings2 size={18} className="text-ink/60" />
           </button>
           
           <button 
@@ -291,9 +291,9 @@ export default function PracticeSwaying() {
             style={{ backgroundColor: "var(--color-accent, #1D9E75)", borderColor: "rgba(255,255,255,0.1)" }}
           >
             {isPlaying ? (
-               <Pause size={32} className="text-white fill-current" />
+               <Pause size={32} className="text-ink fill-current" />
             ) : (
-               <Play size={32} className="text-white fill-current ml-1" />
+               <Play size={32} className="text-ink fill-current ml-1" />
             )}
           </button>
 

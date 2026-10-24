@@ -122,7 +122,7 @@ export default function NavigationMenu() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.95 }}
             transition={{ duration: 0.4 }}
-            className="fixed top-6 left-1/2 -translate-x-1/2 z-[10000] bg-zinc-800/90 border border-white/10 text-white text-sm font-medium px-6 py-3 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-xl whitespace-nowrap text-center max-w-[90vw] truncate"
+            className="fixed top-6 left-1/2 -translate-x-1/2 z-[10000] bg-zinc-800/90 border border-white/10 text-ink text-sm font-medium px-6 py-3 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.4)] backdrop-blur-xl whitespace-nowrap text-center max-w-[90vw] truncate"
           >
             {toastMessage}
           </motion.div>
@@ -218,7 +218,7 @@ export default function NavigationMenu() {
                 </button>
                 <button 
                   onClick={() => setIsOpen(false)}
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-zinc-400 hover:bg-white/10 hover:text-white transition-colors"
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-zinc-400 hover:bg-white/10 hover:text-ink transition-colors"
                 >
                   <X size={20} />
                 </button>
@@ -403,7 +403,7 @@ export default function NavigationMenu() {
                           <div className="flex justify-end gap-2">
                              <button
                                onClick={() => setShowResetConfirm(false)}
-                               className="px-2.5 py-1 bg-white/5 hover:bg-white/10 text-white rounded text-xs font-medium transition-colors"
+                               className="px-2.5 py-1 bg-white/5 hover:bg-white/10 text-ink rounded text-xs font-medium transition-colors"
                              >
                                {language === 'en' ? 'Cancel' : 'Ακύρωση'}
                              </button>
@@ -413,7 +413,7 @@ export default function NavigationMenu() {
                                  window.location.hash = '';
                                  window.location.reload();
                                }}
-                               className="px-2.5 py-1 bg-red-600 hover:bg-red-500 text-white rounded text-xs font-medium transition-colors shadow-lg"
+                               className="px-2.5 py-1 bg-red-600 hover:bg-red-500 text-ink rounded text-xs font-medium transition-colors shadow-lg"
                              >
                                {language === 'en' ? 'Confirm Reset' : 'Επιβεβαίωση'}
                              </button>
@@ -505,14 +505,14 @@ export default function NavigationMenu() {
                 <button 
                   onClick={showInfo} 
                   title={language === 'el' ? 'Σχετικά' : 'About'}
-                  className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 text-zinc-300 hover:bg-white/10 hover:text-white transition-colors border border-white/5"
+                  className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 text-zinc-300 hover:bg-white/10 hover:text-ink transition-colors border border-white/5"
                 >
                   <Info size={20} />
                 </button>
                 <button 
                   onClick={() => toggleMaster()}
                   title={language === 'el' ? 'Μικτής' : 'Mixer'}
-                  className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 text-zinc-300 hover:bg-white/10 hover:text-white transition-colors border border-white/5"
+                  className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 text-zinc-300 hover:bg-white/10 hover:text-ink transition-colors border border-white/5"
                 >
                   {masterPlaying ? <Music size={20} className="text-teal-400" /> : <Music size={20} />}
                 </button>

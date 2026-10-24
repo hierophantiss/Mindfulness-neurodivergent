@@ -37,20 +37,20 @@ export class ErrorBoundary extends Component<Props, State> {
     if (!this.state.hasError) return this.props.children;
     const el = lang() === 'el';
     return (
-      <div role="alert" className="min-h-[60dvh] flex flex-col items-center justify-center gap-4 px-6 text-center text-white/80">
+      <div role="alert" className="min-h-[60dvh] flex flex-col items-center justify-center gap-4 px-6 text-center text-ink/80">
         <p className="text-[17px] leading-relaxed max-w-xs">
           {el ? 'Κάτι δεν φόρτωσε σωστά. Δεν έκανες εσύ κάτι λάθος.' : 'Something did not load properly. You did nothing wrong.'}
         </p>
         <div className="flex gap-3">
           <button
             onClick={() => window.location.reload()}
-            className="min-h-[44px] px-5 rounded-full bg-white/[0.08] border border-white/15 text-[14px] text-white/90 hover:bg-white/[0.12]"
+            className="min-h-[44px] px-5 rounded-full bg-white/[0.08] border border-white/15 text-[14px] text-ink/90 hover:bg-white/[0.12]"
           >
             {el ? 'Ξαναφόρτωσε' : 'Reload'}
           </button>
           <a
             href={el ? '/el' : '/en'}
-            className="min-h-[44px] px-5 flex items-center rounded-full border border-white/10 text-[14px] text-white/60 hover:text-white/85"
+            className="min-h-[44px] px-5 flex items-center rounded-full border border-white/10 text-[14px] text-ink/60 hover:text-ink/85"
           >
             {el ? 'Αρχική' : 'Home'}
           </a>

@@ -65,7 +65,7 @@ function HowTo({ text, language, gravityFirst = false, longExhale = false, chant
             className="w-full max-w-sm max-h-[80dvh] overflow-y-auto rounded-3xl bg-[#1a1d27] border border-white/10 p-5 shadow-2xl"
           >
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-[15px] text-white/90">{el ? 'Πώς γίνεται' : 'How it is done'}</h2>
+              <h2 className="text-[15px] text-ink/90">{el ? 'Πώς γίνεται' : 'How it is done'}</h2>
               <button onClick={() => setOpen(false)} className="min-h-[40px] px-3 -mr-2 text-[13px] text-teal-300/80 hover:text-teal-200">
                 {el ? 'Κλείσιμο' : 'Close'}
               </button>
@@ -77,14 +77,14 @@ function HowTo({ text, language, gravityFirst = false, longExhale = false, chant
                 <li className="flex gap-3">
                   <span className="shrink-0 w-6 h-6 mt-0.5 rounded-full bg-[#7A9E7E]/20 text-[#9cc0a0] text-[12px] flex items-center justify-center">1</span>
                   <span className="text-[14px] text-zinc-300 leading-relaxed">
-                    <strong className="font-medium text-zinc-100">{el ? 'Πρώτα ο άξονας της βαρύτητας. ' : 'First, the axis of gravity. '}</strong>
+                    <strong className="font-medium text-ink">{el ? 'Πρώτα ο άξονας της βαρύτητας. ' : 'First, the axis of gravity. '}</strong>
                     {el ? GRAVITY_FIRST.el : GRAVITY_FIRST.en}
                   </span>
                 </li>
                 <li className="flex gap-3">
                   <span className="shrink-0 w-6 h-6 mt-0.5 rounded-full bg-teal-400/15 text-teal-300 text-[12px] flex items-center justify-center">2</span>
                   <span className="text-[14px] text-zinc-300 leading-relaxed">
-                    <strong className="font-medium text-zinc-100">{chant ? (el ? 'Μετά η αναπνοή και η φωνή. ' : 'Then, breath and voice. ') : (el ? 'Μετά η αναπνοή. ' : 'Then, the breath. ')}</strong>
+                    <strong className="font-medium text-ink">{chant ? (el ? 'Μετά η αναπνοή και η φωνή. ' : 'Then, breath and voice. ') : (el ? 'Μετά η αναπνοή. ' : 'Then, the breath. ')}</strong>
                     {text}
                   </span>
                 </li>
@@ -92,7 +92,7 @@ function HowTo({ text, language, gravityFirst = false, longExhale = false, chant
                   <li className="flex gap-3">
                     <span className="shrink-0 w-6 h-6 mt-0.5 rounded-full bg-teal-400/15 text-teal-300 text-[12px] flex items-center justify-center">3</span>
                     <span className="text-[14px] text-zinc-300 leading-relaxed">
-                      <strong className="font-medium text-zinc-100">{chant ? (el ? 'Η κοιλιά στο ψάλσιμο. ' : 'The belly in the chant. ') : (el ? 'Η κοιλιά στην εκπνοή. ' : 'The belly on the exhale. ')}</strong>
+                      <strong className="font-medium text-ink">{chant ? (el ? 'Η κοιλιά στο ψάλσιμο. ' : 'The belly in the chant. ') : (el ? 'Η κοιλιά στην εκπνοή. ' : 'The belly on the exhale. ')}</strong>
                       {chant ? (el ? BELLY_CHANT.el : BELLY_CHANT.en) : (el ? BELLY_EXHALE.el : BELLY_EXHALE.en)}
                     </span>
                   </li>
@@ -479,7 +479,7 @@ export default function PracticeBreath() {
 
   // The dark stage reaches down to the bottom bar (over the room the other pages keep below their last line).
   return (
-    <div className="flex flex-col flex-1 bg-[#061114] -mx-4 -mt-4 -mb-[calc(2rem+84px)] px-4 pt-4 pb-8 md:-mx-8 md:-mt-8 md:-mb-8 md:px-8 md:pt-8 md:pb-8 overflow-hidden relative font-sans text-zinc-100">
+    <div className="flex flex-col flex-1 bg-[#061114] -mx-4 -mt-4 -mb-[calc(2rem+84px)] px-4 pt-4 pb-8 md:-mx-8 md:-mt-8 md:-mb-8 md:px-8 md:pt-8 md:pb-8 overflow-hidden relative font-sans text-ink">
       
       {/* Sleep Mode Overlay */}
       <div 
@@ -503,7 +503,7 @@ export default function PracticeBreath() {
               navigate('/practice');
             }
           }} 
-          className="w-10 h-10 shrink-0 rounded-full bg-zinc-800/50 border border-zinc-700 flex items-center justify-center hover:bg-zinc-700 text-zinc-300 hover:text-white transition-colors"
+          className="w-10 h-10 shrink-0 rounded-full bg-zinc-800/50 border border-zinc-700 flex items-center justify-center hover:bg-zinc-700 text-zinc-300 hover:text-ink transition-colors"
         >
           <ArrowLeft size={20} />
         </button>
@@ -773,7 +773,7 @@ export default function PracticeBreath() {
                     key={i}
                     className={cn(
                       "flex items-center gap-1 text-[11.5px] desk:text-[14px] whitespace-nowrap transition-all duration-500",
-                      i === phaseIdx ? "font-medium" : "text-white/30"
+                      i === phaseIdx ? "font-medium" : "text-ink/30"
                     )}
                     style={i === phaseIdx ? { color: step.color } : undefined}
                   >
@@ -804,8 +804,8 @@ export default function PracticeBreath() {
         <div className="absolute bottom-6 right-6 z-10 flex flex-col items-center pointer-events-none">
           {cycles > 0 && (
              <div className="flex flex-col items-center">
-               <span className="font-semibold text-2xl text-white/90 leading-none drop-shadow-sm">{cycles}</span>
-               <span className="text-[10px] tracking-widest font-sans mt-0.5 uppercase text-white/60">{language === 'el' ? 'ΚΥΚΛΟΙ' : 'CYCLES'}</span>
+               <span className="font-semibold text-2xl text-ink/90 leading-none drop-shadow-sm">{cycles}</span>
+               <span className="text-[10px] tracking-widest font-sans mt-0.5 uppercase text-ink/60">{language === 'el' ? 'ΚΥΚΛΟΙ' : 'CYCLES'}</span>
              </div>
           )}
         </div>
@@ -823,7 +823,7 @@ export default function PracticeBreath() {
              "flex-1 h-9 rounded-full flex items-center justify-center gap-2 transition-all duration-300 shadow-sm z-20 focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 active:scale-95",
              running 
                ? "bg-zinc-800 border border-zinc-700 text-amber-200" 
-               : "bg-zinc-700 border border-teal-700/50 text-white"
+               : "bg-zinc-700 border border-teal-700/50 text-ink"
            )}
          >
            {running ? (
@@ -864,7 +864,7 @@ export default function PracticeBreath() {
               setPhaseIdx(0); 
               setPhase(pattern.labels[0]); 
             }}
-             className="flex-1 h-9 rounded-full bg-transparent border border-zinc-700/60 flex items-center justify-center gap-2 text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition-all duration-300 active:scale-95"
+             className="flex-1 h-9 rounded-full bg-transparent border border-zinc-700/60 flex items-center justify-center gap-2 text-zinc-400 hover:text-ink hover:bg-zinc-800/50 transition-all duration-300 active:scale-95"
            >
              <X size={14} />
              <span className="text-[10px] font-bold tracking-wider mt-0.5 uppercase opacity-90">{language === 'el' ? 'Επαναφορα' : 'Reset'}</span>
@@ -900,8 +900,8 @@ export default function PracticeBreath() {
                   className={cn(
                     "py-3 rounded-2xl border text-center font-medium transition-colors",
                     sleepMinutes === mins
-                      ? "bg-teal-600 border-teal-500 text-white"
-                      : "bg-zinc-800 border-zinc-700 text-zinc-300 hover:bg-zinc-700/50 hover:text-white"
+                      ? "bg-teal-600 border-teal-500 text-ink"
+                      : "bg-zinc-800 border-zinc-700 text-zinc-300 hover:bg-zinc-700/50 hover:text-ink"
                   )}
                 >
                   <div className="text-lg">{mins}</div>
@@ -915,13 +915,13 @@ export default function PracticeBreath() {
                 setSleepMinutes(0);
                 setShowSleepTimer(false);
               }}
-              className="w-full bg-zinc-800 border-2 border-transparent text-zinc-300 font-medium py-3 rounded-full transition-colors hover:text-white hover:border-zinc-600 mb-2 text-sm"
+              className="w-full bg-zinc-800 border-2 border-transparent text-zinc-300 font-medium py-3 rounded-full transition-colors hover:text-ink hover:border-zinc-600 mb-2 text-sm"
             >
               {language === 'el' ? 'Απενεργοποίηση' : 'Turn Off'}
             </button>
             <button 
               onClick={() => setShowSleepTimer(false)}
-              className="w-full bg-transparent text-zinc-400 font-medium py-2 rounded-full transition-colors hover:text-white text-sm"
+              className="w-full bg-transparent text-zinc-400 font-medium py-2 rounded-full transition-colors hover:text-ink text-sm"
             >
               {language === 'el' ? 'Ακύρωση' : 'Cancel'}
             </button>
@@ -994,7 +994,7 @@ export default function PracticeBreath() {
                   rememberChoice ? "bg-teal-600 border-teal-500" : "bg-zinc-800 border-zinc-600 group-hover:border-zinc-300"
                 )}
               >
-                {rememberChoice && <Check size={14} className="text-white" />}
+                {rememberChoice && <Check size={14} className="text-ink" />}
               </div>
               <span className="mt-0.5 leading-tight">
                 {language === 'el' ? 'Να θυμάσαι την επιλογή μου για αυτή την άσκηση' : 'Remember my choice for this exercise'}
@@ -1004,7 +1004,7 @@ export default function PracticeBreath() {
             <div className="flex flex-col gap-2.5">
               <button 
                 onClick={() => savePreferenceAndStart('with')}
-                className="w-full bg-zinc-600 hover:bg-zinc-700 border border-zinc-300 text-white font-medium py-3 rounded-full transition-colors flex items-center justify-center gap-2 text-sm tracking-wide"
+                className="w-full bg-zinc-600 hover:bg-zinc-700 border border-zinc-300 text-ink font-medium py-3 rounded-full transition-colors flex items-center justify-center gap-2 text-sm tracking-wide"
               >
                 <Headphones size={18} />
                 {isVocal
@@ -1013,19 +1013,19 @@ export default function PracticeBreath() {
               </button>
               <button
                 onClick={() => savePreferenceAndStart('nature')}
-                className="w-full bg-zinc-800 border border-teal-800/60 text-teal-100 font-medium py-2.5 rounded-full transition-colors hover:text-white text-sm"
+                className="w-full bg-zinc-800 border border-teal-800/60 text-teal-100 font-medium py-2.5 rounded-full transition-colors hover:text-ink text-sm"
               >
                 {language === 'el' ? 'Μόνο ήχος φύσης' : 'Nature sound only'}
               </button>
               <button 
                 onClick={() => savePreferenceAndStart('without')}
-                className="w-full bg-zinc-800 border border-zinc-600 text-zinc-300 font-medium py-2.5 rounded-full transition-colors hover:text-white text-sm"
+                className="w-full bg-zinc-800 border border-zinc-600 text-zinc-300 font-medium py-2.5 rounded-full transition-colors hover:text-ink text-sm"
                >
                 {language === 'el' ? 'Χωρίς ήχο' : 'No sound'}
               </button>
               <button 
                 onClick={() => setShowWarning(false)}
-                className="w-full bg-transparent text-zinc-400/80 font-medium py-2 rounded-full transition-colors hover:text-white text-sm"
+                className="w-full bg-transparent text-zinc-400/80 font-medium py-2 rounded-full transition-colors hover:text-ink text-sm"
                >
                 {language === 'el' ? 'Ακύρωση' : 'Cancel'}
               </button>

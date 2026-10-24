@@ -319,12 +319,12 @@ export default function Sanctuary() {
               else navigate('/');
             }}
             aria-label={language === 'el' ? 'Πίσω' : 'Back'}
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/[0.04] border border-white/[0.1] text-white/60 hover:text-white transition-colors"
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/[0.04] border border-white/[0.1] text-ink/60 hover:text-ink transition-colors"
           >
             <ChevronLeft size={20} />
           </button>
           <div className="flex-1 flex justify-center flex-col items-center">
-            <h1 className="text-[26px] font-serif italic text-white/90 leading-none">
+            <h1 className="text-[26px] font-serif italic text-ink/90 leading-none">
               {language === 'el' ? 'Το Καταφύγιο' : 'The Sanctuary'}
             </h1>
             <p className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#4a9eca] mt-1.5">
@@ -337,7 +337,7 @@ export default function Sanctuary() {
             aria-pressed={isDimmed}
             className={cn(
               "w-10 h-10 flex items-center justify-center rounded-full border transition-all duration-300",
-              isDimmed ? "bg-teal-500/20 border-teal-500/50 text-teal-400" : "bg-white/5 border-white/10 text-white/40"
+              isDimmed ? "bg-teal-500/20 border-teal-500/50 text-teal-400" : "bg-white/5 border-white/10 text-ink/40"
             )}
           >
             <Moon size={20} />
@@ -359,8 +359,8 @@ export default function Sanctuary() {
                 className={cn(
                   "flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-all duration-300",
                   activeTab === tab
-                    ? "bg-white/[0.1] text-white shadow-sm border border-white/[0.05]"
-                    : "text-white/40 hover:text-white/70"
+                    ? "bg-white/[0.1] text-ink shadow-sm border border-white/[0.05]"
+                    : "text-ink/40 hover:text-ink/70"
                 )}
               >
                 <Icon size={16} />
@@ -399,14 +399,14 @@ export default function Sanctuary() {
             </div>
 
             <div className="flex flex-col items-center gap-2 mb-8 text-center px-4">
-              <h2 className="text-[22px] font-serif italic text-white/90">
+              <h2 className="text-[22px] font-serif italic text-ink/90">
                 {activeTrackDef ? L(activeTrackDef.label) : (language === 'el' ? 'Διάλεξε έναν ήχο' : 'Choose a sound')}
               </h2>
               <p className="text-[12px] text-[#4a9eca]">
                 {activeTrackDef ? L(activeTrackDef.subtitle) : ''}
               </p>
               {activeTrackDef?.kind === 'binaural' && (
-                <p className="flex items-center gap-1.5 text-[11px] text-white/50">
+                <p className="flex items-center gap-1.5 text-[11px] text-ink/50">
                   <Headphones size={12} aria-hidden="true" />
                   {language === 'el' ? 'Με ακουστικά' : 'With headphones'}
                 </p>
@@ -417,7 +417,7 @@ export default function Sanctuary() {
               <button
                 onClick={() => step(-1)}
                 aria-label={language === 'el' ? 'Προηγούμενος ήχος' : 'Previous sound'}
-                className={cn("w-12 h-12 flex items-center justify-center rounded-full bg-white/[0.04] border border-white/10 text-white/70 hover:text-white transition-colors", !activeTrackDef && "opacity-50 pointer-events-none")}
+                className={cn("w-12 h-12 flex items-center justify-center rounded-full bg-white/[0.04] border border-white/10 text-ink/70 hover:text-ink transition-colors", !activeTrackDef && "opacity-50 pointer-events-none")}
               >
                 <ChevronLeft size={20} />
               </button>
@@ -433,7 +433,7 @@ export default function Sanctuary() {
               <button
                 onClick={() => step(1)}
                 aria-label={language === 'el' ? 'Επόμενος ήχος' : 'Next sound'}
-                className={cn("w-12 h-12 flex items-center justify-center rounded-full bg-white/[0.04] border border-white/10 text-white/70 hover:text-white transition-colors", !activeTrackDef && "opacity-50 pointer-events-none")}
+                className={cn("w-12 h-12 flex items-center justify-center rounded-full bg-white/[0.04] border border-white/10 text-ink/70 hover:text-ink transition-colors", !activeTrackDef && "opacity-50 pointer-events-none")}
               >
                 <ChevronRight size={20} />
               </button>
@@ -444,7 +444,7 @@ export default function Sanctuary() {
               aria-label={language === 'el' ? 'Χρονοδιακόπτης: πάτα για να αλλάξεις τη διάρκεια' : 'Timer: tap to change the length'}
               className={cn(
                 "px-4 py-2 rounded-full border flex items-center justify-center gap-2 text-[12px] font-medium transition-colors",
-                timer !== null ? "bg-teal-500/10 border-teal-500/30 text-teal-200" : "bg-white/[0.05] border-white/[0.08] text-white/60 hover:bg-white/[0.1]"
+                timer !== null ? "bg-teal-500/10 border-teal-500/30 text-teal-200" : "bg-white/[0.05] border-white/[0.08] text-ink/60 hover:bg-white/[0.1]"
               )}
             >
               <Timer size={14} aria-hidden="true" />
@@ -453,7 +453,7 @@ export default function Sanctuary() {
                 : `${timer}′ · ${formatTime(Math.max(0, timeLeft ?? 0))}`}
             </button>
             {timer !== null && (
-              <p className="mt-2 text-[11px] text-white/40">
+              <p className="mt-2 text-[11px] text-ink/40">
                 {language === 'el' ? 'Στο τέλος ο ήχος σβήνει σιγά σιγά.' : 'At the end the sound fades out slowly.'}
               </p>
             )}
@@ -464,7 +464,7 @@ export default function Sanctuary() {
         {activeTab === 'audio' && activeSound && !isDimmed && (
           <div className="flex flex-col gap-4 px-6 py-5 bg-white/[0.02] border border-white/10 rounded-[2rem] shadow-xl mb-8 relative overflow-hidden">
             <div className="flex items-center gap-4 relative z-10">
-              <Volume2 size={20} className="text-white/40" aria-hidden="true" />
+              <Volume2 size={20} className="text-ink/40" aria-hidden="true" />
               <input
                 type="range"
                 min="0"
@@ -481,7 +481,7 @@ export default function Sanctuary() {
                 onClick={toggleNature}
                 role="switch"
                 aria-checked={withNature}
-                className="flex items-center justify-between gap-3 text-left text-[13px] text-white/70"
+                className="flex items-center justify-between gap-3 text-left text-[13px] text-ink/70"
               >
                 <span>{language === 'el' ? 'Με ήχο φύσης' : 'With nature sound'}</span>
                 <span className={cn("w-10 h-6 rounded-full p-0.5 transition-colors", withNature ? "bg-teal-500/50" : "bg-white/10")}>
@@ -502,7 +502,7 @@ export default function Sanctuary() {
                     {group.kind === 'binaural' && <Headphones size={13} aria-hidden="true" />}
                     {L(group.title)}
                   </h3>
-                  <p className="mt-1.5 text-[12px] leading-relaxed text-white/45">{L(group.note)}</p>
+                  <p className="mt-1.5 text-[12px] leading-relaxed text-ink/45">{L(group.note)}</p>
                   {group.kind === 'binaural' && (
                     <button
                       onClick={() => setShowInfo(v => !v)}
@@ -516,7 +516,7 @@ export default function Sanctuary() {
                   {group.kind === 'binaural' && showInfo && (
                     <div className="mt-3 p-4 rounded-2xl bg-white/[0.03] border border-white/[0.08] flex flex-col gap-2.5">
                       {research.map((r, i) => (
-                        <p key={i} className="text-[12.5px] leading-relaxed text-white/65">{L(r)}</p>
+                        <p key={i} className="text-[12.5px] leading-relaxed text-ink/65">{L(r)}</p>
                       ))}
                       <button
                         onClick={() => navigate('/methodology')}
@@ -545,18 +545,18 @@ export default function Sanctuary() {
                         <div className="flex items-center gap-4 relative z-10 w-full">
                           <div className={cn(
                             "w-12 h-12 flex items-center justify-center rounded-2xl flex-shrink-0 transition-colors",
-                            active ? "bg-teal-500/20 text-teal-400" : "bg-white/[0.05] text-white/40 group-hover:text-white/70"
+                            active ? "bg-teal-500/20 text-teal-400" : "bg-white/[0.05] text-ink/40 group-hover:text-ink/70"
                           )}>
                             <sound.icon size={24} strokeWidth={1.5} />
                           </div>
                           <div className="flex flex-col">
                             <span className={cn(
                               "text-[17px] font-serif italic leading-tight mb-1",
-                              active ? "text-white" : "text-white/80 group-hover:text-white"
+                              active ? "text-ink" : "text-ink/80 group-hover:text-ink"
                             )}>
                               {L(sound.label)}
                             </span>
-                            <span className="text-[12px] text-white/45">
+                            <span className="text-[12px] text-ink/45">
                               {L(sound.subtitle)}
                             </span>
                           </div>
@@ -565,7 +565,7 @@ export default function Sanctuary() {
                           {active && isPlaying ? (
                             <div className="w-1.5 h-1.5 rounded-full bg-teal-400 shadow-[0_0_8px_rgba(45,212,191,0.6)]" />
                           ) : (
-                            <span className="text-white/30 text-lg font-light" aria-hidden="true">∞</span>
+                            <span className="text-ink/30 text-lg font-light" aria-hidden="true">∞</span>
                           )}
                         </div>
                       </button>
@@ -585,17 +585,17 @@ export default function Sanctuary() {
                 <Sparkles size={20} />
               </div>
               <div>
-                <h2 className="text-[20px] font-serif italic text-white/90 leading-tight">
+                <h2 className="text-[20px] font-serif italic text-ink/90 leading-tight">
                   {language === 'el' ? 'Διμερής κίνηση' : 'Bilateral rhythm'}
                 </h2>
-                <p className="text-[12px] text-white/45 mt-1">
+                <p className="text-[12px] text-ink/45 mt-1">
                   {language === 'el' ? 'Ένας ρυθμός δεξιά–αριστερά για τα μάτια και τα αυτιά' : 'A left–right rhythm for the eyes and ears'}
                 </p>
               </div>
             </div>
 
             <div className="mx-2 p-4 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
-              <p className="text-[12.5px] leading-relaxed text-white/65">
+              <p className="text-[12.5px] leading-relaxed text-ink/65">
                 {language === 'el'
                   ? 'Δεν είναι θεραπεία EMDR· το EMDR γίνεται με εκπαιδευμένο θεραπευτή. Εδώ είναι απλώς ένας ήπιος ρυθμός για να ακολουθήσεις. Αν ανεβαίνουν δύσκολες μνήμες ή ένταση, σταμάτα και γύρνα στη γείωση: νιώσε τα πόδια σου και το βάρος του σώματος.'
                   : 'This is not EMDR therapy; EMDR is done with a trained therapist. Here it is simply a gentle rhythm to follow. If difficult memories or intensity come up, stop and return to grounding: feel your feet and the weight of your body.'}
@@ -617,7 +617,7 @@ export default function Sanctuary() {
                   <div className="relative w-full md:w-56 aspect-video rounded-[1rem] overflow-hidden flex-shrink-0 border border-white/[0.05]">
                     <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100" style={{ backgroundImage: `url(${video.thumbnail})` }} />
                     <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                      <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20 group-hover:bg-[#C8922A]/80 group-hover:border-[#C8922A] group-hover:scale-110 transition-all">
+                      <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-ink border border-white/20 group-hover:bg-[#C8922A]/80 group-hover:border-[#C8922A] group-hover:scale-110 transition-all">
                         <Play size={20} className="translate-x-[1px]" fill="currentColor" />
                       </div>
                     </div>
@@ -626,10 +626,10 @@ export default function Sanctuary() {
                     <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-[#C8922A] mb-2 block">
                       {video.category}
                     </span>
-                    <h3 className="text-[17px] font-serif italic text-white/90 leading-snug mb-1.5 group-hover:text-white transition-colors line-clamp-2">
+                    <h3 className="text-[17px] font-serif italic text-ink/90 leading-snug mb-1.5 group-hover:text-ink transition-colors line-clamp-2">
                       {video.title}
                     </h3>
-                    <p className="text-[11px] text-white/35 truncate">
+                    <p className="text-[11px] text-ink/35 truncate">
                       {language === 'el' ? 'Βίντεο από' : 'Video by'} {video.author}
                     </p>
                   </div>
@@ -672,14 +672,14 @@ export default function Sanctuary() {
               <div className="w-8 h-8 rounded-full bg-teal-500/10 flex items-center justify-center text-teal-400">
                 <Youtube size={16} />
               </div>
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20">
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-ink/20">
                 {language === 'el' ? 'ΠΡΟΒΟΛΗ ΒΙΝΤΕΟ' : 'NOW PLAYING'}
               </span>
             </div>
             <button 
               onClick={() => { setActiveVideo(null); setIsDimmed(false); }}
               aria-label={language === 'el' ? 'Κλείσιμο βίντεο' : 'Close video'}
-              className="p-3 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-white hover:bg-white/10 transition-all active:scale-90"
+              className="p-3 rounded-full bg-white/5 border border-white/10 text-ink/40 hover:text-ink hover:bg-white/10 transition-all active:scale-90"
             >
               <X size={20} />
             </button>
@@ -709,10 +709,10 @@ export default function Sanctuary() {
               </div>
 
               <div className={cn("hidden md:block transition-opacity duration-1000", isVoidActive ? "opacity-20" : "opacity-100")}>
-                 <h2 className="text-3xl md:text-4xl font-serif italic text-white/95 mb-2">
+                 <h2 className="text-3xl md:text-4xl font-serif italic text-ink/95 mb-2">
                    {bilateralVideos.find(v => v.id === activeVideo)?.title}
                  </h2>
-                 <p className="text-lg text-white/30 font-medium font-serif italic">
+                 <p className="text-lg text-ink/30 font-medium font-serif italic">
                    {bilateralVideos.find(v => v.id === activeVideo)?.author}
                  </p>
               </div>
@@ -730,7 +730,7 @@ export default function Sanctuary() {
                   return (
                     <div className="space-y-8 pb-12">
                       <div className="bg-white/[0.02] border border-white/5 p-8 rounded-[2.5rem] space-y-4">
-                        <p className="text-[14px] text-white/60 leading-relaxed font-sans">
+                        <p className="text-[14px] text-ink/60 leading-relaxed font-sans">
                           {desc.intro}
                         </p>
                         <div className="pt-4 border-t border-white/5">
@@ -746,10 +746,10 @@ export default function Sanctuary() {
                 return (
                   <div className="space-y-6">
                     <div className="md:hidden">
-                       <h2 className="text-2xl font-serif italic text-white/95 mb-2">
+                       <h2 className="text-2xl font-serif italic text-ink/95 mb-2">
                          {videoData?.title}
                        </h2>
-                       <p className="text-sm text-white/30 font-medium">
+                       <p className="text-sm text-ink/30 font-medium">
                          {videoData?.author} • {videoData?.category}
                        </p>
                     </div>
@@ -760,7 +760,7 @@ export default function Sanctuary() {
                            {language === 'el' ? 'ΠΛΗΡΟΦΟΡΙΕΣ' : 'INFORMATION'}
                          </span>
                        </div>
-                       <p className="text-white/50 text-[14px] leading-relaxed italic font-serif">
+                       <p className="text-ink/50 text-[14px] leading-relaxed italic font-serif">
                          {language === 'el' 
                            ? 'Αυτό το βίντεο αποτελεί μέρος της συλλογής μας για την εξερεύνηση της συνείδησης και της νευροδιαφορετικότητας.' 
                            : 'This video is part of our collection exploring consciousness and neurodiversity.'}

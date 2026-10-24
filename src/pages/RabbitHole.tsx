@@ -17,7 +17,7 @@ const formatMarkdown = (text: string) => {
     <>
       {boldParts.map((boldPart, i) => {
         if (boldPart.startsWith('**') && boldPart.endsWith('**')) {
-          return <span key={i} className="font-bold text-white tracking-wide mix-blend-plus-lighter" style={{ fontWeight: 800 }}>{boldPart.slice(2, -2)}</span>;
+          return <span key={i} className="font-bold text-ink tracking-wide mix-blend-plus-lighter" style={{ fontWeight: 800 }}>{boldPart.slice(2, -2)}</span>;
         }
         
         const italicParts = boldPart.split(/(\*[\s\S]*?\*)/g);
@@ -25,7 +25,7 @@ const formatMarkdown = (text: string) => {
           <React.Fragment key={i}>
             {italicParts.map((itPart, j) => {
               if (itPart.startsWith('*') && itPart.endsWith('*')) {
-                return <span key={j} className="font-bold text-white tracking-wide mix-blend-plus-lighter" style={{ fontWeight: 800 }}>{itPart.slice(1, -1)}</span>;
+                return <span key={j} className="font-bold text-ink tracking-wide mix-blend-plus-lighter" style={{ fontWeight: 800 }}>{itPart.slice(1, -1)}</span>;
               }
               return <span key={j}>{itPart}</span>;
             })}
@@ -216,30 +216,30 @@ export default function RabbitHole() {
   // Story Viewer Render
   if (activeArticle) {
     const article = articles.find(a => a.id === activeArticle);
-    if (!article) return <div className="text-white p-20 mt-20 text-center">Article not found: {activeArticle}</div>;
+    if (!article) return <div className="text-ink p-20 mt-20 text-center">Article not found: {activeArticle}</div>;
 
     const storyViewer = (
-      <div className="fixed inset-0 z-[9999] bg-black/40 backdrop-blur-md text-white flex flex-col animate-in fade-in duration-300">
+      <div className="fixed inset-0 z-[9999] bg-black/40 backdrop-blur-md text-ink flex flex-col animate-in fade-in duration-300">
         
         {/* Top Progress Bar & Header */}
         <div className="pt-safe px-4 pb-3 flex items-center justify-between border-b border-white/5 bg-black/40 backdrop-blur-md/80 backdrop-blur-md relative z-20">
           <button 
             onClick={() => setActiveArticle(null)} 
-            className="p-2 -ml-2 text-white/40 hover:text-white transition-colors active:scale-95"
+            className="p-2 -ml-2 text-ink/40 hover:text-ink transition-colors active:scale-95"
             aria-label={t.close}
           >
             <X size={24} />
           </button>
           <div className="flex-1 px-4 text-center">
-            <h2 className="text-[14px] font-medium font-serif italic text-white/90 truncate">{article.title}</h2>
+            <h2 className="text-[14px] font-medium font-serif italic text-ink/90 truncate">{article.title}</h2>
             {article.date && (
-              <p className="text-[9px] text-white/30 uppercase tracking-widest mt-0.5">
+              <p className="text-[9px] text-ink/30 uppercase tracking-widest mt-0.5">
                 {formatDate(article.date, language)}
               </p>
             )}
           </div>
           <div className="w-10 text-xs text-teal-400/80 font-mono text-right font-medium tracking-wide">
-            {currentPage + 1}<span className="text-white/20">/{article.pages.length}</span>
+            {currentPage + 1}<span className="text-ink/20">/{article.pages.length}</span>
           </div>
         </div>
 
@@ -272,7 +272,7 @@ export default function RabbitHole() {
           >
             {currentPage > 0 && (
               <div className="p-3 rounded-full opacity-10 md:opacity-20 group-hover:opacity-100 transition-opacity duration-300">
-                <ChevronLeft size={40} className="text-white" />
+                <ChevronLeft size={40} className="text-ink" />
               </div>
             )}
           </button>
@@ -285,7 +285,7 @@ export default function RabbitHole() {
           >
             {currentPage < article.pages.length - 1 && (
               <div className="p-3 rounded-full opacity-10 md:opacity-20 group-hover:opacity-100 transition-opacity duration-300">
-                <ChevronRight size={40} className="text-white" />
+                <ChevronRight size={40} className="text-ink" />
               </div>
             )}
           </button>
@@ -302,7 +302,7 @@ export default function RabbitHole() {
               className="min-h-full flex flex-col justify-center max-w-xl mx-auto w-full py-12 pb-32 animate-in fade-in zoom-in-[0.98] duration-300 ease-out relative z-0 pointer-events-none"
             >
               <BookOpen size={24} className="text-teal-500/20 mx-auto justify-center mb-8" />
-              <p className="text-[20px] md:text-[24px] leading-[1.7] font-serif text-white/90 text-center tracking-wide whitespace-pre-line pointer-events-auto" style={{ textShadow: "0 4px 20px rgba(0,0,0,0.6)"}}>
+              <p className="text-[20px] md:text-[24px] leading-[1.7] font-serif text-ink/90 text-center tracking-wide whitespace-pre-line pointer-events-auto" style={{ textShadow: "0 4px 20px rgba(0,0,0,0.6)"}}>
                 {formatMarkdown(article.pages[currentPage])}
               </p>
             </div>
@@ -322,13 +322,13 @@ export default function RabbitHole() {
         <div className="flex items-center justify-between px-4 h-16">
           <Link 
             to="/"
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/[0.03] border border-white/[0.05] text-white/40 hover:text-white transition-colors active:scale-95"
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/[0.03] border border-white/[0.05] text-ink/40 hover:text-ink transition-colors active:scale-95"
             aria-label={t.back}
           >
             <ChevronLeft size={20} />
           </Link>
           <div className="flex flex-col items-center flex-1">
-            <h1 className="text-lg font-serif italic text-white/90 tracking-wide flex items-center gap-2">
+            <h1 className="text-lg font-serif italic text-ink/90 tracking-wide flex items-center gap-2">
               <span className="text-[16px] not-italic opacity-80">🐇🕳️</span> {t.title}
             </h1>
             <p className="text-[9px] text-teal-400/60 uppercase tracking-[0.25em] mt-0.5">{t.subtitle}</p>
@@ -346,8 +346,8 @@ export default function RabbitHole() {
             className={cn(
               "flex-1 min-w-[120px] flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-all duration-300",
               activeTab === 'articles' 
-                ? "bg-white/[0.1] text-white shadow-sm border border-white/[0.05]" 
-                : "text-white/30 hover:text-white/60"
+                ? "bg-white/[0.1] text-ink shadow-sm border border-white/[0.05]" 
+                : "text-ink/30 hover:text-ink/60"
             )}
           >
             <BookOpen size={16} />
@@ -358,8 +358,8 @@ export default function RabbitHole() {
             className={cn(
               "flex-1 min-w-[120px] flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-all duration-300",
               activeTab === 'videos' 
-                ? "bg-white/[0.1] text-white shadow-sm border border-white/[0.05]" 
-                : "text-white/30 hover:text-white/60"
+                ? "bg-white/[0.1] text-ink shadow-sm border border-white/[0.05]" 
+                : "text-ink/30 hover:text-ink/60"
             )}
           >
             <Film size={16} />
@@ -368,7 +368,7 @@ export default function RabbitHole() {
         </div>
 
         <div className="flex flex-col items-center justify-center mb-12 text-center px-4 space-y-4 max-w-2xl mx-auto">
-          <p className="text-white/40 text-sm md:text-base font-serif italic leading-relaxed">
+          <p className="text-ink/40 text-sm md:text-base font-serif italic leading-relaxed">
             {activeTab === 'articles' ? (
               language === 'en' 
                 ? 'A collection of theoretical pieces, allegories, and insights from across the world charting the human path to the exploration of consciousness.'
@@ -381,7 +381,7 @@ export default function RabbitHole() {
           </p>
           {activeTab === 'articles' && (
             <div className="pt-4 border-t border-white/10">
-              <p className="text-white/70 font-medium text-sm font-serif italic leading-relaxed">
+              <p className="text-ink/70 font-medium text-sm font-serif italic leading-relaxed">
                 {language === 'en'
                   ? '"These texts are not scientific literature, but philosophical reflections, poetic allegories, and symbolic explorations of the human experience."'
                   : '«Τα κείμενα αυτά δεν αποτελούν επιστημονικά δοκίμια, αλλά φιλοσοφικούς στοχασμούς, ποιητικές αλληγορίες και συμβολικές εξερευνήσεις της συνείδησης.»'}
@@ -446,11 +446,11 @@ export default function RabbitHole() {
 
                 <div className="flex items-center gap-4 mb-5 relative z-10">
                   <div className={`w-14 h-14 rounded-2xl flex items-center justify-center border border-white/5 flex-shrink-0 group-hover:scale-110 transition-transform duration-500 ${isNew ? 'bg-teal-500/[0.05]' : 'bg-white/[0.02]'}`}>
-                    <BookOpen size={22} className={`${isNew ? 'text-teal-400/80' : 'text-white/30'}`} />
+                    <BookOpen size={22} className={`${isNew ? 'text-teal-400/80' : 'text-ink/30'}`} />
                   </div>
                   <div className="flex-1 pr-12">
-                    <h2 className="text-[18px] md:text-[20px] font-serif italic font-medium text-white/90 leading-snug tracking-tight group-hover:text-white transition-colors">{article.title}</h2>
-                    <p className={`text-[9px] md:text-[10px] uppercase tracking-[0.2em] font-bold mt-1.5 ${isNew ? 'text-teal-400/60' : 'text-white/30'}`}>
+                    <h2 className="text-[18px] md:text-[20px] font-serif italic font-medium text-ink/90 leading-snug tracking-tight group-hover:text-ink transition-colors">{article.title}</h2>
+                    <p className={`text-[9px] md:text-[10px] uppercase tracking-[0.2em] font-bold mt-1.5 ${isNew ? 'text-teal-400/60' : 'text-ink/30'}`}>
                       {article.author}
                       {article.date && (
                         <span className="opacity-60 ml-2 before:content-['•'] before:mr-2">
@@ -460,15 +460,15 @@ export default function RabbitHole() {
                     </p>
                   </div>
                 </div>
-                <p className="text-white/40 text-[13px] md:text-[14px] leading-relaxed line-clamp-3 relative z-10 font-sans">
+                <p className="text-ink/40 text-[13px] md:text-[14px] leading-relaxed line-clamp-3 relative z-10 font-sans">
                   "{article.pages[0].replace(/\*\*/g, '')}"
                 </p>
                 <div className="mt-auto pt-6">
-                  <div className="pt-5 border-t border-white/5 flex justify-between items-center text-white/50 font-medium text-[13px] md:text-[14px] relative z-10 group-hover:text-white/70 transition-colors">
+                  <div className="pt-5 border-t border-white/5 flex justify-between items-center text-ink/50 font-medium text-[13px] md:text-[14px] relative z-10 group-hover:text-ink/70 transition-colors">
                     <span className="flex items-center gap-2">
                        {t.startReading} <ChevronRight size={16} className="transform group-hover:translate-x-1 transition-transform" />
                     </span>
-                    <span className="text-[10px] text-white/20 font-bold tracking-[0.25em] uppercase">
+                    <span className="text-[10px] text-ink/20 font-bold tracking-[0.25em] uppercase">
                       {article.pages.length} {language === 'en' ? 'PAGES' : 'ΣΕΛΙΔΕΣ'}
                     </span>
                   </div>
@@ -494,7 +494,7 @@ export default function RabbitHole() {
               <div className="relative w-full md:w-56 aspect-video rounded-[1rem] overflow-hidden flex-shrink-0 border border-white/[0.05]">
                 <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100" style={{ backgroundImage: `url(${video.thumbnail})` }} />
                 <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                  <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20 group-hover:bg-teal-500/80 group-hover:border-teal-400 group-hover:scale-110 transition-all">
+                  <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-ink border border-white/20 group-hover:bg-teal-500/80 group-hover:border-teal-400 group-hover:scale-110 transition-all">
                     <Play size={20} className="translate-x-[1px]" fill="currentColor" />
                   </div>
                 </div>
@@ -503,10 +503,10 @@ export default function RabbitHole() {
                 <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-teal-400 mb-2 block">
                   {language === 'el' ? video.category.el : video.category.en}
                 </span>
-                <h3 className="text-[17px] font-serif italic text-white/90 leading-snug mb-1.5 group-hover:text-white transition-colors line-clamp-2">
+                <h3 className="text-[17px] font-serif italic text-ink/90 leading-snug mb-1.5 group-hover:text-ink transition-colors line-clamp-2">
                   {language === 'el' ? video.title.el : video.title.en}
                 </h3>
-                <p className="text-[10px] uppercase tracking-widest font-black text-white/30 truncate">
+                <p className="text-[10px] uppercase tracking-widest font-black text-ink/30 truncate">
                   {video.author}
                 </p>
               </div>
@@ -543,13 +543,13 @@ export default function RabbitHole() {
               <div className="w-12 h-12 rounded-full bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400">
                 <Youtube size={20} />
               </div>
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20">
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-ink/20">
                 {language === 'el' ? 'ΠΡΟΒΟΛΗ ΒΙΝΤΕΟ' : 'NOW PLAYING'}
               </span>
             </div>
             <button 
               onClick={() => setActiveVideo(null)}
-              className="p-3 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-white hover:bg-white/10 transition-all active:scale-90"
+              className="p-3 rounded-full bg-white/5 border border-white/10 text-ink/40 hover:text-ink hover:bg-white/10 transition-all active:scale-90"
             >
               <X size={20} />
             </button>
@@ -579,10 +579,10 @@ export default function RabbitHole() {
               </div>
 
               <div className={cn("hidden md:block transition-opacity duration-1000", isVoidActive ? "opacity-20" : "opacity-100")}>
-                 <h2 className="text-3xl md:text-4xl font-serif italic text-white/95 mb-2">
+                 <h2 className="text-3xl md:text-4xl font-serif italic text-ink/95 mb-2">
                    {informativeVideos.find(v => v.id === activeVideo)?.title[language as 'en'|'el']}
                  </h2>
-                 <p className="text-lg text-white/30 font-medium font-serif italic">
+                 <p className="text-lg text-ink/30 font-medium font-serif italic">
                    {informativeVideos.find(v => v.id === activeVideo)?.author}
                  </p>
               </div>
@@ -609,7 +609,7 @@ export default function RabbitHole() {
                           className={cn(
                             "w-full py-5 rounded-[2.5rem] border flex items-center justify-center gap-3 transition-all duration-700 font-serif italic text-lg shadow-2xl",
                             isVoidActive 
-                             ? "bg-white/5 border-white/30 text-white shadow-[0_0_60px_rgba(255,255,255,0.1)]" 
+                             ? "bg-white/5 border-white/30 text-ink shadow-[0_0_60px_rgba(255,255,255,0.1)]" 
                              : "bg-teal-500/10 border-teal-500/30 text-teal-400 hover:bg-teal-500/20"
                           )}
                         >
@@ -628,7 +628,7 @@ export default function RabbitHole() {
                       )}
 
                       <div className="bg-white/[0.02] border border-white/5 p-8 rounded-[2.5rem] space-y-4">
-                        <p className="text-[14px] text-white/60 leading-relaxed font-sans">
+                        <p className="text-[14px] text-ink/60 leading-relaxed font-sans">
                           {desc.intro}
                         </p>
                         <div className="pt-4 border-t border-white/5">
@@ -640,7 +640,7 @@ export default function RabbitHole() {
 
                       {desc.mantra && (
                         <div className="space-y-4">
-                          <span className="text-[10px] font-black uppercase tracking-widest text-white/20 px-2">
+                          <span className="text-[10px] font-black uppercase tracking-widest text-ink/20 px-2">
                             {language === 'el' ? 'ΟΔΗΓΟΣ ΡΟΗΣ' : 'FLOW GUIDE'}
                           </span>
                           <div className="bg-[#1D9E75]/5 border border-[#1D9E75]/20 rounded-[2.5rem] p-8 text-center relative overflow-hidden group/mantra">
@@ -657,7 +657,7 @@ export default function RabbitHole() {
                              </div>
 
                              <div className="relative h-20 flex items-center justify-center mb-6">
-                               <h4 className="text-3xl md:text-4xl font-serif italic text-white/90 animate-in fade-in zoom-in duration-500 tracking-widest" key={mantraStep}>
+                               <h4 className="text-3xl md:text-4xl font-serif italic text-ink/90 animate-in fade-in zoom-in duration-500 tracking-widest" key={mantraStep}>
                                  {desc.mantra[mantraStep]}
                                </h4>
                              </div>
@@ -665,7 +665,7 @@ export default function RabbitHole() {
                              <div className="flex items-center justify-center gap-4 relative z-10">
                                <button 
                                  onClick={() => setMantraStep((prev) => (prev > 0 ? prev - 1 : (desc.mantra ? desc.mantra.length - 1 : 0)))}
-                                 className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-all active:scale-95"
+                                 className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-ink/40 hover:text-ink hover:bg-white/10 transition-all active:scale-95"
                                >
                                  <ChevronLeft size={20} />
                                </button>
@@ -694,7 +694,7 @@ export default function RabbitHole() {
 
                       {desc.movements && (
                         <div className="space-y-4">
-                          <span className="text-[10px] font-black uppercase tracking-widest text-white/20 px-2">
+                          <span className="text-[10px] font-black uppercase tracking-widest text-ink/20 px-2">
                             {language === 'el' ? 'ΟΔΗΓΟΣ ΚΙΝΗΣΕΩΝ' : 'MOVEMENTS GUIDE'}
                           </span>
                           <div className="bg-indigo-500/5 border border-indigo-500/20 rounded-[2.5rem] p-8 relative overflow-hidden">
@@ -706,20 +706,20 @@ export default function RabbitHole() {
                                  <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest mb-1">
                                    {language === 'el' ? `ΚΙΝΗΣΗ ${desc.movements[mantraStep]?.id || 1} / 10` : `MOVEMENT ${desc.movements[mantraStep]?.id || 1} / 10`}
                                  </span>
-                                 <h4 className="text-xl font-serif italic text-white/90">
+                                 <h4 className="text-xl font-serif italic text-ink/90">
                                    {desc.movements[mantraStep]?.name}
                                  </h4>
                                </div>
                                <div className="flex gap-2">
                                  <button 
                                    onClick={() => setMantraStep((prev) => (prev > 0 ? prev - 1 : 9))}
-                                   className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white transition-all"
+                                   className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-ink/40 hover:text-ink transition-all"
                                  >
                                    <ChevronLeft size={18} />
                                  </button>
                                  <button 
                                    onClick={() => setMantraStep((prev) => (prev < 9 ? prev + 1 : 0))}
-                                   className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white transition-all"
+                                   className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-ink/40 hover:text-ink transition-all"
                                  >
                                    <ChevronRight size={18} />
                                  </button>
@@ -732,10 +732,10 @@ export default function RabbitHole() {
                                  <div className="w-8 h-8 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 mx-auto mb-3">
                                    <ChevronRight size={16} className="-rotate-90" />
                                  </div>
-                                 <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest block mb-1">
+                                 <span className="text-[10px] font-bold text-ink/30 uppercase tracking-widest block mb-1">
                                     {language === 'el' ? 'ΕΙΣΠΝΟΗ' : 'INHALE'}
                                  </span>
-                                 <p className="text-sm font-serif italic text-white/80">
+                                 <p className="text-sm font-serif italic text-ink/80">
                                     {language === 'el' ? 'Χέρια πάνω' : 'Hands up'}
                                  </p>
                                </div>
@@ -743,10 +743,10 @@ export default function RabbitHole() {
                                  <div className="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 mx-auto mb-3">
                                    <ChevronRight size={16} className="rotate-90" />
                                  </div>
-                                 <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest block mb-1">
+                                 <span className="text-[10px] font-bold text-ink/30 uppercase tracking-widest block mb-1">
                                     {language === 'el' ? 'ΕΚΠΝΟΗ' : 'EXHALE'}
                                  </span>
-                                 <p className="text-sm font-serif italic text-white/80">
+                                 <p className="text-sm font-serif italic text-ink/80">
                                     {language === 'el' ? 'Χέρια κάτω' : 'Hands down'}
                                  </p>
                                </div>
@@ -769,7 +769,7 @@ export default function RabbitHole() {
 
                       {desc.attentionStyles && (
                         <div className="space-y-4">
-                          <span className="text-[10px] font-black uppercase tracking-widest text-white/20 px-2">
+                          <span className="text-[10px] font-black uppercase tracking-widest text-ink/20 px-2">
                             {language === 'el' ? 'ΣΤΥΛ ΠΡΟΣΟΧΗΣ' : 'ATTENTION STYLES'}
                           </span>
                           <div className="bg-amber-500/5 border border-amber-500/20 rounded-[2.5rem] p-8 relative overflow-hidden">
@@ -795,10 +795,10 @@ export default function RabbitHole() {
                                      }`}
                                    >
                                       <div className={`w-2 h-2 rounded-full mb-3 transition-all ${isActive ? 'bg-amber-400 scale-125' : 'bg-white/20'}`}></div>
-                                      <span className={`text-[11px] font-bold uppercase tracking-wider block mb-1 ${isActive ? 'text-amber-200' : 'text-white/40'}`}>
+                                      <span className={`text-[11px] font-bold uppercase tracking-wider block mb-1 ${isActive ? 'text-amber-200' : 'text-ink/40'}`}>
                                         {style.name}
                                       </span>
-                                      <p className="text-[10px] text-white/30 leading-tight">
+                                      <p className="text-[10px] text-ink/30 leading-tight">
                                         {style.desc}
                                       </p>
                                    </button>
@@ -811,7 +811,7 @@ export default function RabbitHole() {
                                  <div className="w-12 h-12 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 mx-auto mb-4 animate-pulse">
                                    <Play size={24} fill="currentColor" />
                                  </div>
-                                 <h4 className="text-xl font-serif italic text-white mb-2">
+                                 <h4 className="text-xl font-serif italic text-ink mb-2">
                                    {language === 'el' ? 'Ενεργοποίηση Άξονα Χώρου' : 'Space Axis Activated'}
                                  </h4>
                                  <p className="text-[11px] text-teal-300/60 uppercase tracking-widest font-bold mb-4">
@@ -826,7 +826,7 @@ export default function RabbitHole() {
                                </div>
                              ) : (
                                <div className="relative z-10 text-center py-4">
-                                 <p className="text-[10px] font-medium text-white/20 uppercase tracking-[0.2em]">
+                                 <p className="text-[10px] font-medium text-ink/20 uppercase tracking-[0.2em]">
                                    {language === 'el' 
                                      ? `Επιλογή ${activeAttentionStyles.length}/4 για τον Χώρο` 
                                      : `Select ${activeAttentionStyles.length}/4 for Space`}
@@ -839,7 +839,7 @@ export default function RabbitHole() {
 
                       {desc.points && (
                         <div className="space-y-4">
-                          <span className="text-[10px] font-black uppercase tracking-widest text-white/20 px-2">
+                          <span className="text-[10px] font-black uppercase tracking-widest text-ink/20 px-2">
                             {language === 'el' ? 'ΚΛΕΙΔΙΑ ΠΡΑΚΤΙΚΗΣ' : 'PRACTICE KEYS'}
                           </span>
                           <div className="space-y-3">
@@ -854,12 +854,12 @@ export default function RabbitHole() {
                                 className="group w-full text-left p-5 rounded-3xl bg-white/[0.01] border border-white/5 hover:bg-white/[0.03] hover:border-teal-500/20 transition-all"
                               >
                                 <div className="flex items-center justify-between mb-2">
-                                  <span className="text-[13px] font-bold text-white/80 group-hover:text-teal-300 transition-colors">{pt.title}</span>
+                                  <span className="text-[13px] font-bold text-ink/80 group-hover:text-teal-300 transition-colors">{pt.title}</span>
                                   <span className="text-[10px] font-mono text-teal-500/50 bg-teal-500/5 px-2 py-1 rounded-lg group-hover:bg-teal-500/20 group-hover:text-teal-400 transition-all">
                                     {pt.time}
                                   </span>
                                 </div>
-                                <p className="text-[12px] text-white/40 leading-relaxed group-hover:text-white/60 transition-colors">
+                                <p className="text-[12px] text-ink/40 leading-relaxed group-hover:text-ink/60 transition-colors">
                                   {pt.text}
                                 </p>
                               </button>
@@ -873,7 +873,7 @@ export default function RabbitHole() {
                           <div className="p-8 rounded-[2.5rem] bg-indigo-500/5 border border-indigo-500/10 hover:bg-indigo-500/10 transition-all group">
                              <button 
                                onClick={() => setVideoStartTime(desc.bridgeTime!)}
-                               className="text-[13px] font-serif italic text-white/80 leading-relaxed text-center group-hover:text-white transition-colors block w-full mb-4 cursor-pointer focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400"
+                               className="text-[13px] font-serif italic text-ink/80 leading-relaxed text-center group-hover:text-ink transition-colors block w-full mb-4 cursor-pointer focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400"
                              >
                                 "{desc.bridge}"
                              </button>
@@ -899,10 +899,10 @@ export default function RabbitHole() {
                 return (
                   <div className="space-y-6">
                     <div className="md:hidden">
-                       <h2 className="text-2xl font-serif italic text-white/95 mb-2">
+                       <h2 className="text-2xl font-serif italic text-ink/95 mb-2">
                          {videoData?.title[language as 'en'|'el']}
                        </h2>
-                       <p className="text-sm text-white/30 font-medium">
+                       <p className="text-sm text-ink/30 font-medium">
                          {videoData?.author} • {videoData?.category[language as 'en'|'el']}
                        </p>
                     </div>
@@ -913,7 +913,7 @@ export default function RabbitHole() {
                            {language === 'el' ? 'ΠΛΗΡΟΦΟΡΙΕΣ' : 'INFORMATION'}
                          </span>
                        </div>
-                       <p className="text-white/50 text-[14px] leading-relaxed italic font-serif">
+                       <p className="text-ink/50 text-[14px] leading-relaxed italic font-serif">
                          {language === 'el' 
                            ? 'Αυτό το βίντεο αποτελεί μέρος της συλλογής μας για την εξερεύνηση της συνείδησης και της νευροδιαφορετικότητας.' 
                            : 'This video is part of our collection exploring consciousness and neurodiversity.'}

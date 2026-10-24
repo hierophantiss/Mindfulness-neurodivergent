@@ -47,7 +47,7 @@ function ConceptTerm({ word, conceptId }: { word: string; conceptId: string }) {
       <button
         type="button"
         onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsOpen(true); }}
-        className="inline font-semibold text-white underline decoration-dotted decoration-white/40 underline-offset-4 hover:decoration-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 rounded-sm"
+        className="inline font-semibold text-ink underline decoration-dotted decoration-white/40 underline-offset-4 hover:decoration-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 rounded-sm"
       >
         {word}
       </button>
@@ -63,7 +63,7 @@ export function ConceptInfoIcon({ conceptId, className = "w-6 h-6 ml-1" }: { con
     <>
       <button 
         onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsOpen(true); }}
-        className={`inline-flex items-center justify-center rounded-full text-white/40 hover:text-white hover:bg-white/10 transition-all focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 ${className}`}
+        className={`inline-flex items-center justify-center rounded-full text-ink/40 hover:text-ink hover:bg-white/10 transition-all focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 ${className}`}
         aria-label="More info"
       >
         <Info size={15} />
@@ -118,7 +118,7 @@ export function ConceptModal({ isOpen, onClose, conceptId }: { isOpen: boolean, 
               </div>
               <button 
                 onClick={onClose}
-                className="text-white/40 hover:text-white hover:bg-white/5 p-1 rounded-full transition-all focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400"
+                className="text-ink/40 hover:text-ink hover:bg-white/5 p-1 rounded-full transition-all focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400"
                 aria-label="Close"
               >
                 <X size={18} />
@@ -127,13 +127,13 @@ export function ConceptModal({ isOpen, onClose, conceptId }: { isOpen: boolean, 
             
             {/* Scrollable Content Body */}
             <div className="p-6 overflow-y-auto space-y-4 flex-1 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
-              <h3 id={`concept-title-${conceptId}`} className="text-xl font-serif text-white mb-1 leading-tight font-medium">{concept[l].title}</h3>
+              <h3 id={`concept-title-${conceptId}`} className="text-xl font-serif text-ink mb-1 leading-tight font-medium">{concept[l].title}</h3>
               
               <p className="text-sm text-teal-200/80 font-medium pb-4 border-b border-white/5 leading-relaxed">
                 {concept[l].short}
               </p>
               
-              <div className="text-[15px] text-white/80 leading-relaxed font-sans space-y-3">
+              <div className="text-[15px] text-ink/80 leading-relaxed font-sans space-y-3">
                 {concept[l].full.split('\n\n').map((paragraph: string, idx: number) => (
                   <p key={idx}>{paragraph}</p>
                 ))}
@@ -152,13 +152,13 @@ export function ConceptModal({ isOpen, onClose, conceptId }: { isOpen: boolean, 
                 <Link
                   to={`/chapters/${readMore.chapter}${readMore.page && readMore.page > 1 ? `?p=${readMore.page}` : ''}`}
                   onClick={onClose}
-                  className="flex items-center justify-between gap-3 rounded-2xl bg-white/[0.04] border border-white/[0.08] px-4 py-3 text-[14px] text-white/85 hover:bg-white/[0.07] transition-colors"
+                  className="flex items-center justify-between gap-3 rounded-2xl bg-white/[0.04] border border-white/[0.08] px-4 py-3 text-[14px] text-ink/85 hover:bg-white/[0.07] transition-colors"
                 >
                   <span>
                     {l === 'el' ? 'Διάβασε περισσότερα: ' : 'Read more: '}
-                    <span className="text-white">{l === 'el' ? 'Κεφάλαιο' : 'Chapter'} {readMore.chapter} · {CHAPTER_TITLES[l][readMore.chapter]}</span>
+                    <span className="text-ink">{l === 'el' ? 'Κεφάλαιο' : 'Chapter'} {readMore.chapter} · {CHAPTER_TITLES[l][readMore.chapter]}</span>
                   </span>
-                  <span aria-hidden="true" className="text-white/40">→</span>
+                  <span aria-hidden="true" className="text-ink/40">→</span>
                 </Link>
               )}
 

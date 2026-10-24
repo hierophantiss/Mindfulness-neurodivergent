@@ -17,11 +17,11 @@ export default function Faq() {
             if (window.history.length > 2) navigate(-1);
             else navigate('/');
           }} 
-          className="w-10 h-10 rounded-full bg-zinc-900/50 border border-zinc-700/50 flex flex-none items-center justify-center text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors shadow-sm"
+          className="w-10 h-10 rounded-full bg-zinc-900/50 border border-zinc-700/50 flex flex-none items-center justify-center text-zinc-300 hover:bg-zinc-800 hover:text-ink transition-colors shadow-sm"
         >
           <ArrowLeft size={20} />
         </button>
-        <h1 className="text-2xl font-heading font-medium text-white tracking-wide">
+        <h1 className="text-2xl font-heading font-medium text-ink tracking-wide">
           {language === 'el' ? 'Συχνές Ερωτήσεις' : 'FAQs'}
         </h1>
       </div>
@@ -41,7 +41,7 @@ export default function Faq() {
               <div className="space-y-4 w-full">
                 {faqs.map((faq: any, idx: number) => (
                   <details key={idx} className="bg-gradient-to-br from-pine-900/40 to-pine-950/60 border border-zinc-700/30 rounded-2xl p-5 md:p-6 group shadow-sm transition-all duration-300 hover:border-zinc-600/50 backdrop-blur-sm w-full outline-none [&_summary::-webkit-details-marker]:hidden">
-                    <summary className="font-heading font-medium cursor-pointer focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 list-none flex justify-between items-center text-base md:text-lg text-zinc-100 group-open:text-teal-100 transition-colors w-full">
+                    <summary className="font-heading font-medium cursor-pointer focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 list-none flex justify-between items-center text-base md:text-lg text-ink group-open:text-teal-100 transition-colors w-full">
                       <span className="pr-6 leading-snug">{faq.q}</span>
                       <span className="text-teal-500/80 group-open:rotate-180 transition-transform duration-500 shrink-0 w-8 h-8 rounded-full bg-zinc-950/50 flex items-center justify-center border border-white/5">↓</span>
                     </summary>

@@ -172,17 +172,17 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                     {language === 'el' ? 'ΠΛΗΡΟΦΟΡΙΕΣ' : 'INFORMATION'}
                   </span>
                 </div>
-                <h2 id="info-modal-title" className="text-2xl md:text-3xl font-medium text-white tracking-tight">
+                <h2 id="info-modal-title" className="text-2xl md:text-3xl font-medium text-ink tracking-tight">
                   {content.title[l]}
                 </h2>
-                <p className="text-sm text-white/40 leading-relaxed max-w-md">
+                <p className="text-sm text-ink/40 leading-relaxed max-w-md">
                   {content.subtitle[l]}
                 </p>
               </div>
               <button 
                 onClick={onClose}
                 aria-label="Close modal"
-                className="w-10 h-10 shrink-0 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-all focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 absolute right-4 top-6 sm:static sm:right-auto sm:top-auto"
+                className="w-10 h-10 shrink-0 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-ink/40 hover:text-ink hover:bg-white/10 transition-all focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 absolute right-4 top-6 sm:static sm:right-auto sm:top-auto"
               >
                 <X size={20} />
               </button>
@@ -213,7 +213,7 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                   {content.features.items.map((item, idx) => (
                     <li key={idx} className="flex items-start gap-3">
                        <CheckCircle2 size={16} className="text-teal-400/60 mt-0.5 shrink-0" />
-                       <span className="text-sm text-white/70 leading-relaxed font-sans">{item[l]}</span>
+                       <span className="text-sm text-ink/70 leading-relaxed font-sans">{item[l]}</span>
                     </li>
                   ))}
                 </ul>
@@ -228,7 +228,7 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                 <ul className="space-y-3">
                   {content.trauma.items.map((item, idx) => (
                     <li key={idx} className="flex flex-col gap-1">
-                       <span className="text-sm text-white/80 leading-relaxed font-sans flex items-start gap-2">
+                       <span className="text-sm text-ink/80 leading-relaxed font-sans flex items-start gap-2">
                          <span className="text-indigo-400 mt-1.5">•</span> {item[l]}
                        </span>
                     </li>
@@ -245,7 +245,7 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {content.research.items.map((item, idx) => (
                     <div key={idx} className="p-4 rounded-3xl bg-white/[0.02] border border-white/5">
-                      <p className="text-xs text-white/60 leading-relaxed font-sans">
+                      <p className="text-xs text-ink/60 leading-relaxed font-sans">
                         {item[l]}
                       </p>
                     </div>
@@ -259,7 +259,7 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
 
               {/* The 4 Axes grid */}
               <div className="space-y-3">
-                <h3 className="text-sm font-bold tracking-wider uppercase text-white/40 mb-3">
+                <h3 className="text-sm font-bold tracking-wider uppercase text-ink/40 mb-3">
                    {content.axesTitle[l]}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -269,10 +269,10 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                         <axis.icon size={18} style={{ color: AXIS_COLOR[axis.id] }} />
                       </div>
                       <div className="space-y-1">
-                        <h4 className="text-sm text-white font-medium">
+                        <h4 className="text-sm text-ink font-medium">
                           {axis.title[l]}
                         </h4>
-                        <p className="text-xs text-white/50 leading-relaxed">{axis.desc[l]}</p>
+                        <p className="text-xs text-ink/50 leading-relaxed">{axis.desc[l]}</p>
                       </div>
                     </div>
                   ))}
@@ -285,13 +285,13 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                   <p className="text-[10px] font-bold tracking-widest uppercase text-teal-400 opacity-60">
                     {content.creatorLabel[l]}
                   </p>
-                  <p className="text-lg font-medium text-white mt-1">
+                  <p className="text-lg font-medium text-ink mt-1">
                     {content.creatorName}
                   </p>
-                  <p className="text-xs text-white/50 leading-relaxed mt-3 font-sans max-w-sm">
+                  <p className="text-xs text-ink/50 leading-relaxed mt-3 font-sans max-w-sm">
                     {content.creatorDesc[l]}
                   </p>
-                  <p className="text-xs text-white/65 leading-relaxed mt-2 font-sans italic max-w-sm">
+                  <p className="text-xs text-ink/65 leading-relaxed mt-2 font-sans italic max-w-sm">
                     {content.creatorQuote[l]}
                   </p>
                 </div>
@@ -300,23 +300,23 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                   <p className="text-[10px] font-bold tracking-widest uppercase text-teal-400 opacity-60">
                     {content.contact.title[l]}
                   </p>
-                  <p className="text-xs text-white/55 leading-relaxed">{content.contact.text[l]}</p>
+                  <p className="text-xs text-ink/55 leading-relaxed">{content.contact.text[l]}</p>
                   <a
                     href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(content.contact.subject[l])}`}
-                    className="inline-flex items-center gap-2 px-5 min-h-[44px] rounded-full bg-white/[0.05] border border-white/[0.12] text-[13px] text-white/85 hover:bg-white/[0.09] transition-colors"
+                    className="inline-flex items-center gap-2 px-5 min-h-[44px] rounded-full bg-white/[0.05] border border-white/[0.12] text-[13px] text-ink/85 hover:bg-white/[0.09] transition-colors"
                   >
-                    <Mail size={15} className="text-white/60" />
+                    <Mail size={15} className="text-ink/60" />
                     {content.contact.button[l]}
                   </a>
-                  <p className="text-[11px] text-white/35 leading-relaxed">{content.contact.note[l]}</p>
-                  <p className="text-[11px] text-white/45 leading-relaxed">{content.contact.urgent[l]}</p>
+                  <p className="text-[11px] text-ink/35 leading-relaxed">{content.contact.note[l]}</p>
+                  <p className="text-[11px] text-ink/45 leading-relaxed">{content.contact.urgent[l]}</p>
                 </div>
                 
                 <div className="flex flex-col items-center max-w-sm border-t border-white/5 pt-4">
                   <p className="text-[10px] font-bold tracking-widest uppercase opacity-40 mb-1">
                     {content.privacy.title[l]}
                   </p>
-                  <p className="text-[11px] text-white/35 leading-relaxed">
+                  <p className="text-[11px] text-ink/35 leading-relaxed">
                     {content.privacy.text[l]}
                   </p>
                 </div>

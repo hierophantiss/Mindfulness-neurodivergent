@@ -147,19 +147,19 @@ export default function GenericExercise() {
         <button
           onClick={() => (window.history.length > 2 ? navigate(-1) : navigate('/practice'))}
           aria-label={el ? 'Πίσω' : 'Back'}
-          className="w-11 h-11 rounded-full bg-white/[0.04] border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/[0.08] transition-colors"
+          className="w-11 h-11 rounded-full bg-white/[0.04] border border-white/10 flex items-center justify-center text-ink/70 hover:text-ink hover:bg-white/[0.08] transition-colors"
         >
           <ArrowLeft size={20} />
         </button>
       </div>
 
       <div className="flex flex-col items-center w-full max-w-md mx-auto text-center">
-        <h1 className="text-[26px] font-medium text-white/95 leading-tight px-2">{exercise.title[lang]}</h1>
-        <p className="mt-1.5 text-[14px] text-white/50">
+        <h1 className="text-[26px] font-medium text-ink/95 leading-tight px-2">{exercise.title[lang]}</h1>
+        <p className="mt-1.5 text-[14px] text-ink/50">
           {exercise.dur ? exercise.dur[lang] : durationLabel(total, el)}
           {exercise.desc && <> · {exercise.desc[lang]}</>}
         </p>
-        <p className="mt-3 text-[12.5px] leading-snug text-white/45 max-w-xs">{note}</p>
+        <p className="mt-3 text-[12.5px] leading-snug text-ink/45 max-w-xs">{note}</p>
 
         {/* Timer */}
         <button
@@ -176,8 +176,8 @@ export default function GenericExercise() {
             />
           </svg>
           <span className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-[34px] font-light tabular-nums text-white/90">{formatTime(Math.max(0, total - elapsed))}</span>
-            <span className="mt-1 text-[11px] uppercase tracking-[0.2em] text-white/40">
+            <span className="text-[34px] font-light tabular-nums text-ink/90">{formatTime(Math.max(0, total - elapsed))}</span>
+            <span className="mt-1 text-[11px] uppercase tracking-[0.2em] text-ink/40">
               {done ? (el ? 'Τέλος' : 'Done') : running ? (el ? 'σε εξέλιξη' : 'in progress') : elapsed > 0 ? (el ? 'σε παύση' : 'paused') : (el ? 'έτοιμο' : 'ready')}
             </span>
           </span>
@@ -188,7 +188,7 @@ export default function GenericExercise() {
             onClick={toggle}
             className={cn(
               'min-h-[48px] px-7 rounded-full flex items-center gap-2 text-[15px] font-medium transition-colors active:scale-[0.97]',
-              running ? 'bg-white/[0.06] border border-white/10 text-white/85' : cn(theme.button, 'text-[#0f1117]')
+              running ? 'bg-white/[0.06] border border-white/10 text-ink/85' : cn(theme.button, 'text-[#0f1117]')
             )}
           >
             {running ? <Pause size={18} className="fill-current" /> : <Play size={18} className="fill-current" />}
@@ -202,7 +202,7 @@ export default function GenericExercise() {
             <button
               onClick={restart}
               aria-label={el ? 'Από την αρχή' : 'From the start'}
-              className="w-12 h-12 rounded-full bg-white/[0.04] border border-white/10 flex items-center justify-center text-white/60 hover:text-white"
+              className="w-12 h-12 rounded-full bg-white/[0.04] border border-white/10 flex items-center justify-center text-ink/60 hover:text-ink"
             >
               <RotateCcw size={18} />
             </button>
@@ -211,7 +211,7 @@ export default function GenericExercise() {
 
         {/* The step to do now */}
         {current && (
-          <p aria-live="polite" className="mt-6 px-3 text-[18px] leading-relaxed text-white/85 min-h-[3.5em]"><ConceptText text={current} /></p>
+          <p aria-live="polite" className="mt-6 px-3 text-[18px] leading-relaxed text-ink/85 min-h-[3.5em]"><ConceptText text={current} /></p>
         )}
 
         {!running && !done && <EvidenceLine evidence={exercise.evidence} language={language} />}
@@ -228,7 +228,7 @@ export default function GenericExercise() {
                   <span className={cn('shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-[13px] font-medium mt-0.5', theme.soft, theme.text)}>
                     {i + 1}
                   </span>
-                  <span className="text-[15px] leading-relaxed text-white/80"><ConceptText text={step} /></span>
+                  <span className="text-[15px] leading-relaxed text-ink/80"><ConceptText text={step} /></span>
                 </li>
               );
             })}

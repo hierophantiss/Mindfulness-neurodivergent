@@ -32,23 +32,23 @@ function PatternCard({ p, colorScheme, icon: Icon, onClick, language }: {
       </div>
 
       <div className="relative z-10 flex flex-col h-full mt-1">
-        <h3 className="text-[22px] md:text-2xl font-serif text-white/90 drop-shadow-sm leading-tight italic mb-1">
+        <h3 className="text-[22px] md:text-2xl font-serif text-ink/90 drop-shadow-sm leading-tight italic mb-1">
           {language === 'en' ? p.title.en : p.title.el}
         </h3>
         <div className={cn("text-[10px] font-bold uppercase tracking-widest mb-3 drop-shadow-sm", isIndigo ? "text-indigo-400/80" : "text-teal-400/80")}>
           {language === 'en' ? p.subtitle.en : p.subtitle.el}
         </div>
-        <p className="text-[14px] text-white/50 leading-relaxed max-w-[85%] font-sans">
+        <p className="text-[14px] text-ink/50 leading-relaxed max-w-[85%] font-sans">
           {language === 'en' ? p.desc.en : p.desc.el}
         </p>
 
         <div className="mt-6 flex flex-wrap gap-2">
           {p.hasBinaural && (
-            <span className="px-3 py-1.5 border rounded-full text-[10px] font-bold tracking-wide uppercase bg-white/5 border-white/10 text-white/60">
+            <span className="px-3 py-1.5 border rounded-full text-[10px] font-bold tracking-wide uppercase bg-white/5 border-white/10 text-ink/60">
               Binaural
             </span>
           )}
-          <span className="px-3 py-1.5 border rounded-full text-[10px] font-bold tracking-wide uppercase bg-white/5 border-white/10 text-white/60">
+          <span className="px-3 py-1.5 border rounded-full text-[10px] font-bold tracking-wide uppercase bg-white/5 border-white/10 text-ink/60">
             {Math.round(p.totalCycleDurationMs / 1000)}s {language === 'el' ? 'Κύκλος' : 'Cycle'}
           </span>
         </div>
@@ -82,16 +82,16 @@ export default function PracticeMovement() {
       <div className="flex items-center gap-4 mb-6 shrink-0 z-10 relative">
         <button 
           onClick={() => navigate('/practice')} 
-          className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 hover:text-white transition-all duration-300 active:scale-[0.98] backdrop-blur-md"
+          className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 hover:text-ink transition-all duration-300 active:scale-[0.98] backdrop-blur-md"
         >
-          <ArrowLeft size={20} className="text-white/80" />
+          <ArrowLeft size={20} className="text-ink/80" />
         </button>
-        <h1 className="text-2xl font-serif text-white/90 italic tracking-wide">
+        <h1 className="text-2xl font-serif text-ink/90 italic tracking-wide">
           {language === 'el' ? 'Εξάσκηση' : 'Practice'}
         </h1>
       </div>
 
-      <div className="text-white/60 mb-8 max-w-lg bg-black/40 backdrop-blur-md/80 p-5 rounded-2xl border border-white/5 backdrop-blur-md z-10 relative">
+      <div className="text-ink/60 mb-8 max-w-lg bg-black/40 backdrop-blur-md/80 p-5 rounded-2xl border border-white/5 backdrop-blur-md z-10 relative">
         <p className="text-[15px] font-sans leading-relaxed mb-3">
           {language === 'el' 
             ? 'Ασκήσεις ενσυνείδητης κίνησης και αναπνοής. Συνοδεύονται από ακουστικά κύματα (binaural beats) για συγχρονισμό των εγκεφαλικών ημισφαιρίων και μπορούν να χρησιμοποιηθούν με τα μάτια ανοιχτά ή κλειστά.' 

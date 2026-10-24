@@ -58,7 +58,7 @@ export default function Layout() {
     <div className="min-h-[100dvh] h-[100dvh] bg-transparent text-pine-100 font-sans selection:bg-teal-500/30 flex flex-col relative overflow-hidden">
       <SEO />
       <div className="noise-overlay" />
-      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-emerald-500 text-white px-4 py-2 rounded-md z-50 shadow-lg">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-emerald-500 text-ink px-4 py-2 rounded-md z-50 shadow-lg">
         {t('skip_to_content')}
       </a>
       <OfflineNotification />

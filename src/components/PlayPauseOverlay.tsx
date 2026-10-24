@@ -34,7 +34,7 @@ export function PlayPauseOverlay({ isPlaying }: PlayPauseOverlayProps) {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 1.4 }}
             transition={reduceMotion ? { duration: 0.01 } : { duration: 0.4, ease: "easeOut" }}
-            className="w-24 h-24 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center text-white"
+            className="w-24 h-24 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center text-ink"
           >
             {isPlaying ? (
               <Play size={40} className="ml-2 fill-white opacity-80" />

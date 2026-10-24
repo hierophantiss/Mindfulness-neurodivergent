@@ -119,7 +119,7 @@ export default function Onboarding() {
   const content = (
     <div 
       data-nosnippet
-      className="fixed inset-0 z-[9999] bg-[var(--color-bg,#0f1117)] text-white flex flex-col justify-between overflow-hidden"
+      className="fixed inset-0 z-[9999] bg-[var(--color-bg,#0f1117)] text-ink flex flex-col justify-between overflow-hidden"
       role="dialog"
       aria-modal="true"
       aria-labelledby="onboarding-title"
@@ -136,7 +136,7 @@ export default function Onboarding() {
       <div className="flex justify-end p-4 md:p-6 z-10 relative gap-3">
         <button 
           onClick={() => setLanguage(language === 'en' ? 'el' : 'en')}
-          className="text-white/70 hover:text-white border border-white/15 hover:bg-white/5 transition-all text-xs font-bold uppercase tracking-wider py-2 px-4 rounded-full min-h-[44px] min-w-[44px]"
+          className="text-ink/70 hover:text-ink border border-white/15 hover:bg-white/5 transition-all text-xs font-bold uppercase tracking-wider py-2 px-4 rounded-full min-h-[44px] min-w-[44px]"
           aria-label={language === 'en' ? 'ΕΛ, Ελληνικά' : 'EN, English'}
           lang={language === 'en' ? 'el' : 'en'}
         >
@@ -144,7 +144,7 @@ export default function Onboarding() {
         </button>
         <button 
           onClick={handleComplete}
-          className="text-white/60 hover:text-white transition-colors text-sm font-medium uppercase tracking-wider py-2 px-4 rounded-full min-h-[44px] min-w-[44px]"
+          className="text-ink/60 hover:text-ink transition-colors text-sm font-medium uppercase tracking-wider py-2 px-4 rounded-full min-h-[44px] min-w-[44px]"
           aria-label={t('onboarding.skip')}
         >
           {t('onboarding.skip')}
@@ -162,10 +162,10 @@ export default function Onboarding() {
             className="bg-white/[0.03] border border-white/10 p-8 rounded-3xl backdrop-blur-xl shadow-2xl"
           >
             {screens[step].visual && screens[step].visual}
-            <h2 id="onboarding-title" className="text-3xl md:text-4xl font-serif text-white mb-6 leading-tight">
+            <h2 id="onboarding-title" className="text-3xl md:text-4xl font-serif text-ink mb-6 leading-tight">
               {screens[step].title}
             </h2>
-            <p className="text-lg md:text-xl text-white/70 leading-relaxed font-sans">
+            <p className="text-lg md:text-xl text-ink/70 leading-relaxed font-sans">
               {screens[step].body}
             </p>
           </motion.div>

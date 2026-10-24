@@ -25,7 +25,7 @@ import { readingSpot, chaptersRead } from '../lib/readingSpot';
 import { chapterPageLabel } from '../lib/chapterPages';
 
 const baseCardClasses = "backdrop-blur-xl border border-white/[0.04] border-t-white/[0.08] border-l-white/[0.06] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.05)] hover:shadow-[0_16px_48px_-12px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(255,255,255,0.1)] hover:-translate-y-1 transition-all duration-500 rounded-[28px]";
-const innerIconClasses = "rounded-2xl bg-gradient-to-b from-white/[0.06] to-transparent border border-white/[0.02] border-t-white/[0.1] shadow-[0_4px_12px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.08)] flex items-center justify-center text-white/50 transition-colors duration-500";
+const innerIconClasses = "rounded-2xl bg-gradient-to-b from-white/[0.06] to-transparent border border-white/[0.02] border-t-white/[0.1] shadow-[0_4px_12px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.08)] flex items-center justify-center text-ink/50 transition-colors duration-500";
 const actionButtonClasses = "w-8 h-8 rounded-full bg-gradient-to-b from-white/[0.04] to-transparent border border-white/[0.02] border-t-white/[0.1] shadow-[0_2px_8px_rgba(0,0,0,0.2)] flex items-center justify-center group-hover:from-white/[0.08] group-hover:border-t-white/[0.15] group-hover:shadow-[0_4px_12px_rgba(0,0,0,0.3)] transition-all duration-500";
 
 // The full chapters (230 KB of text) load after the page shows. Until then the
@@ -48,8 +48,8 @@ function useChapters(lang: 'el' | 'en'): Chapter[] {
   [data, lang]);
 }
 
-const footerLinkClasses = "sky-text flex items-center gap-1.5 py-2 text-[12px] text-white/60 hover:text-white/80 transition-colors";
-const bookPillClasses = "whitespace-nowrap px-4 py-2 rounded-full border border-[var(--tint-sand-line)] bg-[var(--tint-sand-bg)] text-[11px] text-white/65 hover:text-white/80 hover:bg-white/[0.06] transition-colors";
+const footerLinkClasses = "sky-text flex items-center gap-1.5 py-2 text-[12px] text-ink/60 hover:text-ink/80 transition-colors";
+const bookPillClasses = "whitespace-nowrap px-4 py-2 rounded-full border border-[var(--tint-sand-line)] bg-[var(--tint-sand-bg)] text-[11px] text-ink/65 hover:text-ink/80 hover:bg-white/[0.06] transition-colors";
 
 const getDateString =(date: Date): string => {
   return date.toISOString().split('T')[0];
@@ -154,7 +154,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="relative w-full min-h-screen bg-transparent overflow-x-hidden text-white font-sans selection:bg-[#4a9eca]/30 selection:text-white pb-[calc(5rem+env(safe-area-inset-bottom))]">
+    <div className="relative w-full min-h-screen bg-transparent overflow-x-hidden text-ink font-sans selection:bg-[#4a9eca]/30 selection:text-ink pb-[calc(5rem+env(safe-area-inset-bottom))]">
       
       {/* Ambient background glow for the grid */}
       <div className="absolute top-[40%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-teal-900/10 blur-[120px] rounded-full pointer-events-none" />
@@ -179,7 +179,7 @@ export default function Dashboard() {
               <span className="keep-font sky-text text-[15px] max-[359px]:text-[13px] max-[359px]:tracking-normal min-[400px]:text-[17px] leading-tight tracking-[0.02em] min-[400px]:tracking-[0.04em] uppercase text-teal-300/90 font-medium whitespace-nowrap">
                 {language === 'el' ? 'ΕΝΣΥΝΕΙΔΗΤΟΤΗΤΑ' : 'MINDFULNESS'}
               </span>{' '}
-              <span className="sky-text text-[12px] min-[375px]:text-[13px] leading-tight text-white/65 mt-1">
+              <span className="sky-text text-[12px] min-[375px]:text-[13px] leading-tight text-ink/65 mt-1">
                 {language === 'el' ? 'Για νευροδιαφορετικούς' : 'For neurodivergents'}
               </span>
               </span>
@@ -205,10 +205,10 @@ export default function Dashboard() {
         <div className="flex flex-col gap-2 mt-3">
           {/* The greeting and the phrase are there at once (no fade): they are the first
               words you read, and the page counts as shown only when they are. */}
-          <h1 className="sky-text text-[24px] font-sans font-medium tracking-tight leading-none text-white/90">
+          <h1 className="sky-text text-[24px] font-sans font-medium tracking-tight leading-none text-ink/90">
             {greeting}
           </h1>
-          <p className="sky-text text-[13px] leading-snug text-white/70">
+          <p className="sky-text text-[13px] leading-snug text-ink/70">
             {language === 'el' ? affirmation.el : affirmation.en}
           </p>
         </div>
@@ -250,7 +250,7 @@ export default function Dashboard() {
                 </h3>
                 {midChapter ? (
                   <>
-                    <span className="text-[12px] leading-snug text-white/65">
+                    <span className="text-[12px] leading-snug text-ink/65">
                       {chapterPageLabel(spot.pages[spot.page], lang)} · {el ? `σελίδα ${spot.page + 1} από ${spot.pages.length}` : `page ${spot.page + 1} of ${spot.pages.length}`}
                     </span>
                     <span className="mt-1 h-[3px] w-full rounded-full bg-white/[0.06] overflow-hidden" aria-hidden="true">
@@ -262,7 +262,7 @@ export default function Dashboard() {
                     <span className="mt-1 h-[3px] w-full rounded-full bg-white/[0.06] overflow-hidden" aria-hidden="true">
                       <span className="block h-full rounded-full bg-[var(--tint-blue-mark)]/70" style={{ width: `${Math.round((completedChapters / totalChapters) * 100)}%` }} />
                     </span>
-                    <span className="text-[12px] text-white/65">
+                    <span className="text-[12px] text-ink/65">
                       {el ? `${completedChapters} από ${totalChapters} κεφάλαια` : `${completedChapters} of ${totalChapters} chapters`}
                     </span>
                   </>
@@ -273,11 +273,11 @@ export default function Dashboard() {
               {hasRead && (
                 <button
                   onClick={() => setSheetVisible(true)}
-                  className="relative z-10 w-full min-h-[44px] flex items-center gap-2.5 pl-5 pr-4 py-2 border-t border-white/[0.05] text-[13px] text-white/55 hover:text-white/80 hover:bg-white/[0.03] transition-colors"
+                  className="relative z-10 w-full min-h-[44px] flex items-center gap-2.5 pl-5 pr-4 py-2 border-t border-white/[0.05] text-[13px] text-ink/55 hover:text-ink/80 hover:bg-white/[0.03] transition-colors"
                 >
                   <BookOpen size={16} strokeWidth={1.6} className="text-[var(--tint-blue-mark)] shrink-0" aria-hidden="true" />
                   <span className="flex-1 text-left">{el ? 'Τι έχεις διαβάσει' : 'What you have read'}</span>
-                  <ChevronRight size={15} className="text-white/30" />
+                  <ChevronRight size={15} className="text-ink/30" />
                 </button>
               )}
             </div>
@@ -285,12 +285,12 @@ export default function Dashboard() {
 
           {favouritePractice && (
             <motion.div variants={itemVariants}>
-              <Link to={`/practice/breath/${favouritePractice.id}`} className="flex items-center justify-between gap-3 px-5 py-3 rounded-2xl bg-[var(--tint-sage-bg)] border border-[var(--tint-sage-line)] hover:brightness-110 text-[14px] text-white/75 transition-colors active:scale-[0.98]">
+              <Link to={`/practice/breath/${favouritePractice.id}`} className="flex items-center justify-between gap-3 px-5 py-3 rounded-2xl bg-[var(--tint-sage-bg)] border border-[var(--tint-sage-line)] hover:brightness-110 text-[14px] text-ink/75 transition-colors active:scale-[0.98]">
                 <span className="flex items-center gap-2 min-w-0">
-                  <RotateCcw size={14} className="text-white/40 shrink-0" />
+                  <RotateCcw size={14} className="text-ink/40 shrink-0" />
                   <span className="truncate">{lang === 'el' ? 'Ξανά' : 'Again'}: {/^[\d-]+$/.test(favouritePractice.title[lang]) ? `${lang === 'el' ? 'Αναπνοή' : 'Breath'} ${favouritePractice.title[lang]}` : favouritePractice.title[lang]}</span>
                 </span>
-                <ChevronRight size={16} className="text-white/35 shrink-0" />
+                <ChevronRight size={16} className="text-ink/35 shrink-0" />
               </Link>
             </motion.div>
           )}
@@ -300,7 +300,7 @@ export default function Dashboard() {
             <button
               onClick={toggleMore}
               aria-expanded={moreOpen}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-[var(--tint-sand-bg)] border border-[var(--tint-sand-line)] text-[13px] text-white/75 hover:text-white/90 hover:brightness-110 transition-colors active:scale-[0.97]"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-[var(--tint-sand-bg)] border border-[var(--tint-sand-line)] text-[13px] text-ink/75 hover:text-ink/90 hover:brightness-110 transition-colors active:scale-[0.97]"
             >
               {lang === 'el' ? 'Περισσότερα' : 'More'}
               <ChevronDown size={15} className={cn("transition-transform duration-300", moreOpen && "rotate-180")} />
@@ -320,13 +320,13 @@ export default function Dashboard() {
                   >
                     <item.icon size={18} strokeWidth={1.5} className={cn("shrink-0 opacity-80", item.tone)} />
                     <span className="flex flex-col min-w-0 flex-1 gap-0.5">
-                      <span className="flex items-baseline gap-2 text-[14px] leading-tight text-white/85">
+                      <span className="flex items-baseline gap-2 text-[14px] leading-tight text-ink/85">
                         {item.label}
-                        {item.sub && <span className="text-[11px] font-mono text-white/40">{item.sub}</span>}
+                        {item.sub && <span className="text-[11px] font-mono text-ink/40">{item.sub}</span>}
                       </span>
-                      <span className="text-[12px] leading-snug text-white/45">{item.desc}</span>
+                      <span className="text-[12px] leading-snug text-ink/45">{item.desc}</span>
                     </span>
-                    <ChevronRight size={16} className="text-white/30 shrink-0" />
+                    <ChevronRight size={16} className="text-ink/30 shrink-0" />
                   </Link>
                 ))}
               </motion.div>
@@ -345,7 +345,7 @@ export default function Dashboard() {
             <button
               onClick={() => { setBookOpen(o => !o); setInstallHint(null); }}
               aria-expanded={bookOpen}
-              className={cn(footerLinkClasses, bookOpen && "text-white/60")}
+              className={cn(footerLinkClasses, bookOpen && "text-ink/60")}
             >
               <BookOpen size={12} />
               <span>{language === 'el' ? 'Το βιβλίο' : 'The book'}</span>
@@ -382,7 +382,7 @@ export default function Dashboard() {
                   {language === 'el' ? 'MP3 · ακουστικό' : 'MP3 · audiobook'}
                 </a>
               </div>
-              <span className="text-[10px] text-white/25">
+              <span className="text-[10px] text-ink/25">
                 {language === 'el' ? 'Δωρεάν · CC BY-NC-ND 4.0' : 'Free · CC BY-NC-ND 4.0'}
               </span>
             </motion.div>
@@ -392,7 +392,7 @@ export default function Dashboard() {
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="max-w-[280px] text-[11px] leading-relaxed text-white/45"
+              className="max-w-[280px] text-[11px] leading-relaxed text-ink/45"
             >
               {installHint}
             </motion.p>

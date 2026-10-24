@@ -95,7 +95,7 @@ export default function ChapterReaderBar(p: Props) {
               <button
                 type="button"
                 onClick={p.onStart}
-                className="h-11 px-4 rounded-full bg-[#1a1d27]/90 backdrop-blur-xl border border-white/10 text-white/60 text-sm font-sans hover:text-white/90 transition-colors"
+                className="h-11 px-4 rounded-full bg-[#1a1d27]/90 backdrop-blur-xl border border-white/10 text-ink/60 text-sm font-sans hover:text-ink/90 transition-colors"
               >
                 {t.fromHere}
               </button>
@@ -132,7 +132,7 @@ export default function ChapterReaderBar(p: Props) {
               className={cn(card, 'mb-2 p-4 space-y-4')}
             >
               <div className="space-y-2">
-                <span className="text-[11px] text-white/40 font-sans">{t.speed}</span>
+                <span className="text-[11px] text-ink/40 font-sans">{t.speed}</span>
                 <div className="flex gap-2">
                   {RATES.map((r) => (
                     <button
@@ -144,7 +144,7 @@ export default function ChapterReaderBar(p: Props) {
                         'flex-1 h-9 rounded-xl text-sm font-sans border transition-colors',
                         p.settings.rate === r
                           ? 'border-teal-500/40 bg-teal-500/10 text-teal-200'
-                          : 'border-white/5 text-white/50 hover:text-white/80'
+                          : 'border-white/5 text-ink/50 hover:text-ink/80'
                       )}
                     >
                       {r.toLocaleString(p.lang === 'el' ? 'el-GR' : 'en-GB', { minimumFractionDigits: 1 })}
@@ -154,7 +154,7 @@ export default function ChapterReaderBar(p: Props) {
               </div>
 
               <label className="flex items-center justify-between gap-4 cursor-pointer">
-                <span className="text-sm text-white/70 font-sans">{t.follow}</span>
+                <span className="text-sm text-ink/70 font-sans">{t.follow}</span>
                 <input
                   type="checkbox"
                   checked={p.settings.follow}
@@ -176,19 +176,19 @@ export default function ChapterReaderBar(p: Props) {
               <p className="text-xs text-amber-200/70 font-sans leading-relaxed">
                 {p.errorCode === 1 ? t.offline : p.errorCode === 3 ? t.blocked : p.errorCode === 4 ? t.missing : t.stalled}{' '}
                 {p.errorCode === 2 && (
-                  <button type="button" onClick={() => setShowDetail((v) => !v)} className="text-white/30 underline-offset-2 hover:underline">
+                  <button type="button" onClick={() => setShowDetail((v) => !v)} className="text-ink/30 underline-offset-2 hover:underline">
                     ({t.code} {p.errorCode})
                   </button>
                 )}
               </p>
               {showDetail && p.errorDetail && (
-                <p className="text-[10px] text-white/35 font-mono break-words select-all">{p.errorDetail}</p>
+                <p className="text-[10px] text-ink/35 font-mono break-words select-all">{p.errorDetail}</p>
               )}
             </div>
           )}
 
           <div className="flex items-center gap-0.5 px-1.5 py-2">
-            <button type="button" onClick={p.onPrev} aria-label={t.prev} className="h-10 w-10 shrink-0 rounded-full flex items-center justify-center text-white/50 hover:text-white/90 transition-colors">
+            <button type="button" onClick={p.onPrev} aria-label={t.prev} className="h-10 w-10 shrink-0 rounded-full flex items-center justify-center text-ink/50 hover:text-ink/90 transition-colors">
               <SkipBack size={18} />
             </button>
             <button
@@ -199,13 +199,13 @@ export default function ChapterReaderBar(p: Props) {
             >
               {p.status === 'playing' ? <Pause size={20} /> : <Play size={20} className="ml-0.5" />}
             </button>
-            <button type="button" onClick={p.onNext} aria-label={t.next} className="h-10 w-10 shrink-0 rounded-full flex items-center justify-center text-white/50 hover:text-white/90 transition-colors">
+            <button type="button" onClick={p.onNext} aria-label={t.next} className="h-10 w-10 shrink-0 rounded-full flex items-center justify-center text-ink/50 hover:text-ink/90 transition-colors">
               <SkipForward size={18} />
             </button>
 
             <div className="flex-1 min-w-0 px-2" aria-live="polite">
-              <div className="text-xs text-white/70 font-sans leading-tight">{label}</div>
-              <div className="text-[11px] text-white/35 font-sans tabular-nums">
+              <div className="text-xs text-ink/70 font-sans leading-tight">{label}</div>
+              <div className="text-[11px] text-ink/35 font-sans tabular-nums">
                 {p.index + 1} / {p.total}
               </div>
               {isStep && p.silence && (
@@ -227,7 +227,7 @@ export default function ChapterReaderBar(p: Props) {
               onClick={() => setOpen((o) => !o)}
               aria-label={t.settings}
               aria-expanded={open}
-              className={cn('h-10 w-10 shrink-0 rounded-full flex items-center justify-center transition-colors', open ? 'text-teal-200' : 'text-white/40 hover:text-white/80')}
+              className={cn('h-10 w-10 shrink-0 rounded-full flex items-center justify-center transition-colors', open ? 'text-teal-200' : 'text-ink/40 hover:text-ink/80')}
             >
               <SlidersHorizontal size={17} />
             </button>
@@ -238,7 +238,7 @@ export default function ChapterReaderBar(p: Props) {
                 p.onStop();
               }}
               aria-label={t.stop}
-              className="h-10 w-10 shrink-0 rounded-full flex items-center justify-center text-white/40 hover:text-white/80 transition-colors"
+              className="h-10 w-10 shrink-0 rounded-full flex items-center justify-center text-ink/40 hover:text-ink/80 transition-colors"
             >
               <X size={18} />
             </button>

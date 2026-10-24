@@ -63,7 +63,7 @@ export default function InteractiveRenderer({ id, asModal }: InteractiveRenderer
         <div className="w-12 h-12 rounded-full border border-teal-500/20 bg-teal-500/10 flex items-center justify-center text-teal-400 group-hover:scale-110 transition-transform">
           <Play size={20} className="ml-1" />
         </div>
-        <span className="text-xs font-bold tracking-[0.2em] uppercase text-white/50 group-hover:text-teal-400 font-sans transition-colors">
+        <span className="text-xs font-bold tracking-[0.2em] uppercase text-ink/50 group-hover:text-teal-400 font-sans transition-colors">
           Άνοιγμα Διαδραστικής Άσκησης
         </span>
       </button>
@@ -75,7 +75,7 @@ export default function InteractiveRenderer({ id, asModal }: InteractiveRenderer
       {asModal && (
         <button 
           onClick={() => setIsOpen(false)}
-          className="absolute top-6 right-6 z-50 w-10 h-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+          className="absolute top-6 right-6 z-50 w-10 h-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-ink/80 hover:text-ink hover:bg-white/10 transition-colors"
         >
           <X size={20} />
         </button>

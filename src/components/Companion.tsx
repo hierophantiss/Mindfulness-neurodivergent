@@ -183,7 +183,7 @@ export default function Companion() {
               initial={{ opacity: 0, scale: 0.9, x: isRightSide ? 20 : -20 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               exit={{ opacity: 0, scale: 0.9, x: isRightSide ? 20 : -20 }}
-              className={`absolute top-1/2 -translate-y-1/2 flex items-center gap-2 bg-stone-900 text-white p-3 rounded-2xl shadow-2xl border border-stone-700 font-sans pointer-events-auto z-50 ${isRightSide ? 'right-[120%]' : 'left-[120%]'}`}
+              className={`absolute top-1/2 -translate-y-1/2 flex items-center gap-2 bg-stone-900 text-ink p-3 rounded-2xl shadow-2xl border border-stone-700 font-sans pointer-events-auto z-50 ${isRightSide ? 'right-[120%]' : 'left-[120%]'}`}
               style={{ width: 'max-content', maxWidth: '240px' }}
               onClick={dismissBubble}
             >

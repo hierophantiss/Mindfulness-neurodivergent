@@ -60,7 +60,7 @@ export default function HomeCheckin() {
 
   return (
     <div className="flex flex-col gap-3">
-      <h2 className="sky-text text-[15px] text-white/80">{question}</h2>
+      <h2 className="sky-text text-[15px] text-ink/80">{question}</h2>
 
       <div className="grid grid-cols-2 min-[400px]:grid-cols-4 gap-2" role="group" aria-label={question}>
         {CHECKIN_OPTIONS.map(o => {
@@ -74,7 +74,7 @@ export default function HomeCheckin() {
               style={{ backgroundColor: tint(o.id, isSel ? 'hi' : 'bg'), borderColor: tint(o.id, 'line') }}
               className={cn(
                 "min-h-[44px] px-2 rounded-full border text-[13px] transition-[filter,transform] active:scale-[0.97] hover:brightness-110",
-                isSel ? "text-white/95 ring-1 ring-white/15" : "text-white/75",
+                isSel ? "text-ink/95 ring-1 ring-white/15" : "text-ink/75",
                 o.id === 'unsure' && "border-dashed"
               )}
             >
@@ -96,13 +96,13 @@ export default function HomeCheckin() {
             className="rounded-[24px] border p-5 flex flex-col gap-4"
           >
             <div className="flex flex-col gap-1.5">
-              <h3 className="text-[16px] font-medium text-white/90">{opt.title[lang]}</h3>
-              <p className="text-[13px] leading-relaxed text-white/55">{opt.desc[lang]}</p>
+              <h3 className="text-[16px] font-medium text-ink/90">{opt.title[lang]}</h3>
+              <p className="text-[13px] leading-relaxed text-ink/55">{opt.desc[lang]}</p>
             </div>
 
             <div className="flex gap-4">
               {opt.axes.map(axis => (
-                <span key={axis} className="flex items-center gap-1.5 text-[12px] text-white/65">
+                <span key={axis} className="flex items-center gap-1.5 text-[12px] text-ink/65">
                   <span className="w-2 h-2 rounded-full" style={{ backgroundColor: AXIS_COLOR[axis] }} />
                   {AXIS_LABEL[axis][lang]}
                 </span>
@@ -111,7 +111,7 @@ export default function HomeCheckin() {
 
             {showTime && (
               <div className="flex items-center gap-2 flex-wrap" role="group" aria-label={lang === 'el' ? 'Πόσο χρόνο έχεις;' : 'How much time do you have?'}>
-                <span className="text-[12px] text-white/40 mr-1">{lang === 'el' ? 'Πόσο χρόνο έχεις;' : 'How much time?'}</span>
+                <span className="text-[12px] text-ink/40 mr-1">{lang === 'el' ? 'Πόσο χρόνο έχεις;' : 'How much time?'}</span>
                 {(['seconds', 'minutes'] as CheckinTime[]).map(t => (
                   <button
                     key={t}
@@ -119,7 +119,7 @@ export default function HomeCheckin() {
                     aria-pressed={time === t}
                     className={cn(
                       "px-3 min-h-[34px] rounded-full border text-[12px] transition-colors",
-                      time === t ? "bg-white/[0.12] border-white/20 text-white/90" : "bg-white/[0.05] border-white/[0.08] text-white/60 hover:text-white/80"
+                      time === t ? "bg-white/[0.12] border-white/20 text-ink/90" : "bg-white/[0.05] border-white/[0.08] text-ink/60 hover:text-ink/80"
                     )}
                   >
                     {TIME_LABEL[t][lang]}
@@ -139,14 +139,14 @@ export default function HomeCheckin() {
                     <Link
                       to={main.path}
                       style={{ backgroundColor: tint(opt.id, 'hi'), borderColor: tint(opt.id, 'line') }}
-                      className="flex items-center justify-between gap-3 px-5 py-4 rounded-2xl border text-white/95 hover:brightness-110 transition-[filter,transform] active:scale-[0.98]"
+                      className="flex items-center justify-between gap-3 px-5 py-4 rounded-2xl border text-ink/95 hover:brightness-110 transition-[filter,transform] active:scale-[0.98]"
                     >
                       <span className="flex flex-col min-w-0">
-                        <span className="text-[12px] text-white/65">{lang === 'el' ? 'Ξεκίνα' : 'Start'}</span>
+                        <span className="text-[12px] text-ink/65">{lang === 'el' ? 'Ξεκίνα' : 'Start'}</span>
                         <span className="text-[15px] leading-snug">{main.title[lang]}</span>
                       </span>
                       <span className="flex items-center gap-2 shrink-0">
-                        {main.dur && <span className="text-[12px] text-white/60">{main.dur[lang]}</span>}
+                        {main.dur && <span className="text-[12px] text-ink/60">{main.dur[lang]}</span>}
                         <ArrowRight size={17} className="opacity-70" />
                       </span>
                     </Link>
@@ -164,7 +164,7 @@ export default function HomeCheckin() {
                     <button
                       type="button"
                       onClick={() => setAlt(i => i + 1)}
-                      className="self-start flex items-center gap-1.5 px-3 min-h-[36px] text-[13px] text-white/60 hover:text-white/85 transition-colors"
+                      className="self-start flex items-center gap-1.5 px-3 min-h-[36px] text-[13px] text-ink/60 hover:text-ink/85 transition-colors"
                     >
                       <RefreshCw size={13} className="opacity-70" />
                       {lang === 'el' ? 'Άλλη πρόταση' : 'Another suggestion'}
@@ -179,7 +179,7 @@ export default function HomeCheckin() {
                 <button
                   onClick={() => { setDetailOpen(o => !o); setDetailId(null); }}
                   aria-expanded={detailOpen}
-                  className="flex items-center justify-center gap-1.5 py-1 text-[12px] text-white/45 hover:text-white/75 transition-colors"
+                  className="flex items-center justify-center gap-1.5 py-1 text-[12px] text-ink/45 hover:text-ink/75 transition-colors"
                 >
                   {lang === 'el' ? 'Πες το πιο συγκεκριμένα' : 'Say it more precisely'}
                   <ChevronDown size={14} className={cn("transition-transform", detailOpen && "rotate-180")} />
@@ -195,8 +195,8 @@ export default function HomeCheckin() {
                         className={cn(
                           "min-h-[40px] px-2 rounded-full border text-[12.5px] transition-colors active:scale-[0.97]",
                           detailId === d.id
-                            ? "bg-white/[0.12] border-white/20 text-white/90"
-                            : "bg-white/[0.05] border-white/[0.07] text-white/60 hover:text-white/80"
+                            ? "bg-white/[0.12] border-white/20 text-ink/90"
+                            : "bg-white/[0.05] border-white/[0.07] text-ink/60 hover:text-ink/80"
                         )}
                       >
                         {d.label[lang]}
@@ -207,8 +207,8 @@ export default function HomeCheckin() {
 
                 {detailOpen && detail && (
                   <div className="flex flex-col gap-3 pt-1">
-                    <p className="text-[14px] leading-relaxed text-white/80">{detail.msg[lang]}</p>
-                    <p className="text-[13px] leading-relaxed text-white/60 border-l-2 border-white/15 pl-3">{detail.step[lang]}</p>
+                    <p className="text-[14px] leading-relaxed text-ink/80">{detail.msg[lang]}</p>
+                    <p className="text-[13px] leading-relaxed text-ink/60 border-l-2 border-white/15 pl-3">{detail.step[lang]}</p>
                     <div className="flex flex-col gap-2">
                       {detail.actions.map(a => a.path ? (
                         <Link
@@ -218,7 +218,7 @@ export default function HomeCheckin() {
                             "flex items-center justify-between gap-3 px-4 py-3 rounded-xl border text-[14px] transition-colors active:scale-[0.98]",
                             a.path === SOS_PATH
                               ? "bg-[#2a1820] border-rose-500/25 text-rose-300 hover:bg-[#351d28]"
-                              : "bg-white/[0.05] border-white/[0.06] text-white/75 hover:bg-white/[0.12]"
+                              : "bg-white/[0.05] border-white/[0.06] text-ink/75 hover:bg-white/[0.12]"
                           )}
                         >
                           <span className="min-w-0">{a.title[lang]}</span>
@@ -228,7 +228,7 @@ export default function HomeCheckin() {
                         <button
                           key="rest"
                           onClick={() => setOpen(false)}
-                          className="px-4 py-3 rounded-xl border border-white/[0.06] text-[14px] text-white/60 hover:text-white/80 transition-colors"
+                          className="px-4 py-3 rounded-xl border border-white/[0.06] text-[14px] text-ink/60 hover:text-ink/80 transition-colors"
                         >
                           {a.title[lang]}
                         </button>

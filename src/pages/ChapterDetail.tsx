@@ -164,13 +164,13 @@ const ConceptAnnotatedText = ({ text }: { text: string }) => {
           <React.Fragment key={i}>
             {strongParts.map((sp, j) => {
               if (sp.startsWith('<strong>') && sp.endsWith('</strong>')) {
-                return <strong key={j} className="font-semibold text-white/95">{sp.slice(8, -9)}</strong>;
+                return <strong key={j} className="font-semibold text-ink/95">{sp.slice(8, -9)}</strong>;
               }
               if (sp.startsWith('**') && sp.endsWith('**')) {
-                return <strong key={j} className="font-semibold text-white/95">{sp.slice(2, -2)}</strong>;
+                return <strong key={j} className="font-semibold text-ink/95">{sp.slice(2, -2)}</strong>;
               }
               if (sp.startsWith('*') && sp.endsWith('*')) {
-                return <strong key={j} className="font-semibold text-white/95">{sp.slice(1, -1)}</strong>;
+                return <strong key={j} className="font-semibold text-ink/95">{sp.slice(1, -1)}</strong>;
               }
               return <span key={j}>{sp}</span>;
             })}
@@ -193,7 +193,7 @@ const ZenParagraph = ({ text, index, readKey, readState }: { text: string, index
     >
       <div 
         data-read-key={readKey}
-        className={cn("font-sans font-light text-white/80 leading-loose whitespace-pre-line", readClass(readState))}
+        className={cn("font-sans font-light text-ink/80 leading-loose whitespace-pre-line", readClass(readState))}
       >
         <ConceptAnnotatedText text={text} />
       </div>
@@ -318,7 +318,7 @@ export default function ChapterDetail() {
   };
 
   if (!chapter) {
-    return <div className="p-8 text-center text-white/40">{language === 'el' ? 'Κεφάλαιο δεν βρέθηκε.' : 'Chapter not found.'}</div>;
+    return <div className="p-8 text-center text-ink/40">{language === 'el' ? 'Κεφάλαιο δεν βρέθηκε.' : 'Chapter not found.'}</div>;
   }
 
   const scrollToTop = () => {
@@ -401,11 +401,11 @@ export default function ChapterDetail() {
         </button>
         <div className="flex flex-col items-center shrink min-w-0">
           <div className="flex items-center gap-2 flex-wrap justify-center">
-            <span className="text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase font-sans whitespace-nowrap">
+            <span className="text-[10px] font-bold tracking-[0.2em] text-ink/40 uppercase font-sans whitespace-nowrap">
               {language === 'el' ? 'Κεφάλαιο' : 'Chapter'} {chapter.num}
             </span>{' '}
             {CHAPTER_MICRO_CAT[chapter.num] && (
-              <span className="text-[9px] font-bold tracking-widest px-2 py-0.5 rounded-full bg-white/5 text-white/30 border border-white/5 uppercase font-sans whitespace-nowrap">
+              <span className="text-[9px] font-bold tracking-widest px-2 py-0.5 rounded-full bg-white/5 text-ink/30 border border-white/5 uppercase font-sans whitespace-nowrap">
                 {AXIS_LABEL[CHAPTER_MICRO_CAT[chapter.num]]?.[language === 'el' ? 'el' : 'en'] ?? CHAPTER_MICRO_CAT[chapter.num]}
               </span>
             )}
@@ -432,7 +432,7 @@ export default function ChapterDetail() {
             "rounded-full px-3 py-2 border flex items-center justify-center gap-2 transition-all duration-700 font-sans text-[10px] desk:text-xs tracking-wider shrink-0 whitespace-nowrap",
             masterPlaying 
               ? "text-teal-300 bg-teal-500/10 border-teal-500/20" 
-              : "text-white/40 bg-white/[0.02] border-white/5 hover:bg-white/[0.05] hover:text-white/70"
+              : "text-ink/40 bg-white/[0.02] border-white/5 hover:bg-white/[0.05] hover:text-ink/70"
           )}
         >
           <Music size={14} className={masterPlaying ? "animate-pulse" : ""} />
@@ -470,10 +470,10 @@ export default function ChapterDetail() {
                     {chapter.icon}
                   </div>
                   <div data-read-key="intro-title" className={readClass(rs('intro-title'))}>
-                    <h1 className="text-4xl desk:text-6xl font-serif text-white/90 italic leading-tight tracking-tight px-4">
+                    <h1 className="text-4xl desk:text-6xl font-serif text-ink/90 italic leading-tight tracking-tight px-4">
                       {chapter.title}
                     </h1>
-                    <p className="text-lg desk:text-xl text-white/50 leading-relaxed font-sans px-6 font-light mt-6">
+                    <p className="text-lg desk:text-xl text-ink/50 leading-relaxed font-sans px-6 font-light mt-6">
                       {chapter.sub}
                     </p>
                   </div>
@@ -484,13 +484,13 @@ export default function ChapterDetail() {
                     <span className="text-[10px] font-bold tracking-[0.3em] text-teal-400/60 uppercase font-sans">
                       {language === 'el' ? 'ΣΥΝΟΨΗ' : 'SUMMARY'}
                     </span>
-                    <p data-read-key="intro-summary" className={cn("text-2xl desk:text-3xl text-white/90 font-serif italic leading-[1.6] tracking-tight", readClass(rs('intro-summary')))}>
+                    <p data-read-key="intro-summary" className={cn("text-2xl desk:text-3xl text-ink/90 font-serif italic leading-[1.6] tracking-tight", readClass(rs('intro-summary')))}>
                       {chapter.summary}
                     </p>
                   </div>
                   
                   {chapter.tldr && (
-                    <div className="pt-8 border-t border-white/5 text-center text-white/40 text-sm desk:text-base font-sans leading-relaxed block px-8">
+                    <div className="pt-8 border-t border-white/5 text-center text-ink/40 text-sm desk:text-base font-sans leading-relaxed block px-8">
                       <div data-read-key="intro-tldr" className={readClass(rs('intro-tldr'))}>«{chapter.tldr}»</div>
                     </div>
                   )}
@@ -506,7 +506,7 @@ export default function ChapterDetail() {
                   </span>
                   <h2
                     data-read-key={`s${curPage.index}-title`}
-                    className={cn("text-3xl desk:text-4xl font-serif text-white/90 italic leading-snug tracking-tight px-2", readClass(rs(`s${curPage.index}-title`)))}
+                    className={cn("text-3xl desk:text-4xl font-serif text-ink/90 italic leading-snug tracking-tight px-2", readClass(rs(`s${curPage.index}-title`)))}
                   >
                     {curPage.section.title}
                   </h2>
@@ -527,7 +527,7 @@ export default function ChapterDetail() {
                     >
                       <Link 
                         to={curPage.section.actionLink.url}
-                        className="text-white/90 font-medium inline-block p-4 px-6 bg-white/[0.05] hover:bg-white/[0.1] rounded-2xl border border-white/10 hover:border-white/20 transition-all duration-300"
+                        className="text-ink/90 font-medium inline-block p-4 px-6 bg-white/[0.05] hover:bg-white/[0.1] rounded-2xl border border-white/10 hover:border-white/20 transition-all duration-300"
                       >
                         {curPage.section.actionLink.label}
                       </Link>
@@ -565,14 +565,14 @@ export default function ChapterDetail() {
                         )}
                       >
                         <div className="flex items-center gap-3 justify-center text-center">
-                          <span className="text-[10px] font-bold tracking-[0.3em] text-white/30 uppercase font-sans">
+                          <span className="text-[10px] font-bold tracking-[0.3em] text-ink/30 uppercase font-sans">
                             {language === 'el' ? 'ΒΑΣΙΚΑ ΣΗΜΕΙΑ' : 'KEY POINTS'}
                           </span>
                         </div>
                         <ul className="space-y-6">
                           {CHAPTER_TAKEAWAYS[currentLang][chapter.num]?.slice(0, 3).map((take, idx) => (
-                            <li key={idx} className="flex gap-4 items-start text-base desk:text-lg text-white/60 font-serif italic leading-relaxed">
-                              <span className="text-white/20 mt-1.5">—</span>
+                            <li key={idx} className="flex gap-4 items-start text-base desk:text-lg text-ink/60 font-serif italic leading-relaxed">
+                              <span className="text-ink/20 mt-1.5">—</span>
                               <ConceptAnnotatedText text={take} />
                             </li>
                           ))}
@@ -593,15 +593,15 @@ export default function ChapterDetail() {
                           {language === 'el' ? 'ΠΡΑΚΤΙΚΗ ΑΣΚΗΣΗ' : 'PRACTICE EXERCISE'}
                         </span>
                       </div>
-                      <h2 data-read-key="ex-title" className={cn("text-3xl font-serif text-white/90 italic leading-tight tracking-tight", readClass(rs('ex-title')))}>{chapter.exercise.title}</h2>
+                      <h2 data-read-key="ex-title" className={cn("text-3xl font-serif text-ink/90 italic leading-tight tracking-tight", readClass(rs('ex-title')))}>{chapter.exercise.title}</h2>
                     </header>
                     <ul className="space-y-8 pl-4">
                       {chapter.exercise.steps.map((step, idx) => (
                         <li key={idx} data-read-key={`ex-step${idx}`} className={cn("flex gap-6 items-start group", readClass(rs(`ex-step${idx}`)))}>
-                          <span className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-[10px] font-sans font-bold text-white/40 shrink-0">
+                          <span className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-[10px] font-sans font-bold text-ink/40 shrink-0">
                             {idx + 1}
                           </span>
-                          <span className="text-lg desk:text-xl text-white/70 font-sans font-light leading-relaxed group-hover:text-white/90 transition-colors pt-0.5">{step}</span>
+                          <span className="text-lg desk:text-xl text-ink/70 font-sans font-light leading-relaxed group-hover:text-ink/90 transition-colors pt-0.5">{step}</span>
                         </li>
                       ))}
                     </ul>
@@ -614,7 +614,7 @@ export default function ChapterDetail() {
                             {language === 'el' ? '🔬 Επιστημονική & Παραδοσιακή Θεμελίωση' : '🔬 Scientific & Traditional Foundations'}
                           </span>
                         </div>
-                        <p className="text-xs text-white/40 leading-relaxed font-sans max-w-2xl">
+                        <p className="text-xs text-ink/40 leading-relaxed font-sans max-w-2xl">
                           {language === 'el'
                             ? 'Αυτή η άσκηση συνδέεται με κλινικές έρευνες, νευρολογικές εξηγήσεις και αρχαίες παραδόσεις. Επίλεξε μια πηγή για να δεις DOIs και περιλήψεις:'
                             : 'This practice is backed by clinical studies, neurobiological evidence, and contemplative lineages. Select a reference to explore DOIs and research summaries:'}
@@ -624,7 +624,7 @@ export default function ChapterDetail() {
                             <button
                               key={concept.id}
                               onClick={() => setActiveConceptId(concept.id)}
-                              className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.02] border border-white/5 text-[12px] text-white/60 hover:text-teal-300 hover:bg-teal-500/10 hover:border-teal-500/20 active:scale-95 transition-all duration-300"
+                              className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.02] border border-white/5 text-[12px] text-ink/60 hover:text-teal-300 hover:bg-teal-500/10 hover:border-teal-500/20 active:scale-95 transition-all duration-300"
                             >
                               <span>{concept.icon}</span>
                               <span className="font-serif italic font-medium">{language === 'el' ? concept.labelEl : concept.labelEn}</span>
@@ -648,7 +648,7 @@ export default function ChapterDetail() {
                     >
                       <div className="absolute inset-0 bg-gradient-to-br from-teal-500/[0.02] to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl"></div>
                       <span className="text-[9px] font-bold text-teal-400/60 uppercase tracking-widest relative z-10 block font-sans">{language === 'el' ? 'ΕΠΙΓΝΩΣΗ' : 'INSIGHT'}</span>
-                      <p className="text-lg desk:text-xl text-white/80 font-serif italic leading-relaxed relative z-10">"{chapter.insight}"</p>
+                      <p className="text-lg desk:text-xl text-ink/80 font-serif italic leading-relaxed relative z-10">"{chapter.insight}"</p>
                     </div>
                   )}
                   {chapter.reflection && (
@@ -660,8 +660,8 @@ export default function ChapterDetail() {
                         rs('reflection') === 'dim' && 'opacity-45'
                       )}
                     >
-                      <span className="text-[9px] font-bold text-white/40 uppercase tracking-widest relative z-10 block font-sans">{language === 'el' ? 'ΑΝΑΣΤΟΧΑΣΜΟΣ' : 'REFLECTION'}</span>
-                      <p className="text-lg desk:text-xl text-white/80 font-sans font-light leading-relaxed relative z-10">{chapter.reflection}</p>
+                      <span className="text-[9px] font-bold text-ink/40 uppercase tracking-widest relative z-10 block font-sans">{language === 'el' ? 'ΑΝΑΣΤΟΧΑΣΜΟΣ' : 'REFLECTION'}</span>
+                      <p className="text-lg desk:text-xl text-ink/80 font-sans font-light leading-relaxed relative z-10">{chapter.reflection}</p>
                     </div>
                   )}
                 </div>
@@ -676,9 +676,9 @@ export default function ChapterDetail() {
                   className="group flex flex-col items-center gap-4 transition-all duration-700"
                 >
                   <div className="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center group-hover:border-teal-500/50 group-hover:bg-teal-500/5 transition-all duration-700 group-active:scale-90 shadow-lg">
-                    <ChevronRight size={28} className="text-white/20 group-hover:text-teal-400 transition-colors ml-1" />
+                    <ChevronRight size={28} className="text-ink/20 group-hover:text-teal-400 transition-colors ml-1" />
                   </div>
-                  <span className="text-[10px] font-bold tracking-[0.4em] text-white/30 group-hover:text-teal-400 transition-colors uppercase">
+                  <span className="text-[10px] font-bold tracking-[0.4em] text-ink/30 group-hover:text-teal-400 transition-colors uppercase">
                     {language === 'el' ? 'ΣΥΝΕΧΕΙΑ' : 'CONTINUE'}
                   </span>
                 </button>
@@ -699,7 +699,7 @@ export default function ChapterDetail() {
               {page > 0 && (
                 <button 
                   onClick={handlePrev}
-                  className="text-[10px] font-bold text-white/20 hover:text-white/40 tracking-[0.2em] uppercase transition-colors"
+                  className="text-[10px] font-bold text-ink/20 hover:text-ink/40 tracking-[0.2em] uppercase transition-colors"
                 >
                   {language === 'el' ? 'ΠΡΟΗΓΟΥΜΕΝΟ' : 'PREVIOUS'}
                 </button>

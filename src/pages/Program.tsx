@@ -45,10 +45,10 @@ export default function Program() {
               {language === 'en' ? '8 Weeks Program' : 'Πρόγραμμα 8 Εβδομάδων'}
             </span>
           </div>
-          <h2 className="text-5xl md:text-7xl font-serif text-white/90 italic leading-none tracking-tight">
+          <h2 className="text-5xl md:text-7xl font-serif text-ink/90 italic leading-none tracking-tight">
             {language === 'en' ? 'The Path' : 'Η Διαδρομή'}
           </h2>
-          <p className="text-lg text-white/50 font-sans max-w-xl mx-auto leading-relaxed">
+          <p className="text-lg text-ink/50 font-sans max-w-xl mx-auto leading-relaxed">
             {language === 'en' 
               ? 'A 56-day structured path to master awareness and emotional regulation.'
               : 'Μια δομημένη πορεία 56 ημερών για την εκμάθηση της επίγνωσης.'}
@@ -97,17 +97,17 @@ export default function Program() {
                   <div className="flex justify-between items-start">
                     <div className={cn(
                       "w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-sans font-bold border transition-all duration-500",
-                      isLocked ? "bg-white/5 text-white/30 border-white/5" :
+                      isLocked ? "bg-white/5 text-ink/30 border-white/5" :
                       isCurrent 
                         ? "bg-teal-400/20 text-teal-300 border-teal-400/30 shadow-[0_0_20px_rgba(45,212,191,0.2)]" 
-                        : "bg-white/5 text-white/50 border-white/10 group-hover:bg-white/10 group-hover:text-white"
+                        : "bg-white/5 text-ink/50 border-white/10 group-hover:bg-white/10 group-hover:text-ink"
                     )}>
                       {isLocked ? (
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                       ) : isCompleted ? <CheckCircle2 size={24} /> : weekNum}
                     </div>
                     
-                    <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest pt-2">
+                    <div className="text-[10px] font-bold text-ink/40 uppercase tracking-widest pt-2">
                        {isLocked ? (language === 'en' ? 'LOCKED' : 'ΚΛΕΙΔΩΜΕΝΟ') :
                         isCurrent && curD > 0 
                         ? `${curD}/${week.days.length} ${language === 'en' ? 'DONE' : 'ΗΜΕΡΕΣ'}`
@@ -122,7 +122,7 @@ export default function Program() {
                     </span>
                     <h3 className={cn(
                       "text-2xl font-serif italic leading-tight transition-colors",
-                      isCompleted ? "text-white/40" : (isLocked ? "text-white/30" : "text-white/90")
+                      isCompleted ? "text-ink/40" : (isLocked ? "text-ink/30" : "text-ink/90")
                     )}>
                       {isLocked ? (language === 'en' ? 'Locked Week' : 'Κλειδωμένη Εβδομάδα') : week.title}
                     </h3>
@@ -146,7 +146,7 @@ export default function Program() {
                   </div>
                 </div>
 
-                <div className="absolute -bottom-4 -right-4 p-8 text-white/[0.02] transition-all duration-700 select-none pointer-events-none">
+                <div className="absolute -bottom-4 -right-4 p-8 text-ink/[0.02] transition-all duration-700 select-none pointer-events-none">
                    <span className="text-9xl font-serif font-black italic">W{weekNum}</span>
                 </div>
               </CardElement>

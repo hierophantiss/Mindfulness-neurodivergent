@@ -427,7 +427,7 @@ export default function GravityThoughts() {
         </div>
       </div>
 
-      <div className="absolute top-4 right-4 z-40 bg-black/50 backdrop-blur-sm px-4 py-1.5 rounded-full text-[10px] md:text-xs font-mono text-white/80">
+      <div className="absolute top-4 right-4 z-40 bg-black/50 backdrop-blur-sm px-4 py-1.5 rounded-full text-[10px] md:text-xs font-mono text-ink/80">
         {curScene + 1}/4
       </div>
 

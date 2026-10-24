@@ -295,11 +295,11 @@ export default function Settings() {
                   if (window.history.length > 2) navigate(-1);
                   else navigate('/');
                 }}
-                className="p-2 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-white transition-colors"
+                className="p-2 rounded-full bg-white/5 border border-white/10 text-ink/40 hover:text-ink transition-colors"
             >
                 <ChevronLeft size={20} />
             </button>
-            <h1 className="text-2xl font-serif italic text-white/90">
+            <h1 className="text-2xl font-serif italic text-ink/90">
                 {language === 'el' ? 'Ρυθμίσεις' : 'Settings'}
             </h1>
             <div className="flex items-center justify-center w-10 h-10">
@@ -327,10 +327,10 @@ export default function Settings() {
                       {language === 'el' ? 'ΕΡΕΥΝΑ' : 'RESEARCH'}
                     </span>
                   </div>
-                  <h2 className="text-[16px] font-serif italic text-white/95 group-hover:text-teal-200 transition-colors">
+                  <h2 className="text-[16px] font-serif italic text-ink/95 group-hover:text-teal-200 transition-colors">
                     {language === 'el' ? 'Η Επιστημονική Βάση' : 'The Research Basis'}
                   </h2>
-                  <p className="text-[12px] text-white/50 leading-relaxed font-sans">
+                  <p className="text-[12px] text-ink/50 leading-relaxed font-sans">
                     {language === 'el' 
                       ? 'Οι μελέτες πίσω από κάθε κομμάτι της μεθόδου, και τι δεν έχουν δείξει ακόμα.' 
                       : 'The studies behind each part of the method, and what they have not shown yet.'}
@@ -341,7 +341,7 @@ export default function Settings() {
 
             {sections.map((section, idx) => (
               <div key={idx} className="space-y-3">
-                <h3 className="text-[10px] uppercase font-black tracking-[0.2em] text-white/20 px-1">
+                <h3 className="text-[10px] uppercase font-black tracking-[0.2em] text-ink/20 px-1">
                   {language === 'el' ? section.title.el : section.title.en}
                 </h3>
                 <div className="space-y-2">
@@ -357,17 +357,17 @@ export default function Settings() {
                           <item.icon size={18} />
                         </div>
                         <span className="flex flex-col min-w-0 gap-0.5">
-                          <span className="text-[14px] font-sans font-medium text-white/80 group-hover:text-white transition-colors">
+                          <span className="text-[14px] font-sans font-medium text-ink/80 group-hover:text-ink transition-colors">
                             {language === 'el' ? item.label.el : item.label.en}
                           </span>
                           {'hint' in item && item.hint && (
-                            <span className="text-[12px] leading-snug text-white/50">{language === 'el' ? item.hint.el : item.hint.en}</span>
+                            <span className="text-[12px] leading-snug text-ink/50">{language === 'el' ? item.hint.el : item.hint.en}</span>
                           )}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 shrink-0 pl-2">
                          {item.value && (
-                           <span className="text-[11px] font-sans text-white/60 bg-white/5 px-2 py-1 rounded-lg">
+                           <span className="text-[11px] font-sans text-ink/60 bg-white/5 px-2 py-1 rounded-lg">
                              {typeof item.value === 'string' ? item.value : (language === 'el' ? item.value.el : item.value.en)}
                            </span>
                          )}
@@ -382,13 +382,13 @@ export default function Settings() {
           {/* Footer Info */}
           <div className="mt-16 flex flex-col items-center gap-4 opacity-30">
              <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center p-3">
-                <Sparkles size={20} className="text-white" />
+                <Sparkles size={20} className="text-ink" />
              </div>
              <div className="text-center">
-                <p className="text-[10px] font-sans font-medium uppercase tracking-widest text-white mb-1">
+                <p className="text-[10px] font-sans font-medium uppercase tracking-widest text-ink mb-1">
                    Awareness Gateway
                 </p>
-                <p className="text-[9px] font-mono text-white/50">
+                <p className="text-[9px] font-mono text-ink/50">
                    v1.2.0 • 2026
                 </p>
              </div>
@@ -398,7 +398,7 @@ export default function Settings() {
       {showDebug && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80">
           <div className="bg-slate-900 border border-white/10 p-6 rounded-2xl w-full max-w-md max-h-[80vh] overflow-y-auto">
-            <h2 className="text-lg text-white mb-4">PWA Diagnostics</h2>
+            <h2 className="text-lg text-ink mb-4">PWA Diagnostics</h2>
             <div className="space-y-2 mb-6">
               {debugLog.map((log, i) => (
                 <div key={i} className="text-xs font-mono text-green-400 bg-black/50 p-2 rounded">
@@ -408,7 +408,7 @@ export default function Settings() {
             </div>
             <button 
               onClick={() => setShowDebug(false)}
-              className="w-full py-3 bg-white/10 text-white rounded-xl hover:bg-white/20"
+              className="w-full py-3 bg-white/10 text-ink rounded-xl hover:bg-white/20"
             >
               Κλείσιμο
             </button>

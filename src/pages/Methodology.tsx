@@ -33,7 +33,7 @@ export default function Methodology() {
             if (window.history.length > 2) navigate(-1);
             else navigate('/settings');
           }}
-          className="w-10 h-10 rounded-full bg-white/[0.04] flex items-center justify-center text-[#d4d4d8] hover:bg-white/[0.08] hover:text-white transition-colors active:scale-95"
+          className="w-10 h-10 rounded-full bg-white/[0.04] flex items-center justify-center text-[#d4d4d8] hover:bg-white/[0.08] hover:text-ink transition-colors active:scale-95"
           aria-label="Back"
         >
           <ArrowLeft size={20} />
@@ -53,7 +53,7 @@ export default function Methodology() {
             <ShieldCheck size={14} />
             <span>{t.eeatBadge}</span>
           </div>
-          <h2 className="text-2xl font-serif italic text-white/95 leading-snug">
+          <h2 className="text-2xl font-serif italic text-ink/95 leading-snug">
             {t.subtitle}
           </h2>
           <p className="text-[#d4d4d8]/70 text-sm leading-relaxed max-w-xl mx-auto">
@@ -64,7 +64,7 @@ export default function Methodology() {
         {/* Philosophy */}
         <section className="bg-white/[0.02] border border-white/5 p-6 rounded-3xl space-y-3 shadow-xl relative overflow-hidden">
           <div className="absolute top-0 left-0 w-1.5 h-full bg-teal-500" />
-          <h3 className="text-md font-bold text-white tracking-wide">
+          <h3 className="text-md font-bold text-ink tracking-wide">
             {t.philosophyTitle}
           </h3>
           <p className="text-sm text-[#d4d4d8]/85 leading-relaxed text-justify">
@@ -86,7 +86,7 @@ export default function Methodology() {
                   <div className="w-10 h-10 rounded-2xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400">
                     <Icon size={20} />
                   </div>
-                  <h4 className="text-[15px] font-bold text-white leading-tight">
+                  <h4 className="text-[15px] font-bold text-ink leading-tight">
                     {pillar.title}
                   </h4>
                 </div>
