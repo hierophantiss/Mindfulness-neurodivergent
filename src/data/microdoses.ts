@@ -56,8 +56,8 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
     axis: 'body',
     title: { el: 'Παρατήρηση Επαφής', en: 'Contact Observation' },
     type: 'body',
-    dur: { el: '1 λεπτό', en: '1 minute' },
-    maxSeconds: 60,
+    dur: { el: '30 δευτ.', en: '30 sec' },
+    maxSeconds: 30,
     desc: { el: 'Απευθείας γείωση στο παρόν παρατηρώντας τα σημεία επαφής με τη γη (πέλματα ή λεκάνη).', en: 'Direct grounding in the present by observing points of contact with the earth.' },
     iconName: 'Anchor',
     link: '/practice/body/contact-observe'

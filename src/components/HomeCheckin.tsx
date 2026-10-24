@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowRight, ChevronDown } from 'lucide-react';
+import { ArrowRight, ChevronDown, RefreshCw } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { cn } from '../lib/utils';
@@ -27,11 +27,14 @@ export default function HomeCheckin() {
   const [detailOpen, setDetailOpen] = useState(false);
   const [detailId, setDetailId] = useState<string | null>(null);
   const [time, setTime] = useState<CheckinTime | null>(null);
+  // Which suggestion is in front: one at a time, "Another" brings the next.
+  const [alt, setAlt] = useState(0);
 
   const choose = (id: CheckinChoice) => {
     setDetailOpen(false);
     setDetailId(null);
     setTime(null);
+    setAlt(0);
     if (id === selected) {
       setOpen(o => !o);
       return;
@@ -95,7 +98,7 @@ export default function HomeCheckin() {
 
             <div className="flex gap-4">
               {opt.axes.map(axis => (
-                <span key={axis} className="flex items-center gap-1.5 text-[11px] uppercase tracking-[0.15em] text-white/45">
+                <span key={axis} className="flex items-center gap-1.5 text-[12px] text-white/65">
                   <span className="w-2 h-2 rounded-full" style={{ backgroundColor: AXIS_COLOR[axis] }} />
                   {AXIS_LABEL[axis][lang]}
                 </span>
@@ -108,7 +111,7 @@ export default function HomeCheckin() {
                 {(['seconds', 'minutes'] as CheckinTime[]).map(t => (
                   <button
                     key={t}
-                    onClick={() => setTime(cur => (cur === t ? null : t))}
+                    onClick={() => { setTime(cur => (cur === t ? null : t)); setAlt(0); }}
                     aria-pressed={time === t}
                     className={cn(
                       "px-3 min-h-[34px] rounded-full border text-[12px] transition-colors",
@@ -121,31 +124,50 @@ export default function HomeCheckin() {
               </div>
             )}
 
-            <div className="flex flex-col gap-2">
-              {actions.map((a, i) => {
-                const isSos = a.path === SOS_PATH;
-                return (
-                  <Link
-                    key={a.path}
-                    to={a.path}
-                    className={cn(
-                      "flex items-center justify-between gap-3 px-4 py-3 rounded-xl border text-[14px] transition-colors active:scale-[0.98]",
-                      isSos
-                        ? "bg-rose-500/10 border-rose-500/20 text-rose-300 hover:bg-rose-500/20"
-                        : i === 0
-                          ? "bg-white/[0.07] border-white/[0.12] text-white/90 hover:bg-white/[0.1]"
-                          : "bg-white/[0.03] border-white/[0.06] text-white/70 hover:bg-white/[0.06]"
-                    )}
-                  >
-                    <span className="min-w-0">{a.title[lang]}</span>
-                    <span className="flex items-center gap-2 shrink-0">
-                      {a.dur && <span className="text-[11px] text-white/35">{a.dur[lang]}</span>}
+            {(() => {
+              // One suggestion in front, ready to start with one tap; SOS stays in view.
+              const sos = actions.find(a => a.path === SOS_PATH);
+              const rest = actions.filter(a => a.path !== SOS_PATH);
+              const main = rest.length ? rest[alt % rest.length] : undefined;
+              return (
+                <div className="flex flex-col gap-2">
+                  {main && (
+                    <Link
+                      to={main.path}
+                      className="flex items-center justify-between gap-3 px-5 py-4 rounded-2xl border bg-white/[0.08] border-white/[0.14] text-white/95 hover:bg-white/[0.11] transition-colors active:scale-[0.98]"
+                    >
+                      <span className="flex flex-col min-w-0">
+                        <span className="text-[12px] text-white/65">{lang === 'el' ? 'Ξεκίνα' : 'Start'}</span>
+                        <span className="text-[15px] leading-snug">{main.title[lang]}</span>
+                      </span>
+                      <span className="flex items-center gap-2 shrink-0">
+                        {main.dur && <span className="text-[12px] text-white/60">{main.dur[lang]}</span>}
+                        <ArrowRight size={17} className="opacity-70" />
+                      </span>
+                    </Link>
+                  )}
+                  {sos && (
+                    <Link
+                      to={sos.path}
+                      className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl border text-[14px] bg-rose-500/10 border-rose-500/20 text-rose-300 hover:bg-rose-500/20 transition-colors active:scale-[0.98]"
+                    >
+                      <span className="min-w-0">{sos.title[lang]}</span>
                       <ArrowRight size={15} className="opacity-60" />
-                    </span>
-                  </Link>
-                );
-              })}
-            </div>
+                    </Link>
+                  )}
+                  {rest.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => setAlt(i => i + 1)}
+                      className="self-start flex items-center gap-1.5 px-3 min-h-[36px] text-[13px] text-white/60 hover:text-white/85 transition-colors"
+                    >
+                      <RefreshCw size={13} className="opacity-70" />
+                      {lang === 'el' ? 'Άλλη πρόταση' : 'Another suggestion'}
+                    </button>
+                  )}
+                </div>
+              );
+            })()}
 
             {details && (
               <div className="flex flex-col gap-3 pt-1">

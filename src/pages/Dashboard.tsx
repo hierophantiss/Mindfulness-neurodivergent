@@ -1,5 +1,5 @@
 import { AudioEnabler } from '../components/AudioEnabler';
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { BookOpen, ChevronRight, ChevronDown, Info, Download, RotateCcw } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
@@ -14,7 +14,8 @@ import { useAccessibility } from '../hooks/useAccessibility';
 import { BREATH_PATTERNS } from '../data/breathPatterns';
 import InfoModal from '../components/InfoModal';
 
-import { AFFIRMATIONS } from '../data/affirmations';
+import { phraseOfDay } from '../data/affirmations';
+import { readRecentCheckinState } from '../data/stateCheckin';
 import { BreathMark } from '../components/BreathMark';
 import { useInstallApp } from '../hooks/useInstallApp';
 import HomeCheckin from '../components/HomeCheckin';
@@ -27,7 +28,7 @@ const baseCardClasses = "backdrop-blur-xl border border-white/[0.04] border-t-wh
 const innerIconClasses = "rounded-2xl bg-gradient-to-b from-white/[0.06] to-transparent border border-white/[0.02] border-t-white/[0.1] shadow-[0_4px_12px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.08)] flex items-center justify-center text-white/50 transition-colors duration-500";
 const actionButtonClasses = "w-8 h-8 rounded-full bg-gradient-to-b from-white/[0.04] to-transparent border border-white/[0.02] border-t-white/[0.1] shadow-[0_2px_8px_rgba(0,0,0,0.2)] flex items-center justify-center group-hover:from-white/[0.08] group-hover:border-t-white/[0.15] group-hover:shadow-[0_4px_12px_rgba(0,0,0,0.3)] transition-all duration-500";
 
-const footerLinkClasses = "flex items-center gap-1.5 py-2 text-[11px] text-white/30 hover:text-white/60 transition-colors";
+const footerLinkClasses = "flex items-center gap-1.5 py-2 text-[12px] text-white/55 hover:text-white/80 transition-colors";
 const bookPillClasses = "whitespace-nowrap px-4 py-2 rounded-full border border-white/[0.06] bg-white/[0.03] text-[11px] text-white/55 hover:text-white/80 hover:bg-white/[0.06] transition-colors";
 
 const getDateString =(date: Date): string => {
@@ -100,13 +101,33 @@ export default function Dashboard() {
     return () => clearTimeout(t);
   }, [installHint]);
 
-  const affirmation = useMemo(() => {
-    // using hour as dependency to re-calculate if day rolls over while app is open
-    const _ = hour; 
-    const now = new Date();
-    const dayOfYear = getDayOfYear(now);
-    return AFFIRMATIONS[dayOfYear % AFFIRMATIONS.length];
-  }, [hour]);
+  // Where the text begins: the sky keeps its stars above this line (see InteractiveBackground).
+  const textStart = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    const measure = () => {
+      const el = textStart.current;
+      if (el) root.style.setProperty('--sky-end', `${Math.round(el.getBoundingClientRect().top + (document.getElementById('main-content')?.scrollTop || 0))}px`);
+    };
+    measure();
+    const t = setTimeout(measure, 600); // after the entrance animation
+    window.addEventListener('resize', measure);
+    return () => { clearTimeout(t); window.removeEventListener('resize', measure); root.style.removeProperty('--sky-end'); };
+  }, []);
+
+  // The answer to "How do you feel" (last 90 minutes): after "Numbness" the
+  // phrase of the day comes only from the body and contact lines.
+  const [recentState, setRecentState] = useState(readRecentCheckinState);
+  useEffect(() => {
+    const onChange = () => setRecentState(readRecentCheckinState());
+    window.addEventListener('storage', onChange);
+    return () => window.removeEventListener('storage', onChange);
+  }, []);
+  // `hour` in the list so a new day brings a new phrase while the app stays open.
+  const affirmation = useMemo(
+    () => phraseOfDay(getDayOfYear(new Date()), recentState === 'hypo'),
+    [hour, recentState]
+  );
 
   useEffect(() => {
     // Greeting
@@ -154,8 +175,8 @@ export default function Dashboard() {
               <span className="text-[17px] min-[400px]:text-[20px] md:text-[22px] leading-tight tracking-[0.03em] min-[400px]:tracking-[0.05em] uppercase text-teal-300/90 font-medium whitespace-nowrap">
                 {language === 'el' ? 'ΕΝΣΥΝΕΙΔΗΤΟΤΗΤΑ' : 'MINDFULNESS'}
               </span>{' '}
-              <span className="text-[10px] min-[375px]:text-[11px] md:text-[13px] leading-tight tracking-normal min-[375px]:tracking-[0.05em] md:tracking-[0.1em] uppercase text-white/40 font-medium mt-0.5 whitespace-nowrap overflow-hidden text-ellipsis">
-                {language === 'el' ? 'ΓΙΑ ΝΕΥΡΟΔΙΑΦΟΡΕΤΙΚΟΥΣ' : 'FOR NEURODIVERGENT MINDS'}
+              <span className="text-[12px] min-[375px]:text-[13px] leading-tight text-white/65 mt-1 whitespace-nowrap overflow-hidden text-ellipsis">
+                {language === 'el' ? 'Για νευροδιαφορετικούς' : 'For neurodivergent minds'}
               </span>
             </motion.div>
             
@@ -187,7 +208,7 @@ export default function Dashboard() {
         <div className="w-full max-w-lg px-5 flex flex-col gap-5 mt-2">
 
         {/* Greeting & Date */}
-        <div className="flex flex-col gap-2">
+        <div ref={textStart} className="flex flex-col gap-2">
           <motion.h1 
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
@@ -227,7 +248,7 @@ export default function Dashboard() {
               <div className="absolute top-[-30%] right-[-10%] w-48 h-48 bg-[#8ba3ba]/5 blur-[50px] rounded-full pointer-events-none" />
               <Link to={spot.href} className="flex items-center gap-3 pl-5 pr-3 py-4 group active:scale-[0.99] transition-transform">
               <div className="flex flex-col gap-1 min-w-0 flex-1 relative z-10">
-                <span className="text-[10px] uppercase tracking-[0.2em] text-[#8ba3ba]/60 font-medium">
+                <span className="text-[12px] text-[#8ba3ba] font-medium">
                   {spot.kind === 'done'
                     ? (el ? 'Ολοκλήρωσες τον οδηγό' : 'You finished the guide')
                     : spot.kind === 'start'
@@ -243,7 +264,7 @@ export default function Dashboard() {
                 </h3>
                 {midChapter ? (
                   <>
-                    <span className="text-[12px] leading-snug text-white/45">
+                    <span className="text-[12px] leading-snug text-white/65">
                       {chapterPageLabel(spot.pages[spot.page], lang)} · {el ? `σελίδα ${spot.page + 1} από ${spot.pages.length}` : `page ${spot.page + 1} of ${spot.pages.length}`}
                     </span>
                     <span className="mt-1 h-[3px] w-full rounded-full bg-white/[0.06] overflow-hidden" aria-hidden="true">
@@ -251,9 +272,14 @@ export default function Dashboard() {
                     </span>
                   </>
                 ) : !isNewUser && (
-                  <span className="text-[12px] text-white/40">
-                    {el ? `${completedChapters} από ${totalChapters} κεφάλαια` : `${completedChapters} of ${totalChapters} chapters`}
-                  </span>
+                  <>
+                    <span className="mt-1 h-[3px] w-full rounded-full bg-white/[0.06] overflow-hidden" aria-hidden="true">
+                      <span className="block h-full rounded-full bg-[#8ba3ba]/50" style={{ width: `${Math.round((completedChapters / totalChapters) * 100)}%` }} />
+                    </span>
+                    <span className="text-[12px] text-white/65">
+                      {el ? `${completedChapters} από ${totalChapters} ολοκληρώθηκαν` : `${completedChapters} of ${totalChapters} completed`}
+                    </span>
+                  </>
                 )}
               </div>
               <ChevronRight size={18} className="text-[#8ba3ba]/40 group-hover:text-[#8ba3ba]/80 shrink-0 relative z-10" />
@@ -327,9 +353,9 @@ export default function Dashboard() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.8 }}
-          className="mt-6 mb-6 flex flex-col items-center justify-center gap-3 px-4 text-center"
+          className="mt-6 mb-6 flex flex-col items-center justify-center gap-3 text-center"
         >
-          <div className="flex items-center justify-center gap-x-5 gap-y-2 flex-wrap">
+          <div className="flex items-center justify-center gap-x-3 gap-y-2 flex-wrap">
             <button
               onClick={() => { setBookOpen(o => !o); setInstallHint(null); }}
               aria-expanded={bookOpen}

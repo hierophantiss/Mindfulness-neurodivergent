@@ -1,5 +1,6 @@
 import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useTime } from '../contexts/TimeContext';
 import { useProgress } from '../contexts/ProgressContext';
 import { skyStars, starsForScreen, discRadius, starAlpha, auroraStrength, type Star } from '../lib/nightSky';
@@ -18,7 +19,10 @@ const FRAME_MS = 100;          // ten pictures a second are plenty for something
 const TURN_SECONDS = 3600;     // one turn of the sky
 const POLE_Y = 0.35;           // the point the sky turns around, from the top
 const AURORA_HEIGHT = 0.62;    // share of the screen the aurora may cover, from the top
-const AURORA_SCALE = 3;        // the aurora is drawn small and enlarged: naturally soft
+const AURORA_SCALE = 3;
+// The home page sets --sky-end to where its text begins (the greeting); the
+// stars fade out just above it.
+const HOME_STAR_MASK = 'linear-gradient(to bottom, #000 0, #000 calc(var(--sky-end, 30vh) - 64px), transparent calc(var(--sky-end, 30vh) - 6px))';        // the aurora is drawn small and enlarged: naturally soft
 
 function haloSprite([r, g, b]: [number, number, number]) {
   const c = document.createElement('canvas');
@@ -74,6 +78,10 @@ export function InteractiveBackground() {
   const { timeFloat } = useTime();
   const { progress } = useProgress();
   const lessons = progress.completedLessons?.length || 0;
+  // On the home page the stars stay above the text (title and breath circle)
+  // and fade as the page scrolls, so no dot sits on a word.
+  const { pathname } = useLocation();
+  const isHome = pathname === '/' || pathname === '';
 
   const starCanvas = useRef<HTMLCanvasElement>(null);
   const auroraCanvas = useRef<HTMLCanvasElement>(null);
@@ -165,6 +173,20 @@ export function InteractiveBackground() {
     };
   }, [reduceMotion]);
 
+  useEffect(() => {
+    const c = starCanvas.current;
+    if (!c) return;
+    c.style.opacity = '1';
+    if (!isHome) return;
+    const onScroll = (e: Event) => {
+      const t = e.target;
+      if (!(t instanceof Element) || t.id !== 'main-content') return;
+      c.style.opacity = String(1 - Math.min(1, t.scrollTop / 200));
+    };
+    document.addEventListener('scroll', onScroll, { capture: true, passive: true });
+    return () => document.removeEventListener('scroll', onScroll, { capture: true });
+  }, [isHome]);
+
   // With reduced motion nothing loops, so a new hour or a new lesson redraws once.
   useEffect(() => { if (reduceMotion) redraw.current(); }, [timeFloat, lessons, reduceMotion]);
 
@@ -177,7 +199,12 @@ export function InteractiveBackground() {
         className="absolute inset-x-0 top-0 w-full z-10"
         style={{ height: `${AURORA_HEIGHT * 100}%`, opacity: 0, filter: 'blur(2px)' }}
       />
-      <canvas ref={starCanvas} aria-hidden="true" className="absolute inset-0 w-full h-full z-20" />
+      <canvas
+        ref={starCanvas}
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full z-20 transition-opacity duration-300"
+        style={isHome ? { maskImage: HOME_STAR_MASK, WebkitMaskImage: HOME_STAR_MASK } : undefined}
+      />
     </div>
   );
 }
