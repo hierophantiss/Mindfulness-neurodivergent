@@ -14,7 +14,8 @@ const TINTS: [number, number, number][] = [
   [255, 236, 214], // warm
   [255, 222, 176], // pale gold
 ];
-const FRAME_MS = 100;          // ten pictures a second are plenty for something this slow
+const FRAME_MS = 500;          // two pictures a second: the sky turns a tenth of a degree a second
+                               // (under a pixel between pictures), so more would only cost battery
 const TURN_SECONDS = 3600;     // one turn of the sky
 const POLE_Y = 0.35;           // the point the sky turns around, from the top
 const AURORA_HEIGHT = 0.62;    // share of the screen the aurora may cover, from the top
@@ -131,7 +132,9 @@ export function InteractiveBackground() {
       const cx = (W / 2) * dpr, cy = H * POLE_Y * dpr;
       const maxR = discRadius(W, H, H * POLE_Y) * dpr;
       const turn = reduceMotion ? 0 : ((now / 1000) % TURN_SECONDS) / TURN_SECONDS * Math.PI * 2;
-      const rects = textRects(dpr);
+      // Where the text is: looked up again after a scroll, or once a second.
+      const tick = performance.now();
+      if (rectsDirty || tick - rectsAt > 1000) { rects = textRects(dpr); rectsAt = tick; rectsDirty = false; }
       for (let i = 0; i < stars.length; i++) {
         let alpha = alphas[i];
         if (alpha < 0.02) continue;
@@ -164,28 +167,44 @@ export function InteractiveBackground() {
     };
 
     resize();
-    let raf = 0, last = 0;
+    let raf = 0, last = 0, started = false;
+    let rects: ReturnType<typeof textRects> = [], rectsAt = 0, rectsDirty = true;
     const loop = (ts: number) => {
       if (ts - last >= FRAME_MS) { last = ts; draw(Date.now()); }
       raf = requestAnimationFrame(loop);
     };
     redraw.current = () => draw(Date.now());
-    const onResize = () => { resize(); draw(Date.now()); };
+    const onResize = () => { resize(); rectsDirty = true; draw(Date.now()); };
     window.addEventListener('resize', onResize);
     // With reduced motion nothing loops, so text that scrolls clears its stars on scroll.
     let pending = 0;
     const onScroll = () => {
+      rectsDirty = true;
       if (!reduceMotion || pending) return;
       pending = requestAnimationFrame(() => { pending = 0; draw(Date.now()); });
     };
     document.addEventListener('scroll', onScroll, { capture: true, passive: true });
     // (once more after the page has laid out its text)
     const settle = reduceMotion ? window.setTimeout(() => draw(Date.now()), 1200) : 0;
-    if (reduceMotion) draw(Date.now());
-    else raf = requestAnimationFrame(loop);
+    // The sky starts once the page itself has loaded and the phone is idle, so it
+    // never competes with the first words; it fades in over a second and a half.
+    const start = () => {
+      if (started) return;
+      started = true;
+      sc.style.opacity = '1';
+      if (reduceMotion) draw(Date.now());
+      else raf = requestAnimationFrame(loop);
+    };
+    const idle = (window as any).requestIdleCallback as ((cb: () => void, o?: { timeout: number }) => number) | undefined;
+    let startTimer = 0;
+    const afterLoad = () => { startTimer = idle ? idle(start, { timeout: 2500 }) : window.setTimeout(start, 800); };
+    if (document.readyState === 'complete') afterLoad();
+    else window.addEventListener('load', afterLoad, { once: true });
 
     return () => {
       cancelAnimationFrame(raf);
+      window.removeEventListener('load', afterLoad);
+      if (idle) (window as any).cancelIdleCallback?.(startTimer); else clearTimeout(startTimer);
       window.removeEventListener('resize', onResize);
       document.removeEventListener('scroll', onScroll, { capture: true });
       cancelAnimationFrame(pending);
@@ -204,12 +223,13 @@ export function InteractiveBackground() {
         ref={auroraCanvas}
         aria-hidden="true"
         className="absolute inset-x-0 top-0 w-full z-10"
-        style={{ height: `${AURORA_HEIGHT * 100}%`, opacity: 0, filter: 'blur(2px)' }}
+        style={{ height: `${AURORA_HEIGHT * 100}%`, opacity: 0, filter: 'blur(2px)', transition: reduceMotion ? 'none' : 'opacity 1.5s ease-out' }}
       />
       <canvas
         ref={starCanvas}
         aria-hidden="true"
         className="absolute inset-0 w-full h-full z-20"
+        style={{ opacity: 0, transition: reduceMotion ? 'none' : 'opacity 1.5s ease-out' }}
       />
     </div>
   );

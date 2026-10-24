@@ -29,10 +29,6 @@ export default function Layout() {
   const { sheetVisible } = useCompanion();
   const [sheetWanted, setSheetWanted] = React.useState(false);
   useEffect(() => { if (sheetVisible) setSheetWanted(true); }, [sheetVisible]);
-  useEffect(() => {
-    const idle = (window as any).requestIdleCallback || ((cb: () => void) => setTimeout(cb, 2500));
-    idle(() => { loadSheet().catch(() => {}); });
-  }, []);
   const mainRef = React.useRef<HTMLElement>(null);
 
 
@@ -77,7 +73,8 @@ export default function Layout() {
           {/* min-h-full, not h-full: a page taller than the screen must grow this box,
               so the space kept below it for the bottom bar comes after the last line. */}
           <div className={cn("w-full max-w-[480px] mx-auto min-h-full shrink-0 flex flex-col pt-4", isWidePractice && "desk:max-w-[900px]", isReading && "desk:max-w-[680px]")}>
-            <AnimatePresence mode="wait">
+            {/* initial={false}: the first page of a visit is there at once; the fade is only between pages. */}
+            <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={location.pathname}
                 initial={{ opacity: 0, y: 8 }}

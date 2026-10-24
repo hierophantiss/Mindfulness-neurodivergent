@@ -1,8 +1,8 @@
 # Every page: what the browser may load, and from where.
-# The app itself loads only from this site; the fonts come from Google Fonts,
+# The app itself loads only from this site (its fonts too);
 # the videos from YouTube (no-cookie), their thumbnails from YouTube's images.
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://img.youtube.com https://i.ytimg.com; media-src 'self' blob: data:; connect-src 'self'; frame-src 'self' https://www.youtube-nocookie.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob: https://img.youtube.com https://i.ytimg.com; media-src 'self' blob: data:; connect-src 'self'; frame-src 'self' https://www.youtube-nocookie.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests
   Strict-Transport-Security: max-age=31536000
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin

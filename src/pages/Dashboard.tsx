@@ -7,7 +7,8 @@ import { useCompanion } from '../hooks/useCompanion';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { useTime } from '../contexts/TimeContext';
 import { useProgress } from '../contexts/ProgressContext';
-import { CHAPTERS_DATA } from '../data/chapters';
+import { CHAPTER_TITLES } from '../data/chapterTitles';
+import type { Chapter } from '../data/types';
 import { cn } from '../lib/utils';
 import { motion } from 'motion/react';
 import { useAccessibility } from '../hooks/useAccessibility';
@@ -26,6 +27,26 @@ import { chapterPageLabel } from '../lib/chapterPages';
 const baseCardClasses = "backdrop-blur-xl border border-white/[0.04] border-t-white/[0.08] border-l-white/[0.06] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.05)] hover:shadow-[0_16px_48px_-12px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(255,255,255,0.1)] hover:-translate-y-1 transition-all duration-500 rounded-[28px]";
 const innerIconClasses = "rounded-2xl bg-gradient-to-b from-white/[0.06] to-transparent border border-white/[0.02] border-t-white/[0.1] shadow-[0_4px_12px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.08)] flex items-center justify-center text-white/50 transition-colors duration-500";
 const actionButtonClasses = "w-8 h-8 rounded-full bg-gradient-to-b from-white/[0.04] to-transparent border border-white/[0.02] border-t-white/[0.1] shadow-[0_2px_8px_rgba(0,0,0,0.2)] flex items-center justify-center group-hover:from-white/[0.08] group-hover:border-t-white/[0.15] group-hover:shadow-[0_4px_12px_rgba(0,0,0,0.3)] transition-all duration-500";
+
+// The full chapters (230 KB of text) load after the page shows. Until then the
+// "Continue" card knows each chapter by its title; the page you stopped at
+// fills in a moment later.
+let chaptersLoaded: Record<string, Chapter[]> | null = null;
+function useChapters(lang: 'el' | 'en'): Chapter[] {
+  const [data, setData] = useState(chaptersLoaded);
+  useEffect(() => {
+    if (data) return;
+    let alive = true;
+    const load = () => import('../data/chapters').then(m => { chaptersLoaded = m.CHAPTERS_DATA; if (alive) setData(m.CHAPTERS_DATA); }).catch(() => {});
+    // Once the page is shown and the phone is idle.
+    const idle = (window as any).requestIdleCallback as ((cb: () => void, o?: { timeout: number }) => number) | undefined;
+    const id = idle ? idle(load, { timeout: 2000 }) : window.setTimeout(load, 300);
+    return () => { alive = false; if (idle) (window as any).cancelIdleCallback?.(id); else clearTimeout(id); };
+  }, [data]);
+  return useMemo(() => data?.[lang]
+    || Object.entries(CHAPTER_TITLES[lang]).map(([n, title]) => ({ num: Number(n), title, theorySections: [] }) as unknown as Chapter),
+  [data, lang]);
+}
 
 const footerLinkClasses = "sky-text flex items-center gap-1.5 py-2 text-[12px] text-white/60 hover:text-white/80 transition-colors";
 const bookPillClasses = "whitespace-nowrap px-4 py-2 rounded-full border border-[var(--tint-sand-line)] bg-[var(--tint-sand-bg)] text-[11px] text-white/65 hover:text-white/80 hover:bg-white/[0.06] transition-colors";
@@ -49,11 +70,10 @@ export default function Dashboard() {
   const { reduceMotion, toggleReduceMotion } = useAccessibility();
   const { progress } = useProgress();
 
-  const totalChapters = CHAPTERS_DATA[language === 'el' ? 'el' : 'en']?.length || 10;
-  const completedChapters = progress.completedChapters.length;
-  
   const lang = language === 'el' ? 'el' : 'en';
-  const chapters = CHAPTERS_DATA[lang] || [];
+  const chapters = useChapters(lang);
+  const totalChapters = chapters.length || 11;
+  const completedChapters = progress.completedChapters.length;
   // "Continue": where you stopped (the same answer the cat gives).
   const spot = readingSpot(chapters, progress.completedChapters, companionData.chapterProgress, companionData.lastChapter);
   const midChapter = spot.kind === 'resume' && spot.page > 0;
@@ -88,7 +108,6 @@ export default function Dashboard() {
   });
   const moreLinks = getMoreLinks(lang, completedLessons > 0 ? `${lessonProgressPct}%` : undefined);
 
-  const [greeting, setGreeting] = useState('');
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [bookOpen, setBookOpen] = useState(false);
   const [installHint, setInstallHint] = useState<string | null>(null);
@@ -114,16 +133,11 @@ export default function Dashboard() {
     [hour, recentState]
   );
 
-  useEffect(() => {
-    // Greeting
-    if (hour >= 6 && hour < 12) {
-      setGreeting(language === 'el' ? `Καλημέρα` : `Good morning`);
-    } else if (hour >= 12 && hour < 18) {
-      setGreeting(language === 'el' ? `Καλό απόγευμα` : `Good afternoon`);
-    } else {
-      setGreeting(language === 'el' ? `Καλό βράδυ` : `Good evening`);
-    }
-  }, [language, hour]);
+  const greeting = hour >= 6 && hour < 12
+    ? (language === 'el' ? 'Καλημέρα' : 'Good morning')
+    : hour >= 12 && hour < 18
+      ? (language === 'el' ? 'Καλό απόγευμα' : 'Good afternoon')
+      : (language === 'el' ? 'Καλό βράδυ' : 'Good evening');
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -134,8 +148,9 @@ export default function Dashboard() {
   };
 
   const itemVariants: any = {
-    hidden: { opacity: 0, y: 30, filter: 'blur(8px)' },
-    show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+    // (no blur: blurring whole cards while they move is heavy for a phone)
+    hidden: { opacity: 0, y: 30 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
   };
 
   return (
@@ -151,12 +166,8 @@ export default function Dashboard() {
         <div className="w-full max-w-sm lg:sticky lg:top-24 flex-shrink-0 flex flex-col justify-center items-center px-4 gap-2 lg:gap-6 pt-[calc(env(safe-area-inset-top,0px)+0.5rem)] lg:pt-0 lg:pb-[calc(5rem+env(safe-area-inset-bottom))]">
           {/* Top Row: Brand Lockup + SOS */}
           <div className="w-full flex items-start justify-between gap-2 mt-2 px-1 sm:px-2">
-            <motion.div 
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-              className="flex items-center gap-2 min-[360px]:gap-3 text-left shrink min-w-0"
-            >
+            {/* The title and SOS are there at once, like the greeting below. */}
+            <div className="flex items-center gap-2 min-[360px]:gap-3 text-left shrink min-w-0">
               <Link
                 to="/method"
                 aria-label={language === 'en' ? 'The Fourfold Axis: what the sign means' : 'Ο Τετραπλός Άξονας: τι σημαίνει το σήμα'}
@@ -172,14 +183,9 @@ export default function Dashboard() {
                 {language === 'el' ? 'Για νευροδιαφορετικούς' : 'For neurodivergents'}
               </span>
               </span>
-            </motion.div>
-            
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 0.3 }}
-              className="flex flex-col items-end shrink-0 ml-auto"
-            >
+            </div>
+
+            <div className="flex flex-col items-end shrink-0 ml-auto">
               <Link
                 to="/practice/breath/sos-breath"
                 className="flex items-center justify-center h-[40px] min-[375px]:h-[44px] px-4 min-[375px]:px-5 rounded-full bg-[#2a1820] border border-rose-500/25 text-rose-300 hover:bg-[#351d28] active:scale-95 transition-all text-[12px] min-[375px]:text-[13px] font-medium tracking-widest shrink-0"
@@ -187,7 +193,7 @@ export default function Dashboard() {
               >
                 SOS
               </Link>
-            </motion.div>
+            </div>
           </div>
 
         </div>
@@ -197,22 +203,14 @@ export default function Dashboard() {
 
         {/* Greeting & Date */}
         <div className="flex flex-col gap-2 mt-3">
-          <motion.h1 
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.1 }}
-            className="sky-text text-[24px] font-sans font-medium tracking-tight leading-none text-white/90"
-          >
+          {/* The greeting and the phrase are there at once (no fade): they are the first
+              words you read, and the page counts as shown only when they are. */}
+          <h1 className="sky-text text-[24px] font-sans font-medium tracking-tight leading-none text-white/90">
             {greeting}
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.4 }}
-            className="sky-text text-[13px] leading-snug text-white/70"
-          >
+          </h1>
+          <p className="sky-text text-[13px] leading-snug text-white/70">
             {language === 'el' ? affirmation.el : affirmation.en}
-          </motion.p>
+          </p>
         </div>
 
         {/* How do you feel right now? */}
