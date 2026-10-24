@@ -60,7 +60,7 @@ export default function HomeCheckin() {
 
   return (
     <div className="flex flex-col gap-3">
-      <h2 className="sky-text text-[15px] text-white/80 pl-1">{question}</h2>
+      <h2 className="sky-text text-[15px] text-white/80">{question}</h2>
 
       <div className="grid grid-cols-2 min-[400px]:grid-cols-4 gap-2" role="group" aria-label={question}>
         {CHECKIN_OPTIONS.map(o => {

@@ -179,7 +179,7 @@ export default function NavigationMenu() {
               <LayoutGrid size={18} />
             </div>
             <span className={`text-[10px] font-medium tracking-wide transition-all duration-300 font-sans ${isOpen ? 'opacity-100 drop-shadow-md' : 'opacity-80'}`}>
-              {language === 'en' ? 'More' : 'Μενού'}
+              {language === 'en' ? 'Menu' : 'Μενού'}
             </span>
           </motion.button>
         </div>

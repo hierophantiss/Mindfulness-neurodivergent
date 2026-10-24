@@ -19,7 +19,6 @@ import { readRecentCheckinState } from '../data/stateCheckin';
 import { MethodMark } from '../components/MethodMark';
 import { useInstallApp } from '../hooks/useInstallApp';
 import HomeCheckin from '../components/HomeCheckin';
-import { CatInfinityAvatar } from '../components/CatInfinityAvatar';
 import { getMoreLinks } from '../data/moreLinks';
 import { readingSpot, chaptersRead } from '../lib/readingSpot';
 import { chapterPageLabel } from '../lib/chapterPages';
@@ -118,11 +117,11 @@ export default function Dashboard() {
   useEffect(() => {
     // Greeting
     if (hour >= 6 && hour < 12) {
-      setGreeting(language === 'el' ? `Καλημέρα` : `Good Morning`);
+      setGreeting(language === 'el' ? `Καλημέρα` : `Good morning`);
     } else if (hour >= 12 && hour < 18) {
-      setGreeting(language === 'el' ? `Καλό απόγευμα` : `Good Afternoon`);
+      setGreeting(language === 'el' ? `Καλό απόγευμα` : `Good afternoon`);
     } else {
-      setGreeting(language === 'el' ? `Καλό βράδυ` : `Good Evening`);
+      setGreeting(language === 'el' ? `Καλό βράδυ` : `Good evening`);
     }
   }, [language, hour]);
 
@@ -210,7 +209,7 @@ export default function Dashboard() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="sky-text text-[13px] font-light italic leading-snug text-white/60"
+            className="sky-text text-[13px] leading-snug text-white/70"
           >
             {language === 'el' ? affirmation.el : affirmation.en}
           </motion.p>
@@ -234,10 +233,10 @@ export default function Dashboard() {
         >
           <motion.div variants={itemVariants}>
             <div className={cn(baseCardClasses, "bg-[var(--tint-blue-bg)] !border-[var(--tint-blue-line)] relative overflow-hidden")}>
-              <div className="absolute top-[-30%] right-[-10%] w-48 h-48 bg-[#8ba3ba]/5 blur-[50px] rounded-full pointer-events-none" />
+              <div className="absolute top-[-30%] right-[-10%] w-48 h-48 bg-[var(--tint-blue-mark)]/10 blur-[50px] rounded-full pointer-events-none" />
               <Link to={spot.href} className="flex items-center gap-3 pl-5 pr-3 py-4 group active:scale-[0.99] transition-transform">
               <div className="flex flex-col gap-1 min-w-0 flex-1 relative z-10">
-                <span className="text-[12px] text-[#8ba3ba] font-medium">
+                <span className="text-[12px] text-[var(--tint-blue-mark)] font-medium">
                   {spot.kind === 'done'
                     ? (el ? 'Ολοκλήρωσες τον οδηγό' : 'You finished the guide')
                     : spot.kind === 'start'
@@ -246,7 +245,7 @@ export default function Dashboard() {
                         ? (el ? 'Επόμενο κεφάλαιο' : 'Next chapter')
                         : (el ? 'Συνέχισε' : 'Continue')}
                 </span>
-                <h3 className="text-[16px] font-medium tracking-tight text-[#9bb8d1] leading-snug">
+                <h3 className="text-[16px] font-medium tracking-tight text-[var(--tint-blue-ink)] leading-snug">
                   {spot.kind === 'done'
                     ? (el ? 'Όλα τα κεφάλαια' : 'All chapters')
                     : <>{el ? 'Κεφάλαιο' : 'Chapter'} {spot.chapter?.num} · {spot.chapter?.title}</>}
@@ -257,28 +256,28 @@ export default function Dashboard() {
                       {chapterPageLabel(spot.pages[spot.page], lang)} · {el ? `σελίδα ${spot.page + 1} από ${spot.pages.length}` : `page ${spot.page + 1} of ${spot.pages.length}`}
                     </span>
                     <span className="mt-1 h-[3px] w-full rounded-full bg-white/[0.06] overflow-hidden" aria-hidden="true">
-                      <span className="block h-full rounded-full bg-[#8ba3ba]/50" style={{ width: `${Math.round(((spot.page + 1) / spot.pages.length) * 100)}%` }} />
+                      <span className="block h-full rounded-full bg-[var(--tint-blue-mark)]/70" style={{ width: `${Math.round(((spot.page + 1) / spot.pages.length) * 100)}%` }} />
                     </span>
                   </>
                 ) : !isNewUser && (
                   <>
                     <span className="mt-1 h-[3px] w-full rounded-full bg-white/[0.06] overflow-hidden" aria-hidden="true">
-                      <span className="block h-full rounded-full bg-[#8ba3ba]/50" style={{ width: `${Math.round((completedChapters / totalChapters) * 100)}%` }} />
+                      <span className="block h-full rounded-full bg-[var(--tint-blue-mark)]/70" style={{ width: `${Math.round((completedChapters / totalChapters) * 100)}%` }} />
                     </span>
                     <span className="text-[12px] text-white/65">
-                      {el ? `${completedChapters} από ${totalChapters} ολοκληρώθηκαν` : `${completedChapters} of ${totalChapters} completed`}
+                      {el ? `${completedChapters} από ${totalChapters} κεφάλαια` : `${completedChapters} of ${totalChapters} chapters`}
                     </span>
                   </>
                 )}
               </div>
-              <ChevronRight size={18} className="text-[#8ba3ba]/40 group-hover:text-[#8ba3ba]/80 shrink-0 relative z-10" />
+              <ChevronRight size={18} className="text-[var(--tint-blue-mark)]/50 group-hover:text-[var(--tint-blue-mark)] shrink-0 relative z-10" />
               </Link>
               {hasRead && (
                 <button
                   onClick={() => setSheetVisible(true)}
                   className="relative z-10 w-full min-h-[44px] flex items-center gap-2.5 pl-5 pr-4 py-2 border-t border-white/[0.05] text-[13px] text-white/55 hover:text-white/80 hover:bg-white/[0.03] transition-colors"
                 >
-                  <CatInfinityAvatar className="w-6 h-6 rounded-full" />
+                  <BookOpen size={16} strokeWidth={1.6} className="text-[var(--tint-blue-mark)] shrink-0" aria-hidden="true" />
                   <span className="flex-1 text-left">{el ? 'Τι έχεις διαβάσει' : 'What you have read'}</span>
                   <ChevronRight size={15} className="text-white/30" />
                 </button>

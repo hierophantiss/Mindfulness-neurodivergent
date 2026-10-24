@@ -19,6 +19,19 @@ const TURN_SECONDS = 3600;     // one turn of the sky
 const POLE_Y = 0.35;           // the point the sky turns around, from the top
 const AURORA_HEIGHT = 0.62;    // share of the screen the aurora may cover, from the top
 const AURORA_SCALE = 3;
+const TEXT_PAD = 6;            // stars this close to text on the sky (.sky-text) almost go out,
+const UNDER_TEXT = 0.08;       // so none of them reads as a dot or a comma in a sentence
+
+/** Where text sits on the sky right now, in canvas pixels. */
+function textRects(dpr: number) {
+  const out: [number, number, number, number][] = [];
+  document.querySelectorAll('.sky-text').forEach(el => {
+    const r = el.getBoundingClientRect();
+    if (r.width === 0 || r.bottom < 0 || r.top > window.innerHeight) return;
+    out.push([(r.left - TEXT_PAD) * dpr, (r.top - TEXT_PAD) * dpr, (r.right + TEXT_PAD) * dpr, (r.bottom + TEXT_PAD) * dpr]);
+  });
+  return out;
+}
 
 function haloSprite([r, g, b]: [number, number, number]) {
   const c = document.createElement('canvas');
@@ -118,13 +131,17 @@ export function InteractiveBackground() {
       const cx = (W / 2) * dpr, cy = H * POLE_Y * dpr;
       const maxR = discRadius(W, H, H * POLE_Y) * dpr;
       const turn = reduceMotion ? 0 : ((now / 1000) % TURN_SECONDS) / TURN_SECONDS * Math.PI * 2;
+      const rects = textRects(dpr);
       for (let i = 0; i < stars.length; i++) {
-        const alpha = alphas[i];
+        let alpha = alphas[i];
         if (alpha < 0.02) continue;
         const s = stars[i];
         const a = s.angle + turn, d = s.radius * maxR;
         const x = cx + Math.cos(a) * d, y = cy + Math.sin(a) * d;
         if (x < -20 || y < -20 || x > sc.width + 20 || y > sc.height + 20) continue;
+        for (const [l, t, r, b] of rects) {
+          if (x > l && x < r && y > t && y < b) { alpha *= UNDER_TEXT; break; }
+        }
         const r = (0.32 + 1.0 * s.brightness) * dpr;
         if (s.brightness > 0.6) {
           const hs = r * 9;
@@ -155,12 +172,24 @@ export function InteractiveBackground() {
     redraw.current = () => draw(Date.now());
     const onResize = () => { resize(); draw(Date.now()); };
     window.addEventListener('resize', onResize);
+    // With reduced motion nothing loops, so text that scrolls clears its stars on scroll.
+    let pending = 0;
+    const onScroll = () => {
+      if (!reduceMotion || pending) return;
+      pending = requestAnimationFrame(() => { pending = 0; draw(Date.now()); });
+    };
+    document.addEventListener('scroll', onScroll, { capture: true, passive: true });
+    // (once more after the page has laid out its text)
+    const settle = reduceMotion ? window.setTimeout(() => draw(Date.now()), 1200) : 0;
     if (reduceMotion) draw(Date.now());
     else raf = requestAnimationFrame(loop);
 
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', onResize);
+      document.removeEventListener('scroll', onScroll, { capture: true });
+      cancelAnimationFrame(pending);
+      clearTimeout(settle);
       redraw.current = () => {};
     };
   }, [reduceMotion]);

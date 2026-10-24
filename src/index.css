@@ -40,7 +40,8 @@
     --tint-lav-bg: #25233a;   --tint-lav-hi: #312e4b;   --tint-lav-line: rgb(181 167 208 / 0.30);
     --tint-sage-bg: #1e2a25;  --tint-sage-hi: #283730;  --tint-sage-line: rgb(143 184 160 / 0.28);
     --tint-sand-bg: #2a261f;  --tint-sand-hi: #363027;  --tint-sand-line: rgb(214 195 161 / 0.30);
-    --tint-blue-bg: #1d2636;  --tint-blue-hi: #263247;  --tint-blue-line: rgb(155 184 209 / 0.28);
+    --tint-blue-bg: #1a2741;  --tint-blue-hi: #22345a;  --tint-blue-line: rgb(122 166 228 / 0.32);
+    --tint-blue-ink: #a9c8f2;  --tint-blue-mark: #7fa9e4; /* the blue of the sign's circle, the Breath */
   }
 
   body {
