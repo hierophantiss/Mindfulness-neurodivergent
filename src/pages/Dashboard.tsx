@@ -16,7 +16,7 @@ import InfoModal from '../components/InfoModal';
 
 import { phraseOfDay } from '../data/affirmations';
 import { readRecentCheckinState } from '../data/stateCheckin';
-import { BreathMark } from '../components/BreathMark';
+import { MethodMark } from '../components/MethodMark';
 import { useInstallApp } from '../hooks/useInstallApp';
 import HomeCheckin from '../components/HomeCheckin';
 import { CatInfinityAvatar } from '../components/CatInfinityAvatar';
@@ -72,7 +72,7 @@ export default function Dashboard() {
     return best ? BREATH_PATTERNS.find(p => p.id === best[0]) : undefined;
   }, [logs]);
 
-  // At night the rings of the breath circle step back a little (the infinity keeps its colours).
+  // At night the lines of the sign step back a little (the infinity keeps its colours).
   const nightDim = hour >= 21 || hour < 5;
 
   const completedLessons = progress.completedLessons.length;
@@ -197,10 +197,10 @@ export default function Dashboard() {
           </div>
 
           {/* Smaller on short screens, so "How do you feel" and "Continue" fit on the first screen */}
-          {/* The home picture: the breath circle alone, widening and narrowing at 5-5,
-              with the infinity sign. A picture, not a button. Smaller on short screens. */}
-          <div className="w-[min(40%,max(96px,calc(100dvh-640px)))] mx-auto mt-4 mb-1">
-            <BreathMark className="w-full h-auto" infinityScale={0.48} dimRing={nightDim} label={language === 'en' ? 'The Fourfold Axis' : 'Ο Τετραπλός Άξονας'} />
+          {/* The home picture: the sign of the method, breathing at 5-5.
+              A picture, not a button. Smaller on short screens. */}
+          <div className="w-[min(46%,max(110px,calc(100dvh-620px)))] mx-auto mt-3 mb-1">
+            <MethodMark className="w-full h-auto" breathe dim={nightDim} label={language === 'en' ? 'The Fourfold Axis' : 'Ο Τετραπλός Άξονας'} />
           </div>
         </div>
 

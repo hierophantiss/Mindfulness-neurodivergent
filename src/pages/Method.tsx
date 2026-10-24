@@ -3,6 +3,30 @@ import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
+import { MethodMark } from '../components/MethodMark';
+
+// The sign of the method: what each of its four parts stands for (the author's reading).
+const SIGN = {
+  el: {
+    title: 'Το σήμα της μεθόδου',
+    parts: [
+      { color: '#d9b77a', name: 'Ο χρυσός κάθετος άξονας', text: 'η βαρύτητα και ο άξονας της σπονδυλικής στήλης: το Σώμα.' },
+      { color: '#a9c1d9', name: 'Ο κύκλος', text: 'η Αναπνοή.' },
+      { color: '#c97b6c', name: 'Το τρίγωνο', text: 'η Προσοχή.' },
+      { color: 'rainbow', name: 'Το άπειρο', text: 'ο Χώρος.' },
+    ],
+  },
+  en: {
+    title: 'The sign of the method',
+    parts: [
+      { color: '#d9b77a', name: 'The gold vertical axis', text: 'gravity and the axis of the spine: the Body.' },
+      { color: '#a9c1d9', name: 'The circle', text: 'the Breath.' },
+      { color: '#c97b6c', name: 'The triangle', text: 'Attention.' },
+      { color: 'rainbow', name: 'The infinity', text: 'Space.' },
+    ],
+  },
+};
+const RAINBOW = 'linear-gradient(90deg,#ff3b30,#ff9500,#ffd60a,#34c759,#32ade6,#3478f6,#9b59d0)';
 
 const T = {
   el: {
@@ -173,6 +197,27 @@ export default function Method() {
             {t.intro}
           </p>
         </section>
+
+        {/* The sign of the method */}
+        {(() => {
+          const sign = SIGN[language === 'en' ? 'en' : 'el'];
+          return (
+            <section className="flex flex-col items-center gap-5">
+              <MethodMark className="w-40 h-40" label={language === 'en' ? 'The sign of the Fourfold Axis' : 'Το σήμα του Τετραπλού Άξονα'} />
+              <div className="w-full space-y-3">
+                <h2 className="text-[16px] font-bold text-[#d4d4d8]">{sign.title}</h2>
+                <ul className="space-y-2.5">
+                  {sign.parts.map(part => (
+                    <li key={part.name} className="flex items-start gap-3 text-sm leading-relaxed text-[#d4d4d8]/85">
+                      <span className="mt-[7px] w-3 h-3 shrink-0 rounded-full" style={{ background: part.color === 'rainbow' ? RAINBOW : part.color }} aria-hidden="true" />
+                      <span><span className="text-[#d4d4d8]">{part.name}</span>: {part.text}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </section>
+          );
+        })()}
 
         {/* Personal Note Section */}
         <section className="bg-amber-500/5 border border-amber-500/10 p-5 rounded-3xl space-y-4 relative overflow-hidden">
