@@ -13,6 +13,11 @@ import {
 import { usageFromLogs } from '../data/practiceCatalog';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 
+// Each answer has its own soft pastel (see the --tint-* colours in index.css):
+// tension a warm dusty rose, numbness lavender, calm sage, not sure sand.
+const TINT: Record<CheckinChoice, string> = { hyper: 'rose', hypo: 'lav', balanced: 'sage', unsure: 'sand' };
+const tint = (id: CheckinChoice, part: 'bg' | 'hi' | 'line') => `var(--tint-${TINT[id]}-${part})`;
+
 // "How do you feel right now?" — the first thing on the home page, with the
 // four choices always in view.
 export default function HomeCheckin() {
@@ -55,7 +60,7 @@ export default function HomeCheckin() {
 
   return (
     <div className="flex flex-col gap-3">
-      <h2 className="text-[15px] text-white/75 pl-1">{question}</h2>
+      <h2 className="sky-text text-[15px] text-white/80 pl-1">{question}</h2>
 
       <div className="grid grid-cols-2 min-[400px]:grid-cols-4 gap-2" role="group" aria-label={question}>
         {CHECKIN_OPTIONS.map(o => {
@@ -66,13 +71,11 @@ export default function HomeCheckin() {
               onClick={() => choose(o.id)}
               aria-pressed={isSel}
               aria-expanded={isSel ? open : undefined}
+              style={{ backgroundColor: tint(o.id, isSel ? 'hi' : 'bg'), borderColor: tint(o.id, 'line') }}
               className={cn(
-                "min-h-[44px] px-2 rounded-full border text-[13px] transition-colors active:scale-[0.97]",
-                isSel
-                  ? "bg-white/[0.08] border-white/20 text-white/90"
-                  : o.id === 'unsure'
-                    ? "bg-transparent border-white/[0.07] border-dashed text-white/50 hover:text-white/75"
-                    : "bg-white/[0.03] border-white/[0.07] text-white/60 hover:text-white/80 hover:bg-white/[0.05]"
+                "min-h-[44px] px-2 rounded-full border text-[13px] transition-[filter,transform] active:scale-[0.97] hover:brightness-110",
+                isSel ? "text-white/95 ring-1 ring-white/15" : "text-white/75",
+                o.id === 'unsure' && "border-dashed"
               )}
             >
               {o.label[lang]}
@@ -89,7 +92,8 @@ export default function HomeCheckin() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: reduceMotion ? 0 : 0.3 }}
-            className="rounded-[24px] bg-[#1a1f26]/40 backdrop-blur-xl border border-white/[0.05] p-5 flex flex-col gap-4"
+            style={{ backgroundColor: tint(opt.id, 'bg'), borderColor: tint(opt.id, 'line') }}
+            className="rounded-[24px] border p-5 flex flex-col gap-4"
           >
             <div className="flex flex-col gap-1.5">
               <h3 className="text-[16px] font-medium text-white/90">{opt.title[lang]}</h3>
@@ -115,7 +119,7 @@ export default function HomeCheckin() {
                     aria-pressed={time === t}
                     className={cn(
                       "px-3 min-h-[34px] rounded-full border text-[12px] transition-colors",
-                      time === t ? "bg-white/[0.08] border-white/20 text-white/90" : "bg-transparent border-white/[0.08] text-white/55 hover:text-white/80"
+                      time === t ? "bg-white/[0.12] border-white/20 text-white/90" : "bg-white/[0.05] border-white/[0.08] text-white/60 hover:text-white/80"
                     )}
                   >
                     {TIME_LABEL[t][lang]}
@@ -134,7 +138,8 @@ export default function HomeCheckin() {
                   {main && (
                     <Link
                       to={main.path}
-                      className="flex items-center justify-between gap-3 px-5 py-4 rounded-2xl border bg-white/[0.08] border-white/[0.14] text-white/95 hover:bg-white/[0.11] transition-colors active:scale-[0.98]"
+                      style={{ backgroundColor: tint(opt.id, 'hi'), borderColor: tint(opt.id, 'line') }}
+                      className="flex items-center justify-between gap-3 px-5 py-4 rounded-2xl border text-white/95 hover:brightness-110 transition-[filter,transform] active:scale-[0.98]"
                     >
                       <span className="flex flex-col min-w-0">
                         <span className="text-[12px] text-white/65">{lang === 'el' ? 'Ξεκίνα' : 'Start'}</span>
@@ -149,7 +154,7 @@ export default function HomeCheckin() {
                   {sos && (
                     <Link
                       to={sos.path}
-                      className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl border text-[14px] bg-rose-500/10 border-rose-500/20 text-rose-300 hover:bg-rose-500/20 transition-colors active:scale-[0.98]"
+                      className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl border text-[14px] bg-[#2a1820] border-rose-500/25 text-rose-300 hover:bg-[#351d28] transition-colors active:scale-[0.98]"
                     >
                       <span className="min-w-0">{sos.title[lang]}</span>
                       <ArrowRight size={15} className="opacity-60" />
@@ -190,8 +195,8 @@ export default function HomeCheckin() {
                         className={cn(
                           "min-h-[40px] px-2 rounded-full border text-[12.5px] transition-colors active:scale-[0.97]",
                           detailId === d.id
-                            ? "bg-white/[0.08] border-white/20 text-white/90"
-                            : "bg-white/[0.02] border-white/[0.07] text-white/55 hover:text-white/80"
+                            ? "bg-white/[0.12] border-white/20 text-white/90"
+                            : "bg-white/[0.05] border-white/[0.07] text-white/60 hover:text-white/80"
                         )}
                       >
                         {d.label[lang]}
@@ -212,8 +217,8 @@ export default function HomeCheckin() {
                           className={cn(
                             "flex items-center justify-between gap-3 px-4 py-3 rounded-xl border text-[14px] transition-colors active:scale-[0.98]",
                             a.path === SOS_PATH
-                              ? "bg-rose-500/10 border-rose-500/20 text-rose-300 hover:bg-rose-500/20"
-                              : "bg-white/[0.03] border-white/[0.06] text-white/75 hover:bg-white/[0.06]"
+                              ? "bg-[#2a1820] border-rose-500/25 text-rose-300 hover:bg-[#351d28]"
+                              : "bg-white/[0.05] border-white/[0.06] text-white/75 hover:bg-white/[0.12]"
                           )}
                         >
                           <span className="min-w-0">{a.title[lang]}</span>

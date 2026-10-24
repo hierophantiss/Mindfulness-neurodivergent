@@ -17,16 +17,23 @@ export const INFINITY_PATH = 'M144,205 C144,189 162,189 170,205 C178,221 196,221
 // triangle inscribed in it (apex up), the axis from just under the apex to the
 // bottom of the circle, open where it meets the infinity.
 const R = 80;
-const W = 2.6;                       // line width
-const HI = W * 0.18;                 // where the light catches each line
 const BASE_Y = 100 + R / 2;
 const HALF = (R * Math.sqrt(3)) / 2;
 const TRIANGLE = `100,${100 - R} ${(100 - HALF).toFixed(2)},${BASE_Y} ${(100 + HALF).toFixed(2)},${BASE_Y}`;
 
-export function MethodMark({ className = '', label, breathe = false, dim = false }: { className?: string; label?: string; breathe?: boolean; dim?: boolean }) {
+/**
+ * `small`: for ~40–56px (next to the home title): thicker lines and infinity,
+ * no highlights; it does not grow and shrink, only the infinity glows with the breath.
+ */
+export function MethodMark({ className = '', label, breathe = false, dim = false, small = false }: { className?: string; label?: string; breathe?: boolean; dim?: boolean; small?: boolean }) {
   const { reduceMotion } = useAccessibility();
   const id = useId().replace(/:/g, '');
   const moving = breathe && !reduceMotion;
+  const W = small ? 6 : 2.6;          // line width
+  const HI = W * 0.18;                // where the light catches each line
+  const GAP = small ? 16 : 12;        // the axis opens around the infinity
+  const INF_SCALE = small ? 1.4 : 1.23;
+  const INF_W = small ? 8 : 5.6;
   const u = (name: string) => `url(#${id}-${name})`;
   return (
     <svg viewBox="0 0 200 200" className={`block ${className}`} {...(label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': true })}>
@@ -69,34 +76,40 @@ export function MethodMark({ className = '', label, breathe = false, dim = false
           .methodmark-glow { animation: methodmark-glow 10s ease-in-out infinite; }
         `}</style>
       </defs>
-      <g className={moving ? 'methodmark-breathe' : ''}>
+      <g className={moving && !small ? 'methodmark-breathe' : ''}>
         <g opacity={dim ? 0.72 : 1}>
           {/* The lines, like thin metal tubes with a soft shadow */}
-          <g fill="none" strokeWidth={W} strokeLinecap="round" strokeLinejoin="round" filter={u('shadow')}>
+          <g fill="none" strokeWidth={W} strokeLinecap="round" strokeLinejoin="round" filter={small ? undefined : u('shadow')}>
             <circle cx="100" cy="100" r={R} stroke={u('blue')} />
             <polygon points={TRIANGLE} stroke={u('copper')} />
-            <line x1="100" y1={100 - R + 6} x2="100" y2="88" stroke={u('gold')} />
-            <line x1="100" y1="112" x2="100" y2={100 + R} stroke={u('gold')} />
+            <line x1="100" y1={100 - R + 6 + W / 2} x2="100" y2={100 - GAP} stroke={u('gold')} />
+            <line x1="100" y1={100 + GAP} x2="100" y2={100 + R} stroke={u('gold')} />
           </g>
           {/* A thin light line along each tube, where the metal catches the light */}
-          <g fill="none" stroke="#fff" strokeOpacity="0.35" strokeWidth={W * 0.28} strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="100" cy="100" r={R - HI} strokeOpacity="0.4" stroke="#cfe3fb" />
-            <polygon points={TRIANGLE} transform={`translate(0 ${-HI})`} />
-            <line x1={100 - HI} y1={100 - R + 6} x2={100 - HI} y2="88" />
-            <line x1={100 - HI} y1="112" x2={100 - HI} y2={100 + R} />
-          </g>
+          {!small && (
+            <g fill="none" stroke="#fff" strokeOpacity="0.35" strokeWidth={W * 0.28} strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="100" cy="100" r={R - HI} strokeOpacity="0.4" stroke="#cfe3fb" />
+              <polygon points={TRIANGLE} transform={`translate(0 ${-HI})`} />
+              <line x1={100 - HI} y1={100 - R + 6} x2={100 - HI} y2={100 - GAP} />
+              <line x1={100 - HI} y1={100 + GAP} x2={100 - HI} y2={100 + R} />
+            </g>
+          )}
         </g>
-        <g transform="translate(100 100) scale(1.23) translate(-170 -205)" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <g transform={`translate(100 100) scale(${INF_SCALE}) translate(-170 -205)`} fill="none" strokeLinecap="round" strokeLinejoin="round">
           {breathe && (
-            <path d={INFINITY_PATH} stroke={u('rainbow')} strokeWidth="9" filter={u('soft')}
+            <path d={INFINITY_PATH} stroke={u('rainbow')} strokeWidth={INF_W * 1.6} filter={u('soft')}
               className={moving ? 'methodmark-glow' : ''} opacity={moving ? undefined : 0.3} />
           )}
           {/* Glossy infinity: colour, a darker underside, the colour again, a highlight on top */}
-          <g filter={u('shadow')}>
-            <path d={INFINITY_PATH} stroke={u('rainbow')} strokeWidth="5.6" />
-            <path d={INFINITY_PATH} stroke="#000" strokeOpacity="0.18" strokeWidth="5.6" transform="translate(0 0.9)" />
-            <path d={INFINITY_PATH} stroke={u('rainbow')} strokeWidth="4.2" />
-            <path d={INFINITY_PATH} stroke="#fff" strokeOpacity="0.45" strokeWidth="1.2" transform="translate(0 -1.1)" />
+          <g filter={small ? undefined : u('shadow')}>
+            <path d={INFINITY_PATH} stroke={u('rainbow')} strokeWidth={INF_W} />
+            {!small && (
+              <>
+                <path d={INFINITY_PATH} stroke="#000" strokeOpacity="0.18" strokeWidth={INF_W} transform="translate(0 0.9)" />
+                <path d={INFINITY_PATH} stroke={u('rainbow')} strokeWidth={INF_W * 0.75} />
+                <path d={INFINITY_PATH} stroke="#fff" strokeOpacity="0.45" strokeWidth="1.2" transform="translate(0 -1.1)" />
+              </>
+            )}
           </g>
         </g>
       </g>

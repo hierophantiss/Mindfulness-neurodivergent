@@ -1,5 +1,5 @@
 import { AudioEnabler } from '../components/AudioEnabler';
-import React, { useState, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { BookOpen, ChevronRight, ChevronDown, Info, Download, RotateCcw } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
@@ -28,8 +28,8 @@ const baseCardClasses = "backdrop-blur-xl border border-white/[0.04] border-t-wh
 const innerIconClasses = "rounded-2xl bg-gradient-to-b from-white/[0.06] to-transparent border border-white/[0.02] border-t-white/[0.1] shadow-[0_4px_12px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.08)] flex items-center justify-center text-white/50 transition-colors duration-500";
 const actionButtonClasses = "w-8 h-8 rounded-full bg-gradient-to-b from-white/[0.04] to-transparent border border-white/[0.02] border-t-white/[0.1] shadow-[0_2px_8px_rgba(0,0,0,0.2)] flex items-center justify-center group-hover:from-white/[0.08] group-hover:border-t-white/[0.15] group-hover:shadow-[0_4px_12px_rgba(0,0,0,0.3)] transition-all duration-500";
 
-const footerLinkClasses = "flex items-center gap-1.5 py-2 text-[12px] text-white/55 hover:text-white/80 transition-colors";
-const bookPillClasses = "whitespace-nowrap px-4 py-2 rounded-full border border-white/[0.06] bg-white/[0.03] text-[11px] text-white/55 hover:text-white/80 hover:bg-white/[0.06] transition-colors";
+const footerLinkClasses = "sky-text flex items-center gap-1.5 py-2 text-[12px] text-white/60 hover:text-white/80 transition-colors";
+const bookPillClasses = "whitespace-nowrap px-4 py-2 rounded-full border border-[var(--tint-sand-line)] bg-[var(--tint-sand-bg)] text-[11px] text-white/65 hover:text-white/80 hover:bg-white/[0.06] transition-colors";
 
 const getDateString =(date: Date): string => {
   return date.toISOString().split('T')[0];
@@ -101,20 +101,6 @@ export default function Dashboard() {
     return () => clearTimeout(t);
   }, [installHint]);
 
-  // Where the text begins: the sky keeps its stars above this line (see InteractiveBackground).
-  const textStart = useRef<HTMLDivElement>(null);
-  useLayoutEffect(() => {
-    const root = document.documentElement;
-    const measure = () => {
-      const el = textStart.current;
-      if (el) root.style.setProperty('--sky-end', `${Math.round(el.getBoundingClientRect().top + (document.getElementById('main-content')?.scrollTop || 0))}px`);
-    };
-    measure();
-    const t = setTimeout(measure, 600); // after the entrance animation
-    window.addEventListener('resize', measure);
-    return () => { clearTimeout(t); window.removeEventListener('resize', measure); root.style.removeProperty('--sky-end'); };
-  }, []);
-
   // The answer to "How do you feel" (last 90 minutes): after "Numbness" the
   // phrase of the day comes only from the body and contact lines.
   const [recentState, setRecentState] = useState(readRecentCheckinState);
@@ -170,13 +156,22 @@ export default function Dashboard() {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1 }}
-              className="flex flex-col text-left shrink min-w-0"
+              className="flex items-center gap-2 min-[360px]:gap-3 text-left shrink min-w-0"
             >
-              <span className="text-[17px] min-[400px]:text-[20px] md:text-[22px] leading-tight tracking-[0.03em] min-[400px]:tracking-[0.05em] uppercase text-teal-300/90 font-medium whitespace-nowrap">
+              <Link
+                to="/method"
+                aria-label={language === 'en' ? 'The Fourfold Axis: what the sign means' : 'Ο Τετραπλός Άξονας: τι σημαίνει το σήμα'}
+                className="shrink-0 rounded-full active:scale-95 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400"
+              >
+                <MethodMark small breathe dim={nightDim} className="w-10 h-10 min-[360px]:w-12 min-[360px]:h-12" />
+              </Link>
+              <span className="flex flex-col min-w-0">
+              <span className="sky-text text-[15px] max-[359px]:text-[13px] max-[359px]:tracking-normal min-[400px]:text-[17px] leading-tight tracking-[0.02em] min-[400px]:tracking-[0.04em] uppercase text-teal-300/90 font-medium whitespace-nowrap">
                 {language === 'el' ? 'ΕΝΣΥΝΕΙΔΗΤΟΤΗΤΑ' : 'MINDFULNESS'}
               </span>{' '}
-              <span className="text-[12px] min-[375px]:text-[13px] leading-tight text-white/65 mt-1 whitespace-nowrap overflow-hidden text-ellipsis">
+              <span className="sky-text text-[12px] min-[375px]:text-[13px] leading-tight text-white/65 mt-1">
                 {language === 'el' ? 'Για νευροδιαφορετικούς' : 'For neurodivergent minds'}
+              </span>
               </span>
             </motion.div>
             
@@ -188,7 +183,7 @@ export default function Dashboard() {
             >
               <Link
                 to="/practice/breath/sos-breath"
-                className="flex items-center justify-center h-[40px] min-[375px]:h-[44px] px-4 min-[375px]:px-5 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-300 hover:bg-rose-500/20 active:scale-95 transition-all text-[12px] min-[375px]:text-[13px] font-medium tracking-widest shrink-0"
+                className="flex items-center justify-center h-[40px] min-[375px]:h-[44px] px-4 min-[375px]:px-5 rounded-full bg-[#2a1820] border border-rose-500/25 text-rose-300 hover:bg-[#351d28] active:scale-95 transition-all text-[12px] min-[375px]:text-[13px] font-medium tracking-widest shrink-0"
                 title={language === 'el' ? 'Άμεση Ηρέμηση' : 'Immediate Calm'}
               >
                 SOS
@@ -196,24 +191,18 @@ export default function Dashboard() {
             </motion.div>
           </div>
 
-          {/* Smaller on short screens, so "How do you feel" and "Continue" fit on the first screen */}
-          {/* The home picture: the sign of the method, breathing at 5-5.
-              A picture, not a button. Smaller on short screens. */}
-          <div className="w-[min(46%,max(110px,calc(100dvh-620px)))] mx-auto mt-3 mb-1">
-            <MethodMark className="w-full h-auto" breathe dim={nightDim} label={language === 'en' ? 'The Fourfold Axis' : 'Ο Τετραπλός Άξονας'} />
-          </div>
         </div>
 
         {/* Dashboard Content */}
         <div className="w-full max-w-lg px-5 flex flex-col gap-5 mt-2">
 
         {/* Greeting & Date */}
-        <div ref={textStart} className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 mt-3">
           <motion.h1 
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.1 }}
-            className="text-[24px] font-sans font-medium tracking-tight leading-none text-white/90"
+            className="sky-text text-[24px] font-sans font-medium tracking-tight leading-none text-white/90"
           >
             {greeting}
           </motion.h1>
@@ -221,7 +210,7 @@ export default function Dashboard() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="text-[13px] font-light italic leading-snug text-white/50"
+            className="sky-text text-[13px] font-light italic leading-snug text-white/60"
           >
             {language === 'el' ? affirmation.el : affirmation.en}
           </motion.p>
@@ -244,7 +233,7 @@ export default function Dashboard() {
           className="flex flex-col gap-3"
         >
           <motion.div variants={itemVariants}>
-            <div className={cn(baseCardClasses, "bg-[#1a2026]/60 relative overflow-hidden")}>
+            <div className={cn(baseCardClasses, "bg-[var(--tint-blue-bg)] !border-[var(--tint-blue-line)] relative overflow-hidden")}>
               <div className="absolute top-[-30%] right-[-10%] w-48 h-48 bg-[#8ba3ba]/5 blur-[50px] rounded-full pointer-events-none" />
               <Link to={spot.href} className="flex items-center gap-3 pl-5 pr-3 py-4 group active:scale-[0.99] transition-transform">
               <div className="flex flex-col gap-1 min-w-0 flex-1 relative z-10">
@@ -299,7 +288,7 @@ export default function Dashboard() {
 
           {favouritePractice && (
             <motion.div variants={itemVariants}>
-              <Link to={`/practice/breath/${favouritePractice.id}`} className="flex items-center justify-between gap-3 px-5 py-3 rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] text-[14px] text-white/75 transition-colors active:scale-[0.98]">
+              <Link to={`/practice/breath/${favouritePractice.id}`} className="flex items-center justify-between gap-3 px-5 py-3 rounded-2xl bg-[var(--tint-sage-bg)] border border-[var(--tint-sage-line)] hover:brightness-110 text-[14px] text-white/75 transition-colors active:scale-[0.98]">
                 <span className="flex items-center gap-2 min-w-0">
                   <RotateCcw size={14} className="text-white/40 shrink-0" />
                   <span className="truncate">{lang === 'el' ? 'Ξανά' : 'Again'}: {/^[\d-]+$/.test(favouritePractice.title[lang]) ? `${lang === 'el' ? 'Αναπνοή' : 'Breath'} ${favouritePractice.title[lang]}` : favouritePractice.title[lang]}</span>
@@ -314,7 +303,7 @@ export default function Dashboard() {
             <button
               onClick={toggleMore}
               aria-expanded={moreOpen}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/[0.03] border border-white/[0.06] text-[13px] text-white/60 hover:text-white/85 hover:bg-white/[0.06] transition-colors active:scale-[0.97]"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-[var(--tint-sand-bg)] border border-[var(--tint-sand-line)] text-[13px] text-white/75 hover:text-white/90 hover:brightness-110 transition-colors active:scale-[0.97]"
             >
               {lang === 'el' ? 'Περισσότερα' : 'More'}
               <ChevronDown size={15} className={cn("transition-transform duration-300", moreOpen && "rotate-180")} />
@@ -330,7 +319,7 @@ export default function Dashboard() {
                   <Link
                     key={item.to}
                     to={item.to}
-                    className="flex items-center gap-3.5 px-4 py-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] transition-colors active:scale-[0.98]"
+                    className="flex items-center gap-3.5 px-4 py-3.5 rounded-2xl bg-[var(--tint-blue-bg)] border border-[var(--tint-blue-line)] hover:brightness-110 transition-colors active:scale-[0.98]"
                   >
                     <item.icon size={18} strokeWidth={1.5} className={cn("shrink-0 opacity-80", item.tone)} />
                     <span className="flex flex-col min-w-0 flex-1 gap-0.5">
