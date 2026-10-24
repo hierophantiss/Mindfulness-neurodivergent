@@ -216,7 +216,7 @@ export default function NavigationMenu() {
                 >
                   {language === 'el' ? 'English' : 'Ελληνικά'}
                 </button>
-                <button 
+                <button aria-label={language === 'en' ? 'Close' : 'Κλείσιμο'} 
                   onClick={() => setIsOpen(false)}
                   className="w-10 h-10 rounded-full flex items-center justify-center text-zinc-400 hover:bg-white/10 hover:text-ink transition-colors"
                 >

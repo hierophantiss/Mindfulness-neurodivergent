@@ -80,7 +80,7 @@ export default function PracticeMovement() {
     <div className="flex flex-col flex-1 -mx-4 -mt-4 -mb-8 px-4 pt-4 pb-8 md:-mx-8 md:-mt-8 md:-mb-8 md:px-8 md:pt-8 md:pb-8 overflow-y-auto scroll-smooth">
       {/* Top Bar */}
       <div className="flex items-center gap-4 mb-6 shrink-0 z-10 relative">
-        <button 
+        <button aria-label={language === 'en' ? 'Back' : 'Πίσω'} 
           onClick={() => navigate('/practice')} 
           className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 hover:text-ink transition-all duration-300 active:scale-[0.98] backdrop-blur-md"
         >

@@ -58,13 +58,17 @@ function ConceptTerm({ word, conceptId }: { word: string; conceptId: string }) {
 
 export function ConceptInfoIcon({ conceptId, className = "w-6 h-6 ml-1" }: { conceptId: string, className?: string }) {
   const [isOpen, setIsOpen] = useState(false);
+  const { language } = useLanguage();
+  const el = language === 'el';
+  const title = KNOWLEDGE_CONCEPTS[conceptId]?.[el ? 'el' : 'en']?.title;
+  const label = title ? `${el ? 'Τι σημαίνει' : 'What it means'}: ${title}` : (el ? 'Περισσότερα' : 'More info');
   
   return (
     <>
       <button 
         onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsOpen(true); }}
         className={`inline-flex items-center justify-center rounded-full text-ink/40 hover:text-ink hover:bg-white/10 transition-all focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 ${className}`}
-        aria-label="More info"
+        aria-label={label}
       >
         <Info size={15} />
       </button>
@@ -119,7 +123,7 @@ export function ConceptModal({ isOpen, onClose, conceptId }: { isOpen: boolean, 
               <button 
                 onClick={onClose}
                 className="text-ink/40 hover:text-ink hover:bg-white/5 p-1 rounded-full transition-all focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400"
-                aria-label="Close"
+                aria-label={language === 'el' ? 'Κλείσιμο' : 'Close'}
               >
                 <X size={18} />
               </button>

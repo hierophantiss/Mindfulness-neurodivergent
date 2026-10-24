@@ -12,7 +12,7 @@ export default function Faq() {
     <div className="flex flex-col flex-1 bg-transparent -mx-4 -mt-4 -mb-8 px-4 pt-4 pb-12 md:-mx-8 md:-mt-8 md:-mb-8 md:px-8 md:pt-8 md:pb-12 overflow-y-auto w-full">
       
       <div className="flex items-center gap-4 mb-8">
-        <button 
+        <button aria-label={language === 'en' ? 'Back' : 'Πίσω'} 
           onClick={() => {
             if (window.history.length > 2) navigate(-1);
             else navigate('/');
@@ -33,11 +33,11 @@ export default function Faq() {
           
           return (
             <div key={chapter} className="mb-10 w-full">
-              <h3 className="font-bold text-xs text-teal-400 uppercase tracking-[0.2em] mb-5 px-2 flex items-center gap-3">
+              <h2 className="font-bold text-xs text-teal-400 uppercase tracking-[0.2em] mb-5 px-2 flex items-center gap-3">
                 <span className="w-6 h-px bg-teal-800/50"></span>
                 {language === 'el' ? `Κεφάλαιο ${chapter}` : `Chapter ${chapter}`}
                 <span className="flex-1 h-px bg-zinc-800/50"></span>
-              </h3>
+              </h2>
               <div className="space-y-4 w-full">
                 {faqs.map((faq: any, idx: number) => (
                   <details key={idx} className="bg-gradient-to-br from-pine-900/40 to-pine-950/60 border border-zinc-700/30 rounded-2xl p-5 md:p-6 group shadow-sm transition-all duration-300 hover:border-zinc-600/50 backdrop-blur-sm w-full outline-none [&_summary::-webkit-details-marker]:hidden">

@@ -219,7 +219,7 @@ export default function RabbitHole() {
     if (!article) return <div className="text-ink p-20 mt-20 text-center">Article not found: {activeArticle}</div>;
 
     const storyViewer = (
-      <div className="fixed inset-0 z-[9999] bg-black/40 backdrop-blur-md text-ink flex flex-col animate-in fade-in duration-300">
+      <div role="dialog" aria-modal="true" aria-labelledby="rabbithole-article-title" className="fixed inset-0 z-[9999] bg-black/40 backdrop-blur-md text-ink flex flex-col animate-in fade-in duration-300">
         
         {/* Top Progress Bar & Header */}
         <div className="pt-safe px-4 pb-3 flex items-center justify-between border-b border-white/5 bg-black/40 backdrop-blur-md/80 backdrop-blur-md relative z-20">
@@ -231,7 +231,7 @@ export default function RabbitHole() {
             <X size={24} />
           </button>
           <div className="flex-1 px-4 text-center">
-            <h2 className="text-[14px] font-medium font-serif italic text-ink/90 truncate">{article.title}</h2>
+            <h1 id="rabbithole-article-title" className="text-[14px] font-medium font-serif italic text-ink/90 truncate">{article.title}</h1>
             {article.date && (
               <p className="text-[9px] text-ink/30 uppercase tracking-widest mt-0.5">
                 {formatDate(article.date, language)}
@@ -267,7 +267,7 @@ export default function RabbitHole() {
           <button 
             className="absolute top-0 left-0 w-[30%] h-full z-10 flex flex-col justify-center items-start pl-2 md:pl-6 group focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400"
             onClick={(e) => { e.stopPropagation(); handlePrev(); }}
-            aria-label="Previous page"
+            aria-label={language === 'el' ? 'Προηγούμενη σελίδα' : 'Previous page'}
             disabled={currentPage === 0}
           >
             {currentPage > 0 && (
@@ -280,7 +280,7 @@ export default function RabbitHole() {
           <button 
             className="absolute top-0 right-0 w-[30%] h-full z-10 flex flex-col justify-center items-end pr-2 md:pr-6 group focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400"
             onClick={(e) => { e.stopPropagation(); handleNext(); }}
-            aria-label="Next page"
+            aria-label={language === 'el' ? 'Επόμενη σελίδα' : 'Next page'}
             disabled={currentPage === article.pages.length - 1}
           >
             {currentPage < article.pages.length - 1 && (
@@ -293,6 +293,7 @@ export default function RabbitHole() {
           {/* Scrolling Content */}
           <div 
             className="flex-1 overflow-y-auto px-6 md:px-16"
+            tabIndex={0}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >
@@ -547,7 +548,7 @@ export default function RabbitHole() {
                 {language === 'el' ? 'ΠΡΟΒΟΛΗ ΒΙΝΤΕΟ' : 'NOW PLAYING'}
               </span>
             </div>
-            <button 
+            <button aria-label={language === 'en' ? 'Close' : 'Κλείσιμο'} 
               onClick={() => setActiveVideo(null)}
               className="p-3 rounded-full bg-white/5 border border-white/10 text-ink/40 hover:text-ink hover:bg-white/10 transition-all active:scale-90"
             >
@@ -663,7 +664,7 @@ export default function RabbitHole() {
                              </div>
 
                              <div className="flex items-center justify-center gap-4 relative z-10">
-                               <button 
+                               <button aria-label={language === 'en' ? 'Previous' : 'Προηγούμενο'} 
                                  onClick={() => setMantraStep((prev) => (prev > 0 ? prev - 1 : (desc.mantra ? desc.mantra.length - 1 : 0)))}
                                  className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-ink/40 hover:text-ink hover:bg-white/10 transition-all active:scale-95"
                                >
@@ -711,13 +712,13 @@ export default function RabbitHole() {
                                  </h4>
                                </div>
                                <div className="flex gap-2">
-                                 <button 
+                                 <button aria-label={language === 'en' ? 'Previous' : 'Προηγούμενο'} 
                                    onClick={() => setMantraStep((prev) => (prev > 0 ? prev - 1 : 9))}
                                    className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-ink/40 hover:text-ink transition-all"
                                  >
                                    <ChevronLeft size={18} />
                                  </button>
-                                 <button 
+                                 <button aria-label={language === 'en' ? 'Next' : 'Επόμενο'} 
                                    onClick={() => setMantraStep((prev) => (prev < 9 ? prev + 1 : 0))}
                                    className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-ink/40 hover:text-ink transition-all"
                                  >

@@ -181,7 +181,7 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
               </div>
               <button 
                 onClick={onClose}
-                aria-label="Close modal"
+                aria-label={language === 'el' ? 'Κλείσιμο' : 'Close'}
                 className="w-10 h-10 shrink-0 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-ink/40 hover:text-ink hover:bg-white/10 transition-all focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 absolute right-4 top-6 sm:static sm:right-auto sm:top-auto"
               >
                 <X size={20} />

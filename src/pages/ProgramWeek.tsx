@@ -139,7 +139,7 @@ export default function ProgramWeek() {
   return (
     <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-safe mb-4">
       <div className="flex items-center gap-4 mb-8">
-        <button 
+        <button aria-label={language === 'en' ? 'Back' : 'Πίσω'} 
           onClick={() => navigate('/program')} 
           className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-ink/40 hover:bg-white/10 hover:text-ink transition-all duration-300 active:scale-[0.98] backdrop-blur-md"
         >
@@ -151,10 +151,10 @@ export default function ProgramWeek() {
         <span className="text-teal-500/80 text-[10px] font-bold uppercase tracking-[0.2em] block mb-2">
           {language === 'en' ? 'Week' : 'Εβδομάδα'} {weekNum}
         </span>
-        <h2 className="text-3xl md:text-4xl font-serif text-ink tracking-tight mb-8 drop-shadow-sm italic">{week.title}</h2>
+        <h1 className="text-3xl md:text-4xl font-serif text-ink tracking-tight mb-8 drop-shadow-sm italic">{week.title}</h1>
         
         {/* Days Horizontal Scroll */}
-        <div className="flex gap-4 overflow-x-auto pb-6 snap-x hide-scrollbar px-1">
+        <div className="flex gap-4 overflow-x-auto pb-6 snap-x hide-scrollbar px-1" tabIndex={0} aria-label={language === 'el' ? 'Οι μέρες της εβδομάδας' : 'The days of the week'}>
           {week.days.map((day: any, idx: number) => {
              const dayCompleted = isLessonComplete(weekNum, idx + 1);
              const curW = companionData.programProgress?.week || 1;
@@ -189,9 +189,9 @@ export default function ProgramWeek() {
                     </div>
                   )}
                 </div>
-                <h4 className={`font-serif text-lg leading-tight text-left ${activeDay === idx ? 'text-ink drop-shadow-sm' : 'text-ink/60'}`}>
+                <span className={`block font-serif text-lg leading-tight text-left ${activeDay === idx ? 'text-ink drop-shadow-sm' : 'text-ink/60'}`}>
                   {isLocked ? (language === 'en' ? 'Locked' : 'Κλειδωμένο') : day.title}
-                </h4>
+                </span>
               </button>
             )
           })}
@@ -242,10 +242,10 @@ export default function ProgramWeek() {
              >
                 {currentStepData.id === 'lesson' && (
                   <>
-                    <h3 className="text-2xl md:text-3xl font-serif text-ink mb-6 leading-tight drop-shadow-sm flex items-center gap-3">
+                    <h2 className="text-2xl md:text-3xl font-serif text-ink mb-6 leading-tight drop-shadow-sm flex items-center gap-3">
                        <currentStepData.icon className="text-teal-400 opacity-80" size={24} />
                        {currentDayContent.title}
-                    </h3>
+                    </h2>
                     
                     {hasCameraAnchor && !hasCameraZoom && <CameraAnimation mode="anchor" />}
                     {hasCameraZoom && <CameraAnimation mode="zoom" />}
@@ -258,12 +258,12 @@ export default function ProgramWeek() {
 
                 {currentStepData.id === 'exercise' && currentDayContent.exercise && (
                   <div className="bg-black/40 backdrop-blur-md/80 border border-white/5 rounded-[2rem] p-6 sm:p-8 mb-6 shadow-2xl backdrop-blur-md">
-                    <h4 className="text-xl md:text-2xl font-serif text-ink mb-6 flex items-center gap-3 drop-shadow-sm">
+                    <h3 className="text-xl md:text-2xl font-serif text-ink mb-6 flex items-center gap-3 drop-shadow-sm">
                       <div className="bg-amber-500/20 text-amber-400 p-2 rounded-xl border border-amber-500/20 shadow-inner">
                         <PlayCircle size={24} strokeWidth={2} />
                       </div>
                       {currentDayContent.exercise.title}
-                    </h4>
+                    </h3>
                     <ul className="space-y-4">
                       {currentDayContent.exercise.steps.map((step: string, idx: number) => (
                         <li key={idx} className="flex gap-4 text-ink/90 leading-relaxed items-start">
@@ -286,7 +286,7 @@ export default function ProgramWeek() {
                       <div className="bg-black/40 backdrop-blur-md/80 border border-white/5 rounded-[1.75rem] p-6 shadow-2xl backdrop-blur-sm">
                         <div className="flex items-center gap-2 mb-3">
                           <div className="w-1.5 h-1.5 rounded-full bg-amber-400/80"></div>
-                          <h5 className="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-400/90 drop-shadow-sm">{language === 'el' ? 'Επίγνωση' : 'Insight'}</h5>
+                          <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-400/90 drop-shadow-sm">{language === 'el' ? 'Επίγνωση' : 'Insight'}</h4>
                         </div>
                         <p className="text-ink font-medium italic leading-relaxed text-lg sm:text-xl">"{currentDayContent.insight}"</p>
                       </div>
@@ -295,9 +295,9 @@ export default function ProgramWeek() {
                       <div className="bg-black/40 backdrop-blur-md/80 border border-white/5 rounded-[1.75rem] p-6 shadow-2xl backdrop-blur-sm">
                         <div className="flex items-center gap-2 mb-3">
                           <div className="w-1.5 h-1.5 rounded-full bg-teal-400/80"></div>
-                          <h5 className="text-[10px] font-bold uppercase tracking-[0.2em] text-teal-400/90 drop-shadow-sm">
+                          <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-teal-400/90 drop-shadow-sm">
                             {language === 'en' ? 'Reflection' : 'Αναστοχασμός'}
-                          </h5>
+                          </h4>
                         </div>
                         <p className="text-ink/80 leading-relaxed text-base sm:text-lg">{currentDayContent.reflection}</p>
                       </div>
@@ -311,6 +311,7 @@ export default function ProgramWeek() {
         <div className="mt-8 pt-6 border-t border-white/5 flex justify-between items-center z-10 rounded-2xl pb-0">
           <button
             onClick={goPrevStep}
+            aria-label={language === 'el' ? 'Πίσω' : 'Back'}
             disabled={activeStep === 0}
             className="flex h-12 px-5 rounded-xl bg-white/5 border border-white/5 items-center justify-center gap-2 text-ink/50 disabled:opacity-0 disabled:cursor-not-allowed hover:bg-white/[0.08] hover:text-ink/90 transition-all duration-300 active:scale-95 font-medium text-sm backdrop-blur-sm"
           >

@@ -393,7 +393,7 @@ export default function ChapterDetail() {
       
       {/* Header Controls */}
       <header className="flex flex-wrap desk:flex-nowrap items-center justify-between pt-6 pb-2 shrink-0 gap-y-4 w-full">
-        <button 
+        <button aria-label={language === 'en' ? 'Back' : 'Πίσω'} 
           onClick={() => navigate('/chapters')} 
           className="btn-zen !px-3 !py-3 shrink-0"
         >
@@ -442,7 +442,7 @@ export default function ChapterDetail() {
       </header>
 
       {/* Main Content Area */}
-      <main 
+      <div
         className="relative flex flex-col w-full items-center"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
@@ -709,7 +709,7 @@ export default function ChapterDetail() {
             </div>
           </motion.div>
         </AnimatePresence>
-      </main>
+      </div>
 
       {segments.length > 0 && (
         <ChapterReaderBar

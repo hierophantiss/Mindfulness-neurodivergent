@@ -164,7 +164,6 @@ export default function GenericExercise() {
         {/* Timer */}
         <button
           onClick={toggle}
-          aria-label={running ? (el ? 'Παύση' : 'Pause') : (el ? 'Ξεκίνα' : 'Start')}
           className="relative mt-5 w-[clamp(150px,calc(100dvh-460px),200px)] h-[clamp(150px,calc(100dvh-460px),200px)] rounded-full outline-none focus-visible:ring-2 focus-visible:ring-white/25"
         >
           <svg viewBox="0 0 200 200" className="absolute inset-0 w-full h-full -rotate-90" aria-hidden="true">
@@ -175,6 +174,8 @@ export default function GenericExercise() {
               style={{ transition: 'stroke-dashoffset 1s linear', opacity: 0.85 }}
             />
           </svg>
+          {/* What the button does, for screen readers (the time and state below are read after it) */}
+          <span className="sr-only">{running ? (el ? 'Παύση' : 'Pause') : (el ? 'Ξεκίνα' : 'Start')}</span>
           <span className="absolute inset-0 flex flex-col items-center justify-center">
             <span className="text-[34px] font-light tabular-nums text-ink/90">{formatTime(Math.max(0, total - elapsed))}</span>
             <span className="mt-1 text-[11px] uppercase tracking-[0.2em] text-ink/40">

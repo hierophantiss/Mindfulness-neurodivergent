@@ -246,9 +246,9 @@ export default function Journal() {
         >
           <ArrowLeft size={18} />
         </button>
-        <span className="text-lg font-medium tracking-tight text-ink/90">
+        <h1 className="text-lg font-medium tracking-tight text-ink/90">
           {lang === 'el' ? 'Ημερολόγιο' : 'Journal'}
-        </span>
+        </h1>
         <button
           onClick={() => setViewState(viewState === 'edit' ? 'history' : 'edit')}
           aria-label={viewState === 'edit' ? (lang === 'el' ? 'Παλιότερες μέρες' : 'Earlier days') : (lang === 'el' ? 'Κλείσιμο' : 'Close')}

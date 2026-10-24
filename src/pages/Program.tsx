@@ -32,7 +32,7 @@ export default function Program() {
       
       {/* Editorial Header */}
       <header className="flex flex-col items-center text-center space-y-6 relative">
-        <button 
+        <button aria-label={language === 'en' ? 'Back' : 'Πίσω'} 
           onClick={() => navigate('/dashboard')} 
           className="btn-zen absolute left-0 top-0 !px-3 !py-3 hidden md:flex"
         >
@@ -45,9 +45,9 @@ export default function Program() {
               {language === 'en' ? '8 Weeks Program' : 'Πρόγραμμα 8 Εβδομάδων'}
             </span>
           </div>
-          <h2 className="text-5xl md:text-7xl font-serif text-ink/90 italic leading-none tracking-tight">
+          <h1 className="text-5xl md:text-7xl font-serif text-ink/90 italic leading-none tracking-tight">
             {language === 'en' ? 'The Path' : 'Η Διαδρομή'}
-          </h2>
+          </h1>
           <p className="text-lg text-ink/50 font-sans max-w-xl mx-auto leading-relaxed">
             {language === 'en' 
               ? 'A 56-day structured path to master awareness and emotional regulation.'
@@ -120,12 +120,12 @@ export default function Program() {
                     <span className="text-[10px] font-bold text-teal-400 opacity-60 uppercase tracking-[0.2em]">
                       {language === 'en' ? 'Week' : 'Εβδομάδα'} {weekNum}
                     </span>
-                    <h3 className={cn(
+                    <h2 className={cn(
                       "text-2xl font-serif italic leading-tight transition-colors",
                       isCompleted ? "text-ink/40" : (isLocked ? "text-ink/30" : "text-ink/90")
                     )}>
                       {isLocked ? (language === 'en' ? 'Locked Week' : 'Κλειδωμένη Εβδομάδα') : week.title}
-                    </h3>
+                    </h2>
                   </div>
 
                   <div className="flex gap-1.5 opacity-80 mt-6 pt-4 border-t border-white/5 relative z-20">

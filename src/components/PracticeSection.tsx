@@ -310,7 +310,7 @@ export default function PracticeSection() {
       <div className="w-full min-h-screen flex flex-col p-4 md:p-8 font-sans animate-fade-in" style={{ backgroundColor: "var(--color-bg, #0f1117)", color: "var(--color-text, #d4d4d8)" }}>
         {/* Header */}
         <div className="w-full flex justify-between items-center mb-12 py-2">
-          <button onClick={() => navigate('/practice')} className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 transition-all cursor-pointer">
+          <button aria-label={lang === 'en' ? 'Back' : 'Πίσω'} onClick={() => navigate('/practice')} className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 transition-all cursor-pointer">
             <ArrowLeft size={20} />
           </button>
           <button onClick={() => setLang(lang === "el" ? "en" : "el")} className="transition-colors text-xs uppercase cursor-pointer flex gap-1 items-center hover:opacity-80" style={{ color: "var(--color-accent, #1D9E75)" }}>
@@ -375,7 +375,7 @@ export default function PracticeSection() {
     return (
       <div className="w-full min-h-screen flex flex-col p-4 md:p-8 font-sans animate-fade-in" style={{ backgroundColor: "var(--color-bg, #0f1117)", color: "var(--color-text, #d4d4d8)" }}>
         <div className="w-full flex justify-between items-center mb-12 py-2">
-          <button onClick={() => setStep('theme')} className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 transition-all cursor-pointer">
+          <button aria-label={lang === 'en' ? 'Back' : 'Πίσω'} onClick={() => setStep('theme')} className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 transition-all cursor-pointer">
             <ArrowLeft size={20} />
           </button>
           <div className="text-[11px] font-bold tracking-[0.2em] uppercase text-ink/40">
@@ -427,7 +427,7 @@ export default function PracticeSection() {
       
       {/* HUD Bar Overlay */}
       <div className="w-full max-w-5xl flex justify-between items-center mb-2 z-20 px-2 pt-2 md:pt-0">
-        <button 
+        <button aria-label={lang === 'en' ? 'Back' : 'Πίσω'} 
           onClick={() => setStep('rhythm')} 
           className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 transition-all duration-300 cursor-pointer backdrop-blur-md"
         >
@@ -503,7 +503,7 @@ export default function PracticeSection() {
       
       {/* Controls Below Screen */}
       <div className="w-full max-w-5xl flex justify-center items-center gap-6 mt-8 mb-6 z-20 relative">
-        <button 
+        <button aria-label={lang === 'en' ? 'Start over' : 'Από την αρχή'} 
           onClick={(e) => { e.stopPropagation(); handleReset(); }} 
           className="w-14 h-14 flex items-center justify-center rounded-full backdrop-blur cursor-pointer shadow-lg border hover:scale-105 transition-transform" 
           style={{ backgroundColor: "var(--color-surface, #1a1d27)", borderColor: "rgba(255,255,255,0.05)", color: "var(--color-text-muted, #71717a)" }}

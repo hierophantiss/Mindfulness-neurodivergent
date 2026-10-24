@@ -109,7 +109,7 @@ export default function PracticeMicrodoses() {
       
       {/* Header Controls */}
       <div className="flex items-center gap-4">
-        <button 
+        <button aria-label={language === 'en' ? 'Back' : 'Πίσω'} 
           onClick={() => navigate('/practice')} 
           className="btn-zen !px-3 !py-3"
           id="btn-back-practice"
@@ -122,9 +122,9 @@ export default function PracticeMicrodoses() {
       </div>
 
       <header className="space-y-3 max-w-2xl">
-        <h2 className="text-4xl md:text-5xl font-serif text-ink/90 italic leading-tight">
+        <h1 className="text-4xl md:text-5xl font-serif text-ink/90 italic leading-tight">
           {language === 'el' ? 'Αόρατη Εξάσκηση' : 'Invisible Practice'}
-        </h2>
+        </h1>
         <p className="text-base text-ink/50 font-sans leading-relaxed">
           {language === 'el' 
             ? 'Πρακτικές που γίνονται παντού, χωρίς να σε καταλάβει κανείς. Ιδανικές για στιγμές έντασης ή δημόσιους χώρους.' 
@@ -147,9 +147,9 @@ export default function PracticeMicrodoses() {
             </span>
           </div>
           
-          <h3 className="text-2xl md:text-3xl font-serif text-ink/9 drop-shadow-sm leading-tight italic">
+          <h2 className="text-2xl md:text-3xl font-serif text-ink/9 drop-shadow-sm leading-tight italic">
             {language === 'el' ? suggestedExercise.title.el : suggestedExercise.title.en}
-          </h3>
+          </h2>
           
           <p className="text-sm text-ink/50 leading-relaxed font-sans max-w-2xl">
             {language === 'el' 
@@ -231,12 +231,12 @@ export default function PracticeMicrodoses() {
                   <div className={cn("absolute top-0 left-0 bottom-0 w-1", `bg-${color}-50` || `bg-${color}-500`)} style={{ backgroundColor: `var(--tw-color-${color}-500)` }} />
                 )}
                 
-                <h4 className={cn(
+                <h3 className={cn(
                   "text-xs font-bold uppercase tracking-wider transition-colors",
                   isActive ? `text-${color}-300` : "text-ink/70 group-hover:text-ink"
                 )}>
                   {language === 'el' ? sf.label.el : sf.label.en}
-                </h4>
+                </h3>
                 <p className="text-[11px] text-ink/40 leading-relaxed font-sans mt-1 group-hover:text-ink/50 transition-colors">
                   {language === 'el' ? sf.desc.el : sf.desc.en}
                 </p>
@@ -373,9 +373,9 @@ export default function PracticeMicrodoses() {
                   </span>
                 </div>
                 
-                <h3 className="text-base font-serif text-ink/95 italic leading-tight group-hover:text-ink transition-colors truncate flex items-center gap-1.5">
+                <h2 className="text-base font-serif text-ink/95 italic leading-tight group-hover:text-ink transition-colors truncate flex items-center gap-1.5">
                   <span className="truncate">{language === 'en' ? ex.title.en : ex.title.el}</span>
-                </h3>
+                </h2>
                 
                 <p className="text-[12px] text-ink/45 leading-normal font-sans group-hover:text-ink/60 transition-colors line-clamp-2">
                   {language === 'en' ? ex.desc.en : ex.desc.el}

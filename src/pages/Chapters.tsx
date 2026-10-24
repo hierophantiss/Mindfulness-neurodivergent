@@ -32,7 +32,7 @@ export default function Chapters() {
         
         {/* Header - Editorial Style */}
         <header className="flex flex-col items-center text-center space-y-6 relative">
-          <button 
+          <button aria-label={language === 'en' ? 'Back' : 'Πίσω'} 
             onClick={() => navigate('/dashboard')} 
             className="btn-zen absolute left-0 top-0 !px-3 !py-3 hidden md:flex"
           >
@@ -45,9 +45,9 @@ export default function Chapters() {
                 {language === 'en' ? 'Theory & Practice' : 'Θεωρία & Πρακτική'}
               </span>
             </div>
-            <h2 className="text-5xl md:text-7xl font-sans text-ink italic leading-none tracking-tight">
+            <h1 className="text-5xl md:text-7xl font-sans text-ink italic leading-none tracking-tight">
               {language === 'en' ? 'Presence Workbook' : 'Εγχειρίδιο Παρουσίας'}
-            </h2>
+            </h1>
             <p className="text-lg text-ink/50 font-serif italic max-w-xl mx-auto leading-relaxed mt-2 flex items-center justify-center gap-2">
               {language === 'el' ? 'Μαθαίνοντας να ιππεύεις τον άνεμο. Ένας οδηγός για την επίγνωση.' : 'Learning to ride the wind. A guide to awareness.'}
               <Link to="/rabbithole" state={{ activeArticle: 'riding-the-wind' }} className="text-teal-400 hover:text-teal-300 transition-colors inline-flex mt-1" title={language === 'en' ? 'Read in Rabbit Hole' : 'Διαβάστε στην Κουνελότρυπα'}>
@@ -61,9 +61,9 @@ export default function Chapters() {
         <div id="basis" className="space-y-8">
           <div className="flex items-center gap-4">
             <span className="w-12 h-[1px] bg-white/10"></span>
-            <h3 className="text-[11px] font-bold text-ink/40 tracking-[0.3em] uppercase">
+            <h2 className="text-[11px] font-bold text-ink/40 tracking-[0.3em] uppercase">
               {language === 'el' ? 'Ο Τετραπλος Αξονας' : 'The Quadruple Axis'}
-            </h3>
+            </h2>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -106,7 +106,7 @@ export default function Chapters() {
                     )}
                   </div>
                   <div>
-                    <h3 className="text-3xl font-heading text-ink/90 italic group-hover:text-ink transition-colors">{chapter.title}</h3>
+                    <h2 className="text-3xl font-heading text-ink/90 italic group-hover:text-ink transition-colors">{chapter.title}</h2>
                     <p className="text-sm text-ink/50 font-sans mt-2 drop-shadow-sm line-clamp-2">{chapter.sub}</p>
                   </div>
                   <div className="flex items-center gap-2">
@@ -136,9 +136,9 @@ export default function Chapters() {
           <div id="application" className="space-y-8">
             <div className="flex items-center gap-4">
               <span className="w-12 h-[1px] bg-white/10"></span>
-              <h3 className="text-[11px] font-bold text-ink/40 tracking-[0.3em] uppercase">
+              <h2 className="text-[11px] font-bold text-ink/40 tracking-[0.3em] uppercase">
                 {language === 'el' ? 'Εφαρμογη' : 'Application'}
-              </h3>
+              </h2>
             </div>
             <div className="space-y-4">
               {loading ? (
@@ -170,7 +170,7 @@ export default function Chapters() {
                     )}
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-serif text-ink/90 italic leading-tight group-hover:translate-x-1 transition-transform">{chapter.title}</h3>
+                    <h2 className="text-lg font-serif text-ink/90 italic leading-tight group-hover:translate-x-1 transition-transform">{chapter.title}</h2>
                     <p className="text-[11px] text-ink/40 mt-1 uppercase tracking-wider font-bold">{chapter.sub}</p>
                   </div>
                 </Link>
@@ -182,9 +182,9 @@ export default function Chapters() {
           <div id="depth" className="space-y-8">
             <div className="flex items-center gap-4">
               <span className="w-12 h-[1px] bg-white/10"></span>
-              <h3 className="text-[11px] font-bold text-ink/40 tracking-[0.3em] uppercase">
+              <h2 className="text-[11px] font-bold text-ink/40 tracking-[0.3em] uppercase">
                 {language === 'el' ? 'Συνθεση' : 'Depth'}
-              </h3>
+              </h2>
             </div>
             <div className="space-y-4">
               {loading ? (
@@ -216,7 +216,7 @@ export default function Chapters() {
                     )}
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-serif text-ink/90 italic leading-tight group-hover:translate-x-1 transition-transform">{chapter.title}</h3>
+                    <h2 className="text-lg font-serif text-ink/90 italic leading-tight group-hover:translate-x-1 transition-transform">{chapter.title}</h2>
                     <p className="text-[11px] text-ink/40 mt-1 uppercase tracking-wider font-bold">{chapter.sub}</p>
                   </div>
                 </Link>
@@ -235,9 +235,9 @@ export default function Chapters() {
             <div className="w-16 h-16 rounded-2xl bg-teal-500/10 text-teal-400 flex items-center justify-center mb-8 border border-teal-500/20 group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(20,184,166,0.3)] transition-all duration-700">
                <BookOpen size={28} strokeWidth={1.5} />
             </div>
-            <h3 className="text-4xl md:text-5xl font-serif text-ink/90 italic mb-5 leading-tight">
+            <h2 className="text-4xl md:text-5xl font-serif text-ink/90 italic mb-5 leading-tight">
               {language === 'el' ? 'Πρόγραμμα 8 Εβδομάδων' : '8 Weeks Program'}
-            </h3>
+            </h2>
             <p className="text-lg text-ink/50 font-sans max-w-md leading-relaxed">
               {language === 'el' 
                 ? 'Μια δομημένη πρακτική πορεία για την ενσωμάτωση της επίγνωσης στην καθημερινότητα.' 

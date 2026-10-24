@@ -34,7 +34,7 @@ export default function Methodology() {
             else navigate('/settings');
           }}
           className="w-10 h-10 rounded-full bg-white/[0.04] flex items-center justify-center text-[#d4d4d8] hover:bg-white/[0.08] hover:text-ink transition-colors active:scale-95"
-          aria-label="Back"
+          aria-label={language === 'el' ? 'Πίσω' : 'Back'}
         >
           <ArrowLeft size={20} />
         </button>

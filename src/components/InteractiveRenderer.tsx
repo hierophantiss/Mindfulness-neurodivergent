@@ -73,7 +73,7 @@ export default function InteractiveRenderer({ id, asModal }: InteractiveRenderer
   const content = (
     <div className={`relative w-full ${asModal ? 'h-[100dvh] md:h-[90vh] md:max-h-[900px] md:max-w-[1200px] md:rounded-3xl' : 'h-[500px] md:h-[650px] shape-cloud-3 rounded-2xl'} bg-[#050710] overflow-hidden border border-white/5 shadow-2xl`}>
       {asModal && (
-        <button 
+        <button aria-label={language === 'en' ? 'Close' : 'Κλείσιμο'} 
           onClick={() => setIsOpen(false)}
           className="absolute top-6 right-6 z-50 w-10 h-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-ink/80 hover:text-ink hover:bg-white/10 transition-colors"
         >

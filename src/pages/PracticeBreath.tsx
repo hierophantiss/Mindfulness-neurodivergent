@@ -494,7 +494,7 @@ export default function PracticeBreath() {
         "flex items-center justify-between z-20 w-full mb-2 shrink-0 transition-opacity duration-1000",
         running ? "opacity-20 hover:opacity-100 focus-within:opacity-100" : "opacity-100"
       )}>
-        <button 
+        <button aria-label={language === 'en' ? 'Back' : 'Πίσω'} 
           onClick={(e) => {
             e.stopPropagation();
             if (window.history.length > 2) {
@@ -508,14 +508,15 @@ export default function PracticeBreath() {
           <ArrowLeft size={20} />
         </button>
         <div className="flex-1 flex justify-center items-center pointer-events-auto">
-            <span className="text-zinc-400 text-[13px] font-semibold tracking-wider font-sans ml-3">
+            <h1 className="text-zinc-400 text-[13px] font-semibold tracking-wider font-sans ml-3">
                {language === 'en' ? pattern.title.en : pattern.title.el}
-             </span>
+             </h1>
              <ConceptInfoIcon conceptId={pattern.category === 'breath' ? 'vagus_nerve' : 'proprioception'} className="w-6 h-6 ml-1.5 opacity-60 hover:opacity-100 bg-transparent text-zinc-400 border border-zinc-400/20" />
         </div>
         <div className="flex items-center gap-2 shrink-0">
           <button 
             onClick={() => setShowSleepTimer(true)}
+            aria-label={language === 'el' ? 'Χρονοδιακόπτης ύπνου' : 'Sleep timer'}
             className={cn(
               "h-10 rounded-full border border-zinc-700 flex items-center justify-center transition-colors shrink-0 shadow-lg px-3 overflow-hidden",
               sleepMinutes > 0 ? "bg-zinc-700 text-teal-300 border-teal-500/50" : "bg-zinc-800/50 text-zinc-400 opacity-80"
@@ -538,12 +539,15 @@ export default function PracticeBreath() {
                 step="0.05"
                 value={globalVolume}
                 onChange={(e) => setGlobalVolumeState(parseFloat(e.target.value))}
+                aria-label={language === 'el' ? 'Ένταση ήχου' : 'Volume'}
                 className="w-20 md:w-24 accent-teal-500 h-1.5 bg-zinc-900 rounded-lg appearance-none cursor-pointer"
               />
             </div>
           )}
           <button 
             onClick={handleAudioToggle}
+            aria-label={language === 'el' ? 'Ήχος' : 'Sound'}
+            aria-pressed={audioEnabled}
             className={cn(
               "w-10 h-10 rounded-full border flex items-center justify-center transition-colors relative shadow-lg shrink-0",
               audioEnabled ? "bg-zinc-700 border-teal-500 text-teal-400" : "bg-zinc-800/50 border-zinc-700 text-zinc-300"
@@ -573,7 +577,7 @@ export default function PracticeBreath() {
                 ? (isVocal ? 'Για ήχο πάτα τα ακουστικά πάνω δεξιά: φωνή-οδηγός για να ψέλνεις μαζί της, ή μόνο ήχος φύσης.' : 'Για ήχο πάτα τα ακουστικά πάνω δεξιά: binaural με ακουστικά, ή μόνο ήχος φύσης από το ηχείο.')
                 : (isVocal ? 'For sound, tap the headphones at the top right: a voice guide to chant with, or just a nature sound.' : 'For sound, tap the headphones at the top right: binaural with headphones, or just a nature sound from the speaker.')}
             </p>
-            <button
+            <button aria-label={language === 'en' ? 'Close' : 'Κλείσιμο'}
               onClick={() => {
                 setShowBanner(false);
                 localStorage.setItem('hide_binaural_banner', 'true');
@@ -881,9 +885,9 @@ export default function PracticeBreath() {
               <Timer size={28} className="text-teal-400" />
             </div>
             
-            <h3 className="text-lg md:text-xl font-medium text-center text-teal-50 mb-2">
+            <h2 className="text-lg md:text-xl font-medium text-center text-teal-50 mb-2">
               {language === 'el' ? 'Χρονοδιακόπτης ' : 'Sleep Timer '}
-            </h3>
+            </h2>
             
             <p className="text-zinc-200 text-xs md:text-sm text-center leading-relaxed mb-6">
               {language === 'el' ? 'Επιλέξτε μετά από πόση ώρα θέλετε να σταματήσει η εφαρμογή.' : 'Select when you want the application to stop.'}
@@ -937,9 +941,9 @@ export default function PracticeBreath() {
               <Headphones size={28} className="text-teal-400" />
             </div>
             
-            <h3 className="text-lg md:text-xl font-medium text-center text-teal-50 mb-3">
+            <h2 className="text-lg md:text-xl font-medium text-center text-teal-50 mb-3">
               {language === 'el' ? 'Ήχος για την άσκηση' : 'Sound for this practice'}
-            </h3>
+            </h2>
 
             {isVocal ? (
             <div className="text-zinc-200 text-xs md:text-sm leading-relaxed mb-4 space-y-2">

@@ -290,7 +290,7 @@ export default function Settings() {
        <div className="w-full max-w-xl mx-auto px-6">
           {/* Header */}
           <div className="flex items-center justify-between mb-10">
-            <button 
+            <button aria-label={language === 'en' ? 'Back' : 'Πίσω'} 
                 onClick={() => {
                   if (window.history.length > 2) navigate(-1);
                   else navigate('/');

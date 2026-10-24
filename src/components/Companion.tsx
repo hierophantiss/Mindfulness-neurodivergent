@@ -201,7 +201,7 @@ export default function Companion() {
               <button 
                 onClick={dismissBubble} 
                 className="p-1.5 hover:bg-white/20 rounded-full ml-1 transition-colors flex-shrink-0"
-                aria-label="Close message"
+                aria-label={language === 'el' ? 'Κλείσιμο μηνύματος' : 'Close message'}
               >
                 <X size={14} className="text-stone-300" />
               </button>

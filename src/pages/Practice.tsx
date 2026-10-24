@@ -10,13 +10,6 @@ import { Check } from 'lucide-react';
 import { ConceptInfoIcon } from '../components/ConceptInfoOverlay';
 import { QuietAxisHint } from '../components/QuietAxisHint';
 
-// Cards that hold their own small buttons (the concept "i") cannot be <button>s
-// themselves, so they get Enter/Space by hand. Keys pressed on the inner
-// buttons are left to them.
-const onPressKey = (press: () => void) => (e: React.KeyboardEvent) => {
-  if (e.target !== e.currentTarget) return;
-  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); press(); }
-};
 
 function PatternCard({ p, colorScheme, icon: Icon, onClick, language, hideCycle = false }: { 
   p: BreathPattern, 
@@ -44,9 +37,9 @@ function PatternCard({ p, colorScheme, icon: Icon, onClick, language, hideCycle 
       </div>
 
       <div className="relative z-10 flex flex-col h-full mt-1">
-        <h3 className="text-[22px] md:text-2xl font-serif text-ink/90 drop-shadow-sm leading-tight italic mb-1">
+        <h2 className="text-[22px] md:text-2xl font-serif text-ink/90 drop-shadow-sm leading-tight italic mb-1">
           {language === 'en' ? p.title.en : p.title.el}
-        </h3>
+        </h2>
         <div className={cn("text-[10px] font-bold uppercase tracking-widest mb-3 drop-shadow-sm", isIndigo ? "text-indigo-400/80" : "text-teal-400/80")}>
           {language === 'en' ? p.subtitle.en : p.subtitle.el}
         </div>
@@ -239,9 +232,9 @@ const axisInfo = {
             <div className={cn("w-14 h-14 shrink-0 rounded-full flex items-center justify-center text-3xl font-mono border", info.bgColor, info.borderColor, info.color)}>
               {info.icon}
             </div>
-            <h2 className="text-4xl md:text-5xl font-serif text-ink/90 italic leading-tight">
+            <h1 className="text-4xl md:text-5xl font-serif text-ink/90 italic leading-tight">
               {language === 'en' ? info.title.en : info.title.el}
-            </h2>
+            </h1>
           </div>
           <p className="text-lg text-ink/50 font-sans leading-relaxed">
             {language === 'en' ? info.desc.en : info.desc.el}
@@ -251,9 +244,9 @@ const axisInfo = {
         <div className="max-w-4xl mx-auto w-full pb-12 space-y-12">
           {axisBreaths.length > 0 && (
             <div className="space-y-6">
-              <h3 className="text-2xl font-serif text-ink/80 italic border-b border-white/5 pb-2">
+              <h2 className="text-2xl font-serif text-ink/80 italic border-b border-white/5 pb-2">
                 {language === 'el' ? 'Βασικές Πρακτικές' : 'Core Practices'}
-              </h3>
+              </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {axisBreaths.map(p => (
                   <PatternCard
@@ -271,9 +264,9 @@ const axisInfo = {
 
           {axisMicrodoses.length > 0 && (
             <div className="space-y-6">
-              <h3 className="text-2xl font-serif text-ink/80 italic border-b border-white/5 pb-2">
+              <h2 className="text-2xl font-serif text-ink/80 italic border-b border-white/5 pb-2">
                 {language === 'el' ? 'Αόρατες Μικροδόσεις' : 'Invisible Microdoses'}
-              </h3>
+              </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {axisMicrodoses.map((ex, idx) => (
                   <Link
@@ -294,9 +287,9 @@ const axisInfo = {
                           {language === 'en' ? ex.dur.en : ex.dur.el}
                         </span>
                       </div>
-                      <h3 className="text-base font-serif text-ink/95 italic leading-tight group-hover:text-ink transition-colors truncate">
+                      <h2 className="text-base font-serif text-ink/95 italic leading-tight group-hover:text-ink transition-colors truncate">
                         {language === 'en' ? ex.title.en : ex.title.el}
-                      </h3>
+                      </h2>
                       <p className="text-[12px] text-ink/45 leading-normal font-sans group-hover:text-ink/60 transition-colors line-clamp-2">
                         {language === 'en' ? ex.desc.en : ex.desc.el}
                       </p>
@@ -343,10 +336,10 @@ const axisInfo = {
         </div>
 
         <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <h2 className="text-4xl md:text-5xl font-serif text-ink/90 italic leading-tight flex items-center justify-center md:justify-start">
+          <h1 className="text-4xl md:text-5xl font-serif text-ink/90 italic leading-tight flex items-center justify-center md:justify-start">
             {language === 'el' ? 'Ψάλσιμο & Αντήχηση' : 'Chanting & Resonance'}
             <ConceptInfoIcon conceptId="vagus_nerve" />
-          </h2>
+          </h1>
           <p className="text-lg text-ink/50 font-sans leading-relaxed">
             {language === 'el' 
               ? 'Βουητό και ψάλσιμο πάνω στην εκπνοή: μακριά εκπνοή με δόνηση. Το σώμα ηρεμεί το σώμα. Αν σου τελειώνει ο αέρας, σταμάτα νωρίτερα· δεν χρειάζεται να φτάσεις ως το τέλος.' 
@@ -404,10 +397,10 @@ const axisInfo = {
         </div>
 
         <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <h2 className="text-4xl md:text-5xl font-serif text-ink/90 italic leading-tight flex items-center justify-center md:justify-start">
+          <h1 className="text-4xl md:text-5xl font-serif text-ink/90 italic leading-tight flex items-center justify-center md:justify-start">
             {language === 'el' ? 'Αναπνοή & Ύπνος' : 'Breath & Sleep'}
             <ConceptInfoIcon conceptId="vagus_nerve" />
-          </h2>
+          </h1>
           <p className="text-lg text-ink/50 font-sans leading-relaxed">
             {language === 'el' 
               ? 'Οι τρεις ρυθμοί του βιβλίου πρώτα: 5-5 για κάθε μέρα, 4-6 στην κορύφωση, 4-2-7 για βαθιά χαλάρωση. Η εκπνοή είναι το εργαλείο, όχι η εισπνοή.' 
@@ -418,10 +411,10 @@ const axisInfo = {
         {/* Warning Banner */}
         <div className="max-w-4xl mx-auto w-full">
           <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-5 md:p-6 text-left">
-            <h3 className="text-amber-400 font-semibold mb-3 flex items-center gap-2">
+            <h2 className="text-amber-400 font-semibold mb-3 flex items-center gap-2">
               <span className="text-xl">⚠️</span>
               {language === 'el' ? 'Σημαντική Σημείωση για την Ασφάλειά σου' : 'Important Safety Note'}
-            </h3>
+            </h2>
             <div className="space-y-3 text-amber-200/80 text-sm md:text-[15px] leading-relaxed">
               <p>
                 {language === 'el' 
@@ -524,13 +517,13 @@ const axisInfo = {
         </div>
 
         <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <h2 className="text-4xl md:text-5xl font-serif text-ink/90 italic leading-tight flex items-center justify-center md:justify-start flex-wrap gap-2">
+          <h1 className="text-4xl md:text-5xl font-serif text-ink/90 italic leading-tight flex items-center justify-center md:justify-start flex-wrap gap-2">
             <span>{language === 'el' ? 'Κινητική Ενσυνειδητότητα & Τάι Τσι' : 'Mindful Movement & Tai Chi'}</span>
             <span className="inline-flex gap-1 items-center" onClick={(e) => e.stopPropagation()}>
               <ConceptInfoIcon conceptId="proprioception" />
               <ConceptInfoIcon conceptId="movement_vs_breathwork" className="w-6 h-6 ml-0.5 text-indigo-400 hover:text-indigo-300 hover:bg-indigo-400/10" />
             </span>
-          </h2>
+          </h1>
           <p className="text-lg text-ink/50 font-sans leading-relaxed">
             {language === 'el' 
               ? 'Φέρε την προσοχή από τις σκέψεις στο σώμα, με απαλές, ρυθμικές κινήσεις.' 
@@ -540,7 +533,7 @@ const axisInfo = {
 
         <div className="max-w-4xl mx-auto w-full mb-8 font-sans text-ink/80 bg-white/[0.02] border border-white/5 rounded-2xl p-6 md:p-8 space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-700">
           <div>
-            <h3 className="text-xl md:text-2xl font-serif text-indigo-300 italic mb-4">{language === 'el' ? 'Πριν Ξεκινήσεις' : 'Before You Start'}</h3>
+            <h2 className="text-xl md:text-2xl font-serif text-indigo-300 italic mb-4">{language === 'el' ? 'Πριν Ξεκινήσεις' : 'Before You Start'}</h2>
             <p className="mb-6">{language === 'el' ? 'Το Τάι Τσι ξεκινά πριν από την πρώτη κίνηση.' : 'Tai Chi begins before the first movement.'}</p>
             <ul className="space-y-4 text-[15px] leading-relaxed">
               <li>
@@ -565,7 +558,7 @@ const axisInfo = {
           <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
 
           <div>
-            <h3 className="text-xl md:text-2xl font-serif text-indigo-300 italic mb-4">{language === 'el' ? 'Η Αρχή' : 'The Principle'}</h3>
+            <h2 className="text-xl md:text-2xl font-serif text-indigo-300 italic mb-4">{language === 'el' ? 'Η Αρχή' : 'The Principle'}</h2>
             <p className="mb-2 leading-relaxed">
               {language === 'el' ? 'Το Τάι Τσι δεν είναι γυμναστική — είναι συντονισμός. Η κίνηση και η αναπνοή είναι αδιαχώριστες. Η βαρύτητα είναι ο δάσκαλος, η αναπνοή ο ρυθμός, η προσοχή ακολουθεί φυσικά.' : 'Tai Chi is not a workout — it is coordination. Movement and breath are inseparable. Gravity is the teacher, breath is the rhythm, attention follows naturally.'}
             </p>
@@ -589,9 +582,9 @@ const axisInfo = {
               {filteredMovements.length > 0 && (
                 <div className="space-y-4">
                   <div className="border-b border-white/5 pb-2">
-                    <h3 className="text-xl font-serif italic text-indigo-400 leading-tight">
+                    <h2 className="text-xl font-serif italic text-indigo-400 leading-tight">
                       {language === 'el' ? 'Βασικές Κινήσεις (Τάι Τσι & Qigong)' : 'Core Movements (Tai Chi & Qigong)'}
-                    </h3>
+                    </h2>
                     <p className="text-sm text-ink/40 mt-1">
                       {language === 'el' ? 'Μία κίνηση, ξανά και ξανά, με την αναπνοή.' : 'One movement, again and again, with the breath.'}
                     </p>
@@ -625,9 +618,9 @@ const axisInfo = {
                 <div className="space-y-4">
                   <div className="border-b border-white/5 pb-2 flex justify-between items-end">
                     <div>
-                      <h3 className="text-xl font-serif italic text-emerald-400 leading-tight">
+                      <h2 className="text-xl font-serif italic text-emerald-400 leading-tight">
                         {language === 'el' ? 'Ροές' : 'Flows'}
-                      </h3>
+                      </h2>
                       <p className="text-sm text-ink/40 mt-1">
                         {language === 'el' ? 'Η ίδια κίνηση σε τέσσερις ρυθμούς· τον ρυθμό τον διαλέγεις μέσα στην άσκηση.' : 'The same movement in four rhythms; you choose the rhythm inside the practice.'}
                       </p>
@@ -674,10 +667,10 @@ const axisInfo = {
         </div>
 
         <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <h2 className="text-4xl md:text-5xl font-serif text-ink/90 italic leading-tight flex items-center justify-center md:justify-start">
+          <h1 className="text-4xl md:text-5xl font-serif text-ink/90 italic leading-tight flex items-center justify-center md:justify-start">
             {language === 'el' ? 'Αόρατες Μικροδόσεις' : 'Invisible Microdoses'}
             <ConceptInfoIcon conceptId="neuroplasticity" />
-          </h2>
+          </h1>
           <p className="text-lg text-ink/50 font-sans leading-relaxed">
             {language === 'el' 
               ? 'Αόρατες μικροπρακτικές που γίνονται παντού.' 
@@ -701,9 +694,9 @@ const axisInfo = {
               </div>
 
               <div className="relative z-10 flex flex-col h-full mt-1">
-                <h3 className="text-[22px] md:text-2xl font-serif text-ink/90 drop-shadow-sm leading-tight italic mb-1">
+                <h2 className="text-[22px] md:text-2xl font-serif text-ink/90 drop-shadow-sm leading-tight italic mb-1">
                   {language === 'en' ? 'Microdoses Collection' : 'Συλλογή Μικροδόσεων'}
-                </h3>
+                </h2>
                 <div className="text-[10px] font-bold uppercase tracking-widest mb-3 drop-shadow-sm text-amber-400/80">
                   {language === 'en' ? 'Quick Tools' : 'Άμεσα Εργαλεία'}
                 </div>
@@ -739,9 +732,9 @@ const axisInfo = {
       </div>
 
       <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-        <h2 className="text-5xl md:text-6xl font-serif text-ink/90 italic leading-tight">
+        <h1 className="text-5xl md:text-6xl font-serif text-ink/90 italic leading-tight">
           {language === 'el' ? 'Εξάσκηση' : 'Practice'}
-        </h2>
+        </h1>
         <p className="text-lg text-ink/50 font-sans leading-relaxed">
           {language === 'el' 
             ? 'Επίλεξε την κατηγορία εξάσκησης που ταιριάζει στην κατάστασή σου.' 
@@ -753,28 +746,27 @@ const axisInfo = {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-12 max-w-5xl mx-auto w-full">
         {/* Mindful Movement & Tai Chi Card */}
-        <div role="button" tabIndex={0}
-          onClick={() => handleCategoryChange('movement')}
-          onKeyDown={onPressKey(() => handleCategoryChange('movement'))}
-          className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-3 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-indigo-500/20 overflow-hidden text-left"
-        >
+        <div          className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-3 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-indigo-500/20 overflow-hidden text-left">
+          {/* The whole card is one button (its own layer, under the concept "i" buttons) */}
+          <button type="button" onClick={() => handleCategoryChange('movement')} aria-labelledby="practice-cat-movement" aria-describedby="practice-cat-movement-desc"
+            className="absolute inset-0 z-[15] w-full h-full rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60" />
           <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-indigo-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           
-          <div className="flex justify-between items-start mb-8 relative z-10 w-full">
+          <div className="flex justify-between items-start mb-8 relative w-full pointer-events-none">
             <div className="w-14 h-14 shrink-0 shape-cloud-5 bg-indigo-400/15 flex items-center justify-center text-indigo-400 border border-indigo-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
               <Activity size={28} strokeWidth={1.5} />
             </div>
-            <div className="flex gap-1.5" onClick={(e) => e.stopPropagation()}>
-              <ConceptInfoIcon conceptId="proprioception" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
-              <ConceptInfoIcon conceptId="movement_vs_breathwork" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5 text-indigo-400 hover:text-indigo-300" />
+            <div className="flex gap-1.5 pointer-events-auto relative z-20">
+              <ConceptInfoIcon conceptId="proprioception" className="w-8 h-8 pointer-events-auto relative z-20 opacity-60 hover:opacity-100 bg-white/5" />
+              <ConceptInfoIcon conceptId="movement_vs_breathwork" className="w-8 h-8 pointer-events-auto relative z-20 opacity-60 hover:opacity-100 bg-white/5 text-indigo-400 hover:text-indigo-300" />
             </div>
           </div>
           
-          <div className="space-y-2 relative z-10 mt-auto w-full">
-            <h3 className="text-2xl font-serif text-ink/90 italic leading-tight">
+          <div className="space-y-2 relative mt-auto w-full pointer-events-none">
+            <h2 id="practice-cat-movement" className="text-2xl font-serif text-ink/90 italic leading-tight">
               {language === 'en' ? 'Movement & Tai Chi' : 'Κίνηση & Τάι Τσι'}
-            </h3>
-            <p className="text-ink/50 font-sans text-[14px] leading-relaxed">
+            </h2>
+            <p id="practice-cat-movement-desc" className="text-ink/50 font-sans text-[14px] leading-relaxed">
               {language === 'en' 
                ? 'Slow movements with the breath: Cloud Hands, Qigong, Swaying and the Tai Chi and Lotus flows.' 
                : 'Αργές κινήσεις με την αναπνοή: Χέρια στα Σύννεφα, Qigong, Λίκνισμα και οι ροές Τάι Τσι και Λωτός.'}
@@ -783,25 +775,24 @@ const axisInfo = {
         </div>
 
         {/* Breath Rhythms Card */}
-        <div role="button" tabIndex={0}
-          onClick={() => handleCategoryChange('breath')}
-          onKeyDown={onPressKey(() => handleCategoryChange('breath'))}
-          className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-2 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-teal-500/20 overflow-hidden text-left"
-        >
+        <div          className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-2 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-teal-500/20 overflow-hidden text-left">
+          {/* The whole card is one button (its own layer, under the concept "i" buttons) */}
+          <button type="button" onClick={() => handleCategoryChange('breath')} aria-labelledby="practice-cat-breath" aria-describedby="practice-cat-breath-desc"
+            className="absolute inset-0 z-[15] w-full h-full rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60" />
           <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-teal-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           
-          <div className="flex justify-between items-start mb-8 relative z-10 w-full">
+          <div className="flex justify-between items-start mb-8 relative w-full pointer-events-none">
             <div className="w-14 h-14 shrink-0 shape-cloud-4 bg-teal-400/15 flex items-center justify-center text-teal-400 border border-teal-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
               <Wind size={28} strokeWidth={1.5} />
             </div>
-            <ConceptInfoIcon conceptId="vagus_nerve" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
+            <ConceptInfoIcon conceptId="vagus_nerve" className="w-8 h-8 pointer-events-auto relative z-20 opacity-60 hover:opacity-100 bg-white/5" />
           </div>
           
-          <div className="space-y-2 relative z-10 mt-auto w-full">
-            <h3 className="text-2xl font-serif text-ink/90 italic leading-tight">
+          <div className="space-y-2 relative mt-auto w-full pointer-events-none">
+            <h2 id="practice-cat-breath" className="text-2xl font-serif text-ink/90 italic leading-tight">
               {language === 'en' ? 'Breath rhythms' : 'Ρυθμοί Αναπνοής'}
-            </h3>
-            <p className="text-ink/50 font-sans text-[14px] leading-relaxed">
+            </h2>
+            <p id="practice-cat-breath-desc" className="text-ink/50 font-sans text-[14px] leading-relaxed">
               {language === 'en' 
                ? 'Specific breathing techniques to regulate and calm the central nervous system.' 
                : 'Στοχευμένοι ρυθμοί αναπνοής για ηρεμία και ρύθμιση του νευρικού συστήματος.'}
@@ -810,25 +801,24 @@ const axisInfo = {
         </div>
 
         {/* Vocal & Chanting Resonance Card */}
-        <div role="button" tabIndex={0}
-          onClick={() => handleCategoryChange('vocal')}
-          onKeyDown={onPressKey(() => handleCategoryChange('vocal'))}
-          className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-4 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-violet-500/20 overflow-hidden text-left"
-        >
+        <div          className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-4 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-violet-500/20 overflow-hidden text-left">
+          {/* The whole card is one button (its own layer, under the concept "i" buttons) */}
+          <button type="button" onClick={() => handleCategoryChange('vocal')} aria-labelledby="practice-cat-vocal" aria-describedby="practice-cat-vocal-desc"
+            className="absolute inset-0 z-[15] w-full h-full rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60" />
           <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-violet-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           
-          <div className="flex justify-between items-start mb-8 relative z-10 w-full">
+          <div className="flex justify-between items-start mb-8 relative w-full pointer-events-none">
             <div className="w-14 h-14 shrink-0 shape-cloud-2 bg-violet-400/15 flex items-center justify-center text-violet-400 border border-violet-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
               <Volume2 size={28} strokeWidth={1.5} />
             </div>
-            <ConceptInfoIcon conceptId="vagus_nerve" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
+            <ConceptInfoIcon conceptId="vagus_nerve" className="w-8 h-8 pointer-events-auto relative z-20 opacity-60 hover:opacity-100 bg-white/5" />
           </div>
           
-          <div className="space-y-2 relative z-10 mt-auto w-full">
-            <h3 className="text-2xl font-serif text-ink/90 italic leading-tight">
+          <div className="space-y-2 relative mt-auto w-full pointer-events-none">
+            <h2 id="practice-cat-vocal" className="text-2xl font-serif text-ink/90 italic leading-tight">
               {language === 'en' ? 'Chanting & Resonance' : 'Ψάλσιμο & Αντήχηση'}
-            </h3>
-            <p className="text-ink/50 font-sans text-[14px] leading-relaxed">
+            </h2>
+            <p id="practice-cat-vocal-desc" className="text-ink/50 font-sans text-[14px] leading-relaxed">
               {language === 'en' 
                ? 'Vocal vibrations & vagus nerve stimulation (Bhramari, AUM, SaTaNaMa).' 
                : 'Φωνητικές δονήσεις & διέγερση του πνευμονογαστρικού (Bhramari, ΑΟΜ, SaTaNaMa).'}
@@ -837,20 +827,19 @@ const axisInfo = {
         </div>
 
         {/* Microdoses Card */}
-        <div role="button" tabIndex={0}
-          onClick={() => hasFoundation ? handleCategoryChange('microdoses') : setLockedCategoryAttempt('microdoses')}
-          onKeyDown={onPressKey(() => hasFoundation ? handleCategoryChange('microdoses') : setLockedCategoryAttempt('microdoses'))}
-          className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-5 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-amber-500/20 overflow-hidden text-left"
-        >
+        <div          className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-5 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-amber-500/20 overflow-hidden text-left">
+          {/* The whole card is one button (its own layer, under the concept "i" buttons) */}
+          <button type="button" onClick={() => hasFoundation ? handleCategoryChange('microdoses') : setLockedCategoryAttempt('microdoses')} aria-labelledby="practice-cat-microdoses" aria-describedby="practice-cat-microdoses-desc"
+            className="absolute inset-0 z-[15] w-full h-full rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60" />
           <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-amber-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           
-          <div className="flex justify-between items-start mb-8 relative z-10 w-full">
+          <div className="flex justify-between items-start mb-8 relative w-full pointer-events-none">
             <div className="w-14 h-14 shrink-0 shape-cloud-1 bg-amber-400/15 flex items-center justify-center text-amber-400 border border-amber-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
               <Zap size={28} strokeWidth={1.5} />
             </div>
             
             <div className="flex items-center gap-2">
-              <ConceptInfoIcon conceptId="neuroplasticity" className="w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
+              <ConceptInfoIcon conceptId="neuroplasticity" className="w-8 h-8 pointer-events-auto relative z-20 opacity-60 hover:opacity-100 bg-white/5" />
               {!hasFoundation && (
                 <div className="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500/80">
                   <Lock size={14} />
@@ -859,16 +848,16 @@ const axisInfo = {
             </div>
           </div>
           
-          <div className="space-y-2 relative z-10 mt-auto w-full">
+          <div className="space-y-2 relative mt-auto w-full pointer-events-none">
             {!hasFoundation && (
               <div className="text-[9px] uppercase tracking-wider text-amber-500/80 font-bold mb-1">
                 {language === 'el' ? 'Προτεινεται Θεωρια' : 'Theory Recommended'}
               </div>
             )}
-            <h3 className="text-2xl font-serif text-ink/90 italic leading-tight">
+            <h2 id="practice-cat-microdoses" className="text-2xl font-serif text-ink/90 italic leading-tight">
               {language === 'en' ? 'Microdoses' : 'Μικροδόσεις'}
-            </h3>
-            <p className="text-ink/50 font-sans text-[14px] leading-relaxed">
+            </h2>
+            <p id="practice-cat-microdoses-desc" className="text-ink/50 font-sans text-[14px] leading-relaxed">
               {language === 'en' 
                ? 'Stealth practices you can do anywhere unnoticed.' 
                : 'Αόρατες πρακτικές που γίνονται παντού χωρίς να φανεί.'}
@@ -886,9 +875,9 @@ const axisInfo = {
               </div>
             </div>
             
-            <h3 className="text-2xl font-serif text-ink italic text-center mb-2">
+            <h2 className="text-2xl font-serif text-ink italic text-center mb-2">
               {language === 'el' ? 'Προτείνεται Θεωρία' : 'Theory Recommended'}
-            </h3>
+            </h2>
             
             <p className="text-ink/60 text-center mb-8 font-sans leading-relaxed text-[15px]">
               {language === 'el' 
