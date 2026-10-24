@@ -4,7 +4,7 @@ import { useAccessibility } from '../hooks/useAccessibility';
 /**
  * The sign of the Fourfold Axis (the author's design, metal version):
  * - the gold vertical axis: gravity and the axis of the spine, the Body;
- * - the circle (steel blue): the Breath;
+ * - the blue circle: the Breath (it must read as blue, not white or grey);
  * - the triangle inscribed in it (copper): Attention;
  * - the rainbow infinity at the centre: Space.
  * On the home page the whole sign breathes at the method's 5-5 (five seconds
@@ -41,10 +41,10 @@ export function MethodMark({ className = '', label, breathe = false, dim = false
           <stop offset="100%" stopColor="#8e44ad" />
         </linearGradient>
         {/* Metal gradients in user space (a vertical line has no width, so a box-based gradient would not draw). */}
-        <linearGradient id={`${id}-steel`} gradientUnits="userSpaceOnUse" x1="0" y1="20" x2="0" y2="180">
-          <stop offset="0%" stopColor="#cfdeec" />
-          <stop offset="50%" stopColor="#95afc8" />
-          <stop offset="100%" stopColor="#b9cde0" />
+        <linearGradient id={`${id}-blue`} gradientUnits="userSpaceOnUse" x1="0" y1="20" x2="0" y2="180">
+          <stop offset="0%" stopColor="#8fbcef" />
+          <stop offset="50%" stopColor="#4f86cf" />
+          <stop offset="100%" stopColor="#77a7e3" />
         </linearGradient>
         <linearGradient id={`${id}-copper`} gradientUnits="userSpaceOnUse" x1="30" y1="20" x2="170" y2="140">
           <stop offset="0%" stopColor="#b9675a" />
@@ -73,14 +73,14 @@ export function MethodMark({ className = '', label, breathe = false, dim = false
         <g opacity={dim ? 0.72 : 1}>
           {/* The lines, like thin metal tubes with a soft shadow */}
           <g fill="none" strokeWidth={W} strokeLinecap="round" strokeLinejoin="round" filter={u('shadow')}>
-            <circle cx="100" cy="100" r={R} stroke={u('steel')} />
+            <circle cx="100" cy="100" r={R} stroke={u('blue')} />
             <polygon points={TRIANGLE} stroke={u('copper')} />
             <line x1="100" y1={100 - R + 6} x2="100" y2="88" stroke={u('gold')} />
             <line x1="100" y1="112" x2="100" y2={100 + R} stroke={u('gold')} />
           </g>
           {/* A thin light line along each tube, where the metal catches the light */}
           <g fill="none" stroke="#fff" strokeOpacity="0.35" strokeWidth={W * 0.28} strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="100" cy="100" r={R - HI} />
+            <circle cx="100" cy="100" r={R - HI} strokeOpacity="0.4" stroke="#cfe3fb" />
             <polygon points={TRIANGLE} transform={`translate(0 ${-HI})`} />
             <line x1={100 - HI} y1={100 - R + 6} x2={100 - HI} y2="88" />
             <line x1={100 - HI} y1="112" x2={100 - HI} y2={100 + R} />

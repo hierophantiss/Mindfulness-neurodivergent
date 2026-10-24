@@ -11,7 +11,7 @@ const SIGN = {
     title: 'Το σήμα της μεθόδου',
     parts: [
       { color: '#d9b77a', name: 'Ο χρυσός κάθετος άξονας', text: 'η βαρύτητα και ο άξονας της σπονδυλικής στήλης: το Σώμα.' },
-      { color: '#a9c1d9', name: 'Ο κύκλος', text: 'η Αναπνοή.' },
+      { color: '#6a9de0', name: 'Ο κύκλος', text: 'η Αναπνοή.' },
       { color: '#c97b6c', name: 'Το τρίγωνο', text: 'η Προσοχή.' },
       { color: 'rainbow', name: 'Το άπειρο', text: 'ο Χώρος.' },
     ],
@@ -20,7 +20,7 @@ const SIGN = {
     title: 'The sign of the method',
     parts: [
       { color: '#d9b77a', name: 'The gold vertical axis', text: 'gravity and the axis of the spine: the Body.' },
-      { color: '#a9c1d9', name: 'The circle', text: 'the Breath.' },
+      { color: '#6a9de0', name: 'The circle', text: 'the Breath.' },
       { color: '#c97b6c', name: 'The triangle', text: 'Attention.' },
       { color: 'rainbow', name: 'The infinity', text: 'Space.' },
     ],
