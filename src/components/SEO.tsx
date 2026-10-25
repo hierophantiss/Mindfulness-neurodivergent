@@ -627,7 +627,7 @@ export const SEO: React.FC = () => {
       <meta property="og:title"       content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:url"         content={canonicalUrl} />
-      <meta property="og:image"       content={`${BASE_URL}/og-image.png?v=2`} />
+      <meta property="og:image"       content={`${BASE_URL}/og-image.png?v=3`} />
       <meta property="og:type"        content="website" />
       <meta property="og:site_name"   content="Neurodivergent Mindfulness App" />
 
@@ -635,7 +635,7 @@ export const SEO: React.FC = () => {
       <meta name="twitter:card"        content="summary_large_image" />
       <meta name="twitter:title"       content={title} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image"       content={`${BASE_URL}/og-image.png?v=2`} />
+      <meta name="twitter:image"       content={`${BASE_URL}/og-image.png?v=3`} />
 
       {/* Canonical + hreflang */}
       <link rel="canonical"                href={canonicalUrl} />
