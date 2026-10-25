@@ -9,8 +9,21 @@ export const resetOnboarding = () => {
   window.location.reload();
 };
 
+// Shown on the first visit only. Decided before the first picture (not after
+// it), so the welcome screen is the first thing drawn instead of appearing
+// over a home page that was drawn for nothing.
+function shouldShow(): boolean {
+  if (typeof window === 'undefined') return false;
+  const isPrerendering = (window as any).__PRERENDER_INJECTED || navigator.userAgent.includes('jsdom') || navigator.userAgent.includes('HeadlessChrome');
+  try {
+    return localStorage.getItem('onboarding_completed') !== 'true' && !isPrerendering;
+  } catch {
+    return false;
+  }
+}
+
 export default function Onboarding() {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(shouldShow);
   const [step, setStep] = useState(0);
   const { t, language, setLanguage } = useLanguage();
   const { reduceMotion } = useAccessibility();
@@ -22,15 +35,11 @@ export default function Onboarding() {
   const previousActiveElement = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    const completed = localStorage.getItem('onboarding_completed');
-    // Also check for prerendering to avoid hydration mismatch
-    const isPrerendering = typeof window !== 'undefined' && ((window as any).__PRERENDER_INJECTED || navigator.userAgent.includes('jsdom') || navigator.userAgent.includes('HeadlessChrome'));
-    
-    if (completed !== 'true' && !isPrerendering) {
-      setIsVisible(true);
+    if (isVisible) {
       previousActiveElement.current = document.activeElement as HTMLElement;
       document.body.style.overflow = 'hidden';
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // The companion's "Introduction" button asks to see these screens again.
@@ -128,10 +137,12 @@ export default function Onboarding() {
       tabIndex={-1}
       ref={focusRef}
     >
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[color-mix(in_srgb,var(--color-accent,#1D9E75)_10%,transparent)] rounded-full blur-[120px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[color-mix(in_srgb,var(--color-accent,#1D9E75)_6%,transparent)] rounded-full blur-[120px]" />
-      </div>
+      {/* Two soft glows, drawn as gradients (a blur filter this size is heavy for a phone) */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        aria-hidden="true"
+        style={{ background: 'radial-gradient(circle at 10% 8%, color-mix(in srgb, var(--color-accent, #1D9E75) 9%, transparent), transparent 42%), radial-gradient(circle at 92% 94%, color-mix(in srgb, var(--color-accent, #1D9E75) 6%, transparent), transparent 42%)' }}
+      />
 
       <div className="flex justify-end p-4 md:p-6 z-10 relative gap-3">
         <button 
@@ -152,14 +163,15 @@ export default function Onboarding() {
       </div>
 
       <div className="flex-1 min-h-0 overflow-y-auto flex flex-col justify-start pt-[8vh] px-6 max-w-2xl mx-auto w-full z-10 relative">
-        <AnimatePresence mode="wait">
+        {/* initial={false}: the first screen is there at once; the slide is only between screens */}
+        <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={step}
             initial={reduceMotion ? { opacity: 1 } : { opacity: 0, x: 20 }}
             animate={reduceMotion ? { opacity: 1 } : { opacity: 1, x: 0 }}
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, x: -20 }}
             transition={{ duration: reduceMotion ? 0 : 0.3 }}
-            className="bg-white/[0.03] border border-white/10 p-8 rounded-3xl backdrop-blur-xl shadow-2xl"
+            className="bg-white/[0.03] border border-white/10 p-8 rounded-3xl shadow-xl"
           >
             {screens[step].visual && screens[step].visual}
             <h2 id="onboarding-title" className="text-3xl md:text-4xl font-serif text-ink mb-6 leading-tight">
@@ -186,7 +198,7 @@ export default function Onboarding() {
         </div>
         
         <div className="sr-only" aria-live="polite">
-          Step {step + 1} of {screens.length}
+          {language === 'el' ? `Οθόνη ${step + 1} από ${screens.length}` : `Step ${step + 1} of ${screens.length}`}
         </div>
 
         <button
