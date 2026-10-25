@@ -4,7 +4,6 @@ import { useOutlet, useLocation } from 'react-router-dom';
 import { cn } from '../lib/utils';
 import Companion from './Companion';
 import NavigationMenu from './NavigationMenu';
-import Onboarding from './Onboarding';
 import OfflineNotification from './OfflineNotification';
 import { useLanguage } from '../hooks/useLanguage';
 import { motion, AnimatePresence } from 'motion/react';
@@ -18,6 +17,8 @@ import { useCompanion } from '../hooks/useCompanion';
 // first opened (and quietly in the background once the page has settled).
 const loadSheet = () => import('./CompanionSheet');
 const CompanionSheet = lazyWithReload(loadSheet);
+// The welcome screens load only when someone opens them (home card or the cat).
+const Onboarding = lazyWithReload(() => import('./Onboarding'));
 
 export default function Layout() {
     const { reduceMotion } = useAccessibility();
@@ -28,6 +29,12 @@ export default function Layout() {
   const outlet = useOutlet();
   const { sheetVisible } = useCompanion();
   const [sheetWanted, setSheetWanted] = React.useState(false);
+  const [welcomeOpen, setWelcomeOpen] = React.useState(false);
+  useEffect(() => {
+    const open = () => setWelcomeOpen(true);
+    window.addEventListener('show-welcome-modal', open);
+    return () => window.removeEventListener('show-welcome-modal', open);
+  }, []);
   useEffect(() => { if (sheetVisible) setSheetWanted(true); }, [sheetVisible]);
   const mainRef = React.useRef<HTMLElement>(null);
 
@@ -111,7 +118,11 @@ export default function Layout() {
           <CompanionSheet />
         </React.Suspense>
       )}
-      <Onboarding />
+      {welcomeOpen && (
+        <React.Suspense fallback={null}>
+          <Onboarding onClose={() => setWelcomeOpen(false)} />
+        </React.Suspense>
+      )}
     </div>
   );
 }

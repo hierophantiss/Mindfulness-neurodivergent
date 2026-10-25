@@ -3,31 +3,17 @@ import { createPortal } from 'react-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAccessibility } from '../hooks/useAccessibility';
+import { markWelcomeSeen } from '../lib/welcome';
 
-export const resetOnboarding = () => {
-  localStorage.removeItem('onboarding_completed');
-  window.location.reload();
-};
-
-// Shown on the first visit only. Decided before the first picture (not after
-// it), so the welcome screen is the first thing drawn instead of appearing
-// over a home page that was drawn for nothing.
-function shouldShow(): boolean {
-  if (typeof window === 'undefined') return false;
-  const isPrerendering = (window as any).__PRERENDER_INJECTED || navigator.userAgent.includes('jsdom') || navigator.userAgent.includes('HeadlessChrome');
-  try {
-    return localStorage.getItem('onboarding_completed') !== 'true' && !isPrerendering;
-  } catch {
-    return false;
-  }
-}
-
-export default function Onboarding() {
-  const [isVisible, setIsVisible] = useState(shouldShow);
+/** The welcome screens. They never block the first visit: the home page shows
+ * a small welcome card that opens them (and the cat can open them again).
+ * Mounted only while open (Layout loads this file on demand). */
+export default function Onboarding({ onClose }: { onClose: () => void }) {
+  const isVisible = true;
   const [step, setStep] = useState(0);
   const { t, language, setLanguage } = useLanguage();
   const { reduceMotion } = useAccessibility();
-  
+
   // For touch swipe
   const [touchStart, setTouchStart] = useState<number | null>(null);
 
@@ -35,23 +21,9 @@ export default function Onboarding() {
   const previousActiveElement = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    if (isVisible) {
-      previousActiveElement.current = document.activeElement as HTMLElement;
-      document.body.style.overflow = 'hidden';
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // The companion's "Introduction" button asks to see these screens again.
-  useEffect(() => {
-    const reopen = () => {
-      previousActiveElement.current = document.activeElement as HTMLElement;
-      setStep(0);
-      setIsVisible(true);
-      document.body.style.overflow = 'hidden';
-    };
-    window.addEventListener('show-welcome-modal', reopen);
-    return () => window.removeEventListener('show-welcome-modal', reopen);
+    previousActiveElement.current = document.activeElement as HTMLElement;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = ''; };
   }, []);
 
   useEffect(() => {
@@ -72,17 +44,13 @@ export default function Onboarding() {
   }, [isVisible]);
 
   const handleComplete = () => {
-    localStorage.setItem('onboarding_completed', 'true');
-    // Also set the legacy key to prevent the other redirect
-    localStorage.setItem('hasCompletedOnboarding', 'true');
+    markWelcomeSeen();
     document.body.style.overflow = '';
-    setIsVisible(false);
     if (previousActiveElement.current) {
       previousActiveElement.current.focus();
     }
+    onClose();
   };
-
-  if (!isVisible) return null;
 
   const screens = [
     {

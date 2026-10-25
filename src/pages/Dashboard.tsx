@@ -1,6 +1,6 @@
 import { AudioEnabler } from '../components/AudioEnabler';
 import React, { useState, useEffect, useMemo } from 'react';
-import { BookOpen, ChevronRight, ChevronDown, Info, Download, RotateCcw } from 'lucide-react';
+import { BookOpen, ChevronRight, ChevronDown, Info, Download, RotateCcw, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useCompanion } from '../hooks/useCompanion';
@@ -21,6 +21,7 @@ import { MethodMark } from '../components/MethodMark';
 import { useInstallApp } from '../hooks/useInstallApp';
 import HomeCheckin from '../components/HomeCheckin';
 import { getMoreLinks } from '../data/moreLinks';
+import { welcomeSeen, markWelcomeSeen, openWelcome } from '../lib/welcome';
 import { readingSpot, chaptersRead } from '../lib/readingSpot';
 import { chapterPageLabel } from '../lib/chapterPages';
 
@@ -112,6 +113,14 @@ export default function Dashboard() {
   const [bookOpen, setBookOpen] = useState(false);
   const [installHint, setInstallHint] = useState<string | null>(null);
   const { installed, install } = useInstallApp(language);
+
+  // The welcome card, until the welcome is seen or put away.
+  const [showWelcome, setShowWelcome] = useState(() => !welcomeSeen());
+  useEffect(() => {
+    const hide = () => setShowWelcome(false);
+    window.addEventListener('welcome-seen', hide);
+    return () => window.removeEventListener('welcome-seen', hide);
+  }, []);
 
   useEffect(() => {
     if (!installHint) return;
@@ -212,6 +221,34 @@ export default function Dashboard() {
             {language === 'el' ? affirmation.el : affirmation.en}
           </p>
         </div>
+
+        {/* First visit: a small welcome that invites, never blocks (SOS and
+            "How do you feel" are there from the first second). */}
+        {showWelcome && (
+          <div className="flex items-start gap-3 rounded-2xl bg-[var(--tint-sage-bg)] border border-[var(--tint-sage-line)] pl-4 pr-2 py-3">
+            <div className="flex-1 min-w-0">
+              <p className="text-[14px] leading-snug text-ink/90">
+                <span className="font-medium">{el ? 'Καλώς ήρθες.' : 'Welcome.'}</span>{' '}
+                {el ? 'Το μυαλό σου δεν είναι χαλασμένο, απλώς λειτουργεί αλλιώς.' : 'Your mind isn’t broken, it just works differently.'}
+              </p>
+              <button
+                onClick={openWelcome}
+                aria-label={el ? 'Γνώρισε την εφαρμογή · 3 κάρτες' : 'Get to know the app · 3 cards'}
+                className="mt-2 min-h-[36px] inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 bg-[var(--tint-sage-hi)] border border-[var(--tint-sage-line)] text-[13px] text-ink/85 hover:text-ink transition-colors"
+              >
+                {el ? 'Γνώρισε την εφαρμογή' : 'Get to know the app'}
+                <span className="text-ink/70 max-[359px]:hidden">· {el ? '3 κάρτες' : '3 cards'}</span>
+              </button>
+            </div>
+            <button
+              onClick={markWelcomeSeen}
+              aria-label={el ? 'Κλείσιμο καλωσορίσματος' : 'Close the welcome'}
+              className="shrink-0 w-10 h-10 -mt-1 rounded-full flex items-center justify-center text-ink/50 hover:text-ink/80 transition-colors"
+            >
+              <X size={16} />
+            </button>
+          </div>
+        )}
 
         {/* How do you feel right now? */}
         <motion.div
