@@ -20,7 +20,7 @@ const TURN_SECONDS = 3600;     // one turn of the sky
 const POLE_Y = 0.35;           // the point the sky turns around, from the top
 const AURORA_HEIGHT = 0.62;    // share of the screen the aurora may cover, from the top
 const AURORA_SCALE = 3;
-const TEXT_PAD = 6;            // stars this close to text on the sky (.sky-text) almost go out,
+const TEXT_PAD = 12;           // stars this close to text on the sky (.sky-text) almost go out,
 const UNDER_TEXT = 0.08;       // so none of them reads as a dot or a comma in a sentence
 
 /** Where text sits on the sky right now, in canvas pixels. */

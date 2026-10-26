@@ -19,6 +19,8 @@
      for eyes with astigmatism. This one keeps about 15:1 (WCAG asks 4.5:1,
      7:1 for the strictest level). Light text is always text-ink (lib/colors.test.ts). */
   --color-ink: #e8e3d9;
+  /* The soft gold of the sign (its triangle and axis), for the app's name on the home page. */
+  --color-sign-gold: #e6c27e;
   /* "font-sans" is the app's own font (Inter, with full Greek), never the
      phone's system font: some phones' system fonts place the Greek accent
      beside the letter ("Αρχική´") instead of on it. */
@@ -47,7 +49,7 @@
        saturation and low brightness, so they read as colour without glare.
        -bg is the fill, -hi the pressed/hover fill, -line the border. */
     --tint-rose-bg: #2c2127;  --tint-rose-hi: #3a2a32;  --tint-rose-line: rgb(217 160 168 / 0.28);
-    --tint-lav-bg: #25233a;   --tint-lav-hi: #312e4b;   --tint-lav-line: rgb(181 167 208 / 0.30);
+    --tint-lav-bg: #2e2949;   --tint-lav-hi: #3a3459;   --tint-lav-line: rgb(181 167 208 / 0.36);
     --tint-sage-bg: #1e2a25;  --tint-sage-hi: #283730;  --tint-sage-line: rgb(143 184 160 / 0.28);
     --tint-sand-bg: #2a261f;  --tint-sand-hi: #363027;  --tint-sand-line: rgb(214 195 161 / 0.30);
     --tint-blue-bg: #1a2741;  --tint-blue-hi: #22345a;  --tint-blue-line: rgb(122 166 228 / 0.32);

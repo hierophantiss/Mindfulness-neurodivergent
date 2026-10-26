@@ -81,7 +81,6 @@ export default function Dashboard() {
   // The cat remembers what you read; on the home page it lives in this card.
   const hasRead = chaptersRead(chapters, progress.completedChapters, companionData.chapterProgress).length > 0;
   const el = lang === 'el';
-  const isNewUser = completedChapters === 0 && logs.length === 0;
   // Your most used practice, to come back to it in one tap.
   const favouritePractice = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -185,7 +184,7 @@ export default function Dashboard() {
                 <MethodMark small breathe dim={nightDim} className="w-10 h-10 min-[360px]:w-12 min-[360px]:h-12" />
               </Link>
               <span className="flex flex-col min-w-0">
-              <span className="keep-font sky-text text-[15px] max-[359px]:text-[13px] max-[359px]:tracking-normal min-[400px]:text-[17px] leading-tight tracking-[0.02em] min-[400px]:tracking-[0.04em] uppercase text-teal-300/90 font-medium whitespace-nowrap">
+              <span className="keep-font sky-text text-[15px] max-[359px]:text-[13px] max-[359px]:tracking-normal min-[400px]:text-[17px] leading-tight tracking-[0.02em] min-[400px]:tracking-[0.04em] uppercase text-sign-gold font-medium whitespace-nowrap">
                 {language === 'el' ? 'ΕΝΣΥΝΕΙΔΗΤΟΤΗΤΑ' : 'MINDFULNESS'}
               </span>{' '}
               <span className="sky-text text-[12px] min-[375px]:text-[13px] leading-tight text-ink/65 mt-1">
@@ -294,7 +293,10 @@ export default function Dashboard() {
                       <span className="block h-full rounded-full bg-[var(--tint-blue-mark)]/70" style={{ width: `${Math.round(((spot.page + 1) / spot.pages.length) * 100)}%` }} />
                     </span>
                   </>
-                ) : !isNewUser && (
+                ) : completedChapters === 0 ? (
+                  // Nothing finished yet: what the chapter is about, not "0 of 11".
+                  spot.chapter?.sub && <span className="text-[12px] leading-snug text-ink/65">{spot.chapter.sub}</span>
+                ) : (
                   <>
                     <span className="mt-1 h-[3px] w-full rounded-full bg-white/[0.06] overflow-hidden" aria-hidden="true">
                       <span className="block h-full rounded-full bg-[var(--tint-blue-mark)]/70" style={{ width: `${Math.round((completedChapters / totalChapters) * 100)}%` }} />
