@@ -297,6 +297,7 @@ function getMetaForRoute(route: string): RouteMeta {
       '@type': ['WebApplication', 'SoftwareApplication'],
       name: 'Neurodivergent Mindfulness App',
       url: BASE_URL + (lang === 'el' ? '/el' : ''),
+      image: `${BASE_URL}/icon-512.png`,
       description: homeDescription,
       applicationCategory: 'HealthApplication',
       applicationSubCategory: 'Mindfulness & Meditation',
@@ -880,7 +881,7 @@ function buildHead(route: string, meta: RouteMeta, baseHtml: string): string {
   <meta data-seo="prerender" property="og:image" content="${BASE_URL}/og-image.png?v=3" />
   <meta data-seo="prerender" property="og:image:width" content="1200" />
   <meta data-seo="prerender" property="og:image:height" content="630" />
-  <meta data-seo="prerender" property="og:image:alt" content="${lang === 'en' ? 'Neurodivergent Mindfulness – a white cat with the rainbow infinity' : 'Neurodivergent Mindfulness – Ενσυνειδητότητα για Νευροδιαφορετικούς'}" />
+  <meta data-seo="prerender" property="og:image:alt" content="${lang === 'en' ? 'Mindfulness for neurodivergents – the sign of the Fourfold Axis: a blue circle, a gold triangle and axis, a rainbow infinity at the centre' : 'Ενσυνειδητότητα για νευροδιαφορετικούς – το σήμα του Τετραπλού Άξονα: μπλε κύκλος, χρυσό τρίγωνο και άξονας, άπειρο σε ουράνιο τόξο στο κέντρο'}" />
   <meta data-seo="prerender" property="og:type" content="website" />
   <meta data-seo="prerender" property="og:locale" content="${lang === 'en' ? 'en_US' : 'el_GR'}" />
   <meta data-seo="prerender" property="og:site_name" content="Neurodivergent Mindfulness App" />
