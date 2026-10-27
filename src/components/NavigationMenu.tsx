@@ -133,7 +133,10 @@ export default function NavigationMenu() {
       <div data-nosnippet className="fixed bottom-0 left-0 right-0 z-40 bg-[#070b14]/90 backdrop-blur-2xl border-t border-white/10 pb-[env(safe-area-inset-bottom)] shadow-[0_-10px_40px_rgba(0,0,0,0.3)] desk:bottom-4 desk:mx-auto desk:w-[460px] desk:rounded-full desk:border desk:border-white/10 desk:shadow-[0_10px_40px_rgba(0,0,0,0.45)]">
         <div className="flex items-center justify-around px-3 py-2 max-w-md mx-auto">
           {mainNavItems.map((item) => {
-            const isActive = location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path));
+            // Home lives at "/" ("/dashboard" only redirects there).
+            const isActive = location.pathname === item.path
+              || (item.path === '/dashboard' && location.pathname === '/')
+              || (item.path !== '/' && location.pathname.startsWith(item.path));
             return (
               <motion.button
                 key={item.path}

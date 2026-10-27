@@ -18,8 +18,8 @@ import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 const TINT: Record<CheckinChoice, string> = { hyper: 'rose', hypo: 'lav', balanced: 'sage', unsure: 'sand' };
 const tint = (id: CheckinChoice, part: 'bg' | 'hi' | 'line') => `var(--tint-${TINT[id]}-${part})`;
 
-// "How do you feel right now?" — the first thing on the home page, with the
-// four choices always in view.
+// "How do you feel right now?" — on the home page under the guide, small,
+// with the four choices always in view (one row when the screen allows).
 export default function HomeCheckin() {
   const { language } = useLanguage();
   const lang = language === 'en' ? 'en' : 'el';
@@ -59,10 +59,10 @@ export default function HomeCheckin() {
   const question = lang === 'el' ? 'Πώς νιώθεις τώρα;' : 'How do you feel right now?';
 
   return (
-    <div className="flex flex-col gap-3">
-      <h2 className="sky-text text-[15px] text-ink/80">{question}</h2>
+    <div className="flex flex-col gap-2.5">
+      <h2 className="sky-text text-[13px] text-ink/65 pl-1">{question}</h2>
 
-      <div className="grid grid-cols-2 min-[400px]:grid-cols-4 gap-2" role="group" aria-label={question}>
+      <div className="grid grid-cols-2 min-[370px]:grid-cols-4 gap-1.5" role="group" aria-label={question}>
         {CHECKIN_OPTIONS.map(o => {
           const isSel = o.id === selected;
           return (
@@ -73,7 +73,7 @@ export default function HomeCheckin() {
               aria-expanded={isSel ? open : undefined}
               style={{ backgroundColor: tint(o.id, isSel ? 'hi' : 'bg'), borderColor: tint(o.id, 'line') }}
               className={cn(
-                "min-h-[44px] px-2 rounded-full border text-[13px] transition-[filter,transform] active:scale-[0.97] hover:brightness-110",
+                "min-h-[44px] px-1 rounded-full border text-[12px] tracking-[-0.01em] whitespace-nowrap transition-[filter,transform] active:scale-[0.97] hover:brightness-110",
                 isSel ? "text-ink/95 ring-1 ring-white/15" : "text-ink/75",
                 o.id === 'unsure' && "border-dashed"
               )}

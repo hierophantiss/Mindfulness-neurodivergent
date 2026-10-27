@@ -1,10 +1,9 @@
 import { AudioEnabler } from '../components/AudioEnabler';
 import React, { useState, useEffect, useMemo } from 'react';
-import { BookOpen, ChevronRight, ChevronDown, Info, Download, RotateCcw, X } from 'lucide-react';
+import { ArrowRight, BookOpen, ChevronRight, ChevronDown, Info, Download, Moon, Play, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useCompanion } from '../hooks/useCompanion';
-import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { useTime } from '../contexts/TimeContext';
 import { useProgress } from '../contexts/ProgressContext';
 import { CHAPTER_TITLES } from '../data/chapterTitles';
@@ -12,7 +11,6 @@ import type { Chapter } from '../data/types';
 import { cn } from '../lib/utils';
 import { motion } from 'motion/react';
 import { useAccessibility } from '../hooks/useAccessibility';
-import { BREATH_PATTERNS } from '../data/breathPatterns';
 import InfoModal from '../components/InfoModal';
 
 import { phraseOfDay } from '../data/affirmations';
@@ -66,7 +64,6 @@ function getDayOfYear(date: Date) {
 export default function Dashboard() {
   const { language } = useLanguage();
   const { companionData, updateCompanionData, setCompanionMessage, setSheetVisible } = useCompanion();
-  const { logs } = useActivityTracker();
   const { hour } = useTime();
   const { reduceMotion, toggleReduceMotion } = useAccessibility();
   const { progress } = useProgress();
@@ -81,15 +78,26 @@ export default function Dashboard() {
   // The cat remembers what you read; on the home page it lives in this card.
   const hasRead = chaptersRead(chapters, progress.completedChapters, companionData.chapterProgress).length > 0;
   const el = lang === 'el';
-  // Your most used practice, to come back to it in one tap.
-  const favouritePractice = useMemo(() => {
-    const counts: Record<string, number> = {};
-    for (const l of logs) {
-      if (l.itemId && ['breath', 'movement', 'grounding', 'vocal'].includes(l.category)) counts[l.itemId] = (counts[l.itemId] || 0) + 1;
-    }
-    const best = Object.entries(counts).sort((x, y) => y[1] - x[1])[0];
-    return best ? BREATH_PATTERNS.find(p => p.id === best[0]) : undefined;
-  }, [logs]);
+  const finishedGuide = spot.kind === 'done';
+  // The chapter's key line (the first sentence of its insight), once the
+  // chapter texts have loaded; concept markers {{id}} are left out.
+  const keyLine = useMemo(() => {
+    if (finishedGuide) return '';
+    const text = (spot.chapter?.insight || '').replace(/\{\{[^}]*\}\}/g, '').replace(/\s+/g, ' ').trim();
+    return text.match(/^[^.!;]+[.!;]?/)?.[0].trim() || '';
+  }, [spot.chapter, finishedGuide]);
+  // The chapter's own practice is its last page.
+  const chapterPractice = !finishedGuide && spot.chapter?.exercise ? spot.chapter.exercise : undefined;
+  const chapterPracticeHref = spot.chapter ? `/chapters/${spot.chapter.num}?p=${Math.max(1, spot.pages.length)}` : '/chapters';
+  const guideAction = finishedGuide
+    ? (el ? 'Όλα τα κεφάλαια' : 'All chapters')
+    : spot.kind === 'start'
+      ? (el ? 'Ξεκίνα την ανάγνωση' : 'Start reading')
+      : spot.kind === 'next'
+        ? (el ? 'Επόμενο κεφάλαιο' : 'Next chapter')
+        : (el ? 'Συνέχισε την ανάγνωση' : 'Continue reading');
+  // In the evening a quiet way to close the day, in the journal.
+  const evening = hour >= 18 || hour < 5;
 
   // At night the lines of the sign step back a little (the infinity keeps its colours).
   const nightDim = hour >= 21 || hour < 5;
@@ -221,8 +229,8 @@ export default function Dashboard() {
           </p>
         </div>
 
-        {/* First visit: a small welcome that invites, never blocks (SOS and
-            "How do you feel" are there from the first second). */}
+        {/* First visit: a small welcome that invites, never blocks (SOS is
+            there from the first second). */}
         {showWelcome && (
           <div className="flex items-start gap-3 rounded-2xl bg-[var(--tint-sage-bg)] border border-[var(--tint-sage-line)] pl-4 pr-2 py-3">
             <div className="flex-1 min-w-0">
@@ -249,66 +257,96 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* How do you feel right now? */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.3 }}
-        >
-          <HomeCheckin />
-        </motion.div>
-
-        {/* Continue: one next step */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="show"
-          className="flex flex-col gap-3"
+          className="flex flex-col gap-5"
         >
+          {/* The guide comes first: the chapter you are in, its key line, one
+              button to go on, and the practice that belongs to it. */}
           <motion.div variants={itemVariants}>
-            <div className={cn(baseCardClasses, "bg-[var(--tint-blue-bg)] !border-[var(--tint-blue-line)] relative overflow-hidden")}>
+            <section
+              aria-labelledby="home-guide-title"
+              className={cn(baseCardClasses, "hover:translate-y-0 bg-[var(--tint-blue-bg)] !border-[var(--tint-blue-line)] relative overflow-hidden")}
+            >
               <div className="absolute top-[-30%] right-[-10%] w-48 h-48 bg-[var(--tint-blue-mark)]/10 blur-[50px] rounded-full pointer-events-none" />
-              <Link to={spot.href} className="flex items-center gap-3 pl-5 pr-3 py-4 group active:scale-[0.99] transition-transform">
-              <div className="flex flex-col gap-1 min-w-0 flex-1 relative z-10">
-                <span className="text-[12px] text-[var(--tint-blue-mark)] font-medium">
-                  {spot.kind === 'done'
-                    ? (el ? 'Ολοκλήρωσες τον οδηγό' : 'You finished the guide')
-                    : spot.kind === 'start'
-                      ? (el ? 'Ξεκίνα' : 'Start')
-                      : spot.kind === 'next'
-                        ? (el ? 'Επόμενο κεφάλαιο' : 'Next chapter')
-                        : (el ? 'Συνέχισε' : 'Continue')}
-                </span>
-                <h3 className="text-[16px] font-medium tracking-tight text-[var(--tint-blue-ink)] leading-snug">
-                  {spot.kind === 'done'
-                    ? (el ? 'Όλα τα κεφάλαια' : 'All chapters')
-                    : <>{el ? 'Κεφάλαιο' : 'Chapter'} {spot.chapter?.num} · {spot.chapter?.title}</>}
-                </h3>
-                {midChapter ? (
-                  <>
-                    <span className="text-[12px] leading-snug text-ink/65">
-                      {chapterPageLabel(spot.pages[spot.page], lang)} · {el ? `σελίδα ${spot.page + 1} από ${spot.pages.length}` : `page ${spot.page + 1} of ${spot.pages.length}`}
-                    </span>
-                    <span className="mt-1 h-[3px] w-full rounded-full bg-white/[0.06] overflow-hidden" aria-hidden="true">
-                      <span className="block h-full rounded-full bg-[var(--tint-blue-mark)]/70" style={{ width: `${Math.round(((spot.page + 1) / spot.pages.length) * 100)}%` }} />
-                    </span>
-                  </>
-                ) : completedChapters === 0 ? (
-                  // Nothing finished yet: what the chapter is about, not "0 of 11".
-                  spot.chapter?.sub && <span className="text-[12px] leading-snug text-ink/65">{spot.chapter.sub}</span>
+              <div className="relative z-10 flex flex-col px-5 pt-3 pb-5">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--tint-blue-mark)]">
+                    {el ? 'Ο οδηγός σου' : 'Your guide'}
+                  </span>
+                  {!finishedGuide && (
+                    <Link to="/chapters" className="min-h-[40px] -mr-1 px-1 flex items-center text-[12px] text-ink/60 hover:text-ink/85 transition-colors">
+                      {el ? 'Όλα τα κεφάλαια' : 'All chapters'}
+                    </Link>
+                  )}
+                </div>
+
+                {finishedGuide ? (
+                  <h2 id="home-guide-title" className="mt-2 text-[22px] font-medium tracking-tight leading-tight text-[var(--tint-blue-ink)]">
+                    {el ? 'Ολοκλήρωσες τον οδηγό' : 'You finished the guide'}
+                  </h2>
                 ) : (
                   <>
-                    <span className="mt-1 h-[3px] w-full rounded-full bg-white/[0.06] overflow-hidden" aria-hidden="true">
-                      <span className="block h-full rounded-full bg-[var(--tint-blue-mark)]/70" style={{ width: `${Math.round((completedChapters / totalChapters) * 100)}%` }} />
+                    <span className="mt-1 text-[12px] leading-snug text-ink/60">
+                      {el ? 'Κεφάλαιο' : 'Chapter'} {spot.chapter?.num}
+                      {midChapter
+                        ? ` · ${chapterPageLabel(spot.pages[spot.page], lang)}`
+                        : spot.chapter?.sub ? ` · ${spot.chapter.sub}` : ''}
                     </span>
-                    <span className="text-[12px] text-ink/65">
-                      {el ? `${completedChapters} από ${totalChapters} κεφάλαια` : `${completedChapters} of ${totalChapters} chapters`}
-                    </span>
+                    <h2 id="home-guide-title" className="mt-1 text-[24px] font-medium tracking-tight leading-tight text-[var(--tint-blue-ink)]">
+                      {spot.chapter?.title}
+                    </h2>
+                    {keyLine && (
+                      <p className="mt-3 font-serif italic text-[15px] leading-relaxed text-ink/75">«{keyLine}»</p>
+                    )}
                   </>
                 )}
+
+                {midChapter ? (
+                  <div className="mt-4 flex items-center gap-3">
+                    <span className="flex-1 h-[3px] rounded-full bg-white/[0.06] overflow-hidden" aria-hidden="true">
+                      <span className="block h-full rounded-full bg-[var(--tint-blue-mark)]/70" style={{ width: `${Math.round(((spot.page + 1) / spot.pages.length) * 100)}%` }} />
+                    </span>
+                    <span className="text-[12px] text-ink/60 shrink-0">
+                      {el ? `σελίδα ${spot.page + 1} από ${spot.pages.length}` : `page ${spot.page + 1} of ${spot.pages.length}`}
+                    </span>
+                  </div>
+                ) : completedChapters > 0 && (
+                  <div className="mt-4 flex items-center gap-3">
+                    <span className="flex-1 h-[3px] rounded-full bg-white/[0.06] overflow-hidden" aria-hidden="true">
+                      <span className="block h-full rounded-full bg-[var(--tint-blue-mark)]/70" style={{ width: `${Math.round((completedChapters / totalChapters) * 100)}%` }} />
+                    </span>
+                    <span className="text-[12px] text-ink/60 shrink-0">
+                      {el ? `${completedChapters} από ${totalChapters} κεφάλαια` : `${completedChapters} of ${totalChapters} chapters`}
+                    </span>
+                  </div>
+                )}
+
+                <Link
+                  to={spot.href}
+                  className="mt-4 min-h-[48px] px-5 rounded-full flex items-center justify-center gap-2 bg-[var(--color-sign-gold)] text-[var(--color-bg)] text-[15px] font-medium hover:brightness-110 transition-[filter,transform] active:scale-[0.98]"
+                >
+                  {guideAction}
+                  <ArrowRight size={17} aria-hidden="true" />
+                </Link>
+
+                {chapterPractice && (
+                  <Link
+                    to={chapterPracticeHref}
+                    className="mt-4 -mx-1 pt-4 px-1 flex items-center gap-3 border-t border-white/[0.06] group"
+                  >
+                    <span className="flex flex-col min-w-0 flex-1 gap-0.5">
+                      <span className="text-[12px] text-ink/55">{el ? 'Η πρακτική του κεφαλαίου' : 'This chapter’s practice'}</span>
+                      <span className="text-[14px] leading-snug text-ink/85 line-clamp-2">{chapterPractice.title}</span>
+                    </span>
+                    <span aria-hidden="true" className="w-10 h-10 shrink-0 rounded-full flex items-center justify-center bg-[var(--tint-sage-hi)] border border-[var(--tint-sage-line)] text-ink/75 group-hover:brightness-110 transition-[filter]">
+                      <Play size={14} className="ml-0.5" />
+                    </span>
+                  </Link>
+                )}
               </div>
-              <ChevronRight size={18} className="text-[var(--tint-blue-mark)]/50 group-hover:text-[var(--tint-blue-mark)] shrink-0 relative z-10" />
-              </Link>
               {hasRead && (
                 <button
                   onClick={() => setSheetVisible(true)}
@@ -319,15 +357,26 @@ export default function Dashboard() {
                   <ChevronRight size={15} className="text-ink/30" />
                 </button>
               )}
-            </div>
+            </section>
           </motion.div>
 
-          {favouritePractice && (
+          {/* How do you feel right now? Always in the same place, under the guide. */}
+          <motion.div variants={itemVariants}>
+            <HomeCheckin />
+          </motion.div>
+
+          {evening && (
             <motion.div variants={itemVariants}>
-              <Link to={`/practice/breath/${favouritePractice.id}`} className="flex items-center justify-between gap-3 px-5 py-3 rounded-2xl bg-[var(--tint-sage-bg)] border border-[var(--tint-sage-line)] hover:brightness-110 text-[14px] text-ink/75 transition-colors active:scale-[0.98]">
-                <span className="flex items-center gap-2 min-w-0">
-                  <RotateCcw size={14} className="text-ink/40 shrink-0" />
-                  <span className="truncate">{lang === 'el' ? 'Ξανά' : 'Again'}: {/^[\d-]+$/.test(favouritePractice.title[lang]) ? `${lang === 'el' ? 'Αναπνοή' : 'Breath'} ${favouritePractice.title[lang]}` : favouritePractice.title[lang]}</span>
+              <Link
+                to="/journal"
+                className="flex items-center gap-3.5 px-4 py-3 rounded-2xl bg-[var(--tint-rose-bg)] border border-[var(--tint-rose-line)] hover:brightness-110 transition-[filter,transform] active:scale-[0.98]"
+              >
+                <span aria-hidden="true" className="w-10 h-10 shrink-0 rounded-full flex items-center justify-center bg-[var(--tint-rose-hi)] text-ink/70">
+                  <Moon size={17} strokeWidth={1.6} />
+                </span>
+                <span className="flex flex-col min-w-0 flex-1 gap-0.5">
+                  <span className="text-[12px] text-ink/55">{el ? 'Κλείσιμο της μέρας' : 'Closing the day'}</span>
+                  <span className="text-[14px] leading-snug text-ink/85">{el ? 'Τι κουβαλάς ακόμα από σήμερα;' : 'What are you still carrying from today?'}</span>
                 </span>
                 <ChevronRight size={16} className="text-ink/35 shrink-0" />
               </Link>
