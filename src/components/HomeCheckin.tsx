@@ -59,10 +59,10 @@ export default function HomeCheckin() {
   const question = lang === 'el' ? 'Πώς νιώθεις τώρα;' : 'How do you feel right now?';
 
   return (
-    <div className="flex flex-col gap-2.5">
-      <h2 className="sky-text text-[13px] text-ink/65 pl-1">{question}</h2>
+    <div className="flex flex-col gap-4">
+      <h2 className="sky-text text-center text-[20px] font-normal text-ink/90">{question}</h2>
 
-      <div className="checkin-grid grid grid-cols-2 min-[370px]:grid-cols-4 gap-1.5" role="group" aria-label={question}>
+      <div className="checkin-grid grid grid-cols-2 gap-2.5" role="group" aria-label={question}>
         {CHECKIN_OPTIONS.map(o => {
           const isSel = o.id === selected;
           return (
@@ -73,8 +73,8 @@ export default function HomeCheckin() {
               aria-expanded={isSel ? open : undefined}
               style={{ backgroundColor: tint(o.id, isSel ? 'hi' : 'bg'), borderColor: tint(o.id, 'line') }}
               className={cn(
-                "min-h-[44px] px-1 rounded-full border text-[12px] tracking-[-0.01em] whitespace-nowrap transition-[filter,transform] active:scale-[0.97] hover:brightness-110",
-                isSel ? "text-ink/95 ring-1 ring-white/15" : "text-ink/75",
+                "min-h-[56px] px-2 rounded-[18px] border text-[16px] transition-[filter,transform] active:scale-[0.97] hover:brightness-110",
+                isSel ? "text-ink border-2 ring-1 ring-white/20" : "text-ink/85",
                 o.id === 'unsure' && "border-dashed"
               )}
             >
@@ -96,8 +96,8 @@ export default function HomeCheckin() {
             className="rounded-[24px] border p-5 flex flex-col gap-4"
           >
             <div className="flex flex-col gap-1.5">
-              <h3 className="text-[16px] font-medium text-ink/90">{opt.title[lang]}</h3>
-              <p className="text-[13px] leading-relaxed text-ink/55">{opt.desc[lang]}</p>
+              <h3 className="text-[17px] font-medium text-ink/90">{opt.title[lang]}</h3>
+              <p className="text-[15px] leading-relaxed text-ink/75">{opt.desc[lang]}</p>
             </div>
 
             <div className="flex gap-4">
