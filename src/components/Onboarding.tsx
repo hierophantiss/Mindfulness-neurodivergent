@@ -63,7 +63,7 @@ export default function Onboarding({ onClose }: { onClose: () => void }) {
       visual: (
         <div className="flex gap-4 mb-8 justify-center" aria-hidden="true">
           <div className="w-8 h-8 rounded-full" style={{ backgroundColor: 'var(--color-axis-body, #7A9E7E)' }} />
-          <div className="w-8 h-8 rounded-full" style={{ backgroundColor: 'var(--color-axis-breath, #C07050)' }} />
+          <div className="w-8 h-8 rounded-full" style={{ backgroundColor: 'var(--color-axis-breath, #7fa9e4)' }} />
           <div className="w-8 h-8 rounded-full" style={{ backgroundColor: 'var(--color-axis-focus, #C8922A)' }} />
           <div className="w-8 h-8 rounded-full" style={{ backgroundColor: 'var(--color-axis-space, #B5A7D0)' }} />
         </div>

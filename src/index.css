@@ -54,6 +54,16 @@
     --tint-sand-bg: #2a261f;  --tint-sand-hi: #363027;  --tint-sand-line: rgb(214 195 161 / 0.30);
     --tint-blue-bg: #1a2741;  --tint-blue-hi: #22345a;  --tint-blue-line: rgb(122 166 228 / 0.32);
     --tint-blue-ink: #a9c8f2;  --tint-blue-mark: #7fa9e4; /* the blue of the sign's circle, the Breath */
+
+    /* The four axes, one colour each everywhere (practices, chapters, the
+       check-in). The Breath is the blue of the sign's circle. */
+    --color-axis-breath: var(--tint-blue-mark);
+
+    /* The relief material of the cards (see .card-relief below): a solid
+       surface lit from above. */
+    --relief-top: #232838;  --relief-mid: #191c29;  --relief-bottom: #151823;
+    --relief-group-top: #1f2333;  --relief-group-bottom: #171a26;
+    --gold-top: #f0d397;  --gold-bottom: #d9b06a;
   }
 
   body {
@@ -106,6 +116,56 @@
   color: var(--color-accent-light);
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+/* Cards: the relief material, for the whole app. A solid surface lit from
+   above, a fine bevel and a deep soft shadow; text on it reads the same at
+   every hour of the sky. .card-relief is a card on its own, .card-relief-group
+   a card that holds rows (divided by .relief-divide), .icon-relief the small
+   round icon of a row, .btn-gold the one main action, .track-inset a progress
+   track. */
+@layer components {
+  .card-relief {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px;
+    background: linear-gradient(180deg, var(--relief-top) 0%, var(--relief-mid) 55%, var(--relief-bottom) 100%);
+    border: 1px solid rgb(255 255 255 / 0.05);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 -2px 0 rgb(0 0 0 / 0.35),
+      0 2px 4px rgb(0 0 0 / 0.35), 0 22px 44px -16px rgb(0 0 0 / 0.75);
+  }
+  .card-relief::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: -40px;
+    width: 260px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(255 255 255 / 0.05), transparent 70%);
+    pointer-events: none;
+  }
+  .card-relief-group {
+    overflow: hidden;
+    border-radius: 22px;
+    background: linear-gradient(180deg, var(--relief-group-top) 0%, var(--relief-group-bottom) 100%);
+    border: 1px solid rgb(255 255 255 / 0.05);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08), 0 2px 4px rgb(0 0 0 / 0.35), 0 18px 36px -16px rgb(0 0 0 / 0.7);
+  }
+  .relief-divide > * + * {
+    border-top: 1px solid rgb(0 0 0 / 0.35);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.04);
+  }
+  .icon-relief {
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.12), inset 0 -1px 0 rgb(0 0 0 / 0.35), 0 3px 8px rgb(0 0 0 / 0.4);
+  }
+  .btn-gold {
+    background: linear-gradient(180deg, var(--gold-top) 0%, var(--color-sign-gold) 55%, var(--gold-bottom) 100%);
+    color: var(--color-bg);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.45), inset 0 -1px 0 rgb(120 80 20 / 0.35), 0 10px 24px -10px rgb(230 194 126 / 0.55);
+  }
+  .track-inset {
+    background: rgb(0 0 0 / 0.35);
+    box-shadow: inset 0 1px 1px rgb(0 0 0 / 0.4), 0 1px 0 rgb(255 255 255 / 0.05);
+  }
 }
 
 .font-serif {

@@ -145,11 +145,11 @@ export default function NavigationMenu() {
                 whileTap={{ scale: 0.95 }}
                 className={`flex flex-col items-center justify-center gap-1.5 transition-all duration-300 relative py-2.5 px-2 rounded-2xl flex-1 ${
                   isActive
-                    ? 'text-teal-300'
+                    ? 'text-sign-gold'
                     : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.03]'
                 }`}
               >
-                <div className={`relative z-10 transition-all duration-300 ${isActive ? 'scale-110 drop-shadow-[0_0_8px_rgba(45,212,191,0.5)]' : 'scale-100'}`}>
+                <div className={`relative z-10 transition-all duration-300 ${isActive ? 'scale-110 drop-shadow-[0_0_8px_rgba(230,194,126,0.45)]' : 'scale-100'}`}>
                   {item.icon}
                 </div>
                 <span className={`text-[10px] font-medium tracking-wide transition-all duration-300 font-sans ${isActive ? 'opacity-100 drop-shadow-md' : 'opacity-80'}`}>
@@ -159,7 +159,7 @@ export default function NavigationMenu() {
                 {isActive && (
                   <motion.div 
                     layoutId="active-nav-bg" 
-                    className="absolute inset-0 rounded-2xl bg-teal-500/10 pointer-events-none" 
+                    className="absolute inset-0 rounded-2xl bg-[var(--color-sign-gold)]/10 pointer-events-none" 
                     transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                   />
                 )}
@@ -174,11 +174,11 @@ export default function NavigationMenu() {
             whileTap={{ scale: 0.95 }}
             className={`flex flex-col items-center justify-center gap-1.5 transition-all duration-300 relative py-2.5 px-2 rounded-2xl flex-1 ${
               isOpen
-                ? 'text-teal-300 bg-teal-500/10'
+                ? 'text-sign-gold bg-[var(--color-sign-gold)]/10'
                 : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.03]'
             }`}
           >
-            <div className={`transition-all duration-300 relative z-10 ${isOpen ? 'scale-110 rotate-90 drop-shadow-[0_0_8px_rgba(45,212,191,0.5)]' : 'scale-100'}`}>
+            <div className={`transition-all duration-300 relative z-10 ${isOpen ? 'scale-110 rotate-90 drop-shadow-[0_0_8px_rgba(230,194,126,0.45)]' : 'scale-100'}`}>
               <LayoutGrid size={18} />
             </div>
             <span className={`text-[10px] font-medium tracking-wide transition-all duration-300 font-sans ${isOpen ? 'opacity-100 drop-shadow-md' : 'opacity-80'}`}>

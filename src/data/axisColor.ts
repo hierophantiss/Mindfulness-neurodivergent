@@ -4,7 +4,7 @@ import type { Axis } from './types';
 // window) can use the colours without loading every practice.
 export const AXIS_COLOR: Record<Axis, string> = {
   body: 'var(--color-axis-body, #7A9E7E)',
-  breath: 'var(--color-axis-breath, #C07050)',
+  breath: 'var(--color-axis-breath, #7fa9e4)',
   attention: 'var(--color-axis-focus, #C8922A)',
   space: 'var(--color-axis-space, #B5A7D0)',
 };

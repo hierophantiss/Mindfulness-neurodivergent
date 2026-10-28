@@ -17,7 +17,7 @@ import { GUIDED_EXERCISES as EXERCISES } from '../data/guidedExercises';
 
 const AXIS_THEME: Record<string, { ring: string; text: string; soft: string; button: string }> = {
   body: { ring: '#7A9E7E', text: 'text-[#9cc0a0]', soft: 'bg-[#7A9E7E]/15', button: 'bg-[#7A9E7E]' },
-  breath: { ring: '#5eead4', text: 'text-teal-300', soft: 'bg-teal-400/15', button: 'bg-teal-400' },
+  breath: { ring: '#7fa9e4', text: 'text-[var(--tint-blue-ink)]', soft: 'bg-[var(--tint-blue-mark)]/15', button: 'bg-[var(--tint-blue-mark)]' },
   attention: { ring: '#C8922A', text: 'text-[#e0b25a]', soft: 'bg-[#C8922A]/15', button: 'bg-[#C8922A]' },
   space: { ring: '#B5A7D0', text: 'text-[#c9bde0]', soft: 'bg-[#B5A7D0]/15', button: 'bg-[#B5A7D0]' },
 };

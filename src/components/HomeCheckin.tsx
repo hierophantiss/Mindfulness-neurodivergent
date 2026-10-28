@@ -18,9 +18,9 @@ import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 const TINT: Record<CheckinChoice, string> = { hyper: 'rose', hypo: 'lav', balanced: 'sage', unsure: 'sand' };
 const tint = (id: CheckinChoice, part: 'bg' | 'hi' | 'line') => `var(--tint-${TINT[id]}-${part})`;
 
-// "How do you feel right now?" — on the home page under the guide, small,
-// with the four choices always in view (one row when the screen allows).
-export default function HomeCheckin() {
+// "How do you feel right now?" — the four choices and the answer. On the home
+// page it opens inside its row (`embedded`: the row is the heading).
+export default function HomeCheckin({ embedded = false }: { embedded?: boolean } = {}) {
   const { language } = useLanguage();
   const lang = language === 'en' ? 'en' : 'el';
   const { reduceMotion } = useAccessibility();
@@ -60,7 +60,7 @@ export default function HomeCheckin() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="sky-text text-center text-[20px] font-normal text-ink/90">{question}</h2>
+      {!embedded && <h2 className="sky-text text-center text-[20px] font-normal text-ink/90">{question}</h2>}
 
       <div className="checkin-grid grid grid-cols-2 gap-2.5" role="group" aria-label={question}>
         {CHECKIN_OPTIONS.map(o => {
