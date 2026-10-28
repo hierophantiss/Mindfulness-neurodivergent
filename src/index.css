@@ -67,6 +67,8 @@
     --tint-lav-bg: #2e2949;   --tint-lav-hi: #3a3459;   --tint-lav-line: rgb(181 167 208 / 0.36);  --tint-lav-ink: #c9bdf0;
     --tint-sage-bg: #1e2a25;  --tint-sage-hi: #283730;  --tint-sage-line: rgb(143 184 160 / 0.28);  --tint-sage-ink: #a9dcbc;
     --tint-sand-bg: #2a261f;  --tint-sand-hi: #363027;  --tint-sand-line: rgb(214 195 161 / 0.30);
+    /* The small dot of each "How do you feel" answer. */
+    --tint-rose-dot: #e2a3ad;  --tint-lav-dot: #b9abe0;  --tint-sage-dot: #93c4a6;  --tint-sand-dot: #d6c3a1;
     --tint-blue-bg: #1a2741;  --tint-blue-hi: #22345a;  --tint-blue-line: rgb(122 166 228 / 0.32);
     --tint-blue-ink: #a9c8f2;  --tint-blue-mark: #7fa9e4; /* the blue of the sign's circle, the Breath */
 
@@ -172,6 +174,29 @@
     background: linear-gradient(180deg, var(--gold-top) 0%, var(--color-sign-gold) 55%, var(--gold-bottom) 100%);
     color: var(--color-bg);
     box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.45), inset 0 -1px 0 rgb(120 80 20 / 0.35), 0 10px 24px -10px rgb(230 194 126 / 0.55);
+  }
+  /* The lighter card of the home page: the same light from above, half the
+     shadow and a little of the sky showing through. */
+  .card-soft {
+    border-radius: 20px;
+    background: linear-gradient(180deg, rgb(35 40 56 / 0.80), rgb(21 24 35 / 0.84));
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgb(255 255 255 / 0.06);
+    border-top-color: rgb(255 255 255 / 0.12);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 12px 28px -16px rgb(0 0 0 / 0.6);
+  }
+  .btn-gold-soft {
+    background: linear-gradient(180deg, #ecca8a, #dfb66e);
+    color: var(--color-bg);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 6px 16px -8px rgb(230 194 126 / 0.5);
+  }
+  /* A quiet pill on the sky (the four answers of "How do you feel"). */
+  .pill-sky {
+    background: rgb(16 18 26 / 0.38);
+    border: 1px solid rgb(232 227 217 / 0.14);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
   }
   .track-inset {
     background: rgb(0 0 0 / 0.35);

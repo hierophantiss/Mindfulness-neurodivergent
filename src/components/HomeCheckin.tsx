@@ -16,7 +16,7 @@ import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 // Each answer has its own soft pastel (see the --tint-* colours in index.css):
 // tension a warm dusty rose, numbness lavender, calm sage, not sure sand.
 const TINT: Record<CheckinChoice, string> = { hyper: 'rose', hypo: 'lav', balanced: 'sage', unsure: 'sand' };
-const tint = (id: CheckinChoice, part: 'bg' | 'hi' | 'line') => `var(--tint-${TINT[id]}-${part})`;
+const tint = (id: CheckinChoice, part: 'bg' | 'hi' | 'line' | 'dot') => `var(--tint-${TINT[id]}-${part})`;
 
 // "How do you feel right now?" — the four choices and the answer. On the home
 // page it opens inside its row (`embedded`: the row is the heading).
@@ -62,7 +62,7 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
     <div className="flex flex-col gap-4">
       {!embedded && <h2 className="sky-text text-center text-[20px] font-normal text-ink/90">{question}</h2>}
 
-      <div className="checkin-grid grid grid-cols-2 gap-2.5" role="group" aria-label={question}>
+      <div className="checkin-grid grid grid-cols-2 gap-2" role="group" aria-label={question}>
         {CHECKIN_OPTIONS.map(o => {
           const isSel = o.id === selected;
           return (
@@ -71,14 +71,17 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
               onClick={() => choose(o.id)}
               aria-pressed={isSel}
               aria-expanded={isSel ? open : undefined}
-              style={{ backgroundColor: tint(o.id, isSel ? 'hi' : 'bg'), borderColor: tint(o.id, 'line') }}
+              style={isSel ? { backgroundColor: tint(o.id, 'hi'), borderColor: tint(o.id, 'dot') } : undefined}
               className={cn(
-                "min-h-[56px] px-2 rounded-[18px] border text-[16px] transition-[filter,transform] active:scale-[0.97] hover:brightness-110",
-                isSel ? "text-ink border-2 ring-1 ring-white/20" : "text-ink/85",
-                o.id === 'unsure' && "border-dashed"
+                "pill-sky min-h-[44px] px-4 rounded-full flex items-center gap-2.5 text-[15px] text-ink/90 transition-[filter,transform,background-color] active:scale-[0.97] hover:brightness-110"
               )}
             >
-              {o.label[lang]}
+              <span
+                aria-hidden="true"
+                className="w-[7px] h-[7px] rounded-full shrink-0"
+                style={{ backgroundColor: tint(o.id, 'dot'), boxShadow: isSel ? `0 0 8px ${tint(o.id, 'dot')}` : undefined }}
+              />
+              <span className="min-w-0 truncate">{o.label[lang]}</span>
             </button>
           );
         })}
@@ -92,8 +95,7 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: reduceMotion ? 0 : 0.3 }}
-            style={{ backgroundColor: tint(opt.id, 'bg'), borderColor: tint(opt.id, 'line') }}
-            className="rounded-[24px] border p-5 flex flex-col gap-4"
+            className="card-soft p-5 flex flex-col gap-4"
           >
             <div className="flex flex-col gap-1.5">
               <h3 className="text-[17px] font-medium text-ink/90">{opt.title[lang]}</h3>
