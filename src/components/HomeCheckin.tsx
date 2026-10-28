@@ -62,7 +62,7 @@ export default function HomeCheckin() {
     <div className="flex flex-col gap-2.5">
       <h2 className="sky-text text-[13px] text-ink/65 pl-1">{question}</h2>
 
-      <div className="grid grid-cols-2 min-[370px]:grid-cols-4 gap-1.5" role="group" aria-label={question}>
+      <div className="checkin-grid grid grid-cols-2 min-[370px]:grid-cols-4 gap-1.5" role="group" aria-label={question}>
         {CHECKIN_OPTIONS.map(o => {
           const isSel = o.id === selected;
           return (

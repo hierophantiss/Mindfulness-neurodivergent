@@ -86,7 +86,9 @@ export default function Dashboard() {
     const text = (spot.chapter?.insight || '').replace(/\{\{[^}]*\}\}/g, '').replace(/\s+/g, ' ').trim();
     return text.match(/^[^.!;]+[.!;]?/)?.[0].trim() || '';
   }, [spot.chapter, finishedGuide]);
-  // The chapter's own practice is its last page.
+  // The chapter's own practice is its last page; for the chapters of the four
+  // axes it carries the axis's sign (Ι ○ △ ∞), as on the Method page.
+  const axisGlyph = spot.chapter && spot.chapter.num <= 4 ? ['Ι', '○', '△', '∞'][spot.chapter.num - 1] : '';
   const chapterPractice = !finishedGuide && spot.chapter?.exercise ? spot.chapter.exercise : undefined;
   const chapterPracticeHref = spot.chapter ? `/chapters/${spot.chapter.num}?p=${Math.max(1, spot.pages.length)}` : '/chapters';
   const guideAction = finishedGuide
@@ -221,10 +223,10 @@ export default function Dashboard() {
         <div className="flex flex-col gap-2 mt-3">
           {/* The greeting and the phrase are there at once (no fade): they are the first
               words you read, and the page counts as shown only when they are. */}
-          <h1 className="sky-text text-[24px] font-sans font-medium tracking-tight leading-none text-ink/90">
+          <h1 className="sky-text text-[30px] font-sans font-light tracking-tight leading-tight text-ink/95">
             {greeting}
           </h1>
-          <p className="sky-text text-[13px] leading-snug text-ink/70">
+          <p className="sky-text text-[14px] leading-relaxed text-ink/75">
             {language === 'el' ? affirmation.el : affirmation.en}
           </p>
         </div>
@@ -273,11 +275,11 @@ export default function Dashboard() {
               <div className="absolute top-[-30%] right-[-10%] w-48 h-48 bg-[var(--tint-blue-mark)]/10 blur-[50px] rounded-full pointer-events-none" />
               <div className="relative z-10 flex flex-col px-5 pt-3 pb-5">
                 <div className="flex items-center justify-between gap-3">
-                  <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--tint-blue-mark)]">
+                  <span className="whitespace-nowrap text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--tint-blue-mark)]">
                     {el ? 'Ο οδηγός σου' : 'Your guide'}
                   </span>
                   {!finishedGuide && (
-                    <Link to="/chapters" className="min-h-[40px] -mr-1 px-1 flex items-center text-[12px] text-ink/60 hover:text-ink/85 transition-colors">
+                    <Link to="/chapters" className="min-h-[40px] -mr-1 px-1 flex items-center whitespace-nowrap text-[12px] text-ink/60 hover:text-ink/85 transition-colors">
                       {el ? 'Όλα τα κεφάλαια' : 'All chapters'}
                     </Link>
                   )}
@@ -299,7 +301,8 @@ export default function Dashboard() {
                       {spot.chapter?.title}
                     </h2>
                     {keyLine && (
-                      <p className="mt-3 font-serif italic text-[15px] leading-relaxed text-ink/75">«{keyLine}»</p>
+                      // Upright, not italic: slanted letters are harder to read.
+                      <p className="mt-3 text-[15px] leading-relaxed text-ink/80 [@media(max-height:690px)]:hidden">{el ? `«${keyLine}»` : `“${keyLine}”`}</p>
                     )}
                   </>
                 )}
@@ -337,6 +340,11 @@ export default function Dashboard() {
                     to={chapterPracticeHref}
                     className="mt-4 -mx-1 pt-4 px-1 flex items-center gap-3 border-t border-white/[0.06] group"
                   >
+                    {axisGlyph && (
+                      <span aria-hidden="true" className="w-10 h-10 shrink-0 rounded-full flex items-center justify-center text-[18px] font-mono text-[var(--tint-sage-ink)] bg-[var(--tint-sage-bg)] border border-[var(--tint-sage-line)]">
+                        {axisGlyph}
+                      </span>
+                    )}
                     <span className="flex flex-col min-w-0 flex-1 gap-0.5">
                       <span className="text-[12px] text-ink/55">{el ? 'Η πρακτική του κεφαλαίου' : 'This chapter’s practice'}</span>
                       <span className="text-[14px] leading-snug text-ink/85 line-clamp-2">{chapterPractice.title}</span>
@@ -369,9 +377,9 @@ export default function Dashboard() {
             <motion.div variants={itemVariants}>
               <Link
                 to="/journal"
-                className="flex items-center gap-3.5 px-4 py-3 rounded-2xl bg-[var(--tint-rose-bg)] border border-[var(--tint-rose-line)] hover:brightness-110 transition-[filter,transform] active:scale-[0.98]"
+                className="flex items-center gap-3.5 px-4 py-3 rounded-2xl bg-white/[0.04] border border-white/[0.06] hover:bg-white/[0.06] transition-[background-color,transform] active:scale-[0.98]"
               >
-                <span aria-hidden="true" className="w-10 h-10 shrink-0 rounded-full flex items-center justify-center bg-[var(--tint-rose-hi)] text-ink/70">
+                <span aria-hidden="true" className="w-10 h-10 shrink-0 rounded-full flex items-center justify-center bg-[var(--tint-lav-hi)] text-[var(--tint-lav-ink)]">
                   <Moon size={17} strokeWidth={1.6} />
                 </span>
                 <span className="flex flex-col min-w-0 flex-1 gap-0.5">
