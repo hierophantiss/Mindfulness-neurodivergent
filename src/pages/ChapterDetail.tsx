@@ -52,7 +52,7 @@ type ReadState = 'active' | 'dim' | undefined;
 const readClass = (state: ReadState) =>
   cn(
     'rounded-2xl -mx-3 px-3 -my-2 py-2 transition-[opacity,background-color,box-shadow] duration-500',
-    state === 'active' && 'bg-teal-400/[0.06] shadow-[inset_0_0_0_1px_rgba(45,212,191,0.15)]',
+    state === 'active' && 'bg-teal-400/[0.06] shadow-[inset_0_0_0_1px_rgba(127,169,228,0.15)]',
     state === 'dim' && 'opacity-45'
   );
 

@@ -27,7 +27,7 @@ export default function GuideAfterPractice({ axis, language, className }: { axis
           <BookOpen size={18} strokeWidth={1.5} />
         </span>
         <span className="flex flex-col gap-0.5 text-left min-w-0 flex-1">
-          <span className="text-[11px] uppercase tracking-[0.15em] text-ink/40">
+          <span className="text-[13px] text-ink/65">
             {el ? 'Στον οδηγό' : 'In the guide'}
           </span>
           <span className="text-[14px] text-ink/85">

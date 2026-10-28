@@ -234,7 +234,7 @@ export default function Journal() {
   const q = searchQuery.toLowerCase();
   const filteredHistory = allEntries.filter(e => e.data.text.toLowerCase().includes(q) || e.date.includes(searchQuery));
 
-  const sectionLabel = "text-[11px] uppercase tracking-[0.15em] text-ink/40 font-semibold mb-3 ml-1";
+  const sectionLabel = "text-[13px] text-ink/65 font-semibold mb-3 ml-1";
 
   return (
     <div className="min-h-screen bg-transparent text-ink/80 font-sans">
@@ -270,7 +270,7 @@ export default function Journal() {
               <ChevronLeft size={20} />
             </button>
             <div className="flex flex-col items-center">
-              <span className="text-sm tracking-[0.15em] uppercase font-semibold text-ink/90">
+              <span className="text-sm font-semibold text-ink/90">
                 {currentDate.toLocaleDateString(lang === 'el' ? 'el-GR' : 'en-GB', { day: 'numeric', month: 'long' })}
               </span>
               <span className="text-[10px] tracking-wider text-ink/40">
@@ -363,7 +363,7 @@ export default function Journal() {
               <div className="card-relief mt-3 p-4 rounded-[1.5rem]">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="w-2 h-2 rounded-full" style={{ backgroundColor: AXIS_COLOR[question.axis] }} />
-                  <span className="text-[11px] font-semibold tracking-[0.15em] text-ink/45 uppercase">
+                  <span className="text-[13px] font-semibold text-ink/65">
                     {lang === 'el' ? 'Ερώτηση της ημέρας' : 'Question of the day'}
                   </span>
                 </div>
@@ -422,7 +422,7 @@ export default function Journal() {
                     className="card-relief w-full text-left p-5 rounded-3xl hover:brightness-110 transition-all"
                   >
                     <div className="flex items-center justify-between gap-3 mb-3 border-b border-white/[0.05] pb-3">
-                      <span className="text-xs font-semibold tracking-[0.1em] text-ink/60 uppercase">
+                      <span className="text-[13px] font-semibold text-ink/60">
                         {parseLocalDate(item.date).toLocaleDateString(lang === 'el' ? 'el-GR' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
                       </span>
                       <span className="flex items-center gap-2 shrink-0">

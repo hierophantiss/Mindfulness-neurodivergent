@@ -209,7 +209,7 @@ export default function NavigationMenu() {
               className="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-[480px] max-h-[85vh] bg-[#1a1d27]/98 backdrop-blur-2xl border-t border-white/10 z-[9999] shadow-[0_-20px_50px_rgba(0,0,0,0.6)] flex flex-col rounded-t-[2rem]"
             >
               <div className="p-4 flex justify-between items-center border-b border-white/[0.08]">
-                <span className="font-bold text-zinc-200 tracking-wider text-sm uppercase px-4">
+                <span className="font-medium text-zinc-200 text-sm px-4">
                   {language === 'en' ? 'More Options' : 'Περισσότερα'}
                 </span>
                 <button

@@ -21,7 +21,7 @@ export default function Faq() {
         >
           <ArrowLeft size={20} />
         </button>
-        <h1 className="text-2xl font-heading font-medium text-ink tracking-wide">
+        <h1 className="text-2xl font-medium text-ink tracking-wide">
           {language === 'el' ? 'Συχνές Ερωτήσεις' : 'FAQs'}
         </h1>
       </div>
@@ -33,7 +33,7 @@ export default function Faq() {
           
           return (
             <div key={chapter} className="mb-10 w-full">
-              <h2 className="font-bold text-xs text-teal-400 uppercase tracking-[0.2em] mb-5 px-2 flex items-center gap-3">
+              <h2 className="font-medium text-[13px] text-teal-400 mb-5 px-2 flex items-center gap-3">
                 <span className="w-6 h-px bg-teal-800/50"></span>
                 {language === 'el' ? `Κεφάλαιο ${chapter}` : `Chapter ${chapter}`}
                 <span className="flex-1 h-px bg-zinc-800/50"></span>
@@ -41,7 +41,7 @@ export default function Faq() {
               <div className="space-y-4 w-full">
                 {faqs.map((faq: any, idx: number) => (
                   <details key={idx} className="card-relief rounded-2xl p-5 md:p-6 group transition-all duration-300 w-full outline-none [&_summary::-webkit-details-marker]:hidden">
-                    <summary className="font-heading font-medium cursor-pointer focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 list-none flex justify-between items-center text-base md:text-lg text-ink group-open:text-teal-100 transition-colors w-full">
+                    <summary className="font-medium cursor-pointer focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 list-none flex justify-between items-center text-base md:text-lg text-ink group-open:text-teal-100 transition-colors w-full">
                       <span className="pr-6 leading-snug">{faq.q}</span>
                       <span className="text-teal-500/80 group-open:rotate-180 transition-transform duration-500 shrink-0 w-8 h-8 rounded-full bg-zinc-950/50 flex items-center justify-center border border-white/5">↓</span>
                     </summary>

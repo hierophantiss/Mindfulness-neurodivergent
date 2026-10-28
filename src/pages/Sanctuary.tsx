@@ -324,11 +324,11 @@ export default function Sanctuary() {
             <ChevronLeft size={20} />
           </button>
           <div className="flex-1 flex justify-center flex-col items-center">
-            <h1 className="text-[26px] font-serif italic text-ink/90 leading-none">
+            <h1 className="text-[26px] font-light text-ink/90 leading-none">
               {language === 'el' ? 'Το Καταφύγιο' : 'The Sanctuary'}
             </h1>
-            <p className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#4a9eca] mt-1.5">
-              {language === 'el' ? 'ΧΩΡΟΣ ΑΝΑΠΑΥΣΗΣ' : 'SPACE OF REST'}
+            <p className="text-[13px] font-medium text-[#4a9eca] mt-1.5">
+              {language === 'el' ? 'Χώρος ανάπαυσης' : 'Space of rest'}
             </p>
           </div>
           <button
@@ -380,7 +380,7 @@ export default function Sanctuary() {
                   style={{ transform: `scale(${breathScale})`, transition: 'transform 120ms linear' }}
                 >
                   {isPlaying && (
-                    <span className="text-[15px] font-serif italic text-teal-200/90" aria-live="polite">
+                    <span className="text-[15px] font-light text-teal-200/90" aria-live="polite">
                       {inhaling ? (language === 'el' ? 'Εισπνοή' : 'Breathe in') : (language === 'el' ? 'Εκπνοή' : 'Breathe out')}
                     </span>
                   )}
@@ -399,7 +399,7 @@ export default function Sanctuary() {
             </div>
 
             <div className="flex flex-col items-center gap-2 mb-8 text-center px-4">
-              <h2 className="text-[22px] font-serif italic text-ink/90">
+              <h2 className="text-[22px] font-light text-ink/90">
                 {activeTrackDef ? L(activeTrackDef.label) : (language === 'el' ? 'Διάλεξε έναν ήχο' : 'Choose a sound')}
               </h2>
               <p className="text-[12px] text-[#4a9eca]">
@@ -498,7 +498,7 @@ export default function Sanctuary() {
             {groups.map(group => (
               <div key={group.kind} className="flex flex-col gap-3">
                 <div className="pl-2 pr-1">
-                  <h3 className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.15em] text-[#4a9eca]">
+                  <h3 className="flex items-center gap-2 text-[13px] font-medium text-[#4a9eca]">
                     {group.kind === 'binaural' && <Headphones size={13} aria-hidden="true" />}
                     {L(group.title)}
                   </h3>
@@ -551,7 +551,7 @@ export default function Sanctuary() {
                           </div>
                           <div className="flex flex-col">
                             <span className={cn(
-                              "text-[17px] font-serif italic leading-tight mb-1",
+                              "text-[17px] font-light leading-tight mb-1",
                               active ? "text-ink" : "text-ink/80 group-hover:text-ink"
                             )}>
                               {L(sound.label)}
@@ -563,7 +563,7 @@ export default function Sanctuary() {
                         </div>
                         <div className="relative z-10 pr-2">
                           {active && isPlaying ? (
-                            <div className="w-1.5 h-1.5 rounded-full bg-teal-400 shadow-[0_0_8px_rgba(45,212,191,0.6)]" />
+                            <div className="w-1.5 h-1.5 rounded-full bg-teal-400 shadow-[0_0_8px_rgba(127,169,228,0.6)]" />
                           ) : (
                             <span className="text-ink/30 text-lg font-light" aria-hidden="true">∞</span>
                           )}
@@ -585,7 +585,7 @@ export default function Sanctuary() {
                 <Sparkles size={20} />
               </div>
               <div>
-                <h2 className="text-[20px] font-serif italic text-ink/90 leading-tight">
+                <h2 className="text-[20px] font-light text-ink/90 leading-tight">
                   {language === 'el' ? 'Διμερής κίνηση' : 'Bilateral rhythm'}
                 </h2>
                 <p className="text-[12px] text-ink/45 mt-1">
@@ -623,10 +623,10 @@ export default function Sanctuary() {
                     </div>
                   </div>
                   <div className="flex flex-col justify-center flex-1 min-w-0 pb-1">
-                    <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-[#C8922A] mb-2 block">
+                    <span className="text-[13px] font-medium text-[#C8922A] mb-2 block">
                       {video.category}
                     </span>
-                    <h3 className="text-[17px] font-serif italic text-ink/90 leading-snug mb-1.5 group-hover:text-ink transition-colors line-clamp-2">
+                    <h3 className="text-[17px] font-light text-ink/90 leading-snug mb-1.5 group-hover:text-ink transition-colors line-clamp-2">
                       {video.title}
                     </h3>
                     <p className="text-[11px] text-ink/35 truncate">
@@ -672,8 +672,8 @@ export default function Sanctuary() {
               <div className="w-8 h-8 rounded-full bg-teal-500/10 flex items-center justify-center text-teal-400">
                 <Youtube size={16} />
               </div>
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-ink/20">
-                {language === 'el' ? 'ΠΡΟΒΟΛΗ ΒΙΝΤΕΟ' : 'NOW PLAYING'}
+              <span className="text-[13px] font-medium text-ink/65">
+                {language === 'el' ? 'Προβολή βίντεο' : 'Now playing'}
               </span>
             </div>
             <button 
@@ -709,10 +709,10 @@ export default function Sanctuary() {
               </div>
 
               <div className={cn("hidden md:block transition-opacity duration-1000", isVoidActive ? "opacity-20" : "opacity-100")}>
-                 <h2 className="text-3xl md:text-4xl font-serif italic text-ink/95 mb-2">
+                 <h2 className="text-3xl md:text-4xl font-light text-ink/95 mb-2">
                    {bilateralVideos.find(v => v.id === activeVideo)?.title}
                  </h2>
-                 <p className="text-lg text-ink/30 font-medium font-serif italic">
+                 <p className="text-lg text-ink/30 font-medium">
                    {bilateralVideos.find(v => v.id === activeVideo)?.author}
                  </p>
               </div>
@@ -734,7 +734,7 @@ export default function Sanctuary() {
                           {desc.intro}
                         </p>
                         <div className="pt-4 border-t border-white/5">
-                           <p className="text-[12px] font-serif italic text-teal-400/80">
+                           <p className="text-[12px] font-light text-teal-400/80">
                              {desc.tip}
                            </p>
                         </div>
@@ -746,7 +746,7 @@ export default function Sanctuary() {
                 return (
                   <div className="space-y-6">
                     <div className="md:hidden">
-                       <h2 className="text-2xl font-serif italic text-ink/95 mb-2">
+                       <h2 className="text-2xl font-light text-ink/95 mb-2">
                          {videoData?.title}
                        </h2>
                        <p className="text-sm text-ink/30 font-medium">
@@ -756,11 +756,11 @@ export default function Sanctuary() {
                     <div className="bg-white/[0.02] border border-white/5 p-8 rounded-[2.5rem]">
                        <div className="flex items-center gap-3 mb-6 text-teal-400/40">
                          <Info size={20} />
-                         <span className="text-[10px] font-black uppercase tracking-widest">
-                           {language === 'el' ? 'ΠΛΗΡΟΦΟΡΙΕΣ' : 'INFORMATION'}
+                         <span className="text-[13px] font-medium">
+                           {language === 'el' ? 'Πληροφορίες' : 'Information'}
                          </span>
                        </div>
-                       <p className="text-ink/50 text-[14px] leading-relaxed italic font-serif">
+                       <p className="text-ink/50 text-[14px] leading-relaxed font-light">
                          {language === 'el' 
                            ? 'Αυτό το βίντεο αποτελεί μέρος της συλλογής μας για την εξερεύνηση της συνείδησης και της νευροδιαφορετικότητας.' 
                            : 'This video is part of our collection exploring consciousness and neurodiversity.'}

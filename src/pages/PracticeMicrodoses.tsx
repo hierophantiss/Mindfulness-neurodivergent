@@ -53,10 +53,10 @@ export default function PracticeMicrodoses() {
 
   const categories = [
     { id: 'all', label: { el: 'Όλα', en: 'All' }, color: 'text-ink/60' },
-    { id: 'body', label: { el: 'Σώμα', en: 'Body' }, color: 'text-emerald-400' },
-    { id: 'breath', label: { el: 'Αναπνοή', en: 'Breath' }, color: 'text-teal-400' },
-    { id: 'focus', label: { el: 'Προσοχή', en: 'Focus' }, color: 'text-amber-400' },
-    { id: 'space', label: { el: 'Χώρος', en: 'Space' }, color: 'text-indigo-400' }
+    { id: 'body', label: { el: 'Σώμα', en: 'Body' }, color: 'text-[var(--axis-body-ink)]' },
+    { id: 'breath', label: { el: 'Αναπνοή', en: 'Breath' }, color: 'text-[var(--axis-breath-ink)]' },
+    { id: 'focus', label: { el: 'Προσοχή', en: 'Focus' }, color: 'text-[var(--axis-attention-ink)]' },
+    { id: 'space', label: { el: 'Χώρος', en: 'Space' }, color: 'text-[var(--axis-space-ink)]' }
   ];
 
   const getIcon = (name: string) => {
@@ -116,13 +116,13 @@ export default function PracticeMicrodoses() {
         >
           <ArrowLeft size={20} />
         </button>
-        <span className="text-[11px] font-bold tracking-[0.2em] text-teal-400 uppercase">
+        <span className="text-[13px] font-medium text-teal-400">
           {language === 'el' ? 'Μικροδόσεις' : 'Microdoses'}
         </span>
       </div>
 
       <header className="space-y-3 max-w-2xl">
-        <h1 className="text-4xl md:text-5xl font-serif text-ink/90 italic leading-tight">
+        <h1 className="text-4xl md:text-5xl font-light text-ink/90 leading-tight">
           {language === 'el' ? 'Αόρατη Εξάσκηση' : 'Invisible Practice'}
         </h1>
         <p className="text-base text-ink/50 font-sans leading-relaxed">
@@ -139,15 +139,15 @@ export default function PracticeMicrodoses() {
         
         <div className="space-y-3 relative z-10 flex-1">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-teal-500/10 text-teal-300 tracking-wider uppercase border border-teal-500/15 animate-pulse">
-              ✨ {language === 'el' ? 'ΑΝΑΚΟΥΦΙΣΗ ΑΠΟΦΑΣΗΣ' : 'DECISION RELIEF'}
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[12px] font-medium bg-teal-500/10 text-teal-300 border border-teal-500/15 animate-pulse">
+              ✨ {language === 'el' ? 'Ανακούφιση απόφασης' : 'Decision relief'}
             </span>
             <span className="text-[10px] text-ink/40 tracking-wider">
               {language === 'el' ? 'Πρόταση της Ημέρας' : 'Suggested Daily Core'}
             </span>
           </div>
           
-          <h2 className="text-2xl md:text-3xl font-serif text-ink/9 drop-shadow-sm leading-tight italic">
+          <h2 className="text-2xl md:text-3xl font-light text-ink/9 drop-shadow-sm leading-tight">
             {language === 'el' ? suggestedExercise.title.el : suggestedExercise.title.en}
           </h2>
           
@@ -171,7 +171,7 @@ export default function PracticeMicrodoses() {
         
         <Link 
           to={suggestedExercise.link}
-          className="relative z-10 w-full md:w-auto btn-zen !px-6 !py-3 bg-teal-500/10 border-teal-400/30 text-teal-300 hover:bg-teal-500 hover:text-ink hover:shadow-[0_0_20px_rgba(20,184,166,0.25)] transition-all duration-300 text-center text-xs font-bold uppercase tracking-widest whitespace-nowrap shrink-0"
+          className="relative z-10 w-full md:w-auto btn-zen !px-6 !py-3 bg-teal-500/10 border-teal-400/30 text-teal-300 hover:bg-teal-500 hover:text-ink hover:shadow-[0_0_20px_rgba(95,143,214,0.25)] transition-all duration-300 text-center text-[13px] font-medium whitespace-nowrap shrink-0"
         >
           {language === 'el' ? 'Έναρξη Άσκησης' : 'Start Practice'}
         </Link>
@@ -179,7 +179,7 @@ export default function PracticeMicrodoses() {
 
       {/* Somatic Quick Filters */}
       <div className="space-y-3" id="somatic-needs-section">
-        <span className="text-[10px] font-bold text-ink/30 uppercase tracking-[0.2em] pl-1 block">
+        <span className="text-[13px] font-medium text-ink/65 pl-1 block">
           {language === 'el' ? 'Φιλτράρισμα με βάση το Σύστημά σου' : 'Filter by Somatic State'}
         </span>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -232,7 +232,7 @@ export default function PracticeMicrodoses() {
                 )}
                 
                 <h3 className={cn(
-                  "text-xs font-bold uppercase tracking-wider transition-colors",
+                  "text-[13px] font-medium transition-colors",
                   isActive ? `text-${color}-300` : "text-ink/70 group-hover:text-ink"
                 )}>
                   {language === 'el' ? sf.label.el : sf.label.en}
@@ -250,7 +250,7 @@ export default function PracticeMicrodoses() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2 sticky top-0 z-20 bg-black/40 backdrop-blur-xl py-4 -mx-6 px-6 border-b border-white/5">
         {/* Category Filter */}
         <div className="space-y-2">
-          <span className="text-[9px] font-bold text-ink/30 uppercase tracking-widest pl-1">
+          <span className="text-[13px] font-medium text-ink/65 pl-1">
             {language === 'el' ? 'Κατηγορία Άξονα' : 'Axis Category'}
           </span>
           <div className="flex overflow-x-auto gap-2 pb-1 scrollbar-none">
@@ -263,7 +263,7 @@ export default function PracticeMicrodoses() {
                   key={cat.id}
                   onClick={() => setTab(cat.id)}
                   className={cn(
-                    "px-3 py-1.5 rounded-lg text-[11px] font-bold uppercase tracking-widest transition-all duration-300 whitespace-nowrap border",
+                    "px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all duration-300 whitespace-nowrap border",
                     isActive 
                       ? `bg-${color}-500/15 border-${color}-400/40 text-${color}-300` 
                       : "bg-white/5 border-white/5 text-ink/40 hover:text-ink"
@@ -279,7 +279,7 @@ export default function PracticeMicrodoses() {
 
         {/* Speed / Duration Filter */}
         <div className="space-y-2">
-          <span className="text-[9px] font-bold text-ink/30 uppercase tracking-widest pl-1">
+          <span className="text-[13px] font-medium text-ink/65 pl-1">
             {language === 'el' ? 'Ταχύτητα & Διάρκεια' : 'Speed & Duration'}
           </span>
           <div className="flex overflow-x-auto gap-2 pb-1 scrollbar-none">
@@ -297,7 +297,7 @@ export default function PracticeMicrodoses() {
                   key={speed.id}
                   onClick={() => setActiveSpeed(speed.id as any)}
                   className={cn(
-                    "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold uppercase tracking-widest transition-all duration-300 whitespace-nowrap border",
+                    "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all duration-300 whitespace-nowrap border",
                     isActive 
                       ? speed.id === 'all' 
                         ? 'bg-white/10 border-white/25 text-ink' 
@@ -329,7 +329,7 @@ export default function PracticeMicrodoses() {
               className={cn(
                 "group relative flex gap-4 glass-card hover:border-white/10 p-4 transition-all duration-300 active:scale-[0.98] border overflow-hidden items-start",
                 isSuggested 
-                  ? "ring-1 ring-teal-500/30 border-teal-500/40 shadow-[0_0_15px_rgba(20,184,166,0.15)] bg-teal-500/[0.01]" 
+                  ? "ring-1 ring-teal-500/30 border-teal-500/40 shadow-[0_0_15px_rgba(95,143,214,0.15)] bg-teal-500/[0.01]" 
                   : "border-white/5",
                 `shape-cloud-${(idx % 5) + 1}`
               )}
@@ -359,21 +359,21 @@ export default function PracticeMicrodoses() {
               <div className="flex-1 min-w-0 pr-1 space-y-1">
                 <div className="flex justify-between items-center gap-2">
                   <div className="flex items-center gap-1.5">
-                    <span className={cn("text-[9px] font-bold uppercase tracking-widest", `text-${color}-400`)}>
-                      {language === 'en' ? ex.type : ex.type === 'body' ? 'ΣΩΜΑ' : ex.type === 'breath' ? 'ΑΝΑΠΝΟΗ' : ex.type === 'focus' ? 'ΠΡΟΣΟΧΗ' : 'ΧΩΡΟΣ'}
+                    <span className={cn("text-[13px] font-medium", `text-${color}-400`)}>
+                      {language === 'en' ? ex.type.charAt(0).toUpperCase() + ex.type.slice(1) : ex.type === 'body' ? 'Σώμα' : ex.type === 'breath' ? 'Αναπνοή' : ex.type === 'focus' ? 'Προσοχή' : 'Χώρος'}
                     </span>
                     {isSuggested && (
-                      <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[8px] font-bold bg-teal-400/10 text-teal-300 border border-teal-400/20 uppercase tracking-wider animate-pulse">
+                      <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[12px] font-medium bg-teal-400/10 text-teal-300 border border-teal-400/20 animate-pulse">
                         ✨ {language === 'el' ? 'Πρόταση' : 'Suggested'}
                       </span>
                     )}
                   </div>
-                  <span className="text-[9px] text-ink/30 font-semibold tracking-wider uppercase shrink-0">
+                  <span className="text-[13px] text-ink/65 font-semibold shrink-0">
                     {language === 'en' ? ex.dur.en : ex.dur.el}
                   </span>
                 </div>
                 
-                <h2 className="text-base font-serif text-ink/95 italic leading-tight group-hover:text-ink transition-colors truncate flex items-center gap-1.5">
+                <h2 className="text-base font-light text-ink/95 leading-tight group-hover:text-ink transition-colors truncate flex items-center gap-1.5">
                   <span className="truncate">{language === 'en' ? ex.title.en : ex.title.el}</span>
                 </h2>
                 

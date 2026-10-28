@@ -109,8 +109,8 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
       en: 'Designed for neurodivergent individuals.'
     },
     creatorLabel: {
-      el: 'ΔΗΜΙΟΥΡΓΟΣ',
-      en: 'CREATOR'
+      el: 'Δημιουργός',
+      en: 'Creator'
     },
     creatorName: 'Theodoros Bairaktaris',
     creatorDesc: {
@@ -168,8 +168,8 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
               <div className="space-y-1">
                 <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/5 w-fit mb-2">
                   <Info size={12} className="text-teal-400" />
-                  <span className="text-[10px] font-bold tracking-[0.2em] text-teal-400/80 uppercase">
-                    {language === 'el' ? 'ΠΛΗΡΟΦΟΡΙΕΣ' : 'INFORMATION'}
+                  <span className="text-[13px] font-medium text-teal-400/80">
+                    {language === 'el' ? 'Πληροφορίες' : 'Information'}
                   </span>
                 </div>
                 <h2 id="info-modal-title" className="text-2xl md:text-3xl font-medium text-ink tracking-tight">
@@ -206,7 +206,7 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
 
               {/* Features List */}
               <div className="space-y-3">
-                <h3 className="text-sm font-bold tracking-wider uppercase text-teal-400/80 mb-3 flex items-center gap-2">
+                <h3 className="text-sm font-medium text-teal-400/80 mb-3 flex items-center gap-2">
                    {content.features.title[l]}
                 </h3>
                 <ul className="space-y-2">
@@ -221,7 +221,7 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
 
               {/* Trauma Informed */}
               <div className="space-y-3 bg-indigo-500/5 p-5 md:p-6 rounded-[2rem] border border-indigo-500/10">
-                <h3 className="text-sm font-bold tracking-wider uppercase text-indigo-400/80 mb-3 flex items-center gap-2">
+                <h3 className="text-sm font-medium text-indigo-400/80 mb-3 flex items-center gap-2">
                    <Heart size={16} className="text-indigo-400/60" />
                    {content.trauma.title[l]}
                 </h3>
@@ -238,7 +238,7 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
 
                {/* Research Section */}
                <div className="space-y-4">
-                <h3 className="text-sm font-bold tracking-wider uppercase text-amber-400/80 mb-3 flex items-center gap-2">
+                <h3 className="text-sm font-medium text-amber-400/80 mb-3 flex items-center gap-2">
                    <BookOpen size={16} className="text-amber-400/60" />
                    {content.research.title[l]}
                 </h3>
@@ -259,7 +259,7 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
 
               {/* The 4 Axes grid */}
               <div className="space-y-3">
-                <h3 className="text-sm font-bold tracking-wider uppercase text-ink/40 mb-3">
+                <h3 className="text-sm font-medium text-ink/65 mb-3">
                    {content.axesTitle[l]}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -282,7 +282,7 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
               {/* Creator & Privacy Section */}
               <div className="pt-6 border-t border-white/5 mt-8 flex flex-col items-center gap-3 text-center">
                 <div className="flex flex-col items-center max-w-lg mb-4">
-                  <p className="text-[10px] font-bold tracking-widest uppercase text-teal-400 opacity-60">
+                  <p className="text-[13px] font-medium text-teal-400 opacity-60">
                     {content.creatorLabel[l]}
                   </p>
                   <p className="text-lg font-medium text-ink mt-1">
@@ -291,13 +291,13 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                   <p className="text-xs text-ink/50 leading-relaxed mt-3 font-sans max-w-sm">
                     {content.creatorDesc[l]}
                   </p>
-                  <p className="text-xs text-ink/65 leading-relaxed mt-2 font-sans italic max-w-sm">
+                  <p className="text-xs text-ink/65 leading-relaxed mt-2 font-sans max-w-sm">
                     {content.creatorQuote[l]}
                   </p>
                 </div>
 
                 <div className="w-full max-w-sm flex flex-col items-center gap-3 border-t border-white/5 pt-5 pb-1">
-                  <p className="text-[10px] font-bold tracking-widest uppercase text-teal-400 opacity-60">
+                  <p className="text-[13px] font-medium text-teal-400 opacity-60">
                     {content.contact.title[l]}
                   </p>
                   <p className="text-xs text-ink/55 leading-relaxed">{content.contact.text[l]}</p>
@@ -313,7 +313,7 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                 </div>
                 
                 <div className="flex flex-col items-center max-w-sm border-t border-white/5 pt-4">
-                  <p className="text-[10px] font-bold tracking-widest uppercase opacity-40 mb-1">
+                  <p className="text-[13px] font-medium opacity-40 mb-1">
                     {content.privacy.title[l]}
                   </p>
                   <p className="text-[11px] text-ink/35 leading-relaxed">
@@ -321,7 +321,7 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                   </p>
                 </div>
 
-                <p className="text-[10px] font-bold tracking-widest uppercase opacity-30 mt-6 pb-2">
+                <p className="text-[13px] font-medium opacity-30 mt-6 pb-2">
                   {content.footer[l]}
                 </p>
               </div>

@@ -116,7 +116,7 @@ export default function Method() {
         >
           <ArrowLeft size={20} />
         </Link>
-        <h1 className="text-[14px] font-bold text-[#d4d4d8] uppercase tracking-[0.03em] drop-shadow-sm truncate px-2">
+        <h1 className="text-[14px] font-medium text-[#d4d4d8] drop-shadow-sm truncate px-2">
           {t.title}
         </h1>
         <div className="w-10" />
@@ -134,7 +134,7 @@ export default function Method() {
 
         {/* Roots */}
         <section className="space-y-2">
-          <h2 className="text-[13px] font-semibold uppercase tracking-[0.15em] text-[#d4d4d8]/60">{t.rootsTitle}</h2>
+          <h2 className="text-[13px] font-semibold text-[#d4d4d8]/60">{t.rootsTitle}</h2>
           <p className="text-[#d4d4d8]/80 text-sm leading-relaxed">{t.roots}</p>
         </section>
 
@@ -161,14 +161,14 @@ export default function Method() {
 
         {/* The 4 axes, each with its practices */}
         <section className="pt-4 border-t border-white/[0.05]">
-          <h2 className="text-[18px] font-bold text-[#d4d4d8] mb-5 border-b border-white/[0.05] pb-2 uppercase tracking-wide">
+          <h2 className="text-[18px] font-medium text-[#d4d4d8] mb-5 border-b border-white/[0.05] pb-2">
             {t.axesTitle}
           </h2>
           <div className="grid gap-4">
             {t.axes.map(axis => (
               <div key={axis.id} className="card-relief p-5 rounded-3xl flex flex-col gap-4">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl font-mono border border-white/10 bg-white/5 text-teal-400 shrink-0" aria-hidden="true">
+                  <div className="icon-relief w-12 h-12 rounded-2xl flex items-center justify-center text-2xl font-mono border border-white/10 bg-white/5 shrink-0" style={{ color: `var(--axis-${axis.id}-ink)` }} aria-hidden="true">
                     {axis.icon}
                   </div>
                   <div>

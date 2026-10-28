@@ -109,13 +109,13 @@ export default function Onboarding({ onClose }: { onClose: () => void }) {
       <div
         className="absolute inset-0 pointer-events-none"
         aria-hidden="true"
-        style={{ background: 'radial-gradient(circle at 10% 8%, color-mix(in srgb, var(--color-accent, #1D9E75) 9%, transparent), transparent 42%), radial-gradient(circle at 92% 94%, color-mix(in srgb, var(--color-accent, #1D9E75) 6%, transparent), transparent 42%)' }}
+        style={{ background: 'radial-gradient(circle at 10% 8%, color-mix(in srgb, var(--color-accent, #5f8fd6) 9%, transparent), transparent 42%), radial-gradient(circle at 92% 94%, color-mix(in srgb, var(--color-accent, #5f8fd6) 6%, transparent), transparent 42%)' }}
       />
 
       <div className="flex justify-end p-4 md:p-6 z-10 relative gap-3">
         <button 
           onClick={() => setLanguage(language === 'en' ? 'el' : 'en')}
-          className="text-ink/70 hover:text-ink border border-white/15 hover:bg-white/5 transition-all text-xs font-bold uppercase tracking-wider py-2 px-4 rounded-full min-h-[44px] min-w-[44px]"
+          className="text-ink/70 hover:text-ink border border-white/15 hover:bg-white/5 transition-all text-[12px] font-medium py-2 px-4 rounded-full min-h-[44px] min-w-[44px]"
           aria-label={language === 'en' ? 'ΕΛ, Ελληνικά' : 'EN, English'}
           lang={language === 'en' ? 'el' : 'en'}
         >
@@ -123,7 +123,7 @@ export default function Onboarding({ onClose }: { onClose: () => void }) {
         </button>
         <button 
           onClick={handleComplete}
-          className="text-ink/60 hover:text-ink transition-colors text-sm font-medium uppercase tracking-wider py-2 px-4 rounded-full min-h-[44px] min-w-[44px]"
+          className="text-ink/60 hover:text-ink transition-colors text-sm font-medium py-2 px-4 rounded-full min-h-[44px] min-w-[44px]"
           aria-label={t('onboarding.skip')}
         >
           {t('onboarding.skip')}
@@ -142,7 +142,7 @@ export default function Onboarding({ onClose }: { onClose: () => void }) {
             className="bg-white/[0.03] border border-white/10 p-8 rounded-3xl shadow-xl"
           >
             {screens[step].visual && screens[step].visual}
-            <h2 id="onboarding-title" className="text-3xl md:text-4xl font-serif text-ink mb-6 leading-tight">
+            <h2 id="onboarding-title" className="text-3xl md:text-4xl font-light text-ink mb-6 leading-tight">
               {screens[step].title}
             </h2>
             <p className="text-lg md:text-xl text-ink/70 leading-relaxed font-sans">
@@ -160,7 +160,7 @@ export default function Onboarding({ onClose }: { onClose: () => void }) {
           {screens.map((_, i) => (
             <div 
               key={i} 
-              className={`h-2 rounded-full transition-all duration-300 ${i === step ? 'w-8 bg-[var(--color-accent,#1D9E75)]' : 'w-2 bg-white/20'}`} 
+              className={`h-2 rounded-full transition-all duration-300 ${i === step ? 'w-8 bg-[var(--color-accent,#5f8fd6)]' : 'w-2 bg-white/20'}`} 
             />
           ))}
         </div>
@@ -177,7 +177,7 @@ export default function Onboarding({ onClose }: { onClose: () => void }) {
               handleComplete();
             }
           }}
-          className="bg-[color-mix(in_srgb,var(--color-accent,#1D9E75)_15%,transparent)] hover:bg-[color-mix(in_srgb,var(--color-accent,#1D9E75)_25%,transparent)] border border-[color-mix(in_srgb,var(--color-accent,#1D9E75)_40%,transparent)] text-[var(--color-accent-light,#27c491)] font-medium py-4 px-10 rounded-full transition-all active:scale-95 text-lg min-h-[56px]"
+          className="bg-[color-mix(in_srgb,var(--color-accent,#5f8fd6)_15%,transparent)] hover:bg-[color-mix(in_srgb,var(--color-accent,#5f8fd6)_25%,transparent)] border border-[color-mix(in_srgb,var(--color-accent,#5f8fd6)_40%,transparent)] text-[var(--color-accent-light,#27c491)] font-medium py-4 px-10 rounded-full transition-all active:scale-95 text-lg min-h-[56px]"
         >
           {step === screens.length - 1 ? t('onboarding.start') : t('onboarding.next')}
         </button>

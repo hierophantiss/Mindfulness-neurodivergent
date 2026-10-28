@@ -53,10 +53,10 @@ export default function OfflineNotification() {
             </div>
             
             <div className="flex-1">
-              <h4 className="text-sm font-bold uppercase tracking-wider">
+              <h4 className="text-sm font-medium">
                 {isOffline 
-                  ? (language === 'el' ? 'Εκτος συνδεσης' : 'Offline Mode')
-                  : (language === 'el' ? 'Συνδεθηκε' : 'Back Online')
+                  ? (language === 'el' ? 'Εκτός σύνδεσης' : 'Offline Mode')
+                  : (language === 'el' ? 'Συνδέθηκε' : 'Back Online')
                 }
               </h4>
               <p className="text-xs opacity-70">

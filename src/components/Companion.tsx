@@ -163,7 +163,7 @@ export default function Companion() {
     <>
       <div 
         data-nosnippet
-        className={`fixed z-50 flex items-center justify-center w-[56px] h-[56px] rounded-full bg-[#0d0e12]/80 backdrop-blur-md border-2 border-teal-400/40 shadow-[0_0_25px_rgba(20,184,166,0.25)] cursor-pointer touch-none transition-transform duration-300 ${isDragging ? 'scale-110 opacity-80' : 'hover:scale-110 active:scale-90'}`}
+        className={`fixed z-50 flex items-center justify-center w-[56px] h-[56px] rounded-full bg-[#0d0e12]/80 backdrop-blur-md border-2 border-teal-400/40 shadow-[0_0_25px_rgba(95,143,214,0.25)] cursor-pointer touch-none transition-transform duration-300 ${isDragging ? 'scale-110 opacity-80' : 'hover:scale-110 active:scale-90'}`}
         style={{ left: position.x, top: position.y }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}

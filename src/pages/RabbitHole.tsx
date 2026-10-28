@@ -231,9 +231,9 @@ export default function RabbitHole() {
             <X size={24} />
           </button>
           <div className="flex-1 px-4 text-center">
-            <h1 id="rabbithole-article-title" className="text-[14px] font-medium font-serif italic text-ink/90 truncate">{article.title}</h1>
+            <h1 id="rabbithole-article-title" className="text-[14px] font-medium text-ink/90 truncate">{article.title}</h1>
             {article.date && (
-              <p className="text-[9px] text-ink/30 uppercase tracking-widest mt-0.5">
+              <p className="text-[13px] text-ink/65 mt-0.5">
                 {formatDate(article.date, language)}
               </p>
             )}
@@ -303,7 +303,7 @@ export default function RabbitHole() {
               className="min-h-full flex flex-col justify-center max-w-xl mx-auto w-full py-12 pb-32 animate-in fade-in zoom-in-[0.98] duration-300 ease-out relative z-0 pointer-events-none"
             >
               <BookOpen size={24} className="text-teal-500/20 mx-auto justify-center mb-8" />
-              <p className="text-[20px] md:text-[24px] leading-[1.7] font-serif text-ink/90 text-center tracking-wide whitespace-pre-line pointer-events-auto" style={{ textShadow: "0 4px 20px rgba(0,0,0,0.6)"}}>
+              <p className="text-[20px] md:text-[24px] leading-[1.7] font-light text-ink/90 text-center tracking-wide whitespace-pre-line pointer-events-auto" style={{ textShadow: "0 4px 20px rgba(0,0,0,0.6)"}}>
                 {formatMarkdown(article.pages[currentPage])}
               </p>
             </div>
@@ -329,10 +329,10 @@ export default function RabbitHole() {
             <ChevronLeft size={20} />
           </Link>
           <div className="flex flex-col items-center flex-1">
-            <h1 className="text-lg font-serif italic text-ink/90 tracking-wide flex items-center gap-2">
+            <h1 className="text-lg font-light text-ink/90 tracking-wide flex items-center gap-2">
               <span className="text-[16px] not-italic opacity-80">🐇🕳️</span> {t.title}
             </h1>
-            <p className="text-[9px] text-teal-400/60 uppercase tracking-[0.25em] mt-0.5">{t.subtitle}</p>
+            <p className="text-[13px] text-teal-400/60 mt-0.5">{t.subtitle}</p>
           </div>
           <div className="w-10" />
         </div>
@@ -352,7 +352,7 @@ export default function RabbitHole() {
             )}
           >
             <BookOpen size={16} />
-            {language === 'el' ? 'ΚΕΙΜΕΝΑ' : 'ARTICLES'}
+            {language === 'el' ? 'Κείμενα' : 'Articles'}
           </button>
           <button
             onClick={() => setActiveTab('videos')}
@@ -364,12 +364,12 @@ export default function RabbitHole() {
             )}
           >
             <Film size={16} />
-            {language === 'el' ? 'ΒΙΝΤΕΟ' : 'VIDEOS'}
+            {language === 'el' ? 'Βίντεο' : 'Videos'}
           </button>
         </div>
 
         <div className="flex flex-col items-center justify-center mb-12 text-center px-4 space-y-4 max-w-2xl mx-auto">
-          <p className="text-ink/40 text-sm md:text-base font-serif italic leading-relaxed">
+          <p className="text-ink/40 text-sm md:text-base font-light leading-relaxed">
             {activeTab === 'articles' ? (
               language === 'en' 
                 ? 'A collection of theoretical pieces, allegories, and insights from across the world charting the human path to the exploration of consciousness.'
@@ -382,7 +382,7 @@ export default function RabbitHole() {
           </p>
           {activeTab === 'articles' && (
             <div className="pt-4 border-t border-white/10">
-              <p className="text-ink/70 font-medium text-sm font-serif italic leading-relaxed">
+              <p className="text-ink/70 font-medium text-sm leading-relaxed">
                 {language === 'en'
                   ? '"These texts are not scientific literature, but philosophical reflections, poetic allegories, and symbolic explorations of the human experience."'
                   : '«Τα κείμενα αυτά δεν αποτελούν επιστημονικά δοκίμια, αλλά φιλοσοφικούς στοχασμούς, ποιητικές αλληγορίες και συμβολικές εξερευνήσεις της συνείδησης.»'}
@@ -408,8 +408,8 @@ export default function RabbitHole() {
                 <span className="text-[24px] drop-shadow-md grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all">🐘</span>
               </div>
               <div>
-                <h2 className="text-[20px] md:text-[24px] font-serif italic font-medium text-[#d4d4d8] leading-snug tracking-tight group-hover:text-teal-100 transition-colors">{language === 'en' ? 'The Method & Symbols' : 'Η Μέθοδος & τα Σύμβολα'}</h2>
-                <p className="text-[10px] md:text-[11px] uppercase tracking-[0.25em] text-[#d4d4d8]/50 font-bold mt-1.5">{language === 'en' ? 'THE ELEPHANT & THE MONKEY' : 'Ο ΕΛΕΦΑΝΤΑΣ ΚΑΙ Η ΜΑΙΜΟΥ'}</p>
+                <h2 className="text-[20px] md:text-[24px] font-medium text-[#d4d4d8] leading-snug tracking-tight group-hover:text-teal-100 transition-colors">{language === 'en' ? 'The Method & Symbols' : 'Η Μέθοδος & τα Σύμβολα'}</h2>
+                <p className="text-[13px] md:text-[13px] text-[#d4d4d8]/50 font-medium mt-1.5">{language === 'en' ? 'The elephant & the monkey' : 'Ο ελέφαντας και η μαϊμού'}</p>
               </div>
             </div>
             <p className="text-[#d4d4d8]/70 text-sm md:text-[15px] leading-relaxed line-clamp-3 relative z-10 font-medium">
@@ -437,8 +437,8 @@ export default function RabbitHole() {
                 }`}
               >
                 {isNew && (
-                  <div className="absolute top-5 right-5 bg-teal-500/10 border border-teal-500/20 text-teal-300 text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-widest z-20">
-                    {language === 'en' ? 'New' : 'Νεο'}
+                  <div className="absolute top-5 right-5 bg-teal-500/10 border border-teal-500/20 text-teal-300 text-[12px] font-medium px-2.5 py-1 rounded-full z-20">
+                    {language === 'en' ? 'New' : 'Νέο'}
                   </div>
                 )}
                 
@@ -450,8 +450,8 @@ export default function RabbitHole() {
                     <BookOpen size={22} className={`${isNew ? 'text-teal-400/80' : 'text-ink/30'}`} />
                   </div>
                   <div className="flex-1 pr-12">
-                    <h2 className="text-[18px] md:text-[20px] font-serif italic font-medium text-ink/90 leading-snug tracking-tight group-hover:text-ink transition-colors">{article.title}</h2>
-                    <p className={`text-[9px] md:text-[10px] uppercase tracking-[0.2em] font-bold mt-1.5 ${isNew ? 'text-teal-400/60' : 'text-ink/30'}`}>
+                    <h2 className="text-[18px] md:text-[20px] font-medium text-ink/90 leading-snug tracking-tight group-hover:text-ink transition-colors">{article.title}</h2>
+                    <p className={`text-[13px] md:text-[13px] font-medium mt-1.5 ${isNew ? 'text-teal-400/60' : 'text-ink/30'}`}>
                       {article.author}
                       {article.date && (
                         <span className="opacity-60 ml-2 before:content-['•'] before:mr-2">
@@ -469,8 +469,8 @@ export default function RabbitHole() {
                     <span className="flex items-center gap-2">
                        {t.startReading} <ChevronRight size={16} className="transform group-hover:translate-x-1 transition-transform" />
                     </span>
-                    <span className="text-[10px] text-ink/20 font-bold tracking-[0.25em] uppercase">
-                      {article.pages.length} {language === 'en' ? 'PAGES' : 'ΣΕΛΙΔΕΣ'}
+                    <span className="text-[13px] text-ink/65 font-medium">
+                      {article.pages.length} {language === 'en' ? 'pages' : 'σελίδες'}
                     </span>
                   </div>
                 </div>
@@ -501,13 +501,13 @@ export default function RabbitHole() {
                 </div>
               </div>
               <div className="flex flex-col justify-center flex-1 min-w-0 pb-1">
-                <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-teal-400 mb-2 block">
+                <span className="text-[13px] font-medium text-teal-400 mb-2 block">
                   {language === 'el' ? video.category.el : video.category.en}
                 </span>
-                <h3 className="text-[17px] font-serif italic text-ink/90 leading-snug mb-1.5 group-hover:text-ink transition-colors line-clamp-2">
+                <h3 className="text-[17px] font-light text-ink/90 leading-snug mb-1.5 group-hover:text-ink transition-colors line-clamp-2">
                   {language === 'el' ? video.title.el : video.title.en}
                 </h3>
-                <p className="text-[10px] uppercase tracking-widest font-black text-ink/30 truncate">
+                <p className="text-[13px] font-medium text-ink/65 truncate">
                   {video.author}
                 </p>
               </div>
@@ -544,8 +544,8 @@ export default function RabbitHole() {
               <div className="w-12 h-12 rounded-full bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400">
                 <Youtube size={20} />
               </div>
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-ink/20">
-                {language === 'el' ? 'ΠΡΟΒΟΛΗ ΒΙΝΤΕΟ' : 'NOW PLAYING'}
+              <span className="text-[13px] font-medium text-ink/65">
+                {language === 'el' ? 'Προβολή βίντεο' : 'Now playing'}
               </span>
             </div>
             <button aria-label={language === 'en' ? 'Close' : 'Κλείσιμο'} 
@@ -580,10 +580,10 @@ export default function RabbitHole() {
               </div>
 
               <div className={cn("hidden md:block transition-opacity duration-1000", isVoidActive ? "opacity-20" : "opacity-100")}>
-                 <h2 className="text-3xl md:text-4xl font-serif italic text-ink/95 mb-2">
+                 <h2 className="text-3xl md:text-4xl font-light text-ink/95 mb-2">
                    {informativeVideos.find(v => v.id === activeVideo)?.title[language as 'en'|'el']}
                  </h2>
-                 <p className="text-lg text-ink/30 font-medium font-serif italic">
+                 <p className="text-lg text-ink/30 font-medium">
                    {informativeVideos.find(v => v.id === activeVideo)?.author}
                  </p>
               </div>
@@ -608,7 +608,7 @@ export default function RabbitHole() {
                           animate={{ scale: 1, opacity: 1 }}
                           onClick={() => setIsVoidActive(!isVoidActive)}
                           className={cn(
-                            "w-full py-5 rounded-[2.5rem] border flex items-center justify-center gap-3 transition-all duration-700 font-serif italic text-lg shadow-2xl",
+                            "w-full py-5 rounded-[2.5rem] border flex items-center justify-center gap-3 transition-all duration-700 font-light text-lg shadow-2xl",
                             isVoidActive 
                              ? "bg-white/5 border-white/30 text-ink shadow-[0_0_60px_rgba(255,255,255,0.1)]" 
                              : "bg-teal-500/10 border-teal-500/30 text-teal-400 hover:bg-teal-500/20"
@@ -633,7 +633,7 @@ export default function RabbitHole() {
                           {desc.intro}
                         </p>
                         <div className="pt-4 border-t border-white/5">
-                           <p className="text-[12px] font-serif italic text-teal-400/80">
+                           <p className="text-[12px] font-light text-teal-400/80">
                              {desc.tip}
                            </p>
                         </div>
@@ -641,10 +641,10 @@ export default function RabbitHole() {
 
                       {desc.mantra && (
                         <div className="space-y-4">
-                          <span className="text-[10px] font-black uppercase tracking-widest text-ink/20 px-2">
-                            {language === 'el' ? 'ΟΔΗΓΟΣ ΡΟΗΣ' : 'FLOW GUIDE'}
+                          <span className="text-[13px] font-medium text-ink/65 px-2">
+                            {language === 'el' ? 'Οδηγός ροής' : 'Flow guide'}
                           </span>
-                          <div className="bg-[#1D9E75]/5 border border-[#1D9E75]/20 rounded-[2.5rem] p-8 text-center relative overflow-hidden group/mantra">
+                          <div className="bg-[#5f8fd6]/5 border border-[#5f8fd6]/20 rounded-[2.5rem] p-8 text-center relative overflow-hidden group/mantra">
                              <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 to-transparent opacity-50"></div>
                              
                              {/* Stepper Dots */}
@@ -658,7 +658,7 @@ export default function RabbitHole() {
                              </div>
 
                              <div className="relative h-20 flex items-center justify-center mb-6">
-                               <h4 className="text-3xl md:text-4xl font-serif italic text-ink/90 animate-in fade-in zoom-in duration-500 tracking-widest" key={mantraStep}>
+                               <h4 className="text-3xl md:text-4xl font-light text-ink/90 animate-in fade-in zoom-in duration-500 tracking-widest" key={mantraStep}>
                                  {desc.mantra[mantraStep]}
                                </h4>
                              </div>
@@ -672,9 +672,9 @@ export default function RabbitHole() {
                                </button>
                                <button 
                                  onClick={() => setMantraStep((prev) => (prev < (desc.mantra ? desc.mantra.length - 1 : 0) ? prev + 1 : 0))}
-                                 className="px-8 h-12 rounded-full bg-teal-500 text-black font-bold text-[11px] uppercase tracking-widest hover:bg-teal-400 transition-all active:scale-95 shadow-lg shadow-teal-500/20"
+                                 className="px-8 h-12 rounded-full bg-teal-500 text-black font-medium text-[12px] hover:bg-teal-400 transition-all active:scale-95 shadow-lg shadow-teal-500/20"
                                >
-                                 {language === 'el' ? 'ΕΠΟΜΕΝΟ' : 'NEXT'}
+                                 {language === 'el' ? 'Επόμενο' : 'Next'}
                                </button>
                              </div>
                              
@@ -684,10 +684,10 @@ export default function RabbitHole() {
                                  if (videoData.id === '7Qbat52NE98') time = 564; // Tai Chi Mantra [09:24]
                                  setVideoStartTime(time);
                                }}
-                               className="mt-6 text-[9px] font-bold text-teal-400/60 uppercase tracking-[0.2em] hover:text-teal-400 transition-colors flex items-center justify-center gap-2 mx-auto"
+                               className="mt-6 text-[13px] font-medium text-teal-400/60 hover:text-teal-400 transition-colors flex items-center justify-center gap-2 mx-auto"
                              >
                                 <Youtube size={12} />
-                                {language === 'el' ? 'ΔΕΣ ΤΟ ΣΤΟ ΒΙΝΤΕΟ' : 'WATCH IN VIDEO'} {videoData.id === '7Qbat52NE98' ? '[09:24]' : ''}
+                                {language === 'el' ? 'Δες το στο βίντεο' : 'Watch in video'} {videoData.id === '7Qbat52NE98' ? '[09:24]' : ''}
                              </button>
                           </div>
                         </div>
@@ -695,8 +695,8 @@ export default function RabbitHole() {
 
                       {desc.movements && (
                         <div className="space-y-4">
-                          <span className="text-[10px] font-black uppercase tracking-widest text-ink/20 px-2">
-                            {language === 'el' ? 'ΟΔΗΓΟΣ ΚΙΝΗΣΕΩΝ' : 'MOVEMENTS GUIDE'}
+                          <span className="text-[13px] font-medium text-ink/65 px-2">
+                            {language === 'el' ? 'Οδηγός κινήσεων' : 'Movements guide'}
                           </span>
                           <div className="bg-indigo-500/5 border border-indigo-500/20 rounded-[2.5rem] p-8 relative overflow-hidden">
                              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent opacity-50"></div>
@@ -704,10 +704,10 @@ export default function RabbitHole() {
                              {/* Header */}
                              <div className="flex items-center justify-between mb-8 relative z-10">
                                <div className="flex flex-col">
-                                 <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest mb-1">
+                                 <span className="text-[13px] font-medium text-indigo-400 mb-1">
                                    {language === 'el' ? `ΚΙΝΗΣΗ ${desc.movements[mantraStep]?.id || 1} / 10` : `MOVEMENT ${desc.movements[mantraStep]?.id || 1} / 10`}
                                  </span>
-                                 <h4 className="text-xl font-serif italic text-ink/90">
+                                 <h4 className="text-xl font-light text-ink/90">
                                    {desc.movements[mantraStep]?.name}
                                  </h4>
                                </div>
@@ -733,10 +733,10 @@ export default function RabbitHole() {
                                  <div className="w-8 h-8 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 mx-auto mb-3">
                                    <ChevronRight size={16} className="-rotate-90" />
                                  </div>
-                                 <span className="text-[10px] font-bold text-ink/30 uppercase tracking-widest block mb-1">
-                                    {language === 'el' ? 'ΕΙΣΠΝΟΗ' : 'INHALE'}
+                                 <span className="text-[13px] font-medium text-ink/65 block mb-1">
+                                    {language === 'el' ? 'Εισπνοή' : 'Inhale'}
                                  </span>
-                                 <p className="text-sm font-serif italic text-ink/80">
+                                 <p className="text-sm font-light text-ink/80">
                                     {language === 'el' ? 'Χέρια πάνω' : 'Hands up'}
                                  </p>
                                </div>
@@ -744,10 +744,10 @@ export default function RabbitHole() {
                                  <div className="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 mx-auto mb-3">
                                    <ChevronRight size={16} className="rotate-90" />
                                  </div>
-                                 <span className="text-[10px] font-bold text-ink/30 uppercase tracking-widest block mb-1">
-                                    {language === 'el' ? 'ΕΚΠΝΟΗ' : 'EXHALE'}
+                                 <span className="text-[13px] font-medium text-ink/65 block mb-1">
+                                    {language === 'el' ? 'Εκπνοή' : 'Exhale'}
                                  </span>
-                                 <p className="text-sm font-serif italic text-ink/80">
+                                 <p className="text-sm font-light text-ink/80">
                                     {language === 'el' ? 'Χέρια κάτω' : 'Hands down'}
                                  </p>
                                </div>
@@ -759,10 +759,10 @@ export default function RabbitHole() {
                                  if (videoData.id === 'no4x4ewf1dM') time = 65; // Plum Village Mantra [01:05]
                                  setVideoStartTime(time);
                                }}
-                               className="mt-8 text-[9px] font-bold text-indigo-400/60 uppercase tracking-[0.2em] hover:text-indigo-400 transition-colors flex items-center justify-center gap-2 mx-auto"
+                               className="mt-8 text-[13px] font-medium text-indigo-400/60 hover:text-indigo-400 transition-colors flex items-center justify-center gap-2 mx-auto"
                              >
                                 <Youtube size={12} />
-                                {language === 'el' ? 'ΔΕΣ ΤΟ ΣΤΟ ΒΙΝΤΕΟ' : 'WATCH IN VIDEO'} {videoData.id === 'no4x4ewf1dM' ? '[01:05]' : ''}
+                                {language === 'el' ? 'Δες το στο βίντεο' : 'Watch in video'} {videoData.id === 'no4x4ewf1dM' ? '[01:05]' : ''}
                              </button>
                           </div>
                         </div>
@@ -770,8 +770,8 @@ export default function RabbitHole() {
 
                       {desc.attentionStyles && (
                         <div className="space-y-4">
-                          <span className="text-[10px] font-black uppercase tracking-widest text-ink/20 px-2">
-                            {language === 'el' ? 'ΣΤΥΛ ΠΡΟΣΟΧΗΣ' : 'ATTENTION STYLES'}
+                          <span className="text-[13px] font-medium text-ink/65 px-2">
+                            {language === 'el' ? 'Στυλ προσοχής' : 'Attention styles'}
                           </span>
                           <div className="bg-amber-500/5 border border-amber-500/20 rounded-[2.5rem] p-8 relative overflow-hidden">
                              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-50"></div>
@@ -796,7 +796,7 @@ export default function RabbitHole() {
                                      }`}
                                    >
                                       <div className={`w-2 h-2 rounded-full mb-3 transition-all ${isActive ? 'bg-amber-400 scale-125' : 'bg-white/20'}`}></div>
-                                      <span className={`text-[11px] font-bold uppercase tracking-wider block mb-1 ${isActive ? 'text-amber-200' : 'text-ink/40'}`}>
+                                      <span className={`text-[13px] font-medium block mb-1 ${isActive ? 'text-amber-200' : 'text-ink/40'}`}>
                                         {style.name}
                                       </span>
                                       <p className="text-[10px] text-ink/30 leading-tight">
@@ -812,22 +812,22 @@ export default function RabbitHole() {
                                  <div className="w-12 h-12 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 mx-auto mb-4 animate-pulse">
                                    <Play size={24} fill="currentColor" />
                                  </div>
-                                 <h4 className="text-xl font-serif italic text-ink mb-2">
+                                 <h4 className="text-xl font-light text-ink mb-2">
                                    {language === 'el' ? 'Ενεργοποίηση Άξονα Χώρου' : 'Space Axis Activated'}
                                  </h4>
-                                 <p className="text-[11px] text-teal-300/60 uppercase tracking-widest font-bold mb-4">
-                                   {language === 'el' ? 'ΚΑΤΑΣΤΑΣΗ PURE BEING' : 'PURE BEING STATE'}
+                                 <p className="text-[13px] text-teal-300/60 font-medium mb-4">
+                                   {language === 'el' ? 'Κατάσταση pure being' : 'Pure being state'}
                                  </p>
                                  <button 
                                    onClick={() => setVideoStartTime(306)}
-                                   className="w-full h-12 rounded-2xl bg-teal-500 text-black font-black text-[11px] uppercase tracking-[0.2em] hover:bg-teal-400 transition-all shadow-lg shadow-teal-500/20"
+                                   className="w-full h-12 rounded-2xl bg-teal-500 text-black font-medium text-[13px] hover:bg-teal-400 transition-all shadow-lg shadow-teal-500/20"
                                  >
-                                    {language === 'el' ? 'ΒΙΩΣΕ ΤΟ ΤΩΡΑ' : 'EXPERIENCE NOW'} [05:06]
+                                    {language === 'el' ? 'Βίωσέ το τώρα' : 'Experience now'} [05:06]
                                  </button>
                                </div>
                              ) : (
                                <div className="relative z-10 text-center py-4">
-                                 <p className="text-[10px] font-medium text-ink/20 uppercase tracking-[0.2em]">
+                                 <p className="text-[13px] font-medium text-ink/65">
                                    {language === 'el' 
                                      ? `Επιλογή ${activeAttentionStyles.length}/4 για τον Χώρο` 
                                      : `Select ${activeAttentionStyles.length}/4 for Space`}
@@ -840,8 +840,8 @@ export default function RabbitHole() {
 
                       {desc.points && (
                         <div className="space-y-4">
-                          <span className="text-[10px] font-black uppercase tracking-widest text-ink/20 px-2">
-                            {language === 'el' ? 'ΚΛΕΙΔΙΑ ΠΡΑΚΤΙΚΗΣ' : 'PRACTICE KEYS'}
+                          <span className="text-[13px] font-medium text-ink/65 px-2">
+                            {language === 'el' ? 'Κλειδιά πρακτικής' : 'Practice keys'}
                           </span>
                           <div className="space-y-3">
                             {desc.points.map((pt, i) => (
@@ -874,7 +874,7 @@ export default function RabbitHole() {
                           <div className="p-8 rounded-[2.5rem] bg-indigo-500/5 border border-indigo-500/10 hover:bg-indigo-500/10 transition-all group">
                              <button 
                                onClick={() => setVideoStartTime(desc.bridgeTime!)}
-                               className="text-[13px] font-serif italic text-ink/80 leading-relaxed text-center group-hover:text-ink transition-colors block w-full mb-4 cursor-pointer focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400"
+                               className="text-[13px] font-light text-ink/80 leading-relaxed text-center group-hover:text-ink transition-colors block w-full mb-4 cursor-pointer focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400"
                              >
                                 "{desc.bridge}"
                              </button>
@@ -885,8 +885,8 @@ export default function RabbitHole() {
                                }}
                                className="flex items-center justify-center gap-2 text-indigo-400 hover:text-indigo-300 transition-colors w-full"
                              >
-                                <span className="text-[10px] font-black uppercase tracking-widest">
-                                   {language === 'el' ? 'ΜΕΤΑΒΑΣΗ ΣΤΟΝ ΧΩΡΟ' : 'BRIDGE TO SPACE'}
+                                <span className="text-[13px] font-medium">
+                                   {language === 'el' ? 'Μετάβαση στον Χώρο' : 'Bridge to Space'}
                                 </span>
                                 <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
                              </button>
@@ -900,7 +900,7 @@ export default function RabbitHole() {
                 return (
                   <div className="space-y-6">
                     <div className="md:hidden">
-                       <h2 className="text-2xl font-serif italic text-ink/95 mb-2">
+                       <h2 className="text-2xl font-light text-ink/95 mb-2">
                          {videoData?.title[language as 'en'|'el']}
                        </h2>
                        <p className="text-sm text-ink/30 font-medium">
@@ -910,11 +910,11 @@ export default function RabbitHole() {
                     <div className="bg-white/[0.02] border border-white/5 p-8 rounded-[2.5rem]">
                        <div className="flex items-center gap-3 mb-6 text-teal-400/40">
                          <Info size={20} />
-                         <span className="text-[10px] font-black uppercase tracking-widest">
-                           {language === 'el' ? 'ΠΛΗΡΟΦΟΡΙΕΣ' : 'INFORMATION'}
+                         <span className="text-[13px] font-medium">
+                           {language === 'el' ? 'Πληροφορίες' : 'Information'}
                          </span>
                        </div>
-                       <p className="text-ink/50 text-[14px] leading-relaxed italic font-serif">
+                       <p className="text-ink/50 text-[14px] leading-relaxed font-light">
                          {language === 'el' 
                            ? 'Αυτό το βίντεο αποτελεί μέρος της συλλογής μας για την εξερεύνηση της συνείδησης και της νευροδιαφορετικότητας.' 
                            : 'This video is part of our collection exploring consciousness and neurodiversity.'}

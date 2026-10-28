@@ -299,7 +299,7 @@ export default function Settings() {
             >
                 <ChevronLeft size={20} />
             </button>
-            <h1 className="text-2xl font-serif italic text-ink/90">
+            <h1 className="text-2xl font-light text-ink/90">
                 {language === 'el' ? 'Ρυθμίσεις' : 'Settings'}
             </h1>
             <div className="flex items-center justify-center w-10 h-10">
@@ -323,11 +323,11 @@ export default function Settings() {
                 </div>
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-[11px] font-mono font-bold tracking-widest text-teal-400 uppercase bg-teal-500/20 px-2 py-0.5 rounded-full">
-                      {language === 'el' ? 'ΕΡΕΥΝΑ' : 'RESEARCH'}
+                    <span className="text-[12px] font-mono font-medium text-teal-400 bg-teal-500/20 px-2 py-0.5 rounded-full">
+                      {language === 'el' ? 'Έρευνα' : 'Research'}
                     </span>
                   </div>
-                  <h2 className="text-[16px] font-serif italic text-ink/95 group-hover:text-teal-200 transition-colors">
+                  <h2 className="text-[16px] font-light text-ink/95 group-hover:text-teal-200 transition-colors">
                     {language === 'el' ? 'Η Επιστημονική Βάση' : 'The Research Basis'}
                   </h2>
                   <p className="text-[12px] text-ink/50 leading-relaxed font-sans">
@@ -341,7 +341,7 @@ export default function Settings() {
 
             {sections.map((section, idx) => (
               <div key={idx} className="space-y-3">
-                <h3 className="text-[10px] uppercase font-black tracking-[0.2em] text-ink/20 px-1">
+                <h3 className="text-[13px] font-medium text-ink/65 px-1">
                   {language === 'el' ? section.title.el : section.title.en}
                 </h3>
                 <div className="space-y-2">
@@ -385,7 +385,7 @@ export default function Settings() {
                 <Sparkles size={20} className="text-ink" />
              </div>
              <div className="text-center">
-                <p className="text-[10px] font-sans font-medium uppercase tracking-widest text-ink mb-1">
+                <p className="text-[13px] font-sans font-medium text-ink mb-1">
                    Awareness Gateway
                 </p>
                 <p className="text-[9px] font-mono text-ink/50">

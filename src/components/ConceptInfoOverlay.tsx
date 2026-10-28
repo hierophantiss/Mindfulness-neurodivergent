@@ -116,8 +116,8 @@ export function ConceptModal({ isOpen, onClose, conceptId }: { isOpen: boolean, 
             <div className="px-6 py-4 flex justify-between items-center border-b border-white/5 bg-black/20 shrink-0">
               <div className="flex items-center gap-2">
                 <Lightbulb size={15} className="text-teal-400 animate-pulse" />
-                <span className="text-[10px] font-bold tracking-widest uppercase text-teal-400 font-mono">
-                  {language === 'el' ? 'ΝΕΥΡΟΕΠΙΣΤΗΜΗ & ΠΡΑΚΤΙΚΗ' : 'NEUROSCIENCE & PRACTICE'}
+                <span className="text-[13px] font-medium text-teal-400 font-mono">
+                  {language === 'el' ? 'Νευροεπιστήμη & πρακτική' : 'Neuroscience & practice'}
                 </span>
               </div>
               <button 
@@ -131,7 +131,7 @@ export function ConceptModal({ isOpen, onClose, conceptId }: { isOpen: boolean, 
             
             {/* Scrollable Content Body */}
             <div className="p-6 overflow-y-auto space-y-4 flex-1 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
-              <h3 id={`concept-title-${conceptId}`} className="text-xl font-serif text-ink mb-1 leading-tight font-medium">{concept[l].title}</h3>
+              <h3 id={`concept-title-${conceptId}`} className="text-xl text-ink mb-1 leading-tight font-medium">{concept[l].title}</h3>
               
               <p className="text-sm text-teal-200/80 font-medium pb-4 border-b border-white/5 leading-relaxed">
                 {concept[l].short}
@@ -146,7 +146,7 @@ export function ConceptModal({ isOpen, onClose, conceptId }: { isOpen: boolean, 
               {concept[l].ndNote && (
                 <div className="bg-white/[0.03] rounded-2xl p-4 border border-white/[0.04]">
                   <p className="text-[13px] text-amber-100/90 leading-relaxed font-sans">
-                    <span className="font-bold text-amber-500/80 block mb-1.5 uppercase tracking-wider text-[10px] font-mono">{language === 'el' ? 'Για τον νευροδιαφορετικό νου' : 'For the neurodivergent mind'}</span>
+                    <span className="font-medium text-amber-500/80 block mb-1.5 text-[13px] font-mono">{language === 'el' ? 'Για τον νευροδιαφορετικό νου' : 'For the neurodivergent mind'}</span>
                     {concept[l].ndNote}
                   </p>
                 </div>

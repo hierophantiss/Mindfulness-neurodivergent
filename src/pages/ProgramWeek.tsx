@@ -148,10 +148,10 @@ export default function ProgramWeek() {
       </div>
 
       <div className="mb-8">
-        <span className="text-teal-500/80 text-[10px] font-bold uppercase tracking-[0.2em] block mb-2">
+        <span className="text-teal-500/80 text-[13px] font-medium block mb-2">
           {language === 'en' ? 'Week' : 'Εβδομάδα'} {weekNum}
         </span>
-        <h1 className="text-3xl md:text-4xl font-serif text-ink tracking-tight mb-8 drop-shadow-sm italic">{week.title}</h1>
+        <h1 className="text-3xl md:text-4xl font-light text-ink tracking-tight mb-8 drop-shadow-sm">{week.title}</h1>
         
         {/* Days Horizontal Scroll */}
         <div className="flex gap-4 overflow-x-auto pb-6 snap-x hide-scrollbar px-1" tabIndex={0} aria-label={language === 'el' ? 'Οι μέρες της εβδομάδας' : 'The days of the week'}>
@@ -176,8 +176,8 @@ export default function ProgramWeek() {
                 }`}
               >
                 <div className="w-full flex justify-between items-center mb-2">
-                  <div className={`text-[10px] font-bold uppercase tracking-[0.2em] ${activeDay === idx ? 'text-teal-400 drop-shadow-sm' : 'text-ink/30'}`}>
-                    {language === 'en' ? 'Day' : 'Ημερα'} {idx + 1}
+                  <div className={`text-[13px] font-medium ${activeDay === idx ? 'text-teal-400 drop-shadow-sm' : 'text-ink/30'}`}>
+                    {language === 'en' ? 'Day' : 'Ημέρα'} {idx + 1}
                   </div>
                   {isLocked ? (
                     <div className="w-4 h-4 rounded-full bg-white/10 text-ink/40 flex items-center justify-center">
@@ -189,7 +189,7 @@ export default function ProgramWeek() {
                     </div>
                   )}
                 </div>
-                <span className={`block font-serif text-lg leading-tight text-left ${activeDay === idx ? 'text-ink drop-shadow-sm' : 'text-ink/60'}`}>
+                <span className={`block font-light text-lg leading-tight text-left ${activeDay === idx ? 'text-ink drop-shadow-sm' : 'text-ink/60'}`}>
                   {isLocked ? (language === 'en' ? 'Locked' : 'Κλειδωμένο') : day.title}
                 </span>
               </button>
@@ -242,7 +242,7 @@ export default function ProgramWeek() {
              >
                 {currentStepData.id === 'lesson' && (
                   <>
-                    <h2 className="text-2xl md:text-3xl font-serif text-ink mb-6 leading-tight drop-shadow-sm flex items-center gap-3">
+                    <h2 className="text-2xl md:text-3xl font-light text-ink mb-6 leading-tight drop-shadow-sm flex items-center gap-3">
                        <currentStepData.icon className="text-teal-400 opacity-80" size={24} />
                        {currentDayContent.title}
                     </h2>
@@ -251,14 +251,14 @@ export default function ProgramWeek() {
                     {hasCameraZoom && <CameraAnimation mode="zoom" />}
                     {hasSamatha && <SamathaAnimation />}
 
-                    <div className="prose prose-invert max-w-none mb-8 text-ink/80 leading-relaxed font-serif text-lg" 
+                    <div className="prose prose-invert max-w-none mb-8 text-ink/80 leading-relaxed font-light text-lg" 
                          dangerouslySetInnerHTML={{ __html: currentDayContent.lesson }} />
                   </>
                 )}
 
                 {currentStepData.id === 'exercise' && currentDayContent.exercise && (
                   <div className="bg-black/40 backdrop-blur-md/80 border border-white/5 rounded-[2rem] p-6 sm:p-8 mb-6 shadow-2xl backdrop-blur-md">
-                    <h3 className="text-xl md:text-2xl font-serif text-ink mb-6 flex items-center gap-3 drop-shadow-sm">
+                    <h3 className="text-xl md:text-2xl font-light text-ink mb-6 flex items-center gap-3 drop-shadow-sm">
                       <div className="bg-amber-500/20 text-amber-400 p-2 rounded-xl border border-amber-500/20 shadow-inner">
                         <PlayCircle size={24} strokeWidth={2} />
                       </div>
@@ -286,16 +286,16 @@ export default function ProgramWeek() {
                       <div className="bg-black/40 backdrop-blur-md/80 border border-white/5 rounded-[1.75rem] p-6 shadow-2xl backdrop-blur-sm">
                         <div className="flex items-center gap-2 mb-3">
                           <div className="w-1.5 h-1.5 rounded-full bg-amber-400/80"></div>
-                          <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-400/90 drop-shadow-sm">{language === 'el' ? 'Επίγνωση' : 'Insight'}</h4>
+                          <h4 className="text-[13px] font-medium text-amber-400/90 drop-shadow-sm">{language === 'el' ? 'Επίγνωση' : 'Insight'}</h4>
                         </div>
-                        <p className="text-ink font-medium italic leading-relaxed text-lg sm:text-xl">"{currentDayContent.insight}"</p>
+                        <p className="text-ink font-medium leading-relaxed text-lg sm:text-xl">"{currentDayContent.insight}"</p>
                       </div>
                     )}
                     {currentDayContent.reflection && (
                       <div className="bg-black/40 backdrop-blur-md/80 border border-white/5 rounded-[1.75rem] p-6 shadow-2xl backdrop-blur-sm">
                         <div className="flex items-center gap-2 mb-3">
                           <div className="w-1.5 h-1.5 rounded-full bg-teal-400/80"></div>
-                          <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-teal-400/90 drop-shadow-sm">
+                          <h4 className="text-[13px] font-medium text-teal-400/90 drop-shadow-sm">
                             {language === 'en' ? 'Reflection' : 'Αναστοχασμός'}
                           </h4>
                         </div>
@@ -326,7 +326,7 @@ export default function ProgramWeek() {
               className={`group flex items-center gap-2 px-6 h-12 rounded-xl font-bold transition-all duration-300 ${
                 isCompleted 
                   ? 'bg-white/10 text-ink/40 cursor-default opacity-80 border border-white/5' 
-                  : 'bg-teal-500 hover:bg-teal-400 text-black shadow-[0_4px_15px_rgba(20,184,166,0.3)] active:scale-95'
+                  : 'bg-teal-500 hover:bg-teal-400 text-black shadow-[0_4px_15px_rgba(95,143,214,0.3)] active:scale-95'
               }`}
             >
               <span>{isCompleted ? (language === 'en' ? 'Completed' : 'Ολοκληρώθηκε') : (language === 'en' ? 'Complete Day' : 'Ολοκλήρωση')}</span>

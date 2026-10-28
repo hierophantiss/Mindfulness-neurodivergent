@@ -63,7 +63,7 @@ export default function InteractiveRenderer({ id, asModal }: InteractiveRenderer
         <div className="w-12 h-12 rounded-full border border-teal-500/20 bg-teal-500/10 flex items-center justify-center text-teal-400 group-hover:scale-110 transition-transform">
           <Play size={20} className="ml-1" />
         </div>
-        <span className="text-xs font-bold tracking-[0.2em] uppercase text-ink/50 group-hover:text-teal-400 font-sans transition-colors">
+        <span className="text-[13px] font-medium text-ink/65 group-hover:text-teal-400 font-sans transition-colors">
           Άνοιγμα Διαδραστικής Άσκησης
         </span>
       </button>

@@ -38,7 +38,7 @@ export default function Methodology() {
         >
           <ArrowLeft size={20} />
         </button>
-        <h1 className="text-sm font-bold text-teal-400 uppercase tracking-widest drop-shadow-sm truncate px-4">
+        <h1 className="text-sm font-medium text-teal-400 drop-shadow-sm truncate px-4">
           {t.title}
         </h1>
         <div className="w-10" />
@@ -49,11 +49,11 @@ export default function Methodology() {
         
         {/* Title Block */}
         <div className="text-center space-y-3 py-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-300 text-xs font-semibold tracking-wider uppercase mb-2">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-300 text-[12px] font-semibold mb-2">
             <ShieldCheck size={14} />
             <span>{t.eeatBadge}</span>
           </div>
-          <h2 className="text-2xl font-serif italic text-ink/95 leading-snug">
+          <h2 className="text-2xl font-light text-ink/95 leading-snug">
             {t.subtitle}
           </h2>
           <p className="text-[#d4d4d8]/70 text-sm leading-relaxed max-w-xl mx-auto">
@@ -103,7 +103,7 @@ export default function Methodology() {
 
         {/* Quote Block */}
         <section className="text-center py-6 px-4 border-t border-white/5 bg-gradient-to-b from-transparent to-white/[0.01]">
-          <p className="text-sm font-serif italic text-teal-200/90 max-w-lg mx-auto leading-relaxed">
+          <p className="text-sm font-light text-teal-200/90 max-w-lg mx-auto leading-relaxed">
             {t.quote}
           </p>
         </section>

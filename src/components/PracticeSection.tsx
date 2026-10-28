@@ -211,8 +211,8 @@ export default function PracticeSection() {
     phaseQuoteEl = "Εισπνοή. Νιώσε τον άξονα της σπονδυλικής στήλης να μακραίνει.";
     phaseQuoteEn = "Inhale. Feel the axis of your spine lengthen.";
     
-    phaseNameEl = "ΕΙΣΠΝΟΗ";
-    phaseNameEn = "INHALE";
+    phaseNameEl = "Εισπνοή";
+    phaseNameEn = "Inhale";
     currentSec = Math.floor(elapsed) + 1;
     totalPhaseSec = inhale;
   } else if (elapsed < inhale + holdFull) {
@@ -223,8 +223,8 @@ export default function PracticeSection() {
     phaseQuoteEl = "Η προσοχή ανοίγει. Μείνε λίγο εδώ, ήσυχα και ανοιχτά.";
     phaseQuoteEn = "Attention opens. Stay here a moment, quiet and open.";
     
-    phaseNameEl = "ΚΡΑΤΗΜΑ";
-    phaseNameEn = "HOLD";
+    phaseNameEl = "Κράτημα";
+    phaseNameEn = "Hold";
     currentSec = Math.floor(elapsed - inhale) + 1;
     totalPhaseSec = holdFull;
   } else if (elapsed < inhale + holdFull + exhale) {
@@ -236,8 +236,8 @@ export default function PracticeSection() {
     phaseQuoteEl = "Εκπνοή, και άφησε το βάρος να κατέβει. Στο τέλος, μια απαλή σύσπαση χαμηλά στην κοιλιά.";
     phaseQuoteEn = "Exhale, and let the weight sink. At the end, a gentle draw-in low in the belly.";
     
-    phaseNameEl = "ΕΚΠΝΟΗ";
-    phaseNameEn = "EXHALE";
+    phaseNameEl = "Εκπνοή";
+    phaseNameEn = "Exhale";
     currentSec = Math.floor(elapsed - inhale - holdFull) + 1;
     totalPhaseSec = exhale;
   } else {
@@ -248,8 +248,8 @@ export default function PracticeSection() {
     phaseQuoteEl = "Νιώσε το βάρος του σώματος και τη γη που σε κρατά.";
     phaseQuoteEn = "Feel the weight of your body and the ground that holds you.";
     
-    phaseNameEl = "ΚΡΑΤΗΜΑ";
-    phaseNameEn = "HOLD";
+    phaseNameEl = "Κράτημα";
+    phaseNameEn = "Hold";
     currentSec = Math.floor(elapsed - inhale - holdFull - exhale) + 1;
     totalPhaseSec = holdEmpty;
   }
@@ -274,7 +274,7 @@ export default function PracticeSection() {
     if (secElapsed !== prevSecRef.current && isPlaying && step === 'player') {
       prevSecRef.current = secElapsed;
       if ('vibrate' in navigator) {
-        if (phaseRef.current === "HOLD") {
+        if (phaseRef.current === "Hold") {
           navigator.vibrate(40);
         } else {
           navigator.vibrate(15);
@@ -313,14 +313,14 @@ export default function PracticeSection() {
           <button aria-label={lang === 'en' ? 'Back' : 'Πίσω'} onClick={() => navigate('/practice')} className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 transition-all cursor-pointer">
             <ArrowLeft size={20} />
           </button>
-          <button onClick={() => setLang(lang === "el" ? "en" : "el")} className="transition-colors text-xs uppercase cursor-pointer flex gap-1 items-center hover:opacity-80" style={{ color: "var(--color-accent, #1D9E75)" }}>
+          <button onClick={() => setLang(lang === "el" ? "en" : "el")} className="transition-colors text-[13px] cursor-pointer flex gap-1 items-center hover:opacity-80" style={{ color: "var(--color-accent, #5f8fd6)" }}>
             <Languages className="w-4 h-4" /> {lang === "el" ? "EN" : "EL"}
           </button>
         </div>
 
         <div className="max-w-4xl mx-auto w-full flex-1">
           <header className="text-center md:text-left mb-12">
-            <h2 className="text-4xl md:text-5xl font-serif text-ink/90 italic leading-tight mb-4">
+            <h2 className="text-4xl md:text-5xl font-light text-ink/90 leading-tight mb-4">
               {lang === "el" ? "Οπτική Απεικόνιση" : "Visual Theme"}
             </h2>
             <p className="text-lg text-ink/50 font-sans max-w-2xl">
@@ -338,7 +338,7 @@ export default function PracticeSection() {
               <div className="w-16 h-16 rounded-2xl bg-teal-500/10 flex items-center justify-center text-teal-400 mb-6 group-hover:scale-110 transition-transform shadow-inner border border-teal-500/20">
                 <Activity size={32} strokeWidth={1.5} />
               </div>
-              <h3 className="text-2xl md:text-3xl font-serif text-ink/90 italic mb-3">
+              <h3 className="text-2xl md:text-3xl font-light text-ink/90 mb-3">
                 {lang === "el" ? "Η Ροή της Σύνδεσης" : "Grounding Flow"}
               </h3>
               <p className="text-ink/50 font-sans text-sm md:text-base leading-relaxed">
@@ -355,7 +355,7 @@ export default function PracticeSection() {
               <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 mb-6 group-hover:scale-110 transition-transform shadow-inner border border-indigo-500/20">
                 <Wind size={32} strokeWidth={1.5} />
               </div>
-              <h3 className="text-2xl md:text-3xl font-serif text-ink/90 italic mb-3">
+              <h3 className="text-2xl md:text-3xl font-light text-ink/90 mb-3">
                 {lang === "el" ? "Το Άνθος του Λωτού" : "Lotus Blossom"}
               </h3>
               <p className="text-ink/50 font-sans text-sm md:text-base leading-relaxed">
@@ -378,14 +378,14 @@ export default function PracticeSection() {
           <button aria-label={lang === 'en' ? 'Back' : 'Πίσω'} onClick={() => setStep('theme')} className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 transition-all cursor-pointer">
             <ArrowLeft size={20} />
           </button>
-          <div className="text-[11px] font-bold tracking-[0.2em] uppercase text-ink/40">
-            {movementType === 'taichi' ? (lang === 'el' ? 'ΡΟΗ' : 'FLOW') : (lang === 'el' ? 'ΛΩΤΟΣ' : 'LOTUS')}
+          <div className="text-[13px] font-medium text-ink/65">
+            {movementType === 'taichi' ? (lang === 'el' ? 'Ροή' : 'Flow') : (lang === 'el' ? 'Λωτός' : 'Lotus')}
           </div>
         </div>
 
         <div className="max-w-4xl mx-auto w-full flex-1">
           <header className="text-center md:text-left mb-10">
-            <h2 className="text-4xl md:text-5xl font-serif text-ink/90 italic leading-tight mb-4">
+            <h2 className="text-4xl md:text-5xl font-light text-ink/90 leading-tight mb-4">
               {lang === "el" ? "Ρυθμός Αναπνοής" : "Breathing Rhythm"}
             </h2>
             <p className="text-lg text-ink/50 font-sans max-w-2xl">
@@ -401,8 +401,8 @@ export default function PracticeSection() {
                 className="text-left p-6 md:p-8 rounded-[24px] border transition-all duration-300 overflow-hidden cursor-pointer group hover:bg-white/[0.04]"
                 style={{ backgroundColor: "var(--color-surface, #1a1d27)", borderColor: "rgba(255,255,255,0.05)" }}
               >
-                <div className="font-serif text-2xl italic text-ink/90 mb-2">{lang === "el" ? p.nameEl : p.nameEn}</div>
-                <div className="text-[10px] uppercase font-bold tracking-widest mb-4" style={{ color: "var(--color-accent, #1D9E75)" }}>
+                <div className="font-light text-2xl text-ink/90 mb-2">{lang === "el" ? p.nameEl : p.nameEn}</div>
+                <div className="text-[13px] font-medium mb-4" style={{ color: "var(--color-accent, #5f8fd6)" }}>
                   {lang === "el" 
                     ? `${p.inhale} - ${p.holdFull} - ${p.exhale} - ${p.holdEmpty}`
                     : `${p.inhale} - ${p.holdFull} - ${p.exhale} - ${p.holdEmpty}`
@@ -436,7 +436,7 @@ export default function PracticeSection() {
         
         {/* Compact Audio Controls Overlay */}
         <div className="flex items-center gap-3 backdrop-blur-md bg-black/30 border border-white/5 p-1.5 rounded-full pr-4">
-           <button onClick={toggleAudio} aria-label={lang === 'el' ? (audioEnabled ? 'Χωρίς ήχο' : 'Με ήχο') : (audioEnabled ? 'Sound off' : 'Sound on')} className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-colors" style={{ backgroundColor: audioEnabled ? "var(--color-accent, #1D9E75)" : "rgba(255, 255, 255, 0.1)" }}>
+           <button onClick={toggleAudio} aria-label={lang === 'el' ? (audioEnabled ? 'Χωρίς ήχο' : 'Με ήχο') : (audioEnabled ? 'Sound off' : 'Sound on')} className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-colors" style={{ backgroundColor: audioEnabled ? "var(--color-accent, #5f8fd6)" : "rgba(255, 255, 255, 0.1)" }}>
              {audioEnabled ? <Volume2 size={16} className="text-ink" /> : <VolumeX size={16} className="text-ink/50" />}
            </button>
            {audioEnabled && (
@@ -486,7 +486,7 @@ export default function PracticeSection() {
                        animate={{ opacity: 1 }}
                        exit={{ opacity: 0 }}
                        transition={reduceMotion ? { duration: 0.01 } : { duration: 0.3, ease: 'easeInOut' }}
-                       className="absolute text-[11px] md:text-xs font-sans tracking-[0.2em] uppercase font-medium text-center whitespace-nowrap"
+                       className="absolute text-[13px] md:text-xs font-sans font-medium text-center whitespace-nowrap"
                        style={{ color: isRising ? 'rgba(125,211,252,0.7)' : (elapsed > inhale + holdFull && elapsed <= inhale + holdFull + exhale) ? 'rgba(94,234,212,0.7)' : 'rgba(252,211,77,0.7)' }}
                      >
                        {lang === 'el' ? phaseNameEl : phaseNameEn}
@@ -497,7 +497,7 @@ export default function PracticeSection() {
         </div>
 
         <div className="w-full text-center pb-4 z-10 pointer-events-none">
-          <p className="italic font-serif text-base md:text-lg drop-shadow-md" style={{ color: "var(--color-text, #d4d4d8)", fontFamily: "var(--font-heading)" }}>{lang === "el" ? phaseQuoteEl : phaseQuoteEn}</p>
+          <p className="font-light text-base md:text-lg drop-shadow-md" style={{ color: "var(--color-text, #d4d4d8)", fontFamily: "var(--font-heading)" }}>{lang === "el" ? phaseQuoteEl : phaseQuoteEn}</p>
         </div>
       </div>
       
@@ -513,7 +513,7 @@ export default function PracticeSection() {
         <button 
           onClick={(e) => { e.stopPropagation(); setIsPlaying(!isPlaying); }} 
           className="w-20 h-20 flex items-center justify-center rounded-full backdrop-blur cursor-pointer shadow-2xl border hover:scale-105 transition-transform" 
-          style={{ backgroundColor: "var(--color-accent, #1D9E75)", borderColor: "rgba(255,255,255,0.1)", color: "var(--color-ink)" }}
+          style={{ backgroundColor: "var(--color-accent, #5f8fd6)", borderColor: "rgba(255,255,255,0.1)", color: "var(--color-ink)" }}
         >
           {isPlaying ? <Pause className="w-8 h-8 fill-current" /> : <Play className="w-8 h-8 fill-current ml-1" />}
         </button>

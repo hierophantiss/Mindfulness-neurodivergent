@@ -76,7 +76,7 @@ export default function CompanionSheet() {
   };
 
   const cardClasses = "card-relief flex items-center gap-3.5 px-4 py-4 rounded-2xl hover:brightness-110 transition-[filter,transform] active:scale-[0.98]";
-  const eyebrow = "text-[10px] uppercase tracking-[0.2em] text-[#8ba3ba]/70";
+  const eyebrow = "text-[13px] text-[#8ba3ba]/70";
   const chapterWord = el ? 'Κεφάλαιο' : 'Chapter';
 
   const whereCard = () => {
@@ -184,10 +184,10 @@ export default function CompanionSheet() {
               {/* Something to keep in mind today */}
               {reminder && (
                 <figure className="px-1">
-                  <figcaption className="text-[10px] uppercase tracking-[0.2em] text-ink/35 mb-2">
+                  <figcaption className="text-[13px] text-ink/65 mb-2">
                     {el ? `Για σήμερα · από το Κεφάλαιο ${reminder.num}` : `For today · from Chapter ${reminder.num}`}
                   </figcaption>
-                  <blockquote className="font-serif italic text-[16px] leading-relaxed text-ink/80">
+                  <blockquote className="font-light text-[16px] leading-relaxed text-ink/80">
                     «{reminder.text}»
                   </blockquote>
                 </figure>

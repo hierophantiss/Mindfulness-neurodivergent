@@ -593,8 +593,8 @@ export default function PracticeBreath() {
       {/* Rhythm Override Selector (Movement Only) */}
       {!running && basePattern.category === 'movement' && (
         <div className="z-20 w-full mb-4 md:px-0 relative px-4 flex flex-col items-center animate-in fade-in slide-in-from-top-2 duration-500">
-           <span className="text-[11px] font-medium tracking-widest uppercase text-zinc-400 mb-2">
-             {language === 'el' ? 'Ρυθμος Αναπνοης' : 'Breathing Rhythm'}
+           <span className="text-[13px] font-medium text-zinc-400 mb-2">
+             {language === 'el' ? 'Ρυθμός αναπνοής' : 'Breathing Rhythm'}
            </span>
            <div className="flex flex-wrap justify-center gap-2 max-w-sm">
              {[
@@ -623,10 +623,10 @@ export default function PracticeBreath() {
       {/* Flows: the same movement in four rhythms */}
       {!running && (basePattern.visualizer || basePattern.family) && (
         <div className="z-20 w-full mb-4 md:px-0 relative px-4 flex flex-col items-center animate-in fade-in slide-in-from-top-2 duration-500">
-          <span className="text-[11px] font-medium tracking-widest uppercase text-zinc-400 mb-2">
+          <span className="text-[13px] font-medium text-zinc-400 mb-2">
             {basePattern.family
-              ? (language === 'el' ? 'Που νιωθεις τη δονηση' : 'Where you feel the vibration')
-              : (language === 'el' ? 'Ρυθμος Αναπνοης' : 'Breathing Rhythm')}
+              ? (language === 'el' ? 'Πού νιώθεις τη δόνηση' : 'Where you feel the vibration')
+              : (language === 'el' ? 'Ρυθμός αναπνοής' : 'Breathing Rhythm')}
           </span>
           <div className="flex flex-wrap justify-center gap-2 max-w-sm">
             {BREATH_PATTERNS
@@ -656,8 +656,8 @@ export default function PracticeBreath() {
       {/* Movements and breaths: how it is done, before starting */}
       {!running && isVocal && (
         <div className="z-20 w-full mb-3 px-4 flex flex-col items-center">
-          <span className="text-[11px] font-medium tracking-widest uppercase text-zinc-400 mb-2">
-            {language === 'el' ? 'Φωνη-οδηγος' : 'Voice guide'}
+          <span className="text-[13px] font-medium text-zinc-400 mb-2">
+            {language === 'el' ? 'Φωνή-οδηγός' : 'Voice guide'}
           </span>
           <div className="flex justify-center gap-2">
             {([['low', 'Χαμηλή φωνή', 'Low voice'], ['high', 'Ψηλή φωνή', 'High voice']] as const).map(([id, el, en]) => (
@@ -809,7 +809,7 @@ export default function PracticeBreath() {
           {cycles > 0 && (
              <div className="flex flex-col items-center">
                <span className="font-semibold text-2xl text-ink/90 leading-none drop-shadow-sm">{cycles}</span>
-               <span className="text-[10px] tracking-widest font-sans mt-0.5 uppercase text-ink/60">{language === 'el' ? 'ΚΥΚΛΟΙ' : 'CYCLES'}</span>
+               <span className="text-[13px] font-sans mt-0.5 text-ink/60">{language === 'el' ? 'Κύκλοι' : 'Cycles'}</span>
              </div>
           )}
         </div>
@@ -833,12 +833,12 @@ export default function PracticeBreath() {
            {running ? (
              <>
                <Square size={12} className="fill-amber-200/20" />
-               <span className="text-[10px] font-bold tracking-widest mt-0.5 uppercase opacity-80">{language === 'el' ? 'Παυση' : 'Pause'}</span>
+               <span className="text-[13px] font-medium mt-0.5 opacity-80">{language === 'el' ? 'Παύση' : 'Pause'}</span>
              </>
            ) : (
              <>
                <Play size={14} className="ml-0.5 fill-white" />
-               <span className="text-[10px] font-bold tracking-widest mt-0.5 uppercase">{language === 'el' ? 'Ξεκινα' : 'Start'}</span>
+               <span className="text-[13px] font-medium mt-0.5">{language === 'el' ? 'Ξεκίνα' : 'Start'}</span>
              </>
            )}
          </button>
@@ -854,10 +854,10 @@ export default function PracticeBreath() {
                setPhaseIdx(0); 
                setPhase(pattern.labels[0]); 
              }}
-             className="flex-1 h-9 rounded-full bg-teal-500/20 border border-teal-500/40 flex items-center justify-center gap-2 text-teal-300 hover:bg-teal-500/30 transition-all duration-300 active:scale-95 shadow-[0_0_15px_rgba(20,184,166,0.15)]"
+             className="flex-1 h-9 rounded-full bg-teal-500/20 border border-teal-500/40 flex items-center justify-center gap-2 text-teal-300 hover:bg-teal-500/30 transition-all duration-300 active:scale-95 shadow-[0_0_15px_rgba(95,143,214,0.15)]"
            >
              <Check size={14} />
-             <span className="text-[10px] font-bold tracking-wider mt-0.5 uppercase">{language === 'el' ? 'Ολοκληρωση' : 'Complete'}</span>
+             <span className="text-[13px] font-medium mt-0.5">{language === 'el' ? 'Ολοκλήρωση' : 'Complete'}</span>
            </button>
          ) : (
            <button
@@ -871,7 +871,7 @@ export default function PracticeBreath() {
              className="flex-1 h-9 rounded-full bg-transparent border border-zinc-700/60 flex items-center justify-center gap-2 text-zinc-400 hover:text-ink hover:bg-zinc-800/50 transition-all duration-300 active:scale-95"
            >
              <X size={14} />
-             <span className="text-[10px] font-bold tracking-wider mt-0.5 uppercase opacity-90">{language === 'el' ? 'Επαναφορα' : 'Reset'}</span>
+             <span className="text-[13px] font-medium mt-0.5 opacity-90">{language === 'el' ? 'Επαναφορά' : 'Reset'}</span>
            </button>
          )}
       </div>
@@ -909,7 +909,7 @@ export default function PracticeBreath() {
                   )}
                 >
                   <div className="text-lg">{mins}</div>
-                  <div className="text-[10px] opacity-80">{language === 'el' ? 'ΛΕΠΤΑ' : 'MINS'}</div>
+                  <div className="text-[10px] opacity-80">{language === 'el' ? 'Λεπτά' : 'Min'}</div>
                 </button>
               ))}
             </div>

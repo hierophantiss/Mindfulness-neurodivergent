@@ -32,10 +32,10 @@ function PatternCard({ p, colorScheme, icon: Icon, onClick, language }: {
       </div>
 
       <div className="relative z-10 flex flex-col h-full mt-1">
-        <h3 className="text-[22px] md:text-2xl font-serif text-ink/90 drop-shadow-sm leading-tight italic mb-1">
+        <h3 className="text-[22px] md:text-2xl font-light text-ink/90 drop-shadow-sm leading-tight mb-1">
           {language === 'en' ? p.title.en : p.title.el}
         </h3>
-        <div className={cn("text-[10px] font-bold uppercase tracking-widest mb-3 drop-shadow-sm", isIndigo ? "text-indigo-400/80" : "text-teal-400/80")}>
+        <div className={cn("text-[13px] font-medium mb-3 drop-shadow-sm", isIndigo ? "text-indigo-400/80" : "text-teal-400/80")}>
           {language === 'en' ? p.subtitle.en : p.subtitle.el}
         </div>
         <p className="text-[14px] text-ink/50 leading-relaxed max-w-[85%] font-sans">
@@ -44,11 +44,11 @@ function PatternCard({ p, colorScheme, icon: Icon, onClick, language }: {
 
         <div className="mt-6 flex flex-wrap gap-2">
           {p.hasBinaural && (
-            <span className="px-3 py-1.5 border rounded-full text-[10px] font-bold tracking-wide uppercase bg-white/5 border-white/10 text-ink/60">
+            <span className="px-3 py-1.5 border rounded-full text-[12px] font-medium bg-white/5 border-white/10 text-ink/60">
               Binaural
             </span>
           )}
-          <span className="px-3 py-1.5 border rounded-full text-[10px] font-bold tracking-wide uppercase bg-white/5 border-white/10 text-ink/60">
+          <span className="px-3 py-1.5 border rounded-full text-[12px] font-medium bg-white/5 border-white/10 text-ink/60">
             {Math.round(p.totalCycleDurationMs / 1000)}s {language === 'el' ? 'Κύκλος' : 'Cycle'}
           </span>
         </div>
@@ -86,7 +86,7 @@ export default function PracticeMovement() {
         >
           <ArrowLeft size={20} className="text-ink/80" />
         </button>
-        <h1 className="text-2xl font-serif text-ink/90 italic tracking-wide">
+        <h1 className="text-2xl font-light text-ink/90 tracking-wide">
           {language === 'el' ? 'Εξάσκηση' : 'Practice'}
         </h1>
       </div>
@@ -100,7 +100,7 @@ export default function PracticeMovement() {
       </div>
 
       {/* Breath Section */}
-      <h2 id="breath" className="text-2xl font-serif italic text-teal-400 mb-6 px-2 drop-shadow-sm scroll-mt-24">
+      <h2 id="breath" className="text-2xl font-light text-teal-400 mb-6 px-2 drop-shadow-sm scroll-mt-24">
         {language === 'el' ? 'Ρυθμοί Αναπνοής & Ύπνου' : 'Breath & Sleep Rhythms'}
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-safe mb-8">
@@ -117,7 +117,7 @@ export default function PracticeMovement() {
       </div>
 
       {/* Mindful Movement Section */}
-      <h2 id="movement" className="text-2xl font-serif italic text-indigo-400 mb-6 px-2 drop-shadow-sm scroll-mt-24 flex items-center gap-2">
+      <h2 id="movement" className="text-2xl font-light text-indigo-400 mb-6 px-2 drop-shadow-sm scroll-mt-24 flex items-center gap-2">
         <span>{language === 'el' ? 'Ενσυνείδητη Κίνηση & Τάι Τσι' : 'Mindful Movement & Tai Chi'}</span>
         <span className="inline-flex gap-1 items-center" onClick={(e) => e.stopPropagation()}>
           <ConceptInfoIcon conceptId="proprioception" className="w-5 h-5 opacity-60 hover:opacity-100" />

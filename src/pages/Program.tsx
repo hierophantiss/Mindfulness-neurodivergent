@@ -41,11 +41,11 @@ export default function Program() {
         
         <div className="space-y-4">
           <div className="flex items-center justify-center gap-3">
-            <span className="text-[11px] font-bold tracking-[0.2em] text-teal-400 uppercase">
+            <span className="text-[13px] font-medium text-teal-400">
               {language === 'en' ? '8 Weeks Program' : 'Πρόγραμμα 8 Εβδομάδων'}
             </span>
           </div>
-          <h1 className="text-5xl md:text-7xl font-serif text-ink/90 italic leading-none tracking-tight">
+          <h1 className="text-5xl md:text-7xl font-light text-ink/90 leading-none tracking-tight">
             {language === 'en' ? 'The Path' : 'Η Διαδρομή'}
           </h1>
           <p className="text-lg text-ink/50 font-sans max-w-xl mx-auto leading-relaxed">
@@ -88,7 +88,7 @@ export default function Program() {
                 className={cn(
                   "group relative p-8 transition-all duration-300",
                   isLocked ? "glass-card opacity-50 grayscale cursor-not-allowed border-white/5 " : "glass-card active:scale-[0.98] ",
-                  isCurrent && "border-teal-400/40 shadow-[0_0_30px_rgba(45,212,191,0.1)] bg-white/[0.03]",
+                  isCurrent && "border-teal-400/40 shadow-[0_0_30px_rgba(127,169,228,0.1)] bg-white/[0.03]",
                   isCompleted && "opacity-60 grayscale hover:grayscale-0 hover:opacity-100",
                   `shape-cloud-${(weekNum % 5) + 1}`
                 )}
@@ -99,7 +99,7 @@ export default function Program() {
                       "w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-sans font-bold border transition-all duration-500",
                       isLocked ? "bg-white/5 text-ink/30 border-white/5" :
                       isCurrent 
-                        ? "bg-teal-400/20 text-teal-300 border-teal-400/30 shadow-[0_0_20px_rgba(45,212,191,0.2)]" 
+                        ? "bg-teal-400/20 text-teal-300 border-teal-400/30 shadow-[0_0_20px_rgba(127,169,228,0.2)]" 
                         : "bg-white/5 text-ink/50 border-white/10 group-hover:bg-white/10 group-hover:text-ink"
                     )}>
                       {isLocked ? (
@@ -107,21 +107,21 @@ export default function Program() {
                       ) : isCompleted ? <CheckCircle2 size={24} /> : weekNum}
                     </div>
                     
-                    <div className="text-[10px] font-bold text-ink/40 uppercase tracking-widest pt-2">
-                       {isLocked ? (language === 'en' ? 'LOCKED' : 'ΚΛΕΙΔΩΜΕΝΟ') :
+                    <div className="text-[13px] font-medium text-ink/65 pt-2">
+                       {isLocked ? (language === 'en' ? 'Locked' : 'Κλειδωμένο') :
                         isCurrent && curD > 0 
-                        ? `${curD}/${week.days.length} ${language === 'en' ? 'DONE' : 'ΗΜΕΡΕΣ'}`
-                        : `${week.days.length} ${language === 'en' ? 'DAYS' : 'ΗΜΕΡΕΣ'}`
+                        ? `${curD}/${week.days.length} ${language === 'en' ? 'done' : 'ημέρες'}`
+                        : `${week.days.length} ${language === 'en' ? 'days' : 'ημέρες'}`
                       }
                     </div>
                   </div>
 
                   <div className="space-y-4">
-                    <span className="text-[10px] font-bold text-teal-400 opacity-60 uppercase tracking-[0.2em]">
+                    <span className="text-[13px] font-medium text-teal-400 opacity-60">
                       {language === 'en' ? 'Week' : 'Εβδομάδα'} {weekNum}
                     </span>
                     <h2 className={cn(
-                      "text-2xl font-serif italic leading-tight transition-colors",
+                      "text-2xl font-light leading-tight transition-colors",
                       isCompleted ? "text-ink/40" : (isLocked ? "text-ink/30" : "text-ink/90")
                     )}>
                       {isLocked ? (language === 'en' ? 'Locked Week' : 'Κλειδωμένη Εβδομάδα') : week.title}
@@ -138,7 +138,7 @@ export default function Program() {
                           title={`${language === 'en' ? 'Day' : 'Ημέρα'} ${i + 1}`}
                           className={cn(
                             "h-1.5 flex-1 rounded-full transition-all duration-500",
-                            dayCompleted ? "bg-teal-400/80 shadow-[0_0_8px_rgba(45,212,191,0.4)]" : "bg-white/10"
+                            dayCompleted ? "bg-teal-400/80 shadow-[0_0_8px_rgba(127,169,228,0.4)]" : "bg-white/10"
                           )} 
                         />
                       );
@@ -147,7 +147,7 @@ export default function Program() {
                 </div>
 
                 <div className="absolute -bottom-4 -right-4 p-8 text-ink/[0.02] transition-all duration-700 select-none pointer-events-none">
-                   <span className="text-9xl font-serif font-black italic">W{weekNum}</span>
+                   <span className="text-9xl font-black">W{weekNum}</span>
                 </div>
               </CardElement>
             );

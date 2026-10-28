@@ -16,10 +16,10 @@ import { GUIDED_EXERCISES as EXERCISES } from '../data/guidedExercises';
 // plays no sound during it, and the page says so, so nobody waits for audio.
 
 const AXIS_THEME: Record<string, { ring: string; text: string; soft: string; button: string }> = {
-  body: { ring: '#7A9E7E', text: 'text-[#9cc0a0]', soft: 'bg-[#7A9E7E]/15', button: 'bg-[#7A9E7E]' },
-  breath: { ring: '#7fa9e4', text: 'text-[var(--tint-blue-ink)]', soft: 'bg-[var(--tint-blue-mark)]/15', button: 'bg-[var(--tint-blue-mark)]' },
-  attention: { ring: '#C8922A', text: 'text-[#e0b25a]', soft: 'bg-[#C8922A]/15', button: 'bg-[#C8922A]' },
-  space: { ring: '#B5A7D0', text: 'text-[#c9bde0]', soft: 'bg-[#B5A7D0]/15', button: 'bg-[#B5A7D0]' },
+  body: { ring: '#7a9e7e', text: 'text-[var(--axis-body-ink)]', soft: 'bg-[var(--color-axis-body)]/15', button: 'bg-[var(--color-axis-body)]' },
+  breath: { ring: '#7fa9e4', text: 'text-[var(--axis-breath-ink)]', soft: 'bg-[var(--color-axis-breath)]/15', button: 'bg-[var(--color-axis-breath)]' },
+  attention: { ring: '#c8922a', text: 'text-[var(--axis-attention-ink)]', soft: 'bg-[var(--color-axis-focus)]/15', button: 'bg-[var(--color-axis-focus)]' },
+  space: { ring: '#b5a7d0', text: 'text-[var(--axis-space-ink)]', soft: 'bg-[var(--color-axis-space)]/15', button: 'bg-[var(--color-axis-space)]' },
 };
 
 /** Practices whose object is a sound around you: say plainly where the sound comes from. */
@@ -178,7 +178,7 @@ export default function GenericExercise() {
           <span className="sr-only">{running ? (el ? 'Παύση' : 'Pause') : (el ? 'Ξεκίνα' : 'Start')}</span>
           <span className="absolute inset-0 flex flex-col items-center justify-center">
             <span className="text-[34px] font-light tabular-nums text-ink/90">{formatTime(Math.max(0, total - elapsed))}</span>
-            <span className="mt-1 text-[11px] uppercase tracking-[0.2em] text-ink/40">
+            <span className="mt-1 text-[13px] text-ink/65">
               {done ? (el ? 'Τέλος' : 'Done') : running ? (el ? 'σε εξέλιξη' : 'in progress') : elapsed > 0 ? (el ? 'σε παύση' : 'paused') : (el ? 'έτοιμο' : 'ready')}
             </span>
           </span>

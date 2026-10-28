@@ -759,7 +759,7 @@ export default function TaiChiHero({
       {/* Floating Soothing Breath/Phase Label overlay at top centers */}
       {breathStateText && (
       <div className="absolute top-4 flex flex-col items-center">
-        <span className="text-xs uppercase tracking-widest text-[#a855f7] bg-purple-950/40 px-3 py-1 rounded-full border border-purple-800/20 backdrop-blur-md animate-pulse">
+        <span className="text-[12px] text-[#a855f7] bg-purple-950/40 px-3 py-1 rounded-full border border-purple-800/20 backdrop-blur-md animate-pulse">
           {breathStateText}
         </span>
       </div>

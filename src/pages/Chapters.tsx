@@ -232,7 +232,7 @@ export default function Chapters() {
             to="/program"
  className="relative flex flex-col items-center justify-center text-center p-12 md:p-20 shape-cloud-3 glass-card border-teal-500/20 active:scale-[0.98] hover:border-teal-400/40 transition-all duration-500"
           >
-            <div className="w-16 h-16 rounded-2xl bg-teal-500/10 text-teal-400 flex items-center justify-center mb-8 border border-teal-500/20 group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(20,184,166,0.3)] transition-all duration-700">
+            <div className="w-16 h-16 rounded-2xl bg-teal-500/10 text-teal-400 flex items-center justify-center mb-8 border border-teal-500/20 group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(95,143,214,0.3)] transition-all duration-700">
                <BookOpen size={28} strokeWidth={1.5} />
             </div>
             <h2 className="text-4xl md:text-5xl font-light text-ink/90 mb-5 leading-tight">

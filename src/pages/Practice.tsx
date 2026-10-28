@@ -37,10 +37,10 @@ function PatternCard({ p, colorScheme, icon: Icon, onClick, language, hideCycle 
       </div>
 
       <div className="relative z-10 flex flex-col h-full mt-1">
-        <h2 className="text-[22px] md:text-2xl font-serif text-ink/90 drop-shadow-sm leading-tight italic mb-1">
+        <h2 className="text-[22px] md:text-2xl font-light text-ink/90 drop-shadow-sm leading-tight mb-1">
           {language === 'en' ? p.title.en : p.title.el}
         </h2>
-        <div className={cn("text-[10px] font-bold uppercase tracking-widest mb-3 drop-shadow-sm", isIndigo ? "text-indigo-400/80" : "text-teal-400/80")}>
+        <div className={cn("text-[13px] font-medium mb-3 drop-shadow-sm", isIndigo ? "text-indigo-400/80" : "text-teal-400/80")}>
           {language === 'en' ? p.subtitle.en : p.subtitle.el}
         </div>
         <p className="text-[14px] text-ink/50 leading-relaxed max-w-[85%] font-sans">
@@ -49,22 +49,22 @@ function PatternCard({ p, colorScheme, icon: Icon, onClick, language, hideCycle 
 
         <div className="mt-6 flex flex-wrap gap-2">
           {p.hasBinaural && (
-            <span className="px-3 py-1.5 border rounded-full text-[10px] font-bold tracking-wide uppercase bg-white/5 border-white/10 text-ink/60">
+            <span className="px-3 py-1.5 border rounded-full text-[12px] font-medium bg-white/5 border-white/10 text-ink/60">
               Binaural
             </span>
           )}
           {!hideCycle && (
-          <span className="px-3 py-1.5 border rounded-full text-[10px] font-bold tracking-wide uppercase bg-white/5 border-white/10 text-ink/60">
+          <span className="px-3 py-1.5 border rounded-full text-[12px] font-medium bg-white/5 border-white/10 text-ink/60">
             {Math.round(p.totalCycleDurationMs / 1000)}s {language === 'el' ? 'Κύκλος' : 'Cycle'}
           </span>
           )}
           {p.fromBook && (
-            <span className="px-3 py-1.5 border rounded-full text-[10px] font-bold tracking-wide uppercase bg-teal-500/10 border-teal-500/30 text-teal-200/90">
+            <span className="px-3 py-1.5 border rounded-full text-[12px] font-medium bg-teal-500/10 border-teal-500/30 text-teal-200/90">
               {language === 'el' ? 'Από το βιβλίο · Κεφ. 2' : 'From the book · Ch. 2'}
             </span>
           )}
           {p.stance && (
-            <span className="px-3 py-1.5 border rounded-full text-[10px] font-bold tracking-wide uppercase bg-white/5 border-white/10 text-ink/60">
+            <span className="px-3 py-1.5 border rounded-full text-[12px] font-medium bg-white/5 border-white/10 text-ink/60">
               {p.stance === 'standing'
                 ? (language === 'el' ? 'Όρθια' : 'Standing')
                 : (language === 'el' ? 'Όρθια ή καθιστή' : 'Standing or seated')}
@@ -132,33 +132,33 @@ const axisInfo = {
   body: { 
     icon: 'I', 
     title: { en: 'Gravity • Earth', el: 'Βαρύτητα • Γη' }, 
-    color: 'text-purple-400', 
-    borderColor: 'border-purple-400/20',
-    bgColor: 'bg-purple-400/10',
+    color: 'text-[var(--axis-body-ink)]', 
+    borderColor: 'border-[var(--color-axis-body)]/30',
+    bgColor: 'bg-[var(--color-axis-body)]/15',
     desc: { en: 'Practices that root you down and build somatic awareness.', el: 'Πρακτικές που σας γειώνουν και χτίζουν σωματική επίγνωση.' } 
   },
   breath: { 
     icon: '○', 
     title: { en: 'Breath • Air', el: 'Αναπνοή • Αέρας' }, 
-    color: 'text-sky-400', 
-    borderColor: 'border-sky-400/20',
-    bgColor: 'bg-sky-400/10',
+    color: 'text-[var(--axis-breath-ink)]', 
+    borderColor: 'border-[var(--color-axis-breath)]/30',
+    bgColor: 'bg-[var(--color-axis-breath)]/15',
     desc: { en: 'Practices that regulate the nervous system through the breath.', el: 'Πρακτικές που ρυθμίζουν το νευρικό σύστημα μέσω της αναπνοής.' } 
   },
   attention: { 
     icon: '△', 
     title: { en: 'Attention • Fire', el: 'Προσοχή • Φωτιά' }, 
-    color: 'text-amber-400', 
-    borderColor: 'border-amber-400/20',
-    bgColor: 'bg-amber-400/10',
+    color: 'text-[var(--axis-attention-ink)]', 
+    borderColor: 'border-[var(--color-axis-focus)]/30',
+    bgColor: 'bg-[var(--color-axis-focus)]/15',
     desc: { en: 'Practices that sharpen focus and direct mental energy.', el: 'Πρακτικές που οξύνουν την εστίαση και κατευθύνουν τη νοητική ενέργεια.' } 
   },
   space: { 
     icon: '∞', 
     title: { en: 'Space • Water', el: 'Χώρος • Νερό' }, 
-    color: 'text-teal-400', 
-    borderColor: 'border-teal-400/20',
-    bgColor: 'bg-teal-400/10',
+    color: 'text-[var(--axis-space-ink)]', 
+    borderColor: 'border-[var(--color-axis-space)]/30',
+    bgColor: 'bg-[var(--color-axis-space)]/15',
     desc: { en: 'Practices that cultivate open awareness and deep letting go.', el: 'Πρακτικές που καλλιεργούν ανοιχτή επίγνωση και βαθιά απελευθέρωση.' } 
   }
 };
@@ -171,7 +171,7 @@ const axisInfo = {
 
   const renderSomaticFilters = () => (
     <div className="max-w-4xl mx-auto w-full border-b border-white/5 pb-6" id="somatic-filters-container">
-      <span className="text-[10px] font-bold text-ink/30 uppercase tracking-[0.2em] pl-1 block mb-3">
+      <span className="text-[13px] font-medium text-ink/65 pl-1 block mb-3">
         {language === 'el' ? 'Φιλτράρισμα με βάση το Σύστημά σου' : 'Somatic Capacity Filters'}
       </span>
       <div className="flex flex-wrap gap-2 md:gap-3">
@@ -189,7 +189,7 @@ const axisInfo = {
               className={cn(
                 "px-4 py-2 border rounded-full text-xs font-semibold tracking-wide transition-all duration-300 flex items-center gap-2 cursor-pointer",
                 isActive 
-                  ? "bg-teal-500/10 border-teal-500/40 text-teal-300 shadow-[0_0_12px_rgba(20,184,166,0.15)]"
+                  ? "bg-teal-500/10 border-teal-500/40 text-teal-300 shadow-[0_0_12px_rgba(95,143,214,0.15)]"
                   : "glass-card border-white/5 text-ink/60 hover:border-white/10 hover:text-ink"
               )}
               id={`somatic-btn-${item.id}`}
@@ -222,8 +222,8 @@ const axisInfo = {
           >
             <ArrowLeft size={20} />
           </button>
-          <span className={cn("text-[11px] font-bold tracking-[0.2em] uppercase", info.color)}>
-            {language === 'el' ? 'ΠΡΑΚΤΙΚΗ ΜΕ ΑΞΟΝΑ' : 'PRACTICE BY AXIS'}
+          <span className={cn("text-[13px] font-medium", info.color)}>
+            {language === 'el' ? 'Πρακτική με άξονα' : 'Practice by axis'}
           </span>
         </div>
 
@@ -232,7 +232,7 @@ const axisInfo = {
             <div className={cn("w-14 h-14 shrink-0 rounded-full flex items-center justify-center text-3xl font-mono border", info.bgColor, info.borderColor, info.color)}>
               {info.icon}
             </div>
-            <h1 className="text-4xl md:text-5xl font-serif text-ink/90 italic leading-tight">
+            <h1 className="text-4xl md:text-5xl font-light text-ink/90 leading-tight">
               {language === 'en' ? info.title.en : info.title.el}
             </h1>
           </div>
@@ -244,7 +244,7 @@ const axisInfo = {
         <div className="max-w-4xl mx-auto w-full pb-12 space-y-12">
           {axisBreaths.length > 0 && (
             <div className="space-y-6">
-              <h2 className="text-2xl font-serif text-ink/80 italic border-b border-white/5 pb-2">
+              <h2 className="text-2xl font-light text-ink/80 border-b border-white/5 pb-2">
                 {language === 'el' ? 'Βασικές Πρακτικές' : 'Core Practices'}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -264,7 +264,7 @@ const axisInfo = {
 
           {axisMicrodoses.length > 0 && (
             <div className="space-y-6">
-              <h2 className="text-2xl font-serif text-ink/80 italic border-b border-white/5 pb-2">
+              <h2 className="text-2xl font-light text-ink/80 border-b border-white/5 pb-2">
                 {language === 'el' ? 'Αόρατες Μικροδόσεις' : 'Invisible Microdoses'}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -280,14 +280,14 @@ const axisInfo = {
                   >
                     <div className="flex-1 min-w-0 pr-1 space-y-1">
                       <div className="flex justify-between items-center gap-2">
-                        <span className={cn("text-[9px] font-bold uppercase tracking-widest", info.color)}>
-                          {language === 'en' ? ex.type : ex.type === 'body' ? 'ΣΩΜΑ' : ex.type === 'breath' ? 'ΑΝΑΠΝΟΗ' : ex.type === 'focus' ? 'ΠΡΟΣΟΧΗ' : 'ΧΩΡΟΣ'}
+                        <span className={cn("text-[13px] font-medium", info.color)}>
+                          {language === 'en' ? ex.type.charAt(0).toUpperCase() + ex.type.slice(1) : ex.type === 'body' ? 'Σώμα' : ex.type === 'breath' ? 'Αναπνοή' : ex.type === 'focus' ? 'Προσοχή' : 'Χώρος'}
                         </span>
-                        <span className="text-[9px] text-ink/30 font-semibold tracking-wider uppercase shrink-0">
+                        <span className="text-[13px] text-ink/65 font-semibold shrink-0">
                           {language === 'en' ? ex.dur.en : ex.dur.el}
                         </span>
                       </div>
-                      <h2 className="text-base font-serif text-ink/95 italic leading-tight group-hover:text-ink transition-colors truncate">
+                      <h2 className="text-base font-light text-ink/95 leading-tight group-hover:text-ink transition-colors truncate">
                         {language === 'en' ? ex.title.en : ex.title.el}
                       </h2>
                       <p className="text-[12px] text-ink/45 leading-normal font-sans group-hover:text-ink/60 transition-colors line-clamp-2">
@@ -330,13 +330,13 @@ const axisInfo = {
           >
             <ArrowLeft size={20} />
           </button>
-          <span className="text-[11px] font-bold tracking-[0.2em] text-violet-400 uppercase">
-            {language === 'el' ? 'ΨΑΛΣΙΜΟ & ΑΝΤΗΧΗΣΗ' : 'CHANTING & VOCAL RESONANCE'}
+          <span className="text-[13px] font-medium text-violet-400">
+            {language === 'el' ? 'Ψάλσιμο & αντήχηση' : 'Chanting & vocal resonance'}
           </span>
         </div>
 
         <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <h1 className="text-4xl md:text-5xl font-serif text-ink/90 italic leading-tight flex items-center justify-center md:justify-start">
+          <h1 className="text-4xl md:text-5xl font-light text-ink/90 leading-tight flex items-center justify-center md:justify-start">
             {language === 'el' ? 'Ψάλσιμο & Αντήχηση' : 'Chanting & Resonance'}
             <ConceptInfoIcon conceptId="vagus_nerve" />
           </h1>
@@ -391,13 +391,13 @@ const axisInfo = {
           >
             <ArrowLeft size={20} />
           </button>
-          <span className="text-[11px] font-bold tracking-[0.2em] text-teal-400 uppercase">
-            {language === 'el' ? 'Ρυθμοι Αναπνοης' : 'Breath Rhythms'}
+          <span className="text-[13px] font-medium text-teal-400">
+            {language === 'el' ? 'Ρυθμοί αναπνοής' : 'Breath Rhythms'}
           </span>
         </div>
 
         <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <h1 className="text-4xl md:text-5xl font-serif text-ink/90 italic leading-tight flex items-center justify-center md:justify-start">
+          <h1 className="text-4xl md:text-5xl font-light text-ink/90 leading-tight flex items-center justify-center md:justify-start">
             {language === 'el' ? 'Αναπνοή & Ύπνος' : 'Breath & Sleep'}
             <ConceptInfoIcon conceptId="vagus_nerve" />
           </h1>
@@ -511,13 +511,13 @@ const axisInfo = {
           >
             <ArrowLeft size={20} />
           </button>
-          <span className="text-[11px] font-bold tracking-[0.2em] text-indigo-400 uppercase">
-            {language === 'el' ? 'Κινητικη Ενσυνειδητοτητα & Ται Τσι' : 'Mindful Movement & Tai Chi'}
+          <span className="text-[13px] font-medium text-indigo-400">
+            {language === 'el' ? 'Κινητική ενσυνειδητότητα & Τάι Τσι' : 'Mindful Movement & Tai Chi'}
           </span>
         </div>
 
         <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <h1 className="text-4xl md:text-5xl font-serif text-ink/90 italic leading-tight flex items-center justify-center md:justify-start flex-wrap gap-2">
+          <h1 className="text-4xl md:text-5xl font-light text-ink/90 leading-tight flex items-center justify-center md:justify-start flex-wrap gap-2">
             <span>{language === 'el' ? 'Κινητική Ενσυνειδητότητα & Τάι Τσι' : 'Mindful Movement & Tai Chi'}</span>
             <span className="inline-flex gap-1 items-center" onClick={(e) => e.stopPropagation()}>
               <ConceptInfoIcon conceptId="proprioception" />
@@ -533,7 +533,7 @@ const axisInfo = {
 
         <div className="card-relief max-w-4xl mx-auto w-full mb-8 font-sans text-ink/80 rounded-2xl p-6 md:p-8 space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-700">
           <div>
-            <h2 className="text-xl md:text-2xl font-serif text-indigo-300 italic mb-4">{language === 'el' ? 'Πριν Ξεκινήσεις' : 'Before You Start'}</h2>
+            <h2 className="text-xl md:text-2xl font-light text-indigo-300 mb-4">{language === 'el' ? 'Πριν Ξεκινήσεις' : 'Before You Start'}</h2>
             <p className="mb-6">{language === 'el' ? 'Το Τάι Τσι ξεκινά πριν από την πρώτη κίνηση.' : 'Tai Chi begins before the first movement.'}</p>
             <ul className="space-y-4 text-[15px] leading-relaxed">
               <li>
@@ -552,13 +552,13 @@ const axisInfo = {
                 <strong className="text-indigo-200">{language === 'el' ? 'Αναπνοή:' : 'Breath:'}</strong> {language === 'el' ? 'Μια βαθιά εισπνοή από τη μύτη — άφησε την κοιλιά να φουσκώσει. Μια αργή εκπνοή από το στόμα. Το σώμα χαλαρώνει με κάθε εκπνοή.' : 'Take a deep inhale through your nose — let your belly rise. A slow exhale through your mouth. The body relaxes with every exhale.'}
               </li>
             </ul>
-            <p className="mt-6 font-medium text-indigo-300 italic">{language === 'el' ? 'Τώρα μπορείς να ξεκινήσεις.' : 'Now you can begin.'}</p>
+            <p className="mt-6 font-medium text-indigo-300">{language === 'el' ? 'Τώρα μπορείς να ξεκινήσεις.' : 'Now you can begin.'}</p>
           </div>
 
           <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
 
           <div>
-            <h2 className="text-xl md:text-2xl font-serif text-indigo-300 italic mb-4">{language === 'el' ? 'Η Αρχή' : 'The Principle'}</h2>
+            <h2 className="text-xl md:text-2xl font-light text-indigo-300 mb-4">{language === 'el' ? 'Η Αρχή' : 'The Principle'}</h2>
             <p className="mb-2 leading-relaxed">
               {language === 'el' ? 'Το Τάι Τσι δεν είναι γυμναστική — είναι συντονισμός. Η κίνηση και η αναπνοή είναι αδιαχώριστες. Η βαρύτητα είναι ο δάσκαλος, η αναπνοή ο ρυθμός, η προσοχή ακολουθεί φυσικά.' : 'Tai Chi is not a workout — it is coordination. Movement and breath are inseparable. Gravity is the teacher, breath is the rhythm, attention follows naturally.'}
             </p>
@@ -582,7 +582,7 @@ const axisInfo = {
               {filteredMovements.length > 0 && (
                 <div className="space-y-4">
                   <div className="border-b border-white/5 pb-2">
-                    <h2 className="text-xl font-serif italic text-indigo-400 leading-tight">
+                    <h2 className="text-xl font-light text-indigo-400 leading-tight">
                       {language === 'el' ? 'Βασικές Κινήσεις (Τάι Τσι & Qigong)' : 'Core Movements (Tai Chi & Qigong)'}
                     </h2>
                     <p className="text-sm text-ink/40 mt-1">
@@ -618,7 +618,7 @@ const axisInfo = {
                 <div className="space-y-4">
                   <div className="border-b border-white/5 pb-2 flex justify-between items-end">
                     <div>
-                      <h2 className="text-xl font-serif italic text-emerald-400 leading-tight">
+                      <h2 className="text-xl font-light text-emerald-400 leading-tight">
                         {language === 'el' ? 'Ροές' : 'Flows'}
                       </h2>
                       <p className="text-sm text-ink/40 mt-1">
@@ -661,13 +661,13 @@ const axisInfo = {
           >
             <ArrowLeft size={20} />
           </button>
-          <span className="text-[11px] font-bold tracking-[0.2em] text-amber-400 uppercase">
-            {language === 'el' ? 'Μικροδοσεις' : 'Microdoses'}
+          <span className="text-[13px] font-medium text-amber-400">
+            {language === 'el' ? 'Μικροδόσεις' : 'Microdoses'}
           </span>
         </div>
 
         <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <h1 className="text-4xl md:text-5xl font-serif text-ink/90 italic leading-tight flex items-center justify-center md:justify-start">
+          <h1 className="text-4xl md:text-5xl font-light text-ink/90 leading-tight flex items-center justify-center md:justify-start">
             {language === 'el' ? 'Αόρατες Μικροδόσεις' : 'Invisible Microdoses'}
             <ConceptInfoIcon conceptId="neuroplasticity" />
           </h1>
@@ -694,17 +694,17 @@ const axisInfo = {
               </div>
 
               <div className="relative z-10 flex flex-col h-full mt-1">
-                <h2 className="text-[22px] md:text-2xl font-serif text-ink/90 drop-shadow-sm leading-tight italic mb-1">
+                <h2 className="text-[22px] md:text-2xl font-light text-ink/90 drop-shadow-sm leading-tight mb-1">
                   {language === 'en' ? 'Microdoses Collection' : 'Συλλογή Μικροδόσεων'}
                 </h2>
-                <div className="text-[10px] font-bold uppercase tracking-widest mb-3 drop-shadow-sm text-amber-400/80">
+                <div className="text-[13px] font-medium mb-3 drop-shadow-sm text-amber-400/80">
                   {language === 'en' ? 'Quick Tools' : 'Άμεσα Εργαλεία'}
                 </div>
                 <p className="text-[14px] text-ink/50 leading-relaxed max-w-[85%] font-sans">
                   {language === 'en' ? 'Open the collection of short spatial, physical, and breath focus tools.' : 'Άνοιξε τη συλλογή μικρών χρονικά εργαλείων χωρικής, σωματικής και αναπνευστικής εστίασης.'}
                 </p>
                 <div className="mt-6 flex flex-wrap gap-2">
-                  <span className="px-3 py-1.5 border rounded-full text-[10px] font-bold tracking-wide uppercase bg-amber-500/10 border-amber-500/20 text-amber-300">
+                  <span className="px-3 py-1.5 border rounded-full text-[12px] font-medium bg-amber-500/10 border-amber-500/20 text-amber-300">
                     {language === 'en' ? 'Multiple Categories' : 'Πολλαπλές Κατηγορίες'}
                   </span>
                 </div>
@@ -726,13 +726,13 @@ const axisInfo = {
         >
           <ArrowLeft size={20} />
         </button>
-        <span className="text-[11px] font-bold tracking-[0.2em] text-indigo-400 uppercase">
-          {language === 'el' ? 'Κεντρο Εξασκησης' : 'Practice Hub'}
+        <span className="text-[13px] font-medium text-indigo-400">
+          {language === 'el' ? 'Κέντρο εξάσκησης' : 'Practice Hub'}
         </span>
       </div>
 
       <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-        <h1 className="text-5xl md:text-6xl font-serif text-ink/90 italic leading-tight">
+        <h1 className="text-5xl md:text-6xl font-light text-ink/90 leading-tight">
           {language === 'el' ? 'Εξάσκηση' : 'Practice'}
         </h1>
         <p className="text-lg text-ink/50 font-sans leading-relaxed">
@@ -763,7 +763,7 @@ const axisInfo = {
           </div>
           
           <div className="space-y-2 relative mt-auto w-full pointer-events-none">
-            <h2 id="practice-cat-movement" className="text-2xl font-serif text-ink/90 italic leading-tight">
+            <h2 id="practice-cat-movement" className="text-2xl font-light text-ink/90 leading-tight">
               {language === 'en' ? 'Movement & Tai Chi' : 'Κίνηση & Τάι Τσι'}
             </h2>
             <p id="practice-cat-movement-desc" className="text-ink/50 font-sans text-[14px] leading-relaxed">
@@ -789,7 +789,7 @@ const axisInfo = {
           </div>
           
           <div className="space-y-2 relative mt-auto w-full pointer-events-none">
-            <h2 id="practice-cat-breath" className="text-2xl font-serif text-ink/90 italic leading-tight">
+            <h2 id="practice-cat-breath" className="text-2xl font-light text-ink/90 leading-tight">
               {language === 'en' ? 'Breath rhythms' : 'Ρυθμοί Αναπνοής'}
             </h2>
             <p id="practice-cat-breath-desc" className="text-ink/50 font-sans text-[14px] leading-relaxed">
@@ -815,7 +815,7 @@ const axisInfo = {
           </div>
           
           <div className="space-y-2 relative mt-auto w-full pointer-events-none">
-            <h2 id="practice-cat-vocal" className="text-2xl font-serif text-ink/90 italic leading-tight">
+            <h2 id="practice-cat-vocal" className="text-2xl font-light text-ink/90 leading-tight">
               {language === 'en' ? 'Chanting & Resonance' : 'Ψάλσιμο & Αντήχηση'}
             </h2>
             <p id="practice-cat-vocal-desc" className="text-ink/50 font-sans text-[14px] leading-relaxed">
@@ -850,11 +850,11 @@ const axisInfo = {
           
           <div className="space-y-2 relative mt-auto w-full pointer-events-none">
             {!hasFoundation && (
-              <div className="text-[9px] uppercase tracking-wider text-amber-500/80 font-bold mb-1">
-                {language === 'el' ? 'Προτεινεται Θεωρια' : 'Theory Recommended'}
+              <div className="text-[13px] text-amber-500/80 font-medium mb-1">
+                {language === 'el' ? 'Προτείνεται θεωρία' : 'Theory Recommended'}
               </div>
             )}
-            <h2 id="practice-cat-microdoses" className="text-2xl font-serif text-ink/90 italic leading-tight">
+            <h2 id="practice-cat-microdoses" className="text-2xl font-light text-ink/90 leading-tight">
               {language === 'en' ? 'Microdoses' : 'Μικροδόσεις'}
             </h2>
             <p id="practice-cat-microdoses-desc" className="text-ink/50 font-sans text-[14px] leading-relaxed">
@@ -875,7 +875,7 @@ const axisInfo = {
               </div>
             </div>
             
-            <h2 className="text-2xl font-serif text-ink italic text-center mb-2">
+            <h2 className="text-2xl font-light text-ink text-center mb-2">
               {language === 'el' ? 'Προτείνεται Θεωρία' : 'Theory Recommended'}
             </h2>
             

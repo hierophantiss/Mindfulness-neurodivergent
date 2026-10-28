@@ -181,7 +181,7 @@ export default function PracticeSwaying() {
           <ArrowLeft size={20} />
         </button>
         <div className="flex-1 flex justify-center items-center pointer-events-auto">
-          <div className="text-[11px] font-bold tracking-[0.2em] uppercase text-ink/40 flex items-center justify-center">
+          <div className="text-[13px] font-medium text-ink/65 flex items-center justify-center">
             {lang === 'el' ? 'Λίκνισμα' : 'Swaying'}
             <ConceptInfoIcon conceptId="polyvagal" className="w-5 h-5 ml-2" />
           </div>
@@ -204,7 +204,7 @@ export default function PracticeSwaying() {
               aria-atomic="true"
             >
                <span 
-                 className={`text-[11px] uppercase tracking-[0.3em] transition-opacity duration-1000 ${isExhaling ? 'text-teal-400/80' : 'text-amber-400/80'}`}
+                 className={`text-[13px] transition-opacity duration-1000 ${isExhaling ? 'text-teal-400/80' : 'text-amber-400/80'}`}
                  style={{ animation: 'changeOp 2s infinite alternate' }}
                >
                  {breathLabel}
@@ -223,7 +223,7 @@ export default function PracticeSwaying() {
             </p>
           )}
           {instruction && (
-            <p className="text-ink/60 font-serif italic text-lg text-center animate-in fade-in zoom-in duration-1000">
+            <p className="text-ink/60 font-light text-lg text-center animate-in fade-in zoom-in duration-1000">
               {instruction}
             </p>
           )}
@@ -238,7 +238,7 @@ export default function PracticeSwaying() {
           className={`flex flex-col items-center w-full bg-black/20 backdrop-blur-md rounded-2xl border border-white/5 p-5 transition-all duration-300 overflow-hidden ${showSettings ? "h-[220px] opacity-100 translate-y-0" : "h-0 opacity-0 translate-y-4 pointer-events-none p-0 border-transparent shadow-none"}`}
         >
           {/* Sounds Grid */}
-          <label className="text-[10px] uppercase tracking-[0.2em] text-ink/50 mb-3 w-full text-center">
+          <label className="text-[13px] text-ink/65 mb-3 w-full text-center">
              {lang === "el" ? "Ήχος" : "Sound"}
           </label>
           <div className="grid grid-cols-4 gap-2 mb-6 w-full max-w-sm">
@@ -256,7 +256,7 @@ export default function PracticeSwaying() {
              ))}
           </div>
 
-          <label className="text-[10px] uppercase tracking-[0.2em] text-ink/50 mb-3 w-full text-center mt-2">
+          <label className="text-[13px] text-ink/65 mb-3 w-full text-center mt-2">
              {lang === "el" ? "Ρυθμός του χτύπου" : "Beat tempo"}
           </label>
           <input
@@ -288,7 +288,7 @@ export default function PracticeSwaying() {
           <button 
             onClick={(e) => { e.stopPropagation(); handleTogglePlayback(); }} 
             aria-label={isPlaying ? (lang === 'el' ? 'Παύση' : 'Pause') : (lang === 'el' ? 'Έναρξη' : 'Play')} className="w-20 h-20 flex items-center justify-center rounded-full shadow-2xl border transition-all hover:scale-105 active:scale-95 cursor-pointer z-10 focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-white"
-            style={{ backgroundColor: "var(--color-accent, #1D9E75)", borderColor: "rgba(255,255,255,0.1)" }}
+            style={{ backgroundColor: "var(--color-accent, #5f8fd6)", borderColor: "rgba(255,255,255,0.1)" }}
           >
             {isPlaying ? (
                <Pause size={32} className="text-ink fill-current" />
