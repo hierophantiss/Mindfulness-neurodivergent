@@ -396,7 +396,7 @@ export default function RabbitHole() {
           {/* Link to Method & Symbols */}
           <Link 
             to="/method"
- className="w-full md:col-span-2 glass-card rounded-[2rem] p-6 md:p-8 block text-left transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-teal-500/20 relative group"
+ className="w-full md:col-span-2 glass-card rounded-[2rem] p-6 md:p-8 block text-left transition-all duration-300 active:scale-[0.98] hover:border-teal-500/20 relative group"
           >
             <div className="absolute top-0 right-0 p-4 opacity-[0.02] transform translate-x-4 -translate-y-4 group-hover:scale-110 group-hover:opacity-[0.04] transition-all duration-700">
               <span className="text-[120px] md:text-[160px] grayscale">🐘</span>
@@ -430,10 +430,10 @@ export default function RabbitHole() {
               <button 
                 key={article.id}
                 onClick={() => { setActiveArticle(article.id); setCurrentPage(0); }}
-                className={`w-full border rounded-[2rem] p-6 md:p-8 shadow-xl flex flex-col text-left transition-all duration-300 active:scale-[0.98] hover:shadow-2xl relative overflow-hidden group ${
+                className={`w-full border rounded-[2rem] p-6 md:p-8 flex flex-col text-left transition-all duration-300 active:scale-[0.98] relative overflow-hidden group ${
                   isNew 
- ? 'glass-card border-teal-500/20 hover:border-teal-500/40 hover:bg-teal-950/20' 
- : 'glass-card hover:border-white/10 hover:bg-white/[0.04]'
+ ? 'glass-card border-teal-500/20 hover:border-teal-500/40 ' 
+ : 'glass-card hover:border-white/10 '
                 }`}
               >
                 {isNew && (
@@ -490,7 +490,7 @@ export default function RabbitHole() {
                 setActiveAttentionStyles([]);
                 setIsVoidActive(false);
               }}
-              className="group flex flex-col md:flex-row gap-5 p-4 md:p-5 bg-white/[0.02] border border-white/10 rounded-[1.5rem] overflow-hidden hover:border-white/20 transition-all text-left w-full active:scale-[0.98]"
+              className="card-relief group flex flex-col md:flex-row gap-5 p-4 md:p-5 rounded-[1.5rem] overflow-hidden hover:border-white/20 transition-all text-left w-full active:scale-[0.98]"
             >
               <div className="relative w-full md:w-56 aspect-video rounded-[1rem] overflow-hidden flex-shrink-0 border border-white/[0.05]">
                 <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100" style={{ backgroundImage: `url(${video.thumbnail})` }} />
@@ -852,7 +852,7 @@ export default function RabbitHole() {
                                   const totalSeconds = (mins * 60) + secs;
                                   setVideoStartTime(totalSeconds);
                                 }}
-                                className="group w-full text-left p-5 rounded-3xl bg-white/[0.01] border border-white/5 hover:bg-white/[0.03] hover:border-teal-500/20 transition-all"
+                                className="card-relief group w-full text-left p-5 rounded-3xl hover:border-teal-500/20 transition-all"
                               >
                                 <div className="flex items-center justify-between mb-2">
                                   <span className="text-[13px] font-bold text-ink/80 group-hover:text-teal-300 transition-colors">{pt.title}</span>

@@ -1,6 +1,6 @@
 import { AudioEnabler } from '../components/AudioEnabler';
 import React, { useState, useEffect, useMemo } from 'react';
-import { ArrowRight, BookOpen, ChevronRight, ChevronDown, Info, Download, Moon, NotebookPen, Play, Smile, X } from 'lucide-react';
+import { ArrowRight, BookOpen, ChevronRight, ChevronDown, Info, Download, Smile, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useCompanion } from '../hooks/useCompanion';
@@ -93,13 +93,6 @@ export default function Dashboard() {
     ? (el ? 'Ξαναδιάβασε όποιο κεφάλαιο θες' : 'Read any chapter again')
     : `${el ? 'Κεφάλαιο' : 'Chapter'} ${spot.chapter?.num ?? ''}` +
       (midChapter ? (el ? ` · σελίδα ${spot.page + 1} από ${spot.pages.length}` : ` · page ${spot.page + 1} of ${spot.pages.length}`) : '');
-  // The chapter's own practice is its last page; the chapters of the four axes
-  // show the axis's sign (Ι ○ △ ∞), as on the Method page.
-  const chapterPractice = !finishedGuide && spot.chapter?.exercise ? spot.chapter.exercise : undefined;
-  const chapterPracticeHref = spot.chapter ? `/chapters/${spot.chapter.num}?p=${Math.max(1, spot.pages.length)}` : '/chapters';
-  const axisGlyph = spot.chapter && spot.chapter.num <= 4 ? ['Ι', '○', '△', '∞'][spot.chapter.num - 1] : '';
-  // In the evening a quiet way to close the day, in the journal.
-  const evening = hour >= 18 || hour < 5;
 
   // At night the lines of the sign step back a little (the infinity keeps its colours).
   const nightDim = hour >= 21 || hour < 5;
@@ -119,8 +112,6 @@ export default function Dashboard() {
   const moreLinks = getMoreLinks(lang, completedLessons > 0 ? `${lessonProgressPct}%` : undefined);
 
   const [isInfoOpen, setIsInfoOpen] = useState(false);
-  // "How do you feel right now?" opens inside its row.
-  const [checkinOpen, setCheckinOpen] = useState(false);
   const [bookOpen, setBookOpen] = useState(false);
   const [installHint, setInstallHint] = useState<string | null>(null);
   const { installed, install } = useInstallApp(language);
@@ -155,7 +146,7 @@ export default function Dashboard() {
 
   const checkinSub = recentState
     ? `${el ? 'Πριν λίγο' : 'Earlier'}: ${getCheckinOption(recentState).label[lang]}`
-    : (el ? 'Μια πρακτική για τώρα' : 'A practice for right now');
+    : (el ? 'Βρες μια πρακτική για τώρα' : 'Find a practice for right now');
 
   const greeting = hour >= 6 && hour < 12
     ? (language === 'el' ? 'Καλημέρα' : 'Good morning')
@@ -243,63 +234,20 @@ export default function Dashboard() {
           </div>
         </section>
 
-        {/* Or something else: always the same three rows, in the same place. */}
+        {/* How do you feel right now? One card, always in the same place. */}
         <motion.div variants={containerVariants} initial="hidden" animate="show" className="flex flex-col">
-          <motion.p variants={itemVariants} className="sky-text mt-8 mb-2.5 pl-1 text-[14px] text-ink/70">
-            {el ? 'Ή, αν θες, κάτι άλλο' : 'Or, if you like, something else'}
-          </motion.p>
-          <motion.div variants={itemVariants} className="card-relief-group relief-divide">
-            <div>
-              <button
-                onClick={() => setCheckinOpen(o => !o)}
-                aria-expanded={checkinOpen}
-                className="w-full flex items-center gap-3.5 min-h-[68px] px-4 py-3 text-left hover:bg-white/[0.03] transition-colors"
-              >
-                <span aria-hidden="true" className="icon-relief w-10 h-10 shrink-0 rounded-full flex items-center justify-center text-[var(--tint-sage-ink)] bg-[radial-gradient(circle_at_50%_30%,var(--tint-sage-hi),var(--tint-sage-bg)_75%)]">
-                  <Smile size={20} strokeWidth={1.7} />
-                </span>
-                <span className="flex flex-col min-w-0 flex-1 gap-0.5">
-                  <span className="text-[16px] leading-snug text-ink">{el ? 'Πώς νιώθεις τώρα;' : 'How do you feel right now?'}</span>
-                  <span className="text-[14px] leading-snug text-ink/65">{checkinSub}</span>
-                </span>
-                <ChevronRight size={18} aria-hidden="true" className={cn("text-ink/45 shrink-0 transition-transform duration-300", checkinOpen && "rotate-90")} />
-              </button>
-              {checkinOpen && (
-                <div className="px-4 pb-4 pt-1">
-                  <HomeCheckin embedded />
-                </div>
-              )}
-            </div>
-
-            {chapterPractice && (
-              <Link to={chapterPracticeHref} className="flex items-center gap-3.5 min-h-[68px] px-4 py-3 hover:bg-white/[0.03] transition-colors">
-                <span aria-hidden="true" className="icon-relief w-10 h-10 shrink-0 rounded-full flex items-center justify-center text-[18px] text-[var(--tint-blue-ink)] bg-[radial-gradient(circle_at_50%_30%,var(--tint-blue-hi),var(--tint-blue-bg)_75%)]">
-                  {axisGlyph || <Play size={16} className="ml-0.5" />}
-                </span>
-                <span className="flex flex-col min-w-0 flex-1 gap-0.5">
-                  <span className="text-[16px] leading-snug text-ink">{el ? 'Η πρακτική του κεφαλαίου' : 'This chapter’s practice'}</span>
-                  <span className="text-[14px] leading-snug text-ink/65 truncate">{chapterPractice.title}</span>
-                </span>
-                <ChevronRight size={18} aria-hidden="true" className="text-ink/45 shrink-0" />
-              </Link>
-            )}
-
-            {/* The journal; in the evening the same row closes the day. */}
-            <Link to="/journal" className="flex items-center gap-3.5 min-h-[68px] px-4 py-3 hover:bg-white/[0.03] transition-colors">
-              <span aria-hidden="true" className="icon-relief w-10 h-10 shrink-0 rounded-full flex items-center justify-center text-[var(--tint-lav-ink)] bg-[radial-gradient(circle_at_50%_30%,var(--tint-lav-hi),var(--tint-lav-bg)_75%)]">
-                {evening ? <Moon size={19} strokeWidth={1.7} /> : <NotebookPen size={19} strokeWidth={1.7} />}
+          <motion.section variants={itemVariants} aria-labelledby="home-checkin-title" className="card-relief-group mt-5 px-5 pt-5 pb-5">
+            <div className="flex items-center gap-3.5 mb-4">
+              <span aria-hidden="true" className="icon-relief w-10 h-10 shrink-0 rounded-full flex items-center justify-center text-[var(--tint-sage-ink)] bg-[radial-gradient(circle_at_50%_30%,var(--tint-sage-hi),var(--tint-sage-bg)_75%)]">
+                <Smile size={20} strokeWidth={1.7} />
               </span>
               <span className="flex flex-col min-w-0 flex-1 gap-0.5">
-                <span className="text-[16px] leading-snug text-ink">
-                  {evening ? (el ? 'Κλείσιμο της μέρας' : 'Closing the day') : (el ? 'Ημερολόγιο' : 'Journal')}
-                </span>
-                <span className="text-[14px] leading-snug text-ink/65">
-                  {evening ? (el ? 'Τι κουβαλάς ακόμα από σήμερα;' : 'What are you still carrying from today?') : (el ? 'Δυο γραμμές για σήμερα' : 'Two lines for today')}
-                </span>
+                <h2 id="home-checkin-title" className="text-[18px] leading-snug font-normal text-ink">{el ? 'Πώς νιώθεις τώρα;' : 'How do you feel right now?'}</h2>
+                <span className="text-[14px] leading-snug text-ink/65">{checkinSub}</span>
               </span>
-              <ChevronRight size={18} aria-hidden="true" className="text-ink/45 shrink-0" />
-            </Link>
-          </motion.div>
+            </div>
+            <HomeCheckin embedded />
+          </motion.section>
 
           {/* First visit: a small welcome that invites, never blocks or moves anything above. */}
           {showWelcome && (

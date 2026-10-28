@@ -559,8 +559,8 @@ export default function ChapterDetail() {
                       <div
                         data-read-key={`s${curPage.index}-key`}
                         className={cn(
-                          "border border-white/[0.03] bg-white/[0.01] rounded-3xl p-8 desk:p-10 space-y-8 mt-16 transition-[opacity,background-color,box-shadow] duration-500",
-                          rs(`s${curPage.index}-key`) === 'active' && 'bg-teal-400/[0.05] shadow-[inset_0_0_0_1px_rgba(45,212,191,0.15)]',
+                          "card-relief rounded-3xl p-8 desk:p-10 space-y-8 mt-16 transition-[opacity,outline-color] duration-500",
+                          rs(`s${curPage.index}-key`) === 'active' && 'outline outline-1 outline-teal-400/30',
                           readerActive && activeSeg?.key !== `s${curPage.index}-key` && 'opacity-45'
                         )}
                       >
@@ -586,7 +586,7 @@ export default function ChapterDetail() {
             {curPage.type === 'exercise' && (
               <div className="space-y-16 text-left w-full mt-10">
                 {chapter.exercise && (
-                  <div className="border border-white/5 bg-white/[0.01] rounded-[2rem] p-8 desk:p-12 space-y-10">
+                  <div className="card-relief rounded-[2rem] p-6 desk:p-12 space-y-10">
                     <header className="space-y-4 text-center">
                       <div className="flex items-center justify-center gap-4">
                         <span className="text-[10px] font-bold tracking-[0.3em] text-teal-400/60 uppercase font-sans">
@@ -595,7 +595,7 @@ export default function ChapterDetail() {
                       </div>
                       <h2 data-read-key="ex-title" className={cn("text-3xl font-serif text-ink/90 italic leading-tight tracking-tight", readClass(rs('ex-title')))}>{chapter.exercise.title}</h2>
                     </header>
-                    <ul className="space-y-8 pl-4">
+                    <ul className="space-y-8 desk:pl-4">
                       {chapter.exercise.steps.map((step, idx) => (
                         <li key={idx} data-read-key={`ex-step${idx}`} className={cn("flex gap-6 items-start group", readClass(rs(`ex-step${idx}`)))}>
                           <span className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-[10px] font-sans font-bold text-ink/40 shrink-0">
@@ -641,8 +641,8 @@ export default function ChapterDetail() {
                     <div
                       data-read-key="insight"
                       className={cn(
-                        "border border-teal-500/10 p-8 rounded-3xl space-y-6 relative group hover:border-teal-500/20 transition-all duration-500",
-                        rs('insight') === 'active' && 'bg-teal-400/[0.05] border-teal-400/25',
+                        "card-relief p-8 rounded-3xl space-y-6 relative group transition-all duration-500",
+                        rs('insight') === 'active' && 'outline outline-1 outline-teal-400/30',
                         rs('insight') === 'dim' && 'opacity-45'
                       )}
                     >
@@ -655,8 +655,8 @@ export default function ChapterDetail() {
                     <div
                       data-read-key="reflection"
                       className={cn(
-                        "border border-white/5 bg-white/[0.02] p-8 rounded-3xl space-y-6 relative group hover:bg-white/[0.04] transition-all duration-500",
-                        rs('reflection') === 'active' && 'bg-teal-400/[0.05] border-teal-400/25',
+                        "card-relief p-8 rounded-3xl space-y-6 relative group transition-all duration-500",
+                        rs('reflection') === 'active' && 'outline outline-1 outline-teal-400/30',
                         rs('reflection') === 'dim' && 'opacity-45'
                       )}
                     >

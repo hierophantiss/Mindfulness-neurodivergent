@@ -166,7 +166,7 @@ export default function Method() {
           </h2>
           <div className="grid gap-4">
             {t.axes.map(axis => (
-              <div key={axis.id} className="bg-white/[0.04] border border-white/[0.05] p-5 rounded-3xl flex flex-col gap-4">
+              <div key={axis.id} className="card-relief p-5 rounded-3xl flex flex-col gap-4">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl font-mono border border-white/10 bg-white/5 text-teal-400 shrink-0" aria-hidden="true">
                     {axis.icon}

@@ -110,7 +110,7 @@ export function ConceptModal({ isOpen, onClose, conceptId }: { isOpen: boolean, 
             initial={{ scale: 0.95, opacity: 0, y: 15 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 15 }}
-            className="relative w-full max-w-md bg-[#0a151b] rounded-3xl border border-white/10 shadow-2xl z-10 max-h-[82vh] flex flex-col overflow-hidden"
+            className="card-relief relative w-full max-w-md rounded-3xl z-10 max-h-[82vh] flex flex-col overflow-hidden"
           >
             {/* Sticky/Fixed Modal Header */}
             <div className="px-6 py-4 flex justify-between items-center border-b border-white/5 bg-black/20 shrink-0">

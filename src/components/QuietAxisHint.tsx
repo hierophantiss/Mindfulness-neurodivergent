@@ -37,7 +37,7 @@ export function QuietAxisHint() {
   const p = hint.practice;
 
   return (
-    <div className="max-w-4xl mx-auto w-full flex items-stretch gap-1 rounded-2xl bg-white/[0.03] border border-white/[0.06]">
+    <div className="card-relief max-w-4xl mx-auto w-full flex items-stretch gap-1 rounded-2xl">
       <Link
         to={p.path}
         className="flex-1 flex items-center gap-3 pl-4 pr-2 py-3.5 rounded-2xl hover:bg-white/[0.04] transition-colors text-left"

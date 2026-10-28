@@ -21,7 +21,7 @@ export default function GuideAfterPractice({ axis, language, className }: { axis
     <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className={className}>
       <Link
         to={`/chapters/${ch.n}`}
-        className="w-full flex items-center gap-4 p-4 rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:bg-white/[0.06] transition-colors active:scale-[0.99]"
+        className="card-relief w-full flex items-center gap-4 p-4 rounded-2xl hover:brightness-110 transition-[filter,transform] active:scale-[0.99]"
       >
         <span className="w-10 h-10 rounded-full bg-white/[0.05] flex items-center justify-center text-ink/60 shrink-0">
           <BookOpen size={18} strokeWidth={1.5} />

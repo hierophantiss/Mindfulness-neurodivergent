@@ -350,7 +350,7 @@ export default function Settings() {
                       key={item.id}
                       onClick={item.action}
                       aria-pressed={'pressed' in item ? item.pressed : undefined}
-                      className="w-full flex items-center justify-between p-4 rounded-2xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.05] transition-all group active:scale-[0.98]"
+                      className="card-relief w-full flex items-center justify-between p-4 rounded-2xl hover:brightness-110 transition-all group active:scale-[0.98]"
                     >
                       <div className="flex items-center gap-4 min-w-0 text-left">
                         <div className={cn("w-10 h-10 shrink-0 rounded-xl flex items-center justify-center bg-white/5", item.color)}>
@@ -397,7 +397,7 @@ export default function Settings() {
 
       {showDebug && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80">
-          <div className="bg-slate-900 border border-white/10 p-6 rounded-2xl w-full max-w-md max-h-[80vh] overflow-y-auto">
+          <div className="card-relief p-6 rounded-2xl w-full max-w-md max-h-[80vh] overflow-y-auto">
             <h2 className="text-lg text-ink mb-4">PWA Diagnostics</h2>
             <div className="space-y-2 mb-6">
               {debugLog.map((log, i) => (

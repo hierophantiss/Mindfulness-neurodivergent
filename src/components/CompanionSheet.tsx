@@ -75,7 +75,7 @@ export default function CompanionSheet() {
     window.dispatchEvent(new Event('show-welcome-modal'));
   };
 
-  const cardClasses = "flex items-center gap-3.5 px-4 py-4 rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] transition-colors active:scale-[0.98]";
+  const cardClasses = "card-relief flex items-center gap-3.5 px-4 py-4 rounded-2xl hover:brightness-110 transition-[filter,transform] active:scale-[0.98]";
   const eyebrow = "text-[10px] uppercase tracking-[0.2em] text-[#8ba3ba]/70";
   const chapterWord = el ? 'Κεφάλαιο' : 'Chapter';
 
@@ -206,7 +206,7 @@ export default function CompanionSheet() {
                       const count = chapterPages(c).length;
                       const takeaways = CHAPTER_TAKEAWAYS[lang]?.[c.num] || [];
                       return (
-                        <li key={c.num} className="rounded-2xl bg-white/[0.03] border border-white/[0.06] overflow-hidden">
+                        <li key={c.num} className="card-relief rounded-2xl overflow-hidden">
                           <button
                             onClick={() => setOpenNum(open ? null : c.num)}
                             aria-expanded={open}

@@ -20,8 +20,8 @@ function PatternCard({ p, colorScheme, icon: Icon, onClick, language }: {
     <button
       onClick={onClick}
       className={cn(
-        "group relative border p-6 text-left transition-all duration-300 overflow-hidden flex flex-col shadow-md active:scale-[0.98] hover:shadow-lg hover:-translate-y-0.5 backdrop-blur-sm",
-"glass-card/80 hover:bg-[#161922] hover:border-white/10",
+        "group relative border p-6 text-left transition-all duration-300 overflow-hidden flex flex-col active:scale-[0.98] hover:-translate-y-0.5",
+"glass-card hover:border-white/10",
         p.id ? `shape-cloud-${(p.id.length % 5) + 1}` : "shape-cloud-1"
       )}
     >

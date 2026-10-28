@@ -62,7 +62,7 @@ function HowTo({ text, language, gravityFirst = false, longExhale = false, chant
             aria-modal="true"
             aria-label={el ? 'Πώς γίνεται' : 'How it is done'}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-sm max-h-[80dvh] overflow-y-auto rounded-3xl bg-[#1a1d27] border border-white/10 p-5 shadow-2xl"
+            className="card-relief w-full max-w-sm max-h-[80dvh] overflow-y-auto rounded-3xl p-5"
           >
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-[15px] text-ink/90">{el ? 'Πώς γίνεται' : 'How it is done'}</h2>
@@ -880,7 +880,7 @@ export default function PracticeBreath() {
       {/* Sleep Timer Modal */}
       {showSleepTimer && (
         <div className="absolute inset-0 z-[60] flex items-center justify-center p-4 bg-zinc-950/90 backdrop-blur-md">
-          <div className="bg-zinc-900 border border-zinc-700 p-5 md:p-6 rounded-[2rem] max-w-sm w-full shadow-[0_20px_50px_rgba(0,0,0,0.5)] animate-in zoom-in-95 fade-in duration-200">
+          <div className="card-relief p-5 md:p-6 rounded-[2rem] max-w-sm w-full animate-in zoom-in-95 fade-in duration-200">
             <div className="w-14 h-14 rounded-full bg-zinc-800 flex items-center justify-center mx-auto mb-4 border border-zinc-600">
               <Timer size={28} className="text-teal-400" />
             </div>
@@ -936,7 +936,7 @@ export default function PracticeBreath() {
       {/* Warning Modal */}
       {showWarning && (
         <div className="absolute inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/90 backdrop-blur-md">
-          <div className="bg-zinc-900 border border-zinc-700 p-5 md:p-6 rounded-[2rem] max-w-sm w-full max-h-full overflow-y-auto shadow-[0_20px_50px_rgba(0,0,0,0.5)] animate-in zoom-in-95 fade-in duration-200 md:scrollbar-hide">
+          <div className="card-relief p-5 md:p-6 rounded-[2rem] max-w-sm w-full max-h-full overflow-y-auto animate-in zoom-in-95 fade-in duration-200 md:scrollbar-hide">
             <div className="w-14 h-14 rounded-full bg-zinc-800 flex items-center justify-center mx-auto mb-3 border border-zinc-600">
               <Headphones size={28} className="text-teal-400" />
             </div>

@@ -62,7 +62,7 @@ export default function Methodology() {
         </div>
 
         {/* Philosophy */}
-        <section className="bg-white/[0.02] border border-white/5 p-6 rounded-3xl space-y-3 shadow-xl relative overflow-hidden">
+        <section className="card-relief p-6 rounded-3xl space-y-3 relative overflow-hidden">
           <div className="absolute top-0 left-0 w-1.5 h-full bg-teal-500" />
           <h3 className="text-md font-bold text-ink tracking-wide">
             {t.philosophyTitle}
@@ -80,7 +80,7 @@ export default function Methodology() {
               <div 
                 key={index}
                 id={pillar.id}
-                className="bg-white/[0.03] border border-white/5 rounded-3xl p-5 hover:bg-white/[0.05] transition-all space-y-3 scroll-mt-24"
+                className="card-relief rounded-3xl p-5 transition-all space-y-3 scroll-mt-24"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-2xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400">

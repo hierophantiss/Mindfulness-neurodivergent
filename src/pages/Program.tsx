@@ -87,7 +87,7 @@ export default function Program() {
                 key={weekNum} 
                 className={cn(
                   "group relative p-8 transition-all duration-300",
-                  isLocked ? "glass-card opacity-50 grayscale cursor-not-allowed border-white/5 bg-white/[0.01]" : "glass-card active:scale-[0.98] hover:bg-white/[0.04]",
+                  isLocked ? "glass-card opacity-50 grayscale cursor-not-allowed border-white/5 " : "glass-card active:scale-[0.98] ",
                   isCurrent && "border-teal-400/40 shadow-[0_0_30px_rgba(45,212,191,0.1)] bg-white/[0.03]",
                   isCompleted && "opacity-60 grayscale hover:grayscale-0 hover:opacity-100",
                   `shape-cloud-${(weekNum % 5) + 1}`

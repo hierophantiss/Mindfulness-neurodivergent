@@ -221,7 +221,7 @@ export default function GenericExercise() {
 
         {/* All the steps */}
         {steps.length > 1 && (
-          <ol className="w-full mt-6 mb-6 text-left flex flex-col gap-3 rounded-[1.5rem] bg-white/[0.03] border border-white/[0.06] p-5">
+          <ol className="card-relief w-full mt-6 mb-6 text-left flex flex-col gap-3 rounded-[1.5rem] p-5">
             {steps.map((step, i) => {
               const now = (running || elapsed > 0) && !done && i === stepIndex;
               return (

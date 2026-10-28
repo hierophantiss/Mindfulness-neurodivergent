@@ -25,8 +25,8 @@ function PatternCard({ p, colorScheme, icon: Icon, onClick, language, hideCycle 
     <button type="button"
       onClick={onClick}
       className={cn(
-        "w-full group relative border p-6 text-left transition-all duration-300 overflow-hidden flex flex-col shadow-md active:scale-[0.98] hover:shadow-lg hover:-translate-y-0.5 backdrop-blur-sm",
-        "glass-card hover:bg-[#161922] hover:border-white/10",
+        "w-full group relative border p-6 text-left transition-all duration-300 overflow-hidden flex flex-col active:scale-[0.98] hover:-translate-y-0.5",
+        "glass-card hover:border-white/10",
         p.id ? `shape-cloud-${(p.id.length % 5) + 1}` : "shape-cloud-1"
       )}
     >
@@ -273,7 +273,7 @@ const axisInfo = {
                     to={ex.link}
                     key={ex.id}
                     className={cn(
-                      "group relative flex gap-4 glass-card hover:border-white/10 hover:bg-white/[0.04] p-4 transition-all duration-300 active:scale-[0.98] border overflow-hidden items-start",
+                      "group relative flex gap-4 glass-card hover:border-white/10 p-4 transition-all duration-300 active:scale-[0.98] border overflow-hidden items-start",
                       "border-white/5",
                       `shape-cloud-${(idx % 5) + 1}`
                     )}
@@ -531,7 +531,7 @@ const axisInfo = {
           </p>
         </header>
 
-        <div className="max-w-4xl mx-auto w-full mb-8 font-sans text-ink/80 bg-white/[0.02] border border-white/5 rounded-2xl p-6 md:p-8 space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-700">
+        <div className="card-relief max-w-4xl mx-auto w-full mb-8 font-sans text-ink/80 rounded-2xl p-6 md:p-8 space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-700">
           <div>
             <h2 className="text-xl md:text-2xl font-serif text-indigo-300 italic mb-4">{language === 'el' ? 'Πριν Ξεκινήσεις' : 'Before You Start'}</h2>
             <p className="mb-6">{language === 'el' ? 'Το Τάι Τσι ξεκινά πριν από την πρώτη κίνηση.' : 'Tai Chi begins before the first movement.'}</p>
@@ -683,8 +683,8 @@ const axisInfo = {
             <button type="button"
               onClick={() => navigate('/practice/microdoses')}
               className={cn(
-                "w-full group relative border p-6 text-left transition-all duration-300 overflow-hidden flex flex-col shadow-md active:scale-[0.98] hover:shadow-lg hover:-translate-y-0.5 backdrop-blur-sm",
-                "glass-card hover:bg-[#161922] hover:border-white/10 shape-cloud-4"
+                "w-full group relative border p-6 text-left transition-all duration-300 overflow-hidden flex flex-col active:scale-[0.98] hover:-translate-y-0.5",
+                "glass-card hover:border-white/10 shape-cloud-4"
               )}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/[0.02] to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%]"></div>
@@ -746,7 +746,7 @@ const axisInfo = {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-12 max-w-5xl mx-auto w-full">
         {/* Mindful Movement & Tai Chi Card */}
-        <div          className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-3 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-indigo-500/20 overflow-hidden text-left">
+        <div className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-3 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:border-indigo-500/20 overflow-hidden text-left">
           {/* The whole card is one button (its own layer, under the concept "i" buttons) */}
           <button type="button" onClick={() => handleCategoryChange('movement')} aria-labelledby="practice-cat-movement" aria-describedby="practice-cat-movement-desc"
             className="absolute inset-0 z-[15] w-full h-full rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60" />
@@ -775,7 +775,7 @@ const axisInfo = {
         </div>
 
         {/* Breath Rhythms Card */}
-        <div          className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-2 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-teal-500/20 overflow-hidden text-left">
+        <div className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-2 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:border-teal-500/20 overflow-hidden text-left">
           {/* The whole card is one button (its own layer, under the concept "i" buttons) */}
           <button type="button" onClick={() => handleCategoryChange('breath')} aria-labelledby="practice-cat-breath" aria-describedby="practice-cat-breath-desc"
             className="absolute inset-0 z-[15] w-full h-full rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60" />
@@ -801,7 +801,7 @@ const axisInfo = {
         </div>
 
         {/* Vocal & Chanting Resonance Card */}
-        <div          className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-4 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-violet-500/20 overflow-hidden text-left">
+        <div className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-4 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:border-violet-500/20 overflow-hidden text-left">
           {/* The whole card is one button (its own layer, under the concept "i" buttons) */}
           <button type="button" onClick={() => handleCategoryChange('vocal')} aria-labelledby="practice-cat-vocal" aria-describedby="practice-cat-vocal-desc"
             className="absolute inset-0 z-[15] w-full h-full rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60" />
@@ -827,7 +827,7 @@ const axisInfo = {
         </div>
 
         {/* Microdoses Card */}
-        <div          className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-5 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:bg-white/[0.04] hover:border-amber-500/20 overflow-hidden text-left">
+        <div className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-5 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:border-amber-500/20 overflow-hidden text-left">
           {/* The whole card is one button (its own layer, under the concept "i" buttons) */}
           <button type="button" onClick={() => hasFoundation ? handleCategoryChange('microdoses') : setLockedCategoryAttempt('microdoses')} aria-labelledby="practice-cat-microdoses" aria-describedby="practice-cat-microdoses-desc"
             className="absolute inset-0 z-[15] w-full h-full rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60" />
@@ -868,7 +868,7 @@ const axisInfo = {
 
       {lockedCategoryAttempt && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="bg-[#0a1520] border border-white/10 rounded-[2rem] p-6 max-w-sm w-full shadow-2xl relative">
+          <div className="card-relief rounded-[2rem] p-6 max-w-sm w-full relative">
             <div className="flex justify-center mb-4">
               <div className="w-16 h-16 rounded-full bg-amber-500/10 flex items-center justify-center border border-amber-500/20">
                 <Lock size={28} className="text-amber-500/80" />

@@ -360,7 +360,7 @@ export default function Journal() {
             </div>
 
             {question && (
-              <div className="mt-3 p-4 rounded-[1.5rem] bg-white/[0.02] border border-white/[0.06]">
+              <div className="card-relief mt-3 p-4 rounded-[1.5rem]">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="w-2 h-2 rounded-full" style={{ backgroundColor: AXIS_COLOR[question.axis] }} />
                   <span className="text-[11px] font-semibold tracking-[0.15em] text-ink/45 uppercase">
@@ -419,7 +419,7 @@ export default function Journal() {
                   <button
                     key={item.date}
                     onClick={() => { setCurrentDate(parseLocalDate(item.date)); setViewState('edit'); }}
-                    className="w-full text-left p-5 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] transition-all"
+                    className="card-relief w-full text-left p-5 rounded-3xl hover:brightness-110 transition-all"
                   >
                     <div className="flex items-center justify-between gap-3 mb-3 border-b border-white/[0.05] pb-3">
                       <span className="text-xs font-semibold tracking-[0.1em] text-ink/60 uppercase">

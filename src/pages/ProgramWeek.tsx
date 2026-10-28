@@ -172,7 +172,7 @@ export default function ProgramWeek() {
                   isLocked ? 'glass-card opacity-50 grayscale cursor-not-allowed min-w-[180px]' :
                   activeDay === idx 
                     ? 'bg-teal-500/10 border-teal-500/30 text-ink min-w-[220px] shadow-sm ring-1 ring-teal-500/20' 
-                    : 'glass-card text-ink/50 hover:bg-white/[0.04] min-w-[180px] '
+                    : 'glass-card text-ink/50 min-w-[180px] '
                 }`}
               >
                 <div className="w-full flex justify-between items-center mb-2">

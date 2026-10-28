@@ -462,7 +462,7 @@ export default function Sanctuary() {
 
         {/* Volume and nature */}
         {activeTab === 'audio' && activeSound && !isDimmed && (
-          <div className="flex flex-col gap-4 px-6 py-5 bg-white/[0.02] border border-white/10 rounded-[2rem] shadow-xl mb-8 relative overflow-hidden">
+          <div className="card-relief flex flex-col gap-4 px-6 py-5 rounded-[2rem] mb-8 relative overflow-hidden">
             <div className="flex items-center gap-4 relative z-10">
               <Volume2 size={20} className="text-ink/40" aria-hidden="true" />
               <input
@@ -612,7 +612,7 @@ export default function Sanctuary() {
                     setVideoStartTime(0);
                     setIsVoidActive(true);
                   }}
-                  className="group flex flex-col md:flex-row gap-5 p-4 md:p-5 bg-[#0f1117] border border-white/10 rounded-[1.5rem] overflow-hidden hover:border-[#C8922A]/30 transition-all text-left w-full active:scale-[0.98]"
+                  className="card-relief group flex flex-col md:flex-row gap-5 p-4 md:p-5 rounded-[1.5rem] overflow-hidden hover:border-[#C8922A]/30 transition-all text-left w-full active:scale-[0.98]"
                 >
                   <div className="relative w-full md:w-56 aspect-video rounded-[1rem] overflow-hidden flex-shrink-0 border border-white/[0.05]">
                     <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100" style={{ backgroundImage: `url(${video.thumbnail})` }} />

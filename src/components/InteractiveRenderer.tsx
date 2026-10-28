@@ -57,7 +57,7 @@ export default function InteractiveRenderer({ id, asModal }: InteractiveRenderer
     return (
       <button 
         onClick={() => setIsOpen(true)}
-        className="w-full h-32 md:h-48 border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-colors rounded-2xl group flex flex-col items-center justify-center gap-3 relative overflow-hidden"
+        className="card-relief w-full h-32 md:h-48 hover:brightness-110 transition-[filter] rounded-2xl group flex flex-col items-center justify-center gap-3 relative overflow-hidden"
       >
         <div className="absolute inset-0 bg-gradient-to-tr from-teal-500/[0.05] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
         <div className="w-12 h-12 rounded-full border border-teal-500/20 bg-teal-500/10 flex items-center justify-center text-teal-400 group-hover:scale-110 transition-transform">

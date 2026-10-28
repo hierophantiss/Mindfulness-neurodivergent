@@ -327,7 +327,7 @@ export default function PracticeMicrodoses() {
               key={ex.id}
               id={`microdose-card-${ex.id}`}
               className={cn(
-                "group relative flex gap-4 glass-card hover:border-white/10 hover:bg-white/[0.04] p-4 transition-all duration-300 active:scale-[0.98] border overflow-hidden items-start",
+                "group relative flex gap-4 glass-card hover:border-white/10 p-4 transition-all duration-300 active:scale-[0.98] border overflow-hidden items-start",
                 isSuggested 
                   ? "ring-1 ring-teal-500/30 border-teal-500/40 shadow-[0_0_15px_rgba(20,184,166,0.15)] bg-teal-500/[0.01]" 
                   : "border-white/5",
