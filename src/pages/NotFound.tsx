@@ -13,7 +13,7 @@ export default function NotFound() {
         <meta name="robots" content="noindex, follow" />
       </Helmet>
       <div className="space-y-4 max-w-md">
-        <h1 className="text-3xl md:text-4xl font-light text-ink/90 leading-snug">
+        <h1 className="font-display text-3xl md:text-4xl text-ink/90 leading-snug">
           {el ? 'Αυτή η σελίδα δεν υπάρχει' : 'This page does not exist'}
         </h1>
         <p className="text-base md:text-lg text-ink/60 font-light leading-relaxed">

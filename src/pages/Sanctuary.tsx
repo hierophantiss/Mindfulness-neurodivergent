@@ -324,7 +324,7 @@ export default function Sanctuary() {
             <ChevronLeft size={20} />
           </button>
           <div className="flex-1 flex justify-center flex-col items-center">
-            <h1 className="text-[26px] font-light text-ink/90 leading-none">
+            <h1 className="font-display text-[26px] text-ink/90 leading-none">
               {language === 'el' ? 'Το Καταφύγιο' : 'The Sanctuary'}
             </h1>
             <p className="text-[13px] font-medium text-[#4a9eca] mt-1.5">
@@ -709,7 +709,7 @@ export default function Sanctuary() {
               </div>
 
               <div className={cn("hidden md:block transition-opacity duration-1000", isVoidActive ? "opacity-20" : "opacity-100")}>
-                 <h2 className="text-3xl md:text-4xl font-light text-ink/95 mb-2">
+                 <h2 className="font-display text-3xl md:text-4xl text-ink/95 mb-2">
                    {bilateralVideos.find(v => v.id === activeVideo)?.title}
                  </h2>
                  <p className="text-lg text-ink/30 font-medium">

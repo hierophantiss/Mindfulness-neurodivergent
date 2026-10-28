@@ -130,8 +130,9 @@ export default function NavigationMenu() {
       </AnimatePresence>
 
       {/* Bottom Navigation */}
-      <div data-nosnippet className="fixed bottom-0 left-0 right-0 z-40 bg-[#070b14]/90 backdrop-blur-2xl border-t border-white/10 pb-[env(safe-area-inset-bottom)] shadow-[0_-10px_40px_rgba(0,0,0,0.3)] desk:bottom-4 desk:mx-auto desk:w-[460px] desk:rounded-full desk:border desk:border-white/10 desk:shadow-[0_10px_40px_rgba(0,0,0,0.45)]">
-        <div className="flex items-center justify-around px-3 py-2 max-w-md mx-auto">
+      {/* A floating glass bar (colour and a light edge, no blur: light on old phones). */}
+      <div data-nosnippet className="glass fixed left-3 right-3 bottom-[calc(10px+env(safe-area-inset-bottom))] z-40 rounded-[26px] bg-[rgb(12_15_28/0.84)] desk:left-0 desk:right-0 desk:bottom-4 desk:mx-auto desk:w-[460px]">
+        <div className="flex items-center justify-around px-1.5 py-1.5 max-w-md mx-auto">
           {mainNavItems.map((item) => {
             // Home lives at "/" ("/dashboard" only redirects there).
             const isActive = location.pathname === item.path

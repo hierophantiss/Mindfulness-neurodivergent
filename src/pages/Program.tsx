@@ -45,7 +45,7 @@ export default function Program() {
               {language === 'en' ? '8 Weeks Program' : 'Πρόγραμμα 8 Εβδομάδων'}
             </span>
           </div>
-          <h1 className="text-5xl md:text-7xl font-light text-ink/90 leading-none tracking-tight">
+          <h1 className="font-display text-5xl md:text-7xl text-ink/90 leading-none">
             {language === 'en' ? 'The Path' : 'Η Διαδρομή'}
           </h1>
           <p className="text-lg text-ink/50 font-sans max-w-xl mx-auto leading-relaxed">

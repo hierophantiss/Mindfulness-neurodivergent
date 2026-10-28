@@ -17,6 +17,15 @@ import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 // tension a warm dusty rose, numbness lavender, calm sage, not sure sand.
 const TINT: Record<CheckinChoice, string> = { hyper: 'rose', hypo: 'lav', balanced: 'sage', unsure: 'sand' };
 const tint = (id: CheckinChoice, part: 'bg' | 'hi' | 'line' | 'dot') => `var(--tint-${TINT[id]}-${part})`;
+// A line icon for each answer, recognised before the word is read: a wave that
+// rises (tension), a cloud over mist (numbness), a leaf (calm), an open circle
+// (not sure).
+const ICON: Record<CheckinChoice, string> = {
+  hyper: 'M2.5 15c2 0 2.5-5 4.5-5s2.3 8 4.6 8 2.6-12 5-12 2.4 6 4.9 6',
+  hypo: 'M7 13.5h9.5a3.5 3.5 0 0 0 .4-7 5 5 0 0 0-9.5 1.3A3 3 0 0 0 7 13.5zM4 17h16M7 20.5h10',
+  balanced: 'M5 19.5C5 11 10.5 5 19.5 4.5 19.5 13 14 19.5 5 19.5zM5 19.5 13 11.5',
+  unsure: 'M15.5 4.2A8.5 8.5 0 1 0 20.3 9',
+};
 
 // "How do you feel right now?" — the four choices and the answer. On the home
 // page it opens inside its row (`embedded`: the row is the heading).
@@ -62,7 +71,7 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
     <div className="flex flex-col gap-4">
       {!embedded && <h2 className="sky-text text-center text-[20px] font-normal text-ink/90">{question}</h2>}
 
-      <div className="checkin-grid grid grid-cols-2 gap-2" role="group" aria-label={question}>
+      <div className="checkin-grid grid grid-cols-2 gap-3" role="group" aria-label={question}>
         {CHECKIN_OPTIONS.map(o => {
           const isSel = o.id === selected;
           return (
@@ -71,17 +80,20 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
               onClick={() => choose(o.id)}
               aria-pressed={isSel}
               aria-expanded={isSel ? open : undefined}
-              style={isSel ? { backgroundColor: tint(o.id, 'hi'), borderColor: tint(o.id, 'dot') } : undefined}
               className={cn(
-                "pill-sky min-h-[44px] px-4 rounded-full flex items-center gap-2.5 text-[15px] text-ink/90 transition-[filter,transform,background-color] active:scale-[0.97] hover:brightness-110"
+                "glass min-h-[96px] [@media(max-height:700px)]:min-h-[80px] px-2 py-3 rounded-3xl flex flex-col items-center justify-center gap-2.5 text-[16px] text-ink/95 transition-[filter,transform] active:scale-[0.97] hover:brightness-110",
+                isSel && "glass-chosen"
               )}
             >
-              <span
+              <svg
+                width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
                 aria-hidden="true"
-                className="w-[7px] h-[7px] rounded-full shrink-0"
-                style={{ backgroundColor: tint(o.id, 'dot'), boxShadow: isSel ? `0 0 8px ${tint(o.id, 'dot')}` : undefined }}
-              />
-              <span className="min-w-0 truncate">{o.label[lang]}</span>
+                className="[@media(max-height:700px)]:w-7 [@media(max-height:700px)]:h-7"
+                style={{ color: tint(o.id, 'dot'), filter: `drop-shadow(0 0 6px ${tint(o.id, 'dot')})` }}
+              >
+                <path d={ICON[o.id]} />
+              </svg>
+              <span className="min-w-0 truncate max-w-full">{o.label[lang]}</span>
             </button>
           );
         })}
@@ -95,10 +107,10 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: reduceMotion ? 0 : 0.3 }}
-            className="card-soft p-5 flex flex-col gap-4"
+            className="glass rounded-3xl p-5 flex flex-col gap-4"
           >
             <div className="flex flex-col gap-1.5">
-              <h3 className="text-[17px] font-medium text-ink/90">{opt.title[lang]}</h3>
+              <h3 className="font-display text-[21px] leading-snug text-ink">{opt.title[lang]}</h3>
               <p className="text-[15px] leading-relaxed text-ink/75">{opt.desc[lang]}</p>
             </div>
 

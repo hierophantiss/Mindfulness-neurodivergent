@@ -232,7 +232,7 @@ const axisInfo = {
             <div className={cn("w-14 h-14 shrink-0 rounded-full flex items-center justify-center text-3xl font-mono border", info.bgColor, info.borderColor, info.color)}>
               {info.icon}
             </div>
-            <h1 className="text-4xl md:text-5xl font-light text-ink/90 leading-tight">
+            <h1 className="font-display text-4xl md:text-5xl text-ink/90 leading-tight">
               {language === 'en' ? info.title.en : info.title.el}
             </h1>
           </div>
@@ -336,7 +336,7 @@ const axisInfo = {
         </div>
 
         <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <h1 className="text-4xl md:text-5xl font-light text-ink/90 leading-tight flex items-center justify-center md:justify-start">
+          <h1 className="font-display text-4xl md:text-5xl text-ink/90 leading-tight flex items-center justify-center md:justify-start">
             {language === 'el' ? 'Ψάλσιμο & Αντήχηση' : 'Chanting & Resonance'}
             <ConceptInfoIcon conceptId="vagus_nerve" />
           </h1>
@@ -397,7 +397,7 @@ const axisInfo = {
         </div>
 
         <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <h1 className="text-4xl md:text-5xl font-light text-ink/90 leading-tight flex items-center justify-center md:justify-start">
+          <h1 className="font-display text-4xl md:text-5xl text-ink/90 leading-tight flex items-center justify-center md:justify-start">
             {language === 'el' ? 'Αναπνοή & Ύπνος' : 'Breath & Sleep'}
             <ConceptInfoIcon conceptId="vagus_nerve" />
           </h1>
@@ -517,7 +517,7 @@ const axisInfo = {
         </div>
 
         <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <h1 className="text-4xl md:text-5xl font-light text-ink/90 leading-tight flex items-center justify-center md:justify-start flex-wrap gap-2">
+          <h1 className="font-display text-4xl md:text-5xl text-ink/90 leading-tight flex items-center justify-center md:justify-start flex-wrap gap-2">
             <span>{language === 'el' ? 'Κινητική Ενσυνειδητότητα & Τάι Τσι' : 'Mindful Movement & Tai Chi'}</span>
             <span className="inline-flex gap-1 items-center" onClick={(e) => e.stopPropagation()}>
               <ConceptInfoIcon conceptId="proprioception" />
@@ -667,7 +667,7 @@ const axisInfo = {
         </div>
 
         <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <h1 className="text-4xl md:text-5xl font-light text-ink/90 leading-tight flex items-center justify-center md:justify-start">
+          <h1 className="font-display text-4xl md:text-5xl text-ink/90 leading-tight flex items-center justify-center md:justify-start">
             {language === 'el' ? 'Αόρατες Μικροδόσεις' : 'Invisible Microdoses'}
             <ConceptInfoIcon conceptId="neuroplasticity" />
           </h1>
@@ -732,7 +732,7 @@ const axisInfo = {
       </div>
 
       <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-        <h1 className="text-5xl md:text-6xl font-light text-ink/90 leading-tight">
+        <h1 className="font-display text-5xl md:text-6xl text-ink/90 leading-tight">
           {language === 'el' ? 'Εξάσκηση' : 'Practice'}
         </h1>
         <p className="text-lg text-ink/50 font-sans leading-relaxed">

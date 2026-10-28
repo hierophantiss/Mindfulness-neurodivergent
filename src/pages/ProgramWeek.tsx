@@ -151,7 +151,7 @@ export default function ProgramWeek() {
         <span className="text-teal-500/80 text-[13px] font-medium block mb-2">
           {language === 'en' ? 'Week' : 'Εβδομάδα'} {weekNum}
         </span>
-        <h1 className="text-3xl md:text-4xl font-light text-ink tracking-tight mb-8 drop-shadow-sm">{week.title}</h1>
+        <h1 className="font-display text-3xl md:text-4xl text-ink mb-8 drop-shadow-sm">{week.title}</h1>
         
         {/* Days Horizontal Scroll */}
         <div className="flex gap-4 overflow-x-auto pb-6 snap-x hide-scrollbar px-1" tabIndex={0} aria-label={language === 'el' ? 'Οι μέρες της εβδομάδας' : 'The days of the week'}>

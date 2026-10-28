@@ -122,7 +122,7 @@ export default function PracticeMicrodoses() {
       </div>
 
       <header className="space-y-3 max-w-2xl">
-        <h1 className="text-4xl md:text-5xl font-light text-ink/90 leading-tight">
+        <h1 className="font-display text-4xl md:text-5xl text-ink/90 leading-tight">
           {language === 'el' ? 'Αόρατη Εξάσκηση' : 'Invisible Practice'}
         </h1>
         <p className="text-base text-ink/50 font-sans leading-relaxed">
@@ -147,7 +147,7 @@ export default function PracticeMicrodoses() {
             </span>
           </div>
           
-          <h2 className="text-2xl md:text-3xl font-light text-ink/9 drop-shadow-sm leading-tight">
+          <h2 className="text-2xl md:text-3xl font-light text-ink/90 drop-shadow-sm leading-tight">
             {language === 'el' ? suggestedExercise.title.el : suggestedExercise.title.en}
           </h2>
           

@@ -142,7 +142,7 @@ export default function Onboarding({ onClose }: { onClose: () => void }) {
             className="bg-white/[0.03] border border-white/10 p-8 rounded-3xl shadow-xl"
           >
             {screens[step].visual && screens[step].visual}
-            <h2 id="onboarding-title" className="text-3xl md:text-4xl font-light text-ink mb-6 leading-tight">
+            <h2 id="onboarding-title" className="font-display text-3xl md:text-4xl text-ink mb-6 leading-tight">
               {screens[step].title}
             </h2>
             <p className="text-lg md:text-xl text-ink/70 leading-relaxed font-sans">

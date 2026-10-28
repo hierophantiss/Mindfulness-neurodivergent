@@ -320,7 +320,7 @@ export default function PracticeSection() {
 
         <div className="max-w-4xl mx-auto w-full flex-1">
           <header className="text-center md:text-left mb-12">
-            <h2 className="text-4xl md:text-5xl font-light text-ink/90 leading-tight mb-4">
+            <h2 className="font-display text-4xl md:text-5xl text-ink/90 leading-tight mb-4">
               {lang === "el" ? "Οπτική Απεικόνιση" : "Visual Theme"}
             </h2>
             <p className="text-lg text-ink/50 font-sans max-w-2xl">
@@ -385,7 +385,7 @@ export default function PracticeSection() {
 
         <div className="max-w-4xl mx-auto w-full flex-1">
           <header className="text-center md:text-left mb-10">
-            <h2 className="text-4xl md:text-5xl font-light text-ink/90 leading-tight mb-4">
+            <h2 className="font-display text-4xl md:text-5xl text-ink/90 leading-tight mb-4">
               {lang === "el" ? "Ρυθμός Αναπνοής" : "Breathing Rhythm"}
             </h2>
             <p className="text-lg text-ink/50 font-sans max-w-2xl">

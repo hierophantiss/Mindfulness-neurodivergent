@@ -82,8 +82,16 @@ export default function Dashboard() {
   const guideTitle = finishedGuide ? (el ? 'Τον ολοκλήρωσες' : 'You finished it') : (spot.chapter?.title || '');
   const guideSub = finishedGuide
     ? (el ? 'Ο οδηγός σου' : 'Your guide')
-    : `${el ? 'Κεφάλαιο' : 'Chapter'} ${spot.chapter?.num ?? ''}` +
-      (midChapter ? (el ? ` · σελίδα ${spot.page + 1} από ${spot.pages.length}` : ` · page ${spot.page + 1} of ${spot.pages.length}`) : '');
+    : `${el ? 'Κεφάλαιο' : 'Chapter'} ${spot.chapter?.num ?? ''}`;
+  // Beside the button: the page you are on, or the chapter's subtitle.
+  const guideNote = finishedGuide
+    ? ''
+    : midChapter
+      ? (el ? `σελίδα ${spot.page + 1} από ${spot.pages.length}` : `page ${spot.page + 1} of ${spot.pages.length}`)
+      : (spot.chapter?.sub || '');
+  // The chapter's title in the colour of its axis (the first four chapters), else the Breath's blue.
+  const AXIS_INK = ['--axis-body-ink', '--axis-breath-ink', '--axis-attention-ink', '--axis-space-ink'];
+  const guideInk = spot.chapter && spot.chapter.num <= 4 && !finishedGuide ? `var(${AXIS_INK[spot.chapter.num - 1]})` : 'var(--tint-blue-ink)';
 
   // At night the lines of the sign step back a little (the infinity keeps its colours).
   const nightDim = hour >= 21 || hour < 5;
@@ -180,7 +188,7 @@ export default function Dashboard() {
           </div>
           <Link
             to="/practice/breath/sos-breath"
-            className="keep-font flex items-center justify-center h-10 px-4 rounded-full bg-[rgb(44_33_39/0.35)] border border-[rgb(234_185_192/0.45)] text-[var(--tint-rose-ink)] hover:bg-[rgb(58_42_50/0.6)] active:scale-95 transition-all text-[13px] font-medium tracking-[0.1em] shrink-0"
+            className="keep-font flex items-center justify-center h-10 px-4 rounded-full bg-[linear-gradient(160deg,rgb(240_194_200/0.16),rgb(240_194_200/0.05))] border border-[rgb(240_194_200/0.38)] shadow-[inset_0_1px_0_rgb(255_255_255/0.12)] text-[var(--tint-rose-ink)] hover:brightness-110 active:scale-95 transition-all text-[13px] font-medium tracking-[0.1em] shrink-0"
             title={el ? 'Άμεση Ηρέμηση' : 'Immediate Calm'}
           >
             SOS
@@ -189,8 +197,8 @@ export default function Dashboard() {
 
         {/* The greeting and the phrase are there at once (no fade): they are the first
             words you read, and the page counts as shown only when they are. */}
-        <div className="mt-[52px] [@media(max-height:700px)]:mt-8 flex flex-col gap-2.5">
-          <h1 className="sky-text text-[34px] max-[359px]:text-[30px] font-light tracking-[-0.015em] leading-[1.1] text-ink">
+        <div className="mt-10 [@media(max-height:700px)]:mt-6 flex flex-col gap-2.5">
+          <h1 className="font-display sky-text text-[42px] max-[359px]:text-[36px] leading-[1.05] text-ink">
             {greeting}
           </h1>
           <p className="sky-text max-w-[300px] text-[16px] leading-[1.6] text-ink/80">
@@ -199,29 +207,32 @@ export default function Dashboard() {
         </div>
 
         {/* One card: where you are in the book, and one button to go on. */}
-        <section aria-labelledby="home-guide-title" className="card-soft mt-9 [@media(max-height:700px)]:mt-6 px-[22px] pt-[22px] pb-5">
-          <p className="text-[13px] text-ink/65">{guideSub}</p>
-          <h2 id="home-guide-title" className="mt-1.5 text-[24px] font-normal tracking-[-0.005em] leading-[1.2] text-[var(--tint-blue-ink)]">
+        <section aria-labelledby="home-guide-title" className="glass glass-gold rounded-[26px] mt-7 [@media(max-height:700px)]:mt-5 p-[22px]">
+          <p className="text-[13px] text-ink/70">{guideSub}</p>
+          <h2 id="home-guide-title" className="font-display mt-1 text-[34px] max-[359px]:text-[30px] leading-[1.1]" style={{ color: guideInk }}>
             {guideTitle}
           </h2>
           {midChapter && (
-            <div className="mt-4 h-[3px] rounded-full bg-black/30 overflow-hidden" aria-hidden="true">
-              <div className="h-full rounded-full bg-[var(--tint-blue-mark)]" style={{ width: `${Math.round(((spot.page + 1) / spot.pages.length) * 100)}%` }} />
+            <div className="mt-[18px] h-[3px] rounded-full bg-black/30 overflow-hidden" aria-hidden="true">
+              <div className="h-full rounded-full bg-[linear-gradient(90deg,#5f8fd6,var(--tint-blue-ink))] shadow-[0_0_8px_rgb(127_169_228/0.6)]" style={{ width: `${Math.round(((spot.page + 1) / spot.pages.length) * 100)}%` }} />
             </div>
           )}
-          <Link
-            to={spot.href}
-            className="btn-gold-soft mt-[18px] inline-flex items-center gap-2 h-11 px-5 rounded-full whitespace-nowrap text-[15px] font-medium hover:brightness-105 transition-[filter,transform] active:scale-[0.98]"
-          >
-            {guideAction}
-            <ArrowRight size={16} aria-hidden="true" />
-          </Link>
+          <div className="mt-4 flex items-center justify-between gap-3">
+            <span className="min-w-0 truncate text-[14px] text-ink/70">{guideNote}</span>
+            <Link
+              to={spot.href}
+              className="btn-gold shrink-0 inline-flex items-center gap-2 h-11 px-5 rounded-full whitespace-nowrap text-[15px] font-medium hover:brightness-105 transition-[filter,transform] active:scale-[0.98]"
+            >
+              {guideAction}
+              <ArrowRight size={16} aria-hidden="true" />
+            </Link>
+          </div>
         </section>
 
         {/* How do you feel right now? A question on the sky, always in the same place. */}
         <motion.div variants={containerVariants} initial="hidden" animate="show" className="flex flex-col">
-          <motion.section variants={itemVariants} aria-labelledby="home-checkin-title" className="mt-11 [@media(max-height:700px)]:mt-8">
-            <h2 id="home-checkin-title" className="sky-text mb-3.5 text-[17px] font-normal text-ink/90">
+          <motion.section variants={itemVariants} aria-labelledby="home-checkin-title" className="mt-9 [@media(max-height:700px)]:mt-6">
+            <h2 id="home-checkin-title" className="font-display sky-text mb-3.5 text-[24px] leading-tight text-ink">
               {el ? 'Πώς νιώθεις τώρα;' : 'How do you feel right now?'}
             </h2>
             <HomeCheckin embedded />

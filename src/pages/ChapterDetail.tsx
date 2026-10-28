@@ -470,7 +470,7 @@ export default function ChapterDetail() {
                     {chapter.icon}
                   </div>
                   <div data-read-key="intro-title" className={readClass(rs('intro-title'))}>
-                    <h1 className="text-4xl desk:text-6xl font-light text-ink/90 leading-tight tracking-tight px-4">
+                    <h1 className="font-display text-4xl desk:text-6xl text-ink/90 leading-tight px-4">
                       {chapter.title}
                     </h1>
                     <p className="text-lg desk:text-xl text-ink/50 leading-relaxed font-sans px-6 font-light mt-6">
@@ -506,7 +506,7 @@ export default function ChapterDetail() {
                   </span>
                   <h2
                     data-read-key={`s${curPage.index}-title`}
-                    className={cn("text-3xl desk:text-4xl font-light text-ink/90 leading-snug tracking-tight px-2", readClass(rs(`s${curPage.index}-title`)))}
+                    className={cn("font-display text-3xl desk:text-4xl text-ink/90 leading-snug px-2", readClass(rs(`s${curPage.index}-title`)))}
                   >
                     {curPage.section.title}
                   </h2>
@@ -593,7 +593,7 @@ export default function ChapterDetail() {
                           {language === 'el' ? 'Πρακτική άσκηση' : 'Practice'}
                         </span>
                       </div>
-                      <h2 data-read-key="ex-title" className={cn("text-3xl font-light text-ink/90 leading-tight tracking-tight", readClass(rs('ex-title')))}>{chapter.exercise.title}</h2>
+                      <h2 data-read-key="ex-title" className={cn("font-display text-3xl text-ink/90 leading-tight", readClass(rs('ex-title')))}>{chapter.exercise.title}</h2>
                     </header>
                     <ul className="space-y-6 desk:pl-4">
                       {chapter.exercise.steps.map((step, idx) => (

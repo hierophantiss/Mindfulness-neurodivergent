@@ -45,7 +45,7 @@ export default function Chapters() {
                 {language === 'en' ? 'Theory & Practice' : 'Θεωρία & Πρακτική'}
               </span>
             </div>
-            <h1 className="text-5xl md:text-7xl font-sans text-ink leading-none tracking-tight">
+            <h1 className="font-display text-5xl md:text-7xl text-ink leading-none">
               {language === 'en' ? 'Presence Workbook' : 'Εγχειρίδιο Παρουσίας'}
             </h1>
             <p className="text-lg text-ink/50 font-light max-w-xl mx-auto leading-relaxed mt-2 flex items-center justify-center gap-2">
@@ -106,7 +106,7 @@ export default function Chapters() {
                     )}
                   </div>
                   <div>
-                    <h2 className="text-3xl font-light text-ink/90 group-hover:text-ink transition-colors">{chapter.title}</h2>
+                    <h2 className="font-display text-3xl text-ink/90 group-hover:text-ink transition-colors">{chapter.title}</h2>
                     <p className="text-sm text-ink/65 font-sans mt-2 line-clamp-2">{chapter.sub}</p>
                   </div>
                   <div className="flex items-center gap-2">
@@ -235,7 +235,7 @@ export default function Chapters() {
             <div className="w-16 h-16 rounded-2xl bg-teal-500/10 text-teal-400 flex items-center justify-center mb-8 border border-teal-500/20 group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(95,143,214,0.3)] transition-all duration-700">
                <BookOpen size={28} strokeWidth={1.5} />
             </div>
-            <h2 className="text-4xl md:text-5xl font-light text-ink/90 mb-5 leading-tight">
+            <h2 className="font-display text-4xl md:text-5xl text-ink/90 mb-5 leading-tight">
               {language === 'el' ? 'Πρόγραμμα 8 Εβδομάδων' : '8 Weeks Program'}
             </h2>
             <p className="text-lg text-ink/50 font-sans max-w-md leading-relaxed">

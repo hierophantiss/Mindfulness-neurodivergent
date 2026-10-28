@@ -154,7 +154,7 @@ export default function GenericExercise() {
       </div>
 
       <div className="flex flex-col items-center w-full max-w-md mx-auto text-center">
-        <h1 className="text-[26px] font-medium text-ink/95 leading-tight px-2">{exercise.title[lang]}</h1>
+        <h1 className="font-display text-[26px] text-ink/95 leading-tight px-2">{exercise.title[lang]}</h1>
         <p className="mt-1.5 text-[14px] text-ink/50">
           {exercise.dur ? exercise.dur[lang] : durationLabel(total, el)}
           {exercise.desc && <> · {exercise.desc[lang]}</>}

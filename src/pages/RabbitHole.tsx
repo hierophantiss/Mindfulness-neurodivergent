@@ -580,7 +580,7 @@ export default function RabbitHole() {
               </div>
 
               <div className={cn("hidden md:block transition-opacity duration-1000", isVoidActive ? "opacity-20" : "opacity-100")}>
-                 <h2 className="text-3xl md:text-4xl font-light text-ink/95 mb-2">
+                 <h2 className="font-display text-3xl md:text-4xl text-ink/95 mb-2">
                    {informativeVideos.find(v => v.id === activeVideo)?.title[language as 'en'|'el']}
                  </h2>
                  <p className="text-lg text-ink/30 font-medium">

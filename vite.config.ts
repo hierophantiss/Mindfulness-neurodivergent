@@ -23,7 +23,9 @@ export default defineConfig(() => {
           // rarer alphabets load from the network if a page ever needs them.
           globIgnores: ['**/*.{mp4,pdf,png,jpg}', '**/*_debug.html', '**/*-{cyrillic,cyrillic-ext,vietnamese,latin-ext,greek-ext}-wght-*.woff2',
             // the dyslexia font loads only for those who turn it on
-            '**/opendyslexic-*'],
+            '**/opendyslexic-*',
+            // the display face: Latin and Greek only
+            '**/gfs-didot-{greek-ext,vietnamese}-*'],
           // The cat companion, so it shows offline too.
           additionalManifestEntries: [{ url: '/cat-192.png', revision: 'cat-2026-10-19' }],
           navigateFallback: '/index.html',

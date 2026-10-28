@@ -235,13 +235,13 @@ export function InteractiveBackground() {
   );
 }
 
-// Sky colours through the day (unchanged): night, dawn gold, noon blue, dusk gold.
+// Sky colours through the day: night (a deep violet-blue), dawn gold, noon blue, dusk gold.
 const SKY_STEPS = [
-  { time: 0,  top: [1, 2, 4],     mid: [3, 6, 12],    bot: [5, 8, 20] },
+  { time: 0,  top: [3, 4, 14],    mid: [8, 10, 30],   bot: [22, 16, 48] },
   { time: 6,  top: [10, 19, 41],  mid: [58, 32, 51],  bot: [153, 74, 40] },
   { time: 12, top: [10, 27, 51],  mid: [21, 44, 78],  bot: [26, 58, 107] },
   { time: 18, top: [5, 10, 20],   mid: [43, 23, 42],  bot: [112, 38, 33] },
-  { time: 24, top: [1, 2, 4],     mid: [3, 6, 12],    bot: [5, 8, 20] },
+  { time: 24, top: [3, 4, 14],    mid: [8, 10, 30],   bot: [22, 16, 48] },
 ];
 function skyGradient(hour: number) {
   const mix = (c1: number[], c2: number[], f: number) =>
