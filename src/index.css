@@ -253,15 +253,16 @@ html.font-dyslexic .font-serif,
 html.font-dyslexic [data-prerendered] h1 {
   font-family: var(--font-sans);
 }
+/* The short labels under the home page's round answers and axes, in the wider font. */
+html.font-dyslexic .checkin-label {
+  font-size: 10.5px;
+  letter-spacing: 0;
+}
 html.font-dyslexic .font-display {
   font-family: var(--font-sans);
 }
 html.font-dyslexic :is(.italic, em, i) {
   font-style: normal;
-}
-/* The four "How do you feel" choices keep two per row with the wider font. */
-html.font-dyslexic .checkin-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 /* The home title (the app's name beside its sign, like a logo) and the SOS
    button keep their own letters: with the much wider font they would not fit

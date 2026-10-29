@@ -1,6 +1,6 @@
 import { AudioEnabler } from '../components/AudioEnabler';
 import React, { useState, useEffect, useMemo } from 'react';
-import { ArrowRight, BookOpen, ChevronRight, ChevronDown, Info, Download, X } from 'lucide-react';
+import { ArrowRight, BookOpen, Headphones, Info, Download, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useCompanion } from '../hooks/useCompanion';
@@ -18,7 +18,6 @@ import { readRecentCheckinState } from '../data/stateCheckin';
 import { MethodMark } from '../components/MethodMark';
 import { useInstallApp } from '../hooks/useInstallApp';
 import HomeCheckin from '../components/HomeCheckin';
-import { getMoreLinks } from '../data/moreLinks';
 import { welcomeSeen, markWelcomeSeen, openWelcome } from '../lib/welcome';
 import { readingSpot, chaptersRead } from '../lib/readingSpot';
 
@@ -80,15 +79,6 @@ export default function Dashboard() {
       : (el ? 'Ξεκίνα' : 'Start');
   // The guide card: the line above the title, and the title.
   const guideTitle = finishedGuide ? (el ? 'Τον ολοκλήρωσες' : 'You finished it') : (spot.chapter?.title || '');
-  const guideSub = finishedGuide
-    ? (el ? 'Ο οδηγός σου' : 'Your guide')
-    : `${el ? 'Κεφάλαιο' : 'Chapter'} ${spot.chapter?.num ?? ''}`;
-  // Beside the button: the page you are on, or the chapter's subtitle.
-  const guideNote = finishedGuide
-    ? ''
-    : midChapter
-      ? (el ? `σελίδα ${spot.page + 1} από ${spot.pages.length}` : `page ${spot.page + 1} of ${spot.pages.length}`)
-      : (spot.chapter?.sub || '');
   // The chapter's title in the colour of its axis (the first four chapters), else the Breath's blue.
   const AXIS_INK = ['--axis-body-ink', '--axis-breath-ink', '--axis-attention-ink', '--axis-space-ink'];
   const guideInk = spot.chapter && spot.chapter.num <= 4 && !finishedGuide ? `var(${AXIS_INK[spot.chapter.num - 1]})` : 'var(--tint-blue-ink)';
@@ -99,16 +89,6 @@ export default function Dashboard() {
   const completedLessons = progress.completedLessons.length;
   const totalLessons = 56;
   const lessonProgressPct = Math.round((completedLessons / totalLessons) * 100);
-
-  // "More": closed by default, remembered per device.
-  const [moreOpen, setMoreOpen] = useState(() => {
-    try { return localStorage.getItem('home_more_open') === '1'; } catch { return false; }
-  });
-  const toggleMore = () => setMoreOpen(o => {
-    try { localStorage.setItem('home_more_open', o ? '0' : '1'); } catch { /* ignore */ }
-    return !o;
-  });
-  const moreLinks = getMoreLinks(lang, completedLessons > 0 ? `${lessonProgressPct}%` : undefined);
 
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [bookOpen, setBookOpen] = useState(false);
@@ -163,9 +143,43 @@ export default function Dashboard() {
     show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
   };
 
+  // "Listen": the same place, with the narration starting (ChapterDetail reads ?listen=1).
+  const listenHref = finishedGuide ? '' : `${spot.href}${spot.href.includes('?') ? '&' : '?'}listen=1`;
+  // The four axes, a way into the practices and the method's signature.
+  const axes = [
+    { id: 'body', glyph: 'Ι', name: el ? 'Σώμα' : 'Body', ink: 'var(--axis-body-ink)' },
+    { id: 'breath', glyph: '○', name: el ? 'Αναπνοή' : 'Breath', ink: 'var(--axis-breath-ink)' },
+    { id: 'attention', glyph: '△', name: el ? 'Προσοχή' : 'Attention', ink: 'var(--axis-attention-ink)' },
+    { id: 'space', glyph: '∞', name: el ? 'Χώρος' : 'Space', ink: 'var(--axis-space-ink)' },
+  ];
+  // Everything else, on one shelf that scrolls sideways (the next card always peeks).
+  const evening = hour >= 18 || hour < 5;
+  type ShelfItem = { key: string; to?: string; onClick?: () => void; title: string; sub: string; ink: string; icon: string };
+  const ICONS = {
+    spark: 'M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6',
+    moon: 'M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z',
+    calendar: 'M4 6h16v14H4zM4 10h16M9 3v5M15 3v5',
+    book: 'M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z',
+    telescope: 'M10 14 4 20M14 14l6 6M12 13v8M3 9.5l13-6 2 4.5-13 6zM18 7.5l3-1.4',
+    notebook: 'M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM9 8h6M9 12h6',
+    bookmark: 'M6 3h12v18l-6-4-6 4z',
+  };
+  const shelf: ShelfItem[] = [
+    ...(evening ? [{ key: 'close', to: '/journal', title: el ? 'Κλείσιμο της μέρας' : 'Closing the day', sub: el ? 'Τι κουβαλάς ακόμα από σήμερα;' : 'What are you still carrying from today?', ink: 'var(--tint-lav-ink)', icon: ICONS.moon }] : []),
+    { key: 'micro', to: '/practice/microdoses', title: el ? 'Μικροδόσεις' : 'Microdoses', sub: el ? 'Ασκήσεις λίγων δευτερολέπτων, που δεν φαίνονται' : 'Practices of a few seconds, unseen by others', ink: 'var(--axis-attention-ink)', icon: ICONS.spark },
+    { key: 'sanctuary', to: '/sanctuary', title: el ? 'Καταφύγιο' : 'Sanctuary', sub: el ? 'Βροχή, ωκεανός, ήχοι για ύπνο και ηρεμία' : 'Rain, ocean, sounds for sleep and calm', ink: 'var(--tint-lav-ink)', icon: ICONS.moon },
+    { key: 'program', to: '/program', title: el ? 'Πρόγραμμα 8 εβδομάδων' : '8-week Program', sub: completedLessons > 0 ? (el ? `Μία μικρή πρακτική τη μέρα · ${lessonProgressPct}%` : `One small practice a day · ${lessonProgressPct}%`) : (el ? 'Μία μικρή πρακτική τη μέρα' : 'One small practice a day'), ink: 'var(--axis-body-ink)', icon: ICONS.calendar },
+    { key: 'book', onClick: () => { setBookOpen(true); window.setTimeout(() => document.getElementById('home-book')?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' }), 50); }, title: el ? 'Το βιβλίο' : 'The book', sub: el ? 'PDF, EPUB και ακουστικό, δωρεάν' : 'PDF, EPUB and audiobook, free', ink: 'var(--axis-breath-ink)', icon: ICONS.book },
+    { key: 'rabbit', to: '/rabbithole', title: el ? 'Κουνελότρυπα' : 'Rabbit Hole', sub: el ? 'Κείμενα και βίντεο για όσους θέλουν βάθος' : 'Texts and videos for those who want depth', ink: 'var(--axis-attention-ink)', icon: ICONS.telescope },
+    ...(!evening ? [{ key: 'journal', to: '/journal', title: el ? 'Ημερολόγιο' : 'Journal', sub: el ? 'Δυο γραμμές για σήμερα' : 'Two lines for today', ink: 'var(--tint-rose-ink)', icon: ICONS.notebook }] : []),
+    ...(hasRead ? [{ key: 'read', onClick: () => setSheetVisible(true), title: el ? 'Τι έχεις διαβάσει' : 'What you have read', sub: el ? 'Τα κεφάλαια και οι σελίδες σου' : 'Your chapters and pages', ink: 'var(--axis-breath-ink)', icon: ICONS.bookmark }] : []),
+  ];
+  const shelfCard = "glass shrink-0 w-[148px] h-[126px] snap-start flex flex-col gap-[7px] p-3.5 rounded-[20px] text-left hover:brightness-110 transition-[filter,transform] active:scale-[0.98]";
+  const sectionTitle = "sky-text text-[15px] font-normal text-ink/90";
+
   return (
     <div className="relative w-full min-h-screen bg-transparent overflow-x-hidden text-ink font-sans selection:bg-[#4a9eca]/30 selection:text-ink pb-[calc(5rem+env(safe-area-inset-bottom))]">
-      <div className="relative z-10 w-full max-w-lg mx-auto px-2 flex flex-col pt-[calc(env(safe-area-inset-top,0px)+0.875rem)]">
+      <div className="relative z-10 w-full max-w-lg mx-auto px-1.5 flex flex-col pt-[calc(env(safe-area-inset-top,0px)+0.875rem)]">
 
         {/* Top row: the sign with the name, and SOS (there from the first second). */}
         <div className="w-full flex items-center justify-between gap-3 mt-2">
@@ -175,72 +189,126 @@ export default function Dashboard() {
               aria-label={el ? 'Ο Τετραπλός Άξονας: τι σημαίνει το σήμα' : 'The Fourfold Axis: what the sign means'}
               className="shrink-0 rounded-full active:scale-95 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--tint-blue-mark)]"
             >
-              <MethodMark small breathe dim={nightDim} className="w-[34px] h-[34px]" />
+              <MethodMark small breathe dim={nightDim} className="w-[30px] h-[30px]" />
             </Link>
-            <span className="flex flex-col min-w-0 gap-[3px]">
-              <span className="keep-font sky-text text-[13px] max-[359px]:text-[12px] leading-tight tracking-[0.14em] max-[374px]:tracking-[0.08em] uppercase text-sign-gold font-medium whitespace-nowrap">
+            <span className="flex flex-col min-w-0 gap-0.5">
+              <span className="keep-font sky-text text-[12px] leading-tight tracking-[0.16em] max-[374px]:tracking-[0.1em] uppercase text-sign-gold font-medium whitespace-nowrap">
                 {el ? 'ΕΝΣΥΝΕΙΔΗΤΟΤΗΤΑ' : 'MINDFULNESS'}
               </span>{' '}
-              <span className="sky-text text-[12.5px] leading-tight text-ink/70">
+              <span className="sky-text text-[12px] leading-tight text-ink/70">
                 {el ? 'Για νευροδιαφορετικούς' : 'For neurodivergents'}
               </span>
             </span>
           </div>
           <Link
             to="/practice/breath/sos-breath"
-            className="keep-font flex items-center justify-center h-10 px-4 rounded-full bg-[linear-gradient(160deg,rgb(240_194_200/0.16),rgb(240_194_200/0.05))] border border-[rgb(240_194_200/0.38)] shadow-[inset_0_1px_0_rgb(255_255_255/0.12)] text-[var(--tint-rose-ink)] hover:brightness-110 active:scale-95 transition-all text-[13px] font-medium tracking-[0.1em] shrink-0"
+            className="keep-font flex items-center justify-center min-w-[52px] min-h-[40px] px-3.5 shrink-0"
             title={el ? 'Άμεση Ηρέμηση' : 'Immediate Calm'}
           >
-            SOS
+            <span className="flex items-center justify-center h-9 px-3.5 rounded-full bg-[rgb(240_194_200/0.08)] border border-[rgb(240_194_200/0.36)] text-[var(--tint-rose-ink)] text-[12px] font-medium tracking-[0.12em]">SOS</span>
           </Link>
         </div>
 
         {/* The greeting and the phrase are there at once (no fade): they are the first
             words you read, and the page counts as shown only when they are. */}
-        <div className="mt-10 [@media(max-height:700px)]:mt-6 flex flex-col gap-2.5">
-          <h1 className="font-display sky-text text-[42px] max-[359px]:text-[36px] leading-[1.05] text-ink">
+        <div className="mt-[38px] [@media(max-height:700px)]:mt-6 flex flex-col gap-2.5">
+          <h1 className="font-display sky-text text-[38px] max-[359px]:text-[34px] leading-[1.05] text-ink">
             {greeting}
           </h1>
-          <p className="sky-text max-w-[300px] text-[16px] leading-[1.6] text-ink/80">
+          <p className="sky-text max-w-[290px] text-[15px] leading-[1.6] text-ink/80">
             {el ? affirmation.el : affirmation.en}
           </p>
         </div>
 
-        {/* One card: where you are in the book, and one button to go on. */}
-        <section aria-labelledby="home-guide-title" className="glass glass-gold rounded-[26px] mt-7 [@media(max-height:700px)]:mt-5 p-[22px]">
-          <p className="text-[13px] text-ink/70">{guideSub}</p>
-          <h2 id="home-guide-title" className="font-display mt-1 text-[34px] max-[359px]:text-[30px] leading-[1.1]" style={{ color: guideInk }}>
+        {/* The guide: where you are in the book; go on reading, or listen. */}
+        <section aria-labelledby="home-guide-title" className="glass glass-gold rounded-[22px] mt-[26px] [@media(max-height:700px)]:mt-4 px-[18px] pt-[18px] pb-4">
+          <div className="flex items-baseline justify-between gap-3 text-[12.5px] text-ink/70">
+            <span className="min-w-0 truncate">{finishedGuide ? (el ? 'Ο οδηγός' : 'The guide') : `${el ? 'Ο οδηγός · Κεφάλαιο' : 'The guide · Chapter'} ${spot.chapter?.num ?? ''}`}</span>
+            {midChapter && <span className="shrink-0">{el ? `σελ. ${spot.page + 1} από ${spot.pages.length}` : `p. ${spot.page + 1} of ${spot.pages.length}`}</span>}
+          </div>
+          <h2 id="home-guide-title" className="font-display mt-1 text-[28px] leading-[1.15]" style={{ color: guideInk }}>
             {guideTitle}
           </h2>
           {midChapter && (
-            <div className="mt-[18px] h-[3px] rounded-full bg-black/30 overflow-hidden" aria-hidden="true">
-              <div className="h-full rounded-full bg-[linear-gradient(90deg,#5f8fd6,var(--tint-blue-ink))] shadow-[0_0_8px_rgb(127_169_228/0.6)]" style={{ width: `${Math.round(((spot.page + 1) / spot.pages.length) * 100)}%` }} />
+            <div className="mt-3 h-[2px] rounded-full bg-black/30 overflow-hidden" aria-hidden="true">
+              <div className="h-full rounded-full bg-[var(--tint-blue-ink)] shadow-[0_0_6px_rgb(127_169_228/0.6)]" style={{ width: `${Math.round(((spot.page + 1) / spot.pages.length) * 100)}%` }} />
             </div>
           )}
-          <div className="mt-4 flex items-center justify-between gap-3">
-            <span className="min-w-0 truncate text-[14px] text-ink/70">{guideNote}</span>
+          <div className="mt-3.5 flex items-center gap-2">
             <Link
               to={spot.href}
-              className="btn-gold shrink-0 inline-flex items-center gap-2 h-11 px-5 rounded-full whitespace-nowrap text-[15px] font-medium hover:brightness-105 transition-[filter,transform] active:scale-[0.98]"
+              className="btn-gold inline-flex items-center gap-[7px] h-10 px-[17px] rounded-full whitespace-nowrap text-[14px] font-medium hover:brightness-105 transition-[filter,transform] active:scale-[0.98]"
             >
               {guideAction}
-              <ArrowRight size={16} aria-hidden="true" />
+              <ArrowRight size={15} aria-hidden="true" />
             </Link>
+            {listenHref && (
+              <Link
+                to={listenHref}
+                className="inline-flex items-center gap-[7px] h-10 px-[15px] rounded-full whitespace-nowrap text-[14px] text-ink/90 bg-white/[0.05] border border-white/[0.12] hover:bg-white/[0.08] transition-[background-color,transform] active:scale-[0.98]"
+              >
+                <Headphones size={16} strokeWidth={1.8} aria-hidden="true" />
+                {el ? 'Άκουσε' : 'Listen'}
+              </Link>
+            )}
           </div>
         </section>
 
-        {/* How do you feel right now? A question on the sky, always in the same place. */}
         <motion.div variants={containerVariants} initial="hidden" animate="show" className="flex flex-col">
-          <motion.section variants={itemVariants} aria-labelledby="home-checkin-title" className="mt-9 [@media(max-height:700px)]:mt-6">
-            <h2 id="home-checkin-title" className="font-display sky-text mb-3.5 text-[24px] leading-tight text-ink">
+          {/* How do you feel right now? Always in the same place. */}
+          <motion.section variants={itemVariants} aria-labelledby="home-checkin-title" className="mt-7 [@media(max-height:700px)]:mt-5">
+            <h2 id="home-checkin-title" className={cn(sectionTitle, "mb-3")}>
               {el ? 'Πώς νιώθεις τώρα;' : 'How do you feel right now?'}
             </h2>
             <HomeCheckin embedded />
           </motion.section>
 
+          {/* The four axes. */}
+          <motion.section variants={itemVariants} aria-labelledby="home-axes-title" className="mt-[26px]">
+            <div className="flex items-baseline justify-between gap-3">
+              <h2 id="home-axes-title" className={sectionTitle}>{el ? 'Οι τέσσερις άξονες' : 'The four axes'}</h2>
+              <Link to="/method" className="sky-text inline-flex items-center min-h-[40px] text-[12.5px] text-ink/70 hover:text-ink/90 transition-colors">
+                {el ? 'Τι σημαίνουν' : 'What they mean'}
+              </Link>
+            </div>
+            <div className="mt-1 grid grid-cols-4 gap-2">
+              {axes.map(a => (
+                <Link
+                  key={a.id}
+                  to={`/practice?axis=${a.id}`}
+                  className="glass h-[66px] rounded-[18px] flex flex-col items-center justify-center gap-[5px] hover:brightness-110 transition-[filter,transform] active:scale-[0.97]"
+                >
+                  <span aria-hidden="true" className="font-display text-[22px] leading-none" style={{ color: a.ink, textShadow: `0 0 10px color-mix(in srgb, ${a.ink} 45%, transparent)` }}>{a.glyph}</span>
+                  <span className="checkin-label text-[12px] text-ink/90 max-w-full truncate px-1">{a.name}</span>
+                </Link>
+              ))}
+            </div>
+          </motion.section>
+
+          {/* Everything else. */}
+          <motion.section variants={itemVariants} aria-labelledby="home-more-title" className="mt-[26px]">
+            <h2 id="home-more-title" className={sectionTitle}>{el ? 'Και όλα τα άλλα' : 'And everything else'}</h2>
+            <div className="mt-3 -mx-[22px] px-[22px] pb-1 flex gap-2.5 overflow-x-auto snap-x snap-mandatory scroll-px-[22px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {shelf.map(item => {
+                const body = (
+                  <>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ color: item.ink, filter: `drop-shadow(0 0 5px color-mix(in srgb, ${item.ink} 50%, transparent))` }}>
+                      <path d={item.icon} />
+                    </svg>
+                    <span className="mt-auto text-[14.5px] leading-[1.25] text-ink">{item.title}</span>
+                    <span className="text-[12px] leading-[1.35] text-ink/65 line-clamp-2">{item.sub}</span>
+                  </>
+                );
+                return item.to
+                  ? <Link key={item.key} to={item.to} className={shelfCard}>{body}</Link>
+                  : <button key={item.key} type="button" onClick={item.onClick} className={shelfCard}>{body}</button>;
+              })}
+            </div>
+          </motion.section>
+
           {/* First visit: a small welcome that invites, never blocks or moves anything above. */}
           {showWelcome && (
-            <motion.div variants={itemVariants} className="mt-4 flex items-start gap-3 rounded-2xl bg-[var(--tint-sage-bg)] border border-[var(--tint-sage-line)] pl-4 pr-2 py-3">
+            <motion.div variants={itemVariants} className="mt-6 flex items-start gap-3 rounded-2xl bg-[var(--tint-sage-bg)] border border-[var(--tint-sage-line)] pl-4 pr-2 py-3">
               <div className="flex-1 min-w-0">
                 <p className="text-[14px] leading-snug text-ink/90">
                   <span className="font-medium">{el ? 'Καλώς ήρθες.' : 'Welcome.'}</span>{' '}
@@ -264,57 +332,6 @@ export default function Dashboard() {
               </button>
             </motion.div>
           )}
-
-          {/* More: one small button that opens the whole app, for those who want to explore first */}
-          <motion.div variants={itemVariants} className="flex flex-col items-start gap-3 mt-6">
-            <button
-              onClick={toggleMore}
-              aria-expanded={moreOpen}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-[var(--tint-sand-bg)] border border-[var(--tint-sand-line)] text-[13px] text-ink/75 hover:text-ink/90 hover:brightness-110 transition-colors active:scale-[0.97]"
-            >
-              {lang === 'el' ? 'Περισσότερα' : 'More'}
-              <ChevronDown size={15} className={cn("transition-transform duration-300", moreOpen && "rotate-180")} />
-            </button>
-            {moreOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.35 }}
-                className="w-full flex flex-col gap-2"
-              >
-                {hasRead && (
-                  <button
-                    onClick={() => setSheetVisible(true)}
-                    className="flex items-center gap-3.5 px-4 py-3.5 rounded-2xl bg-[var(--tint-blue-bg)] border border-[var(--tint-blue-line)] hover:brightness-110 transition-colors active:scale-[0.98] text-left"
-                  >
-                    <BookOpen size={18} strokeWidth={1.5} className="shrink-0 opacity-80 text-[var(--tint-blue-mark)]" aria-hidden="true" />
-                    <span className="flex flex-col min-w-0 flex-1 gap-0.5">
-                      <span className="text-[14px] leading-tight text-ink/85">{el ? 'Τι έχεις διαβάσει' : 'What you have read'}</span>
-                      <span className="text-[12px] leading-snug text-ink/45">{el ? 'Τα κεφάλαια και οι σελίδες σου' : 'Your chapters and pages'}</span>
-                    </span>
-                    <ChevronRight size={16} className="text-ink/30 shrink-0" />
-                  </button>
-                )}
-                {moreLinks.map(item => (
-                  <Link
-                    key={item.to}
-                    to={item.to}
-                    className="flex items-center gap-3.5 px-4 py-3.5 rounded-2xl bg-[var(--tint-blue-bg)] border border-[var(--tint-blue-line)] hover:brightness-110 transition-colors active:scale-[0.98]"
-                  >
-                    <item.icon size={18} strokeWidth={1.5} className={cn("shrink-0 opacity-80", item.tone)} />
-                    <span className="flex flex-col min-w-0 flex-1 gap-0.5">
-                      <span className="flex items-baseline gap-2 text-[14px] leading-tight text-ink/85">
-                        {item.label}
-                        {item.sub && <span className="text-[11px] font-mono text-ink/40">{item.sub}</span>}
-                      </span>
-                      <span className="text-[12px] leading-snug text-ink/45">{item.desc}</span>
-                    </span>
-                    <ChevronRight size={16} className="text-ink/30 shrink-0" />
-                  </Link>
-                ))}
-              </motion.div>
-            )}
-          </motion.div>
         </motion.div>
 
         {/* Footer info */}
@@ -350,6 +367,7 @@ export default function Dashboard() {
 
           {bookOpen && (
             <motion.div
+              id="home-book"
               initial={{ opacity: 0, y: -4 }}
               animate={{ opacity: 1, y: 0 }}
               className="flex flex-col items-center gap-2"

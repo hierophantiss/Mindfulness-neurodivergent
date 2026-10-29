@@ -132,7 +132,7 @@ export default function NavigationMenu() {
       {/* Bottom Navigation */}
       {/* A floating glass bar (colour and a light edge, no blur: light on old phones). */}
       <div data-nosnippet className="glass fixed left-3 right-3 bottom-[calc(10px+env(safe-area-inset-bottom))] z-40 rounded-[26px] bg-[rgb(12_15_28/0.84)] desk:left-0 desk:right-0 desk:bottom-4 desk:mx-auto desk:w-[460px]">
-        <div className="flex items-center justify-around px-1.5 py-1.5 max-w-md mx-auto">
+        <div className="flex items-center justify-around px-1 py-1 max-w-md mx-auto">
           {mainNavItems.map((item) => {
             // Home lives at "/" ("/dashboard" only redirects there).
             const isActive = location.pathname === item.path
@@ -144,7 +144,7 @@ export default function NavigationMenu() {
                 onClick={() => handleNav(item.path)}
                 whileHover={{ y: -2, scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className={`flex flex-col items-center justify-center gap-1.5 transition-all duration-300 relative py-2.5 px-2 rounded-2xl flex-1 ${
+                className={`flex flex-col items-center justify-center gap-1 transition-all duration-300 relative py-2 px-2 rounded-[18px] flex-1 ${
                   isActive
                     ? 'text-sign-gold'
                     : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.03]'
@@ -160,7 +160,7 @@ export default function NavigationMenu() {
                 {isActive && (
                   <motion.div 
                     layoutId="active-nav-bg" 
-                    className="absolute inset-0 rounded-2xl bg-[var(--color-sign-gold)]/10 pointer-events-none" 
+                    className="absolute inset-0 rounded-[18px] bg-[var(--color-sign-gold)]/10 pointer-events-none" 
                     transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                   />
                 )}
@@ -173,7 +173,7 @@ export default function NavigationMenu() {
             onClick={() => setIsOpen(true)}
             whileHover={{ y: -2, scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className={`flex flex-col items-center justify-center gap-1.5 transition-all duration-300 relative py-2.5 px-2 rounded-2xl flex-1 ${
+            className={`flex flex-col items-center justify-center gap-1 transition-all duration-300 relative py-2 px-2 rounded-[18px] flex-1 ${
               isOpen
                 ? 'text-sign-gold bg-[var(--color-sign-gold)]/10'
                 : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.03]'

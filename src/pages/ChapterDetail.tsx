@@ -317,6 +317,16 @@ export default function ChapterDetail() {
     return i === -1 ? 0 : i;
   };
 
+  // "?listen=1" (the "Listen" button on the home page) starts the narration once,
+  // from the page you stopped at.
+  const listenStarted = useRef(false);
+  useEffect(() => {
+    if (listenStarted.current || searchParams.get('listen') !== '1' || segments.length === 0) return;
+    listenStarted.current = true;
+    reader.playFrom(firstSegmentOfPage(page));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [segments.length]);
+
   if (!chapter) {
     return <div className="p-8 text-center text-ink/40">{language === 'el' ? 'Κεφάλαιο δεν βρέθηκε.' : 'Chapter not found.'}</div>;
   }

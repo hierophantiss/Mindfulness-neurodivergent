@@ -71,7 +71,7 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
     <div className="flex flex-col gap-4">
       {!embedded && <h2 className="sky-text text-center text-[20px] font-normal text-ink/90">{question}</h2>}
 
-      <div className="checkin-grid grid grid-cols-2 gap-3" role="group" aria-label={question}>
+      <div className="checkin-grid grid grid-cols-4 gap-1.5" role="group" aria-label={question}>
         {CHECKIN_OPTIONS.map(o => {
           const isSel = o.id === selected;
           return (
@@ -80,20 +80,18 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
               onClick={() => choose(o.id)}
               aria-pressed={isSel}
               aria-expanded={isSel ? open : undefined}
-              className={cn(
-                "glass min-h-[96px] [@media(max-height:700px)]:min-h-[80px] px-2 py-3 rounded-3xl flex flex-col items-center justify-center gap-2.5 text-[16px] text-ink/95 transition-[filter,transform] active:scale-[0.97] hover:brightness-110",
-                isSel && "glass-chosen"
-              )}
+              className="group flex flex-col items-center gap-[7px] py-1 min-w-0 active:scale-[0.96] transition-transform"
             >
-              <svg
-                width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
-                aria-hidden="true"
-                className="[@media(max-height:700px)]:w-7 [@media(max-height:700px)]:h-7"
-                style={{ color: tint(o.id, 'dot'), filter: `drop-shadow(0 0 6px ${tint(o.id, 'dot')})` }}
-              >
-                <path d={ICON[o.id]} />
-              </svg>
-              <span className="min-w-0 truncate max-w-full">{o.label[lang]}</span>
+              <span className={cn("glass w-[52px] h-[52px] rounded-full flex items-center justify-center group-hover:brightness-110 transition-[filter]", isSel && "glass-chosen")}>
+                <svg
+                  width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"
+                  aria-hidden="true"
+                  style={{ color: tint(o.id, 'dot'), filter: `drop-shadow(0 0 5px color-mix(in srgb, ${tint(o.id, 'dot')} 55%, transparent))` }}
+                >
+                  <path d={ICON[o.id]} />
+                </svg>
+              </span>
+              <span className="checkin-label sky-text max-w-full text-center text-[12.5px] leading-tight text-ink/90 break-words">{o.label[lang]}</span>
             </button>
           );
         })}
@@ -107,10 +105,10 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: reduceMotion ? 0 : 0.3 }}
-            className="glass rounded-3xl p-5 flex flex-col gap-4"
+            className="glass rounded-[20px] p-4 flex flex-col gap-3.5"
           >
             <div className="flex flex-col gap-1.5">
-              <h3 className="font-display text-[21px] leading-snug text-ink">{opt.title[lang]}</h3>
+              <h3 className="font-display text-[19px] leading-snug text-ink">{opt.title[lang]}</h3>
               <p className="text-[15px] leading-relaxed text-ink/75">{opt.desc[lang]}</p>
             </div>
 
