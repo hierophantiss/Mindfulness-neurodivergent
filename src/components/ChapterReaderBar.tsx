@@ -77,7 +77,7 @@ interface Props {
   onSettings: (s: ReaderSettings) => void;
 }
 
-const bottom = 'bottom-[calc(88px+env(safe-area-inset-bottom))] desk:bottom-6';
+const bottom = 'bottom-[calc(88px+env(safe-area-inset-bottom))] desk:bottom-6 desk:left-[248px]';
 const card = 'rounded-2xl bg-[#1a1d27]/95 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)]';
 
 export default function ChapterReaderBar(p: Props) {

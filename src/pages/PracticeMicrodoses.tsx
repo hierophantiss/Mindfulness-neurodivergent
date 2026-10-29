@@ -182,7 +182,7 @@ export default function PracticeMicrodoses() {
         <span className="text-[13px] font-medium text-ink/65 pl-1 block">
           {language === 'el' ? 'Φιλτράρισμα με βάση το Σύστημά σου' : 'Filter by Somatic State'}
         </span>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 desk:grid-cols-4 gap-3">
           {[
             { 
               id: 'all', 
@@ -247,7 +247,7 @@ export default function PracticeMicrodoses() {
       </div>
 
       {/* Dual Filters Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2 sticky top-0 z-20 bg-black/40 backdrop-blur-xl py-4 -mx-6 px-6 border-b border-white/5">
+      <div className="grid grid-cols-1 desk:grid-cols-2 gap-6 pt-2 sticky top-0 z-20 bg-black/40 backdrop-blur-xl py-4 -mx-6 px-6 border-b border-white/5">
         {/* Category Filter */}
         <div className="space-y-2">
           <span className="text-[13px] font-medium text-ink/65 pl-1">
@@ -316,7 +316,7 @@ export default function PracticeMicrodoses() {
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="microdoses-grid">
+      <div className="grid grid-cols-1 desk:grid-cols-3 gap-4" id="microdoses-grid">
         {filteredExercises.map((ex, idx) => {
           const color = getTypeColor(ex.type);
           const isSuggested = ex.id === suggestedExercise.id;

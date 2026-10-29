@@ -13,7 +13,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
 import InteractiveRenderer from '../components/InteractiveRenderer';
 import ChapterReaderBar from '../components/ChapterReaderBar';
-import { chapterPages } from '../lib/chapterPages';
+import { chapterPages, chapterPageLabel } from '../lib/chapterPages';
 import { buildChapterSegments } from '../lib/chapterReading';
 import { useSpeechReader, loadReaderSettings, saveReaderSettings, type ReaderSettings } from '../hooks/useSpeechReader';
 
@@ -398,9 +398,44 @@ export default function ChapterDetail() {
 
   const curPage = pages[page];
 
+  // On a wide screen: the chapter's pages listed beside the text, to go straight to one.
+  const goToPage = (i: number) => {
+    if (i === page || i < 0 || i >= pages.length) return;
+    if (readerActive) reader.jump(firstSegmentOfPage(i));
+    setDirection(i > page ? 1 : -1);
+    setPage(i);
+    setVisibleParagraphs(1);
+    scrollToTop();
+  };
+  const tocLang = language === 'el' ? 'el' : 'en';
+  const isLastPage = page >= pages.length - 1;
+
   return (
-    <div className="flex flex-col min-h-full animate-in fade-in duration-700 max-w-4xl mx-auto px-1 desk:px-6 w-full min-w-0">
-      
+    <div className="flex flex-col min-h-full animate-in fade-in duration-700 max-w-4xl mx-auto px-1 w-full min-w-0 desk:max-w-[680px] desk:px-0 wide:max-w-none wide:grid wide:grid-cols-[180px_minmax(0,680px)_220px] wide:gap-10 wide:justify-center wide:items-start">
+
+      {/* Wide screen: the pages of the chapter (the same order you read them in). */}
+      <nav aria-label={language === 'el' ? 'Σελίδες του κεφαλαίου' : 'Pages of the chapter'} className="hidden wide:flex flex-col gap-0.5 sticky top-6 col-start-1 row-start-1 pt-8">
+        <span className="px-3 pb-3 text-[13px] text-ink/60">
+          {language === 'el' ? `Κεφάλαιο ${chapter.num} · σελίδες` : `Chapter ${chapter.num} · pages`}
+        </span>
+        {pages.map((pg, i) => (
+          <button
+            key={i}
+            type="button"
+            onClick={() => goToPage(i)}
+            aria-current={i === page ? 'page' : undefined}
+            className={cn(
+              "text-left px-3 py-2 rounded-xl border-l-2 text-[14px] leading-snug transition-colors",
+              i === page ? "text-ink bg-white/[0.05]" : "border-transparent text-ink/65 hover:text-ink/90 hover:bg-white/[0.03]"
+            )}
+            style={i === page ? { borderLeftColor: chapter.hex } : undefined}
+          >
+            {chapterPageLabel(pg, tocLang)}
+          </button>
+        ))}
+      </nav>
+
+      <div className="flex flex-col min-w-0 w-full wide:col-start-2 wide:row-start-1">
       {/* Header Controls */}
       <header className="flex flex-wrap desk:flex-nowrap items-center justify-between pt-6 pb-2 shrink-0 gap-y-4 w-full">
         <button aria-label={language === 'en' ? 'Back' : 'Πίσω'} 
@@ -720,6 +755,39 @@ export default function ChapterDetail() {
           </motion.div>
         </AnimatePresence>
       </div>
+      </div>
+
+      {/* Wide screen: where you are in the chapter, and the way on. */}
+      <aside aria-label={language === 'el' ? 'Πρόοδος στο κεφάλαιο' : 'Progress in the chapter'} className="hidden wide:flex flex-col gap-4 sticky top-6 col-start-3 row-start-1 pt-8">
+        <div className="glass rounded-[22px] p-5">
+          <p className="text-[14px] text-ink/70">
+            {language === 'el' ? `Σελίδα ${page + 1} από ${pages.length}` : `Page ${page + 1} of ${pages.length}`}
+          </p>
+          <div className="mt-3 h-[3px] rounded-full bg-black/30 overflow-hidden" aria-hidden="true">
+            <div className="h-full rounded-full transition-[width] duration-500" style={{ width: `${Math.round(((page + 1) / pages.length) * 100)}%`, backgroundColor: chapter.hex }} />
+          </div>
+          <div className="mt-4 flex gap-2">
+            <button
+              type="button"
+              onClick={handlePrev}
+              disabled={page === 0}
+              className="flex-1 min-h-[42px] px-2 whitespace-nowrap rounded-2xl border border-white/[0.12] text-[13.5px] text-ink/85 hover:bg-white/[0.05] transition-colors disabled:opacity-35 disabled:hover:bg-transparent"
+            >
+              {language === 'el' ? '← Πίσω' : '← Back'}
+            </button>
+            <button
+              type="button"
+              onClick={handleNext}
+              className="flex-1 min-h-[42px] px-2 whitespace-nowrap rounded-2xl border border-[var(--color-sign-gold)]/40 text-[13.5px] text-sign-gold hover:bg-[var(--color-sign-gold)]/[0.07] transition-colors"
+            >
+              {isLastPage ? (language === 'el' ? 'Ολοκλήρωση' : 'Complete') : (language === 'el' ? 'Επόμενη →' : 'Next →')}
+            </button>
+          </div>
+        </div>
+        <p className="px-1 text-[12.5px] leading-relaxed text-ink/55">
+          {language === 'el' ? 'Τα βελάκια του πληκτρολογίου αλλάζουν σελίδα· το κενό ξεκινά ή σταματά την ακρόαση.' : 'The arrow keys turn the page; the space bar starts or pauses listening.'}
+        </p>
+      </aside>
 
       {segments.length > 0 && (
         <ChapterReaderBar

@@ -60,6 +60,10 @@ export default function Layout() {
   const isWidePractice = isBreathPlayer || /^\/practice\/(swaying|grounding)/.test(location.pathname);
   const isReading = /^\/chapters\/\d+/.test(location.pathname);
   const hideGlobalNavigation = location.pathname !== '/landing_info';
+  // On a computer the side bar is on the left and the page fills the rest:
+  // home and practice lists in a wide grid, a chapter with its contents beside
+  // it, every other page in a comfortable column (lines never get too long).
+  const isWideDesk = location.pathname === '/' || /^\/practice(\/microdoses)?\/?$/.test(location.pathname);
 
   return (
     <div className="min-h-[100dvh] h-[100dvh] bg-transparent text-pine-100 font-sans selection:bg-teal-500/30 flex flex-col relative overflow-hidden">
@@ -72,14 +76,14 @@ export default function Layout() {
       {/* On a computer the breathing practice fills the whole screen with its dark, not a box in the middle */}
       {isBreathPlayer && <div className="hidden desk:block fixed inset-0 bg-[#061114] pointer-events-none" />}
 
-      <div className="flex flex-1 w-full max-w-[1700px] mx-auto overflow-hidden h-full">
+      <div className={cn("flex flex-1 w-full max-w-[1700px] mx-auto overflow-hidden h-full", hideGlobalNavigation && "desk:max-w-none desk:pl-[248px]")}>
         {/* Main Content Area */}
         <main id="main-content" ref={mainRef} className={cn(
-          "flex-1 relative z-10 w-full flex flex-col overflow-x-hidden scroll-smooth overflow-y-auto px-4 md:px-8 lg:px-12 pt-[env(safe-area-inset-top)] pb-[calc(160px+env(safe-area-inset-bottom))]"
+          "flex-1 relative z-10 w-full flex flex-col overflow-x-hidden scroll-smooth overflow-y-auto px-4 desk:px-14 pt-[env(safe-area-inset-top)] desk:pt-6 pb-[calc(160px+env(safe-area-inset-bottom))] desk:pb-20"
         )}>
           {/* min-h-full, not h-full: a page taller than the screen must grow this box,
               so the space kept below it for the bottom bar comes after the last line. */}
-          <div className={cn("w-full max-w-[480px] mx-auto min-h-full shrink-0 flex flex-col pt-4", isWidePractice && "desk:max-w-[900px]", isReading && "desk:max-w-[680px]")}>
+          <div className={cn("w-full max-w-[480px] mx-auto min-h-full shrink-0 flex flex-col pt-4 desk:max-w-[760px]", isWidePractice && "desk:max-w-[900px]", isWideDesk && "desk:max-w-[1120px]", isReading && "desk:max-w-[1260px]")}>
             {/* initial={false}: the first page of a visit is there at once; the fade is only between pages. */}
             <AnimatePresence mode="wait" initial={false}>
               <motion.div

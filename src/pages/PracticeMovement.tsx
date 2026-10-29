@@ -103,7 +103,7 @@ export default function PracticeMovement() {
       <h2 id="breath" className="text-2xl font-light text-teal-400 mb-6 px-2 drop-shadow-sm scroll-mt-24">
         {language === 'el' ? 'Ρυθμοί Αναπνοής & Ύπνου' : 'Breath & Sleep Rhythms'}
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-safe mb-8">
+      <div className="grid grid-cols-1 desk:grid-cols-2 gap-4 pb-safe mb-8">
         {breathExercises.map(p => (
           <PatternCard
             key={p.id}
@@ -124,7 +124,7 @@ export default function PracticeMovement() {
           <ConceptInfoIcon conceptId="movement_vs_breathwork" className="w-5 h-5 text-indigo-400 hover:text-indigo-300 opacity-60 hover:opacity-100" />
         </span>
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-safe mb-8">
+      <div className="grid grid-cols-1 desk:grid-cols-2 gap-4 pb-safe mb-8">
         {movementExercises.map(p => (
           <PatternCard
             key={p.id}

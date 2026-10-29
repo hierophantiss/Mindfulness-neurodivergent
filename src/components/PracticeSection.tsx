@@ -328,7 +328,7 @@ export default function PracticeSection() {
             </p>
           </header>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 desk:grid-cols-2 gap-8">
             <button
               onClick={() => handleSelectTheme('taichi')}
               className="group relative block p-8 md:p-10 rounded-[32px] border transition-all duration-300 text-left overflow-hidden cursor-pointer"
@@ -393,7 +393,7 @@ export default function PracticeSection() {
             </p>
           </header>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 desk:grid-cols-2 gap-4">
             {PRESETS.map((p) => (
               <button
                 key={p.id}

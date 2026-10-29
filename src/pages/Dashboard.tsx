@@ -147,10 +147,14 @@ export default function Dashboard() {
   const listenHref = finishedGuide ? '' : `${spot.href}${spot.href.includes('?') ? '&' : '?'}listen=1`;
   // The four axes, a way into the practices and the method's signature.
   const axes = [
-    { id: 'body', glyph: 'Ι', name: el ? 'Σώμα' : 'Body', ink: 'var(--axis-body-ink)' },
-    { id: 'breath', glyph: '○', name: el ? 'Αναπνοή' : 'Breath', ink: 'var(--axis-breath-ink)' },
-    { id: 'attention', glyph: '△', name: el ? 'Προσοχή' : 'Attention', ink: 'var(--axis-attention-ink)' },
-    { id: 'space', glyph: '∞', name: el ? 'Χώρος' : 'Space', ink: 'var(--axis-space-ink)' },
+    { id: 'body', glyph: 'Ι', name: el ? 'Σώμα' : 'Body', ink: 'var(--axis-body-ink)',
+      desc: el ? 'Νιώθεις τη βαρύτητα: το βάρος σου πέφτει και στηρίζεται.' : 'You feel gravity: your weight falls and is held.' },
+    { id: 'breath', glyph: '○', name: el ? 'Αναπνοή' : 'Breath', ink: 'var(--axis-breath-ink)',
+      desc: el ? 'Μακριά, ήρεμη εκπνοή από το στόμα, που ρυθμίζει το νευρικό σύστημα.' : 'A long, calm exhale through the mouth that settles the nervous system.' },
+    { id: 'attention', glyph: '△', name: el ? 'Προσοχή' : 'Attention', ink: 'var(--axis-attention-ink)',
+      desc: el ? 'Ο Φακός: στενεύει σε ένα σημείο και ανοίγει σε όλο το πεδίο.' : 'The Lens: it narrows to one point and opens to the whole field.' },
+    { id: 'space', glyph: '∞', name: el ? 'Χώρος' : 'Space', ink: 'var(--axis-space-ink)',
+      desc: el ? 'Ανοιχτή επίγνωση: ξεκουράζεσαι στον χώρο γύρω σου.' : 'Open awareness: you rest in the space around you.' },
   ];
   // Everything else, on one shelf that scrolls sideways (the next card always peeks).
   const evening = hour >= 18 || hour < 5;
@@ -174,15 +178,17 @@ export default function Dashboard() {
     ...(!evening ? [{ key: 'journal', to: '/journal', title: el ? 'Ημερολόγιο' : 'Journal', sub: el ? 'Δυο γραμμές για σήμερα' : 'Two lines for today', ink: 'var(--tint-rose-ink)', icon: ICONS.notebook }] : []),
     ...(hasRead ? [{ key: 'read', onClick: () => setSheetVisible(true), title: el ? 'Τι έχεις διαβάσει' : 'What you have read', sub: el ? 'Τα κεφάλαια και οι σελίδες σου' : 'Your chapters and pages', ink: 'var(--axis-breath-ink)', icon: ICONS.bookmark }] : []),
   ];
-  const shelfCard = "glass shrink-0 w-[148px] h-[126px] snap-start flex flex-col gap-[7px] p-3.5 rounded-[20px] text-left hover:brightness-110 transition-[filter,transform] active:scale-[0.98]";
-  const sectionTitle = "sky-text text-[15px] font-normal text-ink/90";
+  const shelfCard = "glass shrink-0 w-[148px] h-[126px] snap-start flex flex-col gap-[7px] p-3.5 rounded-[20px] text-left hover:brightness-110 transition-[filter,transform] active:scale-[0.98] desk:w-auto desk:h-auto desk:min-h-[96px] desk:flex-row desk:items-start desk:gap-4 desk:p-5 desk:rounded-[22px] desk:hover:-translate-y-0.5";
+  const sectionTitle = "sky-text text-[15px] font-normal text-ink/90 desk:font-display desk:text-[27px] desk:text-ink";
+  // The key line of the chapter you are in (once the chapters have loaded), for the wide guide card.
+  const guideLine = !finishedGuide ? (spot.chapter?.insight || '') : '';
 
   return (
     <div className="relative w-full min-h-screen bg-transparent overflow-x-hidden text-ink font-sans selection:bg-[#4a9eca]/30 selection:text-ink pb-[calc(5rem+env(safe-area-inset-bottom))]">
-      <div className="relative z-10 w-full max-w-lg mx-auto px-1.5 flex flex-col pt-[calc(env(safe-area-inset-top,0px)+0.875rem)]">
+      <div className="relative z-10 w-full max-w-lg mx-auto px-1.5 flex flex-col pt-[calc(env(safe-area-inset-top,0px)+0.875rem)] desk:max-w-none desk:px-0 desk:pt-4">
 
         {/* Top row: the sign with the name, and SOS (there from the first second). */}
-        <div className="w-full flex items-center justify-between gap-3 mt-2">
+        <div className="w-full flex items-center justify-between gap-3 mt-2 desk:hidden">
           <div className="flex items-center gap-2.5 min-w-0">
             <Link
               to="/method"
@@ -211,33 +217,39 @@ export default function Dashboard() {
 
         {/* The greeting and the phrase are there at once (no fade): they are the first
             words you read, and the page counts as shown only when they are. */}
-        <div className="mt-[38px] [@media(max-height:700px)]:mt-6 flex flex-col gap-2.5">
-          <h1 className="font-display sky-text text-[38px] max-[359px]:text-[34px] leading-[1.05] text-ink">
+        <div className="mt-[38px] [@media(max-height:700px)]:mt-6 flex flex-col gap-2.5 desk:mt-2 desk:gap-3.5">
+          <h1 className="font-display sky-text text-[38px] max-[359px]:text-[34px] leading-[1.05] text-ink desk:text-[60px] desk:leading-none">
             {greeting}
           </h1>
-          <p className="sky-text max-w-[290px] text-[15px] leading-[1.6] text-ink/80">
+          <p className="sky-text max-w-[290px] text-[15px] leading-[1.6] text-ink/80 desk:max-w-[560px] desk:text-[18px]">
             {el ? affirmation.el : affirmation.en}
           </p>
         </div>
 
+        {/* On a computer the guide and "How do you feel" stand side by side. */}
+        <div className="desk:grid desk:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] wide:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] desk:gap-5 desk:mt-9 desk:items-stretch">
         {/* The guide: where you are in the book; go on reading, or listen. */}
-        <section aria-labelledby="home-guide-title" className="glass glass-gold rounded-[22px] mt-[26px] [@media(max-height:700px)]:mt-4 px-[18px] pt-[18px] pb-4">
-          <div className="flex items-baseline justify-between gap-3 text-[12.5px] text-ink/70">
+        <section aria-labelledby="home-guide-title" className="glass glass-gold rounded-[22px] mt-[26px] [@media(max-height:700px)]:mt-4 px-[18px] pt-[18px] pb-4 desk:mt-0 desk:rounded-[28px] desk:px-8 desk:pt-[30px] desk:pb-7 desk:flex desk:flex-col desk:min-h-[300px]">
+          <div className="flex items-baseline justify-between gap-3 text-[12.5px] text-ink/70 desk:text-[14px]">
             <span className="min-w-0 truncate">{finishedGuide ? (el ? 'Ο οδηγός' : 'The guide') : `${el ? 'Ο οδηγός · Κεφάλαιο' : 'The guide · Chapter'} ${spot.chapter?.num ?? ''}`}</span>
             {midChapter && <span className="shrink-0">{el ? `σελ. ${spot.page + 1} από ${spot.pages.length}` : `p. ${spot.page + 1} of ${spot.pages.length}`}</span>}
           </div>
-          <h2 id="home-guide-title" className="font-display mt-1 text-[28px] leading-[1.15]" style={{ color: guideInk }}>
+          <h2 id="home-guide-title" className="font-display mt-1 text-[28px] leading-[1.15] desk:mt-2.5 desk:text-[52px] desk:leading-[1.05]" style={{ color: guideInk }}>
             {guideTitle}
           </h2>
+          {guideLine && (
+            <p className="hidden desk:block mt-3.5 max-w-[560px] text-[18px] leading-[1.6] text-ink/85">«{guideLine}»</p>
+          )}
+          <div className="hidden desk:block flex-1 min-h-5" aria-hidden="true" />
           {midChapter && (
-            <div className="mt-3 h-[2px] rounded-full bg-black/30 overflow-hidden" aria-hidden="true">
+            <div className="mt-3 desk:mt-0 h-[2px] desk:h-[3px] rounded-full bg-black/30 overflow-hidden" aria-hidden="true">
               <div className="h-full rounded-full bg-[var(--tint-blue-ink)] shadow-[0_0_6px_rgb(127_169_228/0.6)]" style={{ width: `${Math.round(((spot.page + 1) / spot.pages.length) * 100)}%` }} />
             </div>
           )}
-          <div className="mt-3.5 flex items-center gap-2">
+          <div className="mt-3.5 flex items-center gap-2 desk:mt-5 desk:gap-2.5">
             <Link
               to={spot.href}
-              className="btn-gold inline-flex items-center gap-[7px] h-10 px-[17px] rounded-full whitespace-nowrap text-[14px] font-medium hover:brightness-105 transition-[filter,transform] active:scale-[0.98]"
+              className="btn-gold inline-flex items-center gap-[7px] h-10 px-[17px] rounded-full whitespace-nowrap text-[14px] font-medium hover:brightness-105 transition-[filter,transform] active:scale-[0.98] desk:h-12 desk:px-6 desk:text-[16px]"
             >
               {guideAction}
               <ArrowRight size={15} aria-hidden="true" />
@@ -245,7 +257,7 @@ export default function Dashboard() {
             {listenHref && (
               <Link
                 to={listenHref}
-                className="inline-flex items-center gap-[7px] h-10 px-[15px] rounded-full whitespace-nowrap text-[14px] text-ink/90 bg-white/[0.05] border border-white/[0.12] hover:bg-white/[0.08] transition-[background-color,transform] active:scale-[0.98]"
+                className="inline-flex items-center gap-[7px] h-10 px-[15px] rounded-full whitespace-nowrap text-[14px] text-ink/90 bg-white/[0.05] border border-white/[0.12] hover:bg-white/[0.08] transition-[background-color,transform] active:scale-[0.98] desk:h-12 desk:px-5 desk:text-[16px]"
               >
                 <Headphones size={16} strokeWidth={1.8} aria-hidden="true" />
                 {el ? 'Άκουσε' : 'Listen'}
@@ -254,49 +266,55 @@ export default function Dashboard() {
           </div>
         </section>
 
-        <motion.div variants={containerVariants} initial="hidden" animate="show" className="flex flex-col">
           {/* How do you feel right now? Always in the same place. */}
-          <motion.section variants={itemVariants} aria-labelledby="home-checkin-title" className="mt-7 [@media(max-height:700px)]:mt-5">
-            <h2 id="home-checkin-title" className={cn(sectionTitle, "mb-3")}>
+          <motion.section variants={itemVariants} initial="hidden" animate="show" transition={{ delay: 0.4 }} aria-labelledby="home-checkin-title" className="mt-7 [@media(max-height:700px)]:mt-5 desk:mt-0 desk-glass desk:rounded-[28px] desk:px-6 desk:pt-[26px] desk:pb-6">
+            <h2 id="home-checkin-title" className={cn(sectionTitle, "mb-3 desk:mb-5")}>
               {el ? 'Πώς νιώθεις τώρα;' : 'How do you feel right now?'}
             </h2>
             <HomeCheckin embedded />
           </motion.section>
+        </div>
+
+        <motion.div variants={containerVariants} initial="hidden" animate="show" className="flex flex-col">
 
           {/* The four axes. */}
-          <motion.section variants={itemVariants} aria-labelledby="home-axes-title" className="mt-[26px]">
+          <motion.section variants={itemVariants} aria-labelledby="home-axes-title" className="mt-[26px] desk:mt-11">
             <div className="flex items-baseline justify-between gap-3">
               <h2 id="home-axes-title" className={sectionTitle}>{el ? 'Οι τέσσερις άξονες' : 'The four axes'}</h2>
-              <Link to="/method" className="sky-text inline-flex items-center min-h-[40px] text-[12.5px] text-ink/70 hover:text-ink/90 transition-colors">
+              <Link to="/method" className="sky-text inline-flex items-center min-h-[40px] text-[12.5px] desk:text-[14px] text-ink/70 hover:text-ink/90 transition-colors">
                 {el ? 'Τι σημαίνουν' : 'What they mean'}
               </Link>
             </div>
-            <div className="mt-1 grid grid-cols-4 gap-2">
+            <div className="mt-1 grid grid-cols-4 gap-2 desk:mt-4 desk:gap-3.5">
               {axes.map(a => (
                 <Link
                   key={a.id}
                   to={`/practice?axis=${a.id}`}
-                  className="glass h-[66px] rounded-[18px] flex flex-col items-center justify-center gap-[5px] hover:brightness-110 transition-[filter,transform] active:scale-[0.97]"
+                  className="glass h-[66px] rounded-[18px] flex flex-col items-center justify-center gap-[5px] hover:brightness-110 transition-[filter,transform] active:scale-[0.97] desk:h-auto desk:min-h-[176px] desk:items-start desk:justify-start desk:gap-2 desk:p-[22px] desk:rounded-[24px] desk:hover:-translate-y-0.5"
                 >
-                  <span aria-hidden="true" className="font-display text-[22px] leading-none" style={{ color: a.ink, textShadow: `0 0 10px color-mix(in srgb, ${a.ink} 45%, transparent)` }}>{a.glyph}</span>
-                  <span className="checkin-label text-[12px] text-ink/90 max-w-full truncate px-1">{a.name}</span>
+                  <span aria-hidden="true" className="font-display text-[22px] leading-none desk:text-[34px]" style={{ color: a.ink, textShadow: `0 0 10px color-mix(in srgb, ${a.ink} 45%, transparent)` }}>{a.glyph}</span>
+                  <span className="checkin-label text-[12px] text-ink/90 max-w-full truncate px-1 desk:px-0 desk:mt-1.5 desk:text-[18px] desk:text-ink">{a.name}</span>
+                  <span className="hidden desk:block text-[14px] leading-[1.5] text-ink/70">{a.desc}</span>
+                  <span className="hidden desk:block mt-auto pt-2 text-[13.5px] text-sign-gold">{el ? 'Ασκήσεις →' : 'Practices →'}</span>
                 </Link>
               ))}
             </div>
           </motion.section>
 
           {/* More: everything else in the app. */}
-          <motion.section variants={itemVariants} aria-labelledby="home-more-title" className="mt-[26px]">
+          <motion.section variants={itemVariants} aria-labelledby="home-more-title" className="mt-[26px] desk:mt-11">
             <h2 id="home-more-title" className={sectionTitle}>{el ? 'Περισσότερα' : 'More'}</h2>
-            <div className="mt-3 -mx-[22px] px-[22px] pb-1 flex gap-2.5 overflow-x-auto snap-x snap-mandatory scroll-px-[22px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="mt-3 -mx-[22px] px-[22px] pb-1 flex gap-2.5 overflow-x-auto snap-x snap-mandatory scroll-px-[22px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden desk:mt-4 desk:mx-0 desk:px-0 desk:grid desk:grid-cols-3 desk:gap-3.5 desk:overflow-visible">
               {shelf.map(item => {
                 const body = (
                   <>
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ color: item.ink, filter: `drop-shadow(0 0 5px color-mix(in srgb, ${item.ink} 50%, transparent))` }}>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0 desk:w-[26px] desk:h-[26px] desk:mt-0.5" style={{ color: item.ink, filter: `drop-shadow(0 0 5px color-mix(in srgb, ${item.ink} 50%, transparent))` }}>
                       <path d={item.icon} />
                     </svg>
-                    <span className="mt-auto text-[14.5px] leading-[1.25] text-ink">{item.title}</span>
-                    <span className="text-[12px] leading-[1.35] text-ink/65 line-clamp-2">{item.sub}</span>
+                    <span className="mt-auto flex flex-col gap-[7px] min-w-0 desk:mt-0 desk:gap-1">
+                      <span className="text-[14.5px] leading-[1.25] text-ink desk:text-[16.5px]">{item.title}</span>
+                      <span className="text-[12px] leading-[1.35] text-ink/65 line-clamp-2 desk:text-[13.5px] desk:leading-[1.45]">{item.sub}</span>
+                    </span>
                   </>
                 );
                 return item.to
@@ -339,7 +357,7 @@ export default function Dashboard() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.8 }}
-          className="mt-6 mb-6 flex flex-col items-center justify-center gap-3 text-center"
+          className="mt-6 mb-6 flex flex-col items-center justify-center gap-3 text-center desk:mt-12"
         >
           <div className="flex items-center justify-center gap-x-3 gap-y-2 flex-wrap">
             <button

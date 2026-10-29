@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import InfoModal from './InfoModal';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
 import { downloadBackup, restoreBackup } from '../lib/backup';
-import { Home, BookOpen, Activity, Notebook, Menu, X, Info, Music, Compass, LayoutGrid, EyeOff, Eye, Database, User as UserIcon, LogOut, Download, Sparkles, RotateCcw, Headphones, LetterText } from 'lucide-react';
+import { Home, BookOpen, Activity, Notebook, X, Info, Music, LayoutGrid, EyeOff, Eye, Database, Download, Sparkles, RotateCcw, Headphones, LetterText, Moon, CalendarDays, Telescope, Compass } from 'lucide-react';
+import { MethodMark } from './MethodMark';
+import { useTime } from '../contexts/TimeContext';
 import { motion, AnimatePresence } from 'motion/react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useTheme } from '../hooks/useTheme';
 import { useAccessibility } from '../hooks/useAccessibility';
@@ -101,10 +103,10 @@ export default function NavigationMenu() {
     setTimeout(() => setToastMessage(null), 3500);
   };
 
-  // Hide nav menu completely in chapters for Zen Reading Mode
-  if (location.pathname.match(/^\/chapters\/\d+/)) {
-    return null;
-  }
+  const { hour } = useTime();
+  // On a phone a chapter is read without the bottom bar (zen reading);
+  // on a computer the side bar stays, it takes nothing from the text.
+  const zenReading = /^\/chapters\/\d+/.test(location.pathname);
 
   const mainNavItems = [
     { path: '/dashboard', icon: <Home size={18} />, labelEn: 'Home', labelEl: 'Αρχική' },
@@ -113,8 +115,74 @@ export default function NavigationMenu() {
     { path: '/journal', icon: <Notebook size={18} />, labelEn: 'Journal', labelEl: 'Ημερολόγιο' },
   ];
 
+  const el = language === 'el';
+  const isActivePath = (path: string) =>
+    path === '/' ? location.pathname === '/' || location.pathname === '/dashboard' : location.pathname.startsWith(path);
+  // The computer's side bar: every place in the app, always in the same order.
+  const sideItems = [
+    { path: '/', Icon: Home, label: el ? 'Αρχική' : 'Home' },
+    { path: '/chapters', Icon: BookOpen, label: el ? 'Διάβασμα' : 'Read' },
+    { path: '/practice', Icon: Activity, label: el ? 'Πρακτική' : 'Practice' },
+    { path: '/sanctuary', Icon: Moon, label: el ? 'Καταφύγιο' : 'Sanctuary' },
+    { path: '/program', Icon: CalendarDays, label: el ? 'Πρόγραμμα' : 'Program' },
+    { path: '/journal', Icon: Notebook, label: el ? 'Ημερολόγιο' : 'Journal' },
+    { path: '/rabbithole', Icon: Telescope, label: el ? 'Κουνελότρυπα' : 'Rabbit Hole' },
+    { path: '/method', Icon: Compass, label: el ? 'Η Μέθοδος' : 'The Method' },
+  ];
+  const nightDim = hour >= 21 || hour < 5;
+
   return (
     <>
+      {/* Computer: a side bar in place of the bottom bar. */}
+      <nav data-nosnippet aria-label={el ? 'Κύρια πλοήγηση' : 'Main navigation'} className="hidden desk:flex fixed left-0 top-0 bottom-0 z-40 w-[248px] flex-col gap-1 px-[18px] pt-7 pb-5 bg-[rgb(8_10_20/0.42)] border-r border-white/[0.06] overflow-y-auto">
+        <Link to="/" className="flex items-center gap-3 px-2 pb-6 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--tint-blue-mark)]">
+          <MethodMark small dim={nightDim} className="w-10 h-10 shrink-0" />
+          <span className="flex flex-col gap-[3px] min-w-0">
+            <span className="keep-font text-[12px] leading-tight tracking-[0.15em] uppercase text-sign-gold font-medium whitespace-nowrap">{el ? 'ΕΝΣΥΝΕΙΔΗΤΟΤΗΤΑ' : 'MINDFULNESS'}</span>
+            <span className="text-[12.5px] leading-tight text-ink/70 whitespace-nowrap">{el ? 'Για νευροδιαφορετικούς' : 'For neurodivergents'}</span>
+          </span>
+        </Link>
+        {sideItems.map(({ path, Icon, label }) => {
+          const on = isActivePath(path);
+          return (
+            <Link
+              key={path}
+              to={path}
+              aria-current={on ? 'page' : undefined}
+              className={`flex items-center gap-3 h-11 px-3 rounded-[14px] text-[15px] transition-colors ${on ? 'bg-[var(--color-sign-gold)]/[0.09] text-sign-gold' : 'text-ink/80 hover:bg-white/[0.04] hover:text-ink'}`}
+            >
+              <Icon size={19} strokeWidth={1.7} aria-hidden="true" />
+              <span className="truncate">{label}</span>
+            </Link>
+          );
+        })}
+        <div className="flex-1 min-h-6" />
+        <Link
+          to="/practice/breath/sos-breath"
+          className="keep-font flex items-center justify-center gap-2.5 h-12 rounded-2xl text-[14px] font-medium text-[var(--tint-rose-ink)] bg-[rgb(240_194_200/0.08)] border border-[rgb(240_194_200/0.36)] hover:bg-[rgb(240_194_200/0.12)] transition-colors"
+        >
+          <span className="tracking-[0.14em]">SOS</span>
+          <span className="font-normal">{el ? 'Άμεση ηρέμηση' : 'Immediate calm'}</span>
+        </Link>
+        <div className="mt-3 flex items-center justify-between gap-2 px-1.5 text-[13px] text-ink/65">
+          <button type="button" onClick={() => setIsOpen(true)} aria-expanded={isOpen} className="flex items-center gap-1.5 min-h-[40px] hover:text-ink/90 transition-colors">
+            <LayoutGrid size={14} aria-hidden="true" />
+            {el ? 'Μενού' : 'Menu'}
+          </button>
+          <button
+            type="button"
+            onClick={() => setLanguage(el ? 'en' : 'el')}
+            aria-label={el ? 'Switch to English' : 'Αλλαγή σε Ελληνικά'}
+            className="min-h-[40px] hover:text-ink/90 transition-colors"
+          >
+            {el ? 'English' : 'Ελληνικά'}
+          </button>
+          <button type="button" onClick={() => setInfoOpen(true)} className="min-h-[40px] hover:text-ink/90 transition-colors">
+            {el ? 'Σχετικά' : 'About'}
+          </button>
+        </div>
+      </nav>
+
       <AnimatePresence>
         {toastMessage && (
           <motion.div
@@ -131,7 +199,8 @@ export default function NavigationMenu() {
 
       {/* Bottom Navigation */}
       {/* A floating glass bar (colour and a light edge, no blur: light on old phones). */}
-      <div data-nosnippet className="glass fixed left-3 right-3 bottom-[calc(10px+env(safe-area-inset-bottom))] z-40 rounded-[26px] bg-[rgb(12_15_28/0.84)] desk:left-0 desk:right-0 desk:bottom-4 desk:mx-auto desk:w-[460px]">
+      {!zenReading && (
+      <div data-nosnippet className="glass fixed left-3 right-3 bottom-[calc(10px+env(safe-area-inset-bottom))] z-40 rounded-[26px] bg-[rgb(12_15_28/0.84)] desk:hidden">
         <div className="flex items-center justify-around px-1 py-1 max-w-md mx-auto">
           {mainNavItems.map((item) => {
             // Home lives at "/" ("/dashboard" only redirects there).
@@ -188,6 +257,7 @@ export default function NavigationMenu() {
           </motion.button>
         </div>
       </div>
+      )}
 
       {/* Slide-Up / Slide-Over Menu for More Items */}
       <AnimatePresence>
@@ -207,7 +277,7 @@ export default function NavigationMenu() {
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
               data-nosnippet
-              className="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-[480px] max-h-[85vh] bg-[#1a1d27]/98 backdrop-blur-2xl border-t border-white/10 z-[9999] shadow-[0_-20px_50px_rgba(0,0,0,0.6)] flex flex-col rounded-t-[2rem]"
+              className="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-[480px] max-h-[85vh] desk:left-[260px] desk:right-auto desk:bottom-4 desk:mx-0 desk:rounded-[2rem] desk:border desk:border-white/10 bg-[#1a1d27]/98 backdrop-blur-2xl border-t border-white/10 z-[9999] shadow-[0_-20px_50px_rgba(0,0,0,0.6)] flex flex-col rounded-t-[2rem]"
             >
               <div className="p-4 flex justify-between items-center border-b border-white/[0.08]">
                 <span className="font-medium text-zinc-200 text-sm px-4">

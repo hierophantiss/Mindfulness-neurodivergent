@@ -170,7 +170,7 @@ const axisInfo = {
   };
 
   const renderSomaticFilters = () => (
-    <div className="max-w-4xl mx-auto w-full border-b border-white/5 pb-6" id="somatic-filters-container">
+    <div className="max-w-4xl desk:max-w-none mx-auto w-full border-b border-white/5 pb-6" id="somatic-filters-container">
       <span className="text-[13px] font-medium text-ink/65 pl-1 block mb-3">
         {language === 'el' ? 'Φιλτράρισμα με βάση το Σύστημά σου' : 'Somatic Capacity Filters'}
       </span>
@@ -227,27 +227,27 @@ const axisInfo = {
           </span>
         </div>
 
-        <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <div className="flex items-center justify-center md:justify-start gap-4">
+        <header className="space-y-4 max-w-4xl desk:max-w-none mx-auto text-center desk:text-left w-full">
+          <div className="flex items-center justify-center desk:justify-start gap-4">
             <div className={cn("w-14 h-14 shrink-0 rounded-full flex items-center justify-center text-3xl font-mono border", info.bgColor, info.borderColor, info.color)}>
               {info.icon}
             </div>
-            <h1 className="font-display text-4xl md:text-5xl text-ink/90 leading-tight">
+            <h1 className="font-display text-4xl desk:text-[52px] text-ink/90 leading-tight">
               {language === 'en' ? info.title.en : info.title.el}
             </h1>
           </div>
-          <p className="text-lg text-ink/50 font-sans leading-relaxed">
+          <p className="text-lg text-ink/50 font-sans leading-relaxed desk:max-w-[720px]">
             {language === 'en' ? info.desc.en : info.desc.el}
           </p>
         </header>
 
-        <div className="max-w-4xl mx-auto w-full pb-12 space-y-12">
+        <div className="max-w-4xl desk:max-w-none mx-auto w-full pb-12 space-y-12">
           {axisBreaths.length > 0 && (
             <div className="space-y-6">
               <h2 className="text-2xl font-light text-ink/80 border-b border-white/5 pb-2">
                 {language === 'el' ? 'Βασικές Πρακτικές' : 'Core Practices'}
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 desk:grid-cols-3 gap-6 desk:gap-4">
                 {axisBreaths.map(p => (
                   <PatternCard
                     key={p.id}
@@ -267,7 +267,7 @@ const axisInfo = {
               <h2 className="text-2xl font-light text-ink/80 border-b border-white/5 pb-2">
                 {language === 'el' ? 'Αόρατες Μικροδόσεις' : 'Invisible Microdoses'}
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 desk:grid-cols-3 gap-4">
                 {axisMicrodoses.map((ex, idx) => (
                   <Link
                     to={ex.link}
@@ -335,19 +335,19 @@ const axisInfo = {
           </span>
         </div>
 
-        <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <h1 className="font-display text-4xl md:text-5xl text-ink/90 leading-tight flex items-center justify-center md:justify-start">
+        <header className="space-y-4 max-w-4xl desk:max-w-none mx-auto text-center desk:text-left w-full">
+          <h1 className="font-display text-4xl desk:text-[52px] text-ink/90 leading-tight flex items-center justify-center desk:justify-start">
             {language === 'el' ? 'Ψάλσιμο & Αντήχηση' : 'Chanting & Resonance'}
             <ConceptInfoIcon conceptId="vagus_nerve" />
           </h1>
-          <p className="text-lg text-ink/50 font-sans leading-relaxed">
+          <p className="text-lg text-ink/50 font-sans leading-relaxed desk:max-w-[720px]">
             {language === 'el' 
               ? 'Βουητό και ψάλσιμο πάνω στην εκπνοή: μακριά εκπνοή με δόνηση. Το σώμα ηρεμεί το σώμα. Αν σου τελειώνει ο αέρας, σταμάτα νωρίτερα· δεν χρειάζεται να φτάσεις ως το τέλος.' 
               : 'Humming and chanting on the exhale: a long exhale with vibration. The body calms the body. If you run out of air, stop earlier; you do not need to reach the end.'}
           </p>
         </header>
 
-        <div className="max-w-4xl mx-auto w-full pb-12">
+        <div className="max-w-4xl desk:max-w-none mx-auto w-full pb-12">
           {filteredVocals.length === 0 ? (
             <div className="py-12 text-center text-ink/40 font-sans border border-white/5 rounded-2xl bg-white/[0.01]" id="no-filtered-vocals">
               {language === 'el' 
@@ -355,7 +355,7 @@ const axisInfo = {
                 : 'No chanting exercises found with the active filters.'}
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 desk:grid-cols-3 gap-6 desk:gap-4">
               {filteredVocals.map(p => (
                 <PatternCard
                   key={p.id}
@@ -396,12 +396,12 @@ const axisInfo = {
           </span>
         </div>
 
-        <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <h1 className="font-display text-4xl md:text-5xl text-ink/90 leading-tight flex items-center justify-center md:justify-start">
+        <header className="space-y-4 max-w-4xl desk:max-w-none mx-auto text-center desk:text-left w-full">
+          <h1 className="font-display text-4xl desk:text-[52px] text-ink/90 leading-tight flex items-center justify-center desk:justify-start">
             {language === 'el' ? 'Αναπνοή & Ύπνος' : 'Breath & Sleep'}
             <ConceptInfoIcon conceptId="vagus_nerve" />
           </h1>
-          <p className="text-lg text-ink/50 font-sans leading-relaxed">
+          <p className="text-lg text-ink/50 font-sans leading-relaxed desk:max-w-[720px]">
             {language === 'el' 
               ? 'Οι τρεις ρυθμοί του βιβλίου πρώτα: 5-5 για κάθε μέρα, 4-6 στην κορύφωση, 4-2-7 για βαθιά χαλάρωση. Η εκπνοή είναι το εργαλείο, όχι η εισπνοή.' 
               : 'The book\'s three rhythms first: 5-5 for every day, 4-6 at the peak, 4-2-7 for deep relaxation. The exhale is the tool, not the inhale.'}
@@ -409,7 +409,7 @@ const axisInfo = {
         </header>
 
         {/* Warning Banner */}
-        <div className="max-w-4xl mx-auto w-full">
+        <div className="max-w-4xl desk:max-w-none mx-auto w-full">
           <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-5 md:p-6 text-left">
             <h2 className="text-amber-400 font-semibold mb-3 flex items-center gap-2">
               <span className="text-xl">⚠️</span>
@@ -436,7 +436,7 @@ const axisInfo = {
           </div>
         </div>
 
-        <div className="max-w-4xl mx-auto w-full pb-12">
+        <div className="max-w-4xl desk:max-w-none mx-auto w-full pb-12">
           {filteredBreaths.length === 0 ? (
             <div className="py-12 text-center text-ink/40 font-sans border border-white/5 rounded-2xl bg-white/[0.01]" id="no-filtered-breaths">
               {language === 'el' 
@@ -444,7 +444,7 @@ const axisInfo = {
                 : 'No breath exercises found with the active filters.'}
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 desk:grid-cols-3 gap-6 desk:gap-4">
               {filteredBreaths.map(p => (
                 <PatternCard
                   key={p.id}
@@ -516,22 +516,22 @@ const axisInfo = {
           </span>
         </div>
 
-        <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <h1 className="font-display text-4xl md:text-5xl text-ink/90 leading-tight flex items-center justify-center md:justify-start flex-wrap gap-2">
+        <header className="space-y-4 max-w-4xl desk:max-w-none mx-auto text-center desk:text-left w-full">
+          <h1 className="font-display text-4xl desk:text-[52px] text-ink/90 leading-tight flex items-center justify-center desk:justify-start flex-wrap gap-2">
             <span>{language === 'el' ? 'Κινητική Ενσυνειδητότητα & Τάι Τσι' : 'Mindful Movement & Tai Chi'}</span>
             <span className="inline-flex gap-1 items-center" onClick={(e) => e.stopPropagation()}>
               <ConceptInfoIcon conceptId="proprioception" />
               <ConceptInfoIcon conceptId="movement_vs_breathwork" className="w-6 h-6 ml-0.5 text-indigo-400 hover:text-indigo-300 hover:bg-indigo-400/10" />
             </span>
           </h1>
-          <p className="text-lg text-ink/50 font-sans leading-relaxed">
+          <p className="text-lg text-ink/50 font-sans leading-relaxed desk:max-w-[720px]">
             {language === 'el' 
               ? 'Φέρε την προσοχή από τις σκέψεις στο σώμα, με απαλές, ρυθμικές κινήσεις.' 
               : 'Bring your attention from thoughts to the body, with gentle, rhythmic movements.'}
           </p>
         </header>
 
-        <div className="card-relief max-w-4xl mx-auto w-full mb-8 font-sans text-ink/80 rounded-2xl p-6 md:p-8 space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-700">
+        <div className="card-relief max-w-4xl desk:max-w-none mx-auto w-full mb-8 font-sans text-ink/80 rounded-2xl p-6 md:p-8 space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-700">
           <div>
             <h2 className="text-xl md:text-2xl font-light text-indigo-300 mb-4">{language === 'el' ? 'Πριν Ξεκινήσεις' : 'Before You Start'}</h2>
             <p className="mb-6">{language === 'el' ? 'Το Τάι Τσι ξεκινά πριν από την πρώτη κίνηση.' : 'Tai Chi begins before the first movement.'}</p>
@@ -569,7 +569,7 @@ const axisInfo = {
         </div>
 
 
-        <div className="max-w-4xl mx-auto w-full space-y-12 pb-12">
+        <div className="max-w-4xl desk:max-w-none mx-auto w-full space-y-12 pb-12">
           {filteredMovements.length === 0 && filteredGrounding.length === 0 ? (
             <div className="py-12 text-center text-ink/40 font-sans border border-white/5 rounded-2xl bg-white/[0.01]" id="no-filtered-movements">
               {language === 'el' 
@@ -590,7 +590,7 @@ const axisInfo = {
                     </p>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                  <div className="grid grid-cols-1 desk:grid-cols-3 gap-6 desk:gap-4 animate-in fade-in slide-in-from-bottom-2 duration-500">
                     {filteredMovements.map(p => (
                       <PatternCard
                         key={p.id}
@@ -628,7 +628,7 @@ const axisInfo = {
                     <ConceptInfoIcon conceptId="grounding" className="mb-1" />
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                  <div className="grid grid-cols-1 desk:grid-cols-3 gap-6 desk:gap-4 animate-in fade-in slide-in-from-bottom-2 duration-500">
                     {filteredGrounding.map(p => (
                       <PatternCard
                         key={p.id}
@@ -666,20 +666,20 @@ const axisInfo = {
           </span>
         </div>
 
-        <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-          <h1 className="font-display text-4xl md:text-5xl text-ink/90 leading-tight flex items-center justify-center md:justify-start">
+        <header className="space-y-4 max-w-4xl desk:max-w-none mx-auto text-center desk:text-left w-full">
+          <h1 className="font-display text-4xl desk:text-[52px] text-ink/90 leading-tight flex items-center justify-center desk:justify-start">
             {language === 'el' ? 'Αόρατες Μικροδόσεις' : 'Invisible Microdoses'}
             <ConceptInfoIcon conceptId="neuroplasticity" />
           </h1>
-          <p className="text-lg text-ink/50 font-sans leading-relaxed">
+          <p className="text-lg text-ink/50 font-sans leading-relaxed desk:max-w-[720px]">
             {language === 'el' 
               ? 'Αόρατες μικροπρακτικές που γίνονται παντού.' 
               : 'Stealth practices you can do anywhere without being noticed.'}
           </p>
         </header>
 
-        <div className="max-w-4xl mx-auto w-full pb-12">
-          <div className="grid grid-cols-1 gap-6">
+        <div className="max-w-4xl desk:max-w-none mx-auto w-full pb-12">
+          <div className="grid grid-cols-1 desk:grid-cols-3 gap-6 desk:gap-4">
             <button type="button"
               onClick={() => navigate('/practice/microdoses')}
               className={cn(
@@ -731,11 +731,11 @@ const axisInfo = {
         </span>
       </div>
 
-      <header className="space-y-4 max-w-4xl mx-auto text-center md:text-left w-full">
-        <h1 className="font-display text-5xl md:text-6xl text-ink/90 leading-tight">
+      <header className="space-y-4 max-w-4xl desk:max-w-none mx-auto text-center desk:text-left w-full">
+        <h1 className="font-display text-5xl desk:text-[60px] text-ink/90 leading-tight">
           {language === 'el' ? 'Εξάσκηση' : 'Practice'}
         </h1>
-        <p className="text-lg text-ink/50 font-sans leading-relaxed">
+        <p className="text-lg text-ink/50 font-sans leading-relaxed desk:max-w-[720px]">
           {language === 'el' 
             ? 'Επίλεξε την κατηγορία εξάσκησης που ταιριάζει στην κατάστασή σου.' 
             : 'Choose the practice category that fits your current state.'}
@@ -744,9 +744,23 @@ const axisInfo = {
 
       <QuietAxisHint />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-12 max-w-5xl mx-auto w-full">
+      {/* Computer: the four axes as a quick way in, above the categories. */}
+      <div className="hidden desk:flex flex-wrap gap-2.5 -mt-4" role="group" aria-label={language === 'el' ? 'Ανά άξονα' : 'By axis'}>
+        {(['body', 'breath', 'attention', 'space'] as const).map(id => (
+          <Link
+            key={id}
+            to={`/practice?axis=${id}`}
+            className="inline-flex items-center gap-2 h-10 px-4 rounded-full border border-white/10 bg-white/[0.03] text-[14px] text-ink/85 hover:border-white/20 hover:text-ink transition-colors"
+          >
+            <span aria-hidden="true" className="font-display text-[18px] leading-none" style={{ color: `var(--axis-${id}-ink)` }}>{axisInfo[id].icon}</span>
+            {(language === 'el' ? axisInfo[id].title.el : axisInfo[id].title.en).split(' • ')[0]}
+          </Link>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 desk:grid-cols-2 gap-6 desk:gap-5 pb-12 max-w-5xl desk:max-w-none mx-auto w-full">
         {/* Mindful Movement & Tai Chi Card */}
-        <div className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-3 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:border-indigo-500/20 overflow-hidden text-left">
+        <div className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-3 glass-card flex-col flex justify-between min-h-[260px] desk:min-h-[220px] transition-all duration-300 active:scale-[0.98] hover:border-indigo-500/20 overflow-hidden text-left">
           {/* The whole card is one button (its own layer, under the concept "i" buttons) */}
           <button type="button" onClick={() => handleCategoryChange('movement')} aria-labelledby="practice-cat-movement" aria-describedby="practice-cat-movement-desc"
             className="absolute inset-0 z-[15] w-full h-full rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60" />
@@ -775,7 +789,7 @@ const axisInfo = {
         </div>
 
         {/* Breath Rhythms Card */}
-        <div className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-2 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:border-teal-500/20 overflow-hidden text-left">
+        <div className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-2 glass-card flex-col flex justify-between min-h-[260px] desk:min-h-[220px] transition-all duration-300 active:scale-[0.98] hover:border-teal-500/20 overflow-hidden text-left">
           {/* The whole card is one button (its own layer, under the concept "i" buttons) */}
           <button type="button" onClick={() => handleCategoryChange('breath')} aria-labelledby="practice-cat-breath" aria-describedby="practice-cat-breath-desc"
             className="absolute inset-0 z-[15] w-full h-full rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60" />
@@ -801,7 +815,7 @@ const axisInfo = {
         </div>
 
         {/* Vocal & Chanting Resonance Card */}
-        <div className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-4 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:border-violet-500/20 overflow-hidden text-left">
+        <div className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-4 glass-card flex-col flex justify-between min-h-[260px] desk:min-h-[220px] transition-all duration-300 active:scale-[0.98] hover:border-violet-500/20 overflow-hidden text-left">
           {/* The whole card is one button (its own layer, under the concept "i" buttons) */}
           <button type="button" onClick={() => handleCategoryChange('vocal')} aria-labelledby="practice-cat-vocal" aria-describedby="practice-cat-vocal-desc"
             className="absolute inset-0 z-[15] w-full h-full rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60" />
@@ -827,7 +841,7 @@ const axisInfo = {
         </div>
 
         {/* Microdoses Card */}
-        <div className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-5 glass-card flex-col flex justify-between min-h-[260px] transition-all duration-300 active:scale-[0.98] hover:border-amber-500/20 overflow-hidden text-left">
+        <div className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-5 glass-card flex-col flex justify-between min-h-[260px] desk:min-h-[220px] transition-all duration-300 active:scale-[0.98] hover:border-amber-500/20 overflow-hidden text-left">
           {/* The whole card is one button (its own layer, under the concept "i" buttons) */}
           <button type="button" onClick={() => hasFoundation ? handleCategoryChange('microdoses') : setLockedCategoryAttempt('microdoses')} aria-labelledby="practice-cat-microdoses" aria-describedby="practice-cat-microdoses-desc"
             className="absolute inset-0 z-[15] w-full h-full rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60" />

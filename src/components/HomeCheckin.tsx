@@ -71,7 +71,7 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
     <div className="flex flex-col gap-4">
       {!embedded && <h2 className="sky-text text-center text-[20px] font-normal text-ink/90">{question}</h2>}
 
-      <div className="checkin-grid grid grid-cols-4 gap-1.5" role="group" aria-label={question}>
+      <div className={cn("checkin-grid grid grid-cols-4 gap-1.5", embedded && "desk:grid-cols-2 desk:gap-x-2 desk:gap-y-4")} role="group" aria-label={question}>
         {CHECKIN_OPTIONS.map(o => {
           const isSel = o.id === selected;
           return (
@@ -82,10 +82,10 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
               aria-expanded={isSel ? open : undefined}
               className="group flex flex-col items-center gap-[7px] py-1 min-w-0 active:scale-[0.96] transition-transform"
             >
-              <span className={cn("glass w-[52px] h-[52px] rounded-full flex items-center justify-center group-hover:brightness-110 transition-[filter]", isSel && "glass-chosen")}>
+              <span className={cn("glass w-[52px] h-[52px] rounded-full flex items-center justify-center group-hover:brightness-110 transition-[filter]", embedded && "desk:w-16 desk:h-16", isSel && "glass-chosen")}>
                 <svg
                   width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"
-                  aria-hidden="true"
+                  aria-hidden="true" className={embedded ? 'desk:w-[26px] desk:h-[26px]' : undefined}
                   style={{ color: tint(o.id, 'dot'), filter: `drop-shadow(0 0 5px color-mix(in srgb, ${tint(o.id, 'dot')} 55%, transparent))` }}
                 >
                   <path d={ICON[o.id]} />
@@ -96,6 +96,12 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
           );
         })}
       </div>
+
+      {embedded && !selected && (
+        <p className="hidden desk:block text-[14px] leading-relaxed text-ink/60">
+          {lang === 'el' ? 'Διάλεξε, και θα σου προτείνω μια πρακτική για τώρα.' : 'Choose, and I will suggest a practice for right now.'}
+        </p>
+      )}
 
       <AnimatePresence initial={false}>
         {opt && open && (
