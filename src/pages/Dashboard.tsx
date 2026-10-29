@@ -285,9 +285,9 @@ export default function Dashboard() {
             </div>
           </motion.section>
 
-          {/* Everything else. */}
+          {/* More: everything else in the app. */}
           <motion.section variants={itemVariants} aria-labelledby="home-more-title" className="mt-[26px]">
-            <h2 id="home-more-title" className={sectionTitle}>{el ? 'Και όλα τα άλλα' : 'And everything else'}</h2>
+            <h2 id="home-more-title" className={sectionTitle}>{el ? 'Περισσότερα' : 'More'}</h2>
             <div className="mt-3 -mx-[22px] px-[22px] pb-1 flex gap-2.5 overflow-x-auto snap-x snap-mandatory scroll-px-[22px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {shelf.map(item => {
                 const body = (
