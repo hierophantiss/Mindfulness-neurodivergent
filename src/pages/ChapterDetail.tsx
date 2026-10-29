@@ -193,7 +193,7 @@ const ZenParagraph = ({ text, index, readKey, readState }: { text: string, index
     >
       <div 
         data-read-key={readKey}
-        className={cn("font-sans text-ink/85 leading-loose whitespace-pre-line", readClass(readState))}
+        className={cn("read-text font-sans text-ink/85 leading-loose whitespace-pre-line", readClass(readState))}
       >
         <ConceptAnnotatedText text={text} />
       </div>

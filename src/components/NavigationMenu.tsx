@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import InfoModal from './InfoModal';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
 import { downloadBackup, restoreBackup } from '../lib/backup';
-import { Home, BookOpen, Activity, Notebook, Menu, X, Info, Music, Compass, LayoutGrid, EyeOff, Eye, Database, User as UserIcon, LogOut, Download, Sparkles, RotateCcw, Headphones, Type, LetterText } from 'lucide-react';
+import { Home, BookOpen, Activity, Notebook, Menu, X, Info, Music, Compass, LayoutGrid, EyeOff, Eye, Database, User as UserIcon, LogOut, Download, Sparkles, RotateCcw, Headphones, LetterText } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
@@ -19,7 +19,7 @@ export default function NavigationMenu() {
   const location = useLocation();
   const { language, setLanguage } = useLanguage();
   const { theme, toggleTheme } = useTheme();
-  const { reduceMotion, toggleReduceMotion, dyslexicFont, toggleDyslexicFont, airyText, toggleAiryText } = useAccessibility();
+  const { reduceMotion, toggleReduceMotion, easyRead, toggleEasyRead } = useAccessibility();
   const { masterPlaying, toggleMaster } = useAudioMixer();
 
   useEffect(() => {
@@ -285,14 +285,11 @@ export default function NavigationMenu() {
                     </button>
                   </div>
 
-                  {/* Reading: a dyslexia-friendly font and airier text (also in Settings) */}
+                  {/* Reading: easy reading (also in Settings) */}
                   {[
-                    { on: dyslexicFont, toggle: toggleDyslexicFont, Icon: Type,
-                      label: language === 'en' ? 'Dyslexia-friendly font' : 'Γραμματοσειρά για δυσλεξία',
-                      hint: language === 'en' ? 'OpenDyslexic, no slanted text' : 'OpenDyslexic, χωρίς πλάγια γράμματα' },
-                    { on: airyText, toggle: toggleAiryText, Icon: LetterText,
-                      label: language === 'en' ? 'Airy text' : 'Αραιό κείμενο',
-                      hint: language === 'en' ? 'More space between letters and words' : 'Περισσότερος χώρος ανάμεσα σε γράμματα και λέξεις' },
+                    { on: easyRead, toggle: toggleEasyRead, Icon: LetterText,
+                      label: language === 'en' ? 'Easy reading' : 'Εύκολη ανάγνωση',
+                      hint: language === 'en' ? 'Larger, with more space, no slanted text' : 'Μεγαλύτερα, με περισσότερο χώρο, χωρίς πλάγια' },
                   ].map(({ on, toggle, Icon, label, hint }) => (
                     <React.Fragment key={label}>
                       <div className="w-full h-px bg-white/5 my-1" />

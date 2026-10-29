@@ -1,15 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { applyReadingPrefs, readPref, savePref, DYSLEXIC_FONT_KEY, AIRY_TEXT_KEY } from '../lib/readingPrefs';
+import { applyReadingPrefs, readEasyRead, savePref, EASY_READ_KEY } from '../lib/readingPrefs';
 
 interface AccessibilityContextType {
   reduceMotion: boolean;
   toggleReduceMotion: () => void;
-  /** OpenDyslexic instead of Inter, everywhere. */
-  dyslexicFont: boolean;
-  toggleDyslexicFont: () => void;
-  /** More space between letters, words and lines. */
-  airyText: boolean;
-  toggleAiryText: () => void;
+  /** Easy reading: a little larger, more space between letters, words and lines, no slanted text. */
+  easyRead: boolean;
+  toggleEasyRead: () => void;
 }
 
 const AccessibilityContext = createContext<AccessibilityContextType | undefined>(undefined);
@@ -29,11 +26,9 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
     });
   };
 
-  const [dyslexicFont, setDyslexicFont] = useState(() => readPref(DYSLEXIC_FONT_KEY));
-  const [airyText, setAiryText] = useState(() => readPref(AIRY_TEXT_KEY));
-  const toggleDyslexicFont = () => setDyslexicFont(prev => { savePref(DYSLEXIC_FONT_KEY, !prev); return !prev; });
-  const toggleAiryText = () => setAiryText(prev => { savePref(AIRY_TEXT_KEY, !prev); return !prev; });
-  useEffect(() => { applyReadingPrefs(dyslexicFont, airyText); }, [dyslexicFont, airyText]);
+  const [easyRead, setEasyRead] = useState(readEasyRead);
+  const toggleEasyRead = () => setEasyRead(prev => { savePref(EASY_READ_KEY, !prev); return !prev; });
+  useEffect(() => { applyReadingPrefs(easyRead); }, [easyRead]);
 
   useEffect(() => {
     if (reduceMotion) {
@@ -44,7 +39,7 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
   }, [reduceMotion]);
 
   return (
-    <AccessibilityContext.Provider value={{ reduceMotion, toggleReduceMotion, dyslexicFont, toggleDyslexicFont, airyText, toggleAiryText }}>
+    <AccessibilityContext.Provider value={{ reduceMotion, toggleReduceMotion, easyRead, toggleEasyRead }}>
       {children}
     </AccessibilityContext.Provider>
   );

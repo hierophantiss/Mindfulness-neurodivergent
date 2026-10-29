@@ -1,10 +1,13 @@
-// Reading settings (Settings → Accessibility): a dyslexia-friendly font and
-// airier text. Both are classes on <html>, styled in index.css, so they reach
-// every page. The font (about 120 KB a weight) downloads only once someone
-// turns it on.
+// Reading setting (Menu and Settings → Accessibility): "Easy reading". What
+// helps reading, by the research, is space between letters, words and lines,
+// a slightly larger size and upright letters — not a special "dyslexia font"
+// (none has shown a benefit, and OpenDyslexic has no real Greek), so it stays
+// our own font, with air. A class on <html>, styled in index.css, so it
+// reaches every page.
 
-export const DYSLEXIC_FONT_KEY = 'n_mindfulness_dyslexic_font';
-export const AIRY_TEXT_KEY = 'n_mindfulness_airy_text';
+export const EASY_READ_KEY = 'n_mindfulness_easy_read';
+// The two older settings it replaces: whoever had either on, finds it on.
+const OLD_KEYS = ['n_mindfulness_dyslexic_font', 'n_mindfulness_airy_text'];
 
 export function readPref(key: string): boolean {
   try {
@@ -22,17 +25,23 @@ export function savePref(key: string, on: boolean) {
   }
 }
 
-let fontLoading: Promise<unknown> | null = null;
-function loadDyslexicFont() {
-  if (!fontLoading) {
-    fontLoading = import('../opendyslexic.css').catch(() => { fontLoading = null; });
+/** "Easy reading" as saved, or on if one of the two older settings was on. */
+export function readEasyRead(): boolean {
+  try {
+    const saved = localStorage.getItem(EASY_READ_KEY);
+    if (saved !== null) return saved === 'true';
+    const was = OLD_KEYS.some(k => localStorage.getItem(k) === 'true');
+    OLD_KEYS.forEach(k => localStorage.removeItem(k));
+    if (was) localStorage.setItem(EASY_READ_KEY, 'true');
+    return was;
+  } catch {
+    return false;
   }
-  return fontLoading;
 }
 
-export function applyReadingPrefs(dyslexicFont: boolean, airyText: boolean) {
+export function applyReadingPrefs(easyRead: boolean) {
   const c = document.documentElement.classList;
-  c.toggle('font-dyslexic', dyslexicFont);
-  c.toggle('text-airy', airyText);
-  if (dyslexicFont) void loadDyslexicFont();
+  c.toggle('text-easy', easyRead);
+  // the classes of the older settings, if a page was left with them
+  c.remove('font-dyslexic', 'text-airy');
 }

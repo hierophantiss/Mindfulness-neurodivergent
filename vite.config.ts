@@ -22,8 +22,6 @@ export default defineConfig(() => {
           // Fonts: only the Latin and Greek letters go into the offline copy; the
           // rarer alphabets load from the network if a page ever needs them.
           globIgnores: ['**/*.{mp4,pdf,png,jpg}', '**/*_debug.html', '**/*-{cyrillic,cyrillic-ext,vietnamese,latin-ext,greek-ext}-wght-*.woff2',
-            // the dyslexia font loads only for those who turn it on
-            '**/opendyslexic-*',
             // the display face: Latin and Greek only
             '**/gfs-didot-{greek-ext,vietnamese}-*'],
           // The cat companion, so it shows offline too.

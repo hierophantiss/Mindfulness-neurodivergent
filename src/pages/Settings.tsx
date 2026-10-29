@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { downloadBackup, restoreBackup } from '../lib/backup';
 import { motion } from 'motion/react';
-import { ChevronLeft, Languages, Activity, Type, LetterText, Info, LogOut, Sparkles, Sun, Database, FileText, Download, Bug, ShieldCheck } from 'lucide-react';
+import { ChevronLeft, Languages, Activity, LetterText, Info, LogOut, Sparkles, Sun, Database, FileText, Download, Bug, ShieldCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
@@ -11,7 +11,7 @@ import { RainbowInfinity } from '../components/RainbowInfinity';
 export default function Settings() {
   const navigate = useNavigate();
   const { language, setLanguage } = useLanguage();
-  const { reduceMotion, toggleReduceMotion, dyslexicFont, toggleDyslexicFont, airyText, toggleAiryText } = useAccessibility();
+  const { reduceMotion, toggleReduceMotion, easyRead, toggleEasyRead } = useAccessibility();
   const [canInstall, setCanInstall] = useState(false);
   const [showDebug, setShowDebug] = useState(false);
   const [debugLog, setDebugLog] = useState<string[]>([]);
@@ -195,23 +195,13 @@ export default function Settings() {
           color: 'text-indigo-400'
         },
         {
-          id: 'dyslexic-font',
-          icon: Type,
-          label: { el: 'Γραμματοσειρά για δυσλεξία', en: 'Dyslexia-friendly font' },
-          hint: { el: 'OpenDyslexic, χωρίς πλάγια γράμματα', en: 'OpenDyslexic, no slanted text' },
-          value: dyslexicFont ? { el: 'Ενεργό', en: 'Enabled' } : { el: 'Ανενεργό', en: 'Disabled' },
-          action: toggleDyslexicFont,
-          pressed: dyslexicFont,
-          color: 'text-sky-300'
-        },
-        {
-          id: 'airy-text',
+          id: 'easy-read',
           icon: LetterText,
-          label: { el: 'Αραιό κείμενο', en: 'Airy text' },
-          hint: { el: 'Περισσότερος χώρος ανάμεσα σε γράμματα, λέξεις και γραμμές', en: 'More space between letters, words and lines' },
-          value: airyText ? { el: 'Ενεργό', en: 'Enabled' } : { el: 'Ανενεργό', en: 'Disabled' },
-          action: toggleAiryText,
-          pressed: airyText,
+          label: { el: 'Εύκολη ανάγνωση', en: 'Easy reading' },
+          hint: { el: 'Λίγο μεγαλύτερα γράμματα, περισσότερος χώρος ανάμεσα σε γράμματα, λέξεις και γραμμές, χωρίς πλάγια', en: 'Slightly larger letters, more space between letters, words and lines, no slanted text' },
+          value: easyRead ? { el: 'Ενεργό', en: 'Enabled' } : { el: 'Ανενεργό', en: 'Disabled' },
+          action: toggleEasyRead,
+          pressed: easyRead,
           color: 'text-sky-300'
         }
       ]

@@ -243,48 +243,31 @@
   font-family: 'Cinzel Variable', 'Cinzel', Georgia, serif;
 }
 
-/* Reading settings (Settings → Accessibility; see lib/readingPrefs.ts).
-   Dyslexia-friendly font: OpenDyslexic everywhere, titles too, and no slanted
-   text (it has no italic of its own, and slanted letters are harder to read). */
-html.font-dyslexic {
-  --font-sans: 'OpenDyslexic', 'Inter Variable', 'Inter', ui-sans-serif, system-ui, sans-serif;
-}
-html.font-dyslexic .font-serif,
-html.font-dyslexic [data-prerendered] h1 {
-  font-family: var(--font-sans);
-}
-/* The short labels under the home page's round answers and axes, in the wider font. */
-html.font-dyslexic .checkin-label {
-  font-size: 10.5px;
-  letter-spacing: 0;
-}
-html.font-dyslexic .font-display {
-  font-family: var(--font-sans);
-}
-html.font-dyslexic :is(.italic, em, i) {
-  font-style: normal;
-}
-/* The home title (the app's name beside its sign, like a logo) and the SOS
-   button keep their own letters: with the much wider font they would not fit
-   side by side. */
-html.font-dyslexic .keep-font {
-  font-family: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, sans-serif;
-}
-/* Airy text: the spacing of WCAG 1.4.12 — letters 0.12em, words 0.16em apart —
-   and lines further apart, for everything you read. Buttons, the bottom bar, the
-   home title and SOS keep their own spacing (revert-layer: back to Tailwind's),
-   or they would no longer fit. Outside Tailwind's layers, so it wins over them. */
-html.text-airy body * {
-  letter-spacing: 0.12em;
+/* Easy reading (Menu and Settings → Accessibility; see lib/readingPrefs.ts):
+   what the research finds helps reading — space between letters and words
+   (Zorzi et al. 2012), more space between lines, a slightly larger size for
+   the text you read, upright letters — in our own font. Buttons, the bottom
+   bar, the home title and SOS keep their own spacing (revert-layer: back to
+   Tailwind's), or they would no longer fit. Outside Tailwind's layers, so it
+   wins over them. */
+html.text-easy body * {
+  letter-spacing: 0.05em;
   word-spacing: 0.16em;
 }
-html.text-airy :is(button, nav, [role="button"], input, select, textarea, .keep-font),
-html.text-airy :is(button, nav, [role="button"], input, select, textarea, .keep-font) * {
+html.text-easy :is(button, nav, [role="button"], input, select, textarea, .keep-font, .font-display),
+html.text-easy :is(button, nav, [role="button"], input, select, textarea, .keep-font, .font-display) * {
   letter-spacing: revert-layer;
   word-spacing: revert-layer;
 }
-html.text-airy :is(p, li, blockquote, dd) {
-  line-height: 1.85;
+html.text-easy :is(p, li, blockquote, dd) {
+  line-height: 1.9;
+}
+/* The reading text of the chapters, a step larger. */
+html.text-easy .read-text {
+  font-size: 1.08em;
+}
+html.text-easy :is(.italic, em, i) {
+  font-style: normal;
 }
 
 @keyframes fadeIn {
