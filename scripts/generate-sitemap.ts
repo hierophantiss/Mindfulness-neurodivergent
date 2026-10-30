@@ -147,8 +147,12 @@ ${urls}
   fs.writeFileSync(path.join(ROOT_DIR, 'public', 'sitemap.xml'), sitemapContent);
   console.log('✅ Generated sitemap.xml.');
 
+  // Everyone may read the site (search engines and AI assistants alike).
+  // Only /audio/ is closed: the chapters' and the audiobook's MP3 files
+  // (hundreds of MB) are for listening, not for crawlers to download.
   const robotsTxt = `User-agent: *
 Allow: /
+Disallow: /audio/
 
 Sitemap: ${BASE_URL}/sitemap.xml
 `;

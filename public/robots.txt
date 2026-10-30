@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /audio/
 
 Sitemap: https://neurodivergent-mindfulness.org/sitemap.xml
