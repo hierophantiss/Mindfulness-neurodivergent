@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Γεωμετρία της Προσοχής · Attention Geometry</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Serif:ital@0;1&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: radial-gradient(circle at center, #0c0f17 0%, #040508 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Cormorant Garamond', serif;
+    overflow: hidden;
+    user-select: none;
+    color: #e8e4df;
+  }
+
+  #title {
+    color: #dfc593;
+    font-size: clamp(18px, 3vw, 24px);
+    font-weight: 300;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    opacity: 0.95;
+    text-shadow: 0 0 20px rgba(200, 169, 110, 0.2);
+  }
+
+  #canvas-wrap {
+    position: relative;
+    width: min(560px, 95vw);
+    height: min(560px, 95vw);
+  }
+
+  canvas {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    box-shadow:
+      0 0 80px rgba(100, 180, 210, 0.08),
+      0 0 140px rgba(200, 169, 110, 0.05),
+      inset 0 0 60px rgba(0,0,0,0.9);
+    background: radial-gradient(circle at 50% 40%, #151c2a 0%, #05070a 100%);
+  }
+
+  #phase-label {
+    margin-top: 28px;
+    color: #aed3d3;
+    font-size: clamp(15px, 2.2vw, 18px);
+    letter-spacing: 0.15em;
+    font-weight: 400;
+    text-align: center;
+    min-height: 24px;
+    transition: opacity 0.6s ease;
+    text-shadow: 0 0 10px rgba(160, 210, 230, 0.2);
+  }
+
+  #phase-el {
+    color: #dfc593;
+    font-size: clamp(12px, 1.6vw, 14px);
+    letter-spacing: 0.2em;
+    text-align: center;
+    margin-top: 8px;
+    opacity: 0.7;
+    font-style: italic;
+    min-height: 20px;
+  }
+
+  #controls {
+    margin-top: 30px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 12px 24px;
+    border-radius: 30px;
+    border: 1px solid rgba(200, 169, 110, 0.1);
+    backdrop-filter: blur(10px);
+  }
+
+  button {
+    background: rgba(200, 169, 110, 0.08);
+    border: 1px solid rgba(200, 169, 110, 0.4);
+    color: #dfc593;
+    padding: 8px 24px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 20px;
+  }
+
+  button:hover {
+    background: rgba(200, 169, 110, 0.2);
+    border-color: rgba(200, 169, 110, 0.9);
+    box-shadow: 0 0 15px rgba(200, 169, 110, 0.2);
+    transform: translateY(-1px);
+  }
+
+  #speed-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #7b9999;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+  }
+
+  input[type=range] {
+    width: 100px;
+    accent-color: #dfc593;
+    opacity: 0.8;
+    cursor: pointer;
+  }
+
+  .ex-intro{position:fixed;inset:0;z-index:100;background:#050508;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:opacity 2s ease; backdrop-filter: blur(5px);}
+  .ex-intro.hidden{opacity:0;pointer-events:none}
+  .ex-intro-t{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4.5vw,3rem);font-weight:300;letter-spacing:0.2em;background:linear-gradient(135deg,#fff,#dfc593);-webkit-background-clip:text;-webkit-text-fill-color:transparent;opacity:0;animation:xfi 2.5s ease 0.5s forwards; filter: drop-shadow(0 0 20px rgba(223, 197, 147, 0.2));}
+  .ex-intro-s{font-family:'Cormorant Garamond',serif;font-size:clamp(0.8rem,1.4vw,1rem);letter-spacing:0.3em;color:rgba(232,228,223,0.4);margin-top:12px;font-style:italic;opacity:0;animation:xfi 2.5s ease 1.5s forwards}
+  .ex-intro-h{position:absolute;bottom:clamp(40px,8vh,80px);left:50%;transform:translateX(-50%);font-family:'Cormorant Garamond',serif;font-size:clamp(0.85rem,2vw,1.1rem);letter-spacing:0.3em;color:rgba(223, 197, 147, 0.7);text-transform:uppercase;cursor:pointer;padding:14px 40px;border:1px solid rgba(223, 197, 147, 0.3);border-radius:30px;background:rgba(223, 197, 147, 0.05);transition:all 0.4s;animation:xpu 3s ease-in-out infinite;white-space:nowrap}
+  .ex-intro-h:hover{background:rgba(223, 197, 147, 0.15); border-color:rgba(223, 197, 147, 0.8);}
+  
+  @keyframes xfi{to{opacity:1}}
+  @keyframes xpu{0%,100%{opacity:0.6; box-shadow: 0 0 0 rgba(223,197,147,0)}50%{opacity:1; box-shadow: 0 0 20px rgba(223,197,147,0.2)}}
+</style>
+</head>
+<body>
+<div class="ex-intro" id="exIntro" onclick="this.classList.add('hidden')">
+  <div class="ex-intro-t">Γεωμετρία Προσοχής</div>
+  <div class="ex-intro-s">Εστίαση & Ανοιχτή Επίγνωση</div>
+  <div class="ex-intro-h">πάτησε για να ξεκινήσεις</div>
+</div>
+
+<div id="title">Η Σκηνή του Νου</div>
+
+<div id="canvas-wrap">
+  <canvas id="c"></canvas>
+</div>
+
+<div id="phase-label">Άξονας Βαρύτητας & Κύκλος Φροντίδας</div>
+<div id="phase-el">Gravity Axis & Circle of Care</div>
+
+<div id="controls">
+  <button id="btn-pause">⏸ ΠΑΥΣΗ</button>
+  <div id="speed-wrap">
+    <span>ΡΥΘΜΟΣ</span>
+    <input type="range" id="speed" min="0.3" max="2" step="0.1" value="1">
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const W = 600, H = 600, CX = 300, CY = 300;
+
+// High-DPI Display Support
+const dpr = window.devicePixelRatio || 1;
+canvas.width = W * dpr;
+canvas.height = H * dpr;
+ctx.scale(dpr, dpr);
+
+const labelEl = document.getElementById('phase-label');
+const labelEn = document.getElementById('phase-el');
+const btnPause = document.getElementById('btn-pause');
+const speedEl = document.getElementById('speed');
+
+const urlLang = new URLSearchParams(location.search).get('lang');
+const lang = (urlLang === 'en') ? 'en' : 'el';
+
+let paused = false;
+let speedMult = 1;
+let t = 0; 
+let animId;
+
+if (lang === 'en') {
+  labelEl.style.cssText = 'color:#dfc593;font-size:clamp(12px,1.6vw,14px);letter-spacing:0.2em;text-align:center;margin-top:8px;opacity:0.7;font-style:italic;min-height:20px';
+  labelEn.style.cssText = 'margin-top:28px;color:#aed3d3;font-size:clamp(15px,2.2vw,18px);letter-spacing:0.15em;font-weight:400;text-align:center;min-height:24px;transition:opacity 0.6s ease;text-shadow:0 0 10px rgba(160,210,230,0.2)';
+  labelEn.parentNode.insertBefore(labelEn, labelEl);
+  document.getElementById('title').textContent = 'The Stage of the Mind';
+  document.querySelector('.ex-intro-t').textContent = 'Attention Geometry';
+  document.querySelector('.ex-intro-h').textContent = 'click anywhere to begin';
+  btnPause.textContent = '⏸ PAUSE';
+  btnPause.onclick = () => { paused = !paused; btnPause.textContent = paused ? '▶ PLAY' : '⏸ PAUSE'; if (!paused) loop(); };
+} else {
+  btnPause.onclick = () => { paused = !paused; btnPause.textContent = paused ? '▶ ΣΥΝΕΧΕΙΑ' : '⏸ ΠΑΥΣΗ'; if (!paused) loop(); };
+}
+speedEl.oninput = () => { speedMult = parseFloat(speedEl.value); };
+
+// Ambient Mind Dust
+const dustParticles = Array.from({ length: 60 }, () => ({
+  x: Math.random() * W,
+  y: Math.random() * H,
+  r: Math.random() * 1.5 + 0.5,
+  speedX: (Math.random() - 0.5) * 0.2,
+  speedY: (Math.random() - 0.5) * 0.2,
+  baseAlpha: Math.random() * 0.4 + 0.1
+}));
+
+// Γεωμετρία (Ο Χάρτης)
+const MED = { x: CX, y: 440 }; 
+const OBJECT = { x: CX, y: 150 }; 
+const EYE_L = { x: -14, y: -28 };
+const EYE_R = { x: 14, y: -28 };
+
+// Νοητικά Γεγονότα (Σκέψεις)
+class Thought {
+  constructor(side) {
+    this.side = side;
+    this.opacity = 0;
+    this.scale = 0;
+    this.recognized = false;
+    this.recogOpacity = 0;
+    this.particles = [];
+    for (let i = 0; i < 8; i++) {
+      this.particles.push({
+        angle: Math.random() * Math.PI * 2,
+        r: 10 + Math.random() * 20,
+        speed: 0.2 + Math.random() * 0.6,
+        size: Math.random() * 2 + 1
+      });
+    }
+    if (side === 'left')  { this.x = CX - 100; this.y = 280; }
+    if (side === 'front') { this.x = CX + 20;  this.y = 230; }
+  }
+
+  update(dt, show, recognized) {
+    if (show)       this.opacity = Math.min(1, this.opacity + dt * 1.2);
+    else            this.opacity = Math.max(0, this.opacity - dt * 1.5);
+    
+    if (show)       this.scale  = Math.min(1, this.scale  + dt * 1.2);
+    else            this.scale  = Math.max(0, this.scale  - dt * 2.0);
+
+    this.recognized = recognized;
+    if (recognized) this.recogOpacity = Math.min(1, this.recogOpacity + dt * 2);
+    else            this.recogOpacity = Math.max(0, this.recogOpacity - dt * 3);
+
+    this.particles.forEach(p => { p.angle += p.speed * dt; });
+  }
+
+  draw() {
+    if (this.opacity < 0.01) return;
+    ctx.save();
+    ctx.globalAlpha = this.opacity;
+    ctx.translate(this.x, this.y);
+    ctx.translate(0, Math.sin(t * 2 + (this.side==='left'?0:Math.PI)) * 4);
+    ctx.scale(this.scale, this.scale);
+
+    const r = 32;
+    
+    const grd = ctx.createRadialGradient(0, 0, 0, 0, 0, r);
+    grd.addColorStop(0, 'rgba(120, 170, 200, 0.45)');
+    grd.addColorStop(0.5, 'rgba(90, 140, 170, 0.2)');
+    grd.addColorStop(1, 'rgba(80, 120, 140, 0.0)');
+    ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2);
+    ctx.fillStyle = grd; ctx.fill();
+
+    this.particles.forEach(p => {
+      const px = Math.cos(p.angle) * p.r;
+      const py = Math.sin(p.angle) * p.r;
+      ctx.beginPath(); ctx.arc(px, py, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(180, 220, 240, 0.8)';
+      ctx.shadowColor = 'rgba(180, 220, 240, 0.6)';
+      ctx.shadowBlur = 4;
+      ctx.fill();
+    });
+
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = 'rgba(210, 240, 255, 0.95)';
+    ctx.font = '12px Cormorant Garamond, serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('σκέψη', 0, 0);
+
+    if (this.recogOpacity > 0.01) {
+      ctx.globalAlpha = this.opacity * this.recogOpacity;
+      ctx.fillStyle = '#dfc593';
+      ctx.font = 'italic 12px Cormorant Garamond, serif';
+      ctx.shadowColor = 'rgba(223, 197, 147, 0.4)';
+      ctx.shadowBlur = 8;
+      ctx.fillText('αποταύτιση', 0, r + 18);
+    }
+
+    ctx.restore();
+  }
+}
+
+// Το Τρίγωνο της Προσοχής (Η Σκηνή του Νου)
+function drawStage(targetX, targetY, alpha = 1) {
+  const eL = { x: MED.x + EYE_L.x, y: MED.y + EYE_L.y };
+  const eR = { x: MED.x + EYE_R.x, y: MED.y + EYE_R.y };
+
+  ctx.save();
+  ctx.globalCompositeOperation = 'screen';
+
+  const grd = ctx.createLinearGradient(MED.x, MED.y, targetX, targetY);
+  grd.addColorStop(0,   `rgba(223, 197, 147, ${0.18 * alpha})`);
+  grd.addColorStop(0.5, `rgba(160, 210, 230, ${0.08 * alpha})`);
+  grd.addColorStop(1,   `rgba(100, 150, 180, 0)`);
+
+  ctx.beginPath();
+  ctx.moveTo(eL.x, eL.y);
+  ctx.lineTo(targetX, targetY);
+  ctx.lineTo(eR.x, eR.y);
+  ctx.closePath();
+  ctx.fillStyle = grd;
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.moveTo(eL.x, eL.y); ctx.lineTo(targetX, targetY);
+  ctx.moveTo(eR.x, eR.y); ctx.lineTo(targetX, targetY);
+  
+  const lineGrd = ctx.createLinearGradient(MED.x, MED.y, targetX, targetY);
+  lineGrd.addColorStop(0, `rgba(230, 205, 150, ${0.9 * alpha})`);
+  lineGrd.addColorStop(1, `rgba(160, 210, 240, ${0.1 * alpha})`);
+  
+  ctx.strokeStyle = lineGrd;
+  ctx.lineWidth = 1.5;
+  ctx.shadowColor = 'rgba(223, 197, 147, 0.8)';
+  ctx.shadowBlur = 12;
+  ctx.stroke();
+  
+  ctx.restore();
+}
+
+// Ο Παρατηρητής (Σημείο Βαρύτητας & Αναπνοή) - ΝΕΟΣ ΣΧΕΔΙΑΣΜΟΣ
+function drawMeditator(pulse) {
+  ctx.save();
+  ctx.translate(MED.x, MED.y);
+
+  const breatheIn = Math.sin(pulse * Math.PI * 0.5);
+
+  // 1. Ο Απέραντος Χώρος (Pristine Mind)
+  ctx.beginPath();
+  ctx.arc(0, 0, 260, 0, Math.PI * 2);
+  const spaceGrd = ctx.createRadialGradient(0, 0, 80, 0, 0, 260);
+  spaceGrd.addColorStop(0, 'rgba(80, 120, 150, 0.08)');
+  spaceGrd.addColorStop(1, 'rgba(80, 120, 150, 0)');
+  ctx.fillStyle = spaceGrd; ctx.fill();
+
+  // 2. Οι Κύκλοι Φροντίδας (Αναπνοή)
+  const breathRadius = 90 + breatheIn * 12;
+  
+  ctx.beginPath();
+  ctx.arc(0, 0, breathRadius, 0, Math.PI * 2);
+  ctx.strokeStyle = `rgba(160, 210, 230, ${0.15 + breatheIn * 0.08})`;
+  ctx.lineWidth = 2;
+  ctx.shadowColor = 'rgba(160, 210, 230, 0.4)';
+  ctx.shadowBlur = 8;
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.arc(0, 0, breathRadius * 0.85, 0, Math.PI * 2);
+  ctx.strokeStyle = `rgba(223, 197, 147, ${0.08 + breatheIn * 0.04})`;
+  ctx.lineWidth = 1;
+  ctx.shadowBlur = 0;
+  ctx.stroke();
+
+  // 3. Ακουστικά Κύματα
+  const waveOffset = (t * 12) % 25;
+  for(let i=0; i<3; i++) {
+    const r = waveOffset + i * 22;
+    const alpha = Math.max(0, 0.25 - r/120);
+    ctx.strokeStyle = `rgba(160, 210, 230, ${alpha})`;
+    ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.arc(-40, 0, r, Math.PI*0.6, Math.PI*1.4); ctx.stroke();
+    ctx.beginPath(); ctx.arc(40, 0, r, -Math.PI*0.4, Math.PI*0.4); ctx.stroke();
+  }
+
+  // 4. Σώμα & Ώμοι (Γείωση & Βαρύτητα - Οργανικός Σχεδιασμός)
+  const shoulderGrd = ctx.createLinearGradient(0, -20, 0, 60);
+  shoulderGrd.addColorStop(0, 'rgba(40, 55, 75, 0.95)');
+  shoulderGrd.addColorStop(1, 'rgba(15, 22, 30, 0.95)');
+  
+  const sW = 55 + breatheIn * 2; 
+  const sH = 25 + breatheIn * 1; 
+  
+  ctx.beginPath();
+  ctx.moveTo(-sW, sH);
+  ctx.bezierCurveTo(-sW, 0, -35, -15, 0, -15);
+  ctx.bezierCurveTo(35, -15, sW, 0, sW, sH);
+  ctx.bezierCurveTo(sW, 55, 35, 70, 0, 70);
+  ctx.bezierCurveTo(-35, 70, -sW, 55, -sW, sH);
+  
+  ctx.fillStyle = shoulderGrd;
+  ctx.strokeStyle = 'rgba(100, 140, 160, 0.5)';
+  ctx.lineWidth = 1.5;
+  ctx.shadowColor = 'rgba(0,0,0,0.6)';
+  ctx.shadowBlur = 15;
+  ctx.fill(); ctx.stroke();
+
+  // 5. Κεφάλι (Ο Αισθητήρας)
+  const headGrd = ctx.createRadialGradient(0, 0, 0, 0, 0, 32);
+  headGrd.addColorStop(0, 'rgba(60, 80, 105, 1)');
+  headGrd.addColorStop(1, 'rgba(25, 35, 50, 1)');
+
+  ctx.beginPath();
+  ctx.arc(0, 0, 32, 0, Math.PI * 2);
+  ctx.fillStyle = headGrd;
+  ctx.strokeStyle = 'rgba(150, 190, 210, 0.8)';
+  ctx.lineWidth = 1.5;
+  ctx.shadowColor = 'rgba(0,0,0,0.8)';
+  ctx.shadowBlur = 12;
+  ctx.fill(); ctx.stroke();
+
+  // Μύτη (Δείκτης κατεύθυνσης)
+  ctx.beginPath();
+  ctx.moveTo(-7, -31);
+  ctx.lineTo(0, -42);
+  ctx.lineTo(7, -31);
+  ctx.fillStyle = 'rgba(150, 190, 210, 0.9)';
+  ctx.fill();
+
+  // 6. Ο Άξονας Βαρύτητας (Το Κέντρο / Η Άγκυρα στο Σώμα)
+  const gravityPulse = 0.5 + 0.5 * Math.sin(t * 3);
+  ctx.beginPath();
+  ctx.arc(0, 0, 7, 0, Math.PI * 2);
+  ctx.fillStyle = '#ffffff';
+  ctx.shadowColor = `rgba(223, 197, 147, ${0.6 + gravityPulse * 0.4})`; 
+  ctx.shadowBlur = 12 + gravityPulse * 8;
+  ctx.fill(); 
+  
+  ctx.beginPath();
+  ctx.arc(0, 0, 3, 0, Math.PI * 2);
+  ctx.fillStyle = '#dfc593';
+  ctx.fill();
+  ctx.shadowBlur = 0;
+
+  // 7. Τα Μάτια (Εστίαση)
+  ctx.beginPath(); ctx.arc(EYE_L.x, EYE_L.y, 4, 0, Math.PI * 2);
+  ctx.fillStyle = '#dfc593'; ctx.shadowColor = '#dfc593'; ctx.shadowBlur = 10;
+  ctx.fill();
+  
+  ctx.beginPath(); ctx.arc(EYE_R.x, EYE_R.y, 4, 0, Math.PI * 2);
+  ctx.fillStyle = '#dfc593'; ctx.fill(); ctx.shadowBlur = 0;
+
+  ctx.restore();
+}
+
+// Το Αντικείμενο Εστίασης
+function drawObject(pulse) {
+  const p = 0.5 + 0.5 * Math.sin(pulse * Math.PI * 2);
+
+  ctx.save();
+  ctx.translate(OBJECT.x, OBJECT.y);
+  ctx.rotate(t * 0.4);
+
+  for (let i = 2; i >= 1; i--) {
+    const r = 12 + i * 7 + p * 4;
+    const a = (0.15 - i * 0.03) * (0.6 + 0.4 * p);
+    ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2);
+    ctx.strokeStyle = `rgba(180, 230, 255, ${a})`;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+
+  ctx.beginPath();
+  for (let i = 0; i < 6; i++) {
+    const angle = (i * Math.PI) / 3;
+    const px = Math.cos(angle) * 10;
+    const py = Math.sin(angle) * 10;
+    i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+  }
+  ctx.closePath();
+  ctx.fillStyle = `rgba(200, 240, 255, ${0.85 + 0.15*p})`;
+  ctx.shadowColor = 'rgba(160, 220, 255, 0.9)';
+  ctx.shadowBlur = 20;
+  ctx.fill();
+  
+  ctx.beginPath(); ctx.arc(0, 0, 3, 0, Math.PI*2);
+  ctx.fillStyle = '#ffffff';
+  ctx.fill();
+  ctx.restore();
+}
+
+// SEQUENCER
+const PHASE_DUR = [3, 2.5, 2, 1.5, 2.5, 2.5, 2, 1.5, 1.5, 2.5];
+const PHASE_LABELS_EL = [
+  'Άξονας Βαρύτητας & Κύκλος Φροντίδας',
+  'Ένα νοητικό γεγονός εισέρχεται στη Σκηνή...',
+  'Ταύτιση: Ο προβολέας εγκλωβίζεται στη σκέψη',
+  'Επίγνωση: Επιστροφή στον Άξονα',
+  'Ανοιχτή Σκηνή του Νου',
+  'Νέα σκέψη αναδύεται στον Χώρο...',
+  'Ταύτιση: Απορρόφηση από τη σκέψη',
+  'Αποταύτιση — «Δεν είμαι αυτή η σκέψη»',
+  'Άφεση — Η σκέψη διαλύεται στον Χώρο',
+  'Άξονας Βαρύτητας & Κύκλος Φροντίδας',
+];
+const PHASE_LABELS_EN = [
+  'Gravity Axis & Circle of Care',
+  'A mental event enters the Stage...',
+  'Identification: The spotlight is caught',
+  'Awareness: Returning to the Axis',
+  'Open Stage of the Mind',
+  'A new thought arises in Space...',
+  'Identification: Absorbed by the thought',
+  'Defusion — "I am not this thought"',
+  'Release — The thought dissolves in Space',
+  'Gravity Axis & Circle of Care',
+];
+
+function getPhase(globalT) {
+  const totalCycle = PHASE_DUR.reduce((a,b) => a+b, 0);
+  let time = globalT % totalCycle;
+  let phase = 0;
+  for (let i = 0; i < PHASE_DUR.length; i++) {
+    if (time < PHASE_DUR[i]) { phase = i; break; }
+    time -= PHASE_DUR[i];
+    phase = i + 1;
+  }
+  return Math.min(phase, PHASE_DUR.length - 1);
+}
+
+function getPhaseT(globalT) {
+  const totalCycle = PHASE_DUR.reduce((a,b) => a+b, 0);
+  let time = globalT % totalCycle;
+  for (let i = 0; i < PHASE_DUR.length; i++) {
+    if (time < PHASE_DUR[i]) return time / PHASE_DUR[i];
+    time -= PHASE_DUR[i];
+  }
+  return 1;
+}
+
+const thoughtL = new Thought('left');
+const thoughtF = new Thought('front');
+let lastLabel = -1;
+
+function lerp(a, b, f) { return a + (b-a)*f; }
+function ease(f) { return f < 0.5 ? 2*f*f : -1+(4-2*f)*f; }
+
+function getGazeTarget(phase, phaseT) {
+  const obj = OBJECT;
+  const tL = thoughtL;
+  const tF = thoughtF;
+
+  switch(phase) {
+    case 0: case 4: case 9: return { x: obj.x, y: obj.y };
+    case 1: return { x: lerp(obj.x, tL.x, ease(phaseT)), y: lerp(obj.y, tL.y, ease(phaseT)) };
+    case 2: return { x: tL.x, y: tL.y };
+    case 3: return { x: lerp(tL.x, obj.x, ease(phaseT)), y: lerp(tL.y, obj.y, ease(phaseT)) };
+    case 5: return { x: lerp(obj.x, tF.x, ease(phaseT)), y: lerp(obj.y, tF.y, ease(phaseT)) };
+    case 6: return { x: tF.x, y: tF.y };
+    case 7: return { x: tF.x, y: tF.y };
+    case 8: return { x: lerp(tF.x, obj.x, ease(phaseT)), y: lerp(tF.y, obj.y, ease(phaseT)) };
+  }
+  return { x: obj.x, y: obj.y };
+}
+
+let lastTime = null;
+function loop(ts) {
+  if (paused) return;
+  animId = requestAnimationFrame(loop);
+
+  const dt0 = lastTime === null ? 0 : (ts - lastTime) / 1000;
+  lastTime = ts;
+  const dt = dt0 * speedMult;
+  t += dt;
+
+  const phase = getPhase(t / speedMult * speedMult);
+  const phaseT = getPhaseT(t);
+
+  if (phase !== lastLabel) {
+    lastLabel = phase;
+    labelEl.textContent = PHASE_LABELS_EL[phase];
+    labelEn.textContent = PHASE_LABELS_EN[phase];
+  }
+
+  const showL = phase >= 1 && phase <= 3;
+  const showF = phase >= 5 && phase <= 8;
+  const recognizedF = phase === 7;
+
+  thoughtL.update(dt, showL, false);
+  thoughtF.update(dt, showF, recognizedF);
+
+  const gaze = getGazeTarget(phase, phaseT);
+
+  ctx.clearRect(0, 0, W, H);
+  
+  dustParticles.forEach(p => {
+    p.x += p.speedX * dt * 60;
+    p.y += p.speedY * dt * 60;
+    if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+    if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+    
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(160, 210, 240, ${p.baseAlpha * (0.5 + 0.5 * Math.sin(t * 3 + p.x))})`;
+    ctx.fill();
+  });
+
+  drawObject(t * 0.5);
+
+  thoughtL.draw();
+  thoughtF.draw();
+
+  drawStage(gaze.x, gaze.y);
+  drawMeditator(t);
+
+  ctx.save();
+  ctx.translate(CX, H - 25);
+  const dotCount = PHASE_DUR.length;
+  const dotSpacing = 18;
+  const totalW = (dotCount - 1) * dotSpacing;
+  for (let i = 0; i < dotCount; i++) {
+    const dx = -totalW / 2 + i * dotSpacing;
+    ctx.beginPath();
+    ctx.arc(dx, 0, i === phase ? 4 : 2, 0, Math.PI * 2);
+    ctx.fillStyle = i === phase ? 'rgba(223,197,147,1)' : 'rgba(80,120,140,0.4)';
+    if (i === phase) {
+      ctx.shadowColor = 'rgba(223,197,147,0.6)';
+      ctx.shadowBlur = 8;
+    } else {
+      ctx.shadowBlur = 0;
+    }
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
