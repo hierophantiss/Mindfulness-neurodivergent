@@ -186,7 +186,7 @@ interface RouteMeta {
   title: string;
   description: string;
   schema: object;
-  schemaType: 'WebApplication' | 'Article' | 'HowTo' | 'FAQPage' | 'MedicalWebPage';
+  schemaType: 'WebApplication' | 'Article' | 'HowTo' | 'FAQPage' | 'MedicalWebPage' | 'WebPage';
   /** Real, crawlable paragraphs injected into <body> for search engines
    *  and non-JS agents. Falls back to [description] if omitted. */
   bodyParagraphs?: string[];
@@ -753,6 +753,18 @@ function getMetaForRoute(route: string): RouteMeta {
     };
 
     return { title: t, description: d, schema, schemaType: 'MedicalWebPage', rawHtml };
+  }
+
+  // ── Privacy ──
+  if (clean === '/privacy') {
+    const t = lang === 'en' ? 'Privacy and terms | Neurodivergent Mindfulness' : 'Απόρρητο και όροι | Neurodivergent Mindfulness';
+    const d = lang === 'en'
+      ? 'Everything stays on your device: no account, no tracking, no ads. What the app keeps, the services it passes through, how to save or delete your data, and what the app is and is not.'
+      : 'Όλα μένουν στη συσκευή σου: χωρίς λογαριασμό, χωρίς παρακολούθηση, χωρίς διαφημίσεις. Τι κρατά η εφαρμογή, από ποιες υπηρεσίες περνά, πώς κρατάς ή σβήνεις τα δεδομένα σου, και τι είναι και τι δεν είναι η εφαρμογή.';
+    const bodyParagraphs = lang === 'en'
+      ? [d, 'The app keeps your progress, journal, practices, check-ins and settings only in your browser’s storage. The site is hosted on Cloudflare; videos in the Rabbit Hole and the Sanctuary play from YouTube. It is a guide to mindfulness for wellbeing, not therapy or medical advice. In a crisis: 112, or findahelpline.com.']
+      : [d, 'Η εφαρμογή κρατά την πρόοδο, το ημερολόγιο, τις ασκήσεις, το «Πώς νιώθεις» και τις ρυθμίσεις μόνο στον αποθηκευτικό χώρο του browser. Ο ιστότοπος φιλοξενείται στο Cloudflare· τα βίντεο της Κουνελότρυπας και του Καταφυγίου παίζουν από το YouTube. Είναι οδηγός ενσυνειδητότητας για την ευεξία, όχι θεραπεία ή ιατρική συμβουλή. Σε κρίση: 112, 1018 (Κλίμακα), 197.'];
+    return { title: t, description: d, schema: { '@context': 'https://schema.org', '@type': 'WebPage', name: t, description: d }, schemaType: 'WebPage', bodyParagraphs };
   }
 
   // ── FAQ ──

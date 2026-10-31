@@ -29,7 +29,8 @@ const mainRoutes = [
   '/journal',
   '/sanctuary',
   '/settings',
-  '/faq'
+  '/faq',
+  '/privacy'
 ];
 
 async function generate() {

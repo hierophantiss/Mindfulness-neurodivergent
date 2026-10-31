@@ -376,6 +376,9 @@ export default function Dashboard() {
               <Info size={12} />
               <span>{language === 'el' ? 'Σχετικά' : 'About'}</span>
             </button>
+            <Link to="/privacy" className={footerLinkClasses}>
+              <span>{language === 'el' ? 'Απόρρητο' : 'Privacy'}</span>
+            </Link>
             {!installed && (
               <button
                 onClick={async () => { setBookOpen(false); setInstallHint(await install()); }}

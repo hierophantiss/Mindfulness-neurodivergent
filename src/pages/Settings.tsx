@@ -260,9 +260,17 @@ export default function Settings() {
             label: { el: 'Εξαγωγή Βιβλίου (PDF)', en: 'Export Workbook (PDF)' },
             value: null,
             action: () => {
-              window.open('#/workbook/print', '_blank');
+              window.open(`/workbook_${language === 'en' ? 'en' : 'el'}.pdf`, '_blank');
             },
             color: 'text-blue-400'
+          },
+          {
+            id: 'privacy',
+            icon: ShieldCheck,
+            label: { el: 'Απόρρητο και όροι', en: 'Privacy and terms' },
+            value: null,
+            action: () => navigate('/privacy'),
+            color: 'text-emerald-300'
           },
           {
             id: 'clear',

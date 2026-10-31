@@ -132,8 +132,8 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
     privacy: {
       title: { el: 'Απόρρητο', en: 'Privacy' },
       text: {
-        el: 'Όλα τα δεδομένα σου (πρόοδος, ημερολόγιο, ρυθμίσεις) μένουν μόνο στη συσκευή σου. Δεν συλλέγουμε, δεν παρακολουθούμε και δεν στέλνουμε πουθενά τις πληροφορίες σου. Η σελίδα φορτώνει γραμματοσειρές από τη Google, που βλέπει μόνο ότι ζητήθηκε ένα αρχείο. Ο ήχος της ακρόασης έρχεται από την ίδια τη σελίδα.',
-        en: 'All your data (progress, journal, settings) stays only on your device. We do not collect, track or send your information anywhere. The page loads fonts from Google, which only sees that a file was requested. The read-aloud audio comes from the site itself.'
+        el: 'Όλα τα δεδομένα σου (πρόοδος, ημερολόγιο, ρυθμίσεις) μένουν μόνο στη συσκευή σου. Δεν συλλέγουμε, δεν παρακολουθούμε και δεν στέλνουμε πουθενά τις πληροφορίες σου. Οι γραμματοσειρές και ο ήχος της ακρόασης έρχονται από την ίδια τη σελίδα.',
+        en: 'All your data (progress, journal, settings) stays only on your device. We do not collect, track or send your information anywhere. The fonts and the read-aloud audio come from the site itself.'
       }
     }
   };
@@ -319,6 +319,9 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                   <p className="text-[11px] text-ink/35 leading-relaxed">
                     {content.privacy.text[l]}
                   </p>
+                  <Link to="/privacy" onClick={onClose} className="mt-1.5 inline-flex items-center min-h-[36px] text-[12px] text-ink/60 underline underline-offset-4 hover:text-ink/85">
+                    {l === 'el' ? 'Απόρρητο και όροι, όλο το κείμενο' : 'Privacy and terms, in full'}
+                  </Link>
                 </div>
 
                 <p className="text-[13px] font-medium opacity-30 mt-6 pb-2">

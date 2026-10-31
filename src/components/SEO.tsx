@@ -568,6 +568,16 @@ export const SEO: React.FC = () => {
       : 'Ο Τετραπλός Άξονας: Σώμα, Αναπνοή, Προσοχή, Χώρος. Μέθοδος ενσυνειδητότητας για ΔΕΠΥ και αυτισμό που ξεκινά από το σώμα, με ρυθμούς αναπνοής, Τάι Τσι, ψάλσιμο και δωρεάν βιβλίο 11 κεφαλαίων που διαβάζεις ή ακούς.';
     schema = articleSchema(title, description, pageUrl);
 
+  // ── Privacy ──────────────────────────────────────────────────────
+  } else if (cleanPath === '/privacy') {
+    title = lang === 'en'
+      ? 'Privacy and terms | Neurodivergent Mindfulness'
+      : 'Απόρρητο και όροι | Neurodivergent Mindfulness';
+    description = lang === 'en'
+      ? 'Everything stays on your device: no account, no tracking, no ads. What the app keeps, the services it passes through, how to save or delete your data, and what the app is and is not.'
+      : 'Όλα μένουν στη συσκευή σου: χωρίς λογαριασμό, χωρίς παρακολούθηση, χωρίς διαφημίσεις. Τι κρατά η εφαρμογή, από ποιες υπηρεσίες περνά, πώς κρατάς ή σβήνεις τα δεδομένα σου, και τι είναι και τι δεν είναι η εφαρμογή.';
+    schema = { '@context': 'https://schema.org', '@type': 'WebPage', name: title, description, url: pageUrl };
+
   // ── FAQ ──────────────────────────────────────────────────────────
   } else if (cleanPath === '/faq') {
     title = lang === 'en'
