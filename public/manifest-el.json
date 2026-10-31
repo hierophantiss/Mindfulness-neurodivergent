@@ -79,5 +79,42 @@
         }
       ]
     }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/el-phone-1-home.webp",
+      "sizes": "720x1558",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "Η αρχική: ο οδηγός, «Πώς νιώθεις τώρα;» και οι τέσσερις άξονες"
+    },
+    {
+      "src": "/screenshots/el-phone-2-breath.webp",
+      "sizes": "720x1558",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "Αναπνοή 4-6 σε εξέλιξη"
+    },
+    {
+      "src": "/screenshots/el-phone-3-chapter.webp",
+      "sizes": "720x1558",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "Κεφάλαιο 2, Αναπνοή: διάβασμα ή ακρόαση"
+    },
+    {
+      "src": "/screenshots/el-desktop-home.webp",
+      "sizes": "1280x720",
+      "type": "image/webp",
+      "form_factor": "wide",
+      "label": "Η αρχική σε υπολογιστή"
+    },
+    {
+      "src": "/screenshots/el-desktop-chapter.webp",
+      "sizes": "1280x720",
+      "type": "image/webp",
+      "form_factor": "wide",
+      "label": "Κεφάλαιο σε υπολογιστή, με τις σελίδες του δίπλα"
+    }
   ]
 }

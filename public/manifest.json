@@ -79,5 +79,42 @@
         }
       ]
     }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/en-phone-1-home.webp",
+      "sizes": "720x1558",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "Home: the guide, “How do you feel right now?” and the four axes"
+    },
+    {
+      "src": "/screenshots/en-phone-2-breath.webp",
+      "sizes": "720x1558",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "The 4-6 breath in progress"
+    },
+    {
+      "src": "/screenshots/en-phone-3-chapter.webp",
+      "sizes": "720x1558",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "Chapter 2, Breath: read or listen"
+    },
+    {
+      "src": "/screenshots/en-desktop-home.webp",
+      "sizes": "1280x720",
+      "type": "image/webp",
+      "form_factor": "wide",
+      "label": "Home on a computer"
+    },
+    {
+      "src": "/screenshots/en-desktop-chapter.webp",
+      "sizes": "1280x720",
+      "type": "image/webp",
+      "form_factor": "wide",
+      "label": "A chapter on a computer, with its pages beside it"
+    }
   ]
 }
