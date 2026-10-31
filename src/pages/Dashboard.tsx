@@ -18,6 +18,7 @@ import { readRecentCheckinState } from '../data/stateCheckin';
 import { MethodMark } from '../components/MethodMark';
 import { useInstallApp } from '../hooks/useInstallApp';
 import HomeCheckin from '../components/HomeCheckin';
+import BackupReminder from '../components/BackupReminder';
 import { welcomeSeen, markWelcomeSeen, openWelcome } from '../lib/welcome';
 import { readingSpot, chaptersRead } from '../lib/readingSpot';
 
@@ -351,6 +352,9 @@ export default function Dashboard() {
             </motion.div>
           )}
         </motion.div>
+
+        {/* About once a month: a copy of what lives only on this device. */}
+        <BackupReminder lang={lang} />
 
         {/* Footer info */}
         <motion.div 

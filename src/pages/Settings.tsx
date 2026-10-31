@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { downloadBackup, restoreBackup } from '../lib/backup';
+import { lastBackupDate } from '../lib/dataSafety';
 import { motion } from 'motion/react';
 import { ChevronLeft, Languages, Activity, LetterText, Info, LogOut, Sparkles, Sun, Database, FileText, Download, Bug, ShieldCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +15,8 @@ export default function Settings() {
   const { reduceMotion, toggleReduceMotion, easyRead, toggleEasyRead } = useAccessibility();
   const [canInstall, setCanInstall] = useState(false);
   const [showDebug, setShowDebug] = useState(false);
+  // The day of the last copy, shown next to "Save Data".
+  const [lastBackup, setLastBackup] = useState(lastBackupDate);
   const [debugLog, setDebugLog] = useState<string[]>([]);
 
   const addLog = (msg: string) => {
@@ -213,9 +216,12 @@ export default function Settings() {
             id: 'export-data',
             icon: Download,
             label: { el: 'Αποθήκευση Δεδομένων (Backup)', en: 'Save Data (Backup)' },
-            value: null,
+            value: lastBackup
+              ? { el: `Τελευταίο: ${lastBackup.toLocaleDateString('el-GR', { day: 'numeric', month: 'short' })}`, en: `Last: ${lastBackup.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}` }
+              : null,
             action: () => {
               downloadBackup();
+              setLastBackup(lastBackupDate());
               alert(language === 'el' ? 'Τα δεδομένα σας αποθηκεύτηκαν σε αρχείο.' : 'Your data has been saved to a file.');
             },
             color: 'text-indigo-400'

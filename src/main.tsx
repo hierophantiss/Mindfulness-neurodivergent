@@ -8,6 +8,7 @@ import { reloadOnceForUpdate } from './lib/lazyWithReload';
 import { setUpdater, markUpdateWaiting } from './lib/appUpdate';
 import { listenForFirstTap } from './lib/sound';
 import { applyReadingPrefs, readEasyRead } from './lib/readingPrefs';
+import { keepDataOnDevice } from './lib/dataSafety';
 
 // The reading settings apply before the first picture, so the text does not jump.
 applyReadingPrefs(readEasyRead());
@@ -28,6 +29,12 @@ if ('serviceWorker' in navigator) {
   });
   setUpdater(updateSW);
 }
+
+// Ask the browser to keep progress and journal (once there is something to
+// keep), after the page has settled. See lib/dataSafety.ts.
+window.addEventListener('load', () => {
+  window.setTimeout(() => { void keepDataOnDevice(); }, 3000);
+});
 
 // The text already in the page is a plain version for search engines (see
 // scripts/prerender.ts), not the app itself, so the app replaces it rather than

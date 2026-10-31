@@ -5,6 +5,7 @@
 // companion data (one object with chapterProgress, programProgress, ...).
 
 import { RECORD_VERSION_KEY } from './activityLog';
+import { markBackupSaved } from './dataSafety';
 
 const COMPANION_KEY = 'mindful_companion_v5';
 const SKIP = (key: string) => key.startsWith('vite') || key.startsWith('workbox');
@@ -30,6 +31,8 @@ export function downloadBackup(): void {
   a.click();
   document.body.removeChild(a);
   setTimeout(() => URL.revokeObjectURL(url), 1000);
+  // The home page's monthly reminder starts counting again from today.
+  markBackupSaved();
 }
 
 const looksLikeCompanion = (o: Record<string, unknown>) =>
