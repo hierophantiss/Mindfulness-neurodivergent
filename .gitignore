@@ -14,3 +14,7 @@ __pycache__/
 # Audiobook: spoken-segment cache and build output (tools/audiobook)
 .tts-cache/
 audiobook-out/
+
+# Site checks in a browser (e2e/)
+test-results/
+playwright-report/

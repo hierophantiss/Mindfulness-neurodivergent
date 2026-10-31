@@ -653,6 +653,22 @@ function getMetaForRoute(route: string): RouteMeta {
     return { title: t, description: d, schema: {}, schemaType: 'WebApplication', bodyParagraphs };
   }
 
+  // ── Practice / Guided grounding and Swaying (opened from the chapters) ──
+  if (clean === '/practice/grounding' || clean === '/practice/swaying') {
+    const g = clean === '/practice/grounding';
+    const t = g
+      ? (lang === 'en' ? 'Guided Grounding – Neurodivergent Mindfulness' : 'Γείωση με καθοδήγηση – Νευροδιαφορετική Ενσυνειδητότητα')
+      : (lang === 'en' ? 'Swaying – Gentle Movement with the Breath' : 'Λίκνισμα – Ήπια κίνηση με την αναπνοή');
+    const d = g
+      ? (lang === 'en'
+        ? 'A guided grounding practice from the chapters: you feel gravity, your weight being supported, and let the exhale grow longer. With nature sounds or binaural sound, if you like.'
+        : 'Μια καθοδηγούμενη άσκηση γείωσης από τα κεφάλαια: νιώθεις τη βαρύτητα, το βάρος σου να στηρίζεται, και αφήνεις την εκπνοή να μακρύνει. Με ήχο φύσης ή binaural, αν θέλεις.')
+      : (lang === 'en'
+        ? 'A gentle to-and-fro of the body with the breath, for when sitting still is not what you need.'
+        : 'Ένα ήπιο πήγαινε-έλα του σώματος με την αναπνοή, για όταν το να κάθεσαι ακίνητος δεν είναι αυτό που χρειάζεσαι.');
+    return { title: t, description: d, schema: {}, schemaType: 'WebApplication', bodyParagraphs: [d] };
+  }
+
   // ── Practice / Microdoses ──
   if (clean === '/practice/microdoses') {
     const t = lang === 'en'

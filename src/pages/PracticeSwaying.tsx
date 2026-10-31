@@ -182,7 +182,8 @@ export default function PracticeSwaying() {
         </button>
         <div className="flex-1 flex justify-center items-center pointer-events-auto">
           <div className="text-[13px] font-medium text-ink/65 flex items-center justify-center">
-            {lang === 'el' ? 'Λίκνισμα' : 'Swaying'}
+            {/* The page's title (for screen readers and search engines), kept small as it was. */}
+            <h1 className="text-[13px] font-medium">{lang === 'el' ? 'Λίκνισμα' : 'Swaying'}</h1>
             <ConceptInfoIcon conceptId="polyvagal" className="w-5 h-5 ml-2" />
           </div>
         </div>

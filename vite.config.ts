@@ -6,6 +6,8 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig(() => {
   return {
+    // When this version was built (in the diagnostics report).
+    define: { __BUILD_DATE__: JSON.stringify(new Date().toISOString().slice(0, 16)) },
     plugins: [
       react(),
       tailwindcss(),

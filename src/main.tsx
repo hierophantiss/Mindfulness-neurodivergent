@@ -9,6 +9,10 @@ import { setUpdater, markUpdateWaiting } from './lib/appUpdate';
 import { listenForFirstTap } from './lib/sound';
 import { applyReadingPrefs, readEasyRead } from './lib/readingPrefs';
 import { keepDataOnDevice } from './lib/dataSafety';
+import { installErrorLog } from './lib/errorLog';
+
+// Errors are noted on this device only (Settings → Diagnostics).
+installErrorLog();
 
 // The reading settings apply before the first picture, so the text does not jump.
 applyReadingPrefs(readEasyRead());

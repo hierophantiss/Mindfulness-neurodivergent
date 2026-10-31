@@ -1,5 +1,6 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { isChunkLoadError, reloadOnceForUpdate } from '../lib/lazyWithReload';
+import { recordError } from '../lib/errorLog';
 
 interface Props {
   children?: ReactNode;
@@ -26,6 +27,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   public componentDidCatch(error: Error, info: ErrorInfo) {
     if (isChunkLoadError(error) && reloadOnceForUpdate()) return;
+    recordError('page', error);
     console.error('Page error:', error, info.componentStack);
   }
 

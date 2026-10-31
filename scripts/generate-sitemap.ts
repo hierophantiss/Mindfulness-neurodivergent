@@ -25,6 +25,9 @@ const mainRoutes = [
   '/program',
   '/practice',
   '/practice/movement',
+  // linked from the chapters; without a page of their own a visit answered 404
+  '/practice/grounding',
+  '/practice/swaying',
   '/practice/microdoses',
   '/journal',
   '/sanctuary',

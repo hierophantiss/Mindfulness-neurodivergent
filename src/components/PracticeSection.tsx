@@ -320,9 +320,9 @@ export default function PracticeSection() {
 
         <div className="max-w-4xl mx-auto w-full flex-1">
           <header className="text-center md:text-left mb-12">
-            <h2 className="font-display text-4xl md:text-5xl text-ink/90 leading-tight mb-4">
+            <h1 className="font-display text-4xl md:text-5xl text-ink/90 leading-tight mb-4">
               {lang === "el" ? "Οπτική Απεικόνιση" : "Visual Theme"}
-            </h2>
+            </h1>
             <p className="text-lg text-ink/50 font-sans max-w-2xl">
               {lang === "el" ? "Επίλεξε το μοτίβο κίνησης που σε βοηθάει να συγκεντρωθείς και να γειωθείς καλύτερα." : "Choose the movement pattern that helps you center and ground yourself best."}
             </p>
@@ -385,9 +385,9 @@ export default function PracticeSection() {
 
         <div className="max-w-4xl mx-auto w-full flex-1">
           <header className="text-center md:text-left mb-10">
-            <h2 className="font-display text-4xl md:text-5xl text-ink/90 leading-tight mb-4">
+            <h1 className="font-display text-4xl md:text-5xl text-ink/90 leading-tight mb-4">
               {lang === "el" ? "Ρυθμός Αναπνοής" : "Breathing Rhythm"}
-            </h2>
+            </h1>
             <p className="text-lg text-ink/50 font-sans max-w-2xl">
               {lang === "el" ? "Επίλεξε το μοτίβο αναπνοής που θα συνοδεύσει την κίνηση." : "Select the breathing pattern to accompany the movement."}
             </p>

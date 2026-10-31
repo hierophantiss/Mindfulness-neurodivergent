@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { downloadBackup, restoreBackup } from '../lib/backup';
 import { lastBackupDate } from '../lib/dataSafety';
+import { readErrors, clearErrors, errorReport } from '../lib/errorLog';
 import { motion } from 'motion/react';
 import { ChevronLeft, Languages, Activity, LetterText, Info, LogOut, Sparkles, Sun, Database, FileText, Download, Bug, ShieldCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -18,6 +19,8 @@ export default function Settings() {
   // The day of the last copy, shown next to "Save Data".
   const [lastBackup, setLastBackup] = useState(lastBackupDate);
   const [debugLog, setDebugLog] = useState<string[]>([]);
+  // Errors the app noted on this device (lib/errorLog.ts).
+  const [errors, setErrors] = useState(readErrors);
 
   const addLog = (msg: string) => {
     setDebugLog(prev => [...prev, `${new Date().toLocaleTimeString()}: ${msg}`]);
@@ -179,8 +182,8 @@ export default function Settings() {
           id: 'debug',
           icon: Bug,
           label: { el: 'Διαγνωστικά', en: 'Diagnostics' },
-          value: null,
-          action: () => setShowDebug(!showDebug),
+          value: errors.length ? { el: `${errors.length} σφάλματα`, en: `${errors.length} errors` } : null,
+          action: () => { setErrors(readErrors()); setShowDebug(!showDebug); },
           color: 'text-orange-400'
         }
       ]
@@ -399,26 +402,56 @@ export default function Settings() {
           </div>
        </div>
 
-      {showDebug && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80">
-          <div className="card-relief p-6 rounded-2xl w-full max-w-md max-h-[80vh] overflow-y-auto">
-            <h2 className="text-lg text-ink mb-4">PWA Diagnostics</h2>
-            <div className="space-y-2 mb-6">
-              {debugLog.map((log, i) => (
-                <div key={i} className="text-xs font-mono text-green-400 bg-black/50 p-2 rounded">
-                  {log}
-                </div>
-              ))}
+      {showDebug && (() => {
+        const el = language === 'el';
+        const report = errorReport(el ? 'el' : 'en', errors) + '\n\n' + debugLog.join('\n');
+        const mail = `mailto:bairaktaris.theodoros@gmail.com?subject=${encodeURIComponent(el ? 'Σφάλματα της εφαρμογής' : 'App errors')}&body=${encodeURIComponent(report.slice(0, 1900))}`;
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80" onClick={() => setShowDebug(false)}>
+            <div role="dialog" aria-modal="true" aria-labelledby="diag-title" onClick={(e) => e.stopPropagation()} className="card-relief p-6 rounded-2xl w-full max-w-md max-h-[80vh] overflow-y-auto flex flex-col gap-4">
+              <h2 id="diag-title" className="font-display text-[24px] text-ink">{el ? 'Διαγνωστικά' : 'Diagnostics'}</h2>
+              <p className="text-[14px] leading-relaxed text-ink/75">
+                {el
+                  ? 'Όταν κάτι δεν δουλεύει, η εφαρμογή κρατά μια σύντομη σημείωση σε αυτή τη συσκευή. Δεν στέλνεται πουθενά μόνη της· αν θέλεις, τη στέλνεις εσύ στον δημιουργό με email.'
+                  : 'When something does not work, the app keeps a short note on this device. It is never sent anywhere on its own; if you like, you send it to the creator by email.'}
+              </p>
+              {errors.length === 0 ? (
+                <p className="text-[14px] text-ink/85">{el ? 'Κανένα σφάλμα. Όλα καλά.' : 'No errors. All is well.'}</p>
+              ) : (
+                <ul className="flex flex-col gap-2">
+                  {errors.slice().reverse().map((x, i) => (
+                    <li key={i} className="rounded-xl bg-black/30 border border-white/5 p-3 text-[12.5px] leading-snug">
+                      <span className="block text-ink/55">{new Date(x.t).toLocaleString(el ? 'el-GR' : 'en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })} · {x.where}{x.count > 1 ? ` · ×${x.count}` : ''}</span>
+                      <span className="block mt-1 text-ink/85 break-words">{x.msg}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <div className="flex flex-col gap-2 pt-1">
+                {errors.length > 0 && (
+                  <a href={mail} className="min-h-[44px] flex items-center justify-center rounded-xl btn-gold text-[14px] font-medium">
+                    {el ? 'Στείλε το στον δημιουργό' : 'Send it to the creator'}
+                  </a>
+                )}
+                {errors.length > 0 && (
+                  <button type="button" onClick={() => { clearErrors(); setErrors([]); }} className="min-h-[44px] rounded-xl border border-white/10 text-[14px] text-ink/75 hover:text-ink">
+                    {el ? 'Καθάρισμα' : 'Clear'}
+                  </button>
+                )}
+                <details className="text-[12px] text-ink/55">
+                  <summary className="cursor-pointer min-h-[36px] flex items-center">{el ? 'Τεχνικά στοιχεία' : 'Technical details'}</summary>
+                  <div className="mt-2 flex flex-col gap-1 font-mono break-all">
+                    {debugLog.map((log, i) => <span key={i}>{log}</span>)}
+                  </div>
+                </details>
+                <button type="button" onClick={() => setShowDebug(false)} className="min-h-[44px] rounded-xl bg-white/[0.06] text-[14px] text-ink/90 hover:bg-white/[0.1]">
+                  {el ? 'Κλείσιμο' : 'Close'}
+                </button>
+              </div>
             </div>
-            <button 
-              onClick={() => setShowDebug(false)}
-              className="w-full py-3 bg-white/10 text-ink rounded-xl hover:bg-white/20"
-            >
-              Κλείσιμο
-            </button>
           </div>
-        </div>
-      )}
+        );
+      })()}
     </div>
   );
 }

@@ -247,7 +247,7 @@ export default function PracticeMicrodoses() {
       </div>
 
       {/* Dual Filters Row */}
-      <div className="grid grid-cols-1 desk:grid-cols-2 gap-6 pt-2 sticky top-0 z-20 bg-black/40 backdrop-blur-xl py-4 -mx-6 px-6 border-b border-white/5">
+      <div className="grid grid-cols-1 desk:grid-cols-2 gap-6 pt-2 sticky top-0 z-20 bg-black/40 backdrop-blur-xl py-4 -mx-5 px-5 desk:-mx-6 desk:px-6 border-b border-white/5">
         {/* Category Filter */}
         <div className="space-y-2">
           <span className="text-[13px] font-medium text-ink/65 pl-1">
