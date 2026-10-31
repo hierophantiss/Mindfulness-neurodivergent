@@ -9,6 +9,7 @@
 /methodology   /el/methodology        301
 /faq           /el/faq                301
 /privacy       /el/privacy            301
+/install       /el/install            301
 /practice        /el/practice          301
 /practice/*      /el/practice/:splat   301
 /program        /el/program           301

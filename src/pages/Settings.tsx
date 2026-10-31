@@ -97,67 +97,6 @@ export default function Settings() {
     };
   }, []);
 
-  const handleInstall = async () => {
-    addLog('Install clicked');
-    const promptEvent = (window as any).initDeferredPrompt;
-    if (promptEvent) {
-      try {
-        await promptEvent.prompt();
-        const choiceResult = await promptEvent.userChoice;
-        addLog(`User choice: ${choiceResult.outcome}`);
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the A2HS prompt');
-          setCanInstall(false);
-          (window as any).initDeferredPrompt = null;
-        } else {
-          console.log('User dismissed the A2HS prompt');
-        }
-      } catch (err: any) {
-        addLog(`Prompt error: ${err.message}`);
-        console.error('PWA Prompt Error:', err);
-        alert(language === 'el' 
-            ? "Υπήρξε πρόβλημα με την προτροπή εγκατάστασης." 
-            : "There was a problem with the install prompt.");
-      }
-    } else {
-      addLog('No prompt event available during click');
-      const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
-      const isIos = /iPhone|iPad|iPod/.test(navigator.userAgent);
-      const isIframe = window.self !== window.top;
-      
-      const ua = navigator.userAgent || navigator.vendor || (window as any).opera;
-      const isWebView = /; wv\)/i.test(ua) || /FBAN|FBAV|Instagram|Line/i.test(ua);
-      
-      let msg = language === 'el' ? "Η εγκατάσταση δεν υποστηρίζεται αυτή τη στιγμή." : "Installation not currently supported.";
-      
-      if (isIframe) {
-        msg = language === 'el' 
-         ? "Βρίσκεστε σε περιβάλλον iframe (πρόσβαση από άλλη σελίδα). Ανοίξτε την εφαρμογή σε νέα καρτέλα για εγκατάσταση!" 
-         : "You are inside an iframe. Please open the app in a new tab to install!";
-      } else if (isWebView) {
-        msg = language === 'el'
-         ? "Ανοίξατε την εφαρμογή μέσα από κάποιο άλλο App (πχ. Facebook/Instagram). Παρακαλούμε ανοίξτε τη σε κανονικό Browser (Chrome/Safari) για εγκατάσταση."
-         : "You opened the app inside an in-app browser. Please open it in a regular browser (Chrome/Safari) to install.";
-      } else if (isStandalone) {
-        msg = language === 'el' ? "Η εφαρμογή βρίσκεται ήδη σε λειτουργία App!" : "App is already running in standalone mode!";
-      } else if (isIos) {
-        msg = language === 'el' 
-         ? "Σε συσκευές Apple (iOS), πατήστε το 'Share' (κοινοποίηση) κάτω στην οθόνη και μετά 'Προσθήκη στην οθόνη έναρξης' (Add to Home Screen)." 
-         : "On Apple (iOS) devices, tap 'Share' then 'Add to Home Screen'.";
-      } else {
-        const isSamsungBrowser = navigator.userAgent.includes('SamsungBrowser');
-        msg = language === 'el' 
-         ? isSamsungBrowser 
-            ? "Στο Samsung Internet Browser: Πατήστε το εικονίδιο λήψης πάνω δεξιά στη γραμμή διεύθυνσης ή ανοίξτε το μενού (τρεις γραμμές κάτω δεξιά) και επιλέξτε 'Προσθήκη σελίδας σε' > 'Αρχική οθόνη'."
-            : "Αν η εφαρμογή είναι ήδη εγκατεστημένη δεν θα εμφανιστεί ξανά. Αλλιώς, πατήστε το μενού του browser (τρεις τελείες πάνω δεξιά) και επιλέξτε 'Εγκατάσταση εφαρμογής' (Install app) ή 'Προσθήκη στην αρχική οθόνη'." 
-         : isSamsungBrowser
-            ? "On Samsung Internet: Tap the download icon in the address bar, or tap the menu (three lines bottom right) and select 'Add page to' > 'Home screen'."
-            : "If the app is already installed it won't prompt again. Otherwise, tap the browser menu (three dots top right) and select 'Install app' or 'Add to Home screen'.";
-      }
-      alert(msg);
-    }
-  };
-
   const sections = [
     {
       title: { el: 'Γενικά', en: 'General' },
@@ -175,7 +114,7 @@ export default function Settings() {
           icon: Download,
           label: { el: 'Εγκατάσταση (App)', en: 'Install App' },
           value: null,
-          action: handleInstall,
+          action: () => navigate('/install'),
           color: 'text-green-400'
         }] : []),
         {

@@ -33,7 +33,8 @@ const mainRoutes = [
   '/sanctuary',
   '/settings',
   '/faq',
-  '/privacy'
+  '/privacy',
+  '/install'
 ];
 
 async function generate() {

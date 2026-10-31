@@ -525,35 +525,9 @@ export default function NavigationMenu() {
                   </a>
                 </div>
 
-                {/* Install App - Always show with manual fallback */}
+                {/* Install: the page with the steps for every device, and the Microsoft Store */}
                 <button 
-                  onClick={async () => {
-                    const inIframe = window.self !== window.top;
-                    if (inIframe) {
-                      showToast(language === 'el' ? 'Ανοίξτε την εφαρμογή σε νέα καρτέλα για εγκατάσταση (Web App).' : 'Open the app in a new tab to install (Web App).');
-                      return;
-                    }
-
-                    const promptEvent = deferredPrompt || (window as any).initDeferredPrompt;
-                    if (promptEvent) {
-                      promptEvent.prompt();
-                      const { outcome } = await promptEvent.userChoice;
-                      if (outcome === 'accepted') {
-                        setDeferredPrompt(null);
-                        (window as any).initDeferredPrompt = null;
-                      }
-                    } else {
-                       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
-                       const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone;
-                       if (isStandalone) {
-                         showToast(language === 'el' ? 'Η εφαρμογή είναι ήδη εγκατεστημένη.' : 'The app is already installed.');
-                       } else if (isIOS) {
-                         showToast(language === 'el' ? 'Σε iOS: Κοινοποίηση ⎋ > Προσθήκη στην Οθόνη Αφετηρίας ⊞.' : 'On iOS: Share ⎋ > Add to Home Screen ⊞.');
-                       } else {
-                         showToast(language === 'el' ? 'Πατήστε τις 3 τελείες (Μενού) του browser > "Εγκατάσταση εφαρμογής".' : 'Tap the 3 dots (Menu) in your browser > "Install app".');
-                       }
-                    }
-                  }}
+                  onClick={() => handleNav('/install')}
                   className="bg-teal-500/10 border border-teal-500/20 hover:bg-teal-500/20 rounded-3xl p-4 flex items-center justify-between transition-colors active:scale-[0.98]"
                 >
                     <div className="flex items-center gap-3">

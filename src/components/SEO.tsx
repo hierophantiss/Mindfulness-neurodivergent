@@ -578,6 +578,16 @@ export const SEO: React.FC = () => {
       : 'Όλα μένουν στη συσκευή σου: χωρίς λογαριασμό, χωρίς παρακολούθηση, χωρίς διαφημίσεις. Τι κρατά η εφαρμογή, από ποιες υπηρεσίες περνά, πώς κρατάς ή σβήνεις τα δεδομένα σου, και τι είναι και τι δεν είναι η εφαρμογή.';
     schema = { '@context': 'https://schema.org', '@type': 'WebPage', name: title, description, url: pageUrl };
 
+  // ── Install ──────────────────────────────────────────────────────
+  } else if (cleanPath === '/install') {
+    title = lang === 'en'
+      ? 'Install the app | Neurodivergent Mindfulness'
+      : 'Εγκατάσταση της εφαρμογής | Neurodivergent Mindfulness';
+    description = lang === 'en'
+      ? 'Install the free app on Windows (Microsoft Store), Android, iPhone, iPad or Mac in a few steps. No account; it works offline.'
+      : 'Εγκατάστησε τη δωρεάν εφαρμογή σε Windows (Microsoft Store), Android, iPhone, iPad ή Mac σε λίγα βήματα. Χωρίς λογαριασμό· λειτουργεί και χωρίς σύνδεση.';
+    schema = { '@context': 'https://schema.org', '@type': 'WebPage', name: title, description, url: pageUrl };
+
   // ── FAQ ──────────────────────────────────────────────────────────
   } else if (cleanPath === '/faq') {
     title = lang === 'en'

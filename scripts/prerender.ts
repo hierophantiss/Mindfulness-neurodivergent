@@ -771,6 +771,18 @@ function getMetaForRoute(route: string): RouteMeta {
     return { title: t, description: d, schema, schemaType: 'MedicalWebPage', rawHtml };
   }
 
+  // ── Install ──
+  if (clean === '/install') {
+    const t = lang === 'en' ? 'Install the app | Neurodivergent Mindfulness' : 'Εγκατάσταση της εφαρμογής | Neurodivergent Mindfulness';
+    const d = lang === 'en'
+      ? 'Install the free app on Windows (Microsoft Store), Android, iPhone, iPad or Mac in a few steps. No account; it works offline.'
+      : 'Εγκατάστησε τη δωρεάν εφαρμογή σε Windows (Microsoft Store), Android, iPhone, iPad ή Mac σε λίγα βήματα. Χωρίς λογαριασμό· λειτουργεί και χωρίς σύνδεση.';
+    const bodyParagraphs = lang === 'en'
+      ? [d, 'Windows: from the Microsoft Store (apps.microsoft.com/detail/9P4VQBGJM317), or install it from Edge or Chrome.', 'Android: in Chrome, the three dots → Install app.', 'iPhone and iPad: in Safari, Share → Add to Home Screen.']
+      : [d, 'Windows: από το Microsoft Store (apps.microsoft.com/detail/9P4VQBGJM317), ή εγκατάσταση από το Edge ή το Chrome.', 'Android: στο Chrome, οι τρεις τελείες → Εγκατάσταση εφαρμογής.', 'iPhone και iPad: στο Safari, Κοινοποίηση → Προσθήκη στην οθόνη αφετηρίας.'];
+    return { title: t, description: d, schema: { '@context': 'https://schema.org', '@type': 'WebPage', name: t, description: d }, schemaType: 'WebPage', bodyParagraphs };
+  }
+
   // ── Privacy ──
   if (clean === '/privacy') {
     const t = lang === 'en' ? 'Privacy and terms | Neurodivergent Mindfulness' : 'Απόρρητο και όροι | Neurodivergent Mindfulness';

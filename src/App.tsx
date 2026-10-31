@@ -21,6 +21,7 @@ const PracticeSwaying = lazyWithReload(() => import('./pages/PracticeSwaying'));
 const Journal = lazyWithReload(() => import('./pages/Journal'));
 const Faq = lazyWithReload(() => import('./pages/Faq'));
 const Privacy = lazyWithReload(() => import('./pages/Privacy'));
+const Install = lazyWithReload(() => import('./pages/Install'));
 const GenericExercise = lazyWithReload(() => import('./pages/GenericExercise'));
 const Method = lazyWithReload(() => import('./pages/Method'));
 const Methodology = lazyWithReload(() => import('./pages/Methodology'));
@@ -99,6 +100,7 @@ function AppContent() {
             <Route path="settings" element={<Settings />} />
             <Route path="faq" element={<Faq />} />
             <Route path="privacy" element={<Privacy />} />
+            <Route path="install" element={<Install />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

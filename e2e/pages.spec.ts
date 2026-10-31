@@ -7,7 +7,7 @@ const PAGES = [
   '/practice', '/practice?category=breath', '/practice?category=movement', '/practice?category=vocal', '/practice?axis=body',
   '/practice/microdoses', '/practice/movement', '/practice/grounding', '/practice/swaying',
   '/practice/breath/breath-5-5', '/practice/breath/sos-breath', '/practice/breath/tai-chi-cloud-hands', '/practice/breath/bhramari-humming',
-  '/sanctuary', '/program', '/program/week/1', '/journal', '/rabbithole', '/method', '/methodology', '/faq', '/settings', '/privacy',
+  '/sanctuary', '/program', '/program/week/1', '/journal', '/rabbithole', '/method', '/methodology', '/faq', '/settings', '/privacy', '/install',
 ];
 
 test.beforeEach(async ({ page }) => asReturningVisitor(page));

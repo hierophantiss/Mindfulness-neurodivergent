@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Anchor, Wind, Focus, Maximize, Heart, Info, CheckCircle2, BookOpen, Sparkles, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { MICROSOFT_STORE_URL } from '../lib/links';
 import { AXIS_COLOR } from '../data/axisColor';
 
 // Where "Send me a message" goes. One place to change it later.
@@ -322,6 +323,14 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                   <Link to="/privacy" onClick={onClose} className="mt-1.5 inline-flex items-center min-h-[36px] text-[12px] text-ink/60 underline underline-offset-4 hover:text-ink/85">
                     {l === 'el' ? 'Απόρρητο και όροι, όλο το κείμενο' : 'Privacy and terms, in full'}
                   </Link>
+                  <span className="flex flex-wrap justify-center gap-x-4">
+                    <Link to="/install" onClick={onClose} className="inline-flex items-center min-h-[36px] text-[12px] text-ink/60 underline underline-offset-4 hover:text-ink/85">
+                      {l === 'el' ? 'Πώς την εγκαθιστάς' : 'How to install it'}
+                    </Link>
+                    <a href={MICROSOFT_STORE_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center min-h-[36px] text-[12px] text-ink/60 underline underline-offset-4 hover:text-ink/85">
+                      Microsoft Store
+                    </a>
+                  </span>
                 </div>
 
                 <p className="text-[13px] font-medium opacity-30 mt-6 pb-2">

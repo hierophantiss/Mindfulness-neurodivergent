@@ -93,8 +93,7 @@ export default function Dashboard() {
 
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [bookOpen, setBookOpen] = useState(false);
-  const [installHint, setInstallHint] = useState<string | null>(null);
-  const { installed, install } = useInstallApp(language);
+  const { installed } = useInstallApp(language);
 
   // The welcome card, until the welcome is seen or put away.
   const [showWelcome, setShowWelcome] = useState(() => !welcomeSeen());
@@ -104,11 +103,6 @@ export default function Dashboard() {
     return () => window.removeEventListener('welcome-seen', hide);
   }, []);
 
-  useEffect(() => {
-    if (!installHint) return;
-    const t = setTimeout(() => setInstallHint(null), 8000);
-    return () => clearTimeout(t);
-  }, [installHint]);
 
   // The answer to "How do you feel" (last 90 minutes): after "Numbness" the
   // phrase of the day comes only from the body and contact lines.
@@ -365,7 +359,7 @@ export default function Dashboard() {
         >
           <div className="flex items-center justify-center gap-x-3 gap-y-2 flex-wrap">
             <button
-              onClick={() => { setBookOpen(o => !o); setInstallHint(null); }}
+              onClick={() => setBookOpen(o => !o)}
               aria-expanded={bookOpen}
               className={cn(footerLinkClasses, bookOpen && "text-ink/60")}
             >
@@ -380,13 +374,10 @@ export default function Dashboard() {
               <span>{language === 'el' ? 'Απόρρητο' : 'Privacy'}</span>
             </Link>
             {!installed && (
-              <button
-                onClick={async () => { setBookOpen(false); setInstallHint(await install()); }}
-                className={footerLinkClasses}
-              >
+              <Link to="/install" className={footerLinkClasses}>
                 <Download size={12} />
                 <span>{language === 'el' ? 'Εγκατάσταση' : 'Install'}</span>
-              </button>
+              </Link>
             )}
           </div>
 
@@ -412,16 +403,6 @@ export default function Dashboard() {
                 {language === 'el' ? 'Δωρεάν · CC BY-NC-ND 4.0' : 'Free · CC BY-NC-ND 4.0'}
               </span>
             </motion.div>
-          )}
-
-          {installHint && (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="max-w-[280px] text-[11px] leading-relaxed text-ink/45"
-            >
-              {installHint}
-            </motion.p>
           )}
         </motion.div>
 
