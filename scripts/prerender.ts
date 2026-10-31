@@ -913,6 +913,8 @@ function buildHead(route: string, meta: RouteMeta, baseHtml: string): string {
   // then inject our complete per-route block
   let html = baseHtml
     .replace(/<html lang="[^"]*"/, `<html lang="${lang}"`)
+    // The Greek pages install the Greek app (name, shortcuts); same app id.
+    .replace('<link rel="manifest" href="/manifest.json" />', `<link rel="manifest" href="${lang === 'el' ? '/manifest-el.json' : '/manifest.json'}" />`)
     .replace(/<title>[^<]*<\/title>/g, '')
     .replace(/<meta name="description"[^>]*>/g, '')
     .replace(/<meta name="keywords"[^>]*>/g, '')

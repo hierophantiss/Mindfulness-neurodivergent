@@ -1,6 +1,21 @@
 {
-  "name": "Neurodivergent Mindfulness App",
+  "id": "/",
+  "name": "Neurodivergent Mindfulness",
   "short_name": "Mindfulness",
+  "description": "A free mindfulness app for neurodivergent minds. Four axes, Body, Breath, Attention and Space: breathing and movement practices, a calm space for sleep, and an 11-chapter guide to read or listen to. Everything stays on your device.",
+  "lang": "en",
+  "dir": "ltr",
+  "start_url": "/en",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#070b14",
+  "background_color": "#0f1117",
+  "categories": [
+    "health",
+    "lifestyle",
+    "education"
+  ],
   "icons": [
     {
       "src": "/icon-192.png",
@@ -27,15 +42,11 @@
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#070b14",
-  "background_color": "#0f1117",
-  "display": "standalone",
-  "start_url": "/",
   "shortcuts": [
     {
-      "name": "SOS Αναπνοή",
-      "short_name": "SOS Breath",
-      "url": "/practice/breath/sos-breath",
+      "name": "SOS · Immediate calm",
+      "short_name": "SOS",
+      "url": "/en/practice/breath/sos-breath",
       "icons": [
         {
           "src": "/icon-192.png",
@@ -45,9 +56,9 @@
       ]
     },
     {
-      "name": "Πώς νιώθεις;",
-      "short_name": "Check-in",
-      "url": "/",
+      "name": "Sanctuary",
+      "short_name": "Sanctuary",
+      "url": "/en/sanctuary",
       "icons": [
         {
           "src": "/icon-192.png",
@@ -57,9 +68,9 @@
       ]
     },
     {
-      "name": "Μικροδόσεις",
+      "name": "Microdoses",
       "short_name": "Microdoses",
-      "url": "/practice/microdoses",
+      "url": "/en/practice/microdoses",
       "icons": [
         {
           "src": "/icon-192.png",
@@ -68,15 +79,5 @@
         }
       ]
     }
-  ],
-  "description": "A free mindfulness app designed for neurodivergent minds. Body, Breath, Attention, Space — four axes of presence practice with somatic exercises, guided breathing, and open awareness.",
-  "lang": "en",
-  "dir": "ltr",
-  "categories": [
-    "health",
-    "lifestyle",
-    "education"
-  ],
-  "orientation": "any",
-  "scope": "/"
+  ]
 }

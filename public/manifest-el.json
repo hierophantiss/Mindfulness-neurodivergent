@@ -1,0 +1,83 @@
+{
+  "id": "/",
+  "name": "Ενσυνειδητότητα για Νευροδιαφορετικούς",
+  "short_name": "Mindfulness",
+  "description": "Δωρεάν εφαρμογή ενσυνειδητότητας για νευροδιαφορετικούς. Τέσσερις άξονες, Σώμα, Αναπνοή, Προσοχή και Χώρος: ασκήσεις αναπνοής και κίνησης, ήσυχοι ήχοι για ύπνο, και ένας οδηγός 11 κεφαλαίων που διαβάζεις ή ακούς. Όλα μένουν στη συσκευή σου.",
+  "lang": "el",
+  "dir": "ltr",
+  "start_url": "/el",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#070b14",
+  "background_color": "#0f1117",
+  "categories": [
+    "health",
+    "lifestyle",
+    "education"
+  ],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "SOS · Άμεση ηρέμηση",
+      "short_name": "SOS",
+      "url": "/el/practice/breath/sos-breath",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Καταφύγιο",
+      "short_name": "Καταφύγιο",
+      "url": "/el/sanctuary",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Μικροδόσεις",
+      "short_name": "Μικροδόσεις",
+      "url": "/el/practice/microdoses",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}

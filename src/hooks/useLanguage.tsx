@@ -89,6 +89,8 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   useEffect(() => {
     document.documentElement.lang = language;
+    // Installing the app gives it the name and shortcuts in this language.
+    document.querySelector('link[rel="manifest"]')?.setAttribute('href', language === 'el' ? '/manifest-el.json' : '/manifest.json');
   }, [language]);
 
   const t = (key: string): string => {
