@@ -1,10 +1,13 @@
 [
   {
-    "relation": ["delegate_permission/common.handle_all_urls"],
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
     "target": {
       "namespace": "android_app",
       "package_name": "org.neurodivergent_mindfulness.app",
       "sha256_cert_fingerprints": [
+        "F0:9D:98:D3:1C:06:89:E3:79:C5:76:5D:75:55:DF:83:1F:98:8E:DD:2C:C4:D6:1D:3F:CC:E5:D9:8E:24:1B:6A",
         "77:40:B0:4E:89:C4:E7:D7:87:33:61:96:04:E7:29:36:13:E8:9F:12:90:6E:8E:DE:69:B5:C0:E8:F8:90:89:EA"
       ]
     }
