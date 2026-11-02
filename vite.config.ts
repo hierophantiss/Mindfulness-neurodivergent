@@ -29,7 +29,7 @@ export default defineConfig(() => {
           // The cat companion, so it shows offline too.
           additionalManifestEntries: [{ url: '/cat-192.png', revision: 'cat-2026-10-19' }],
           navigateFallback: '/index.html',
-          navigateFallbackDenylist: [/\.(?:pdf|epub)$/, /^\/workbook_/, /^\/animations\//, /^\/audio\//],
+          navigateFallbackDenylist: [/\.(?:pdf|epub|json)$/, /^\/workbook_/, /^\/animations\//, /^\/audio\//, /^\/\.well-known\//],
           ignoreURLParametersMatching: [/^utm_/, /^fbclid$/, /^lang$/],
           maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
           cleanupOutdatedCaches: true,
