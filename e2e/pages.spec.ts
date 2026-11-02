@@ -19,3 +19,14 @@ for (const lang of ['el', 'en']) {
     });
   }
 }
+
+// The file that lets the Google Play app open full screen, without the
+// browser's address bar (Digital Asset Links). It must be valid JSON.
+test('assetlinks.json is served', async ({ request }) => {
+  const res = await request.get('/.well-known/assetlinks.json');
+  if (res.status() !== 200) throw new Error(`status ${res.status()}`);
+  const links = await res.json();
+  const target = links[0]?.target;
+  if (target?.package_name !== 'org.neurodivergent_mindfulness.app') throw new Error('wrong package');
+  if (!target.sha256_cert_fingerprints?.length) throw new Error('no fingerprint');
+});
