@@ -7,6 +7,7 @@ import { useProgress } from '../contexts/ProgressContext';
 import { Skeleton } from '../components/ui/Skeleton';
 import { cn } from '../lib/utils';
 import { Check } from 'lucide-react';
+import { OfflineAudioCard } from '../components/OfflineAudioCard';
 
 export default function Chapters() {
   const navigate = useNavigate();
@@ -56,6 +57,10 @@ export default function Chapters() {
             </p>
           </div>
         </header>
+
+        <div className="max-w-xl mx-auto w-full">
+          <OfflineAudioCard lang={currentLang} />
+        </div>
 
         {/* Section 1: The Quadruple Axis - Atmospheric Cards */}
         <div id="basis" className="space-y-8">

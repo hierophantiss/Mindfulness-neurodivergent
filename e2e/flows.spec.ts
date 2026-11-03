@@ -63,3 +63,27 @@ test('an unknown address answers 404 with a way home', async ({ page }) => {
   expect(res?.status()).toBe(404);
   await expect(page.getByRole('link', { name: /στην αρχική|home/i }).first()).toBeVisible();
 });
+
+test("the Journal already knows the day's \"How do you feel\"", async ({ page }) => {
+  await page.goto('/el', { waitUntil: 'networkidle' });
+  await page.getByRole('button', { name: 'Ένταση' }).first().click();
+  await page.goto('/el/journal', { waitUntil: 'networkidle' });
+  await expect(page.getByRole('button', { name: 'Ένταση' })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByText('Από το «Πώς νιώθεις» της αρχικής')).toBeVisible();
+});
+
+test('Settings makes a daily calendar reminder', async ({ page }) => {
+  await page.goto('/el/settings', { waitUntil: 'networkidle' });
+  await page.getByRole('button', { name: /Υπενθύμιση στο ημερολόγιο/ }).click();
+  const dialog = page.getByRole('dialog', { name: 'Υπενθύμιση στο ημερολόγιο' });
+  await expect(dialog).toBeVisible();
+  const download = page.waitForEvent('download');
+  await dialog.getByRole('button', { name: /Πρόσθεσε στο ημερολόγιο/ }).click();
+  expect((await download).suggestedFilename()).toBe('ypenthymisi.ics');
+});
+
+test('the chapter list offers the audio for listening offline', async ({ page }) => {
+  await page.goto('/el/chapters', { waitUntil: 'networkidle' });
+  await expect(page.getByRole('heading', { name: 'Ακρόαση χωρίς σύνδεση' })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Κατέβασε/ })).toBeVisible();
+});

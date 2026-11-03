@@ -6,7 +6,7 @@ import { motion } from 'motion/react';
 import { useLanguage } from '../hooks/useLanguage';
 import { cn } from '../lib/utils';
 import type { Axis } from '../data/types';
-import { AXIS_LABEL, AXIS_COLOR, CHECKIN_OPTIONS, getCheckinOption, type CheckinChoice } from '../data/stateCheckin';
+import { AXIS_LABEL, AXIS_COLOR, CHECKIN_OPTIONS, getCheckinOption, checkinOnDay, type CheckinChoice } from '../data/stateCheckin';
 import { dayOfYear } from '../data/practiceCatalog';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 
@@ -88,7 +88,8 @@ const LEGACY_MOODS: Record<number, T> = {
 interface JournalEntry {
   text: string;
   mood: number | null;          // legacy
-  state?: CheckinChoice | null; // how I felt
+  state?: CheckinChoice | null; // how I felt (chosen here)
+  stateOff?: boolean;           // the day's "How do you feel?" answer, unticked here
   axes?: Axis[];                // what I practised (ticked by hand)
   axesOff?: Axis[];             // filled in from the practices, then unticked by hand
   timestamp: number;
@@ -125,7 +126,10 @@ function loadEntry(date: string): JournalEntry {
 // Something the person wrote or ticked (what the history shows).
 const isEmptyEntry = (e: JournalEntry) => !e.text.trim() && !e.state && !e.mood && !(e.axes && e.axes.length);
 // Worth keeping on the device: also a practice unticked by hand.
-const nothingToKeep = (e: JournalEntry) => isEmptyEntry(e) && !(e.axesOff && e.axesOff.length);
+const nothingToKeep = (e: JournalEntry) => isEmptyEntry(e) && !(e.axesOff && e.axesOff.length) && !e.stateOff;
+// How I felt: chosen here, or else the day's answer to "How do you feel?" on the home page.
+const feltOn = (e: JournalEntry, day: string): CheckinChoice | null =>
+  e.state || (e.stateOff ? null : checkinOnDay(day));
 
 export default function Journal() {
   const navigate = useNavigate();
@@ -178,6 +182,8 @@ export default function Journal() {
   const isTicked = (axis: Axis) =>
     (entry.axes || []).includes(axis) || (dayPractice.axes.includes(axis) && !(entry.axesOff || []).includes(axis));
   const tickedAxes = AXES.filter(isTicked);
+  const felt = feltOn(entry, dateStr);
+  const feltFromHome = !entry.state && !!felt;
 
   const toggleAxis = (axis: Axis) => {
     const axes = entry.axes || [];
@@ -321,11 +327,11 @@ export default function Journal() {
             <p className={sectionLabel}>{lang === 'el' ? 'Πώς ένιωθα' : 'How I felt'}</p>
             <div className="grid grid-cols-2 min-[400px]:grid-cols-4 gap-2" role="group">
               {CHECKIN_OPTIONS.map(o => {
-                const on = entry.state === o.id;
+                const on = felt === o.id;
                 return (
                   <button
                     key={o.id}
-                    onClick={() => save({ state: on ? null : o.id })}
+                    onClick={() => save(on ? { state: null, stateOff: true } : { state: o.id, stateOff: false })}
                     aria-pressed={on}
                     className={cn(
                       "min-h-[44px] px-2 rounded-full border text-[13px] transition-colors active:scale-[0.97]",
@@ -337,6 +343,11 @@ export default function Journal() {
                 );
               })}
             </div>
+            {feltFromHome && (
+              <p className="mt-2 ml-1 text-[12px] leading-relaxed text-ink/45">
+                {lang === 'el' ? 'Από το «Πώς νιώθεις» της αρχικής. Άλλαξέ το αν θες.' : 'From “How do you feel?” on the home page. Change it if you like.'}
+              </p>
+            )}
           </div>
 
           {/* What I noticed */}
@@ -412,8 +423,9 @@ export default function Journal() {
               </div>
             ) : (
               filteredHistory.map(item => {
-                const felt = item.data.state
-                  ? getCheckinOption(item.data.state).label[lang]
+                const feltState = feltOn(item.data, item.date);
+                const feltLabel = feltState
+                  ? getCheckinOption(feltState).label[lang]
                   : item.data.mood ? LEGACY_MOODS[item.data.mood]?.[lang] : null;
                 return (
                   <button
@@ -429,7 +441,7 @@ export default function Journal() {
                         {(item.data.axes || []).map(a => (
                           <span key={a} className="w-2 h-2 rounded-full" style={{ backgroundColor: AXIS_COLOR[a] }} title={AXIS_LABEL[a][lang]} />
                         ))}
-                        {felt && <span className="text-[11px] text-ink/45 ml-1">{felt}</span>}
+                        {feltLabel && <span className="text-[11px] text-ink/45 ml-1">{feltLabel}</span>}
                       </span>
                     </div>
                     <p className="text-sm leading-relaxed text-ink/70 line-clamp-3">

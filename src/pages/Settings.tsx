@@ -3,10 +3,12 @@ import { downloadBackup, restoreBackup } from '../lib/backup';
 import { lastBackupDate } from '../lib/dataSafety';
 import { readErrors, clearErrors, errorReport } from '../lib/errorLog';
 import { motion } from 'motion/react';
-import { ChevronLeft, Languages, Activity, LetterText, Info, LogOut, Sparkles, Sun, Database, FileText, Download, Bug, ShieldCheck, MessageCircleHeart } from 'lucide-react';
+import { ChevronLeft, Languages, Activity, LetterText, Info, LogOut, Sparkles, Sun, Database, FileText, Download, Bug, ShieldCheck, MessageCircleHeart, CalendarClock } from 'lucide-react';
+import { openIcs, googleCalendarUrl } from '../lib/reminder';
 import { feedbackMailto } from '../lib/feedback';
 import { CONTACT_EMAIL } from '../lib/links';
 import { useNavigate } from 'react-router-dom';
+import { createPortal } from 'react-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { cn } from '../lib/utils';
@@ -18,6 +20,15 @@ export default function Settings() {
   const { reduceMotion, toggleReduceMotion, easyRead, toggleEasyRead } = useAccessibility();
   const [canInstall, setCanInstall] = useState(false);
   const [showDebug, setShowDebug] = useState(false);
+  const [showReminder, setShowReminder] = useState(false);
+  // The time last chosen for the calendar reminder (a convenience on this device).
+  const [remindAt, setRemindAt] = useState(() => {
+    try { return localStorage.getItem('n_mindfulness_reminder_time') || '09:00'; } catch { return '09:00'; }
+  });
+  const chooseTime = (v: string) => {
+    setRemindAt(v);
+    try { localStorage.setItem('n_mindfulness_reminder_time', v); } catch { /* storage unavailable */ }
+  };
   // The day of the last copy, shown next to "Save Data".
   const [lastBackup, setLastBackup] = useState(lastBackupDate);
   const [debugLog, setDebugLog] = useState<string[]>([]);
@@ -119,6 +130,15 @@ export default function Settings() {
           action: () => navigate('/install'),
           color: 'text-green-400'
         }] : []),
+        {
+          id: 'reminder',
+          icon: CalendarClock,
+          label: { el: 'Υπενθύμιση στο ημερολόγιο', en: 'Reminder in your calendar' },
+          hint: { el: 'Μία ήπια υπενθύμιση τη μέρα, χωρίς σερί', en: 'One gentle reminder a day, no streaks' },
+          value: null,
+          action: () => setShowReminder(true),
+          color: 'text-[var(--axis-breath-ink)]'
+        },
         {
           id: 'feedback',
           icon: MessageCircleHeart,
@@ -352,12 +372,55 @@ export default function Settings() {
           </div>
        </div>
 
+      {showReminder && (() => {
+        const el = language === 'el';
+        const lg = el ? 'el' : 'en';
+        return createPortal(
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80" onClick={() => setShowReminder(false)}>
+            <div role="dialog" aria-modal="true" aria-labelledby="reminder-title" onClick={(e) => e.stopPropagation()} className="card-relief p-6 rounded-2xl w-full max-w-md max-h-[85vh] overflow-y-auto flex flex-col gap-4">
+              <h2 id="reminder-title" className="font-display text-[24px] text-ink">{el ? 'Υπενθύμιση στο ημερολόγιο' : 'Reminder in your calendar'}</h2>
+              <p className="text-[14px] leading-relaxed text-ink/75">
+                {el
+                  ? 'Ένα γεγονός που επαναλαμβάνεται κάθε μέρα στο δικό σου ημερολόγιο: «Λίγα λεπτά για σένα». Χωρίς σερί και χωρίς μέτρημα· το μετακινείς ή το σβήνεις όπως κάθε γεγονός.'
+                  : 'An event that repeats every day in your own calendar: “A few minutes for you”. No streaks, no counting; move it or delete it like any event.'}
+              </p>
+              <label className="flex items-center justify-between gap-4 rounded-xl bg-black/30 border border-white/5 px-4 min-h-[52px]">
+                <span className="text-[14px] text-ink/85">{el ? 'Ώρα' : 'Time'}</span>
+                <input
+                  type="time"
+                  value={remindAt}
+                  onChange={(e) => chooseTime(e.target.value)}
+                  className="bg-transparent text-[16px] text-ink outline-none [color-scheme:dark]"
+                />
+              </label>
+              <div className="flex flex-col gap-2 pt-1">
+                <button type="button" onClick={() => openIcs(lg, remindAt)} className="min-h-[44px] rounded-xl btn-gold text-[14px] font-medium">
+                  {el ? 'Πρόσθεσε στο ημερολόγιο (.ics)' : 'Add to calendar (.ics)'}
+                </button>
+                <a href={googleCalendarUrl(lg, remindAt)} target="_blank" rel="noopener noreferrer" className="min-h-[44px] flex items-center justify-center rounded-xl border border-white/10 text-[14px] text-ink/85 hover:text-ink">
+                  Google Calendar
+                </a>
+                <p className="text-[12.5px] leading-relaxed text-ink/55">
+                  {el
+                    ? 'Το αρχείο ανοίγει στο ημερολόγιο του iPhone, του Mac, στο Outlook και στο Samsung Calendar. Στο Android με Google Calendar, διάλεξε το δεύτερο κουμπί.'
+                    : 'The file opens in the calendar on iPhone and Mac, in Outlook and in Samsung Calendar. On Android with Google Calendar, choose the second button.'}
+                </p>
+                <button type="button" onClick={() => setShowReminder(false)} className="min-h-[44px] rounded-xl bg-white/[0.06] text-[14px] text-ink/90 hover:bg-white/[0.1]">
+                  {el ? 'Κλείσιμο' : 'Close'}
+                </button>
+              </div>
+            </div>
+          </div>,
+          document.body,
+        );
+      })()}
+
       {showDebug && (() => {
         const el = language === 'el';
         const report = errorReport(el ? 'el' : 'en', errors) + '\n\n' + debugLog.join('\n');
         const mail = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(el ? 'Σφάλματα της εφαρμογής' : 'App errors')}&body=${encodeURIComponent(report.slice(0, 1900))}`;
-        return (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80" onClick={() => setShowDebug(false)}>
+        return createPortal(
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80" onClick={() => setShowDebug(false)}>
             <div role="dialog" aria-modal="true" aria-labelledby="diag-title" onClick={(e) => e.stopPropagation()} className="card-relief p-6 rounded-2xl w-full max-w-md max-h-[80vh] overflow-y-auto flex flex-col gap-4">
               <h2 id="diag-title" className="font-display text-[24px] text-ink">{el ? 'Διαγνωστικά' : 'Diagnostics'}</h2>
               <p className="text-[14px] leading-relaxed text-ink/75">
@@ -399,7 +462,8 @@ export default function Settings() {
                 </button>
               </div>
             </div>
-          </div>
+          </div>,
+          document.body,
         );
       })()}
     </div>

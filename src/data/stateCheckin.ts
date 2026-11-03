@@ -138,6 +138,7 @@ const INTENTION: Record<CheckinState, string> = { hyper: 'anxiety', hypo: 'focus
 // reads it for the next 90 minutes.
 // "Not sure" is not a state, so nothing is saved for it.
 export function saveCheckinState(choice: CheckinChoice) {
+  recordCheckinDay(choice);
   if (choice === 'unsure') return;
   try {
     localStorage.setItem('n_mindfulness_intention', INTENTION[choice]);
@@ -146,6 +147,42 @@ export function saveCheckinState(choice: CheckinChoice) {
     // storage unavailable — the answer still shows on screen
   }
   window.dispatchEvent(new Event('storage'));
+}
+
+// ── The day's answer, for the Journal's "How I felt" ─────────────────────
+// The last answer of each day (the person's local day), the last 120 days.
+// The Journal shows it already chosen, and the person can change it there.
+
+export const CHECKIN_DAYS_KEY = 'n_mindfulness_checkin_days';
+const KEEP_DAYS = 120;
+const pad2 = (n: number) => String(n).padStart(2, '0');
+export const localDay = (d: Date) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+const isChoice = (v: unknown): v is CheckinChoice => v === 'hyper' || v === 'hypo' || v === 'balanced' || v === 'unsure';
+
+function readDays(storage: Storage): Record<string, CheckinChoice> {
+  try {
+    const o = JSON.parse(storage.getItem(CHECKIN_DAYS_KEY) || '{}');
+    return o && typeof o === 'object' && !Array.isArray(o) ? o : {};
+  } catch {
+    return {};
+  }
+}
+
+export function recordCheckinDay(choice: CheckinChoice, now = new Date(), storage: Storage = localStorage) {
+  try {
+    const days = readDays(storage);
+    days[localDay(now)] = choice;
+    const keep = Object.keys(days).sort().slice(-KEEP_DAYS);
+    storage.setItem(CHECKIN_DAYS_KEY, JSON.stringify(Object.fromEntries(keep.map(k => [k, days[k]]))));
+  } catch {
+    // storage unavailable
+  }
+}
+
+/** The last "How do you feel?" answer of that day ("YYYY-MM-DD"), if any. */
+export function checkinOnDay(day: string, storage: Storage = localStorage): CheckinChoice | null {
+  const v = readDays(storage)[day];
+  return isChoice(v) ? v : null;
 }
 
 // The answer given in the last 90 minutes, if any.

@@ -14,3 +14,14 @@ describe('chapter audio address', () => {
     expect(audioVersion(null)).toBeUndefined();
   });
 });
+
+describe('listen offline', () => {
+  it('reads the languages kept offline, ignoring anything else', async () => {
+    const { offlineLangs, OFFLINE_KEY } = await import('./chapterAudio');
+    localStorage.setItem(OFFLINE_KEY, JSON.stringify(['el', 'xx', 'en']));
+    expect(offlineLangs()).toEqual(['el', 'en']);
+    localStorage.setItem(OFFLINE_KEY, 'broken');
+    expect(offlineLangs()).toEqual([]);
+    localStorage.removeItem(OFFLINE_KEY);
+  });
+});
