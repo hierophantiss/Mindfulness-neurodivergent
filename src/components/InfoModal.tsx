@@ -3,13 +3,13 @@ import { useAccessibility } from '../hooks/useAccessibility';
 import React from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Anchor, Wind, Focus, Maximize, Heart, Info, CheckCircle2, BookOpen, Sparkles, Mail } from 'lucide-react';
+import { X, Anchor, Wind, Focus, Maximize, Heart, Info, CheckCircle2, BookOpen, Sparkles, Mail, MessageCircleHeart } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { MICROSOFT_STORE_URL } from '../lib/links';
+import { MICROSOFT_STORE_URL, CONTACT_EMAIL } from '../lib/links';
+import { feedbackMailto } from '../lib/feedback';
 import { AXIS_COLOR } from '../data/axisColor';
 
 // Where "Send me a message" goes. One place to change it later.
-const CONTACT_EMAIL = 'bairaktaris.theodoros@gmail.com';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../hooks/useLanguage';
 
@@ -302,6 +302,13 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                     {content.contact.title[l]}
                   </p>
                   <p className="text-xs text-ink/55 leading-relaxed">{content.contact.text[l]}</p>
+                  <a
+                    href={feedbackMailto(l)}
+                    className="inline-flex items-center gap-2 px-5 min-h-[44px] rounded-full bg-white/[0.05] border border-sign-gold/40 text-[13px] text-ink/90 hover:bg-white/[0.09] transition-colors"
+                  >
+                    <MessageCircleHeart size={15} className="text-sign-gold" />
+                    {l === 'el' ? 'Τι θα άλλαζες;' : 'What would you change?'}
+                  </a>
                   <a
                     href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(content.contact.subject[l])}`}
                     className="inline-flex items-center gap-2 px-5 min-h-[44px] rounded-full bg-white/[0.05] border border-white/[0.12] text-[13px] text-ink/85 hover:bg-white/[0.09] transition-colors"

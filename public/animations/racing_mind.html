@@ -12,9 +12,8 @@
 {"@context":"https://schema.org","@type":"LearningResource","name":"Racing Mind","alternateName":"Νους που Τρέχει","url":"https://mindfulness-practice.site/racing_mind.html","inLanguage":["el","en"],"isAccessibleForFree":true,"author":{"@type":"Person","name":"Θεόδωρος Μπαϊρακτάρης"}}
 </script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#060810;overflow:hidden;height:100vh;height:100dvh;width:100vw;font-family:'Cormorant Garamond',serif;color:#e8e4df;user-select:none}
+body{background:#060810;overflow:hidden;height:100vh;height:100dvh;width:100vw;font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;color:#e8e4df;user-select:none}
 canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:1}
 .label{position:fixed;bottom:54px;left:50%;transform:translateX(-50%);z-index:10;text-align:center;width:90%;opacity:0;transition:opacity 1.5s ease}
 .label.vis{opacity:1}
@@ -27,7 +26,7 @@ canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:1}
 .dot{width:8px;height:8px;border-radius:50%;background:rgba(232,228,223,0.1);transition:all .6s;cursor:pointer;border:none;padding:0;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center}
 .dot.active{background:rgba(232,228,223,0.5)}
 .ctrls{position:fixed;bottom:clamp(8px,2vh,18px);left:50%;transform:translateX(-50%);z-index:10;display:flex;gap:10px}
-.ctrls button{background:rgba(232,228,223,0.06);border:1.5px solid rgba(232,228,223,0.15);color:rgba(232,228,223,0.5);padding:10px 22px;font-family:'Cormorant Garamond',serif;font-size:clamp(0.75rem,1.5vw,0.9rem);letter-spacing:0.12em;cursor:pointer;border-radius:24px;transition:all .3s;min-width:48px;min-height:44px}
+.ctrls button{background:rgba(232,228,223,0.06);border:1.5px solid rgba(232,228,223,0.15);color:rgba(232,228,223,0.5);padding:10px 22px;font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-size:clamp(0.75rem,1.5vw,0.9rem);letter-spacing:0.12em;cursor:pointer;border-radius:24px;transition:all .3s;min-width:48px;min-height:44px}
 .ctrls button:active{background:rgba(232,228,223,0.18);transform:scale(0.95)}
 .back-link{position:fixed;top:12px;left:12px;z-index:20;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);padding:5px 12px;border-radius:14px;font-size:13px;text-decoration:none;font-family:inherit}
 .lang-btn{position:fixed;top:12px;right:12px;z-index:20;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);padding:4px 10px;border-radius:12px;font-size:11px;cursor:pointer;font-family:inherit}

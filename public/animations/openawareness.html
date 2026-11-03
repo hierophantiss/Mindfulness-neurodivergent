@@ -13,9 +13,8 @@
 {"@context":"https://schema.org","@type":"LearningResource","name":"Open Awareness","alternateName":"Ανοιχτή Επίγνωση","url":"https://mindfulness-practice.site/openawareness.html","inLanguage":["el","en"],"isAccessibleForFree":true,"author":{"@type":"Person","name":"Θεόδωρος Μπαϊρακτάρης"}}
 </script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,700;1,300&display=swap');
   *{margin:0;padding:0;box-sizing:border-box}
-  body{background:#050510;overflow:hidden;height:100vh;width:100vw;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;color:#e8e4df;user-select:none}
+  body{background:#050510;overflow:hidden;height:100vh;width:100vw;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',Georgia,'Times New Roman',serif;color:#e8e4df;user-select:none}
   canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:1}
   .label{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);z-index:10;text-align:center;width:85%;opacity:0;transition:opacity 1.8s ease}
   .label.vis{opacity:1}
@@ -28,7 +27,7 @@
   .dot{width:6px;height:6px;border-radius:50%;background:rgba(232,228,223,0.1);transition:all .6s ease;cursor:pointer;border:none;padding:0}
   .dot.active{background:rgba(232,228,223,0.5);transform:scale(1.5);box-shadow:0 0 10px rgba(232,228,223,0.12)}
   .ctrls{position:fixed;bottom:clamp(12px,3vh,24px);left:50%;transform:translateX(-50%);z-index:10;display:flex;gap:10px;align-items:center}
-  .ctrls button{background:rgba(232,228,223,0.06);border:1.5px solid rgba(232,228,223,0.15);color:rgba(232,228,223,0.5);padding:10px 22px;font-family:'Fraunces',serif;font-size:clamp(0.75rem,1.5vw,0.9rem);letter-spacing:0.12em;cursor:pointer;border-radius:24px;transition:all .3s;min-width:48px;min-height:44px}
+  .ctrls button{background:rgba(232,228,223,0.06);border:1.5px solid rgba(232,228,223,0.15);color:rgba(232,228,223,0.5);padding:10px 22px;font-family:'Fraunces',Georgia,'Times New Roman',serif;font-size:clamp(0.75rem,1.5vw,0.9rem);letter-spacing:0.12em;cursor:pointer;border-radius:24px;transition:all .3s;min-width:48px;min-height:44px}
   .ctrls button:active{background:rgba(232,228,223,0.18);color:rgba(232,228,223,0.8);transform:scale(0.95)}
   .intro{position:fixed;inset:0;z-index:100;background:#050510;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:opacity 2s ease}
   .intro.hidden{opacity:0;pointer-events:none}
@@ -267,7 +266,7 @@ function drawCloudThoughts(alpha) {
         
         // Text on cloud
         ctx.shadowBlur = 8;
-        ctx.font = `${Math.floor(cloudR*0.8)}px 'Fraunces', serif`;
+        ctx.font = `${Math.floor(cloudR*0.8)}px 'Fraunces',Georgia,'Times New Roman',serif`;
         ctx.fillStyle = `rgba(255, 255, 245, ${alpha * opacity * 0.9})`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';

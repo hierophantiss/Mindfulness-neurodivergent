@@ -180,9 +180,7 @@ export default function ProgramWeek() {
                     {language === 'en' ? 'Day' : 'Ημέρα'} {idx + 1}
                   </div>
                   {isLocked ? (
-                    <div className="w-4 h-4 rounded-full bg-white/10 text-ink/40 flex items-center justify-center">
-                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                    </div>
+                    <span className="text-[12px] text-ink/45">{language === 'en' ? 'later' : 'αργότερα'}</span>
                   ) : dayCompleted && (
                     <div className="w-4 h-4 rounded-full bg-teal-500/20 text-teal-300 flex items-center justify-center border border-teal-500/30">
                       <Check size={10} strokeWidth={3} />
@@ -190,7 +188,7 @@ export default function ProgramWeek() {
                   )}
                 </div>
                 <span className={`block font-light text-lg leading-tight text-left ${activeDay === idx ? 'text-ink drop-shadow-sm' : 'text-ink/60'}`}>
-                  {isLocked ? (language === 'en' ? 'Locked' : 'Κλειδωμένο') : day.title}
+                  {day.title}
                 </span>
               </button>
             )

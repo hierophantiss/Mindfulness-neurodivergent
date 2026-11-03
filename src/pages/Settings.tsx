@@ -3,7 +3,9 @@ import { downloadBackup, restoreBackup } from '../lib/backup';
 import { lastBackupDate } from '../lib/dataSafety';
 import { readErrors, clearErrors, errorReport } from '../lib/errorLog';
 import { motion } from 'motion/react';
-import { ChevronLeft, Languages, Activity, LetterText, Info, LogOut, Sparkles, Sun, Database, FileText, Download, Bug, ShieldCheck } from 'lucide-react';
+import { ChevronLeft, Languages, Activity, LetterText, Info, LogOut, Sparkles, Sun, Database, FileText, Download, Bug, ShieldCheck, MessageCircleHeart } from 'lucide-react';
+import { feedbackMailto } from '../lib/feedback';
+import { CONTACT_EMAIL } from '../lib/links';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
@@ -117,6 +119,15 @@ export default function Settings() {
           action: () => navigate('/install'),
           color: 'text-green-400'
         }] : []),
+        {
+          id: 'feedback',
+          icon: MessageCircleHeart,
+          label: { el: 'Τι θα άλλαζες;', en: 'What would you change?' },
+          hint: { el: 'Ένα email με πέντε σύντομες ερωτήσεις, από το δικό σου email', en: 'An email with five short questions, from your own email' },
+          value: null,
+          action: () => { window.location.href = feedbackMailto(language === 'en' ? 'en' : 'el'); },
+          color: 'text-sign-gold'
+        },
         {
           id: 'debug',
           icon: Bug,
@@ -344,7 +355,7 @@ export default function Settings() {
       {showDebug && (() => {
         const el = language === 'el';
         const report = errorReport(el ? 'el' : 'en', errors) + '\n\n' + debugLog.join('\n');
-        const mail = `mailto:bairaktaris.theodoros@gmail.com?subject=${encodeURIComponent(el ? 'Σφάλματα της εφαρμογής' : 'App errors')}&body=${encodeURIComponent(report.slice(0, 1900))}`;
+        const mail = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(el ? 'Σφάλματα της εφαρμογής' : 'App errors')}&body=${encodeURIComponent(report.slice(0, 1900))}`;
         return (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80" onClick={() => setShowDebug(false)}>
             <div role="dialog" aria-modal="true" aria-labelledby="diag-title" onClick={(e) => e.stopPropagation()} className="card-relief p-6 rounded-2xl w-full max-w-md max-h-[80vh] overflow-y-auto flex flex-col gap-4">

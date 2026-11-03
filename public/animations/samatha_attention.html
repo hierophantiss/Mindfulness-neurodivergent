@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Γεωμετρία της Προσοχής · Attention Geometry</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Serif:ital@0;1&display=swap');
 
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -16,7 +15,7 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Cormorant Garamond',Georgia,'Times New Roman',serif;
     overflow: hidden;
     user-select: none;
     color: #e8e4df;
@@ -90,7 +89,7 @@
     border: 1px solid rgba(200, 169, 110, 0.4);
     color: #dfc593;
     padding: 8px 24px;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Cormorant Garamond',Georgia,'Times New Roman',serif;
     font-size: 13px;
     letter-spacing: 0.15em;
     cursor: pointer;
@@ -123,9 +122,9 @@
 
   .ex-intro{position:fixed;inset:0;z-index:100;background:#050508;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:opacity 2s ease; backdrop-filter: blur(5px);}
   .ex-intro.hidden{opacity:0;pointer-events:none}
-  .ex-intro-t{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4.5vw,3rem);font-weight:300;letter-spacing:0.2em;background:linear-gradient(135deg,#fff,#dfc593);-webkit-background-clip:text;-webkit-text-fill-color:transparent;opacity:0;animation:xfi 2.5s ease 0.5s forwards; filter: drop-shadow(0 0 20px rgba(223, 197, 147, 0.2));}
-  .ex-intro-s{font-family:'Cormorant Garamond',serif;font-size:clamp(0.8rem,1.4vw,1rem);letter-spacing:0.3em;color:rgba(232,228,223,0.4);margin-top:12px;font-style:italic;opacity:0;animation:xfi 2.5s ease 1.5s forwards}
-  .ex-intro-h{position:absolute;bottom:clamp(40px,8vh,80px);left:50%;transform:translateX(-50%);font-family:'Cormorant Garamond',serif;font-size:clamp(0.85rem,2vw,1.1rem);letter-spacing:0.3em;color:rgba(223, 197, 147, 0.7);text-transform:uppercase;cursor:pointer;padding:14px 40px;border:1px solid rgba(223, 197, 147, 0.3);border-radius:30px;background:rgba(223, 197, 147, 0.05);transition:all 0.4s;animation:xpu 3s ease-in-out infinite;white-space:nowrap}
+  .ex-intro-t{font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-size:clamp(1.8rem,4.5vw,3rem);font-weight:300;letter-spacing:0.2em;background:linear-gradient(135deg,#fff,#dfc593);-webkit-background-clip:text;-webkit-text-fill-color:transparent;opacity:0;animation:xfi 2.5s ease 0.5s forwards; filter: drop-shadow(0 0 20px rgba(223, 197, 147, 0.2));}
+  .ex-intro-s{font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-size:clamp(0.8rem,1.4vw,1rem);letter-spacing:0.3em;color:rgba(232,228,223,0.4);margin-top:12px;font-style:italic;opacity:0;animation:xfi 2.5s ease 1.5s forwards}
+  .ex-intro-h{position:absolute;bottom:clamp(40px,8vh,80px);left:50%;transform:translateX(-50%);font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-size:clamp(0.85rem,2vw,1.1rem);letter-spacing:0.3em;color:rgba(223, 197, 147, 0.7);text-transform:uppercase;cursor:pointer;padding:14px 40px;border:1px solid rgba(223, 197, 147, 0.3);border-radius:30px;background:rgba(223, 197, 147, 0.05);transition:all 0.4s;animation:xpu 3s ease-in-out infinite;white-space:nowrap}
   .ex-intro-h:hover{background:rgba(223, 197, 147, 0.15); border-color:rgba(223, 197, 147, 0.8);}
   
   @keyframes xfi{to{opacity:1}}

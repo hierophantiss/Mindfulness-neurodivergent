@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Άσκηση Κάμερας — Παρουσία & Τετραπλός Άξονας | Camera Exercise with Presence Hero</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,700;1,300&display=swap');
-  *{margin:0;padding:0;box-sizing:border-box} body{background:#050510;overflow:hidden;height:100vh;width:100vw;font-family:'Fraunces',serif;color:#e8e4df;user-select:none}
+  *{margin:0;padding:0;box-sizing:border-box} body{background:#050510;overflow:hidden;height:100vh;width:100vw;font-family:'Fraunces',Georgia,'Times New Roman',serif;color:#e8e4df;user-select:none}
   canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:1}
   .sub-box{position:fixed;bottom:50px;left:50%;transform:translateX(-50%);z-index:10;text-align:center;width:90%;max-width:530px;opacity:0;transition:opacity 1.5s ease;background:rgba(5,5,16,0.6);backdrop-filter:blur(6px);border-radius:20px;padding:12px 16px;border:1px solid rgba(232,228,223,0.08);pointer-events:none}
   .sub-box.vis{opacity:1} .sub-box .stag{font-size:clamp(0.5rem,0.9vw,0.65rem);letter-spacing:0.3em;text-transform:uppercase;color:rgba(200,180,120,0.65);margin-bottom:5px}
@@ -19,7 +18,7 @@
   .dot{width:6px;height:6px;border-radius:50%;background:rgba(232,228,223,0.1);transition:all .4s ease;cursor:pointer;border:none;padding:0;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center}
   .dot.active{background:rgba(232,228,223,0.55);transform:scale(1.2)}
   .ctrls{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);z-index:10;display:flex;gap:8px}
-  .ctrls button{background:rgba(232,228,223,0.06);border:1.5px solid rgba(232,228,223,0.15);color:rgba(232,228,223,0.5);padding:10px 22px;font-family:'Fraunces',serif;font-size:clamp(0.75rem,1.5vw,0.9rem);letter-spacing:0.12em;cursor:pointer;border-radius:28px;transition:all .3s;min-width:48px;min-height:44px}
+  .ctrls button{background:rgba(232,228,223,0.06);border:1.5px solid rgba(232,228,223,0.15);color:rgba(232,228,223,0.5);padding:10px 22px;font-family:'Fraunces',Georgia,'Times New Roman',serif;font-size:clamp(0.75rem,1.5vw,0.9rem);letter-spacing:0.12em;cursor:pointer;border-radius:28px;transition:all .3s;min-width:48px;min-height:44px}
   .ctrls button:active{background:rgba(232,228,223,0.18);transform:scale(0.96)}
   .intro{position:fixed;inset:0;z-index:100;background:#050510;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:opacity 2s ease}
   .intro.hidden{opacity:0;pointer-events:none}

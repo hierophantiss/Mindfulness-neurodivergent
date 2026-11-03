@@ -50,8 +50,8 @@ export default function Program() {
           </h1>
           <p className="text-lg text-ink/50 font-sans max-w-xl mx-auto leading-relaxed">
             {language === 'en' 
-              ? 'A 56-day structured path to master awareness and emotional regulation.'
-              : 'Μια δομημένη πορεία 56 ημερών για την εκμάθηση της επίγνωσης.'}
+              ? 'Eight weeks, one small step a day, at your own pace.'
+              : 'Οκτώ εβδομάδες, ένα μικρό βήμα τη μέρα, με τον δικό σου ρυθμό.'}
           </p>
         </div>
       </header>
@@ -102,13 +102,11 @@ export default function Program() {
                         ? "bg-teal-400/20 text-teal-300 border-teal-400/30 shadow-[0_0_20px_rgba(127,169,228,0.2)]" 
                         : "bg-white/5 text-ink/50 border-white/10 group-hover:bg-white/10 group-hover:text-ink"
                     )}>
-                      {isLocked ? (
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                      ) : isCompleted ? <CheckCircle2 size={24} /> : weekNum}
+                      {isCompleted ? <CheckCircle2 size={24} /> : weekNum}
                     </div>
                     
                     <div className="text-[13px] font-medium text-ink/65 pt-2">
-                       {isLocked ? (language === 'en' ? 'Locked' : 'Κλειδωμένο') :
+                       {isLocked ? (language === 'en' ? 'Opens later' : 'Ανοίγει αργότερα') :
                         isCurrent && curD > 0 
                         ? `${curD}/${week.days.length} ${language === 'en' ? 'done' : 'ημέρες'}`
                         : `${week.days.length} ${language === 'en' ? 'days' : 'ημέρες'}`
@@ -124,7 +122,7 @@ export default function Program() {
                       "text-2xl font-light leading-tight transition-colors",
                       isCompleted ? "text-ink/40" : (isLocked ? "text-ink/30" : "text-ink/90")
                     )}>
-                      {isLocked ? (language === 'en' ? 'Locked Week' : 'Κλειδωμένη Εβδομάδα') : week.title}
+                      {week.title}
                     </h2>
                   </div>
 

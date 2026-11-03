@@ -7,9 +7,8 @@
 <meta name="description" content="Οπτικοποίηση της διάσπασης προσοχής: κάθε σκέψη κρατά ένα τρίγωνο αναμμένο, δημιουργώντας αισθητηριακή υπερφόρτωση. Attention dispersion visualization for neurodivergent individuals.">
 <link rel="canonical" href="https://mindfulness-practice.site/attention_dispersion.html">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap');
   *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-  body{background:#080a0f;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:'Cormorant Garamond',serif;overflow:hidden;user-select:none}
+  body{background:#080a0f;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;overflow:hidden;user-select:none}
   #title{color:#c85050;font-size:clamp(16px,2.8vw,22px);font-weight:300;letter-spacing:0.3em;text-transform:uppercase;margin-bottom:16px;opacity:0.9;text-align:center}
   #title-en{color:rgba(200,80,80,0.4);font-size:clamp(10px,1.6vw,13px);letter-spacing:0.2em;margin-top:4px}
   #canvas-wrap{position:relative;width:min(560px,95vw);height:min(560px,95vw)}
@@ -24,9 +23,9 @@
 
   .ex-intro{position:fixed;inset:0;z-index:100;background:#080a0f;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:opacity 2s ease}
   .ex-intro.hidden{opacity:0;pointer-events:none}
-  .ex-intro-t{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,4.5vw,2.8rem);font-weight:300;letter-spacing:0.2em;color:#c85050;opacity:0;animation:xfi 2s ease 0.5s forwards}
-  .ex-intro-s{font-family:'Cormorant Garamond',serif;font-size:clamp(0.7rem,1.4vw,0.95rem);letter-spacing:0.3em;color:rgba(200,80,80,0.3);margin-top:8px;font-style:italic;opacity:0;animation:xfi 2s ease 1.2s forwards}
-  .ex-intro-h{position:absolute;bottom:clamp(40px,8vh,80px);left:50%;transform:translateX(-50%);font-family:'Cormorant Garamond',serif;font-size:clamp(0.85rem,2vw,1.1rem);letter-spacing:0.3em;color:rgba(200,100,100,0.55);text-transform:uppercase;cursor:pointer;padding:14px 36px;border:1.5px solid rgba(200,80,80,0.2);border-radius:30px;background:rgba(200,80,80,0.04);transition:all 0.3s;animation:xpu 3s ease-in-out infinite;white-space:nowrap}
+  .ex-intro-t{font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-size:clamp(1.6rem,4.5vw,2.8rem);font-weight:300;letter-spacing:0.2em;color:#c85050;opacity:0;animation:xfi 2s ease 0.5s forwards}
+  .ex-intro-s{font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-size:clamp(0.7rem,1.4vw,0.95rem);letter-spacing:0.3em;color:rgba(200,80,80,0.3);margin-top:8px;font-style:italic;opacity:0;animation:xfi 2s ease 1.2s forwards}
+  .ex-intro-h{position:absolute;bottom:clamp(40px,8vh,80px);left:50%;transform:translateX(-50%);font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-size:clamp(0.85rem,2vw,1.1rem);letter-spacing:0.3em;color:rgba(200,100,100,0.55);text-transform:uppercase;cursor:pointer;padding:14px 36px;border:1.5px solid rgba(200,80,80,0.2);border-radius:30px;background:rgba(200,80,80,0.04);transition:all 0.3s;animation:xpu 3s ease-in-out infinite;white-space:nowrap}
   .ex-intro-h:active{background:rgba(200,80,80,0.12);color:rgba(200,100,100,0.8);transform:translateX(-50%) scale(0.96)}
   @keyframes xfi{to{opacity:1}}
   @keyframes xpu{0%,100%{opacity:0.55}50%{opacity:0.9}}
