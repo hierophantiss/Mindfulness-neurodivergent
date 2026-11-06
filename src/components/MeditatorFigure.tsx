@@ -18,8 +18,10 @@ export interface MeditatorFigureProps {
   bare?: boolean;
   /** Light one axis of the sign and dim the others (the home page's axis cards). */
   focus?: 'body' | 'breath' | 'attention' | 'space';
-  /** Sound coming from the voice, for chanting (soft arcs on both sides of the face). */
+  /** Sound spreading out from the whole body, for chanting (arcs on both sides). */
   voice?: boolean;
+  /** A masked, stealthy meditator, for the microdoses no one notices. */
+  ninja?: boolean;
 }
 
 
@@ -35,7 +37,8 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
   hideBreathRing = false,
   bare = false,
   focus,
-  voice = false
+  voice = false,
+  ninja = false
 }) => {
   const { reduceMotion } = useAccessibility();
 
@@ -152,6 +155,15 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
             <stop offset="0%" stopColor="#2e3c31" />
             <stop offset="100%" stopColor="#222d25" />
           </linearGradient>
+          {/* The ninja's dark hoodie (its own ids: other meditators share this page) */}
+          <linearGradient id="hoodie-ninja" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#23272e" />
+            <stop offset="100%" stopColor="#15181d" />
+          </linearGradient>
+          <linearGradient id="hoodie-low-ninja" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#1c2026" />
+            <stop offset="100%" stopColor="#111317" />
+          </linearGradient>
           <filter id="soft-blur" x="-60%" y="-60%" width="220%" height="220%">
             <feGaussianBlur stdDeviation="5" />
           </filter>
@@ -209,12 +221,12 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
             <ellipse cx="170" cy="322" rx="100" ry="10" fill="#0c121e" opacity="0.55" />
             <g transform="translate(66.8 61) scale(0.154)" stroke="#141a15" strokeWidth="12" strokeLinejoin="round" strokeLinecap="round">
               {/* Crossed legs */}
-              <path d="M 72,1640 C 43,1560 90,1470 252,1420 C 394,1380 528,1390 670,1400 C 812,1390 946,1380 1088,1420 C 1250,1470 1297,1560 1268,1640 C 1240,1700 1078,1722 670,1722 C 262,1722 100,1700 72,1640 Z" fill="url(#hoodie-low)" />
+              <path d="M 72,1640 C 43,1560 90,1470 252,1420 C 394,1380 528,1390 670,1400 C 812,1390 946,1380 1088,1420 C 1250,1470 1297,1560 1268,1640 C 1240,1700 1078,1722 670,1722 C 262,1722 100,1700 72,1640 Z" fill={ninja ? "url(#hoodie-low-ninja)" : "url(#hoodie-low)"} />
               <path d="M 1259,1610 C 1126,1560 888,1530 689,1575" fill="none" />
               <path d="M 81,1615 C 233,1585 442,1570 642,1600" fill="none" />
 
               {/* Hoodie: shoulders and upper arms */}
-              <path d="M 556,702 C 461,708 361,742 315,792 C 273,842 260,942 260,1072 C 260,1212 271,1332 322,1392 L 1018,1392 C 1069,1332 1080,1212 1080,1072 C 1080,942 1067,842 1025,792 C 979,742 879,708 784,702 Z" fill="url(#hoodie)" stroke="none" />
+              <path d="M 556,702 C 461,708 361,742 315,792 C 273,842 260,942 260,1072 C 260,1212 271,1332 322,1392 L 1018,1392 C 1069,1332 1080,1212 1080,1072 C 1080,942 1067,842 1025,792 C 979,742 879,708 784,702 Z" fill={ninja ? "url(#hoodie-ninja)" : "url(#hoodie)"} stroke="none" />
               <path d="M 322,1392 C 271,1332 260,1212 260,1072 C 260,942 273,842 315,792 C 361,742 461,708 556,702" fill="none" />
               <path d="M 1018,1392 C 1069,1332 1080,1212 1080,1072 C 1080,942 1067,842 1025,792 C 979,742 879,708 784,702" fill="none" />
               <path d="M 404,860 C 388,970 384,1120 404,1260" fill="none" />
@@ -227,8 +239,8 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
               <path d="M 578,1448 C 590,1462 594,1482 586,1500" fill="none" strokeWidth="8" />
 
               {/* Forearms, from the elbows down to the hands resting on the legs */}
-              <path d="M 404,1260 C 428,1318 458,1378 496,1418 L 518,1496 C 436,1490 350,1462 300,1420 C 280,1380 268,1330 268,1290 C 320,1290 370,1276 404,1260 Z" fill="url(#hoodie)" />
-              <path d="M 936,1260 C 912,1318 882,1378 844,1418 L 822,1496 C 904,1490 990,1462 1040,1420 C 1060,1380 1072,1330 1072,1290 C 1020,1290 970,1276 936,1260 Z" fill="url(#hoodie)" />
+              <path d="M 404,1260 C 428,1318 458,1378 496,1418 L 518,1496 C 436,1490 350,1462 300,1420 C 280,1380 268,1330 268,1290 C 320,1290 370,1276 404,1260 Z" fill={ninja ? "url(#hoodie-ninja)" : "url(#hoodie)"} />
+              <path d="M 936,1260 C 912,1318 882,1378 844,1418 L 822,1496 C 904,1490 990,1462 1040,1420 C 1060,1380 1072,1330 1072,1290 C 1020,1290 970,1276 936,1260 Z" fill={ninja ? "url(#hoodie-ninja)" : "url(#hoodie)"} />
 
               {/* The body axis, in front of the hoodie, as on the cover */}
               <line x1="670" y1="718" x2="670" y2="1420" stroke="#e0473a" strokeWidth={focus === 'body' ? 22 : 9} style={{ opacity: Math.min(1, getOpacity('body') * 1.5) }} className="axis-layer" />
@@ -243,10 +255,17 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
               <path d="M 566,1410 C 606,1408 646,1416 664,1436" fill="none" strokeWidth="7" opacity="0.6" />
               <path d="M 774,1410 C 734,1408 694,1416 676,1436" fill="none" strokeWidth="7" opacity="0.6" />
 
+              {/* The ninja's headband tails, flowing out behind the hood */}
+              {ninja && (
+                <g fill="none" stroke="var(--axis-attention-ink, #e89e6f)" strokeWidth="34" strokeLinecap="round">
+                  <path d="M 870,372 C 980,330 1060,250 1170,262" />
+                  <path d="M 878,408 C 990,412 1070,380 1160,430" opacity="0.8" />
+                </g>
+              )}
               {/* Hood, draped onto the shoulders */}
-              <path d="M 670,183 C 538,183 448,275 436,424 C 425,554 443,660 490,716 L 850,716 C 897,660 915,554 904,424 C 892,275 802,183 670,183 Z" fill="url(#hoodie)" />
+              <path d="M 670,183 C 538,183 448,275 436,424 C 425,554 443,660 490,716 L 850,716 C 897,660 915,554 904,424 C 892,275 802,183 670,183 Z" fill={ninja ? "url(#hoodie-ninja)" : "url(#hoodie)"} />
               {/* Inside of the hood */}
-              <path d="M 670,287 C 570,287 498,359 490,459 C 483,577 520,655 580,693 L 760,693 C 820,655 857,577 850,459 C 842,359 770,287 670,287 Z" fill="#1b241d" />
+              <path d="M 670,287 C 570,287 498,359 490,459 C 483,577 520,655 580,693 L 760,693 C 820,655 857,577 850,459 C 842,359 770,287 670,287 Z" fill={ninja ? "#0e1013" : "#1b241d"} />
               {/* Neck */}
               <path d="M 578,600 L 578,712 L 762,712 L 762,600 Z" fill="#c9966a" />
               {/* Collar of the hoodie */}
@@ -262,12 +281,28 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
               <path d="M 670,340 C 584,340 527,384 527,479 C 527,583 591,644 670,644 C 749,644 813,583 813,479 C 813,384 756,340 670,340 Z" fill="#dcaa7b" />
               {/* Shade of the hood on the forehead */}
               <path d="M 533,435 C 549,366 605,345 670,345 C 735,345 791,366 807,435 C 767,400 719,391 670,391 C 621,391 573,400 533,435 Z" fill="#c9966a" stroke="none" opacity="0.8" />
+              {ninja ? (
+                <>
+                  {/* The headband across the forehead */}
+                  <path d="M 530,410 C 600,388 740,388 810,410 L 812,438 C 740,418 600,418 528,438 Z" fill="var(--axis-attention-ink, #e89e6f)" strokeWidth="8" />
+                  {/* The mask over the lower face, and the eyes, open and quiet */}
+                  <path d="M 527,492 C 600,478 740,478 813,492 C 813,583 749,644 670,644 C 591,644 527,583 527,492 Z" fill="#15181d" />
+                  <path d="M 560,500 C 620,512 720,512 780,500" fill="none" stroke="#2a2f37" strokeWidth="8" />
+                  <path d="M 568,452 Q 603,432 638,452 Q 603,466 568,452 Z" fill="#141a15" strokeWidth="8" />
+                  <path d="M 702,452 Q 737,432 772,452 Q 737,466 702,452 Z" fill="#141a15" strokeWidth="8" />
+                  <circle cx="610" cy="449" r="6" fill="#f5e6c8" stroke="none" />
+                  <circle cx="744" cy="449" r="6" fill="#f5e6c8" stroke="none" />
+                </>
+              ) : (
+                <>
               {/* Eyes (closed) */}
               <path d="M 563,453 Q 601,480 640,456" fill="none" strokeWidth="13" />
               <path d="M 700,456 Q 739,480 777,453" fill="none" strokeWidth="13" />
               {/* Nose and smile */}
               <path d="M 651,526 Q 670,539 689,526" fill="none" strokeWidth="11" />
               <path d="M 619,577 Q 670,609 721,577" fill="none" strokeWidth="13" />
+                </>
+              )}
             </g>
           </g>
 
@@ -358,15 +393,19 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
           </g>
         )}
 
-        {/* Voice: the hum spreading out from the face, on both sides */}
+        {/* Voice: the hum spreading out from the whole body, on both sides */}
         {voice && (
           <g transform="translate(0, 52)" fill="none" stroke="var(--axis-space-ink, #a78bfa)" strokeLinecap="round" filter="url(#symbol-glow)">
-            {[34, 50, 66].map((r, i) => (
-              <g key={r} opacity={1 - i * 0.25} strokeWidth={4 - i * 0.6}>
-                <path d={`M ${170 + r * Math.cos(-0.6)},${140 + r * Math.sin(-0.6)} A ${r} ${r} 0 0 1 ${170 + r * Math.cos(0.6)},${140 + r * Math.sin(0.6)}`} />
-                <path d={`M ${170 - r * Math.cos(-0.6)},${140 + r * Math.sin(-0.6)} A ${r} ${r} 0 0 0 ${170 - r * Math.cos(0.6)},${140 + r * Math.sin(0.6)}`} />
-              </g>
-            ))}
+            {[98, 124, 150].map((r, i) => {
+              const cx = 170, cy = 238, t = 0.72;
+              const y1 = cy - r * Math.sin(t), y2 = cy + r * Math.sin(t), dx = r * Math.cos(t);
+              return (
+                <g key={r} opacity={1 - i * 0.22} strokeWidth={5 - i}>
+                  <path d={`M ${cx + dx},${y1} A ${r} ${r} 0 0 1 ${cx + dx},${y2}`} />
+                  <path d={`M ${cx - dx},${y1} A ${r} ${r} 0 0 0 ${cx - dx},${y2}`} />
+                </g>
+              );
+            })}
           </g>
         )}
 

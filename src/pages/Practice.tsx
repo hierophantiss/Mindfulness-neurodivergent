@@ -769,9 +769,9 @@ const axisInfo = {
           <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-indigo-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           
           <div className="flex justify-between items-start mb-8 relative w-full pointer-events-none">
-            <div aria-hidden="true" className="w-[96px] h-[112px] -ml-2 -mt-3 -mb-3 shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-500 [mask-image:radial-gradient(ellipse_at_50%_40%,black_55%,transparent_78%)]" style={{ filter: 'drop-shadow(0 0 12px color-mix(in srgb, var(--axis-body-ink) 35%, transparent))' }}>
-              <div className="w-full origin-[50%_62%] scale-[1.75]">
-                <TaiChiHero breathForce={1} isRising breathStateText="" movementType="tai-chi-cloud-hands" idle bare />
+            <div aria-hidden="true" className="w-[136px] h-[112px] -ml-4 -mt-3 -mb-3 shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-500 [mask-image:radial-gradient(ellipse_at_50%_40%,black_55%,transparent_78%)]" style={{ filter: 'drop-shadow(0 0 12px color-mix(in srgb, var(--axis-body-ink) 35%, transparent))' }}>
+              <div className="w-full origin-[50%_60%] scale-[1.12]">
+                <TaiChiHero breathForce={0} isRising={false} breathStateText="" movementType="be-like-a-flower-5-5" bare />
               </div>
             </div>
             <div className="flex gap-1.5 pointer-events-auto relative z-20">
@@ -853,7 +853,7 @@ const axisInfo = {
           
           <div className="flex justify-between items-start mb-8 relative w-full pointer-events-none">
             <div aria-hidden="true" className="w-[84px] -mt-3 -mb-3 shrink-0 group-hover:scale-105 transition-transform duration-500" style={{ filter: 'drop-shadow(0 0 12px color-mix(in srgb, var(--axis-attention-ink) 35%, transparent))' }}>
-              <MeditatorFigure focus="attention" bare />
+              <MeditatorFigure showAxisSymbols="none" ninja bare />
             </div>
             
             <div className="flex items-center gap-2">
