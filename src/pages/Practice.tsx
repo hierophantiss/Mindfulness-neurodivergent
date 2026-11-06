@@ -231,7 +231,7 @@ const axisInfo = {
 
         <header className="space-y-4 max-w-4xl desk:max-w-none mx-auto text-center desk:text-left w-full">
           <div className="flex flex-col desk:flex-row items-center justify-center desk:justify-start gap-1 desk:gap-4">
-            <div aria-hidden="true" className="w-[120px] desk:w-[96px] shrink-0 desk:-my-3" style={{ filter: `drop-shadow(0 0 12px color-mix(in srgb, var(--axis-${activeAxis}-ink) 35%, transparent))` }}>
+            <div aria-hidden="true" className="w-[120px] desk:w-[96px] shrink-0 desk:-my-3" style={{ background: `radial-gradient(closest-side, color-mix(in srgb, var(--axis-${activeAxis}-ink) 30%, transparent), transparent)` }}>
               <MeditatorFigure focus={activeAxis as 'body'} bare />
             </div>
             <h1 className="font-display text-4xl desk:text-[52px] text-ink/90 leading-tight">
@@ -769,7 +769,7 @@ const axisInfo = {
           <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-indigo-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           
           <div className="flex justify-between items-start mb-8 relative w-full pointer-events-none">
-            <div aria-hidden="true" className="w-[136px] h-[112px] -ml-4 -mt-3 -mb-3 shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-500 [mask-image:radial-gradient(ellipse_at_50%_40%,black_55%,transparent_78%)]" style={{ filter: 'drop-shadow(0 0 12px color-mix(in srgb, var(--axis-body-ink) 35%, transparent))' }}>
+            <div aria-hidden="true" className="w-[136px] h-[112px] -ml-4 -mt-3 -mb-3 shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-500 [mask-image:radial-gradient(ellipse_at_50%_40%,black_55%,transparent_78%)]" style={{ background: 'radial-gradient(closest-side, color-mix(in srgb, var(--axis-body-ink) 32%, transparent), transparent)' }}>
               <div className="w-full origin-[50%_60%] scale-[1.12]">
                 <TaiChiHero breathForce={0} isRising={false} breathStateText="" movementType="be-like-a-flower-5-5" bare />
               </div>
@@ -800,8 +800,8 @@ const axisInfo = {
           <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-teal-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           
           <div className="flex justify-between items-start mb-8 relative w-full pointer-events-none">
-            <div aria-hidden="true" className="w-[84px] -mt-3 -mb-3 shrink-0 group-hover:scale-105 transition-transform duration-500" style={{ filter: 'drop-shadow(0 0 12px color-mix(in srgb, var(--axis-breath-ink) 35%, transparent))' }}>
-              <MeditatorFigure focus="breath" bare />
+            <div aria-hidden="true" className="w-[84px] -mt-3 -mb-3 shrink-0 rounded-full group-hover:scale-105 desk:group-hover:brightness-125 motion-safe:transition-[transform,filter] duration-500" style={{ background: 'radial-gradient(closest-side, color-mix(in srgb, var(--axis-breath-ink) 32%, transparent), transparent)' }}>
+              <MeditatorFigure focus="breath" bare small />
             </div>
             <ConceptInfoIcon conceptId="vagus_nerve" className="w-8 h-8 pointer-events-auto relative z-20 opacity-60 hover:opacity-100 bg-white/5" />
           </div>
@@ -826,8 +826,8 @@ const axisInfo = {
           <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-violet-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           
           <div className="flex justify-between items-start mb-8 relative w-full pointer-events-none">
-            <div aria-hidden="true" className="w-[84px] -mt-3 -mb-3 shrink-0 group-hover:scale-105 transition-transform duration-500" style={{ filter: 'drop-shadow(0 0 12px color-mix(in srgb, var(--axis-space-ink) 35%, transparent))' }}>
-              <MeditatorFigure showAxisSymbols="none" voice bare />
+            <div aria-hidden="true" className="w-[84px] -mt-3 -mb-3 shrink-0 rounded-full group-hover:scale-105 desk:group-hover:brightness-125 motion-safe:transition-[transform,filter] duration-500" style={{ background: 'radial-gradient(closest-side, color-mix(in srgb, var(--axis-space-ink) 32%, transparent), transparent)' }}>
+              <MeditatorFigure showAxisSymbols="none" voice bare small />
             </div>
             <ConceptInfoIcon conceptId="vagus_nerve" className="w-8 h-8 pointer-events-auto relative z-20 opacity-60 hover:opacity-100 bg-white/5" />
           </div>
@@ -852,8 +852,8 @@ const axisInfo = {
           <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-amber-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           
           <div className="flex justify-between items-start mb-8 relative w-full pointer-events-none">
-            <div aria-hidden="true" className="w-[84px] -mt-3 -mb-3 shrink-0 group-hover:scale-105 transition-transform duration-500" style={{ filter: 'drop-shadow(0 0 12px color-mix(in srgb, var(--axis-attention-ink) 35%, transparent))' }}>
-              <MeditatorFigure showAxisSymbols="none" ninja bare />
+            <div aria-hidden="true" className="w-[84px] -mt-3 -mb-3 shrink-0 rounded-full group-hover:scale-105 desk:group-hover:brightness-125 motion-safe:transition-[transform,filter] duration-500" style={{ background: 'radial-gradient(closest-side, color-mix(in srgb, var(--axis-attention-ink) 32%, transparent), transparent)' }}>
+              <MeditatorFigure showAxisSymbols="none" ninja bare small />
             </div>
             
             <div className="flex items-center gap-2">

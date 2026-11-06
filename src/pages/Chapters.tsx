@@ -129,8 +129,8 @@ export default function Chapters() {
 
                 {/* The meditator with this chapter's axis lit, as on the home page. */}
                 {axisOfChapter(chapter.num) && (
-                  <span aria-hidden="true" className="absolute top-4 right-4 w-[118px] desk:w-[136px] opacity-90 group-hover:opacity-100 transition-opacity duration-700" style={{ filter: `drop-shadow(0 0 14px ${chapter.hex}40)` }}>
-                    <MeditatorFigure focus={axisOfChapter(chapter.num)!} bare />
+                  <span aria-hidden="true" className="absolute top-4 right-4 w-[118px] desk:w-[136px] opacity-90 group-hover:opacity-100 transition-opacity duration-700" style={{ background: `radial-gradient(closest-side, ${chapter.hex}4d, transparent)` }}>
+                    <MeditatorFigure focus={axisOfChapter(chapter.num)!} bare small />
                   </span>
                 )}
               </Link>

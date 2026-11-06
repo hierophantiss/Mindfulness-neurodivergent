@@ -22,6 +22,9 @@ export interface MeditatorFigureProps {
   voice?: boolean;
   /** A masked, stealthy meditator, for the microdoses no one notices. */
   ninja?: boolean;
+  /** Small sizes: with `focus`, show only the lit part (no dimmed ones), and skip
+   *  the blur filters (the card draws the glow, more cheaply). */
+  small?: boolean;
 }
 
 
@@ -38,7 +41,8 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
   bare = false,
   focus,
   voice = false,
-  ninja = false
+  ninja = false,
+  small = false
 }) => {
   const { reduceMotion } = useAccessibility();
 
@@ -51,7 +55,8 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
 
   // The figure is a picture, not a menu: every axis symbol shows the same.
   const currentAxis = (focus ?? null) as 'body' | 'breath' | 'attention' | 'space' | 'focus' | null;
-  const dim = 0.1;
+  const dim = small ? 0 : 0.1;
+  const glow = small ? undefined : 'url(#symbol-glow)';
 
   const getOpacity = (axisName: string) => {
     if (showAxisSymbols === 'none') return 0;
@@ -206,7 +211,7 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
         {/* a. BODY/GRAVITY (behind figure) */}
         {showAxisSymbols !== 'none' && (
           <g className="axis-layer" style={{ opacity: getOpacity('body') }} transform="translate(0, 52)">
-            <line x1="170" y1="30" x2="170" y2="440" stroke="url(#body-grad)" strokeWidth={focus === 'body' ? 11 : 6} strokeLinecap="round" filter="url(#symbol-glow)" />
+            <line x1="170" y1="30" x2="170" y2="440" stroke="url(#body-grad)" strokeWidth={focus === 'body' ? 11 : 6} strokeLinecap="round" filter={glow} />
             <line x1="170" y1="30" x2="170" y2="440" stroke="#fef08a" strokeWidth={focus === 'body' ? 4 : 2} strokeLinecap="round" opacity={focus === 'body' ? 1 : 0.8} />
           </g>
         )}
@@ -346,7 +351,7 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
               )}</g>
               
               {/* Infinity Core - glow animates if in breathing exercise */}
-              <g style={{ transformOrigin: '170px 205px', opacity: focus ? (focus === 'space' ? 1 : 0.18) : 1 }}>
+              <g style={{ transformOrigin: '170px 205px', opacity: focus ? (focus === 'space' ? 1 : small ? 0 : 0.18) : 1 }}>
                 {/* Dark outline, as on the cover */}
                 <path
                   d="M144,205 C144,189 162,189 170,205 C178,221 196,221 196,205 C196,189 178,189 170,205 C162,221 144,221 144,205 Z"
@@ -359,7 +364,7 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
                   strokeWidth="5" 
                   strokeLinecap="round" 
                   strokeLinejoin="round" 
-                  filter="url(#symbol-glow)"
+                  filter={glow}
                   animate={isExercise ? { opacity: 0.3 + targetChestGlow * 0.7 } : { opacity: 1 }}
                   transition={isExercise ? transitionConfig : { duration: 0.5 }}
                 />
@@ -379,13 +384,13 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
                 transition={transitionConfig}
                 style={{ transformOrigin: '170px 180px' }}
               >
-                <circle cx="170" cy="180" r="145" fill="none" stroke={tokens.breath} strokeWidth="3" opacity="0.65" filter="url(#symbol-glow)" />
+                <circle cx="170" cy="180" r="145" fill="none" stroke={tokens.breath} strokeWidth="3" opacity="0.65" filter={glow} />
                 <circle cx="170" cy="180" r="135" fill="none" stroke={tokens.breath} strokeWidth="1.5" opacity="0.3" />
               </motion.g>
             ) : (
               // Idle Mode: CSS Pulse
               <g className={!reduceMotion && !focus ? 'animate-breath' : ''}>
-                <circle cx="170" cy="180" r="145" fill="none" stroke={tokens.breath} strokeWidth="3" opacity="0.65" filter="url(#symbol-glow)" />
+                <circle cx="170" cy="180" r="145" fill="none" stroke={tokens.breath} strokeWidth="3" opacity="0.65" filter={glow} />
                 <circle cx="170" cy="180" r="135" fill="none" stroke={tokens.breath} strokeWidth="1.5" opacity="0.3" />
               </g>
             )}
@@ -395,7 +400,7 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
 
         {/* Voice: the hum spreading out from the whole body, on both sides */}
         {voice && (
-          <g transform="translate(0, 52)" fill="none" stroke="var(--axis-space-ink, #a78bfa)" strokeLinecap="round" filter="url(#symbol-glow)">
+          <g transform="translate(0, 52)" fill="none" stroke="var(--axis-space-ink, #a78bfa)" strokeLinecap="round" filter={glow}>
             {[98, 124, 150].map((r, i) => {
               const cx = 170, cy = 238, t = 0.72;
               const y1 = cy - r * Math.sin(t), y2 = cy + r * Math.sin(t), dx = r * Math.cos(t);
@@ -412,8 +417,8 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
         {/* c. FOCUS / ATTENTION */}
         {showAxisSymbols !== 'none' && (
           <g className="axis-layer" style={{ opacity: getAttentionOpacity() }} transform="translate(0, 52)">
-            <polygon points="170,118 295,290 45,290" fill="none" stroke={focus === 'attention' ? tokens.attention : 'url(#attention-grad)'} strokeWidth={focus === 'attention' ? 7 : 3} strokeLinejoin="round" filter="url(#symbol-glow)" />
-            <circle cx="170" cy="118" r={focus === 'attention' ? 8 : 4} fill={tokens.attention} filter="url(#symbol-glow)" />
+            <polygon points="170,118 295,290 45,290" fill="none" stroke={focus === 'attention' ? tokens.attention : 'url(#attention-grad)'} strokeWidth={focus === 'attention' ? 7 : 3} strokeLinejoin="round" filter={glow} />
+            <circle cx="170" cy="118" r={focus === 'attention' ? 8 : 4} fill={tokens.attention} filter={glow} />
           </g>
         )}
       </svg>

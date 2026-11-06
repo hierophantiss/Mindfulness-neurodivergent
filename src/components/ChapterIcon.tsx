@@ -21,8 +21,22 @@ const PATHS: Record<number, string> = {
   11: 'M12 3.5 2.5 8.5 12 13.5l9.5-5zM2.5 12.5 12 17.5l9.5-5M2.5 16.5 12 21.5l9.5-5',
 };
 
-export function ChapterIcon({ num, color, size = 22 }: { num: number; color: string; size?: number }) {
+/** Relative luminance of a #rrggbb colour (0 dark … 1 light). */
+function luminance(hex: string): number {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex);
+  if (!m) return 1;
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(m[1].slice(i, i + 2), 16) / 255)
+    .map((c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+/** A chapter colour too deep to read as a thin line on the dark sky is lifted toward the ink colour. */
+export const iconColor = (hex: string) =>
+  luminance(hex) < 0.15 ? `color-mix(in srgb, ${hex} 55%, var(--color-ink))` : hex;
+
+export function ChapterIcon({ num, color: base, size = 22 }: { num: number; color: string; size?: number }) {
   const axis = axisOfChapter(num);
+  const color = iconColor(base);
   if (axis) {
     return (
       <span aria-hidden="true" className="font-display leading-none" style={{ color, fontSize: size * 1.15 }}>

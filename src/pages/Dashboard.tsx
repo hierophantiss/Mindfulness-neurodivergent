@@ -286,11 +286,11 @@ export default function Dashboard() {
                 <Link
                   key={a.id}
                   to={`/practice?axis=${a.id}`}
-                  className="glass h-[128px] pt-1 rounded-[18px] flex flex-col items-center justify-center gap-[5px] overflow-hidden hover:brightness-110 transition-[filter,transform] active:scale-[0.97] desk:h-auto desk:min-h-[176px] desk:items-start desk:justify-start desk:gap-2 desk:p-[22px] desk:rounded-[24px] desk:hover:-translate-y-0.5"
+                  className="group glass h-[128px] pt-1 rounded-[18px] flex flex-col items-center justify-center gap-[5px] overflow-hidden hover:brightness-110 transition-[filter,transform] active:scale-[0.97] desk:h-auto desk:min-h-[176px] desk:items-start desk:justify-start desk:gap-2 desk:p-[22px] desk:rounded-[24px] desk:hover:-translate-y-0.5"
                 >
                   {/* The meditator with this axis's part of the sign lit, the others dimmed. */}
-                  <span aria-hidden="true" className="block w-[68px] desk:w-[124px] desk:self-center desk:-mt-2 desk:-mb-1" style={{ filter: `drop-shadow(0 0 10px color-mix(in srgb, ${a.ink} 35%, transparent))` }}>
-                    <MeditatorFigure focus={a.id} bare />
+                  <span aria-hidden="true" className="block w-[68px] desk:w-[124px] desk:self-center desk:-mt-2 desk:-mb-1 rounded-full motion-safe:transition-[filter] motion-safe:duration-500 desk:group-hover:brightness-125" style={{ background: `radial-gradient(closest-side, color-mix(in srgb, ${a.ink} 30%, transparent), transparent)` }}>
+                    <MeditatorFigure focus={a.id} bare small />
                   </span>
                   <span className="checkin-label text-[12px] text-ink/90 max-w-full truncate px-1 desk:px-0 desk:mt-1.5 desk:text-[18px] desk:text-ink">{a.name}</span>
                   <span className="hidden desk:block text-[14px] leading-[1.5] text-ink/70">{a.desc}</span>

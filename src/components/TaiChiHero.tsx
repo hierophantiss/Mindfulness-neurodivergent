@@ -629,27 +629,28 @@ export default function TaiChiHero({
           </g>
 
           {/* LEGS (Jogger pants, dark charcoal, elegant folds) */}
-          <g id="tc-legs" fill="#1e222a" stroke="#13161b" strokeWidth="0.5" transform={bodyShift ? `translate(0, 283) skewX(${(-Math.atan2(bodyShift, 38) * 180) / Math.PI}) translate(0, -283)` : undefined}>
+          {/* Clothes in the meditator's green, so it is the same person everywhere */}
+          <g id="tc-legs" fill="#2a372d" stroke="#1b241d" strokeWidth="0.5" transform={bodyShift ? `translate(0, 283) skewX(${(-Math.atan2(bodyShift, 38) * 180) / Math.PI}) translate(0, -283)` : undefined}>
             {/* Left leg */}
             <path d="M 188 245 L 182 268 L 186 283 L 196 283 L 195 245 Z" />
             {/* Right leg */}
             <path d="M 212 245 L 218 268 L 214 283 L 204 283 L 205 245 Z" />
             {/* Cuffs on pants */}
-            <rect x="186" y="279" width="10" height="4" rx="1.2" fill="#13161b" />
-            <rect x="204" y="279" width="10" height="4" rx="1.2" fill="#13161b" />
+            <rect x="186" y="279" width="10" height="4" rx="1.2" fill="#1b241d" />
+            <rect x="204" y="279" width="10" height="4" rx="1.2" fill="#1b241d" />
           </g>
 
           {/* TORSO / HOODIE (Black/Charcoal hoodie, centered) */}
-          <g id="tc-torso" fill="#13161d" transform={bodyShift ? `translate(${bodyShift}, 0)` : undefined}>
+          <g id="tc-torso" fill="#36463a" transform={bodyShift ? `translate(${bodyShift}, 0)` : undefined}>
             <path d={`M 180 ${206 + torsoBendY + leanBackY} L 220 ${206 + torsoBendY + leanBackY} L 214 248 L 186 248 Z`} />
             {/* Kangaroo Pocket */}
             <path
               d={`M 189 ${232 + torsoBendY * 0.35 + leanBackY * 0.35} L 211 ${232 + torsoBendY * 0.35 + leanBackY * 0.35} L 213 246 L 187 246 Z`}
-              fill="#1b1e26"
-              stroke="#0b0d12"
+              fill="#2e3c31"
+              stroke="#1b241d"
               strokeWidth="0.8"
             />
-            <path d={`M 189 ${232 + torsoBendY * 0.35 + leanBackY * 0.35} L 193 239 M 211 ${232 + torsoBendY * 0.35 + leanBackY * 0.35} L 207 239`} stroke="#0b0d12" strokeWidth="0.5" />
+            <path d={`M 189 ${232 + torsoBendY * 0.35 + leanBackY * 0.35} L 193 239 M 211 ${232 + torsoBendY * 0.35 + leanBackY * 0.35} L 207 239`} stroke="#1b241d" strokeWidth="0.5" />
           </g>
 
           {/* RAINBOW INFINITY SYMBOL ON CHEST */}
@@ -696,11 +697,11 @@ export default function TaiChiHero({
             </g>
 
             {/* HOOD (Black/Charcoal outer frame surrounding face) */}
-            <g id="tc-hood" fill="#13161d" stroke="#000000" strokeWidth="0.5">
+            <g id="tc-hood" fill="#36463a" stroke="#1b241d" strokeWidth="0.5">
               {/* Outer Hood Circle */}
-              <path d="M 181 206 C 176 195 178 174 188 166 C 194 161 206 161 212 166 C 222 174 224 195 219 206 Z" fill="#13161d" />
+              <path d="M 181 206 C 176 195 178 174 188 166 C 194 161 206 161 212 166 C 222 174 224 195 219 206 Z" fill="#36463a" />
               {/* Inner Hood Cutout (Face shadow contrast) */}
-              <path d="M 185 204 C 182 195 184 179 191 173 C 196 169 204 169 209 173 C 216 179 218 195 215 204 Z" fill="#0c0e12" />
+              <path d="M 185 204 C 182 195 184 179 191 173 C 196 169 204 169 209 173 C 216 179 218 195 215 204 Z" fill="#222d25" />
             </g>
           </g>
 
@@ -710,7 +711,7 @@ export default function TaiChiHero({
           <path
             d={`M ${sL.x} ${sL.y} L ${eLf.x} ${eLf.y} L ${hLf.x} ${hLf.y}`}
             fill="none"
-            stroke="#13161d"
+            stroke="#36463a"
             strokeWidth="9.5"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -719,7 +720,7 @@ export default function TaiChiHero({
           <path
             d={`M ${sL.x} ${sL.y} L ${eLf.x} ${eLf.y} L ${hLf.x} ${hLf.y}`}
             fill="none"
-            stroke="#0c0e12"
+            stroke="#222d25"
             strokeWidth="5"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -731,7 +732,7 @@ export default function TaiChiHero({
           <path
             d={`M ${sR.x} ${sR.y} L ${eR.x} ${eR.y} L ${hR.x} ${hR.y}`}
             fill="none"
-            stroke="#13161d"
+            stroke="#36463a"
             strokeWidth="9.5"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -740,7 +741,7 @@ export default function TaiChiHero({
           <path
             d={`M ${sR.x} ${sR.y} L ${eR.x} ${eR.y} L ${hR.x} ${hR.y}`}
             fill="none"
-            stroke="#0c0e12"
+            stroke="#222d25"
             strokeWidth="5"
             strokeLinecap="round"
             strokeLinejoin="round"
