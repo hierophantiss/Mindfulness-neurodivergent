@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Zap, Focus, Anchor, Box, ArrowLeft } from 'lucide-react';
+import { Zap, Focus, Anchor, Box, ArrowLeft, Sparkles } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../hooks/useLanguage';
 import { MICRODOSES_EXERCISES } from '../data/microdoses';
@@ -139,8 +139,8 @@ export default function PracticeMicrodoses() {
         
         <div className="space-y-3 relative z-10 flex-1">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[12px] font-medium bg-teal-500/10 text-teal-300 border border-teal-500/15 animate-pulse">
-              ✨ {language === 'el' ? 'Ανακούφιση απόφασης' : 'Decision relief'}
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[12px] font-medium bg-teal-500/10 text-teal-300 border border-teal-500/15 gap-1">
+              <Sparkles size={12} aria-hidden="true" /> {language === 'el' ? 'Ανακούφιση απόφασης' : 'Decision relief'}
             </span>
             <span className="text-[10px] text-ink/40 tracking-wider">
               {language === 'el' ? 'Πρόταση της Ημέρας' : 'Suggested Daily Core'}
@@ -363,8 +363,8 @@ export default function PracticeMicrodoses() {
                       {language === 'en' ? ex.type.charAt(0).toUpperCase() + ex.type.slice(1) : ex.type === 'body' ? 'Σώμα' : ex.type === 'breath' ? 'Αναπνοή' : ex.type === 'focus' ? 'Προσοχή' : 'Χώρος'}
                     </span>
                     {isSuggested && (
-                      <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[12px] font-medium bg-teal-400/10 text-teal-300 border border-teal-400/20 animate-pulse">
-                        ✨ {language === 'el' ? 'Πρόταση' : 'Suggested'}
+                      <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[12px] font-medium bg-teal-400/10 text-teal-300 border border-teal-400/20 gap-1">
+                        <Sparkles size={12} aria-hidden="true" /> {language === 'el' ? 'Πρόταση' : 'Suggested'}
                       </span>
                     )}
                   </div>

@@ -14,6 +14,8 @@ interface TaiChiHeroProps {
   rhythmText?: string;
   /** Not running: show the movement's resting pose. */
   idle?: boolean;
+  /** Only the figure and the earth, on the page's own sky (the Practice cards). */
+  bare?: boolean;
 }
 
 export default function TaiChiHero({
@@ -23,6 +25,7 @@ export default function TaiChiHero({
   movementType,
   rhythmText,
   idle = false,
+  bare = false,
 }: TaiChiHeroProps) {
   // Generate a list of randomized cosmic stars (twinkling)
   const stars = useMemo(() => {
@@ -359,12 +362,12 @@ export default function TaiChiHero({
   }
 
   return (
-    <div className="relative w-full aspect-square bg-[#070b14] rounded-2xl overflow-hidden border border-slate-800 shadow-2xl flex items-center justify-center">
+    <div className={bare ? 'relative w-full aspect-square flex items-center justify-center' : 'relative w-full aspect-square bg-[#070b14] rounded-2xl overflow-hidden border border-slate-800 shadow-2xl flex items-center justify-center'}>
       {/* Absolute Layer - Subtle star twinkling sky */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 400">
         <defs>
           {/* Main Space Sky Gradient */}
-          <linearGradient id="northern-lights-base" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="tc-northern-lights-base" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#020617" />
             <stop offset="25%" stopColor="#0f172a" />
             <stop offset="50%" stopColor="#064e3b" />
@@ -373,7 +376,7 @@ export default function TaiChiHero({
           </linearGradient>
 
           {/* Central Vertical Beam High Glow Filter */}
-          <filter id="beam-glow" x="-50%" y="-10%" width="200%" height="120%">
+          <filter id="tc-beam-glow" x="-50%" y="-10%" width="200%" height="120%">
             <feGaussianBlur stdDeviation="6" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
@@ -382,7 +385,7 @@ export default function TaiChiHero({
           </filter>
 
           {/* Hand Aura Glow */}
-          <filter id="aura-glow" x="-80%" y="-80%" width="260%" height="260%">
+          <filter id="tc-aura-glow" x="-80%" y="-80%" width="260%" height="260%">
             <feGaussianBlur stdDeviation="8" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
@@ -391,7 +394,7 @@ export default function TaiChiHero({
           </filter>
 
           {/* Earth Atmosphere Outer Glow */}
-          <filter id="earth-glow" x="-20%" y="-20%" width="140%" height="140%">
+          <filter id="tc-earth-glow" x="-20%" y="-20%" width="140%" height="140%">
             <feGaussianBlur stdDeviation="15" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
@@ -400,7 +403,7 @@ export default function TaiChiHero({
           </filter>
 
           {/* Rainbow Infinity Symbol Gradient */}
-          <linearGradient id="rainbow-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <linearGradient id="tc-rainbow-grad" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="#ec4899" /> {/* Pink */}
             <stop offset="25%" stopColor="#8b5cf6" /> {/* Violet */}
             <stop offset="50%" stopColor="#3b82f6" /> {/* Blue */}
@@ -409,28 +412,28 @@ export default function TaiChiHero({
           </linearGradient>
 
           {/* Earth Oceans Gradient */}
-          <radialGradient id="ocean-grad" cx="50%" cy="10%" r="90%">
+          <radialGradient id="tc-ocean-grad" cx="50%" cy="10%" r="90%">
             <stop offset="0%" stopColor="#102e5c" />
             <stop offset="60%" stopColor="#0a1d3a" />
             <stop offset="100%" stopColor="#040913" />
           </radialGradient>
 
           {/* Earth Continents Shading */}
-          <linearGradient id="land-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <linearGradient id="tc-land-grad" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stopColor="#b4a34f" />
             <stop offset="50%" stopColor="#a3923c" />
             <stop offset="100%" stopColor="#645d25" />
           </linearGradient>
 
           {/* Dawn Glow Overlay Gradient */}
-          <radialGradient id="northern-lights-active" cx="50%" cy="50%" r="70%">
+          <radialGradient id="tc-northern-lights-active" cx="50%" cy="50%" r="70%">
             <stop offset="0%" stopColor="#34d399" stopOpacity="0.6" />
             <stop offset="40%" stopColor="#818cf8" stopOpacity="0.3" />
             <stop offset="100%" stopColor="#020617" stopOpacity="0" />
           </radialGradient>
 
           {/* Particle Glow */}
-          <filter id="particle-glow" x="-50%" y="-50%" width="200%" height="200%">
+          <filter id="tc-particle-glow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="2" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
@@ -439,14 +442,15 @@ export default function TaiChiHero({
           </filter>
         </defs>
 
+        {!bare && (<>
         {/* Sky Background */}
-        <rect width="400" height="400" fill="url(#northern-lights-base)" />
+        <rect width="400" height="400" fill="url(#tc-northern-lights-base)" />
 
         {/* Reactive Environment: Dimming Layer (darkens background during exhale/holdEmpty) */}
         <rect width="400" height="400" fill="#020617" opacity={0.4 * (1 - bf)} />
 
         {/* Reactive Environment: Aurora Glow (brightens background during inhale) */}
-        <rect width="400" height="400" fill="url(#northern-lights-active)" opacity={bf} />
+        <rect width="400" height="400" fill="url(#tc-northern-lights-active)" opacity={bf} />
 
         {/* Stars */}
         <g opacity={0.3 + 0.7 * bf}>
@@ -493,13 +497,12 @@ export default function TaiChiHero({
                 r={p.size} 
                 fill="#fbbf24" 
                 opacity={opacity} 
-                filter="url(#particle-glow)" 
+                filter="url(#tc-particle-glow)" 
               />
             );
           })}
         </g>
-
-
+        </>)}
 
         {/* SCENE WRAPPER: Double size hero and earth */}
         <g transform="translate(200, 320) scale(1.8) translate(-200, -283)">
@@ -512,7 +515,7 @@ export default function TaiChiHero({
             y2="400"
             stroke="#f59e0b"
             strokeWidth="3.2"
-            filter="url(#beam-glow)"
+            filter="url(#tc-beam-glow)"
             opacity={0.85}
           />
           {/* Above Earth Beam (Upper Golden/Neon Yellow laser) */}
@@ -523,7 +526,7 @@ export default function TaiChiHero({
             y2="284"
             stroke="#fed7aa"
             strokeWidth="2.5"
-            filter="url(#beam-glow)"
+            filter="url(#tc-beam-glow)"
             opacity={0.7 + breathForce * 0.3}
           />
           <line
@@ -562,52 +565,52 @@ export default function TaiChiHero({
             stroke="#7dd3fc"
             strokeWidth="4"
             opacity="0.25"
-            filter="url(#earth-glow)"
+            filter="url(#tc-earth-glow)"
           />
 
           {/* Base Earth Circle (Ocean Backdrop) */}
-          <circle cx="200" cy="500" r="215" fill="url(#ocean-grad)" stroke="#fed7aa" strokeWidth={0.8} />
+          <circle cx="200" cy="500" r="215" fill="url(#tc-ocean-grad)" stroke="#fed7aa" strokeWidth={0.8} />
 
           {/* Earth Continent Shapes (Clipped to Globe Sphere) */}
-          <g clipPath="url(#earth-clip)">
-            <clipPath id="earth-clip">
+          <g clipPath="url(#tc-earth-clip)">
+            <clipPath id="tc-earth-clip">
               <circle cx="200" cy="500" r="215" />
             </clipPath>
 
             {/* Mediterranean Continent (Europe Vector outline) */}
             <path
               d="M 120 400 Q 140 375 160 380 T 195 365 T 220 370 T 250 355 T 280 375 L 305 410 Q 280 432 250 430 T 180 415 Z"
-              fill="url(#land-grad)"
+              fill="url(#tc-land-grad)"
               opacity="0.8"
             />
 
             {/* Africa Continent Vector */}
             <path
               d="M 115 410 Q 140 420 170 422 T 190 435 T 230 440 T 260 420 T 290 445 Q 260 482 240 500 T 210 528 T 190 550 T 165 520 Z"
-              fill="url(#land-grad)"
+              fill="url(#tc-land-grad)"
               opacity="0.88"
             />
 
             {/* Middle East & India Vector Peninsula */}
             <path
               d="M 285 362 Q 300 375 320 370 T 345 390 T 330 415 T 290 425 Z"
-              fill="url(#land-grad)"
+              fill="url(#tc-land-grad)"
               opacity="0.85"
             />
 
             {/* Soft atmospheric shadowing at edge of globe */}
-            <radialGradient id="earth-shading" cx="50%" cy="10%" r="90%">
+            <radialGradient id="tc-earth-shading" cx="50%" cy="10%" r="90%">
               <stop offset="0%" stopColor="#000000" stopOpacity="0" />
               <stop offset="75%" stopColor="#000000" stopOpacity="0.4" />
               <stop offset="100%" stopColor="#030712" stopOpacity="0.95" />
             </radialGradient>
-            <circle cx="200" cy="500" r="215" fill="url(#earth-shading)" />
+            <circle cx="200" cy="500" r="215" fill="url(#tc-earth-shading)" />
           </g>
 
           {/* CHARACTER / HERO MODEL */}
           {/* Bare Feet Grounded on top curve of Earth */}
           {/* Left Foot */}
-          <g id="left-foot" transform="translate(191, 283)">
+          <g id="tc-left-foot" transform="translate(191, 283)">
             {/* Ankle to foot curve */}
             <path d="M -3 -5 L -3 1 C -3 3 -5 4 -5 5 C -5 6 -2 7 2 7 C 5 7 5 5 5 4 L 4 -5 Z" fill="#e5bda3" />
             {/* Toes details */}
@@ -617,7 +620,7 @@ export default function TaiChiHero({
             <circle cx="3" cy="6.2" r="0.8" fill="#d9b197" />
           </g>
           {/* Right Foot */}
-          <g id="right-foot" transform="translate(209, 283)">
+          <g id="tc-right-foot" transform="translate(209, 283)">
             <path d="M -4 -5 L -4 4 C -4 5 -4 7 -1 7 C 3 7 6 6 6 5 C 6 4 4 3 4 1 L 4 -5 Z" fill="#e5bda3" />
             <circle cx="-2" cy="6.2" r="0.8" fill="#d9b197" />
             <circle cx="0" cy="6.2" r="0.9" fill="#d9b197" />
@@ -626,7 +629,7 @@ export default function TaiChiHero({
           </g>
 
           {/* LEGS (Jogger pants, dark charcoal, elegant folds) */}
-          <g id="legs" fill="#1e222a" stroke="#13161b" strokeWidth="0.5" transform={bodyShift ? `translate(0, 283) skewX(${(-Math.atan2(bodyShift, 38) * 180) / Math.PI}) translate(0, -283)` : undefined}>
+          <g id="tc-legs" fill="#1e222a" stroke="#13161b" strokeWidth="0.5" transform={bodyShift ? `translate(0, 283) skewX(${(-Math.atan2(bodyShift, 38) * 180) / Math.PI}) translate(0, -283)` : undefined}>
             {/* Left leg */}
             <path d="M 188 245 L 182 268 L 186 283 L 196 283 L 195 245 Z" />
             {/* Right leg */}
@@ -637,7 +640,7 @@ export default function TaiChiHero({
           </g>
 
           {/* TORSO / HOODIE (Black/Charcoal hoodie, centered) */}
-          <g id="torso" fill="#13161d" transform={bodyShift ? `translate(${bodyShift}, 0)` : undefined}>
+          <g id="tc-torso" fill="#13161d" transform={bodyShift ? `translate(${bodyShift}, 0)` : undefined}>
             <path d={`M 180 ${206 + torsoBendY + leanBackY} L 220 ${206 + torsoBendY + leanBackY} L 214 248 L 186 248 Z`} />
             {/* Kangaroo Pocket */}
             <path
@@ -650,7 +653,7 @@ export default function TaiChiHero({
           </g>
 
           {/* RAINBOW INFINITY SYMBOL ON CHEST */}
-          <g id="infinity-symbol" transform={`translate(${200 + bodyShift}, ${222 + torsoBendY * 0.6 + leanBackY * 0.6})`}>
+          <g id="tc-infinity-symbol" transform={`translate(${200 + bodyShift}, ${222 + torsoBendY * 0.6 + leanBackY * 0.6})`}>
             {/* Outer glow around symbol when breathing in */}
             <path
               d="M -6.5 0 C -6.5 -3.5 -2.5 -3.5 0 0 C 2.5 3.5 6.5 3.5 6.5 0 C 6.5 -3.5 2.5 -3.5 0 0 C -2.5 3.5 -6.5 3.5 -6.5 0 Z"
@@ -658,22 +661,22 @@ export default function TaiChiHero({
               stroke={selectedColor.primary}
               strokeWidth={1.5 + breathForce * 2.5}
               opacity={0.15 + breathForce * 0.55}
-              filter="url(#aura-glow)"
+              filter="url(#tc-aura-glow)"
             />
             {/* Real infinity symbol */}
             <path
               d="M -6.5 0 C -6.5 -3.5 -2.5 -3.5 0 0 C 2.5 3.5 6.5 3.5 6.5 0 C 6.5 -3.5 2.5 -3.5 0 0 C -2.5 3.5 -6.5 3.5 -6.5 0 Z"
               fill="none"
-              stroke="url(#rainbow-grad)"
+              stroke="url(#tc-rainbow-grad)"
               strokeWidth="2.0"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
           </g>
 
-          <g id="head-group" transform={`translate(${200 + bodyShift * 1.15}, ${206 + torsoBendY + leanBackY * 1.5}) scale(${0.85 + bowBend * 0.15}) translate(-200, -206)`}>
+          <g id="tc-head-group" transform={`translate(${200 + bodyShift * 1.15}, ${206 + torsoBendY + leanBackY * 1.5}) scale(${0.85 + bowBend * 0.15}) translate(-200, -206)`}>
             {/* INNER HEAD & FACE peeking from under hood */}
-            <g id="face">
+            <g id="tc-face">
               {/* Neck */}
               <rect x="195" y="196" width="10" height="11" fill="#e5bda3" />
 
@@ -693,7 +696,7 @@ export default function TaiChiHero({
             </g>
 
             {/* HOOD (Black/Charcoal outer frame surrounding face) */}
-            <g id="hood" fill="#13161d" stroke="#000000" strokeWidth="0.5">
+            <g id="tc-hood" fill="#13161d" stroke="#000000" strokeWidth="0.5">
               {/* Outer Hood Circle */}
               <path d="M 181 206 C 176 195 178 174 188 166 C 194 161 206 161 212 166 C 222 174 224 195 219 206 Z" fill="#13161d" />
               {/* Inner Hood Cutout (Face shadow contrast) */}

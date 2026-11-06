@@ -18,6 +18,8 @@ export interface MeditatorFigureProps {
   bare?: boolean;
   /** Light one axis of the sign and dim the others (the home page's axis cards). */
   focus?: 'body' | 'breath' | 'attention' | 'space';
+  /** Sound coming from the voice, for chanting (soft arcs on both sides of the face). */
+  voice?: boolean;
 }
 
 
@@ -32,7 +34,8 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
   label,
   hideBreathRing = false,
   bare = false,
-  focus
+  focus,
+  voice = false
 }) => {
   const { reduceMotion } = useAccessibility();
 
@@ -352,6 +355,18 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
               </g>
             )}
             
+          </g>
+        )}
+
+        {/* Voice: the hum spreading out from the face, on both sides */}
+        {voice && (
+          <g transform="translate(0, 52)" fill="none" stroke="var(--axis-space-ink, #a78bfa)" strokeLinecap="round" filter="url(#symbol-glow)">
+            {[34, 50, 66].map((r, i) => (
+              <g key={r} opacity={1 - i * 0.25} strokeWidth={4 - i * 0.6}>
+                <path d={`M ${170 + r * Math.cos(-0.6)},${140 + r * Math.sin(-0.6)} A ${r} ${r} 0 0 1 ${170 + r * Math.cos(0.6)},${140 + r * Math.sin(0.6)}`} />
+                <path d={`M ${170 - r * Math.cos(-0.6)},${140 + r * Math.sin(-0.6)} A ${r} ${r} 0 0 0 ${170 - r * Math.cos(0.6)},${140 + r * Math.sin(0.6)}`} />
+              </g>
+            ))}
           </g>
         )}
 

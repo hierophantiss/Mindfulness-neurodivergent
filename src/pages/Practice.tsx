@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Wind, Zap, ArrowLeft, Move, Compass, Activity, Lock, BookOpen, ChevronDown, ChevronUp, Volume2 } from 'lucide-react';
+import { Wind, Zap, ArrowLeft, Compass, Activity, Lock, BookOpen, ChevronDown, ChevronUp, Volume2 } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import { useProgress } from '../contexts/ProgressContext';
 import { BREATH_PATTERNS, BreathPattern } from '../data/breathPatterns';
@@ -8,6 +8,8 @@ import { MICRODOSES_EXERCISES } from '../data/microdoses';
 import { cn } from '../lib/utils';
 import { Check } from 'lucide-react';
 import { ConceptInfoIcon } from '../components/ConceptInfoOverlay';
+import { MeditatorFigure } from '../components/MeditatorFigure';
+import TaiChiHero from '../components/TaiChiHero';
 import { QuietAxisHint } from '../components/QuietAxisHint';
 
 
@@ -228,9 +230,9 @@ const axisInfo = {
         </div>
 
         <header className="space-y-4 max-w-4xl desk:max-w-none mx-auto text-center desk:text-left w-full">
-          <div className="flex items-center justify-center desk:justify-start gap-4">
-            <div className={cn("w-14 h-14 shrink-0 rounded-full flex items-center justify-center text-3xl font-mono border", info.bgColor, info.borderColor, info.color)}>
-              {info.icon}
+          <div className="flex flex-col desk:flex-row items-center justify-center desk:justify-start gap-1 desk:gap-4">
+            <div aria-hidden="true" className="w-[120px] desk:w-[96px] shrink-0 desk:-my-3" style={{ filter: `drop-shadow(0 0 12px color-mix(in srgb, var(--axis-${activeAxis}-ink) 35%, transparent))` }}>
+              <MeditatorFigure focus={activeAxis as 'body'} bare />
             </div>
             <h1 className="font-display text-4xl desk:text-[52px] text-ink/90 leading-tight">
               {language === 'en' ? info.title.en : info.title.el}
@@ -767,8 +769,10 @@ const axisInfo = {
           <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-indigo-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           
           <div className="flex justify-between items-start mb-8 relative w-full pointer-events-none">
-            <div className="w-14 h-14 shrink-0 shape-cloud-5 bg-indigo-400/15 flex items-center justify-center text-indigo-400 border border-indigo-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
-              <Activity size={28} strokeWidth={1.5} />
+            <div aria-hidden="true" className="w-[96px] h-[112px] -ml-2 -mt-3 -mb-3 shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-500 [mask-image:radial-gradient(ellipse_at_50%_40%,black_55%,transparent_78%)]" style={{ filter: 'drop-shadow(0 0 12px color-mix(in srgb, var(--axis-body-ink) 35%, transparent))' }}>
+              <div className="w-full origin-[50%_62%] scale-[1.75]">
+                <TaiChiHero breathForce={1} isRising breathStateText="" movementType="tai-chi-cloud-hands" idle bare />
+              </div>
             </div>
             <div className="flex gap-1.5 pointer-events-auto relative z-20">
               <ConceptInfoIcon conceptId="proprioception" className="w-8 h-8 pointer-events-auto relative z-20 opacity-60 hover:opacity-100 bg-white/5" />
@@ -796,8 +800,8 @@ const axisInfo = {
           <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-teal-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           
           <div className="flex justify-between items-start mb-8 relative w-full pointer-events-none">
-            <div className="w-14 h-14 shrink-0 shape-cloud-4 bg-teal-400/15 flex items-center justify-center text-teal-400 border border-teal-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
-              <Wind size={28} strokeWidth={1.5} />
+            <div aria-hidden="true" className="w-[84px] -mt-3 -mb-3 shrink-0 group-hover:scale-105 transition-transform duration-500" style={{ filter: 'drop-shadow(0 0 12px color-mix(in srgb, var(--axis-breath-ink) 35%, transparent))' }}>
+              <MeditatorFigure focus="breath" bare />
             </div>
             <ConceptInfoIcon conceptId="vagus_nerve" className="w-8 h-8 pointer-events-auto relative z-20 opacity-60 hover:opacity-100 bg-white/5" />
           </div>
@@ -822,8 +826,8 @@ const axisInfo = {
           <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-violet-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           
           <div className="flex justify-between items-start mb-8 relative w-full pointer-events-none">
-            <div className="w-14 h-14 shrink-0 shape-cloud-2 bg-violet-400/15 flex items-center justify-center text-violet-400 border border-violet-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
-              <Volume2 size={28} strokeWidth={1.5} />
+            <div aria-hidden="true" className="w-[84px] -mt-3 -mb-3 shrink-0 group-hover:scale-105 transition-transform duration-500" style={{ filter: 'drop-shadow(0 0 12px color-mix(in srgb, var(--axis-space-ink) 35%, transparent))' }}>
+              <MeditatorFigure showAxisSymbols="none" voice bare />
             </div>
             <ConceptInfoIcon conceptId="vagus_nerve" className="w-8 h-8 pointer-events-auto relative z-20 opacity-60 hover:opacity-100 bg-white/5" />
           </div>
@@ -848,8 +852,8 @@ const axisInfo = {
           <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-amber-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           
           <div className="flex justify-between items-start mb-8 relative w-full pointer-events-none">
-            <div className="w-14 h-14 shrink-0 shape-cloud-1 bg-amber-400/15 flex items-center justify-center text-amber-400 border border-amber-400/20 group-hover:scale-110 transition-transform duration-500 shadow-inner">
-              <Zap size={28} strokeWidth={1.5} />
+            <div aria-hidden="true" className="w-[84px] -mt-3 -mb-3 shrink-0 group-hover:scale-105 transition-transform duration-500" style={{ filter: 'drop-shadow(0 0 12px color-mix(in srgb, var(--axis-attention-ink) 35%, transparent))' }}>
+              <MeditatorFigure focus="attention" bare />
             </div>
             
             <div className="flex items-center gap-2">
