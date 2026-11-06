@@ -6,7 +6,7 @@ import { motion } from 'motion/react';
 import { useLanguage } from '../hooks/useLanguage';
 import { cn } from '../lib/utils';
 import type { Axis } from '../data/types';
-import { AXIS_LABEL, AXIS_COLOR, CHECKIN_OPTIONS, getCheckinOption, checkinOnDay, type CheckinChoice } from '../data/stateCheckin';
+import { AXIS_LABEL, AXIS_COLOR, CHECKIN_OPTIONS, getCheckinOption } from '../data/stateCheckin';
 import { dayOfYear } from '../data/practiceCatalog';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 
@@ -85,51 +85,8 @@ const LEGACY_MOODS: Record<number, T> = {
   4: { el: 'Θετικό', en: 'Positive' },
 };
 
-interface JournalEntry {
-  text: string;
-  mood: number | null;          // legacy
-  state?: CheckinChoice | null; // how I felt (chosen here)
-  stateOff?: boolean;           // the day's "How do you feel?" answer, unticked here
-  axes?: Axis[];                // what I practised (ticked by hand)
-  axesOff?: Axis[];             // filled in from the practices, then unticked by hand
-  timestamp: number;
-}
-
-// Dates are the person's local day, so writing after midnight lands on the right day.
-const pad = (n: number) => String(n).padStart(2, '0');
-const toLocalDateStr = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-const parseLocalDate = (s: string) => {
-  const [y, m, d] = s.split('-').map(Number);
-  return new Date(y, (m || 1) - 1, d || 1);
-};
-
-const V2 = (date: string) => `journal_v2_${date}`;
-const V1 = (date: string) => `journal_papyrus_${date}`; // oldest format, read only
-
-const EMPTY: JournalEntry = { text: '', mood: null, state: null, axes: [], timestamp: 0 };
-
-function loadEntry(date: string): JournalEntry {
-  try {
-    const v2 = localStorage.getItem(V2(date));
-    if (v2) {
-      const parsed = JSON.parse(v2) as JournalEntry;
-      return { ...EMPTY, ...parsed, axes: parsed.axes || [], state: parsed.state || null };
-    }
-    const v1 = localStorage.getItem(V1(date));
-    if (v1) return { ...EMPTY, text: v1 };
-  } catch {
-    // ignore
-  }
-  return { ...EMPTY };
-}
-
-// Something the person wrote or ticked (what the history shows).
-const isEmptyEntry = (e: JournalEntry) => !e.text.trim() && !e.state && !e.mood && !(e.axes && e.axes.length);
-// Worth keeping on the device: also a practice unticked by hand.
-const nothingToKeep = (e: JournalEntry) => isEmptyEntry(e) && !(e.axesOff && e.axesOff.length) && !e.stateOff;
-// How I felt: chosen here, or else the day's answer to "How do you feel?" on the home page.
-const feltOn = (e: JournalEntry, day: string): CheckinChoice | null =>
-  e.state || (e.stateOff ? null : checkinOnDay(day));
+import { WeekSheetCard } from '../components/WeekSheetCard';
+import { EMPTY, V1, V2, feltOn, isEmptyEntry, loadEntry, nothingToKeep, parseLocalDate, tickedAxes as axesOfDay, toLocalDateStr, type JournalEntry } from '../lib/journalEntry';
 
 export default function Journal() {
   const navigate = useNavigate();
@@ -179,9 +136,8 @@ export default function Journal() {
   };
 
   // Ticked = ticked by hand, or done in the app that day (unless unticked).
-  const isTicked = (axis: Axis) =>
-    (entry.axes || []).includes(axis) || (dayPractice.axes.includes(axis) && !(entry.axesOff || []).includes(axis));
-  const tickedAxes = AXES.filter(isTicked);
+  const tickedAxes = axesOfDay(entry, dayPractice.axes);
+  const isTicked = (axis: Axis) => tickedAxes.includes(axis);
   const felt = feltOn(entry, dateStr);
   const feltFromHome = !entry.state && !!felt;
 
@@ -400,9 +356,13 @@ export default function Journal() {
             placeholder={lang === 'el' ? 'Άδειασε το μυαλό σου εδώ...' : 'Empty your mind here...'}
             className="w-full min-h-[40vh] bg-transparent resize-none outline-none text-[16px] md:text-[17px] leading-[1.75] text-ink/85 placeholder:text-ink/25 font-sans py-4"
           />
+          <button type="button" onClick={() => setViewState('history')} className="mt-2 inline-flex items-center gap-2 min-h-[44px] text-[13.5px] text-ink/55 hover:text-ink/85 transition-colors">
+            {lang === 'el' ? 'Η εβδομάδα μου σε μία σελίδα (PDF)' : 'My week on one page (PDF)'} <ChevronRight size={15} aria-hidden="true" />
+          </button>
         </motion.div>
       ) : (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-3xl mx-auto px-6 py-8">
+          <WeekSheetCard lang={lang} />
           <div className="relative mb-8">
             <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-ink/40">
               <Search size={16} />

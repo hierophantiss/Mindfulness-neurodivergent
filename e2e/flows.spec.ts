@@ -87,3 +87,30 @@ test('the chapter list offers the audio for listening offline', async ({ page })
   await expect(page.getByRole('heading', { name: 'Ακρόαση χωρίς σύνδεση' })).toBeVisible();
   await expect(page.getByRole('button', { name: /Κατέβασε/ })).toBeVisible();
 });
+
+test('the Journal makes a PDF of the week', async ({ page }) => {
+  await page.goto('/el', { waitUntil: 'networkidle' });
+  await page.getByRole('button', { name: 'Ηρεμία' }).first().click();
+  await page.evaluate(() => {
+    const d = new Date();
+    const key = `journal_v2_${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    localStorage.setItem(key, JSON.stringify({ text: 'Τάι Τσι στο μπαλκόνι.', mood: null, axes: ['body'], timestamp: Date.now() }));
+  });
+  await page.goto('/el/journal', { waitUntil: 'networkidle' });
+  await page.getByRole('button', { name: 'Παλιότερες μέρες' }).click();
+  const card = page.getByRole('region', { name: 'Η εβδομάδα μου' });
+  await expect(card).toBeVisible();
+  await expect(card.getByRole('img')).toHaveAttribute('aria-label', /Ηρεμία/);
+  await expect(card.getByRole('button', { name: 'Επόμενη εβδομάδα' })).toBeDisabled();
+  await card.getByRole('radio', { name: 'Με τις σημειώσεις' }).click();
+  const download = page.waitForEvent('download');
+  await card.getByRole('button', { name: 'Κατέβασε PDF' }).click();
+  const file = await download;
+  expect(file.suggestedFilename()).toMatch(/^evdomada-\d{4}-\d{2}-\d{2}\.pdf$/);
+  const { readFile } = await import('fs/promises');
+  const bytes = await readFile((await file.path())!);
+  expect(bytes.subarray(0, 5).toString()).toBe('%PDF-');
+  // an earlier week, nothing in it yet
+  await card.getByRole('button', { name: 'Προηγούμενη εβδομάδα' }).click();
+  await expect(card.getByText(/Δεν έχει ακόμα τίποτα/)).toBeVisible();
+});

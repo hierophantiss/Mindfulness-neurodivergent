@@ -25,9 +25,17 @@ export default defineConfig(() => {
           // rarer alphabets load from the network if a page ever needs them.
           globIgnores: ['**/*.{mp4,pdf,png,jpg}', '**/*_debug.html', '**/*-{cyrillic,cyrillic-ext,vietnamese,latin-ext,greek-ext}-wght-*.woff2',
             // the display face: Latin and Greek only
-            '**/gfs-didot-{greek-ext,vietnamese}-*'],
+            '**/gfs-didot-{greek-ext,vietnamese}-*',
+            // "My week" PDF: its tool (about 1 MB) is fetched the first time someone
+            // makes a PDF, then kept (runtimeCaching below), not on every install.
+            '**/weekPdf-*.js'],
           // The cat companion, so it shows offline too.
           additionalManifestEntries: [{ url: '/cat-192.png', revision: 'cat-2026-10-19' }],
+          runtimeCaching: [{
+            urlPattern: /\/assets\/(?:weekPdf-[^/]*\.js|[^/]*-400-normal-[^/]*\.woff)$/,
+            handler: 'CacheFirst',
+            options: { cacheName: 'week-pdf', expiration: { maxEntries: 12 } },
+          }],
           navigateFallback: '/index.html',
           navigateFallbackDenylist: [/\.(?:pdf|epub|json)$/, /^\/workbook_/, /^\/animations\//, /^\/audio\//, /^\/\.well-known\//],
           ignoreURLParametersMatching: [/^utm_/, /^fbclid$/, /^lang$/],
