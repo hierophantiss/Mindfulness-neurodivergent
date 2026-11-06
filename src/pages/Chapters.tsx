@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, BookOpen } from 'lucide-react';
 import { MeditatorFigure } from '../components/MeditatorFigure';
-import { axisOfChapter, AXIS_GLYPH } from '../lib/axisOfChapter';
+import { axisOfChapter } from '../lib/axisOfChapter';
+import { ChapterIcon } from '../components/ChapterIcon';
 import { CHAPTERS_DATA } from '../data/chapters';
 import { useLanguage } from '../hooks/useLanguage';
 import { useProgress } from '../contexts/ProgressContext';
@@ -105,7 +106,7 @@ export default function Chapters() {
                     className="w-12 h-12 rounded-2xl flex items-center justify-center font-display text-[26px] leading-none backdrop-blur-md border border-white/10 relative"
                     style={{ backgroundColor: `${chapter.hex}25`, color: chapter.hex }}
                   >
-                    <span aria-hidden="true">{AXIS_GLYPH[axisOfChapter(chapter.num) ?? 'body']}</span>
+                    <ChapterIcon num={chapter.num} color={chapter.hex} size={23} />
                     {isChapterComplete(chapter.num) && (
                       <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-teal-500 flex items-center justify-center text-ink border-2 border-[#12141c] animate-in zoom-in-50 duration-300">
                         <Check size={12} strokeWidth={3} />
@@ -169,7 +170,7 @@ export default function Chapters() {
                     className="w-12 h-12 rounded-xl flex items-center justify-center text-xl shrink-0 backdrop-blur-sm transition-transform group-hover:scale-110 relative"
                     style={{ backgroundColor: `${chapter.hex}25`, color: chapter.hex }}
                   >
-                    {chapter.icon}
+                    <ChapterIcon num={chapter.num} color={chapter.hex} />
                     {isChapterComplete(chapter.num) && (
                       <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-teal-500 flex items-center justify-center text-ink border border-[#12141c]">
                         <Check size={10} strokeWidth={3} />
@@ -215,7 +216,7 @@ export default function Chapters() {
                     className="w-12 h-12 rounded-xl flex items-center justify-center text-xl shrink-0 backdrop-blur-sm transition-transform group-hover:scale-110 relative"
                     style={{ backgroundColor: `${chapter.hex}25`, color: chapter.hex }}
                   >
-                    {chapter.icon}
+                    <ChapterIcon num={chapter.num} color={chapter.hex} />
                     {isChapterComplete(chapter.num) && (
                       <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-teal-500 flex items-center justify-center text-ink border border-[#12141c]">
                         <Check size={10} strokeWidth={3} />

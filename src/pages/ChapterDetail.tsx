@@ -17,6 +17,7 @@ import { chapterPages, chapterPageLabel } from '../lib/chapterPages';
 import { buildChapterSegments } from '../lib/chapterReading';
 import { MeditatorFigure } from '../components/MeditatorFigure';
 import { axisOfChapter } from '../lib/axisOfChapter';
+import { ChapterIcon } from '../components/ChapterIcon';
 import { useSpeechReader, loadReaderSettings, saveReaderSettings, type ReaderSettings } from '../hooks/useSpeechReader';
 
 const READER_POS_KEY = 'n_mindfulness_reader_pos';
@@ -519,7 +520,7 @@ export default function ChapterDetail() {
                     className="w-24 h-24 rounded-full flex items-center justify-center text-5xl mx-auto backdrop-blur-md border border-white/5 shadow-inner"
                     style={{ backgroundColor: `${chapter.hex}15`, color: chapter.hex }}
                   >
-                    {chapter.icon}
+                    <ChapterIcon num={chapter.num} color={chapter.hex} size={44} />
                   </div>
                   )}
                   <div data-read-key="intro-title" className={readClass(rs('intro-title'))}>
