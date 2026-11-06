@@ -15,6 +15,8 @@ import InteractiveRenderer from '../components/InteractiveRenderer';
 import ChapterReaderBar from '../components/ChapterReaderBar';
 import { chapterPages, chapterPageLabel } from '../lib/chapterPages';
 import { buildChapterSegments } from '../lib/chapterReading';
+import { MeditatorFigure } from '../components/MeditatorFigure';
+import { axisOfChapter } from '../lib/axisOfChapter';
 import { useSpeechReader, loadReaderSettings, saveReaderSettings, type ReaderSettings } from '../hooks/useSpeechReader';
 
 const READER_POS_KEY = 'n_mindfulness_reader_pos';
@@ -508,12 +510,18 @@ export default function ChapterDetail() {
             {curPage.type === 'intro' && (
               <div className="space-y-8">
                 <div className="space-y-6 text-center">
+                  {axisOfChapter(chapter.num) ? (
+                    <div aria-hidden="true" className="w-[150px] desk:w-[180px] mx-auto -mb-2" style={{ filter: `drop-shadow(0 0 16px ${chapter.hex}45)` }}>
+                      <MeditatorFigure focus={axisOfChapter(chapter.num)!} bare />
+                    </div>
+                  ) : (
                    <div 
                     className="w-24 h-24 rounded-full flex items-center justify-center text-5xl mx-auto backdrop-blur-md border border-white/5 shadow-inner"
                     style={{ backgroundColor: `${chapter.hex}15`, color: chapter.hex }}
                   >
                     {chapter.icon}
                   </div>
+                  )}
                   <div data-read-key="intro-title" className={readClass(rs('intro-title'))}>
                     <h1 className="font-display text-4xl desk:text-6xl text-ink/90 leading-tight px-4">
                       {chapter.title}

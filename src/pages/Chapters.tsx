@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, BookOpen, Mountain, Wind, Target, Maximize } from 'lucide-react';
+import { ArrowLeft, BookOpen } from 'lucide-react';
+import { MeditatorFigure } from '../components/MeditatorFigure';
+import { axisOfChapter, AXIS_GLYPH } from '../lib/axisOfChapter';
 import { CHAPTERS_DATA } from '../data/chapters';
 import { useLanguage } from '../hooks/useLanguage';
 import { useProgress } from '../contexts/ProgressContext';
@@ -100,10 +102,10 @@ export default function Chapters() {
                 
                 <div className="relative z-10 space-y-4">
                    <div 
-                    className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl backdrop-blur-md border border-white/10 relative"
+                    className="w-12 h-12 rounded-2xl flex items-center justify-center font-display text-[26px] leading-none backdrop-blur-md border border-white/10 relative"
                     style={{ backgroundColor: `${chapter.hex}25`, color: chapter.hex }}
                   >
-                    {chapter.icon}
+                    <span aria-hidden="true">{AXIS_GLYPH[axisOfChapter(chapter.num) ?? 'body']}</span>
                     {isChapterComplete(chapter.num) && (
                       <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-teal-500 flex items-center justify-center text-ink border-2 border-[#12141c] animate-in zoom-in-50 duration-300">
                         <Check size={12} strokeWidth={3} />
@@ -124,12 +126,12 @@ export default function Chapters() {
                   </div>
                 </div>
 
-                <div className="absolute top-0 right-0 p-8 text-ink/5 group-hover:scale-110 transition-transform duration-1000">
-                  {chapter.num === 1 && <Mountain size={140} strokeWidth={0.5} />}
-                  {chapter.num === 2 && <Wind size={140} strokeWidth={0.5} />}
-                  {chapter.num === 3 && <Target size={140} strokeWidth={0.5} />}
-                  {chapter.num === 4 && <Maximize size={140} strokeWidth={0.5} />}
-                </div>
+                {/* The meditator with this chapter's axis lit, as on the home page. */}
+                {axisOfChapter(chapter.num) && (
+                  <span aria-hidden="true" className="absolute top-4 right-4 w-[118px] desk:w-[136px] opacity-90 group-hover:opacity-100 transition-opacity duration-700" style={{ filter: `drop-shadow(0 0 14px ${chapter.hex}40)` }}>
+                    <MeditatorFigure focus={axisOfChapter(chapter.num)!} bare />
+                  </span>
+                )}
               </Link>
             )))}
           </div>
