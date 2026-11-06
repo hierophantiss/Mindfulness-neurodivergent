@@ -16,6 +16,8 @@ export interface MeditatorFigureProps {
   hideBreathRing?: boolean;
   /** Hide the starfield and the beam (the exercise sits on the app's own sky). */
   bare?: boolean;
+  /** Light one axis of the sign and dim the others (the home page's axis cards). */
+  focus?: 'body' | 'breath' | 'attention' | 'space';
 }
 
 
@@ -29,7 +31,8 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
   className = '',
   label,
   hideBreathRing = false,
-  bare = false
+  bare = false,
+  focus
 }) => {
   const { reduceMotion } = useAccessibility();
 
@@ -41,7 +44,8 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
   };
 
   // The figure is a picture, not a menu: every axis symbol shows the same.
-  const currentAxis = null as 'body' | 'breath' | 'attention' | 'space' | 'focus' | null;
+  const currentAxis = (focus ?? null) as 'body' | 'breath' | 'attention' | 'space' | 'focus' | null;
+  const dim = 0.1;
 
   const getOpacity = (axisName: string) => {
     if (showAxisSymbols === 'none') return 0;
@@ -50,14 +54,14 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
       return 0.08;
     }
     if (!currentAxis) return 0.45;
-    return currentAxis === axisName ? 1 : 0.18;
+    return currentAxis === axisName ? 1 : dim;
   };
 
   const getAttentionOpacity = () => {
     if (showAxisSymbols === 'none') return 0;
     if (showAxisSymbols === 'breath-focus') return 0.08;
     if (!currentAxis) return 0.45;
-    return (currentAxis === 'focus' || currentAxis === 'attention') ? 1 : 0.18;
+    return (currentAxis === 'focus' || currentAxis === 'attention') ? 1 : dim;
   };
 
   const isInhale = breathPhase === 'inhale';
@@ -173,7 +177,7 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
 
         {/* 2. EARTH AT THE BOTTOM */}
         {withEarth && (
-          <g>
+          <g style={{ opacity: focus && focus !== 'body' ? 0.35 : 1 }}>
             <circle cx="170" cy="565" r="205" fill="#123b45" />
             <ellipse cx="170" cy="368" rx="175" ry="55" fill="url(#earth-warm)" />
             <g clipPath="url(#earth-clip)" fill="#c99a3a" opacity="0.9">
@@ -187,8 +191,8 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
         {/* a. BODY/GRAVITY (behind figure) */}
         {showAxisSymbols !== 'none' && (
           <g className="axis-layer" style={{ opacity: getOpacity('body') }} transform="translate(0, 52)">
-            <line x1="170" y1="30" x2="170" y2="440" stroke="url(#body-grad)" strokeWidth="6" strokeLinecap="round" filter="url(#symbol-glow)" />
-            <line x1="170" y1="30" x2="170" y2="440" stroke="#fef08a" strokeWidth="2" strokeLinecap="round" opacity="0.8" />
+            <line x1="170" y1="30" x2="170" y2="440" stroke="url(#body-grad)" strokeWidth={focus === 'body' ? 11 : 6} strokeLinecap="round" filter="url(#symbol-glow)" />
+            <line x1="170" y1="30" x2="170" y2="440" stroke="#fef08a" strokeWidth={focus === 'body' ? 4 : 2} strokeLinecap="round" opacity={focus === 'body' ? 1 : 0.8} />
           </g>
         )}
 
@@ -224,7 +228,7 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
               <path d="M 936,1260 C 912,1318 882,1378 844,1418 L 822,1496 C 904,1490 990,1462 1040,1420 C 1060,1380 1072,1330 1072,1290 C 1020,1290 970,1276 936,1260 Z" fill="url(#hoodie)" />
 
               {/* The body axis, in front of the hoodie, as on the cover */}
-              <line x1="670" y1="718" x2="670" y2="1420" stroke="#e0473a" strokeWidth="9" style={{ opacity: Math.min(1, getOpacity('body') * 1.5) }} className="axis-layer" />
+              <line x1="670" y1="718" x2="670" y2="1420" stroke="#e0473a" strokeWidth={focus === 'body' ? 22 : 9} style={{ opacity: Math.min(1, getOpacity('body') * 1.5) }} className="axis-layer" />
 
               {/* Hands resting together on the legs, palms joined */}
               <path d="M 494,1418 C 566,1398 640,1406 670,1434 L 670,1524 C 616,1540 556,1528 516,1496 Z" fill="#dcaa7b" />
@@ -304,7 +308,7 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
               )}</g>
               
               {/* Infinity Core - glow animates if in breathing exercise */}
-              <g style={{ transformOrigin: '170px 205px' }}>
+              <g style={{ transformOrigin: '170px 205px', opacity: focus ? (focus === 'space' ? 1 : 0.18) : 1 }}>
                 {/* Dark outline, as on the cover */}
                 <path
                   d="M144,205 C144,189 162,189 170,205 C178,221 196,221 196,205 C196,189 178,189 170,205 C162,221 144,221 144,205 Z"
@@ -342,7 +346,7 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
               </motion.g>
             ) : (
               // Idle Mode: CSS Pulse
-              <g className={!reduceMotion ? 'animate-breath' : ''}>
+              <g className={!reduceMotion && !focus ? 'animate-breath' : ''}>
                 <circle cx="170" cy="180" r="145" fill="none" stroke={tokens.breath} strokeWidth="3" opacity="0.65" filter="url(#symbol-glow)" />
                 <circle cx="170" cy="180" r="135" fill="none" stroke={tokens.breath} strokeWidth="1.5" opacity="0.3" />
               </g>
@@ -354,8 +358,8 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
         {/* c. FOCUS / ATTENTION */}
         {showAxisSymbols !== 'none' && (
           <g className="axis-layer" style={{ opacity: getAttentionOpacity() }} transform="translate(0, 52)">
-            <polygon points="170,118 295,290 45,290" fill="none" stroke="url(#attention-grad)" strokeWidth="3" strokeLinejoin="round" filter="url(#symbol-glow)" />
-            <circle cx="170" cy="118" r="4" fill={tokens.attention} filter="url(#symbol-glow)" />
+            <polygon points="170,118 295,290 45,290" fill="none" stroke={focus === 'attention' ? tokens.attention : 'url(#attention-grad)'} strokeWidth={focus === 'attention' ? 7 : 3} strokeLinejoin="round" filter="url(#symbol-glow)" />
+            <circle cx="170" cy="118" r={focus === 'attention' ? 8 : 4} fill={tokens.attention} filter="url(#symbol-glow)" />
           </g>
         )}
       </svg>

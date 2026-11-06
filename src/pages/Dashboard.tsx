@@ -9,6 +9,7 @@ import { useProgress } from '../contexts/ProgressContext';
 import { CHAPTER_TITLES } from '../data/chapterTitles';
 import type { Chapter } from '../data/types';
 import { cn } from '../lib/utils';
+import { MeditatorFigure } from '../components/MeditatorFigure';
 import { motion } from 'motion/react';
 import { useAccessibility } from '../hooks/useAccessibility';
 import InfoModal from '../components/InfoModal';
@@ -142,13 +143,13 @@ export default function Dashboard() {
   const listenHref = finishedGuide ? '' : `${spot.href}${spot.href.includes('?') ? '&' : '?'}listen=1`;
   // The four axes, a way into the practices and the method's signature.
   const axes = [
-    { id: 'body', glyph: 'Ι', name: el ? 'Σώμα' : 'Body', ink: 'var(--axis-body-ink)',
+    { id: 'body' as const, name: el ? 'Σώμα' : 'Body', ink: 'var(--axis-body-ink)',
       desc: el ? 'Νιώθεις τη βαρύτητα: το βάρος σου πέφτει και στηρίζεται.' : 'You feel gravity: your weight falls and is held.' },
-    { id: 'breath', glyph: '○', name: el ? 'Αναπνοή' : 'Breath', ink: 'var(--axis-breath-ink)',
+    { id: 'breath' as const, name: el ? 'Αναπνοή' : 'Breath', ink: 'var(--axis-breath-ink)',
       desc: el ? 'Μακριά, ήρεμη εκπνοή από το στόμα, που ρυθμίζει το νευρικό σύστημα.' : 'A long, calm exhale through the mouth that settles the nervous system.' },
-    { id: 'attention', glyph: '△', name: el ? 'Προσοχή' : 'Attention', ink: 'var(--axis-attention-ink)',
+    { id: 'attention' as const, name: el ? 'Προσοχή' : 'Attention', ink: 'var(--axis-attention-ink)',
       desc: el ? 'Ο Φακός: στενεύει σε ένα σημείο και ανοίγει σε όλο το πεδίο.' : 'The Lens: it narrows to one point and opens to the whole field.' },
-    { id: 'space', glyph: '∞', name: el ? 'Χώρος' : 'Space', ink: 'var(--axis-space-ink)',
+    { id: 'space' as const, name: el ? 'Χώρος' : 'Space', ink: 'var(--axis-space-ink)',
       desc: el ? 'Ανοιχτή επίγνωση: ξεκουράζεσαι στον χώρο γύρω σου.' : 'Open awareness: you rest in the space around you.' },
   ];
   // Everything else, on one shelf that scrolls sideways (the next card always peeks).
@@ -285,9 +286,12 @@ export default function Dashboard() {
                 <Link
                   key={a.id}
                   to={`/practice?axis=${a.id}`}
-                  className="glass h-[66px] rounded-[18px] flex flex-col items-center justify-center gap-[5px] hover:brightness-110 transition-[filter,transform] active:scale-[0.97] desk:h-auto desk:min-h-[176px] desk:items-start desk:justify-start desk:gap-2 desk:p-[22px] desk:rounded-[24px] desk:hover:-translate-y-0.5"
+                  className="glass h-[128px] pt-1 rounded-[18px] flex flex-col items-center justify-center gap-[5px] overflow-hidden hover:brightness-110 transition-[filter,transform] active:scale-[0.97] desk:h-auto desk:min-h-[176px] desk:items-start desk:justify-start desk:gap-2 desk:p-[22px] desk:rounded-[24px] desk:hover:-translate-y-0.5"
                 >
-                  <span aria-hidden="true" className="font-display text-[22px] leading-none desk:text-[34px]" style={{ color: a.ink, textShadow: `0 0 10px color-mix(in srgb, ${a.ink} 45%, transparent)` }}>{a.glyph}</span>
+                  {/* The meditator with this axis's part of the sign lit, the others dimmed. */}
+                  <span aria-hidden="true" className="block w-[68px] desk:w-[124px] desk:self-center desk:-mt-2 desk:-mb-1" style={{ filter: `drop-shadow(0 0 10px color-mix(in srgb, ${a.ink} 35%, transparent))` }}>
+                    <MeditatorFigure focus={a.id} bare />
+                  </span>
                   <span className="checkin-label text-[12px] text-ink/90 max-w-full truncate px-1 desk:px-0 desk:mt-1.5 desk:text-[18px] desk:text-ink">{a.name}</span>
                   <span className="hidden desk:block text-[14px] leading-[1.5] text-ink/70">{a.desc}</span>
                   <span className="hidden desk:block mt-auto pt-2 text-[13.5px] text-sign-gold">{el ? 'Ασκήσεις →' : 'Practices →'}</span>
