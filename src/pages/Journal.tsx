@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { practiceOf } from '../lib/quietAxis';
-import { ArrowLeft, ChevronLeft, ChevronRight, RefreshCw, Plus, Search, Calendar, X, Heart, Wind, Lightbulb, Compass } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, RefreshCw, Plus, Search, CalendarArrowDown, X, Heart, Wind, Lightbulb, Compass } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useLanguage } from '../hooks/useLanguage';
@@ -211,15 +211,21 @@ export default function Journal() {
         <h1 className="text-lg font-medium tracking-tight text-ink/90">
           {lang === 'el' ? 'Ημερολόγιο' : 'Journal'}
         </h1>
+        {/* "Week" in words, with the download arrow: it leads to My week (PDF) and the earlier days. */}
         <button
           onClick={() => setViewState(viewState === 'edit' ? 'history' : 'edit')}
-          aria-label={viewState === 'edit' ? (lang === 'el' ? 'Παλιότερες μέρες' : 'Earlier days') : (lang === 'el' ? 'Κλείσιμο' : 'Close')}
+          aria-label={viewState === 'edit' ? (lang === 'el' ? 'Εβδομάδα και παλιότερες μέρες' : 'Week and earlier days') : (lang === 'el' ? 'Κλείσιμο' : 'Close')}
           className={cn(
-            "w-10 h-10 rounded-full flex items-center justify-center transition-all",
-            viewState === 'history' ? "bg-teal-500/20 text-teal-300 border border-teal-500/30" : "bg-white/[0.03] border border-white/[0.08] text-ink/60 hover:text-ink hover:bg-white/[0.08]"
+            "h-10 rounded-full flex items-center justify-center gap-1.5 transition-all",
+            viewState === 'history' ? "w-10 bg-teal-500/20 text-teal-300 border border-teal-500/30" : "px-3.5 bg-white/[0.03] border border-white/[0.08] text-ink/75 hover:text-ink hover:bg-white/[0.08]"
           )}
         >
-          {viewState === 'edit' ? <Calendar size={18} /> : <X size={18} />}
+          {viewState === 'edit' ? (
+            <>
+              <CalendarArrowDown size={17} aria-hidden="true" />
+              <span className="text-[13.5px]">{lang === 'el' ? 'Εβδομάδα' : 'Week'}</span>
+            </>
+          ) : <X size={18} />}
         </button>
       </header>
 

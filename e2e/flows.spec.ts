@@ -97,7 +97,7 @@ test('the Journal makes a PDF of the week', async ({ page }) => {
     localStorage.setItem(key, JSON.stringify({ text: 'Τάι Τσι στο μπαλκόνι.', mood: null, axes: ['body'], timestamp: Date.now() }));
   });
   await page.goto('/el/journal', { waitUntil: 'networkidle' });
-  await page.getByRole('button', { name: 'Παλιότερες μέρες' }).click();
+  await page.getByRole('button', { name: 'Εβδομάδα και παλιότερες μέρες' }).click();
   const card = page.getByRole('region', { name: 'Η εβδομάδα μου' });
   await expect(card).toBeVisible();
   await expect(card.getByRole('img')).toHaveAttribute('aria-label', /Ηρεμία/);

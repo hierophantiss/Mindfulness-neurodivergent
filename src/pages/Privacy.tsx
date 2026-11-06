@@ -52,7 +52,7 @@ const T: Record<'el' | 'en', { title: string; updated: string; short: string; bl
         title: 'Τα δεδομένα σου, στο χέρι σου',
         list: [
           'Αντίγραφο: Ρυθμίσεις → Αποθήκευση Δεδομένων φτιάχνει ένα αρχείο με όλα όσα κρατά η εφαρμογή. Το αρχείο είναι δικό σου και μένει όπου το αποθηκεύσεις. Το επαναφέρεις από Ρυθμίσεις → Ανάκτηση.',
-          'Η εβδομάδα μου: στο Ημερολόγιο → Παλιότερες μέρες, το «Κατέβασε PDF» φτιάχνει μια σελίδα με την εβδομάδα σου, μέσα στη συσκευή. Πηγαίνει μόνο όπου τη στείλεις εσύ.',
+          'Η εβδομάδα μου: στο Ημερολόγιο → Εβδομάδα, το «Κατέβασε PDF» φτιάχνει μια σελίδα με την εβδομάδα σου, μέσα στη συσκευή. Πηγαίνει μόνο όπου τη στείλεις εσύ.',
           'Διαγραφή: Ρυθμίσεις → Διαγραφή Δεδομένων σβήνει τα πάντα από τη συσκευή. Το ίδιο κάνει και η διαγραφή των δεδομένων του ιστότοπου από τον browser, ή η απεγκατάσταση της εφαρμογής.',
           'Δεν χρειάζεται να ζητήσεις διαγραφή από κανέναν: αντίγραφο των δεδομένων σου δεν υπάρχει πουθενά αλλού.',
         ],
@@ -126,7 +126,7 @@ const T: Record<'el' | 'en', { title: string; updated: string; short: string; bl
         title: 'Your data, in your hands',
         list: [
           'Copy: Settings → Save Data makes a file with everything the app keeps. The file is yours and stays wherever you save it. You restore it from Settings → Restore.',
-          'My week: in the Journal → Earlier days, “Download PDF” makes a page of your week, on the device. It goes only where you send it.',
+          'My week: in the Journal → Week, “Download PDF” makes a page of your week, on the device. It goes only where you send it.',
           'Deletion: Settings → Clear Data erases everything from the device. So does clearing the site’s data in the browser, or uninstalling the app.',
           'You do not need to ask anyone to delete anything: no copy of your data exists anywhere else.',
         ],
