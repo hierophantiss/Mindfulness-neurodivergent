@@ -44,7 +44,7 @@ function useChapters(lang: 'el' | 'en'): Chapter[] {
   [data, lang]);
 }
 
-const footerLinkClasses = "sky-text flex items-center gap-1.5 py-2 text-[12px] text-ink/60 hover:text-ink/80 transition-colors";
+const footerLinkClasses = "sky-text flex items-center gap-1.5 min-h-[44px] text-[12px] text-ink/60 hover:text-ink/80 transition-colors";
 const bookPillClasses = "whitespace-nowrap px-4 py-2 rounded-full border border-[var(--tint-sand-line)] bg-[var(--tint-sand-bg)] text-[11px] text-ink/65 hover:text-ink/80 hover:bg-white/[0.06] transition-colors";
 
 const getDateString =(date: Date): string => {
@@ -174,7 +174,7 @@ export default function Dashboard() {
     ...(!evening ? [{ key: 'journal', to: '/journal', title: el ? 'Ημερολόγιο' : 'Journal', sub: el ? 'Δυο γραμμές για σήμερα' : 'Two lines for today', ink: 'var(--tint-rose-ink)', icon: ICONS.notebook }] : []),
     ...(hasRead ? [{ key: 'read', onClick: () => setSheetVisible(true), title: el ? 'Τι έχεις διαβάσει' : 'What you have read', sub: el ? 'Τα κεφάλαια και οι σελίδες σου' : 'Your chapters and pages', ink: 'var(--axis-breath-ink)', icon: ICONS.bookmark }] : []),
   ];
-  const shelfCard = "glass shrink-0 w-[148px] h-[126px] snap-start flex flex-col gap-[7px] p-3.5 rounded-[20px] text-left hover:brightness-110 transition-[filter,transform] active:scale-[0.98] desk:w-auto desk:h-auto desk:min-h-[96px] desk:flex-row desk:items-start desk:gap-4 desk:p-5 desk:rounded-[22px] desk:hover:-translate-y-0.5";
+  const shelfCard = "glass shrink-0 w-[148px] h-[126px] snap-start flex flex-col gap-[7px] p-3.5 rounded-[20px] text-left hover:brightness-110 transition-[filter,transform] active:scale-[0.98] desk:w-auto desk:h-auto desk:min-h-[96px] desk:flex-row desk:items-start desk:gap-4 desk:p-5 desk:rounded-[24px] desk:hover:-translate-y-0.5";
   const sectionTitle = "sky-text text-[15px] font-normal text-ink/90 desk:font-display desk:text-[27px] desk:text-ink";
   // The key line of the chapter you are in (once the chapters have loaded), for the wide guide card.
   const guideLine = !finishedGuide ? (spot.chapter?.insight || '') : '';
@@ -204,7 +204,7 @@ export default function Dashboard() {
           </div>
           <Link
             to="/practice/breath/sos-breath"
-            className="keep-font flex items-center justify-center min-w-[52px] min-h-[40px] px-3.5 shrink-0"
+            className="keep-font flex items-center justify-center min-w-[52px] min-h-[44px] px-3.5 shrink-0"
             title={el ? 'Άμεση Ηρέμηση' : 'Immediate Calm'}
           >
             <span className="flex items-center justify-center h-9 px-3.5 rounded-full bg-[rgb(240_194_200/0.08)] border border-[rgb(240_194_200/0.36)] text-[var(--tint-rose-ink)] text-[12px] font-medium tracking-[0.12em]">SOS</span>
@@ -225,7 +225,7 @@ export default function Dashboard() {
         {/* On a computer the guide and "How do you feel" stand side by side. */}
         <div className="desk:grid desk:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] wide:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] desk:gap-5 desk:mt-9 desk:items-stretch">
         {/* The guide: where you are in the book; go on reading, or listen. */}
-        <section aria-labelledby="home-guide-title" className="glass glass-gold rounded-[22px] mt-[26px] [@media(max-height:700px)]:mt-4 px-[18px] pt-[18px] pb-4 desk:mt-0 desk:rounded-[28px] desk:px-8 desk:pt-[30px] desk:pb-7 desk:flex desk:flex-col desk:min-h-[300px]">
+        <section aria-labelledby="home-guide-title" className="glass glass-gold rounded-[24px] mt-[26px] [@media(max-height:700px)]:mt-4 px-[18px] pt-[18px] pb-4 desk:mt-0 desk:rounded-[28px] desk:px-8 desk:pt-[30px] desk:pb-7 desk:flex desk:flex-col desk:min-h-[300px]">
           <div className="flex items-baseline justify-between gap-3 text-[12.5px] text-ink/70 desk:text-[14px]">
             <span className="min-w-0 truncate">{finishedGuide ? (el ? 'Ο οδηγός' : 'The guide') : `${el ? 'Ο οδηγός · Κεφάλαιο' : 'The guide · Chapter'} ${spot.chapter?.num ?? ''}`}</span>
             {midChapter && <span className="shrink-0">{el ? `σελ. ${spot.page + 1} από ${spot.pages.length}` : `p. ${spot.page + 1} of ${spot.pages.length}`}</span>}
@@ -245,7 +245,7 @@ export default function Dashboard() {
           <div className="mt-3.5 flex items-center gap-2 desk:mt-5 desk:gap-2.5">
             <Link
               to={spot.href}
-              className="btn-gold inline-flex items-center gap-[7px] h-10 px-[17px] rounded-full whitespace-nowrap text-[14px] font-medium hover:brightness-105 transition-[filter,transform] active:scale-[0.98] desk:h-12 desk:px-6 desk:text-[16px]"
+              className="btn-gold inline-flex items-center gap-[7px] h-11 px-[18px] rounded-full whitespace-nowrap text-[14px] font-medium hover:brightness-105 transition-[filter,transform] active:scale-[0.98] desk:h-12 desk:px-6 desk:text-[16px]"
             >
               {guideAction}
               <ArrowRight size={15} aria-hidden="true" />
@@ -253,7 +253,7 @@ export default function Dashboard() {
             {listenHref && (
               <Link
                 to={listenHref}
-                className="inline-flex items-center gap-[7px] h-10 px-[15px] rounded-full whitespace-nowrap text-[14px] text-ink/90 bg-white/[0.05] border border-white/[0.12] hover:bg-white/[0.08] transition-[background-color,transform] active:scale-[0.98] desk:h-12 desk:px-5 desk:text-[16px]"
+                className="inline-flex items-center gap-[7px] h-11 px-4 rounded-full whitespace-nowrap text-[14px] text-ink/90 bg-white/[0.05] border border-white/[0.12] hover:bg-white/[0.08] transition-[background-color,transform] active:scale-[0.98] desk:h-12 desk:px-5 desk:text-[16px]"
               >
                 <Headphones size={16} strokeWidth={1.8} aria-hidden="true" />
                 {el ? 'Άκουσε' : 'Listen'}
@@ -263,7 +263,7 @@ export default function Dashboard() {
         </section>
 
           {/* How do you feel right now? Always in the same place. */}
-          <motion.section variants={itemVariants} initial="hidden" animate="show" transition={{ delay: 0.4 }} aria-labelledby="home-checkin-title" className="mt-7 [@media(max-height:700px)]:mt-5 desk:mt-0 desk-glass desk:rounded-[28px] desk:px-6 desk:pt-[26px] desk:pb-6">
+          <motion.section variants={itemVariants} initial="hidden" animate="show" transition={{ delay: 0.4 }} aria-labelledby="home-checkin-title" className="mt-[26px] [@media(max-height:700px)]:mt-5 desk:mt-0 desk-glass desk:rounded-[28px] desk:px-6 desk:pt-[26px] desk:pb-6">
             <h2 id="home-checkin-title" className={cn(sectionTitle, "mb-3 desk:mb-5")}>
               {el ? 'Πώς νιώθεις τώρα;' : 'How do you feel right now?'}
             </h2>
@@ -277,7 +277,7 @@ export default function Dashboard() {
           <motion.section variants={itemVariants} aria-labelledby="home-axes-title" className="mt-[26px] desk:mt-11">
             <div className="flex items-baseline justify-between gap-3">
               <h2 id="home-axes-title" className={sectionTitle}>{el ? 'Οι τέσσερις άξονες' : 'The four axes'}</h2>
-              <Link to="/method" className="sky-text inline-flex items-center min-h-[40px] text-[12.5px] desk:text-[14px] text-ink/70 hover:text-ink/90 transition-colors">
+              <Link to="/method" className="sky-text inline-flex items-center min-h-[44px] text-[12.5px] desk:text-[14px] text-ink/70 hover:text-ink/90 transition-colors">
                 {el ? 'Τι σημαίνουν' : 'What they mean'}
               </Link>
             </div>
@@ -286,7 +286,7 @@ export default function Dashboard() {
                 <Link
                   key={a.id}
                   to={`/practice?axis=${a.id}`}
-                  className="group glass h-[128px] pt-1 rounded-[18px] flex flex-col items-center justify-center gap-[5px] overflow-hidden hover:brightness-110 transition-[filter,transform] active:scale-[0.97] desk:h-auto desk:min-h-[176px] desk:items-start desk:justify-start desk:gap-2 desk:p-[22px] desk:rounded-[24px] desk:hover:-translate-y-0.5"
+                  className="group glass h-[128px] pt-1 rounded-[20px] flex flex-col items-center justify-center gap-[5px] overflow-hidden hover:brightness-110 transition-[filter,transform] active:scale-[0.97] desk:h-auto desk:min-h-[176px] desk:items-start desk:justify-start desk:gap-2 desk:p-[22px] desk:rounded-[24px] desk:hover:-translate-y-0.5"
                 >
                   {/* The meditator with this axis's part of the sign lit, the others dimmed. */}
                   <span aria-hidden="true" className="block w-[68px] desk:w-[124px] desk:self-center desk:-mt-2 desk:-mb-1 rounded-full motion-safe:transition-[filter] motion-safe:duration-500 desk:group-hover:brightness-125" style={{ background: `radial-gradient(closest-side, color-mix(in srgb, ${a.ink} 30%, transparent), transparent)` }}>
@@ -325,7 +325,7 @@ export default function Dashboard() {
 
           {/* First visit: a small welcome that invites, never blocks or moves anything above. */}
           {showWelcome && (
-            <motion.div variants={itemVariants} className="mt-6 flex items-start gap-3 rounded-2xl bg-[var(--tint-sage-bg)] border border-[var(--tint-sage-line)] pl-4 pr-2 py-3">
+            <motion.div variants={itemVariants} className="mt-[26px] flex items-start gap-3 rounded-[24px] desk:rounded-[28px] bg-[var(--tint-sage-bg)] border border-[var(--tint-sage-line)] pl-[18px] pr-2 pt-3.5 pb-4 desk:pl-7 desk:pr-4 desk:py-5">
               <div className="flex-1 min-w-0">
                 <p className="text-[14px] leading-snug text-ink/90">
                   <span className="font-medium">{el ? 'Καλώς ήρθες.' : 'Welcome.'}</span>{' '}
@@ -334,7 +334,7 @@ export default function Dashboard() {
                 <button
                   onClick={openWelcome}
                   aria-label={el ? 'Γνώρισε την εφαρμογή · 3 κάρτες' : 'Get to know the app · 3 cards'}
-                  className="mt-2 min-h-[36px] inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 bg-[var(--tint-sage-hi)] border border-[var(--tint-sage-line)] text-[13px] text-ink/85 hover:text-ink transition-colors"
+                  className="mt-2.5 min-h-[44px] inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-4 bg-[var(--tint-sage-hi)] border border-[var(--tint-sage-line)] text-[13px] text-ink/85 hover:text-ink transition-colors"
                 >
                   {el ? 'Γνώρισε την εφαρμογή' : 'Get to know the app'}
                   <span className="text-ink/70 max-[359px]:hidden">· {el ? '3 κάρτες' : '3 cards'}</span>
@@ -343,7 +343,7 @@ export default function Dashboard() {
               <button
                 onClick={markWelcomeSeen}
                 aria-label={el ? 'Κλείσιμο καλωσορίσματος' : 'Close the welcome'}
-                className="shrink-0 w-10 h-10 -mt-1 rounded-full flex items-center justify-center text-ink/50 hover:text-ink/80 transition-colors"
+                className="shrink-0 w-11 h-11 -mt-1.5 rounded-full flex items-center justify-center text-ink/50 hover:text-ink/80 transition-colors"
               >
                 <X size={16} />
               </button>
