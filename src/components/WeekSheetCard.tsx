@@ -14,6 +14,8 @@ const T = {
   el: {
     title: 'Η εβδομάδα μου',
     prev: 'Προηγούμενη εβδομάδα',
+    thisWeek: 'Αυτή η εβδομάδα',
+    lastWeek: 'Η προηγούμενη',
     next: 'Επόμενη εβδομάδα',
     high: 'Ένταση', mid: 'Ηρεμία', low: 'Μούδιασμα', unsure: 'Δεν ξέρω', none: 'χωρίς σημείωση',
     lead: 'Η εβδομάδα σου σε μία σελίδα PDF: πώς ένιωσες και ποιους άξονες άσκησες κάθε μέρα. Χωρίς βαθμούς, για σένα ή για να τη δείξεις σε κάποιον που εμπιστεύεσαι.',
@@ -30,6 +32,8 @@ const T = {
   en: {
     title: 'My week',
     prev: 'Previous week',
+    thisWeek: 'This week',
+    lastWeek: 'Last week',
     next: 'Next week',
     high: 'Tension', mid: 'Calm', low: 'Numbness', unsure: 'Not sure', none: 'nothing noted',
     lead: 'Your week on one PDF page: how you felt and which axes you practised each day. No scores; for you, or to show someone you trust.',
@@ -88,21 +92,25 @@ export function WeekSheetCard({ lang }: { lang: Lang }) {
     }
   };
 
-  const arrow = 'w-10 h-10 rounded-full flex items-center justify-center text-ink/70 hover:text-ink hover:bg-white/[0.06] transition-colors disabled:opacity-30 disabled:pointer-events-none';
+  const arrow = 'w-10 h-10 rounded-full flex items-center justify-center text-ink/55 hover:text-ink hover:bg-white/[0.05] transition-colors disabled:opacity-30 disabled:pointer-events-none';
 
   return (
-    <section aria-labelledby="week-sheet" className="glass rounded-[24px] p-5 desk:p-6 mb-8 flex flex-col gap-4">
-      <div className="flex items-center justify-between gap-2">
-        <h2 id="week-sheet" className="font-display text-[19px] desk:text-[21px] text-ink whitespace-nowrap">{t.title}</h2>
-        <div className="flex items-center text-[13px] text-ink/70 shrink-0">
-          <button type="button" onClick={() => setOffset((o) => o - 1)} disabled={offset <= OLDEST} aria-label={t.prev} className={arrow}>
-            <ChevronLeft size={17} aria-hidden="true" />
-          </button>
-          <span className="whitespace-nowrap tabular-nums" aria-live="polite">{weekRange(start, lang)}</span>
-          <button type="button" onClick={() => setOffset((o) => o + 1)} disabled={offset >= 0} aria-label={t.next} className={arrow}>
-            <ChevronRight size={17} aria-hidden="true" />
-          </button>
-        </div>
+    <section aria-labelledby="week-sheet" className="card-relief rounded-[24px] p-5 desk:p-6 mb-8 flex flex-col gap-4">
+      {/* The page's own title says "My week"; the card names the region for screen readers. */}
+      <h2 id="week-sheet" className="sr-only">{t.title}</h2>
+      <div className="flex items-center justify-between bg-white/[0.02] p-1.5 rounded-full border border-white/[0.05] text-ink/80">
+        <button type="button" onClick={() => setOffset((o) => o - 1)} disabled={offset <= OLDEST} aria-label={t.prev} className={arrow}>
+          <ChevronLeft size={19} aria-hidden="true" />
+        </button>
+        <span className="flex flex-col items-center" aria-live="polite">
+          <span className="text-sm desk:text-[15px] font-semibold text-ink/90 whitespace-nowrap">{weekRange(start, lang)}</span>
+          <span className="text-[10px] desk:text-[11px] tracking-wider text-ink/45 whitespace-nowrap">
+            {offset === 0 ? `${t.thisWeek} · ` : offset === -1 ? `${t.lastWeek} · ` : ''}{start.getFullYear()}
+          </span>
+        </span>
+        <button type="button" onClick={() => setOffset((o) => o + 1)} disabled={offset >= 0} aria-label={t.next} className={arrow}>
+          <ChevronRight size={19} aria-hidden="true" />
+        </button>
       </div>
 
       <svg viewBox="0 0 330 104" className="w-full desk:max-w-[520px] desk:mx-auto" role="img" aria-label={summary}>
@@ -133,7 +141,7 @@ export function WeekSheetCard({ lang }: { lang: Lang }) {
         ))}
       </svg>
 
-      <p className="text-[13px] leading-relaxed text-ink/60">{empty ? t.empty : t.lead}</p>
+      <p className="text-[13px] desk:text-[14px] leading-relaxed text-ink/65">{empty ? t.empty : t.lead}</p>
 
       <div role="radiogroup" aria-label={t.what} className="grid grid-cols-2 gap-1 p-1 rounded-full bg-black/25 border border-white/5">
         {[false, true].map((v) => (

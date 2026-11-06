@@ -34,6 +34,7 @@ export { AXIS_COLOR } from './axisColor';
 
 export const SOS_PATH = '/practice/breath/sos-breath';
 
+// In the order of the week's picture: tension (high), calm (middle), numbness (low).
 export const CHECKIN_OPTIONS: CheckinOption[] = [
   {
     id: 'hyper',
@@ -49,6 +50,19 @@ export const CHECKIN_OPTIONS: CheckinOption[] = [
     pinned: [{ title: { el: 'SOS', en: 'SOS' }, path: SOS_PATH }],
   },
   {
+    id: 'balanced',
+    label: { el: 'Ηρεμία', en: 'Calm' },
+    hint: { el: 'Παρουσία, ασφάλεια, συγκέντρωση', en: 'Present, safe, focused' },
+    title: { el: 'Καλή στιγμή για εξερεύνηση', en: 'A good moment to explore' },
+    desc: {
+      el: 'Μοιάζει να υπάρχει ηρεμία. Είναι καλή στιγμή για μια πιο ανοιχτή πρακτική ή για λίγο διάβασμα.',
+      en: 'It sounds like there is calm. It is a good moment for a more open practice, or for some reading.',
+    },
+    axes: ['space'],
+    kinds: ['dose', 'movement'],
+    pinned: [{ title: { el: 'Η Κουνελότρυπα', en: 'The Rabbit Hole' }, path: '/rabbithole' }],
+  },
+  {
     id: 'hypo',
     label: { el: 'Μούδιασμα', en: 'Numbness' },
     hint: { el: 'Κούραση, ομίχλη, αποσύνδεση', en: 'Tiredness, fog, disconnection' },
@@ -62,19 +76,6 @@ export const CHECKIN_OPTIONS: CheckinOption[] = [
     axes: ['body', 'attention'],
     kinds: ['movement', 'voice', 'dose'],
     pinned: [],
-  },
-  {
-    id: 'balanced',
-    label: { el: 'Ηρεμία', en: 'Calm' },
-    hint: { el: 'Παρουσία, ασφάλεια, συγκέντρωση', en: 'Present, safe, focused' },
-    title: { el: 'Καλή στιγμή για εξερεύνηση', en: 'A good moment to explore' },
-    desc: {
-      el: 'Μοιάζει να υπάρχει ηρεμία. Είναι καλή στιγμή για μια πιο ανοιχτή πρακτική ή για λίγο διάβασμα.',
-      en: 'It sounds like there is calm. It is a good moment for a more open practice, or for some reading.',
-    },
-    axes: ['space'],
-    kinds: ['dose', 'movement'],
-    pinned: [{ title: { el: 'Η Κουνελότρυπα', en: 'The Rabbit Hole' }, path: '/rabbithole' }],
   },
   {
     id: 'unsure',
