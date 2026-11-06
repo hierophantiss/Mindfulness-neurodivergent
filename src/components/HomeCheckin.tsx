@@ -59,7 +59,8 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
     <div className="flex flex-col gap-4">
       {!embedded && <h2 className="sky-text text-center text-[20px] font-normal text-ink/90">{question}</h2>}
 
-      <div className={cn("checkin-grid grid grid-cols-4 gap-1.5", embedded && "desk:grid-cols-2 desk:gap-x-2 desk:gap-y-4")} role="group" aria-label={question}>
+      {/* Four square tiles, in the same columns as the four axes below. */}
+      <div className={cn("checkin-grid grid grid-cols-4 gap-2 max-[359px]:gap-1.5", embedded && "desk:grid-cols-2 desk:gap-3")} role="group" aria-label={question}>
         {CHECKIN_OPTIONS.map(o => {
           const isSel = o.id === selected;
           return (
@@ -68,18 +69,20 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
               onClick={() => choose(o.id)}
               aria-pressed={isSel}
               aria-expanded={isSel ? open : undefined}
-              className="group flex flex-col items-center gap-[7px] py-1 min-w-0 active:scale-[0.96] transition-transform"
+              className={cn(
+                "glass h-[84px] min-w-0 px-0.5 rounded-[20px] flex flex-col items-center justify-center gap-2 hover:brightness-110 transition-[filter,transform] active:scale-[0.97]",
+                embedded && "desk:h-[104px] desk:rounded-[24px] desk:gap-2.5",
+                isSel && "glass-chosen"
+              )}
             >
-              <span className={cn("glass w-[52px] h-[52px] rounded-full flex items-center justify-center group-hover:brightness-110 transition-[filter]", embedded && "desk:w-16 desk:h-16", isSel && "glass-chosen")}>
-                <svg
-                  width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"
-                  aria-hidden="true" className={embedded ? 'desk:w-[26px] desk:h-[26px]' : undefined}
-                  style={{ color: tint(o.id, 'dot'), filter: `drop-shadow(0 0 5px color-mix(in srgb, ${tint(o.id, 'dot')} 55%, transparent))` }}
-                >
-                  <path d={ICON[o.id]} />
-                </svg>
-              </span>
-              <span className="checkin-label sky-text max-w-full text-center text-[12.5px] leading-tight text-ink/90 break-words">{o.label[lang]}</span>
+              <svg
+                width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"
+                aria-hidden="true" className={embedded ? 'desk:w-7 desk:h-7' : undefined}
+                style={{ color: tint(o.id, 'dot'), filter: `drop-shadow(0 0 5px color-mix(in srgb, ${tint(o.id, 'dot')} 55%, transparent))` }}
+              >
+                <path d={ICON[o.id]} />
+              </svg>
+              <span className="checkin-label max-w-full text-center text-[12px] max-[359px]:text-[11px] tracking-[-0.005em] leading-tight text-ink/90 whitespace-nowrap desk:text-[14px]">{o.label[lang]}</span>
             </button>
           );
         })}

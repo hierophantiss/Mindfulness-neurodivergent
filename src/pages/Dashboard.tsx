@@ -222,8 +222,15 @@ export default function Dashboard() {
           </p>
         </div>
 
-        {/* On a computer the guide and "How do you feel" stand side by side. */}
-        <div className="desk:grid desk:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] wide:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] desk:gap-5 desk:mt-9 desk:items-stretch">
+        {/* First "How do you feel", then the guide; on a computer side by side, in the same order. */}
+        <div className="desk:grid desk:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] wide:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] desk:gap-5 desk:mt-9 desk:items-start">
+          {/* How do you feel right now? First, and always in the same place. */}
+          <motion.section variants={itemVariants} initial="hidden" animate="show" transition={{ delay: 0.4 }} aria-labelledby="home-checkin-title" className="mt-[26px] [@media(max-height:700px)]:mt-5 desk:mt-0">
+            <h2 id="home-checkin-title" className={cn(sectionTitle, "mb-3 desk:mb-5")}>
+              {el ? 'Πώς νιώθεις τώρα;' : 'How do you feel right now?'}
+            </h2>
+            <HomeCheckin embedded />
+          </motion.section>
         {/* The guide: where you are in the book; go on reading, or listen. */}
         <section aria-labelledby="home-guide-title" className="glass glass-gold rounded-[24px] mt-[26px] [@media(max-height:700px)]:mt-4 px-[18px] pt-[18px] pb-4 desk:mt-0 desk:rounded-[28px] desk:px-8 desk:pt-[30px] desk:pb-7 desk:flex desk:flex-col desk:min-h-[300px]">
           <div className="flex items-baseline justify-between gap-3 text-[12.5px] text-ink/70 desk:text-[14px]">
@@ -262,13 +269,6 @@ export default function Dashboard() {
           </div>
         </section>
 
-          {/* How do you feel right now? Always in the same place. */}
-          <motion.section variants={itemVariants} initial="hidden" animate="show" transition={{ delay: 0.4 }} aria-labelledby="home-checkin-title" className="mt-[26px] [@media(max-height:700px)]:mt-5 desk:mt-0 desk-glass desk:rounded-[28px] desk:px-6 desk:pt-[26px] desk:pb-6">
-            <h2 id="home-checkin-title" className={cn(sectionTitle, "mb-3 desk:mb-5")}>
-              {el ? 'Πώς νιώθεις τώρα;' : 'How do you feel right now?'}
-            </h2>
-            <HomeCheckin embedded />
-          </motion.section>
         </div>
 
         <motion.div variants={containerVariants} initial="hidden" animate="show" className="flex flex-col">
