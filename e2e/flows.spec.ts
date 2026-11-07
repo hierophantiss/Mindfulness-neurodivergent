@@ -34,6 +34,23 @@ test('a breath starts without sound and counts', async ({ page }) => {
   await expect(page.getByText(/Εκπνοή 6/)).toBeVisible();
 });
 
+test('the offline note closes with its ×', async ({ page, context }) => {
+  await page.goto('/en', { waitUntil: 'networkidle' });
+  await context.setOffline(true);
+  await expect(page.getByRole('heading', { name: 'Offline Mode' })).toBeVisible();
+  await page.getByRole('button', { name: 'Close', exact: true }).last().click();
+  await expect(page.getByRole('heading', { name: 'Offline Mode' })).toHaveCount(0);
+  await context.setOffline(false);
+});
+
+test('the menu leads to Settings', async ({ page }) => {
+  await page.goto('/el', { waitUntil: 'networkidle' });
+  await page.getByRole('button', { name: /^(Μενού|Περισσότερα)/ }).first().click();
+  await page.getByRole('button', { name: 'Ρυθμίσεις', exact: true }).click();
+  await expect(page).toHaveURL(/\/settings/);
+  await expect(page.getByRole('heading', { name: 'Ρυθμίσεις' })).toBeVisible();
+});
+
 test('Settings saves a copy of the data to a file', async ({ page }) => {
   await page.goto('/el/settings', { waitUntil: 'networkidle' });
   page.on('dialog', (d) => d.dismiss());

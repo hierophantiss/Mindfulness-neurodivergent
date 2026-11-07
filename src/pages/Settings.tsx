@@ -1,4 +1,5 @@
 import { versionText } from '../lib/version';
+import { isNative } from '../lib/native';
 import React, { useState, useEffect } from 'react';
 import { downloadBackup, restoreBackup } from '../lib/backup';
 import { lastBackupDate } from '../lib/dataSafety';
@@ -123,7 +124,8 @@ export default function Settings() {
           action: () => setLanguage(language === 'el' ? 'en' : 'el'),
           color: 'text-teal-400'
         },
-        ...(!window.matchMedia('(display-mode: standalone)').matches ? [{
+        // Not in the installed app (on the phone's home screen, or the Android app).
+        ...(!window.matchMedia('(display-mode: standalone)').matches && !isNative() ? [{
           id: 'install',
           icon: Download,
           label: { el: 'Εγκατάσταση (App)', en: 'Install App' },
@@ -358,13 +360,13 @@ export default function Settings() {
           </div>
 
           {/* Footer Info */}
-          <div className="mt-16 flex flex-col items-center gap-4 opacity-30">
+          <div className="mt-16 flex flex-col items-center gap-4 opacity-60">
              <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center p-3">
                 <Sparkles size={20} className="text-ink" />
              </div>
              <div className="text-center">
                 <p className="text-[13px] font-sans font-medium text-ink mb-1">
-                   Awareness Gateway
+                   Mindfulness for Neurodivergent Minds
                 </p>
                 {/* Which version this is: the day it was built, and in the Android app the
                     copy number too (it rises when the app has updated itself). */}

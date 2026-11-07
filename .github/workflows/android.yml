@@ -71,6 +71,18 @@ jobs:
           grep -q "versionCode $N" "$f"
           npx cap sync android
 
+      # Every copy signed with the same key (the secret TEST_DEBUG_KEYSTORE, a
+      # debug keystore as base64), so a new APK installs over the old one.
+      # Without the secret, each run makes its own key, as before.
+      - name: The same signing key every time
+        env:
+          KEYSTORE: ${{ secrets.TEST_DEBUG_KEYSTORE }}
+        run: |
+          [ -n "$KEYSTORE" ] || { echo "No TEST_DEBUG_KEYSTORE: a key of this run's own."; exit 0; }
+          mkdir -p ~/.android
+          printf '%s' "$KEYSTORE" | tr -d ' \r\n' | base64 -d > ~/.android/debug.keystore
+          keytool -list -keystore ~/.android/debug.keystore -storepass android -alias androiddebugkey > /dev/null
+
       - name: APK
         working-directory: android
         run: ./gradlew assembleDebug --no-daemon

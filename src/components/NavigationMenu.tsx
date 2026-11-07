@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import InfoModal from './InfoModal';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
 import { downloadBackup, restoreBackup } from '../lib/backup';
-import { Home, BookOpen, Activity, Notebook, X, Info, Music, LayoutGrid, EyeOff, Eye, Database, Download, Sparkles, RotateCcw, Headphones, LetterText, Moon, CalendarDays, Telescope, Compass } from 'lucide-react';
+import { Home, BookOpen, Activity, Notebook, X, Info, Music, LayoutGrid, EyeOff, Eye, Database, Download, Sparkles, RotateCcw, Headphones, LetterText, Moon, CalendarDays, Telescope, Compass, Settings } from 'lucide-react';
 import { MethodMark } from './MethodMark';
 import { useTime } from '../contexts/TimeContext';
 import { motion, AnimatePresence } from 'motion/react';
@@ -546,21 +546,26 @@ export default function NavigationMenu() {
                   </button>
               </div>
 
-              <div className="flex justify-center gap-6 items-center p-6 border-t border-white/[0.08] mt-auto pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
-                <button 
-                  onClick={showInfo} 
-                  title={language === 'el' ? 'Σχετικά' : 'About'}
-                  className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 text-zinc-300 hover:bg-white/10 hover:text-ink transition-colors border border-white/5"
-                >
-                  <Info size={20} />
-                </button>
-                <button 
-                  onClick={() => toggleMaster()}
-                  title={language === 'el' ? 'Μικτής' : 'Mixer'}
-                  className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 text-zinc-300 hover:bg-white/10 hover:text-ink transition-colors border border-white/5"
-                >
-                  {masterPlaying ? <Music size={20} className="text-teal-400" /> : <Music size={20} />}
-                </button>
+              {/* Settings, About and the sound mixer: each with its name under it. */}
+              <div className="flex justify-center gap-7 items-start px-6 pt-5 border-t border-white/[0.08] mt-auto pb-[calc(1.25rem+env(safe-area-inset-bottom))]">
+                {[
+                  { key: 'settings', label: language === 'el' ? 'Ρυθμίσεις' : 'Settings', onClick: () => handleNav('/settings'), icon: <Settings size={20} aria-hidden="true" /> },
+                  { key: 'about', label: language === 'el' ? 'Σχετικά' : 'About', onClick: showInfo, icon: <Info size={20} aria-hidden="true" /> },
+                  { key: 'mixer', label: language === 'el' ? 'Ήχοι' : 'Sounds', onClick: () => toggleMaster(), icon: <Music size={20} aria-hidden="true" className={masterPlaying ? 'text-teal-400' : undefined} />, pressed: masterPlaying },
+                ].map((b) => (
+                  <button
+                    key={b.key}
+                    type="button"
+                    onClick={b.onClick}
+                    aria-pressed={b.pressed}
+                    className="group flex flex-col items-center gap-1.5 min-w-[64px] text-zinc-300 hover:text-ink transition-colors"
+                  >
+                    <span className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 group-hover:bg-white/10 border border-white/5 transition-colors">
+                      {b.icon}
+                    </span>
+                    <span className="text-[11px] text-ink/60 group-hover:text-ink/85">{b.label}</span>
+                  </button>
+                ))}
               </div>
             </motion.div>
           </>
