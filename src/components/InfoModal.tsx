@@ -7,6 +7,7 @@ import { X, Anchor, Wind, Focus, Maximize, Heart, Info, CheckCircle2, BookOpen, 
 import { Link } from 'react-router-dom';
 import { MICROSOFT_STORE_URL, CONTACT_EMAIL } from '../lib/links';
 import { feedbackMailto } from '../lib/feedback';
+import { versionText } from '../lib/version';
 import { AXIS_COLOR } from '../data/axisColor';
 
 // Where "Send me a message" goes. One place to change it later.
@@ -340,9 +341,10 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                   </span>
                 </div>
 
-                <p className="text-[13px] font-medium opacity-30 mt-6 pb-2">
+                <p className="text-[13px] font-medium opacity-30 mt-6">
                   {content.footer[l]}
                 </p>
+                <p className="text-[12px] text-ink/50 pb-2 tabular-nums">{versionText(l)}</p>
               </div>
 
             </div>
