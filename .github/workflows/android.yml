@@ -61,12 +61,7 @@ jobs:
 
       - name: Icons and splash, from the app's own icon
         run: |
-          mkdir -p assets
-          cp public/icon-512.png assets/icon-only.png
-          cp public/icon-512-maskable.png assets/icon-foreground.png
-          convert -size 1024x1024 xc:'#0f1117' assets/icon-background.png
-          convert -size 2732x2732 xc:'#0f1117' public/icon-512.png -gravity center -composite assets/splash.png
-          cp assets/splash.png assets/splash-dark.png
+          node scripts/android-assets.mjs
           npx @capacitor/assets generate --android
 
       - name: Version
