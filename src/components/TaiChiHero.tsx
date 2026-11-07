@@ -387,9 +387,41 @@ export default function TaiChiHero({
   const at = (a: number): Pt => ({ x: sL.x + prefUpper * Math.cos(a), y: sL.y + prefUpper * Math.sin(a) });
   const ePlus = at(angleSH + angleInterior);
   const eMinus = at(angleSH - angleInterior);
-  // 5-5: the elbows go out to the sides (as in the video).
-  const preferred = movementType === "5-5" ? (ePlus.x <= eMinus.x ? ePlus : eMinus) : (cross >= 0 ? ePlus : eMinus);
-  const eL = keepElbowSide(ePlus, eMinus, preferred, memo.current.eL);
+  // 5-5: the elbows always go out to the sides (as in the video), on the
+  // outer side of the hand, so the forearms never cross.
+  const outer = ePlus.x <= eMinus.x ? ePlus : eMinus;
+  let eL = movementType === "5-5" ? outer : keepElbowSide(ePlus, eMinus, cross >= 0 ? ePlus : eMinus, memo.current.eL);
+  // 5-5 rise: hanging, the elbow is just out from the arm; as the arm comes up
+  // to the side it turns smoothly to below it (the elbow rolls round, seen
+  // for a moment in line with the arm), and stays out from there to the top.
+  if (movementType === "5-5" && isRisePhase) {
+    const c = Math.min(1, Math.max(0, (bf - 0.12) / 0.26));
+    const roll = 1 - 2 * c * c * (3 - 2 * c); // +1 → −1
+    eL = at(angleSH + roll * angleInterior);
+  }
+  // 5-5 fall, while the joined palms come down the middle: the elbows come
+  // forward (the upper arm seen shorter), so the forearm turns steadily from
+  // its line overhead to its line at the chest, out from the hand all the way.
+  if (movementType === "5-5" && !isRisePhase && 1 - bf < 0.65) {
+    const MID = 200 - HAND_W / 2;
+    const outerElbow = (h: Pt): Pt => {
+      const d = Math.hypot(h.x - sL.x, h.y - sL.y);
+      const c = (prefUpper ** 2 + d * d - prefLower ** 2) / (2 * prefUpper * d);
+      const i = Math.acos(Math.max(-1, Math.min(1, c)));
+      const g = Math.atan2(h.y - sL.y, h.x - sL.x);
+      const p = at(g + i), m = at(g - i);
+      return p.x <= m.x ? p : m;
+    };
+    const wTop = { x: MID, y: sL.y - Math.sqrt(29 * 29 - (MID - sL.x) ** 2) };
+    const wChest = { x: MID, y: 207 };
+    const eTop = outerElbow(wTop), eChest = outerElbow(wChest);
+    const fTop = Math.atan2(eTop.y - wTop.y, eTop.x - wTop.x);
+    const fChest = Math.atan2(eChest.y - wChest.y, eChest.x - wChest.x);
+    const c = Math.min(1, (1 - bf) / 0.65);
+    const k = c * c * (3 - 2 * c);
+    const f = fTop + (fChest - fTop) * k;
+    eL = { x: hL.x + prefLower * Math.cos(f), y: hL.y + prefLower * Math.sin(f) };
+  }
   memo.current.eL = eL;
 
   const baseLeftHandRotation = easeBezier1D(rotExhale, isRisePhase ? rotCpRise : rotCpFall, rotInhale, bf);
