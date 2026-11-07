@@ -4,6 +4,8 @@
 # - Every run makes an APK (as a downloadable artifact).
 # - On main it also publishes the site's files as a bundle in the release
 #   "app-bundle", where installed apps find their update (src/lib/nativeUpdate.ts).
+# - On main, with the upload key in the secrets, it also makes the package
+#   for Google Play (AAB) in the release "play".
 # - Other branches build a test copy (CAP_TEST=1) with its own id and name,
 #   which installs next to the app from the store.
 #
@@ -97,6 +99,52 @@ jobs:
           else
             ./gradlew assembleDebug --no-daemon
           fi
+
+      # The package for Google Play (AAB), signed with the upload key: the
+      # secrets UPLOAD_KEYSTORE (the keystore as base64), UPLOAD_KEYSTORE_PASSWORD,
+      # UPLOAD_KEY_ALIAS and UPLOAD_KEY_PASSWORD (if it differs from the store's).
+      # Same id as the app already on Play, so it goes in as a new version of
+      # it. On a branch it is only built (with the test key), as a check.
+      - name: The package for Google Play (AAB)
+        working-directory: android
+        env:
+          UPLOAD_KEYSTORE: ${{ secrets.UPLOAD_KEYSTORE }}
+          UPLOAD_KEYSTORE_PASSWORD: ${{ secrets.UPLOAD_KEYSTORE_PASSWORD }}
+          UPLOAD_KEY_ALIAS: ${{ secrets.UPLOAD_KEY_ALIAS }}
+          UPLOAD_KEY_PASSWORD: ${{ secrets.UPLOAD_KEY_PASSWORD }}
+        run: |
+          if [ "$GITHUB_REF" = refs/heads/main ]; then
+            [ -n "$UPLOAD_KEYSTORE" ] || { echo "No UPLOAD_KEYSTORE yet: no package for Google Play."; exit 0; }
+            k="$RUNNER_TEMP/upload.keystore"
+            printf '%s' "$UPLOAD_KEYSTORE" | tr -d ' \r\n' | base64 -d > "$k"
+            sp="$UPLOAD_KEYSTORE_PASSWORD"; ka="$UPLOAD_KEY_ALIAS"; kp="${UPLOAD_KEY_PASSWORD:-$UPLOAD_KEYSTORE_PASSWORD}"
+          else
+            [ -n "$TEST_KEYSTORE_FILE" ] || { echo "No test key: no check build."; exit 0; }
+            k="$TEST_KEYSTORE_FILE"; sp=android; ka=androiddebugkey; kp=android
+          fi
+          # Which key signs it (Play knows the upload key as 77:40:B0:4E:…:89:EA).
+          keytool -list -v -keystore "$k" -storepass "$sp" -alias "$ka" | grep -m1 'SHA256:'
+          ./gradlew bundleRelease --no-daemon \
+            -Pandroid.injected.signing.store.file="$k" \
+            -Pandroid.injected.signing.store.password="$sp" \
+            -Pandroid.injected.signing.key.alias="$ka" \
+            -Pandroid.injected.signing.key.password="$kp"
+          f="$PWD/app/build/outputs/bundle/release/app-release.aab"
+          ls -l "$f"
+          unzip -l "$f" | grep -q 'base/assets/public/index.html'
+          echo "AAB_FILE=$f" >> "$GITHUB_ENV"
+
+      - name: Publish the package for Google Play (main only)
+        if: github.ref == 'refs/heads/main' && env.AAB_FILE != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp "$AAB_FILE" "mindfulness-play-$N.aab"
+          gh release view play >/dev/null 2>&1 || gh release create play --prerelease --title "Android app: package for Google Play" --notes "The newest package (AAB) to upload in the Play Console, signed with the upload key. Made by the Android workflow from main." --latest=false
+          gh release upload play "mindfulness-play-$N.aab" --clobber
+          for old in $(gh release view play --json assets -q '.assets[].name' | grep -E '^mindfulness-play-[0-9]+\.aab$' | grep -v "^mindfulness-play-$N.aab$"); do
+            gh release delete-asset play "$old" -y
+          done
 
       - uses: actions/upload-artifact@v4
         with:
