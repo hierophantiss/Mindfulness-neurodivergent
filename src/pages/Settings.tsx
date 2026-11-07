@@ -1,3 +1,4 @@
+import { isNative } from '../lib/native';
 import React, { useState, useEffect } from 'react';
 import { downloadBackup, restoreBackup } from '../lib/backup';
 import { lastBackupDate } from '../lib/dataSafety';
@@ -365,8 +366,10 @@ export default function Settings() {
                 <p className="text-[13px] font-sans font-medium text-ink mb-1">
                    Awareness Gateway
                 </p>
-                <p className="text-[9px] font-mono text-ink/50">
-                   v1.2.0 • 2026
+                {/* Which version this is: the day it was built, and in the Android app the
+                    copy number too (it rises when the app has updated itself). */}
+                <p className="text-[11px] font-sans text-ink/60">
+                   {language === 'el' ? 'Έκδοση' : 'Version'} {new Date(`${__BUILD_DATE__}:00Z`).toLocaleDateString(language === 'el' ? 'el-GR' : 'en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}{isNative() ? ` · ${import.meta.env.VITE_BUNDLE_VERSION || '0'}` : ''}
                 </p>
              </div>
           </div>

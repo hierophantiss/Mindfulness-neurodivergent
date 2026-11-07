@@ -42,7 +42,8 @@ async function check() {
   const [{ CapacitorHttp }, { App }, { CapacitorUpdater }] = await Promise.all([
     import('@capacitor/core'), import('@capacitor/app'), import('@capgo/capacitor-updater'),
   ]);
-  const res = await CapacitorHttp.get({ url: MANIFEST, headers: { 'Cache-Control': 'no-cache' } });
+  // As text, then read: GitHub may label the file as a plain download.
+  const res = await CapacitorHttp.get({ url: MANIFEST, headers: { 'Cache-Control': 'no-cache' }, responseType: 'text' });
   if (res.status !== 200) return;
   const m = (typeof res.data === 'string' ? JSON.parse(res.data) : res.data) as Partial<Manifest>;
   const info = await App.getInfo();
