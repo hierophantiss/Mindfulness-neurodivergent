@@ -211,16 +211,40 @@ export default function Dashboard() {
           </Link>
         </div>
 
-        {/* The greeting and the phrase are there at once (no fade): they are the first
-            words you read, and the page counts as shown only when they are. */}
-        <div className="mt-[38px] [@media(max-height:700px)]:mt-6 flex flex-col gap-2.5 desk:mt-2 desk:gap-3.5">
+        {/* The greeting is there at once (no fade): it is the first word you read,
+            and the page counts as shown only when it is. */}
+        <div className="mt-6 [@media(max-height:700px)]:mt-4 desk:mt-2">
           <h1 className="font-display sky-text text-[38px] max-[359px]:text-[34px] leading-[1.05] text-ink desk:text-[60px] desk:leading-none">
             {greeting}
           </h1>
-          <p className="sky-text max-w-[290px] text-[15px] leading-[1.6] text-ink/80 desk:max-w-[560px] desk:text-[18px]">
-            {el ? affirmation.el : affirmation.en}
-          </p>
         </div>
+
+        {/* First visit only: a small welcome, high up where a newcomer looks. Once seen or put away, it is gone. */}
+        {showWelcome && (
+          <div className="mt-5 flex items-start gap-3 rounded-[24px] desk:rounded-[28px] desk:max-w-[760px] bg-[var(--tint-sage-bg)] border border-[var(--tint-sage-line)] pl-[18px] pr-2 pt-3.5 pb-4 desk:mt-7 desk:pl-7 desk:pr-4 desk:py-5">
+          <div className="flex-1 min-w-0">
+            <p className="text-[14px] leading-snug text-ink/90">
+              <span className="font-medium">{el ? 'Καλώς ήρθες.' : 'Welcome.'}</span>{' '}
+              {el ? 'Το μυαλό σου δεν είναι χαλασμένο, απλώς λειτουργεί αλλιώς.' : 'Your mind isn’t broken, it just works differently.'}
+            </p>
+            <button
+              onClick={openWelcome}
+              aria-label={el ? 'Γνώρισε την εφαρμογή · 3 κάρτες' : 'Get to know the app · 3 cards'}
+              className="mt-2.5 min-h-[44px] inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-4 bg-[var(--tint-sage-hi)] border border-[var(--tint-sage-line)] text-[13px] text-ink/85 hover:text-ink transition-colors"
+            >
+              {el ? 'Γνώρισε την εφαρμογή' : 'Get to know the app'}
+              <span className="text-ink/70 max-[359px]:hidden">· {el ? '3 κάρτες' : '3 cards'}</span>
+            </button>
+          </div>
+          <button
+            onClick={markWelcomeSeen}
+            aria-label={el ? 'Κλείσιμο καλωσορίσματος' : 'Close the welcome'}
+            className="shrink-0 w-11 h-11 -mt-1.5 rounded-full flex items-center justify-center text-ink/50 hover:text-ink/80 transition-colors"
+          >
+            <X size={16} />
+          </button>
+          </div>
+        )}
 
         {/* First "How do you feel", then the guide; on a computer side by side, in the same order. */}
         <div className="desk:grid desk:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] wide:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] desk:gap-5 desk:mt-9 desk:items-start">
@@ -323,33 +347,20 @@ export default function Dashboard() {
             </div>
           </motion.section>
 
-          {/* First visit: a small welcome that invites, never blocks or moves anything above. */}
-          {showWelcome && (
-            <motion.div variants={itemVariants} className="mt-[26px] flex items-start gap-3 rounded-[24px] desk:rounded-[28px] bg-[var(--tint-sage-bg)] border border-[var(--tint-sage-line)] pl-[18px] pr-2 pt-3.5 pb-4 desk:pl-7 desk:pr-4 desk:py-5">
-              <div className="flex-1 min-w-0">
-                <p className="text-[14px] leading-snug text-ink/90">
-                  <span className="font-medium">{el ? 'Καλώς ήρθες.' : 'Welcome.'}</span>{' '}
-                  {el ? 'Το μυαλό σου δεν είναι χαλασμένο, απλώς λειτουργεί αλλιώς.' : 'Your mind isn’t broken, it just works differently.'}
-                </p>
-                <button
-                  onClick={openWelcome}
-                  aria-label={el ? 'Γνώρισε την εφαρμογή · 3 κάρτες' : 'Get to know the app · 3 cards'}
-                  className="mt-2.5 min-h-[44px] inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-4 bg-[var(--tint-sage-hi)] border border-[var(--tint-sage-line)] text-[13px] text-ink/85 hover:text-ink transition-colors"
-                >
-                  {el ? 'Γνώρισε την εφαρμογή' : 'Get to know the app'}
-                  <span className="text-ink/70 max-[359px]:hidden">· {el ? '3 κάρτες' : '3 cards'}</span>
-                </button>
-              </div>
-              <button
-                onClick={markWelcomeSeen}
-                aria-label={el ? 'Κλείσιμο καλωσορίσματος' : 'Close the welcome'}
-                className="shrink-0 w-11 h-11 -mt-1.5 rounded-full flex items-center justify-center text-ink/50 hover:text-ink/80 transition-colors"
-              >
-                <X size={16} />
-              </button>
-            </motion.div>
-          )}
         </motion.div>
+
+        {/* The phrase of the day, as a quiet close at the foot of the page. */}
+        <motion.figure
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.6 }}
+          className="mt-11 desk:mt-16 mx-auto max-w-[330px] desk:max-w-[620px] text-center"
+        >
+          <figcaption className="sky-text text-[12px] desk:text-[13px] text-ink/50">{el ? 'Για σήμερα' : 'For today'}</figcaption>
+          <blockquote className="sky-text mt-2 font-display text-[19px] desk:text-[24px] leading-[1.45] text-ink/80">
+            «{el ? affirmation.el : affirmation.en}»
+          </blockquote>
+        </motion.figure>
 
         {/* About once a month: a copy of what lives only on this device. */}
         <BackupReminder lang={lang} />
