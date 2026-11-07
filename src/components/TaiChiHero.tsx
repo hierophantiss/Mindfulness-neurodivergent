@@ -238,6 +238,28 @@ export default function TaiChiHero({
     rotCpRise = -90;
     rotCpFall = -80;
 
+  } else if (movementType === "5-5") {
+    // 5-5 SYNC, as Theodoros does it (from his video): from standing, arms
+    // hanging at the sides, the inhale lifts them in a wide arc out to the
+    // sides, long and almost straight, up until the palms meet above the
+    // head; the exhale brings the joined palms down the middle, past the
+    // face to the chest, and there they part and settle at the sides.
+    eL_exhale = { x: 182, y: 220 };
+    eL_inhale = { x: 176, y: 180 };
+    hL_exhale = { x: 180, y: 237 };   // hanging at the side
+    hL_inhale = { x: 197, y: 160 };   // palms together above the head
+
+    eL_cpRise = { x: 150, y: 200 };   // the elbow out to the side
+    eL_cpFall = { x: 172, y: 204 };   // elbows out as the hands come down the middle
+    hL_cpRise = { x: 64, y: 180 };    // a wide arc: beyond reach, so the arm stays long
+    hL_cpFall = { x: 201, y: 214 };   // down the middle to the chest, then apart
+
+    // The hand follows the forearm (set below), relaxed; these only set the start.
+    rotExhale = 0;
+    rotInhale = 180;
+    rotCpRise = 90;
+    rotCpFall = 180;
+
   } else if (movementType === "deep-bow-5-5" || movementType === "bow") {
     // DEEP BOW (Kinematics mostly static relative to torso)
     eL_exhale = { x: 153, y: 232 };
@@ -281,6 +303,32 @@ export default function TaiChiHero({
   const isRisePhase = isRising; 
   let eL_bezier = calcBezier2D(eL_exhale, isRisePhase ? eL_cpRise : eL_cpFall, eL_inhale, bf);
   let hL_bezier = calcBezier2D(hL_exhale, isRisePhase ? hL_cpRise : hL_cpFall, hL_inhale, bf);
+  // 5-5 rise: the long arm turns on the shoulder like the hand of a clock, from
+  // hanging just out from the side (100°) through level (180°) to above the
+  // head (288°, where the palms meet). Set a little beyond reach, so it stays
+  // long; near the top it comes in a little, so the palms meet just above the
+  // head with the elbows out, as in the video.
+  // 5-5 fall: the joined palms come straight down the middle to the chest
+  // (the first two thirds of the exhale), then part and settle at the sides.
+  if (movementType === "5-5") {
+    const ease = (x: number) => { const c = Math.min(1, Math.max(0, x)); return c * c * (3 - 2 * c); };
+    if (isRisePhase) {
+      const a = ((100 + 188 * bf) * Math.PI) / 180;
+      const r = REACH + 4 - (REACH + 4 - 29) * ease((bf - 0.72) / 0.28);
+      hL_bezier = { x: sL.x + r * Math.cos(a), y: sL.y + r * Math.sin(a) };
+    } else {
+      const u = 1 - bf;
+      const MID = 200 - HAND_W / 2;
+      const top = { x: MID, y: sL.y - Math.sqrt(29 * 29 - (MID - sL.x) ** 2) };
+      if (u < 0.65) {
+        const k = u / 0.65;
+        hL_bezier = { x: MID, y: top.y + (212 - top.y) * k };
+      } else {
+        const k = ease((u - 0.65) / 0.35);
+        hL_bezier = { x: MID + (hL_exhale.x - MID) * k, y: 212 + (hL_exhale.y - 212) * k };
+      }
+    }
+  }
 
   // KINEMATICS: the arm has fixed, natural lengths (see UPPER_ARM, FOREARM).
   const prefUpper = UPPER_ARM;
@@ -339,7 +387,9 @@ export default function TaiChiHero({
   const at = (a: number): Pt => ({ x: sL.x + prefUpper * Math.cos(a), y: sL.y + prefUpper * Math.sin(a) });
   const ePlus = at(angleSH + angleInterior);
   const eMinus = at(angleSH - angleInterior);
-  const eL = keepElbowSide(ePlus, eMinus, cross >= 0 ? ePlus : eMinus, memo.current.eL);
+  // 5-5: the elbows go out to the sides (as in the video).
+  const preferred = movementType === "5-5" ? (ePlus.x <= eMinus.x ? ePlus : eMinus) : (cross >= 0 ? ePlus : eMinus);
+  const eL = keepElbowSide(ePlus, eMinus, preferred, memo.current.eL);
   memo.current.eL = eL;
 
   const baseLeftHandRotation = easeBezier1D(rotExhale, isRisePhase ? rotCpRise : rotCpFall, rotInhale, bf);
@@ -384,6 +434,11 @@ export default function TaiChiHero({
     memo.current.diff = diff;
 
     leftHandRotation = baseLeftHandRotation + diff * aeroBlend;
+  }
+
+  // 5-5: a relaxed wrist; the hand goes on in the line of the forearm.
+  if (movementType === "5-5") {
+    leftHandRotation = (Math.atan2(-(hL.x - eL.x), hL.y - eL.y) * 180) / Math.PI;
   }
 
   // Meeting palms turn upright, fingers up (180°), by the same measure.
