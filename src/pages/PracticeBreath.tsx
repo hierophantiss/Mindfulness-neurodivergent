@@ -1,6 +1,6 @@
 import { createPortal } from 'react-dom';
 import { AudioEnabler } from '../components/AudioEnabler';
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import BreathCanvas, { PhaseLabel } from '../components/BreathCanvas';
 import { ArrowLeft, Play, Square, Headphones, X, Check, Timer, Volume1 } from 'lucide-react';
@@ -13,6 +13,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { RainbowInfinity } from '../components/RainbowInfinity';
 import { BreathingHero, PHASE_COLORS } from '../components/BreathingHero';
 import TaiChiHero from '../components/TaiChiHero';
+import { createTickStore, LiveTick } from '../lib/breathTick';
 import { PlayPauseOverlay } from '../components/PlayPauseOverlay';
 import { EvidenceLine } from '../components/EvidenceLine';
 import GuideAfterPractice from '../components/GuideAfterPractice';
@@ -185,8 +186,8 @@ export default function PracticeBreath() {
   const [phase, setPhase] = useState(pattern.labels[0]);
   const [phaseIdx, setPhaseIdx] = useState(0);
 
-  const [smoothArmPos, setSmoothArmPos] = useState(0);
-  const [phaseProgress, setPhaseProgress] = useState(0);
+  // The breath's position each frame goes to the figure only (lib/breathTick).
+  const tick = useMemo(() => createTickStore(), []);
 
   // Counter State
   const [phaseSeconds, setPhaseSeconds] = useState(1);
@@ -463,6 +464,13 @@ export default function PracticeBreath() {
   
   const maxSeconds = Math.round((pattern.phases[phaseIdx]?.dur || 4000) / 1000);
 
+  // The glow round the figure, by phase: a filter for the breathing figures,
+  // a shadow behind the card for Tai Chi (see below).
+  const isTaiChi = pattern.category === 'movement' || !!pattern.visualizer;
+  const glowRGBA = running ? (isInhale ? 'rgba(56, 189, 248, 0.4)' : isExhale ? 'rgba(52, 211, 153, 0.7)' : 'rgba(251, 191, 36, 0.5)') : 'rgba(167, 139, 250, 0.3)';
+  const glowFilter = `drop-shadow(0 0 ${running ? (isExhale ? 16 : 12) : 8}px ${glowRGBA})`;
+  const glowShadow = `0 0 ${running ? (isExhale ? 28 : 22) : 14}px ${running ? 4 : 2}px ${glowRGBA}`;
+
   // The whole cycle, step by step: a hold with full lungs is «Κράτημα», with empty lungs «Παύση».
   const cycleSteps = pattern.phases.map((ph, i) => {
     // Read the phase from what the breath does (fuller, emptier, or held), not from its label.
@@ -705,15 +713,14 @@ export default function PracticeBreath() {
             onPhaseChange={handlePhaseChange}
             onTick={(pos, prog) => {
               if (updateArmPos) updateArmPos(pos);
-              setSmoothArmPos(pos);
-              setPhaseProgress(prog);
+              tick.set(pos, prog);
             }}
           />
         </div>
 
         {/* Organic Motion Circle & Counter (Centered exactly in the globe) */}
         <div 
-          className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none drop-shadow-lg"
+          className={cn("absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none", !isTaiChi && "drop-shadow-lg")}
         >
           {/* Centred in the space it has, and smaller on short screens, so the circle is never cut at the top */}
           <div className="relative flex items-center justify-center shrink-0 w-[clamp(200px,calc(100dvh-420px),320px)] h-[clamp(200px,calc(100dvh-420px),320px)] desk:w-[clamp(320px,calc(100vh-420px),520px)] desk:h-[clamp(320px,calc(100vh-420px),520px)]">
@@ -722,23 +729,24 @@ export default function PracticeBreath() {
              <div className="z-10 absolute inset-0 flex items-center justify-center">
                 <motion.div 
                   className="absolute inset-0 flex items-center justify-center pointer-events-none"
-                  initial={{ scale: 1, opacity: 0, filter: 'drop-shadow(0 0 0px rgba(0,0,0,0))' }}
-                  animate={{ 
+                  initial={isTaiChi ? { scale: 1, opacity: 0 } : { scale: 1, opacity: 0, filter: 'drop-shadow(0 0 0px rgba(0,0,0,0))' }}
+                  animate={isTaiChi ? { opacity: running ? 1 : 0.55 } : {
                     opacity: running ? 1 : 0.55,
-                    filter: running ? (isInhale 
-                      ? 'drop-shadow(0 0 12px rgba(56, 189, 248, 0.4))' 
-                      : isExhale 
-                        ? 'drop-shadow(0 0 16px rgba(52, 211, 153, 0.7))' 
-                        : 'drop-shadow(0 0 12px rgba(251, 191, 36, 0.5))') : 'drop-shadow(0 0 8px rgba(167, 139, 250, 0.3))'
+                    filter: glowFilter,
                   }}
                   transition={{ 
                     duration: running ? (pattern.phases[phaseIdx]?.dur / 1000 || 2) : 4, 
                     ease: [0.45, 0, 0.55, 1] 
                   }}
                 >
-                  {(pattern.category === 'movement' || pattern.visualizer) ? (
+                  {/* The Tai Chi card's glow is a shadow behind the square card, drawn once
+                      per phase; a glow filter over the moving figure was redrawn every frame. */}
+                  {isTaiChi && (
+                    <div aria-hidden="true" className="absolute inset-x-0 top-1/2 -translate-y-1/2 aspect-square rounded-2xl pointer-events-none transition-[box-shadow] duration-[1500ms]" style={{ boxShadow: glowShadow }} />
+                  )}
+                  <LiveTick store={tick}>{({ pos, prog }) => isTaiChi ? (
                     <TaiChiHero
-                      breathForce={running ? smoothArmPos : 1.0}
+                      breathForce={running ? pos : 1.0}
                       isRising={running ? isInhale : true}
                       breathStateText=""
                       movementType={pattern.visualizer || pattern.id}
@@ -754,12 +762,12 @@ export default function PracticeBreath() {
                       durationMs={running ? (pattern.phases[phaseIdx]?.dur || 2000) : 4000}
                       className="w-full h-full"
                       isHumming={pattern.category === 'vocal'}
-                      armPos={running ? smoothArmPos : 0.35}
-                      progress={running ? phaseProgress : 0}
+                      armPos={running ? pos : 0.35}
+                      progress={running ? prog : 0}
                       color={phaseColor}
                       patternId={pattern.id}
                     />
-                  )}
+                  )}</LiveTick>
                 </motion.div>
                 
              </div>

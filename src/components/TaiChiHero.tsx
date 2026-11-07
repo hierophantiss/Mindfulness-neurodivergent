@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { motion } from "motion/react";
 
 // The head (with its hood) a quarter smaller than first drawn: it read too big
@@ -31,6 +31,23 @@ const HAND_W = 5.4;                  // the hand's width, for palms that meet in
 // The hand from the wrist (0,0) to the fingertips (0, ~10.8): the palm widest
 // near the knuckles, the fingers narrowing to a rounded tip.
 const HAND_PATH = 'M -2.2 -0.6 L 2.2 -0.6 C 2.8 1.8 2.9 4.6 2.5 6.8 C 2.1 9 1.2 10.8 0 10.8 C -1.2 10.8 -2.1 9 -2.5 6.8 C -2.9 4.6 -2.8 1.8 -2.2 -0.6 Z';
+
+type Pt = { x: number; y: number };
+const dist2 = (a: Pt, b: Pt) => Math.hypot(a.x - b.x, a.y - b.y);
+/**
+ * The elbow has two possible places for a given hand. It stays on the side it
+ * was on, and goes over to the preferred side only where the arm is nearly
+ * straight (where the two places meet), so it never jumps.
+ */
+function keepElbowSide(c1: Pt, c2: Pt, preferred: Pt, prev: Pt | undefined): Pt {
+  if (!prev) return preferred;
+  const near = dist2(c1, prev) <= dist2(c2, prev) ? c1 : c2;
+  if (near === preferred) return near;
+  return dist2(c1, c2) < 4 ? preferred : near;
+}
+/** The shortest way round from angle a to angle b, in degrees. */
+const turn = (a: number, b: number) => ((((b - a) % 360) + 540) % 360) - 180;
+
 
 interface TaiChiHeroProps {
   breathForce: number; // 0 to 1
@@ -137,6 +154,9 @@ export default function TaiChiHero({
   };
 
   const bf = breathForce;
+  // The last pose drawn, so elbows and hands carry on from where they were.
+  const memo = useRef<{ type?: string; eL?: Pt; cL?: Pt; cR?: Pt; diff?: number }>({});
+  if (memo.current.type !== movementType || idle) memo.current = { type: movementType };
   const bowBend = (movementType === "bow" || movementType === "deep-bow-5-5") ? (1 - bf) : 0;
   // The bow: the trunk tips forward and, seen from the front, looks shorter;
   // it stops 4 units above the hem so it never folds flat.
@@ -164,8 +184,11 @@ export default function TaiChiHero({
     // Fall: Sweeping wide arc downwards along the sides
     eL_cpRise = { x: 175, y: 205 };
     eL_cpFall = { x: 130, y: 210 };
-    hL_cpRise = { x: 180, y: 175 };
-    hL_cpFall = { x: 120, y: 180 };
+    // The hands' paths keep clear of the shoulder (at least 11 units): a path
+    // over the shoulder point whipped the elbow round. Rise: up the middle, in
+    // front of the chest; fall: a wide arc down the sides.
+    hL_cpRise = { x: 204, y: 175 };
+    hL_cpFall = { x: 115, y: 203 };
 
     rotExhale = -135;
     rotInhale = -75;
@@ -186,7 +209,7 @@ export default function TaiChiHero({
     eL_cpRise = { x: 155, y: 235 };
     eL_cpFall = { x: 160, y: 195 };
     hL_cpRise = { x: 145, y: 245 };
-    hL_cpFall = { x: 160, y: 180 };
+    hL_cpFall = { x: 157, y: 207 }; // out in front of the chest, clear of the shoulder
 
     rotExhale = -90;
     rotInhale = -135;
@@ -205,8 +228,10 @@ export default function TaiChiHero({
     // Symmetrical subtle oval
     eL_cpRise = { x: 160, y: 210 };
     eL_cpFall = { x: 173, y: 205 };
-    hL_cpRise = { x: 175, y: 190 };
-    hL_cpFall = { x: 188, y: 185 };
+    // The bud rises up the middle and opens; the petals close down round the
+    // outside. Both keep clear of the shoulder.
+    hL_cpRise = { x: 204, y: 185 };
+    hL_cpFall = { x: 162, y: 214 };
 
     rotExhale = -135;
     rotInhale = -45;
@@ -243,7 +268,7 @@ export default function TaiChiHero({
     eL_cpRise = { x: 140, y: 200 };
     eL_cpFall = { x: 175, y: 195 };
     hL_cpRise = { x: 125, y: 195 };
-    hL_cpFall = { x: 195, y: 190 };
+    hL_cpFall = { x: 210, y: 193 }; // down through the middle, clear of the shoulder
 
     rotExhale = 0;
     rotInhale = 130;
@@ -264,13 +289,13 @@ export default function TaiChiHero({
 
   // Palms that come together in the middle (at the heart, or overhead) meet,
   // upright as in prayer: near the centre line each hand eases to half a hand
-  // from it (fully within 3 units, not at all beyond 12), with no jump.
-  const near = Math.min(1, Math.max(0, (12 - Math.abs(hL.x - 200)) / 9));
+  // from it (fully within 4 units, not at all beyond 18), with no jump.
+  const near = Math.min(1, Math.max(0, (18 - Math.abs(hL.x - 200)) / 14));
   const meetW = near * near * (3 - 2 * near);
   hL.x += (200 - HAND_W / 2 - hL.x) * meetW;
   // At the chest they rest a little higher, in front of the breastbone, so the
   // sign on the heart stays in sight below them.
-  if (hL.y > 200) hL.y -= 5 * meetW;
+  hL.y -= 5 * meetW * Math.min(1, Math.max(0, (hL.y - 196) / 8));
 
   let dx = hL.x - sL.x;
   let dy = hL.y - sL.y;
@@ -278,17 +303,18 @@ export default function TaiChiHero({
   // Out of reach: the arm straightens towards the target. Palms meeting in the
   // middle keep meeting: the hand stays on the centre line and goes as high (or
   // low) as the arm allows; any other target is approached along its direction.
+  // The two are blended by how near the middle the hands are, so nothing jumps.
   if (dist > REACH) {
-    const meet = meetW > 0.99 && Math.abs(dx) < REACH;
-    if (meet) {
-      hL.y = sL.y + Math.sign(dy || -1) * Math.sqrt(REACH * REACH - dx * dx);
-    } else {
-      hL.x = sL.x + (dx * REACH) / dist;
-      hL.y = sL.y + (dy * REACH) / dist;
+    const along = { x: sL.x + (dx * REACH) / dist, y: sL.y + (dy * REACH) / dist };
+    let p = along;
+    if (meetW > 0 && Math.abs(dx) < REACH) {
+      const upright = { x: hL.x, y: sL.y + Math.sign(dy || -1) * Math.sqrt(REACH * REACH - dx * dx) };
+      p = { x: along.x + (upright.x - along.x) * meetW, y: along.y + (upright.y - along.y) * meetW };
     }
+    hL.x = p.x; hL.y = p.y;
     dx = hL.x - sL.x;
     dy = hL.y - sL.y;
-    dist = REACH;
+    dist = Math.hypot(dx, dy);
   }
   // Too close for the arm (it cannot fold flat): kept a little away from the shoulder.
   const MIN_D = Math.abs(UPPER_ARM - FOREARM) + 1;
@@ -305,16 +331,16 @@ export default function TaiChiHero({
   const angleInterior = Math.acos(Math.max(-1, Math.min(1, cosAngle)));
   
   // Determine bend direction using original Bezier Elbow as a Pole Target
+  // (the side the movement's own elbow path is on), but keeps its side
+  // from one moment to the next (keepElbowSide).
   const hx = eL_bezier.x - sL.x;
   const hy = eL_bezier.y - sL.y;
   const cross = dx * hy - dy * hx;
-  const sign = cross >= 0 ? 1 : -1;
-  const finalAngle = angleSH + sign * angleInterior;
-  
-  const eL = {
-    x: sL.x + prefUpper * Math.cos(finalAngle),
-    y: sL.y + prefUpper * Math.sin(finalAngle)
-  };
+  const at = (a: number): Pt => ({ x: sL.x + prefUpper * Math.cos(a), y: sL.y + prefUpper * Math.sin(a) });
+  const ePlus = at(angleSH + angleInterior);
+  const eMinus = at(angleSH - angleInterior);
+  const eL = keepElbowSide(ePlus, eMinus, cross >= 0 ? ePlus : eMinus, memo.current.eL);
+  memo.current.eL = eL;
 
   const baseLeftHandRotation = easeBezier1D(rotExhale, isRisePhase ? rotCpRise : rotCpFall, rotInhale, bf);
 
@@ -335,9 +361,6 @@ export default function TaiChiHero({
     leftHandRotation = baseLeftHandRotation;
   } else {
     // Smoothed interpolation between Mudra (structure) and Tangent (flow)
-    let diff = angularFlowRotation - baseLeftHandRotation;
-    diff = ((diff + 540) % 360) - 180; 
-
     // Max aerodynamic trailing feeling happens in the middle of the sweep (bf = 0.5)
     let aeroBlend = Math.sin(bf * Math.PI); 
     
@@ -346,6 +369,19 @@ export default function TaiChiHero({
     } else {
        aeroBlend *= 0.8; // High aerodynamic plasticity (water sweep)
     }
+    // Where the hand hardly moves, its direction of travel means little (and
+    // swings about): it counts for less there.
+    const speed = Math.hypot(vX, vY);
+    aeroBlend *= speed / (speed + 25);
+
+    // The difference carries on from the last moment (it may pass 180°)
+    // instead of wrapping round, which turned the hand in a flash. Where it
+    // has no effect (start and end of the sweep) it starts afresh, so it
+    // never gathers whole turns from one breath to the next.
+    let diff = turn(baseLeftHandRotation, angularFlowRotation);
+    const prevDiff = memo.current.diff;
+    if (prevDiff !== undefined && aeroBlend > 0.008) diff = prevDiff + turn(prevDiff, diff);
+    memo.current.diff = diff;
 
     leftHandRotation = baseLeftHandRotation + diff * aeroBlend;
   }
@@ -378,7 +414,7 @@ export default function TaiChiHero({
     const handR = { x: cx + rx * turn, y: yMid - ry * lift };
     const handL = { x: cx + rx * 0.82 * turn, y: yMid + ry * lift };
 
-    const solveArm = (sh: { x: number; y: number }, hand: { x: number; y: number }, out: 1 | -1) => {
+    const solveArm = (sh: { x: number; y: number }, hand: { x: number; y: number }, out: 1 | -1, prev: Pt | undefined) => {
       let dx = hand.x - sh.x, dy = hand.y - sh.y;
       let d = Math.hypot(dx, dy);
       // Seen flat, an arm reaching forward looks shorter: keep only a soft bend.
@@ -392,12 +428,14 @@ export default function TaiChiHero({
       const c2 = { x: sh.x + L1 * Math.cos(a - b), y: sh.y + L1 * Math.sin(a - b) };
       // Elbows hang down (and a little outwards), below the hands.
       const score = (e: { x: number; y: number }) => 0.4 * out * (e.x - sh.x) + (e.y - sh.y);
-      return { elbow: score(c1) >= score(c2) ? c1 : c2, hand: h };
+      return { elbow: keepElbowSide(c1, c2, score(c1) >= score(c2) ? c1 : c2, prev), hand: h };
     };
     const shL = { x: sL.x + bodyShift, y: sL.y };
     const shR = { x: sR.x + bodyShift, y: sR.y };
-    const armR = solveArm(shR, handR, 1);
-    const armL = solveArm(shL, handL, -1);
+    const armR = solveArm(shR, handR, 1, memo.current.cR);
+    const armL = solveArm(shL, handL, -1, memo.current.cL);
+    memo.current.cR = armR.elbow;
+    memo.current.cL = armL.elbow;
     eR = armR.elbow; hR = armR.hand;
     eLf = armL.elbow; hLf = armL.hand;
     // Upper hand: palm towards the face, fingers up; lower hand: palm down, fingers across.
@@ -407,9 +445,8 @@ export default function TaiChiHero({
     sL.x = shL.x; sR.x = shR.x;
   }
 
-  return (
-    <div className={bare ? 'relative w-full aspect-square flex items-center justify-center' : 'relative w-full aspect-square bg-[#070b14] rounded-2xl overflow-hidden border border-slate-800 shadow-2xl flex items-center justify-center'}>
-      {/* Absolute Layer - Subtle star twinkling sky */}
+  // Drawn once and kept (see the layers below).
+  const staticSky = useMemo(() => (
       <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 400">
         <defs>
           {/* Main Space Sky Gradient */}
@@ -486,70 +523,19 @@ export default function TaiChiHero({
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
+          {/* A soft dot of light, instead of a blur filter on every particle (much lighter to draw). */}
+          <radialGradient id="tc-particle-dot">
+            <stop offset="0%" stopColor="#fef3c7" stopOpacity="1" />
+            <stop offset="35%" stopColor="#fbbf24" stopOpacity="0.85" />
+            <stop offset="100%" stopColor="#fbbf24" stopOpacity="0" />
+          </radialGradient>
         </defs>
-
-        {!bare && (<>
         {/* Sky Background */}
-        <rect width="400" height="400" fill="url(#tc-northern-lights-base)" />
-
-        {/* Reactive Environment: Dimming Layer (darkens background during exhale/holdEmpty) */}
-        <rect width="400" height="400" fill="#020617" opacity={0.4 * (1 - bf)} />
-
-        {/* Reactive Environment: Aurora Glow (brightens background during inhale) */}
-        <rect width="400" height="400" fill="url(#tc-northern-lights-active)" opacity={bf} />
-
-        {/* Stars */}
-        <g opacity={0.3 + 0.7 * bf}>
-          {stars.map((star) => (
-            <g key={star.id} className="transition-opacity duration-500">
-              {star.isSparkle ? (
-                // Cross Sparkle blinking
-                <path
-                  d={`M ${star.cx - 3} ${star.cy} L ${star.cx + 3} ${star.cy} M ${star.cx} ${star.cy - 3} L ${star.cx} ${star.cy + 3}`}
-                  stroke="#ffffff"
-                  strokeWidth={0.6}
-                  opacity={0.3 + 0.7 * Math.abs(Math.sin((Date.now() / 1500) * star.pulseSpeed + star.delay))}
-                />
-              ) : (
-                // Round star twinkling
-                <circle
-                  cx={star.cx}
-                  cy={star.cy}
-                  r={star.r}
-                  fill="#ffffff"
-                  opacity={0.2 + 0.8 * Math.abs(Math.sin((Date.now() / 1000) * star.pulseSpeed + star.delay))}
-                />
-              )}
-            </g>
-          ))}
-        </g>
-
-        {/* Prana/Aura Particles */}
-        <g>
-          {particles.map((p) => {
-            // Inhale (bf -> 1): particles gather concentrically (r scales to 0.3)
-            // Exhale (bf -> 0): particles diffuse outwards (r scales to 1.5)
-            const swirl = isRising ? bf * Math.PI : (1 - bf) * Math.PI; 
-            const currentR = p.rBase * (0.3 + (1 - bf) * 1.2);
-            const currentAngle = p.angle + swirl * 0.3 + p.driftOffset;
-            const px = 200 + currentR * Math.cos(currentAngle);
-            const py = 190 + currentR * Math.sin(currentAngle); // Center slightly above chest
-            const opacity = (0.2 + 0.8 * Math.min(1, bf * 1.5)) * (currentR < 180 ? 1 : Math.max(0, 1 - (currentR - 180) / 50)); 
-            return (
-              <circle 
-                key={p.id} 
-                cx={px} 
-                cy={py} 
-                r={p.size} 
-                fill="#fbbf24" 
-                opacity={opacity} 
-                filter="url(#tc-particle-glow)" 
-              />
-            );
-          })}
-        </g>
-        </>)}
-
+        {!bare && <rect width="400" height="400" fill="url(#tc-northern-lights-base)" />}
+      </svg>
+  ), [bare]);
+  const staticScene = useMemo(() => (
+      <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 400">
         {/* SCENE WRAPPER: Double size hero and earth */}
         <g transform="translate(200, 320) scale(1.8) translate(-200, -283)">
           {/* CENTRAL ENERGY LIGHT BEAM (Passing through earth and cosmic body) */}
@@ -573,7 +559,7 @@ export default function TaiChiHero({
             stroke="#fed7aa"
             strokeWidth="2.5"
             filter="url(#tc-beam-glow)"
-            opacity={0.7 + breathForce * 0.3}
+            opacity={0.85}
           />
           <line
             x1="200"
@@ -583,22 +569,6 @@ export default function TaiChiHero({
             stroke="#facc15"
             strokeWidth="1.2"
             opacity={0.9}
-          />
-
-          {/* Energy pulses expanding up the central beam */}
-          <circle
-            cx="200"
-            cy={284 - breathForce * 200}
-            r={2 + breathForce * 4}
-            fill="#fef08a"
-            opacity={1 - breathForce}
-          />
-          <circle
-            cx="200"
-            cy={284 - ((breathForce + 0.5) % 1) * 200}
-            r={1 + ((breathForce + 0.5) % 1) * 3}
-            fill="#fed7aa"
-            opacity={1 - ((breathForce + 0.5) % 1)}
           />
 
           {/* EARTH GLOBE AT THE BOTTOM */}
@@ -652,6 +622,99 @@ export default function TaiChiHero({
             </radialGradient>
             <circle cx="200" cy="500" r="215" fill="url(#tc-earth-shading)" />
           </g>
+
+        </g>
+      </svg>
+  ), []);
+
+  return (
+    <div className={bare ? 'relative w-full aspect-square flex items-center justify-center' : 'relative w-full aspect-square bg-[#070b14] rounded-2xl overflow-hidden border border-slate-800 shadow-2xl flex items-center justify-center'}>
+      {/* Absolute Layer - Subtle star twinkling sky */}
+      {/* The picture is drawn in layers. What never changes (the sky, the beam and
+          the earth with their soft glows) is drawn once and kept; what moves with
+          the breath (stars, particles, the figure) is drawn on its own layers,
+          and the light that rises and falls is a plain change of opacity. A
+          single picture had every glow drawn again on every frame, which made
+          the movement stutter on phones. */}
+      {staticSky}
+      {!bare && (<>
+      <div className="absolute inset-0 pointer-events-none bg-[#020617]" style={{ opacity: 0.4 * (1 - bf) }} />
+      <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 400" style={{ opacity: bf }}>
+        <rect width="400" height="400" fill="url(#tc-northern-lights-active)" />
+      </svg>
+      <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 400">
+        {/* Stars */}
+        <g opacity={0.3 + 0.7 * bf}>
+          {stars.map((star) => (
+            <g key={star.id}>
+              {star.isSparkle ? (
+                // Cross Sparkle blinking
+                <path
+                  d={`M ${star.cx - 3} ${star.cy} L ${star.cx + 3} ${star.cy} M ${star.cx} ${star.cy - 3} L ${star.cx} ${star.cy + 3}`}
+                  stroke="#ffffff"
+                  strokeWidth={0.6}
+                  opacity={0.3 + 0.7 * Math.abs(Math.sin((Date.now() / 1500) * star.pulseSpeed + star.delay))}
+                />
+              ) : (
+                // Round star twinkling
+                <circle
+                  cx={star.cx}
+                  cy={star.cy}
+                  r={star.r}
+                  fill="#ffffff"
+                  opacity={0.2 + 0.8 * Math.abs(Math.sin((Date.now() / 1000) * star.pulseSpeed + star.delay))}
+                />
+              )}
+            </g>
+          ))}
+        </g>
+
+      </svg>
+      <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 400">
+        {/* Prana/Aura Particles */}
+        <g>
+          {particles.map((p) => {
+            // Inhale (bf -> 1): particles gather concentrically (r scales to 0.3)
+            // Exhale (bf -> 0): particles diffuse outwards (r scales to 1.5)
+            const swirl = isRising ? bf * Math.PI : (1 - bf) * Math.PI; 
+            const currentR = p.rBase * (0.3 + (1 - bf) * 1.2);
+            const currentAngle = p.angle + swirl * 0.3 + p.driftOffset;
+            const px = 200 + currentR * Math.cos(currentAngle);
+            const py = 190 + currentR * Math.sin(currentAngle); // Center slightly above chest
+            const opacity = (0.2 + 0.8 * Math.min(1, bf * 1.5)) * (currentR < 180 ? 1 : Math.max(0, 1 - (currentR - 180) / 50)); 
+            return (
+              <circle 
+                key={p.id} 
+                cx={px} 
+                cy={py} 
+                r={p.size * 2.4}
+                fill="url(#tc-particle-dot)"
+                opacity={opacity}
+              />
+            );
+          })}
+        </g>
+      </svg>
+      </>)}
+      {staticScene}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 400">
+        {/* SCENE WRAPPER: Double size hero and earth */}
+        <g transform="translate(200, 320) scale(1.8) translate(-200, -283)">
+          {/* Energy pulses expanding up the central beam */}
+          <circle
+            cx="200"
+            cy={284 - breathForce * 200}
+            r={2 + breathForce * 4}
+            fill="#fef08a"
+            opacity={1 - breathForce}
+          />
+          <circle
+            cx="200"
+            cy={284 - ((breathForce + 0.5) % 1) * 200}
+            r={1 + ((breathForce + 0.5) % 1) * 3}
+            fill="#fed7aa"
+            opacity={1 - ((breathForce + 0.5) % 1)}
+          />
 
           {/* CHARACTER / HERO MODEL */}
           {/* Bare Feet Grounded on top curve of Earth */}
