@@ -79,13 +79,24 @@ jobs:
           KEYSTORE: ${{ secrets.TEST_DEBUG_KEYSTORE }}
         run: |
           [ -n "$KEYSTORE" ] || { echo "No TEST_DEBUG_KEYSTORE: a key of this run's own."; exit 0; }
-          mkdir -p ~/.android
-          printf '%s' "$KEYSTORE" | tr -d ' \r\n' | base64 -d > ~/.android/debug.keystore
-          keytool -list -keystore ~/.android/debug.keystore -storepass android -alias androiddebugkey > /dev/null
+          k="$RUNNER_TEMP/test.keystore"
+          printf '%s' "$KEYSTORE" | tr -d ' \r\n' | base64 -d > "$k"
+          keytool -list -v -keystore "$k" -storepass android -alias androiddebugkey | grep -m1 'SHA256:'
+          echo "TEST_KEYSTORE_FILE=$k" >> "$GITHUB_ENV"
 
+      # Gradle is told the key directly (it may not look in ~/.android).
       - name: APK
         working-directory: android
-        run: ./gradlew assembleDebug --no-daemon
+        run: |
+          if [ -n "$TEST_KEYSTORE_FILE" ]; then
+            ./gradlew assembleDebug --no-daemon \
+              -Pandroid.injected.signing.store.file="$TEST_KEYSTORE_FILE" \
+              -Pandroid.injected.signing.store.password=android \
+              -Pandroid.injected.signing.key.alias=androiddebugkey \
+              -Pandroid.injected.signing.key.password=android
+          else
+            ./gradlew assembleDebug --no-daemon
+          fi
 
       - uses: actions/upload-artifact@v4
         with:
