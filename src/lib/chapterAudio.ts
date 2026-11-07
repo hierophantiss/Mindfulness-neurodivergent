@@ -1,4 +1,5 @@
 import type { ReadLang } from './chapterReading';
+import { remote } from './native';
 
 /**
  * The chapter audio: one MP3 per chapter, read by Sulafat, and a timing map
@@ -47,7 +48,7 @@ const fileName = (lang: ReadLang, num: number) => `app-${lang}-${String(num).pad
  * on the device can play an old recording against a new timing map.
  */
 export const audioUrl = (lang: ReadLang, num: number, version?: number | string) =>
-  `/audio/${fileName(lang, num)}.mp3${version != null ? `?v=${version}` : ''}`;
+  remote(`/audio/${fileName(lang, num)}.mp3${version != null ? `?v=${version}` : ''}`);
 /** The version of the audio a timing map belongs to. */
 export const audioVersion = (t: ChapterTiming | null | undefined) => (t ? String(t.duration) : undefined);
 const isMp3 = (url: string) => new URL(url, 'https://x').pathname.endsWith('.mp3');
@@ -56,7 +57,7 @@ const langNumOf = (url: string): [ReadLang, number] | null => {
   const m = /app-(el|en)-(\d{2})\.mp3$/.exec(new URL(url, 'https://x').pathname);
   return m ? [m[1] as ReadLang, Number(m[2])] : null;
 };
-const mapUrl = (lang: ReadLang, num: number) => `/audio/${fileName(lang, num)}.json`;
+const mapUrl = (lang: ReadLang, num: number) => remote(`/audio/${fileName(lang, num)}.json`);
 
 const hasCaches = () => typeof caches !== 'undefined';
 

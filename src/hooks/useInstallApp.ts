@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
+import { isNative } from '../lib/native';
 
 // The browser's install prompt is caught once (NavigationMenu keeps it on
 // window.initDeferredPrompt). This hook shares it, and tells whether the app
 // is already running installed, so install links can hide themselves.
 
+// The Android app counts as installed: it is.
 const isStandaloneNow = () =>
   typeof window !== 'undefined' &&
-  (window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone === true);
+  (isNative() || window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone === true);
 
 export function useInstallApp(language: string) {
   const [installed, setInstalled] = useState(isStandaloneNow);

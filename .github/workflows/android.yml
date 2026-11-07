@@ -1,0 +1,103 @@
+# The Android app: the site's files inside an APK, so it opens and works with
+# no connection and no website (capacitor.config.ts).
+#
+# - Every run makes an APK (as a downloadable artifact).
+# - On main it also publishes the site's files as a bundle in the release
+#   "app-bundle", where installed apps find their update (src/lib/nativeUpdate.ts).
+# - Other branches build a test copy (CAP_TEST=1) with its own id and name,
+#   which installs next to the app from the store.
+#
+# The Android project is made fresh on every run and never kept in the
+# repository (AGENTS.md: no binary files in the repo).
+
+name: Android
+
+on:
+  push:
+    branches: [main, android-app]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      N: ${{ github.run_number }}
+      VITE_BUNDLE_VERSION: ${{ github.run_number }}
+      CAP_TEST: ${{ github.ref == 'refs/heads/main' && '0' || '1' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Install
+        run: npm ci
+
+      - name: The site's files
+        run: npm run build
+
+      # What only the website needs: the pages written out for search engines
+      # (the app draws them itself), the service worker, the store pictures.
+      - name: Only what the app needs
+        run: rm -rf dist/el dist/en dist/screenshots dist/og-image.png dist/sitemap.xml dist/robots.txt dist/sw.js dist/workbox-*.js
+
+      - name: The Android project
+        run: npx cap add android
+
+      - name: Icons and splash, from the app's own icon
+        run: |
+          mkdir -p assets
+          cp public/icon-512.png assets/icon-only.png
+          cp public/icon-512-maskable.png assets/icon-foreground.png
+          convert -size 1024x1024 xc:'#0f1117' assets/icon-background.png
+          convert -size 2732x2732 xc:'#0f1117' public/icon-512.png -gravity center -composite assets/splash.png
+          cp assets/splash.png assets/splash-dark.png
+          npx @capacitor/assets generate --android
+
+      - name: Version
+        run: |
+          f=android/app/build.gradle
+          sed -i -E "s/versionCode [0-9]+/versionCode $N/; s/versionName \"[^\"]*\"/versionName \"1.$N\"/" "$f"
+          grep -q "versionCode $N" "$f"
+          npx cap sync android
+
+      - name: APK
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mindfulness-android-${{ github.run_number }}
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 14
+
+      - name: Publish the update for installed apps (main only)
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          (cd dist && zip -qr "../app-bundle-$N.zip" .)
+          sha=$(sha256sum "app-bundle-$N.zip" | cut -d' ' -f1)
+          url="https://github.com/${{ github.repository }}/releases/download/app-bundle/app-bundle-$N.zip"
+          printf '{"version":%s,"url":"%s","sha256":"%s","minNative":1}\n' "$N" "$url" "$sha" > app-bundle.json
+          gh release view app-bundle >/dev/null 2>&1 || gh release create app-bundle --title "Android app: update bundle" --notes "The site's files for the Android app's own updates (src/lib/nativeUpdate.ts). Made by the Android workflow." --latest=false
+          gh release upload app-bundle "app-bundle-$N.zip" --clobber
+          gh release upload app-bundle app-bundle.json --clobber
+          for old in $(gh release view app-bundle --json assets -q '.assets[].name' | grep -E '^app-bundle-[0-9]+\.zip$' | grep -v "^app-bundle-$N.zip$"); do
+            gh release delete-asset app-bundle "$old" -y
+          done

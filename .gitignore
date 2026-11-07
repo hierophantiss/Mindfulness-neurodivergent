@@ -18,3 +18,7 @@ audiobook-out/
 # Site checks in a browser (e2e/)
 test-results/
 playwright-report/
+
+# The Android project and its icon sources are made fresh by the Android workflow
+android/
+assets/
