@@ -18,6 +18,43 @@ const FIGURE_H = 108;
 const UPPER_ARM = 0.19 * FIGURE_H;   // ≈ 20.5
 const FOREARM = 0.145 * FIGURE_H;    // ≈ 15.7
 const REACH = UPPER_ARM + FOREARM - 0.5;
+// Cloud Hands: the loop of the screen-right hand over one breath cycle
+// (theta 0 → 2π), as an offset across from the body's centre and a height;
+// theta = π is the turn to its own side. A smooth closed curve through
+// points read from Theodoros's video.
+const CLOUD_LOOP: Pt[] = [
+  { x: -12, y: 235 }, // end of the turn away: low, across in front of the belly
+  { x: -12, y: 222 }, // rising up the middle
+  { x: 2, y: 206 },   // across in front of the chest
+  { x: 28, y: 202 },  // on, out towards its side
+  { x: 48, y: 199 },  // out at shoulder height, the arm long
+  { x: 40, y: 224 },  // sinking at the side
+  { x: 14, y: 238 },  // back across, low
+  { x: -4, y: 240 },
+];
+// Where the elbow of that hand is, at the same moments: out to its own side
+// and down, below the hand.
+const CLOUD_ELBOW: Pt[] = [
+  { x: 8, y: 222 },
+  { x: 16, y: 222 },
+  { x: 24, y: 219 },  // the forearm across the chest
+  { x: 30, y: 214 },
+  { x: 34, y: 205 },  // the arm long, out at the side
+  { x: 30, y: 214 },
+  { x: 22, y: 222 },
+  { x: 14, y: 223 },
+];
+function cloudLoop(theta: number, pts: Pt[] = CLOUD_LOOP): Pt {
+  const CLOUD = pts;
+  const n = CLOUD.length;
+  const t = ((((theta / (2 * Math.PI)) % 1) + 1) % 1) * n;
+  const i = Math.floor(t), u = t - i;
+  const p = (k: number) => CLOUD[(i + k + n) % n];
+  const cr = (a: number, b: number, c: number, d: number) =>
+    0.5 * (2 * b + (-a + c) * u + (2 * a - 5 * b + 4 * c - d) * u * u + (-a + 3 * b - 3 * c + d) * u * u * u);
+  return { x: cr(p(-1).x, p(0).x, p(1).x, p(2).x), y: cr(p(-1).y, p(0).y, p(1).y, p(2).y) };
+}
+
 // Greeting the Infinite: the hands gathered in front of the belly, palms up.
 const FLOWER_BELLY = { x: 190, y: 232 };
 // Trunk and legs (Drillis & Contini, in Winter's Biomechanics, as fractions of
@@ -546,50 +583,80 @@ export default function TaiChiHero({
   let rightHandRotation = -leftHandRotation;
   let eLf = eL, hLf = hL, leftRot = leftHandRotation;
 
-  // ── CLOUD HANDS (Yun Shou): not mirrored ──
+  // ── CLOUD HANDS (Yun Shou), as Theodoros does it (from his video) ──
   // One breath cycle is one full turn: the inhale turns the body to one side,
-  // the exhale to the other. The upper hand passes in front of the face, the
-  // lower in front of the belly; at the end of each turn they change places.
+  // the exhale to the other. Each hand draws its own loop: across in front of
+  // the face, out to its side at shoulder height (the arm long), down that
+  // side, back across in front of the belly and up the middle again. The two
+  // loops are mirror images, half a turn apart, so the hands always travel
+  // the same way, one high and one low, and change places at the sides.
   const cloudHands = movementType === 'tai-chi-cloud-hands';
   let bodyShift = 0;
   if (cloudHands) {
     const theta = idle ? Math.PI / 2 : (isRising ? Math.PI * bf : Math.PI + Math.PI * (1 - bf));
     const turn = -Math.cos(theta);          // -1 = turned to screen-left, +1 = screen-right
-    const lift = Math.sin(theta);           // +1 = screen-right hand at the top
     bodyShift = turn * 6;                   // weight moves from one foot to the other
     const cx = 200 + bodyShift;
-    const yMid = 214, ry = 28, rx = 44;
-    const handR = { x: cx + rx * turn, y: yMid - ry * lift };
-    const handL = { x: cx + rx * 0.82 * turn, y: yMid + ry * lift };
+    const handR = { ...cloudLoop(theta) };
+    handR.x += cx;
+    const m = cloudLoop(theta + Math.PI);
+    const handL = { x: cx - m.x, y: m.y };
+    const lift = Math.min(1, Math.max(0, (238 - handR.y) / 40)); // 1 = screen-right hand high
 
-    const solveArm = (sh: { x: number; y: number }, hand: { x: number; y: number }, out: 1 | -1, prev: Pt | undefined) => {
-      let dx = hand.x - sh.x, dy = hand.y - sh.y;
-      let d = Math.hypot(dx, dy);
-      // Seen flat, an arm reaching forward looks shorter: keep only a soft bend.
+    // The elbow goes where the video shows it (its own loop, below), as near
+    // as the arm allows: no farther from the shoulder than the upper arm, nor
+    // from the hand than the forearm (shorter where the arm points forward,
+    // as it does across the chest). That nearest place moves smoothly.
+    const solveArm = (sh: Pt, hand: Pt, want: Pt) => {
       const L1 = UPPER_ARM, L2 = FOREARM;
+      let dx = hand.x - sh.x, dy = hand.y - sh.y;
+      const d0 = Math.hypot(dx, dy);
       const maxD = L1 + L2 - 0.5;
-      const h = d > maxD ? { x: sh.x + (dx * maxD) / d, y: sh.y + (dy * maxD) / d } : hand;
-      dx = h.x - sh.x; dy = h.y - sh.y; d = Math.max(0.1, Math.min(d, maxD));
-      const a = Math.atan2(dy, dx);
-      const b = Math.acos(Math.max(-1, Math.min(1, (L1 * L1 + d * d - L2 * L2) / (2 * L1 * d))));
-      const c1 = { x: sh.x + L1 * Math.cos(a + b), y: sh.y + L1 * Math.sin(a + b) };
-      const c2 = { x: sh.x + L1 * Math.cos(a - b), y: sh.y + L1 * Math.sin(a - b) };
-      // Elbows hang down (and a little outwards), below the hands.
-      const score = (e: { x: number; y: number }) => 0.4 * out * (e.x - sh.x) + (e.y - sh.y);
-      return { elbow: keepElbowSide(c1, c2, score(c1) >= score(c2) ? c1 : c2, prev), hand: h };
+      const h = d0 > maxD ? { x: sh.x + (dx * maxD) / d0, y: sh.y + (dy * maxD) / d0 } : hand;
+      dx = h.x - sh.x; dy = h.y - sh.y;
+      const d = Math.max(0.1, Math.hypot(dx, dy));
+      const inDisk = (c: Pt, r: number, q: Pt) => Math.hypot(q.x - c.x, q.y - c.y) <= r + 1e-6;
+      const onCircle = (c: Pt, r: number, q: Pt): Pt => {
+        const l = Math.max(1e-6, Math.hypot(q.x - c.x, q.y - c.y));
+        return { x: c.x + ((q.x - c.x) * r) / l, y: c.y + ((q.y - c.y) * r) / l };
+      };
+      let elbow: Pt;
+      if (inDisk(sh, L1, want) && inDisk(h, L2, want)) elbow = want;
+      else {
+        const a = onCircle(sh, L1, want), b = onCircle(h, L2, want);
+        const okA = inDisk(sh, L1, want) ? false : inDisk(h, L2, a);
+        const okB = inDisk(h, L2, want) ? false : inDisk(sh, L1, b);
+        if (okA) elbow = a;
+        else if (okB) elbow = b;
+        else {
+          // Where the two circles cross: the nearer of the two.
+          const g = Math.atan2(dy, dx);
+          const i = Math.acos(Math.max(-1, Math.min(1, (L1 * L1 + d * d - L2 * L2) / (2 * L1 * d))));
+          const c1 = { x: sh.x + L1 * Math.cos(g + i), y: sh.y + L1 * Math.sin(g + i) };
+          const c2 = { x: sh.x + L1 * Math.cos(g - i), y: sh.y + L1 * Math.sin(g - i) };
+          elbow = dist2(c1, want) <= dist2(c2, want) ? c1 : c2;
+        }
+      }
+      return { elbow, hand: h };
     };
     const shL = { x: sL.x + bodyShift, y: sL.y };
     const shR = { x: sR.x + bodyShift, y: sR.y };
-    const armR = solveArm(shR, handR, 1, memo.current.cR);
-    const armL = solveArm(shL, handL, -1, memo.current.cL);
-    memo.current.cR = armR.elbow;
-    memo.current.cL = armL.elbow;
+    const wantR = cloudLoop(theta, CLOUD_ELBOW);
+    const wm = cloudLoop(theta + Math.PI, CLOUD_ELBOW);
+    const armR = solveArm(shR, handR, { x: cx + wantR.x, y: wantR.y });
+    const armL = solveArm(shL, handL, { x: cx - wm.x, y: wm.y });
     eR = armR.elbow; hR = armR.hand;
     eLf = armL.elbow; hLf = armL.hand;
-    // Upper hand: palm towards the face, fingers up; lower hand: palm down, fingers across.
-    const upR = (lift + 1) / 2;
-    rightHandRotation = 90 + 90 * upR;
-    leftRot = -(90 + 90 * (1 - upR));
+    // Upper hand: relaxed, in the line of the forearm (across the chest, then
+    // out at the side); lower hand: palm down, fingers across.
+    const sm = (x: number) => x * x * (3 - 2 * x);
+    const upL = Math.min(1, Math.max(0, (238 - handL.y) / 40));
+    const along = (e: Pt, h: Pt) => (Math.atan2(-(h.x - e.x), h.y - e.y) * 180) / Math.PI;
+    // Rising, the fingers turn up and over (never the short way back down):
+    // the screen-right hand turns on from 90°, the screen-left one back from −90°.
+    const wrap = (a: number) => ((a % 360) + 360) % 360;
+    rightHandRotation = 90 + (wrap(along(eR, hR) - 90 + 60) - 60) * sm(lift);
+    leftRot = -90 - (wrap(-(along(eLf, hLf) + 90) + 60) - 60) * sm(upL);
     sL.x = shL.x; sR.x = shR.x;
   }
 
