@@ -16,6 +16,8 @@ export interface MeditatorFigureProps {
   hideBreathRing?: boolean;
   /** Hide the starfield and the beam (the exercise sits on the app's own sky). */
   bare?: boolean;
+  /** Without the empty sky above the sign: for small square cards. */
+  crop?: boolean;
   /** Light one axis of the sign and dim the others (the home page's axis cards). */
   focus?: 'body' | 'breath' | 'attention' | 'space';
   /** Sound spreading out from the whole body, for chanting (arcs on both sides). */
@@ -39,6 +41,7 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
   label,
   hideBreathRing = false,
   bare = false,
+  crop = false,
   focus,
   voice = false,
   ninja = false,
@@ -99,7 +102,7 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
   return (
     <div className={`relative inline-block w-full ${className} ${dimmed ? 'brightness-50 grayscale-[50%] transition-all duration-1000' : 'transition-all duration-1000'}`}>
       <svg 
-        viewBox="0 0 340 420" 
+        viewBox={crop ? "0 72 340 348" : "0 0 340 420"}
         width="100%" 
         {...(label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': true })}
         className="block h-auto transition-all duration-500"

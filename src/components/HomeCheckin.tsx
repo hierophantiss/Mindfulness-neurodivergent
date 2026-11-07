@@ -82,7 +82,7 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
               >
                 <path d={ICON[o.id]} />
               </svg>
-              <span className="checkin-label max-w-full text-center text-[12px] max-[359px]:text-[11px] tracking-[-0.005em] leading-tight text-ink/90 whitespace-nowrap desk:text-[14px]">{o.label[lang]}</span>
+              <span className="checkin-label max-w-full text-center text-[12px] max-[359px]:text-[11px] tracking-[-0.005em] leading-tight text-ink/85 whitespace-nowrap desk:text-[14px]">{o.label[lang]}</span>
             </button>
           );
         })}

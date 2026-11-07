@@ -310,13 +310,15 @@ export default function Dashboard() {
                 <Link
                   key={a.id}
                   to={`/practice?axis=${a.id}`}
-                  className="group glass h-[128px] pt-1 rounded-[20px] flex flex-col items-center justify-center gap-[5px] overflow-hidden hover:brightness-110 transition-[filter,transform] active:scale-[0.97] desk:h-auto desk:min-h-[176px] desk:items-start desk:justify-start desk:gap-2 desk:p-[22px] desk:rounded-[24px] desk:hover:-translate-y-0.5"
+                  className="group relative glass h-[96px] pt-1.5 rounded-[20px] flex flex-col items-center justify-start overflow-hidden hover:brightness-110 transition-[filter,transform] active:scale-[0.97] desk:h-auto desk:min-h-[176px] desk:items-start desk:gap-2 desk:p-[22px] desk:rounded-[24px] desk:hover:-translate-y-0.5"
                 >
                   {/* The meditator with this axis's part of the sign lit, the others dimmed. */}
                   <span aria-hidden="true" className="block w-[68px] desk:w-[124px] desk:self-center desk:-mt-2 desk:-mb-1 rounded-full motion-safe:transition-[filter] motion-safe:duration-500 desk:group-hover:brightness-125" style={{ background: `radial-gradient(closest-side, color-mix(in srgb, ${a.ink} 30%, transparent), transparent)` }}>
-                    <MeditatorFigure focus={a.id} bare small />
+                    <MeditatorFigure focus={a.id} bare small crop />
                   </span>
-                  <span className="checkin-label text-[12px] text-ink/90 max-w-full truncate px-1 desk:px-0 desk:mt-1.5 desk:text-[18px] desk:text-ink">{a.name}</span>
+                  {/* Phone: the name sits on the figure's base, over a soft fade so it reads on every colour. */}
+                  <span aria-hidden="true" className="desk:hidden absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-[color-mix(in_srgb,var(--color-bg)_85%,transparent)] to-transparent" />
+                  <span className="checkin-label absolute inset-x-0 bottom-[6px] text-center text-[12px] text-ink/85 max-w-full truncate px-1 [text-shadow:0_1px_2px_rgb(0_0_0/0.45)] desk:static desk:text-left desk:px-0 desk:mt-1.5 desk:text-[18px] desk:[text-shadow:none]">{a.name}</span>
                   <span className="hidden desk:block text-[14px] leading-[1.5] text-ink/70">{a.desc}</span>
                   <span className="hidden desk:block mt-auto pt-2 text-[13.5px] text-sign-gold">{el ? 'Ασκήσεις →' : 'Practices →'}</span>
                 </Link>
