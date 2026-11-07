@@ -8,33 +8,33 @@ export default function OfflineNotification() {
     const { reduceMotion } = useAccessibility();
   
 
+  // The note shows when the connection changes (and at the start, if there is
+  // none), stays a few seconds and goes; the × closes it at once. It only says
+  // the app keeps working, so it never needs to stay on screen.
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
-  const [showStatus, setShowStatus] = useState(false);
+  const [showStatus, setShowStatus] = useState(!navigator.onLine);
   const { language } = useLanguage();
 
   useEffect(() => {
-    const handleOnline = () => {
-      setIsOffline(false);
-      setShowStatus(true);
-      setTimeout(() => setShowStatus(false), 3000);
-    };
-    const handleOffline = () => {
-      setIsOffline(true);
-      setShowStatus(true);
-    };
-
+    const handleOnline = () => { setIsOffline(false); setShowStatus(true); };
+    const handleOffline = () => { setIsOffline(true); setShowStatus(true); };
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
-
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
     };
   }, []);
 
+  useEffect(() => {
+    if (!showStatus) return;
+    const t = window.setTimeout(() => setShowStatus(false), isOffline ? 6000 : 3000);
+    return () => window.clearTimeout(t);
+  }, [showStatus, isOffline]);
+
   return (
     <AnimatePresence>
-      {(isOffline || showStatus) && (
+      {showStatus && (
         <motion.div
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -69,9 +69,9 @@ export default function OfflineNotification() {
 
             <button 
               onClick={() => setShowStatus(false)}
-              aria-label={language === 'el' ? 'Κλείσιμο' : 'Close'} className="p-1 hover:bg-white/5 rounded-full transition-colors focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400"
+              aria-label={language === 'el' ? 'Κλείσιμο' : 'Close'} className="-m-2 w-11 h-11 shrink-0 flex items-center justify-center hover:bg-white/5 rounded-full transition-colors focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400"
             >
-              <X size={16} />
+              <X size={18} />
             </button>
           </div>
         </motion.div>

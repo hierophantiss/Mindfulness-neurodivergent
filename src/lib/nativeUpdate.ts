@@ -8,6 +8,8 @@
 // Nothing about the person is sent: it is one request for a small file.
 // The plugin's own reporting to Capgo is off (capacitor.config.ts).
 
+import { recordError } from './errorLog';
+
 const MANIFEST = 'https://github.com/hierophantiss/Mindfulness-neurodivergent/releases/download/app-bundle/app-bundle.json';
 const PENDING = 'n_mindfulness_app_bundle_next';
 
@@ -48,8 +50,10 @@ async function check() {
   const m = (typeof res.data === 'string' ? JSON.parse(res.data) : res.data) as Partial<Manifest>;
   const info = await App.getInfo();
   if (!isNewer(m, BUNDLE_VERSION, Number(info.build) || 0)) return;
-  // The bundle comes over HTTPS from the repository's own release.
-  const bundle = await CapacitorUpdater.download({ url: m.url, version: String(m.version) });
+  // The bundle comes over HTTPS from the repository's own release. The plugin
+  // refuses any download without its SHA-256 (it checks the file against it).
+  if (!m.sha256) return;
+  const bundle = await CapacitorUpdater.download({ url: m.url, version: String(m.version), checksum: m.sha256 });
   try { localStorage.setItem(PENDING, bundle.id); } catch { /* ignore */ }
 }
 
@@ -58,5 +62,5 @@ export async function startUpdates() {
   // This copy started fine: keep it (otherwise the plugin rolls back).
   await CapacitorUpdater.notifyAppReady();
   // Look a little after the start, when the page has settled.
-  window.setTimeout(() => { check().catch(() => { /* next time */ }); }, 5000);
+  window.setTimeout(() => { check().catch((e) => recordError('app-update', e)); }, 5000);
 }
