@@ -6,6 +6,32 @@
 import { useMemo } from "react";
 import { motion } from "motion/react";
 
+// The head (with its hood) a quarter smaller than first drawn: it read too big
+// for the body. It shrinks towards the neck, so it stays on the shoulders.
+const HEAD_SCALE = 0.75;
+// Natural proportions (anthropometry, Contini 1972): upper arm about 19% of
+// the height, forearm about 14.5%, hand about 10% and half as wide as it is
+// long. The figure stands about 108 units tall (head top 182, soles 290).
+// The arm keeps its length in every pose: it may look shorter when it comes
+// towards us, never longer.
+const FIGURE_H = 108;
+const UPPER_ARM = 0.19 * FIGURE_H;   // ≈ 20.5
+const FOREARM = 0.145 * FIGURE_H;    // ≈ 15.7
+const REACH = UPPER_ARM + FOREARM - 0.5;
+// Trunk and legs (Drillis & Contini, in Winter's Biomechanics, as fractions of
+// the height from the floor): shoulders 0.818, heart about 0.70, crotch about
+// 0.47, knee 0.285; shoulder width 0.259 (joint to joint), hip width 0.191.
+// The floor is y = 290. The hood comes down over the top of the shoulders.
+const SHOULDER_Y = 202;              // 290 - 0.818 * 108
+const SHOULDER_HALF = 14;            // 0.259 * 108 / 2
+const HEART_Y = 215;
+const HEM_Y = 240;                   // the hoodie's hem, at the crotch: legs about 47% of the height
+const KNEE_Y = 259;                  // 290 - 0.285 * 108
+const HAND_W = 5.4;                  // the hand's width, for palms that meet in the middle
+// The hand from the wrist (0,0) to the fingertips (0, ~10.8): the palm widest
+// near the knuckles, the fingers narrowing to a rounded tip.
+const HAND_PATH = 'M -2.2 -0.6 L 2.2 -0.6 C 2.8 1.8 2.9 4.6 2.5 6.8 C 2.1 9 1.2 10.8 0 10.8 C -1.2 10.8 -2.1 9 -2.5 6.8 C -2.9 4.6 -2.8 1.8 -2.2 -0.6 Z';
+
 interface TaiChiHeroProps {
   breathForce: number; // 0 to 1
   isRising: boolean; // true = inhaling, false = exhaling
@@ -112,12 +138,14 @@ export default function TaiChiHero({
 
   const bf = breathForce;
   const bowBend = (movementType === "bow" || movementType === "deep-bow-5-5") ? (1 - bf) : 0;
-  const torsoBendY = bowBend * 38;
+  // The bow: the trunk tips forward and, seen from the front, looks shorter;
+  // it stops 4 units above the hem so it never folds flat.
+  const torsoBendY = bowBend * (HEM_Y - 4 - SHOULDER_Y);
   const leanBackY = movementType === "qigong-lifting-sky" ? (bf * -4) : 0;
 
   // Base shoulders
-  const sL = { x: 182, y: 206 + torsoBendY + leanBackY };
-  const sR = { x: 218, y: 206 + torsoBendY + leanBackY };
+  const sL = { x: 200 - SHOULDER_HALF, y: SHOULDER_Y + torsoBendY + leanBackY };
+  const sR = { x: 200 + SHOULDER_HALF, y: SHOULDER_Y + torsoBendY + leanBackY };
 
   let eL_exhale = {x: 0, y: 0}, eL_inhale = {x: 0, y: 0}, eL_cpRise = {x: 0, y: 0}, eL_cpFall = {x: 0, y: 0};
   let hL_exhale = {x: 0, y: 0}, hL_inhale = {x: 0, y: 0}, hL_cpRise = {x: 0, y: 0}, hL_cpFall = {x: 0, y: 0};
@@ -229,36 +257,48 @@ export default function TaiChiHero({
   let eL_bezier = calcBezier2D(eL_exhale, isRisePhase ? eL_cpRise : eL_cpFall, eL_inhale, bf);
   let hL_bezier = calcBezier2D(hL_exhale, isRisePhase ? hL_cpRise : hL_cpFall, hL_inhale, bf);
 
-  // KINEMATICS DYNAMICS: Skeletal Constraints (Inverse Kinematics)
-  const MAX_REACH = 72; // Maximum physical 2D arm span
-  let prefUpper = Math.max(1, Math.hypot(eL_bezier.x - sL.x, eL_bezier.y - sL.y));
-  let prefLower = Math.max(1, Math.hypot(hL_bezier.x - eL_bezier.x, hL_bezier.y - eL_bezier.y));
-  
-  let dx = hL_bezier.x - sL.x;
-  let dy = hL_bezier.y - sL.y;
-  let dist = Math.hypot(dx, dy);
-  
+  // KINEMATICS: the arm has fixed, natural lengths (see UPPER_ARM, FOREARM).
+  const prefUpper = UPPER_ARM;
+  const prefLower = FOREARM;
   let hL = { ...hL_bezier };
-  
-  // 1. Enforce Maximum Reach (Anti-Unnatural Extension)
-  if (dist > MAX_REACH) {
-    const scale = MAX_REACH / dist;
-    hL.x = sL.x + dx * scale;
-    hL.y = sL.y + dy * scale;
-    dist = MAX_REACH;
+
+  // Palms that come together in the middle (at the heart, or overhead) meet,
+  // upright as in prayer: near the centre line each hand eases to half a hand
+  // from it (fully within 3 units, not at all beyond 12), with no jump.
+  const near = Math.min(1, Math.max(0, (12 - Math.abs(hL.x - 200)) / 9));
+  const meetW = near * near * (3 - 2 * near);
+  hL.x += (200 - HAND_W / 2 - hL.x) * meetW;
+  // At the chest they rest a little higher, in front of the breastbone, so the
+  // sign on the heart stays in sight below them.
+  if (hL.y > 200) hL.y -= 5 * meetW;
+
+  let dx = hL.x - sL.x;
+  let dy = hL.y - sL.y;
+  let dist = Math.hypot(dx, dy);
+  // Out of reach: the arm straightens towards the target. Palms meeting in the
+  // middle keep meeting: the hand stays on the centre line and goes as high (or
+  // low) as the arm allows; any other target is approached along its direction.
+  if (dist > REACH) {
+    const meet = meetW > 0.99 && Math.abs(dx) < REACH;
+    if (meet) {
+      hL.y = sL.y + Math.sign(dy || -1) * Math.sqrt(REACH * REACH - dx * dx);
+    } else {
+      hL.x = sL.x + (dx * REACH) / dist;
+      hL.y = sL.y + (dy * REACH) / dist;
+    }
     dx = hL.x - sL.x;
     dy = hL.y - sL.y;
+    dist = REACH;
   }
-  
+  // Too close for the arm (it cannot fold flat): kept a little away from the shoulder.
+  const MIN_D = Math.abs(UPPER_ARM - FOREARM) + 1;
+  if (dist < MIN_D) {
+    const k = MIN_D / Math.max(0.1, dist);
+    hL.x = sL.x + dx * k; hL.y = sL.y + dy * k;
+    dx = hL.x - sL.x; dy = hL.y - sL.y; dist = MIN_D;
+  }
   const safeDist = Math.max(0.1, dist);
 
-  // Scale up segment lengths if they fall short of reaching the hand
-  if (prefUpper + prefLower < safeDist) {
-    const scale = safeDist / (prefUpper + prefLower);
-    prefUpper *= scale;
-    prefLower *= scale;
-  }
-  
   // 2. Resolve Joint Angle (Law of Cosines) to reconstruct elbow
   const angleSH = Math.atan2(dy, dx);
   const cosAngle = (prefUpper ** 2 + safeDist ** 2 - prefLower ** 2) / (2 * prefUpper * safeDist);
@@ -310,6 +350,12 @@ export default function TaiChiHero({
     leftHandRotation = baseLeftHandRotation + diff * aeroBlend;
   }
 
+  // Meeting palms turn upright, fingers up (180°), by the same measure.
+  if (meetW > 0) {
+    const d = ((180 - leftHandRotation) % 360 + 540) % 360 - 180; // shortest turn
+    leftHandRotation += d * meetW;
+  }
+
   // Pure mathematical symmetry across the vertical center (x = 200)
   let eR = { x: 200 + (200 - eL.x), y: eL.y };
   let hR = { x: 200 + (200 - hL.x), y: hL.y };
@@ -336,7 +382,7 @@ export default function TaiChiHero({
       let dx = hand.x - sh.x, dy = hand.y - sh.y;
       let d = Math.hypot(dx, dy);
       // Seen flat, an arm reaching forward looks shorter: keep only a soft bend.
-      const L1 = Math.min(34, Math.max(12, (d / 2) * 1.25)), L2 = L1;
+      const L1 = UPPER_ARM, L2 = FOREARM;
       const maxD = L1 + L2 - 0.5;
       const h = d > maxD ? { x: sh.x + (dx * maxD) / d, y: sh.y + (dy * maxD) / d } : hand;
       dx = h.x - sh.x; dy = h.y - sh.y; d = Math.max(0.1, Math.min(d, maxD));
@@ -632,9 +678,9 @@ export default function TaiChiHero({
           {/* Clothes in the meditator's green, so it is the same person everywhere */}
           <g id="tc-legs" fill="#2a372d" stroke="#1b241d" strokeWidth="0.5" transform={bodyShift ? `translate(0, 283) skewX(${(-Math.atan2(bodyShift, 38) * 180) / Math.PI}) translate(0, -283)` : undefined}>
             {/* Left leg */}
-            <path d="M 188 245 L 182 268 L 186 283 L 196 283 L 195 245 Z" />
+            <path d={`M 189.5 ${HEM_Y - 3} L 185.5 ${KNEE_Y} L 186.5 283 L 196 283 L 196 ${HEM_Y - 3} Z`} />
             {/* Right leg */}
-            <path d="M 212 245 L 218 268 L 214 283 L 204 283 L 205 245 Z" />
+            <path d={`M 210.5 ${HEM_Y - 3} L 214.5 ${KNEE_Y} L 213.5 283 L 204 283 L 204 ${HEM_Y - 3} Z`} />
             {/* Cuffs on pants */}
             <rect x="186" y="279" width="10" height="4" rx="1.2" fill="#1b241d" />
             <rect x="204" y="279" width="10" height="4" rx="1.2" fill="#1b241d" />
@@ -642,40 +688,18 @@ export default function TaiChiHero({
 
           {/* TORSO / HOODIE (Black/Charcoal hoodie, centered) */}
           <g id="tc-torso" fill="#36463a" transform={bodyShift ? `translate(${bodyShift}, 0)` : undefined}>
-            <path d={`M 180 ${206 + torsoBendY + leanBackY} L 220 ${206 + torsoBendY + leanBackY} L 214 248 L 186 248 Z`} />
+            <path d={`M 184 ${SHOULDER_Y + torsoBendY + leanBackY} L 216 ${SHOULDER_Y + torsoBendY + leanBackY} L 211.5 ${HEM_Y} L 188.5 ${HEM_Y} Z`} />
             {/* Kangaroo Pocket */}
             <path
-              d={`M 189 ${232 + torsoBendY * 0.35 + leanBackY * 0.35} L 211 ${232 + torsoBendY * 0.35 + leanBackY * 0.35} L 213 246 L 187 246 Z`}
+              d={`M 191 ${HEM_Y - 14 + torsoBendY * 0.35 + leanBackY * 0.35} L 209 ${HEM_Y - 14 + torsoBendY * 0.35 + leanBackY * 0.35} L 210.5 ${HEM_Y - 2} L 189.5 ${HEM_Y - 2} Z`}
               fill="#2e3c31"
               stroke="#1b241d"
               strokeWidth="0.8"
             />
-            <path d={`M 189 ${232 + torsoBendY * 0.35 + leanBackY * 0.35} L 193 239 M 211 ${232 + torsoBendY * 0.35 + leanBackY * 0.35} L 207 239`} stroke="#1b241d" strokeWidth="0.5" />
+            <path d={`M 191 ${HEM_Y - 14 + torsoBendY * 0.35 + leanBackY * 0.35} L 194.5 ${HEM_Y - 8} M 209 ${HEM_Y - 14 + torsoBendY * 0.35 + leanBackY * 0.35} L 205.5 ${HEM_Y - 8}`} stroke="#1b241d" strokeWidth="0.5" />
           </g>
 
-          {/* RAINBOW INFINITY SYMBOL ON CHEST */}
-          <g id="tc-infinity-symbol" transform={`translate(${200 + bodyShift}, ${222 + torsoBendY * 0.6 + leanBackY * 0.6})`}>
-            {/* Outer glow around symbol when breathing in */}
-            <path
-              d="M -6.5 0 C -6.5 -3.5 -2.5 -3.5 0 0 C 2.5 3.5 6.5 3.5 6.5 0 C 6.5 -3.5 2.5 -3.5 0 0 C -2.5 3.5 -6.5 3.5 -6.5 0 Z"
-              fill="none"
-              stroke={selectedColor.primary}
-              strokeWidth={1.5 + breathForce * 2.5}
-              opacity={0.15 + breathForce * 0.55}
-              filter="url(#tc-aura-glow)"
-            />
-            {/* Real infinity symbol */}
-            <path
-              d="M -6.5 0 C -6.5 -3.5 -2.5 -3.5 0 0 C 2.5 3.5 6.5 3.5 6.5 0 C 6.5 -3.5 2.5 -3.5 0 0 C -2.5 3.5 -6.5 3.5 -6.5 0 Z"
-              fill="none"
-              stroke="url(#tc-rainbow-grad)"
-              strokeWidth="2.0"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </g>
-
-          <g id="tc-head-group" transform={`translate(${200 + bodyShift * 1.15}, ${206 + torsoBendY + leanBackY * 1.5}) scale(${0.85 + bowBend * 0.15}) translate(-200, -206)`}>
+          <g id="tc-head-group" transform={`translate(${200 + bodyShift * 1.15}, ${206 + torsoBendY + leanBackY * 1.5}) scale(${HEAD_SCALE * (0.85 + bowBend * 0.15)}) translate(-200, -206)`}>
             {/* INNER HEAD & FACE peeking from under hood */}
             <g id="tc-face">
               {/* Neck */}
@@ -748,14 +772,37 @@ export default function TaiChiHero({
             opacity="0.35"
           />
 
+          {/* RAINBOW INFINITY SYMBOL ON CHEST: drawn over the sleeves, as a light on the
+              heart, so arms crossing the chest never cut it; the hands stay in front. */}
+          <g id="tc-infinity-symbol" transform={`translate(${200 + bodyShift}, ${HEART_Y + torsoBendY * 0.6 + leanBackY * 0.6})`}>
+            {/* Outer glow around symbol when breathing in */}
+            <path
+              d="M -6.5 0 C -6.5 -3.5 -2.5 -3.5 0 0 C 2.5 3.5 6.5 3.5 6.5 0 C 6.5 -3.5 2.5 -3.5 0 0 C -2.5 3.5 -6.5 3.5 -6.5 0 Z"
+              fill="none"
+              stroke={selectedColor.primary}
+              strokeWidth={1.5 + breathForce * 2.5}
+              opacity={0.15 + breathForce * 0.55}
+              filter="url(#tc-aura-glow)"
+            />
+            {/* Real infinity symbol */}
+            <path
+              d="M -6.5 0 C -6.5 -3.5 -2.5 -3.5 0 0 C 2.5 3.5 6.5 3.5 6.5 0 C 6.5 -3.5 2.5 -3.5 0 0 C -2.5 3.5 -6.5 3.5 -6.5 0 Z"
+              fill="none"
+              stroke="url(#tc-rainbow-grad)"
+              strokeWidth="2.0"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </g>
+
           {/* LEFT HAND (Simplified Abstract Oval) */}
-          <g transform={`translate(${hLf.x}, ${hLf.y}) rotate(${leftRot}) scale(0.65)`}>
-            <path d="M -3 -2 L 3 -2 C 4 3 3 7 0 8 C -3 7 -4 3 -3 -2 Z" fill="#e5bda3" />
+          <g transform={`translate(${hLf.x}, ${hLf.y}) rotate(${leftRot}) `}>
+            <path d={HAND_PATH} fill="#e5bda3" />
           </g>
 
           {/* RIGHT HAND (Simplified Abstract Oval) */}
-          <g transform={`translate(${hR.x}, ${hR.y}) rotate(${rightHandRotation}) scale(0.65)`}>
-            <path d="M -3 -2 L 3 -2 C 4 3 3 7 0 8 C -3 7 -4 3 -3 -2 Z" fill="#e5bda3" />
+          <g transform={`translate(${hR.x}, ${hR.y}) rotate(${rightHandRotation}) `}>
+            <path d={HAND_PATH} fill="#e5bda3" />
           </g>
         </g>
       </svg>
