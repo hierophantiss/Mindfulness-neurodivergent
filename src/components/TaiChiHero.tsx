@@ -18,6 +18,8 @@ const FIGURE_H = 108;
 const UPPER_ARM = 0.19 * FIGURE_H;   // ≈ 20.5
 const FOREARM = 0.145 * FIGURE_H;    // ≈ 15.7
 const REACH = UPPER_ARM + FOREARM - 0.5;
+// Greeting the Infinite: the hands gathered in front of the belly, palms up.
+const FLOWER_BELLY = { x: 190, y: 232 };
 // Trunk and legs (Drillis & Contini, in Winter's Biomechanics, as fractions of
 // the height from the floor): shoulders 0.818, heart about 0.70, crotch about
 // 0.47, knee 0.285; shoulder width 0.259 (joint to joint), hip width 0.191.
@@ -196,9 +198,12 @@ export default function TaiChiHero({
     rotCpFall = -60;
 
   } else if (movementType === "be-like-a-flower-5-5") {
-    // BE LIKE A FLOWER
-    // Exhale (bf -> 0): Arms open horizontally wide
-    // Inhale (bf -> 1): Hands gather back to chest (prayer)
+    // GREETING THE INFINITE, as Theodoros does it (from his video). The path
+    // of the hands is set below; these keyframes only seed it.
+    // Exhale (bf -> 0): the joined palms rise from the chest up the middle to
+    //   above the head, part, and the arms open out to the sides, level.
+    // Inhale (bf -> 1): the arms come down to the sides, the hands gather in
+    //   front of the belly, palms up, and rise together to the chest (prayer).
     eL_exhale = { x: 145, y: 210 };
     eL_inhale = { x: 178, y: 228 };
     hL_exhale = { x: 110, y: 210 };
@@ -330,6 +335,31 @@ export default function TaiChiHero({
     }
   }
 
+  if (movementType === "be-like-a-flower-5-5") {
+    const ease = (x: number) => { const c = Math.min(1, Math.max(0, x)); return c * c * (3 - 2 * c); };
+    const MID = 200 - HAND_W / 2;
+    const topY = sL.y - Math.sqrt(29 * 29 - (MID - sL.x) ** 2);
+    const polar = (deg: number, r: number): Pt => ({ x: sL.x + r * Math.cos((deg * Math.PI) / 180), y: sL.y + r * Math.sin((deg * Math.PI) / 180) });
+    const lerp = (a: Pt, b: Pt, k: number): Pt => ({ x: a.x + (b.x - a.x) * k, y: a.y + (b.y - a.y) * k });
+    if (!isRisePhase) {
+      const u = 1 - bf;
+      if (u < 0.35) {
+        hL_bezier = { x: MID, y: 212 + (topY - 212) * ease(u / 0.35) };
+      } else {
+        // Overhead they part and the arms swing out and down to level, from
+        // bent (above the head) to long.
+        const k = Math.min(1, (u - 0.35) / 0.6);
+        hL_bezier = polar(288 - 108 * ease(k), 29 + (REACH + 4 - 29) * ease(k / 0.5));
+      }
+    } else if (bf < 0.5) {
+      hL_bezier = polar(180 - 80 * ease(bf / 0.5), REACH + 4);
+    } else if (bf < 0.72) {
+      hL_bezier = lerp(polar(100, REACH), FLOWER_BELLY, ease((bf - 0.5) / 0.22));
+    } else {
+      hL_bezier = lerp(FLOWER_BELLY, { x: MID, y: 212 }, ease((bf - 0.72) / 0.28));
+    }
+  }
+
   // KINEMATICS: the arm has fixed, natural lengths (see UPPER_ARM, FOREARM).
   const prefUpper = UPPER_ARM;
   const prefLower = FOREARM;
@@ -339,7 +369,9 @@ export default function TaiChiHero({
   // upright as in prayer: near the centre line each hand eases to half a hand
   // from it (fully within 4 units, not at all beyond 18), with no jump.
   const near = Math.min(1, Math.max(0, (18 - Math.abs(hL.x - 200)) / 14));
-  const meetW = near * near * (3 - 2 * near);
+  // (Greeting the Infinite: in front of the belly the hands stay apart, palms up.)
+  const above = movementType === "be-like-a-flower-5-5" ? Math.min(1, Math.max(0, (231 - hL.y) / 16)) : 1;
+  const meetW = near * near * (3 - 2 * near) * above;
   hL.x += (200 - HAND_W / 2 - hL.x) * meetW;
   // At the chest they rest a little higher, in front of the breastbone, so the
   // sign on the heart stays in sight below them.
@@ -390,7 +422,42 @@ export default function TaiChiHero({
   // 5-5: the elbows always go out to the sides (as in the video), on the
   // outer side of the hand, so the forearms never cross.
   const outer = ePlus.x <= eMinus.x ? ePlus : eMinus;
-  let eL = movementType === "5-5" ? outer : keepElbowSide(ePlus, eMinus, cross >= 0 ? ePlus : eMinus, memo.current.eL);
+  let eL = movementType === "5-5" || movementType === "be-like-a-flower-5-5" ? outer : keepElbowSide(ePlus, eMinus, cross >= 0 ? ePlus : eMinus, memo.current.eL);
+  const outerElbow = (h: Pt): Pt => {
+    const d = Math.hypot(h.x - sL.x, h.y - sL.y);
+    const c = (prefUpper ** 2 + d * d - prefLower ** 2) / (2 * prefUpper * d);
+    const i = Math.acos(Math.max(-1, Math.min(1, c)));
+    const g = Math.atan2(h.y - sL.y, h.x - sL.x);
+    const p = at(g + i), m = at(g - i);
+    return p.x <= m.x ? p : m;
+  };
+  // Joined palms on the centre line between chest (0) and overhead (1): the
+  // elbows come forward (the upper arm seen shorter), so the forearm turns
+  // steadily from its line at the chest to its line overhead, out from the
+  // hand all the way: the forearms never cross.
+  const midlineElbow = (k: number): Pt => {
+    const MID = 200 - HAND_W / 2;
+    const wTop = { x: MID, y: sL.y - Math.sqrt(29 * 29 - (MID - sL.x) ** 2) };
+    const wChest = { x: MID, y: 207 };
+    const eTop = outerElbow(wTop), eChest = outerElbow(wChest);
+    const fTop = Math.atan2(eTop.y - wTop.y, eTop.x - wTop.x);
+    const fChest = Math.atan2(eChest.y - wChest.y, eChest.x - wChest.x);
+    const f = fChest + (fTop - fChest) * k;
+    return { x: hL.x + prefLower * Math.cos(f), y: hL.y + prefLower * Math.sin(f) };
+  };
+  if (movementType === "be-like-a-flower-5-5") {
+    const sm = (x: number) => { const c = Math.min(1, Math.max(0, x)); return c * c * (3 - 2 * c); };
+    if (!isRisePhase) {
+      // Up the middle, then out from the hand while the arms open (the
+      // elbow below the arm once it is level).
+      eL = 1 - bf < 0.35 ? midlineElbow(sm((1 - bf) / 0.35)) : eMinus;
+    } else {
+      // Coming down, the elbow rolls from below the arm to just out from it
+      // (seen for a moment in line with it), and stays out to the chest.
+      const roll = -1 + 2 * sm((bf - 0.25) / 0.25); // −1 → +1
+      eL = at(angleSH + roll * angleInterior);
+    }
+  }
   // 5-5 rise: hanging, the elbow is just out from the arm; as the arm comes up
   // to the side it turns smoothly to below it (the elbow rolls round, seen
   // for a moment in line with the arm), and stays out from there to the top.
@@ -403,24 +470,8 @@ export default function TaiChiHero({
   // forward (the upper arm seen shorter), so the forearm turns steadily from
   // its line overhead to its line at the chest, out from the hand all the way.
   if (movementType === "5-5" && !isRisePhase && 1 - bf < 0.65) {
-    const MID = 200 - HAND_W / 2;
-    const outerElbow = (h: Pt): Pt => {
-      const d = Math.hypot(h.x - sL.x, h.y - sL.y);
-      const c = (prefUpper ** 2 + d * d - prefLower ** 2) / (2 * prefUpper * d);
-      const i = Math.acos(Math.max(-1, Math.min(1, c)));
-      const g = Math.atan2(h.y - sL.y, h.x - sL.x);
-      const p = at(g + i), m = at(g - i);
-      return p.x <= m.x ? p : m;
-    };
-    const wTop = { x: MID, y: sL.y - Math.sqrt(29 * 29 - (MID - sL.x) ** 2) };
-    const wChest = { x: MID, y: 207 };
-    const eTop = outerElbow(wTop), eChest = outerElbow(wChest);
-    const fTop = Math.atan2(eTop.y - wTop.y, eTop.x - wTop.x);
-    const fChest = Math.atan2(eChest.y - wChest.y, eChest.x - wChest.x);
     const c = Math.min(1, (1 - bf) / 0.65);
-    const k = c * c * (3 - 2 * c);
-    const f = fTop + (fChest - fTop) * k;
-    eL = { x: hL.x + prefLower * Math.cos(f), y: hL.y + prefLower * Math.sin(f) };
+    eL = midlineElbow(1 - c * c * (3 - 2 * c));
   }
   memo.current.eL = eL;
 
@@ -469,8 +520,18 @@ export default function TaiChiHero({
   }
 
   // 5-5: a relaxed wrist; the hand goes on in the line of the forearm.
-  if (movementType === "5-5") {
+  if (movementType === "5-5" || movementType === "be-like-a-flower-5-5") {
     leftHandRotation = (Math.atan2(-(hL.x - eL.x), hL.y - eL.y) * 180) / Math.PI;
+  }
+
+  // Greeting the Infinite: gathered in front of the belly the palms face up,
+  // fingers pointing to each other (left hand: −95°); rising, they let go of
+  // that and close upright at the chest.
+  if (movementType === "be-like-a-flower-5-5" && isRisePhase) {
+    const sm = (x: number) => { const c = Math.min(1, Math.max(0, x)); return c * c * (3 - 2 * c); };
+    const w = sm((bf - 0.52) / 0.14) * (1 - sm((bf - 0.8) / 0.12));
+    const d = ((-95 - leftHandRotation) % 360 + 540) % 360 - 180;
+    leftHandRotation += d * w;
   }
 
   // Meeting palms turn upright, fingers up (180°), by the same measure.
