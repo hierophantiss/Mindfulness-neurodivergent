@@ -73,6 +73,24 @@ jobs:
           grep -q "versionCode $N" "$f"
           npx cap sync android
 
+      # R8 for release builds: unused Java code and resources out, names
+      # shortened (Play asks for it: "DEX code optimisation", at least 25%).
+      # Capacitor's own rules keep its plugins; the updater plugin brings none,
+      # so it is kept whole. Its map goes inside the AAB, so Play can still
+      # read crash reports.
+      - name: Shrink the release build (R8)
+        run: |
+          f=android/app/build.gradle
+          sed -i -E "s/minifyEnabled false/minifyEnabled true\n            shrinkResources true/; s/proguard-android\.txt/proguard-android-optimize.txt/" "$f"
+          grep -q "minifyEnabled true" "$f" && grep -q "shrinkResources true" "$f" && grep -q "proguard-android-optimize.txt" "$f"
+          cat >> android/app/proguard-rules.pro <<'RULES'
+
+          # The app's updates (Capgo): kept whole, it uses reflection and brings no rules.
+          -keep class ee.forgr.capacitor_updater.** { *; }
+          -dontwarn ee.forgr.capacitor_updater.**
+          RULES
+          sed -n '/buildTypes/,/^    }/p' "$f"
+
       # Every copy signed with the same key (the secret TEST_DEBUG_KEYSTORE, a
       # debug keystore as base64), so a new APK installs over the old one.
       # Without the secret, each run makes its own key, as before.
@@ -86,18 +104,22 @@ jobs:
           keytool -list -v -keystore "$k" -storepass android -alias androiddebugkey | grep -m1 'SHA256:'
           echo "TEST_KEYSTORE_FILE=$k" >> "$GITHUB_ENV"
 
-      # Gradle is told the key directly (it may not look in ~/.android).
+      # Gradle is told the key directly (it may not look in ~/.android). With
+      # the test key, the APK is a release build, with R8 as in the Play
+      # package, so the test copy shows what Play's users will get.
       - name: APK
         working-directory: android
         run: |
           if [ -n "$TEST_KEYSTORE_FILE" ]; then
-            ./gradlew assembleDebug --no-daemon \
+            ./gradlew assembleRelease --no-daemon \
               -Pandroid.injected.signing.store.file="$TEST_KEYSTORE_FILE" \
               -Pandroid.injected.signing.store.password=android \
               -Pandroid.injected.signing.key.alias=androiddebugkey \
               -Pandroid.injected.signing.key.password=android
+            echo "APK_FILE=android/app/build/outputs/apk/release/app-release.apk" >> "$GITHUB_ENV"
           else
             ./gradlew assembleDebug --no-daemon
+            echo "APK_FILE=android/app/build/outputs/apk/debug/app-debug.apk" >> "$GITHUB_ENV"
           fi
 
       # The package for Google Play (AAB), signed with the upload key: the
@@ -149,7 +171,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: mindfulness-android-${{ github.run_number }}
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: ${{ env.APK_FILE }}
           retention-days: 14
 
       # The test copy, to download straight onto a phone from the release page.
@@ -158,7 +180,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          cp android/app/build/outputs/apk/debug/app-debug.apk mindfulness-test.apk
+          cp "$APK_FILE" mindfulness-test.apk
           gh release view android-test >/dev/null 2>&1 || gh release create android-test --prerelease --title "Android app: test copy" --notes "A test copy of the Android app (its own id and name, next to the app from the store). Made by the Android workflow from the branch ${{ github.ref_name }}." --latest=false
           gh release upload android-test mindfulness-test.apk --clobber
 
