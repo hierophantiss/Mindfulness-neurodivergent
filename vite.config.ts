@@ -37,7 +37,7 @@ export default defineConfig(() => {
             options: { cacheName: 'week-pdf', expiration: { maxEntries: 12 } },
           }],
           navigateFallback: '/index.html',
-          navigateFallbackDenylist: [/\.(?:pdf|epub|json)$/, /^\/workbook_/, /^\/animations\//, /^\/audio\//, /^\/\.well-known\//],
+          navigateFallbackDenylist: [/\.(?:pdf|epub|json)$/, /^\/workbook_/, /^\/animations\//, /^\/audio\//, /^\/download\//, /^\/\.well-known\//],
           ignoreURLParametersMatching: [/^utm_/, /^fbclid$/, /^lang$/],
           maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
           cleanupOutdatedCaches: true,

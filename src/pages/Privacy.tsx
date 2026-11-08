@@ -46,7 +46,7 @@ const T: Record<'el' | 'en', { title: string; updated: string; short: string; bl
           'Βίντεο: στην Κουνελότρυπα και στο Καταφύγιο, οι εικόνες των βίντεο έρχονται από το YouTube, και τα βίντεο παίζουν από το YouTube, στη λειτουργία του χωρίς cookies παρακολούθησης. Όταν ανοίγεις αυτά τα βίντεο, το YouTube (Google) βλέπει τη διεύθυνση IP σου και ισχύει η δική του πολιτική απορρήτου.',
           'Ημερολόγιο: η υπενθύμιση (Ρυθμίσεις) είναι ένα αρχείο ημερολογίου που φτιάχνεται στη συσκευή και μπαίνει στο δικό σου ημερολόγιο. Αν διαλέξεις «Google Calendar», ανοίγει η σελίδα της Google με το γεγονός έτοιμο και ισχύει η δική της πολιτική απορρήτου.',
           'Email: αν γράψεις στον δημιουργό, το μήνυμα φεύγει από το δικό σου email και κρατιέται μόνο για να σου απαντήσει. Το «Τι θα άλλαζες;» προσθέτει στο τέλος μόνο το είδος της συσκευής (π.χ. Android) και αν η εφαρμογή είναι εγκατεστημένη· το βλέπεις πριν το στείλεις.',
-          'Η εφαρμογή Android: όλη η εφαρμογή είναι μέσα στο κινητό και δουλεύει χωρίς σύνδεση. Όταν υπάρχει σύνδεση, ρωτά μία φορά μόλις ανοίξει το GitHub αν υπάρχει νεότερη έκδοσή της και, αν ναι, την κατεβάζει. Δεν στέλνει τίποτα για σένα· ο ήχος των κεφαλαίων έρχεται από τον ιστότοπο, όπως παραπάνω.',
+          'Η εφαρμογή Android: όλη η εφαρμογή είναι μέσα στο κινητό και δουλεύει χωρίς σύνδεση. Όταν υπάρχει σύνδεση, ρωτά μία φορά μόλις ανοίξει το GitHub αν υπάρχει νεότερη έκδοσή της και, αν ναι, την κατεβάζει. Δεν στέλνει τίποτα για σένα· ο ήχος των κεφαλαίων έρχεται από τον ιστότοπο, όπως παραπάνω. Το αρχείο της εφαρμογής, αν την κατεβάσεις από τη σελίδα «Εγκατάσταση», έρχεται κι αυτό από το GitHub.',
         ],
       },
       {
@@ -121,7 +121,7 @@ const T: Record<'el' | 'en', { title: string; updated: string; short: string; bl
           'Videos: in the Rabbit Hole and the Sanctuary, the video pictures come from YouTube, and the videos play from YouTube, in its mode without tracking cookies. When you open these videos, YouTube (Google) sees your IP address and its own privacy policy applies.',
           'Calendar: the reminder (Settings) is a calendar file made on the device that goes into your own calendar. If you choose “Google Calendar”, Google’s page opens with the event ready and its own privacy policy applies.',
           'Email: if you write to the creator, the message goes from your own email and is kept only to reply to you. “What would you change?” adds at the end only the kind of device (e.g. Android) and whether the app is installed; you see it before sending.',
-          'The Android app: the whole app is on the phone and works without a connection. With a connection, it asks GitHub once after it opens whether there is a newer version and, if so, downloads it. It sends nothing about you; the chapters’ audio comes from the website, as above.',
+          'The Android app: the whole app is on the phone and works without a connection. With a connection, it asks GitHub once after it opens whether there is a newer version and, if so, downloads it. It sends nothing about you; the chapters’ audio comes from the website, as above. The app’s file, if you download it from the Install page, also comes from GitHub.',
         ],
       },
       {

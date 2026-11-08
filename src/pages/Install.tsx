@@ -30,6 +30,8 @@ const T = {
     installed: 'Η εφαρμογή είναι ήδη εγκατεστημένη σε αυτή τη συσκευή.',
     now: 'Εγκατάσταση τώρα',
     store: 'Λήψη από το Microsoft Store',
+    apk: 'Κατέβασε την εφαρμογή',
+    apkSize: 'APK · περίπου 12 MB',
     or: 'ή',
     sections: {
       windows: {
@@ -39,8 +41,9 @@ const T = {
       },
       android: {
         name: 'Κινητό ή tablet Android',
-        intro: 'Από το Chrome, σε λίγα δευτερόλεπτα.',
-        steps: ['Άνοιξε τον ιστότοπο στο Chrome.', 'Πάτα τις τρεις τελείες (⋮) πάνω δεξιά.', 'Πάτα «Εγκατάσταση εφαρμογής» ή «Προσθήκη στην αρχική οθόνη».', 'Στο Samsung Internet: το βελάκι λήψης στη γραμμή διεύθυνσης, ή Μενού → «Προσθήκη σελίδας σε» → «Αρχική οθόνη».'],
+        intro: 'Η εφαρμογή για Android, η ίδια με του Google Play: έχει μέσα όλο το περιεχόμενο, δουλεύει χωρίς σύνδεση και παίρνει μόνη της τις ενημερώσεις.',
+        steps: ['Πάτα «Κατέβασε την εφαρμογή» και άνοιξε το αρχείο όταν κατέβει (από την ειδοποίηση ή από τις Λήψεις).', 'Αν το κινητό ρωτήσει, επίτρεψε στον browser να εγκαθιστά εφαρμογές («Άγνωστες εφαρμογές» → «Να επιτρέπεται») και γύρνα πίσω.', 'Πάτα «Εγκατάσταση».'],
+        note: 'Αν το Play Protect ρωτήσει, είναι η ίδια εφαρμογή με του Google Play, υπογεγραμμένη από την Google. Θες χωρίς αρχείο; Άνοιξε τον ιστότοπο στο Chrome → τρεις τελείες (⋮) → «Εγκατάσταση εφαρμογής» (στο Samsung Internet: Μενού → «Προσθήκη σελίδας σε» → «Αρχική οθόνη»).',
       },
       ios: {
         name: 'iPhone ή iPad',
@@ -72,6 +75,8 @@ const T = {
     installed: 'The app is already installed on this device.',
     now: 'Install now',
     store: 'Get it from the Microsoft Store',
+    apk: 'Download the app',
+    apkSize: 'APK · about 12 MB',
     or: 'or',
     sections: {
       windows: {
@@ -81,8 +86,9 @@ const T = {
       },
       android: {
         name: 'Android phone or tablet',
-        intro: 'From Chrome, in a few seconds.',
-        steps: ['Open the site in Chrome.', 'Tap the three dots (⋮) at the top right.', 'Tap “Install app” or “Add to Home screen”.', 'In Samsung Internet: the download arrow in the address bar, or Menu → “Add page to” → “Home screen”.'],
+        intro: 'The Android app, the same as on Google Play: everything is inside it, it works offline and it updates itself.',
+        steps: ['Tap “Download the app” and open the file when it has downloaded (from the notification or from Downloads).', 'If the phone asks, let the browser install apps (“Unknown apps” → “Allow”) and go back.', 'Tap “Install”.'],
+        note: 'If Play Protect asks, it is the same app as on Google Play, signed by Google. Rather not use a file? Open the site in Chrome → the three dots (⋮) → “Install app” (in Samsung Internet: Menu → “Add page to” → “Home screen”).',
       },
       ios: {
         name: 'iPhone or iPad',
@@ -174,6 +180,18 @@ export default function Install() {
                 <Download size={17} aria-hidden="true" /> {t.store}
               </a>
             )}
+            {p === 'android' && (
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                {/* A plain link: the site's /download/android sends it on to the file. */}
+                <a
+                  href="/download/android"
+                  className="btn-gold inline-flex items-center gap-2 min-h-[46px] px-5 rounded-full text-[15px] font-medium"
+                >
+                  <Download size={17} aria-hidden="true" /> {t.apk}
+                </a>
+                <span className="text-[13px] text-ink/60">{t.apkSize}</span>
+              </div>
+            )}
             <ol className="flex flex-col gap-2 list-decimal pl-6 marker:text-ink/50">
               {s.steps.map(step => (
                 <li key={step} className="text-[15.5px] leading-relaxed text-ink/85 pl-1">{step}</li>
@@ -182,7 +200,7 @@ export default function Install() {
             {'note' in s && s.note && (
               <p className="text-[14px] leading-relaxed text-ink/70 border-l-2 border-white/15 pl-3">{s.note}</p>
             )}
-            {first && !installed && (p === 'android' || p === 'other' || p === 'mac' || p === 'windows') && (
+            {first && !installed && (p === 'other' || p === 'mac' || p === 'windows') && (
               <div className="flex flex-col gap-2">
                 <button
                   type="button"
