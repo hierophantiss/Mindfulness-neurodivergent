@@ -1,5 +1,5 @@
 import type { ReadLang } from './chapterReading';
-import { remote } from './native';
+import { isNative, remote } from './native';
 
 /**
  * The chapter audio: one MP3 per chapter, read by Sulafat, and a timing map
@@ -172,9 +172,13 @@ export async function downloadAllChapters(
   signal?: AbortSignal,
 ): Promise<{ ready: number; failed: number }> {
   setOffline(lang, true);
-  // Ask the browser not to clear it when space runs low (not Firefox, which asks with a window).
+  // Ask the browser not to clear it when space runs low (not Firefox, which asks
+  // with a window; not the Android app, whose files stay anyway). Never waited
+  // on for long: in some places the answer never comes.
   try {
-    if (!/firefox/i.test(navigator.userAgent)) await navigator.storage?.persist?.();
+    if (!isNative() && !/firefox/i.test(navigator.userAgent) && navigator.storage?.persist) {
+      await Promise.race([navigator.storage.persist(), new Promise((r) => setTimeout(r, 1500))]);
+    }
   } catch {
     /* fine without it */
   }
