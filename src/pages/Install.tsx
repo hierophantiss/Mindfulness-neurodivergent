@@ -22,6 +22,12 @@ function detectPlatform(): Platform {
   return 'other';
 }
 
+// The Android APK (Play's, signed by Google) is offered only when anyone can
+// use it: while the app is in Play's closed test, a copy from outside Play
+// sends the person to Play, where only testers can get it. On once a version
+// without Play's "Automatic protection" is up, or the app is public on Play.
+const APK_FOR_ALL = false;
+
 const T = {
   el: {
     title: 'Εγκατάσταση',
@@ -39,11 +45,16 @@ const T = {
         intro: 'Ο πιο απλός τρόπος είναι το Microsoft Store.',
         steps: ['Άνοιξε τη σελίδα της εφαρμογής στο Microsoft Store και πάτα «Λήψη».', 'Χωρίς το Store: άνοιξε τον ιστότοπο στο Edge ή στο Chrome και πάτα το εικονίδιο εγκατάστασης δεξιά στη γραμμή διεύθυνσης, ή Μενού (⋯ ή ⋮) → «Εφαρμογές» → «Εγκατάσταση».'],
       },
-      android: {
+      androidApk: {
         name: 'Κινητό ή tablet Android',
         intro: 'Η εφαρμογή για Android, η ίδια με του Google Play: έχει μέσα όλο το περιεχόμενο, δουλεύει χωρίς σύνδεση και παίρνει μόνη της τις ενημερώσεις.',
         steps: ['Πάτα «Κατέβασε την εφαρμογή» και άνοιξε το αρχείο όταν κατέβει (από την ειδοποίηση ή από τις Λήψεις).', 'Αν το κινητό ρωτήσει, επίτρεψε στον browser να εγκαθιστά εφαρμογές («Άγνωστες εφαρμογές» → «Να επιτρέπεται») και γύρνα πίσω.', 'Πάτα «Εγκατάσταση».'],
         note: 'Αν το Play Protect ρωτήσει, είναι η ίδια εφαρμογή με του Google Play, υπογεγραμμένη από την Google. Θες χωρίς αρχείο; Άνοιξε τον ιστότοπο στο Chrome → τρεις τελείες (⋮) → «Εγκατάσταση εφαρμογής» (στο Samsung Internet: Μενού → «Προσθήκη σελίδας σε» → «Αρχική οθόνη»).',
+      },
+      android: {
+        name: 'Κινητό ή tablet Android',
+        intro: 'Από το Chrome, σε λίγα δευτερόλεπτα.',
+        steps: ['Άνοιξε τον ιστότοπο στο Chrome.', 'Πάτα τις τρεις τελείες (⋮) πάνω δεξιά.', 'Πάτα «Εγκατάσταση εφαρμογής» ή «Προσθήκη στην αρχική οθόνη».', 'Στο Samsung Internet: το βελάκι λήψης στη γραμμή διεύθυνσης, ή Μενού → «Προσθήκη σελίδας σε» → «Αρχική οθόνη».'],
       },
       ios: {
         name: 'iPhone ή iPad',
@@ -84,11 +95,16 @@ const T = {
         intro: 'The simplest way is the Microsoft Store.',
         steps: ['Open the app’s page in the Microsoft Store and choose “Get”.', 'Without the Store: open the site in Edge or Chrome and click the install icon at the right of the address bar, or Menu (⋯ or ⋮) → “Apps” → “Install”.'],
       },
-      android: {
+      androidApk: {
         name: 'Android phone or tablet',
         intro: 'The Android app, the same as on Google Play: everything is inside it, it works offline and it updates itself.',
         steps: ['Tap “Download the app” and open the file when it has downloaded (from the notification or from Downloads).', 'If the phone asks, let the browser install apps (“Unknown apps” → “Allow”) and go back.', 'Tap “Install”.'],
         note: 'If Play Protect asks, it is the same app as on Google Play, signed by Google. Rather not use a file? Open the site in Chrome → the three dots (⋮) → “Install app” (in Samsung Internet: Menu → “Add page to” → “Home screen”).',
+      },
+      android: {
+        name: 'Android phone or tablet',
+        intro: 'From Chrome, in a few seconds.',
+        steps: ['Open the site in Chrome.', 'Tap the three dots (⋮) at the top right.', 'Tap “Install app” or “Add to Home screen”.', 'In Samsung Internet: the download arrow in the address bar, or Menu → “Add page to” → “Home screen”.'],
       },
       ios: {
         name: 'iPhone or iPad',
@@ -159,7 +175,8 @@ export default function Install() {
       </header>
 
       {order.map((p, i) => {
-        const s = t.sections[p];
+        const s = p === 'android' && APK_FOR_ALL ? t.sections.androidApk : t.sections[p];
+        const note = (s as { note?: string }).note;
         const first = i === 0;
         return (
           <section
@@ -180,7 +197,7 @@ export default function Install() {
                 <Download size={17} aria-hidden="true" /> {t.store}
               </a>
             )}
-            {p === 'android' && (
+            {p === 'android' && APK_FOR_ALL && (
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
                 {/* A plain link: the site's /download/android sends it on to the file. */}
                 <a
@@ -197,10 +214,10 @@ export default function Install() {
                 <li key={step} className="text-[15.5px] leading-relaxed text-ink/85 pl-1">{step}</li>
               ))}
             </ol>
-            {'note' in s && s.note && (
-              <p className="text-[14px] leading-relaxed text-ink/70 border-l-2 border-white/15 pl-3">{s.note}</p>
+            {note && (
+              <p className="text-[14px] leading-relaxed text-ink/70 border-l-2 border-white/15 pl-3">{note}</p>
             )}
-            {first && !installed && (p === 'other' || p === 'mac' || p === 'windows') && (
+            {first && !installed && ((p === 'android' && !APK_FOR_ALL) || p === 'other' || p === 'mac' || p === 'windows') && (
               <div className="flex flex-col gap-2">
                 <button
                   type="button"
