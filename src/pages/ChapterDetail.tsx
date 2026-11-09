@@ -527,25 +527,26 @@ export default function ChapterDetail() {
                     <h1 className="font-display text-4xl desk:text-6xl text-ink/90 leading-tight px-4">
                       {chapter.title}
                     </h1>
-                    <p className="text-lg desk:text-xl text-ink/50 leading-relaxed font-sans px-6 font-light mt-6">
+                    <p className="text-lg desk:text-xl text-ink/70 leading-relaxed font-sans px-6 mt-5">
                       {chapter.sub}
                     </p>
                   </div>
                 </div>
 
                 <div className="py-6 space-y-6 relative w-full text-left">
-                  <div className="space-y-4 text-center">
-                    <span className="text-[13px] font-medium text-teal-300/90 font-sans">
+                  <div className="space-y-3 text-left">
+                    <span className="block text-[14px] font-medium text-teal-300 font-sans">
                       {language === 'el' ? 'Σύνοψη' : 'Summary'}
                     </span>
-                    <p data-read-key="intro-summary" className={cn("text-left text-2xl desk:text-3xl text-ink/90 font-light leading-[1.6] tracking-tight", readClass(rs('intro-summary')))}>
+                    <p data-read-key="intro-summary" className={cn("text-[21px] desk:text-[26px] text-ink/90 leading-[1.55]", readClass(rs('intro-summary')))}>
                       {chapter.summary}
                     </p>
                   </div>
-                  
+
+                  {/* The chapter in one breath, on the line of the axis. */}
                   {chapter.tldr && (
-                    <div className="pt-8 border-t border-white/5 text-center text-ink/65 text-[15px] desk:text-base font-sans leading-relaxed block px-4">
-                      <div data-read-key="intro-tldr" className={readClass(rs('intro-tldr'))}>«{chapter.tldr}»</div>
+                    <div className="axis-line text-left text-ink/85 text-[17px] desk:text-[19px] font-sans leading-[1.65]" style={{ '--axis-line': chapter.color } as React.CSSProperties}>
+                      <div data-read-key="intro-tldr" className={readClass(rs('intro-tldr'))}>{chapter.tldr}</div>
                     </div>
                   )}
                 </div>
@@ -725,15 +726,17 @@ export default function ChapterDetail() {
             {/* In-content Navigation Buttons */}
             <div className="mt-8 pb-12 flex flex-col items-center gap-8">
               {page < pages.length - 1 ? (
+                // Says where it leads: the name of the next page, not only "Continue".
                 <button
                   onClick={handleNext}
-                  className="group flex flex-col items-center gap-4 transition-all duration-700"
+                  className="glass w-full max-w-md flex items-center gap-4 min-h-[68px] rounded-[22px] pl-5 pr-4 py-3 text-left hover:brightness-110 active:scale-[0.99] transition-[filter,transform]"
                 >
-                  <div className="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center group-hover:border-teal-500/50 group-hover:bg-teal-500/5 transition-all duration-700 group-active:scale-90 shadow-lg">
-                    <ChevronRight size={28} className="text-ink/20 group-hover:text-teal-400 transition-colors ml-1" />
-                  </div>
-                  <span className="text-[13px] font-medium text-ink/60 group-hover:text-teal-400 transition-colors">
-                    {language === 'el' ? 'Συνέχεια' : 'Continue'}
+                  <span className="flex-1 min-w-0 flex flex-col gap-0.5">
+                    <span className="text-[13px] text-ink/70">{language === 'el' ? 'Επόμενη σελίδα' : 'Next page'}</span>
+                    <span className="text-[16px] leading-snug text-ink">{chapterPageLabel(pages[page + 1], language === 'el' ? 'el' : 'en')}</span>
+                  </span>
+                  <span className="shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-white/[0.06] border border-white/10">
+                    <ChevronRight size={20} aria-hidden="true" className="text-ink/80" />
                   </span>
                 </button>
               ) : (

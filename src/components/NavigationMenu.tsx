@@ -138,7 +138,7 @@ export default function NavigationMenu() {
         <Link to="/" className="flex items-center gap-3 px-2 pb-6 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--tint-blue-mark)]">
           <MethodMark small dim={nightDim} className="w-10 h-10 shrink-0" />
           <span className="flex flex-col gap-[3px] min-w-0">
-            <span className="keep-font text-[12px] leading-tight tracking-[0.15em] uppercase text-sign-gold font-medium whitespace-nowrap">{el ? 'ΕΝΣΥΝΕΙΔΗΤΟΤΗΤΑ' : 'MINDFULNESS'}</span>
+            <span className="keep-font font-display text-[17px] leading-none text-sign-gold whitespace-nowrap">{el ? 'Ενσυνειδητότητα' : 'Mindfulness'}</span>
             <span className="text-[12.5px] leading-tight text-ink/70 whitespace-nowrap">{el ? 'Για νευροδιαφορετικούς' : 'For neurodivergents'}</span>
           </span>
         </Link>

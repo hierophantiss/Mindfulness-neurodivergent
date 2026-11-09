@@ -1,6 +1,6 @@
 import { AudioEnabler } from '../components/AudioEnabler';
 import React, { useState, useEffect, useMemo } from 'react';
-import { ArrowRight, BookOpen, Headphones, Info, Download, X } from 'lucide-react';
+import { ArrowRight, BookOpen, ChevronRight, Headphones, Info, Download, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useCompanion } from '../hooks/useCompanion';
@@ -44,7 +44,7 @@ function useChapters(lang: 'el' | 'en'): Chapter[] {
   [data, lang]);
 }
 
-const footerLinkClasses = "sky-text flex items-center gap-1.5 min-h-[44px] text-[12px] text-ink/60 hover:text-ink/80 transition-colors";
+const footerLinkClasses = "sky-text flex items-center gap-1.5 min-h-[44px] text-[14px] text-ink/75 hover:text-ink transition-colors";
 const bookPillClasses = "whitespace-nowrap px-4 py-2 rounded-full border border-[var(--tint-sand-line)] bg-[var(--tint-sand-bg)] text-[11px] text-ink/65 hover:text-ink/80 hover:bg-white/[0.06] transition-colors";
 
 const getDateString =(date: Date): string => {
@@ -174,7 +174,7 @@ export default function Dashboard() {
     ...(!evening ? [{ key: 'journal', to: '/journal', title: el ? 'Ημερολόγιο' : 'Journal', sub: el ? 'Δυο γραμμές για σήμερα' : 'Two lines for today', ink: 'var(--tint-rose-ink)', icon: ICONS.notebook }] : []),
     ...(hasRead ? [{ key: 'read', onClick: () => setSheetVisible(true), title: el ? 'Τι έχεις διαβάσει' : 'What you have read', sub: el ? 'Τα κεφάλαια και οι σελίδες σου' : 'Your chapters and pages', ink: 'var(--axis-breath-ink)', icon: ICONS.bookmark }] : []),
   ];
-  const shelfCard = "glass shrink-0 w-[148px] h-[126px] snap-start flex flex-col gap-[7px] p-3.5 rounded-[20px] text-left hover:brightness-110 transition-[filter,transform] active:scale-[0.98] desk:w-auto desk:h-auto desk:min-h-[96px] desk:flex-row desk:items-start desk:gap-4 desk:p-5 desk:rounded-[24px] desk:hover:-translate-y-0.5";
+  const shelfCard = "flex items-center gap-3.5 min-h-[64px] px-4 py-3 text-left hover:bg-white/[0.04] transition-colors active:bg-white/[0.06] desk:min-h-[96px] desk:items-start desk:gap-4 desk:p-5 desk:rounded-[24px] desk:hover:bg-transparent desk:hover:brightness-110 desk:transition-[filter,transform] desk:hover:-translate-y-0.5";
   const sectionTitle = "sky-text text-[15px] font-normal text-ink/90 desk:font-display desk:text-[27px] desk:text-ink";
   // The key line of the chapter you are in (once the chapters have loaded), for the wide guide card.
   const guideLine = !finishedGuide ? (spot.chapter?.insight || '') : '';
@@ -194,10 +194,10 @@ export default function Dashboard() {
               <MethodMark small breathe dim={nightDim} className="w-[30px] h-[30px]" />
             </Link>
             <span className="flex flex-col min-w-0 gap-0.5">
-              <span className="keep-font sky-text text-[12px] leading-tight tracking-[0.16em] max-[374px]:tracking-[0.1em] uppercase text-sign-gold font-medium whitespace-nowrap">
-                {el ? 'ΕΝΣΥΝΕΙΔΗΤΟΤΗΤΑ' : 'MINDFULNESS'}
+              <span className="keep-font sky-text font-display text-[18px] leading-none text-sign-gold whitespace-nowrap">
+                {el ? 'Ενσυνειδητότητα' : 'Mindfulness'}
               </span>{' '}
-              <span className="sky-text text-[12px] leading-tight text-ink/70">
+              <span className="sky-text text-[13px] leading-tight text-ink/70">
                 {el ? 'Για νευροδιαφορετικούς' : 'For neurodivergents'}
               </span>
             </span>
@@ -221,16 +221,16 @@ export default function Dashboard() {
 
         {/* First visit only: a small welcome, high up where a newcomer looks. Once seen or put away, it is gone. */}
         {showWelcome && (
-          <div className="mt-5 flex items-start gap-3 rounded-[24px] desk:rounded-[28px] desk:max-w-[760px] bg-[var(--tint-sage-bg)] border border-[var(--tint-sage-line)] pl-[18px] pr-2 pt-3.5 pb-4 desk:mt-7 desk:pl-7 desk:pr-4 desk:py-5">
+          <div className="glass mt-5 flex items-start gap-3 rounded-[24px] desk:rounded-[28px] desk:max-w-[760px] pl-[18px] pr-2 pt-3.5 pb-4 desk:mt-7 desk:pl-7 desk:pr-4 desk:py-5">
           <div className="flex-1 min-w-0">
-            <p className="text-[14px] leading-snug text-ink/90">
+            <p className="text-[15px] leading-snug text-ink/90">
               <span className="font-medium">{el ? 'Καλώς ήρθες.' : 'Welcome.'}</span>{' '}
               {el ? 'Το μυαλό σου δεν είναι χαλασμένο, απλώς λειτουργεί αλλιώς.' : 'Your mind isn’t broken, it just works differently.'}
             </p>
             <button
               onClick={openWelcome}
               aria-label={el ? 'Γνώρισε την εφαρμογή · 3 κάρτες' : 'Get to know the app · 3 cards'}
-              className="mt-2.5 min-h-[44px] inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-4 bg-[var(--tint-sage-hi)] border border-[var(--tint-sage-line)] text-[13px] text-ink/85 hover:text-ink transition-colors"
+              className="btn-soft mt-3 !min-h-[44px] !text-[14px]"
             >
               {el ? 'Γνώρισε την εφαρμογή' : 'Get to know the app'}
               <span className="text-ink/70 max-[359px]:hidden">· {el ? '3 κάρτες' : '3 cards'}</span>
@@ -329,17 +329,18 @@ export default function Dashboard() {
           {/* More: everything else in the app. */}
           <motion.section variants={itemVariants} aria-labelledby="home-more-title" className="mt-[26px] desk:mt-11">
             <h2 id="home-more-title" className={sectionTitle}>{el ? 'Περισσότερα' : 'More'}</h2>
-            <div className="mt-3 -mx-[22px] px-[22px] pb-1 flex gap-2.5 overflow-x-auto snap-x snap-mandatory scroll-px-[22px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden desk:mt-4 desk:mx-0 desk:px-0 desk:grid desk:grid-cols-3 desk:gap-3.5 desk:overflow-visible">
+            <div className="glass shelf-list mt-3 flex flex-col desk:mt-4 desk:grid desk:grid-cols-3 desk:gap-3.5">
               {shelf.map(item => {
                 const body = (
                   <>
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0 desk:w-[26px] desk:h-[26px] desk:mt-0.5" style={{ color: item.ink, filter: `drop-shadow(0 0 5px color-mix(in srgb, ${item.ink} 50%, transparent))` }}>
                       <path d={item.icon} />
                     </svg>
-                    <span className="mt-auto flex flex-col gap-[7px] min-w-0 desk:mt-0 desk:gap-1">
-                      <span className="text-[14.5px] leading-[1.25] text-ink desk:text-[16.5px]">{item.title}</span>
-                      <span className="text-[12px] leading-[1.35] text-ink/65 line-clamp-2 desk:text-[13.5px] desk:leading-[1.45]">{item.sub}</span>
+                    <span className="flex-1 flex flex-col gap-0.5 min-w-0 desk:gap-1">
+                      <span className="text-[15.5px] leading-[1.3] text-ink desk:text-[16.5px]">{item.title}</span>
+                      <span className="text-[13.5px] leading-[1.4] text-ink/70 desk:leading-[1.45]">{item.sub}</span>
                     </span>
+                    <ChevronRight size={18} aria-hidden="true" className="shrink-0 text-ink/40 desk:hidden" />
                   </>
                 );
                 return item.to
@@ -378,7 +379,7 @@ export default function Dashboard() {
             <button
               onClick={() => setBookOpen(o => !o)}
               aria-expanded={bookOpen}
-              className={cn(footerLinkClasses, bookOpen && "text-ink/60")}
+              className={cn(footerLinkClasses, bookOpen && "text-ink")}
             >
               <BookOpen size={12} />
               <span>{language === 'el' ? 'Το βιβλίο' : 'The book'}</span>
