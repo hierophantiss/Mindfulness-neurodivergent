@@ -312,7 +312,7 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                   </a>
                   <a
                     href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(content.contact.subject[l])}`}
-                    className="inline-flex items-center gap-2 px-5 min-h-[44px] rounded-full bg-white/[0.05] border border-white/[0.12] text-[13px] text-ink/85 hover:bg-white/[0.09] transition-colors"
+                    className="btn-soft"
                   >
                     <Mail size={15} className="text-ink/60" />
                     {content.contact.button[l]}

@@ -305,7 +305,7 @@ export default function ProgramWeek() {
             onClick={goPrevStep}
             aria-label={language === 'el' ? 'Πίσω' : 'Back'}
             disabled={activeStep === 0}
-            className="flex h-12 px-5 rounded-xl bg-white/5 border border-white/5 items-center justify-center gap-2 text-ink/50 disabled:opacity-0 disabled:cursor-not-allowed hover:bg-white/[0.08] hover:text-ink/90 transition-all duration-300 active:scale-95 font-medium text-sm backdrop-blur-sm"
+            className="btn-soft !px-4 disabled:!opacity-0"
           >
             <ChevronLeft size={18} />
             <span className="hidden sm:inline">{language === 'el' ? 'Πίσω' : 'Back'}</span>
@@ -327,7 +327,7 @@ export default function ProgramWeek() {
           ) : (
             <button
               onClick={goNextStep}
-              className="flex h-12 px-6 rounded-xl items-center justify-center gap-2 transition-all duration-300 active:scale-95 font-bold text-sm bg-teal-500/10 text-teal-300 border border-teal-500/30 hover:bg-teal-500/20 shadow-sm"
+              className="btn-main"
             >
               {language === 'el' ? 'Συνέχεια' : 'Next'}
               <ChevronRight size={18} />

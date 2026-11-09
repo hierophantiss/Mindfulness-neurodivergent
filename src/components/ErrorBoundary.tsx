@@ -46,7 +46,7 @@ export class ErrorBoundary extends Component<Props, State> {
         <div className="flex gap-3">
           <button
             onClick={() => window.location.reload()}
-            className="min-h-[44px] px-5 rounded-full bg-white/[0.08] border border-white/15 text-[14px] text-ink/90 hover:bg-white/[0.12]"
+            className="btn-soft"
           >
             {el ? 'Ξαναφόρτωσε' : 'Reload'}
           </button>

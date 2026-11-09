@@ -159,7 +159,7 @@ export function WeekSheetCard({ lang }: { lang: Lang }) {
       </div>
 
       <div className="flex flex-col desk:flex-row desk:items-center gap-3">
-        <button type="button" onClick={download} disabled={busy} aria-busy={busy} className="btn-gold self-start inline-flex items-center gap-2 min-h-[46px] px-5 rounded-full text-[15px] font-medium disabled:opacity-70">
+        <button type="button" onClick={download} disabled={busy} aria-busy={busy} className="btn-main self-start disabled:!opacity-70">
           <Download size={17} aria-hidden="true" /> {busy ? t.busy : t.download}
         </button>
         <span className="text-[12px] leading-relaxed text-ink/45">{t.local}</span>

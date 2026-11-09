@@ -186,7 +186,7 @@ export default function Install() {
                 href={MICROSOFT_STORE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-gold self-start inline-flex items-center gap-2 min-h-[46px] px-5 rounded-full text-[15px] font-medium"
+                className="btn-main self-start"
               >
                 <Download size={17} aria-hidden="true" /> {t.store}
               </a>
@@ -196,7 +196,7 @@ export default function Install() {
                 {/* A plain link: the site's /download/android sends it on to the file. */}
                 <a
                   href="/download/android"
-                  className="btn-gold inline-flex items-center gap-2 min-h-[46px] px-5 rounded-full text-[15px] font-medium"
+                  className="btn-main"
                 >
                   <Download size={17} aria-hidden="true" /> {t.apk}
                 </a>
@@ -216,7 +216,7 @@ export default function Install() {
                 <button
                   type="button"
                   onClick={async () => setHint(await install())}
-                  className="self-start inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full border border-white/15 bg-white/[0.04] text-[14.5px] text-ink/90 hover:bg-white/[0.08] transition-colors"
+                  className="btn-soft self-start"
                 >
                   {p === 'windows' ? `${t.or} ${t.now.toLowerCase()}` : t.now}
                 </button>
@@ -234,7 +234,7 @@ export default function Install() {
         <button
           type="button"
           onClick={share}
-          className="self-start inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full border border-white/15 bg-white/[0.04] text-[14.5px] text-ink/90 hover:bg-white/[0.08] transition-colors"
+          className="btn-soft self-start"
         >
           {copied ? <Check size={16} aria-hidden="true" /> : <Share2 size={16} aria-hidden="true" />}
           {copied ? t.copied : t.share}

@@ -832,20 +832,20 @@ export default function PracticeBreath() {
          <button
            onClick={(e) => { e.stopPropagation(); handleStartToggle(); }}
            className={cn(
-             "flex-1 h-9 rounded-full flex items-center justify-center gap-2 transition-all duration-300 shadow-sm z-20 focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 active:scale-95",
+             "flex-1 z-20 !text-[14px] focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400",
              running 
-               ? "bg-zinc-800 border border-zinc-700 text-amber-200" 
-               : "bg-zinc-700 border border-teal-700/50 text-ink"
+               ? "btn-soft" 
+               : "btn-main"
            )}
          >
            {running ? (
              <>
-               <Square size={12} className="fill-amber-200/20" />
+               <Square size={12} className="fill-current opacity-60" />
                <span className="text-[13px] font-medium mt-0.5 opacity-80">{language === 'el' ? 'Παύση' : 'Pause'}</span>
              </>
            ) : (
              <>
-               <Play size={14} className="ml-0.5 fill-white" />
+               <Play size={14} className="ml-0.5 fill-current" />
                <span className="text-[13px] font-medium mt-0.5">{language === 'el' ? 'Ξεκίνα' : 'Start'}</span>
              </>
            )}
@@ -862,7 +862,7 @@ export default function PracticeBreath() {
                setPhaseIdx(0); 
                setPhase(pattern.labels[0]); 
              }}
-             className="flex-1 h-9 rounded-full bg-teal-500/20 border border-teal-500/40 flex items-center justify-center gap-2 text-teal-300 hover:bg-teal-500/30 transition-all duration-300 active:scale-95 shadow-[0_0_15px_rgba(95,143,214,0.15)]"
+             className="btn-soft flex-1 !text-[14px] !border-[var(--tint-blue-line)] !text-[var(--tint-blue-ink)]"
            >
              <Check size={14} />
              <span className="text-[13px] font-medium mt-0.5">{language === 'el' ? 'Ολοκλήρωση' : 'Complete'}</span>
@@ -876,7 +876,7 @@ export default function PracticeBreath() {
               setPhaseIdx(0); 
               setPhase(pattern.labels[0]); 
             }}
-             className="flex-1 h-9 rounded-full bg-transparent border border-zinc-700/60 flex items-center justify-center gap-2 text-zinc-400 hover:text-ink hover:bg-zinc-800/50 transition-all duration-300 active:scale-95"
+             className="btn-soft flex-1 !text-[14px] !bg-transparent"
            >
              <X size={14} />
              <span className="text-[13px] font-medium mt-0.5 opacity-90">{language === 'el' ? 'Επαναφορά' : 'Reset'}</span>
@@ -898,7 +898,7 @@ export default function PracticeBreath() {
             </h2>
             
             <p className="text-zinc-200 text-xs md:text-sm text-center leading-relaxed mb-6">
-              {language === 'el' ? 'Επιλέξτε μετά από πόση ώρα θέλετε να σταματήσει η εφαρμογή.' : 'Select when you want the application to stop.'}
+              {language === 'el' ? 'Διάλεξε μετά από πόση ώρα θέλεις να σταματήσει η εφαρμογή.' : 'Select when you want the application to stop.'}
             </p>
 
             <div className="grid grid-cols-3 gap-3 mb-6">

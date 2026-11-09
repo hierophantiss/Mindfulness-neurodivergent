@@ -138,7 +138,7 @@ const axisInfo = {
     color: 'text-[var(--axis-body-ink)]', 
     borderColor: 'border-[var(--color-axis-body)]/30',
     bgColor: 'bg-[var(--color-axis-body)]/15',
-    desc: { en: 'Practices that root you down and build somatic awareness.', el: 'Πρακτικές που σας γειώνουν και χτίζουν σωματική επίγνωση.' } 
+    desc: { en: 'Practices that root you down and build somatic awareness.', el: 'Πρακτικές που σε γειώνουν και χτίζουν σωματική επίγνωση.' } 
   },
   breath: { 
     icon: '○', 
@@ -813,7 +813,7 @@ const axisInfo = {
             
             <p className="text-ink/60 text-center mb-8 font-sans leading-relaxed text-[15px]">
               {language === 'el' 
-                ? 'Οι πρακτικές εξάσκησης των τεσσάρων στοιχείων είναι πιο αποτελεσματικές αν έχετε ήδη διαβάσει κάποια βασικά στοιχεία. Σας προτείνουμε να διαβάσετε το 1ο Κεφάλαιο του Εγχειριδίου πριν ξεκινήσετε.'
+                ? 'Οι πρακτικές των τεσσάρων αξόνων βοηθούν περισσότερο αν έχεις ήδη διαβάσει τα βασικά. Καλό είναι να διαβάσεις πρώτα το 1ο Κεφάλαιο του Εγχειριδίου.'
                 : 'Mental exercises are more effective with a foundation. We recommend reading Chapter 1 of the Workbook before you begin.'}
             </p>
             

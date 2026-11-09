@@ -197,7 +197,7 @@ export default function Settings() {
             action: () => {
               downloadBackup();
               setLastBackup(lastBackupDate());
-              alert(language === 'el' ? 'Τα δεδομένα σας αποθηκεύτηκαν σε αρχείο.' : 'Your data has been saved to a file.');
+              alert(language === 'el' ? 'Τα δεδομένα σου αποθηκεύτηκαν σε αρχείο.' : 'Your data has been saved to a file.');
             },
             color: 'text-indigo-400'
           },
@@ -253,7 +253,7 @@ export default function Settings() {
             label: { el: 'Διαγραφή Δεδομένων', en: 'Clear Data' },
             value: null,
             action: () => {
-                if (confirm(language === 'el' ? 'Είστε σίγουροι; Όλες οι καταγραφές θα διαγραφούν.' : 'Are you sure? All records will be deleted.')) {
+                if (confirm(language === 'el' ? 'Είσαι σίγουρος; Όλες οι καταγραφές θα διαγραφούν.' : 'Are you sure? All records will be deleted.')) {
                     localStorage.clear();
                     window.location.href = '/';
                 }

@@ -167,7 +167,7 @@ export default function Method() {
                 </div>
                 <Link
                   to={`/practice?axis=${axis.id}`}
-                  className="mt-auto w-full py-3 px-4 rounded-xl bg-teal-500/10 hover:bg-teal-500/20 text-teal-300 transition-all text-sm font-semibold text-center border border-teal-500/20 active:scale-[0.98]"
+                  className="btn-soft mt-auto w-full"
                 >
                   {t.axesButton}
                 </Link>

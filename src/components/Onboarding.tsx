@@ -115,7 +115,7 @@ export default function Onboarding({ onClose }: { onClose: () => void }) {
       <div className="flex justify-end p-4 md:p-6 z-10 relative gap-3">
         <button 
           onClick={() => setLanguage(language === 'en' ? 'el' : 'en')}
-          className="text-ink/70 hover:text-ink border border-white/15 hover:bg-white/5 transition-all text-[12px] font-medium py-2 px-4 rounded-full min-h-[44px] min-w-[44px]"
+          className="btn-soft !min-h-[44px] !px-4 !text-[13px]"
           aria-label={language === 'en' ? 'ΕΛ, Ελληνικά' : 'EN, English'}
           lang={language === 'en' ? 'el' : 'en'}
         >

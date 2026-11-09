@@ -95,7 +95,7 @@ export default function ChapterReaderBar(p: Props) {
               <button
                 type="button"
                 onClick={p.onStart}
-                className="h-11 px-4 rounded-full bg-[#1a1d27]/90 backdrop-blur-xl border border-white/10 text-ink/60 text-sm font-sans hover:text-ink/90 transition-colors"
+                className="btn-soft !bg-[var(--color-surface)] !text-[14px]"
               >
                 {t.fromHere}
               </button>

@@ -163,7 +163,7 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
                   {sos && (
                     <Link
                       to={sos.path}
-                      className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl border text-[14px] bg-[#2a1820] border-rose-500/25 text-rose-300 hover:bg-[#351d28] transition-colors active:scale-[0.98]"
+                      className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl border text-[14px] bg-[var(--tint-rose-bg)] border-[var(--tint-rose-line)] text-[var(--tint-rose-ink)] hover:bg-[var(--tint-rose-hi)] transition-colors active:scale-[0.98]"
                     >
                       <span className="min-w-0">{sos.title[lang]}</span>
                       <ArrowRight size={15} className="opacity-60" />
@@ -226,7 +226,7 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
                           className={cn(
                             "flex items-center justify-between gap-3 px-4 py-3 rounded-xl border text-[14px] transition-colors active:scale-[0.98]",
                             a.path === SOS_PATH
-                              ? "bg-[#2a1820] border-rose-500/25 text-rose-300 hover:bg-[#351d28]"
+                              ? "bg-[var(--tint-rose-bg)] border-[var(--tint-rose-line)] text-[var(--tint-rose-ink)] hover:bg-[var(--tint-rose-hi)]"
                               : "bg-white/[0.05] border-white/[0.06] text-ink/75 hover:bg-white/[0.12]"
                           )}
                         >

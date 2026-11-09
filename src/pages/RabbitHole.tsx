@@ -400,7 +400,7 @@ export default function RabbitHole() {
             <p className="text-[#d4d4d8]/70 text-sm md:text-[15px] leading-relaxed line-clamp-3 relative z-10 font-medium">
               {language === 'en' 
                 ? "Dive into the allegorical framework that structures the practice. Understanding how the mind wanders and returns."
-                : "Εξερευνήστε το αλληγορικό πλαίσιο που δομεί την πρακτική. Πώς ο νους περιπλανάται και πώς επιστρέφει."}
+                : "Εξερεύνησε το αλληγορικό πλαίσιο που δομεί την πρακτική. Πώς ο νους περιπλανάται και πώς επιστρέφει."}
             </p>
             <div className="mt-6 pt-5 border-t border-white/5 flex justify-between items-center text-teal-400/80 font-medium text-[13px] md:text-sm relative z-10 group-hover:text-teal-300 transition-colors">
               <span className="flex items-center gap-2">
@@ -657,7 +657,7 @@ export default function RabbitHole() {
                                </button>
                                <button 
                                  onClick={() => setMantraStep((prev) => (prev < (desc.mantra ? desc.mantra.length - 1 : 0) ? prev + 1 : 0))}
-                                 className="px-8 h-12 rounded-full bg-teal-500 text-black font-medium text-[12px] hover:bg-teal-400 transition-all active:scale-95 shadow-lg shadow-teal-500/20"
+                                 className="btn-main px-8"
                                >
                                  {language === 'el' ? 'Επόμενο' : 'Next'}
                                </button>

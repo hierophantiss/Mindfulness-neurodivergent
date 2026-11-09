@@ -27,7 +27,7 @@ export default function OpenAwareness() {
       thoughtWords: ['σκέψη', 'ανησυχία', 'σχέδιο', 'θυμός', 'χαρά', 'φόβος', 'ανάμνηση', 'προσδοκία', 'κρίση', 'επιθυμία'],
       introTitle: 'Χώρος',
       introSub: 'Ανοιχτή Επίγνωση — Από την εστίαση στον ανοιχτό ουρανό',
-      introHint: '▶ Ξεκινήστε'
+      introHint: '▶ Ξεκίνα'
     },
     en: {
       scenes: [

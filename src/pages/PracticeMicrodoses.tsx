@@ -156,7 +156,7 @@ export default function PracticeMicrodoses() {
         
         <Link 
           to={suggestedExercise.link}
-          className="relative z-10 w-full md:w-auto btn-zen !px-6 !py-3 bg-teal-500/10 border-teal-400/30 text-teal-300 hover:bg-teal-500 hover:text-ink hover:shadow-[0_0_20px_rgba(95,143,214,0.25)] transition-all duration-300 text-center text-[13px] font-medium whitespace-nowrap shrink-0"
+          className="btn-main relative z-10 w-full shrink-0"
         >
           {language === 'el' ? 'Έναρξη Άσκησης' : 'Start Practice'}
         </Link>
@@ -184,7 +184,7 @@ export default function PracticeMicrodoses() {
             { 
               id: 'seated', 
               label: { el: 'Σταθερότητα & Κάθισμα', en: 'Seated & Grounded' }, 
-              desc: { el: 'Βαθιά γείωση, ιδανικές για όταν κάθεστε ή είστε στο σπίτι', en: 'Deeper relaxation while sitting comfortably' },
+              desc: { el: 'Βαθιά γείωση, ιδανική για όταν κάθεσαι ή είσαι στο σπίτι', en: 'Deeper relaxation while sitting comfortably' },
               color: 'indigo'
             },
             { 

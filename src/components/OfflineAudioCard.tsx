@@ -46,7 +46,7 @@ const T = {
   },
 };
 
-const btn = 'inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full border border-white/15 bg-white/[0.04] text-[14px] text-ink/90 hover:bg-white/[0.08] transition-colors';
+const btn = 'btn-soft self-start';
 
 export function OfflineAudioCard({ lang }: { lang: ReadLang }) {
   const t = T[lang];

@@ -60,11 +60,11 @@ export default function NavigationMenu() {
       }
     } else if (isIframe) {
        showToast(language === 'el'
-         ? 'Ανοίξτε σε νέο παράθυρο για εγκατάσταση.'
+         ? 'Άνοιξέ το σε νέο παράθυρο για εγκατάσταση.'
          : 'Open the app in a new tab to enable installation.');
     } else if (isIOS) {
       showToast(language === 'el' 
-        ? 'Εγκατάσταση: Πατήστε «Κοινοποίηση» ⎋ και «Προσθήκη στην Οθόνη Αφετηρίας» ⊞.' 
+        ? 'Εγκατάσταση: πάτα «Κοινοποίηση» ⎋ και «Προσθήκη στην Οθόνη Αφετηρίας» ⊞.' 
         : 'Install Web App: Tap “Share” ⎋ and then “Add to Home Screen” ⊞.');
     } else {
       const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone;
@@ -74,8 +74,8 @@ export default function NavigationMenu() {
         const isSamsungBrowser = navigator.userAgent.includes('SamsungBrowser');
         showToast(language === 'el' 
           ? isSamsungBrowser
-             ? 'Samsung Internet: Πατήστε το εικονίδιο λήψης (βέλος) στη γραμμή διεύθυνσης ή «Προσθήκη σελίδας σε» > «Αρχική οθόνη» από το μενού.'
-             : 'Εγκατάσταση: Πατήστε τις 3 τελείες (Μενού Chrome) και μετά «Εγκατάσταση εφαρμογής» ή «Προσθήκη στην αρχική οθόνη».' 
+             ? 'Samsung Internet: πάτα το εικονίδιο λήψης (βέλος) στη γραμμή διεύθυνσης ή «Προσθήκη σελίδας σε» > «Αρχική οθόνη» από το μενού.'
+             : 'Εγκατάσταση: πάτα τις 3 τελείες (Μενού Chrome) και μετά «Εγκατάσταση εφαρμογής» ή «Προσθήκη στην αρχική οθόνη».' 
           : isSamsungBrowser
              ? 'Samsung Internet: Tap the download icon in URL bar or “Add page to” > “Home screen” from menu.'
              : 'Installation: Tap the 3 dots (Chrome Menu) and select “Install app”.');
@@ -395,7 +395,7 @@ export default function NavigationMenu() {
                       </div>
                       <div className="flex flex-col">
                         <span className="text-sm font-medium text-zinc-200">
-                          {language === 'en' ? 'Your Data' : 'Τα Δεδομένα σας'}
+                          {language === 'en' ? 'Your Data' : 'Τα δεδομένα σου'}
                         </span>
                         <span className="text-[10px] text-zinc-400">
                           {language === 'en' ? 'Save or restore progress' : 'Αποθήκευση ή επαναφορά προόδου'}
@@ -469,7 +469,7 @@ export default function NavigationMenu() {
                           <span className="text-xs font-medium text-red-200">
                             {language === 'en' 
                               ? 'Are you sure? This will delete all your progress and history.' 
-                              : 'Είστε σίγουροι; Αυτή η ενέργεια θα διαγράψει όλη την πρόοδο και το ιστορικό σας.'}
+                              : 'Είσαι σίγουρος; Αυτό θα διαγράψει όλη την πρόοδο και το ιστορικό σου.'}
                           </span>
                           <div className="flex justify-end gap-2">
                              <button
