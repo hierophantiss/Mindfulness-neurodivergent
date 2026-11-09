@@ -18,6 +18,7 @@ import { phraseOfDay } from '../data/affirmations';
 import { readRecentCheckinState } from '../data/stateCheckin';
 import { MethodMark } from '../components/MethodMark';
 import { useInstallApp } from '../hooks/useInstallApp';
+import { PLACE_PATHS } from '../components/placeIcons';
 import HomeCheckin from '../components/HomeCheckin';
 import BackupReminder from '../components/BackupReminder';
 import { welcomeSeen, markWelcomeSeen, openWelcome } from '../lib/welcome';
@@ -156,22 +157,23 @@ export default function Dashboard() {
   const evening = hour >= 18 || hour < 5;
   type ShelfItem = { key: string; to?: string; onClick?: () => void; title: string; sub: string; ink: string; icon: string };
   const ICONS = {
-    spark: 'M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6',
+    drop: PLACE_PATHS.drop,
     moon: 'M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z',
-    calendar: 'M4 6h16v14H4zM4 10h16M9 3v5M15 3v5',
+    sprout: PLACE_PATHS.sprout,
+    waves: PLACE_PATHS.waves,
     book: 'M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z',
-    telescope: 'M10 14 4 20M14 14l6 6M12 13v8M3 9.5l13-6 2 4.5-13 6zM18 7.5l3-1.4',
-    notebook: 'M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM9 8h6M9 12h6',
+    spiral: PLACE_PATHS.spiral,
+    quill: PLACE_PATHS.quill,
     bookmark: 'M6 3h12v18l-6-4-6 4z',
   };
   const shelf: ShelfItem[] = [
     ...(evening ? [{ key: 'close', to: '/journal', title: el ? 'Κλείσιμο της μέρας' : 'Closing the day', sub: el ? 'Τι κουβαλάς ακόμα από σήμερα;' : 'What are you still carrying from today?', ink: 'var(--tint-lav-ink)', icon: ICONS.moon }] : []),
-    { key: 'micro', to: '/practice/microdoses', title: el ? 'Μικροδόσεις' : 'Microdoses', sub: el ? 'Ασκήσεις λίγων δευτερολέπτων, που δεν φαίνονται' : 'Practices of a few seconds, unseen by others', ink: 'var(--axis-attention-ink)', icon: ICONS.spark },
-    { key: 'sanctuary', to: '/sanctuary', title: el ? 'Καταφύγιο' : 'Sanctuary', sub: el ? 'Βροχή, ωκεανός, ήχοι για ύπνο και ηρεμία' : 'Rain, ocean, sounds for sleep and calm', ink: 'var(--tint-lav-ink)', icon: ICONS.moon },
-    { key: 'program', to: '/program', title: el ? 'Πρόγραμμα 8 εβδομάδων' : '8-week Program', sub: completedLessons > 0 ? (el ? `Μία μικρή πρακτική τη μέρα · ${lessonProgressPct}%` : `One small practice a day · ${lessonProgressPct}%`) : (el ? 'Μία μικρή πρακτική τη μέρα' : 'One small practice a day'), ink: 'var(--axis-body-ink)', icon: ICONS.calendar },
+    { key: 'micro', to: '/practice/microdoses', title: el ? 'Μικροδόσεις' : 'Microdoses', sub: el ? 'Ασκήσεις λίγων δευτερολέπτων, που δεν φαίνονται' : 'Practices of a few seconds, unseen by others', ink: 'var(--axis-attention-ink)', icon: ICONS.drop },
+    { key: 'sanctuary', to: '/sanctuary', title: el ? 'Καταφύγιο' : 'Sanctuary', sub: el ? 'Βροχή, ωκεανός, ήχοι για ύπνο και ηρεμία' : 'Rain, ocean, sounds for sleep and calm', ink: 'var(--tint-lav-ink)', icon: ICONS.waves },
+    { key: 'program', to: '/program', title: el ? 'Πρόγραμμα 8 εβδομάδων' : '8-week Program', sub: completedLessons > 0 ? (el ? `Μία μικρή πρακτική τη μέρα · ${lessonProgressPct}%` : `One small practice a day · ${lessonProgressPct}%`) : (el ? 'Μία μικρή πρακτική τη μέρα' : 'One small practice a day'), ink: 'var(--axis-body-ink)', icon: ICONS.sprout },
     { key: 'book', onClick: () => { setBookOpen(true); window.setTimeout(() => document.getElementById('home-book')?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' }), 50); }, title: el ? 'Το βιβλίο' : 'The book', sub: el ? 'PDF, EPUB και ακουστικό, δωρεάν' : 'PDF, EPUB and audiobook, free', ink: 'var(--axis-breath-ink)', icon: ICONS.book },
-    { key: 'rabbit', to: '/rabbithole', title: el ? 'Κουνελότρυπα' : 'Rabbit Hole', sub: el ? 'Κείμενα και βίντεο για όσους θέλουν βάθος' : 'Texts and videos for those who want depth', ink: 'var(--axis-attention-ink)', icon: ICONS.telescope },
-    ...(!evening ? [{ key: 'journal', to: '/journal', title: el ? 'Ημερολόγιο' : 'Journal', sub: el ? 'Δυο γραμμές για σήμερα' : 'Two lines for today', ink: 'var(--tint-rose-ink)', icon: ICONS.notebook }] : []),
+    { key: 'rabbit', to: '/rabbithole', title: el ? 'Κουνελότρυπα' : 'Rabbit Hole', sub: el ? 'Κείμενα και βίντεο για όσους θέλουν βάθος' : 'Texts and videos for those who want depth', ink: 'var(--axis-attention-ink)', icon: ICONS.spiral },
+    ...(!evening ? [{ key: 'journal', to: '/journal', title: el ? 'Ημερολόγιο' : 'Journal', sub: el ? 'Δυο γραμμές για σήμερα' : 'Two lines for today', ink: 'var(--tint-rose-ink)', icon: ICONS.quill }] : []),
     ...(hasRead ? [{ key: 'read', onClick: () => setSheetVisible(true), title: el ? 'Τι έχεις διαβάσει' : 'What you have read', sub: el ? 'Τα κεφάλαια και οι σελίδες σου' : 'Your chapters and pages', ink: 'var(--axis-breath-ink)', icon: ICONS.bookmark }] : []),
   ];
   const shelfCard = "flex items-center gap-3.5 min-h-[64px] px-4 py-3 text-left hover:bg-white/[0.04] transition-colors active:bg-white/[0.06] desk:min-h-[96px] desk:items-start desk:gap-4 desk:p-5 desk:rounded-[24px] desk:hover:bg-transparent desk:hover:brightness-110 desk:transition-[filter,transform] desk:hover:-translate-y-0.5";

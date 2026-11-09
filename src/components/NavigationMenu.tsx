@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import InfoModal from './InfoModalLazy';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
 import { downloadBackup, restoreBackup } from '../lib/backup';
-import { Home, BookOpen, Activity, Notebook, X, Info, Music, LayoutGrid, EyeOff, Eye, Database, Download, Sparkles, RotateCcw, Headphones, LetterText, Moon, CalendarDays, Telescope, Compass, Settings } from 'lucide-react';
+import { Home, BookOpen, Activity, X, Info, Music, LayoutGrid, EyeOff, Eye, Database, Download, Sparkles, RotateCcw, Headphones, LetterText, Compass, Settings } from 'lucide-react';
 import { MethodMark } from './MethodMark';
 import { useTime } from '../contexts/TimeContext';
 import { motion, AnimatePresence } from 'motion/react';
@@ -11,6 +11,7 @@ import { useLanguage } from '../hooks/useLanguage';
 import { useTheme } from '../hooks/useTheme';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { useAudioMixer } from '../contexts/AudioContext';
+import { QuillIcon, SpiralIcon, SproutIcon, WavesIcon } from './placeIcons';
 
 export default function NavigationMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -112,7 +113,7 @@ export default function NavigationMenu() {
     { path: '/dashboard', icon: <Home size={18} />, labelEn: 'Home', labelEl: 'Αρχική' },
     { path: '/chapters', icon: <BookOpen size={18} />, labelEn: 'Read', labelEl: 'Διάβασμα' },
     { path: '/practice', icon: <Activity size={18} />, labelEn: 'Practice', labelEl: 'Πρακτική' },
-    { path: '/journal', icon: <Notebook size={18} />, labelEn: 'Journal', labelEl: 'Ημερολόγιο' },
+    { path: '/journal', icon: <QuillIcon size={18} />, labelEn: 'Journal', labelEl: 'Ημερολόγιο' },
   ];
 
   const el = language === 'el';
@@ -123,10 +124,10 @@ export default function NavigationMenu() {
     { path: '/', Icon: Home, label: el ? 'Αρχική' : 'Home' },
     { path: '/chapters', Icon: BookOpen, label: el ? 'Διάβασμα' : 'Read' },
     { path: '/practice', Icon: Activity, label: el ? 'Πρακτική' : 'Practice' },
-    { path: '/sanctuary', Icon: Moon, label: el ? 'Καταφύγιο' : 'Sanctuary' },
-    { path: '/program', Icon: CalendarDays, label: el ? 'Πρόγραμμα' : 'Program' },
-    { path: '/journal', Icon: Notebook, label: el ? 'Ημερολόγιο' : 'Journal' },
-    { path: '/rabbithole', Icon: Telescope, label: el ? 'Κουνελότρυπα' : 'Rabbit Hole' },
+    { path: '/sanctuary', Icon: WavesIcon, label: el ? 'Καταφύγιο' : 'Sanctuary' },
+    { path: '/program', Icon: SproutIcon, label: el ? 'Πρόγραμμα' : 'Program' },
+    { path: '/journal', Icon: QuillIcon, label: el ? 'Ημερολόγιο' : 'Journal' },
+    { path: '/rabbithole', Icon: SpiralIcon, label: el ? 'Κουνελότρυπα' : 'Rabbit Hole' },
     { path: '/method', Icon: Compass, label: el ? 'Η Μέθοδος' : 'The Method' },
   ];
   const nightDim = hour >= 21 || hour < 5;
