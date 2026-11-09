@@ -1,6 +1,7 @@
+import { PageHeader } from '../components/PageHeader';
 import React, { useState, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { practiceOf } from '../lib/quietAxis';
-import { ArrowLeft, ChevronLeft, ChevronRight, RefreshCw, Plus, Search, CalendarArrowDown, Heart, Wind, Lightbulb, Compass } from 'lucide-react';
+import { ChevronLeft, ChevronRight, RefreshCw, Plus, Search, CalendarArrowDown, Heart, Wind, Lightbulb, Compass } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useLanguage } from '../hooks/useLanguage';
@@ -216,33 +217,27 @@ export default function Journal() {
 
   return (
     <div className="min-h-screen bg-transparent text-ink/80 font-sans">
-      <div className="max-w-3xl mx-auto px-6 pt-8 desk:pt-12 pb-32">
-        {/* Header, as on the other pages: the title on the sky. */}
-        <header className="flex items-center justify-between gap-3 mb-8">
-          <button
-            onClick={() => (history ? setViewState('edit') : navigate('/'))}
-            aria-label={lang === 'el' ? 'Πίσω' : 'Back'}
-            className="w-10 h-10 shrink-0 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-ink/60 hover:text-ink transition-colors"
-          >
-            <ArrowLeft size={18} />
-          </button>
-          <h1 className="sky-text font-display text-[26px] desk:text-[30px] leading-tight text-ink/90 text-center">
-            {history ? (lang === 'el' ? 'Η εβδομάδα μου' : 'My week') : (lang === 'el' ? 'Ημερολόγιο' : 'Journal')}
-          </h1>
-          {history ? (
-            <span className="w-10 shrink-0" aria-hidden="true" />
-          ) : (
-            // "Week" in words, with the download arrow: it leads to My week (PDF) and the earlier days.
-            <button
-              onClick={() => setViewState('history')}
-              aria-label={lang === 'el' ? 'Εβδομάδα και παλιότερες μέρες' : 'Week and earlier days'}
-              className="h-10 shrink-0 px-3.5 rounded-full bg-white/5 border border-white/10 flex items-center gap-1.5 text-ink/75 hover:text-ink transition-colors"
-            >
-              <CalendarArrowDown size={17} aria-hidden="true" />
-              <span className="text-[13.5px]">{lang === 'el' ? 'Εβδομάδα' : 'Week'}</span>
-            </button>
-          )}
-        </header>
+      <div className="max-w-3xl mx-auto pt-2 pb-32">
+        <div className="mb-8">
+          <PageHeader
+            back={() => (history ? setViewState('edit') : navigate('/'))}
+            eyebrow={history ? (lang === 'el' ? 'Ημερολόγιο' : 'Journal') : undefined}
+            title={history ? (lang === 'el' ? 'Η εβδομάδα μου' : 'My week') : (lang === 'el' ? 'Ημερολόγιο' : 'Journal')}
+            action={
+              history ? undefined : (
+                // "Week" in words, with the download arrow: it leads to My week (PDF) and the earlier days.
+                <button
+                  onClick={() => setViewState('history')}
+                  aria-label={lang === 'el' ? 'Εβδομάδα και παλιότερες μέρες' : 'Week and earlier days'}
+                  className="h-11 shrink-0 px-4 rounded-full bg-white/5 border border-white/10 flex items-center gap-1.5 text-ink/75 hover:text-ink transition-colors"
+                >
+                  <CalendarArrowDown size={17} aria-hidden="true" />
+                  <span className="text-[13.5px]">{lang === 'el' ? 'Εβδομάδα' : 'Week'}</span>
+                </button>
+              )
+            }
+          />
+        </div>
 
         {!history ? (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>

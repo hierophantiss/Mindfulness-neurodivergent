@@ -1,3 +1,4 @@
+import { PageHeader } from '../components/PageHeader';
 import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
@@ -318,28 +319,12 @@ export default function RabbitHole() {
   // List View Render (when activeArticle is null)
   return (
     <div className="flex flex-col min-h-screen animate-in fade-in pb-24">
-      {/* Header */}
-      <header className="sticky top-0 z-30 bg-black/40 backdrop-blur-md/80 backdrop-blur-xl border-b border-white/5 shadow-sm">
-        <div className="flex items-center justify-between px-4 h-16">
-          <Link 
-            to="/"
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/[0.03] border border-white/[0.05] text-ink/40 hover:text-ink transition-colors active:scale-95"
-            aria-label={t.back}
-          >
-            <ChevronLeft size={20} />
-          </Link>
-          <div className="flex flex-col items-center flex-1">
-            <h1 className="text-lg font-light text-ink/90 tracking-wide flex items-center gap-2">
-              <span className="text-[16px] not-italic opacity-80">🐇🕳️</span> {t.title}
-            </h1>
-            <p className="text-[13px] text-teal-400/60 mt-0.5">{t.subtitle}</p>
-          </div>
-          <div className="w-10" />
-        </div>
-      </header>
+      <div className="pt-2 max-w-4xl mx-auto w-full">
+        <PageHeader back="/" title={t.title} lead={t.subtitle} />
+      </div>
 
       {/* Content */}
-      <div className="flex-1 px-4 pt-6 max-w-4xl mx-auto w-full">
+      <div className="flex-1 pt-6 max-w-4xl mx-auto w-full">
         {/* Custom Tabs */}
         <div className="flex p-1 bg-white/[0.04] border border-white/[0.08] rounded-2xl mb-8 overflow-x-auto hide-scrollbar">
           <button

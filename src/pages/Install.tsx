@@ -1,6 +1,6 @@
+import { PageHeader } from '../components/PageHeader';
 import { useState } from 'react';
-import { ArrowLeft, Download, Share2, Check } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Download, Share2, Check } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import { useInstallApp } from '../hooks/useInstallApp';
 import { MICROSOFT_STORE_URL } from '../lib/links';
@@ -158,21 +158,15 @@ export default function Install() {
 
   return (
     <div className="flex flex-col gap-8 pb-10 animate-in fade-in duration-500">
-      <div className="flex items-center gap-3 pt-2">
-        <Link to="/" aria-label={t.back} className="btn-zen !px-3 !py-3">
-          <ArrowLeft size={20} />
-        </Link>
+      <div className="pt-2">
+        <PageHeader back="/" title={t.title} lead={t.lead}>
+          {installed && (
+            <p role="status" className="flex items-center gap-2 text-[15px] text-[var(--axis-body-ink)]">
+              <Check size={18} aria-hidden="true" /> {t.installed}
+            </p>
+          )}
+        </PageHeader>
       </div>
-
-      <header className="flex flex-col gap-3">
-        <h1 className="font-display text-[38px] desk:text-[52px] leading-[1.05] text-ink">{t.title}</h1>
-        <p className="text-[16.5px] leading-relaxed text-ink/85">{t.lead}</p>
-        {installed && (
-          <p role="status" className="flex items-center gap-2 text-[15px] text-[var(--axis-body-ink)]">
-            <Check size={18} aria-hidden="true" /> {t.installed}
-          </p>
-        )}
-      </header>
 
       {order.map((p, i) => {
         const s = p === 'android' && APK_FOR_ALL ? t.sections.androidApk : t.sections[p];

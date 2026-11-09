@@ -1,6 +1,7 @@
+import { PageHeader } from '../components/PageHeader';
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { CheckCircle2 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../hooks/useLanguage';
 import { useCompanion } from '../hooks/useCompanion';
@@ -10,7 +11,6 @@ import { COURSE_EL as courseDataEl } from '../data/course-el';
 import { COURSE_EN as courseDataEn } from '../data/course-en';
 
 export default function Program() {
-  const navigate = useNavigate();
   const { language } = useLanguage();
   const { companionData } = useCompanion();
   const { isLessonComplete } = useProgress();
@@ -30,31 +30,12 @@ export default function Program() {
   return (
     <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
       
-      {/* Editorial Header */}
-      <header className="flex flex-col items-center text-center space-y-6 relative">
-        <button aria-label={language === 'en' ? 'Back' : 'Πίσω'} 
-          onClick={() => navigate('/dashboard')} 
-          className="btn-zen absolute left-0 top-0 !px-3 !py-3 hidden md:flex"
-        >
-          <ArrowLeft size={20} />
-        </button>
-        
-        <div className="space-y-4">
-          <div className="flex items-center justify-center gap-3">
-            <span className="text-[13px] font-medium text-teal-400">
-              {language === 'en' ? '8 Weeks Program' : 'Πρόγραμμα 8 Εβδομάδων'}
-            </span>
-          </div>
-          <h1 className="font-display text-5xl md:text-7xl text-ink/90 leading-none">
-            {language === 'en' ? 'The Path' : 'Η Διαδρομή'}
-          </h1>
-          <p className="text-lg text-ink/50 font-sans max-w-xl mx-auto leading-relaxed">
-            {language === 'en' 
-              ? 'Eight weeks, one small step a day, at your own pace.'
-              : 'Οκτώ εβδομάδες, ένα μικρό βήμα τη μέρα, με τον δικό σου ρυθμό.'}
-          </p>
-        </div>
-      </header>
+      <PageHeader
+        back="/dashboard"
+        eyebrow={language === 'en' ? '8 Weeks Program' : 'Πρόγραμμα 8 Εβδομάδων'}
+        title={language === 'en' ? 'The Path' : 'Η Διαδρομή'}
+        lead={language === 'en' ? 'Eight weeks, one small step a day, at your own pace.' : 'Οκτώ εβδομάδες, ένα μικρό βήμα τη μέρα, με τον δικό σου ρυθμό.'}
+      />
       
       {/* Program Grid */}
       <div className="max-w-4xl mx-auto px-2">

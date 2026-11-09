@@ -1,12 +1,12 @@
+import { PageHeader } from '../components/PageHeader';
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Zap, Focus, Anchor, Box, ArrowLeft, Sparkles } from 'lucide-react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { Zap, Focus, Anchor, Box, Sparkles } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../hooks/useLanguage';
 import { MICRODOSES_EXERCISES } from '../data/microdoses';
 
 export default function PracticeMicrodoses() {
-  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { language } = useLanguage();
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'all');
@@ -107,30 +107,15 @@ export default function PracticeMicrodoses() {
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20 max-w-7xl mx-auto px-1">
       
-      {/* Header Controls */}
-      <div className="flex items-center gap-4">
-        <button aria-label={language === 'en' ? 'Back' : 'Πίσω'} 
-          onClick={() => navigate('/practice')} 
-          className="btn-zen !px-3 !py-3"
-          id="btn-back-practice"
-        >
-          <ArrowLeft size={20} />
-        </button>
-        <span className="text-[13px] font-medium text-teal-400">
-          {language === 'el' ? 'Μικροδόσεις' : 'Microdoses'}
-        </span>
-      </div>
-
-      <header className="space-y-3 max-w-2xl">
-        <h1 className="font-display text-4xl md:text-5xl text-ink/90 leading-tight">
-          {language === 'el' ? 'Αόρατη Εξάσκηση' : 'Invisible Practice'}
-        </h1>
-        <p className="text-base text-ink/50 font-sans leading-relaxed">
-          {language === 'el' 
-            ? 'Πρακτικές που γίνονται παντού, χωρίς να σε καταλάβει κανείς. Ιδανικές για στιγμές έντασης ή δημόσιους χώρους.' 
-            : 'Practices you can do anywhere, without anyone noticing. Perfect for overstimulation or public spaces.'}
-        </p>
-      </header>
+      <PageHeader
+        back="/practice"
+        size="sub"
+        eyebrow={language === 'el' ? 'Μικροδόσεις' : 'Microdoses'}
+        title={language === 'el' ? 'Αόρατη Εξάσκηση' : 'Invisible Practice'}
+        lead={language === 'el'
+          ? 'Πρακτικές που γίνονται παντού, χωρίς να σε καταλάβει κανείς. Ιδανικές για στιγμές έντασης ή δημόσιους χώρους.'
+          : 'Practices you can do anywhere, without anyone noticing. Perfect for overstimulation or public spaces.'}
+      />
 
       {/* 🌟 ADHD Decision Relief: Daily Core Suggestion */}
       <div className="relative overflow-hidden bg-gradient-to-br from-teal-500/[0.04] to-indigo-500/[0.02] border border-teal-500/20 rounded-2xl p-6 flex flex-col md:flex-row gap-6 justify-between items-start md:items-center max-w-4xl shadow-lg shadow-teal-950/20" id="decision-relief-banner">

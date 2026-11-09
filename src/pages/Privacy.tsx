@@ -1,5 +1,4 @@
-import { ArrowLeft } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { PageHeader } from '../components/PageHeader';
 import { useLanguage } from '../hooks/useLanguage';
 import { CONTACT_EMAIL } from '../lib/links';
 
@@ -166,17 +165,11 @@ export default function Privacy() {
 
   return (
     <div className="flex flex-col gap-8 pb-10 animate-in fade-in duration-500">
-      <div className="flex items-center gap-3 pt-2">
-        <Link to="/" aria-label={t.back} className="btn-zen !px-3 !py-3">
-          <ArrowLeft size={20} />
-        </Link>
+      <div className="pt-2">
+        <PageHeader back="/" title={t.title} lead={t.short}>
+          <p className="text-[13px] text-ink/60">{t.updated}</p>
+        </PageHeader>
       </div>
-
-      <header className="flex flex-col gap-3">
-        <h1 className="font-display text-[38px] desk:text-[52px] leading-[1.05] text-ink">{t.title}</h1>
-        <p className="text-[13px] text-ink/60">{t.updated}</p>
-        <p className="text-[16.5px] leading-relaxed text-ink/90">{t.short}</p>
-      </header>
 
       {t.blocks.map(b => (
         <section key={b.title} className="flex flex-col gap-3">

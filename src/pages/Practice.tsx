@@ -1,6 +1,7 @@
+import { PageHeader } from '../components/PageHeader';
 import React, { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Wind, Zap, ArrowLeft, Compass, Activity, Lock, BookOpen, ChevronDown, ChevronUp, Volume2 } from 'lucide-react';
+import { Wind, Zap, Compass, Activity, Lock, BookOpen, ChevronDown, ChevronUp, Volume2 } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import { useProgress } from '../contexts/ProgressContext';
 import { BREATH_PATTERNS, BreathPattern } from '../data/breathPatterns';
@@ -213,35 +214,18 @@ const axisInfo = {
 
     return (
       <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <div className="flex items-center gap-4">
-          <button type="button"
-            onClick={() => {
+        <PageHeader
+          size="sub"
+          back={() => {
               searchParams.delete('axis');
               setSearchParams(searchParams);
             }}
-            className="btn-zen !px-3 !py-3"
-            aria-label={language === 'el' ? 'Πίσω' : 'Back'}
-          >
-            <ArrowLeft size={20} />
-          </button>
-          <span className={cn("text-[13px] font-medium", info.color)}>
-            {language === 'el' ? 'Πρακτική με άξονα' : 'Practice by axis'}
-          </span>
-        </div>
-
-        <header className="space-y-4 max-w-4xl desk:max-w-none mx-auto text-center desk:text-left w-full">
-          <div className="flex flex-col desk:flex-row items-center justify-center desk:justify-start gap-1 desk:gap-4">
-            <div aria-hidden="true" className="w-[120px] desk:w-[96px] shrink-0 desk:-my-3" style={{ background: `radial-gradient(closest-side, color-mix(in srgb, var(--axis-${activeAxis}-ink) 30%, transparent), transparent)` }}>
+          eyebrow={language === 'el' ? 'Πρακτική με άξονα' : 'Practice by axis'}
+          title={<span className="flex items-center gap-3"><span aria-hidden="true" className="block w-[64px] desk:w-[76px] shrink-0 -my-2" style={{ background: `radial-gradient(closest-side, color-mix(in srgb, var(--axis-${activeAxis}-ink) 30%, transparent), transparent)` }}>
               <MeditatorFigure focus={activeAxis as 'body'} bare />
-            </div>
-            <h1 className="font-display text-4xl desk:text-[52px] text-ink/90 leading-tight">
-              {language === 'en' ? info.title.en : info.title.el}
-            </h1>
-          </div>
-          <p className="text-lg text-ink/50 font-sans leading-relaxed desk:max-w-[720px]">
-            {language === 'en' ? info.desc.en : info.desc.el}
-          </p>
-        </header>
+            </span><span>{language === 'en' ? info.title.en : info.title.el}</span></span>}
+          lead={language === 'en' ? info.desc.en : info.desc.el}
+        />
 
         <div className="max-w-4xl desk:max-w-none mx-auto w-full pb-12 space-y-12">
           {axisBreaths.length > 0 && (
@@ -324,30 +308,16 @@ const axisInfo = {
 
     return (
       <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <div className="flex items-center gap-4">
-          <button type="button"
-            onClick={() => activeCategoryWithReset(null)} 
-            className="btn-zen !px-3 !py-3"
-            aria-label={language === 'el' ? 'Πίσω' : 'Back'}
-          >
-            <ArrowLeft size={20} />
-          </button>
-          <span className="text-[13px] font-medium text-violet-400">
-            {language === 'el' ? 'Ψάλσιμο & αντήχηση' : 'Chanting & vocal resonance'}
-          </span>
-        </div>
-
-        <header className="space-y-4 max-w-4xl desk:max-w-none mx-auto text-center desk:text-left w-full">
-          <h1 className="font-display text-4xl desk:text-[52px] text-ink/90 leading-tight flex items-center justify-center desk:justify-start">
-            {language === 'el' ? 'Ψάλσιμο & Αντήχηση' : 'Chanting & Resonance'}
-            <ConceptInfoIcon conceptId="vagus_nerve" />
-          </h1>
-          <p className="text-lg text-ink/50 font-sans leading-relaxed desk:max-w-[720px]">
-            {language === 'el' 
+        <PageHeader
+          size="sub"
+          back={() => activeCategoryWithReset(null)}
+          eyebrow={language === 'el' ? 'Ψάλσιμο & αντήχηση' : 'Chanting & vocal resonance'}
+          title={<span className="inline-flex flex-wrap items-center gap-1">{language === 'el' ? 'Ψάλσιμο & Αντήχηση' : 'Chanting & Resonance'}
+            <ConceptInfoIcon conceptId="vagus_nerve" /></span>}
+          lead={language === 'el' 
               ? 'Βουητό και ψάλσιμο πάνω στην εκπνοή: μακριά εκπνοή με δόνηση. Το σώμα ηρεμεί το σώμα. Αν σου τελειώνει ο αέρας, σταμάτα νωρίτερα· δεν χρειάζεται να φτάσεις ως το τέλος.' 
               : 'Humming and chanting on the exhale: a long exhale with vibration. The body calms the body. If you run out of air, stop earlier; you do not need to reach the end.'}
-          </p>
-        </header>
+        />
 
         <div className="max-w-4xl desk:max-w-none mx-auto w-full pb-12">
           {filteredVocals.length === 0 ? (
@@ -385,30 +355,16 @@ const axisInfo = {
 
     return (
       <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <div className="flex items-center gap-4">
-          <button type="button"
-            onClick={() => activeCategoryWithReset(null)} 
-            className="btn-zen !px-3 !py-3"
-            aria-label={language === 'el' ? 'Πίσω' : 'Back'}
-          >
-            <ArrowLeft size={20} />
-          </button>
-          <span className="text-[13px] font-medium text-teal-400">
-            {language === 'el' ? 'Ρυθμοί αναπνοής' : 'Breath Rhythms'}
-          </span>
-        </div>
-
-        <header className="space-y-4 max-w-4xl desk:max-w-none mx-auto text-center desk:text-left w-full">
-          <h1 className="font-display text-4xl desk:text-[52px] text-ink/90 leading-tight flex items-center justify-center desk:justify-start">
-            {language === 'el' ? 'Αναπνοή & Ύπνος' : 'Breath & Sleep'}
-            <ConceptInfoIcon conceptId="vagus_nerve" />
-          </h1>
-          <p className="text-lg text-ink/50 font-sans leading-relaxed desk:max-w-[720px]">
-            {language === 'el' 
+        <PageHeader
+          size="sub"
+          back={() => activeCategoryWithReset(null)}
+          eyebrow={language === 'el' ? 'Ρυθμοί αναπνοής' : 'Breath Rhythms'}
+          title={<span className="inline-flex flex-wrap items-center gap-1">{language === 'el' ? 'Αναπνοή & Ύπνος' : 'Breath & Sleep'}
+            <ConceptInfoIcon conceptId="vagus_nerve" /></span>}
+          lead={language === 'el' 
               ? 'Οι τρεις ρυθμοί του βιβλίου πρώτα: 5-5 για κάθε μέρα, 4-6 στην κορύφωση, 4-2-7 για βαθιά χαλάρωση. Η εκπνοή είναι το εργαλείο, όχι η εισπνοή.' 
               : 'The book\'s three rhythms first: 5-5 for every day, 4-6 at the peak, 4-2-7 for deep relaxation. The exhale is the tool, not the inhale.'}
-          </p>
-        </header>
+        />
 
         {/* Warning Banner */}
         <div className="max-w-4xl desk:max-w-none mx-auto w-full">
@@ -505,33 +461,19 @@ const axisInfo = {
 
     return (
       <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <div className="flex items-center gap-4">
-          <button type="button"
-            onClick={() => activeCategoryWithReset(null)} 
-            className="btn-zen !px-3 !py-3"
-            aria-label={language === 'el' ? 'Πίσω' : 'Back'}
-          >
-            <ArrowLeft size={20} />
-          </button>
-          <span className="text-[13px] font-medium text-indigo-400">
-            {language === 'el' ? 'Κινητική ενσυνειδητότητα & Τάι Τσι' : 'Mindful Movement & Tai Chi'}
-          </span>
-        </div>
-
-        <header className="space-y-4 max-w-4xl desk:max-w-none mx-auto text-center desk:text-left w-full">
-          <h1 className="font-display text-4xl desk:text-[52px] text-ink/90 leading-tight flex items-center justify-center desk:justify-start flex-wrap gap-2">
-            <span>{language === 'el' ? 'Κινητική Ενσυνειδητότητα & Τάι Τσι' : 'Mindful Movement & Tai Chi'}</span>
+        <PageHeader
+          size="sub"
+          back={() => activeCategoryWithReset(null)}
+          eyebrow={language === 'el' ? 'Κινητική ενσυνειδητότητα & Τάι Τσι' : 'Mindful Movement & Tai Chi'}
+          title={<span className="inline-flex flex-wrap items-center gap-2"><span>{language === 'el' ? 'Κινητική Ενσυνειδητότητα & Τάι Τσι' : 'Mindful Movement & Tai Chi'}</span>
             <span className="inline-flex gap-1 items-center" onClick={(e) => e.stopPropagation()}>
               <ConceptInfoIcon conceptId="proprioception" />
               <ConceptInfoIcon conceptId="movement_vs_breathwork" className="w-6 h-6 ml-0.5 text-indigo-400 hover:text-indigo-300 hover:bg-indigo-400/10" />
-            </span>
-          </h1>
-          <p className="text-lg text-ink/50 font-sans leading-relaxed desk:max-w-[720px]">
-            {language === 'el' 
+            </span></span>}
+          lead={language === 'el' 
               ? 'Φέρε την προσοχή από τις σκέψεις στο σώμα, με απαλές, ρυθμικές κινήσεις.' 
               : 'Bring your attention from thoughts to the body, with gentle, rhythmic movements.'}
-          </p>
-        </header>
+        />
 
         <div className="card-relief max-w-4xl desk:max-w-none mx-auto w-full mb-8 font-sans text-ink/80 rounded-2xl p-6 md:p-8 space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-700">
           <div>
@@ -655,30 +597,16 @@ const axisInfo = {
   if (activeCategory === 'microdoses') {
     return (
       <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <div className="flex items-center gap-4">
-          <button type="button"
-            onClick={() => handleCategoryChange(null)} 
-            className="btn-zen !px-3 !py-3"
-            aria-label={language === 'el' ? 'Πίσω' : 'Back'}
-          >
-            <ArrowLeft size={20} />
-          </button>
-          <span className="text-[13px] font-medium text-amber-400">
-            {language === 'el' ? 'Μικροδόσεις' : 'Microdoses'}
-          </span>
-        </div>
-
-        <header className="space-y-4 max-w-4xl desk:max-w-none mx-auto text-center desk:text-left w-full">
-          <h1 className="font-display text-4xl desk:text-[52px] text-ink/90 leading-tight flex items-center justify-center desk:justify-start">
-            {language === 'el' ? 'Αόρατες Μικροδόσεις' : 'Invisible Microdoses'}
-            <ConceptInfoIcon conceptId="neuroplasticity" />
-          </h1>
-          <p className="text-lg text-ink/50 font-sans leading-relaxed desk:max-w-[720px]">
-            {language === 'el' 
+        <PageHeader
+          size="sub"
+          back={() => handleCategoryChange(null)}
+          eyebrow={language === 'el' ? 'Μικροδόσεις' : 'Microdoses'}
+          title={<span className="inline-flex flex-wrap items-center gap-1">{language === 'el' ? 'Αόρατες Μικροδόσεις' : 'Invisible Microdoses'}
+            <ConceptInfoIcon conceptId="neuroplasticity" /></span>}
+          lead={language === 'el' 
               ? 'Αόρατες μικροπρακτικές που γίνονται παντού.' 
               : 'Stealth practices you can do anywhere without being noticed.'}
-          </p>
-        </header>
+        />
 
         <div className="max-w-4xl desk:max-w-none mx-auto w-full pb-12">
           <div className="grid grid-cols-1 desk:grid-cols-3 gap-6 desk:gap-4">
@@ -720,29 +648,15 @@ const axisInfo = {
 
   return (
     <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="flex items-center gap-4">
-        <button type="button"
-          onClick={() => navigate('/dashboard')} 
-          className="btn-zen !px-3 !py-3"
-          aria-label={language === 'el' ? 'Πίσω' : 'Back'}
-        >
-          <ArrowLeft size={20} />
-        </button>
-        <span className="text-[13px] font-medium text-indigo-400">
-          {language === 'el' ? 'Κέντρο εξάσκησης' : 'Practice Hub'}
-        </span>
-      </div>
-
-      <header className="space-y-4 max-w-4xl desk:max-w-none mx-auto text-center desk:text-left w-full">
-        <h1 className="font-display text-5xl desk:text-[60px] text-ink/90 leading-tight">
-          {language === 'el' ? 'Εξάσκηση' : 'Practice'}
-        </h1>
-        <p className="text-lg text-ink/50 font-sans leading-relaxed desk:max-w-[720px]">
-          {language === 'el' 
+      <PageHeader
+        size="main"
+        back={'/dashboard'}
+        eyebrow={language === 'el' ? 'Κέντρο εξάσκησης' : 'Practice Hub'}
+        title={<>{language === 'el' ? 'Εξάσκηση' : 'Practice'}</>}
+        lead={language === 'el' 
             ? 'Επίλεξε την κατηγορία εξάσκησης που ταιριάζει στην κατάστασή σου.' 
             : 'Choose the practice category that fits your current state.'}
-        </p>
-      </header>
+      />
 
       <QuietAxisHint />
 

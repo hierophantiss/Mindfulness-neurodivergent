@@ -1,3 +1,4 @@
+import { PageHeader } from './PageHeader';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { useState, useEffect, useRef } from "react";
 import {
@@ -307,26 +308,22 @@ export default function PracticeSection() {
   // ------------------------------------
   if (step === 'theme') {
     return (
-      <div className="w-full min-h-screen flex flex-col p-4 md:p-8 font-sans animate-fade-in" style={{ backgroundColor: "var(--color-bg, #0f1117)", color: "var(--color-text, #d4d4d8)" }}>
-        {/* Header */}
-        <div className="w-full flex justify-between items-center mb-12 py-2">
-          <button aria-label={lang === 'en' ? 'Back' : 'Πίσω'} onClick={() => navigate('/practice')} className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 transition-all cursor-pointer">
-            <ArrowLeft size={20} />
-          </button>
-          <button onClick={() => setLang(lang === "el" ? "en" : "el")} className="transition-colors text-[13px] cursor-pointer flex gap-1 items-center hover:opacity-80" style={{ color: "var(--color-accent, #5f8fd6)" }}>
-            <Languages className="w-4 h-4" /> {lang === "el" ? "EN" : "EL"}
-          </button>
-        </div>
-
+      <div className="w-full min-h-screen flex flex-col pt-2 font-sans animate-fade-in text-ink">
         <div className="max-w-4xl mx-auto w-full flex-1">
-          <header className="text-center md:text-left mb-12">
-            <h1 className="font-display text-4xl md:text-5xl text-ink/90 leading-tight mb-4">
-              {lang === "el" ? "Οπτική Απεικόνιση" : "Visual Theme"}
-            </h1>
-            <p className="text-lg text-ink/50 font-sans max-w-2xl">
-              {lang === "el" ? "Επίλεξε το μοτίβο κίνησης που σε βοηθάει να συγκεντρωθείς και να γειωθείς καλύτερα." : "Choose the movement pattern that helps you center and ground yourself best."}
-            </p>
-          </header>
+          <div className="mb-12">
+            <PageHeader
+              size="sub"
+              back="/practice"
+              eyebrow={lang === 'el' ? 'Κίνηση & Τάι Τσι' : 'Movement & Tai Chi'}
+              title={lang === "el" ? "Οπτική Απεικόνιση" : "Visual Theme"}
+              lead={lang === "el" ? "Επίλεξε το μοτίβο κίνησης που σε βοηθάει να συγκεντρωθείς και να γειωθείς καλύτερα." : "Choose the movement pattern that helps you center and ground yourself best."}
+              action={
+                <button onClick={() => setLang(lang === "el" ? "en" : "el")} className="h-11 px-3 rounded-full transition-colors text-[13px] cursor-pointer flex gap-1 items-center text-teal-400 hover:text-teal-300">
+                  <Languages className="w-4 h-4" aria-hidden="true" /> {lang === "el" ? "EN" : "EL"}
+                </button>
+              }
+            />
+          </div>
 
           <div className="grid grid-cols-1 desk:grid-cols-2 gap-8">
             <button
@@ -373,25 +370,17 @@ export default function PracticeSection() {
   // ------------------------------------
   if (step === 'rhythm') {
     return (
-      <div className="w-full min-h-screen flex flex-col p-4 md:p-8 font-sans animate-fade-in" style={{ backgroundColor: "var(--color-bg, #0f1117)", color: "var(--color-text, #d4d4d8)" }}>
-        <div className="w-full flex justify-between items-center mb-12 py-2">
-          <button aria-label={lang === 'en' ? 'Back' : 'Πίσω'} onClick={() => setStep('theme')} className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 transition-all cursor-pointer">
-            <ArrowLeft size={20} />
-          </button>
-          <div className="text-[13px] font-medium text-ink/65">
-            {movementType === 'taichi' ? (lang === 'el' ? 'Ροή' : 'Flow') : (lang === 'el' ? 'Λωτός' : 'Lotus')}
-          </div>
-        </div>
-
+      <div className="w-full min-h-screen flex flex-col pt-2 font-sans animate-fade-in text-ink">
         <div className="max-w-4xl mx-auto w-full flex-1">
-          <header className="text-center md:text-left mb-10">
-            <h1 className="font-display text-4xl md:text-5xl text-ink/90 leading-tight mb-4">
-              {lang === "el" ? "Ρυθμός Αναπνοής" : "Breathing Rhythm"}
-            </h1>
-            <p className="text-lg text-ink/50 font-sans max-w-2xl">
-              {lang === "el" ? "Επίλεξε το μοτίβο αναπνοής που θα συνοδεύσει την κίνηση." : "Select the breathing pattern to accompany the movement."}
-            </p>
-          </header>
+          <div className="mb-10">
+            <PageHeader
+              size="sub"
+              back={() => setStep('theme')}
+              eyebrow={movementType === 'taichi' ? (lang === 'el' ? 'Ροή' : 'Flow') : (lang === 'el' ? 'Λωτός' : 'Lotus')}
+              title={lang === "el" ? "Ρυθμός Αναπνοής" : "Breathing Rhythm"}
+              lead={lang === "el" ? "Επίλεξε το μοτίβο αναπνοής που θα συνοδεύσει την κίνηση." : "Select the breathing pattern to accompany the movement."}
+            />
+          </div>
 
           <div className="grid grid-cols-1 desk:grid-cols-2 gap-4">
             {PRESETS.map((p) => (

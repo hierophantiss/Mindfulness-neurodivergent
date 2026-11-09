@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { PageHeader } from '../components/PageHeader';
 import { KNOWLEDGE_FAQ } from '../data/faq';
 import { useLanguage } from '../hooks/useLanguage';
 
@@ -11,19 +11,15 @@ export default function Faq() {
   return (
     <div className="flex flex-col flex-1 bg-transparent -mx-4 -mt-4 -mb-8 px-4 pt-4 pb-12 md:-mx-8 md:-mt-8 md:-mb-8 md:px-8 md:pt-8 md:pb-12 overflow-y-auto w-full">
       
-      <div className="flex items-center gap-4 mb-8">
-        <button aria-label={language === 'en' ? 'Back' : 'Πίσω'} 
-          onClick={() => {
+      <div className="mb-8">
+        <PageHeader
+          size="sub"
+          back={() => {
             if (window.history.length > 2) navigate(-1);
             else navigate('/');
-          }} 
-          className="w-10 h-10 rounded-full bg-zinc-900/50 border border-zinc-700/50 flex flex-none items-center justify-center text-zinc-300 hover:bg-zinc-800 hover:text-ink transition-colors shadow-sm"
-        >
-          <ArrowLeft size={20} />
-        </button>
-        <h1 className="text-2xl font-medium text-ink tracking-wide">
-          {language === 'el' ? 'Συχνές Ερωτήσεις' : 'FAQs'}
-        </h1>
+          }}
+          title={language === 'el' ? 'Συχνές Ερωτήσεις' : 'Frequently asked questions'}
+        />
       </div>
 
       <div className="space-y-8 max-w-2xl mx-auto w-full">

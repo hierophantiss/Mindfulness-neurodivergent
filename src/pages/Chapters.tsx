@@ -1,6 +1,7 @@
+import { PageHeader } from '../components/PageHeader';
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, BookOpen } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { BookOpen, Star } from 'lucide-react';
 import { MeditatorFigure } from '../components/MeditatorFigure';
 import { axisOfChapter } from '../lib/axisOfChapter';
 import { ChapterIcon } from '../components/ChapterIcon';
@@ -13,7 +14,6 @@ import { Check } from 'lucide-react';
 import { OfflineAudioCard } from '../components/OfflineAudioCard';
 
 export default function Chapters() {
-  const navigate = useNavigate();
   const { language } = useLanguage();
   const { isChapterComplete } = useProgress();
   const [loading, setLoading] = useState(true);
@@ -31,35 +31,22 @@ export default function Chapters() {
   const depthChapters = chapters.filter(c => c.num >= 9 && c.num <= 11);
 
   return (
-    <div className="flex flex-col relative w-full min-h-full pt-8">
-      <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-32 px-6 max-w-5xl mx-auto w-full">
+    <div className="flex flex-col relative w-full min-h-full pt-2">
+      <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-32 max-w-5xl mx-auto w-full">
         
-        {/* Header - Editorial Style */}
-        <header className="flex flex-col items-center text-center space-y-6 relative">
-          <button aria-label={language === 'en' ? 'Back' : 'Πίσω'} 
-            onClick={() => navigate('/dashboard')} 
-            className="btn-zen absolute left-0 top-0 !px-3 !py-3 hidden md:flex"
-          >
-            <ArrowLeft size={20} />
-          </button>
-          
-          <div className="space-y-4">
-            <div className="flex items-center justify-center gap-3">
-              <span className="text-[13px] font-medium text-teal-400">
-                {language === 'en' ? 'Theory & Practice' : 'Θεωρία & Πρακτική'}
-              </span>
-            </div>
-            <h1 className="font-display text-5xl md:text-7xl text-ink leading-none">
-              {language === 'en' ? 'Presence Workbook' : 'Εγχειρίδιο Παρουσίας'}
-            </h1>
-            <p className="text-lg text-ink/50 font-light max-w-xl mx-auto leading-relaxed mt-2 flex items-center justify-center gap-2">
-              {language === 'el' ? 'Μαθαίνοντας να ιππεύεις τον άνεμο. Ένας οδηγός για την επίγνωση.' : 'Learning to ride the wind. A guide to awareness.'}
-              <Link to="/rabbithole" state={{ activeArticle: 'riding-the-wind' }} className="text-teal-400 hover:text-teal-300 transition-colors inline-flex mt-1" title={language === 'en' ? 'Read in Rabbit Hole' : 'Διαβάστε στην Κουνελότρυπα'}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-star fill-current" ><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+        <PageHeader
+          back="/dashboard"
+          eyebrow={language === 'en' ? 'Theory & Practice' : 'Θεωρία & Πρακτική'}
+          title={language === 'en' ? 'Presence Workbook' : 'Εγχειρίδιο Παρουσίας'}
+          lead={
+            <>
+              {language === 'el' ? 'Μαθαίνοντας να ιππεύεις τον άνεμο. Ένας οδηγός για την επίγνωση.' : 'Learning to ride the wind. A guide to awareness.'}{' '}
+              <Link to="/rabbithole" state={{ activeArticle: 'riding-the-wind' }} className="inline-flex align-[-3px] text-teal-400 hover:text-teal-300 transition-colors" aria-label={language === 'en' ? 'Read in the Rabbit Hole' : 'Διάβασέ το στην Κουνελότρυπα'}>
+                <Star size={17} className="fill-current" aria-hidden="true" />
               </Link>
-            </p>
-          </div>
-        </header>
+            </>
+          }
+        />
 
         <div className="max-w-xl mx-auto w-full">
           <OfflineAudioCard lang={currentLang} />

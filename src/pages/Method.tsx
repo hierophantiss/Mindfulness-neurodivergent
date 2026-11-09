@@ -1,5 +1,5 @@
+import { PageHeader } from '../components/PageHeader';
 import React, { useEffect, useRef } from 'react';
-import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
@@ -105,37 +105,26 @@ export default function Method() {
   }, [logActivity]);
 
   return (
-    <div className="flex flex-col h-full bg-[#0f1117] font-sans animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="flex flex-col h-full font-sans animate-in fade-in slide-in-from-bottom-4 duration-500">
       
-      {/* Header */}
-      <header className="flex-none flex items-center justify-between px-6 py-5 bg-[#191b20] border-b border-white/[0.05] sticky top-0 z-10">
-        <Link 
-          to="/" 
-          className="w-10 h-10 rounded-full bg-white/[0.04] flex items-center justify-center text-[#d4d4d8] hover:bg-white/[0.04] hover:text-ink transition-colors active:scale-95"
-          aria-label={language === 'el' ? 'Πίσω στην αρχική' : 'Back to home'}
-        >
-          <ArrowLeft size={20} />
-        </Link>
-        <h1 className="text-[14px] font-medium text-[#d4d4d8] drop-shadow-sm truncate px-2">
-          {t.title}
-        </h1>
-        <div className="w-10" />
-      </header>
+      <div className="pt-2">
+        <PageHeader back="/" title={t.title} />
+      </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto px-5 py-6 space-y-8 custom-scrollbar pb-safe mb-6">
+      <div className="flex-1 py-6 space-y-8 pb-safe mb-6">
         
         {/* Intro */}
         <section className="space-y-4">
-          <p className="text-[#d4d4d8]/85 text-[15px] leading-relaxed">
+          <p className="text-ink/85 text-[15px] leading-relaxed">
             {t.intro}
           </p>
         </section>
 
         {/* Roots */}
         <section className="space-y-2">
-          <h2 className="text-[13px] font-semibold text-[#d4d4d8]/60">{t.rootsTitle}</h2>
-          <p className="text-[#d4d4d8]/80 text-sm leading-relaxed">{t.roots}</p>
+          <h2 className="text-[13px] font-semibold text-ink/60">{t.rootsTitle}</h2>
+          <p className="text-ink/80 text-sm leading-relaxed">{t.roots}</p>
         </section>
 
         {/* The sign of the method */}
@@ -145,12 +134,12 @@ export default function Method() {
             <section className="flex flex-col items-center gap-5">
               <MethodMark className="w-40 h-40" label={language === 'en' ? 'The sign of the Fourfold Axis' : 'Το σήμα του Τετραπλού Άξονα'} />
               <div className="w-full space-y-3">
-                <h2 className="text-[16px] font-bold text-[#d4d4d8]">{sign.title}</h2>
+                <h2 className="text-[16px] font-bold text-ink">{sign.title}</h2>
                 <ul className="space-y-2.5">
                   {sign.parts.map(part => (
-                    <li key={part.name} className="flex items-start gap-3 text-sm leading-relaxed text-[#d4d4d8]/85">
+                    <li key={part.name} className="flex items-start gap-3 text-sm leading-relaxed text-ink/85">
                       <span className="mt-[7px] w-3 h-3 shrink-0 rounded-full" style={{ background: part.color === 'rainbow' ? RAINBOW : part.color }} aria-hidden="true" />
-                      <span><span className="text-[#d4d4d8]">{part.name}</span>: {part.text}</span>
+                      <span><span className="text-ink">{part.name}</span>: {part.text}</span>
                     </li>
                   ))}
                 </ul>
@@ -161,7 +150,7 @@ export default function Method() {
 
         {/* The 4 axes, each with its practices */}
         <section className="pt-4 border-t border-white/[0.05]">
-          <h2 className="text-[18px] font-medium text-[#d4d4d8] mb-5 border-b border-white/[0.05] pb-2">
+          <h2 className="text-[18px] font-medium text-ink mb-5 border-b border-white/[0.05] pb-2">
             {t.axesTitle}
           </h2>
           <div className="grid gap-4">
@@ -172,8 +161,8 @@ export default function Method() {
                     {axis.icon}
                   </div>
                   <div>
-                    <h3 className="text-[#d4d4d8] font-bold text-[16px] mb-1">{axis.title}</h3>
-                    <p className="text-[#d4d4d8]/80 text-[13px] leading-relaxed">{axis.desc}</p>
+                    <h3 className="text-ink font-bold text-[16px] mb-1">{axis.title}</h3>
+                    <p className="text-ink/80 text-[13px] leading-relaxed">{axis.desc}</p>
                   </div>
                 </div>
                 <Link
@@ -191,10 +180,10 @@ export default function Method() {
         <section className="bg-white/[0.04] border border-white/[0.05] shape-cloud-4 p-5 shadow-lg relative overflow-hidden">
           <div className="absolute top-0 left-0 w-1.5 h-full bg-teal-600/80 rounded-l-[2.5rem]" />
           <h2 className="text-[16px] font-bold text-teal-100 mb-3 drop-shadow-sm">{t.diffTitle}</h2>
-          <p className="text-[#d4d4d8]/90 text-sm leading-relaxed mb-3">{t.diffIntro}</p>
-          <ol className="space-y-2.5 list-decimal pl-5 text-[#d4d4d8]/90 text-sm leading-relaxed marker:text-teal-300/80">
+          <p className="text-ink/90 text-sm leading-relaxed mb-3">{t.diffIntro}</p>
+          <ol className="space-y-2.5 list-decimal pl-5 text-ink/90 text-sm leading-relaxed marker:text-teal-300/80">
             {t.diffSteps.map(step => (
-              <li key={step.name}><span className="font-semibold text-[#d4d4d8]">{step.name}:</span> {step.text}</li>
+              <li key={step.name}><span className="font-semibold text-ink">{step.name}:</span> {step.text}</li>
             ))}
           </ol>
         </section>
@@ -204,7 +193,7 @@ export default function Method() {
           <h2 className="text-[16px] font-bold text-blue-200 mb-3 drop-shadow-sm flex items-center gap-2">
             <span aria-hidden="true">🚲</span> {t.bikeTitle}
           </h2>
-          <p className="text-[#d4d4d8]/90 text-sm leading-relaxed whitespace-pre-wrap mb-4">{t.bikeText}</p>
+          <p className="text-ink/90 text-sm leading-relaxed whitespace-pre-wrap mb-4">{t.bikeText}</p>
           <p className="pt-3 border-t border-white/[0.05] text-xs font-medium text-teal-300 leading-relaxed">{t.bikeLesson}</p>
         </section>
 

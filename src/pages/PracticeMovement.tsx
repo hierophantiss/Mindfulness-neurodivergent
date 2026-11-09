@@ -1,7 +1,8 @@
+import { PageHeader } from '../components/PageHeader';
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { BREATH_PATTERNS, BreathPattern } from '../data/breathPatterns';
-import { ArrowLeft, Activity, Wind } from 'lucide-react';
+import { Activity, Wind } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../hooks/useLanguage';
 import { ConceptInfoIcon } from '../components/ConceptInfoOverlay';
@@ -78,17 +79,13 @@ export default function PracticeMovement() {
 
   return (
     <div className="flex flex-col flex-1 -mx-4 -mt-4 -mb-8 px-4 pt-4 pb-8 md:-mx-8 md:-mt-8 md:-mb-8 md:px-8 md:pt-8 md:pb-8 overflow-y-auto scroll-smooth">
-      {/* Top Bar */}
-      <div className="flex items-center gap-4 mb-6 shrink-0 z-10 relative">
-        <button aria-label={language === 'en' ? 'Back' : 'Πίσω'} 
-          onClick={() => navigate('/practice')} 
-          className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 hover:text-ink transition-all duration-300 active:scale-[0.98] backdrop-blur-md"
-        >
-          <ArrowLeft size={20} className="text-ink/80" />
-        </button>
-        <h1 className="text-2xl font-light text-ink/90 tracking-wide">
-          {language === 'el' ? 'Εξάσκηση' : 'Practice'}
-        </h1>
+      <div className="mb-6 z-10 relative">
+        <PageHeader
+          size="sub"
+          back="/practice"
+          eyebrow={language === 'el' ? 'Εξάσκηση' : 'Practice'}
+          title={language === 'el' ? 'Κίνηση & Αναπνοή' : 'Movement & Breath'}
+        />
       </div>
 
       <div className="text-ink/60 mb-8 max-w-lg bg-black/40 backdrop-blur-md/80 p-5 rounded-2xl border border-white/5 backdrop-blur-md z-10 relative">

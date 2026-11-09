@@ -1,3 +1,4 @@
+import { PageHeader } from '../components/PageHeader';
 import { versionText } from '../lib/version';
 import { isNative } from '../lib/native';
 import React, { useState, useEffect } from 'react';
@@ -5,7 +6,7 @@ import { downloadBackup, restoreBackup } from '../lib/backup';
 import { lastBackupDate } from '../lib/dataSafety';
 import { readErrors, clearErrors, errorReport } from '../lib/errorLog';
 import { motion } from 'motion/react';
-import { ChevronLeft, Languages, Activity, LetterText, Info, LogOut, Sparkles, Sun, Database, FileText, Download, Bug, ShieldCheck, MessageCircleHeart, CalendarClock } from 'lucide-react';
+import { Languages, Activity, LetterText, Info, LogOut, Sparkles, Sun, Database, FileText, Download, Bug, ShieldCheck, MessageCircleHeart, CalendarClock } from 'lucide-react';
 import { openIcs, googleCalendarUrl } from '../lib/reminder';
 import { feedbackMailto } from '../lib/feedback';
 import { CONTACT_EMAIL } from '../lib/links';
@@ -14,7 +15,6 @@ import { createPortal } from 'react-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { cn } from '../lib/utils';
-import { RainbowInfinity } from '../components/RainbowInfinity';
 
 export default function Settings() {
   const navigate = useNavigate();
@@ -266,25 +266,16 @@ export default function Settings() {
   ];
 
   return (
-    <div className="relative min-h-screen w-full bg-transparent flex flex-col pt-20 pb-32">
-       <div className="w-full max-w-xl mx-auto px-6">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-10">
-            <button aria-label={language === 'en' ? 'Back' : 'Πίσω'} 
-                onClick={() => {
-                  if (window.history.length > 2) navigate(-1);
-                  else navigate('/');
-                }}
-                className="p-2 rounded-full bg-white/5 border border-white/10 text-ink/40 hover:text-ink transition-colors"
-            >
-                <ChevronLeft size={20} />
-            </button>
-            <h1 className="text-2xl font-light text-ink/90">
-                {language === 'el' ? 'Ρυθμίσεις' : 'Settings'}
-            </h1>
-            <div className="flex items-center justify-center w-10 h-10">
-               <RainbowInfinity size={28} className="opacity-80 drop-shadow-[0_0_8px_rgba(255,255,255,0.1)]" />
-            </div>
+    <div className="relative min-h-screen w-full bg-transparent flex flex-col pt-2 pb-32">
+       <div className="w-full max-w-xl mx-auto">
+          <div className="mb-10">
+            <PageHeader
+              back={() => {
+                if (window.history.length > 2) navigate(-1);
+                else navigate('/');
+              }}
+              title={language === 'el' ? 'Ρυθμίσεις' : 'Settings'}
+            />
           </div>
 
           <div className="space-y-8">

@@ -1,3 +1,4 @@
+import { PageHeader } from '../components/PageHeader';
 import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -5,7 +6,7 @@ import { useLanguage } from '../hooks/useLanguage';
 import { useCompanion } from '../hooks/useCompanion';
 import { COURSE_EL as courseDataEl } from '../data/course-el';
 import { COURSE_EN as courseDataEn } from '../data/course-en';
-import { ArrowLeft, Check, PlayCircle, Clock, MapPin, ChevronLeft, ChevronRight, Wind, BookOpen, Lightbulb } from 'lucide-react';
+import { Check, PlayCircle, Clock, MapPin, ChevronLeft, ChevronRight, Wind, BookOpen, Lightbulb } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import CameraAnimation from '../components/CameraAnimation';
 import SamathaAnimation from '../components/SamathaAnimation';
@@ -138,20 +139,13 @@ export default function ProgramWeek() {
 
   return (
     <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-safe mb-4">
-      <div className="flex items-center gap-4 mb-8">
-        <button aria-label={language === 'en' ? 'Back' : 'Πίσω'} 
-          onClick={() => navigate('/program')} 
-          className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-ink/40 hover:bg-white/10 hover:text-ink transition-all duration-300 active:scale-[0.98] backdrop-blur-md"
-        >
-          <ArrowLeft size={20} />
-        </button>
-      </div>
-
-      <div className="mb-8">
-        <span className="text-teal-500/80 text-[13px] font-medium block mb-2">
-          {language === 'en' ? 'Week' : 'Εβδομάδα'} {weekNum}
-        </span>
-        <h1 className="font-display text-3xl md:text-4xl text-ink mb-8 drop-shadow-sm">{week.title}</h1>
+      <div className="mb-8 flex flex-col gap-8">
+        <PageHeader
+          size="sub"
+          back="/program"
+          eyebrow={`${language === 'en' ? 'Week' : 'Εβδομάδα'} ${weekNum}`}
+          title={week.title}
+        />
         
         {/* Days Horizontal Scroll */}
         <div className="flex gap-4 overflow-x-auto pb-6 snap-x hide-scrollbar px-1" tabIndex={0} aria-label={language === 'el' ? 'Οι μέρες της εβδομάδας' : 'The days of the week'}>
