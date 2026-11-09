@@ -52,7 +52,7 @@ export default function PracticeMicrodoses() {
   };
 
   const categories = [
-    { id: 'all', label: { el: 'Όλα', en: 'All' }, color: 'text-ink/60' },
+    { id: 'all', label: { el: 'Όλα', en: 'All' }, color: 'text-ink/70' },
     { id: 'body', label: { el: 'Σώμα', en: 'Body' }, color: 'text-[var(--axis-body-ink)]' },
     { id: 'breath', label: { el: 'Αναπνοή', en: 'Breath' }, color: 'text-[var(--axis-breath-ink)]' },
     { id: 'focus', label: { el: 'Προσοχή', en: 'Focus' }, color: 'text-[var(--axis-attention-ink)]' },
@@ -120,14 +120,14 @@ export default function PracticeMicrodoses() {
       {/* 🌟 ADHD Decision Relief: Daily Core Suggestion */}
       <div className="relative overflow-hidden bg-gradient-to-br from-teal-500/[0.04] to-indigo-500/[0.02] border border-teal-500/20 rounded-2xl p-6 flex flex-col md:flex-row gap-6 justify-between items-start md:items-center max-w-4xl shadow-lg shadow-teal-950/20" id="decision-relief-banner">
         {/* Soft elegant pulsing glow in the bg */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-teal-500/5 rounded-full blur-3xl pointer-events-none animate-pulse duration-[8000ms]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full pointer-events-none bg-[radial-gradient(circle,rgb(95_143_214/0.07),transparent_70%)]" />
         
         <div className="space-y-3 relative z-10 flex-1">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[12px] font-medium bg-teal-500/10 text-teal-300 border border-teal-500/15 gap-1">
               <Sparkles size={12} aria-hidden="true" /> {language === 'el' ? 'Ανακούφιση απόφασης' : 'Decision relief'}
             </span>
-            <span className="text-[10px] text-ink/40 tracking-wider">
+            <span className="text-[12px] text-ink/70 tracking-wider">
               {language === 'el' ? 'Πρόταση της Ημέρας' : 'Suggested Daily Core'}
             </span>
           </div>
@@ -136,7 +136,7 @@ export default function PracticeMicrodoses() {
             {language === 'el' ? suggestedExercise.title.el : suggestedExercise.title.en}
           </h2>
           
-          <p className="text-sm text-ink/50 leading-relaxed font-sans max-w-2xl">
+          <p className="text-sm text-ink/70 leading-relaxed font-sans max-w-2xl">
             {language === 'el' 
               ? 'Εάν νιώθεις πίεση ή υπερδιέγερση, μην ψάχνεις ανάμεσα στις κάρτες. Ξεκίνα απευθείας με αυτή την απλή άσκηση.' 
               : 'If choosing feels overwhelming right now, bypass the cards completely. Try this direct, single-focus practice.'}
@@ -144,11 +144,11 @@ export default function PracticeMicrodoses() {
           
           <div className="flex flex-wrap gap-4 items-center pt-1 text-xs">
             <span className="flex items-center gap-1.5 text-teal-400 font-semibold">
-              <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-ping" />
+              <span className="w-1.5 h-1.5 rounded-full bg-teal-400" />
               {language === 'el' ? `Διάρκεια: ${suggestedExercise.dur.el}` : `Duration: ${suggestedExercise.dur.en}`}
             </span>
-            <span className="text-ink/30">•</span>
-            <span className="text-ink/45 font-sans">
+            <span className="text-ink/70">•</span>
+            <span className="text-ink/70 font-sans">
               {language === 'el' ? suggestedExercise.desc.el : suggestedExercise.desc.en}
             </span>
           </div>
@@ -222,7 +222,7 @@ export default function PracticeMicrodoses() {
                 )}>
                   {language === 'el' ? sf.label.el : sf.label.en}
                 </h3>
-                <p className="text-[11px] text-ink/40 leading-relaxed font-sans mt-1 group-hover:text-ink/50 transition-colors">
+                <p className="text-[12px] text-ink/70 leading-relaxed font-sans mt-1 group-hover:text-ink/50 transition-colors">
                   {language === 'el' ? sf.desc.el : sf.desc.en}
                 </p>
               </button>
@@ -251,7 +251,7 @@ export default function PracticeMicrodoses() {
                     "px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all duration-300 whitespace-nowrap border",
                     isActive 
                       ? `bg-${color}-500/15 border-${color}-400/40 text-${color}-300` 
-                      : "bg-white/5 border-white/5 text-ink/40 hover:text-ink"
+                      : "bg-white/5 border-white/5 text-ink/70 hover:text-ink"
                   )}
                   id={`cat-filter-${cat.id}`}
                 >
@@ -287,7 +287,7 @@ export default function PracticeMicrodoses() {
                       ? speed.id === 'all' 
                         ? 'bg-white/10 border-white/25 text-ink' 
                         : `bg-${color}-500/15 border-${color}-400/40 text-${color}-300`
-                      : "bg-white/5 border-white/5 text-ink/40 hover:text-ink pointer-events-auto"
+                      : "bg-white/5 border-white/5 text-ink/70 hover:text-ink pointer-events-auto"
                   )}
                   id={`speed-filter-${speed.id}`}
                 >
@@ -344,7 +344,7 @@ export default function PracticeMicrodoses() {
               <div className="flex-1 min-w-0 pr-1 space-y-1">
                 <div className="flex justify-between items-center gap-2">
                   <div className="flex items-center gap-1.5">
-                    <span className={cn("text-[13px] font-medium", `text-${color}-400`)}>
+                    <span className={cn("text-[13px] font-medium", `text-${color}-300`)}>
                       {language === 'en' ? ex.type.charAt(0).toUpperCase() + ex.type.slice(1) : ex.type === 'body' ? 'Σώμα' : ex.type === 'breath' ? 'Αναπνοή' : ex.type === 'focus' ? 'Προσοχή' : 'Χώρος'}
                     </span>
                     {isSuggested && (
@@ -362,7 +362,7 @@ export default function PracticeMicrodoses() {
                   <span className="truncate">{language === 'en' ? ex.title.en : ex.title.el}</span>
                 </h2>
                 
-                <p className="text-[12px] text-ink/45 leading-normal font-sans group-hover:text-ink/60 transition-colors line-clamp-2">
+                <p className="text-[12px] text-ink/70 leading-normal font-sans group-hover:text-ink/60 transition-colors line-clamp-2">
                   {language === 'en' ? ex.desc.en : ex.desc.el}
                 </p>
               </div>
@@ -372,7 +372,7 @@ export default function PracticeMicrodoses() {
 
         {filteredExercises.length === 0 && (
           <div className="col-span-full text-center py-12 border border-dashed border-white/5 rounded-2xl bg-white/[0.01]">
-            <p className="text-sm text-ink/40">
+            <p className="text-sm text-ink/70">
               {language === 'el' 
                 ? 'Δεν βρέθηκαν μικροδόσεις με αυτά τα φίλτρα.' 
                 : 'No microdoses found with these criteria.'}

@@ -291,7 +291,7 @@ export default function Settings() {
                 <span className="text-[15px] font-medium text-ink/90 group-hover:text-ink transition-colors">
                   {language === 'el' ? 'Η Επιστημονική Βάση' : 'The Research Basis'}
                 </span>
-                <span className="text-[13px] leading-snug text-ink/60">
+                <span className="text-[13px] leading-snug text-ink/70">
                   {language === 'el'
                     ? 'Οι μελέτες πίσω από κάθε κομμάτι της μεθόδου, και τι δεν έχουν δείξει ακόμα.'
                     : 'The studies behind each part of the method, and what they have not shown yet.'}
@@ -321,13 +321,13 @@ export default function Settings() {
                             {language === 'el' ? item.label.el : item.label.en}
                           </span>
                           {'hint' in item && item.hint && (
-                            <span className="text-[12px] leading-snug text-ink/50">{language === 'el' ? item.hint.el : item.hint.en}</span>
+                            <span className="text-[12px] leading-snug text-ink/70">{language === 'el' ? item.hint.el : item.hint.en}</span>
                           )}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 shrink-0 pl-2">
                          {item.value && (
-                           <span className="text-[11px] font-sans text-ink/60 bg-white/5 px-2 py-1 rounded-lg">
+                           <span className="text-[12px] font-sans text-ink/70 bg-white/5 px-2 py-1 rounded-lg">
                              {typeof item.value === 'string' ? item.value : (language === 'el' ? item.value.el : item.value.en)}
                            </span>
                          )}
@@ -340,7 +340,7 @@ export default function Settings() {
           </div>
 
           {/* Footer Info */}
-          <div className="mt-16 flex flex-col items-center gap-4 opacity-60">
+          <div className="mt-16 flex flex-col items-center gap-4 opacity-80">
              <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center p-3">
                 <Sparkles size={20} className="text-ink" />
              </div>
@@ -350,7 +350,7 @@ export default function Settings() {
                 </p>
                 {/* Which version this is: the day it was built, and in the Android app the
                     copy number too (it rises when the app has updated itself). */}
-                <p className="text-[11px] font-sans text-ink/60">
+                <p className="text-[12px] font-sans text-ink/70">
                    {versionText(language === 'el' ? 'el' : 'en')}
                 </p>
              </div>
@@ -385,7 +385,7 @@ export default function Settings() {
                 <a href={googleCalendarUrl(lg, remindAt)} target="_blank" rel="noopener noreferrer" className="min-h-[44px] flex items-center justify-center rounded-xl border border-white/10 text-[14px] text-ink/85 hover:text-ink">
                   Google Calendar
                 </a>
-                <p className="text-[12.5px] leading-relaxed text-ink/55">
+                <p className="text-[12.5px] leading-relaxed text-ink/70">
                   {el
                     ? 'Το αρχείο ανοίγει στο ημερολόγιο του iPhone, του Mac, στο Outlook και στο Samsung Calendar. Στο Android με Google Calendar, διάλεξε το δεύτερο κουμπί.'
                     : 'The file opens in the calendar on iPhone and Mac, in Outlook and in Samsung Calendar. On Android with Google Calendar, choose the second button.'}
@@ -419,7 +419,7 @@ export default function Settings() {
                 <ul className="flex flex-col gap-2">
                   {errors.slice().reverse().map((x, i) => (
                     <li key={i} className="rounded-xl bg-black/30 border border-white/5 p-3 text-[12.5px] leading-snug">
-                      <span className="block text-ink/55">{new Date(x.t).toLocaleString(el ? 'el-GR' : 'en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })} · {x.where}{x.count > 1 ? ` · ×${x.count}` : ''}</span>
+                      <span className="block text-ink/70">{new Date(x.t).toLocaleString(el ? 'el-GR' : 'en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })} · {x.where}{x.count > 1 ? ` · ×${x.count}` : ''}</span>
                       <span className="block mt-1 text-ink/85 break-words">{x.msg}</span>
                     </li>
                   ))}
@@ -436,7 +436,7 @@ export default function Settings() {
                     {el ? 'Καθάρισμα' : 'Clear'}
                   </button>
                 )}
-                <details className="text-[12px] text-ink/55">
+                <details className="text-[12px] text-ink/70">
                   <summary className="cursor-pointer min-h-[36px] flex items-center">{el ? 'Τεχνικά στοιχεία' : 'Technical details'}</summary>
                   <div className="mt-2 flex flex-col gap-1 font-mono break-all">
                     {debugLog.map((log, i) => <span key={i}>{log}</span>)}

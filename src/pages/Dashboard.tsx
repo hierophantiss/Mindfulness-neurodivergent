@@ -45,7 +45,7 @@ function useChapters(lang: 'el' | 'en'): Chapter[] {
 }
 
 const footerLinkClasses = "sky-text flex items-center gap-1.5 min-h-[44px] text-[14px] text-ink/75 hover:text-ink transition-colors";
-const bookPillClasses = "whitespace-nowrap px-4 py-2 rounded-full border border-[var(--tint-sand-line)] bg-[var(--tint-sand-bg)] text-[11px] text-ink/65 hover:text-ink/80 hover:bg-white/[0.06] transition-colors";
+const bookPillClasses = "whitespace-nowrap px-4 py-2 rounded-full border border-[var(--tint-sand-line)] bg-[var(--tint-sand-bg)] text-[12px] text-ink/65 hover:text-ink/80 hover:bg-white/[0.06] transition-colors";
 
 const getDateString =(date: Date): string => {
   return date.toISOString().split('T')[0];
@@ -239,7 +239,7 @@ export default function Dashboard() {
           <button
             onClick={markWelcomeSeen}
             aria-label={el ? 'Κλείσιμο καλωσορίσματος' : 'Close the welcome'}
-            className="shrink-0 w-11 h-11 -mt-1.5 rounded-full flex items-center justify-center text-ink/50 hover:text-ink/80 transition-colors"
+            className="shrink-0 w-11 h-11 -mt-1.5 rounded-full flex items-center justify-center text-ink/70 hover:text-ink/80 transition-colors"
           >
             <X size={16} />
           </button>
@@ -318,7 +318,7 @@ export default function Dashboard() {
                   </span>
                   {/* Phone: the name sits on the figure's base, over a soft fade so it reads on every colour. */}
                   <span aria-hidden="true" className="desk:hidden absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-[color-mix(in_srgb,var(--color-bg)_85%,transparent)] to-transparent" />
-                  <span className="checkin-label absolute inset-x-0 bottom-[6px] text-center text-[12px] text-ink/85 max-w-full truncate px-1 [text-shadow:0_1px_2px_rgb(0_0_0/0.45)] desk:static desk:text-left desk:px-0 desk:mt-1.5 desk:text-[18px] desk:[text-shadow:none]">{a.name}</span>
+                  <span className="checkin-label absolute inset-x-0 bottom-[6px] text-center text-[12.5px] text-ink max-w-full truncate px-1 [text-shadow:0_0_2px_rgb(0_0_0/0.9),0_1px_6px_rgb(0_0_0/0.8)] desk:static desk:text-left desk:px-0 desk:mt-1.5 desk:text-[18px] desk:[text-shadow:none]">{a.name}</span>
                   <span className="hidden desk:block text-[14px] leading-[1.5] text-ink/70">{a.desc}</span>
                   <span className="hidden desk:block mt-auto pt-2 text-[13.5px] text-sign-gold">{el ? 'Ασκήσεις →' : 'Practices →'}</span>
                 </Link>
@@ -340,7 +340,7 @@ export default function Dashboard() {
                       <span className="text-[15.5px] leading-[1.3] text-ink desk:text-[16.5px]">{item.title}</span>
                       <span className="text-[13.5px] leading-[1.4] text-ink/70 desk:leading-[1.45]">{item.sub}</span>
                     </span>
-                    <ChevronRight size={18} aria-hidden="true" className="shrink-0 text-ink/40 desk:hidden" />
+                    <ChevronRight size={18} aria-hidden="true" className="shrink-0 text-ink/70 desk:hidden" />
                   </>
                 );
                 return item.to
@@ -359,7 +359,7 @@ export default function Dashboard() {
           transition={{ duration: 1, delay: 0.6 }}
           className="mt-11 desk:mt-16 mx-auto max-w-[330px] desk:max-w-[620px] text-center"
         >
-          <figcaption className="sky-text text-[12px] desk:text-[13px] text-ink/50">{el ? 'Για σήμερα' : 'For today'}</figcaption>
+          <figcaption className="sky-text text-[12px] desk:text-[13px] text-ink/70">{el ? 'Για σήμερα' : 'For today'}</figcaption>
           <blockquote className="sky-text mt-2 font-display text-[19px] desk:text-[24px] leading-[1.45] text-ink/80">
             «{el ? affirmation.el : affirmation.en}»
           </blockquote>
@@ -417,7 +417,7 @@ export default function Dashboard() {
                   {language === 'el' ? 'MP3 · ακουστικό' : 'MP3 · audiobook'}
                 </a>
               </div>
-              <span className="text-[10px] text-ink/25">
+              <span className="text-[12px] text-ink/70">
                 {language === 'el' ? 'Δωρεάν · CC BY-NC-ND 4.0' : 'Free · CC BY-NC-ND 4.0'}
               </span>
             </motion.div>

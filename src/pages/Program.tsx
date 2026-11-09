@@ -68,7 +68,7 @@ export default function Program() {
                 key={weekNum} 
                 className={cn(
                   "group relative p-8 transition-all duration-300",
-                  isLocked ? "glass-card opacity-50 grayscale cursor-not-allowed border-white/5 " : "glass-card active:scale-[0.98] ",
+                  isLocked ? "glass-card opacity-75 grayscale cursor-not-allowed border-white/5 " : "glass-card active:scale-[0.98] ",
                   isCurrent && "border-teal-400/40 shadow-[0_0_30px_rgba(127,169,228,0.1)] bg-white/[0.03]",
                   isCompleted && "opacity-60 grayscale hover:grayscale-0 hover:opacity-100",
                   `shape-cloud-${(weekNum % 5) + 1}`
@@ -78,10 +78,10 @@ export default function Program() {
                   <div className="flex justify-between items-start">
                     <div className={cn(
                       "w-12 h-12 rounded-2xl flex items-center justify-center text-xl font-sans font-bold border transition-all duration-500",
-                      isLocked ? "bg-white/5 text-ink/30 border-white/5" :
+                      isLocked ? "bg-white/5 text-ink/70 border-white/5" :
                       isCurrent 
                         ? "bg-teal-400/20 text-teal-300 border-teal-400/30 shadow-[0_0_20px_rgba(127,169,228,0.2)]" 
-                        : "bg-white/5 text-ink/50 border-white/10 group-hover:bg-white/10 group-hover:text-ink"
+                        : "bg-white/5 text-ink/70 border-white/10 group-hover:bg-white/10 group-hover:text-ink"
                     )}>
                       {isCompleted ? <CheckCircle2 size={24} /> : weekNum}
                     </div>
@@ -96,12 +96,12 @@ export default function Program() {
                   </div>
 
                   <div className="space-y-4">
-                    <span className="text-[13px] font-medium text-teal-400 opacity-60">
+                    <span className="text-[13px] font-medium text-teal-300">
                       {language === 'en' ? 'Week' : 'Εβδομάδα'} {weekNum}
                     </span>
                     <h2 className={cn(
                       "text-2xl font-light leading-tight transition-colors",
-                      isCompleted ? "text-ink/40" : (isLocked ? "text-ink/30" : "text-ink/90")
+                      isCompleted ? "text-ink/70" : (isLocked ? "text-ink/70" : "text-ink/90")
                     )}>
                       {week.title}
                     </h2>
@@ -125,7 +125,7 @@ export default function Program() {
                   </div>
                 </div>
 
-                <div className="absolute -bottom-4 -right-4 p-8 text-ink/[0.02] transition-all duration-700 select-none pointer-events-none">
+                <div aria-hidden="true" className="absolute -bottom-4 -right-4 p-8 text-ink/[0.02] transition-all duration-700 select-none pointer-events-none">
                    <span className="text-9xl font-black">W{weekNum}</span>
                 </div>
               </CardElement>

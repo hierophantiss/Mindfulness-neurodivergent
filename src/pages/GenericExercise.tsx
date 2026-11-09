@@ -155,11 +155,11 @@ export default function GenericExercise() {
 
       <div className="flex flex-col items-center w-full max-w-md mx-auto text-center">
         <h1 className="font-display text-[26px] text-ink/95 leading-tight px-2">{exercise.title[lang]}</h1>
-        <p className="mt-1.5 text-[14px] text-ink/50">
+        <p className="mt-1.5 text-[14px] text-ink/70">
           {exercise.dur ? exercise.dur[lang] : durationLabel(total, el)}
           {exercise.desc && <> · {exercise.desc[lang]}</>}
         </p>
-        <p className="mt-3 text-[12.5px] leading-snug text-ink/45 max-w-xs">{note}</p>
+        <p className="mt-3 text-[12.5px] leading-snug text-ink/70 max-w-xs">{note}</p>
 
         {/* Timer */}
         <button
@@ -203,7 +203,7 @@ export default function GenericExercise() {
             <button
               onClick={restart}
               aria-label={el ? 'Από την αρχή' : 'From the start'}
-              className="w-12 h-12 rounded-full bg-white/[0.04] border border-white/10 flex items-center justify-center text-ink/60 hover:text-ink"
+              className="w-12 h-12 rounded-full bg-white/[0.04] border border-white/10 flex items-center justify-center text-ink/70 hover:text-ink"
             >
               <RotateCcw size={18} />
             </button>

@@ -90,7 +90,7 @@ export function ConceptInfoIcon({ conceptId, className = "w-6 h-6 ml-1" }: { con
     <>
       <button 
         onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsOpen(true); }}
-        className={`inline-flex items-center justify-center rounded-full text-ink/40 hover:text-ink hover:bg-white/10 transition-all focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 ${className}`}
+        className={`inline-flex items-center justify-center rounded-full text-ink/70 hover:text-ink hover:bg-white/10 transition-all focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 ${className}`}
         aria-label={label}
       >
         <Info size={15} />
@@ -139,14 +139,14 @@ export function ConceptModal({ isOpen, onClose, conceptId }: { isOpen: boolean, 
             {/* Sticky/Fixed Modal Header */}
             <div className="px-6 py-4 flex justify-between items-center border-b border-white/5 bg-black/20 shrink-0">
               <div className="flex items-center gap-2">
-                <Lightbulb size={15} className="text-teal-400 animate-pulse" />
+                <Lightbulb size={15} className="text-teal-400" />
                 <span className="text-[13px] font-medium text-teal-400 font-mono">
                   {language === 'el' ? 'Νευροεπιστήμη & πρακτική' : 'Neuroscience & practice'}
                 </span>
               </div>
               <button 
                 onClick={onClose}
-                className="text-ink/40 hover:text-ink hover:bg-white/5 p-1 rounded-full transition-all focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400"
+                className="text-ink/70 hover:text-ink hover:bg-white/5 p-1 rounded-full transition-all focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400"
                 aria-label={language === 'el' ? 'Κλείσιμο' : 'Close'}
               >
                 <X size={18} />
@@ -186,14 +186,14 @@ export function ConceptModal({ isOpen, onClose, conceptId }: { isOpen: boolean, 
                     {l === 'el' ? 'Διάβασε περισσότερα: ' : 'Read more: '}
                     <span className="text-ink">{l === 'el' ? 'Κεφάλαιο' : 'Chapter'} {readMore.chapter} · {CHAPTER_TITLES[l][readMore.chapter]}</span>
                   </span>
-                  <span aria-hidden="true" className="text-ink/40">→</span>
+                  <span aria-hidden="true" className="text-ink/70">→</span>
                 </Link>
               )}
 
               {concept[l].science && (
                 <div className="flex gap-2 items-start opacity-75 bg-black/10 p-3 rounded-xl border border-white/5">
                   <Beaker size={13} className="mt-0.5 shrink-0 text-indigo-400" />
-                  <p className="text-[11px] leading-relaxed font-mono text-indigo-200/90">{concept[l].science}</p>
+                  <p className="text-[12px] leading-relaxed font-mono text-indigo-200/90">{concept[l].science}</p>
                 </div>
               )}
             </div>

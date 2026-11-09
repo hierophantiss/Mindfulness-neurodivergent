@@ -29,7 +29,7 @@ export function EvidenceLine({ evidence, language }: { evidence?: Evidence, lang
         <div className="mt-2 text-sm text-ink/70 bg-[#0f1117] border border-white/5 p-3 rounded-xl animate-in fade-in slide-in-from-top-2 text-left relative z-30 leading-relaxed shadow-lg">
           {el ? evidence.el : evidence.en}{note && <span aria-hidden="true">*</span>}
           {note && (
-            <p className="mt-2 text-[12px] not-italic leading-relaxed text-ink/45">
+            <p className="mt-2 text-[12px] not-italic leading-relaxed text-ink/70">
               <span aria-hidden="true">* </span>{el ? note.el : note.en}
             </p>
           )}

@@ -56,7 +56,7 @@ export default function Chapters() {
         <div id="basis" className="space-y-8">
           <div className="flex items-center gap-4">
             <span className="w-12 h-[1px] bg-white/10"></span>
-            <h2 className="text-[13px] font-medium text-ink/60">
+            <h2 className="text-[13px] font-medium text-ink/70">
               {language === 'el' ? 'Ο Τετραπλός Άξονας' : 'The Fourfold Axis'}
             </h2>
           </div>
@@ -131,7 +131,7 @@ export default function Chapters() {
           <div id="application" className="space-y-8">
             <div className="flex items-center gap-4">
               <span className="w-12 h-[1px] bg-white/10"></span>
-              <h2 className="text-[13px] font-medium text-ink/60">
+              <h2 className="text-[13px] font-medium text-ink/70">
                 {language === 'el' ? 'Εφαρμογή' : 'Application'}
               </h2>
             </div>
@@ -177,7 +177,7 @@ export default function Chapters() {
           <div id="depth" className="space-y-8">
             <div className="flex items-center gap-4">
               <span className="w-12 h-[1px] bg-white/10"></span>
-              <h2 className="text-[13px] font-medium text-ink/60">
+              <h2 className="text-[13px] font-medium text-ink/70">
                 {language === 'el' ? 'Σύνθεση' : 'Depth'}
               </h2>
             </div>
@@ -233,7 +233,7 @@ export default function Chapters() {
             <h2 className="font-display text-4xl md:text-5xl text-ink/90 mb-5 leading-tight">
               {language === 'el' ? 'Πρόγραμμα 8 Εβδομάδων' : '8 Weeks Program'}
             </h2>
-            <p className="text-lg text-ink/50 font-sans max-w-md leading-relaxed">
+            <p className="text-lg text-ink/70 font-sans max-w-md leading-relaxed">
               {language === 'el' 
                 ? 'Μια δομημένη πρακτική πορεία για την ενσωμάτωση της επίγνωσης στην καθημερινότητα.' 
                 : 'A structured practical path to integrate awareness into daily life.'}

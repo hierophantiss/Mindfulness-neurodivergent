@@ -181,14 +181,14 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                 <h2 id="info-modal-title" className="text-2xl md:text-3xl font-medium text-ink tracking-tight">
                   {content.title[l]}
                 </h2>
-                <p className="text-sm text-ink/40 leading-relaxed max-w-md">
+                <p className="text-sm text-ink/70 leading-relaxed max-w-md">
                   {content.subtitle[l]}
                 </p>
               </div>
               <button 
                 onClick={onClose}
                 aria-label={language === 'el' ? 'Κλείσιμο' : 'Close'}
-                className="w-10 h-10 shrink-0 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-ink/40 hover:text-ink hover:bg-white/10 transition-all focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 absolute right-4 top-6 sm:static sm:right-auto sm:top-auto"
+                className="w-10 h-10 shrink-0 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-ink/70 hover:text-ink hover:bg-white/10 transition-all focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 absolute right-4 top-6 sm:static sm:right-auto sm:top-auto"
               >
                 <X size={20} />
               </button>
@@ -251,7 +251,7 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {content.research.items.map((item, idx) => (
                     <div key={idx} className="p-4 rounded-3xl bg-white/[0.02] border border-white/5">
-                      <p className="text-xs text-ink/60 leading-relaxed font-sans">
+                      <p className="text-[13px] text-ink/70 leading-relaxed font-sans">
                         {item[l]}
                       </p>
                     </div>
@@ -278,7 +278,7 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                         <h4 className="text-sm text-ink font-medium">
                           {axis.title[l]}
                         </h4>
-                        <p className="text-xs text-ink/50 leading-relaxed">{axis.desc[l]}</p>
+                        <p className="text-[13px] text-ink/70 leading-relaxed">{axis.desc[l]}</p>
                       </div>
                     </div>
                   ))}
@@ -294,13 +294,13 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                   <p className="text-lg font-medium text-ink mt-1">
                     {content.creatorName}
                   </p>
-                  <p className="text-xs text-ink/50 leading-relaxed mt-3 font-sans max-w-sm">
+                  <p className="text-[13px] text-ink/70 leading-relaxed mt-3 font-sans max-w-sm">
                     {content.creatorDesc[l]}
                   </p>
-                  <p className="text-xs text-ink/65 leading-relaxed mt-2 font-sans max-w-sm">
+                  <p className="text-[13px] text-ink/65 leading-relaxed mt-2 font-sans max-w-sm">
                     {content.creatorQuote[l]}
                   </p>
-                  <p className="text-xs text-ink/50 leading-relaxed mt-3 font-sans max-w-sm">
+                  <p className="text-[13px] text-ink/70 leading-relaxed mt-3 font-sans max-w-sm">
                     {content.madeWith[l]}
                   </p>
                 </div>
@@ -309,7 +309,7 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                   <p className="text-[13px] font-medium text-teal-400 opacity-60">
                     {content.contact.title[l]}
                   </p>
-                  <p className="text-xs text-ink/55 leading-relaxed">{content.contact.text[l]}</p>
+                  <p className="text-[13px] text-ink/70 leading-relaxed">{content.contact.text[l]}</p>
                   <a
                     href={feedbackMailto(l)}
                     className="inline-flex items-center gap-2 px-5 min-h-[44px] rounded-full bg-white/[0.05] border border-sign-gold/40 text-[13px] text-ink/90 hover:bg-white/[0.09] transition-colors"
@@ -321,28 +321,28 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                     href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(content.contact.subject[l])}`}
                     className="btn-soft"
                   >
-                    <Mail size={15} className="text-ink/60" />
+                    <Mail size={15} className="text-ink/70" />
                     {content.contact.button[l]}
                   </a>
-                  <p className="text-[11px] text-ink/35 leading-relaxed">{content.contact.note[l]}</p>
-                  <p className="text-[11px] text-ink/45 leading-relaxed">{content.contact.urgent[l]}</p>
+                  <p className="text-[12px] text-ink/70 leading-relaxed">{content.contact.note[l]}</p>
+                  <p className="text-[12px] text-ink/70 leading-relaxed">{content.contact.urgent[l]}</p>
                 </div>
                 
                 <div className="flex flex-col items-center max-w-sm border-t border-white/5 pt-4">
                   <p className="text-[13px] font-medium opacity-40 mb-1">
                     {content.privacy.title[l]}
                   </p>
-                  <p className="text-[11px] text-ink/35 leading-relaxed">
+                  <p className="text-[12px] text-ink/70 leading-relaxed">
                     {content.privacy.text[l]}
                   </p>
-                  <Link to="/privacy" onClick={onClose} className="mt-1.5 inline-flex items-center min-h-[36px] text-[12px] text-ink/60 underline underline-offset-4 hover:text-ink/85">
+                  <Link to="/privacy" onClick={onClose} className="mt-1.5 inline-flex items-center min-h-[36px] text-[12px] text-ink/70 underline underline-offset-4 hover:text-ink/85">
                     {l === 'el' ? 'Απόρρητο και όροι, όλο το κείμενο' : 'Privacy and terms, in full'}
                   </Link>
                   <span className="flex flex-wrap justify-center gap-x-4">
-                    <Link to="/install" onClick={onClose} className="inline-flex items-center min-h-[36px] text-[12px] text-ink/60 underline underline-offset-4 hover:text-ink/85">
+                    <Link to="/install" onClick={onClose} className="inline-flex items-center min-h-[36px] text-[12px] text-ink/70 underline underline-offset-4 hover:text-ink/85">
                       {l === 'el' ? 'Πώς την εγκαθιστάς' : 'How to install it'}
                     </Link>
-                    <a href={MICROSOFT_STORE_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center min-h-[36px] text-[12px] text-ink/60 underline underline-offset-4 hover:text-ink/85">
+                    <a href={MICROSOFT_STORE_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center min-h-[36px] text-[12px] text-ink/70 underline underline-offset-4 hover:text-ink/85">
                       Microsoft Store
                     </a>
                   </span>
@@ -351,7 +351,7 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                 <p className="text-[13px] font-medium opacity-30 mt-6">
                   {content.footer[l]}
                 </p>
-                <p className="text-[12px] text-ink/50 pb-2 tabular-nums">{versionText(l)}</p>
+                <p className="text-[12px] text-ink/70 pb-2 tabular-nums">{versionText(l)}</p>
               </div>
 
             </div>

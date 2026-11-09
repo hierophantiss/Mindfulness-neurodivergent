@@ -205,7 +205,7 @@ export default function PracticeSwaying() {
               aria-atomic="true"
             >
                <span 
-                 className={`text-[13px] transition-opacity duration-1000 ${isExhaling ? 'text-teal-400/80' : 'text-amber-400/80'}`}
+                 className={`text-[13px] transition-opacity duration-1000 ${isExhaling ? 'text-teal-300' : 'text-amber-400/80'}`}
                  style={{ animation: 'changeOp 2s infinite alternate' }}
                >
                  {breathLabel}
@@ -217,14 +217,14 @@ export default function PracticeSwaying() {
         {/* Dynamic Instruction */}
         <div className="h-16 mt-8 flex items-center justify-center px-4">
           {!isPlaying && !showSettings && (
-            <p className="text-ink/55 text-[14px] text-center leading-relaxed max-w-sm">
+            <p className="text-ink/70 text-[14px] text-center leading-relaxed max-w-sm">
               {lang === 'el'
                 ? 'Λικνίσου απαλά δεξιά–αριστερά, όρθια ή καθιστή, με κάθε χτύπο. Εισπνοή προς τη μία πλευρά, εκπνοή πίσω στο κέντρο.'
                 : 'Sway gently left and right, standing or seated, with each beat. Inhale towards one side, exhale back to the centre.'}
             </p>
           )}
           {instruction && (
-            <p className="text-ink/60 font-light text-lg text-center animate-in fade-in zoom-in duration-1000">
+            <p className="text-ink/70 font-light text-lg text-center animate-in fade-in zoom-in duration-1000">
               {instruction}
             </p>
           )}
@@ -247,7 +247,7 @@ export default function PracticeSwaying() {
                 <button
                   key={layer}
                   onClick={() => setAmbientLayer(layer)}
-                  className={`py-2 rounded-xl text-xs font-medium border transition-colors ${ambientLayer === layer ? 'bg-teal-600 border-teal-500 text-ink' : 'bg-white/5 border-transparent text-ink/50 hover:bg-white/10'}`}
+                  className={`py-2 rounded-xl text-xs font-medium border transition-colors ${ambientLayer === layer ? 'bg-teal-600 border-teal-500 text-ink' : 'bg-white/5 border-transparent text-ink/70 hover:bg-white/10'}`}
                 >
                   {layer === 'none' && (lang === 'el' ? 'Κανένας' : 'None')}
                   {layer === 'ocean' && (lang === 'el' ? 'Ωκεανός' : 'Ocean')}
@@ -270,8 +270,8 @@ export default function PracticeSwaying() {
             className="w-full max-w-xs accent-teal-500"
           />
           <div className="flex justify-between w-full max-w-xs mt-1 px-1">
-             <span className="text-[10px] text-ink/40">{lang === 'el' ? 'Γρήγορα (0,6 δ.)' : 'Fast (0.6 s)'}</span>
-             <span className="text-[10px] text-ink/40">{lang === 'el' ? 'Αργά (2 δ.)' : 'Slow (2 s)'}</span>
+             <span className="text-[12px] text-ink/70">{lang === 'el' ? 'Γρήγορα (0,6 δ.)' : 'Fast (0.6 s)'}</span>
+             <span className="text-[12px] text-ink/70">{lang === 'el' ? 'Αργά (2 δ.)' : 'Slow (2 s)'}</span>
           </div>
         </div>
 
@@ -283,7 +283,7 @@ export default function PracticeSwaying() {
              aria-expanded={showSettings}
              className="w-12 h-12 flex items-center justify-center rounded-full bg-white/5 border border-white/5 hover:bg-white/10 transition-colors"
           >
-             <Settings2 size={18} className="text-ink/60" />
+             <Settings2 size={18} className="text-ink/70" />
           </button>
           
           <button 

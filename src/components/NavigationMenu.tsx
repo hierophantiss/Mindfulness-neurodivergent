@@ -216,13 +216,13 @@ export default function NavigationMenu() {
                 className={`flex flex-col items-center justify-center gap-1 transition-all duration-300 relative py-2 px-2 rounded-[18px] flex-1 ${
                   isActive
                     ? 'text-sign-gold'
-                    : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.03]'
+                    : 'text-ink/75 hover:text-ink hover:bg-white/[0.03]'
                 }`}
               >
                 <div className={`relative z-10 transition-all duration-300 ${isActive ? 'scale-110 drop-shadow-[0_0_8px_rgba(230,194,126,0.45)]' : 'scale-100'}`}>
                   {item.icon}
                 </div>
-                <span className={`text-[10px] font-medium tracking-wide transition-all duration-300 font-sans ${isActive ? 'opacity-100 drop-shadow-md' : 'opacity-80'}`}>
+                <span className={`text-[11px] font-medium transition-all duration-300 font-sans ${isActive ? 'drop-shadow-md' : ''}`}>
                   {language === 'en' ? item.labelEn : item.labelEl}
                 </span>
                 
@@ -245,13 +245,13 @@ export default function NavigationMenu() {
             className={`flex flex-col items-center justify-center gap-1 transition-all duration-300 relative py-2 px-2 rounded-[18px] flex-1 ${
               isOpen
                 ? 'text-sign-gold bg-[var(--color-sign-gold)]/10'
-                : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.03]'
+                : 'text-ink/75 hover:text-ink hover:bg-white/[0.03]'
             }`}
           >
             <div className={`transition-all duration-300 relative z-10 ${isOpen ? 'scale-110 rotate-90 drop-shadow-[0_0_8px_rgba(230,194,126,0.45)]' : 'scale-100'}`}>
               <LayoutGrid size={18} />
             </div>
-            <span className={`text-[10px] font-medium tracking-wide transition-all duration-300 font-sans ${isOpen ? 'opacity-100 drop-shadow-md' : 'opacity-80'}`}>
+            <span className={`text-[11px] font-medium transition-all duration-300 font-sans ${isOpen ? 'drop-shadow-md' : ''}`}>
               {language === 'en' ? 'Menu' : 'Μενού'}
             </span>
           </motion.button>

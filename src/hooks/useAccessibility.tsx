@@ -1,3 +1,4 @@
+import { MotionConfig } from 'motion/react';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { applyReadingPrefs, readEasyRead, savePref, EASY_READ_KEY } from '../lib/readingPrefs';
 
@@ -40,7 +41,12 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
 
   return (
     <AccessibilityContext.Provider value={{ reduceMotion, toggleReduceMotion, easyRead, toggleEasyRead }}>
-      {children}
+      {/* The animations of the whole app follow the same switch (it starts
+          from the phone's own "reduce motion"): with it on, things appear
+          and fade, but nothing slides, grows or springs. */}
+      <MotionConfig reducedMotion={reduceMotion ? 'always' : 'never'}>
+        {children}
+      </MotionConfig>
     </AccessibilityContext.Provider>
   );
 }

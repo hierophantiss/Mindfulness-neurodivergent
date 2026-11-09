@@ -563,7 +563,7 @@ export default function PracticeBreath() {
           >
             <Headphones size={18} />
             {audioPref === null ? (
-              <span className={`absolute -top-1 -right-1 w-3 h-3 bg-indigo-500 rounded-full border-2 border-zinc-900 ${reduceMotion ? '' : 'animate-pulse'}`}></span>
+              <span className={`absolute -top-1 -right-1 w-3 h-3 bg-indigo-500 rounded-full border-2 border-zinc-900`}></span>
             ) : null}
           </button>
         </div>
@@ -590,7 +590,7 @@ export default function PracticeBreath() {
                 setShowBanner(false);
                 try { localStorage.setItem('hide_binaural_banner', 'true'); } catch { /* fine */ }
               }}
-              className="w-11 h-11 shrink-0 flex items-center justify-center text-ink/55 hover:text-ink rounded-full hover:bg-white/5 transition-colors"
+              className="w-11 h-11 shrink-0 flex items-center justify-center text-ink/70 hover:text-ink rounded-full hover:bg-white/5 transition-colors"
             >
               <X size={16} aria-hidden="true" />
             </button>
@@ -784,8 +784,8 @@ export default function PracticeBreath() {
                   <span
                     key={i}
                     className={cn(
-                      "flex items-center gap-1 text-[11.5px] desk:text-[14px] whitespace-nowrap transition-all duration-500",
-                      i === phaseIdx ? "font-medium" : "text-ink/30"
+                      "flex items-center gap-1 text-[12px] desk:text-[14px] whitespace-nowrap transition-all duration-500",
+                      i === phaseIdx ? "font-medium" : "text-ink/70"
                     )}
                     style={i === phaseIdx ? { color: step.color } : undefined}
                   >
@@ -804,7 +804,7 @@ export default function PracticeBreath() {
         {/* SOS: the helplines sit at the bottom of the stage, so the figure stays at the same height as in the other breaths */}
         {currentPatternId === 'sos-breath' && (
           <div className="absolute bottom-2 left-0 right-0 px-8 text-center z-20 pointer-events-none">
-            <p className="text-[11.5px] text-zinc-500 font-sans leading-relaxed">
+            <p className="text-[13px] text-ink/70 font-sans leading-relaxed">
               {language === 'el' 
                 ? 'Αν αυτό δεν είναι αρκετό αυτή τη στιγμή, μπορείς να μιλήσεις με κάποιον τώρα — 1018 (Κλίμακα, 24ωρη γραμμή) ή 197 (δωρεάν, 24ωρη ψυχοκοινωνική στήριξη).'
                 : 'If this isn\'t enough right now, you are not alone — 1018 (Greece) or visit findahelpline.com for international support.'}
@@ -817,7 +817,7 @@ export default function PracticeBreath() {
           {cycles > 0 && (
              <div className="flex flex-col items-center">
                <span className="font-semibold text-2xl text-ink/90 leading-none drop-shadow-sm">{cycles}</span>
-               <span className="text-[13px] font-sans mt-0.5 text-ink/60">{language === 'el' ? 'Κύκλοι' : 'Cycles'}</span>
+               <span className="text-[13px] font-sans mt-0.5 text-ink/70">{language === 'el' ? 'Κύκλοι' : 'Cycles'}</span>
              </div>
           )}
         </div>
@@ -917,7 +917,7 @@ export default function PracticeBreath() {
                   )}
                 >
                   <div className="text-lg">{mins}</div>
-                  <div className="text-[10px] opacity-80">{language === 'el' ? 'Λεπτά' : 'Min'}</div>
+                  <div className="text-[12px] opacity-80">{language === 'el' ? 'Λεπτά' : 'Min'}</div>
                 </button>
               ))}
             </div>

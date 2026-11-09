@@ -243,18 +243,18 @@ export default function Journal() {
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
             {/* Date */}
             <div className="flex items-center justify-between mb-8 bg-white/[0.02] p-2 rounded-full border border-white/[0.05]">
-              <button onClick={() => changeDate(-1)} aria-label={lang === 'el' ? 'Προηγούμενη μέρα' : 'Previous day'} className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/[0.05] text-ink/50 hover:text-ink transition-colors">
+              <button onClick={() => changeDate(-1)} aria-label={lang === 'el' ? 'Προηγούμενη μέρα' : 'Previous day'} className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/[0.05] text-ink/70 hover:text-ink transition-colors">
                 <ChevronLeft size={20} />
               </button>
               <div className="flex flex-col items-center">
                 <span className="text-sm desk:text-[15px] font-semibold text-ink/90">
                   {currentDate.toLocaleDateString(lang === 'el' ? 'el-GR' : 'en-GB', { day: 'numeric', month: 'long' })}
                 </span>
-                <span className="text-[10px] desk:text-[11px] tracking-wider text-ink/45">
+                <span className="text-[12px] desk:text-[12px] tracking-wider text-ink/70">
                   {currentDate.toLocaleDateString(lang === 'el' ? 'el-GR' : 'en-GB', { weekday: 'long' })} · {currentDate.getFullYear()}
                 </span>
               </div>
-              <button onClick={() => changeDate(1)} disabled={isToday} aria-label={lang === 'el' ? 'Επόμενη μέρα' : 'Next day'} className={cn("w-10 h-10 flex items-center justify-center rounded-full transition-colors", isToday ? "opacity-30 cursor-not-allowed text-ink/30" : "hover:bg-white/[0.05] text-ink/50 hover:text-ink")}>
+              <button onClick={() => changeDate(1)} disabled={isToday} aria-label={lang === 'el' ? 'Επόμενη μέρα' : 'Next day'} className={cn("w-10 h-10 flex items-center justify-center rounded-full transition-colors", isToday ? "opacity-30 cursor-not-allowed text-ink/70" : "hover:bg-white/[0.05] text-ink/70 hover:text-ink")}>
                 <ChevronRight size={20} />
               </button>
             </div>
@@ -286,7 +286,7 @@ export default function Journal() {
                 })}
               </div>
               {feltFromHome && (
-                <p className="mt-3 ml-1 text-[12px] desk:text-[13px] leading-relaxed text-ink/50">
+                <p className="mt-3 ml-1 text-[12px] desk:text-[13px] leading-relaxed text-ink/70">
                   {lang === 'el' ? 'Από το «Πώς νιώθεις» της αρχικής. Άλλαξέ το αν θες.' : 'From “How do you feel?” on the home page. Change it if you like.'}
                 </p>
               )}
@@ -305,7 +305,7 @@ export default function Journal() {
                       aria-pressed={on}
                       className={cn(
                         "min-h-[44px] px-3 rounded-full border flex items-center justify-center gap-2 text-[13px] desk:text-[14px] transition-colors active:scale-[0.97]",
-                        on ? "bg-white/[0.08] border-white/20 text-ink/90" : "bg-white/[0.02] border-white/[0.07] text-ink/60 hover:text-ink/80"
+                        on ? "bg-white/[0.08] border-white/20 text-ink/90" : "bg-white/[0.02] border-white/[0.07] text-ink/70 hover:text-ink/80"
                       )}
                     >
                       <span
@@ -318,7 +318,7 @@ export default function Journal() {
                 })}
               </div>
               {dayPractice.names.length > 0 && (
-                <p className="mt-3 ml-1 text-[12px] desk:text-[13px] leading-relaxed text-ink/45">
+                <p className="mt-3 ml-1 text-[12px] desk:text-[13px] leading-relaxed text-ink/70">
                   {lang === 'el' ? (isToday ? 'Σήμερα στην εφαρμογή: ' : 'Εκείνη τη μέρα στην εφαρμογή: ') : (isToday ? 'Today in the app: ' : 'That day in the app: ')}
                   <span className="text-ink/65">{dayPractice.names.map(n => n[lang]).join(' · ')}</span>
                 </p>
@@ -328,20 +328,20 @@ export default function Journal() {
             {/* What I noticed — its own card, so it is clear where to write */}
             <section aria-labelledby="noticed" className="card-relief rounded-[24px] p-5 desk:p-6">
               <h2 id="noticed" className="text-[15px] desk:text-[16px] font-medium text-ink/90">{lang === 'el' ? 'Τι παρατήρησα σήμερα' : 'What I noticed today'}</h2>
-              <p className="mt-1 text-[12.5px] desk:text-[13px] text-ink/45">
+              <p className="mt-1 text-[12.5px] desk:text-[13px] text-ink/70">
                 {lang === 'el' ? 'Δεν χρειάζεται να είναι τέλειο. Αρκεί να είναι αληθινό.' : 'It does not need to be perfect. It only needs to be true.'}
               </p>
 
               {question && (
                 <div className="mt-4 pl-3 border-l-2" style={{ borderColor: AXIS_COLOR[question.axis] }}>
-                  <p className="text-[12px] text-ink/50">{lang === 'el' ? 'Ερώτηση της ημέρας' : 'Question of the day'}</p>
+                  <p className="text-[12px] text-ink/70">{lang === 'el' ? 'Ερώτηση της ημέρας' : 'Question of the day'}</p>
                   <p className="mt-1 text-[15px] desk:text-[16px] leading-relaxed text-ink/85">{question.q}</p>
                   <div className="flex items-center gap-4 mt-1">
-                    <button onClick={() => appendText(`~ ${question.q}\n`)} className="min-h-[36px] flex items-center gap-1.5 whitespace-nowrap text-[12.5px] text-ink/60 hover:text-ink/90 transition-colors">
+                    <button onClick={() => appendText(`~ ${question.q}\n`)} className="min-h-[36px] flex items-center gap-1.5 whitespace-nowrap text-[12.5px] text-ink/70 hover:text-ink/90 transition-colors">
                       <Plus size={13} /> {lang === 'el' ? 'Γράψε γι\' αυτήν' : 'Write about it'}
                     </button>
                     {questionPool.length > 1 && (
-                      <button onClick={() => setQuestionShift(n => n + 1)} className="min-h-[36px] flex items-center gap-1.5 whitespace-nowrap text-[12.5px] text-ink/45 hover:text-ink/80 transition-colors">
+                      <button onClick={() => setQuestionShift(n => n + 1)} className="min-h-[36px] flex items-center gap-1.5 whitespace-nowrap text-[12.5px] text-ink/70 hover:text-ink/80 transition-colors">
                         <RefreshCw size={12} /> {lang === 'el' ? 'Άλλη ερώτηση' : 'Another question'}
                       </button>
                     )}
@@ -360,21 +360,21 @@ export default function Journal() {
               />
 
               <div className="mt-3 flex items-center gap-2 overflow-x-auto pb-1 custom-scrollbar desk:flex-wrap desk:overflow-visible">
-                <span className="shrink-0 text-[12px] text-ink/45">{lang === 'el' ? 'Ή ξεκίνα από:' : 'Or start from:'}</span>
+                <span className="shrink-0 text-[12px] text-ink/70">{lang === 'el' ? 'Ή ξεκίνα από:' : 'Or start from:'}</span>
                 {QUICK_TEMPLATES.map(t => (
                   <button
                     key={t.id}
                     onClick={() => appendText(t.content[lang])}
                     className="shrink-0 min-h-[36px] flex items-center gap-2 bg-white/[0.03] border border-white/[0.07] hover:bg-white/[0.07] rounded-full px-3.5 transition-colors"
                   >
-                    <t.icon size={14} className="text-ink/50" strokeWidth={1.75} aria-hidden="true" />
+                    <t.icon size={14} className="text-ink/70" strokeWidth={1.75} aria-hidden="true" />
                     <span className="text-[12.5px] text-ink/75">{t.title[lang]}</span>
                   </button>
                 ))}
               </div>
             </section>
 
-            <button type="button" onClick={() => setViewState('history')} className="mt-4 ml-1 inline-flex items-center gap-2 min-h-[44px] text-[13.5px] text-ink/60 hover:text-ink/90 transition-colors">
+            <button type="button" onClick={() => setViewState('history')} className="mt-4 ml-1 inline-flex items-center gap-2 min-h-[44px] text-[13.5px] text-ink/70 hover:text-ink/90 transition-colors">
               <CalendarArrowDown size={15} aria-hidden="true" />
               {lang === 'el' ? 'Η εβδομάδα μου σε μία σελίδα (PDF)' : 'My week on one page (PDF)'}
               <ChevronRight size={15} aria-hidden="true" />
@@ -386,7 +386,7 @@ export default function Journal() {
 
             <h2 className={cn(sectionLabel, 'mt-2')}>{lang === 'el' ? 'Παλιότερες μέρες' : 'Earlier days'}</h2>
             <div className="relative mb-5">
-              <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-ink/40">
+              <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-ink/70">
                 <Search size={16} />
               </div>
               <input
@@ -401,7 +401,7 @@ export default function Journal() {
 
             <div className="space-y-3">
               {filteredHistory.length === 0 ? (
-                <div className="text-center text-ink/45 py-12 text-sm">
+                <div className="text-center text-ink/70 py-12 text-sm">
                   {lang === 'el' ? 'Δεν βρέθηκαν μέρες.' : 'No days found.'}
                 </div>
               ) : (
@@ -432,7 +432,7 @@ export default function Journal() {
                         {item.data.text || (lang === 'el' ? '(Χωρίς κείμενο)' : '(No text)')}
                       </p>
                       {axes.length > 0 && (
-                        <p className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-[12px] text-ink/55">
+                        <p className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-[12px] text-ink/70">
                           {axes.map(a => (
                             <span key={a} className="flex items-center gap-1">
                               <span aria-hidden="true" className="font-display text-[13px]" style={{ color: AXIS_COLOR[a] }}>{AXIS_GLYPH[a]}</span>

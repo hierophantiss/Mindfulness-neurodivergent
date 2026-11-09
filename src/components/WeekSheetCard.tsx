@@ -92,7 +92,7 @@ export function WeekSheetCard({ lang }: { lang: Lang }) {
     }
   };
 
-  const arrow = 'w-10 h-10 rounded-full flex items-center justify-center text-ink/55 hover:text-ink hover:bg-white/[0.05] transition-colors disabled:opacity-30 disabled:pointer-events-none';
+  const arrow = 'w-10 h-10 rounded-full flex items-center justify-center text-ink/70 hover:text-ink hover:bg-white/[0.05] transition-colors disabled:opacity-30 disabled:pointer-events-none';
 
   return (
     <section aria-labelledby="week-sheet" className="card-relief rounded-[24px] p-5 desk:p-6 mb-8 flex flex-col gap-4">
@@ -104,7 +104,7 @@ export function WeekSheetCard({ lang }: { lang: Lang }) {
         </button>
         <span className="flex flex-col items-center" aria-live="polite">
           <span className="text-sm desk:text-[15px] font-semibold text-ink/90 whitespace-nowrap">{weekRange(start, lang)}</span>
-          <span className="text-[10px] desk:text-[11px] tracking-wider text-ink/45 whitespace-nowrap">
+          <span className="text-[12px] desk:text-[12px] tracking-wider text-ink/70 whitespace-nowrap">
             {offset === 0 ? `${t.thisWeek} · ` : offset === -1 ? `${t.lastWeek} · ` : ''}{start.getFullYear()}
           </span>
         </span>
@@ -115,7 +115,7 @@ export function WeekSheetCard({ lang }: { lang: Lang }) {
 
       <svg viewBox="0 0 330 104" className="w-full desk:max-w-[520px] desk:mx-auto" role="img" aria-label={summary}>
         <rect x="56" y="38" width="274" height="28" rx="14" fill="color-mix(in srgb, var(--axis-breath-ink) 10%, transparent)" />
-        <g fontSize="10" fill="currentColor" className="text-ink/45">
+        <g fontSize="10" fill="currentColor" className="text-ink/70">
           <text x="0" y="26">{t.high}</text>
           <text x="0" y="56">{t.mid}</text>
           <text x="0" y="86">{t.low}</text>
@@ -123,7 +123,7 @@ export function WeekSheetCard({ lang }: { lang: Lang }) {
         {path && <path d={path} fill="none" stroke={C} strokeWidth="1.6" opacity="0.5" strokeLinecap="round" />}
         {week.map((d, i) => (
           <g key={d.date}>
-            <text x={xs[i]} y="102" fontSize="9.5" textAnchor="middle" fill="currentColor" className="text-ink/40">{names[i].charAt(0)}</text>
+            <text x={xs[i]} y="102" fontSize="9.5" textAnchor="middle" fill="currentColor" className="text-ink/70">{names[i].charAt(0)}</text>
             {d.felt === 'unsure' ? (
               <>
                 <circle cx={xs[i]} cy="52" r="6.5" fill="var(--color-bg)" stroke={C} strokeWidth="1.4" />
@@ -151,7 +151,7 @@ export function WeekSheetCard({ lang }: { lang: Lang }) {
             role="radio"
             aria-checked={withNotes === v}
             onClick={() => setWithNotes(v)}
-            className={`min-h-[40px] px-2 rounded-full text-[13px] whitespace-nowrap transition-colors ${withNotes === v ? 'bg-white/[0.09] text-ink' : 'text-ink/55 hover:text-ink/80'}`}
+            className={`min-h-[40px] px-2 rounded-full text-[13px] whitespace-nowrap transition-colors ${withNotes === v ? 'bg-white/[0.09] text-ink' : 'text-ink/70 hover:text-ink/80'}`}
           >
             {v ? t.notes : t.graph}
           </button>
@@ -162,7 +162,7 @@ export function WeekSheetCard({ lang }: { lang: Lang }) {
         <button type="button" onClick={download} disabled={busy} aria-busy={busy} className="btn-main self-start disabled:!opacity-70">
           <Download size={17} aria-hidden="true" /> {busy ? t.busy : t.download}
         </button>
-        <span className="text-[12px] leading-relaxed text-ink/45">{t.local}</span>
+        <span className="text-[12px] leading-relaxed text-ink/70">{t.local}</span>
       </div>
       {failed && <p role="status" className="text-[13px] leading-relaxed text-ink/70">{t.failed}</p>}
     </section>

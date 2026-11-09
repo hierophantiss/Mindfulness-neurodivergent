@@ -626,7 +626,7 @@ export default function OpenAwareness() {
           <p className="text-sm md:text-base tracking-[0.2em] text-[#e8e4df]/60 italic mb-12 text-center px-4">
             {data.introSub}
           </p>
-          <div className="px-8 py-3 rounded-full border border-white/20 bg-white/5 text-ink/70 tracking-[0.2em] uppercase text-sm animate-pulse hover:bg-white/10 transition-colors">
+          <div className="px-8 py-3 rounded-full border border-white/20 bg-white/5 text-ink/85 text-[15px] hover:bg-white/10 transition-colors">
             {data.introHint}
           </div>
         </div>
@@ -644,7 +644,7 @@ export default function OpenAwareness() {
       <div className={`absolute inset-0 pointer-events-none transition-opacity duration-1000 ${showIntro ? 'opacity-0' : 'opacity-100'}`}>
         
         {/* Top Info */}
-        <div className="absolute top-6 right-6 text-ink/30 tracking-[0.3em] font-mono text-xs z-10">
+        <div className="absolute top-6 right-6 text-ink/70 tracking-[0.3em] font-mono text-xs z-10">
           {curScene + 1} / 4
         </div>
         

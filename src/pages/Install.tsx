@@ -200,7 +200,7 @@ export default function Install() {
                 >
                   <Download size={17} aria-hidden="true" /> {t.apk}
                 </a>
-                <span className="text-[13px] text-ink/60">{t.apkSize}</span>
+                <span className="text-[13px] text-ink/70">{t.apkSize}</span>
               </div>
             )}
             <ol className="flex flex-col gap-2 list-decimal pl-6 marker:text-ink/50">

@@ -226,7 +226,7 @@ export default function RabbitHole() {
         <div className="pt-safe px-4 pb-3 flex items-center justify-between border-b border-white/5 bg-black/40 backdrop-blur-md/80 backdrop-blur-md relative z-20">
           <button 
             onClick={() => setActiveArticle(null)} 
-            className="p-2 -ml-2 text-ink/40 hover:text-ink transition-colors active:scale-95"
+            className="p-2 -ml-2 text-ink/70 hover:text-ink transition-colors active:scale-95"
             aria-label={t.close}
           >
             <X size={24} />
@@ -239,8 +239,8 @@ export default function RabbitHole() {
               </p>
             )}
           </div>
-          <div className="w-10 text-xs text-teal-400/80 font-mono text-right font-medium tracking-wide">
-            {currentPage + 1}<span className="text-ink/20">/{article.pages.length}</span>
+          <div className="w-10 text-xs text-teal-300 font-mono text-right font-medium tracking-wide">
+            {currentPage + 1}<span className="text-ink/60">/{article.pages.length}</span>
           </div>
         </div>
 
@@ -333,7 +333,7 @@ export default function RabbitHole() {
               "flex-1 min-w-[120px] flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-all duration-300",
               activeTab === 'articles' 
                 ? "bg-white/[0.1] text-ink shadow-sm border border-white/[0.05]" 
-                : "text-ink/30 hover:text-ink/60"
+                : "text-ink/70 hover:text-ink/60"
             )}
           >
             <BookOpen size={16} />
@@ -345,7 +345,7 @@ export default function RabbitHole() {
               "flex-1 min-w-[120px] flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-all duration-300",
               activeTab === 'videos' 
                 ? "bg-white/[0.1] text-ink shadow-sm border border-white/[0.05]" 
-                : "text-ink/30 hover:text-ink/60"
+                : "text-ink/70 hover:text-ink/60"
             )}
           >
             <Film size={16} />
@@ -354,7 +354,7 @@ export default function RabbitHole() {
         </div>
 
         <div className="flex flex-col items-center justify-center mb-12 text-center px-4 space-y-4 max-w-2xl mx-auto">
-          <p className="text-ink/40 text-sm md:text-base font-light leading-relaxed">
+          <p className="text-ink/70 text-sm md:text-base font-light leading-relaxed">
             {activeTab === 'articles' ? (
               language === 'en' 
                 ? 'A collection of theoretical pieces, allegories, and insights from across the world charting the human path to the exploration of consciousness.'
@@ -394,7 +394,7 @@ export default function RabbitHole() {
               </div>
               <div>
                 <h2 className="text-[20px] md:text-[24px] font-medium text-[#d4d4d8] leading-snug tracking-tight group-hover:text-teal-100 transition-colors">{language === 'en' ? 'The Method & Symbols' : 'Η Μέθοδος & τα Σύμβολα'}</h2>
-                <p className="text-[13px] md:text-[13px] text-[#d4d4d8]/50 font-medium mt-1.5">{language === 'en' ? 'The elephant & the monkey' : 'Ο ελέφαντας και η μαϊμού'}</p>
+                <p className="text-[13px] md:text-[13px] text-ink/70 font-medium mt-1.5">{language === 'en' ? 'The elephant & the monkey' : 'Ο ελέφαντας και η μαϊμού'}</p>
               </div>
             </div>
             <p className="text-[#d4d4d8]/70 text-sm md:text-[15px] leading-relaxed line-clamp-3 relative z-10 font-medium">
@@ -402,7 +402,7 @@ export default function RabbitHole() {
                 ? "Dive into the allegorical framework that structures the practice. Understanding how the mind wanders and returns."
                 : "Εξερεύνησε το αλληγορικό πλαίσιο που δομεί την πρακτική. Πώς ο νους περιπλανάται και πώς επιστρέφει."}
             </p>
-            <div className="mt-6 pt-5 border-t border-white/5 flex justify-between items-center text-teal-400/80 font-medium text-[13px] md:text-sm relative z-10 group-hover:text-teal-300 transition-colors">
+            <div className="mt-6 pt-5 border-t border-white/5 flex justify-between items-center text-teal-300 font-medium text-[13px] md:text-sm relative z-10 group-hover:text-teal-300 transition-colors">
               <span className="flex items-center gap-2">
                 {language === 'en' ? 'Explore Symbols' : 'Εξερεύνηση Συμβόλων'} <ChevronRight size={16} className="transform group-hover:translate-x-1 transition-transform" />
               </span>
@@ -432,25 +432,25 @@ export default function RabbitHole() {
 
                 <div className="flex items-center gap-4 mb-5 relative z-10">
                   <div className={`w-14 h-14 rounded-2xl flex items-center justify-center border border-white/5 flex-shrink-0 group-hover:scale-110 transition-transform duration-500 ${isNew ? 'bg-teal-500/[0.05]' : 'bg-white/[0.02]'}`}>
-                    <BookOpen size={22} className={`${isNew ? 'text-teal-400/80' : 'text-ink/30'}`} />
+                    <BookOpen size={22} className={`${isNew ? 'text-teal-300' : 'text-ink/70'}`} />
                   </div>
                   <div className="flex-1 pr-12">
                     <h2 className="text-[18px] md:text-[20px] font-medium text-ink/90 leading-snug tracking-tight group-hover:text-ink transition-colors">{article.title}</h2>
-                    <p className={`text-[13px] md:text-[13px] font-medium mt-1.5 ${isNew ? 'text-teal-400/60' : 'text-ink/30'}`}>
+                    <p className={`text-[13px] md:text-[13px] font-medium mt-1.5 ${isNew ? 'text-teal-300' : 'text-ink/70'}`}>
                       {article.author}
                       {article.date && (
-                        <span className="opacity-60 ml-2 before:content-['•'] before:mr-2">
+                        <span className="ml-2 before:content-['•'] before:mr-2">
                           {formatDate(article.date, language)}
                         </span>
                       )}
                     </p>
                   </div>
                 </div>
-                <p className="text-ink/40 text-[13px] md:text-[14px] leading-relaxed line-clamp-3 relative z-10 font-sans">
+                <p className="text-ink/70 text-[13px] md:text-[14px] leading-relaxed line-clamp-3 relative z-10 font-sans">
                   "{article.pages[0].replace(/\*\*/g, '')}"
                 </p>
                 <div className="mt-auto pt-6">
-                  <div className="pt-5 border-t border-white/5 flex justify-between items-center text-ink/50 font-medium text-[13px] md:text-[14px] relative z-10 group-hover:text-ink/70 transition-colors">
+                  <div className="pt-5 border-t border-white/5 flex justify-between items-center text-ink/70 font-medium text-[13px] md:text-[14px] relative z-10 group-hover:text-ink/70 transition-colors">
                     <span className="flex items-center gap-2">
                        {t.startReading} <ChevronRight size={16} className="transform group-hover:translate-x-1 transition-transform" />
                     </span>
@@ -518,7 +518,7 @@ export default function RabbitHole() {
                 className="fixed inset-0 pointer-events-none z-0"
               >
                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.08)_0%,transparent_1px)] bg-[length:120px_120px]" />
-                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.05)_0%,transparent_1px)] bg-[length:180px_180px] animate-pulse" />
+                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.05)_0%,transparent_1px)] bg-[length:180px_180px]" />
                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(255,255,255,0.03)_0%,transparent_1px)] bg-[length:250px_250px]" />
               </motion.div>
             )}
@@ -535,7 +535,7 @@ export default function RabbitHole() {
             </div>
             <button aria-label={language === 'en' ? 'Close' : 'Κλείσιμο'} 
               onClick={() => setActiveVideo(null)}
-              className="p-3 rounded-full bg-white/5 border border-white/10 text-ink/40 hover:text-ink hover:bg-white/10 transition-all active:scale-90"
+              className="p-3 rounded-full bg-white/5 border border-white/10 text-ink/70 hover:text-ink hover:bg-white/10 transition-all active:scale-90"
             >
               <X size={20} />
             </button>
@@ -568,7 +568,7 @@ export default function RabbitHole() {
                  <h2 className="font-display text-3xl md:text-4xl text-ink/95 mb-2">
                    {informativeVideos.find(v => v.id === activeVideo)?.title[language as 'en'|'el']}
                  </h2>
-                 <p className="text-lg text-ink/30 font-medium">
+                 <p className="text-lg text-ink/70 font-medium">
                    {informativeVideos.find(v => v.id === activeVideo)?.author}
                  </p>
               </div>
@@ -614,11 +614,11 @@ export default function RabbitHole() {
                       )}
 
                       <div className="bg-white/[0.02] border border-white/5 p-8 rounded-[2.5rem] space-y-4">
-                        <p className="text-[14px] text-ink/60 leading-relaxed font-sans">
+                        <p className="text-[14px] text-ink/70 leading-relaxed font-sans">
                           {desc.intro}
                         </p>
                         <div className="pt-4 border-t border-white/5">
-                           <p className="text-[12px] font-light text-teal-400/80">
+                           <p className="text-[12px] font-light text-teal-300">
                              {desc.tip}
                            </p>
                         </div>
@@ -651,7 +651,7 @@ export default function RabbitHole() {
                              <div className="flex items-center justify-center gap-4 relative z-10">
                                <button aria-label={language === 'en' ? 'Previous' : 'Προηγούμενο'} 
                                  onClick={() => setMantraStep((prev) => (prev > 0 ? prev - 1 : (desc.mantra ? desc.mantra.length - 1 : 0)))}
-                                 className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-ink/40 hover:text-ink hover:bg-white/10 transition-all active:scale-95"
+                                 className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-ink/70 hover:text-ink hover:bg-white/10 transition-all active:scale-95"
                                >
                                  <ChevronLeft size={20} />
                                </button>
@@ -669,7 +669,7 @@ export default function RabbitHole() {
                                  if (videoData.id === '7Qbat52NE98') time = 564; // Tai Chi Mantra [09:24]
                                  setVideoStartTime(time);
                                }}
-                               className="mt-6 text-[13px] font-medium text-teal-400/60 hover:text-teal-400 transition-colors flex items-center justify-center gap-2 mx-auto"
+                               className="mt-6 text-[13px] font-medium text-teal-300 hover:text-teal-400 transition-colors flex items-center justify-center gap-2 mx-auto"
                              >
                                 <Youtube size={12} />
                                 {language === 'el' ? 'Δες το στο βίντεο' : 'Watch in video'} {videoData.id === '7Qbat52NE98' ? '[09:24]' : ''}
@@ -699,13 +699,13 @@ export default function RabbitHole() {
                                <div className="flex gap-2">
                                  <button aria-label={language === 'en' ? 'Previous' : 'Προηγούμενο'} 
                                    onClick={() => setMantraStep((prev) => (prev > 0 ? prev - 1 : 9))}
-                                   className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-ink/40 hover:text-ink transition-all"
+                                   className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-ink/70 hover:text-ink transition-all"
                                  >
                                    <ChevronLeft size={18} />
                                  </button>
                                  <button aria-label={language === 'en' ? 'Next' : 'Επόμενο'} 
                                    onClick={() => setMantraStep((prev) => (prev < 9 ? prev + 1 : 0))}
-                                   className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-ink/40 hover:text-ink transition-all"
+                                   className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-ink/70 hover:text-ink transition-all"
                                  >
                                    <ChevronRight size={18} />
                                  </button>
@@ -781,10 +781,10 @@ export default function RabbitHole() {
                                      }`}
                                    >
                                       <div className={`w-2 h-2 rounded-full mb-3 transition-all ${isActive ? 'bg-amber-400 scale-125' : 'bg-white/20'}`}></div>
-                                      <span className={`text-[13px] font-medium block mb-1 ${isActive ? 'text-amber-200' : 'text-ink/40'}`}>
+                                      <span className={`text-[13px] font-medium block mb-1 ${isActive ? 'text-amber-200' : 'text-ink/70'}`}>
                                         {style.name}
                                       </span>
-                                      <p className="text-[10px] text-ink/30 leading-tight">
+                                      <p className="text-[12px] text-ink/70 leading-tight">
                                         {style.desc}
                                       </p>
                                    </button>
@@ -794,7 +794,7 @@ export default function RabbitHole() {
 
                              {activeAttentionStyles.length === 4 ? (
                                <div className="relative z-10 bg-teal-500/20 border border-teal-500/40 rounded-3xl p-6 text-center animate-in zoom-in duration-500">
-                                 <div className="w-12 h-12 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 mx-auto mb-4 animate-pulse">
+                                 <div className="w-12 h-12 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 mx-auto mb-4">
                                    <Play size={24} fill="currentColor" />
                                  </div>
                                  <h4 className="text-xl font-light text-ink mb-2">
@@ -841,11 +841,11 @@ export default function RabbitHole() {
                               >
                                 <div className="flex items-center justify-between mb-2">
                                   <span className="text-[13px] font-bold text-ink/80 group-hover:text-teal-300 transition-colors">{pt.title}</span>
-                                  <span className="text-[10px] font-mono text-teal-500/50 bg-teal-500/5 px-2 py-1 rounded-lg group-hover:bg-teal-500/20 group-hover:text-teal-400 transition-all">
+                                  <span className="text-[12px] font-mono text-teal-500/50 bg-teal-500/5 px-2 py-1 rounded-lg group-hover:bg-teal-500/20 group-hover:text-teal-400 transition-all">
                                     {pt.time}
                                   </span>
                                 </div>
-                                <p className="text-[12px] text-ink/40 leading-relaxed group-hover:text-ink/60 transition-colors">
+                                <p className="text-[12px] text-ink/70 leading-relaxed group-hover:text-ink/60 transition-colors">
                                   {pt.text}
                                 </p>
                               </button>
@@ -888,7 +888,7 @@ export default function RabbitHole() {
                        <h2 className="text-2xl font-light text-ink/95 mb-2">
                          {videoData?.title[language as 'en'|'el']}
                        </h2>
-                       <p className="text-sm text-ink/30 font-medium">
+                       <p className="text-sm text-ink/70 font-medium">
                          {videoData?.author} • {videoData?.category[language as 'en'|'el']}
                        </p>
                     </div>
@@ -899,7 +899,7 @@ export default function RabbitHole() {
                            {language === 'el' ? 'Πληροφορίες' : 'Information'}
                          </span>
                        </div>
-                       <p className="text-ink/50 text-[14px] leading-relaxed font-light">
+                       <p className="text-ink/70 text-[14px] leading-relaxed font-light">
                          {language === 'el' 
                            ? 'Αυτό το βίντεο αποτελεί μέρος της συλλογής μας για την εξερεύνηση της συνείδησης και της νευροδιαφορετικότητας.' 
                            : 'This video is part of our collection exploring consciousness and neurodiversity.'}

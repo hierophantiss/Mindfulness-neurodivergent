@@ -47,7 +47,7 @@ export default function ProgramWeek() {
   }, [activeDay]);
 
   if (!week) {
-    return <div className="p-8 text-center text-ink/40">
+    return <div className="p-8 text-center text-ink/70">
       {language === 'en' ? 'Week not found.' : 'Εβδομάδα δεν βρέθηκε.'}
     </div>;
   }
@@ -166,22 +166,22 @@ export default function ProgramWeek() {
                   isLocked ? 'glass-card opacity-50 grayscale cursor-not-allowed min-w-[180px]' :
                   activeDay === idx 
                     ? 'bg-teal-500/10 border-teal-500/30 text-ink min-w-[220px] shadow-sm ring-1 ring-teal-500/20' 
-                    : 'glass-card text-ink/50 min-w-[180px] '
+                    : 'glass-card text-ink/70 min-w-[180px] '
                 }`}
               >
                 <div className="w-full flex justify-between items-center mb-2">
-                  <div className={`text-[13px] font-medium ${activeDay === idx ? 'text-teal-400 drop-shadow-sm' : 'text-ink/30'}`}>
+                  <div className={`text-[13px] font-medium ${activeDay === idx ? 'text-teal-400 drop-shadow-sm' : 'text-ink/70'}`}>
                     {language === 'en' ? 'Day' : 'Ημέρα'} {idx + 1}
                   </div>
                   {isLocked ? (
-                    <span className="text-[12px] text-ink/45">{language === 'en' ? 'later' : 'αργότερα'}</span>
+                    <span className="text-[12px] text-ink/70">{language === 'en' ? 'later' : 'αργότερα'}</span>
                   ) : dayCompleted && (
                     <div className="w-4 h-4 rounded-full bg-teal-500/20 text-teal-300 flex items-center justify-center border border-teal-500/30">
                       <Check size={10} strokeWidth={3} />
                     </div>
                   )}
                 </div>
-                <span className={`block font-light text-lg leading-tight text-left ${activeDay === idx ? 'text-ink drop-shadow-sm' : 'text-ink/60'}`}>
+                <span className={`block font-light text-lg leading-tight text-left ${activeDay === idx ? 'text-ink drop-shadow-sm' : 'text-ink/70'}`}>
                   {day.title}
                 </span>
               </button>
@@ -196,7 +196,7 @@ export default function ProgramWeek() {
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
-        <div className="flex flex-wrap gap-3 mb-6 text-xs text-ink/60 font-medium">
+        <div className="flex flex-wrap gap-3 mb-6 text-xs text-ink/70 font-medium">
           <div className="flex items-center gap-2 bg-black/40 backdrop-blur-md/60 px-4 py-2 rounded-full border border-white/5 shadow-inner backdrop-blur-sm">
             <Clock size={14} className="text-amber-400/80" />
             <span>{currentDayContent.dur}</span>
@@ -317,12 +317,12 @@ export default function ProgramWeek() {
               disabled={isCompleted}
               className={`group flex items-center gap-2 px-6 h-12 rounded-xl font-bold transition-all duration-300 ${
                 isCompleted 
-                  ? 'bg-white/10 text-ink/40 cursor-default opacity-80 border border-white/5' 
+                  ? 'bg-white/10 text-ink/70 cursor-default opacity-80 border border-white/5' 
                   : 'bg-teal-500 hover:bg-teal-400 text-black shadow-[0_4px_15px_rgba(95,143,214,0.3)] active:scale-95'
               }`}
             >
               <span>{isCompleted ? (language === 'en' ? 'Completed' : 'Ολοκληρώθηκε') : (language === 'en' ? 'Complete Day' : 'Ολοκλήρωση')}</span>
-              <Check size={18} strokeWidth={3} className={isCompleted ? 'text-ink/50' : 'text-black'} />
+              <Check size={18} strokeWidth={3} className={isCompleted ? 'text-ink/70' : 'text-black'} />
             </button>
           ) : (
             <button

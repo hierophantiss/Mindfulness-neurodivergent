@@ -319,7 +319,7 @@ export default function Sanctuary() {
               else navigate('/');
             }}
             aria-label={language === 'el' ? 'Πίσω' : 'Back'}
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/[0.04] border border-white/[0.1] text-ink/60 hover:text-ink transition-colors"
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/[0.04] border border-white/[0.1] text-ink/70 hover:text-ink transition-colors"
           >
             <ChevronLeft size={20} />
           </button>
@@ -337,7 +337,7 @@ export default function Sanctuary() {
             aria-pressed={isDimmed}
             className={cn(
               "w-10 h-10 flex items-center justify-center rounded-full border transition-all duration-300",
-              isDimmed ? "bg-teal-500/20 border-teal-500/50 text-teal-400" : "bg-white/5 border-white/10 text-ink/40"
+              isDimmed ? "bg-teal-500/20 border-teal-500/50 text-teal-400" : "bg-white/5 border-white/10 text-ink/70"
             )}
           >
             <Moon size={20} />
@@ -360,7 +360,7 @@ export default function Sanctuary() {
                   "flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-all duration-300",
                   activeTab === tab
                     ? "bg-white/[0.1] text-ink shadow-sm border border-white/[0.05]"
-                    : "text-ink/40 hover:text-ink/70"
+                    : "text-ink/70 hover:text-ink/70"
                 )}
               >
                 <Icon size={16} />
@@ -406,7 +406,7 @@ export default function Sanctuary() {
                 {activeTrackDef ? L(activeTrackDef.subtitle) : ''}
               </p>
               {activeTrackDef?.kind === 'binaural' && (
-                <p className="flex items-center gap-1.5 text-[11px] text-ink/50">
+                <p className="flex items-center gap-1.5 text-[12px] text-ink/70">
                   <Headphones size={12} aria-hidden="true" />
                   {language === 'el' ? 'Με ακουστικά' : 'With headphones'}
                 </p>
@@ -444,7 +444,7 @@ export default function Sanctuary() {
               aria-label={language === 'el' ? 'Χρονοδιακόπτης: πάτα για να αλλάξεις τη διάρκεια' : 'Timer: tap to change the length'}
               className={cn(
                 "px-4 py-2 rounded-full border flex items-center justify-center gap-2 text-[12px] font-medium transition-colors",
-                timer !== null ? "bg-teal-500/10 border-teal-500/30 text-teal-200" : "bg-white/[0.05] border-white/[0.08] text-ink/60 hover:bg-white/[0.1]"
+                timer !== null ? "bg-teal-500/10 border-teal-500/30 text-teal-200" : "bg-white/[0.05] border-white/[0.08] text-ink/70 hover:bg-white/[0.1]"
               )}
             >
               <Timer size={14} aria-hidden="true" />
@@ -453,7 +453,7 @@ export default function Sanctuary() {
                 : `${timer}′ · ${formatTime(Math.max(0, timeLeft ?? 0))}`}
             </button>
             {timer !== null && (
-              <p className="mt-2 text-[11px] text-ink/40">
+              <p className="mt-2 text-[12px] text-ink/70">
                 {language === 'el' ? 'Στο τέλος ο ήχος σβήνει σιγά σιγά.' : 'At the end the sound fades out slowly.'}
               </p>
             )}
@@ -464,7 +464,7 @@ export default function Sanctuary() {
         {activeTab === 'audio' && activeSound && !isDimmed && (
           <div className="card-relief flex flex-col gap-4 px-6 py-5 rounded-[2rem] mb-8 relative overflow-hidden">
             <div className="flex items-center gap-4 relative z-10">
-              <Volume2 size={20} className="text-ink/40" aria-hidden="true" />
+              <Volume2 size={20} className="text-ink/70" aria-hidden="true" />
               <input
                 type="range"
                 min="0"
@@ -502,7 +502,7 @@ export default function Sanctuary() {
                     {group.kind === 'binaural' && <Headphones size={13} aria-hidden="true" />}
                     {L(group.title)}
                   </h3>
-                  <p className="mt-1.5 text-[12px] leading-relaxed text-ink/45">{L(group.note)}</p>
+                  <p className="mt-1.5 text-[12px] leading-relaxed text-ink/70">{L(group.note)}</p>
                   {group.kind === 'binaural' && (
                     <button
                       onClick={() => setShowInfo(v => !v)}
@@ -545,7 +545,7 @@ export default function Sanctuary() {
                         <div className="flex items-center gap-4 relative z-10 w-full">
                           <div className={cn(
                             "w-12 h-12 flex items-center justify-center rounded-2xl flex-shrink-0 transition-colors",
-                            active ? "bg-teal-500/20 text-teal-400" : "bg-white/[0.05] text-ink/40 group-hover:text-ink/70"
+                            active ? "bg-teal-500/20 text-teal-400" : "bg-white/[0.05] text-ink/70 group-hover:text-ink/70"
                           )}>
                             <sound.icon size={24} strokeWidth={1.5} />
                           </div>
@@ -556,7 +556,7 @@ export default function Sanctuary() {
                             )}>
                               {L(sound.label)}
                             </span>
-                            <span className="text-[12px] text-ink/45">
+                            <span className="text-[12px] text-ink/70">
                               {L(sound.subtitle)}
                             </span>
                           </div>
@@ -565,7 +565,7 @@ export default function Sanctuary() {
                           {active && isPlaying ? (
                             <div className="w-1.5 h-1.5 rounded-full bg-teal-400 shadow-[0_0_8px_rgba(127,169,228,0.6)]" />
                           ) : (
-                            <span className="text-ink/30 text-lg font-light" aria-hidden="true">∞</span>
+                            <span className="text-ink/70 text-lg font-light" aria-hidden="true">∞</span>
                           )}
                         </div>
                       </button>
@@ -588,7 +588,7 @@ export default function Sanctuary() {
                 <h2 className="text-[20px] font-light text-ink/90 leading-tight">
                   {language === 'el' ? 'Διμερής κίνηση' : 'Bilateral rhythm'}
                 </h2>
-                <p className="text-[12px] text-ink/45 mt-1">
+                <p className="text-[12px] text-ink/70 mt-1">
                   {language === 'el' ? 'Ένας ρυθμός δεξιά–αριστερά για τα μάτια και τα αυτιά' : 'A left–right rhythm for the eyes and ears'}
                 </p>
               </div>
@@ -629,7 +629,7 @@ export default function Sanctuary() {
                     <h3 className="text-[17px] font-light text-ink/90 leading-snug mb-1.5 group-hover:text-ink transition-colors line-clamp-2">
                       {video.title}
                     </h3>
-                    <p className="text-[11px] text-ink/35 truncate">
+                    <p className="text-[12px] text-ink/70 truncate">
                       {language === 'el' ? 'Βίντεο από' : 'Video by'} {video.author}
                     </p>
                   </div>
@@ -657,7 +657,7 @@ export default function Sanctuary() {
                 className="fixed inset-0 pointer-events-none z-0"
               >
                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.08)_0%,transparent_1px)] bg-[length:120px_120px]" />
-                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.05)_0%,transparent_1px)] bg-[length:180px_180px] animate-pulse" />
+                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.05)_0%,transparent_1px)] bg-[length:180px_180px]" />
                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(255,255,255,0.03)_0%,transparent_1px)] bg-[length:250px_250px]" />
               </motion.div>
             )}
@@ -679,7 +679,7 @@ export default function Sanctuary() {
             <button 
               onClick={() => { setActiveVideo(null); setIsDimmed(false); }}
               aria-label={language === 'el' ? 'Κλείσιμο βίντεο' : 'Close video'}
-              className="p-3 rounded-full bg-white/5 border border-white/10 text-ink/40 hover:text-ink hover:bg-white/10 transition-all active:scale-90"
+              className="p-3 rounded-full bg-white/5 border border-white/10 text-ink/70 hover:text-ink hover:bg-white/10 transition-all active:scale-90"
             >
               <X size={20} />
             </button>
@@ -712,7 +712,7 @@ export default function Sanctuary() {
                  <h2 className="font-display text-3xl md:text-4xl text-ink/95 mb-2">
                    {bilateralVideos.find(v => v.id === activeVideo)?.title}
                  </h2>
-                 <p className="text-lg text-ink/30 font-medium">
+                 <p className="text-lg text-ink/70 font-medium">
                    {bilateralVideos.find(v => v.id === activeVideo)?.author}
                  </p>
               </div>
@@ -730,11 +730,11 @@ export default function Sanctuary() {
                   return (
                     <div className="space-y-8 pb-12">
                       <div className="bg-white/[0.02] border border-white/5 p-8 rounded-[2.5rem] space-y-4">
-                        <p className="text-[14px] text-ink/60 leading-relaxed font-sans">
+                        <p className="text-[14px] text-ink/70 leading-relaxed font-sans">
                           {desc.intro}
                         </p>
                         <div className="pt-4 border-t border-white/5">
-                           <p className="text-[12px] font-light text-teal-400/80">
+                           <p className="text-[12px] font-light text-teal-300">
                              {desc.tip}
                            </p>
                         </div>
@@ -749,7 +749,7 @@ export default function Sanctuary() {
                        <h2 className="text-2xl font-light text-ink/95 mb-2">
                          {videoData?.title}
                        </h2>
-                       <p className="text-sm text-ink/30 font-medium">
+                       <p className="text-sm text-ink/70 font-medium">
                          {videoData?.author} • {videoData?.category}
                        </p>
                     </div>
@@ -760,7 +760,7 @@ export default function Sanctuary() {
                            {language === 'el' ? 'Πληροφορίες' : 'Information'}
                          </span>
                        </div>
-                       <p className="text-ink/50 text-[14px] leading-relaxed font-light">
+                       <p className="text-ink/70 text-[14px] leading-relaxed font-light">
                          {language === 'el' 
                            ? 'Αυτό το βίντεο αποτελεί μέρος της συλλογής μας για την εξερεύνηση της συνείδησης και της νευροδιαφορετικότητας.' 
                            : 'This video is part of our collection exploring consciousness and neurodiversity.'}

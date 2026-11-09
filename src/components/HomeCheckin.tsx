@@ -82,14 +82,14 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
               >
                 <path d={ICON[o.id]} />
               </svg>
-              <span className="checkin-label max-w-full text-center text-[12px] max-[359px]:text-[11px] tracking-[-0.005em] leading-tight text-ink/85 whitespace-nowrap desk:text-[14px]">{o.label[lang]}</span>
+              <span className="checkin-label max-w-full text-center text-[12px] max-[359px]:text-[12px] tracking-[-0.005em] leading-tight text-ink/85 whitespace-nowrap desk:text-[14px]">{o.label[lang]}</span>
             </button>
           );
         })}
       </div>
 
       {embedded && !selected && (
-        <p className="hidden desk:block text-[14px] leading-relaxed text-ink/60">
+        <p className="hidden desk:block text-[14px] leading-relaxed text-ink/70">
           {lang === 'el' ? 'Διάλεξε, και θα σου προτείνω μια πρακτική για τώρα.' : 'Choose, and I will suggest a practice for right now.'}
         </p>
       )}
@@ -120,7 +120,7 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
 
             {showTime && (
               <div className="flex items-center gap-2 flex-wrap" role="group" aria-label={lang === 'el' ? 'Πόσο χρόνο έχεις;' : 'How much time do you have?'}>
-                <span className="text-[12px] text-ink/40 mr-1">{lang === 'el' ? 'Πόσο χρόνο έχεις;' : 'How much time?'}</span>
+                <span className="text-[12px] text-ink/70 mr-1">{lang === 'el' ? 'Πόσο χρόνο έχεις;' : 'How much time?'}</span>
                 {(['seconds', 'minutes'] as CheckinTime[]).map(t => (
                   <button
                     key={t}
@@ -128,7 +128,7 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
                     aria-pressed={time === t}
                     className={cn(
                       "px-3 min-h-[34px] rounded-full border text-[12px] transition-colors",
-                      time === t ? "bg-white/[0.12] border-white/20 text-ink/90" : "bg-white/[0.05] border-white/[0.08] text-ink/60 hover:text-ink/80"
+                      time === t ? "bg-white/[0.12] border-white/20 text-ink/90" : "bg-white/[0.05] border-white/[0.08] text-ink/70 hover:text-ink/80"
                     )}
                   >
                     {TIME_LABEL[t][lang]}
@@ -155,7 +155,7 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
                         <span className="text-[15px] leading-snug">{main.title[lang]}</span>
                       </span>
                       <span className="flex items-center gap-2 shrink-0">
-                        {main.dur && <span className="text-[12px] text-ink/60">{main.dur[lang]}</span>}
+                        {main.dur && <span className="text-[12px] text-ink/70">{main.dur[lang]}</span>}
                         <ArrowRight size={17} className="opacity-70" />
                       </span>
                     </Link>
@@ -173,7 +173,7 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
                     <button
                       type="button"
                       onClick={() => setAlt(i => i + 1)}
-                      className="self-start flex items-center gap-1.5 px-3 min-h-[36px] text-[13px] text-ink/60 hover:text-ink/85 transition-colors"
+                      className="self-start flex items-center gap-1.5 px-3 min-h-[36px] text-[13px] text-ink/70 hover:text-ink/85 transition-colors"
                     >
                       <RefreshCw size={13} className="opacity-70" />
                       {lang === 'el' ? 'Άλλη πρόταση' : 'Another suggestion'}
@@ -188,7 +188,7 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
                 <button
                   onClick={() => { setDetailOpen(o => !o); setDetailId(null); }}
                   aria-expanded={detailOpen}
-                  className="flex items-center justify-center gap-1.5 py-1 text-[12px] text-ink/45 hover:text-ink/75 transition-colors"
+                  className="flex items-center justify-center gap-1.5 py-1 text-[12px] text-ink/70 hover:text-ink/75 transition-colors"
                 >
                   {lang === 'el' ? 'Πες το πιο συγκεκριμένα' : 'Say it more precisely'}
                   <ChevronDown size={14} className={cn("transition-transform", detailOpen && "rotate-180")} />
@@ -205,7 +205,7 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
                           "min-h-[40px] px-2 rounded-full border text-[12.5px] transition-colors active:scale-[0.97]",
                           detailId === d.id
                             ? "bg-white/[0.12] border-white/20 text-ink/90"
-                            : "bg-white/[0.05] border-white/[0.07] text-ink/60 hover:text-ink/80"
+                            : "bg-white/[0.05] border-white/[0.07] text-ink/70 hover:text-ink/80"
                         )}
                       >
                         {d.label[lang]}
@@ -217,7 +217,7 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
                 {detailOpen && detail && (
                   <div className="flex flex-col gap-3 pt-1">
                     <p className="text-[14px] leading-relaxed text-ink/80">{detail.msg[lang]}</p>
-                    <p className="text-[13px] leading-relaxed text-ink/60 border-l-2 border-white/15 pl-3">{detail.step[lang]}</p>
+                    <p className="text-[13px] leading-relaxed text-ink/70 border-l-2 border-white/15 pl-3">{detail.step[lang]}</p>
                     <div className="flex flex-col gap-2">
                       {detail.actions.map(a => a.path ? (
                         <Link
@@ -237,7 +237,7 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
                         <button
                           key="rest"
                           onClick={() => setOpen(false)}
-                          className="px-4 py-3 rounded-xl border border-white/[0.06] text-[14px] text-ink/60 hover:text-ink/80 transition-colors"
+                          className="px-4 py-3 rounded-xl border border-white/[0.06] text-[14px] text-ink/70 hover:text-ink/80 transition-colors"
                         >
                           {a.title[lang]}
                         </button>

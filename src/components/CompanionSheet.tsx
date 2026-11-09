@@ -83,7 +83,7 @@ export default function CompanionSheet() {
     if (read.length === 0) {
       return (
         <div className="flex flex-col gap-3">
-          <p className="text-[14px] leading-relaxed text-ink/60 px-1">
+          <p className="text-[14px] leading-relaxed text-ink/70 px-1">
             {el ? 'Όταν ξεκινήσεις να διαβάζεις, θα θυμάμαι πού σταμάτησες.' : 'When you start reading, I will remember where you stopped.'}
           </p>
           <Link to={spot.href} onClick={close} className={cardClasses}>
@@ -92,7 +92,7 @@ export default function CompanionSheet() {
               <span className={eyebrow}>{el ? 'Ξεκίνα' : 'Start'}</span>
               <span className="text-[14px] leading-snug text-[#9bb8d1]">{chapterWord} {spot.chapter?.num} · {spot.chapter?.title}</span>
             </span>
-            <ChevronRight size={16} className="text-ink/30 shrink-0" />
+            <ChevronRight size={16} className="text-ink/70 shrink-0" />
           </Link>
         </div>
       );
@@ -104,12 +104,12 @@ export default function CompanionSheet() {
           <span className="flex flex-col min-w-0 flex-1 gap-1">
             <span className={eyebrow}>{el ? 'Σταμάτησες εδώ' : 'You stopped here'}{spotWhen && ` · ${spotWhen}`}</span>
             <span className="text-[14px] leading-snug text-[#9bb8d1]">{chapterWord} {spot.chapter?.num} · {spot.chapter?.title}</span>
-            <span className="text-[12px] leading-snug text-ink/45">
+            <span className="text-[12px] leading-snug text-ink/70">
               {chapterPageLabel(spot.pages[spot.page], lang)} · {el ? `σελίδα ${spot.page + 1} από ${spot.pages.length}` : `page ${spot.page + 1} of ${spot.pages.length}`}
             </span>
             <span className="text-[12px] text-teal-300/80 mt-1">{el ? 'Συνέχισε από εκεί' : 'Continue from there'}</span>
           </span>
-          <ChevronRight size={16} className="text-ink/30 shrink-0" />
+          <ChevronRight size={16} className="text-ink/70 shrink-0" />
         </Link>
       );
     }
@@ -128,7 +128,7 @@ export default function CompanionSheet() {
               : (el ? 'Διάβασες όλα τα κεφάλαια' : 'You have read every chapter')}
           </span>
         </span>
-        <ChevronRight size={16} className="text-ink/30 shrink-0" />
+        <ChevronRight size={16} className="text-ink/70 shrink-0" />
       </Link>
     );
   };
@@ -172,7 +172,7 @@ export default function CompanionSheet() {
                 <button
                   onClick={close}
                   aria-label={el ? 'Κλείσιμο' : 'Close'}
-                  className="w-11 h-11 -mr-2 flex items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-white/25 text-ink/50 hover:text-ink/85 hover:bg-white/[0.06] transition-colors"
+                  className="w-11 h-11 -mr-2 flex items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-white/25 text-ink/70 hover:text-ink/85 hover:bg-white/[0.06] transition-colors"
                 >
                   <X size={18} />
                 </button>
@@ -196,9 +196,9 @@ export default function CompanionSheet() {
               {/* What you have read */}
               {read.length > 0 && (
                 <section className="flex flex-col gap-2">
-                  <h3 className="flex items-baseline justify-between px-1 text-[13px] text-ink/60">
+                  <h3 className="flex items-baseline justify-between px-1 text-[13px] text-ink/70">
                     <span>{el ? 'Τι έχεις διαβάσει' : 'What you have read'}</span>
-                    <span className="text-[11px] font-mono text-ink/35">{progress.completedChapters.length}/{chapters.length}</span>
+                    <span className="text-[12px] font-mono text-ink/70">{progress.completedChapters.length}/{chapters.length}</span>
                   </h3>
                   <ul className="flex flex-col gap-1.5">
                     {read.map(c => {
@@ -212,19 +212,19 @@ export default function CompanionSheet() {
                             aria-expanded={open}
                             className="w-full min-h-[48px] flex items-center gap-3 px-4 py-3 text-left hover:bg-white/[0.04] transition-colors"
                           >
-                            <span className="w-6 text-[12px] font-mono text-ink/40 shrink-0">{c.num}</span>
+                            <span className="w-6 text-[12px] font-mono text-ink/70 shrink-0">{c.num}</span>
                             <span className="flex-1 min-w-0 text-[14px] leading-snug text-ink/80">{c.title}</span>
                             {isDone(c.num)
                               ? <Check size={15} className="text-teal-300/80 shrink-0" aria-label={el ? 'Ολοκληρώθηκε' : 'Finished'} />
-                              : <span className="text-[11px] font-mono text-ink/40 shrink-0">{pageOf(c.num, count) + 1}/{count}</span>}
-                            <ChevronDown size={15} className={cn("text-ink/30 shrink-0 transition-transform", open && "rotate-180")} />
+                              : <span className="text-[12px] font-mono text-ink/70 shrink-0">{pageOf(c.num, count) + 1}/{count}</span>}
+                            <ChevronDown size={15} className={cn("text-ink/70 shrink-0 transition-transform", open && "rotate-180")} />
                           </button>
                           {open && (
                             <div className="px-4 pb-4 pl-[52px] flex flex-col gap-3">
                               <ul className="flex flex-col gap-2">
                                 {takeaways.map((t, i) => (
                                   <li key={i} className="text-[13px] leading-relaxed text-ink/65 flex gap-2">
-                                    <span className="text-ink/30" aria-hidden="true">·</span>
+                                    <span className="text-ink/70" aria-hidden="true">·</span>
                                     <span>{plain(t)}</span>
                                   </li>
                                 ))}
@@ -243,7 +243,7 @@ export default function CompanionSheet() {
 
               <button
                 onClick={showIntro}
-                className="self-center min-h-[44px] px-4 text-[12px] text-ink/40 hover:text-ink/70 transition-colors"
+                className="self-center min-h-[44px] px-4 text-[12px] text-ink/70 hover:text-ink/70 transition-colors"
               >
                 {el ? 'Δες ξανά την εισαγωγή' : 'See the introduction again'}
               </button>

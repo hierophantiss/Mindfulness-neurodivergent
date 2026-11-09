@@ -331,7 +331,7 @@ export default function ChapterDetail() {
   }, [segments.length]);
 
   if (!chapter) {
-    return <div className="p-8 text-center text-ink/40">{language === 'el' ? 'Κεφάλαιο δεν βρέθηκε.' : 'Chapter not found.'}</div>;
+    return <div className="p-8 text-center text-ink/70">{language === 'el' ? 'Κεφάλαιο δεν βρέθηκε.' : 'Chapter not found.'}</div>;
   }
 
   const scrollToTop = () => {
@@ -418,7 +418,7 @@ export default function ChapterDetail() {
 
       {/* Wide screen: the pages of the chapter (the same order you read them in). */}
       <nav aria-label={language === 'el' ? 'Σελίδες του κεφαλαίου' : 'Pages of the chapter'} className="hidden wide:flex flex-col gap-0.5 sticky top-6 col-start-1 row-start-1 pt-8">
-        <span className="px-3 pb-3 text-[13px] text-ink/60">
+        <span className="px-3 pb-3 text-[13px] text-ink/70">
           {language === 'el' ? `Κεφάλαιο ${chapter.num} · σελίδες` : `Chapter ${chapter.num} · pages`}
         </span>
         {pages.map((pg, i) => (
@@ -449,11 +449,11 @@ export default function ChapterDetail() {
         </button>
         <div className="flex flex-col items-center shrink min-w-0">
           <div className="flex items-center gap-2 flex-wrap justify-center">
-            <span className="text-[13px] font-medium text-ink/60 font-sans whitespace-nowrap">
+            <span className="text-[13px] font-medium text-ink/70 font-sans whitespace-nowrap">
               {language === 'el' ? 'Κεφάλαιο' : 'Chapter'} {chapter.num}
             </span>{' '}
             {CHAPTER_MICRO_CAT[chapter.num] && (
-              <span className="text-[12px] font-medium px-2 py-0.5 rounded-full bg-white/5 text-ink/60 border border-white/5 font-sans whitespace-nowrap">
+              <span className="text-[12px] font-medium px-2 py-0.5 rounded-full bg-white/5 text-ink/70 border border-white/5 font-sans whitespace-nowrap">
                 {AXIS_LABEL[CHAPTER_MICRO_CAT[chapter.num]]?.[language === 'el' ? 'el' : 'en'] ?? CHAPTER_MICRO_CAT[chapter.num]}
               </span>
             )}
@@ -477,13 +477,13 @@ export default function ChapterDetail() {
           onClick={toggleMaster}
           title={language === 'el' ? 'Ηχητικό Τοπίο' : 'Ambient Audio'}
           className={cn(
-            "rounded-full px-3 py-2 border flex items-center justify-center gap-2 transition-all duration-700 font-sans text-[10px] desk:text-xs tracking-wider shrink-0 whitespace-nowrap",
+            "rounded-full px-3 py-2 border flex items-center justify-center gap-2 transition-all duration-700 font-sans text-[12px] desk:text-[13px] shrink-0 whitespace-nowrap",
             masterPlaying 
               ? "text-teal-300 bg-teal-500/10 border-teal-500/20" 
-              : "text-ink/40 bg-white/[0.02] border-white/5 hover:bg-white/[0.05] hover:text-ink/70"
+              : "text-ink/75 bg-white/[0.04] border-white/10 hover:bg-white/[0.07] hover:text-ink"
           )}
         >
-          <Music size={14} className={masterPlaying ? "animate-pulse" : ""} />
+          <Music size={14} aria-hidden="true" />
           <span className="hidden desk:inline">{language === 'el' ? 'Μουσική υπόκρουση' : 'Background music'}</span>
           <span className="desk:hidden">{language === 'el' ? 'Μουσική' : 'Music'}</span>
         </button>
@@ -620,14 +620,14 @@ export default function ChapterDetail() {
                         )}
                       >
                         <div className="flex items-center gap-3 justify-center text-center">
-                          <span className="text-[13px] font-medium text-ink/60 font-sans">
+                          <span className="text-[13px] font-medium text-ink/70 font-sans">
                             {language === 'el' ? 'Βασικά σημεία' : 'Key points'}
                           </span>
                         </div>
                         <ul className="space-y-6">
                           {CHAPTER_TAKEAWAYS[currentLang][chapter.num]?.slice(0, 3).map((take, idx) => (
-                            <li key={idx} className="flex gap-4 items-start text-base desk:text-lg text-ink/60 font-light leading-relaxed">
-                              <span className="text-ink/20 mt-1.5">—</span>
+                            <li key={idx} className="flex gap-4 items-start text-base desk:text-lg text-ink/70 font-light leading-relaxed">
+                              <span aria-hidden="true" className="text-ink/70 mt-1.5">—</span>
                               <ConceptAnnotatedText text={take} />
                             </li>
                           ))}
@@ -669,7 +669,7 @@ export default function ChapterDetail() {
                             {language === 'el' ? '🔬 Επιστημονική & Παραδοσιακή Θεμελίωση' : '🔬 Scientific & Traditional Foundations'}
                           </span>
                         </div>
-                        <p className="text-xs text-ink/40 leading-relaxed font-sans max-w-2xl">
+                        <p className="text-[13px] text-ink/70 leading-relaxed font-sans max-w-2xl">
                           {language === 'el'
                             ? 'Αυτή η άσκηση συνδέεται με κλινικές έρευνες, νευρολογικές εξηγήσεις και αρχαίες παραδόσεις. Επίλεξε μια πηγή για να δεις DOIs και περιλήψεις:'
                             : 'This practice is backed by clinical studies, neurobiological evidence, and contemplative lineages. Select a reference to explore DOIs and research summaries:'}
@@ -679,7 +679,7 @@ export default function ChapterDetail() {
                             <button
                               key={concept.id}
                               onClick={() => setActiveConceptId(concept.id)}
-                              className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.02] border border-white/5 text-[12px] text-ink/60 hover:text-teal-300 hover:bg-teal-500/10 hover:border-teal-500/20 active:scale-95 transition-all duration-300"
+                              className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.02] border border-white/5 text-[12px] text-ink/70 hover:text-teal-300 hover:bg-teal-500/10 hover:border-teal-500/20 active:scale-95 transition-all duration-300"
                             >
                               <span>{concept.icon}</span>
                               <span className="font-medium">{language === 'el' ? concept.labelEl : concept.labelEn}</span>
@@ -715,7 +715,7 @@ export default function ChapterDetail() {
                         rs('reflection') === 'dim' && 'opacity-45'
                       )}
                     >
-                      <span className="text-[13px] font-medium text-ink/60 relative z-10 block font-sans">{language === 'el' ? 'Αναστοχασμός' : 'Reflection'}</span>
+                      <span className="text-[13px] font-medium text-ink/70 relative z-10 block font-sans">{language === 'el' ? 'Αναστοχασμός' : 'Reflection'}</span>
                       <p className="text-lg desk:text-xl text-ink/80 font-sans font-light leading-relaxed relative z-10">{chapter.reflection}</p>
                     </div>
                   )}
@@ -796,7 +796,7 @@ export default function ChapterDetail() {
             </button>
           </div>
         </div>
-        <p className="px-1 text-[12.5px] leading-relaxed text-ink/55">
+        <p className="px-1 text-[12.5px] leading-relaxed text-ink/70">
           {language === 'el' ? 'Τα βελάκια του πληκτρολογίου αλλάζουν σελίδα· το κενό ξεκινά ή σταματά την ακρόαση.' : 'The arrow keys turn the page; the space bar starts or pauses listening.'}
         </p>
       </aside>

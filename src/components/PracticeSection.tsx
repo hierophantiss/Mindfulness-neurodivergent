@@ -338,7 +338,7 @@ export default function PracticeSection() {
               <h3 className="text-2xl md:text-3xl font-light text-ink/90 mb-3">
                 {lang === "el" ? "Η Ροή της Σύνδεσης" : "Grounding Flow"}
               </h3>
-              <p className="text-ink/50 font-sans text-sm md:text-base leading-relaxed">
+              <p className="text-ink/70 font-sans text-sm md:text-base leading-relaxed">
                 {lang === "el" ? "Τα χέρια ανεβαίνουν με την εισπνοή και κατεβαίνουν με την εκπνοή, σαν παλίρροια." : "The arms rise with the inhale and sink with the exhale, like a tide."}
               </p>
             </button>
@@ -355,7 +355,7 @@ export default function PracticeSection() {
               <h3 className="text-2xl md:text-3xl font-light text-ink/90 mb-3">
                 {lang === "el" ? "Το Άνθος του Λωτού" : "Lotus Blossom"}
               </h3>
-              <p className="text-ink/50 font-sans text-sm md:text-base leading-relaxed">
+              <p className="text-ink/70 font-sans text-sm md:text-base leading-relaxed">
                 {lang === "el" ? "Τα χέρια ανοίγουν σαν λωτός με την εισπνοή και κλείνουν στο στήθος με την εκπνοή." : "The arms open like a lotus with the inhale and close at the chest with the exhale."}
               </p>
             </button>
@@ -426,7 +426,7 @@ export default function PracticeSection() {
         {/* Compact Audio Controls Overlay */}
         <div className="flex items-center gap-3 backdrop-blur-md bg-black/30 border border-white/5 p-1.5 rounded-full pr-4">
            <button onClick={toggleAudio} aria-label={lang === 'el' ? (audioEnabled ? 'Χωρίς ήχο' : 'Με ήχο') : (audioEnabled ? 'Sound off' : 'Sound on')} className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-colors" style={{ backgroundColor: audioEnabled ? "var(--color-accent, #5f8fd6)" : "rgba(255, 255, 255, 0.1)" }}>
-             {audioEnabled ? <Volume2 size={16} className="text-ink" /> : <VolumeX size={16} className="text-ink/50" />}
+             {audioEnabled ? <Volume2 size={16} className="text-ink" /> : <VolumeX size={16} className="text-ink/70" />}
            </button>
            {audioEnabled && (
              <div className="flex gap-2">
@@ -435,7 +435,7 @@ export default function PracticeSection() {
                     key={kind} 
                     onClick={() => chooseSound(kind)} 
                     aria-pressed={soundKind === kind}
-                    className={`text-[11px] font-semibold px-2 py-1 rounded transition-colors cursor-pointer ${soundKind === kind ? 'bg-white/20 text-ink' : 'text-ink/40 hover:text-ink/80'}`}
+                    className={`text-[12px] font-semibold px-2 py-1 rounded transition-colors cursor-pointer ${soundKind === kind ? 'bg-white/20 text-ink' : 'text-ink/70 hover:text-ink/80'}`}
                   >
                     {lang === 'el' ? el : en}
                   </button>

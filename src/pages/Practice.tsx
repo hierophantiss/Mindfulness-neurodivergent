@@ -43,21 +43,21 @@ function PatternCard({ p, colorScheme, icon: Icon, onClick, language, hideCycle 
         <h2 className="text-[22px] md:text-2xl font-light text-ink/90 drop-shadow-sm leading-tight mb-1">
           {language === 'en' ? p.title.en : p.title.el}
         </h2>
-        <div className={cn("text-[13px] font-medium mb-3 drop-shadow-sm", isIndigo ? "text-indigo-400/80" : "text-teal-400/80")}>
+        <div className={cn("text-[13px] font-medium mb-3 drop-shadow-sm", isIndigo ? "text-indigo-300" : "text-teal-300")}>
           {language === 'en' ? p.subtitle.en : p.subtitle.el}
         </div>
-        <p className="text-[14px] text-ink/50 leading-relaxed max-w-[85%] font-sans">
+        <p className="text-[14px] text-ink/70 leading-relaxed max-w-[85%] font-sans">
           {language === 'en' ? p.desc.en : p.desc.el}
         </p>
 
         <div className="mt-6 flex flex-wrap gap-2">
           {p.hasBinaural && (
-            <span className="px-3 py-1.5 border rounded-full text-[12px] font-medium bg-white/5 border-white/10 text-ink/60">
+            <span className="px-3 py-1.5 border rounded-full text-[12px] font-medium bg-white/5 border-white/10 text-ink/70">
               Binaural
             </span>
           )}
           {!hideCycle && (
-          <span className="px-3 py-1.5 border rounded-full text-[12px] font-medium bg-white/5 border-white/10 text-ink/60">
+          <span className="px-3 py-1.5 border rounded-full text-[12px] font-medium bg-white/5 border-white/10 text-ink/70">
             {Math.round(p.totalCycleDurationMs / 1000)}s {language === 'el' ? 'Κύκλος' : 'Cycle'}
           </span>
           )}
@@ -67,7 +67,7 @@ function PatternCard({ p, colorScheme, icon: Icon, onClick, language, hideCycle 
             </span>
           )}
           {p.stance && (
-            <span className="px-3 py-1.5 border rounded-full text-[12px] font-medium bg-white/5 border-white/10 text-ink/60">
+            <span className="px-3 py-1.5 border rounded-full text-[12px] font-medium bg-white/5 border-white/10 text-ink/70">
               {p.stance === 'standing'
                 ? (language === 'el' ? 'Όρθια' : 'Standing')
                 : (language === 'el' ? 'Όρθια ή καθιστή' : 'Standing or seated')}
@@ -193,11 +193,11 @@ const axisInfo = {
                 "px-4 py-2 border rounded-full text-xs font-semibold tracking-wide transition-all duration-300 flex items-center gap-2 cursor-pointer",
                 isActive 
                   ? "bg-teal-500/10 border-teal-500/40 text-teal-300 shadow-[0_0_12px_rgba(95,143,214,0.15)]"
-                  : "glass-card border-white/5 text-ink/60 hover:border-white/10 hover:text-ink"
+                  : "glass-card border-white/5 text-ink/70 hover:border-white/10 hover:text-ink"
               )}
               id={`somatic-btn-${item.id}`}
             >
-              {isActive && <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />}
+              {isActive && <span className="w-1.5 h-1.5 rounded-full bg-teal-400" />}
               <span className="font-medium">{language === 'el' ? item.label.el : item.label.en}</span>
             </button>
           );
@@ -276,7 +276,7 @@ const axisInfo = {
                       <h2 className="text-base font-light text-ink/95 leading-tight group-hover:text-ink transition-colors truncate">
                         {language === 'en' ? ex.title.en : ex.title.el}
                       </h2>
-                      <p className="text-[12px] text-ink/45 leading-normal font-sans group-hover:text-ink/60 transition-colors line-clamp-2">
+                      <p className="text-[12px] text-ink/70 leading-normal font-sans group-hover:text-ink/60 transition-colors line-clamp-2">
                         {language === 'en' ? ex.desc.en : ex.desc.el}
                       </p>
                     </div>
@@ -321,7 +321,7 @@ const axisInfo = {
 
         <div className="max-w-4xl desk:max-w-none mx-auto w-full pb-12">
           {filteredVocals.length === 0 ? (
-            <div className="py-12 text-center text-ink/40 font-sans border border-white/5 rounded-2xl bg-white/[0.01]" id="no-filtered-vocals">
+            <div className="py-12 text-center text-ink/70 font-sans border border-white/5 rounded-2xl bg-white/[0.01]" id="no-filtered-vocals">
               {language === 'el' 
                 ? 'Δεν βρέθηκαν ασκήσεις ψαλσίματος με αυτά τα φίλτρα.' 
                 : 'No chanting exercises found with the active filters.'}
@@ -396,7 +396,7 @@ const axisInfo = {
 
         <div className="max-w-4xl desk:max-w-none mx-auto w-full pb-12">
           {filteredBreaths.length === 0 ? (
-            <div className="py-12 text-center text-ink/40 font-sans border border-white/5 rounded-2xl bg-white/[0.01]" id="no-filtered-breaths">
+            <div className="py-12 text-center text-ink/70 font-sans border border-white/5 rounded-2xl bg-white/[0.01]" id="no-filtered-breaths">
               {language === 'el' 
                 ? 'Δεν βρέθηκαν ασκήσεις αναπνοής με αυτά τα φίλτρα.' 
                 : 'No breath exercises found with the active filters.'}
@@ -515,7 +515,7 @@ const axisInfo = {
 
         <div className="max-w-4xl desk:max-w-none mx-auto w-full space-y-12 pb-12">
           {filteredMovements.length === 0 && filteredGrounding.length === 0 ? (
-            <div className="py-12 text-center text-ink/40 font-sans border border-white/5 rounded-2xl bg-white/[0.01]" id="no-filtered-movements">
+            <div className="py-12 text-center text-ink/70 font-sans border border-white/5 rounded-2xl bg-white/[0.01]" id="no-filtered-movements">
               {language === 'el' 
                 ? 'Δεν βρέθηκαν κινητικές ασκήσεις με αυτά τα φίλτρα.' 
                 : 'No movement exercises found with the active filters.'}
@@ -529,7 +529,7 @@ const axisInfo = {
                     <h2 className="text-xl font-light text-indigo-400 leading-tight">
                       {language === 'el' ? 'Βασικές Κινήσεις (Τάι Τσι & Qigong)' : 'Core Movements (Tai Chi & Qigong)'}
                     </h2>
-                    <p className="text-sm text-ink/40 mt-1">
+                    <p className="text-sm text-ink/70 mt-1">
                       {language === 'el' ? 'Μία κίνηση, ξανά και ξανά, με την αναπνοή.' : 'One movement, again and again, with the breath.'}
                     </p>
                   </div>
@@ -565,7 +565,7 @@ const axisInfo = {
                       <h2 className="text-xl font-light text-emerald-400 leading-tight">
                         {language === 'el' ? 'Ροές' : 'Flows'}
                       </h2>
-                      <p className="text-sm text-ink/40 mt-1">
+                      <p className="text-sm text-ink/70 mt-1">
                         {language === 'el' ? 'Η ίδια κίνηση σε τέσσερις ρυθμούς· τον ρυθμό τον διαλέγεις μέσα στην άσκηση.' : 'The same movement in four rhythms; you choose the rhythm inside the practice.'}
                       </p>
                     </div>
@@ -630,7 +630,7 @@ const axisInfo = {
                 <div className="text-[13px] font-medium mb-3 drop-shadow-sm text-amber-400/80">
                   {language === 'en' ? 'Quick Tools' : 'Άμεσα Εργαλεία'}
                 </div>
-                <p className="text-[14px] text-ink/50 leading-relaxed max-w-[85%] font-sans">
+                <p className="text-[14px] text-ink/70 leading-relaxed max-w-[85%] font-sans">
                   {language === 'en' ? 'Open the collection of short spatial, physical, and breath focus tools.' : 'Άνοιξε τη συλλογή μικρών χρονικά εργαλείων χωρικής, σωματικής και αναπνευστικής εστίασης.'}
                 </p>
                 <div className="mt-6 flex flex-wrap gap-2">
@@ -698,7 +698,7 @@ const axisInfo = {
             <h2 id="practice-cat-movement" className="text-2xl font-light text-ink/90 leading-tight">
               {language === 'en' ? 'Movement & Tai Chi' : 'Κίνηση & Τάι Τσι'}
             </h2>
-            <p id="practice-cat-movement-desc" className="text-ink/50 font-sans text-[14px] leading-relaxed">
+            <p id="practice-cat-movement-desc" className="text-ink/70 font-sans text-[14px] leading-relaxed">
               {language === 'en' 
                ? 'Slow movements with the breath: Cloud Hands, Qigong, Swaying and the Tai Chi and Lotus flows.' 
                : 'Αργές κινήσεις με την αναπνοή: Χέρια στα Σύννεφα, Qigong, Λίκνισμα και οι ροές Τάι Τσι και Λωτός.'}
@@ -724,7 +724,7 @@ const axisInfo = {
             <h2 id="practice-cat-breath" className="text-2xl font-light text-ink/90 leading-tight">
               {language === 'en' ? 'Breath rhythms' : 'Ρυθμοί Αναπνοής'}
             </h2>
-            <p id="practice-cat-breath-desc" className="text-ink/50 font-sans text-[14px] leading-relaxed">
+            <p id="practice-cat-breath-desc" className="text-ink/70 font-sans text-[14px] leading-relaxed">
               {language === 'en' 
                ? 'Specific breathing techniques to regulate and calm the central nervous system.' 
                : 'Στοχευμένοι ρυθμοί αναπνοής για ηρεμία και ρύθμιση του νευρικού συστήματος.'}
@@ -750,7 +750,7 @@ const axisInfo = {
             <h2 id="practice-cat-vocal" className="text-2xl font-light text-ink/90 leading-tight">
               {language === 'en' ? 'Chanting & Resonance' : 'Ψάλσιμο & Αντήχηση'}
             </h2>
-            <p id="practice-cat-vocal-desc" className="text-ink/50 font-sans text-[14px] leading-relaxed">
+            <p id="practice-cat-vocal-desc" className="text-ink/70 font-sans text-[14px] leading-relaxed">
               {language === 'en' 
                ? 'Vocal vibrations & vagus nerve stimulation (Bhramari, AUM, SaTaNaMa).' 
                : 'Φωνητικές δονήσεις & διέγερση του πνευμονογαστρικού (Bhramari, ΑΟΜ, SaTaNaMa).'}
@@ -789,7 +789,7 @@ const axisInfo = {
             <h2 id="practice-cat-microdoses" className="text-2xl font-light text-ink/90 leading-tight">
               {language === 'en' ? 'Microdoses' : 'Μικροδόσεις'}
             </h2>
-            <p id="practice-cat-microdoses-desc" className="text-ink/50 font-sans text-[14px] leading-relaxed">
+            <p id="practice-cat-microdoses-desc" className="text-ink/70 font-sans text-[14px] leading-relaxed">
               {language === 'en' 
                ? 'Stealth practices you can do anywhere unnoticed.' 
                : 'Αόρατες πρακτικές που γίνονται παντού χωρίς να φανεί.'}
@@ -811,7 +811,7 @@ const axisInfo = {
               {language === 'el' ? 'Προτείνεται Θεωρία' : 'Theory Recommended'}
             </h2>
             
-            <p className="text-ink/60 text-center mb-8 font-sans leading-relaxed text-[15px]">
+            <p className="text-ink/70 text-center mb-8 font-sans leading-relaxed text-[15px]">
               {language === 'el' 
                 ? 'Οι πρακτικές των τεσσάρων αξόνων βοηθούν περισσότερο αν έχεις ήδη διαβάσει τα βασικά. Καλό είναι να διαβάσεις πρώτα το 1ο Κεφάλαιο του Εγχειριδίου.'
                 : 'Mental exercises are more effective with a foundation. We recommend reading Chapter 1 of the Workbook before you begin.'}
@@ -834,7 +834,7 @@ const axisInfo = {
                   setLockedCategoryAttempt(null);
                   handleCategoryChange(cat as any);
                 }}
-                className="w-full py-4 px-6 rounded-2xl text-ink/50 hover:text-ink/80 transition-all active:scale-[0.98] text-sm"
+                className="w-full py-4 px-6 rounded-2xl text-ink/70 hover:text-ink/80 transition-all active:scale-[0.98] text-sm"
               >
                 {language === 'el' ? 'Θέλω να συνεχίσω ούτως ή άλλως' : 'I want to continue anyway'}
               </button>
