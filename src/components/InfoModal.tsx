@@ -11,7 +11,6 @@ import { versionText } from '../lib/version';
 import { AXIS_COLOR } from '../data/axisColor';
 
 // Where "Send me a message" goes. One place to change it later.
-import { cn } from '../lib/utils';
 import { useLanguage } from '../hooks/useLanguage';
 
 interface InfoModalProps {

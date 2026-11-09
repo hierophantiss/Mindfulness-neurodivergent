@@ -83,7 +83,7 @@ export default function Layout() {
         )}>
           {/* min-h-full, not h-full: a page taller than the screen must grow this box,
               so the space kept below it for the bottom bar comes after the last line. */}
-          <div className={cn("w-full max-w-[480px] mx-auto min-h-full shrink-0 flex flex-col pt-4 desk:max-w-[760px]", isWidePractice && "desk:max-w-[900px]", isWideDesk && "desk:max-w-[1120px]", isReading && "desk:max-w-[1260px]")}>
+          <div className={cn("w-full max-w-[480px] mx-auto min-h-full shrink-0 flex flex-col pt-4", isReading ? "desk:max-w-[1260px]" : isWideDesk ? "desk:max-w-[1120px]" : isWidePractice ? "desk:max-w-[900px]" : "desk:max-w-[760px]")}>
             {/* initial={false}: the first page of a visit is there at once; the fade is only between pages. */}
             <AnimatePresence mode="wait" initial={false}>
               <motion.div

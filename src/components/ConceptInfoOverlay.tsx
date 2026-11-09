@@ -1,10 +1,10 @@
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { useAccessibility } from '../hooks/useAccessibility';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Info, X, Lightbulb, Beaker } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useLanguage } from '../hooks/useLanguage';
-import { KNOWLEDGE_CONCEPTS } from '../data/concepts';
+import type { KNOWLEDGE_CONCEPTS as Concepts } from '../data/concepts';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import { CHAPTER_TITLES } from '../data/chapterTitles';
@@ -21,6 +21,28 @@ const READ_MORE: Record<string, { chapter: number; page?: number }> = {
   peripheral_vision: { chapter: 4, page: 2 },
   open_awareness: { chapter: 4, page: 7 },
 };
+
+// The texts of the ideas (about 90 KB) load the first time a page shows one
+// of the small (i) buttons, after the page itself, and stay for the session.
+// The ids are checked by the tests (course.test, practiceTexts.test), so the
+// buttons show at once and the titles fill in when the texts arrive.
+type ConceptMap = typeof Concepts;
+let loaded: ConceptMap | null = null;
+let loading: Promise<ConceptMap> | null = null;
+function loadConcepts() {
+  loading ??= import('../data/concepts').then((m) => (loaded = m.KNOWLEDGE_CONCEPTS));
+  return loading;
+}
+function useConcepts(want = true): ConceptMap | null {
+  const [map, setMap] = useState<ConceptMap | null>(loaded);
+  useEffect(() => {
+    if (map || !want) return;
+    let live = true;
+    loadConcepts().then((m) => live && setMap(m), () => {});
+    return () => { live = false; };
+  }, [map, want]);
+  return map;
+}
 
 /**
  * Text where [[word|concept]] makes the word tappable: it opens the concept's
@@ -41,7 +63,7 @@ export function ConceptText({ text }: { text: string }) {
 
 function ConceptTerm({ word, conceptId }: { word: string; conceptId: string }) {
   const [isOpen, setIsOpen] = useState(false);
-  if (!KNOWLEDGE_CONCEPTS[conceptId]) return <>{word}</>;
+  useConcepts(); // fetched with the page's text, so a tap opens at once
   return (
     <>
       <button
@@ -60,7 +82,8 @@ export function ConceptInfoIcon({ conceptId, className = "w-6 h-6 ml-1" }: { con
   const [isOpen, setIsOpen] = useState(false);
   const { language } = useLanguage();
   const el = language === 'el';
-  const title = KNOWLEDGE_CONCEPTS[conceptId]?.[el ? 'el' : 'en']?.title;
+  const concepts = useConcepts();
+  const title = concepts?.[conceptId]?.[el ? 'el' : 'en']?.title;
   const label = title ? `${el ? 'Τι σημαίνει' : 'What it means'}: ${title}` : (el ? 'Περισσότερα' : 'More info');
   
   return (
@@ -79,13 +102,14 @@ export function ConceptInfoIcon({ conceptId, className = "w-6 h-6 ml-1" }: { con
 }
 
 export function ConceptModal({ isOpen, onClose, conceptId }: { isOpen: boolean, onClose: () => void, conceptId: string }) {
-    const { reduceMotion } = useAccessibility();
-  const modalRef = useFocusTrap(isOpen, onClose);
-  
-
+  const { reduceMotion } = useAccessibility();
   const { language } = useLanguage();
-  const concept = KNOWLEDGE_CONCEPTS[conceptId];
-  
+  const concepts = useConcepts(isOpen);
+  const concept = concepts?.[conceptId];
+  // The trap starts when the window is really there (on a first tap the texts
+  // may still be on their way for a moment).
+  const modalRef = useFocusTrap(isOpen && !!concept, onClose);
+
   if (!concept) return null;
   const l = language === 'el' ? 'el' : 'en';
   const readMore = READ_MORE[conceptId] ?? (Array.isArray(concept.chapters) && concept.chapters.length ? { chapter: concept.chapters[0] } : null);

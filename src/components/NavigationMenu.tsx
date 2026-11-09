@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import InfoModal from './InfoModal';
+import InfoModal from './InfoModalLazy';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
 import { downloadBackup, restoreBackup } from '../lib/backup';
 import { Home, BookOpen, Activity, Notebook, X, Info, Music, LayoutGrid, EyeOff, Eye, Database, Download, Sparkles, RotateCcw, Headphones, LetterText, Moon, CalendarDays, Telescope, Compass, Settings } from 'lucide-react';

@@ -1,9 +1,10 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { BrowserRouter, HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import { AppProviders } from './components/AppProviders';
 import { lazyWithReload } from './lib/lazyWithReload';
 import { useLanguage } from './hooks/useLanguage';
+import { arrivingText, dropArrivingText } from './lib/firstPaint';
 
 const InteractiveBackground = lazyWithReload(() => import('./components/InteractiveBackground').then(m => ({ default: m.InteractiveBackground })));
 const Dashboard = lazyWithReload(() => import('./pages/Dashboard'));
@@ -30,11 +31,22 @@ const Sanctuary = lazyWithReload(() => import('./pages/Sanctuary'));
 const Settings = lazyWithReload(() => import('./pages/Settings'));
 const PrintWorkbook = lazyWithReload(() => import('./pages/PrintWorkbook'));
 
-const FallbackLoader = () => (
-  <div role="status" aria-label="Loading" className="flex items-center justify-center min-h-[50vh] bg-transparent">
-    <div className="w-3 h-3 rounded-full bg-indigo-400/50 animate-pulse"></div>
-  </div>
-);
+// While a page's code loads: on the first page of a visit, the text it arrived
+// with (see lib/firstPaint.ts); afterwards, a quiet dot.
+const FallbackLoader = () => {
+  const arriving = arrivingText();
+  if (arriving) return <div className="arriving-text" aria-busy="true" dangerouslySetInnerHTML={{ __html: arriving }} />;
+  return (
+    <div role="status" aria-label="Loading" className="flex items-center justify-center min-h-[50vh] bg-transparent">
+      <div className="w-3 h-3 rounded-full bg-indigo-400/50 animate-pulse"></div>
+    </div>
+  );
+};
+
+function FirstPageShown() {
+  useEffect(() => dropArrivingText(), []);
+  return null;
+}
 
 /**
  * Keeps the /el or /en prefix of the address bar in step with the language
@@ -104,6 +116,7 @@ function AppContent() {
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
+        <FirstPageShown />
       </Suspense>
     </Router>
   );

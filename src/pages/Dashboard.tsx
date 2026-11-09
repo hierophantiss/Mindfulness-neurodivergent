@@ -12,7 +12,7 @@ import { cn } from '../lib/utils';
 import { MeditatorFigure } from '../components/MeditatorFigure';
 import { motion } from 'motion/react';
 import { useAccessibility } from '../hooks/useAccessibility';
-import InfoModal from '../components/InfoModal';
+import InfoModal from '../components/InfoModalLazy';
 
 import { phraseOfDay } from '../data/affirmations';
 import { readRecentCheckinState } from '../data/stateCheckin';

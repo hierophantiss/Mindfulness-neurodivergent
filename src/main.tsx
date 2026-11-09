@@ -11,6 +11,7 @@ import { applyReadingPrefs, readEasyRead } from './lib/readingPrefs';
 import { keepDataOnDevice } from './lib/dataSafety';
 import { installErrorLog } from './lib/errorLog';
 import { isNative } from './lib/native';
+import { keepArrivingText } from './lib/firstPaint';
 
 // Errors are noted on this device only (Settings → Diagnostics).
 installErrorLog();
@@ -49,6 +50,7 @@ window.addEventListener('load', () => {
 // scripts/prerender.ts), not the app itself, so the app replaces it rather than
 // taking it over (hydrating it would not match).
 function render() {
+  keepArrivingText();
   const root = createRoot(document.getElementById('root')!);
   root.render(
     <StrictMode>

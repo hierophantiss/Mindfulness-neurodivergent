@@ -2,7 +2,6 @@
    wait on another server before the first words show) and no visitor's
    address is sent to anyone. The phone downloads only the alphabets it needs. */
 @import "@fontsource-variable/inter/wght.css";
-@import "@fontsource-variable/cinzel/wght.css";
 /* The display face for the large words only (greeting, chapter and page titles):
    GFS Didot, from the tradition of Greek typography. One weight; the phone
    downloads only the alphabet it shows (Greek ~7 KB, Latin ~14 KB). */
@@ -115,10 +114,12 @@
   line-height: 1.7;
   animation: fadeIn 0.6s ease-out both;
 }
+/* Kept on screen while the first page loads (lib/firstPaint.ts): already shown, so no second fade. */
+.arriving-text [data-prerendered] { animation: none; }
 [data-prerendered] h1 {
-  font-family: 'Cinzel Variable', 'Cinzel', Georgia, serif;
-  font-size: 24px;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 400;
   line-height: 1.35;
   margin: 0 0 24px;
 }
@@ -292,7 +293,7 @@
 }
 
 .font-serif {
-  font-family: 'Cinzel Variable', 'Cinzel', Georgia, serif;
+  font-family: var(--font-display);
 }
 
 /* Easy reading (Menu and Settings → Accessibility; see lib/readingPrefs.ts):

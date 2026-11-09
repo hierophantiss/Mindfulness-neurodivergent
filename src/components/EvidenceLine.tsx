@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Microscope } from 'lucide-react';
-import { cn } from '../lib/utils';
 import { STUDY_NOTES } from '../data/studyNotes';
 
 interface Evidence {
