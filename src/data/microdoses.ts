@@ -30,7 +30,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'soft-belly',
-    evidence: { en: 'A soft belly is linked to the calming, "ventral vagal" side of the nervous system', el: 'Η μαλακή κοιλιά συνδέεται με την ηρεμιστική, «κοιλιακή» πλευρά του πνευμονογαστρικού', ref: 'study-porges' },
+    evidence: { en: 'A soft belly is linked to the calming, “ventral vagal” side of the nervous system', el: 'Η μαλακή κοιλιά συνδέεται με την ηρεμιστική, «κοιλιακή» πλευρά του πνευμονογαστρικού', ref: 'study-porges' },
     axis: 'body',
     title: { el: 'Μαλακή Κοιλιά', en: 'Soft Belly' },
     type: 'body',
@@ -80,7 +80,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
     type: 'body',
     dur: { el: '20 δευτ.', en: '20 sec' },
     maxSeconds: 20,
-    desc: { el: 'Νιώσε το βάρος των χεριών σου να "κρέμεται" από τους ώμους. Άφησέ τα να ξεκουραστούν.', en: 'Feel the weight of your hands "hanging" from your shoulders. Let them rest.' },
+    desc: { el: 'Νιώσε το βάρος των χεριών σου να «κρέμεται» από τους ώμους. Άφησέ τα να ξεκουραστούν.', en: 'Feel the weight of your hands “hanging” from your shoulders. Let them rest.' },
     iconName: 'Anchor',
     link: '/practice/body/hand-weight'
   },
@@ -91,7 +91,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
     type: 'body',
     dur: { el: '30 δευτ.', en: '30 sec' },
     maxSeconds: 30,
-    desc: { el: 'Νιώσε τη λεκάνη σου ως τη σταθερή βάση όπου "ριζώνει" ο άξονάς σου. Βάθος και ασφάλεια.', en: 'Feel your pelvis as the stable base where your axis "roots". Depth and security.' },
+    desc: { el: 'Νιώσε τη λεκάνη σου ως τη σταθερή βάση όπου «ριζώνει» ο άξονάς σου. Βάθος και ασφάλεια.', en: 'Feel your pelvis as the stable base where your axis “roots”. Depth and security.' },
     iconName: 'Anchor',
     link: '/practice/body/pelvis-root'
   },
@@ -172,7 +172,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
     type: 'breath',
     dur: { el: '1 λεπτό', en: '1 minute' },
     maxSeconds: 60,
-    desc: { el: 'Βγάλε έναν ανεπαίσθητο ήχο "Mmm" στην εκπνοή. Νιώσε τη δόνηση στο πρόσωπο και στο στήθος.', en: 'Make a subtle "Mmm" sound on the exhale. Feel the vibration in your face and chest.' },
+    desc: { el: 'Βγάλε έναν ανεπαίσθητο ήχο «Mmm» στην εκπνοή. Νιώσε τη δόνηση στο πρόσωπο και στο στήθος.', en: 'Make a subtle “Mmm” sound on the exhale. Feel the vibration in your face and chest.' },
     iconName: 'Zap',
     link: '/practice/breath/vocal-vibration'
   },
@@ -242,7 +242,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
     type: 'focus',
     dur: { el: 'Συνεχές', en: 'Continuous' },
     maxSeconds: 5,
-    desc: { el: 'Όταν ο "ελέφαντας" της σκέψης φύγει, φέρτον πίσω στο σώμα με το απαλό λάσο της πρόθεσης.', en: 'When the "elephant" of thought wanders, bring it back to the body with the gentle lasso of intention.' },
+    desc: { el: 'Όταν ο «ελέφαντας» της σκέψης φύγει, φέρτον πίσω στο σώμα με το απαλό λάσο της πρόθεσης.', en: 'When the “elephant” of thought wanders, bring it back to the body with the gentle lasso of intention.' },
     iconName: 'Focus',
     link: '/practice/focus/gentle-return'
   },

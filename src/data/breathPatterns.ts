@@ -78,7 +78,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     subtitle: { el: "Στην Κορύφωση", en: "At the Peak" },
     desc: {
       el: "Εισπνοή 4, εκπνοή 6, χωρίς κράτημα. Όταν ο άνεμος δυναμώνει, θυμός που ανεβαίνει ή άγχος που ξεφεύγει: η μακρύτερη εκπνοή λέει στο νευρικό σύστημα «είμαστε ασφαλείς». Άφησε την εκπνοή να βγαίνει από το στόμα.",
-      en: "Inhale 4, exhale 6, no holding. When the wind picks up, anger rising or anxiety running away: the longer exhale tells the nervous system \"we are safe\". Let the exhale leave through the mouth.",
+      en: "Inhale 4, exhale 6, no holding. When the wind picks up, anger rising or anxiety running away: the longer exhale tells the nervous system “we are safe”. Let the exhale leave through the mouth.",
     },
     totalCycleDurationMs: 10000,
     audioConfig: {
@@ -677,7 +677,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
         sub: { el: "ετοιμάσου (1s)", en: "get ready (1s)" },
       },
       {
-        label: { el: "«μμμ...»", en: "«mmm...»" },
+        label: { el: "«μμμ…»", en: "«mmm...»" },
         sub: { el: "βουητό με κλειστά χείλη (10s)", en: "hum with closed lips (10s)" },
       },
     ],
@@ -748,7 +748,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
         sub: { el: "νιώσε το στήθος (2s)", en: "feel the chest (2s)" },
       },
       {
-        label: { el: "«ΑΑΑ...»", en: "«AAA...»" },
+        label: { el: "«ΑΑΑ…»", en: "«AAA...»" },
         sub: { el: "δόνηση στο στήθος (12s)", en: "vibration in the chest (12s)" },
       },
     ],
@@ -785,7 +785,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
         sub: { el: "νιώσε την κοιλιά (2s)", en: "feel the belly (2s)" },
       },
       {
-        label: { el: "«ΟΥΟΥΟΥ...»", en: "«OOO...»" },
+        label: { el: "«ΟΥΟΥΟΥ…»", en: "«OOO...»" },
         sub: { el: "δόνηση στην κοιλιά (12s)", en: "vibration in the belly (12s)" },
       },
     ],
@@ -822,7 +822,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
         sub: { el: "νιώσε το λαιμό (2s)", en: "feel the throat (2s)" },
       },
       {
-        label: { el: "«ΧΑΜ / ΜΜΜ...»", en: "«HAM / MMM...»" },
+        label: { el: "«ΧΑΜ / ΜΜΜ…»", en: "«HAM / MMM...»" },
         sub: { el: "δόνηση στο λαιμό (12s)", en: "vibration in the throat (12s)" },
       },
     ],
@@ -859,7 +859,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
         sub: { el: "νιώσε το κεφάλι (2s)", en: "feel the head (2s)" },
       },
       {
-        label: { el: "«ΟΜ / ΜΜΜ...»", en: "«OM / MMM...»" },
+        label: { el: "«ΟΜ / ΜΜΜ…»", en: "«OM / MMM...»" },
         sub: { el: "δόνηση στο κεφάλι (12s)", en: "vibration in the head (12s)" },
       },
     ],

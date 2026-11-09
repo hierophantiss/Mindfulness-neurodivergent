@@ -52,7 +52,7 @@ export const GUIDED_EXERCISES: Record<string, any> = {
   'rhythm-5-5': {
     axis: 'breath',
     title: { el: 'Ρυθμική Αναπνοή 5-5', en: 'Rhythmic Breath 5-5' },
-    desc: { el: 'Συμμετρία που βοηθά τον «αυτόματο πιλότο» να ησυχάσει.', en: 'Symmetry that helps the "autopilot" quieten.' },
+    desc: { el: 'Συμμετρία που βοηθά τον «αυτόματο πιλότο» να ησυχάσει.', en: 'Symmetry that helps the “autopilot” quieten.' },
     duration: 120, // 2 mins
     color: 'teal',
     instructions: {
@@ -236,7 +236,7 @@ export const GUIDED_EXERCISES: Record<string, any> = {
   'vertical-axis': {
     axis: 'body',
     title: { el: 'Ο Κατακόρυφος Άξονας', en: 'The Vertical Axis' },
-    desc: { el: 'Ο άξονας σας κρατά. Δεν χρειάζεται να τον "φτιάξετε", αρκεί να τον αναγνωρίσετε.', en: 'Your axis holds you. You do not need to "fix" it, just acknowledge it.' },
+    desc: { el: 'Ο άξονας σας κρατά. Δεν χρειάζεται να τον «φτιάξετε», αρκεί να τον αναγνωρίσετε.', en: 'Your axis holds you. You do not need to “fix” it, just acknowledge it.' },
     duration: 180, // 3 minutes
     color: 'indigo',
     instructions: {

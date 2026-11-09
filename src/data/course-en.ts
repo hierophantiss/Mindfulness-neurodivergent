@@ -3,16 +3,16 @@ export const COURSE_EN: Record<number, any> = {
     "title": "Body: Gravity & Axis",
     "days": [
       {
-        "title": "Gravity vs. \"Autopilot\"",
+        "title": "Gravity vs. “Autopilot”",
         "where": "Anywhere",
         "dur": "1 second",
-        "lesson": "<p>Our method is a method of \"self-relaxation,\" not of pressured self-concentration. There is no rush, no force, no \"failure\" — everything is learning, even distraction.</p><p>The Default Mode Network (DMN) — the brain's \"autopilot\" — is associated with mind-wandering. Today we run an experiment: we feel gravity in order to restore bodily sensation and activate the proprioceptive center. The \"autopilot\" does not stop for good with gravity alone (that requires open awareness), but it is the first step in returning to the Now.</p>",
+        "lesson": "<p>Our method is a method of “self-relaxation,” not of pressured self-concentration. There is no rush, no force, no “failure” — everything is learning, even distraction.</p><p>The Default Mode Network (DMN) — the brain's “autopilot” — is associated with mind-wandering. Today we run an experiment: we feel gravity in order to restore bodily sensation and activate the proprioceptive center. The “autopilot” does not stop for good with gravity alone (that requires open awareness), but it is the first step in returning to the Now.</p>",
         "exercise": {
           "title": "Feel Gravity:",
           "steps": [
             "During the day, remember:",
             "Stop what you are doing for 1 second.",
-            "Simply feel the weight of your body \"falling,\" and the floor or the seat holding it.",
+            "Simply feel the weight of your body “falling,” and the floor or the seat holding it.",
             "Return gently, without criticism, if you drift."
           ]
         },
@@ -24,7 +24,7 @@ export const COURSE_EN: Record<number, any> = {
         "title": "The Axis as Safety",
         "where": "Anywhere",
         "dur": "1 second",
-        "lesson": "<p>We are building a relaxed presence. The more tense you are, the more closed your attention and your sense of the space around you.</p><p>Today we add the \"axis.\" Besides the gravity that pulls you down, there is an imaginary vertical line that keeps you upright. This axis is your safety. It keeps you steady and open, without needing to clench.</p>",
+        "lesson": "<p>We are building a relaxed presence. The more tense you are, the more closed your attention and your sense of the space around you.</p><p>Today we add the “axis.” Besides the gravity that pulls you down, there is an imaginary vertical line that keeps you upright. This axis is your safety. It keeps you steady and open, without needing to clench.</p>",
         "exercise": {
           "title": "1-Second Pause:",
           "steps": [
@@ -35,7 +35,7 @@ export const COURSE_EN: Record<number, any> = {
           ]
         },
         "breathing": "<strong>Natural Breath</strong><p>Let your body breathe as it wishes.</p>",
-        "reflection": "Could I feel this \"imaginary line\" within me without clenching?",
+        "reflection": "Could I feel this “imaginary line” within me without clenching?",
         "insight": "Your axis keeps you upright and aligned, providing structure without tension."
       },
       {
@@ -79,7 +79,7 @@ export const COURSE_EN: Record<number, any> = {
         "title": "Feet, Axis & Pelvis",
         "where": "A quiet place",
         "dur": "5 minutes",
-        "lesson": "<p>The pelvis is the body's center of gravity. It is the \"pot\" in which your axis takes root.</p><p>Today we bring our attention to the region of the pelvis.</p>",
+        "lesson": "<p>The pelvis is the body's center of gravity. It is the “pot” in which your axis takes root.</p><p>Today we bring our attention to the region of the pelvis.</p>",
         "exercise": {
           "title": "The Center of Gravity:",
           "steps": [
@@ -147,11 +147,11 @@ export const COURSE_EN: Record<number, any> = {
             "Feel knees, pelvis, the torso ([[axis|axis]]).",
             "Feel the shoulders, the arms (their weight).",
             "Feel the neck and the head.",
-            "Take a 30-second pause, feeling the \"whole.\""
+            "Take a 30-second pause, feeling the “whole.”"
           ]
         },
         "breathing": "<strong>5-5 Breath</strong><p>Keep a gentle 5-5 rhythm during the scan.</p>",
-        "reflection": "Is there a point that \"attracts\" my attention more?",
+        "reflection": "Is there a point that “attracts” my attention more?",
         "insight": "Clear mapping of the body reduces the sense of anxiety."
       },
       {
@@ -182,7 +182,7 @@ export const COURSE_EN: Record<number, any> = {
           "steps": [
             "Find the central [[axis|axis]].",
             "Bring attention to the neck. Feel that the head balances without effort.",
-            "Make small, almost imperceptible movements right and left to \"unlock\" the neck.",
+            "Make small, almost imperceptible movements right and left to “unlock” the neck.",
             "Give the weight to [[gravity|gravity]]."
           ]
         },
@@ -194,19 +194,19 @@ export const COURSE_EN: Record<number, any> = {
         "title": "Pelvis, Belly, Scan (Soles-Head)",
         "where": "A quiet place",
         "dur": "10 minutes",
-        "lesson": "<p>Today the scan is reinforced by observing the belly. For many people, the belly is the \"mirror\" of tension.</p>",
+        "lesson": "<p>Today the scan is reinforced by observing the belly. For many people, the belly is the “mirror” of tension.</p>",
         "exercise": {
           "title": "Scan with Focus on the Center:",
           "steps": [
             "Begin the scan from the soles upward.",
             "When you reach the pelvis, stay there.",
-            "Bring attention to the belly. Is it tight? Let it \"fall,\" fully relax (soft belly).",
+            "Bring attention to the belly. Is it tight? Let it “fall,” fully relax (soft belly).",
             "Continue the scan to chest, arms, head."
           ]
         },
         "breathing": "<strong>Belly Breathing (Soft Belly)</strong><p>Inhale: the belly gently rises. Exhale: the belly falls.</p>",
-        "reflection": "Did I manage to let my belly relax, instead of holding it \"in\"?",
-        "insight": "A soft belly immediately sends a signal of \"safety\" to the brain (via the Vagus nerve)."
+        "reflection": "Did I manage to let my belly relax, instead of holding it “in”?",
+        "insight": "A soft belly immediately sends a signal of “safety” to the brain (via the Vagus nerve)."
       },
       {
         "title": "Scan & Balance",
@@ -223,14 +223,14 @@ export const COURSE_EN: Record<number, any> = {
           ]
         },
         "breathing": "<strong>5-5 Breath</strong><p>Keep the 5-5 rhythm (or 4-6, if you want a longer exhale).</p>",
-        "reflection": "Did I feel the difference in \"unlocked\" knees?",
-        "insight": "When we \"unlock\" the knees, we allow energy and weight to flow into the earth."
+        "reflection": "Did I feel the difference in “unlocked” knees?",
+        "insight": "When we “unlock” the knees, we allow energy and weight to flow into the earth."
       },
       {
         "title": "Axis & Mindful Walking",
         "where": "Outdoors or at home",
         "dur": "10 minutes",
-        "lesson": "<p>Today we join movement with stillness. The test of mindfulness is to keep the sense of the \"center\" (axis) in all conditions.</p>",
+        "lesson": "<p>Today we join movement with stillness. The test of mindfulness is to keep the sense of the “center” (axis) in all conditions.</p>",
         "exercise": {
           "title": "Movement and Pause:",
           "steps": [
@@ -262,7 +262,7 @@ export const COURSE_EN: Record<number, any> = {
         },
         "breathing": "<strong>Breath in Rhythm</strong><p>Match the breath to the beats/steps (e.g., 2 steps in, 2 out).</p>",
         "reflection": "How did my nervous system feel the rhythm?",
-        "insight": "Rhythm gives the brain \"prediction,\" and prediction brings calm."
+        "insight": "Rhythm gives the brain “prediction,” and prediction brings calm."
       }
     ]
   },
@@ -291,7 +291,7 @@ export const COURSE_EN: Record<number, any> = {
         "title": "Inner Touch at the Nostrils",
         "where": "A quiet place",
         "dur": "5 minutes",
-        "lesson": "<p>The breath offers an \"inner touch.\" We feel the air touching us from within.</p><p>Today the point of focus is the nostrils, as the air enters and leaves.</p>",
+        "lesson": "<p>The breath offers an “inner touch.” We feel the air touching us from within.</p><p>Today the point of focus is the nostrils, as the air enters and leaves.</p>",
         "exercise": {
           "title": "Focus on the Nostrils:",
           "steps": [
@@ -328,14 +328,14 @@ export const COURSE_EN: Record<number, any> = {
         "title": "The Belly That Rises and Falls",
         "where": "A quiet place",
         "dur": "5 minutes",
-        "lesson": "<p>We descend to the base of the breath: the belly. When the belly \"rises and falls\" freely, the body knows it is safe.</p>",
+        "lesson": "<p>We descend to the base of the breath: the belly. When the belly “rises and falls” freely, the body knows it is safe.</p>",
         "exercise": {
           "title": "Belly Breathing:",
           "steps": [
             "[[Grounding|grounding]] in the body (10 seconds).",
             "Rest one hand on the belly.",
             "Observe the belly filling (inhale).",
-            "At the end, observe the exhale exclusively, as the belly \"empties.\""
+            "At the end, observe the exhale exclusively, as the belly “empties.”"
           ]
         },
         "breathing": "<strong>Exhale from the belly</strong><p>Emphasize how the belly relaxes as the air empties out.</p>",
@@ -364,7 +364,7 @@ export const COURSE_EN: Record<number, any> = {
         "title": "Whole Breath and Pauses",
         "where": "Anywhere",
         "dur": "5 minutes",
-        "lesson": "<p>We read the chapter on pauses. Between the inhale and the exhale there is a small gap. A natural \"pause.\" That is where the quiet lives.</p>",
+        "lesson": "<p>We read the chapter on pauses. Between the inhale and the exhale there is a small gap. A natural “pause.” That is where the quiet lives.</p>",
         "exercise": {
           "title": "Observing the Pauses:",
           "steps": [
@@ -442,7 +442,7 @@ export const COURSE_EN: Record<number, any> = {
         "title": "Review: Belly & Pause Breathing",
         "where": "A quiet place",
         "dur": "5 minutes",
-        "lesson": "<p>We return to the center of gravity: the belly. When the belly \"rises and falls\" freely, the body feels safe.</p>",
+        "lesson": "<p>We return to the center of gravity: the belly. When the belly “rises and falls” freely, the body feels safe.</p>",
         "exercise": {
           "title": "Belly and Pause:",
           "steps": [
@@ -452,7 +452,7 @@ export const COURSE_EN: Record<number, any> = {
             "At the end of the exhale, notice the natural pause before you draw air again."
           ]
         },
-        "breathing": "<strong>Pause at the Belly</strong><p>The belly \"rests\" between the cycles.</p>",
+        "breathing": "<strong>Pause at the Belly</strong><p>The belly “rests” between the cycles.</p>",
         "reflection": "Did I manage to stay in the pause without anxiety?",
         "insight": "In the pause lies the deepest trust."
       },
@@ -460,13 +460,13 @@ export const COURSE_EN: Record<number, any> = {
         "title": "Sounding Breath (Chanting)",
         "where": "A quiet place",
         "dur": "5 minutes",
-        "lesson": "<p>Producing sound (like humming) creates a vibration that massages the vagus nerve, calming the body.</p><p>It does not need to have any religious tone. Today we will use a note (e.g., \"C\") or simply the letter \"A.\" If you have a mantra of your own from your tradition (optional), you may use it.</p><p><a href=\"/practice?category=vocal\">Explore the \"Chanting & Resonance\" (Humming) practices</a></p>",
+        "lesson": "<p>Producing sound (like humming) creates a vibration that massages the vagus nerve, calming the body.</p><p>It does not need to have any religious tone. Today we will use a note (e.g., “C”) or simply the letter “A.” If you have a mantra of your own from your tradition (optional), you may use it.</p><p><a href=\"/practice?category=vocal\">Explore the “Chanting & Resonance” (Humming) practices</a></p>",
         "exercise": {
-          "title": "Vibration with the Sound \"A\":",
+          "title": "Vibration with the Sound “A”:",
           "steps": [
             "[[Grounding|grounding]] in the body (10 seconds).",
             "Take a calm inhale.",
-            "Exhaling, make a low, prolonged \"Aaah\" or the note C.",
+            "Exhaling, make a low, prolonged “Aaah” or the note C.",
             "Feel the vibration in your throat and chest.",
             "Repeat for a few cycles."
           ]
@@ -489,7 +489,7 @@ export const COURSE_EN: Record<number, any> = {
             "With the exhale, lower the arms gently to your sides."
           ]
         },
-        "breathing": "<strong>Expanded Inhale</strong><p>The chest opens, the heart \"breathes.\"</p>",
+        "breathing": "<strong>Expanded Inhale</strong><p>The chest opens, the heart “breathes.”</p>",
         "reflection": "What feeling did opening the arms evoke?",
         "insight": "The body's posture deeply affects our emotion and our intention."
       },
@@ -503,7 +503,7 @@ export const COURSE_EN: Record<number, any> = {
           "steps": [
             "[[Grounding|grounding]] in the body (10 seconds).",
             "Begin the movement: arms open, heart opens.",
-            "Think inwardly: \"May I be well. May all be well\" as you inhale from the chest.",
+            "Think inwardly: “May I be well. May all be well” as you inhale from the chest.",
             "The movement becomes a prayer of kindness."
           ]
         },
@@ -515,7 +515,7 @@ export const COURSE_EN: Record<number, any> = {
         "title": "Completion: Body, Breath & Kindness",
         "where": "Open space",
         "dur": "10 minutes",
-        "lesson": "<p>Today the second axis is completed. We have connected body, breath, movement, and kindness.</p><p>As we have said, the app contains a series of mindful movements, one for each axis, which you can combine freely after completing the weeks.</p><p><a href=\"/practice?category=vocal\">Explore the \"Chanting & Resonance\" (Humming) practices</a></p>",
+        "lesson": "<p>Today the second axis is completed. We have connected body, breath, movement, and kindness.</p><p>As we have said, the app contains a series of mindful movements, one for each axis, which you can combine freely after completing the weeks.</p><p><a href=\"/practice?category=vocal\">Explore the “Chanting & Resonance” (Humming) practices</a></p>",
         "exercise": {
           "title": "The Final Breathing Practice:",
           "steps": [
@@ -557,7 +557,7 @@ export const COURSE_EN: Record<number, any> = {
         "title": "Alternating Attention",
         "where": "Anywhere",
         "dur": "5 minutes",
-        "lesson": "<p>We keep sharpening the \"lens\" of attention, moving our focus consciously. The movement of the gaze rests the nervous system.</p>",
+        "lesson": "<p>We keep sharpening the “lens” of attention, moving our focus consciously. The movement of the gaze rests the nervous system.</p>",
         "exercise": {
           "title": "Right - Left:",
           "steps": [
@@ -587,7 +587,7 @@ export const COURSE_EN: Record<number, any> = {
           ]
         },
         "breathing": "<strong>Steady Anchor</strong><p>When the gaze steadies, thinking often quiets too.</p>",
-        "reflection": "How easy was it not to move my \"camera\" (my gaze)?",
+        "reflection": "How easy was it not to move my “camera” (my gaze)?",
         "insight": "A steady point of reference creates inner stability."
       },
       {
@@ -661,7 +661,7 @@ export const COURSE_EN: Record<number, any> = {
           ]
         },
         "breathing": "<strong>Breath of Release</strong><p>From control to acceptance.</p>",
-        "reflection": "How did I feel the moment the lens \"opened\"?",
+        "reflection": "How did I feel the moment the lens “opened”?",
         "insight": "You do not need to hold the world up alone. Space holds you."
       }
     ]
@@ -703,7 +703,7 @@ export const COURSE_EN: Record<number, any> = {
             "You remain the steady observer."
           ]
         },
-        "breathing": "<strong>Breath of Calm</strong><p>A steady base while the \"objects\" pass.</p>",
+        "breathing": "<strong>Breath of Calm</strong><p>A steady base while the “objects” pass.</p>",
         "reflection": "Did I manage not to identify with any thought?",
         "insight": "You are not your thoughts. You are the space in which they happen."
       },
@@ -717,7 +717,7 @@ export const COURSE_EN: Record<number, any> = {
           "steps": [
             "During the day: 5-5 breathing exercise (Inhale 5 / Exhale 5).",
             "Breath of calm (small pauses) whenever you need it.",
-            "Evening Routine: \"Settling, Slowing Down.\"",
+            "Evening Routine: “Settling, Slowing Down.”",
             "Before sleep: [[grounding|grounding]] in bed, deep exhales, letting the day go."
           ]
         },
@@ -729,25 +729,25 @@ export const COURSE_EN: Record<number, any> = {
         "title": "The Echo of the Past (Insight)",
         "where": "Mentally",
         "dur": "10 minutes",
-        "lesson": "<p>Through calm observation we begin to gain insight. As you sit and observe, the critical \"echo of the past\" often appears.</p><p>You see clearly the content of your consciousness and realize how it tries to control you from behind the scenes.</p>",
+        "lesson": "<p>Through calm observation we begin to gain insight. As you sit and observe, the critical “echo of the past” often appears.</p><p>You see clearly the content of your consciousness and realize how it tries to control you from behind the scenes.</p>",
         "exercise": {
           "title": "Changing the Helmsman:",
           "steps": [
             "When you observe a critical thought (the echo), recognize it.",
-            "Do not fight it. Simply let it go, as \"not useful.\"",
+            "Do not fight it. Simply let it go, as “not useful.”",
             "In its place, put presence ([[grounding|grounding]]) with kindness and openness.",
-            "You change \"helmsman\": from the subconscious/turmoil, to conscious, open presence."
+            "You change “helmsman”: from the subconscious/turmoil, to conscious, open presence."
           ]
         },
-        "breathing": "<strong>Breath of Acceptance</strong><p>Inhale presence, exhale the \"not useful.\"</p>",
-        "reflection": "Could I see my \"self-criticism\" as a mere \"echo\" and not as truth?",
+        "breathing": "<strong>Breath of Acceptance</strong><p>Inhale presence, exhale the “not useful.”</p>",
+        "reflection": "Could I see my “self-criticism” as a mere “echo” and not as truth?",
         "insight": "You are now free to choose who governs your mind."
       },
       {
         "title": "The Mental Mantra",
         "where": "Anywhere",
         "dur": "10 minutes",
-        "lesson": "<p>If the mind races too much into negative scenarios and it is hard to simply observe the thoughts, give it something to do.</p><p>Use a mental chant/mantra without any religious tone (e.g., a song lyric like \"always look on the bright side of life,\" or something from your tradition if you wish). This occupies the mind without creating negative emotions in it.</p>",
+        "lesson": "<p>If the mind races too much into negative scenarios and it is hard to simply observe the thoughts, give it something to do.</p><p>Use a mental chant/mantra without any religious tone (e.g., a song lyric like “always look on the bright side of life,” or something from your tradition if you wish). This occupies the mind without creating negative emotions in it.</p>",
         "exercise": {
           "title": "Replacing with a Mantra:",
           "steps": [
@@ -765,7 +765,7 @@ export const COURSE_EN: Record<number, any> = {
         "title": "Presence Everywhere with Kindness",
         "where": "Anywhere",
         "dur": "Continuous practice",
-        "lesson": "<p>The consistency of the last days bears fruit. \"Open attention\" becomes natural, always with the mark of simple kindness toward ourselves.</p>",
+        "lesson": "<p>The consistency of the last days bears fruit. “Open attention” becomes natural, always with the mark of simple kindness toward ourselves.</p>",
         "exercise": {
           "title": "The Effortless Anchor:",
           "steps": [
@@ -783,7 +783,7 @@ export const COURSE_EN: Record<number, any> = {
         "title": "Completing the Consolidation",
         "where": "Anywhere",
         "dur": "15 minutes",
-        "lesson": "<p>We reach the end of the sixth week, where Attention, Space, and the new, open \"Helmsman\" of the mind have begun to take root day by day.</p>",
+        "lesson": "<p>We reach the end of the sixth week, where Attention, Space, and the new, open “Helmsman” of the mind have begun to take root day by day.</p>",
         "exercise": {
           "title": "Review and Routine:",
           "steps": [
@@ -807,7 +807,7 @@ export const COURSE_EN: Record<number, any> = {
         "title": "The 4 Centers & Open Space",
         "where": "Anywhere / Outdoors",
         "dur": "5-10 minutes",
-        "lesson": "<p>From this week we join the 4 centers (Body, Breath, Attention, Space). We learn \"Open Attention.\"</p><p>Every day: <strong>Sky-gazing.</strong> Take a little time to look at the sky and feel the space around you.</p>",
+        "lesson": "<p>From this week we join the 4 centers (Body, Breath, Attention, Space). We learn “Open Attention.”</p><p>Every day: <strong>Sky-gazing.</strong> Take a little time to look at the sky and feel the space around you.</p>",
         "exercise": {
           "title": "Sky-Gazing:",
           "steps": [
@@ -835,7 +835,7 @@ export const COURSE_EN: Record<number, any> = {
           ]
         },
         "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
-        "reflection": "Did I remember to \"open\" my attention at these 3 moments?",
+        "reflection": "Did I remember to “open” my attention at these 3 moments?",
         "insight": "Small reminders build a continuous state of presence."
       },
       {
@@ -890,15 +890,15 @@ export const COURSE_EN: Record<number, any> = {
         },
         "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
         "reflection": "Can a 3-second pause bring calm?",
-        "insight": "The pause is the door to the \"Now.\""
+        "insight": "The pause is the door to the “Now.”"
       },
       {
-        "title": "The \"Open Horizon\"",
+        "title": "The “Open Horizon”",
         "where": "Anywhere",
         "dur": "A few seconds",
-        "lesson": "<p>We continue: Body, breath, attention, space. 3 times a day (morning, noon, evening) and sky-gazing.</p><p>Today's micro-exercise helps us not get stuck in thoughts. Contrary to what we believe, thoughts need our \"closed\" space to survive. When we open our mental field, thoughts dissolve on their own.</p>",
+        "lesson": "<p>We continue: Body, breath, attention, space. 3 times a day (morning, noon, evening) and sky-gazing.</p><p>Today's micro-exercise helps us not get stuck in thoughts. Contrary to what we believe, thoughts need our “closed” space to survive. When we open our mental field, thoughts dissolve on their own.</p>",
         "exercise": {
-          "title": "The \"Open Horizon\":",
+          "title": "The “Open Horizon”:",
           "steps": [
             "Feel the real space around you, with your body grounded.",
             "Your thoughts are clouds passing by.",
@@ -907,24 +907,24 @@ export const COURSE_EN: Record<number, any> = {
           ]
         },
         "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
-        "reflection": "Did I manage not to follow a \"cloud\" (thought) today?",
+        "reflection": "Did I manage not to follow a “cloud” (thought) today?",
         "insight": "You do not need to clear the sky of clouds. The sky always has room."
       },
       {
         "title": "Interrupting the Autopilot",
         "where": "During an activity",
         "dur": "3 seconds",
-        "lesson": "<p>Morning, noon, evening: Open attention and 4 centers. Sky-gazing still shows you the sense of space.</p><p>Today we break the routine with small interruptions. Our mind's \"autopilot\" (the Default Mode Network we mentioned on the first day) feeds on ceaseless, breathless motion. When we cut it, our nervous system does a \"reset.\"</p>",
+        "lesson": "<p>Morning, noon, evening: Open attention and 4 centers. Sky-gazing still shows you the sense of space.</p><p>Today we break the routine with small interruptions. Our mind's “autopilot” (the Default Mode Network we mentioned on the first day) feeds on ceaseless, breathless motion. When we cut it, our nervous system does a “reset.”</p>",
         "exercise": {
           "title": "Interrupting the Autopilot:",
           "steps": [
             "As you do something everyday (e.g., washing your hands).",
             "Take a 3-second pause.",
-            "Feel your weight in your soles, and simply feel that you \"exist,\" without thinking of the next step."
+            "Feel your weight in your soles, and simply feel that you “exist,” without thinking of the next step."
           ]
         },
         "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
-        "reflection": "How many times did I recognize that I was on \"autopilot\"?",
+        "reflection": "How many times did I recognize that I was on “autopilot”?",
         "insight": "The magic hides between the ordinary movements."
       }
     ]
@@ -936,55 +936,55 @@ export const COURSE_EN: Record<number, any> = {
         "title": "The Mind Is Not Broken",
         "where": "Anywhere",
         "dur": "A few seconds",
-        "lesson": "<p>We enter the last week. The kindness we practiced is not an attempt to \"become good,\" but the clearing of the \"echoes\" of rejection.</p><p>An old contemplative image says it simply: the mind is not broken — it is like muddy water. When you stop trying to control it, the \"mud\" settles on its own. The gold (your natural, innate kindness) was always there, beneath the storm.</p>",
+        "lesson": "<p>We enter the last week. The kindness we practiced is not an attempt to “become good,” but the clearing of the “echoes” of rejection.</p><p>An old contemplative image says it simply: the mind is not broken — it is like muddy water. When you stop trying to control it, the “mud” settles on its own. The gold (your natural, innate kindness) was always there, beneath the storm.</p>",
         "exercise": {
           "title": "Space for Kindness:",
           "steps": [
-            "When you feel pressure or resistance, instead of \"fighting\" it...",
+            "When you feel pressure or resistance, instead of “fighting” it...",
             "Feel [[gravity|gravity]], and accept the situation.",
-            "Give it free space. Say: \"Let it be exactly as it is.\"",
-            "Watch the \"mud\" settle without any effort of yours."
+            "Give it free space. Say: “Let it be exactly as it is.”",
+            "Watch the “mud” settle without any effort of yours."
           ]
         },
         "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
-        "reflection": "Did I feel relief in understanding that I am not \"broken\"?",
+        "reflection": "Did I feel relief in understanding that I am not “broken”?",
         "insight": "Resistance to emotion stirs the water. Acceptance clears it."
       },
       {
         "title": "The Six Points (Non-Effort)",
         "where": "Anywhere",
         "dur": "A few seconds",
-        "lesson": "<p>Today we practice Tilopa's six points — the core of \"non-effort\" that calms the Mechanical Mind.</p><p>1. Do not recall (Past). 2. Do not imagine (Future). 3. Do not think (Inner monologue). 4. Do not examine (Analysis). 5. Do not control (Effort). 6. Rest (Let go).</p>",
+        "lesson": "<p>Today we practice Tilopa's six points — the core of “non-effort” that calms the Mechanical Mind.</p><p>1. Do not recall (Past). 2. Do not imagine (Future). 3. Do not think (Inner monologue). 4. Do not examine (Analysis). 5. Do not control (Effort). 6. Rest (Let go).</p>",
         "exercise": {
           "title": "Non-Effort Test:",
           "steps": [
             "In a moment of respite:",
             "Do not analyze whether you are doing well or badly.",
             "Do not even try to control your breath.",
-            "Feel your [[axis|axis]] and simply \"Rest\" in the Now."
+            "Feel your [[axis|axis]] and simply “Rest” in the Now."
           ]
         },
         "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
-        "reflection": "How did it feel to \"not try\" for a few seconds?",
+        "reflection": "How did it feel to “not try” for a few seconds?",
         "insight": "Sometimes the greatest effort is to stop trying."
       },
       {
         "title": "The Elephant, the Monkey & the Lasso",
         "where": "Anywhere",
         "dur": "A little while",
-        "lesson": "<p>An old image from the Samatha tradition: your mind is like a wild elephant, and a monkey runs ahead of it: distraction. Your lasso is the \"Gentle Return\" of awareness.</p><p>You do not strike the elephant. You throw the lasso gently and bring it back. Over time the elephant settles, and the lasso is needed less and less.</p>",
+        "lesson": "<p>An old image from the Samatha tradition: your mind is like a wild elephant, and a monkey runs ahead of it: distraction. Your lasso is the “Gentle Return” of awareness.</p><p>You do not strike the elephant. You throw the lasso gently and bring it back. Over time the elephant settles, and the lasso is needed less and less.</p>",
         "exercise": {
           "title": "The Modern Ascetic:",
           "steps": [
             "Feel [[gravity|gravity]].",
             "Take a pause for a few seconds.",
             "Observe the present moment.",
-            "When the \"elephant\" runs off toward anxiety, gently throw the [[lasso|elephant_path]] of awareness.",
+            "When the “elephant” runs off toward anxiety, gently throw the [[lasso|elephant_path]] of awareness.",
             "Return to the soles and the breath. This return is the practice itself."
           ]
         },
         "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
-        "reflection": "Did I feel the \"gentle return\" as a safe lasso rather than a punishment?",
+        "reflection": "Did I feel the “gentle return” as a safe lasso rather than a punishment?",
         "insight": "Every return of attention is a muscle growing stronger."
       },
       {
@@ -1026,13 +1026,13 @@ export const COURSE_EN: Record<number, any> = {
         "title": "Giving Space to Others",
         "where": "In interactions",
         "dur": "A few seconds",
-        "lesson": "<p>The same \"open space\" of kindness that we offer ourselves, we learn to offer to others around us too.</p><p>We let them exist effortlessly within the space, without trying to control them — exactly as we let go of our own \"elephant.\"</p>",
+        "lesson": "<p>The same “open space” of kindness that we offer ourselves, we learn to offer to others around us too.</p><p>We let them exist effortlessly within the space, without trying to control them — exactly as we let go of our own “elephant.”</p>",
         "exercise": {
           "title": "Spacious Kindness:",
           "steps": [
             "In a conversation today...",
             "Feel your [[axis|axis]] and your feet.",
-            "Offer the other person an \"empty space\" of acceptance.",
+            "Offer the other person an “empty space” of acceptance.",
             "Do not try to control them, simply let them exist."
           ]
         },

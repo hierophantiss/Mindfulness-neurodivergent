@@ -20,11 +20,11 @@ const translations: Record<string, Record<Language, string>> = {
   
   // Home
   'home.introTitle': { el: 'Καλώς ήρθατε στο N-Mindfulness', en: 'Welcome to N-Mindfulness' },
-  'home.introText': { el: 'Η μέθοδός μας είναι μια μέθοδος «αυτο-χαλάρωσης» και όχι πιεστικής αυτο-συγκέντρωσης. Δεν απαιτεί να αδειάσεις το μυαλό σου, ούτε να μείνεις ακίνητος. Μαθαίνουμε να βγαίνουμε από τον "αυτόματο πιλότο" και να δημιουργούμε χώρο, ρυθμίζοντας το νευρικό σύστημα.', en: 'Our method is one of "auto-relaxation" rather than forced concentration. It does not require you to empty your mind, nor to stay perfectly still. We learn how to step out of the "autopilot" and create space, regulating the nervous system.' },
+  'home.introText': { el: 'Η μέθοδός μας είναι μια μέθοδος «αυτο-χαλάρωσης» και όχι πιεστικής αυτο-συγκέντρωσης. Δεν απαιτεί να αδειάσεις το μυαλό σου, ούτε να μείνεις ακίνητος. Μαθαίνουμε να βγαίνουμε από τον «αυτόματο πιλότο» και να δημιουργούμε χώρο, ρυθμίζοντας το νευρικό σύστημα.', en: 'Our method is one of "auto-relaxation" rather than forced concentration. It does not require you to empty your mind, nor to stay perfectly still. We learn how to step out of the "autopilot" and create space, regulating the nervous system.' },
   
   // Welcome Modal
   'welcome.title': { el: 'Καλώς ήρθατε στο N-Mindfulness', en: 'Welcome to N-Mindfulness' },
-  'welcome.p1': { el: 'Η μέθοδός μας προσφέρει «αυτο-χαλάρωση» και όχι πιεστική αυτο-συγκέντρωσης. Δεν απαιτεί να αδειάσεις το μυαλό σου, ούτε να αναμετρηθείς με τις σκέψεις σου. Δεν υπάρχει βιασύνη, βία ή "αποτυχία".', en: 'Our method is one of "auto-relaxation" rather than forced concentration. It does not require you to empty your mind or fight your thoughts. There is no rush, no violence, and no "failure".' },
+  'welcome.p1': { el: 'Η μέθοδός μας προσφέρει «αυτο-χαλάρωση» και όχι πιεστική αυτο-συγκέντρωσης. Δεν απαιτεί να αδειάσεις το μυαλό σου, ούτε να αναμετρηθείς με τις σκέψεις σου. Δεν υπάρχει βιασύνη, βία ή «αποτυχία».', en: 'Our method is one of "auto-relaxation" rather than forced concentration. It does not require you to empty your mind or fight your thoughts. There is no rush, no violence, and no "failure".' },
   'welcome.p3': { el: 'Μαθαίνουμε πώς να βγαίνουμε από τον «αυτόματο πιλότο» (DMN) και να δημιουργούμε χώρο. Χρησιμοποιούμε τη βαρύτητα ως σταθερή άγκυρα, την ανοιχτή προσοχή και την απλή καλοσύνη για να ρυθμίσουμε το νευρικό μας σύστημα.', en: 'We learn how to voluntarily step out of the "autopilot" (DMN) and create space. We use gravity as a stable anchor, open attention, and simple kindness to regulate our nervous system.' },
   'welcome.startBtn': { el: 'Ας ξεκινήσουμε', en: 'Let\'s begin' },
   'welcome.closeBtn': { el: 'Κλείσιμο', en: 'Close' },

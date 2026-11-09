@@ -13,7 +13,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     en: {
       title: 'Grounding',
       short: 'The sensation of your body in space through gravity.',
-      full: 'Grounding is the first act of relaxation. By feeling gravity — soles on the floor, weight on the chair, the axis of the spine — attention moves from thoughts to the sensations of the body. Gravity is the proof of "Here": it shows you exactly where you exist in this moment.',
+      full: 'Grounding is the first act of relaxation. By feeling gravity — soles on the floor, weight on the chair, the axis of the spine — attention moves from thoughts to the sensations of the body. Gravity is the proof of “Here”: it shows you exactly where you exist in this moment.',
       ndNote: 'If you can\'t feel your soles (common with atypical interoception), try external anchors: hold something heavy, press feet firmly into the floor, or feel the temperature of an object.',
       science: 'Mackrous et al. (2019) Current Biology — the cerebellum continually computes gravity and the body\'s relationship to the ground. (Doi: 10.1016/j.cub.2019.07.006)'
     },
@@ -49,9 +49,9 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     },
     en: {
       title: 'Gravity',
-      short: 'The force that proves "Here."',
+      short: 'The force that proves “Here.”',
       full: 'Gravity is not just a force — it is proof that you exist at a specific point in space, at this very moment. No faith or experience is needed to feel it. It is undeniable. That\'s why it\'s the foundation of the entire method.',
-      ndNote: 'Gravity is always there even if you don\'t feel it "strongly." The intensity of sensation doesn\'t matter — turning attention toward it does.'
+      ndNote: 'Gravity is always there even if you don\'t feel it “strongly.” The intensity of sensation doesn\'t matter — turning attention toward it does.'
     },
     axis: 'body',
     chapters: [1, 6, 7, 9, 10],
@@ -64,14 +64,14 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       short: 'Ένας χάρτης για τρεις καταστάσεις: ένταση, μούδιασμα, ηρεμία.',
       full: 'Μοντέλο του Stephen Porges (1995). Στην εφαρμογή το χρησιμοποιούμε ως χάρτη τριών καταστάσεων: η ένταση (πολύ τεντωμένη χορδή), το μούδιασμα και η αποσύνδεση (πολύ χαλαρή χορδή), και η ηρεμία με σύνδεση (η μέση οδός). Η θεωρία συζητείται ακόμα στην επιστήμη και κάποια σημεία της αμφισβητούνται· εδώ σε βοηθά να αναγνωρίσεις πού βρίσκεσαι, όχι να εξηγήσεις πώς δουλεύει το νεύρο.',
       ndNote: 'Πολλοί νευροδιαφορετικοί περνούν από τη μία άκρη στην άλλη, από την ένταση στην εξάντληση. Συχνά η λογική δεν φτάνει για να ηρεμήσεις· το σώμα (η βαρύτητα, η μακριά εκπνοή, η κίνηση) είναι πιο εύκολη πόρτα.',
-      science: 'Stephen Porges, PhD (1995) "Orienting in a defensive world: mammalian modifications of our evolutionary heritage. A Polyvagal Theory" (Doi: 10.1111/j.1469-8986.1995.tb01213.x)'
+      science: 'Stephen Porges, PhD (1995) “Orienting in a defensive world: mammalian modifications of our evolutionary heritage. A Polyvagal Theory” (Doi: 10.1111/j.1469-8986.1995.tb01213.x)'
     },
     en: {
       title: 'Polyvagal Theory',
       short: 'A map of three states: tension, numbness, calm.',
       full: 'A model by Stephen Porges (1995). In the app we use it as a map of three states: tension (a string too tight), numbness and disconnection (a string too loose), and calm with connection (the middle way). The theory is still debated in science and parts of it are disputed; here it helps you recognise where you are, not explain how the nerve works.',
       ndNote: 'Many neurodivergent people swing from one end to the other, from tension to exhaustion. Logic is often not enough to calm down; the body (gravity, a long exhale, movement) is an easier door.',
-      science: 'Stephen Porges, PhD (1995) "Orienting in a defensive world: mammalian modifications of our evolutionary heritage. A Polyvagal Theory" (Doi: 10.1111/j.1469-8986.1995.tb01213.x)'
+      science: 'Stephen Porges, PhD (1995) “Orienting in a defensive world: mammalian modifications of our evolutionary heritage. A Polyvagal Theory” (Doi: 10.1111/j.1469-8986.1995.tb01213.x)'
     },
     axis: 'body',
     chapters: [5, 6, 8, 11],
@@ -106,8 +106,8 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     en: {
       title: 'Interoception',
       short: 'The perception of internal body sensations.',
-      full: 'Interoception is the bridge between body and consciousness. It includes sensing heartbeat, breathing, hunger, temperature, and pain. Breathing as "internal touch" — feeling air at the nostrils, chest expansion — is exactly this sense.',
-      ndNote: 'Many autistic and ADHD people have atypical interoception. You may not feel your heartbeat, or feel it too intensely. Both are normal for your brain. The method doesn\'t require "correct" sensation — turning attention is enough.'
+      full: 'Interoception is the bridge between body and consciousness. It includes sensing heartbeat, breathing, hunger, temperature, and pain. Breathing as “internal touch” — feeling air at the nostrils, chest expansion — is exactly this sense.',
+      ndNote: 'Many autistic and ADHD people have atypical interoception. You may not feel your heartbeat, or feel it too intensely. Both are normal for your brain. The method doesn\'t require “correct” sensation — turning attention is enough.'
     },
     axis: 'body',
     chapters: [1, 2, 8, 11],
@@ -125,7 +125,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       title: 'The Echo',
       short: 'The tension in your body that didn\'t originate inside you.',
       full: 'The tightness, the tension, the voice "you\'re not doing enough" — they didn\'t originate inside you. They\'re echoes: words you heard, looks you received, expectations that weren\'t met. Your nervous system stored them. The method doesn\'t ask you to fight them — it asks for recognition: "Ah, that\'s the old voice."',
-      ndNote: 'Neurodivergent people often carry more echoes due to years of masking, rejection, and feeling that "something is wrong with us." Recognition is the beginning — not analysis.'
+      ndNote: 'Neurodivergent people often carry more echoes due to years of masking, rejection, and feeling that “something is wrong with us.” Recognition is the beginning — not analysis.'
     },
     axis: 'body',
     chapters: [1, 5, 10],
@@ -145,7 +145,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     },
     en: {
       title: 'Vagus Nerve',
-      short: 'The "brake" of the nervous system.',
+      short: 'The “brake” of the nervous system.',
       full: 'The vagus nerve is the largest nerve of the parasympathetic system, the calming side. A slow, long exhale is linked to its action: on the exhale the heart rate slows a little. That is why in the method\'s rhythms the exhale is always the longest phase.',
       ndNote: 'No perfect execution needed. Even one slow exhale through the mouth is a good start.',
       science: 'Gerritsen & Band (2018) — a theoretical model of how breathing in contemplative practice affects the vagus nerve; not a measurement of this exercise.'
@@ -242,7 +242,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     en: {
       title: 'Labeling',
       short: 'Name the thought → create distance.',
-      full: 'When a thought pulls you, label it: "Worry," "Scenario," "Criticism," "Past." The label creates distance — you are not the thought, you are the one observing it. No analysis needed — just a name. Then, return to the axis.',
+      full: 'When a thought pulls you, label it: “Worry,” “Scenario,” “Criticism,” “Past.” The label creates distance — you are not the thought, you are the one observing it. No analysis needed — just a name. Then, return to the axis.',
       ndNote: 'Labeling often helps ADHD minds that get stuck in worry loops. One word is enough.'
     },
     axis: 'attention',
@@ -261,7 +261,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       title: 'Gentle Return',
       short: 'Returning attention is NOT failure — it IS the practice.',
       full: 'Every time attention leaves and you bring it back, that return is the practice itself. What counts is that you come back, not how long you stayed focused. Fifty returns in five minutes are fifty times of practice.',
-      ndNote: 'Instead of "I am failing because my attention leaves", think "every return is practice". A mind that drifts often simply has more chances to come back.'
+      ndNote: 'Instead of “I am failing because my attention leaves”, think “every return is practice”. A mind that drifts often simply has more chances to come back.'
     },
     axis: 'attention',
     chapters: [3, 4, 5, 10],
@@ -300,7 +300,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       title: 'Peripheral Vision',
       short: 'Your gaze stays in front; vision opens to the sides as well.',
       full: 'You look ahead, at one point, and without moving your eyes you let your vision open to the right and left, above and below. Focused vision shows the point; peripheral vision shows the space around it. It is a main way in which we orient ourselves, and many people find it calming when there is too much around them.',
-      ndNote: 'In noisy spaces, peripheral vision transforms stimuli into "clouds" — you let them exist without being overwhelmed.'
+      ndNote: 'In noisy spaces, peripheral vision transforms stimuli into “clouds” — you let them exist without being overwhelmed.'
     },
     axis: 'space',
     chapters: [4, 6, 8, 9, 10],
@@ -318,7 +318,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       title: 'The Sky Metaphor',
       short: 'You are not the clouds — you are the sky that holds them.',
       full: 'The sky is not burdened by clouds, does not react, does not judge. It simply holds them. Thoughts, emotions, sensations appear and disappear. You remain. This is not a poetic image — it\'s the experience of the 4th axis. In the Dzogchen tradition this is called Rigpa: the natural state of open awareness.',
-      ndNote: 'This metaphor changes your relationship with stimuli. Instead of "I must stop them," it becomes "I can hold them." For many neurodivergent people this shift helps.'
+      ndNote: 'This metaphor changes your relationship with stimuli. Instead of “I must stop them,” it becomes “I can hold them.” For many neurodivergent people this shift helps.'
     },
     axis: 'space',
     chapters: [4, 8, 9, 10, 11],
@@ -330,16 +330,16 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
   // ═══════════════════════════════════════════
   mahamudra: {
     el: {
-      title: 'Ο Νους δεν είναι "Σπασμένος" (Mahamudra)',
+      title: 'Ο Νους δεν είναι «Σπασμένος» (Mahamudra)',
       short: 'Άσε το λασπώδες νερό να κατακαθίσει από μόνο του.',
-      full: 'Δεν προσπαθούμε να "φτιάξουμε" ένα χαλασμένο νευρικό σύστημα ή να "γίνουμε καλοί". Ο νους δεν είναι σπασμένος, απλώς λειτουργεί σε συνθήκες πολεμικής κατάστασης και απόρριψης. Η βασική φιλοσοφία της Μαχαμούντρα είναι ότι αν σταματήσεις να ανακατεύεις το λασπώδες νερό («πρέπει να ηρεμήσω», «ήμουν τραυματισμένος»), η λάσπη (οι απόηχοι) κατακάθεται μόνη της. Τότε αποκαλύπτεται η φυσική, έμφυτη καλοσύνη και διαύγειά σου — ο χρυσός που ήταν πάντα εκεί.',
+      full: 'Δεν προσπαθούμε να «φτιάξουμε» ένα χαλασμένο νευρικό σύστημα ή να «γίνουμε καλοί». Ο νους δεν είναι σπασμένος, απλώς λειτουργεί σε συνθήκες πολεμικής κατάστασης και απόρριψης. Η βασική φιλοσοφία της Μαχαμούντρα είναι ότι αν σταματήσεις να ανακατεύεις το λασπώδες νερό («πρέπει να ηρεμήσω», «ήμουν τραυματισμένος»), η λάσπη (οι απόηχοι) κατακάθεται μόνη της. Τότε αποκαλύπτεται η φυσική, έμφυτη καλοσύνη και διαύγειά σου — ο χρυσός που ήταν πάντα εκεί.',
       ndNote: 'Αυτή η προσέγγιση σπάει το trauma-response της συνεχούς «βελτίωσης». Δεν χρειάζεσαι «φτιάξιμο». Χρειάζεσαι παύση.'
     },
     en: {
-      title: 'The Mind is not "Broken" (Mahamudra)',
+      title: 'The Mind is not “Broken” (Mahamudra)',
       short: 'Let the muddy water settle on its own.',
-      full: 'We do not try to "fix" a broken nervous system or "become good." The mind is not broken, it just operates under combat conditions and rejection. The core philosophy of Mahamudra is that if you stop stirring the muddy water ("I must calm down," "I am traumatized"), the mud (the echoes) settles on its own. Then your natural, innate goodness and clarity is revealed — the gold that was always there.',
-      ndNote: 'This approach breaks the trauma-response of constant "improvement." You do not need "fixing." You need a pause.'
+      full: 'We do not try to “fix” a broken nervous system or “become good.” The mind is not broken, it just operates under combat conditions and rejection. The core philosophy of Mahamudra is that if you stop stirring the muddy water (“I must calm down,” “I am traumatized”), the mud (the echoes) settles on its own. Then your natural, innate goodness and clarity is revealed — the gold that was always there.',
+      ndNote: 'This approach breaks the trauma-response of constant “improvement.” You do not need “fixing.” You need a pause.'
     },
     axis: 'all',
     chapters: [1, 10, 11],
@@ -351,13 +351,13 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       title: 'Οι Έξι Συμβουλές (Tilopa)',
       short: 'Η τέχνη της μη-προσπάθειας.',
       full: 'Ο πυρήνας της άσκησης χωρίς προσπάθεια: 1. Μην αναπολείς (Άσε το παρελθόν). 2. Μην φαντάζεσαι (Άσε το μέλλον). 3. Μην σκέφτεσαι (Άσε τον εσωτερικό διάλογο). 4. Μην εξετάζεις (Μην αναλύεις). 5. Μην ελέγχεις (Μην πιέζεις την εμπειρία). 6. Ξεκουράσου (Αφέσου στη φυσική κατάσταση). Η γαλήνη είναι η εργοστασιακή ρύθμιση του νου σου όταν σταματάς να τον ανακατεύεις.',
-      ndNote: 'Ιδανικό αντίδοτο για τον εσωτερικό "Μηχανικό Νου" που προσπαθεί διαρκώς να βάλει κανόνες για το πώς "πρέπει" να διαλογιστεί.'
+      ndNote: 'Ιδανικό αντίδοτο για τον εσωτερικό «Μηχανικό Νου» που προσπαθεί διαρκώς να βάλει κανόνες για το πώς «πρέπει» να διαλογιστεί.'
     },
     en: {
       title: 'The Six Words of Advice (Tilopa)',
       short: 'The art of non-effort.',
       full: 'The core of effortless practice: 1. Don\'t recall (Let go of the past). 2. Don\'t imagine (Let go of the future). 3. Don\'t think (Let go of present dialogue). 4. Don\'t examine (Don\'t analyze). 5. Don\'t control (Don\'t force the experience). 6. Rest (Surrender to the natural state). Peace is your mind\'s factory setting when you stop stirring it.',
-      ndNote: 'Ideal antidote for the inner "Mechanical Mind" that constantly tries to make rules on how it "should" meditate.'
+      ndNote: 'Ideal antidote for the inner “Mechanical Mind” that constantly tries to make rules on how it “should” meditate.'
     },
     axis: 'attention',
     chapters: [5, 9],
@@ -375,7 +375,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       title: 'The Elephant, the Monkey, and Awareness',
       short: 'An old image of how the mind settles.',
       full: 'In the Samatha tradition, the mind is like a wild elephant, and a monkey runs ahead of it: distraction. The practitioner holds a lasso, awareness. Each time you notice the mind has wandered, you bring it back with the lasso. Over time the elephant settles and the lasso is needed less and less.',
-      ndNote: 'The lasso is the "Gentle Return". You do not beat the elephant, you simply bring it back.'
+      ndNote: 'The lasso is the “Gentle Return”. You do not beat the elephant, you simply bring it back.'
     },
     axis: 'all',
     chapters: [5, 10, 11],
@@ -392,9 +392,9 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     },
     en: {
       title: 'Default Mode Network (DMN)',
-      short: 'The "autopilot" — mental wandering and self-criticism.',
+      short: 'The “autopilot” — mental wandering and self-criticism.',
       full: 'The DMN is a brain network that activates automatically when you\'re not focused on something specific. It is associated with mental wandering, self-criticism, replaying old stories, fantasizing about the future. In experienced meditators it was found less active than in beginners.',
-      ndNote: 'A well-known hypothesis about ADHD says the DMN does not quiet easily when attention is needed, which is why the mind "races" even when you want calm. Grounding gives attention something tangible instead of wandering.',
+      ndNote: 'A well-known hypothesis about ADHD says the DMN does not quiet easily when attention is needed, which is why the mind “races” even when you want calm. Grounding gives attention something tangible instead of wandering.',
       science: 'Brewer et al. (2011) PNAS — less DMN activity in experienced meditators. On ADHD: Sonuga-Barke & Castellanos (2007), a hypothesis.'
     },
     axis: 'all',
@@ -432,7 +432,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     en: {
       title: 'Kindness',
       short: 'The attitude of the method — not optional.',
-      full: 'Kindness isn\'t taught as a separate technique. It\'s the attitude behind every step: the way the method doesn\'t push you, doesn\'t judge you, doesn\'t say "you must." Every time you return without criticism, you practice kindness. Treat yourself as you would treat a struggling friend.',
+      full: 'Kindness isn\'t taught as a separate technique. It\'s the attitude behind every step: the way the method doesn\'t push you, doesn\'t judge you, doesn\'t say “you must.” Every time you return without criticism, you practice kindness. Treat yourself as you would treat a struggling friend.',
       ndNote: 'The gentleness of this method is not accidental. In experience, pressure keeps the nervous system on alert; gentleness gives it room to calm down.'
     },
     axis: 'all',
@@ -451,8 +451,8 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     en: {
       title: 'Neuroplasticity',
       short: 'The brain changes with what you repeat.',
-      full: 'In a small study (16 people), 8 weeks of mindfulness practice were linked with increased grey matter in areas involved in learning, memory and emotion regulation — Hölzel et al. (2011). The brain changes with what you repeat; every "gentle return" is a small repetition.',
-      ndNote: 'For neurodivergent people who feel "stuck", this means change is possible: slowly, through repetition.',
+      full: 'In a small study (16 people), 8 weeks of mindfulness practice were linked with increased grey matter in areas involved in learning, memory and emotion regulation — Hölzel et al. (2011). The brain changes with what you repeat; every “gentle return” is a small repetition.',
+      ndNote: 'For neurodivergent people who feel “stuck”, this means change is possible: slowly, through repetition.',
       science: 'Hölzel et al. (2011) — a small study, 16 people, 8 weeks of practice.'
     },
     axis: 'all',
@@ -470,7 +470,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     en: {
       title: 'Mechanical Mind',
       short: 'The internal rule system that replaces missing automaticity.',
-      full: 'Many neurodivergent people develop an internal rule system — "if X, then Y" — to function in social situations, at work, in daily life. It\'s exhausting but brilliantly clever. Mindfulness doesn\'t replace the mechanical mind — it relieves it. It gives moments of rest to the system.',
+      full: 'Many neurodivergent people develop an internal rule system — “if X, then Y” — to function in social situations, at work, in daily life. It\'s exhausting but brilliantly clever. Mindfulness doesn\'t replace the mechanical mind — it relieves it. It gives moments of rest to the system.',
       ndNote: 'If you recognise the mechanical mind, it may be a form of masking too. The method doesn\'t ask you to stop; it asks for small refresh pauses.'
     },
     axis: 'all',
@@ -488,8 +488,8 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     },
     en: {
       title: 'Parasympathetic System',
-      short: 'The "rest and recover" system — opposite of fight-or-flight.',
-      full: 'The autonomic nervous system has two branches: the sympathetic (tension, "fight or flight") and the parasympathetic (rest, recovery). A slow exhale is linked to the second: on the exhale the heart rate slows a little. For grounding and open awareness, the calm they bring is the experience of the method, not a measurement.',
+      short: 'The “rest and recover” system — opposite of fight-or-flight.',
+      full: 'The autonomic nervous system has two branches: the sympathetic (tension, “fight or flight”) and the parasympathetic (rest, recovery). A slow exhale is linked to the second: on the exhale the heart rate slows a little. For grounding and open awareness, the calm they bring is the experience of the method, not a measurement.',
       ndNote: 'Many neurodivergent people describe feeling on alert all day. The method offers small, frequent moments of calm.',
       science: 'Gerritsen & Band (2018).'
     },
@@ -509,7 +509,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       title: 'Amygdala',
       short: 'A brain area that takes part in detecting danger.',
       full: 'The amygdala takes part in detecting danger, real or imagined. In a small study, people who felt less stress after 8 weeks of mindfulness also had lower grey-matter density in the amygdala — Hölzel et al. (2010).',
-      ndNote: 'The method does not ask you to "defeat" the alarm; it asks you not to feed it with pressure.'
+      ndNote: 'The method does not ask you to “defeat” the alarm; it asks you not to feed it with pressure.'
     },
     axis: 'all',
     chapters: [5, 11],
@@ -548,7 +548,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     en: {
       title: 'Trauma-Informed Approach',
       short: 'The method respects your boundaries — always.',
-      full: 'This guide is trauma-informed:\n• Always starts with body — grounding creates safety first.\n• Does not ask to "empty mind" — attention returns, it doesn\'t control.\n• Respects boundaries — if something brings discomfort, you stop.\n• Uses kindness instead of judgment.\n• Doesn\'t require closing eyes if that doesn\'t feel safe.',
+      full: 'This guide is trauma-informed:\n• Always starts with body — grounding creates safety first.\n• Does not ask to “empty mind” — attention returns, it doesn\'t control.\n• Respects boundaries — if something brings discomfort, you stop.\n• Uses kindness instead of judgment.\n• Doesn\'t require closing eyes if that doesn\'t feel safe.',
       ndNote: 'Many neurodivergent people have lived through hard experiences: stigma, masking, exclusion. The method takes this into account at every step.'
     },
     axis: 'all',
@@ -558,7 +558,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
 
   movement_vs_breathwork: {
     el: {
-      title: 'Κίνηση vs Αναπνοή (Τάι Τσι)',
+      title: 'Κίνηση ή αναπνοή (Τάι Τσι)',
       short: 'Γιατί η κίνηση είναι η ιδανική εναλλακτική της αναπνοής.',
       full: 'Για πολλούς νευροδιαφορετικούς, η άμεση εστίαση στην αναπνοή μπορεί να φέρει άγχος: η αναπνοή γίνεται κάτι που «πρέπει» να γίνει σωστά. Η ενσυνείδητη κίνηση, όπως το Τάι Τσι, μεταφέρει την προσοχή από τους πνεύμονες στους μύες, τις αρθρώσεις και το δέρμα (ιδιοδεκτικότητα). Η αναπνοή ακολουθεί την κίνηση μόνη της, χωρίς την πίεση της «σωστής αναπνοής».',
       ndNote: 'Αν η αναπνοή σου φέρνει ανησυχία, η κίνηση είναι η δική σου πύλη γείωσης. Το Τάι Τσι δίνει απτά σήματα στο σώμα — βάρος, ροή, ισορροπία — να ακουμπήσει η προσοχή.'
@@ -566,7 +566,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     en: {
       title: 'Movement vs. Breathwork (Tai Chi)',
       short: 'Why mindful movement is the ideal alternative to breathwork.',
-      full: 'For many neurodivergent people, focusing directly on the breath can bring anxiety: breathing becomes something that "must" be done right. Mindful movement, such as Tai Chi, moves attention away from the lungs to the muscles, joints and skin (proprioception). The breath follows the movement on its own, without the pressure of "breathing correctly".',
+      full: 'For many neurodivergent people, focusing directly on the breath can bring anxiety: breathing becomes something that “must” be done right. Mindful movement, such as Tai Chi, moves attention away from the lungs to the muscles, joints and skin (proprioception). The breath follows the movement on its own, without the pressure of “breathing correctly”.',
       ndNote: 'If the breath brings you unease, movement is your door to grounding. Tai Chi gives the body tangible signals — weight, flow, balance — for attention to rest on.'
     },
     axis: 'body',
@@ -585,7 +585,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     en: {
       title: 'ADHD & Mindfulness Study (Zylowska et al., 2008)',
       short: 'A mindfulness programme adapted for ADHD was feasible, and participants reported improvements.',
-      full: 'A pilot study ("Mindfulness Meditation Training in Adults and Adolescents With ADHD: A Feasibility Study") with 24 adults and 8 adolescents. The 8-week programme was adapted for ADHD: shorter sittings, walking meditation, visual aids. Most participants completed it, reported fewer ADHD symptoms, less anxiety and low mood, and did better on some attention tests.\n\nThere was no control group. So the study shows that this kind of approach is feasible and worth more research, not that it works better than others.',
+      full: 'A pilot study (“Mindfulness Meditation Training in Adults and Adolescents With ADHD: A Feasibility Study”) with 24 adults and 8 adolescents. The 8-week programme was adapted for ADHD: shorter sittings, walking meditation, visual aids. Most participants completed it, reported fewer ADHD symptoms, less anxiety and low mood, and did better on some attention tests.\n\nThere was no control group. So the study shows that this kind of approach is feasible and worth more research, not that it works better than others.',
       ndNote: 'Adapting the practice to your mind, rather than your mind to the practice: that is also the idea behind the microdoses and the gentle return.',
       science: 'Zylowska et al. (2008) Journal of Attention Disorders (Doi: 10.1177/1087054707308502)'
     },
@@ -605,7 +605,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     en: {
       title: 'Systematic Review & Meta-analysis for ADHD (Kim & Jung, 2025)',
       short: 'A meta-analysis found that mindfulness-based interventions may improve core ADHD symptoms in adults.',
-      full: 'This systematic review and meta-analysis ("Mindfulness-based interventions for adults with ADHD") pooled 10 controlled trials published up to 2023. It found small-to-moderate improvements in core ADHD symptoms, both self-reported and observer-rated, and in everyday functioning. Results for mood and for mindfulness skills were inconclusive.\n\nThe authors note that more and better studies are needed, and that long-term effects are not yet known.',
+      full: 'This systematic review and meta-analysis (“Mindfulness-based interventions for adults with ADHD”) pooled 10 controlled trials published up to 2023. It found small-to-moderate improvements in core ADHD symptoms, both self-reported and observer-rated, and in everyday functioning. Results for mood and for mindfulness skills were inconclusive.\n\nThe authors note that more and better studies are needed, and that long-term effects are not yet known.',
       ndNote: 'The authors see mindfulness as a complementary support, not a replacement for treatment. So does this guide.',
       science: 'Kim, H.-H., & Jung, N.-H. (2025). Medicine. (Doi: 10.1097/md.0000000000044308)'
     },
@@ -625,7 +625,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     en: {
       title: 'Interoception & the Body (Gibson, 2019)',
       short: 'Sensing the body from the inside (interoception) is closely linked to self-regulation.',
-      full: 'A theoretical article ("Mindfulness, Interoception, and the Body: A Contemporary Perspective") that brings together research on mindfulness and interoception. It describes how practice is linked with the insula, a brain region central to sensing the body from the inside, and suggests that anchoring attention in the concrete, tangible body gives a stable focus.\n\nIt also notes that more bodily sensitivity without regulation tools can increase anxiety, especially with a history of trauma. That is why practice needs to stay gentle and protective.',
+      full: 'A theoretical article (“Mindfulness, Interoception, and the Body: A Contemporary Perspective”) that brings together research on mindfulness and interoception. It describes how practice is linked with the insula, a brain region central to sensing the body from the inside, and suggests that anchoring attention in the concrete, tangible body gives a stable focus.\n\nIt also notes that more bodily sensitivity without regulation tools can increase anxiety, especially with a history of trauma. That is why practice needs to stay gentle and protective.',
       ndNote: 'This is why the method starts with gravity and grounding, something steady and tangible, and gives breathing and movement a rhythm, rather than asking only for passive observation.',
       science: 'Jonathan Gibson (2019) Frontiers in Psychology (Vol 10, Art 2012, Doi: 10.3389/fpsyg.2019.02012)'
     },
@@ -645,7 +645,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     en: {
       title: 'Dose & Practice Habits in Digital Meditation (Cearns & Clark, 2023)',
       short: 'Practising regularly, most days of the week, was linked to greater benefit and to keeping going.',
-      full: 'A longitudinal study ("The Effects of Dose, Practice Habits, and Objects of Focus on Digital Meditation Effectiveness and Adherence") of about 10,000 users of a meditation app, with more than 280,000 sessions across 103 countries. Mood, equanimity and resilience improved as practice continued. Practising 4 to 7 days a week was the strongest predictor of keeping going; session length was not.\n\nIt is an observational study: it shows associations, not cause and effect. Nor did it show that short sessions are better than long ones.',
+      full: 'A longitudinal study (“The Effects of Dose, Practice Habits, and Objects of Focus on Digital Meditation Effectiveness and Adherence”) of about 10,000 users of a meditation app, with more than 280,000 sessions across 103 countries. Mood, equanimity and resilience improved as practice continued. Practising 4 to 7 days a week was the strongest predictor of keeping going; session length was not.\n\nIt is an observational study: it shows associations, not cause and effect. Nor did it show that short sessions are better than long ones.',
       ndNote: 'What seems to matter is coming back often. Microdoses make coming back easy; when you have time, a longer practice is good too.',
       science: 'Cearns & Clark (2023) JMIR (Doi: 10.2196/43358, 280,000+ sessions studied)'
     },
@@ -665,7 +665,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     en: {
       title: 'Neural Modes of Self-Reference Study (Farb et al., 2007)',
       short: 'The study distinguished two ways the brain processes the self: telling a story, and sensing the present.',
-      full: 'An fMRI study ("Attending to the present: mindfulness meditation reveals distinct neural modes of self-reference") that distinguished two ways the brain processes the self:\n\n1. Narrative focus: the mind comments, judges and builds a "story" about the self. Linked with regions of the Default Mode Network (medial prefrontal cortex).\n\n2. Experiential focus: the mind stays with the sensations of this moment. Linked with the insula and the somatosensory cortex.\n\nIn people who had completed an 8-week mindfulness programme, the two modes were more clearly separated than in people without training. The study suggests that the two modes can be told apart, and that practice seems to separate them further.',
+      full: 'An fMRI study (“Attending to the present: mindfulness meditation reveals distinct neural modes of self-reference”) that distinguished two ways the brain processes the self:\n\n1. Narrative focus: the mind comments, judges and builds a “story” about the self. Linked with regions of the Default Mode Network (medial prefrontal cortex).\n\n2. Experiential focus: the mind stays with the sensations of this moment. Linked with the insula and the somatosensory cortex.\n\nIn people who had completed an 8-week mindfulness programme, the two modes were more clearly separated than in people without training. The study suggests that the two modes can be told apart, and that practice seems to separate them further.',
       ndNote: 'For many neurodivergent people the inner narrative is loud and full of criticism. Turning to the senses (gravity, sound, the air at the nostrils) gives attention another place to rest. The chatter often quietens; it does not have to disappear.',
       science: 'Farb et al. (2007) Social Cognitive and Affective Neuroscience (Doi: 10.1093/scan/nsm030)'
     },
@@ -680,14 +680,14 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       short: 'Δύο λίγο διαφορετικοί τόνοι, ένας σε κάθε αυτί, ακούγονται σαν ένας παλμός. Τα ευρήματα για τη διάθεση και την προσοχή είναι ακόμα ανάμεικτα.',
       full: 'Όταν σε κάθε αυτί φτάνει ένας λίγο διαφορετικός τόνος (π.χ. 300 Hz αριστερά, 310 Hz δεξιά), ακούμε έναν ήπιο παλμό στη διαφορά τους (10 Hz). Το φαινόμενο το περιέγραψε ο Oster το 1973.\n\nΑν ο παλμός αυτός συντονίζει πραγματικά τα εγκεφαλικά κύματα (brainwave entrainment) συζητείται ακόμα. Κάποιες μικρές μελέτες, όπως του Lane και των συνεργατών του (1998), βρήκαν μικρές αλλαγές στην εγρήγορση και στη διάθεση· άλλες δεν βρήκαν.',
       ndNote: 'Για κάποιους, ο σταθερός ήχος λειτουργεί σαν «ακουστική κουβέρτα»: καλύπτει τον θόρυβο γύρω και κάνει πιο εύκολο να μείνεις. Αν σε ενοχλεί, δεν τον χρειάζεσαι· η πρακτική γίνεται το ίδιο καλά και χωρίς αυτόν.',
-      science: 'Oster (1973) "Auditory beats in the brain" (Scientific American) & Lane et al. (1998) Physiology & Behavior (Doi: 10.1016/s0031-9384(97)00436-8)'
+      science: 'Oster (1973) “Auditory beats in the brain” (Scientific American) & Lane et al. (1998) Physiology & Behavior (Doi: 10.1016/s0031-9384(97)00436-8)'
     },
     en: {
       title: 'Binaural Beats',
       short: 'Two slightly different tones, one in each ear, are heard as a single beat. Findings on mood and attention are still mixed.',
       full: 'When each ear hears a slightly different tone (e.g. 300 Hz left, 310 Hz right), we hear a gentle beat at their difference (10 Hz). Oster described the effect in 1973.\n\nWhether this beat really entrains brainwaves (brainwave entrainment) is still debated. Some small studies, such as Lane and colleagues (1998), found small changes in alertness and mood; others found none.',
-      ndNote: 'For some people, a steady sound works like an "acoustic blanket": it covers the noise around and makes it easier to stay. If it bothers you, you do not need it; you can practise just as well without it.',
-      science: 'Oster (1973) "Auditory beats in the brain" (Scientific American) & Lane et al. (1998) Physiology & Behavior (Doi: 10.1016/s0031-9384(97)00436-8)'
+      ndNote: 'For some people, a steady sound works like an “acoustic blanket”: it covers the noise around and makes it easier to stay. If it bothers you, you do not need it; you can practise just as well without it.',
+      science: 'Oster (1973) “Auditory beats in the brain” (Scientific American) & Lane et al. (1998) Physiology & Behavior (Doi: 10.1016/s0031-9384(97)00436-8)'
     },
     axis: 'all',
     chapters: [8, 11],
@@ -705,7 +705,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     en: {
       title: 'Gamma Synchrony in Long-Term Meditators (Lutz, Davidson et al., 2004)',
       short: 'Eight monks with many years of practice showed unusually strong gamma synchrony during compassion meditation.',
-      full: 'An EEG study ("Long-term meditators self-induce high-amplitude gamma synchrony during mental practice") of 8 Tibetan Buddhist monks with tens of thousands of hours of practice, compared with 10 beginners. During objectless compassion meditation, the monks showed far greater gamma synchrony (25–42 Hz) than the beginners; a smaller difference was present at rest as well.\n\nThe study shows that long-term practice is linked with changes in how the brain works. It did not test short practice, and gamma waves do not correspond to any particular experience.',
+      full: 'An EEG study (“Long-term meditators self-induce high-amplitude gamma synchrony during mental practice”) of 8 Tibetan Buddhist monks with tens of thousands of hours of practice, compared with 10 beginners. During objectless compassion meditation, the monks showed far greater gamma synchrony (25–42 Hz) than the beginners; a smaller difference was present at rest as well.\n\nThe study shows that long-term practice is linked with changes in how the brain works. It did not test short practice, and gamma waves do not correspond to any particular experience.',
       ndNote: 'There is no need to chase brainwaves. The spaciousness of open awareness is something you feel, not something you measure.',
       science: 'Lutz, Greischar, Rawlings, Ricard, Davidson (2004) PNAS (Doi: 10.1073/pnas.0407401101)'
     },
@@ -725,8 +725,8 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     en: {
       title: 'Hyperfocus Review (Ashinoff & Abu-Akel, 2019)',
       short: 'A review of hyperfocus: a state of deep absorption often reported in ADHD and autism.',
-      full: 'The review ("Hyperfocus: the forgotten frontier of attention") describes hyperfocus as intense absorption in an activity, in which whatever happens around fades from attention.\n\nIt is often reported by people with ADHD and autism, but it also occurs in others. The authors note that research is still scarce and there is no shared definition; they see it as a distinct mode of attention, not simply a deficit.',
-      ndNote: 'Many neurodivergent people describe their attention as "all or nothing". A soft gaze and listening to the space help you leave a tunnel of attention slowly, without a jolt.',
+      full: 'The review (“Hyperfocus: the forgotten frontier of attention”) describes hyperfocus as intense absorption in an activity, in which whatever happens around fades from attention.\n\nIt is often reported by people with ADHD and autism, but it also occurs in others. The authors note that research is still scarce and there is no shared definition; they see it as a distinct mode of attention, not simply a deficit.',
+      ndNote: 'Many neurodivergent people describe their attention as “all or nothing”. A soft gaze and listening to the space help you leave a tunnel of attention slowly, without a jolt.',
       science: 'Ashinoff, B. K., & Abu-Akel, A. (2019). Psychological Research. (Doi: 10.1007/s00426-019-01245-8)'
     },
     axis: 'attention',
@@ -745,7 +745,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     en: {
       title: 'DMN Connectivity & Meditation (Brewer et al., 2011)',
       short: 'Experienced meditators showed less activity in the Default Mode Network (DMN) than beginners.',
-      full: 'An fMRI study ("Meditation experience is associated with differences in default mode network activity and connectivity") comparing experienced meditators with beginners. The experienced group showed less activity in the main hubs of the Default Mode Network (posterior cingulate and medial prefrontal cortex) across three types of meditation.\n\nThey also showed stronger connections between the DMN and regions that control attention, both during meditation and at rest. The authors read this as a sign that practice helps the mind notice when it wanders.',
+      full: 'An fMRI study (“Meditation experience is associated with differences in default mode network activity and connectivity”) comparing experienced meditators with beginners. The experienced group showed less activity in the main hubs of the Default Mode Network (posterior cingulate and medial prefrontal cortex) across three types of meditation.\n\nThey also showed stronger connections between the DMN and regions that control attention, both during meditation and at rest. The authors read this as a sign that practice helps the mind notice when it wanders.',
       ndNote: 'The study was done with people who had years of practice, not specifically with neurodivergent people. It fits what the method describes, though: when you return gently to the senses, wandering and rumination lose some of their pull.',
       science: 'Brewer, J. A., Worhunsky, P. D., Gray, J. R., Weber, J., Tang, Y., & Kober, H. (2011). PNAS. (Doi: 10.1073/pnas.1112029108)'
     },
@@ -760,14 +760,14 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       short: 'Για τον Gibson, η αντίληψη του χώρου δεν είναι αφηρημένος υπολογισμός· στηρίζεται στο έδαφος που κρατά το σώμα.',
       full: 'Η θεωρία του James J. Gibson («The Ecological Approach to Visual Perception») υποστηρίζει ότι το σώμα και το περιβάλλον του λειτουργούν μαζί, σαν ένα σύστημα. Κατά τον Gibson, την απόσταση και τον χώρο δεν τα υπολογίζει ο εγκέφαλος αφηρημένα· τα αντιλαμβανόμαστε άμεσα, πάνω στη συνεχή επιφάνεια του εδάφους.\n\nΤο έδαφος προσφέρει «δυνατότητες δράσης» (affordances): μας κρατά, και μας επιτρέπει να σταθούμε και να κινηθούμε.',
       ndNote: 'Ταιριάζει με τη γείωση της μεθόδου: δεν είναι μόνο νοητική άσκηση, είναι και η αίσθηση ότι κάτι από κάτω σε κρατά. Η αντίληψη του σώματος και η αντίληψη του χώρου πάνε μαζί.',
-      science: 'Gibson, J. J. (1979/2014) "The Ecological Approach to Visual Perception" (Doi: 10.4324/9781315740218)'
+      science: 'Gibson, J. J. (1979/2014) “The Ecological Approach to Visual Perception” (Doi: 10.4324/9781315740218)'
     },
     en: {
       title: 'Ecological Space Perception • J. J. Gibson (1979)',
       short: 'For Gibson, perceiving space is not an abstract calculation; it rests on the ground that holds the body.',
-      full: 'James J. Gibson\'s theory ("The Ecological Approach to Visual Perception") holds that the body and its environment work together, as one system. For Gibson, distance and space are not computed abstractly by the brain; we perceive them directly, along the continuous surface of the ground.\n\nThe ground offers "affordances", possibilities for action: it holds us, and lets us stand and move.',
+      full: 'James J. Gibson\'s theory (“The Ecological Approach to Visual Perception”) holds that the body and its environment work together, as one system. For Gibson, distance and space are not computed abstractly by the brain; we perceive them directly, along the continuous surface of the ground.\n\nThe ground offers “affordances”, possibilities for action: it holds us, and lets us stand and move.',
       ndNote: 'This fits the grounding of the method: it is not only a mental exercise, it is also the sense that something underneath is holding you. Perceiving the body and perceiving space go together.',
-      science: 'Gibson, J. J. (1979/2014) "The Ecological Approach to Visual Perception" (Doi: 10.4324/9781315740218)'
+      science: 'Gibson, J. J. (1979/2014) “The Ecological Approach to Visual Perception” (Doi: 10.4324/9781315740218)'
     },
     axis: 'body',
     chapters: [1, 4, 11],
@@ -785,7 +785,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     en: {
       title: 'Cerebellar Gravity Prediction • Mackrous et al. (2019)',
       short: 'The cerebellum constantly predicts how the sense of gravity will change as we move.',
-      full: 'A study in monkeys ("Cerebellar Prediction of the Dynamic Sensory Consequences of Gravity") that recorded neurons in the cerebellum, the part of the brain that coordinates movement and balance. It found that the cerebellum predicts how the sense of gravity will change when the animal tilts its own head, and so tells its own movements apart from those that happen to it.\n\nThe brain, in other words, does not just receive gravity; it tracks and computes it all the time.',
+      full: 'A study in monkeys (“Cerebellar Prediction of the Dynamic Sensory Consequences of Gravity”) that recorded neurons in the cerebellum, the part of the brain that coordinates movement and balance. It found that the cerebellum predicts how the sense of gravity will change when the animal tilts its own head, and so tells its own movements apart from those that happen to it.\n\nThe brain, in other words, does not just receive gravity; it tracks and computes it all the time.',
       ndNote: 'The study did not test attention or any exercise. It does show that gravity is a signal the brain already tracks, every moment. Grounding simply turns your attention towards it.',
       science: 'Mackrous, I., Carriot, J., Jamali, M., & Cullen, K. E. (2019). Current Biology. (Doi: 10.1016/j.cub.2019.07.006)'
     },
@@ -803,8 +803,8 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     },
     en: {
       title: 'Peripheral Vision in Real-World Tasks • Vater et al. (2022)',
-      short: 'Peripheral vision is not just "blurry" vision. It keeps giving us a picture of the space around us.',
-      full: 'This 2022 systematic review ("Peripheral vision in real-world tasks") shows that peripheral vision plays a large role in everyday tasks: walking, finding our way, noticing what is happening around us without looking at it directly.\n\nThe method draws on this: when you soften your gaze, attention spreads into the space instead of narrowing to one point.',
+      short: 'Peripheral vision is not just “blurry” vision. It keeps giving us a picture of the space around us.',
+      full: 'This 2022 systematic review (“Peripheral vision in real-world tasks”) shows that peripheral vision plays a large role in everyday tasks: walking, finding our way, noticing what is happening around us without looking at it directly.\n\nThe method draws on this: when you soften your gaze, attention spreads into the space instead of narrowing to one point.',
       ndNote: 'For a nervous system that locks on easily, widening the gaze can soften the tension. You do not need to force yourself to relax; just widen your view.',
       science: 'Vater, C., Wolfe, B., & Rosenholtz, R. (2022). Psychonomic Bulletin & Review. (Doi: 10.3758/s13423-022-02117-w)'
     },
@@ -823,8 +823,8 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     en: {
       title: 'Window of Tolerance & Self-Regulation • Corrigan et al. (2011)',
       short: 'Self-regulation is the ability to return your nervous system from overstimulation or under-functioning to a state of balance.',
-      full: 'According to the "Window of Tolerance" model, the nervous system works best within a specific range of arousal. Outside of this window, it is driven either into hyperarousal (anxiety, panic, a racing mind) or hypoarousal (numbness, dissociation, locking).\n\nSelf-regulation is the ability to recognize these states and use tools (like grounding, breathing, and space) to return the system to balance.',
-      ndNote: 'The neurodivergent mind can leave the window of tolerance more easily because of sensory overload. The Fourfold Axis method offers bodily tools to "brake" hyperarousal (space, slow exhale) or to "unstick" from hypoarousal (grounding).',
+      full: 'According to the “Window of Tolerance” model, the nervous system works best within a specific range of arousal. Outside of this window, it is driven either into hyperarousal (anxiety, panic, a racing mind) or hypoarousal (numbness, dissociation, locking).\n\nSelf-regulation is the ability to recognize these states and use tools (like grounding, breathing, and space) to return the system to balance.',
+      ndNote: 'The neurodivergent mind can leave the window of tolerance more easily because of sensory overload. The Fourfold Axis method offers bodily tools to “brake” hyperarousal (space, slow exhale) or to “unstick” from hypoarousal (grounding).',
       science: 'Corrigan, F. M., Fisher, J. J., & Nutt, D. J. (2011). Journal of Psychopharmacology. (Doi: 10.1177/0269881109354930)'
     },
     axis: 'body',
