@@ -47,6 +47,13 @@ jobs:
           distribution: temurin
           java-version: 21
 
+      # Gradle and the Android libraries kept between runs, so a slow or
+      # failing download server (services.gradle.org, Maven Central) does
+      # not stop the build. Only main writes the cache.
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+
       - name: Install
         run: npm ci
 
@@ -71,6 +78,8 @@ jobs:
           f=android/app/build.gradle
           sed -i -E "s/versionCode [0-9]+/versionCode $N/; s/versionName \"[^\"]*\"/versionName \"1.$N\"/" "$f"
           grep -q "versionCode $N" "$f"
+          # The Gradle download may be slow: a minute instead of ten seconds.
+          sed -i -E 's/^networkTimeout=.*/networkTimeout=60000/' android/gradle/wrapper/gradle-wrapper.properties
           npx cap sync android
 
       # R8 for release builds: unused Java code and resources out, names
@@ -110,15 +119,16 @@ jobs:
       - name: APK
         working-directory: android
         run: |
+          gw() { for i in 1 2 3; do ./gradlew "$@" && return 0; echo "Gradle failed (try $i); again in 20 s"; sleep 20; done; return 1; }
           if [ -n "$TEST_KEYSTORE_FILE" ]; then
-            ./gradlew assembleRelease --no-daemon \
+            gw assembleRelease --no-daemon \
               -Pandroid.injected.signing.store.file="$TEST_KEYSTORE_FILE" \
               -Pandroid.injected.signing.store.password=android \
               -Pandroid.injected.signing.key.alias=androiddebugkey \
               -Pandroid.injected.signing.key.password=android
             echo "APK_FILE=android/app/build/outputs/apk/release/app-release.apk" >> "$GITHUB_ENV"
           else
-            ./gradlew assembleDebug --no-daemon
+            gw assembleDebug --no-daemon
             echo "APK_FILE=android/app/build/outputs/apk/debug/app-debug.apk" >> "$GITHUB_ENV"
           fi
 
@@ -146,7 +156,8 @@ jobs:
           fi
           # Which key signs it (Play knows the upload key as 77:40:B0:4E:…:89:EA).
           keytool -list -v -keystore "$k" -storepass "$sp" -alias "$ka" | grep -m1 'SHA256:'
-          ./gradlew bundleRelease --no-daemon \
+          gw() { for i in 1 2 3; do ./gradlew "$@" && return 0; echo "Gradle failed (try $i); again in 20 s"; sleep 20; done; return 1; }
+          gw bundleRelease --no-daemon \
             -Pandroid.injected.signing.store.file="$k" \
             -Pandroid.injected.signing.store.password="$sp" \
             -Pandroid.injected.signing.key.alias="$ka" \

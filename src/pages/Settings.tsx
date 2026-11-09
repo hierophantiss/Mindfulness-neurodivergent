@@ -5,7 +5,6 @@ import React, { useState, useEffect } from 'react';
 import { downloadBackup, restoreBackup } from '../lib/backup';
 import { lastBackupDate } from '../lib/dataSafety';
 import { readErrors, clearErrors, errorReport } from '../lib/errorLog';
-import { motion } from 'motion/react';
 import { Languages, Activity, LetterText, Info, LogOut, Sparkles, Sun, Database, FileText, Download, Bug, ShieldCheck, MessageCircleHeart, CalendarClock } from 'lucide-react';
 import { openIcs, googleCalendarUrl } from '../lib/reminder';
 import { feedbackMailto } from '../lib/feedback';
@@ -279,36 +278,26 @@ export default function Settings() {
           </div>
 
           <div className="space-y-8">
-            {/* Evidence-Based Science Badge */}
-            <motion.button
+            {/* The research behind the method: a card like the rows below, in the sign's blue. */}
+            <button
               type="button"
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
               onClick={() => navigate('/methodology')}
-              className="w-full text-left block relative p-5 rounded-3xl bg-gradient-to-r from-teal-500/10 to-emerald-500/10 border border-teal-500/20 shadow-lg cursor-pointer group overflow-hidden"
+              className="card-relief w-full text-left flex items-center gap-4 p-4 rounded-[20px] hover:brightness-110 transition-all group active:scale-[0.98]"
             >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/5 rounded-full blur-2xl group-hover:bg-teal-500/10 transition-all duration-500" />
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-teal-500/15 border border-teal-500/20 flex items-center justify-center text-teal-300 shadow-inner shrink-0 group-hover:scale-105 transition-transform duration-300">
-                  <ShieldCheck size={24} className="animate-pulse" />
-                </div>
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[12px] font-mono font-medium text-teal-400 bg-teal-500/20 px-2 py-0.5 rounded-full">
-                      {language === 'el' ? 'Έρευνα' : 'Research'}
-                    </span>
-                  </div>
-                  <h2 className="text-[16px] font-light text-ink/95 group-hover:text-teal-200 transition-colors">
-                    {language === 'el' ? 'Η Επιστημονική Βάση' : 'The Research Basis'}
-                  </h2>
-                  <p className="text-[12px] text-ink/50 leading-relaxed font-sans">
-                    {language === 'el' 
-                      ? 'Οι μελέτες πίσω από κάθε κομμάτι της μεθόδου, και τι δεν έχουν δείξει ακόμα.' 
-                      : 'The studies behind each part of the method, and what they have not shown yet.'}
-                  </p>
-                </div>
+              <div className="w-11 h-11 shrink-0 rounded-xl flex items-center justify-center bg-[var(--tint-blue-bg)] border border-[var(--tint-blue-line)] text-[var(--tint-blue-ink)]">
+                <ShieldCheck size={22} aria-hidden="true" />
               </div>
-            </motion.button>
+              <span className="flex flex-col min-w-0 gap-0.5">
+                <span className="text-[15px] font-medium text-ink/90 group-hover:text-ink transition-colors">
+                  {language === 'el' ? 'Η Επιστημονική Βάση' : 'The Research Basis'}
+                </span>
+                <span className="text-[13px] leading-snug text-ink/60">
+                  {language === 'el'
+                    ? 'Οι μελέτες πίσω από κάθε κομμάτι της μεθόδου, και τι δεν έχουν δείξει ακόμα.'
+                    : 'The studies behind each part of the method, and what they have not shown yet.'}
+                </span>
+              </span>
+            </button>
 
             {sections.map((section, idx) => (
               <div key={idx} className="space-y-3">

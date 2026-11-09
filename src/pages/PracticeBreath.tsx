@@ -576,23 +576,23 @@ export default function PracticeBreath() {
       {/* Info Banner for Binaural Beats */}
       {!running && showBanner && (
         <div className="z-20 w-full mb-4 md:px-0 relative px-4">
-          <div className="bg-zinc-800/40 border border-teal-900/50 rounded-2xl p-3 pr-8 flex items-start gap-3 shadow-sm mx-auto max-w-sm relative">
-            <div className="w-8 h-8 rounded-full bg-teal-900/40 border border-teal-800/50 flex items-center justify-center shrink-0 mt-0.5">
-               <Headphones size={14} className="text-teal-400" />
+          <div className="mx-auto max-w-sm flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] pl-3 pr-1 py-2">
+            <div className="w-8 h-8 rounded-full bg-[var(--tint-blue-bg)] border border-[var(--tint-blue-line)] flex items-center justify-center shrink-0">
+               <Headphones size={14} className="text-[var(--tint-blue-ink)]" aria-hidden="true" />
             </div>
-            <p className="text-[13px] text-zinc-200/90 leading-relaxed font-medium">
+            <p className="flex-1 text-[13px] text-ink/85 leading-relaxed">
               {language === 'el' 
                 ? (isVocal ? 'Για ήχο πάτα τα ακουστικά πάνω δεξιά: φωνή-οδηγός για να ψέλνεις μαζί της, ή μόνο ήχος φύσης.' : 'Για ήχο πάτα τα ακουστικά πάνω δεξιά: binaural με ακουστικά, ή μόνο ήχος φύσης από το ηχείο.')
                 : (isVocal ? 'For sound, tap the headphones at the top right: a voice guide to chant with, or just a nature sound.' : 'For sound, tap the headphones at the top right: binaural with headphones, or just a nature sound from the speaker.')}
             </p>
-            <button aria-label={language === 'en' ? 'Close' : 'Κλείσιμο'}
+            <button type="button" aria-label={language === 'en' ? 'Close' : 'Κλείσιμο'}
               onClick={() => {
                 setShowBanner(false);
-                localStorage.setItem('hide_binaural_banner', 'true');
+                try { localStorage.setItem('hide_binaural_banner', 'true'); } catch { /* fine */ }
               }}
-              className="absolute top-2.5 right-2.5 p-1.5 text-zinc-400 hover:text-zinc-200 rounded-full hover:bg-zinc-700/50 transition-colors"
+              className="w-11 h-11 shrink-0 flex items-center justify-center text-ink/55 hover:text-ink rounded-full hover:bg-white/5 transition-colors"
             >
-              <X size={14} />
+              <X size={16} aria-hidden="true" />
             </button>
           </div>
         </div>
