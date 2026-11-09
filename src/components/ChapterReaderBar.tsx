@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Headphones, Pause, Play, SkipBack, SkipForward, SlidersHorizontal, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
+import { useFrameInBand } from '../lib/frameInBand';
 import type { ReadLang, SegmentKind } from '../lib/chapterReading';
 import type { ReaderSettings, ReaderStatus } from '../hooks/useSpeechReader';
 
@@ -85,11 +86,14 @@ export default function ChapterReaderBar(p: Props) {
   const [open, setOpen] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
   const active = p.status !== 'idle';
+  // While an animation's own buttons are down here, the "Listen" button
+  // steps aside (lib/frameInBand.ts); it returns when the page moves on.
+  const aside = useFrameInBand();
 
   if (!active) {
     return (
-      <div data-no-read className={cn('fixed left-0 right-0 z-40 px-4 pointer-events-none', bottom)}>
-        <div className="max-w-md mx-auto pointer-events-auto">
+      <div data-no-read className={cn('fixed left-0 right-0 z-40 px-4 pointer-events-none transition-opacity duration-300', aside && 'opacity-0', bottom)}>
+        <div inert={aside} className={cn('max-w-md mx-auto', aside ? 'pointer-events-none' : 'pointer-events-auto')}>
           <div className="flex items-center justify-end gap-2">
             {p.hasResume && (
               <button

@@ -1,21 +1,18 @@
-import React from 'react';
 import { useLanguage } from '../hooks/useLanguage';
 
-export default function CameraAnimation({ mode = 'camera' }: { mode?: 'hero' | 'camera' | 'anchor' | 'zoom' }) {
+// "bare": inside a window that already frames it (a chapter's .anim-frame);
+// otherwise it brings the same window itself (a day of the Programme).
+export default function CameraAnimation({ mode = 'camera', bare = false }: { mode?: 'hero' | 'camera' | 'anchor' | 'zoom'; bare?: boolean }) {
   const { language } = useLanguage();
-  // Use camera-hero.html by default as it covers all features
-  // We can switch to basic 'camera' if desired
+  // camera-hero.html covers every mode but the plain camera.
   const base = mode === 'camera' ? '/animations/camera.html' : '/animations/camera-hero.html';
-  const src = `${base}?lang=${language}`;
-  
-  return (
-    <div className="relative w-full h-[600px] bg-[#050510] rounded-2xl overflow-hidden border border-pine-800 shadow-xl my-6">
-      <iframe 
-        src={src} 
-        className="absolute inset-0 w-full h-full border-0"
-        title="Camera Exercise"
-        sandbox="allow-scripts allow-same-origin"
-      />
-    </div>
+  const frame = (
+    <iframe
+      src={`${base}?lang=${language}`}
+      className="absolute inset-0 w-full h-full border-0"
+      title="Camera Exercise"
+      sandbox="allow-scripts allow-same-origin"
+    />
   );
+  return bare ? frame : <div className="anim-frame my-6">{frame}</div>;
 }

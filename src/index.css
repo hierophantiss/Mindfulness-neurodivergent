@@ -66,6 +66,8 @@
   :root {
     --color-bg: #0f1117;
     --color-surface: #1a1d27;
+    /* Behind an animation, while it loads: the night its scenes are drawn on. */
+    --color-stage: #050710;
     --color-accent: #5f8fd6;
     --color-accent-light: #a9c8f2;
     --color-text: #d4d4d8;
@@ -308,6 +310,38 @@
       border-top-color: rgb(255 255 255 / 0.20);
       box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.10), 0 18px 34px -22px rgb(0 0 0 / 0.8);
     }
+  }
+  /* The window of an animation inside a page (a chapter, a day of the
+     Programme). One size for all of them: as wide as the phone allows (it
+     steps 12px into the page's margin on each side) and tall enough to show
+     the scene whole between the bars, never taller than the screen. The
+     animation fills it. (svh where the phone knows it, vh otherwise.) */
+  .anim-frame {
+    position: relative;
+    height: clamp(380px, 76vh, 680px);
+    height: clamp(380px, 76svh, 680px);
+    margin-inline: -12px;
+    overflow: hidden;
+    border-radius: 22px;
+    border: 1px solid rgb(255 255 255 / 0.07);
+    background: var(--color-stage);
+    box-shadow: 0 24px 48px -28px rgb(0 0 0 / 0.9);
+  }
+  @media (min-width: 1024px) {
+    .anim-frame { margin-inline: 0; }
+  }
+  /* The stage of a breath (the meditator, the Tai Chi figure): a square as
+     large as the screen leaves. On the phone, the width of the screen less a
+     small margin, or the height left between the controls above and the
+     buttons below (about 420px), whichever is smaller; so it is never cut.
+     On a computer, the height decides. */
+  .breath-stage {
+    width: clamp(200px, min(calc(100vh - 420px), calc(100vw - 24px)), 440px);
+    width: clamp(200px, min(calc(100dvh - 420px), calc(100vw - 24px)), 440px);
+    aspect-ratio: 1;
+  }
+  @media (min-width: 1024px) {
+    .breath-stage { width: clamp(320px, calc(100vh - 420px), 520px); }
   }
   /* A key sentence, marked with the line of the axis (the sign's vertical
      line) in its chapter's colour: --axis-line. */

@@ -722,8 +722,8 @@ export default function PracticeBreath() {
         <div 
           className={cn("absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none", !isTaiChi && "drop-shadow-lg")}
         >
-          {/* Centred in the space it has, and smaller on short screens, so the circle is never cut at the top */}
-          <div className="relative flex items-center justify-center shrink-0 w-[clamp(200px,calc(100dvh-420px),320px)] h-[clamp(200px,calc(100dvh-420px),320px)] desk:w-[clamp(320px,calc(100vh-420px),520px)] desk:h-[clamp(320px,calc(100vh-420px),520px)]">
+          {/* Centred in the space it has, as large as the screen leaves (.breath-stage), so the circle is never cut at the top */}
+          <div className="breath-stage relative flex items-center justify-center shrink-0">
              
              {/* Counter Text & Infinity */}
              <div className="z-10 absolute inset-0 flex items-center justify-center">

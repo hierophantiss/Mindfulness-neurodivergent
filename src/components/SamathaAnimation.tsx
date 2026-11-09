@@ -1,17 +1,16 @@
-import React from 'react';
 import { useLanguage } from '../hooks/useLanguage';
 
-export default function SamathaAnimation() {
+// "bare": inside a window that already frames it (a chapter's .anim-frame);
+// otherwise it brings the same window itself (a day of the Programme).
+export default function SamathaAnimation({ bare = false }: { bare?: boolean }) {
   const { language } = useLanguage();
-
-  return (
-    <div className="relative w-full h-[600px] bg-transparent rounded-2xl overflow-hidden border border-pine-800 shadow-xl my-6">
-      <iframe 
-        src={`/animations/samatha_attention.html?lang=${language}`}
-        className="w-full h-full border-0"
-        title="Attention Geometry"
-        sandbox="allow-scripts allow-same-origin"
-      />
-    </div>
+  const frame = (
+    <iframe
+      src={`/animations/samatha_attention.html?lang=${language}`}
+      className="absolute inset-0 w-full h-full border-0"
+      title="Attention Geometry"
+      sandbox="allow-scripts allow-same-origin"
+    />
   );
+  return bare ? frame : <div className="anim-frame my-6">{frame}</div>;
 }

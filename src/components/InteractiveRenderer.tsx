@@ -1,5 +1,5 @@
 import { useAccessibility } from '../hooks/useAccessibility';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import GravityThoughts from './animations/GravityThoughts';
 import OpenAwareness from './animations/OpenAwareness';
 import CameraAnimation from './CameraAnimation';
@@ -7,6 +7,7 @@ import SamathaAnimation from './SamathaAnimation';
 import { Maximize2, X, Play } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useLanguage } from '../hooks/useLanguage';
+import { watchFrame } from '../lib/frameInBand';
 
 interface InteractiveRendererProps {
   id: string;
@@ -19,6 +20,9 @@ export default function InteractiveRenderer({ id, asModal }: InteractiveRenderer
 
   const [isOpen, setIsOpen] = useState(!asModal);
   const { language } = useLanguage();
+  // In a page, the window says when it is down where the "Listen" button floats.
+  const frameRef = useRef<HTMLDivElement>(null);
+  useEffect(() => (asModal || !frameRef.current ? undefined : watchFrame(frameRef.current)), [asModal]);
 
   // Map other IDs to existing or newly created HTML files in /animations/
   const htmlMap: Record<string, string> = {
@@ -35,9 +39,9 @@ export default function InteractiveRenderer({ id, asModal }: InteractiveRenderer
   const renderContent = () => {
     if (id === 'gravity_thoughts') return <GravityThoughts />;
     if (id === 'openawareness' || id === 'open_awareness') return <OpenAwareness />;
-    if (id === 'camera_exercise') return <CameraAnimation mode="camera" />;
-    if (id === 'samatha_attention') return <SamathaAnimation />;
-    if (id === 'camera_hero') return <CameraAnimation mode="hero" />;
+    if (id === 'camera_exercise') return <CameraAnimation mode="camera" bare />;
+    if (id === 'samatha_attention') return <SamathaAnimation bare />;
+    if (id === 'camera_hero') return <CameraAnimation mode="hero" bare />;
 
     const fileName = htmlMap[id] || `${id}.html`;
     const src = `/animations/${fileName}?lang=${language}`;
@@ -45,7 +49,7 @@ export default function InteractiveRenderer({ id, asModal }: InteractiveRenderer
     return (
       <iframe 
         src={src} 
-        className="w-full h-full border-0 rounded-2xl bg-[#050710]"
+        className="absolute inset-0 w-full h-full border-0"
         title={`Interactive Exercise: ${id}`}
         sandbox="allow-scripts allow-same-origin"
         loading="lazy"
@@ -71,7 +75,8 @@ export default function InteractiveRenderer({ id, asModal }: InteractiveRenderer
   }
 
   const content = (
-    <div className={`relative w-full ${asModal ? 'h-[100dvh] md:h-[90vh] md:max-h-[900px] md:max-w-[1200px] md:rounded-3xl' : 'h-[500px] md:h-[650px] shape-cloud-3 rounded-2xl'} bg-[#050710] overflow-hidden border border-white/5 shadow-2xl`}>
+    // In the page: the shared window (.anim-frame); the animation fills it.
+    <div ref={frameRef} className={asModal ? 'relative w-full h-[100dvh] bg-[var(--color-stage)] overflow-hidden border border-white/5 shadow-2xl' : 'anim-frame'}>
       {asModal && (
         <button aria-label={language === 'en' ? 'Close' : 'Κλείσιμο'} 
           onClick={() => setIsOpen(false)}

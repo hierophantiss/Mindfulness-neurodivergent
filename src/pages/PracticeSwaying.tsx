@@ -194,7 +194,8 @@ export default function PracticeSwaying() {
       <div 
         className="flex-1 w-full max-w-5xl mx-auto flex flex-col items-center justify-center relative"
       >
-        <div className="w-full sm:w-4/5 md:w-3/4 max-w-[600px] relative pointer-events-none">
+        {/* The scene steps 12px into the page's margin on each side, like the other animation windows. */}
+        <div className="w-[calc(100%+24px)] max-w-[600px] relative pointer-events-none">
           <SwayingHero tickCount={isPlaying ? tickCount : 0} tempo={tempo} />
           
           {/* Subtle Breathing Label overlaying the hero */}

@@ -610,7 +610,7 @@ export default function OpenAwareness() {
   }, [data]);
 
   return (
-    <div className="relative w-full max-w-4xl mx-auto rounded-3xl overflow-hidden aspect-[4/5] md:aspect-[16/9] shadow-2xl border border-white/10 mt-8 mb-12" style={{ backgroundColor: '#050510' }}>
+    <div className="absolute inset-0 overflow-hidden" style={{ backgroundColor: '#050510' }}>
       
       {showIntro && (
         <div 

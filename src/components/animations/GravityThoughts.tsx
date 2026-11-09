@@ -383,7 +383,7 @@ export default function GravityThoughts() {
   const currentSceneData = data.scenes[curScene];
 
   return (
-    <div className="relative w-full h-[70vh] min-h-[400px] rounded-3xl overflow-hidden shadow-2xl bg-[#0c171b] border border-white/10 group mb-10 select-none">
+    <div className="absolute inset-0 overflow-hidden bg-[#0c171b] group select-none">
       <canvas 
         ref={canvasRef} 
         className="absolute inset-0 block w-full h-full cursor-pointer" 
