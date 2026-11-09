@@ -119,6 +119,11 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
       el: 'Νευροδιαφορετικός ασκούμενος, με πάνω από 20 χρόνια πρακτικής σε παραδόσεις ενσυνειδητότητας (Tai Chi, σουφικός διαλογισμός, θιβετιανός βουδισμός).',
       en: 'A neurodivergent practitioner with over 20 years of practice in mindfulness traditions (Tai Chi, Sufi meditation, Tibetan Buddhism).'
     },
+    // Said plainly: who wrote the code with him.
+    madeWith: {
+      el: 'Ο κώδικας της εφαρμογής γράφτηκε με τη βοήθεια του Claude, της τεχνητής νοημοσύνης της Anthropic.',
+      en: 'The app’s code was written with the help of Claude, the AI made by Anthropic.'
+    },
     creatorQuote: {
       el: '«Δεν είμαι δάσκαλος. Η πρακτική ήρθε από αλλού· η μετάφραση είναι δική μου, και η ευθύνη της επίσης.»',
       en: '“I am not a teacher. The practice came from elsewhere; the translation is mine, and so is the responsibility for it.”'
@@ -295,6 +300,9 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                   </p>
                   <p className="text-xs text-ink/65 leading-relaxed mt-2 font-sans max-w-sm">
                     {content.creatorQuote[l]}
+                  </p>
+                  <p className="text-xs text-ink/50 leading-relaxed mt-3 font-sans max-w-sm">
+                    {content.madeWith[l]}
                   </p>
                 </div>
 
