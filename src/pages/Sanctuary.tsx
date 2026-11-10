@@ -2,17 +2,17 @@ import { useAccessibility } from '../hooks/useAccessibility';
 import { AudioEnabler } from '../components/AudioEnabler';
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Waves, Wind, CloudRain, Moon, ChevronLeft, Volume2, Info, Play, Youtube, X, ChevronRight, Sparkles, Headphones, AudioLines, AudioWaveform, Leaf, Feather, Sunrise, Focus, Timer } from 'lucide-react';
+import { Waves, Wind, CloudRain, CloudLightning, Flame, Droplets, MoonStar, Cat, Moon, ChevronLeft, Volume2, Info, Play, Youtube, X, ChevronRight, Sparkles, Headphones, AudioLines, AudioWaveform, Leaf, Feather, Sunrise, Focus, Timer } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { cn } from '../lib/utils';
 import { useBinauralAudio } from '../hooks/useBinauralAudio';
-import { BREATH_WAVE_SECONDS } from '../contexts/AudioContext';
+import { BREATH_WAVE_SECONDS, type AmbientLayer } from '../contexts/AudioContext';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
 
-type Layer = 'rain' | 'ocean' | 'wind' | 'brown' | 'pink' | 'breath';
+type Layer = AmbientLayer;
 type Text = { el: string; en: string };
 
 export interface SanctuaryTrack {
@@ -28,22 +28,30 @@ export interface SanctuaryTrack {
   /** A very slow swell of the tone, in Hz (0 = steady). */
   pulse?: number;
   layers: Layer[];
+  /** Binaural: what plays under it as it comes, in words ("with waves"). */
+  under?: Text;
 }
 
 export const sleepTracks: SanctuaryTrack[] = [
   // ── Nature and steady noise: no headphones needed ──
   { id: 'rain-ambient', kind: 'nature', icon: CloudRain, label: { el: 'Ήρεμη Βροχή', en: 'Calm Rain' }, subtitle: { el: 'Σκεπάζει τον θόρυβο γύρω', en: 'Covers the noise around you' }, layers: ['rain'] },
+  { id: 'storm-ambient', kind: 'nature', icon: CloudLightning, label: { el: 'Βροχή με Μακρινή Βροντή', en: 'Rain with Distant Thunder' }, subtitle: { el: 'Η βροντή έρχεται αργά, χωρίς κρότο', en: 'The thunder comes slowly, never a crack' }, layers: ['storm'] },
   { id: 'ocean-ambient', kind: 'nature', icon: Waves, label: { el: 'Κύματα Ωκεανού', en: 'Ocean Waves' }, subtitle: { el: 'Αργά κύματα, για να ησυχάσεις', en: 'Slow waves, to settle' }, layers: ['ocean'] },
+  { id: 'stream-ambient', kind: 'nature', icon: Droplets, label: { el: 'Ρυάκι', en: 'Stream' }, subtitle: { el: 'Νερό που κυλά πάνω σε πέτρες', en: 'Water running over stones' }, layers: ['stream'] },
   { id: 'wind-ambient', kind: 'nature', icon: Wind, label: { el: 'Αέρας Βουνού', en: 'Mountain Wind' }, subtitle: { el: 'Ανοιχτός χώρος, μακρινός άνεμος', en: 'Open space, a distant wind' }, layers: ['wind'] },
+  { id: 'fire-ambient', kind: 'nature', icon: Flame, label: { el: 'Φωτιά', en: 'Fire' }, subtitle: { el: 'Τζάκι που τριζοβολά', en: 'A crackling hearth' }, layers: ['fire'] },
+  { id: 'crickets-ambient', kind: 'nature', icon: MoonStar, label: { el: 'Γρύλοι τη Νύχτα', en: 'Crickets at Night' }, subtitle: { el: 'Ήσυχη καλοκαιρινή νύχτα', en: 'A quiet summer night' }, layers: ['crickets'] },
+  { id: 'purr-ambient', kind: 'nature', icon: Cat, label: { el: 'Γουργουρητό Γάτας', en: 'A Cat Purring' }, subtitle: { el: 'Αργό, ζεστό, με την ανάσα της', en: 'Slow and warm, with her breath' }, layers: ['purr'] },
   { id: 'brown-noise', kind: 'nature', icon: AudioLines, label: { el: 'Καφέ Θόρυβος', en: 'Brown Noise' }, subtitle: { el: 'Βαθύ, σταθερό βουητό', en: 'A deep, steady hum' }, layers: ['brown'] },
   { id: 'pink-noise', kind: 'nature', icon: AudioWaveform, label: { el: 'Ροζ Θόρυβος', en: 'Pink Noise' }, subtitle: { el: 'Σταθερός ήχος για να μείνεις σε μια δουλειά', en: 'A steady sound to stay with a task' }, layers: ['pink'] },
   { id: 'breath-wave', kind: 'nature', icon: Leaf, label: { el: 'Κύμα Αναπνοής 5-5', en: 'Breathing Wave 5-5' }, subtitle: { el: 'Εισπνοή όσο έρχεται, εκπνοή όσο φεύγει', en: 'Breathe in as it comes, out as it goes' }, layers: ['breath'] },
 
   // ── Binaural: with headphones, named by use ──
-  { id: 'sleep-delta', kind: 'binaural', icon: Moon, label: { el: 'Ύπνος', en: 'Sleep' }, subtitle: { el: 'Δέλτα 3 Hz · με κύματα', en: 'Delta 3 Hz · with waves' }, base: 250, beat: 3, pulse: 0.05, layers: ['ocean'] },
-  { id: 'relax-theta', kind: 'binaural', icon: Feather, label: { el: 'Χαλάρωση', en: 'Unwind' }, subtitle: { el: 'Θήτα 6 Hz · με ήχους φύσης', en: 'Theta 6 Hz · with nature sounds' }, base: 180, beat: 6, pulse: 0.1, layers: ['ocean', 'wind'] },
-  { id: 'alpha-calm', kind: 'binaural', icon: Sunrise, label: { el: 'Ήρεμη Εγρήγορση', en: 'Calm Alertness' }, subtitle: { el: 'Άλφα 10 Hz · με άνεμο', en: 'Alpha 10 Hz · with wind' }, base: 200, beat: 10, pulse: 0, layers: ['wind'] },
-  { id: 'focus-beta', kind: 'binaural', icon: Focus, label: { el: 'Εστίαση', en: 'Focus' }, subtitle: { el: 'Βήτα 14 Hz · με βροχή', en: 'Beta 14 Hz · with rain' }, base: 200, beat: 14, pulse: 0, layers: ['rain'] },
+  // (subtitle: the band; what plays under it is added from `under`, or from the person's choice)
+  { id: 'sleep-delta', kind: 'binaural', icon: Moon, label: { el: 'Ύπνος', en: 'Sleep' }, subtitle: { el: 'Δέλτα 3 Hz', en: 'Delta 3 Hz' }, under: { el: 'κύματα', en: 'waves' }, base: 250, beat: 3, pulse: 0.05, layers: ['ocean'] },
+  { id: 'relax-theta', kind: 'binaural', icon: Feather, label: { el: 'Χαλάρωση', en: 'Unwind' }, subtitle: { el: 'Θήτα 6 Hz', en: 'Theta 6 Hz' }, under: { el: 'ήχους φύσης', en: 'nature sounds' }, base: 180, beat: 6, pulse: 0.1, layers: ['ocean', 'wind'] },
+  { id: 'alpha-calm', kind: 'binaural', icon: Sunrise, label: { el: 'Ήρεμη Εγρήγορση', en: 'Calm Alertness' }, subtitle: { el: 'Άλφα 10 Hz', en: 'Alpha 10 Hz' }, under: { el: 'άνεμο', en: 'wind' }, base: 200, beat: 10, pulse: 0, layers: ['wind'] },
+  { id: 'focus-beta', kind: 'binaural', icon: Focus, label: { el: 'Εστίαση', en: 'Focus' }, subtitle: { el: 'Βήτα 14 Hz', en: 'Beta 14 Hz' }, under: { el: 'βροχή', en: 'rain' }, base: 200, beat: 14, pulse: 0, layers: ['rain'] },
 ];
 
 /** Links saved before the sounds were renamed still open the nearest one. */
@@ -61,9 +69,33 @@ const TIMER_STEPS = [null, 10, 20, 30, 45, 60] as const;
 const FADE_SECONDS = 30;
 const NATURE_PREF = 'sanctuary-binaural-nature';
 
-const readNaturePref = () => {
-  try { return localStorage.getItem(NATURE_PREF) !== 'off'; } catch { return true; }
+/** Under a binaural tone: as it comes ("default"), nothing ("off"), or one of these. */
+type Under = 'default' | 'off' | Layer;
+const UNDER_CHOICES: Array<{ id: Under; label: Text; with?: Text }> = [
+  { id: 'default', label: { el: 'Όπως είναι', en: 'As it is' } },
+  { id: 'rain', label: { el: 'Βροχή', en: 'Rain' }, with: { el: 'βροχή', en: 'rain' } },
+  { id: 'storm', label: { el: 'Βροντή', en: 'Thunder' }, with: { el: 'βροχή και βροντή', en: 'rain and thunder' } },
+  { id: 'ocean', label: { el: 'Κύματα', en: 'Waves' }, with: { el: 'κύματα', en: 'waves' } },
+  { id: 'stream', label: { el: 'Ρυάκι', en: 'Stream' }, with: { el: 'ρυάκι', en: 'a stream' } },
+  { id: 'wind', label: { el: 'Άνεμος', en: 'Wind' }, with: { el: 'άνεμο', en: 'wind' } },
+  { id: 'fire', label: { el: 'Φωτιά', en: 'Fire' }, with: { el: 'φωτιά', en: 'fire' } },
+  { id: 'crickets', label: { el: 'Γρύλοι', en: 'Crickets' }, with: { el: 'γρύλους', en: 'crickets' } },
+  { id: 'purr', label: { el: 'Γουργουρητό', en: 'Purring' }, with: { el: 'γουργουρητό', en: 'purring' } },
+  { id: 'off', label: { el: 'Χωρίς', en: 'None' } },
+];
+
+// Older saves kept "on" or "off" (with or without the nature sound).
+const readUnder = (): Under => {
+  try {
+    const v = localStorage.getItem(NATURE_PREF);
+    if (!v || v === 'on') return 'default';
+    return UNDER_CHOICES.some(c => c.id === v) ? (v as Under) : 'default';
+  } catch { return 'default'; }
 };
+
+/** What a binaural track plays under its tone, for this choice. */
+const layersUnder = (track: SanctuaryTrack, under: Under): Layer[] =>
+  under === 'default' ? track.layers : under === 'off' ? [] : [under];
 
 export default function Sanctuary() {
   const { reduceMotion } = useAccessibility();
@@ -75,7 +107,7 @@ export default function Sanctuary() {
   const [activeTab, setActiveTab] = useState<'audio' | 'bilateral'>('audio');
   const [activeSound, setActiveSound] = useState<string | null>(() => resolveId(searchParams.get('track')));
   const [volume, setVolume] = useState(0.6);
-  const [withNature, setWithNature] = useState(readNaturePref);
+  const [under, setUnder] = useState<Under>(readUnder);
   const [showInfo, setShowInfo] = useState(false);
   const [isDimmed, setIsDimmed] = useState(false);
   const [timer, setTimer] = useState<number | null>(null);
@@ -151,7 +183,7 @@ export default function Sanctuary() {
     setGlobalVolume(volume);
   }, [volume, setGlobalVolume]);
 
-  const play = useCallback((id: string, nature = withNature) => {
+  const play = useCallback((id: string, choice: Under = under) => {
     const track = sleepTracks.find(t => t.id === id);
     if (!track) return;
     setActiveSound(id);
@@ -164,10 +196,19 @@ export default function Sanctuary() {
     } else {
       startAudio({
         base: track.base!, beat: track.beat!, pulse: track.pulse ?? 0,
-        disableSynth: false, ambientLayers: nature ? track.layers : [],
+        disableSynth: false, ambientLayers: layersUnder(track, choice),
       });
     }
-  }, [searchParams, setSearchParams, startAudio, withNature]);
+  }, [searchParams, setSearchParams, startAudio, under]);
+
+  /** A track's line: for a binaural, its band and what plays under it now. */
+  const subtitleOf = (track: SanctuaryTrack) => {
+    if (track.kind !== 'binaural') return L(track.subtitle);
+    const c = UNDER_CHOICES.find(x => x.id === under);
+    const what = under === 'default' ? track.under : c?.with;
+    if (under === 'off') return `${L(track.subtitle)} · ${language === 'el' ? 'χωρίς ήχο από κάτω' : 'nothing under it'}`;
+    return what ? `${L(track.subtitle)} · ${language === 'el' ? 'με' : 'with'} ${L(what)}` : L(track.subtitle);
+  };
 
   const clear = () => {
     stopAudio();
@@ -231,10 +272,9 @@ export default function Sanctuary() {
     setTimeLeft(next === null ? null : next * 60);
   };
 
-  const toggleNature = () => {
-    const next = !withNature;
-    setWithNature(next);
-    try { localStorage.setItem(NATURE_PREF, next ? 'on' : 'off'); } catch { /* not stored */ }
+  const chooseUnder = (next: Under) => {
+    setUnder(next);
+    try { localStorage.setItem(NATURE_PREF, next); } catch { /* not stored */ }
     if (activeTrackDef?.kind === 'binaural' && isPlaying) play(activeTrackDef.id, next);
   };
 
@@ -403,7 +443,7 @@ export default function Sanctuary() {
                 {activeTrackDef ? L(activeTrackDef.label) : (language === 'el' ? 'Διάλεξε έναν ήχο' : 'Choose a sound')}
               </h2>
               <p className="text-[12px] text-[#4a9eca]">
-                {activeTrackDef ? L(activeTrackDef.subtitle) : ''}
+                {activeTrackDef ? subtitleOf(activeTrackDef) : ''}
               </p>
               {activeTrackDef?.kind === 'binaural' && (
                 <p className="flex items-center gap-1.5 text-[12px] text-ink/70">
@@ -476,18 +516,28 @@ export default function Sanctuary() {
                 className="flex-1 accent-teal-500 h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer"
               />
             </div>
+            {/* Under the tone: as it comes, one of the nature sounds, or nothing. */}
             {activeTrackDef?.kind === 'binaural' && (
-              <button
-                onClick={toggleNature}
-                role="switch"
-                aria-checked={withNature}
-                className="flex items-center justify-between gap-3 text-left text-[13px] text-ink/70"
-              >
-                <span>{language === 'el' ? 'Με ήχο φύσης' : 'With nature sound'}</span>
-                <span className={cn("w-10 h-6 rounded-full p-0.5 transition-colors", withNature ? "bg-teal-500/50" : "bg-white/10")}>
-                  <span className={cn("block w-5 h-5 rounded-full bg-white/80 transition-transform", withNature && "translate-x-4")} />
-                </span>
-              </button>
+              <div className="flex flex-col gap-2">
+                <span id="under-label" className="text-[13px] text-ink/70">{language === 'el' ? 'Από κάτω' : 'Under it'}</span>
+                <div className="flex flex-wrap gap-1.5" role="radiogroup" aria-labelledby="under-label">
+                  {UNDER_CHOICES.map(c => (
+                    <button
+                      key={c.id}
+                      type="button"
+                      role="radio"
+                      aria-checked={under === c.id}
+                      onClick={() => chooseUnder(c.id)}
+                      className={cn(
+                        "min-h-[40px] px-3.5 rounded-full border text-[13px] transition-colors",
+                        under === c.id ? "bg-teal-500/15 border-teal-500/40 text-ink" : "bg-white/[0.04] border-white/[0.1] text-ink/75 hover:text-ink"
+                      )}
+                    >
+                      {L(c.label)}
+                    </button>
+                  ))}
+                </div>
+              </div>
             )}
           </div>
         )}
@@ -557,7 +607,7 @@ export default function Sanctuary() {
                               {L(sound.label)}
                             </span>
                             <span className="text-[12px] text-ink/70">
-                              {L(sound.subtitle)}
+                              {subtitleOf(sound)}
                             </span>
                           </div>
                         </div>

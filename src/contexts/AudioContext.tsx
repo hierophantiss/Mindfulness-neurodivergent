@@ -12,6 +12,9 @@ import { getAudioContext } from '../lib/sound';
 // Types
 // ---------------------------------------------------------------------------
 
+/** The sounds that can play under (or instead of) a tone. */
+export type AmbientLayer = 'rain' | 'ocean' | 'wind' | 'brown' | 'pink' | 'green' | 'breath' | 'fire' | 'stream' | 'crickets' | 'storm' | 'purr';
+
 export interface AudioConfig {
   base: number;
   beat: number;
@@ -19,7 +22,7 @@ export interface AudioConfig {
   carrierType?: 'sine' | 'triangle' | 'square' | 'sawtooth';
   pulseType?: 'sine';
   disableSynth?: boolean;
-  ambientLayers?: ('rain' | 'ocean' | 'wind' | 'brown' | 'pink' | 'breath')[];
+  ambientLayers?: AmbientLayer[];
   id?: string;
 }
 
@@ -512,6 +515,247 @@ function setupBrownNoise(ctx: globalThis.AudioContext, dest: AudioNode): () => v
   return startSource(src, ctx);
 }
 
+
+// ---------------------------------------------------------------------------
+// FIRE, STREAM, CRICKETS, STORM, PURR — the Sanctuary's newer sounds.
+// The steady part is a looped noise; the living part (crackles, bubbles,
+// chirps, a far roll of thunder) is scheduled a moment ahead, at random, so
+// it never repeats. Each rises over two seconds, like the others, and none
+// has a sharp onset: the thunder swells and fades, it never cracks.
+// ---------------------------------------------------------------------------
+
+/** Calls `fn` every `ms` with a time slightly ahead (only while the sound runs). */
+function every(ctx: globalThis.AudioContext, ms: number, fn: (at: number) => void): () => void {
+  const id = window.setInterval(() => { if (ctx.state === 'running') fn(ctx.currentTime + 0.05); }, ms);
+  return () => window.clearInterval(id);
+}
+
+// The noise of the newer sounds is made once per kind and length, then reused
+// (making it is the one heavy moment, on an old phone a few tenths of a second).
+type NoiseMaker = (c: globalThis.AudioContext, d: number) => AudioBuffer;
+const loopCache = new WeakMap<globalThis.AudioContext, Map<NoiseMaker, Map<number, AudioBuffer>>>();
+function cachedLoop(ctx: globalThis.AudioContext, make: NoiseMaker, secs: number): AudioBuffer {
+  let byMaker = loopCache.get(ctx);
+  if (!byMaker) { byMaker = new Map(); loopCache.set(ctx, byMaker); }
+  let m = byMaker.get(make);
+  if (!m) { m = new Map(); byMaker.set(make, m); }
+  let b = m.get(secs);
+  if (!b) { b = seamless(ctx, make, secs); m.set(secs, b); }
+  return b;
+}
+
+/** A looped noise through a chain of filters, into its own gain. */
+function loopNoise(
+  ctx: globalThis.AudioContext, dest: AudioNode,
+  make: (c: globalThis.AudioContext, d: number) => AudioBuffer, secs: number,
+  filters: Array<[BiquadFilterType, number, number?]>, gain: number,
+): { gain: GainNode; stop: () => void } {
+  const src = ctx.createBufferSource();
+  src.buffer = cachedLoop(ctx, make, secs);
+  src.loop = true;
+  let node: AudioNode = src;
+  for (const [type, freq, q] of filters) {
+    const f = ctx.createBiquadFilter();
+    f.type = type; f.frequency.value = freq; if (q) f.Q.value = q;
+    node.connect(f); node = f;
+  }
+  const g = ctx.createGain(); g.gain.value = gain;
+  node.connect(g); g.connect(dest);
+  // From a different place in the loop each time, so two layers of one noise never line up.
+  src.start(ctx.currentTime + 0.05, Math.random() * secs);
+  return { gain: g, stop: () => { try { src.stop(); } catch (_) {} } };
+}
+
+/** A slow wobble on a parameter. */
+function wobble(ctx: globalThis.AudioContext, param: AudioParam, rate: number, depth: number): () => void {
+  const o = ctx.createOscillator(); o.frequency.value = rate;
+  const g = ctx.createGain(); g.gain.value = depth;
+  o.connect(g); g.connect(param);
+  return startOsc(o, ctx);
+}
+
+function panner(ctx: globalThis.AudioContext, v: number): AudioNode {
+  if (!ctx.createStereoPanner) return ctx.createGain();
+  const p = ctx.createStereoPanner(); p.pan.value = v; return p;
+}
+
+const whiteCache = new WeakMap<globalThis.AudioContext, AudioBuffer>();
+function whiteBuf(ctx: globalThis.AudioContext): AudioBuffer {
+  let b = whiteCache.get(ctx);
+  if (!b) { b = createWhiteNoiseBuffer(ctx, 2.0); whiteCache.set(ctx, b); }
+  return b;
+}
+
+/** A short burst of noise through a band: a crackle, a drop. */
+function burst(ctx: globalThis.AudioContext, dest: AudioNode, at: number, o: { freq: number; q: number; peak: number; dur: number; pan: number }) {
+  const s = ctx.createBufferSource(); s.buffer = whiteBuf(ctx);
+  const f = ctx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = o.freq; f.Q.value = o.q;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(0, at);
+  g.gain.linearRampToValueAtTime(o.peak, at + 0.002);
+  g.gain.exponentialRampToValueAtTime(0.0001, at + o.dur);
+  const p = panner(ctx, o.pan);
+  s.connect(f); f.connect(g); g.connect(p); p.connect(dest);
+  s.start(at, Math.random() * 1.5, o.dur + 0.05);
+}
+
+/** The sound's own level, rising over two seconds; its parts connect here. */
+function level(ctx: globalThis.AudioContext, dest: AudioNode, target: number): GainNode {
+  const g = ctx.createGain();
+  fadeIn(g, ctx, target, 2.0);
+  g.connect(dest);
+  return g;
+}
+
+function setupFire(ctx: globalThis.AudioContext, dest: AudioNode): () => void {
+  const out = level(ctx, dest, FIRE_LEVEL);
+  const s: Array<() => void> = [];
+  const roar = loopNoise(ctx, out, createBrownNoiseBuffer, 7, [['lowpass', 480]], 0.5);
+  s.push(roar.stop, wobble(ctx, roar.gain.gain, 0.17, 0.12), wobble(ctx, roar.gain.gain, 0.43, 0.06));
+  s.push(loopNoise(ctx, out, createWhiteNoiseBuffer, 4, [['highpass', 3500]], 0.012).stop);
+  s.push(every(ctx, 45, (t) => {
+    if (Math.random() >= 0.38) return;
+    const big = Math.random() < 0.12;
+    burst(ctx, out, t + Math.random() * 0.04, big
+      ? { freq: 900 + Math.random() * 900, q: 0.8, peak: 0.35 + Math.random() * 0.25, dur: 0.05 + Math.random() * 0.05, pan: Math.random() * 1.2 - 0.6 }
+      : { freq: 1800 + Math.random() * 4200, q: 1.4, peak: 0.04 + Math.random() ** 2 * 0.3, dur: 0.004 + Math.random() * 0.025, pan: Math.random() * 1.2 - 0.6 });
+  }));
+  return () => { s.forEach(f => f()); };
+}
+
+function setupStream(ctx: globalThis.AudioContext, dest: AudioNode): () => void {
+  const out = level(ctx, dest, STREAM_LEVEL);
+  const s: Array<() => void> = [];
+  const a = loopNoise(ctx, out, createWhiteNoiseBuffer, 5, [['bandpass', 850, 0.7]], 0.32);
+  const b = loopNoise(ctx, out, createWhiteNoiseBuffer, 5, [['bandpass', 2300, 1.1]], 0.14);
+  const c = loopNoise(ctx, out, createPinkNoiseBuffer, 6, [['lowpass', 500]], 0.25);
+  s.push(a.stop, b.stop, c.stop,
+    wobble(ctx, a.gain.gain, 0.9, 0.08), wobble(ctx, a.gain.gain, 2.3, 0.05),
+    wobble(ctx, b.gain.gain, 1.7, 0.05), wobble(ctx, b.gain.gain, 3.1, 0.03), wobble(ctx, c.gain.gain, 0.2, 0.05));
+  // Bubbles: a short tone that rises.
+  s.push(every(ctx, 40, (t) => {
+    if (Math.random() >= 0.45) return;
+    const at = t + Math.random() * 0.04, f0 = 450 + Math.random() * 900, dur = 0.025 + Math.random() * 0.05;
+    const o = ctx.createOscillator(); o.type = 'sine';
+    o.frequency.setValueAtTime(f0, at); o.frequency.exponentialRampToValueAtTime(f0 * (1.4 + Math.random() * 0.6), at + dur);
+    const g = ctx.createGain(); const pk = 0.015 + Math.random() * 0.045;
+    g.gain.setValueAtTime(0, at); g.gain.linearRampToValueAtTime(pk, at + 0.005); g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+    const p = panner(ctx, Math.random() * 1.4 - 0.7);
+    o.connect(g); g.connect(p); p.connect(out); o.start(at); o.stop(at + dur + 0.02);
+  }));
+  return () => { s.forEach(f => f()); };
+}
+
+function setupCrickets(ctx: globalThis.AudioContext, dest: AudioNode): () => void {
+  const out = level(ctx, dest, CRICKETS_LEVEL);
+  const s: Array<() => void> = [];
+  s.push(loopNoise(ctx, out, createPinkNoiseBuffer, 6, [['lowpass', 700]], 0.12).stop);
+  // Three crickets, near and far, each with its own pitch and pace.
+  for (const c of [
+    { f: 4150, gain: 0.05, pan: -0.45, every: 0.62, pulses: 3 },
+    { f: 4480, gain: 0.025, pan: 0.5, every: 0.81, pulses: 4 },
+    { f: 3900, gain: 0.014, pan: 0.1, every: 0.97, pulses: 3 },
+  ]) {
+    const o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = c.f;
+    const g = ctx.createGain(); g.gain.value = 0;
+    const p = panner(ctx, c.pan);
+    o.connect(g); g.connect(p); p.connect(out);
+    s.push(startOsc(o, ctx));
+    let next = ctx.currentTime + 0.3 + Math.random() * c.every;
+    s.push(every(ctx, 60, (t) => {
+      if (next < t - 1) next = t;               // after a pause in the background, start again from now
+      while (next < t + 0.2) {
+        if (Math.random() > 0.08) {
+          for (let k = 0; k < c.pulses; k++) {
+            const at = next + k * 0.032;
+            g.gain.setValueAtTime(0, at);
+            g.gain.linearRampToValueAtTime(c.gain, at + 0.006);
+            g.gain.linearRampToValueAtTime(c.gain * 0.7, at + 0.014);
+            g.gain.linearRampToValueAtTime(0, at + 0.02);
+          }
+        }
+        next += c.every * (0.94 + Math.random() * 0.12);
+      }
+    }));
+  }
+  return () => { s.forEach(f => f()); };
+}
+
+function setupStorm(ctx: globalThis.AudioContext, dest: AudioNode): () => void {
+  const out = level(ctx, dest, STORM_LEVEL);
+  const s: Array<() => void> = [];
+  s.push(loopNoise(ctx, out, createWhiteNoiseBuffer, 5, [['lowpass', 2600], ['highpass', 380]], 0.26).stop);
+  s.push(loopNoise(ctx, out, createPinkNoiseBuffer, 6, [['lowpass', 900]], 0.2).stop);
+  s.push(every(ctx, 35, (t) => {
+    if (Math.random() < 0.5) burst(ctx, out, t + Math.random() * 0.03, { freq: 3000 + Math.random() * 4000, q: 2, peak: 0.01 + Math.random() * 0.03, dur: 0.008 + Math.random() * 0.015, pan: Math.random() * 1.6 - 0.8 });
+  }));
+  // The thunder, far away: a slow swell, a second one, a long tail.
+  const brown = createBrownNoiseBuffer(ctx, 4.0);
+  const roll = (at: number) => {
+    const src = ctx.createBufferSource(); src.buffer = brown; src.loop = true;
+    const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 120 + Math.random() * 60;
+    const g = ctx.createGain(); const pk = 0.7 + Math.random() * 0.4, len = 7 + Math.random() * 5;
+    g.gain.setValueAtTime(0.0001, at);
+    g.gain.exponentialRampToValueAtTime(pk * 0.6, at + 1.4);
+    g.gain.linearRampToValueAtTime(pk, at + 2.4);
+    g.gain.linearRampToValueAtTime(pk * 0.55, at + 3.6);
+    g.gain.linearRampToValueAtTime(pk * 0.8, at + 4.6);
+    g.gain.exponentialRampToValueAtTime(0.0001, at + len);
+    const p = panner(ctx, Math.random() * 1.2 - 0.6);
+    src.connect(lp); lp.connect(g); g.connect(p); p.connect(out);
+    src.start(at, Math.random() * 3); src.stop(at + len + 0.1);
+  };
+  let next = ctx.currentTime + 6;
+  s.push(every(ctx, 500, (t) => {
+    if (next < t - 1) next = t + 4;
+    if (next < t + 1) { roll(next); next += 18 + Math.random() * 20; }
+  }));
+  return () => { s.forEach(f => f()); };
+}
+
+const purrCache = new WeakMap<globalThis.AudioContext, AudioBuffer>();
+/** Three breaths of a purr, a little different each, made once and looped. */
+function purrBuffer(ctx: globalThis.AudioContext): AudioBuffer {
+  const cached = purrCache.get(ctx);
+  if (cached) return cached;
+  const sr = ctx.sampleRate;
+  const parts: Array<[number, number, number]> = [];
+  for (let k = 0; k < 3; k++) parts.push([2.3 + Math.random() * 0.4, 25 + Math.random() * 2, 1], [0.25, 0, 0], [2.5 + Math.random() * 0.4, 23 + Math.random() * 2, 0.8], [0.35, 0, 0]);
+  const len = Math.floor(parts.reduce((a, p) => a + p[0], 0) * sr);
+  const b = ctx.createBuffer(1, len, sr), d = b.getChannelData(0);
+  let i = 0, low = 0;
+  for (const [secs, rate, amp] of parts) {
+    const n = Math.floor(secs * sr);
+    for (let j = 0; j < n && i < len; j++, i++) {
+      low = low * 0.92 + (Math.random() * 2 - 1) * 0.08;
+      if (!rate) { d[i] = 0; continue; }
+      const ph = ((j / sr) * rate) % 1;
+      const pulse = Math.exp(-ph * 6.5) * (0.6 + 0.4 * Math.sin(Math.PI * Math.min(1, ph * 4)));
+      const breath = Math.sin(Math.PI * (j / n)) ** 0.6;
+      d[i] = low * pulse * breath * amp * 5;
+    }
+  }
+  purrCache.set(ctx, b);
+  return b;
+}
+
+function setupPurr(ctx: globalThis.AudioContext, dest: AudioNode): () => void {
+  const out = level(ctx, dest, PURR_LEVEL);
+  const src = ctx.createBufferSource(); src.buffer = purrBuffer(ctx); src.loop = true;
+  const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 420;
+  const warm = ctx.createBiquadFilter(); warm.type = 'peaking'; warm.frequency.value = 140; warm.gain.value = 6;
+  src.connect(lp); lp.connect(warm); warm.connect(out);
+  return startSource(src, ctx);
+}
+
+// Their levels next to the older sounds (set by ear and by measure: about as loud as the rain).
+// Measured in the Sanctuary: the rain -38 dB, the waves -40, the wind -48.
+const FIRE_LEVEL = 1.5;      // about -40
+const STREAM_LEVEL = 1.7;    // about -40
+const CRICKETS_LEVEL = 2.8;  // about -47: a night sound, quieter than the rest
+const STORM_LEVEL = 1.6;     // about -40, the thunder above it now and then
+const PURR_LEVEL = 1.15;     // about -41
+
 // ---------------------------------------------------------------------------
 // Context & Provider
 // ---------------------------------------------------------------------------
@@ -727,6 +971,11 @@ export function AudioProvider({ children }: { children: ReactNode }) {
           brown: setupBrownNoise,
           green: setupGreenNoise,
           breath: setupBreathWave,
+          fire: setupFire,
+          stream: setupStream,
+          crickets: setupCrickets,
+          storm: setupStorm,
+          purr: setupPurr,
         };
 
         for (const layer of config.ambientLayers) {
