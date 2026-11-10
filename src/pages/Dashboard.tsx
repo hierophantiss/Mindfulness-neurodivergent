@@ -366,6 +366,9 @@ export default function Dashboard() {
             <Link to="/privacy" className={footerLinkClasses}>
               <span>{language === 'el' ? 'Απόρρητο' : 'Privacy'}</span>
             </Link>
+            <Link to="/accessibility" className={footerLinkClasses}>
+              <span>{language === 'el' ? 'Προσβασιμότητα' : 'Accessibility'}</span>
+            </Link>
             {!installed && (
               <Link to="/install" className={footerLinkClasses}>
                 <Download size={12} />

@@ -34,6 +34,7 @@ const mainRoutes = [
   '/settings',
   '/faq',
   '/privacy',
+  '/accessibility',
   '/install'
 ];
 

@@ -578,6 +578,16 @@ export const SEO: React.FC = () => {
       : 'Όλα μένουν στη συσκευή σου: χωρίς λογαριασμό, χωρίς παρακολούθηση, χωρίς διαφημίσεις. Τι κρατά η εφαρμογή, από ποιες υπηρεσίες περνά, πώς κρατάς ή σβήνεις τα δεδομένα σου, και τι είναι και τι δεν είναι η εφαρμογή.';
     schema = { '@context': 'https://schema.org', '@type': 'WebPage', name: title, description, url: pageUrl };
 
+  // ── Accessibility ────────────────────────────────────────────────
+  } else if (cleanPath === '/accessibility') {
+    title = lang === 'en'
+      ? 'Accessibility statement | Neurodivergent Mindfulness'
+      : 'Δήλωση προσβασιμότητας | Neurodivergent Mindfulness';
+    description = lang === 'en'
+      ? 'What the app already does for accessibility, how it is checked, what does not work well yet, and how to tell us if something gets in your way. Aim: WCAG 2.2 AA.'
+      : 'Τι κάνει ήδη η εφαρμογή για την προσβασιμότητα, πώς ελέγχεται, τι δεν δουλεύει ακόμα καλά και πώς λες αν κάτι σε δυσκολεύει. Στόχος: WCAG 2.2 AA.';
+    schema = { '@context': 'https://schema.org', '@type': 'WebPage', name: title, description, url: pageUrl };
+
   // ── Install ──────────────────────────────────────────────────────
   } else if (cleanPath === '/install') {
     title = lang === 'en'

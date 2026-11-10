@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { downloadBackup, restoreBackup } from '../lib/backup';
 import { lastBackupDate } from '../lib/dataSafety';
 import { readErrors, clearErrors, errorReport } from '../lib/errorLog';
-import { Languages, Activity, LetterText, Info, LogOut, Sparkles, Sun, Database, FileText, Download, Bug, ShieldCheck, MessageCircleHeart, CalendarClock } from 'lucide-react';
+import { Languages, Activity, LetterText, Info, LogOut, Sparkles, Sun, Database, FileText, Download, Bug, ShieldCheck, Accessibility, MessageCircleHeart, CalendarClock } from 'lucide-react';
 import { openIcs, googleCalendarUrl } from '../lib/reminder';
 import { feedbackMailto } from '../lib/feedback';
 import { CONTACT_EMAIL } from '../lib/links';
@@ -246,6 +246,14 @@ export default function Settings() {
             value: null,
             action: () => navigate('/privacy'),
             color: 'text-emerald-300'
+          },
+          {
+            id: 'accessibility',
+            icon: Accessibility,
+            label: { el: 'Δήλωση προσβασιμότητας', en: 'Accessibility statement' },
+            value: null,
+            action: () => navigate('/accessibility'),
+            color: 'text-sky-300'
           },
           {
             id: 'clear',

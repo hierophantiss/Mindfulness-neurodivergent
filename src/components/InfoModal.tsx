@@ -339,6 +339,9 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
                     {l === 'el' ? 'Απόρρητο και όροι, όλο το κείμενο' : 'Privacy and terms, in full'}
                   </Link>
                   <span className="flex flex-wrap justify-center gap-x-4">
+                    <Link to="/accessibility" onClick={onClose} className="inline-flex items-center min-h-[36px] text-[12px] text-ink/70 underline underline-offset-4 hover:text-ink/85">
+                      {l === 'el' ? 'Προσβασιμότητα' : 'Accessibility'}
+                    </Link>
                     <Link to="/install" onClick={onClose} className="inline-flex items-center min-h-[36px] text-[12px] text-ink/70 underline underline-offset-4 hover:text-ink/85">
                       {l === 'el' ? 'Πώς την εγκαθιστάς' : 'How to install it'}
                     </Link>

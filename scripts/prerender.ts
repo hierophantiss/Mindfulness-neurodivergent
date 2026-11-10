@@ -795,6 +795,18 @@ function getMetaForRoute(route: string): RouteMeta {
     return { title: t, description: d, schema: { '@context': 'https://schema.org', '@type': 'WebPage', name: t, description: d }, schemaType: 'WebPage', bodyParagraphs };
   }
 
+  // ── Accessibility ──
+  if (clean === '/accessibility') {
+    const t = lang === 'en' ? 'Accessibility statement | Neurodivergent Mindfulness' : 'Δήλωση προσβασιμότητας | Neurodivergent Mindfulness';
+    const d = lang === 'en'
+      ? 'What the app already does for accessibility, how it is checked, what does not work well yet, and how to tell us if something gets in your way. Aim: WCAG 2.2 AA.'
+      : 'Τι κάνει ήδη η εφαρμογή για την προσβασιμότητα, πώς ελέγχεται, τι δεν δουλεύει ακόμα καλά και πώς λες αν κάτι σε δυσκολεύει. Στόχος: WCAG 2.2 AA.';
+    const bodyParagraphs = lang === 'en'
+      ? [d, 'Two languages, reduced motion, easy reading, zoom, keyboard use, no sound that starts on its own, and the text of every audio chapter. Not yet: full descriptions of the animations for screen readers, a few small texts below the contrast threshold, and checked PDF files.']
+      : [d, 'Δύο γλώσσες, μειωμένη κίνηση, εύκολη ανάγνωση, μεγέθυνση, πληκτρολόγιο, κανένας ήχος που ξεκινά μόνος του, και το κείμενο κάθε ηχητικού κεφαλαίου. Όχι ακόμα: πλήρης περιγραφή των κινούμενων σχεδίων για αναγνώστες οθόνης, λίγα μικρά κείμενα κάτω από το όριο αντίθεσης, και ελεγμένα αρχεία PDF.'];
+    return { title: t, description: d, schema: { '@context': 'https://schema.org', '@type': 'WebPage', name: t, description: d }, schemaType: 'WebPage', bodyParagraphs };
+  }
+
   // ── FAQ ──
   if (clean === '/faq') {
     const t = lang === 'en'
