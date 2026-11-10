@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, ChevronDown, RefreshCw } from 'lucide-react';
@@ -14,6 +14,7 @@ import { usageFromLogs } from '../data/practiceCatalog';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 
 import { CHECKIN_ICON as ICON, tint } from '../lib/checkinLook';
+import { takePendingFeeling } from '../lib/welcome';
 
 // "How do you feel right now?" — the four choices and the answer. On the home
 // page it opens inside its row (`embedded`: the row is the heading).
@@ -47,6 +48,22 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
     setUses(countCheckinUse());
   };
 
+  // An answer given in the welcome: open its suggestion here, in view.
+  const rootRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const take = () => {
+      const id = takePendingFeeling();
+      if (!id) return;
+      setDetailOpen(false); setDetailId(null); setTime(null); setAlt(0);
+      setSelected(id); setOpen(true);
+      saveCheckinState(id); setUses(countCheckinUse());
+      requestAnimationFrame(() => rootRef.current?.scrollIntoView({ block: 'start', behavior: reduceMotion ? 'auto' : 'smooth' }));
+    };
+    take();
+    window.addEventListener('checkin-choose', take);
+    return () => window.removeEventListener('checkin-choose', take);
+  }, [reduceMotion]);
+
   const opt = selected ? getCheckinOption(selected) : null;
   const actions = useMemo(() => (selected ? getCheckinActions(selected, counts, time || undefined) : []), [selected, counts, time]);
   // The time choice, like the second step, appears only after a few uses.
@@ -56,7 +73,7 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
   const question = lang === 'el' ? 'Πώς νιώθεις τώρα;' : 'How do you feel right now?';
 
   return (
-    <div className="flex flex-col gap-4">
+    <div ref={rootRef} className="flex flex-col gap-4 scroll-mt-24">
       {!embedded && <h2 className="sky-text text-center text-[20px] font-normal text-ink/90">{question}</h2>}
 
       {/* Four square tiles, in the same columns as the four axes below. */}

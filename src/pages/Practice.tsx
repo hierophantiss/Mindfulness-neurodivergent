@@ -660,13 +660,13 @@ const axisInfo = {
 
       <QuietAxisHint />
 
-      {/* Computer: the four axes as a quick way in, above the categories. */}
-      <div className="hidden desk:flex flex-wrap gap-2.5 -mt-4" role="group" aria-label={language === 'el' ? 'Ανά άξονα' : 'By axis'}>
+      {/* The four axes as a quick way in, above the categories (on the phone two by two). */}
+      <div className="grid grid-cols-2 gap-2 -mt-2 desk:flex desk:flex-wrap desk:gap-2.5 desk:-mt-4" role="group" aria-label={language === 'el' ? 'Ανά άξονα' : 'By axis'}>
         {(['body', 'breath', 'attention', 'space'] as const).map(id => (
           <Link
             key={id}
             to={`/practice?axis=${id}`}
-            className="inline-flex items-center gap-2 h-10 px-4 rounded-full border border-white/10 bg-white/[0.03] text-[14px] text-ink/85 hover:border-white/20 hover:text-ink transition-colors"
+            className="inline-flex items-center gap-2 h-11 px-4 rounded-full border border-white/10 bg-white/[0.03] text-[14px] text-ink/85 hover:border-white/20 hover:text-ink transition-colors"
           >
             <span aria-hidden="true" className="font-display text-[18px] leading-none" style={{ color: `var(--axis-${id}-ink)` }}>{axisInfo[id].icon}</span>
             {(language === 'el' ? axisInfo[id].title.el : axisInfo[id].title.en).split(' • ')[0]}

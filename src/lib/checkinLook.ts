@@ -15,3 +15,13 @@ export const CHECKIN_ICON: Record<CheckinChoice, string> = {
   balanced: 'M5 19.5C5 11 10.5 5 19.5 4.5 19.5 13 14 19.5 5 19.5zM5 19.5 13 11.5',
   unsure: 'M15.5 4.2A8.5 8.5 0 1 0 20.3 9',
 };
+
+// The four answers' names, in their order: small, so the welcome can ask the
+// question without loading the suggestions (data/stateCheckin.ts uses these).
+export const CHECKIN_ORDER: CheckinChoice[] = ['hyper', 'balanced', 'hypo', 'unsure'];
+export const CHECKIN_LABEL: Record<CheckinChoice, { el: string; en: string }> = {
+  hyper: { el: 'Ένταση', en: 'Tension' },
+  balanced: { el: 'Ηρεμία', en: 'Calm' },
+  hypo: { el: 'Μούδιασμα', en: 'Numbness' },
+  unsure: { el: 'Δεν ξέρω', en: 'Not sure' },
+};

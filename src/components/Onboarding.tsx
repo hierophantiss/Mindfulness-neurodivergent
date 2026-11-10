@@ -3,7 +3,10 @@ import { createPortal } from 'react-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAccessibility } from '../hooks/useAccessibility';
-import { markWelcomeSeen } from '../lib/welcome';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { markWelcomeSeen, askFeeling } from '../lib/welcome';
+import type { CheckinChoice } from '../data/stateCheckin';
+import { CHECKIN_ICON, CHECKIN_LABEL, CHECKIN_ORDER, tint } from '../lib/checkinLook';
 
 /** The welcome screens. They never block the first visit: the home page shows
  * a small welcome card that opens them (and the cat can open them again).
@@ -13,6 +16,8 @@ export default function Onboarding({ onClose }: { onClose: () => void }) {
   const [step, setStep] = useState(0);
   const { t, language, setLanguage } = useLanguage();
   const { reduceMotion } = useAccessibility();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   // For touch swipe
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -52,28 +57,38 @@ export default function Onboarding({ onClose }: { onClose: () => void }) {
     onClose();
   };
 
+  // The last screen is the four centres, which ends "tell the app how you
+  // feel": so under it, the question itself. One tap closes the welcome and
+  // opens that suggestion on the home page.
+  const feel = (id: CheckinChoice) => {
+    handleComplete();
+    askFeeling(id);
+    if (pathname !== '/') navigate('/');
+  };
+
   const screens = [
     {
       title: t('onboarding.s1.title'),
       body: t('onboarding.s1.body'),
     },
     {
+      title: t('onboarding.s3.title'),
+      body: t('onboarding.s3.body'),
+    },
+    {
       title: t('onboarding.s2.title'),
       body: t('onboarding.s2.body'),
       visual: (
-        <div className="flex gap-4 mb-8 justify-center" aria-hidden="true">
-          <div className="w-8 h-8 rounded-full" style={{ backgroundColor: 'var(--color-axis-body, #7A9E7E)' }} />
-          <div className="w-8 h-8 rounded-full" style={{ backgroundColor: 'var(--color-axis-breath, #7fa9e4)' }} />
-          <div className="w-8 h-8 rounded-full" style={{ backgroundColor: 'var(--color-axis-focus, #C8922A)' }} />
-          <div className="w-8 h-8 rounded-full" style={{ backgroundColor: 'var(--color-axis-space, #B5A7D0)' }} />
+        <div className="flex gap-3 mb-4 [@media(max-height:700px)]:hidden" aria-hidden="true">
+          <div className="w-5 h-5 rounded-full" style={{ backgroundColor: 'var(--color-axis-body, #7A9E7E)' }} />
+          <div className="w-5 h-5 rounded-full" style={{ backgroundColor: 'var(--color-axis-breath, #7fa9e4)' }} />
+          <div className="w-5 h-5 rounded-full" style={{ backgroundColor: 'var(--color-axis-focus, #C8922A)' }} />
+          <div className="w-5 h-5 rounded-full" style={{ backgroundColor: 'var(--color-axis-space, #B5A7D0)' }} />
         </div>
       )
     },
-    {
-      title: t('onboarding.s3.title'),
-      body: t('onboarding.s3.body'),
-    }
   ];
+  const last = step === screens.length - 1;
 
   
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -130,7 +145,7 @@ export default function Onboarding({ onClose }: { onClose: () => void }) {
         </button>
       </div>
 
-      <div className="flex-1 min-h-0 overflow-y-auto flex flex-col justify-start pt-[8vh] px-6 max-w-2xl mx-auto w-full z-10 relative">
+      <div className={`flex-1 min-h-0 overflow-y-auto flex flex-col justify-start ${last ? 'pt-2 px-4' : 'pt-[8vh] px-6'} max-w-2xl mx-auto w-full z-10 relative`}>
         {/* initial={false}: the first screen is there at once; the slide is only between screens */}
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
@@ -139,20 +154,20 @@ export default function Onboarding({ onClose }: { onClose: () => void }) {
             animate={reduceMotion ? { opacity: 1 } : { opacity: 1, x: 0 }}
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, x: -20 }}
             transition={{ duration: reduceMotion ? 0 : 0.3 }}
-            className="bg-white/[0.03] border border-white/10 p-8 rounded-3xl shadow-xl"
+            className={`bg-white/[0.03] border border-white/10 ${last ? 'px-6 py-5' : 'p-8'} rounded-3xl shadow-xl`}
           >
             {screens[step].visual && screens[step].visual}
-            <h2 id="onboarding-title" className="font-display text-3xl md:text-4xl text-ink mb-6 leading-tight">
+            <h2 id="onboarding-title" className={`font-display text-ink leading-tight ${last ? 'text-[26px] mb-3' : 'text-3xl md:text-4xl mb-6'}`}>
               {screens[step].title}
             </h2>
-            <p className="text-lg md:text-xl text-ink/70 leading-relaxed font-sans">
+            <p className={`text-ink/70 font-sans ${last ? 'text-[16px] leading-[1.6]' : 'text-lg md:text-xl leading-relaxed'}`}>
               {screens[step].body}
             </p>
           </motion.div>
         </AnimatePresence>
       </div>
 
-      <div className="p-6 md:p-10 flex flex-col items-center gap-8 z-10 relative">
+      <div className={`${last ? 'px-4 pt-4 pb-5 gap-4' : 'p-6 md:p-10 gap-8'} flex flex-col items-center z-10 relative`}>
         <div 
           className="flex gap-3" 
           aria-hidden="true"
@@ -169,18 +184,39 @@ export default function Onboarding({ onClose }: { onClose: () => void }) {
           {language === 'el' ? `Οθόνη ${step + 1} από ${screens.length}` : `Step ${step + 1} of ${screens.length}`}
         </div>
 
-        <button
-          onClick={() => {
-            if (step < screens.length - 1) {
-              setStep(s => s + 1);
-            } else {
-              handleComplete();
-            }
-          }}
-          className="bg-[color-mix(in_srgb,var(--color-accent,#5f8fd6)_15%,transparent)] hover:bg-[color-mix(in_srgb,var(--color-accent,#5f8fd6)_25%,transparent)] border border-[color-mix(in_srgb,var(--color-accent,#5f8fd6)_40%,transparent)] text-[var(--color-accent-light,#27c491)] font-medium py-4 px-10 rounded-full transition-all active:scale-95 text-lg min-h-[56px]"
-        >
-          {step === screens.length - 1 ? t('onboarding.start') : t('onboarding.next')}
-        </button>
+        {last ? (
+          <div className="w-full max-w-md flex flex-col items-center gap-4">
+            <h3 className="font-display text-[24px] leading-tight text-ink text-center">
+              {language === 'el' ? 'Πώς νιώθεις τώρα;' : 'How do you feel right now?'}
+            </h3>
+            <div className="w-full grid grid-cols-4 gap-2" role="group" aria-label={language === 'el' ? 'Πώς νιώθεις τώρα;' : 'How do you feel right now?'}>
+              {CHECKIN_ORDER.map(id => ({ id, label: CHECKIN_LABEL[id] })).map(opt => (
+                <button
+                  key={opt.id}
+                  type="button"
+                  onClick={() => feel(opt.id)}
+                  className="glass h-[84px] min-w-0 px-0.5 rounded-[20px] flex flex-col items-center justify-center gap-2 hover:brightness-110 transition-[filter,transform] active:scale-[0.97]"
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"
+                    style={{ color: tint(opt.id, 'dot'), filter: `drop-shadow(0 0 5px color-mix(in srgb, ${tint(opt.id, 'dot')} 55%, transparent))` }}>
+                    <path d={CHECKIN_ICON[opt.id]} />
+                  </svg>
+                  <span className="max-w-full text-center text-[12px] leading-tight text-ink/85 whitespace-nowrap">{opt.label[language === 'en' ? 'en' : 'el']}</span>
+                </button>
+              ))}
+            </div>
+            <button type="button" onClick={handleComplete} className="btn-text !text-ink/70 hover:!text-ink">
+              {language === 'el' ? 'Αργότερα, πήγαινε στην αρχική' : 'Later, take me home'}
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => setStep(s => s + 1)}
+            className="bg-[color-mix(in_srgb,var(--color-accent,#5f8fd6)_15%,transparent)] hover:bg-[color-mix(in_srgb,var(--color-accent,#5f8fd6)_25%,transparent)] border border-[color-mix(in_srgb,var(--color-accent,#5f8fd6)_40%,transparent)] text-[var(--color-accent-light,#27c491)] font-medium py-4 px-10 rounded-full transition-all active:scale-95 text-lg min-h-[56px]"
+          >
+            {t('onboarding.next')}
+          </button>
+        )}
       </div>
     </div>
   );

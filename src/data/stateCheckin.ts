@@ -4,6 +4,7 @@
 // from the practice catalogue, so every tagged exercise can be offered.
 
 import type { Axis } from './types';
+import { CHECKIN_LABEL } from '../lib/checkinLook';
 import { pickWithUsage, forTag, type CatalogItem, type PracticeKind, type UsageCounts } from './practiceCatalog';
 
 export type CheckinState = 'hyper' | 'hypo' | 'balanced';
@@ -38,7 +39,7 @@ export const SOS_PATH = '/practice/breath/sos-breath';
 export const CHECKIN_OPTIONS: CheckinOption[] = [
   {
     id: 'hyper',
-    label: { el: 'Ένταση', en: 'Tension' },
+    label: CHECKIN_LABEL.hyper,
     hint: { el: 'Σφίξιμο, γρήγορη καρδιά, σκέψεις που τρέχουν', en: 'Tightness, a racing heart, thoughts that run' },
     title: { el: 'Γείωση και μακριά εκπνοή', en: 'Grounding and a long exhale' },
     desc: {
@@ -51,7 +52,7 @@ export const CHECKIN_OPTIONS: CheckinOption[] = [
   },
   {
     id: 'balanced',
-    label: { el: 'Ηρεμία', en: 'Calm' },
+    label: CHECKIN_LABEL.balanced,
     hint: { el: 'Παρουσία, ασφάλεια, συγκέντρωση', en: 'Present, safe, focused' },
     title: { el: 'Καλή στιγμή για εξερεύνηση', en: 'A good moment to explore' },
     desc: {
@@ -64,7 +65,7 @@ export const CHECKIN_OPTIONS: CheckinOption[] = [
   },
   {
     id: 'hypo',
-    label: { el: 'Μούδιασμα', en: 'Numbness' },
+    label: CHECKIN_LABEL.hypo,
     hint: { el: 'Κούραση, ομίχλη, αποσύνδεση', en: 'Tiredness, fog, disconnection' },
     title: { el: 'Απαλή ενεργοποίηση', en: 'Gentle activation' },
     desc: {
@@ -79,7 +80,7 @@ export const CHECKIN_OPTIONS: CheckinOption[] = [
   },
   {
     id: 'unsure',
-    label: { el: 'Δεν ξέρω', en: 'Not sure' },
+    label: CHECKIN_LABEL.unsure,
     hint: { el: 'Δεν είναι ξεκάθαρο τι νιώθω', en: 'It is not clear what I feel' },
     title: { el: 'Δεν χρειάζεται να το ονομάσεις', en: 'You do not need to name it' },
     desc: {

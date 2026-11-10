@@ -9,7 +9,6 @@ import { useProgress } from '../contexts/ProgressContext';
 import { CHAPTER_TITLES } from '../data/chapterTitles';
 import type { Chapter } from '../data/types';
 import { cn } from '../lib/utils';
-import { MeditatorFigure } from '../components/MeditatorFigure';
 import { motion } from 'motion/react';
 import { useAccessibility } from '../hooks/useAccessibility';
 import InfoModal from '../components/InfoModalLazy';
@@ -142,20 +141,10 @@ export default function Dashboard() {
 
   // "Listen": the same place, with the narration starting (ChapterDetail reads ?listen=1).
   const listenHref = finishedGuide ? '' : `${spot.href}${spot.href.includes('?') ? '&' : '?'}listen=1`;
-  // The four axes, a way into the practices and the method's signature.
-  const axes = [
-    { id: 'body' as const, name: el ? 'Σώμα' : 'Body', ink: 'var(--axis-body-ink)',
-      desc: el ? 'Νιώθεις τη βαρύτητα: το βάρος σου πέφτει και στηρίζεται.' : 'You feel gravity: your weight falls and is held.' },
-    { id: 'breath' as const, name: el ? 'Αναπνοή' : 'Breath', ink: 'var(--axis-breath-ink)',
-      desc: el ? 'Μακριά, ήρεμη εκπνοή από το στόμα, που ρυθμίζει το νευρικό σύστημα.' : 'A long, calm exhale through the mouth that settles the nervous system.' },
-    { id: 'attention' as const, name: el ? 'Προσοχή' : 'Attention', ink: 'var(--axis-attention-ink)',
-      desc: el ? 'Ο Φακός: στενεύει σε ένα σημείο και ανοίγει σε όλο το πεδίο.' : 'The Lens: it narrows to one point and opens to the whole field.' },
-    { id: 'space' as const, name: el ? 'Χώρος' : 'Space', ink: 'var(--axis-space-ink)',
-      desc: el ? 'Ανοιχτή επίγνωση: ξεκουράζεσαι στον χώρο γύρω σου.' : 'Open awareness: you rest in the space around you.' },
-  ];
   // Everything else, on one shelf that scrolls sideways (the next card always peeks).
   const evening = hour >= 18 || hour < 5;
-  type ShelfItem = { key: string; to?: string; onClick?: () => void; title: string; sub: string; ink: string; icon: string };
+  /** phoneOnly: on a computer the side bar already has it. */
+  type ShelfItem = { key: string; to?: string; onClick?: () => void; title: string; sub: string; ink: string; icon: string; phoneOnly?: boolean };
   const ICONS = {
     drop: PLACE_PATHS.drop,
     moon: 'M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z',
@@ -164,6 +153,8 @@ export default function Dashboard() {
     book: 'M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z',
     spiral: PLACE_PATHS.spiral,
     quill: PLACE_PATHS.quill,
+    // The sign's own figure: the vertical axis through a circle.
+    axis: 'M12 2.5v19M3.5 12a8.5 8.5 0 1 0 17 0 8.5 8.5 0 1 0-17 0',
     bookmark: 'M6 3h12v18l-6-4-6 4z',
   };
   const shelf: ShelfItem[] = [
@@ -173,6 +164,8 @@ export default function Dashboard() {
     { key: 'program', to: '/program', title: el ? 'Πρόγραμμα 8 εβδομάδων' : '8-week Program', sub: completedLessons > 0 ? (el ? `Μία μικρή πρακτική τη μέρα · ${lessonProgressPct}%` : `One small practice a day · ${lessonProgressPct}%`) : (el ? 'Μία μικρή πρακτική τη μέρα' : 'One small practice a day'), ink: 'var(--axis-body-ink)', icon: ICONS.sprout },
     { key: 'book', onClick: () => { setBookOpen(true); window.setTimeout(() => document.getElementById('home-book')?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' }), 50); }, title: el ? 'Το βιβλίο' : 'The book', sub: el ? 'PDF, EPUB και ακουστικό, δωρεάν' : 'PDF, EPUB and audiobook, free', ink: 'var(--axis-breath-ink)', icon: ICONS.book },
     { key: 'rabbit', to: '/rabbithole', title: el ? 'Κουνελότρυπα' : 'Rabbit Hole', sub: el ? 'Κείμενα και βίντεο για όσους θέλουν βάθος' : 'Texts and videos for those who want depth', ink: 'var(--axis-attention-ink)', icon: ICONS.spiral },
+    // The four axes were a section of their own; for someone new they were four figures to decode. The method is one place here, and the axes are a way into the practices on the Practice page.
+    { key: 'method', to: '/method', title: el ? 'Η Μέθοδος' : 'The Method', sub: el ? 'Οι τέσσερις άξονες: Σώμα, Αναπνοή, Προσοχή, Χώρος' : 'The four axes: Body, Breath, Attention, Space', ink: 'var(--color-sign-gold)', icon: ICONS.axis, phoneOnly: true },
     ...(!evening ? [{ key: 'journal', to: '/journal', title: el ? 'Ημερολόγιο' : 'Journal', sub: el ? 'Δυο γραμμές για σήμερα' : 'Two lines for today', ink: 'var(--tint-rose-ink)', icon: ICONS.quill }] : []),
     ...(hasRead ? [{ key: 'read', onClick: () => setSheetVisible(true), title: el ? 'Τι έχεις διαβάσει' : 'What you have read', sub: el ? 'Τα κεφάλαια και οι σελίδες σου' : 'Your chapters and pages', ink: 'var(--axis-breath-ink)', icon: ICONS.bookmark }] : []),
   ];
@@ -308,35 +301,6 @@ export default function Dashboard() {
 
         <motion.div variants={containerVariants} initial="hidden" animate="show" className="flex flex-col">
 
-          {/* The four axes. */}
-          <motion.section variants={itemVariants} aria-labelledby="home-axes-title" className="mt-[26px] desk:mt-11">
-            <div className="flex items-baseline justify-between gap-3">
-              <h2 id="home-axes-title" className={sectionTitle}>{el ? 'Οι τέσσερις άξονες' : 'The four axes'}</h2>
-              <Link to="/method" className="sky-text inline-flex items-center min-h-[44px] text-[12.5px] desk:text-[14px] text-ink/70 hover:text-ink/90 transition-colors">
-                {el ? 'Τι σημαίνουν' : 'What they mean'}
-              </Link>
-            </div>
-            <div className="mt-1 grid grid-cols-4 gap-2 desk:mt-4 desk:gap-3.5">
-              {axes.map(a => (
-                <Link
-                  key={a.id}
-                  to={`/practice?axis=${a.id}`}
-                  className="group relative glass h-[96px] pt-1.5 rounded-[20px] flex flex-col items-center justify-start overflow-hidden hover:brightness-110 transition-[filter,transform] active:scale-[0.97] desk:h-auto desk:min-h-[176px] desk:items-start desk:gap-2 desk:p-[22px] desk:rounded-[24px] desk:hover:-translate-y-0.5"
-                >
-                  {/* The meditator with this axis's part of the sign lit, the others dimmed. */}
-                  <span aria-hidden="true" className="block w-[68px] desk:w-[124px] desk:self-center desk:-mt-2 desk:-mb-1 rounded-full motion-safe:transition-[filter] motion-safe:duration-500 desk:group-hover:brightness-125" style={{ background: `radial-gradient(closest-side, color-mix(in srgb, ${a.ink} 30%, transparent), transparent)` }}>
-                    <MeditatorFigure focus={a.id} bare small crop />
-                  </span>
-                  {/* Phone: the name sits on the figure's base, over a soft fade so it reads on every colour. */}
-                  <span aria-hidden="true" className="desk:hidden absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-[color-mix(in_srgb,var(--color-bg)_85%,transparent)] to-transparent" />
-                  <span className="checkin-label absolute inset-x-0 bottom-[6px] text-center text-[12.5px] text-ink max-w-full truncate px-1 [text-shadow:0_0_2px_rgb(0_0_0/0.9),0_1px_6px_rgb(0_0_0/0.8)] desk:static desk:text-left desk:px-0 desk:mt-1.5 desk:text-[18px] desk:[text-shadow:none]">{a.name}</span>
-                  <span className="hidden desk:block text-[14px] leading-[1.5] text-ink/70">{a.desc}</span>
-                  <span className="hidden desk:block mt-auto pt-2 text-[13.5px] text-sign-gold">{el ? 'Ασκήσεις →' : 'Practices →'}</span>
-                </Link>
-              ))}
-            </div>
-          </motion.section>
-
           {/* More: everything else in the app. */}
           <motion.section variants={itemVariants} aria-labelledby="home-more-title" className="mt-[26px] desk:mt-11">
             <h2 id="home-more-title" className={sectionTitle}>{el ? 'Περισσότερα' : 'More'}</h2>
@@ -355,8 +319,8 @@ export default function Dashboard() {
                   </>
                 );
                 return item.to
-                  ? <Link key={item.key} to={item.to} className={shelfCard}>{body}</Link>
-                  : <button key={item.key} type="button" onClick={item.onClick} className={shelfCard}>{body}</button>;
+                  ? <Link key={item.key} to={item.to} className={cn(shelfCard, item.phoneOnly && 'desk:hidden')}>{body}</Link>
+                  : <button key={item.key} type="button" onClick={item.onClick} className={cn(shelfCard, item.phoneOnly && 'desk:hidden')}>{body}</button>;
               })}
             </div>
           </motion.section>
