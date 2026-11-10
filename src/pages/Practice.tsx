@@ -12,6 +12,53 @@ import HomeCheckin from '../components/HomeCheckin';
 import { MeditatorFigure } from '../components/MeditatorFigure';
 import TaiChiHero from '../components/TaiChiHero';
 import { QuietAxisHint } from '../components/QuietAxisHint';
+import { useAccessibility } from '../hooks/useAccessibility';
+
+/** A long list's names as a row at its top: a tap goes straight to that practice. */
+function JumpChips({ items, language }: { items: { id: string; label: string }[]; language: 'en' | 'el' }) {
+  const { reduceMotion } = useAccessibility();
+  const go = (id: string) => {
+    const el = document.getElementById(`pattern-${id}`);
+    if (!el) return;
+    el.scrollIntoView({ block: 'start', behavior: reduceMotion ? 'instant' : 'smooth' });
+    el.focus({ preventScroll: true });
+  };
+  return (
+    <nav aria-label={language === 'el' ? 'Πήγαινε σε άσκηση' : 'Go to a practice'} className="max-w-4xl desk:max-w-none mx-auto w-full">
+      <ul className="flex flex-wrap gap-2">
+        {items.map(it => (
+          <li key={it.id}>
+            <button type="button" onClick={() => go(it.id)}
+              className="h-11 px-4 rounded-full border border-white/10 bg-white/[0.03] text-[14px] text-ink/85 hover:border-white/20 hover:text-ink transition-colors">
+              {it.label}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}
+
+/** One of the four kinds of practice. On the phone a short row (figure beside the words); on a computer a tall card. */
+function CategoryCard({ id, onOpen, figure, conceptId, title, desc, glow, shape }: {
+  id: string; onOpen: () => void; figure: React.ReactNode; conceptId: string;
+  title: string; desc: string; glow: string; shape: string;
+}) {
+  return (
+    <div className={cn("w-full group relative glass-card overflow-hidden text-left transition-all duration-300 active:scale-[0.98] flex items-center gap-3 py-4 pl-3 pr-12 desk:flex-col desk:items-stretch desk:justify-between desk:gap-0 desk:p-6 desk:min-h-[220px]", shape)}>
+      {/* The whole card is one button (its own layer, under the concept "i" button) */}
+      <button type="button" onClick={onOpen} aria-labelledby={`practice-cat-${id}`} aria-describedby={`practice-cat-${id}-desc`}
+        className="absolute inset-0 z-[15] w-full h-full rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60" />
+      <div className={cn("absolute top-[-20%] right-[-20%] w-48 h-48 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000", glow)} />
+      <div aria-hidden="true" className="relative shrink-0 pointer-events-none desk:mb-8 desk:self-start">{figure}</div>
+      <ConceptInfoIcon conceptId={conceptId} className="absolute top-3 right-3 desk:top-6 desk:right-6 z-20 w-8 h-8 opacity-60 hover:opacity-100 bg-white/5" />
+      <div className="relative min-w-0 flex-1 space-y-1 desk:space-y-2 desk:flex-none desk:mt-auto pointer-events-none">
+        <h2 id={`practice-cat-${id}`} className="text-[20px] desk:text-2xl font-light text-ink/90 leading-tight">{title}</h2>
+        <p id={`practice-cat-${id}-desc`} className="text-ink/70 font-sans text-[14px] leading-relaxed">{desc}</p>
+      </div>
+    </div>
+  );
+}
 
 
 function PatternCard({ p, colorScheme, icon: Icon, onClick, language, hideCycle = false }: { 
@@ -26,9 +73,10 @@ function PatternCard({ p, colorScheme, icon: Icon, onClick, language, hideCycle 
   
   return (
     <button type="button"
+      id={`pattern-${p.id}`}
       onClick={onClick}
       className={cn(
-        "w-full group relative border p-6 text-left transition-all duration-300 overflow-hidden flex flex-col active:scale-[0.98] hover:-translate-y-0.5",
+        "w-full group relative border p-6 text-left transition-all duration-300 overflow-hidden flex flex-col active:scale-[0.98] hover:-translate-y-0.5 scroll-mt-4",
         "glass-card hover:border-white/10",
         p.id ? `shape-cloud-${(p.id.length % 5) + 1}` : "shape-cloud-1"
       )}
@@ -228,6 +276,8 @@ const axisInfo = {
           lead={language === 'en' ? info.desc.en : info.desc.el}
         />
 
+        {axisBreaths.length > 3 && <JumpChips language={language} items={axisBreaths.map(p => ({ id: p.id, label: language === 'en' ? p.title.en : p.title.el }))} />}
+
         <div className="max-w-4xl desk:max-w-none mx-auto w-full pb-12 space-y-12">
           {axisBreaths.length > 0 && (
             <div className="space-y-6">
@@ -394,6 +444,8 @@ const axisInfo = {
           </div>
         </div>
 
+        <JumpChips language={language} items={filteredBreaths.map(p => ({ id: p.id, label: language === 'en' ? p.title.en : p.title.el }))} />
+
         <div className="max-w-4xl desk:max-w-none mx-auto w-full pb-12">
           {filteredBreaths.length === 0 ? (
             <div className="py-12 text-center text-ink/70 font-sans border border-white/5 rounded-2xl bg-white/[0.01]" id="no-filtered-breaths">
@@ -450,7 +502,7 @@ const axisInfo = {
       ...filteredMovements[0],
       id: 'swaying',
       title: { el: 'Λίκνισμα', en: 'Swaying' },
-      subtitle: { el: 'Ρυθμός & Ηρεμία', en: 'Rhythm & Calm' },
+      subtitle: { el: 'Ρυθμός και ηρεμία', en: 'Rhythm and calm' },
       desc: {
         el: 'Ένα μικρό, ρυθμικό λίκνισμα δεξιά–αριστερά, με τον ρυθμό που σε βολεύει. Το λίκνισμα είναι και φυσικός τρόπος αυτορρύθμισης· δεν χρειάζεται να το κρύβεις.',
         en: 'A small, rhythmic sway from side to side, at the pace that suits you. Swaying is also a natural way to self-regulate; you do not need to hide it.',
@@ -477,6 +529,8 @@ const axisInfo = {
               : <>A little theory: <ConceptText text="[[Proprioception|proprioception]] · [[Movement or breath?|movement_vs_breathwork]]" /></>}
           </p>
         </PageHeader>
+
+        <JumpChips language={language} items={[...filteredMovements, swayingCard, ...filteredGrounding].map(p => ({ id: p.id, label: language === 'en' ? p.title.en : p.title.el }))} />
 
         <div className="card-relief max-w-4xl desk:max-w-none mx-auto w-full mb-8 font-sans text-ink/80 rounded-2xl p-6 md:p-8 space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-700">
           <div>
@@ -530,7 +584,7 @@ const axisInfo = {
                 <div className="space-y-4">
                   <div className="border-b border-white/5 pb-2">
                     <h2 className="text-xl font-light text-indigo-400 leading-tight">
-                      {language === 'el' ? 'Βασικές Κινήσεις (Τάι Τσι & Qigong)' : 'Core Movements (Tai Chi & Qigong)'}
+                      {language === 'el' ? 'Βασικές κινήσεις (Τάι Τσι και Qigong)' : 'Core movements (Tai Chi and Qigong)'}
                     </h2>
                     <p className="text-sm text-ink/70 mt-1">
                       {language === 'el' ? 'Μία κίνηση, ξανά και ξανά, με την αναπνοή.' : 'One movement, again and again, with the breath.'}
@@ -597,6 +651,8 @@ const axisInfo = {
     );
   }
 
+  const figureRound = "w-[64px] desk:w-[84px] desk:-mt-3 desk:-mb-3 rounded-full group-hover:scale-105 desk:group-hover:brightness-125 motion-safe:transition-[transform,filter] duration-500";
+
   // The microdoses have one page of their own; an old link to the category goes there.
   if (activeCategory === 'microdoses') return <Navigate to="/practice/microdoses" replace />;
 
@@ -636,128 +692,68 @@ const axisInfo = {
         )}
       </section>
 
-      {/* The four axes as a quick way in, above the categories (on the phone two by two). */}
-      <div className="grid grid-cols-2 gap-2 -mt-2 desk:flex desk:flex-wrap desk:gap-2.5 desk:-mt-4" role="group" aria-label={language === 'el' ? 'Ανά άξονα' : 'By axis'}>
-        {(['body', 'breath', 'attention', 'space'] as const).map(id => (
-          <Link
-            key={id}
-            to={`/practice?axis=${id}`}
-            className="inline-flex items-center gap-2 h-11 px-4 rounded-full border border-white/10 bg-white/[0.03] text-[14px] text-ink/85 hover:border-white/20 hover:text-ink transition-colors"
-          >
-            <span aria-hidden="true" className="font-display text-[18px] leading-none" style={{ color: `var(--axis-${id}-ink)` }}>{axisInfo[id].icon}</span>
-            {(language === 'el' ? axisInfo[id].title.el : axisInfo[id].title.en).split(' • ')[0]}
-          </Link>
-        ))}
+      <div className="grid grid-cols-1 desk:grid-cols-2 gap-3 desk:gap-5 max-w-5xl desk:max-w-none mx-auto w-full -mt-4 desk:mt-0">
+        <CategoryCard id="movement" onOpen={() => handleCategoryChange('movement')} conceptId="proprioception"
+          shape="shape-cloud-3 hover:border-indigo-500/20" glow="bg-indigo-500/15"
+          title={language === 'en' ? 'Movement and Tai Chi' : 'Κίνηση και Τάι Τσι'}
+          desc={language === 'en'
+            ? 'Slow movements with the breath, many of them on a chair too: Cloud Hands, Qigong, Swaying, the Tai Chi and Lotus flows.'
+            : 'Αργές κινήσεις μαζί με την αναπνοή, πολλές και σε καρέκλα: Χέρια στα Σύννεφα, Qigong, Λίκνισμα, οι ροές Τάι Τσι και Λωτός.'}
+          figure={<div className="w-[76px] h-[76px] desk:w-[136px] desk:h-[112px] desk:-ml-4 desk:-mt-3 desk:-mb-3 overflow-hidden group-hover:scale-105 transition-transform duration-500 [mask-image:radial-gradient(ellipse_at_50%_40%,black_55%,transparent_78%)]" style={{ background: 'radial-gradient(closest-side, color-mix(in srgb, var(--axis-body-ink) 32%, transparent), transparent)' }}>
+            <div className="w-full origin-[50%_60%] scale-[1.12]">
+              <TaiChiHero breathForce={0} isRising={false} breathStateText="" movementType="be-like-a-flower-5-5" bare />
+            </div>
+          </div>} />
+        <CategoryCard id="breath" onOpen={() => handleCategoryChange('breath')} conceptId="vagus_nerve"
+          shape="shape-cloud-2 hover:border-teal-500/20" glow="bg-teal-500/15"
+          title={language === 'en' ? 'Breath rhythms' : 'Ρυθμοί αναπνοής'}
+          desc={language === 'en'
+            ? 'Simple rhythms you count with the breath: for every day, for tense moments and before sleep.'
+            : 'Απλοί ρυθμοί που μετράς με την ανάσα: για κάθε μέρα, για στιγμές έντασης και πριν τον ύπνο.'}
+          figure={<div className={figureRound} style={{ background: 'radial-gradient(closest-side, color-mix(in srgb, var(--axis-breath-ink) 32%, transparent), transparent)' }}>
+            <MeditatorFigure focus="breath" bare small />
+          </div>} />
+        <CategoryCard id="vocal" onOpen={() => handleCategoryChange('vocal')} conceptId="vagus_nerve"
+          shape="shape-cloud-4 hover:border-violet-500/20" glow="bg-violet-500/15"
+          title={language === 'en' ? 'Chanting and resonance' : 'Ψάλσιμο και αντήχηση'}
+          desc={language === 'en'
+            ? 'Humming and simple sounds with your voice, on the exhale. You feel the vibration in your chest and head.'
+            : 'Βουητό και απλοί ήχοι με τη φωνή, πάνω στην εκπνοή. Νιώθεις τη δόνηση στο στήθος και στο κεφάλι.'}
+          figure={<div className={figureRound} style={{ background: 'radial-gradient(closest-side, color-mix(in srgb, var(--axis-space-ink) 32%, transparent), transparent)' }}>
+            <MeditatorFigure showAxisSymbols="none" voice bare small />
+          </div>} />
+        <CategoryCard id="microdoses" onOpen={() => navigate('/practice/microdoses')} conceptId="neuroplasticity"
+          shape="shape-cloud-5 hover:border-amber-500/20" glow="bg-amber-500/15"
+          title={language === 'en' ? 'Microdoses' : 'Μικροδόσεις'}
+          desc={language === 'en'
+            ? 'Tiny practices, from a few seconds to a minute or two, that you can do anywhere unnoticed.'
+            : 'Μικρές πρακτικές, από λίγα δευτερόλεπτα ως ένα-δυο λεπτά, που γίνονται παντού χωρίς να φανεί.'}
+          figure={<div className={figureRound} style={{ background: 'radial-gradient(closest-side, color-mix(in srgb, var(--axis-attention-ink) 32%, transparent), transparent)' }}>
+            <MeditatorFigure showAxisSymbols="none" ninja bare small />
+          </div>} />
       </div>
 
-      <div className="grid grid-cols-1 desk:grid-cols-2 gap-6 desk:gap-5 pb-12 max-w-5xl desk:max-w-none mx-auto w-full">
-        {/* Mindful Movement & Tai Chi Card */}
-        <div className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-3 glass-card flex-col flex justify-between min-h-[260px] desk:min-h-[220px] transition-all duration-300 active:scale-[0.98] hover:border-indigo-500/20 overflow-hidden text-left">
-          {/* The whole card is one button (its own layer, under the concept "i" buttons) */}
-          <button type="button" onClick={() => handleCategoryChange('movement')} aria-labelledby="practice-cat-movement" aria-describedby="practice-cat-movement-desc"
-            className="absolute inset-0 z-[15] w-full h-full rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60" />
-          <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-indigo-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
-          
-          <div className="flex justify-between items-start mb-8 relative w-full pointer-events-none">
-            <div aria-hidden="true" className="w-[136px] h-[112px] -ml-4 -mt-3 -mb-3 shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-500 [mask-image:radial-gradient(ellipse_at_50%_40%,black_55%,transparent_78%)]" style={{ background: 'radial-gradient(closest-side, color-mix(in srgb, var(--axis-body-ink) 32%, transparent), transparent)' }}>
-              <div className="w-full origin-[50%_60%] scale-[1.12]">
-                <TaiChiHero breathForce={0} isRising={false} breathStateText="" movementType="be-like-a-flower-5-5" bare />
-              </div>
-            </div>
-            <ConceptInfoIcon conceptId="proprioception" className="w-8 h-8 pointer-events-auto relative z-20 opacity-60 hover:opacity-100 bg-white/5" />
-          </div>
-          
-          <div className="space-y-2 relative mt-auto w-full pointer-events-none">
-            <h2 id="practice-cat-movement" className="text-2xl font-light text-ink/90 leading-tight">
-              {language === 'en' ? 'Movement and Tai Chi' : 'Κίνηση και Τάι Τσι'}
-            </h2>
-            <p id="practice-cat-movement-desc" className="text-ink/70 font-sans text-[14px] leading-relaxed">
-              {language === 'en' 
-               ? 'Slow movements with the breath, many of them on a chair too: Cloud Hands, Qigong, Swaying, the Tai Chi and Lotus flows.' 
-               : 'Αργές κινήσεις μαζί με την αναπνοή, πολλές και σε καρέκλα: Χέρια στα Σύννεφα, Qigong, Λίκνισμα, οι ροές Τάι Τσι και Λωτός.'}
-            </p>
-          </div>
+      {/* The four axes of the method, after the kinds of practice: another way in, for whoever knows them. */}
+      <section aria-labelledby="practice-axes-title" className="pb-12 -mt-4 desk:mt-0">
+        <h2 id="practice-axes-title" className="text-[17px] font-medium text-ink/90">
+          {language === 'el' ? 'Ή διάλεξε με βάση τον άξονα' : 'Or choose by axis'}
+        </h2>
+        <p className="text-[14px] text-ink/70 leading-relaxed mt-1 mb-3">
+          {language === 'el' ? 'Οι ασκήσεις μαζεμένες στους τέσσερις άξονες της μεθόδου.' : 'The exercises gathered under the four axes of the method.'}
+        </p>
+        <div className="grid grid-cols-2 gap-2 desk:flex desk:flex-wrap desk:gap-2.5">
+          {(['body', 'breath', 'attention', 'space'] as const).map(id => (
+            <Link
+              key={id}
+              to={`/practice?axis=${id}`}
+              className="inline-flex items-center gap-2 h-11 px-4 rounded-full border border-white/10 bg-white/[0.03] text-[14px] text-ink/85 hover:border-white/20 hover:text-ink transition-colors"
+            >
+              <span aria-hidden="true" className="font-display text-[18px] leading-none" style={{ color: `var(--axis-${id}-ink)` }}>{axisInfo[id].icon}</span>
+              {(language === 'el' ? axisInfo[id].title.el : axisInfo[id].title.en).split(' • ')[0]}
+            </Link>
+          ))}
         </div>
-
-        {/* Breath Rhythms Card */}
-        <div className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-2 glass-card flex-col flex justify-between min-h-[260px] desk:min-h-[220px] transition-all duration-300 active:scale-[0.98] hover:border-teal-500/20 overflow-hidden text-left">
-          {/* The whole card is one button (its own layer, under the concept "i" buttons) */}
-          <button type="button" onClick={() => handleCategoryChange('breath')} aria-labelledby="practice-cat-breath" aria-describedby="practice-cat-breath-desc"
-            className="absolute inset-0 z-[15] w-full h-full rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60" />
-          <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-teal-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
-          
-          <div className="flex justify-between items-start mb-8 relative w-full pointer-events-none">
-            <div aria-hidden="true" className="w-[84px] -mt-3 -mb-3 shrink-0 rounded-full group-hover:scale-105 desk:group-hover:brightness-125 motion-safe:transition-[transform,filter] duration-500" style={{ background: 'radial-gradient(closest-side, color-mix(in srgb, var(--axis-breath-ink) 32%, transparent), transparent)' }}>
-              <MeditatorFigure focus="breath" bare small />
-            </div>
-            <ConceptInfoIcon conceptId="vagus_nerve" className="w-8 h-8 pointer-events-auto relative z-20 opacity-60 hover:opacity-100 bg-white/5" />
-          </div>
-          
-          <div className="space-y-2 relative mt-auto w-full pointer-events-none">
-            <h2 id="practice-cat-breath" className="text-2xl font-light text-ink/90 leading-tight">
-              {language === 'en' ? 'Breath rhythms' : 'Ρυθμοί αναπνοής'}
-            </h2>
-            <p id="practice-cat-breath-desc" className="text-ink/70 font-sans text-[14px] leading-relaxed">
-              {language === 'en' 
-               ? 'Simple rhythms you count with the breath: for every day, for tense moments and before sleep.' 
-               : 'Απλοί ρυθμοί που μετράς με την ανάσα: για κάθε μέρα, για στιγμές έντασης και πριν τον ύπνο.'}
-            </p>
-          </div>
-        </div>
-
-        {/* Vocal & Chanting Resonance Card */}
-        <div className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-4 glass-card flex-col flex justify-between min-h-[260px] desk:min-h-[220px] transition-all duration-300 active:scale-[0.98] hover:border-violet-500/20 overflow-hidden text-left">
-          {/* The whole card is one button (its own layer, under the concept "i" buttons) */}
-          <button type="button" onClick={() => handleCategoryChange('vocal')} aria-labelledby="practice-cat-vocal" aria-describedby="practice-cat-vocal-desc"
-            className="absolute inset-0 z-[15] w-full h-full rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60" />
-          <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-violet-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
-          
-          <div className="flex justify-between items-start mb-8 relative w-full pointer-events-none">
-            <div aria-hidden="true" className="w-[84px] -mt-3 -mb-3 shrink-0 rounded-full group-hover:scale-105 desk:group-hover:brightness-125 motion-safe:transition-[transform,filter] duration-500" style={{ background: 'radial-gradient(closest-side, color-mix(in srgb, var(--axis-space-ink) 32%, transparent), transparent)' }}>
-              <MeditatorFigure showAxisSymbols="none" voice bare small />
-            </div>
-            <ConceptInfoIcon conceptId="vagus_nerve" className="w-8 h-8 pointer-events-auto relative z-20 opacity-60 hover:opacity-100 bg-white/5" />
-          </div>
-          
-          <div className="space-y-2 relative mt-auto w-full pointer-events-none">
-            <h2 id="practice-cat-vocal" className="text-2xl font-light text-ink/90 leading-tight">
-              {language === 'en' ? 'Chanting and resonance' : 'Ψάλσιμο και αντήχηση'}
-            </h2>
-            <p id="practice-cat-vocal-desc" className="text-ink/70 font-sans text-[14px] leading-relaxed">
-              {language === 'en' 
-               ? 'Humming and simple sounds with your voice, on the exhale. You feel the vibration in your chest and head.' 
-               : 'Βουητό και απλοί ήχοι με τη φωνή, πάνω στην εκπνοή. Νιώθεις τη δόνηση στο στήθος και στο κεφάλι.'}
-            </p>
-          </div>
-        </div>
-
-        {/* Microdoses Card */}
-        <div className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-5 glass-card flex-col flex justify-between min-h-[260px] desk:min-h-[220px] transition-all duration-300 active:scale-[0.98] hover:border-amber-500/20 overflow-hidden text-left">
-          {/* The whole card is one button (its own layer, under the concept "i" buttons) */}
-          <button type="button" onClick={() => navigate('/practice/microdoses')} aria-labelledby="practice-cat-microdoses" aria-describedby="practice-cat-microdoses-desc"
-            className="absolute inset-0 z-[15] w-full h-full rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60" />
-          <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-amber-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
-          
-          <div className="flex justify-between items-start mb-8 relative w-full pointer-events-none">
-            <div aria-hidden="true" className="w-[84px] -mt-3 -mb-3 shrink-0 rounded-full group-hover:scale-105 desk:group-hover:brightness-125 motion-safe:transition-[transform,filter] duration-500" style={{ background: 'radial-gradient(closest-side, color-mix(in srgb, var(--axis-attention-ink) 32%, transparent), transparent)' }}>
-              <MeditatorFigure showAxisSymbols="none" ninja bare small />
-            </div>
-            <ConceptInfoIcon conceptId="neuroplasticity" className="w-8 h-8 pointer-events-auto relative z-20 opacity-60 hover:opacity-100 bg-white/5" />
-          </div>
-          
-          <div className="space-y-2 relative mt-auto w-full pointer-events-none">
-            <h2 id="practice-cat-microdoses" className="text-2xl font-light text-ink/90 leading-tight">
-              {language === 'en' ? 'Microdoses' : 'Μικροδόσεις'}
-            </h2>
-            <p id="practice-cat-microdoses-desc" className="text-ink/70 font-sans text-[14px] leading-relaxed">
-              {language === 'en' 
-               ? 'Tiny practices, from a few seconds to a minute or two, that you can do anywhere unnoticed.' 
-               : 'Μικρές πρακτικές, από λίγα δευτερόλεπτα ως ένα-δυο λεπτά, που γίνονται παντού χωρίς να φανεί.'}
-            </p>
-          </div>
-        </div>
-      </div>
-
+      </section>
     </div>
   );
 }
