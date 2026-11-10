@@ -89,7 +89,7 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
       </div>
 
       {embedded && !selected && (
-        <p className="hidden desk:block text-[14px] leading-relaxed text-ink/70">
+        <p className="-mt-1 text-[14px] leading-relaxed text-ink/70">
           {lang === 'el' ? 'Διάλεξε, και θα σου προτείνω μια πρακτική για τώρα.' : 'Choose, and I will suggest a practice for right now.'}
         </p>
       )}
@@ -151,8 +151,13 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
                       className="flex items-center justify-between gap-3 px-5 py-4 rounded-2xl border text-ink/95 hover:brightness-110 transition-[filter,transform] active:scale-[0.98]"
                     >
                       <span className="flex flex-col min-w-0">
-                        <span className="text-[12px] text-ink/65">{lang === 'el' ? 'Ξεκίνα' : 'Start'}</span>
-                        <span className="text-[15px] leading-snug">{main.title[lang]}</span>
+                        <span className="text-[12px] text-ink/70">{lang === 'el' ? 'Πρόταση για τώρα' : 'For right now'}</span>
+                        {/* "Deep relaxation · 4-2-7": the words, then the rhythm, never cut in two. */}
+                        <span className="text-[15px] leading-snug">
+                          {main.title[lang].split(' · ').map((part, i) =>
+                            i === 0 ? part : <span key={i} className="whitespace-nowrap text-ink/70"> · {part}</span>
+                          )}
+                        </span>
                       </span>
                       <span className="flex items-center gap-2 shrink-0">
                         {main.dur && <span className="text-[12px] text-ink/70">{main.dur[lang]}</span>}

@@ -91,9 +91,11 @@ function build(): CatalogItem[] {
     const sub = p.subtitle;
     items.push({
       id: p.id, kind, axis: p.axis,
-      title: p.title.el === sub.el || !sub.el ? p.title : { el: `${p.title.el} · ${sub.el}`, en: `${p.title.en} · ${sub.en}` },
+      // What it does first, the rhythm after ("Deep relaxation · 4-2-7"): the numbers mean nothing yet to someone new.
+      title: p.title.el === sub.el || !sub.el ? p.title : { el: `${sub.el} · ${p.title.el}`, en: `${sub.en} · ${p.title.en}` },
       path: `/practice/breath/${p.id}`,
-      seconds: 180, dur: { el: 'λίγα λεπτά', en: 'a few min' }, tags: CHECKIN_TAGS[p.id] || [],
+      // A breath has no fixed end; 2–5 minutes is what the welcome promises.
+      seconds: 180, dur: { el: '2–5 λεπτά', en: '2–5 min' }, tags: CHECKIN_TAGS[p.id] || [],
     });
   }
 

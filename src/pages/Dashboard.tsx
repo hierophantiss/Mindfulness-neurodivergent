@@ -199,17 +199,21 @@ export default function Dashboard() {
               <span className="keep-font sky-text font-display text-[18px] leading-none text-sign-gold whitespace-nowrap">
                 {el ? 'Ενσυνειδητότητα' : 'Mindfulness'}
               </span>{' '}
-              <span className="sky-text text-[13px] leading-tight text-ink/70">
+              <span className="sky-text text-[13px] leading-tight text-ink/70 whitespace-nowrap">
                 {el ? 'Για νευροδιαφορετικούς' : 'For neurodivergents'}
               </span>
             </span>
           </div>
           <Link
             to="/practice/breath/sos-breath"
-            className="keep-font flex items-center justify-center min-w-[52px] min-h-[44px] px-3.5 shrink-0"
+            className="keep-font flex items-center justify-center min-w-[52px] min-h-[44px] pl-1 shrink-0"
             title={el ? 'Άμεση Ηρέμηση' : 'Immediate Calm'}
           >
-            <span className="flex items-center justify-center h-9 px-3.5 rounded-full bg-[rgb(240_194_200/0.08)] border border-[rgb(240_194_200/0.36)] text-[var(--tint-rose-ink)] text-[12px] font-medium tracking-[0.12em]">SOS</span>
+            {/* "SOS" alone could read as an emergency call: it says it is a way to calm down now. */}
+            <span className="flex items-center justify-center gap-1 h-9 px-3 rounded-full bg-[rgb(240_194_200/0.08)] border border-[rgb(240_194_200/0.36)] text-[var(--tint-rose-ink)] text-[13px] font-medium whitespace-nowrap">
+              <span className="tracking-[0.08em]">SOS</span>
+              <span className="font-normal max-[339px]:hidden">{el ? 'ηρεμία' : 'calm'}</span>
+            </span>
           </Link>
         </div>
 
@@ -260,12 +264,17 @@ export default function Dashboard() {
         {/* The guide: where you are in the book; go on reading, or listen. */}
         <section aria-labelledby="home-guide-title" className="glass glass-gold rounded-[24px] mt-[26px] [@media(max-height:700px)]:mt-4 px-[18px] pt-[18px] pb-4 desk:mt-0 desk:rounded-[28px] desk:px-8 desk:pt-[30px] desk:pb-7 desk:flex desk:flex-col desk:min-h-[300px]">
           <div className="flex items-baseline justify-between gap-3 text-[12.5px] text-ink/70 desk:text-[14px]">
-            <span className="min-w-0 truncate">{finishedGuide ? (el ? 'Ο οδηγός' : 'The guide') : `${el ? 'Ο οδηγός · Κεφάλαιο' : 'The guide · Chapter'} ${spot.chapter?.num ?? ''}`}</span>
+            {/* Named as in the bottom bar ("Read"), with the chapter of how many: a newcomer sees it is the book, read in the app. */}
+            <span className="min-w-0 truncate">{finishedGuide ? (el ? 'Διάβασμα' : 'Reading') : el ? `Διάβασμα · Κεφάλαιο ${spot.chapter?.num ?? ''} από ${chapters.length}` : `Reading · Chapter ${spot.chapter?.num ?? ''} of ${chapters.length}`}</span>
             {midChapter && <span className="shrink-0">{el ? `σελ. ${spot.page + 1} από ${spot.pages.length}` : `p. ${spot.page + 1} of ${spot.pages.length}`}</span>}
           </div>
           <h2 id="home-guide-title" className="font-display mt-1 text-[28px] leading-[1.15] desk:mt-2.5 desk:text-[52px] desk:leading-[1.05]" style={{ color: guideInk }}>
             {guideTitle}
           </h2>
+          {/* The chapter's own name under its axis ("Body" alone reads like the axis below). */}
+          {!finishedGuide && spot.chapter?.sub && (
+            <p className="mt-1 text-[15px] leading-snug text-ink/80 desk:mt-2 desk:text-[18px]">{spot.chapter.sub}</p>
+          )}
           {guideLine && (
             <p className="hidden desk:block mt-3.5 max-w-[560px] text-[18px] leading-[1.6] text-ink/85">«{guideLine}»</p>
           )}
