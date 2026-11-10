@@ -23,6 +23,8 @@ export interface AudioConfig {
   pulseType?: 'sine';
   disableSynth?: boolean;
   ambientLayers?: AmbientLayer[];
+  /** Each layer's own level, 0–1 (1 when not given): "My mix" in the Sanctuary. */
+  layerLevels?: Partial<Record<AmbientLayer, number>>;
   id?: string;
 }
 
@@ -41,6 +43,8 @@ export interface AudioContextProps {
   setGlobalVolume: (v: number) => void;
   updateArmPos: (armPos: number) => void;
   updatePhase: (idx: number, label: string) => void;
+  /** Changes one layer's level while it plays, without starting it again. */
+  setLayerLevel: (layer: AmbientLayer, level: number) => void;
 }
 
 interface SynthNodes {
@@ -57,6 +61,8 @@ interface SynthNodes {
   vOsc3Gain?: GainNode;
   subGain?: GainNode;
   currentConfig?: AudioConfig;
+  /** Each playing layer's own gain (see setLayerLevel). */
+  layerGains?: Map<AmbientLayer, GainNode>;
   stoppers: Array<() => void>;
   sessionId: number;
 }
@@ -794,6 +800,12 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const setLayerLevel = useCallback((layer: AmbientLayer, level: number) => {
+    const g = nodesRef.current.layerGains?.get(layer);
+    const ctx = webAudioCtxRef.current;
+    if (g && ctx) g.gain.setTargetAtTime(Math.max(0, Math.min(1, level)), ctx.currentTime, 0.08);
+  }, []);
+
   // ---- AudioContext init ----
   const getCtx = (): globalThis.AudioContext => {
     // The app's one audio engine, shared with the bells (lib/sound.ts).
@@ -808,6 +820,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     const n = nodesRef.current;
     n.stoppers.forEach(s => s());
     n.stoppers    = [];
+    n.layerGains  = undefined;
     if (n.breathGain) {
       try { n.breathGain.disconnect(); } catch (e) {}
     }
@@ -978,9 +991,16 @@ export function AudioProvider({ children }: { children: ReactNode }) {
           purr: setupPurr,
         };
 
+        // Each layer through its own gain, so a mix can set and change them one by one.
+        n.layerGains = new Map();
         for (const layer of config.ambientLayers) {
           const fn = layerMap[layer];
-          if (fn) n.stoppers.push(fn(ctx, ambientGain));
+          if (!fn) continue;
+          const lg = ctx.createGain();
+          lg.gain.value = Math.max(0, Math.min(1, config.layerLevels?.[layer] ?? 1));
+          lg.connect(ambientGain);
+          n.layerGains.set(layer, lg);
+          n.stoppers.push(fn(ctx, lg));
         }
       }
 
@@ -1386,7 +1406,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       value={{
         masterPlaying, masterVolume, toggleMaster, setMasterVolume,
         stopAll, isPlaying, volume, startAudio, stopAudio, fadeOutAudio,
-        setGlobalVolume, updateArmPos, updatePhase,
+        setGlobalVolume, updateArmPos, updatePhase, setLayerLevel,
       }}
     >
       {children}

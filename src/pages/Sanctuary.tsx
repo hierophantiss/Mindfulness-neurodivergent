@@ -2,7 +2,7 @@ import { useAccessibility } from '../hooks/useAccessibility';
 import { AudioEnabler } from '../components/AudioEnabler';
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Waves, Wind, CloudRain, CloudLightning, Flame, Droplets, MoonStar, Cat, Moon, ChevronLeft, Volume2, Info, Play, Youtube, X, ChevronRight, Sparkles, Headphones, AudioLines, AudioWaveform, Leaf, Feather, Sunrise, Focus, Timer } from 'lucide-react';
+import { Waves, Wind, CloudRain, CloudLightning, Flame, Droplets, MoonStar, Cat, SlidersHorizontal, Pencil, Moon, ChevronLeft, Volume2, Info, Play, Youtube, X, ChevronRight, Sparkles, Headphones, AudioLines, AudioWaveform, Leaf, Feather, Sunrise, Focus, Timer } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { useLanguage } from '../hooks/useLanguage';
@@ -11,6 +11,8 @@ import { cn } from '../lib/utils';
 import { useBinauralAudio } from '../hooks/useBinauralAudio';
 import { BREATH_WAVE_SECONDS, type AmbientLayer } from '../contexts/AudioContext';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
+import MyMixEditor, { type MixSound } from '../components/MyMixEditor';
+import { MIX_ID, MIX_MAX, readMix, saveMix, type MixPart } from '../lib/myMix';
 
 type Layer = AmbientLayer;
 type Text = { el: string; en: string };
@@ -120,7 +122,7 @@ export default function Sanctuary() {
   const sessionStartTimeRef = useRef<number | null>(null);
   const startedAtRef = useRef(0);
 
-  const { startAudio, stopAudio, fadeOutAudio, isPlaying, setGlobalVolume } = useBinauralAudio();
+  const { startAudio, stopAudio, fadeOutAudio, isPlaying, setGlobalVolume, setLayerLevel } = useBinauralAudio();
 
   // ── Time spent, for the activity log ──
   useEffect(() => {
@@ -176,22 +178,45 @@ export default function Sanctuary() {
     }
   ];
 
-  const activeTrackDef = useMemo(() => sleepTracks.find(t => t.id === activeSound), [activeSound]);
+  // ── My mix: up to three nature sounds together, each at its own level ──
+  const [mix, setMix] = useState<MixPart[]>(readMix);
+  const [editingMix, setEditingMix] = useState(false);
+  const mixSounds: MixSound[] = useMemo(() => sleepTracks
+    .filter(t => t.kind === 'nature' && t.layers.length === 1)
+    .map(t => ({ layer: t.layers[0], label: t.label, icon: t.icon })), []);
+  const mixNames = (m: MixPart[]) => m.map(p => { const s = mixSounds.find(x => x.layer === p.layer); return s ? L(s.label) : p.layer; }).join(', ');
+  const mixTrack: SanctuaryTrack = {
+    id: MIX_ID, kind: 'nature', icon: SlidersHorizontal,
+    label: { el: 'Η μίξη μου', en: 'My mix' },
+    subtitle: { el: mixNames(mix), en: mixNames(mix) },
+    layers: mix.map(p => p.layer),
+  };
+  /** Every sound that can play, the mix first once there is one. */
+  const tracks = mix.length ? [mixTrack, ...sleepTracks] : sleepTracks;
+
+  const activeTrackDef = tracks.find(t => t.id === activeSound);
   const isBreathWave = activeTrackDef?.id === 'breath-wave';
 
   useEffect(() => {
     setGlobalVolume(volume);
   }, [volume, setGlobalVolume]);
 
-  const play = useCallback((id: string, choice: Under = under) => {
-    const track = sleepTracks.find(t => t.id === id);
-    if (!track) return;
+  const play = useCallback((id: string, choice: Under = under, mixNow: MixPart[] = mix) => {
+    const isMix = id === MIX_ID;
+    const track = isMix ? undefined : sleepTracks.find(t => t.id === id);
+    if (isMix ? !mixNow.length : !track) return;
     setActiveSound(id);
     const next = new URLSearchParams(searchParams);
     next.set('track', id);
     setSearchParams(next, { replace: true });
     startedAtRef.current = performance.now() + 50;
-    if (track.kind === 'nature') {
+    if (isMix || !track) {
+      startAudio({
+        base: 0, beat: 0, disableSynth: true,
+        ambientLayers: mixNow.map(p => p.layer),
+        layerLevels: Object.fromEntries(mixNow.map(p => [p.layer, p.level])),
+      });
+    } else if (track.kind === 'nature') {
       startAudio({ base: 0, beat: 0, disableSynth: true, ambientLayers: track.layers });
     } else {
       startAudio({
@@ -199,7 +224,26 @@ export default function Sanctuary() {
         disableSynth: false, ambientLayers: layersUnder(track, choice),
       });
     }
-  }, [searchParams, setSearchParams, startAudio, under]);
+  }, [searchParams, setSearchParams, startAudio, under, mix]);
+
+  // Editing the mix: heard at once. Adding or taking out a sound starts the
+  // mix again with the new set; a level changes in place.
+  const mixPlaying = activeSound === MIX_ID && isPlaying;
+  const toggleMixSound = (layer: MixPart['layer']) => {
+    const has = mix.some(p => p.layer === layer);
+    if (!has && mix.length >= MIX_MAX) return;
+    const next = has ? mix.filter(p => p.layer !== layer) : [...mix, { layer, level: 0.7 }];
+    setMix(next);
+    saveMix(next);
+    if (next.length) play(MIX_ID, under, next);
+    else if (activeSound === MIX_ID) clear();
+  };
+  const setMixLevel = (layer: MixPart['layer'], level: number) => {
+    const next = mix.map(p => (p.layer === layer ? { ...p, level } : p));
+    setMix(next);
+    saveMix(next);
+    if (mixPlaying) setLayerLevel(layer, level);
+  };
 
   /** A track's line: for a binaural, its band and what plays under it now. */
   const subtitleOf = (track: SanctuaryTrack) => {
@@ -253,13 +297,13 @@ export default function Sanctuary() {
 
   const onMain = () => {
     if (isPlaying) stopAudio();
-    else play(activeTrackDef ? activeTrackDef.id : sleepTracks[0].id);
+    else play(activeTrackDef ? activeTrackDef.id : tracks[0].id);
   };
 
   const step = (dir: 1 | -1) => {
     if (!activeTrackDef) return;
-    const i = sleepTracks.findIndex(t => t.id === activeTrackDef.id);
-    play(sleepTracks[(i + dir + sleepTracks.length) % sleepTracks.length].id);
+    const i = tracks.findIndex(t => t.id === activeTrackDef.id);
+    play(tracks[(i + dir + tracks.length) % tracks.length].id);
   };
 
   // Keyboard: Space plays or pauses, the arrows change the sound.
@@ -545,6 +589,76 @@ export default function Sanctuary() {
         {/* Sound cards */}
         {activeTab === 'audio' && !isDimmed && (
           <div className="flex flex-col gap-10 pb-24">
+            {/* My mix: first, so the sound you made for yourself is one tap away. */}
+            <section aria-labelledby="mix-title" className="flex flex-col gap-3">
+              <div className="pl-2 pr-1">
+                <h3 id="mix-title" className="flex items-center gap-2 text-[13px] font-medium text-[#4a9eca]">
+                  <SlidersHorizontal size={13} aria-hidden="true" />
+                  {language === 'el' ? 'Η μίξη μου' : 'My mix'}
+                </h3>
+                <p className="mt-1.5 text-[12px] leading-relaxed text-ink/70">
+                  {language === 'el'
+                    ? `Έως ${MIX_MAX} ήχοι φύσης μαζί, ο καθένας με την έντασή του. Μένει μόνο σε αυτή τη συσκευή.`
+                    : `Up to ${MIX_MAX} nature sounds together, each at its own level. Kept only on this device.`}
+                </p>
+              </div>
+              {mix.length > 0 ? (
+                <div className={cn(
+                  "flex items-stretch rounded-[1.5rem] border transition-all duration-300 overflow-hidden",
+                  mixPlaying ? "bg-[#1a3832]/60 border-teal-500/30" : "bg-white/[0.03] border-white/[0.08]"
+                )}>
+                  <button
+                    type="button"
+                    onClick={() => onCard(MIX_ID)}
+                    aria-pressed={mixPlaying}
+                    className="flex-1 min-w-0 flex items-center gap-4 p-4 text-left active:scale-[0.98] transition-transform"
+                  >
+                    <span className={cn("w-12 h-12 flex items-center justify-center rounded-2xl flex-shrink-0", mixPlaying ? "bg-teal-500/20 text-teal-400" : "bg-white/[0.05] text-ink/70")}>
+                      <SlidersHorizontal size={24} strokeWidth={1.5} />
+                    </span>
+                    <span className="flex flex-col min-w-0">
+                      <span className="text-[17px] leading-tight mb-1 text-ink/90">{language === 'el' ? 'Η μίξη μου' : 'My mix'}</span>
+                      <span className="text-[12px] text-ink/70">{mixNames(mix)}</span>
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setEditingMix(v => !v)}
+                    aria-expanded={editingMix}
+                    className="shrink-0 min-w-[64px] flex flex-col items-center justify-center gap-1 px-3 border-l border-white/[0.08] text-[12px] text-ink/75 hover:text-ink hover:bg-white/[0.04] transition-colors"
+                  >
+                    <Pencil size={16} aria-hidden="true" />
+                    {language === 'el' ? 'Άλλαξε' : 'Change'}
+                  </button>
+                </div>
+              ) : !editingMix ? (
+                <button
+                  type="button"
+                  onClick={() => setEditingMix(true)}
+                  aria-expanded={false}
+                  className="flex items-center gap-4 p-4 rounded-[1.5rem] border border-dashed border-white/[0.16] bg-white/[0.02] text-left hover:bg-white/[0.05] transition-colors active:scale-[0.98]"
+                >
+                  <span className="w-12 h-12 flex items-center justify-center rounded-2xl flex-shrink-0 bg-white/[0.05] text-ink/70">
+                    <SlidersHorizontal size={24} strokeWidth={1.5} />
+                  </span>
+                  <span className="flex flex-col min-w-0">
+                    <span className="text-[17px] leading-tight mb-1 text-ink/90">{language === 'el' ? 'Φτιάξε τη μίξη σου' : 'Make your mix'}</span>
+                    <span className="text-[12px] text-ink/70">{language === 'el' ? 'Π.χ. βροχή δυνατά και φωτιά χαμηλά' : 'E.g. rain up and fire low'}</span>
+                  </span>
+                </button>
+              ) : null}
+              {editingMix && (
+                <MyMixEditor
+                  lang={language === 'en' ? 'en' : 'el'}
+                  mix={mix}
+                  sounds={mixSounds}
+                  onToggle={toggleMixSound}
+                  onLevel={setMixLevel}
+                  onDone={() => setEditingMix(false)}
+                />
+              )}
+            </section>
+
             {groups.map(group => (
               <div key={group.kind} className="flex flex-col gap-3">
                 <div className="pl-2 pr-1">

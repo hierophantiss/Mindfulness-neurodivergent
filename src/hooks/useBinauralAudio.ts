@@ -5,7 +5,7 @@ export type { AudioConfig } from '../data/types-breath';
 import { AudioConfig } from '../data/types-breath';
 
 export function useBinauralAudio(config?: AudioConfig) {
-  const { startAudio, stopAudio, fadeOutAudio, isPlaying, setGlobalVolume, updateArmPos, updatePhase, volume } = useAudioMixer();
+  const { startAudio, stopAudio, fadeOutAudio, isPlaying, setGlobalVolume, updateArmPos, updatePhase, volume, setLayerLevel } = useAudioMixer();
 
   const start = useCallback((overrideConfig?: AudioConfig) => {
     startAudio((overrideConfig || config || { base: 110, beat: 6.3, pulse: 0.1 }) as any);
@@ -19,6 +19,7 @@ export function useBinauralAudio(config?: AudioConfig) {
     setGlobalVolume,
     updateArmPos,
     updatePhase,
-    volume
+    volume,
+    setLayerLevel,
   };
 }
