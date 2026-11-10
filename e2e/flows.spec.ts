@@ -36,6 +36,9 @@ test('a breath starts without sound and counts', async ({ page }) => {
 
 test('the offline note closes with its ×', async ({ page, context }) => {
   await page.goto('/en', { waitUntil: 'networkidle' });
+  // The page itself first (not the text it arrived with): the note listens
+  // for the change only once the app is on screen.
+  await expect(page.getByRole('heading', { name: 'How do you feel right now?' })).toBeVisible();
   await context.setOffline(true);
   await expect(page.getByRole('heading', { name: 'Offline Mode' })).toBeVisible();
   await page.getByRole('button', { name: 'Close', exact: true }).last().click();
