@@ -83,7 +83,7 @@ export default function PracticeMovement() {
         <PageHeader
           size="sub"
           back="/practice"
-          eyebrow={language === 'el' ? 'Εξάσκηση' : 'Practice'}
+          eyebrow={language === 'el' ? 'Πρακτική' : 'Practice'}
           title={language === 'el' ? 'Κίνηση & Αναπνοή' : 'Movement & Breath'}
         />
       </div>

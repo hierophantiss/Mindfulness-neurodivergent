@@ -71,6 +71,16 @@ test('the language changes to English', async ({ page, isMobile }) => {
   await expect(page.locator('h1').first()).toHaveText('Practice');
 });
 
+test('Practice: "not sure" asks how you feel, and Microdoses open without a lock', async ({ page }) => {
+  await page.goto('/el/practice', { waitUntil: 'networkidle' });
+  await page.getByRole('button', { name: /Δεν ξέρεις από πού/ }).click();
+  await page.getByRole('button', { name: /Ένταση/ }).first().click();
+  await expect(page.getByText('Πρόταση για τώρα').first()).toBeVisible();
+  await page.getByRole('button', { name: /^Μικροδόσεις/ }).click();
+  await expect(page).toHaveURL(/\/practice\/microdoses/);
+  await expect(page.locator('h1').first()).toHaveText('Μικροδόσεις');
+});
+
 test('SOS is one tap away', async ({ page }) => {
   await page.goto('/el/journal', { waitUntil: 'networkidle' });
   await page.goto('/el', { waitUntil: 'networkidle' });

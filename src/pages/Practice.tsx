@@ -1,14 +1,14 @@
 import { PageHeader } from '../components/PageHeader';
 import React, { useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Wind, Zap, Compass, Activity, Lock, BookOpen, ChevronDown, ChevronUp, Volume2 } from 'lucide-react';
+import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom';
+import { Wind, Compass, Activity, BookOpen, ChevronDown, ChevronUp, Volume2 } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
-import { useProgress } from '../contexts/ProgressContext';
 import { BREATH_PATTERNS, BreathPattern } from '../data/breathPatterns';
 import { MICRODOSES_EXERCISES } from '../data/microdoses';
 import { cn } from '../lib/utils';
 import { Check } from 'lucide-react';
-import { ConceptInfoIcon } from '../components/ConceptInfoOverlay';
+import { ConceptInfoIcon, ConceptText } from '../components/ConceptInfoOverlay';
+import HomeCheckin from '../components/HomeCheckin';
 import { MeditatorFigure } from '../components/MeditatorFigure';
 import TaiChiHero from '../components/TaiChiHero';
 import { QuietAxisHint } from '../components/QuietAxisHint';
@@ -83,7 +83,6 @@ export default function Practice() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { language } = useLanguage();
-  const { progress } = useProgress();
   
   const initialCategory = ['breath', 'movement', 'grounding', 'microdoses', 'vocal'].includes(searchParams.get('category') || '') 
     ? (searchParams.get('category') as 'breath' | 'movement' | 'grounding' | 'microdoses' | 'vocal') 
@@ -94,6 +93,8 @@ export default function Practice() {
   // Update URL search params when category changes (optional, but good for linking)
   const handleCategoryChange = (cat: 'breath' | 'movement' | 'grounding' | 'microdoses' | 'vocal' | null) => {
     setActiveCategory(cat);
+    // Only the search changes, so the page keeps its place: start the new list from its top.
+    document.getElementById('main-content')?.scrollTo({ top: 0, behavior: 'instant' });
     if (cat) {
       setSearchParams({ category: cat }, { replace: true });
     } else {
@@ -101,10 +102,10 @@ export default function Practice() {
     }
   };
 
-  const [lockedCategoryAttempt, setLockedCategoryAttempt] = useState<'grounding' | 'microdoses' | null>(null);
+  // "Not sure what to choose?" opens the same "How do you feel right now?" as the home page.
+  const [unsureOpen, setUnsureOpen] = useState(false);
   const [activeSomatic, setActiveSomatic] = useState<'all' | 'seated' | 'quick' | 'audio'>('all');
 
-  const hasFoundation = progress.completedChapters.length > 0;
 
   
   // Somatic filter dynamic matches
@@ -134,7 +135,7 @@ export default function Practice() {
 const axisInfo = {
   body: { 
     icon: 'I', 
-    title: { en: 'Gravity • Earth', el: 'Βαρύτητα • Γη' }, 
+    title: { en: 'Body • Earth', el: 'Σώμα • Γη' }, 
     color: 'text-[var(--axis-body-ink)]', 
     borderColor: 'border-[var(--color-axis-body)]/30',
     bgColor: 'bg-[var(--color-axis-body)]/15',
@@ -220,7 +221,7 @@ const axisInfo = {
               searchParams.delete('axis');
               setSearchParams(searchParams);
             }}
-          eyebrow={language === 'el' ? 'Πρακτική με άξονα' : 'Practice by axis'}
+          eyebrow={language === 'el' ? 'Πρακτική' : 'Practice'}
           title={<span className="flex items-center gap-3"><span aria-hidden="true" className="block w-[64px] desk:w-[76px] shrink-0 -my-2" style={{ background: `radial-gradient(closest-side, color-mix(in srgb, var(--axis-${activeAxis}-ink) 30%, transparent), transparent)` }}>
               <MeditatorFigure focus={activeAxis as 'body'} bare />
             </span><span>{language === 'en' ? info.title.en : info.title.el}</span></span>}
@@ -251,7 +252,7 @@ const axisInfo = {
           {axisMicrodoses.length > 0 && (
             <div className="space-y-6">
               <h2 className="text-2xl font-light text-ink/80 border-b border-white/5 pb-2">
-                {language === 'el' ? 'Αόρατες Μικροδόσεις' : 'Invisible Microdoses'}
+                {language === 'el' ? 'Μικροδόσεις' : 'Microdoses'}
               </h2>
               <div className="grid grid-cols-1 desk:grid-cols-3 gap-4">
                 {axisMicrodoses.map((ex, idx) => (
@@ -311,8 +312,8 @@ const axisInfo = {
         <PageHeader
           size="sub"
           back={() => activeCategoryWithReset(null)}
-          eyebrow={language === 'el' ? 'Ψάλσιμο & αντήχηση' : 'Chanting & vocal resonance'}
-          title={<span className="inline-flex flex-wrap items-center gap-1">{language === 'el' ? 'Ψάλσιμο & Αντήχηση' : 'Chanting & Resonance'}
+          eyebrow={language === 'el' ? 'Πρακτική' : 'Practice'}
+          title={<span className="inline-flex flex-wrap items-center gap-1">{language === 'el' ? 'Ψάλσιμο και αντήχηση' : 'Chanting and resonance'}
             <ConceptInfoIcon conceptId="vagus_nerve" /></span>}
           lead={language === 'el' 
               ? 'Βουητό και ψάλσιμο πάνω στην εκπνοή: μακριά εκπνοή με δόνηση. Το σώμα ηρεμεί το σώμα. Αν σου τελειώνει ο αέρας, σταμάτα νωρίτερα· δεν χρειάζεται να φτάσεις ως το τέλος.' 
@@ -358,22 +359,21 @@ const axisInfo = {
         <PageHeader
           size="sub"
           back={() => activeCategoryWithReset(null)}
-          eyebrow={language === 'el' ? 'Ρυθμοί αναπνοής' : 'Breath Rhythms'}
-          title={<span className="inline-flex flex-wrap items-center gap-1">{language === 'el' ? 'Αναπνοή & Ύπνος' : 'Breath & Sleep'}
+          eyebrow={language === 'el' ? 'Πρακτική' : 'Practice'}
+          title={<span className="inline-flex flex-wrap items-center gap-1">{language === 'el' ? 'Ρυθμοί αναπνοής' : 'Breath rhythms'}
             <ConceptInfoIcon conceptId="vagus_nerve" /></span>}
           lead={language === 'el' 
               ? 'Οι τρεις ρυθμοί του βιβλίου πρώτα: 5-5 για κάθε μέρα, 4-6 στην κορύφωση, 4-2-7 για βαθιά χαλάρωση. Η εκπνοή είναι το εργαλείο, όχι η εισπνοή.' 
               : 'The book\'s three rhythms first: 5-5 for every day, 4-6 at the peak, 4-2-7 for deep relaxation. The exhale is the tool, not the inhale.'}
         />
 
-        {/* Warning Banner */}
+        {/* Before you start: the safety note, said calmly (no alarm colours, no warning sign). */}
         <div className="max-w-4xl desk:max-w-none mx-auto w-full">
-          <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-5 md:p-6 text-left">
-            <h2 className="text-amber-400 font-semibold mb-3 flex items-center gap-2">
-              <span className="text-xl">⚠️</span>
-              {language === 'el' ? 'Σημαντική Σημείωση για την Ασφάλειά σου' : 'Important Safety Note'}
+          <div className="card-relief rounded-2xl p-5 desk:p-6 text-left">
+            <h2 className="text-[17px] font-medium text-ink/90 mb-3">
+              {language === 'el' ? 'Πριν ξεκινήσεις' : 'Before you start'}
             </h2>
-            <div className="space-y-3 text-amber-200/80 text-sm md:text-[15px] leading-relaxed">
+            <div className="space-y-3 text-ink/80 text-[15px] leading-relaxed">
               <p>
                 {language === 'el' 
                   ? 'Η αναπνοή είναι εργαλείο, όχι καταναγκασμός. Ειδικά στις ασκήσεις που απαιτούν κράτημα της αναπνοής ή πολύ αργή εκπνοή, το νευρικό σύστημα κάποιων ανθρώπων μπορεί να νιώσει πίεση.' 
@@ -383,7 +383,7 @@ const axisInfo = {
                 {language === 'el' 
                   ? 'Αν οποιαδήποτε στιγμή νιώσεις δυσφορία, άγχος, ζάλη ή «πνίξιμο», ' 
                   : 'If at any point you feel discomfort, anxiety, dizziness, or "suffocation", '}
-                <strong className="text-amber-300">
+                <strong className="font-semibold text-ink">
                   {language === 'el' ? 'σταμάτα αμέσως την άσκηση' : 'stop the exercise immediately'}
                 </strong>
                 {language === 'el' 
@@ -464,20 +464,23 @@ const axisInfo = {
         <PageHeader
           size="sub"
           back={() => activeCategoryWithReset(null)}
-          eyebrow={language === 'el' ? 'Κινητική ενσυνειδητότητα & Τάι Τσι' : 'Mindful Movement & Tai Chi'}
-          title={<span className="inline-flex flex-wrap items-center gap-2"><span>{language === 'el' ? 'Κινητική Ενσυνειδητότητα & Τάι Τσι' : 'Mindful Movement & Tai Chi'}</span>
-            <span className="inline-flex gap-1 items-center" onClick={(e) => e.stopPropagation()}>
-              <ConceptInfoIcon conceptId="proprioception" />
-              <ConceptInfoIcon conceptId="movement_vs_breathwork" className="w-6 h-6 ml-0.5 text-indigo-400 hover:text-indigo-300 hover:bg-indigo-400/10" />
-            </span></span>}
+          eyebrow={language === 'el' ? 'Πρακτική' : 'Practice'}
+          title={language === 'el' ? 'Κίνηση και Τάι Τσι' : 'Movement and Tai Chi'}
           lead={language === 'el' 
               ? 'Φέρε την προσοχή από τις σκέψεις στο σώμα, με απαλές, ρυθμικές κινήσεις.' 
               : 'Bring your attention from thoughts to the body, with gentle, rhythmic movements.'}
-        />
+        >
+          {/* The two explanations named, instead of two identical (i). */}
+          <p className="text-[14px] text-ink/70 leading-relaxed">
+            {language === 'el'
+              ? <>Λίγη θεωρία: <ConceptText text="[[Ιδιοδεκτικότητα|proprioception]] · [[Κίνηση ή αναπνοή;|movement_vs_breathwork]]" /></>
+              : <>A little theory: <ConceptText text="[[Proprioception|proprioception]] · [[Movement or breath?|movement_vs_breathwork]]" /></>}
+          </p>
+        </PageHeader>
 
         <div className="card-relief max-w-4xl desk:max-w-none mx-auto w-full mb-8 font-sans text-ink/80 rounded-2xl p-6 md:p-8 space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-700">
           <div>
-            <h2 className="text-xl md:text-2xl font-light text-indigo-300 mb-4">{language === 'el' ? 'Πριν Ξεκινήσεις' : 'Before You Start'}</h2>
+            <h2 className="text-xl md:text-2xl font-light text-indigo-300 mb-4">{language === 'el' ? 'Πριν ξεκινήσεις' : 'Before you start'}</h2>
             <p className="mb-6">{language === 'el' ? 'Το Τάι Τσι ξεκινά πριν από την πρώτη κίνηση.' : 'Tai Chi begins before the first movement.'}</p>
             <ul className="space-y-4 text-[15px] leading-relaxed">
               <li>
@@ -594,71 +597,44 @@ const axisInfo = {
     );
   }
 
-  if (activeCategory === 'microdoses') {
-    return (
-      <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <PageHeader
-          size="sub"
-          back={() => handleCategoryChange(null)}
-          eyebrow={language === 'el' ? 'Μικροδόσεις' : 'Microdoses'}
-          title={<span className="inline-flex flex-wrap items-center gap-1">{language === 'el' ? 'Αόρατες Μικροδόσεις' : 'Invisible Microdoses'}
-            <ConceptInfoIcon conceptId="neuroplasticity" /></span>}
-          lead={language === 'el' 
-              ? 'Αόρατες μικροπρακτικές που γίνονται παντού.' 
-              : 'Stealth practices you can do anywhere without being noticed.'}
-        />
-
-        <div className="max-w-4xl desk:max-w-none mx-auto w-full pb-12">
-          <div className="grid grid-cols-1 desk:grid-cols-3 gap-6 desk:gap-4">
-            <button type="button"
-              onClick={() => navigate('/practice/microdoses')}
-              className={cn(
-                "w-full group relative border p-6 text-left transition-all duration-300 overflow-hidden flex flex-col active:scale-[0.98] hover:-translate-y-0.5",
-                "glass-card hover:border-white/10 shape-cloud-4"
-              )}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/[0.02] to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%]"></div>
-              
-              <div className="absolute -top-4 -right-4 p-6 opacity-5 group-hover:opacity-10 group-hover:rotate-12 group-hover:scale-110 transition-all duration-500 pointer-events-none">
-                <Zap size={96} className="text-amber-300" />
-              </div>
-
-              <div className="relative z-10 flex flex-col h-full mt-1">
-                <h2 className="text-[22px] md:text-2xl font-light text-ink/90 drop-shadow-sm leading-tight mb-1">
-                  {language === 'en' ? 'Microdoses Collection' : 'Συλλογή Μικροδόσεων'}
-                </h2>
-                <div className="text-[13px] font-medium mb-3 drop-shadow-sm text-amber-400/80">
-                  {language === 'en' ? 'Quick Tools' : 'Άμεσα Εργαλεία'}
-                </div>
-                <p className="text-[14px] text-ink/70 leading-relaxed max-w-[85%] font-sans">
-                  {language === 'en' ? 'Open the collection of short spatial, physical, and breath focus tools.' : 'Άνοιξε τη συλλογή μικρών χρονικά εργαλείων χωρικής, σωματικής και αναπνευστικής εστίασης.'}
-                </p>
-                <div className="mt-6 flex flex-wrap gap-2">
-                  <span className="px-3 py-1.5 border rounded-full text-[12px] font-medium bg-amber-500/10 border-amber-500/20 text-amber-300">
-                    {language === 'en' ? 'Multiple Categories' : 'Πολλαπλές Κατηγορίες'}
-                  </span>
-                </div>
-              </div>
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // The microdoses have one page of their own; an old link to the category goes there.
+  if (activeCategory === 'microdoses') return <Navigate to="/practice/microdoses" replace />;
 
   return (
     <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <PageHeader
         size="main"
         back={'/dashboard'}
-        eyebrow={language === 'el' ? 'Κέντρο εξάσκησης' : 'Practice Hub'}
-        title={<>{language === 'el' ? 'Εξάσκηση' : 'Practice'}</>}
+        eyebrow={language === 'el' ? 'Οι ασκήσεις του βιβλίου' : 'The book\'s exercises'}
+        title={<>{language === 'el' ? 'Πρακτική' : 'Practice'}</>}
         lead={language === 'el' 
-            ? 'Επίλεξε την κατηγορία εξάσκησης που ταιριάζει στην κατάστασή σου.' 
-            : 'Choose the practice category that fits your current state.'}
+            ? 'Διάλεξε τι θέλεις να κάνεις: να κινηθείς, να αναπνεύσεις, να βγάλεις φωνή ή κάτι αθόρυβο, για οπουδήποτε.' 
+            : 'Choose what you would like to do: move, breathe, use your voice, or something quiet, for anywhere.'}
       />
 
       <QuietAxisHint />
+
+      {/* For whoever does not know where to begin: the same "How do you feel right now?" as on the home page. */}
+      <section aria-label={language === 'el' ? 'Πώς νιώθεις τώρα;' : 'How do you feel right now?'} className="-mt-4 desk:-mt-6">
+        <button
+          type="button"
+          onClick={() => setUnsureOpen(o => !o)}
+          aria-expanded={unsureOpen}
+          aria-controls="practice-unsure"
+          className="w-full min-h-11 flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-left text-[15px] text-ink/85 hover:border-white/20 hover:text-ink transition-colors desk:max-w-[560px]"
+        >
+          <span>
+            {language === 'el' ? 'Δεν ξέρεις από πού; ' : 'Not sure where to start? '}
+            <span className="text-ink font-medium whitespace-nowrap">{language === 'el' ? 'Πες πώς νιώθεις' : 'Say how you feel'}</span>
+          </span>
+          {unsureOpen ? <ChevronUp size={18} aria-hidden="true" className="shrink-0 text-ink/60" /> : <ChevronDown size={18} aria-hidden="true" className="shrink-0 text-ink/60" />}
+        </button>
+        {unsureOpen && (
+          <div id="practice-unsure" className="mt-3 desk:max-w-[560px]">
+            <HomeCheckin embedded />
+          </div>
+        )}
+      </section>
 
       {/* The four axes as a quick way in, above the categories (on the phone two by two). */}
       <div className="grid grid-cols-2 gap-2 -mt-2 desk:flex desk:flex-wrap desk:gap-2.5 desk:-mt-4" role="group" aria-label={language === 'el' ? 'Ανά άξονα' : 'By axis'}>
@@ -688,20 +664,17 @@ const axisInfo = {
                 <TaiChiHero breathForce={0} isRising={false} breathStateText="" movementType="be-like-a-flower-5-5" bare />
               </div>
             </div>
-            <div className="flex gap-1.5 pointer-events-auto relative z-20">
-              <ConceptInfoIcon conceptId="proprioception" className="w-8 h-8 pointer-events-auto relative z-20 opacity-60 hover:opacity-100 bg-white/5" />
-              <ConceptInfoIcon conceptId="movement_vs_breathwork" className="w-8 h-8 pointer-events-auto relative z-20 opacity-60 hover:opacity-100 bg-white/5 text-indigo-400 hover:text-indigo-300" />
-            </div>
+            <ConceptInfoIcon conceptId="proprioception" className="w-8 h-8 pointer-events-auto relative z-20 opacity-60 hover:opacity-100 bg-white/5" />
           </div>
           
           <div className="space-y-2 relative mt-auto w-full pointer-events-none">
             <h2 id="practice-cat-movement" className="text-2xl font-light text-ink/90 leading-tight">
-              {language === 'en' ? 'Movement & Tai Chi' : 'Κίνηση & Τάι Τσι'}
+              {language === 'en' ? 'Movement and Tai Chi' : 'Κίνηση και Τάι Τσι'}
             </h2>
             <p id="practice-cat-movement-desc" className="text-ink/70 font-sans text-[14px] leading-relaxed">
               {language === 'en' 
-               ? 'Slow movements with the breath: Cloud Hands, Qigong, Swaying and the Tai Chi and Lotus flows.' 
-               : 'Αργές κινήσεις με την αναπνοή: Χέρια στα Σύννεφα, Qigong, Λίκνισμα και οι ροές Τάι Τσι και Λωτός.'}
+               ? 'Slow movements with the breath, many of them on a chair too: Cloud Hands, Qigong, Swaying, the Tai Chi and Lotus flows.' 
+               : 'Αργές κινήσεις μαζί με την αναπνοή, πολλές και σε καρέκλα: Χέρια στα Σύννεφα, Qigong, Λίκνισμα, οι ροές Τάι Τσι και Λωτός.'}
             </p>
           </div>
         </div>
@@ -722,12 +695,12 @@ const axisInfo = {
           
           <div className="space-y-2 relative mt-auto w-full pointer-events-none">
             <h2 id="practice-cat-breath" className="text-2xl font-light text-ink/90 leading-tight">
-              {language === 'en' ? 'Breath rhythms' : 'Ρυθμοί Αναπνοής'}
+              {language === 'en' ? 'Breath rhythms' : 'Ρυθμοί αναπνοής'}
             </h2>
             <p id="practice-cat-breath-desc" className="text-ink/70 font-sans text-[14px] leading-relaxed">
               {language === 'en' 
-               ? 'Specific breathing techniques to regulate and calm the central nervous system.' 
-               : 'Στοχευμένοι ρυθμοί αναπνοής για ηρεμία και ρύθμιση του νευρικού συστήματος.'}
+               ? 'Simple rhythms you count with the breath: for every day, for tense moments and before sleep.' 
+               : 'Απλοί ρυθμοί που μετράς με την ανάσα: για κάθε μέρα, για στιγμές έντασης και πριν τον ύπνο.'}
             </p>
           </div>
         </div>
@@ -748,12 +721,12 @@ const axisInfo = {
           
           <div className="space-y-2 relative mt-auto w-full pointer-events-none">
             <h2 id="practice-cat-vocal" className="text-2xl font-light text-ink/90 leading-tight">
-              {language === 'en' ? 'Chanting & Resonance' : 'Ψάλσιμο & Αντήχηση'}
+              {language === 'en' ? 'Chanting and resonance' : 'Ψάλσιμο και αντήχηση'}
             </h2>
             <p id="practice-cat-vocal-desc" className="text-ink/70 font-sans text-[14px] leading-relaxed">
               {language === 'en' 
-               ? 'Vocal vibrations & vagus nerve stimulation (Bhramari, AUM, SaTaNaMa).' 
-               : 'Φωνητικές δονήσεις & διέγερση του πνευμονογαστρικού (Bhramari, ΑΟΜ, SaTaNaMa).'}
+               ? 'Humming and simple sounds with your voice, on the exhale. You feel the vibration in your chest and head.' 
+               : 'Βουητό και απλοί ήχοι με τη φωνή, πάνω στην εκπνοή. Νιώθεις τη δόνηση στο στήθος και στο κεφάλι.'}
             </p>
           </div>
         </div>
@@ -761,7 +734,7 @@ const axisInfo = {
         {/* Microdoses Card */}
         <div className="w-full col-span-1 group relative block p-6 md:p-8 shape-cloud-5 glass-card flex-col flex justify-between min-h-[260px] desk:min-h-[220px] transition-all duration-300 active:scale-[0.98] hover:border-amber-500/20 overflow-hidden text-left">
           {/* The whole card is one button (its own layer, under the concept "i" buttons) */}
-          <button type="button" onClick={() => hasFoundation ? handleCategoryChange('microdoses') : setLockedCategoryAttempt('microdoses')} aria-labelledby="practice-cat-microdoses" aria-describedby="practice-cat-microdoses-desc"
+          <button type="button" onClick={() => navigate('/practice/microdoses')} aria-labelledby="practice-cat-microdoses" aria-describedby="practice-cat-microdoses-desc"
             className="absolute inset-0 z-[15] w-full h-full rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60" />
           <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-amber-500/15 blur-[60px] rounded-full pointer-events-none transition-transform group-hover:scale-110 duration-1000" />
           
@@ -769,79 +742,22 @@ const axisInfo = {
             <div aria-hidden="true" className="w-[84px] -mt-3 -mb-3 shrink-0 rounded-full group-hover:scale-105 desk:group-hover:brightness-125 motion-safe:transition-[transform,filter] duration-500" style={{ background: 'radial-gradient(closest-side, color-mix(in srgb, var(--axis-attention-ink) 32%, transparent), transparent)' }}>
               <MeditatorFigure showAxisSymbols="none" ninja bare small />
             </div>
-            
-            <div className="flex items-center gap-2">
-              <ConceptInfoIcon conceptId="neuroplasticity" className="w-8 h-8 pointer-events-auto relative z-20 opacity-60 hover:opacity-100 bg-white/5" />
-              {!hasFoundation && (
-                <div className="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500/80">
-                  <Lock size={14} />
-                </div>
-              )}
-            </div>
+            <ConceptInfoIcon conceptId="neuroplasticity" className="w-8 h-8 pointer-events-auto relative z-20 opacity-60 hover:opacity-100 bg-white/5" />
           </div>
           
           <div className="space-y-2 relative mt-auto w-full pointer-events-none">
-            {!hasFoundation && (
-              <div className="text-[13px] text-amber-500/80 font-medium mb-1">
-                {language === 'el' ? 'Προτείνεται θεωρία' : 'Theory Recommended'}
-              </div>
-            )}
             <h2 id="practice-cat-microdoses" className="text-2xl font-light text-ink/90 leading-tight">
               {language === 'en' ? 'Microdoses' : 'Μικροδόσεις'}
             </h2>
             <p id="practice-cat-microdoses-desc" className="text-ink/70 font-sans text-[14px] leading-relaxed">
               {language === 'en' 
-               ? 'Stealth practices you can do anywhere unnoticed.' 
-               : 'Αόρατες πρακτικές που γίνονται παντού χωρίς να φανεί.'}
+               ? 'Tiny practices, from a few seconds to a minute or two, that you can do anywhere unnoticed.' 
+               : 'Μικρές πρακτικές, από λίγα δευτερόλεπτα ως ένα-δυο λεπτά, που γίνονται παντού χωρίς να φανεί.'}
             </p>
           </div>
         </div>
       </div>
 
-      {lockedCategoryAttempt && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="card-relief rounded-[2rem] p-6 max-w-sm w-full relative">
-            <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 rounded-full bg-amber-500/10 flex items-center justify-center border border-amber-500/20">
-                <Lock size={28} className="text-amber-500/80" />
-              </div>
-            </div>
-            
-            <h2 className="text-2xl font-light text-ink text-center mb-2">
-              {language === 'el' ? 'Προτείνεται Θεωρία' : 'Theory Recommended'}
-            </h2>
-            
-            <p className="text-ink/70 text-center mb-8 font-sans leading-relaxed text-[15px]">
-              {language === 'el' 
-                ? 'Οι πρακτικές των τεσσάρων αξόνων βοηθούν περισσότερο αν έχεις ήδη διαβάσει τα βασικά. Καλό είναι να διαβάσεις πρώτα το 1ο Κεφάλαιο του Εγχειριδίου.'
-                : 'Mental exercises are more effective with a foundation. We recommend reading Chapter 1 of the Workbook before you begin.'}
-            </p>
-            
-            <div className="flex flex-col gap-3">
-              <button 
-                onClick={() => {
-                  setLockedCategoryAttempt(null);
-                  navigate('/chapters/1');
-                }}
-                className="w-full py-4 px-6 rounded-2xl bg-white/10 hover:bg-white/15 text-ink transition-all active:scale-[0.98] font-medium border border-white/5"
-              >
-                {language === 'el' ? 'Άνοιγμα Κεφαλαίου 1' : 'Open Chapter 1'}
-              </button>
-              
-              <button 
-                onClick={() => {
-                  const cat = lockedCategoryAttempt;
-                  setLockedCategoryAttempt(null);
-                  handleCategoryChange(cat as any);
-                }}
-                className="w-full py-4 px-6 rounded-2xl text-ink/70 hover:text-ink/80 transition-all active:scale-[0.98] text-sm"
-              >
-                {language === 'el' ? 'Θέλω να συνεχίσω ούτως ή άλλως' : 'I want to continue anyway'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

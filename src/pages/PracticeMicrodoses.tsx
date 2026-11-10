@@ -5,10 +5,13 @@ import { Zap, Focus, Anchor, Box, Sparkles } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../hooks/useLanguage';
 import { MICRODOSES_EXERCISES } from '../data/microdoses';
+import { useProgress } from '../contexts/ProgressContext';
 
 export default function PracticeMicrodoses() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { language } = useLanguage();
+  const { progress } = useProgress();
+  const readFirstChapter = progress.completedChapters.length > 0;
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'all');
   const [activeSpeed, setActiveSpeed] = useState<'all' | 'sos' | 'brief' | 'deep'>('all');
   const [activeSomatic, setActiveSomatic] = useState<'all' | 'stealth' | 'seated' | 'vibration'>('all');
@@ -110,12 +113,23 @@ export default function PracticeMicrodoses() {
       <PageHeader
         back="/practice"
         size="sub"
-        eyebrow={language === 'el' ? 'Μικροδόσεις' : 'Microdoses'}
-        title={language === 'el' ? 'Αόρατη Εξάσκηση' : 'Invisible Practice'}
+        eyebrow={language === 'el' ? 'Πρακτική' : 'Practice'}
+        title={language === 'el' ? 'Μικροδόσεις' : 'Microdoses'}
         lead={language === 'el'
           ? 'Πρακτικές που γίνονται παντού, χωρίς να σε καταλάβει κανείς. Ιδανικές για στιγμές έντασης ή δημόσιους χώρους.'
           : 'Practices you can do anywhere, without anyone noticing. Perfect for overstimulation or public spaces.'}
-      />
+      >
+        {/* Once a lock in front of the page; now only a word, and the page is open to everyone. */}
+        {!readFirstChapter && (
+          <p className="text-[14px] text-ink/70 leading-relaxed">
+            {language === 'el' ? 'Βοηθά αν έχεις διαβάσει πρώτα το ' : 'It helps to have read '}
+            <Link to="/chapters/1" className="text-ink underline decoration-white/40 underline-offset-4 hover:decoration-white/80">
+              {language === 'el' ? 'Κεφάλαιο 1' : 'Chapter 1'}
+            </Link>
+            {language === 'el' ? ', όχι όμως απαραίτητα.' : ' first, but you do not have to.'}
+          </p>
+        )}
+      </PageHeader>
 
       {/* 🌟 ADHD Decision Relief: Daily Core Suggestion */}
       <div className="relative overflow-hidden bg-gradient-to-br from-teal-500/[0.04] to-indigo-500/[0.02] border border-teal-500/20 rounded-2xl p-6 flex flex-col md:flex-row gap-6 justify-between items-start md:items-center max-w-4xl shadow-lg shadow-teal-950/20" id="decision-relief-banner">
