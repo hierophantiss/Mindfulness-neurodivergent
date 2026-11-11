@@ -11,6 +11,9 @@ import { motion } from "motion/react";
 // is about 1/7.5; the hood adds the rest). It shrinks towards the neck, so it
 // stays on the shoulders.
 const HEAD_SCALE = 0.58;
+// The neck: the head sits this much above the shoulders, so a little neck
+// shows between them (without it the head looked sunk into the body).
+const NECK_LIFT = 6;
 // Natural proportions (anthropometry, Contini 1972): upper arm about 19% of
 // the height, forearm about 14.5%, hand about 10% and half as wide as it is
 // long. The figure stands about 108 units tall (head top 182, soles 290).
@@ -1116,7 +1119,8 @@ export default function TaiChiHero({
           <g id="tc-upper" transform={sinkY ? `translate(0, ${sinkY})` : undefined}>
           {/* TORSO / HOODIE (Black/Charcoal hoodie, centered) */}
           <g id="tc-torso" fill="#36463a" transform={bodyShift ? `translate(${bodyShift}, 0)` : undefined}>
-            <path d={`M 184 ${SHOULDER_Y + torsoBendY + leanBackY} L 216 ${SHOULDER_Y + torsoBendY + leanBackY} L 211.5 ${HEM_Y} L 188.5 ${HEM_Y} Z`} />
+            {/* The shoulders slope up a little to the neck */}
+            <path d={`M 184 ${SHOULDER_Y + torsoBendY + leanBackY} C 188 ${SHOULDER_Y + torsoBendY + leanBackY - 1} 192 ${SHOULDER_Y + torsoBendY + leanBackY - 3} 195.4 ${SHOULDER_Y + torsoBendY + leanBackY - 3} L 204.6 ${SHOULDER_Y + torsoBendY + leanBackY - 3} C 208 ${SHOULDER_Y + torsoBendY + leanBackY - 3} 212 ${SHOULDER_Y + torsoBendY + leanBackY - 1} 216 ${SHOULDER_Y + torsoBendY + leanBackY} L 211.5 ${HEM_Y} L 188.5 ${HEM_Y} Z`} />
             {/* Kangaroo Pocket */}
             <path
               d={`M 191 ${HEM_Y - 14 + torsoBendY * 0.35 + leanBackY * 0.35} L 209 ${HEM_Y - 14 + torsoBendY * 0.35 + leanBackY * 0.35} L 210.5 ${HEM_Y - 2} L 189.5 ${HEM_Y - 2} Z`}
@@ -1127,7 +1131,16 @@ export default function TaiChiHero({
             <path d={`M 191 ${HEM_Y - 14 + torsoBendY * 0.35 + leanBackY * 0.35} L 194.5 ${HEM_Y - 8} M 209 ${HEM_Y - 14 + torsoBendY * 0.35 + leanBackY * 0.35} L 205.5 ${HEM_Y - 8}`} stroke="#1b241d" strokeWidth="0.5" />
           </g>
 
-          <g id="tc-head-group" transform={`translate(${200 + bodyShift * 1.15}, ${206 + torsoBendY + leanBackY * 1.5}) scale(${HEAD_SCALE * (0.85 + bowBend * 0.15)}) translate(-200, -206)`}>
+          {/* NECK: from under the hood down into the hoodie's collar */}
+          <g id="tc-neck" transform={bodyShift ? `translate(${bodyShift * 1.07}, 0)` : undefined}>
+            <path
+              d={`M 196.6 ${206 + torsoBendY + leanBackY * 1.5 - NECK_LIFT - 3} L 203.4 ${206 + torsoBendY + leanBackY * 1.5 - NECK_LIFT - 3} L 204.2 ${SHOULDER_Y + torsoBendY + leanBackY + 1} L 195.8 ${SHOULDER_Y + torsoBendY + leanBackY + 1} Z`}
+              fill="#e5bda3"
+            />
+            {/* the hood's shadow on the neck */}
+            <rect x="196.6" y={206 + torsoBendY + leanBackY * 1.5 - NECK_LIFT - 3} width="6.8" height="2.4" fill="#d9b197" />
+          </g>
+          <g id="tc-head-group" transform={`translate(${200 + bodyShift * 1.15}, ${206 + torsoBendY + leanBackY * 1.5 - NECK_LIFT}) scale(${HEAD_SCALE * (0.85 + bowBend * 0.15)}) translate(-200, -206)`}>
             {/* INNER HEAD & FACE peeking from under hood */}
             <g id="tc-face">
               {/* Neck */}
