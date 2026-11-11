@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import InfoModal from './InfoModalLazy';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
 import { downloadBackup, restoreBackup } from '../lib/backup';
-import { Home, BookOpen, Activity, X, Info, Music, LayoutGrid, EyeOff, Eye, Database, Download, Sparkles, RotateCcw, Headphones, LetterText, Compass, Settings } from 'lucide-react';
+import { Home, BookOpen, Activity, X, Info, Music, LayoutGrid, EyeOff, Eye, Database, Download, Sparkles, RotateCcw, Headphones, LetterText, Compass, Settings, Layers } from 'lucide-react';
 import { MethodMark } from './MethodMark';
 import { useTime } from '../contexts/TimeContext';
 import { motion, AnimatePresence } from 'motion/react';
@@ -118,7 +118,7 @@ export default function NavigationMenu() {
 
   const mainNavItems = [
     { path: '/dashboard', icon: <Home size={18} />, labelEn: 'Home', labelEl: 'Αρχική' },
-    { path: '/chapters', icon: <BookOpen size={18} />, labelEn: 'Read', labelEl: 'Διάβασμα' },
+    { path: '/chapters', icon: <BookOpen size={18} />, labelEn: 'Book', labelEl: 'Βιβλίο' },
     { path: '/practice', icon: <Activity size={18} />, labelEn: 'Practice', labelEl: 'Πρακτική' },
     { path: '/journal', icon: <QuillIcon size={18} />, labelEn: 'Journal', labelEl: 'Ημερολόγιο' },
   ];
@@ -129,11 +129,12 @@ export default function NavigationMenu() {
   // The computer's side bar: every place in the app, always in the same order.
   const sideItems = [
     { path: '/', Icon: Home, label: el ? 'Αρχική' : 'Home' },
-    { path: '/chapters', Icon: BookOpen, label: el ? 'Διάβασμα' : 'Read' },
+    { path: '/chapters', Icon: BookOpen, label: el ? 'Βιβλίο' : 'Book' },
     { path: '/practice', Icon: Activity, label: el ? 'Πρακτική' : 'Practice' },
     { path: '/sanctuary', Icon: WavesIcon, label: el ? 'Καταφύγιο' : 'Sanctuary' },
     { path: '/program', Icon: SproutIcon, label: el ? 'Πρόγραμμα' : 'Program' },
     { path: '/journal', Icon: QuillIcon, label: el ? 'Ημερολόγιο' : 'Journal' },
+    { path: '/cards', Icon: Layers, label: el ? 'Κάρτες' : 'Cards' },
     { path: '/rabbithole', Icon: SpiralIcon, label: el ? 'Κουνελότρυπα' : 'Rabbit Hole' },
     { path: '/method', Icon: Compass, label: el ? 'Η Μέθοδος' : 'The Method' },
   ];
@@ -309,7 +310,7 @@ export default function NavigationMenu() {
               <div className="flex-[1] overflow-y-auto pt-6 px-6 pb-6 max-w-2xl mx-auto w-full flex flex-col gap-3">
                 {/* On the phone, the places the home page does not list (on a computer they are in the side bar). */}
                 <nav aria-label={el ? 'Τόποι της εφαρμογής' : 'Places in the app'} className="grid grid-cols-2 gap-2.5 desk:hidden">
-                  {sideItems.filter(i => ['/sanctuary', '/rabbithole', '/method', '/program'].includes(i.path)).map(({ path, Icon, label }) => (
+                  {sideItems.filter(i => ['/sanctuary', '/program', '/cards', '/rabbithole', '/method'].includes(i.path)).map(({ path, Icon, label }) => (
                     <Link
                       key={path}
                       to={path}

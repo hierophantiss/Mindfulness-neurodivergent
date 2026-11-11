@@ -32,8 +32,8 @@ export default function Program() {
       
       <PageHeader
         back="/dashboard"
-        eyebrow={language === 'en' ? '8 Weeks Program' : 'Πρόγραμμα 8 Εβδομάδων'}
-        title={language === 'en' ? 'The Path' : 'Η Διαδρομή'}
+        eyebrow={language === 'en' ? '8 weeks' : '8 εβδομάδες'}
+        title={language === 'en' ? 'Program' : 'Πρόγραμμα'}
         lead={language === 'en' ? 'Eight weeks, one small step a day, at your own pace.' : 'Οκτώ εβδομάδες, ένα μικρό βήμα τη μέρα, με τον δικό σου ρυθμό.'}
       />
       

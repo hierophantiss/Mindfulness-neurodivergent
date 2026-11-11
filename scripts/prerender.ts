@@ -795,6 +795,13 @@ function getMetaForRoute(route: string): RouteMeta {
     return { title: t, description: d, schema: { '@context': 'https://schema.org', '@type': 'WebPage', name: t, description: d }, schemaType: 'WebPage', bodyParagraphs };
   }
 
+  // ── Cards: the book's four summaries ──
+  if (clean === '/cards') {
+    const t = lang === 'en' ? 'The Book\'s Four Cards | Neurodivergent Mindfulness' : 'Οι τέσσερις κάρτες του βιβλίου | Neurodivergent Mindfulness';
+    const d = lang === 'en' ? 'The four summaries of the Fourfold Axis, each for a different moment: the Pocket Card for inside the wave, the card for when you are stuck, the Worksheet for inside the day and the Four Stages for a quiet moment.' : 'Οι τέσσερις περιλήψεις του Τετραπλού Άξονα, η καθεμία για άλλη στιγμή: η Κάρτα της Τσέπης για μέσα στο κύμα, η κάρτα για όταν έχεις κολλήσει, το Φύλλο Εργασίας για μέσα στη μέρα και τα Τέσσερα Στάδια για ήσυχη στιγμή.';
+    return { title: t, description: d, schema: { '@context': 'https://schema.org', '@type': 'WebPage', name: t, description: d }, schemaType: 'WebPage', bodyParagraphs: [d] };
+  }
+
   // ── Accessibility ──
   if (clean === '/accessibility') {
     const t = lang === 'en' ? 'Accessibility statement | Neurodivergent Mindfulness' : 'Δήλωση προσβασιμότητας | Neurodivergent Mindfulness';

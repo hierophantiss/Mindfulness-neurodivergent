@@ -240,9 +240,10 @@ export default function Dashboard() {
             {greeting}
           </h1>
           {/* The method in one line: one way, many ways in. */}
-          <p className="sky-text mt-3 text-[15px] leading-snug text-ink/75 desk:mt-4 desk:text-[18px]">
-            {el ? 'Μία μέθοδος, τέσσερις άξονες. Μάθε τη όπως σου ταιριάζει.' : 'One method, four axes. Learn it the way that suits you.'}
-          </p>
+          <Link to="/method" className="sky-text mt-2 inline-flex items-center gap-1.5 min-h-[40px] text-[15px] leading-snug text-ink/75 hover:text-ink transition-colors desk:mt-3 desk:text-[18px]">
+            <span>{el ? 'Μία μέθοδος, τέσσερις άξονες. Δες πώς δουλεύει' : 'One method, four axes. See how it works'}</span>
+            <ArrowRight size={15} aria-hidden="true" className="shrink-0 opacity-70" />
+          </Link>
         </div>
 
         {/* First visit only: a small welcome, high up where a newcomer looks. Once seen or put away, it is gone. */}
@@ -285,7 +286,7 @@ export default function Dashboard() {
           {/* Learn: the book, open where you stopped. */}
           <section aria-labelledby="home-learn-title" className="mt-[30px] desk:mt-0">
             <div className="flex items-baseline justify-between gap-3 mb-3 desk:mb-5">
-              <h2 id="home-learn-title" className={sectionTitle}>{el ? 'Μάθε' : 'Learn'}</h2>
+              <h2 id="home-learn-title" className={sectionTitle}>{el ? 'Το βιβλίο' : 'The book'}</h2>
               <Link to="/chapters" className="sky-text flex items-center min-h-[36px] text-[13.5px] text-ink/75 hover:text-ink transition-colors">
                 {el ? `${chapters.length} κεφάλαια` : `${chapters.length} chapters`}
               </Link>
@@ -351,7 +352,7 @@ export default function Dashboard() {
           {/* Practise: many ways, one for each axis. */}
           <motion.section variants={itemVariants} aria-labelledby="home-practise-title" className="mt-[30px] desk:mt-12">
             <div className="flex items-baseline justify-between gap-3 mb-3 desk:mb-5">
-              <h2 id="home-practise-title" className={sectionTitle}>{el ? 'Εξασκήσου' : 'Practise'}</h2>
+              <h2 id="home-practise-title" className={sectionTitle}>{el ? 'Πρακτική' : 'Practice'}</h2>
               <Link to="/practice" className="sky-text flex items-center min-h-[36px] text-[13.5px] text-ink/75 hover:text-ink transition-colors">
                 {el ? 'όλες οι ασκήσεις' : 'all practices'}
               </Link>

@@ -86,7 +86,7 @@
       "sizes": "720x1558",
       "type": "image/webp",
       "form_factor": "narrow",
-      "label": "Home: the guide, “How do you feel right now?” and the four axes"
+      "label": "Home: \"How do you feel right now?\", the book and the practice"
     },
     {
       "src": "/screenshots/en-phone-2-breath.webp",
@@ -96,11 +96,25 @@
       "label": "The 4-6 breath in progress"
     },
     {
+      "src": "/screenshots/en-phone-4-movement.webp",
+      "sizes": "720x1558",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "Cloud Hands: a Tai Chi movement with the breath"
+    },
+    {
       "src": "/screenshots/en-phone-3-chapter.webp",
       "sizes": "720x1558",
       "type": "image/webp",
       "form_factor": "narrow",
       "label": "Chapter 2, Breath: read or listen"
+    },
+    {
+      "src": "/screenshots/en-phone-5-cards.webp",
+      "sizes": "720x1558",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "Cards: the book's four summaries"
     },
     {
       "src": "/screenshots/en-desktop-home.webp",

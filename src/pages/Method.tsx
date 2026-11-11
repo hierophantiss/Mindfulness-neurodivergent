@@ -30,7 +30,7 @@ const RAINBOW = 'linear-gradient(90deg,#ff3b30,#ff9500,#ffd60a,#34c759,#32ade6,#
 
 const T = {
   el: {
-    title: 'Η Μέθοδος & Το Σήμα',
+    title: 'Η Μέθοδος',
     intro: 'Η ενσυνειδητότητα της μεθόδου δεν σου ζητά «να αδειάσεις το μυαλό σου» ούτε να μείνεις ακίνητος. Σε μαθαίνει να ρυθμίζεις το νευρικό σου σύστημα με τέσσερα απλά βήματα, τους τέσσερις άξονες: Σώμα, Αναπνοή, Προσοχή, Χώρος.',
     rootsTitle: 'Ρίζες',
     roots: 'Η μέθοδος πατά σε αρχές από διαφορετικές παραδόσεις: τη Σαμάθα (shiné, η ηρεμία του νου) και τη Βιπάσανα (η καθαρή όραση), το Τάι Τσι και το Τσι Κονγκ, και τον Σουφισμό. Από αυτές κρατά ό,τι βοηθά το νευρικό σύστημα να ρυθμιστεί, δοσμένο σε απλά βήματα. Καμία από αυτές τις παραδόσεις δεν έχει εγκρίνει τη μέθοδο.',
@@ -56,7 +56,7 @@ const T = {
     closing: '«Δεν σταμάτησε το μυαλό μου να τρέχει, αλλά σταμάτησε να με παρασύρει.»',
   },
   en: {
-    title: 'The Method & the Sign',
+    title: 'The Method',
     intro: 'The mindfulness of this method does not ask you to "empty your mind", nor to stay still. It teaches you to regulate your nervous system in four simple steps, the four axes: Body, Breath, Attention, Space.',
     rootsTitle: 'Roots',
     roots: 'The method draws on principles from different traditions: Samatha (shiné, calm abiding of the mind) and Vipassana (clear seeing), Tai Chi and Qigong, and Sufism. From them it keeps what helps the nervous system settle, given in simple steps. None of these traditions has endorsed the method.',
@@ -114,20 +114,7 @@ export default function Method() {
       {/* Content */}
       <div className="flex-1 py-6 space-y-8 pb-safe mb-6">
         
-        {/* Intro */}
-        <section className="space-y-4">
-          <p className="text-ink/85 text-[15px] leading-relaxed">
-            {t.intro}
-          </p>
-        </section>
-
-        {/* Roots */}
-        <section className="space-y-2">
-          <h2 className="text-[13px] font-semibold text-ink/60">{t.rootsTitle}</h2>
-          <p className="text-ink/80 text-sm leading-relaxed">{t.roots}</p>
-        </section>
-
-        {/* The sign of the method */}
+        {/* First the sign: the whole method in one picture. */}
         {(() => {
           const sign = SIGN[language === 'en' ? 'en' : 'el'];
           return (
@@ -147,6 +134,13 @@ export default function Method() {
             </section>
           );
         })()}
+
+        {/* Intro */}
+        <section className="space-y-4">
+          <p className="text-ink/85 text-[15px] leading-relaxed">
+            {t.intro}
+          </p>
+        </section>
 
         {/* The 4 axes, each with its practices */}
         <section className="pt-4 border-t border-white/[0.05]">
@@ -195,6 +189,12 @@ export default function Method() {
           </h2>
           <p className="text-ink/90 text-sm leading-relaxed whitespace-pre-wrap mb-4">{t.bikeText}</p>
           <p className="pt-3 border-t border-white/[0.05] text-xs font-medium text-teal-300 leading-relaxed">{t.bikeLesson}</p>
+        </section>
+
+        {/* Roots: where it comes from, after what it is. */}
+        <section className="space-y-2">
+          <h2 className="text-[13px] font-semibold text-ink/60">{t.rootsTitle}</h2>
+          <p className="text-ink/80 text-sm leading-relaxed">{t.roots}</p>
         </section>
 
         {/* Closing: the author's words */}

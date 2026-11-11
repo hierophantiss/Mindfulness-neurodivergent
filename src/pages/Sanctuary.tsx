@@ -456,8 +456,9 @@ export default function Sanctuary() {
 
         {/* Player */}
         {activeTab === 'audio' && (
-          <div className="flex-1 flex flex-col items-center justify-center py-6 relative">
-            <div className="relative w-56 h-56 desk:w-72 desk:h-72 flex items-center justify-center mb-8">
+          <div className={cn("flex flex-col items-center justify-center relative", activeSound ? "flex-1 py-6" : "pt-1")}>
+            {/* Before a sound is chosen there is nothing to show in the circle: the sounds come up instead. */}
+            <div className={cn("relative w-56 h-56 desk:w-72 desk:h-72 items-center justify-center mb-8", activeSound ? "flex" : "hidden")}>
               {isBreathWave ? (
                 <div
                   className="absolute inset-0 rounded-full bg-teal-500/10 border border-teal-500/30 flex items-center justify-center"

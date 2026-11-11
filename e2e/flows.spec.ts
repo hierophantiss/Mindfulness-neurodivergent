@@ -39,9 +39,17 @@ test('the offline note closes with its ×', async ({ page, context }) => {
   // The page itself first (not the text it arrived with): the note listens
   // for the change only once the app is on screen.
   await expect(page.getByRole('heading', { name: 'How do you feel right now?' })).toBeVisible();
-  await context.setOffline(true);
-  await expect(page.getByRole('heading', { name: 'Offline Mode' })).toBeVisible();
-  await page.getByRole('button', { name: 'Close', exact: true }).last().click();
+  // The note may start listening a moment after the page shows: if the change
+  // came too early for it, make the change again.
+  await expect(async () => {
+    await context.setOffline(false);
+    await context.setOffline(true);
+    await expect(page.getByRole('heading', { name: 'Offline Mode' })).toBeVisible({ timeout: 2500 });
+  }).toPass({ timeout: 30000 });
+  // The note slides in and leaves by itself after a few seconds: click it as soon
+  // as it is there, without waiting for the slide to settle (on a busy machine
+  // it could be gone first).
+  await page.getByRole('button', { name: 'Close', exact: true }).last().click({ force: true });
   await expect(page.getByRole('heading', { name: 'Offline Mode' })).toHaveCount(0);
   await context.setOffline(false);
 });

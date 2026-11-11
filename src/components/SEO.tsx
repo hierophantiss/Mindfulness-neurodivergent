@@ -578,6 +578,12 @@ export const SEO: React.FC = () => {
       : 'Όλα μένουν στη συσκευή σου: χωρίς λογαριασμό, χωρίς παρακολούθηση, χωρίς διαφημίσεις. Τι κρατά η εφαρμογή, από ποιες υπηρεσίες περνά, πώς κρατάς ή σβήνεις τα δεδομένα σου, και τι είναι και τι δεν είναι η εφαρμογή.';
     schema = { '@context': 'https://schema.org', '@type': 'WebPage', name: title, description, url: pageUrl };
 
+  // ── Cards: the book's four summaries ─────────────────────────────
+  } else if (cleanPath === '/cards') {
+    title = lang === 'en' ? 'The Book\'s Four Cards | Neurodivergent Mindfulness' : 'Οι τέσσερις κάρτες του βιβλίου | Neurodivergent Mindfulness';
+    description = lang === 'en' ? 'The four summaries of the Fourfold Axis, each for a different moment: the Pocket Card for inside the wave, the card for when you are stuck, the Worksheet for inside the day and the Four Stages for a quiet moment.' : 'Οι τέσσερις περιλήψεις του Τετραπλού Άξονα, η καθεμία για άλλη στιγμή: η Κάρτα της Τσέπης για μέσα στο κύμα, η κάρτα για όταν έχεις κολλήσει, το Φύλλο Εργασίας για μέσα στη μέρα και τα Τέσσερα Στάδια για ήσυχη στιγμή.';
+    schema = { '@context': 'https://schema.org', '@type': 'WebPage', name: title, description, url: pageUrl };
+
   // ── Accessibility ────────────────────────────────────────────────
   } else if (cleanPath === '/accessibility') {
     title = lang === 'en'

@@ -661,6 +661,26 @@ export default function ChapterDetail() {
                       ))}
                     </ul>
 
+                    {/* From reading to doing: the practices of this chapter's axis, or its card. */}
+                    {(() => {
+                      const axis = axisOfChapter(chapter.num);
+                      const el = language === 'el';
+                      const AXIS_NAME = { body: el ? 'το Σώμα' : 'the Body', breath: el ? 'την Αναπνοή' : 'the Breath', attention: el ? 'την Προσοχή' : 'Attention', space: el ? 'τον Χώρο' : 'Space' } as const;
+                      const to = axis ? `/practice?axis=${axis}` : [7, 8, 9, 10].includes(chapter.num) ? `/cards#card-${chapter.num}` : null;
+                      if (!to) return null;
+                      return (
+                        <Link to={to} className="glass flex items-center gap-4 min-h-[64px] rounded-[20px] pl-5 pr-4 py-3 hover:brightness-110 active:scale-[0.99] transition-[filter,transform]">
+                          <span className="flex-1 min-w-0 flex flex-col gap-0.5">
+                            <span className="text-[16px] leading-snug text-ink">{axis ? (el ? 'Δοκίμασέ το τώρα' : 'Try it now') : (el ? 'Κράτα το στις Κάρτες' : 'Keep it in the Cards')}</span>
+                            <span className="text-[13px] leading-snug text-ink/70">{axis ? (el ? `Ασκήσεις για ${AXIS_NAME[axis]}` : `Practices for ${AXIS_NAME[axis]}`) : (el ? 'Οι περιλήψεις του βιβλίου, με ένα πάτημα' : 'The book\'s summaries, one tap away')}</span>
+                          </span>
+                          <span className="shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-white/[0.06] border border-white/10">
+                            <ChevronRight size={20} aria-hidden="true" className="text-ink/80" />
+                          </span>
+                        </Link>
+                      );
+                    })()}
+
                     {/* Evidence & Foundations Section */}
                     {CHAPTER_CONCEPTS_MAP[chapter.num] && CHAPTER_CONCEPTS_MAP[chapter.num].length > 0 && (
                       <div className="pt-8 border-t border-white/5 space-y-4">

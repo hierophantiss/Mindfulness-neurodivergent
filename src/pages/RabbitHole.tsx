@@ -353,28 +353,16 @@ export default function RabbitHole() {
           </button>
         </div>
 
-        <div className="flex flex-col items-center justify-center mb-12 text-center px-4 space-y-4 max-w-2xl mx-auto">
-          <p className="text-ink/70 text-sm md:text-base font-light leading-relaxed">
-            {activeTab === 'articles' ? (
-              language === 'en' 
-                ? 'A collection of theoretical pieces, allegories, and insights from across the world charting the human path to the exploration of consciousness.'
-                : 'Μια βιβλιοθήκη με θεωρητικά κείμενα, αλληγορίες και στοχασμούς από όλο τον κόσμο για την ανθρώπινη πορεία προς την εξερεύνηση της συνειδητότητας.'
-            ) : (
-              language === 'en'
-                ? 'Visual insights and philosophical explorations.'
-                : 'Οπτικές αναζητήσεις και φιλοσοφικές εξερευνήσεις.'
-            )}
-          </p>
-          {activeTab === 'articles' && (
-            <div className="pt-4 border-t border-white/10">
-              <p className="text-ink/70 font-medium text-sm leading-relaxed">
-                {language === 'en'
-                  ? '"These texts are not scientific literature, but philosophical reflections, poetic allegories, and symbolic explorations of the human experience."'
-                  : '«Τα κείμενα αυτά δεν αποτελούν επιστημονικά δοκίμια, αλλά φιλοσοφικούς στοχασμούς, ποιητικές αλληγορίες και συμβολικές εξερευνήσεις της συνείδησης.»'}
-              </p>
-            </div>
-          )}
-        </div>
+        {/* One line on what this is, then the texts. */}
+        <p className="mb-7 px-1 text-ink/75 text-[14.5px] leading-relaxed max-w-2xl">
+          {activeTab === 'articles'
+            ? (language === 'en'
+              ? 'Reflections and allegories, for deeper reading. They are not scientific texts.'
+              : 'Στοχασμοί και αλληγορίες, για βαθύτερο διάβασμα. Δεν είναι επιστημονικά κείμενα.')
+            : (language === 'en'
+              ? 'Visual insights and philosophical explorations.'
+              : 'Οπτικές αναζητήσεις και φιλοσοφικές εξερευνήσεις.')}
+        </p>
 
         {activeTab === 'articles' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">

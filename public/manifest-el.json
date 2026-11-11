@@ -86,7 +86,7 @@
       "sizes": "720x1558",
       "type": "image/webp",
       "form_factor": "narrow",
-      "label": "Η αρχική: ο οδηγός, «Πώς νιώθεις τώρα;» και οι τέσσερις άξονες"
+      "label": "Η αρχική: «Πώς νιώθεις τώρα;», το βιβλίο και η πρακτική"
     },
     {
       "src": "/screenshots/el-phone-2-breath.webp",
@@ -96,11 +96,25 @@
       "label": "Αναπνοή 4-6 σε εξέλιξη"
     },
     {
+      "src": "/screenshots/el-phone-4-movement.webp",
+      "sizes": "720x1558",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "Χέρια στα Σύννεφα: κίνηση Τάι Τσι με την αναπνοή"
+    },
+    {
       "src": "/screenshots/el-phone-3-chapter.webp",
       "sizes": "720x1558",
       "type": "image/webp",
       "form_factor": "narrow",
       "label": "Κεφάλαιο 2, Αναπνοή: διάβασμα ή ακρόαση"
+    },
+    {
+      "src": "/screenshots/el-phone-5-cards.webp",
+      "sizes": "720x1558",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "Κάρτες: οι τέσσερις περιλήψεις του βιβλίου"
     },
     {
       "src": "/screenshots/el-desktop-home.webp",

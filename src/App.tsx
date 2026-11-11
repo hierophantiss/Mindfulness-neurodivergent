@@ -23,6 +23,7 @@ const Journal = lazyWithReload(() => import('./pages/Journal'));
 const Faq = lazyWithReload(() => import('./pages/Faq'));
 const Privacy = lazyWithReload(() => import('./pages/Privacy'));
 const Accessibility = lazyWithReload(() => import('./pages/Accessibility'));
+const Cards = lazyWithReload(() => import('./pages/Cards'));
 const Install = lazyWithReload(() => import('./pages/Install'));
 const GenericExercise = lazyWithReload(() => import('./pages/GenericExercise'));
 const Method = lazyWithReload(() => import('./pages/Method'));
@@ -114,6 +115,7 @@ function AppContent() {
             <Route path="faq" element={<Faq />} />
             <Route path="privacy" element={<Privacy />} />
             <Route path="accessibility" element={<Accessibility />} />
+            <Route path="cards" element={<Cards />} />
             <Route path="install" element={<Install />} />
             <Route path="*" element={<NotFound />} />
           </Route>

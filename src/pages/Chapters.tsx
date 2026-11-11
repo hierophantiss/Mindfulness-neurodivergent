@@ -1,7 +1,7 @@
 import { PageHeader } from '../components/PageHeader';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, Star } from 'lucide-react';
+import { ArrowRight, BookOpen, Layers, Star } from 'lucide-react';
 import { MeditatorFigure } from '../components/MeditatorFigure';
 import { axisOfChapter } from '../lib/axisOfChapter';
 import { ChapterIcon } from '../components/ChapterIcon';
@@ -27,8 +27,9 @@ export default function Chapters() {
   const chapters = CHAPTERS_DATA[currentLang] || [];
 
   const basisChapters = chapters.filter(c => c.num >= 1 && c.num <= 4);
-  const applicationChapters = chapters.filter(c => c.num >= 5 && c.num <= 8);
-  const depthChapters = chapters.filter(c => c.num >= 9 && c.num <= 11);
+  // The book's own shape: Part 1 (the four axes), Part 2 (in life), and the background.
+  const applicationChapters = chapters.filter(c => c.num >= 5 && c.num <= 10);
+  const depthChapters = chapters.filter(c => c.num >= 11);
 
   return (
     <div className="flex flex-col relative w-full min-h-full pt-2">
@@ -36,8 +37,8 @@ export default function Chapters() {
         
         <PageHeader
           back="/dashboard"
-          eyebrow={language === 'en' ? 'Theory & Practice' : 'Θεωρία & Πρακτική'}
-          title={language === 'en' ? 'Presence Workbook' : 'Εγχειρίδιο Παρουσίας'}
+          eyebrow={language === 'en' ? 'Presence Workbook' : 'Εγχειρίδιο Παρουσίας'}
+          title={language === 'en' ? 'The book' : 'Το βιβλίο'}
           lead={
             <>
               {language === 'el' ? 'Μαθαίνοντας να ιππεύεις τον άνεμο. Ένας οδηγός για την επίγνωση.' : 'Learning to ride the wind. A guide to awareness.'}{' '}
@@ -48,16 +49,24 @@ export default function Chapters() {
           }
         />
 
-        <div className="max-w-xl mx-auto w-full">
-          <OfflineAudioCard lang={currentLang} />
-        </div>
+        {/* The book's four summaries, one tap away. */}
+        <Link to="/cards" className="glass flex items-center gap-3.5 min-h-[68px] rounded-[22px] px-4 py-3 hover:brightness-110 active:scale-[0.99] transition-[filter,transform]">
+          <span aria-hidden="true" className="shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-white/[0.04] border border-white/[0.08] text-sign-gold">
+            <Layers size={19} />
+          </span>
+          <span className="flex-1 min-w-0 flex flex-col gap-0.5">
+            <span className="text-[15px] leading-snug text-ink">{language === 'el' ? 'Κάρτες' : 'Cards'}</span>
+            <span className="text-[13px] leading-snug text-ink/70">{language === 'el' ? 'Οι τέσσερις περιλήψεις του βιβλίου, για τη στιγμή που τις χρειάζεσαι' : 'The book\'s four summaries, for the moment you need them'}</span>
+          </span>
+          <ArrowRight size={16} aria-hidden="true" className="shrink-0 text-ink/55" />
+        </Link>
 
         {/* Section 1: The Quadruple Axis - Atmospheric Cards */}
         <div id="basis" className="space-y-8">
           <div className="flex items-center gap-4">
             <span className="w-12 h-[1px] bg-white/10"></span>
             <h2 className="text-[13px] font-medium text-ink/70">
-              {language === 'el' ? 'Ο Τετραπλός Άξονας' : 'The Fourfold Axis'}
+              {language === 'el' ? 'Μέρος 1 · Ο Πυρήνας της Μεθόδου' : 'Part 1 · The Core of the Method'}
             </h2>
           </div>
           
@@ -132,7 +141,7 @@ export default function Chapters() {
             <div className="flex items-center gap-4">
               <span className="w-12 h-[1px] bg-white/10"></span>
               <h2 className="text-[13px] font-medium text-ink/70">
-                {language === 'el' ? 'Εφαρμογή' : 'Application'}
+                {language === 'el' ? 'Μέρος 2 · Εφαρμογές και Μετασχηματισμός' : 'Part 2 · Applications and Transformation'}
               </h2>
             </div>
             <div className="space-y-4">
@@ -178,7 +187,7 @@ export default function Chapters() {
             <div className="flex items-center gap-4">
               <span className="w-12 h-[1px] bg-white/10"></span>
               <h2 className="text-[13px] font-medium text-ink/70">
-                {language === 'el' ? 'Σύνθεση' : 'Depth'}
+                {language === 'el' ? 'Το Υπόβαθρο' : 'The Background'}
               </h2>
             </div>
             <div className="space-y-4">
@@ -239,6 +248,11 @@ export default function Chapters() {
                 : 'A structured practical path to integrate awareness into daily life.'}
             </p>
           </Link>
+        </div>
+
+        {/* For listening without a connection: after the chapters, not before them. */}
+        <div className="max-w-xl mx-auto w-full">
+          <OfflineAudioCard lang={currentLang} />
         </div>
 
       </div>

@@ -116,8 +116,8 @@ export default function PracticeMicrodoses() {
         eyebrow={language === 'el' ? 'Πρακτική' : 'Practice'}
         title={language === 'el' ? 'Μικροδόσεις' : 'Microdoses'}
         lead={language === 'el'
-          ? 'Πρακτικές που γίνονται παντού, χωρίς να σε καταλάβει κανείς. Ιδανικές για στιγμές έντασης ή δημόσιους χώρους.'
-          : 'Practices you can do anywhere, without anyone noticing. Perfect for overstimulation or public spaces.'}
+          ? 'Πολύ σύντομες πρακτικές, για παντού, χωρίς να φαίνονται.'
+          : 'Very short practices, for anywhere, that nobody notices.'}
       >
         {/* Once a lock in front of the page; now only a word, and the page is open to everyone. */}
         {!readFirstChapter && (
