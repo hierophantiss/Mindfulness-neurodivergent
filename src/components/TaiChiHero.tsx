@@ -200,33 +200,6 @@ export default function TaiChiHero({
     return list;
   }, []);
 
-  // Generate a list of Prana/Aura particles
-  const particles = useMemo(() => {
-    const list = [];
-    const seedRandom = (str: string) => {
-      let hash = 0;
-      for (let i = 0; i < str.length; i++) {
-        hash = str.charCodeAt(i) + ((hash << 5) - hash);
-      }
-      return () => {
-        const x = Math.sin(hash++) * 10000;
-        return x - Math.floor(x);
-      };
-    };
-    const random = seedRandom("prana_particles_v1");
-    // Generate 30 aura flow particles
-    for (let i = 0; i < 30; i++) {
-       list.push({
-         id: `p_${i}`,
-         angle: random() * Math.PI * 2,
-         rBase: random() * 120 + 40,
-         size: random() * 1.5 + 0.5,
-         driftOffset: random() * Math.PI * 2,
-       });
-    }
-    return list;
-  }, []);
-
   const selectedColor = {
     primary: "#fbbf24", // yellow-400
     secondary: "#f59e0b", // amber-500
@@ -258,6 +231,7 @@ export default function TaiChiHero({
   const bf = breathForce;
   // The last pose drawn, so elbows and hands carry on from where they were.
   const memo = useRef<{ type?: string; eL?: Pt; cL?: Pt; cR?: Pt; diff?: number }>({});
+  const trailRef = useRef<{ type?: string; pts: { t: number; l: Pt; r: Pt }[] }>({ pts: [] });
   if (memo.current.type !== movementType || idle) memo.current = { type: movementType };
   const bowBend = (movementType === "bow" || movementType === "deep-bow-5-5") ? (1 - bf) : 0;
   // The bow: the trunk tips forward and, seen from the front, looks shorter;
@@ -812,6 +786,34 @@ export default function TaiChiHero({
     sL.x = shL.x; sR.x = shR.x;
   }
 
+  // ── Light trails: each palm leaves a soft trail that fades in under a
+  // second, so the path of the movement can be seen (the arc of the 5-5, the
+  // Lotus's V, the circles of Cloud Hands). Kept as the last moments' palms.
+  const TRAIL_MS = 900;
+  const nowMs = typeof performance !== 'undefined' ? performance.now() : 0;
+  const palmAt = (h: Pt, rot: number): Pt => {
+    const r = (rot * Math.PI) / 180;
+    return { x: h.x - 5 * Math.sin(r), y: h.y + 5 * Math.cos(r) + sinkY };
+  };
+  if (idle || bare || trailRef.current.type !== movementType) trailRef.current = { type: movementType, pts: [] };
+  if (!idle && !bare) {
+    const pts = trailRef.current.pts;
+    const l = palmAt(hLf, leftRot), r = palmAt(hR, rightHandRotation);
+    const last = pts[pts.length - 1];
+    // A jump (a new practice, a new phase that starts elsewhere) starts afresh.
+    if (last && Math.hypot(last.l.x - l.x, last.l.y - l.y) > 20) pts.length = 0;
+    if (!last || nowMs - last.t > 16) pts.push({ t: nowMs, l, r });
+    while (pts.length && nowMs - pts[0].t > TRAIL_MS) pts.shift();
+  }
+  const trail = trailRef.current.pts;
+
+  // The figure and the earth, framed: in the practice picture closer than at
+  // first (the figure about two thirds of the height, the open arms still in),
+  // feet a little lower; small pictures (bare) keep their framing.
+  const sceneTf = bare
+    ? "translate(200, 320) scale(1.8) translate(-200, -283)"
+    : "translate(200, 336) scale(2.3) translate(-200, -283)";
+
   // Drawn once and kept (see the layers below).
   const staticSky = useMemo(() => (
       <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 400">
@@ -890,11 +892,26 @@ export default function TaiChiHero({
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
-          {/* A soft dot of light, instead of a blur filter on every particle (much lighter to draw). */}
-          <radialGradient id="tc-particle-dot">
-            <stop offset="0%" stopColor="#fef3c7" stopOpacity="1" />
-            <stop offset="35%" stopColor="#fbbf24" stopOpacity="0.85" />
-            <stop offset="100%" stopColor="#fbbf24" stopOpacity="0" />
+          {/* The clothes: light from above, a little darker towards the hem */}
+          <linearGradient id="tc-hoodie-shade" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#425547" />
+            <stop offset="45%" stopColor="#36463a" />
+            <stop offset="100%" stopColor="#2c392f" />
+          </linearGradient>
+          <linearGradient id="tc-pants-shade" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#2a372d" />
+            <stop offset="100%" stopColor="#222d25" />
+          </linearGradient>
+          {/* Light behind the figure, so its outline reads against the night */}
+          <radialGradient id="tc-backlight">
+            <stop offset="0%" stopColor="#a7f3d0" stopOpacity="0.55" />
+            <stop offset="55%" stopColor="#5eead4" stopOpacity="0.18" />
+            <stop offset="100%" stopColor="#5eead4" stopOpacity="0" />
+          </radialGradient>
+          {/* Under the feet */}
+          <radialGradient id="tc-foot-shadow">
+            <stop offset="0%" stopColor="#000000" stopOpacity="0.55" />
+            <stop offset="100%" stopColor="#000000" stopOpacity="0" />
           </radialGradient>
         </defs>
         {/* Sky Background */}
@@ -904,7 +921,7 @@ export default function TaiChiHero({
   const staticScene = useMemo(() => (
       <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 400">
         {/* SCENE WRAPPER: Double size hero and earth */}
-        <g transform="translate(200, 320) scale(1.8) translate(-200, -283)">
+        <g transform={sceneTf}>
           {/* CENTRAL ENERGY LIGHT BEAM (Passing through earth and cosmic body) */}
           {/* Under Earth Beam (Golden orange, rich glow) */}
           <line
@@ -917,26 +934,14 @@ export default function TaiChiHero({
             filter="url(#tc-beam-glow)"
             opacity={0.85}
           />
-          {/* Above Earth Beam (Upper Golden/Neon Yellow laser) */}
-          <line
-            x1="200"
-            y1="0"
-            x2="200"
-            y2="284"
-            stroke="#fed7aa"
-            strokeWidth="2.5"
-            filter="url(#tc-beam-glow)"
-            opacity={0.85}
-          />
-          <line
-            x1="200"
-            y1="0"
-            x2="200"
-            y2="284"
-            stroke="#facc15"
-            strokeWidth="1.2"
-            opacity={0.9}
-          />
+          {/* Above Earth Beam: the axis, thinner, fading softly towards the top */}
+          <linearGradient id="tc-axis-fade" gradientUnits="userSpaceOnUse" x1="0" y1="284" x2="0" y2="60">
+            <stop offset="0%" stopColor="#facc15" stopOpacity="0.85" />
+            <stop offset="55%" stopColor="#facc15" stopOpacity="0.45" />
+            <stop offset="100%" stopColor="#facc15" stopOpacity="0" />
+          </linearGradient>
+          <line x1="200" y1="60" x2="200" y2="284" stroke="url(#tc-axis-fade)" strokeWidth="1.8" filter="url(#tc-beam-glow)" opacity={0.6} />
+          <line x1="200" y1="60" x2="200" y2="284" stroke="url(#tc-axis-fade)" strokeWidth="0.8" />
 
           {/* EARTH GLOBE AT THE BOTTOM */}
           {/* Atmospheric Blue Glow Ring */}
@@ -992,14 +997,14 @@ export default function TaiChiHero({
 
         </g>
       </svg>
-  ), []);
+  ), [sceneTf]);
 
   return (
     <div className={bare ? 'relative w-full aspect-square flex items-center justify-center' : 'relative w-full aspect-square bg-[#070b14] rounded-2xl overflow-hidden border border-slate-800 shadow-2xl flex items-center justify-center'}>
       {/* Absolute Layer - Subtle star twinkling sky */}
       {/* The picture is drawn in layers. What never changes (the sky, the beam and
           the earth with their soft glows) is drawn once and kept; what moves with
-          the breath (stars, particles, the figure) is drawn on its own layers,
+          the breath (stars, the light trails, the figure) is drawn on its own layers,
           and the light that rises and falls is a plain change of opacity. A
           single picture had every glow drawn again on every frame, which made
           the movement stutter on phones. */}
@@ -1037,36 +1042,11 @@ export default function TaiChiHero({
         </g>
 
       </svg>
-      <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 400">
-        {/* Prana/Aura Particles */}
-        <g>
-          {particles.map((p) => {
-            // Inhale (bf -> 1): particles gather concentrically (r scales to 0.3)
-            // Exhale (bf -> 0): particles diffuse outwards (r scales to 1.5)
-            const swirl = isRising ? bf * Math.PI : (1 - bf) * Math.PI; 
-            const currentR = p.rBase * (0.3 + (1 - bf) * 1.2);
-            const currentAngle = p.angle + swirl * 0.3 + p.driftOffset;
-            const px = 200 + currentR * Math.cos(currentAngle);
-            const py = 190 + currentR * Math.sin(currentAngle); // Center slightly above chest
-            const opacity = (0.2 + 0.8 * Math.min(1, bf * 1.5)) * (currentR < 180 ? 1 : Math.max(0, 1 - (currentR - 180) / 50)); 
-            return (
-              <circle 
-                key={p.id} 
-                cx={px} 
-                cy={py} 
-                r={p.size * 2.4}
-                fill="url(#tc-particle-dot)"
-                opacity={opacity}
-              />
-            );
-          })}
-        </g>
-      </svg>
       </>)}
       {staticScene}
       <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 400">
         {/* SCENE WRAPPER: Double size hero and earth */}
-        <g transform="translate(200, 320) scale(1.8) translate(-200, -283)">
+        <g transform={sceneTf}>
           {/* Energy pulses expanding up the central beam */}
           <circle
             cx="200"
@@ -1082,6 +1062,13 @@ export default function TaiChiHero({
             fill="#fed7aa"
             opacity={1 - ((breathForce + 0.5) % 1)}
           />
+
+          {/* Light behind the figure: always a little, more with the inhale */}
+          {!bare && (
+            <ellipse cx={200 + bodyShift} cy={226 + sinkY} rx={42} ry={66} fill="url(#tc-backlight)" opacity={0.35 + 0.4 * bf} />
+          )}
+          {/* The figure stands on the earth: a soft shadow under the feet */}
+          <ellipse cx={200} cy={289} rx={17} ry={2.6} fill="url(#tc-foot-shadow)" />
 
           {/* CHARACTER / HERO MODEL */}
           {/* Bare Feet Grounded on top curve of Earth */}
@@ -1106,11 +1093,14 @@ export default function TaiChiHero({
 
           {/* LEGS (Jogger pants, dark charcoal, elegant folds) */}
           {/* Clothes in the meditator's green, so it is the same person everywhere */}
-          <g id="tc-legs" fill="#2a372d" stroke="#1b241d" strokeWidth="0.5" transform={bodyShift ? `translate(0, 283) skewX(${(-Math.atan2(bodyShift, 38) * 180) / Math.PI}) translate(0, -283)` : undefined}>
+          <g id="tc-legs" fill="url(#tc-pants-shade)" stroke="#1b241d" strokeWidth="0.5" transform={bodyShift ? `translate(0, 283) skewX(${(-Math.atan2(bodyShift, 38) * 180) / Math.PI}) translate(0, -283)` : undefined}>
             {/* Left leg */}
             <path d={`M 189.5 ${HEM_Y - 3 + sinkY} L ${185.5 - sinkY * 0.4} ${KNEE_Y + sinkY * 0.45} L 186.5 283 L 196 283 L ${196 - sinkY * 0.2} ${HEM_Y - 3 + sinkY} Z`} />
             {/* Right leg */}
             <path d={`M 210.5 ${HEM_Y - 3 + sinkY} L ${214.5 + sinkY * 0.4} ${KNEE_Y + sinkY * 0.45} L 213.5 283 L 204 283 L ${204 + sinkY * 0.2} ${HEM_Y - 3 + sinkY} Z`} />
+            {/* Soft folds at the knees */}
+            <path d={`M ${187 - sinkY * 0.4} ${KNEE_Y - 1 + sinkY * 0.45} q 4 1.6 8 0.2 M ${188 - sinkY * 0.3} ${KNEE_Y + 3 + sinkY * 0.45} q 3 1.2 6.5 0.2`} fill="none" strokeOpacity={0.7} />
+            <path d={`M ${213 + sinkY * 0.4} ${KNEE_Y - 1 + sinkY * 0.45} q -4 1.6 -8 0.2 M ${212 + sinkY * 0.3} ${KNEE_Y + 3 + sinkY * 0.45} q -3 1.2 -6.5 0.2`} fill="none" strokeOpacity={0.7} />
             {/* Cuffs on pants */}
             <rect x="186" y="279" width="10" height="4" rx="1.2" fill="#1b241d" />
             <rect x="204" y="279" width="10" height="4" rx="1.2" fill="#1b241d" />
@@ -1118,9 +1108,9 @@ export default function TaiChiHero({
 
           <g id="tc-upper" transform={sinkY ? `translate(0, ${sinkY})` : undefined}>
           {/* TORSO / HOODIE (Black/Charcoal hoodie, centered) */}
-          <g id="tc-torso" fill="#36463a" transform={bodyShift ? `translate(${bodyShift}, 0)` : undefined}>
-            {/* The shoulders slope up a little to the neck */}
-            <path d={`M 184 ${SHOULDER_Y + torsoBendY + leanBackY} C 188 ${SHOULDER_Y + torsoBendY + leanBackY - 1} 192 ${SHOULDER_Y + torsoBendY + leanBackY - 3} 195.4 ${SHOULDER_Y + torsoBendY + leanBackY - 3} L 204.6 ${SHOULDER_Y + torsoBendY + leanBackY - 3} C 208 ${SHOULDER_Y + torsoBendY + leanBackY - 3} 212 ${SHOULDER_Y + torsoBendY + leanBackY - 1} 216 ${SHOULDER_Y + torsoBendY + leanBackY} L 211.5 ${HEM_Y} L 188.5 ${HEM_Y} Z`} />
+          <g id="tc-torso" fill="url(#tc-hoodie-shade)" transform={bodyShift ? `translate(${bodyShift}, 0)` : undefined}>
+            {/* The shoulders slope up a little to the neck; a light edge from behind */}
+            <path stroke="#a7f3d0" strokeOpacity={bare ? 0 : 0.22} strokeWidth={0.7} strokeLinejoin="round" d={`M 184 ${SHOULDER_Y + torsoBendY + leanBackY} C 188 ${SHOULDER_Y + torsoBendY + leanBackY - 1} 192 ${SHOULDER_Y + torsoBendY + leanBackY - 3} 195.4 ${SHOULDER_Y + torsoBendY + leanBackY - 3} L 204.6 ${SHOULDER_Y + torsoBendY + leanBackY - 3} C 208 ${SHOULDER_Y + torsoBendY + leanBackY - 3} 212 ${SHOULDER_Y + torsoBendY + leanBackY - 1} 216 ${SHOULDER_Y + torsoBendY + leanBackY} L 211.5 ${HEM_Y} L 188.5 ${HEM_Y} Z`} />
             {/* Kangaroo Pocket */}
             <path
               d={`M 191 ${HEM_Y - 14 + torsoBendY * 0.35 + leanBackY * 0.35} L 209 ${HEM_Y - 14 + torsoBendY * 0.35 + leanBackY * 0.35} L 210.5 ${HEM_Y - 2} L 189.5 ${HEM_Y - 2} Z`}
@@ -1164,7 +1154,8 @@ export default function TaiChiHero({
             {/* HOOD (Black/Charcoal outer frame surrounding face) */}
             <g id="tc-hood" fill="#36463a" stroke="#1b241d" strokeWidth="0.5">
               {/* Outer Hood Circle */}
-              <path d="M 181 206 C 176 195 178 174 188 166 C 194 161 206 161 212 166 C 222 174 224 195 219 206 Z" fill="#36463a" />
+              {!bare && <path d="M 181 206 C 176 195 178 174 188 166 C 194 161 206 161 212 166 C 222 174 224 195 219 206" fill="none" stroke="#a7f3d0" strokeOpacity={0.3} strokeWidth={2.2} />}
+              <path d="M 181 206 C 176 195 178 174 188 166 C 194 161 206 161 212 166 C 222 174 224 195 219 206 Z" fill="#3c4e40" />
               {/* Inner Hood Cutout (Face shadow contrast) */}
               <path d="M 185 204 C 182 195 184 179 191 173 C 196 169 204 169 209 173 C 216 179 218 195 215 204 Z" fill="#222d25" />
             </g>
@@ -1172,6 +1163,11 @@ export default function TaiChiHero({
 
           {/* ARMS & HANDS (Animate via calculated coordinates) */}
           {/* LEFT ARM (Shoulder -> Elbow -> Wrist) */}
+          {/* A light edge round the sleeves, from the light behind */}
+          {!bare && (
+            <path d={`M ${sL.x} ${sL.y} L ${eLf.x} ${eLf.y} L ${hLf.x} ${hLf.y} M ${sR.x} ${sR.y} L ${eR.x} ${eR.y} L ${hR.x} ${hR.y}`}
+              fill="none" stroke="#a7f3d0" strokeOpacity={0.2} strokeWidth={11} strokeLinecap="round" strokeLinejoin="round" />
+          )}
           {/* Left Arm Sleeve */}
           <path
             d={`M ${sL.x} ${sL.y} L ${eLf.x} ${eLf.y} L ${hLf.x} ${hLf.y}`}
@@ -1236,6 +1232,13 @@ export default function TaiChiHero({
             />
           </g>
 
+          {/* Cuffs at the wrists */}
+          {[[eLf, hLf], [eR, hR]].map(([e, h], k) => {
+            const d = Math.max(0.1, Math.hypot(e.x - h.x, e.y - h.y));
+            const c = Math.min(2.4, d * 0.4) / d;
+            return <line key={k} x1={h.x} y1={h.y} x2={h.x + (e.x - h.x) * c} y2={h.y + (e.y - h.y) * c} stroke="#2a372d" strokeWidth={9.5} />;
+          })}
+
           {/* LEFT HAND (Simplified Abstract Oval) */}
           <g transform={`translate(${hLf.x}, ${hLf.y}) rotate(${leftRot}) `}>
             <path d={HAND_PATH} fill="#e5bda3" />
@@ -1248,6 +1251,24 @@ export default function TaiChiHero({
             {palmVis > 0.01 && <path d={HAND_PATH} transform="translate(0 1.2) scale(0.72)" fill="var(--color-ink)" opacity={0.38 * palmVis} />}
           </g>
           </g>
+
+          {/* The palms' light trails */}
+          {trail.length > 1 && (
+            <g stroke="var(--color-sign-gold)" strokeLinecap="round" fill="none">
+              {trail.slice(1).map((p, i) => {
+                const q = trail[i];
+                const fresh = 1 - Math.min(1, (nowMs - p.t) / TRAIL_MS);
+                const o = 0.5 * fresh * fresh;
+                const w = 0.4 + 2.2 * fresh;
+                return (
+                  <g key={p.t}>
+                    <line x1={q.l.x} y1={q.l.y} x2={p.l.x} y2={p.l.y} strokeWidth={w} opacity={o} />
+                    <line x1={q.r.x} y1={q.r.y} x2={p.r.x} y2={p.r.y} strokeWidth={w} opacity={o} />
+                  </g>
+                );
+              })}
+            </g>
+          )}
         </g>
       </svg>
 
