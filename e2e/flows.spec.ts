@@ -39,6 +39,13 @@ test('the offline note closes with its ×', async ({ page, context }) => {
   // The page itself first (not the text it arrived with): the note listens
   // for the change only once the app is on screen.
   await expect(page.getByRole('heading', { name: 'How do you feel right now?' })).toBeVisible();
+  // Offline, the rest of the app comes from the service worker: wait until it
+  // has taken the page, or a part that loads late could fail and reload it.
+  await page.evaluate(async () => {
+    if (!('serviceWorker' in navigator)) return;
+    await navigator.serviceWorker.ready;
+    if (!navigator.serviceWorker.controller) await new Promise<void>(r => { navigator.serviceWorker.addEventListener('controllerchange', () => r(), { once: true }); setTimeout(r, 4000); });
+  });
   // The note may start listening a moment after the page shows: if the change
   // came too early for it, make the change again.
   await expect(async () => {
