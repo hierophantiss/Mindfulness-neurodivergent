@@ -143,7 +143,7 @@ export default function Dashboard() {
     return () => window.removeEventListener('storage', onChange);
   }, []);
   // `hour` in the list so a new day brings a new phrase while the app stays open.
-  const affirmation = useMemo(
+  const affirmationToday = useMemo(
     () => phraseOfDay(getDayOfYear(new Date()), recentState === 'hypo'),
     [hour, recentState]
   );
@@ -198,10 +198,21 @@ export default function Dashboard() {
     ...(!evening ? [{ key: 'journal', to: '/journal', title: el ? 'Ημερολόγιο' : 'Journal', sub: el ? 'Δυο γραμμές για σήμερα' : 'Two lines for today', ink: 'var(--tint-rose-ink)', icon: ICONS.quill }] : []),
     ...(hasRead ? [{ key: 'read', onClick: () => setSheetVisible(true), title: el ? 'Τι έχεις διαβάσει' : 'What you have read', sub: el ? 'Τα κεφάλαια και οι σελίδες σου' : 'Your chapters and pages', ink: 'var(--axis-breath-ink)', icon: ICONS.bookmark }] : []),
   ];
+  // Every day (the journal or the day's close, the program, the microdoses); when you want more (the rest).
+  const DAILY = ['close', 'journal', 'program', 'micro'];
+  const shelfGroups = [
+    { key: 'daily', title: el ? 'Κάθε μέρα' : 'Every day', items: shelf.filter(i => DAILY.includes(i.key)) },
+    { key: 'more', title: el ? 'Όταν θέλεις περισσότερο' : 'When you want more', items: shelf.filter(i => !DAILY.includes(i.key)) },
+  ];
   const shelfCard = "flex items-center gap-3.5 min-h-[64px] px-4 py-3 text-left hover:bg-white/[0.04] transition-colors active:bg-white/[0.06] desk:min-h-[96px] desk:items-start desk:gap-4 desk:p-5 desk:rounded-[24px] desk:hover:bg-transparent desk:hover:brightness-110 desk:transition-[filter,transform] desk:hover:-translate-y-0.5";
   const sectionTitle = "sky-text text-[15px] font-normal text-ink/90 desk:font-display desk:text-[27px] desk:text-ink";
   // The key line of the chapter you are in (once the chapters have loaded), for the wide guide card.
   const guideLine = !finishedGuide ? (spot.chapter?.insight || '') : '';
+  // The phrase of the day, never the same as the chapter's line in the card above (then the next day's).
+  const same = (x: string, y: string) => x.replace(/[«»"\s.]/g, '') === y.replace(/[«»"\s.]/g, '');
+  const affirmation = guideLine && same(el ? affirmationToday.el : affirmationToday.en, guideLine)
+    ? phraseOfDay(getDayOfYear(new Date()) + 1, recentState === 'hypo')
+    : affirmationToday;
 
   return (
     <div className="relative w-full min-h-screen bg-transparent overflow-x-hidden text-ink font-sans selection:bg-[#4a9eca]/30 selection:text-ink pb-[calc(5rem+env(safe-area-inset-bottom))]">
@@ -365,11 +376,12 @@ export default function Dashboard() {
 
         <motion.div variants={containerVariants} initial="hidden" animate="show" className="flex flex-col">
 
-          {/* More: everything else in the app. */}
-          <motion.section variants={itemVariants} aria-labelledby="home-more-title" className="mt-[26px] desk:mt-11">
-            <h2 id="home-more-title" className={sectionTitle}>{el ? 'Περισσότερα' : 'More'}</h2>
+          {/* Everything else in the app, in two small groups: what is there every day, and what is there when you want more. */}
+          {shelfGroups.map((group, gi) => (
+          <motion.section key={group.key} variants={itemVariants} aria-labelledby={`home-${group.key}-title`} className={gi === 0 ? 'mt-[26px] desk:mt-11' : 'mt-6 desk:mt-9'}>
+            <h2 id={`home-${group.key}-title`} className={sectionTitle}>{group.title}</h2>
             <div className="glass shelf-list mt-3 flex flex-col desk:mt-4 desk:grid desk:grid-cols-3 desk:gap-3.5">
-              {shelf.map(item => {
+              {group.items.map(item => {
                 const body = (
                   <>
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0 desk:w-[26px] desk:h-[26px] desk:mt-0.5" style={{ color: item.ink, filter: `drop-shadow(0 0 5px color-mix(in srgb, ${item.ink} 50%, transparent))` }}>
@@ -388,6 +400,7 @@ export default function Dashboard() {
               })}
             </div>
           </motion.section>
+          ))}
 
         </motion.div>
 
