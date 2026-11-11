@@ -176,9 +176,9 @@ export default function Dashboard() {
   const [waysOpen, setWaysOpen] = useState(false);
   // Under it, the places for every day and for more (on a computer, in the side bar).
   const PLACES = [
-    { to: '/program', title: el ? 'Πρόγραμμα' : 'Program', ink: 'var(--axis-body-ink)', icon: PLACE_PATHS.sprout },
-    { to: '/sanctuary', title: el ? 'Καταφύγιο' : 'Sanctuary', ink: 'var(--tint-lav-ink)', icon: PLACE_PATHS.waves },
-    { to: '/rabbithole', title: el ? 'Κουνελότρυπα' : 'Rabbit Hole', ink: 'var(--axis-attention-ink)', icon: PLACE_PATHS.spiral },
+    { to: '/program', title: el ? 'Πρόγραμμα' : 'Program', desc: el ? '8 εβδομάδες, ένα μικρό βήμα τη μέρα' : '8 weeks, one small step a day', ink: 'var(--axis-body-ink)', icon: PLACE_PATHS.sprout },
+    { to: '/sanctuary', title: el ? 'Καταφύγιο' : 'Sanctuary', desc: el ? 'Ήσυχοι ήχοι για να ξεκουραστείς' : 'Calm sounds to rest with', ink: 'var(--tint-lav-ink)', icon: PLACE_PATHS.waves },
+    { to: '/rabbithole', title: el ? 'Κουνελότρυπα' : 'Rabbit Hole', desc: el ? 'Άρθρα και στοχασμοί, για βαθύτερο διάβασμα' : 'Articles and reflections, for deeper reading', ink: 'var(--axis-attention-ink)', icon: PLACE_PATHS.spiral },
   ];
   const sectionTitle = "sky-text font-display text-[23px] leading-tight text-ink desk:text-[27px]";
   // The book's page: the chapter's name as large as its longest word lets it be.
@@ -349,7 +349,7 @@ export default function Dashboard() {
 
         <motion.div variants={containerVariants} initial="hidden" animate="show" className="flex flex-col">
 
-          {/* Practise: many ways, one for each axis; and the whole method in one minute. */}
+          {/* Practise: many ways, one for each axis. */}
           <motion.section variants={itemVariants} aria-labelledby="home-practise-title" className="mt-[30px] desk:mt-12">
             <div className="flex items-baseline justify-between gap-3 mb-3 desk:mb-5">
               <h2 id="home-practise-title" className={sectionTitle}>{el ? 'Εξασκήσου' : 'Practise'}</h2>
@@ -391,35 +391,28 @@ export default function Dashboard() {
                 </Link>
               ))}
             </div>
-            {/* One minute, the four axes: the method in one gesture. */}
-            <Link
-              to="/practice/minute"
-              className="glass mt-3 flex items-center justify-between gap-3 min-h-[62px] rounded-full pl-5 pr-2 py-2 hover:brightness-110 active:scale-[0.98] transition-[filter,transform] desk:mt-3.5"
-            >
-              <span className="flex flex-col gap-1.5 min-w-0">
-                <span className="text-[15px] leading-snug text-ink">{el ? 'Ένα λεπτό: και οι τέσσερις άξονες' : 'One minute: all four axes'}</span>
-                <span className="flex gap-1.5" aria-hidden="true">
-                  {['--axis-body-ink', '--axis-breath-ink', '--axis-attention-ink', '--axis-space-ink'].map(v => (
-                    <span key={v} className="w-[18px] h-[3px] rounded-full" style={{ backgroundColor: `var(${v})` }} />
-                  ))}
-                </span>
-              </span>
-              <span aria-hidden="true" className="shrink-0 w-11 h-11 rounded-full flex items-center justify-center text-sign-gold bg-[color-mix(in_srgb,var(--color-sign-gold)_16%,transparent)] border border-[color-mix(in_srgb,var(--color-sign-gold)_45%,transparent)]">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l10.5-6.5z" /></svg>
-              </span>
-            </Link>
           </motion.section>
 
-          {/* Program, Sanctuary, Rabbit Hole: one row of three (on a computer, in the side bar). */}
-          <motion.nav variants={itemVariants} aria-label={el ? 'Περισσότερα' : 'More'} className="mt-3 grid grid-cols-3 gap-2.5 desk:hidden">
-            {PLACES.map(p => (
-              <Link key={p.to} to={p.to} className="glass rounded-[20px] h-[84px] px-1 flex flex-col items-center justify-center gap-2 hover:brightness-110 active:scale-[0.97] transition-[filter,transform]">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ color: p.ink, filter: `drop-shadow(0 0 5px color-mix(in srgb, ${p.ink} 50%, transparent))` }}>
-                  <path d={p.icon} />
-                </svg>
-                <span className="max-w-full text-center text-[12.5px] leading-tight text-ink/85 whitespace-nowrap">{p.title}</span>
-              </Link>
-            ))}
+          {/* Program, Sanctuary, Rabbit Hole, each with what it is (on a computer, in the side bar). */}
+          <motion.nav variants={itemVariants} aria-label={el ? 'Περισσότερα' : 'More'} className="glass mt-3 rounded-[22px] overflow-hidden desk:hidden">
+            <ul className="divide-y divide-white/[0.07]">
+              {PLACES.map(p => (
+                <li key={p.to}>
+                  <Link to={p.to} className="flex items-center gap-3.5 min-h-[68px] px-4 py-3 hover:bg-white/[0.04] active:bg-white/[0.06] transition-colors">
+                    <span aria-hidden="true" className="shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-white/[0.04] border border-white/[0.08]" style={{ color: p.ink }}>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" style={{ filter: `drop-shadow(0 0 5px color-mix(in srgb, ${p.ink} 50%, transparent))` }}>
+                        <path d={p.icon} />
+                      </svg>
+                    </span>
+                    <span className="flex-1 min-w-0 flex flex-col gap-0.5">
+                      <span className="text-[15px] leading-snug text-ink">{p.title}</span>
+                      <span className="text-[13px] leading-snug text-ink/70">{p.desc}</span>
+                    </span>
+                    <ArrowRight size={16} aria-hidden="true" className="shrink-0 text-ink/55" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </motion.nav>
 
         </motion.div>
