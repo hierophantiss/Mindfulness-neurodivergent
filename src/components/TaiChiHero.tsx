@@ -160,11 +160,13 @@ export default function TaiChiHero({
   breathForce,
   isRising,
   breathStateText,
-  movementType,
+  movementType: givenType,
   rhythmText,
   idle = false,
   bare = false,
 }: TaiChiHeroProps) {
+  // The Tai Chi flows move as the 5-5 Sync (from Theodoros's video), in their own rhythms.
+  const movementType = givenType === "taichi" ? "5-5" : givenType;
   // Generate a list of randomized cosmic stars (twinkling)
   const stars = useMemo(() => {
     const list = [];

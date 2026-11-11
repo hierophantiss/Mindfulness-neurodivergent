@@ -113,6 +113,7 @@ const STEPS: Record<string, Partial<Record<Kind, L>>> = {
   },
 };
 STEPS['lotus-bloom-5-5'] = STEPS.lotus;
+STEPS.taichi = STEPS['5-5'];   // the Tai Chi flows move as the 5-5 Sync
 
 const LABEL: Record<Kind, L> = {
   stance: { el: 'Στάση', en: 'Stance' },
