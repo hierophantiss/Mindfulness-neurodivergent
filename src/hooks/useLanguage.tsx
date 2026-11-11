@@ -33,14 +33,14 @@ const translations: Record<string, Record<Language, string>> = {
 
   // Onboarding
 
-  'onboarding.s1.title': { el: 'Το μυαλό σου δεν είναι χαλασμένο', en: 'Your mind isn\'t broken' },
-  'onboarding.s1.body': { el: 'Απλώς λειτουργεί αλλιώς. Εδώ θα βρεις σύντομες πρακτικές αυτορρύθμισης για νευροδιαφορετικά μυαλά, όπως ΔΕΠΥ ή αυτισμό, και για όσους ζουν με τις συνέπειες τραύματος.', en: 'It just works differently. Here you will find short self-regulation practices for neurodivergent minds, such as ADHD or autism, and for anyone living with the impact of trauma.' },
+  'onboarding.s1.title': { el: 'Για νου που τρέχει ή κλειδώνει', en: 'For minds that race or lock' },
+  'onboarding.s1.body': { el: 'Το μυαλό σου δεν είναι χαλασμένο, απλώς λειτουργεί αλλιώς. Εδώ θα βρεις σύντομες πρακτικές αυτορρύθμισης για νευροδιαφορετικούς ενήλικες, όπως με ΔΕΠΥ ή αυτισμό, και για όσους ζουν με τις συνέπειες τραύματος.', en: "Your mind isn't broken, it just works differently. Here you will find short self-regulation practices for neurodivergent adults, such as those with ADHD or autism, and for anyone living with the impact of trauma." },
   
-  'onboarding.s2.title': { el: 'Τέσσερα κέντρα, ένας άξονας', en: 'Four centres, one axis' },
-  'onboarding.s2.body': { el: 'Σώμα, Αναπνοή, Προσοχή, Χώρος. Έρχεσαι σε επαφή με το καθένα και σιγά σιγά τα συντονίζεις. Πες στην εφαρμογή πώς νιώθεις και θα σου προτείνει από πού να ξεκινήσεις, με μια άσκηση 2–5 λεπτών. Χωρίς ενοχές αν χάσεις μέρες.', en: 'Body, Breath, Attention, Space. You come into contact with each one, and little by little you attune them. Tell the app how you feel and it will suggest where to begin, with a 2–5 minute practice. No guilt if you miss days.' },
+  'onboarding.s2.title': { el: 'Δεν χρειάζεται να αδειάσεις το μυαλό σου', en: "You don't have to empty your mind" },
+  'onboarding.s2.body': { el: 'Ούτε να μείνεις ακίνητος. Η μέθοδος έχει τέσσερα απλά βήματα, με αυτή τη σειρά: Σώμα, Αναπνοή, Προσοχή, Χώρος. Πες πώς νιώθεις και θα σου προτείνει από πού να ξεκινήσεις, με μια άσκηση 2–5 λεπτών.', en: 'Nor to stay still. The method has four simple steps, in this order: Body, Breath, Attention, Space. Say how you feel and it will suggest where to begin, with a 2–5 minute practice.' },
 
-  'onboarding.s3.title': { el: 'Όλα μένουν στη συσκευή σου', en: 'Everything stays on your device' },
-  'onboarding.s3.body': { el: 'Χωρίς λογαριασμό, χωρίς tracking, χωρίς διαφημίσεις, χωρίς chatbot. Εντελώς δωρεάν. Όταν αρχίσεις να διαβάζεις, θα εμφανιστεί μια γάτα που θυμάται πού σταμάτησες — κι αυτό μένει μόνο εδώ. Τα δεδομένα σου είναι δικά σου: μπορείς να τα εξάγεις ή να τα σβήσεις όποτε θέλεις.', en: 'No account, no tracking, no ads, no chatbot. Completely free. Once you start reading, a cat will appear that remembers where you stopped — and that stays here too. Your data is yours: export it or delete it whenever you want.' },
+  'onboarding.s3.title': { el: 'Τι να περιμένεις', en: 'What to expect' },
+  'onboarding.s3.body': { el: 'Δωρεάν, χωρίς λογαριασμό, χωρίς διαφημίσεις. Όλα μένουν στη συσκευή σου. Δεν μετράμε σερί: λίγα δευτερόλεπτα αρκούν, και αν χάσεις μέρες δεν πειράζει. Δεν είναι θεραπεία και δεν την αντικαθιστά.', en: "Free, no account, no ads. Everything stays on your device. We don't count streaks: a few seconds are enough, and missing days is fine. It is not therapy and does not replace it." },
 
   'onboarding.next': { el: 'Επόμενο', en: 'Next' },
   'onboarding.skip': { el: 'Παράλειψη', en: 'Skip' },

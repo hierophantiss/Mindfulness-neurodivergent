@@ -215,8 +215,8 @@ export default function Dashboard() {
               <span className="keep-font sky-text font-display text-[18px] leading-none text-sign-gold whitespace-nowrap">
                 {el ? 'Ενσυνειδητότητα' : 'Mindfulness'}
               </span>{' '}
-              <span className="sky-text text-[13px] leading-tight text-ink/70 whitespace-nowrap">
-                {el ? 'Για νευροδιαφορετικούς' : 'For neurodivergents'}
+              <span className="sky-text text-[12.5px] leading-[1.2] text-ink/70 [text-wrap:balance]">
+                {el ? 'Για νου που τρέχει ή κλειδώνει' : 'For minds that race or lock'}
               </span>
             </span>
           </div>

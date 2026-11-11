@@ -28,8 +28,8 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
   const content = {
     title: { el: 'Ο Τετραπλός Άξονας', en: 'The Fourfold Axis' },
     subtitle: {
-      el: 'Ένα σύστημα ενσυνειδητότητας σχεδιασμένο για τη νευροδιαφορετικότητα.',
-      en: 'A mindfulness system designed for neurodivergent minds.'
+      el: 'Ενσυνειδητότητα για νου που τρέχει ή κλειδώνει.',
+      en: 'Mindfulness for minds that race or lock.'
     },
     purpose: {
       el: 'Μια μέθοδος σταδιακής επανασύνδεσης με τέσσερα κέντρα της εμπειρίας: Σώμα, Αναπνοή, Προσοχή, Χώρος. Σχεδιασμένη με σεβασμό στη νευροδιαφορετικότητα. Ξεκίνα με μικρές πρακτικές. Αντί για «άδειασμα του μυαλού», έρχεσαι σε επαφή με το καθένα και σιγά σιγά τα συντονίζεις.',
@@ -43,7 +43,8 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
         { el: 'Με φροντίδα για όσους ζουν με τραύμα: σέβεται τα όριά σου', en: 'Trauma-informed: respects your boundaries' },
         { el: 'Λειτουργεί offline — εγκατάσταση στο κινητό', en: 'Works offline — installable on mobile devices' },
         { el: 'Μια γάτα-σύντροφος θυμάται τι διάβασες και σε γυρίζει εκεί που σταμάτησες', en: 'A cat companion remembers what you read and brings you back where you stopped' },
-        { el: 'Τα δεδομένα σου μένουν μόνο στη συσκευή σου', en: 'Your data stays entirely on your device' }
+        { el: 'Τα δεδομένα σου μένουν μόνο στη συσκευή σου', en: 'Your data stays entirely on your device' },
+        { el: 'Δεν μετράμε σερί: λίγα δευτερόλεπτα αρκούν', en: 'No streaks: a few seconds are enough' }
       ]
     },
     trauma: {
