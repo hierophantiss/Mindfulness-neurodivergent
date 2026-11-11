@@ -1,4 +1,5 @@
 import { createPortal } from 'react-dom';
+import { movementSteps, type Step } from '../data/movementSteps';
 import { AudioEnabler } from '../components/AudioEnabler';
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -42,7 +43,7 @@ const BELLY_CHANT = {
 
 /** "How it's done": the description, folded so the figure keeps its room.
  *  For breathing practices it starts from the axis of gravity. */
-function HowTo({ text, language, gravityFirst = false, longExhale = false, chant = false }: { text: string; language: string; gravityFirst?: boolean; longExhale?: boolean; chant?: boolean }) {
+function HowTo({ text, language, gravityFirst = false, longExhale = false, chant = false, steps = null }: { text: string; language: string; gravityFirst?: boolean; longExhale?: boolean; chant?: boolean; steps?: Step[] | null }) {
   const [open, setOpen] = useState(false);
   const el = language === 'el';
   useKeyboardShortcuts({ Escape: () => setOpen(false) }, open);
@@ -51,7 +52,7 @@ function HowTo({ text, language, gravityFirst = false, longExhale = false, chant
       <button
         onClick={(e) => { e.stopPropagation(); setOpen(true); }}
         aria-expanded={open}
-        className="mt-2 text-[12px] text-teal-300/80 hover:text-teal-200 underline underline-offset-2"
+        className="mt-2 min-h-10 px-4 rounded-full border border-teal-400/30 bg-teal-400/[0.06] text-[14px] text-teal-200 hover:border-teal-300/60 hover:text-teal-100 transition-colors"
       >
         {el ? 'Πώς γίνεται' : 'How it is done'}
       </button>
@@ -71,7 +72,20 @@ function HowTo({ text, language, gravityFirst = false, longExhale = false, chant
                 {el ? 'Κλείσιμο' : 'Close'}
               </button>
             </div>
-            {!gravityFirst ? (
+            {steps ? (
+              // The movement, step by step, as the figure does it.
+              <ol className="flex flex-col gap-3.5 text-left">
+                {steps.map((st, i) => (
+                  <li key={i} className="flex gap-3">
+                    <span className="shrink-0 w-6 h-6 mt-0.5 rounded-full bg-teal-400/15 text-teal-300 text-[12px] flex items-center justify-center">{i + 1}</span>
+                    <span className="text-[14px] text-zinc-300 leading-relaxed">
+                      <strong className="font-medium text-ink">{st.label}. </strong>
+                      {st.text}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            ) : !gravityFirst ? (
               <p className="text-[14px] text-zinc-300 leading-relaxed">{text}</p>
             ) : (
               <ol className="flex flex-col gap-3.5 text-left">
@@ -657,7 +671,8 @@ export default function PracticeBreath() {
             ))}
           </div>
           <HowTo text={language === 'el' ? basePattern.desc.el : basePattern.desc.en} language={language}
-            gravityFirst={isVocal} longExhale={isVocal} chant={isVocal} />
+            gravityFirst={isVocal} longExhale={isVocal} chant={isVocal}
+            steps={movementSteps(basePattern.visualizer || basePattern.id, basePattern.phases, language === 'en' ? 'en' : 'el')} />
         </div>
       )}
 
@@ -693,7 +708,8 @@ export default function PracticeBreath() {
       {!running && (basePattern.category === 'movement' || basePattern.category === 'breath') && (
         <div className="z-20 mb-3 -mt-2 px-6 flex flex-col items-center">
           <HowTo text={language === 'el' ? basePattern.desc.el : basePattern.desc.en} language={language} gravityFirst={basePattern.category === 'breath'}
-            longExhale={basePattern.category === 'breath' && basePattern.phases.some(ph => ph.armFrom > ph.armTo && ph.dur >= 5000)} />
+            longExhale={basePattern.category === 'breath' && basePattern.phases.some(ph => ph.armFrom > ph.armTo && ph.dur >= 5000)}
+            steps={basePattern.category === 'movement' ? movementSteps(basePattern.visualizer || basePattern.id, pattern.phases, language === 'en' ? 'en' : 'el') : null} />
         </div>
       )}
 

@@ -238,8 +238,8 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     title: { el: "Συγχρονισμός 5-5", en: "5-5 Sync" },
     subtitle: { el: "Ισορροπία για Κάθε Μέρα", en: "Everyday Balance" },
     desc: {
-      el: "Ο ρυθμός 5-5 του βιβλίου με απλό σήκωμα των χεριών: πέντε δευτερόλεπτα πάνω με την εισπνοή, πέντε κάτω με την εκπνοή.",
-      en: "The book's 5-5 rhythm with a simple raising of the arms: five seconds up with the inhale, five down with the exhale.",
+      el: "Ο ρυθμός 5-5 του βιβλίου με τα χέρια: πέντε δευτερόλεπτα ανεβαίνουν σε τόξο ως πάνω από το κεφάλι με την εισπνοή, πέντε κατεβαίνουν ενωμένα από τη μέση με την εκπνοή.",
+      en: "The book's 5-5 rhythm with the arms: five seconds rising in an arc to above the head with the inhale, five coming down joined through the middle with the exhale.",
     },
     totalCycleDurationMs: 10000,
     audioConfig: {
