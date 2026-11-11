@@ -53,8 +53,11 @@ jobs:
           test "$pages" -ge 200
           if find dist -name '*_debug.html' | grep -q .; then echo 'debug files in the build'; exit 1; fi
 
+      # The browser's system packages come from Ubuntu's servers; when those do
+      # not answer (it happens), the runner already has what Chromium needs,
+      # so the browser alone is enough.
       - name: Browser for the site checks
-        run: npx playwright install --with-deps chromium
+        run: timeout 300 npx playwright install --with-deps chromium || npx playwright install chromium
 
       # Every main page opens cleanly (EL/EN), the main things a person does
       # work, and accessibility (axe) on the main pages.
