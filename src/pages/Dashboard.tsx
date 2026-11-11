@@ -1,6 +1,6 @@
 import { AudioEnabler } from '../components/AudioEnabler';
 import React, { useState, useEffect, useMemo } from 'react';
-import { ArrowRight, BookOpen, Info, Download, X } from 'lucide-react';
+import { ArrowRight, BookOpen, ChevronDown, Info, Download, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useCompanion } from '../hooks/useCompanion';
@@ -19,6 +19,7 @@ import { MethodMark } from '../components/MethodMark';
 import { useInstallApp } from '../hooks/useInstallApp';
 import HomeCheckin from '../components/HomeCheckin';
 import HomeEarth from '../components/HomeEarth';
+import { PLACE_PATHS } from '../components/placeIcons';
 import BackupReminder from '../components/BackupReminder';
 import { welcomeSeen, markWelcomeSeen, openWelcome } from '../lib/welcome';
 import { readingSpot, chaptersRead } from '../lib/readingSpot';
@@ -170,6 +171,14 @@ export default function Dashboard() {
     { key: 'breath', to: '/practice?category=breath', title: el ? 'Ρυθμοί αναπνοής' : 'Breath rhythms', axis: el ? 'Αναπνοή' : 'Breath', ink: 'var(--axis-breath-ink)', icon: 'M3 9h10a3 3 0 1 0-3-3M3 14h15a3 3 0 1 1-3 3M3 19h6' },
     { key: 'micro', to: '/practice/microdoses', title: el ? 'Μικροδόσεις' : 'Microdoses', axis: el ? 'Προσοχή · λίγα δευτερόλεπτα' : 'Attention · a few seconds', ink: 'var(--axis-attention-ink)', icon: 'M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z' },
     { key: 'vocal', to: '/practice?category=vocal', title: el ? 'Ψάλσιμο και αντήχηση' : 'Chanting and resonance', axis: el ? 'Χώρος' : 'Space', ink: 'var(--axis-space-ink)', icon: 'M3 12c2-4 4-4 6 0s4 4 6 0 4-4 6 0M3 17c2-3 4-3 6 0s4 3 6 0 4-3 6 0' },
+  ];
+  // On a phone the four ways open from one card (on a computer they are always there).
+  const [waysOpen, setWaysOpen] = useState(false);
+  // Under it, the places for every day and for more (on a computer, in the side bar).
+  const PLACES = [
+    { to: '/program', title: el ? 'Πρόγραμμα' : 'Program', ink: 'var(--axis-body-ink)', icon: PLACE_PATHS.sprout },
+    { to: '/sanctuary', title: el ? 'Καταφύγιο' : 'Sanctuary', ink: 'var(--tint-lav-ink)', icon: PLACE_PATHS.waves },
+    { to: '/rabbithole', title: el ? 'Κουνελότρυπα' : 'Rabbit Hole', ink: 'var(--axis-attention-ink)', icon: PLACE_PATHS.spiral },
   ];
   const sectionTitle = "sky-text font-display text-[23px] leading-tight text-ink desk:text-[27px]";
   // The book's page: the chapter's name as large as its longest word lets it be.
@@ -348,7 +357,28 @@ export default function Dashboard() {
                 {el ? 'όλες οι ασκήσεις' : 'all practices'}
               </Link>
             </div>
-            <div className="grid grid-cols-2 gap-2.5 desk:grid-cols-4 desk:gap-3.5">
+            {/* One card on a phone: the four ways, in their colours; a tap opens them. */}
+            <button
+              type="button"
+              onClick={() => setWaysOpen(o => !o)}
+              aria-expanded={waysOpen}
+              aria-controls="home-ways"
+              className={cn("glass w-full flex items-center gap-3.5 min-h-[76px] px-4 py-3 text-left hover:brightness-110 active:scale-[0.99] transition-[filter,transform,border-radius] desk:hidden", waysOpen ? 'rounded-[20px]' : 'rounded-[22px]')}
+            >
+              <span aria-hidden="true" className="shrink-0 grid grid-cols-2 gap-1">
+                {WAYS.map(w => (
+                  <svg key={w.key} width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" style={{ color: w.ink }}>
+                    <path d={w.icon} />
+                  </svg>
+                ))}
+              </span>
+              <span className="flex-1 min-w-0 flex flex-col gap-0.5">
+                <span className="text-[15.5px] leading-snug text-ink">{el ? 'Τέσσερις τρόποι εξάσκησης' : 'Four ways to practise'}</span>
+                <span className="text-[13px] leading-snug text-ink/70">{el ? 'Κίνηση, αναπνοή, μικροδόσεις, ψάλσιμο' : 'Movement, breath, microdoses, chanting'}</span>
+              </span>
+              <ChevronDown size={18} aria-hidden="true" className={cn("shrink-0 text-ink/70 transition-transform", waysOpen && "rotate-180")} />
+            </button>
+            <div id="home-ways" className={cn(waysOpen ? 'grid' : 'hidden', "mt-2.5 grid-cols-2 gap-2.5 desk:mt-0 desk:grid desk:grid-cols-4 desk:gap-3.5")}>
               {WAYS.map(w => (
                 <Link key={w.key} to={w.to} className="glass rounded-[20px] p-4 min-h-[108px] flex flex-col justify-between gap-4 hover:brightness-110 active:scale-[0.98] transition-[filter,transform] desk:rounded-[24px] desk:p-5 desk:min-h-[140px]">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="desk:w-7 desk:h-7" style={{ color: w.ink, filter: `drop-shadow(0 0 5px color-mix(in srgb, ${w.ink} 50%, transparent))` }}>
@@ -380,17 +410,17 @@ export default function Dashboard() {
             </Link>
           </motion.section>
 
-          {/* The rest of the app is one tap away in the Menu (on a computer, in the side bar), not listed twice. */}
-          <motion.div variants={itemVariants} className="mt-5 desk:hidden">
-            <button
-              type="button"
-              onClick={() => window.dispatchEvent(new Event('open-menu'))}
-              className="flex items-center gap-1.5 min-h-[40px] px-1 text-[14px] text-ink/75 hover:text-ink transition-colors text-left"
-            >
-              <span>{el ? 'Πρόγραμμα, Καταφύγιο, Κουνελότρυπα και Μέθοδος: στο Μενού' : 'Program, Sanctuary, Rabbit Hole and Method: in the Menu'}</span>
-              <ArrowRight size={14} aria-hidden="true" className="shrink-0 opacity-70" />
-            </button>
-          </motion.div>
+          {/* Program, Sanctuary, Rabbit Hole: one row of three (on a computer, in the side bar). */}
+          <motion.nav variants={itemVariants} aria-label={el ? 'Περισσότερα' : 'More'} className="mt-3 grid grid-cols-3 gap-2.5 desk:hidden">
+            {PLACES.map(p => (
+              <Link key={p.to} to={p.to} className="glass rounded-[20px] h-[84px] px-1 flex flex-col items-center justify-center gap-2 hover:brightness-110 active:scale-[0.97] transition-[filter,transform]">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ color: p.ink, filter: `drop-shadow(0 0 5px color-mix(in srgb, ${p.ink} 50%, transparent))` }}>
+                  <path d={p.icon} />
+                </svg>
+                <span className="max-w-full text-center text-[12.5px] leading-tight text-ink/85 whitespace-nowrap">{p.title}</span>
+              </Link>
+            ))}
+          </motion.nav>
 
         </motion.div>
 
