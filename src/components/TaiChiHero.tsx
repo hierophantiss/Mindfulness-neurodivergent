@@ -6,9 +6,11 @@
 import { useMemo, useRef } from "react";
 import { motion } from "motion/react";
 
-// The head (with its hood) a quarter smaller than first drawn: it read too big
-// for the body. It shrinks towards the neck, so it stays on the shoulders.
-const HEAD_SCALE = 0.75;
+// The head (with its hood), smaller than first drawn: it read too big for the
+// body. Now about 1/6 of the height, crown to chin under the hood (a real head
+// is about 1/7.5; the hood adds the rest). It shrinks towards the neck, so it
+// stays on the shoulders.
+const HEAD_SCALE = 0.58;
 // Natural proportions (anthropometry, Contini 1972): upper arm about 19% of
 // the height, forearm about 14.5%, hand about 10% and half as wide as it is
 // long. The figure stands about 108 units tall (head top 182, soles 290).
@@ -578,6 +580,9 @@ export default function TaiChiHero({
   }
   // Movements set from the videos give the hand's turn themselves.
   let ownRot: number | null = null;
+  // How much of the palm faces us (0–1): there it shows a little lighter, so
+  // you can see the palms turn (Lifting the Sky at the face, the open Lotus).
+  let palmVis = 0;
   // ── LIFTING THE SKY (Ba Duan Jin), as Theodoros does it (from his video) ──
   // Inhale: see SKY_IN. Exhale: the long arms come down out to the sides in a
   // wide arc, through level, to hanging; the palms push out (fingers up at
@@ -616,6 +621,14 @@ export default function TaiChiHero({
     }
     const arm = solveArm(sL, hand, want);
     eL = arm.elbow; hL = arm.hand;
+    // Palms forward at the face; then turned up to the sky (seen in part);
+    // coming down they push out to the sides (edge on).
+    if (isRisePhase) {
+      palmVis = bf < 0.6 ? sm((bf - 0.42) / 0.18) : 1 - 0.65 * sm((bf - 0.6) / 0.25);
+    } else {
+      const deg = SKY_TOP_DEG - (SKY_TOP_DEG - SKY_HANG_DEG) * sm(1 - bf);
+      palmVis = 0.35 * sm((deg - 200) / (SKY_TOP_DEG - 200));
+    }
     if (!isRisePhase) {
       // The wrist, by where the arm is: bent right back above the head (palm to
       // the sky, fingers in), fingers up while the arm is still above level
@@ -668,6 +681,8 @@ export default function TaiChiHero({
     }
     const arm = solveArm(sL, hand, want);
     eL = arm.elbow; hL = arm.hand;
+    // The open flower: palms to the sky, the wrists bent back, seen in part.
+    palmVis = s0 > 2 ? 0.45 * sm(s0 - 2) : 0;
     if (Number.isNaN(rot)) {
       const line = along(eL, hL);
       rot = s0 <= 2 ? 180 + turn(180, line) * sm(s0 - 1) : line + BEND * sm(s0 - 2);
@@ -1211,11 +1226,13 @@ export default function TaiChiHero({
           {/* LEFT HAND (Simplified Abstract Oval) */}
           <g transform={`translate(${hLf.x}, ${hLf.y}) rotate(${leftRot}) `}>
             <path d={HAND_PATH} fill="#e5bda3" />
+            {palmVis > 0.01 && <path d={HAND_PATH} transform="translate(0 1.2) scale(0.72)" fill="var(--color-ink)" opacity={0.38 * palmVis} />}
           </g>
 
           {/* RIGHT HAND (Simplified Abstract Oval) */}
           <g transform={`translate(${hR.x}, ${hR.y}) rotate(${rightHandRotation}) `}>
             <path d={HAND_PATH} fill="#e5bda3" />
+            {palmVis > 0.01 && <path d={HAND_PATH} transform="translate(0 1.2) scale(0.72)" fill="var(--color-ink)" opacity={0.38 * palmVis} />}
           </g>
           </g>
         </g>
