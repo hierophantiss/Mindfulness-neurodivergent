@@ -31,6 +31,13 @@ export default function NavigationMenu() {
     }
   }, [isOpen]);
 
+  // The home page's "In the Menu" line opens it.
+  useEffect(() => {
+    const open = () => setIsOpen(true);
+    window.addEventListener('open-menu', open);
+    return () => window.removeEventListener('open-menu', open);
+  }, []);
+
   useEffect(() => {
     const handler = (e: any) => {
       e.preventDefault();
@@ -300,6 +307,20 @@ export default function NavigationMenu() {
               </div>
 
               <div className="flex-[1] overflow-y-auto pt-6 px-6 pb-6 max-w-2xl mx-auto w-full flex flex-col gap-3">
+                {/* On the phone, the places the home page does not list (on a computer they are in the side bar). */}
+                <nav aria-label={el ? 'Τόποι της εφαρμογής' : 'Places in the app'} className="grid grid-cols-2 gap-2.5 desk:hidden">
+                  {sideItems.filter(i => ['/sanctuary', '/rabbithole', '/method', '/program'].includes(i.path)).map(({ path, Icon, label }) => (
+                    <Link
+                      key={path}
+                      to={path}
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center gap-3 min-h-[56px] px-4 rounded-2xl bg-white/[0.04] border border-white/[0.07] text-[14.5px] text-ink/90 hover:bg-white/[0.07] transition-colors"
+                    >
+                      <Icon size={19} aria-hidden="true" className="shrink-0 text-ink/75" />
+                      {label}
+                    </Link>
+                  ))}
+                </nav>
                 <div className="bg-white/[0.03] border border-white/[0.05] rounded-3xl p-4 flex flex-col gap-4">
                   
                   {/* Evidence-Based Science Link */}

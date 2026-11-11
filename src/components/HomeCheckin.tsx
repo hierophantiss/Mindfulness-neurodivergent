@@ -10,8 +10,7 @@ import {
   saveCheckinState, readRecentCheckinState, type CheckinChoice,
   CHECKIN_DETAILS, DETAIL_AFTER_USES, readCheckinUses, countCheckinUse, TIME_LABEL, type CheckinTime,
 } from '../data/stateCheckin';
-import { usageFromLogs, PRACTICE_CATALOG } from '../data/practiceCatalog';
-import { useTime } from '../contexts/TimeContext';
+import { usageFromLogs } from '../data/practiceCatalog';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 
 import { CHECKIN_ICON as ICON, tint } from '../lib/checkinLook';
@@ -67,26 +66,6 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
 
   const opt = selected ? getCheckinOption(selected) : null;
 
-  // The hour's practice: morning, the 5-5 Sync (moving wakes the body);
-  // midday and afternoon, a second on the axis; evening, the long exhale
-  // (4-6); night, the Sanctuary's sounds. No promises, only a suggestion.
-  const { hour } = useTime();
-  const hourPick = useMemo(() => {
-    const at = (id: string) => PRACTICE_CATALOG.find(c => c.id === id);
-    const name = (id: string) => {
-      const c = at(id);
-      if (!c) return null;
-      const t = c.title[lang];
-      return { title: c.kind === 'movement' ? t.split(' · ').pop()! : t, path: c.path };
-    };
-    const el = lang === 'el';
-    const pick = hour >= 5 && hour < 11 ? { when: el ? 'Για το πρωί' : 'For the morning', ...name('5-5') }
-      : hour >= 11 && hour < 14 ? { when: el ? 'Για το μεσημέρι' : 'For midday', ...name('axis-pause') }
-      : hour >= 14 && hour < 18 ? { when: el ? 'Για το απόγευμα' : 'For the afternoon', ...name('axis-pause') }
-      : hour >= 18 && hour < 22 ? { when: el ? 'Για το βράδυ' : 'For the evening', ...name('breath-4-6') }
-      : { when: el ? 'Για τη νύχτα' : 'For the night', title: el ? 'Καταφύγιο: ήχοι της φύσης' : 'Sanctuary: sounds of nature', path: '/sanctuary' };
-    return pick.title && pick.path ? (pick as { when: string; title: string; path: string }) : null;
-  }, [hour, lang]);
   const actions = useMemo(() => (selected ? getCheckinActions(selected, counts, time || undefined) : []), [selected, counts, time]);
   // The time choice, like the second step, appears only after a few uses.
   const showTime = selected !== null && selected !== 'unsure' && uses > DETAIL_AFTER_USES;
@@ -131,14 +110,6 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
         <p className="-mt-1 text-[14px] leading-relaxed text-ink/70">
           {lang === 'el' ? 'Διάλεξε, και θα σου προτείνω μια πρακτική για τώρα.' : 'Choose, and I will suggest a practice for right now.'}
         </p>
-      )}
-      {/* Nothing chosen: a practice for the hour of the day, quietly. */}
-      {embedded && !selected && hourPick && (
-        <Link to={hourPick.path} className="-mt-1 self-start inline-flex items-center gap-1.5 min-h-[36px] text-[14px] text-ink/80 hover:text-ink transition-colors">
-          <span className="text-ink/60">{hourPick.when}:</span>
-          <span className="underline decoration-white/25 underline-offset-4">{hourPick.title}</span>
-          <ArrowRight size={14} aria-hidden="true" className="opacity-70" />
-        </Link>
       )}
 
       <AnimatePresence initial={false}>

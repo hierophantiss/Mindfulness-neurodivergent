@@ -202,7 +202,6 @@ export default function Dashboard() {
   const DAILY = ['close', 'journal', 'program', 'micro'];
   const shelfGroups = [
     { key: 'daily', title: el ? 'Κάθε μέρα' : 'Every day', items: shelf.filter(i => DAILY.includes(i.key)) },
-    { key: 'more', title: el ? 'Όταν θέλεις περισσότερο' : 'When you want more', items: shelf.filter(i => !DAILY.includes(i.key)) },
   ];
   const shelfCard = "flex items-center gap-3.5 min-h-[64px] px-4 py-3 text-left hover:bg-white/[0.04] transition-colors active:bg-white/[0.06] desk:min-h-[96px] desk:items-start desk:gap-4 desk:p-5 desk:rounded-[24px] desk:hover:bg-transparent desk:hover:brightness-110 desk:transition-[filter,transform] desk:hover:-translate-y-0.5";
   const sectionTitle = "sky-text text-[15px] font-normal text-ink/90 desk:font-display desk:text-[27px] desk:text-ink";
@@ -348,35 +347,32 @@ export default function Dashboard() {
               </Link>
             )}
           </div>
+          {/* Inside the card, below: the last practice to take up again (this device only), and what you have read. */}
+          {(lastPractice || hasRead) && (
+            <div className="mt-3.5 pt-3 border-t border-white/[0.08] flex items-center justify-between gap-3 text-[13.5px] desk:mt-5 desk:text-[14.5px]">
+              {lastPractice ? (
+                <Link to={lastPractice.path} className="flex items-center gap-1.5 min-w-0 min-h-[36px] text-ink/80 hover:text-ink transition-colors">
+                  <span className="shrink-0 text-ink/60">{el ? 'Συνέχισε:' : 'Continue:'}</span>
+                  <span className="truncate">{lastPractice.title}</span>
+                  <span className="shrink-0 text-ink/60">· {lastPractice.when}</span>
+                  <ArrowRight size={14} aria-hidden="true" className="shrink-0 opacity-70" />
+                </Link>
+              ) : <span />}
+              {hasRead && (
+                <button type="button" onClick={() => setSheetVisible(true)} className="shrink-0 min-h-[36px] text-ink/70 hover:text-ink transition-colors underline decoration-white/20 underline-offset-4">
+                  {el ? 'Τι έχεις διαβάσει' : 'What you have read'}
+                </button>
+              )}
+            </div>
+          )}
         </section>
-
-        {/* Continue: the last practice, one tap away (kept on this device only). */}
-        {lastPractice && (
-          <Link
-            to={lastPractice.path}
-            className="glass mt-3 flex items-center justify-between gap-3 rounded-[20px] px-4 py-3 hover:brightness-110 transition-[filter,transform] active:scale-[0.98] desk:mt-0 desk:px-6 desk:py-4"
-          >
-            <span className="flex flex-col min-w-0">
-              <span className="text-[12px] text-ink/70">{el ? 'Συνέχισε' : 'Continue'}</span>
-              <span className="text-[15px] leading-snug text-ink">
-                {lastPractice.title.split(' · ').map((part, i) =>
-                  i === 0 ? part : <span key={i} className="whitespace-nowrap text-ink/70"> · {part}</span>
-                )}
-              </span>
-            </span>
-            <span className="flex items-center gap-2 shrink-0 text-[12px] text-ink/70">
-              {lastPractice.when}
-              <ArrowRight size={16} aria-hidden="true" />
-            </span>
-          </Link>
-        )}
         </div>
 
         </div>
 
         <motion.div variants={containerVariants} initial="hidden" animate="show" className="flex flex-col">
 
-          {/* Everything else in the app, in two small groups: what is there every day, and what is there when you want more. */}
+          {/* What is there every day; the rest of the app is in the Menu. */}
           {shelfGroups.map((group, gi) => (
           <motion.section key={group.key} variants={itemVariants} aria-labelledby={`home-${group.key}-title`} className={gi === 0 ? 'mt-[26px] desk:mt-11' : 'mt-6 desk:mt-9'}>
             <h2 id={`home-${group.key}-title`} className={sectionTitle}>{group.title}</h2>
@@ -401,6 +397,17 @@ export default function Dashboard() {
             </div>
           </motion.section>
           ))}
+          {/* The rest of the app is one tap away in the Menu (on a computer, in the side bar), not listed twice. */}
+          <motion.div variants={itemVariants} className="mt-4 desk:hidden">
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new Event('open-menu'))}
+              className="flex items-center gap-1.5 min-h-[40px] px-1 text-[14px] text-ink/75 hover:text-ink transition-colors text-left"
+            >
+              <span>{el ? 'Καταφύγιο, Κουνελότρυπα, Μέθοδος και το βιβλίο: στο Μενού' : 'Sanctuary, Rabbit Hole, Method and the book: in the Menu'}</span>
+              <ArrowRight size={14} aria-hidden="true" className="shrink-0 opacity-70" />
+            </button>
+          </motion.div>
 
         </motion.div>
 
