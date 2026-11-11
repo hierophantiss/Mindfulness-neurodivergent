@@ -168,7 +168,8 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
                       className="flex items-center justify-between gap-3 px-5 py-4 rounded-2xl border text-ink/95 hover:brightness-110 transition-[filter,transform] active:scale-[0.98]"
                     >
                       <span className="flex flex-col min-w-0">
-                        <span className="text-[12px] text-ink/70">{lang === 'el' ? 'Πρόταση για τώρα' : 'For right now'}</span>
+                        {/* The suggestion's axis, in its colour: in time you see which axis helps you when. */}
+                        <span className="text-[12px] text-ink/70 whitespace-nowrap">{lang === 'el' ? 'Πρόταση για τώρα' : 'For right now'}</span>
                         {/* "Deep relaxation · 4-2-7": the words, then the rhythm, never cut in two. */}
                         <span className="text-[15px] leading-snug">
                           {main.title[lang].split(' · ').map((part, i) =>
@@ -177,7 +178,15 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
                         </span>
                       </span>
                       <span className="flex items-center gap-2 shrink-0">
-                        {main.dur && <span className="text-[12px] text-ink/70">{main.dur[lang]}</span>}
+                        <span className="flex flex-col items-end gap-1">
+                          {main.axis && (
+                            <span className="inline-flex items-center gap-1.5 text-[12px]" style={{ color: `var(--axis-${main.axis}-ink)` }}>
+                              <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: AXIS_COLOR[main.axis] }} aria-hidden="true" />
+                              {AXIS_LABEL[main.axis][lang]}
+                            </span>
+                          )}
+                          {main.dur && <span className="text-[12px] text-ink/70">{main.dur[lang]}</span>}
+                        </span>
                         <ArrowRight size={17} className="opacity-70" />
                       </span>
                     </Link>

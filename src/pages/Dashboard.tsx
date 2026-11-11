@@ -22,6 +22,34 @@ import HomeCheckin from '../components/HomeCheckin';
 import BackupReminder from '../components/BackupReminder';
 import { welcomeSeen, markWelcomeSeen, openWelcome } from '../lib/welcome';
 import { readingSpot, chaptersRead } from '../lib/readingSpot';
+import { useActivityTracker } from '../contexts/ActivityTrackerContext';
+import { PRACTICE_CATALOG } from '../data/practiceCatalog';
+
+/** The last practice done (in the last month), to take up again with one tap. */
+function useLastPractice(lang: 'el' | 'en') {
+  const { logs } = useActivityTracker();
+  return useMemo(() => {
+    const MONTH = 30 * 86400000;
+    for (let i = logs.length - 1; i >= 0; i--) {
+      const l = logs[i];
+      if (!l.itemId || Date.now() - Date.parse(l.timestamp) > MONTH) continue;
+      const own: Record<string, { title: { el: string; en: string }; path: string }> = {
+        'four-axes-minute': { title: { el: 'Ένα λεπτό: οι τέσσερις άξονες', en: 'One minute: the four axes' }, path: '/practice/minute' },
+        'practice-swaying': { title: { el: 'Λίκνισμα', en: 'Swaying' }, path: '/practice/swaying' },
+      };
+      const item = own[l.itemId] ?? PRACTICE_CATALOG.find(c => c.id === l.itemId);
+      if (!item) continue;
+      const days = Math.floor((new Date().setHours(0, 0, 0, 0) - new Date(l.timestamp).setHours(0, 0, 0, 0)) / 86400000);
+      const when = lang === 'el'
+        ? (days <= 0 ? 'σήμερα' : days === 1 ? 'χθες' : `πριν από ${days} μέρες`)
+        : (days <= 0 ? 'today' : days === 1 ? 'yesterday' : `${days} days ago`);
+      // A movement goes by its own name ("Lifting the Sky"), not by what it does first.
+      const title = 'kind' in item && item.kind === 'movement' ? item.title[lang].split(' · ').pop()! : item.title[lang];
+      return { title, path: item.path, when };
+    }
+    return null;
+  }, [logs, lang]);
+}
 
 
 // The full chapters (230 KB of text) load after the page shows. Until then the
@@ -73,6 +101,7 @@ export default function Dashboard() {
   // The cat remembers what you read; on the home page it lives in this card.
   const hasRead = chaptersRead(chapters, progress.completedChapters, companionData.chapterProgress).length > 0;
   const el = lang === 'el';
+  const lastPractice = useLastPractice(lang);
   const finishedGuide = spot.kind === 'done';
   const guideAction = finishedGuide
     ? (el ? 'Όλα τα κεφάλαια' : 'All chapters')
@@ -253,7 +282,20 @@ export default function Dashboard() {
               {el ? 'Πώς νιώθεις τώρα;' : 'How do you feel right now?'}
             </h2>
             <HomeCheckin embedded />
+            {/* One minute, the four axes: the method in one gesture, the sign as its door. */}
+            <Link
+              to="/practice/minute"
+              className="glass mt-4 flex items-center gap-3.5 rounded-[20px] px-4 py-3 hover:brightness-110 transition-[filter,transform] active:scale-[0.98] desk:mt-5"
+            >
+              <MethodMark small breathe className="w-11 h-11 shrink-0" />
+              <span className="flex-1 min-w-0 flex flex-col gap-0.5">
+                <span className="font-display text-[19px] leading-tight text-ink">{el ? 'Ένα λεπτό' : 'One minute'}</span>
+                <span className="text-[13.5px] leading-snug text-ink/70">{el ? 'Οι τέσσερις άξονες: σώμα, αναπνοή, προσοχή, χώρος' : 'The four axes: body, breath, attention, space'}</span>
+              </span>
+              <ArrowRight size={17} aria-hidden="true" className="shrink-0 text-ink/70" />
+            </Link>
           </motion.section>
+        <div className="flex flex-col desk:gap-4">
         {/* The guide: where you are in the book; go on reading, or listen. */}
         <section aria-labelledby="home-guide-title" className="glass glass-gold rounded-[24px] mt-[26px] [@media(max-height:700px)]:mt-4 px-[18px] pt-[18px] pb-4 desk:mt-0 desk:rounded-[28px] desk:px-8 desk:pt-[30px] desk:pb-7 desk:flex desk:flex-col desk:min-h-[300px]">
           <div className="flex items-baseline justify-between gap-3 text-[12.5px] text-ink/70 desk:text-[14px]">
@@ -296,6 +338,28 @@ export default function Dashboard() {
             )}
           </div>
         </section>
+
+        {/* Continue: the last practice, one tap away (kept on this device only). */}
+        {lastPractice && (
+          <Link
+            to={lastPractice.path}
+            className="glass mt-3 flex items-center justify-between gap-3 rounded-[20px] px-4 py-3 hover:brightness-110 transition-[filter,transform] active:scale-[0.98] desk:mt-0 desk:px-6 desk:py-4"
+          >
+            <span className="flex flex-col min-w-0">
+              <span className="text-[12px] text-ink/70">{el ? 'Συνέχισε' : 'Continue'}</span>
+              <span className="text-[15px] leading-snug text-ink">
+                {lastPractice.title.split(' · ').map((part, i) =>
+                  i === 0 ? part : <span key={i} className="whitespace-nowrap text-ink/70"> · {part}</span>
+                )}
+              </span>
+            </span>
+            <span className="flex items-center gap-2 shrink-0 text-[12px] text-ink/70">
+              {lastPractice.when}
+              <ArrowRight size={16} aria-hidden="true" />
+            </span>
+          </Link>
+        )}
+        </div>
 
         </div>
 

@@ -16,6 +16,7 @@ const ProgramWeek = lazyWithReload(() => import('./pages/ProgramWeek'));
 const Practice = lazyWithReload(() => import('./pages/Practice'));
 const PracticeMovement = lazyWithReload(() => import('./pages/PracticeMovement'));
 const PracticeMicrodoses = lazyWithReload(() => import('./pages/PracticeMicrodoses'));
+const PracticeMinute = lazyWithReload(() => import('./pages/PracticeMinute'));
 const BreathRoute = lazyWithReload(() => import('./pages/BreathRoute'));
 const PracticeSection = lazyWithReload(() => import('./components/PracticeSection'));
 const PracticeSwaying = lazyWithReload(() => import('./pages/PracticeSwaying'));
@@ -106,6 +107,7 @@ function AppContent() {
             <Route path="practice/swaying" element={<PracticeSwaying />} />
             <Route path="practice/movement" element={<PracticeMovement />} />
             <Route path="practice/microdoses" element={<PracticeMicrodoses />} />
+            <Route path="practice/minute" element={<PracticeMinute />} />
             <Route path="practice/breath/:id" element={<BreathRoute />} />
             <Route path="practice/:category/:id" element={<GenericExercise />} />
             <Route path="journal" element={<Journal />} />

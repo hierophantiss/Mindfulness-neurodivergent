@@ -669,6 +669,15 @@ function getMetaForRoute(route: string): RouteMeta {
     return { title: t, description: d, schema: {}, schemaType: 'WebApplication', bodyParagraphs: [d] };
   }
 
+  // ── Practice / One minute, the four axes ──
+  if (clean === '/practice/minute') {
+    const t = lang === 'en' ? 'One Minute: the Four Axes | Neurodivergent Mindfulness' : 'Ένα Λεπτό: οι Τέσσερις Άξονες | Neurodivergent Mindfulness';
+    const d = lang === 'en'
+      ? 'The Fourfold Axis method in one minute: body, breath, attention and space, fifteen seconds each, for ADHD and autism. Free.'
+      : 'Η μέθοδος του Τετραπλού Άξονα σε ένα λεπτό: σώμα, αναπνοή, προσοχή και χώρος, δεκαπέντε δευτερόλεπτα το καθένα, για ΔΕΠΥ και αυτισμό. Δωρεάν.';
+    return { title: t, description: d, schema: {}, schemaType: 'WebApplication', bodyParagraphs: [d] };
+  }
+
   // ── Practice / Microdoses ──
   if (clean === '/practice/microdoses') {
     const t = lang === 'en'

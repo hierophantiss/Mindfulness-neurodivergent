@@ -29,6 +29,7 @@ const mainRoutes = [
   '/practice/grounding',
   '/practice/swaying',
   '/practice/microdoses',
+  '/practice/minute',
   '/journal',
   '/sanctuary',
   '/settings',

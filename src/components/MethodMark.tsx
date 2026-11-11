@@ -13,7 +13,11 @@ import { useAccessibility } from '../hooks/useAccessibility';
  * On the home page the whole sign breathes at the method's 5-5 (five seconds
  * widening, five narrowing) and the infinity glows on the in-breath.
  * `dim` lowers the lines (at night) so the infinity keeps its colours.
+ * `focus` lights one part and lets the others rest (the one-minute practice of
+ * the four axes): body = the axis, breath = the circle (it breathes),
+ * attention = the triangle, space = the infinity (it glows).
  */
+export type MarkPart = 'body' | 'breath' | 'attention' | 'space';
 export const INFINITY_PATH = 'M144,205 C144,189 162,189 170,205 C178,221 196,221 196,205 C196,189 178,189 170,205 C162,221 144,221 144,205 Z';
 
 // Geometry in a 200 × 200 box, centred on (100, 100).
@@ -49,8 +53,13 @@ const ENSO_SMALL = ensoPath(15);
  * infinity, no highlights; it does not grow and shrink, only the infinity
  * glows with the breath.
  */
-export function MethodMark({ className = '', label, breathe = false, dim = false, small = false }: { className?: string; label?: string; breathe?: boolean; dim?: boolean; small?: boolean }) {
+export function MethodMark({ className = '', label, breathe = false, dim = false, small = false, focus }: { className?: string; label?: string; breathe?: boolean; dim?: boolean; small?: boolean; focus?: MarkPart | null }) {
   const { reduceMotion } = useAccessibility();
+  // With a focus: that part full, the others resting; null = all resting (before starting).
+  const lit = (part: MarkPart) => ({
+    opacity: focus === undefined || focus === part ? 1 : 0.22,
+    transition: 'opacity 1.2s ease',
+  });
   const id = useId().replace(/:/g, '');
   const moving = breathe && !reduceMotion;
   const W = small ? 6.5 : 3.6;        // gold line width
@@ -92,24 +101,30 @@ export function MethodMark({ className = '', label, breathe = false, dim = false
           .methodmark-breathe { animation: methodmark 10s ease-in-out infinite; transform-origin: 100px 100px; }
           @keyframes methodmark-glow { 0%, 100% { opacity: 0.1; } 50% { opacity: 0.55; } }
           .methodmark-glow { animation: methodmark-glow 10s ease-in-out infinite; }
+          @keyframes methodmark-enso { 0%, 100% { transform: scale(0.95); } 50% { transform: scale(1.04); } }
+          .methodmark-enso { animation: methodmark-enso 10s ease-in-out infinite; transform-origin: 100px 100px; }
         `}</style>
       </defs>
       <g className={moving && !small ? 'methodmark-breathe' : ''}>
         <g opacity={dim ? 0.72 : 1} filter={small ? undefined : u('shadow')}>
           {/* The Breath: the blue ensō */}
-          <path d={small ? ENSO_SMALL : ENSO_LARGE} fill={u('blue')} />
+          <g style={lit('breath')} className={focus === 'breath' && !reduceMotion ? 'methodmark-enso' : ''}>
+            <path d={small ? ENSO_SMALL : ENSO_LARGE} fill={u('blue')} />
+          </g>
           {/* Attention and the Body: the gold triangle and the axis, open around the centre */}
           <g fill="none" stroke={u('gold')} strokeWidth={W} strokeLinecap="round" strokeLinejoin="round">
-            <polygon points={TRIANGLE} />
-            <line x1="100" y1={APEX_Y + 8} x2="100" y2={100 - GAP} />
-            <line x1="100" y1={100 + GAP} x2="100" y2={100 + R - 6} />
+            <polygon points={TRIANGLE} style={lit('attention')} />
+            <g style={lit('body')}>
+              <line x1="100" y1={APEX_Y + 8} x2="100" y2={100 - GAP} />
+              <line x1="100" y1={100 + GAP} x2="100" y2={100 + R - 6} />
+            </g>
           </g>
         </g>
         {/* Space: the infinity, exactly at the centre of the circle */}
-        <g transform={`translate(100 100) scale(${INF_SCALE}) translate(-170 -205)`} fill="none" strokeLinecap="round" strokeLinejoin="round">
-          {breathe && (
+        <g transform={`translate(100 100) scale(${INF_SCALE}) translate(-170 -205)`} fill="none" strokeLinecap="round" strokeLinejoin="round" style={lit('space')}>
+          {(breathe || focus === 'space') && (
             <path d={INFINITY_PATH} stroke={u('rainbow')} strokeWidth={INF_W * 1.6} filter={u('soft')}
-              className={moving ? 'methodmark-glow' : ''} opacity={moving ? undefined : 0.3} />
+              className={(moving || focus === 'space') && !reduceMotion ? 'methodmark-glow' : ''} opacity={(moving || focus === 'space') && !reduceMotion ? undefined : 0.3} />
           )}
           <path d={INFINITY_PATH} stroke="#2a1f12" strokeOpacity="0.55" strokeWidth={INF_W + 1.6} />
           <path d={INFINITY_PATH} stroke={u('rainbow')} strokeWidth={INF_W} />

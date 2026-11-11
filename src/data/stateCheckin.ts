@@ -11,7 +11,7 @@ export type CheckinState = 'hyper' | 'hypo' | 'balanced';
 export type CheckinChoice = CheckinState | 'unsure';
 
 type T = { el: string; en: string };
-export type CheckinAction = { title: T; path: string; dur?: T };
+export type CheckinAction = { title: T; path: string; dur?: T; axis?: Axis };
 
 export interface CheckinOption {
   id: CheckinChoice;
@@ -95,13 +95,14 @@ export const CHECKIN_OPTIONS: CheckinOption[] = [
       title: { el: 'Παρατήρηση επαφής', en: 'Noticing contact' },
       path: '/practice/body/contact-observe',
       dur: { el: '30 δευτ.', en: '30 sec' },
+      axis: 'body',
     }],
   },
 ];
 
 export const getCheckinOption = (id: CheckinChoice) => CHECKIN_OPTIONS.find(o => o.id === id)!;
 
-const asAction = (i: CatalogItem): CheckinAction => ({ title: i.title, path: i.path, dur: i.dur });
+const asAction = (i: CatalogItem): CheckinAction => ({ title: i.title, path: i.path, dur: i.dur, axis: i.axis });
 
 // The practices shown right away: one per kind, then the pinned ones.
 // "How much time do you have?" — seconds: microdoses up to a minute;
