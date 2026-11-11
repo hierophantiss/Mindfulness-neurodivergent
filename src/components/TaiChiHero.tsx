@@ -57,6 +57,24 @@ function cloudLoop(theta: number, pts: Pt[] = CLOUD_LOOP): Pt {
 
 // Greeting the Infinite: the hands gathered in front of the belly, palms up.
 const FLOWER_BELLY = { x: 190, y: 232 };
+// Lifting the Sky, the inhale, as Theodoros does it (from his video), for the
+// screen-left hand: from hanging, the hands come in front of the belly, palms
+// up and fingers towards each other (apart, never touching); they rise in front
+// of the chest, turn palms forward at the face, and go on up until the arms
+// stand long above the head in a wide V, palms to the sky, fingers in.
+// bf, the wrist, where the elbow wants to be, the hand's turn (0 = fingers down,
+// −90 = towards the middle, ±180 = up). Hanging and the V are set from the
+// shoulder (see below); their entries here only hold the place.
+const SKY_IN: { bf: number; hand: Pt; elbow: Pt; rot: number }[] = [
+  { bf: 0, hand: { x: 0, y: 0 }, elbow: { x: 0, y: 0 }, rot: 0 },
+  { bf: 0.22, hand: { x: 185, y: 234 }, elbow: { x: 172, y: 225 }, rot: -95 },
+  { bf: 0.42, hand: { x: 185, y: 214 }, elbow: { x: 168, y: 217 }, rot: -100 },
+  { bf: 0.6, hand: { x: 178, y: 191 }, elbow: { x: 165, y: 205 }, rot: -172 },
+  { bf: 0.8, hand: { x: 175, y: 174 }, elbow: { x: 169, y: 190 }, rot: -128 },
+  { bf: 1, hand: { x: 0, y: 0 }, elbow: { x: 0, y: 0 }, rot: -105 },
+];
+const SKY_TOP_DEG = 242;   // the arm above the head, out in a wide V
+const SKY_HANG_DEG = 100;  // the arm hanging at the side
 // Trunk and legs (Drillis & Contini, in Winter's Biomechanics, as fractions of
 // the height from the floor): shoulders 0.818, heart about 0.70, crotch about
 // 0.47, knee 0.285; shoulder width 0.259 (joint to joint), hip width 0.191.
@@ -84,6 +102,44 @@ function keepElbowSide(c1: Pt, c2: Pt, preferred: Pt, prev: Pt | undefined): Pt 
   if (near === preferred) return near;
   return dist2(c1, c2) < 4 ? preferred : near;
 }
+/**
+ * The elbow goes where it is wanted, as near as the arm allows: no farther
+ * from the shoulder than the upper arm, nor from the hand than the forearm
+ * (shorter where the arm points forward). That nearest place moves smoothly.
+ */
+function solveArm(sh: Pt, hand: Pt, want: Pt): { elbow: Pt; hand: Pt } {
+  const L1 = UPPER_ARM, L2 = FOREARM;
+  let dx = hand.x - sh.x, dy = hand.y - sh.y;
+  const d0 = Math.hypot(dx, dy);
+  const maxD = L1 + L2 - 0.5;
+  const h = d0 > maxD ? { x: sh.x + (dx * maxD) / d0, y: sh.y + (dy * maxD) / d0 } : hand;
+  dx = h.x - sh.x; dy = h.y - sh.y;
+  const d = Math.max(0.1, Math.hypot(dx, dy));
+  const inDisk = (c: Pt, r: number, q: Pt) => Math.hypot(q.x - c.x, q.y - c.y) <= r + 1e-6;
+  const onCircle = (c: Pt, r: number, q: Pt): Pt => {
+    const l = Math.max(1e-6, Math.hypot(q.x - c.x, q.y - c.y));
+    return { x: c.x + ((q.x - c.x) * r) / l, y: c.y + ((q.y - c.y) * r) / l };
+  };
+  let elbow: Pt;
+  if (inDisk(sh, L1, want) && inDisk(h, L2, want)) elbow = want;
+  else {
+    const a = onCircle(sh, L1, want), b = onCircle(h, L2, want);
+    const okA = inDisk(sh, L1, want) ? false : inDisk(h, L2, a);
+    const okB = inDisk(h, L2, want) ? false : inDisk(sh, L1, b);
+    if (okA) elbow = a;
+    else if (okB) elbow = b;
+    else {
+      // Where the two circles cross: the nearer of the two.
+      const g = Math.atan2(dy, dx);
+      const i = Math.acos(Math.max(-1, Math.min(1, (L1 * L1 + d * d - L2 * L2) / (2 * L1 * d))));
+      const c1 = { x: sh.x + L1 * Math.cos(g + i), y: sh.y + L1 * Math.sin(g + i) };
+      const c2 = { x: sh.x + L1 * Math.cos(g - i), y: sh.y + L1 * Math.sin(g - i) };
+      elbow = dist2(c1, want) <= dist2(c2, want) ? c1 : c2;
+    }
+  }
+  return { elbow, hand: h };
+}
+
 /** The shortest way round from angle a to angle b, in degrees. */
 const turn = (a: number, b: number) => ((((b - a) % 360) + 540) % 360) - 180;
 
@@ -407,7 +463,9 @@ export default function TaiChiHero({
   // from it (fully within 4 units, not at all beyond 18), with no jump.
   const near = Math.min(1, Math.max(0, (18 - Math.abs(hL.x - 200)) / 14));
   // (Greeting the Infinite: in front of the belly the hands stay apart, palms up.)
-  const above = movementType === "be-like-a-flower-5-5" ? Math.min(1, Math.max(0, (231 - hL.y) / 16)) : 1;
+  // (Lifting the Sky: the hands never meet.)
+  const above = movementType === "be-like-a-flower-5-5" ? Math.min(1, Math.max(0, (231 - hL.y) / 16))
+    : movementType === "qigong-lifting-sky" ? 0 : 1;
   const meetW = near * near * (3 - 2 * near) * above;
   hL.x += (200 - HAND_W / 2 - hL.x) * meetW;
   // At the chest they rest a little higher, in front of the breastbone, so the
@@ -510,6 +568,58 @@ export default function TaiChiHero({
     const c = Math.min(1, (1 - bf) / 0.65);
     eL = midlineElbow(1 - c * c * (3 - 2 * c));
   }
+  // ── LIFTING THE SKY (Ba Duan Jin), as Theodoros does it (from his video) ──
+  // Inhale: see SKY_IN. Exhale: the long arms come down out to the sides in a
+  // wide arc, through level, to hanging; the palms push out (fingers up at
+  // level) and the hands come back into the line of the arm at the end.
+  let skyRot: number | null = null;
+  if (movementType === "qigong-lifting-sky") {
+    const sm = (x: number) => { const c = Math.min(1, Math.max(0, x)); return c * c * (3 - 2 * c); };
+    const polar = (deg: number, r: number): Pt => ({ x: sL.x + r * Math.cos((deg * Math.PI) / 180), y: sL.y + r * Math.sin((deg * Math.PI) / 180) });
+    // The elbow of a long arm: a little below its line.
+    const longElbow = (deg: number) => polar(deg - 10, UPPER_ARM);
+    const along = (e: Pt, h: Pt) => (Math.atan2(-(h.x - e.x), h.y - e.y) * 180) / Math.PI;
+    let hand: Pt, want: Pt;
+    if (isRisePhase) {
+      const K = SKY_IN.map((k, i) => i === 0 ? { ...k, hand: polar(SKY_HANG_DEG, REACH), elbow: longElbow(SKY_HANG_DEG), rot: along(longElbow(SKY_HANG_DEG), polar(SKY_HANG_DEG, REACH)) }
+        : i === SKY_IN.length - 1 ? { ...k, hand: polar(SKY_TOP_DEG, REACH + 2), elbow: longElbow(SKY_TOP_DEG) } : k);
+      // One smooth curve through the moments (no stop at each of them).
+      let i = 0;
+      while (i < K.length - 2 && bf > K[i + 1].bf) i++;
+      const u = Math.min(1, Math.max(0, (bf - K[i].bf) / (K[i + 1].bf - K[i].bf)));
+      const at = (k: number) => K[Math.min(K.length - 1, Math.max(0, k))];
+      const cr = (a: number, b: number, c: number, d: number) =>
+        0.5 * (2 * b + (-a + c) * u + (2 * a - 5 * b + 4 * c - d) * u * u + (-a + 3 * b - 3 * c + d) * u * u * u);
+      const curve = (f: (k: typeof K[number]) => Pt): Pt => {
+        const [a, b, c, d] = [f(at(i - 1)), f(at(i)), f(at(i + 1)), f(at(i + 2))];
+        return { x: cr(a.x, b.x, c.x, d.x), y: cr(a.y, b.y, c.y, d.y) };
+      };
+      hand = curve(k => k.hand);
+      want = curve(k => k.elbow);
+      // The turns, unwound so each step goes the short way round.
+      const r1 = at(i).rot, r0 = r1 - turn(at(i - 1).rot, r1);
+      const r2 = r1 + turn(r1, at(i + 1).rot), r3 = r2 + turn(at(i + 1).rot, at(i + 2).rot);
+      skyRot = cr(r0, r1, r2, r3);
+    } else {
+      const deg = SKY_TOP_DEG - (SKY_TOP_DEG - SKY_HANG_DEG) * sm(1 - bf);
+      hand = polar(deg, REACH + 2);
+      want = longElbow(deg);
+    }
+    const arm = solveArm(sL, hand, want);
+    eL = arm.elbow; hL = arm.hand;
+    if (!isRisePhase) {
+      // The wrist, by where the arm is: bent right back above the head (palm to
+      // the sky, fingers in), fingers up while the arm is still above level
+      // (the palm pushing out), half let go at level, in line with the arm
+      // below it.
+      const deg = SKY_TOP_DEG - (SKY_TOP_DEG - SKY_HANG_DEG) * sm(1 - bf);
+      const topBend = turn(along(longElbow(SKY_TOP_DEG), polar(SKY_TOP_DEG, REACH)), SKY_IN[SKY_IN.length - 1].rot);
+      const bend = deg > 210 ? 90 + (topBend - 90) * sm((deg - 210) / (SKY_TOP_DEG - 210))
+        : deg > 160 ? 90 * sm((deg - 160) / 50)
+        : 0;
+      skyRot = along(eL, hL) + bend;
+    }
+  }
   memo.current.eL = eL;
 
   const baseLeftHandRotation = easeBezier1D(rotExhale, isRisePhase ? rotCpRise : rotCpFall, rotInhale, bf);
@@ -571,6 +681,8 @@ export default function TaiChiHero({
     leftHandRotation += d * w;
   }
 
+  if (skyRot !== null) leftHandRotation = skyRot;
+
   // Meeting palms turn upright, fingers up (180°), by the same measure.
   if (meetW > 0) {
     const d = ((180 - leftHandRotation) % 360 + 540) % 360 - 180; // shortest turn
@@ -607,38 +719,6 @@ export default function TaiChiHero({
     // as the arm allows: no farther from the shoulder than the upper arm, nor
     // from the hand than the forearm (shorter where the arm points forward,
     // as it does across the chest). That nearest place moves smoothly.
-    const solveArm = (sh: Pt, hand: Pt, want: Pt) => {
-      const L1 = UPPER_ARM, L2 = FOREARM;
-      let dx = hand.x - sh.x, dy = hand.y - sh.y;
-      const d0 = Math.hypot(dx, dy);
-      const maxD = L1 + L2 - 0.5;
-      const h = d0 > maxD ? { x: sh.x + (dx * maxD) / d0, y: sh.y + (dy * maxD) / d0 } : hand;
-      dx = h.x - sh.x; dy = h.y - sh.y;
-      const d = Math.max(0.1, Math.hypot(dx, dy));
-      const inDisk = (c: Pt, r: number, q: Pt) => Math.hypot(q.x - c.x, q.y - c.y) <= r + 1e-6;
-      const onCircle = (c: Pt, r: number, q: Pt): Pt => {
-        const l = Math.max(1e-6, Math.hypot(q.x - c.x, q.y - c.y));
-        return { x: c.x + ((q.x - c.x) * r) / l, y: c.y + ((q.y - c.y) * r) / l };
-      };
-      let elbow: Pt;
-      if (inDisk(sh, L1, want) && inDisk(h, L2, want)) elbow = want;
-      else {
-        const a = onCircle(sh, L1, want), b = onCircle(h, L2, want);
-        const okA = inDisk(sh, L1, want) ? false : inDisk(h, L2, a);
-        const okB = inDisk(h, L2, want) ? false : inDisk(sh, L1, b);
-        if (okA) elbow = a;
-        else if (okB) elbow = b;
-        else {
-          // Where the two circles cross: the nearer of the two.
-          const g = Math.atan2(dy, dx);
-          const i = Math.acos(Math.max(-1, Math.min(1, (L1 * L1 + d * d - L2 * L2) / (2 * L1 * d))));
-          const c1 = { x: sh.x + L1 * Math.cos(g + i), y: sh.y + L1 * Math.sin(g + i) };
-          const c2 = { x: sh.x + L1 * Math.cos(g - i), y: sh.y + L1 * Math.sin(g - i) };
-          elbow = dist2(c1, want) <= dist2(c2, want) ? c1 : c2;
-        }
-      }
-      return { elbow, hand: h };
-    };
     const shL = { x: sL.x + bodyShift, y: sL.y };
     const shR = { x: sR.x + bodyShift, y: sR.y };
     const wantR = cloudLoop(theta, CLOUD_ELBOW);
