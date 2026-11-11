@@ -150,3 +150,19 @@ export function movementSteps(
   if (m.care) out.push({ label: say(LABEL.care), text: say(m.care) });
   return out;
 }
+
+/** The stance of a movement (to take position before it starts); null if none. */
+export function movementStance(movementType: string, language: 'el' | 'en'): string | null {
+  const st = STEPS[movementType]?.stance;
+  return st ? (language === 'el' ? st.el : st.en) : null;
+}
+
+/** What a phase is called: inhale, hold, exhale or pause. */
+export function phaseName(ph: { armFrom?: number; armTo?: number }, language: 'el' | 'en'): string {
+  const from = Number(ph.armFrom ?? 0), to = Number(ph.armTo ?? 0);
+  const kind: Kind = to > from ? 'in' : to < from ? 'out' : from >= 0.5 ? 'holdIn' : 'holdOut';
+  return language === 'el' ? LABEL[kind].el : LABEL[kind].en;
+}
+
+/** "Stance", as the step is called. */
+export const stanceName = (language: 'el' | 'en') => (language === 'el' ? LABEL.stance.el : LABEL.stance.en);

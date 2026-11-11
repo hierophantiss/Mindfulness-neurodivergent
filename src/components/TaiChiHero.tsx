@@ -259,6 +259,12 @@ export default function TaiChiHero({
   // it stops 4 units above the hem so it never folds flat.
   const torsoBendY = bowBend * (HEM_Y - 4 - SHOULDER_Y);
   const leanBackY = movementType === "qigong-lifting-sky" ? (bf * -4) : 0;
+  // Rooted: with each exhale the body sinks a little (the knees soften, the
+  // hips drop) and rises again with the inhale; the feet stay where they are.
+  // Not in the bow (it folds) nor in Cloud Hands (the weight goes side to side).
+  const SINK = 3;
+  const sinkY = (movementType === "5-5" || movementType === "be-like-a-flower-5-5" || movementType === "qigong-lifting-sky"
+    || movementType === "lotus-bloom-5-5" || movementType === "lotus") ? SINK * (1 - bf) : 0;
 
   // Base shoulders
   const sL = { x: 200 - SHOULDER_HALF, y: SHOULDER_Y + torsoBendY + leanBackY };
@@ -1084,14 +1090,15 @@ export default function TaiChiHero({
           {/* Clothes in the meditator's green, so it is the same person everywhere */}
           <g id="tc-legs" fill="#2a372d" stroke="#1b241d" strokeWidth="0.5" transform={bodyShift ? `translate(0, 283) skewX(${(-Math.atan2(bodyShift, 38) * 180) / Math.PI}) translate(0, -283)` : undefined}>
             {/* Left leg */}
-            <path d={`M 189.5 ${HEM_Y - 3} L 185.5 ${KNEE_Y} L 186.5 283 L 196 283 L 196 ${HEM_Y - 3} Z`} />
+            <path d={`M 189.5 ${HEM_Y - 3 + sinkY} L ${185.5 - sinkY * 0.4} ${KNEE_Y + sinkY * 0.45} L 186.5 283 L 196 283 L ${196 - sinkY * 0.2} ${HEM_Y - 3 + sinkY} Z`} />
             {/* Right leg */}
-            <path d={`M 210.5 ${HEM_Y - 3} L 214.5 ${KNEE_Y} L 213.5 283 L 204 283 L 204 ${HEM_Y - 3} Z`} />
+            <path d={`M 210.5 ${HEM_Y - 3 + sinkY} L ${214.5 + sinkY * 0.4} ${KNEE_Y + sinkY * 0.45} L 213.5 283 L 204 283 L ${204 + sinkY * 0.2} ${HEM_Y - 3 + sinkY} Z`} />
             {/* Cuffs on pants */}
             <rect x="186" y="279" width="10" height="4" rx="1.2" fill="#1b241d" />
             <rect x="204" y="279" width="10" height="4" rx="1.2" fill="#1b241d" />
           </g>
 
+          <g id="tc-upper" transform={sinkY ? `translate(0, ${sinkY})` : undefined}>
           {/* TORSO / HOODIE (Black/Charcoal hoodie, centered) */}
           <g id="tc-torso" fill="#36463a" transform={bodyShift ? `translate(${bodyShift}, 0)` : undefined}>
             <path d={`M 184 ${SHOULDER_Y + torsoBendY + leanBackY} L 216 ${SHOULDER_Y + torsoBendY + leanBackY} L 211.5 ${HEM_Y} L 188.5 ${HEM_Y} Z`} />
@@ -1209,6 +1216,7 @@ export default function TaiChiHero({
           {/* RIGHT HAND (Simplified Abstract Oval) */}
           <g transform={`translate(${hR.x}, ${hR.y}) rotate(${rightHandRotation}) `}>
             <path d={HAND_PATH} fill="#e5bda3" />
+          </g>
           </g>
         </g>
       </svg>

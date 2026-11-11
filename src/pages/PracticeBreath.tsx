@@ -1,5 +1,5 @@
 import { createPortal } from 'react-dom';
-import { movementSteps, type Step } from '../data/movementSteps';
+import { movementSteps, movementStance, phaseName, stanceName, type Step } from '../data/movementSteps';
 import { AudioEnabler } from '../components/AudioEnabler';
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -372,13 +372,74 @@ export default function PracticeBreath() {
     }
   };
 
-  const startSequence = (withAudio: boolean = audioEnabled, mode: 'binaural' | 'nature' = soundMode) => {
+  const beginRun = (withAudio: boolean, mode: 'binaural' | 'nature') => {
     setAudioEnabled(withAudio);
     setFinished(false);
     setRunning(true);
     if (withAudio) {
       beginSound(mode);
     }
+  };
+
+  // ── Take position: before a movement starts, its stance for three seconds ──
+  const lang: 'el' | 'en' = language === 'en' ? 'en' : 'el';
+  const movementKind = pattern.visualizer || pattern.id;
+  const stance = (pattern.category === 'movement' || !!pattern.visualizer) ? movementStance(movementKind, lang) : null;
+  const [prep, setPrep] = useState<{ left: number; audio: boolean; mode: 'binaural' | 'nature' } | null>(null);
+  useEffect(() => {
+    if (!prep) return;
+    const t = setTimeout(() => {
+      if (prep.left <= 1) { setPrep(null); beginRun(prep.audio, prep.mode); }
+      else setPrep({ ...prep, left: prep.left - 1 });
+    }, 1000);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [prep]);
+  useEffect(() => { setPrep(null); }, [pattern.id]);
+
+  // ── Watch it slowly: one cycle at half speed, before trying (no sound, not counted) ──
+  const [demo, setDemo] = useState<{ rising: boolean; label: string } | null>(null);
+  const demoFrame = useRef<number | null>(null);
+  const stopDemo = useCallback(() => {
+    if (demoFrame.current !== null) cancelAnimationFrame(demoFrame.current);
+    demoFrame.current = null;
+    setDemo(null);
+  }, []);
+  useEffect(() => stopDemo, [stopDemo, pattern.id]);
+  const playDemo = () => {
+    const SLOW = 2, STANCE_MS = 1500;
+    const phases = pattern.phases;
+    const first = phases[0];
+    const t0 = performance.now();
+    let shown = -2;
+    const frame = (now: number) => {
+      let t = now - t0;
+      if (t < STANCE_MS) {
+        tick.set(Number(first.armFrom ?? 0), 0);
+        if (shown !== -1) { shown = -1; setDemo({ rising: Number(first.armTo ?? 0) > Number(first.armFrom ?? 0), label: stanceName(lang) }); }
+      } else {
+        t -= STANCE_MS;
+        let i = 0;
+        while (i < phases.length && t >= phases[i].dur * SLOW) { t -= phases[i].dur * SLOW; i++; }
+        if (i >= phases.length) { stopDemo(); return; }
+        const ph = phases[i];
+        const p = t / (ph.dur * SLOW);
+        const from = Number(ph.armFrom ?? 0), to = Number(ph.armTo ?? 0);
+        tick.set(from + (to - from) * (-(Math.cos(Math.PI * p) - 1) / 2), p);
+        if (shown !== i) {
+          shown = i;
+          setDemo({ rising: to > from, label: `${phaseName(ph, lang)} · ${lang === 'el' ? 'αργά' : 'slowly'}` });
+        }
+      }
+      demoFrame.current = requestAnimationFrame(frame);
+    };
+    demoFrame.current = requestAnimationFrame(frame);
+  };
+
+  const startSequence = (withAudio: boolean = audioEnabled, mode: 'binaural' | 'nature' = soundMode) => {
+    stopDemo();
+    if (stance) setPrep({ left: 3, audio: withAudio, mode });
+    else beginRun(withAudio, mode);
   };
 
   const savePreferenceAndStart = (choice: 'with' | 'nature' | 'without') => {
@@ -395,6 +456,8 @@ export default function PracticeBreath() {
   };
 
   const handleStartToggle = () => {
+    if (prep) { setPrep(null); return; }
+    if (demo) { stopDemo(); return; }
     if (running) {
       setRunning(false);
       stopAudio();
@@ -670,9 +733,20 @@ export default function PracticeBreath() {
               </button>
             ))}
           </div>
-          <HowTo text={language === 'el' ? basePattern.desc.el : basePattern.desc.en} language={language}
-            gravityFirst={isVocal} longExhale={isVocal} chant={isVocal}
-            steps={movementSteps(basePattern.visualizer || basePattern.id, basePattern.phases, language === 'en' ? 'en' : 'el')} />
+          <div className="flex flex-wrap justify-center gap-2">
+            <HowTo text={language === 'el' ? basePattern.desc.el : basePattern.desc.en} language={language}
+              gravityFirst={isVocal} longExhale={isVocal} chant={isVocal}
+              steps={movementSteps(basePattern.visualizer || basePattern.id, basePattern.phases, language === 'en' ? 'en' : 'el')} />
+            {stance && (
+              <button
+                onClick={(e) => { e.stopPropagation(); if (demo) stopDemo(); else playDemo(); }}
+                aria-pressed={!!demo}
+                className="mt-2 min-h-10 px-4 rounded-full border border-teal-400/30 bg-teal-400/[0.06] text-[14px] text-teal-200 hover:border-teal-300/60 hover:text-teal-100 transition-colors"
+              >
+                {demo ? (language === 'el' ? 'Σταμάτα' : 'Stop') : (language === 'el' ? 'Δες το αργά' : 'Watch it slowly')}
+              </button>
+            )}
+          </div>
         </div>
       )}
 
@@ -707,9 +781,20 @@ export default function PracticeBreath() {
 
       {!running && (basePattern.category === 'movement' || basePattern.category === 'breath') && (
         <div className="z-20 mb-3 -mt-2 px-6 flex flex-col items-center">
-          <HowTo text={language === 'el' ? basePattern.desc.el : basePattern.desc.en} language={language} gravityFirst={basePattern.category === 'breath'}
-            longExhale={basePattern.category === 'breath' && basePattern.phases.some(ph => ph.armFrom > ph.armTo && ph.dur >= 5000)}
-            steps={basePattern.category === 'movement' ? movementSteps(basePattern.visualizer || basePattern.id, pattern.phases, language === 'en' ? 'en' : 'el') : null} />
+          <div className="flex flex-wrap justify-center gap-2">
+            <HowTo text={language === 'el' ? basePattern.desc.el : basePattern.desc.en} language={language} gravityFirst={basePattern.category === 'breath'}
+              longExhale={basePattern.category === 'breath' && basePattern.phases.some(ph => ph.armFrom > ph.armTo && ph.dur >= 5000)}
+              steps={basePattern.category === 'movement' ? movementSteps(basePattern.visualizer || basePattern.id, pattern.phases, language === 'en' ? 'en' : 'el') : null} />
+            {stance && (
+              <button
+                onClick={(e) => { e.stopPropagation(); if (demo) stopDemo(); else playDemo(); }}
+                aria-pressed={!!demo}
+                className="mt-2 min-h-10 px-4 rounded-full border border-teal-400/30 bg-teal-400/[0.06] text-[14px] text-teal-200 hover:border-teal-300/60 hover:text-teal-100 transition-colors"
+              >
+                {demo ? (language === 'el' ? 'Σταμάτα' : 'Stop') : (language === 'el' ? 'Δες το αργά' : 'Watch it slowly')}
+              </button>
+            )}
+          </div>
         </div>
       )}
 
@@ -740,13 +825,21 @@ export default function PracticeBreath() {
         >
           {/* Centred in the space it has, as large as the screen leaves (.breath-stage), so the circle is never cut at the top */}
           <div className="breath-stage relative flex items-center justify-center shrink-0">
+             {/* Take position: the stance, and three seconds */}
+             {prep && stance && (
+               <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 aspect-square z-20 flex flex-col items-center justify-center gap-3 px-6 text-center rounded-2xl bg-[#0f1117]/80" role="status" aria-live="polite">
+                 <p className="text-[13px] text-teal-200/90">{language === 'el' ? 'Πάρε θέση' : 'Take your position'}</p>
+                 <p className="text-[15px] leading-relaxed text-ink/90 max-w-[320px]">{stance}</p>
+                 <p className="font-mono text-[40px] font-light text-ink" aria-hidden="true">{prep.left}</p>
+               </div>
+             )}
              
              {/* Counter Text & Infinity */}
              <div className="z-10 absolute inset-0 flex items-center justify-center">
                 <motion.div 
                   className="absolute inset-0 flex items-center justify-center pointer-events-none"
                   initial={isTaiChi ? { scale: 1, opacity: 0 } : { scale: 1, opacity: 0, filter: 'drop-shadow(0 0 0px rgba(0,0,0,0))' }}
-                  animate={isTaiChi ? { opacity: running ? 1 : 0.55 } : {
+                  animate={isTaiChi ? { opacity: running || demo ? 1 : 0.55 } : {
                     opacity: running ? 1 : 0.55,
                     filter: glowFilter,
                   }}
@@ -762,12 +855,12 @@ export default function PracticeBreath() {
                   )}
                   <LiveTick store={tick}>{({ pos, prog }) => isTaiChi ? (
                     <TaiChiHero
-                      breathForce={running ? pos : 1.0}
-                      isRising={running ? isInhale : true}
-                      breathStateText=""
+                      breathForce={running || demo ? pos : 1.0}
+                      isRising={running ? isInhale : demo ? demo.rising : true}
+                      breathStateText={demo ? demo.label : ""}
                       movementType={pattern.visualizer || pattern.id}
                       rhythmText=""
-                      idle={!running}
+                      idle={!running && !demo}
                     />
                   ) : (
                     <BreathingHero
@@ -849,12 +942,14 @@ export default function PracticeBreath() {
            onClick={(e) => { e.stopPropagation(); handleStartToggle(); }}
            className={cn(
              "flex-1 z-20 !text-[14px] focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400",
-             running 
+             running || prep
                ? "btn-soft" 
                : "btn-main"
            )}
          >
-           {running ? (
+           {prep ? (
+             <span className="text-[13px] font-medium mt-0.5 opacity-80">{language === 'el' ? 'Άκυρο' : 'Cancel'}</span>
+           ) : running ? (
              <>
                <Square size={12} className="fill-current opacity-60" />
                <span className="text-[13px] font-medium mt-0.5 opacity-80">{language === 'el' ? 'Παύση' : 'Pause'}</span>
