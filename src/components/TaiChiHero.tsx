@@ -517,7 +517,7 @@ export default function TaiChiHero({
   // 5-5: the elbows always go out to the sides (as in the video), on the
   // outer side of the hand, so the forearms never cross.
   const outer = ePlus.x <= eMinus.x ? ePlus : eMinus;
-  let eL = movementType === "5-5" || movementType === "be-like-a-flower-5-5" ? outer : keepElbowSide(ePlus, eMinus, cross >= 0 ? ePlus : eMinus, memo.current.eL);
+  let eL = movementType === "5-5" || movementType === "be-like-a-flower-5-5" || movementType === "lotus-bloom-5-5" || movementType === "lotus" ? outer : keepElbowSide(ePlus, eMinus, cross >= 0 ? ePlus : eMinus, memo.current.eL);
   const outerElbow = (h: Pt): Pt => {
     const d = Math.hypot(h.x - sL.x, h.y - sL.y);
     const c = (prefUpper ** 2 + d * d - prefLower ** 2) / (2 * prefUpper * d);
@@ -568,11 +568,12 @@ export default function TaiChiHero({
     const c = Math.min(1, (1 - bf) / 0.65);
     eL = midlineElbow(1 - c * c * (3 - 2 * c));
   }
+  // Movements set from the videos give the hand's turn themselves.
+  let ownRot: number | null = null;
   // ── LIFTING THE SKY (Ba Duan Jin), as Theodoros does it (from his video) ──
   // Inhale: see SKY_IN. Exhale: the long arms come down out to the sides in a
   // wide arc, through level, to hanging; the palms push out (fingers up at
   // level) and the hands come back into the line of the arm at the end.
-  let skyRot: number | null = null;
   if (movementType === "qigong-lifting-sky") {
     const sm = (x: number) => { const c = Math.min(1, Math.max(0, x)); return c * c * (3 - 2 * c); };
     const polar = (deg: number, r: number): Pt => ({ x: sL.x + r * Math.cos((deg * Math.PI) / 180), y: sL.y + r * Math.sin((deg * Math.PI) / 180) });
@@ -599,7 +600,7 @@ export default function TaiChiHero({
       // The turns, unwound so each step goes the short way round.
       const r1 = at(i).rot, r0 = r1 - turn(at(i - 1).rot, r1);
       const r2 = r1 + turn(r1, at(i + 1).rot), r3 = r2 + turn(at(i + 1).rot, at(i + 2).rot);
-      skyRot = cr(r0, r1, r2, r3);
+      ownRot = cr(r0, r1, r2, r3);
     } else {
       const deg = SKY_TOP_DEG - (SKY_TOP_DEG - SKY_HANG_DEG) * sm(1 - bf);
       hand = polar(deg, REACH + 2);
@@ -617,8 +618,53 @@ export default function TaiChiHero({
       const bend = deg > 210 ? 90 + (topBend - 90) * sm((deg - 210) / (SKY_TOP_DEG - 210))
         : deg > 160 ? 90 * sm((deg - 160) / 50)
         : 0;
-      skyRot = along(eL, hL) + bend;
+      ownRot = along(eL, hL) + bend;
     }
+  }
+  // ── LOTUS, as Theodoros does it (from his video) ──
+  // Inhale: the joined palms rise from the chest up the middle to above the
+  // head; there they part, the arms stand straight up, palms facing; then they
+  // open out into a wide V, the wrists bending so the palms face the sky (the
+  // flower open). Exhale: the arms come back up straight, the palms meet
+  // above the head and come down the middle together to the chest.
+  if (movementType === "lotus-bloom-5-5" || movementType === "lotus") {
+    const sm = (x: number) => { const c = Math.min(1, Math.max(0, x)); return c * c * (3 - 2 * c); };
+    const polar = (deg: number, r: number): Pt => ({ x: sL.x + r * Math.cos((deg * Math.PI) / 180), y: sL.y + r * Math.sin((deg * Math.PI) / 180) });
+    const lerp = (a: Pt, b: Pt, k: number): Pt => ({ x: a.x + (b.x - a.x) * k, y: a.y + (b.y - a.y) * k });
+    const along = (e: Pt, h: Pt) => (Math.atan2(-(h.x - e.x), h.y - e.y) * 180) / Math.PI;
+    const MID = 200 - HAND_W / 2;
+    const chest = { x: MID, y: 207 };
+    const top = { x: MID, y: sL.y - Math.sqrt(29 * 29 - (MID - sL.x) ** 2) };
+    const UP = 263, OPEN = 225, BEND = 55;          // straight up; the open V; the wrist at the V
+    const elbowChest = { x: 175, y: 222 }, elbowTop = { x: 172, y: 186 };
+    // Where the hands are on the way: 0 = at the chest, 1 = rising joined to
+    // the top, 2 = parted (straight up), 3 = open. Inhale goes 0→3 with the
+    // breath; the exhale comes back 3→2 (closing), 2→1 (meeting), 1→0 (down).
+    const s0 = isRisePhase
+      ? (bf < 0.42 ? bf / 0.42 : bf < 0.58 ? 1 + (bf - 0.42) / 0.16 : 2 + (bf - 0.58) / 0.42)
+      : (bf > 0.55 ? 2 + (bf - 0.55) / 0.45 : bf > 0.4 ? 1 + (bf - 0.4) / 0.15 : bf / 0.4);
+    let hand: Pt, want: Pt, rot: number;
+    if (s0 <= 1) {
+      const k = sm(s0);
+      hand = lerp(chest, top, k); want = lerp(elbowChest, elbowTop, k); rot = 180;
+    } else if (s0 <= 2) {
+      const k = sm(s0 - 1);
+      const up = polar(UP, REACH);
+      hand = lerp(top, up, k); want = lerp(elbowTop, polar(UP - 8, UPPER_ARM), k);
+      rot = NaN; // set from the arm below
+    } else {
+      const k = sm(s0 - 2);
+      const deg = UP + (OPEN - UP) * k;
+      hand = polar(deg, REACH + 2); want = polar(deg - 8, UPPER_ARM);
+      rot = NaN;
+    }
+    const arm = solveArm(sL, hand, want);
+    eL = arm.elbow; hL = arm.hand;
+    if (Number.isNaN(rot)) {
+      const line = along(eL, hL);
+      rot = s0 <= 2 ? 180 + turn(180, line) * sm(s0 - 1) : line + BEND * sm(s0 - 2);
+    }
+    ownRot = rot;
   }
   memo.current.eL = eL;
 
@@ -681,7 +727,7 @@ export default function TaiChiHero({
     leftHandRotation += d * w;
   }
 
-  if (skyRot !== null) leftHandRotation = skyRot;
+  if (ownRot !== null) leftHandRotation = ownRot;
 
   // Meeting palms turn upright, fingers up (180°), by the same measure.
   if (meetW > 0) {
