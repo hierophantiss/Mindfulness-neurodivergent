@@ -35,7 +35,6 @@ function useLastPractice(lang: 'el' | 'en') {
       const l = logs[i];
       if (!l.itemId || Date.now() - Date.parse(l.timestamp) > MONTH) continue;
       const own: Record<string, { title: { el: string; en: string }; path: string }> = {
-        'four-axes-minute': { title: { el: 'Ένα λεπτό: οι τέσσερις άξονες', en: 'One minute: the four axes' }, path: '/practice/minute' },
         'practice-swaying': { title: { el: 'Λίκνισμα', en: 'Swaying' }, path: '/practice/swaying' },
       };
       const item = own[l.itemId] ?? PRACTICE_CATALOG.find(c => c.id === l.itemId);

@@ -529,16 +529,6 @@ export const SEO: React.FC = () => {
       : `Σύντομη πρακτική (${cat.el}) από τον Τετραπλό Άξονα, για ΔΕΠΥ και αυτισμό.`;
     schema = practiceSchema(title, description, pageUrl);
 
-  // ── Practice: one minute, the four axes ─────────────────────────
-  } else if (cleanPath === '/practice/minute') {
-    title = lang === 'en'
-      ? 'One Minute: the Four Axes | Neurodivergent Mindfulness'
-      : 'Ένα Λεπτό: οι Τέσσερις Άξονες | Neurodivergent Mindfulness';
-    description = lang === 'en'
-      ? 'The Fourfold Axis method in one minute: body, breath, attention and space, fifteen seconds each, for ADHD and autism. Free.'
-      : 'Η μέθοδος του Τετραπλού Άξονα σε ένα λεπτό: σώμα, αναπνοή, προσοχή και χώρος, δεκαπέντε δευτερόλεπτα το καθένα, για ΔΕΠΥ και αυτισμό. Δωρεάν.';
-    schema = practiceSchema(title, description, pageUrl);
-
   // ── Practice: hub ────────────────────────────────────────────────
   } else if (cleanPath === '/practice' || cleanPath.startsWith('/practice/')) {
     title = lang === 'en'
