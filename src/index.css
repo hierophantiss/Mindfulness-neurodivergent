@@ -97,6 +97,12 @@
     --relief-top: #232838;  --relief-mid: #191c29;  --relief-bottom: #151823;
     --relief-group-top: #1f2333;  --relief-group-bottom: #171a26;
     --gold-top: #f0d397;  --gold-bottom: #d9b06a;
+
+    /* The earth at the foot of the home page (first the earth, then the sky):
+       its body, darker below, a little lit by day; and the light on its rim,
+       which follows the hour like the sky does. */
+    --earth-deep: #070b10;  --earth-mid: #101a22;  --earth-lit: #1b2a31;  --earth-lit-day: #23384a;
+    --earth-rim-night: #b8c3e6;  --earth-rim-dawn: #f2b97c;  --earth-rim-day: #d3e6f7;  --earth-rim-dusk: #ee9c7e;
   }
 
   body {

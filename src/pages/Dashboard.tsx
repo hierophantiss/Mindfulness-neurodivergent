@@ -18,6 +18,7 @@ import { readRecentCheckinState } from '../data/stateCheckin';
 import { MethodMark } from '../components/MethodMark';
 import { useInstallApp } from '../hooks/useInstallApp';
 import HomeCheckin from '../components/HomeCheckin';
+import HomeEarth from '../components/HomeEarth';
 import BackupReminder from '../components/BackupReminder';
 import { welcomeSeen, markWelcomeSeen, openWelcome } from '../lib/welcome';
 import { readingSpot, chaptersRead } from '../lib/readingSpot';
@@ -189,7 +190,7 @@ export default function Dashboard() {
     : affirmationToday;
 
   return (
-    <div className="relative w-full min-h-screen bg-transparent overflow-x-hidden text-ink font-sans selection:bg-[#4a9eca]/30 selection:text-ink pb-[calc(5rem+env(safe-area-inset-bottom))]">
+    <div className="relative -mx-4 px-4 desk:-mx-14 desk:px-14 min-h-screen bg-transparent overflow-x-hidden text-ink font-sans selection:bg-[#4a9eca]/30 selection:text-ink pb-[calc(240px+env(safe-area-inset-bottom))] -mb-[calc(160px+env(safe-area-inset-bottom))] desk:pb-[260px] desk:-mb-20">
       <div className="relative z-10 w-full max-w-lg mx-auto px-1.5 flex flex-col pt-[calc(env(safe-area-inset-top,0px)+0.875rem)] desk:max-w-none desk:px-0 desk:pt-4">
 
         {/* Top row: the sign with the name, and SOS (there from the first second). */}
@@ -469,6 +470,8 @@ export default function Dashboard() {
         </motion.div>
 
       </div>
+      {/* At the foot of the page, the earth: first the earth, then the sky. */}
+      <HomeEarth />
       <InfoModal isOpen={isInfoOpen} onClose={() => setIsInfoOpen(false)} />
     </div>
   );
