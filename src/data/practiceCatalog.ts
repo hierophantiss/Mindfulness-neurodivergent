@@ -42,7 +42,8 @@ export const CHECKIN_TAGS: Record<string, CheckinTag[]> = {
   'shoulder-drop': [H], 'hand-weight': [H], 'pelvis-root': [H, B], 'jaw-release': [H], 'gravity-sink': [H],
   // microdoses — breath
   'rhythm-5-5': [B, L], 'nostril-touch': [B], 'stealth-breath': [H, B], 'breath-path': [B],
-  'humming-vibration': [H], 'breath-4-2-7': [H], 'ocean-breath': [H],
+  // breath-4-2-7 holds the breath: not offered in tension (12/11).
+  'humming-vibration': [H], 'breath-4-2-7': [B], 'ocean-breath': [H],
   // microdoses — attention
   'anchor-7-sec': [B], 'triple-anchor': [L, H], 'alternate-focus': [B], 'gentle-return': [B],
   'eye-horizon': [L], 'one-sound': [L], 'sensory-54321': [L, U],
@@ -52,7 +53,9 @@ export const CHECKIN_TAGS: Record<string, CheckinTag[]> = {
   'sky-gazing-micro': [B], 'spacious-metta': [B],
   // breathing patterns
   // 4-7-8: only a variant of 4-2-7 (17/10); its 7-second hold is not a first step in tension.
-  'breath-5-5': [B], 'breath-4-6': [H], '4-2-6-1': [H], '4-2-7-1': [H], '4-7-8': [], 'box-breathing': [L, B], 'sos-breath': [H],
+  // In tension the breath is 4-6, without a hold, as in the book (ch. 8, Protocol 1):
+  // holding the breath can raise the tension (12/11). 4-2-6-1 and 4-2-7-1 suit calm.
+  'breath-5-5': [B], 'breath-4-6': [H], '4-2-6-1': [B], '4-2-7-1': [B], '4-7-8': [], 'box-breathing': [L, B], 'sos-breath': [H],
   // movement
   // lotus-bloom-5-5: removed (17/10); its link opens lotus-resonant.
   '5-5': [B, L], 'deep-bow-5-5': [L, B], 'lotus-bloom-5-5': [], 'be-like-a-flower-5-5': [L, B],

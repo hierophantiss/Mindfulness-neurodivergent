@@ -142,3 +142,12 @@ describe('numbness starts with gentle activation', () => {
     expect(CHECKIN_TAGS['be-like-a-flower-5-5']).toEqual(['hypo', 'balanced']);
   });
 });
+
+describe('in tension, no held breath', () => {
+  it('the breath offered for tension is 4-6, without a hold', () => {
+    const breaths = forTag('hyper').filter(i => i.kind === 'breath' && i.id !== 'sos-breath').map(i => i.id);
+    expect(breaths).toEqual(['breath-4-6']);
+    // SOS is offered on its own (pinned); the suggestion beside it is 4-6.
+    expect(getCheckinActions('hyper')[0].path).toMatch(/breath-4-6$/);
+  });
+});

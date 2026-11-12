@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Headphones, Pause, Play, SkipBack, SkipForward, SlidersHorizontal, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
@@ -89,6 +89,15 @@ export default function ChapterReaderBar(p: Props) {
   // While an animation's own buttons are down here, the "Listen" button
   // steps aside (lib/frameInBand.ts); it returns when the page moves on.
   const aside = useFrameInBand();
+  // At first the button says "Listen"; after a few seconds it folds into a
+  // round headphones button at the edge, so it does not sit on the text.
+  const [folded, setFolded] = useState(false);
+  useEffect(() => {
+    if (active) return;
+    setFolded(false);
+    const t = setTimeout(() => setFolded(true), 4000);
+    return () => clearTimeout(t);
+  }, [active]);
 
   if (!active) {
     return (
@@ -107,10 +116,12 @@ export default function ChapterReaderBar(p: Props) {
             <button
               type="button"
               onClick={p.hasResume ? p.onResumeSaved : p.onStart}
-              className="h-11 pl-4 pr-5 rounded-full bg-[#1a1d27]/90 backdrop-blur-xl border border-teal-500/25 text-teal-200/90 shadow-[0_8px_32px_rgba(0,0,0,0.35)] flex items-center gap-2 text-sm font-sans hover:border-teal-400/40 hover:text-teal-100 transition-colors"
+              aria-label={p.hasResume ? t.continue : t.listen}
+              title={p.hasResume ? t.continue : t.listen}
+              className={cn("h-11 rounded-full bg-[#1a1d27]/90 backdrop-blur-xl border border-teal-500/25 text-teal-200/90 shadow-[0_8px_32px_rgba(0,0,0,0.35)] flex items-center justify-center gap-2 text-sm font-sans hover:border-teal-400/40 hover:text-teal-100 transition-[padding,width,border-color,color]", folded && !p.hasResume ? 'w-11 px-0' : 'pl-4 pr-5')}
             >
               <Headphones size={16} aria-hidden="true" />
-              <span>{p.hasResume ? t.continue : t.listen}</span>
+              {!(folded && !p.hasResume) && <span aria-hidden="true">{p.hasResume ? t.continue : t.listen}</span>}
             </button>
           </div>
         </div>

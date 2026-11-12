@@ -34,7 +34,7 @@ const translations: Record<string, Record<Language, string>> = {
   // Onboarding
 
   'onboarding.s1.title': { el: 'Για νου που τρέχει ή κλειδώνει', en: 'For minds that race or lock' },
-  'onboarding.s1.body': { el: 'Το μυαλό σου δεν είναι χαλασμένο, απλώς λειτουργεί αλλιώς. Εδώ θα βρεις σύντομες πρακτικές αυτορρύθμισης για νευροδιαφορετικούς ενήλικες, όπως με ΔΕΠΥ ή αυτισμό, και για όσους ζουν με τις συνέπειες τραύματος.', en: "Your mind isn't broken, it just works differently. Here you will find short self-regulation practices for neurodivergent adults, such as those with ADHD or autism, and for anyone living with the impact of trauma." },
+  'onboarding.s1.body': { el: 'Το μυαλό σου δεν είναι χαλασμένο, απλώς λειτουργεί αλλιώς. Σύντομες πρακτικές για νευροδιαφορετικούς ενήλικες και για όσους ζουν με τραύμα.', en: 'Your mind isn\'t broken, it just works differently. Short practices for neurodivergent adults and for anyone living with trauma.' },
   
   'onboarding.s2.title': { el: 'Δεν χρειάζεται να αδειάσεις το μυαλό σου', en: "You don't have to empty your mind" },
   'onboarding.s2.body': { el: 'Ούτε να μείνεις ακίνητος. Η μέθοδος έχει τέσσερα απλά βήματα, με αυτή τη σειρά: Σώμα, Αναπνοή, Προσοχή, Χώρος. Πες πώς νιώθεις και θα σου προτείνει από πού να ξεκινήσεις, με μια άσκηση 2–5 λεπτών.', en: 'Nor to stay still. The method has four simple steps, in this order: Body, Breath, Attention, Space. Say how you feel and it will suggest where to begin, with a 2–5 minute practice.' },

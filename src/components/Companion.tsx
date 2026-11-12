@@ -70,9 +70,13 @@ export default function Companion() {
     
     const autoDismissTimer = setTimeout(() => {
       setCompanionMessage(null);
-    }, 12000); 
+    }, 8000);
+    // Scrolling means you are reading the page: the bubble steps out of the way.
+    const main = document.getElementById('main-content');
+    const away = () => setCompanionMessage(null);
+    const armed = setTimeout(() => main?.addEventListener('scroll', away, { passive: true, once: true }), 400);
 
-    return () => clearTimeout(autoDismissTimer);
+    return () => { clearTimeout(autoDismissTimer); clearTimeout(armed); main?.removeEventListener('scroll', away); };
   }, [companionMessage]);
 
   const dismissBubble = (e?: React.MouseEvent) => {

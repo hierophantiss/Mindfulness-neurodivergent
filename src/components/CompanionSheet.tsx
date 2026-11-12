@@ -223,25 +223,39 @@ export default function CompanionSheet() {
                 </button>
               </div>
 
-              {/* First visit: the welcome, and the three short cards that tell what this is. */}
-              {newcomer && (
-                <div className="flex flex-col gap-3 px-1">
-                  <p className="text-[15px] leading-relaxed text-ink/90">
+              {newcomer ? (
+                // Someone new: one thing to do, then two quieter ways on.
+                <div className="flex flex-col gap-4">
+                  <p className="px-1 text-[15px] leading-relaxed text-ink/90">
                     <span className="font-medium">{el ? 'Καλώς ήρθες.' : 'Welcome.'}</span>{' '}
-                    {el ? 'Το μυαλό σου δεν είναι χαλασμένο, απλώς λειτουργεί αλλιώς.' : 'Your mind isn’t broken, it just works differently.'}
+                    {el ? 'Ας ξεκινήσουμε με κάτι μικρό.' : 'Let’s start with something small.'}
                   </p>
-                  <button onClick={showIntro} className="btn-soft self-start !min-h-[44px] !text-[14px]">
-                    {el ? 'Γνώρισε την εφαρμογή' : 'Get to know the app'}
-                    <span className="text-ink/70"> · {el ? '3 κάρτες' : '3 cards'}</span>
-                  </button>
+                  <Link to="/practice/body/gravity-sink" onClick={close} className="flex items-center gap-3.5 rounded-2xl px-4 py-4 bg-[color-mix(in_srgb,var(--axis-body-ink)_12%,transparent)] border border-[color-mix(in_srgb,var(--axis-body-ink)_40%,transparent)] hover:brightness-110 active:scale-[0.98] transition-[filter,transform]">
+                    <Anchor size={20} strokeWidth={1.6} className="shrink-0 text-[var(--axis-body-ink)]" aria-hidden="true" />
+                    <span className="flex flex-col min-w-0 flex-1 gap-0.5">
+                      <span className="text-[15.5px] leading-snug text-ink">{el ? 'Βύθιση στη Βαρύτητα · 20 δευτ.' : 'Gravity Sink · 20 sec'}</span>
+                      <span className="text-[13px] leading-snug text-ink/75">{el ? 'Πρώτα η γη: νιώσε το βάρος σου.' : 'First the earth: feel your weight.'}</span>
+                    </span>
+                    <ChevronRight size={18} className="text-ink/70 shrink-0" aria-hidden="true" />
+                  </Link>
+                  <div className="flex flex-col gap-1 px-1">
+                    <button onClick={showIntro} className="self-start min-h-[44px] text-[14px] text-ink/80 hover:text-ink underline decoration-white/25 underline-offset-4">
+                      {el ? 'Ή γνώρισε πρώτα την εφαρμογή · 3 κάρτες' : 'Or get to know the app first · 3 cards'}
+                    </button>
+                    <Link to={spot.href} onClick={close} className="self-start min-h-[44px] flex items-center text-[14px] text-ink/80 hover:text-ink underline decoration-white/25 underline-offset-4">
+                      {el ? 'Ή άνοιξε το βιβλίο · Κεφάλαιο 1' : 'Or open the book · Chapter 1'}
+                    </Link>
+                  </div>
                 </div>
+              ) : (
+                <>
+                  {/* How you feel, and what fits now. */}
+                  <HomeCheckin />
+
+                  {/* Where you stopped, or a first step */}
+                  {whereCard()}
+                </>
               )}
-
-              {/* How you feel, and what fits now. */}
-              <HomeCheckin />
-
-              {/* Where you stopped, or a first step */}
-              {whereCard()}
 
               {/* Something to keep in mind today */}
               {reminder && (
@@ -305,7 +319,7 @@ export default function CompanionSheet() {
 
               {/* What is this page? And a quiet cat, for those who prefer it. */}
               <div className="flex flex-col gap-1.5">
-                {here && (
+                {here && !newcomer && (
                   <button onClick={tipAgain} className="flex items-center gap-3 min-h-[48px] px-4 rounded-2xl text-left text-[14px] text-ink/80 hover:bg-white/[0.04] transition-colors">
                     <HelpCircle size={17} strokeWidth={1.6} className="shrink-0 text-ink/60" aria-hidden="true" />
                     {el ? 'Τι υπάρχει σε αυτή τη σελίδα;' : 'What is on this page?'}
