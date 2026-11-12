@@ -5,8 +5,8 @@ import { useLanguage } from '../hooks/useLanguage';
 import { X, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CatInfinityAvatar } from './CatInfinityAvatar';
-import { useProgress } from '../contexts/ProgressContext';
-import { hasReadAnything } from '../lib/readingSpot';
+import { useLocation } from 'react-router-dom';
+import { TIPS, placeOf, tipSeen, markTipSeen, isQuiet } from '../lib/companionTips';
 
 export const InfinitySVG = ({ size }: { size: number }) => (
   <svg width={size} height={Math.round(size * 0.55)} viewBox="0 0 120 66" fill="none" xmlns="http://www.w3.org/2000/svg" className="inf-svg-glow filter drop-shadow-sm">
@@ -35,13 +35,33 @@ export default function Companion() {
   const [isDragging, setIsDragging] = useState(false);
   const dragRef = useRef<{ startX: number, startY: number, initX: number, initY: number } | null>(null);
   const { language } = useLanguage();
-  const { progress } = useProgress();
-  const hasRead = hasReadAnything(progress.completedChapters, companionData.chapterProgress);
+  const { pathname } = useLocation();
 
+  // The first time you open a place, the cat says in one sentence what it is,
+  // a moment after the page has settled; then never again there. Not if the
+  // welcome is still open, and not at all with "quiet cat".
   useEffect(() => {
-    // Initial welcome message removed to prevent sensory overwhelm on first load.
-    // The user will discover the Companion manually without unrequested automatic popups.
-  }, [language]);
+    const place = placeOf(pathname);
+    if (!place || isQuiet() || tipSeen(place)) return;
+    const t = setTimeout(() => {
+      if (document.querySelector('[aria-labelledby="onboarding-title"]')) return;
+      markTipSeen(place);
+      setCompanionMessage(TIPS[place][language === 'en' ? 'en' : 'el']);
+    }, 1400);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, language]);
+
+  // "What is here?", asked from the sheet: the sentence for this place, again.
+  useEffect(() => {
+    const again = () => {
+      const place = placeOf(pathname);
+      if (place) setCompanionMessage(TIPS[place][language === 'en' ? 'en' : 'el']);
+    };
+    window.addEventListener('companion-tip-again', again);
+    return () => window.removeEventListener('companion-tip-again', again);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, language]);
 
   // Auto-dismiss logic for any message
   useEffect(() => {
@@ -156,26 +176,35 @@ export default function Companion() {
 
   const isRightSide = position.x > window.innerWidth / 2;
 
-  // The cat remembers what you read, so it appears once there is something to remember.
-  if (!hasRead) return null;
-
   return (
     <>
-      <div 
-        data-nosnippet
-        className={`fixed z-50 flex items-center justify-center w-[56px] h-[56px] rounded-full bg-[#0d0e12]/80 backdrop-blur-md border-2 border-teal-400/40 shadow-[0_0_25px_rgba(95,143,214,0.25)] cursor-pointer touch-none transition-transform duration-300 ${isDragging ? 'scale-110 opacity-80' : 'hover:scale-110 active:scale-90'}`}
-        style={{ left: position.x, top: position.y }}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
-        onPointerCancel={onPointerUp}
-        onClick={handleClick}
-        role="button"
-        tabIndex={0}
-        aria-label={language === 'en' ? 'What you have read' : 'Τι έχεις διαβάσει'}
-        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSheetVisible(true); } }}
-      >
-        <div className="absolute inset-0 rounded-full bg-teal-500/10 pointer-events-none" />
+      {/* The cat and its speech bubble side by side (a button may not hold another button). */}
+      <div data-nosnippet className="fixed z-50 w-[56px] h-[56px]" style={{ left: position.x, top: position.y }}>
+        <div
+          className={`relative flex items-center justify-center w-[56px] h-[56px] rounded-full bg-[#0d0e12]/80 backdrop-blur-md border-2 border-teal-400/40 shadow-[0_0_25px_rgba(95,143,214,0.25)] cursor-pointer touch-none transition-transform duration-300 ${isDragging ? 'scale-110 opacity-80' : 'hover:scale-110 active:scale-90'}`}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerCancel={onPointerUp}
+          onClick={handleClick}
+          role="button"
+          tabIndex={0}
+          aria-label={language === 'en' ? 'Companion: what now?' : 'Συνοδός: τι κάνω τώρα;'}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSheetVisible(true); } }}
+        >
+          <div className="absolute inset-0 rounded-full bg-teal-500/10 pointer-events-none" />
+          <motion.div 
+            className="relative w-12 h-12 flex items-center justify-center transition-transform duration-300"
+            animate={{ y: [0, -3, 0] }}
+            transition={reduceMotion ? { duration: 0.01 } : { 
+              repeat: Infinity, 
+              duration: 4, 
+              ease: "easeInOut" 
+            }}
+          >
+            <CatInfinityAvatar className="w-11 h-11" />
+          </motion.div>
+        </div>
         <AnimatePresence>
           {companionMessage && (
             <motion.div 
@@ -183,7 +212,8 @@ export default function Companion() {
               initial={{ opacity: 0, scale: 0.9, x: isRightSide ? 20 : -20 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               exit={{ opacity: 0, scale: 0.9, x: isRightSide ? 20 : -20 }}
-              className={`absolute top-1/2 -translate-y-1/2 flex items-center gap-2 bg-stone-900 text-ink p-3 rounded-2xl shadow-2xl border border-stone-700 font-sans pointer-events-auto z-50 ${isRightSide ? 'right-[120%]' : 'left-[120%]'}`}
+              role="status"
+              className={`absolute top-1/2 -translate-y-1/2 flex items-center gap-2 bg-stone-900 text-ink p-3 rounded-2xl shadow-2xl border border-stone-700 font-sans pointer-events-auto z-50 cursor-default ${isRightSide ? 'right-[120%]' : 'left-[120%]'}`}
               style={{ width: 'max-content', maxWidth: '240px' }}
               onClick={dismissBubble}
             >
@@ -209,18 +239,6 @@ export default function Companion() {
           )}
         </AnimatePresence>
 
-        <motion.div 
-          className="relative w-12 h-12 flex items-center justify-center transition-transform duration-300"
-          animate={{ y: [0, -3, 0] }}
-          transition={reduceMotion ? { duration: 0.01 } : { 
-            repeat: Infinity, 
-            duration: 4, 
-            ease: "easeInOut" 
-          }}
-        >
-          <CatInfinityAvatar className="w-11 h-11" />
-        </motion.div>
-        
       </div>
     </>
   );

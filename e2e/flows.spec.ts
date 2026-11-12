@@ -159,3 +159,14 @@ test('the Journal makes a PDF of the week', async ({ page }) => {
   await card.getByRole('button', { name: 'Προηγούμενη εβδομάδα' }).click();
   await expect(card.getByText(/Δεν έχει ακόμα τίποτα/)).toBeVisible();
 });
+
+test('the cat guides someone new: how you feel, and a first step', async ({ page }) => {
+  await page.goto('/el', { waitUntil: 'networkidle' });
+  // The first time on a page, one sentence about it.
+  await expect(page.getByRole('status').filter({ hasText: 'πάτα με' })).toBeVisible({ timeout: 6000 });
+  await page.getByRole('button', { name: 'Συνοδός: τι κάνω τώρα;' }).click();
+  const sheet = page.getByRole('dialog', { name: 'Συνοδός' });
+  await expect(sheet.getByRole('heading', { name: 'Πώς νιώθεις τώρα;' })).toBeVisible();
+  await sheet.getByRole('link', { name: /Βύθιση στη Βαρύτητα/ }).click();
+  await expect(page).toHaveURL(/\/practice\/body\/gravity-sink/);
+});

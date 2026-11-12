@@ -2,7 +2,7 @@ import { useFocusTrap } from '../hooks/useFocusTrap';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link, useLocation } from 'react-router-dom';
-import { BookOpen, Check, ChevronDown, ChevronRight, X } from 'lucide-react';
+import { Anchor, BookOpen, Check, ChevronDown, ChevronRight, HelpCircle, X } from 'lucide-react';
 import { useCompanion } from '../hooks/useCompanion';
 import { useLanguage } from '../hooks/useLanguage';
 import { useProgress } from '../contexts/ProgressContext';
@@ -12,6 +12,9 @@ import { chapterPages, chapterPageLabel } from '../lib/chapterPages';
 import { readingSpot, savedPage, chaptersRead } from '../lib/readingSpot';
 import { cn } from '../lib/utils';
 import { CatInfinityAvatar } from './CatInfinityAvatar';
+import HomeCheckin from './HomeCheckin';
+import { placeOf, isQuiet, setQuiet } from '../lib/companionTips';
+import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 
 /** Takeaways carry concept markers ("text{{id}}") for the chapter page; here only the words. */
 const plain = (t: string) => t.replace(/\{\{[^}]*\}\}/g, '');
@@ -26,8 +29,9 @@ function whenLabel(iso: string | undefined, el: boolean): string {
   return el ? `πριν από ${days} μέρες` : `${days} days ago`;
 }
 
-// The cat remembers what you have read: where you stopped, one thing to keep
-// in mind today, and what each chapter you read was about.
+// The cat's sheet answers "what now?": how you feel (and what fits), where you
+// stopped or a first small step, one thing to keep in mind today, what each
+// chapter you read was about, and what the page you are on is.
 export default function CompanionSheet() {
   const { sheetVisible, setSheetVisible, companionData } = useCompanion();
   const { language } = useLanguage();
@@ -36,6 +40,9 @@ export default function CompanionSheet() {
   const { progress } = useProgress();
   const location = useLocation();
   const [openNum, setOpenNum] = useState<number | null>(null);
+  const [quiet, setQuietState] = useState(isQuiet);
+  const { logs } = useActivityTracker();
+  const here = placeOf(location.pathname);
 
   const close = () => setSheetVisible(false);
   const modalRef = useFocusTrap(sheetVisible, close);
@@ -70,6 +77,13 @@ export default function CompanionSheet() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [readKey, lang]);
 
+  // "What is here?": the cat says again what this place is.
+  const tipAgain = () => {
+    close();
+    setTimeout(() => window.dispatchEvent(new Event('companion-tip-again')), 350);
+  };
+  const toggleQuiet = () => { setQuiet(!quiet); setQuietState(!quiet); };
+
   const showIntro = () => {
     close();
     window.dispatchEvent(new Event('show-welcome-modal'));
@@ -80,6 +94,34 @@ export default function CompanionSheet() {
   const chapterWord = el ? 'Κεφάλαιο' : 'Chapter';
 
   const whereCard = () => {
+    // Someone new, who has neither read nor practised: one first step that works,
+    // fifteen seconds of gravity (first the earth), then the book.
+    if (read.length === 0 && logs.length === 0) {
+      return (
+        <div className="flex flex-col gap-2.5">
+          <Link to="/practice/body/gravity-sink" onClick={close} className={cardClasses}>
+            <Anchor size={18} strokeWidth={1.5} className="shrink-0 text-[var(--axis-body-ink)]" />
+            <span className="flex flex-col min-w-0 flex-1 gap-0.5">
+              <span className={eyebrow}>{el ? 'Ένα πρώτο βήμα · 15 δευτερόλεπτα' : 'A first step · 15 seconds'}</span>
+              <span className="text-[14px] leading-snug text-[#9bb8d1]">{el ? 'Βύθιση στη Βαρύτητα' : 'Gravity Sink'}</span>
+              <span className="text-[12px] leading-snug text-ink/70">{el ? 'Πρώτα η γη: νιώσε το βάρος σου.' : 'First the earth: feel your weight.'}</span>
+            </span>
+            <ChevronRight size={16} className="text-ink/70 shrink-0" />
+          </Link>
+          <Link to={spot.href} onClick={close} className={cardClasses}>
+            <BookOpen size={18} strokeWidth={1.5} className="shrink-0 text-[#8ba3ba]" />
+            <span className="flex flex-col min-w-0 flex-1 gap-0.5">
+              <span className={eyebrow}>{el ? 'Μετά, το βιβλίο' : 'Then, the book'}</span>
+              <span className="text-[14px] leading-snug text-[#9bb8d1]">{chapterWord} {spot.chapter?.num} · {spot.chapter?.title}</span>
+            </span>
+            <ChevronRight size={16} className="text-ink/70 shrink-0" />
+          </Link>
+          <p className="text-[12.5px] leading-relaxed text-ink/60 px-1">
+            {el ? 'Όταν ξεκινήσεις να διαβάζεις, θα θυμάμαι πού σταμάτησες.' : 'When you start reading, I will remember where you stopped.'}
+          </p>
+        </div>
+      );
+    }
     if (read.length === 0) {
       return (
         <div className="flex flex-col gap-3">
@@ -178,7 +220,10 @@ export default function CompanionSheet() {
                 </button>
               </div>
 
-              {/* Where you stopped */}
+              {/* How you feel, and what fits now. */}
+              <HomeCheckin />
+
+              {/* Where you stopped, or a first step */}
               {whereCard()}
 
               {/* Something to keep in mind today */}
@@ -240,6 +285,30 @@ export default function CompanionSheet() {
                   </ul>
                 </section>
               )}
+
+              {/* What is this page? And a quiet cat, for those who prefer it. */}
+              <div className="flex flex-col gap-1.5">
+                {here && (
+                  <button onClick={tipAgain} className="flex items-center gap-3 min-h-[48px] px-4 rounded-2xl text-left text-[14px] text-ink/80 hover:bg-white/[0.04] transition-colors">
+                    <HelpCircle size={17} strokeWidth={1.6} className="shrink-0 text-ink/60" aria-hidden="true" />
+                    {el ? 'Τι υπάρχει σε αυτή τη σελίδα;' : 'What is on this page?'}
+                  </button>
+                )}
+                <button
+                  role="switch"
+                  aria-checked={quiet}
+                  onClick={toggleQuiet}
+                  className="flex items-center justify-between gap-3 min-h-[48px] px-4 rounded-2xl text-left hover:bg-white/[0.04] transition-colors"
+                >
+                  <span className="flex flex-col gap-0.5">
+                    <span className="text-[14px] text-ink/80">{el ? 'Ήσυχη γάτα' : 'Quiet cat'}</span>
+                    <span className="text-[12px] text-ink/60">{el ? 'Χωρίς μηνύματα στις σελίδες' : 'No messages on the pages'}</span>
+                  </span>
+                  <span aria-hidden="true" className={cn("relative shrink-0 w-10 h-6 rounded-full border transition-colors", quiet ? "bg-teal-400/30 border-teal-300/50" : "bg-white/[0.06] border-white/15")}>
+                    <span className={cn("absolute top-0.5 w-[18px] h-[18px] rounded-full bg-ink/85 transition-[left]", quiet ? "left-[18px]" : "left-0.5")} />
+                  </span>
+                </button>
+              </div>
 
               <button
                 onClick={showIntro}
