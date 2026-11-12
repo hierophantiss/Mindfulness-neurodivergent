@@ -28,10 +28,11 @@ export default function Companion() {
   
 
   const { companionData, updateCompanionData, setSheetVisible, sheetVisible, companionMessage, setCompanionMessage } = useCompanion();
-  // The cat starts at the bottom right, just above the bottom bar, where it covers
-  // the least of the page (on a computer: in the bottom right corner, beside the
-  // content). Once moved, it stays where it was put.
-  const [position, setPosition] = useState({ x: window.innerWidth >= 1024 ? window.innerWidth - 84 : Math.min(window.innerWidth - 68, window.innerWidth / 2 + 240 - 64), y: window.innerHeight - 56 - 85 - 16 });
+  // The cat starts at the bottom left, just above the bottom bar: the actions of
+  // the cards ("Start →", the arrows) are on the right, and it should not sit on
+  // them. On a computer: in the bottom right corner, beside the content.
+  // Once moved, it stays where it was put.
+  const [position, setPosition] = useState({ x: window.innerWidth >= 1024 ? window.innerWidth - 84 : 10, y: window.innerHeight - 56 - 85 - 16 });
   const [isDragging, setIsDragging] = useState(false);
   const dragRef = useRef<{ startX: number, startY: number, initX: number, initY: number } | null>(null);
   const { language } = useLanguage();
@@ -45,8 +46,6 @@ export default function Companion() {
     if (!place || isQuiet() || tipSeen(place)) return;
     const t = setTimeout(() => {
       if (document.querySelector('[aria-labelledby="onboarding-title"]')) return;
-      // One invitation at a time: while the home page's welcome card is there, the cat waits.
-      if (document.getElementById('home-welcome')) return;
       markTipSeen(place);
       setCompanionMessage(TIPS[place][language === 'en' ? 'en' : 'el']);
     }, 1400);

@@ -21,7 +21,6 @@ import HomeCheckin from '../components/HomeCheckin';
 import HomeEarth from '../components/HomeEarth';
 import { PLACE_PATHS } from '../components/placeIcons';
 import BackupReminder from '../components/BackupReminder';
-import { welcomeSeen, markWelcomeSeen, openWelcome } from '../lib/welcome';
 import { readingSpot, chaptersRead } from '../lib/readingSpot';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { PRACTICE_CATALOG } from '../data/practiceCatalog';
@@ -121,13 +120,6 @@ export default function Dashboard() {
   const [bookOpen, setBookOpen] = useState(false);
   const { installed } = useInstallApp(language);
 
-  // The welcome card, until the welcome is seen or put away.
-  const [showWelcome, setShowWelcome] = useState(() => !welcomeSeen());
-  useEffect(() => {
-    const hide = () => setShowWelcome(false);
-    window.addEventListener('welcome-seen', hide);
-    return () => window.removeEventListener('welcome-seen', hide);
-  }, []);
 
 
   // The answer to "How do you feel" (last 90 minutes): after "Numbness" the
@@ -245,33 +237,6 @@ export default function Dashboard() {
             <ArrowRight size={15} aria-hidden="true" className="shrink-0 opacity-70" />
           </Link>
         </div>
-
-        {/* First visit only: a small welcome, high up where a newcomer looks. Once seen or put away, it is gone. */}
-        {showWelcome && (
-          <div id="home-welcome" className="glass mt-5 flex items-start gap-3 rounded-[24px] desk:rounded-[28px] desk:max-w-[760px] pl-[18px] pr-2 pt-3.5 pb-4 desk:mt-7 desk:pl-7 desk:pr-4 desk:py-5">
-          <div className="flex-1 min-w-0">
-            <p className="text-[15px] leading-snug text-ink/90">
-              <span className="font-medium">{el ? 'Καλώς ήρθες.' : 'Welcome.'}</span>{' '}
-              {el ? 'Το μυαλό σου δεν είναι χαλασμένο, απλώς λειτουργεί αλλιώς.' : 'Your mind isn’t broken, it just works differently.'}
-            </p>
-            <button
-              onClick={openWelcome}
-              aria-label={el ? 'Γνώρισε την εφαρμογή · 3 κάρτες' : 'Get to know the app · 3 cards'}
-              className="btn-soft mt-3 !min-h-[44px] !text-[14px]"
-            >
-              {el ? 'Γνώρισε την εφαρμογή' : 'Get to know the app'}
-              <span className="text-ink/70 max-[359px]:hidden">· {el ? '3 κάρτες' : '3 cards'}</span>
-            </button>
-          </div>
-          <button
-            onClick={markWelcomeSeen}
-            aria-label={el ? 'Κλείσιμο καλωσορίσματος' : 'Close the welcome'}
-            className="shrink-0 w-11 h-11 -mt-1.5 rounded-full flex items-center justify-center text-ink/70 hover:text-ink/80 transition-colors"
-          >
-            <X size={16} />
-          </button>
-          </div>
-        )}
 
         {/* First "How do you feel", then the book; on a computer side by side, in the same order. */}
         <div className="desk:grid desk:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] desk:gap-7 desk:mt-10 desk:items-start">

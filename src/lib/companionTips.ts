@@ -7,7 +7,7 @@ export type TipPlace =
   | 'chapters' | 'program' | 'rabbithole' | 'journal' | 'method';
 
 export const TIPS: Record<TipPlace, { el: string; en: string }> = {
-  home: { el: 'Γεια. Αν δεν ξέρεις από πού να ξεκινήσεις, πάτα με.', en: 'Hi. If you don\'t know where to start, tap me.' },
+  home: { el: 'Καλώς ήρθες. Αν δεν ξέρεις από πού να ξεκινήσεις, πάτα με.', en: 'Welcome. If you don\'t know where to start, tap me.' },
   practice: { el: 'Εδώ κάνεις πράξη τη μέθοδο. Διάλεξε έναν άξονα, ή πάτα με να σου πω τι ταιριάζει τώρα.', en: 'Here you put the method into practice. Choose an axis, or tap me and I\'ll say what fits now.' },
   microdoses: { el: 'Πολύ σύντομες πρακτικές. Μία αρκεί για σήμερα.', en: 'Very short practices. One is enough for today.' },
   sanctuary: { el: 'Ήχοι για να ξεκουραστείς. Διάλεξε έναν και άφησέ τον να παίζει.', en: 'Sounds to rest with. Choose one and let it play.' },

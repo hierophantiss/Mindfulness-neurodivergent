@@ -14,6 +14,7 @@ import { cn } from '../lib/utils';
 import { CatInfinityAvatar } from './CatInfinityAvatar';
 import HomeCheckin from './HomeCheckin';
 import { placeOf, isQuiet, setQuiet } from '../lib/companionTips';
+import { welcomeSeen } from '../lib/welcome';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 
 /** Takeaways carry concept markers ("text{{id}}") for the chapter page; here only the words. */
@@ -43,6 +44,8 @@ export default function CompanionSheet() {
   const [quiet, setQuietState] = useState(isQuiet);
   const { logs } = useActivityTracker();
   const here = placeOf(location.pathname);
+  // The welcome now lives here, with the cat: until it is seen, it comes first.
+  const [newcomer] = useState(() => !welcomeSeen());
 
   const close = () => setSheetVisible(false);
   const modalRef = useFocusTrap(sheetVisible, close);
@@ -220,6 +223,20 @@ export default function CompanionSheet() {
                 </button>
               </div>
 
+              {/* First visit: the welcome, and the three short cards that tell what this is. */}
+              {newcomer && (
+                <div className="flex flex-col gap-3 px-1">
+                  <p className="text-[15px] leading-relaxed text-ink/90">
+                    <span className="font-medium">{el ? 'Καλώς ήρθες.' : 'Welcome.'}</span>{' '}
+                    {el ? 'Το μυαλό σου δεν είναι χαλασμένο, απλώς λειτουργεί αλλιώς.' : 'Your mind isn’t broken, it just works differently.'}
+                  </p>
+                  <button onClick={showIntro} className="btn-soft self-start !min-h-[44px] !text-[14px]">
+                    {el ? 'Γνώρισε την εφαρμογή' : 'Get to know the app'}
+                    <span className="text-ink/70"> · {el ? '3 κάρτες' : '3 cards'}</span>
+                  </button>
+                </div>
+              )}
+
               {/* How you feel, and what fits now. */}
               <HomeCheckin />
 
@@ -310,12 +327,12 @@ export default function CompanionSheet() {
                 </button>
               </div>
 
-              <button
+              {!newcomer && <button
                 onClick={showIntro}
                 className="self-center min-h-[44px] px-4 text-[12px] text-ink/70 hover:text-ink/70 transition-colors"
               >
                 {el ? 'Δες ξανά την εισαγωγή' : 'See the introduction again'}
-              </button>
+              </button>}
             </div>
           </motion.div>
         </>

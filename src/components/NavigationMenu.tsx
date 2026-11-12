@@ -310,7 +310,7 @@ export default function NavigationMenu() {
               <div className="flex-[1] overflow-y-auto pt-6 px-6 pb-6 max-w-2xl mx-auto w-full flex flex-col gap-3">
                 {/* On the phone, the places the home page does not list (on a computer they are in the side bar). */}
                 <nav aria-label={el ? 'Τόποι της εφαρμογής' : 'Places in the app'} className="grid grid-cols-2 gap-2.5 desk:hidden">
-                  {sideItems.filter(i => ['/sanctuary', '/program', '/cards', '/rabbithole', '/method'].includes(i.path)).map(({ path, Icon, label }) => (
+                  {sideItems.filter(i => ['/cards', '/method'].includes(i.path)).map(({ path, Icon, label }) => (
                     <Link
                       key={path}
                       to={path}
