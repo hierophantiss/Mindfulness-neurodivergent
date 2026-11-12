@@ -29,9 +29,9 @@ export default function Companion() {
 
   const { companionData, updateCompanionData, setSheetVisible, sheetVisible, companionMessage, setCompanionMessage } = useCompanion();
   // The cat starts at the bottom right, just above the bottom bar, where it covers
-  // the least of the page (on a wide screen: at the right edge of the centred app).
-  // Once moved, it stays where it was put.
-  const [position, setPosition] = useState({ x: Math.min(window.innerWidth - 68, window.innerWidth / 2 + 240 - 64), y: window.innerHeight - 56 - 85 - 16 });
+  // the least of the page (on a computer: in the bottom right corner, beside the
+  // content). Once moved, it stays where it was put.
+  const [position, setPosition] = useState({ x: window.innerWidth >= 1024 ? window.innerWidth - 84 : Math.min(window.innerWidth - 68, window.innerWidth / 2 + 240 - 64), y: window.innerHeight - 56 - 85 - 16 });
   const [isDragging, setIsDragging] = useState(false);
   const dragRef = useRef<{ startX: number, startY: number, initX: number, initY: number } | null>(null);
   const { language } = useLanguage();

@@ -294,28 +294,28 @@ export default function Dashboard() {
             <Link
               to={spot.href}
               aria-label={bookLabel}
-              className="relative block h-[184px] hover:brightness-110 active:scale-[0.99] transition-[filter,transform] desk:h-[272px]"
+              className="relative block h-[150px] hover:brightness-110 active:scale-[0.99] transition-[filter,transform] desk:h-[232px]"
             >
               {/* The edges of the pages, below. */}
               <span aria-hidden="true" className="home-book-edge absolute left-1.5 right-1.5 bottom-0 h-3 rounded-b-[14px]" />
               <span className="absolute inset-x-0 top-0 bottom-2 grid grid-cols-2">
-                <span className="home-book-left rounded-l-[18px] rounded-r-[4px] pl-5 pr-4 pt-[18px] pb-3.5 flex flex-col justify-between desk:rounded-l-[24px] desk:pl-8 desk:pt-7 desk:pb-6">
+                <span className="home-book-left rounded-l-[18px] rounded-r-[4px] pl-5 pr-4 pt-3.5 pb-3 flex flex-col justify-between desk:rounded-l-[24px] desk:pl-8 desk:pt-7 desk:pb-6">
                   <span className="text-[11px] tracking-[0.16em] uppercase text-ink/65 desk:text-[12px]">{el ? 'Κεφάλαιο' : 'Chapter'}</span>
-                  <span className="font-display text-[64px] leading-[0.9] desk:text-[104px]" style={{ color: guideInk }}>
+                  <span className="font-display text-[52px] leading-[0.9] desk:text-[88px]" style={{ color: guideInk }}>
                     {finishedGuide ? chapters.length : spot.chapter?.num}
                   </span>
                   <span className="text-[12px] text-ink/65 desk:text-[13.5px]">{el ? `από ${chapters.length}` : `of ${chapters.length}`}</span>
                 </span>
-                <span className="home-book-right relative [container-type:inline-size] rounded-r-[18px] rounded-l-[4px] pl-[18px] pr-5 pt-[18px] pb-3.5 flex flex-col justify-between gap-2 desk:rounded-r-[24px] desk:pl-7 desk:pr-8 desk:pt-7 desk:pb-6">
+                <span className="home-book-right relative [container-type:inline-size] rounded-r-[18px] rounded-l-[4px] pl-[18px] pr-5 pt-3.5 pb-3 flex flex-col justify-between gap-1.5 desk:rounded-r-[24px] desk:pl-7 desk:pr-8 desk:pt-7 desk:pb-6">
                   {/* The ribbon that keeps your page. */}
-                  <span aria-hidden="true" className="home-book-ribbon absolute -top-0.5 right-[22px] w-3 h-11 desk:right-8 desk:w-3.5 desk:h-14" />
+                  <span aria-hidden="true" className="home-book-ribbon absolute -top-0.5 right-[22px] w-3 h-9 desk:right-8 desk:w-3.5 desk:h-12" />
                   <span className="flex flex-col gap-1.5 pr-5 min-w-0 desk:gap-2.5 desk:pr-8">
                     <span className="font-display leading-[1.05] text-ink hyphens-auto [overflow-wrap:anywhere] desk:hidden" style={{ fontSize: bookTitleSize }}>{guideTitle}</span>
                     <span className="hidden desk:block font-display leading-[1.05] text-ink hyphens-auto [overflow-wrap:anywhere]" style={{ fontSize: bookTitleSizeDesk }}>{guideTitle}</span>
                     {!finishedGuide && spot.chapter?.sub && (
-                      <span className="text-[13px] leading-snug text-ink/75 line-clamp-3 desk:text-[15.5px]">{spot.chapter.sub}</span>
+                      <span className="text-[13px] leading-snug text-ink/75 line-clamp-2 desk:text-[15.5px]">{spot.chapter.sub}</span>
                     )}
-                    {guideLine && <span className="hidden desk:block mt-1 text-[15px] leading-relaxed text-ink/70 line-clamp-3">«{guideLine}»</span>}
+                    {guideLine && <span className="hidden desk:line-clamp-2 mt-1 text-[15px] leading-relaxed text-ink/70">«{guideLine}»</span>}
                   </span>
                   <span className="flex items-end justify-between gap-2 text-[12px] desk:text-[14px]">
                     <span className="text-ink/65">{midChapter ? (el ? `σελ. ${spot.page + 1} από ${spot.pages.length}` : `p. ${spot.page + 1} of ${spot.pages.length}`) : ''}</span>

@@ -148,7 +148,7 @@ export default function NavigationMenu() {
           <MethodMark small dim={nightDim} className="w-10 h-10 shrink-0" />
           <span className="flex flex-col gap-[3px] min-w-0">
             <span className="keep-font font-display text-[17px] leading-none text-sign-gold whitespace-nowrap">{el ? 'Ενσυνειδητότητα' : 'Mindfulness'}</span>
-            <span className="text-[12.5px] leading-tight text-ink/70 whitespace-nowrap">{el ? 'Για νου που τρέχει ή κλειδώνει' : 'For minds that race or lock'}</span>
+            <span className="text-[12.5px] leading-tight text-ink/70 [text-wrap:balance]">{el ? 'Για νου που τρέχει ή κλειδώνει' : 'For minds that race or lock'}</span>
           </span>
         </Link>
         {sideItems.map(({ path, Icon, label }) => {

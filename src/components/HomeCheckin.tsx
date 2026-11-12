@@ -106,12 +106,6 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
         })}
       </div>
 
-      {embedded && !selected && (
-        <p className="-mt-1 text-[14px] leading-relaxed text-ink/70">
-          {lang === 'el' ? 'Διάλεξε, και θα σου προτείνω μια πρακτική για τώρα.' : 'Choose, and I will suggest a practice for right now.'}
-        </p>
-      )}
-
       <AnimatePresence initial={false}>
         {opt && open && (
           <motion.div
