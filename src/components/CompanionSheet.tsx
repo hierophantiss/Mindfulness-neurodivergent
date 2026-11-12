@@ -102,7 +102,7 @@ export default function CompanionSheet() {
           <Link to="/practice/body/gravity-sink" onClick={close} className={cardClasses}>
             <Anchor size={18} strokeWidth={1.5} className="shrink-0 text-[var(--axis-body-ink)]" />
             <span className="flex flex-col min-w-0 flex-1 gap-0.5">
-              <span className={eyebrow}>{el ? 'Ένα πρώτο βήμα · 15 δευτερόλεπτα' : 'A first step · 15 seconds'}</span>
+              <span className={eyebrow}>{el ? 'Ένα πρώτο βήμα · 20 δευτερόλεπτα' : 'A first step · 20 seconds'}</span>
               <span className="text-[14px] leading-snug text-[#9bb8d1]">{el ? 'Βύθιση στη Βαρύτητα' : 'Gravity Sink'}</span>
               <span className="text-[12px] leading-snug text-ink/70">{el ? 'Πρώτα η γη: νιώσε το βάρος σου.' : 'First the earth: feel your weight.'}</span>
             </span>

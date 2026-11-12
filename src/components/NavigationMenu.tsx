@@ -569,8 +569,17 @@ export default function NavigationMenu() {
                   </button>
               </div>
 
+              {/* Help now: always here, in plain sight. */}
+              <p className="mt-auto px-6 pb-4 text-center text-[13px] leading-relaxed text-ink/70 [&_a]:text-ink/90 [&_a]:underline [&_a]:decoration-white/30 [&_a]:underline-offset-2">
+                {language === 'el' ? (
+                  <>Αν χρειάζεσαι βοήθεια τώρα: <a href="tel:112">112</a> για κίνδυνο, <a href="tel:1018">1018</a> (Κλίμακα) ή <a href="tel:197">197</a>, όλο το 24ωρο.</>
+                ) : (
+                  <>If you need help now: <a href="tel:112">112</a> in danger (Europe), <a href="tel:1018">1018</a> in Greece, or <a href="https://findahelpline.com" target="_blank" rel="noopener noreferrer">findahelpline.com</a>.</>
+                )}
+              </p>
+
               {/* Settings, About and the sound mixer: each with its name under it. */}
-              <div className="flex justify-center gap-7 items-start px-6 pt-5 border-t border-white/[0.08] mt-auto pb-[calc(1.25rem+env(safe-area-inset-bottom))]">
+              <div className="flex justify-center gap-7 items-start px-6 pt-5 border-t border-white/[0.08] pb-[calc(1.25rem+env(safe-area-inset-bottom))]">
                 {[
                   { key: 'settings', label: language === 'el' ? 'Ρυθμίσεις' : 'Settings', onClick: () => handleNav('/settings'), icon: <Settings size={20} aria-hidden="true" /> },
                   { key: 'about', label: language === 'el' ? 'Σχετικά' : 'About', onClick: showInfo, icon: <Info size={20} aria-hidden="true" /> },

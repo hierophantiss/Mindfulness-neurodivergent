@@ -114,6 +114,12 @@ function HowTo({ text, language, gravityFirst = false, longExhale = false, chant
                 )}
               </ol>
             )}
+            {/* Safety, where it is read: in the practice itself. */}
+            {!steps && (
+              <p className="mt-4 pt-3 border-t border-white/[0.08] text-[13px] leading-relaxed text-ink/70">
+                {el ? 'Αν ζαλιστείς ή νιώσεις πίεση, σταμάτα και γύρνα στη φυσική σου ανάσα.' : 'If you feel dizzy or pressured, stop and return to your natural breath.'}
+              </p>
+            )}
           </div>
         </div>,
         document.body
@@ -651,7 +657,7 @@ export default function PracticeBreath() {
       )}
       {!running && <EvidenceLine evidence={pattern.evidence} language={language} />}
       {/* Info Banner for Binaural Beats */}
-      {!running && showBanner && (
+      {!running && showBanner && currentPatternId !== 'sos-breath' && (
         <div className="z-20 w-full mb-4 md:px-0 relative px-4">
           <div className="mx-auto max-w-sm flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] pl-3 pr-1 py-2">
             <div className="w-8 h-8 rounded-full bg-[var(--tint-blue-bg)] border border-[var(--tint-blue-line)] flex items-center justify-center shrink-0">
@@ -913,10 +919,12 @@ export default function PracticeBreath() {
         {/* SOS: the helplines sit at the bottom of the stage, so the figure stays at the same height as in the other breaths */}
         {currentPatternId === 'sos-breath' && (
           <div className="absolute bottom-2 left-0 right-0 px-8 text-center z-20 pointer-events-none">
-            <p className="text-[13px] text-ink/70 font-sans leading-relaxed">
-              {language === 'el' 
-                ? 'Αν αυτό δεν είναι αρκετό αυτή τη στιγμή, μπορείς να μιλήσεις με κάποιον τώρα — 1018 (Κλίμακα, 24ωρη γραμμή) ή 197 (δωρεάν, 24ωρη ψυχοκοινωνική στήριξη).'
-                : 'If this isn\'t enough right now, you are not alone — 1018 (Greece) or visit findahelpline.com for international support.'}
+            <p className="text-[13px] text-ink/70 font-sans leading-relaxed [&_a]:pointer-events-auto [&_a]:text-ink/90 [&_a]:underline [&_a]:decoration-white/30 [&_a]:underline-offset-2">
+              {language === 'el' ? (
+                <>Αν κινδυνεύεις τώρα: <a href="tel:112">112</a>. Αν αυτό δεν είναι αρκετό, μπορείς να μιλήσεις με κάποιον: <a href="tel:1018">1018</a> (Κλίμακα, 24ωρη γραμμή) ή <a href="tel:197">197</a> (δωρεάν, 24ωρη ψυχοκοινωνική στήριξη).</>
+              ) : (
+                <>If you are in danger now: <a href="tel:112">112</a> (Europe) or your local emergency number. If this isn't enough, you are not alone: <a href="tel:1018">1018</a> (Greece) or <a href="https://findahelpline.com" target="_blank" rel="noopener noreferrer">findahelpline.com</a>.</>
+              )}
             </p>
           </div>
         )}

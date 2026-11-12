@@ -45,6 +45,8 @@ export default function Companion() {
     if (!place || isQuiet() || tipSeen(place)) return;
     const t = setTimeout(() => {
       if (document.querySelector('[aria-labelledby="onboarding-title"]')) return;
+      // One invitation at a time: while the home page's welcome card is there, the cat waits.
+      if (document.getElementById('home-welcome')) return;
       markTipSeen(place);
       setCompanionMessage(TIPS[place][language === 'en' ? 'en' : 'el']);
     }, 1400);

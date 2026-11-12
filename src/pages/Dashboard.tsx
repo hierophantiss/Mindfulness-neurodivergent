@@ -248,7 +248,7 @@ export default function Dashboard() {
 
         {/* First visit only: a small welcome, high up where a newcomer looks. Once seen or put away, it is gone. */}
         {showWelcome && (
-          <div className="glass mt-5 flex items-start gap-3 rounded-[24px] desk:rounded-[28px] desk:max-w-[760px] pl-[18px] pr-2 pt-3.5 pb-4 desk:mt-7 desk:pl-7 desk:pr-4 desk:py-5">
+          <div id="home-welcome" className="glass mt-5 flex items-start gap-3 rounded-[24px] desk:rounded-[28px] desk:max-w-[760px] pl-[18px] pr-2 pt-3.5 pb-4 desk:mt-7 desk:pl-7 desk:pr-4 desk:py-5">
           <div className="flex-1 min-w-0">
             <p className="text-[15px] leading-snug text-ink/90">
               <span className="font-medium">{el ? 'Καλώς ήρθες.' : 'Welcome.'}</span>{' '}

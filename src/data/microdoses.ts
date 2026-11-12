@@ -112,8 +112,8 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
     axis: 'body',
     title: { el: 'Βύθιση στη Βαρύτητα', en: 'Gravity Sink' },
     type: 'body',
-    dur: { el: '15 δευτ.', en: '15 sec' },
-    maxSeconds: 15,
+    dur: { el: '20 δευτ.', en: '20 sec' },
+    maxSeconds: 20,
     desc: { el: 'Άφησε το σώμα να γίνει λίγο πιο βαρύ, ένα χιλιοστό πιο κάτω, μέσα στο στήριγμα. Παράδοση.', en: 'Let the body grow a little heavier, one millimetre further into the support. Surrender.' },
     iconName: 'Anchor',
     link: '/practice/body/gravity-sink'
