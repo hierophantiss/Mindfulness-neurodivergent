@@ -302,7 +302,7 @@ const axisInfo = {
           {axisMicrodoses.length > 0 && (
             <div className="space-y-6">
               <h2 className="text-2xl font-light text-ink/80 border-b border-white/5 pb-2">
-                {language === 'el' ? 'Μικροδόσεις' : 'Microdoses'}
+                {language === 'el' ? 'Μικροδόσεις' : 'Small doses'}
               </h2>
               <div className="grid grid-cols-1 desk:grid-cols-3 gap-4">
                 {axisMicrodoses.map((ex, idx) => (
@@ -363,7 +363,7 @@ const axisInfo = {
           size="sub"
           back={() => activeCategoryWithReset(null)}
           eyebrow={language === 'el' ? 'Πρακτική' : 'Practice'}
-          title={<span className="inline-flex flex-wrap items-center gap-1">{language === 'el' ? 'Ψάλσιμο και αντήχηση' : 'Chanting and resonance'}
+          title={<span className="inline-flex flex-wrap items-center gap-1">{language === 'el' ? 'Ψάλσιμο και αντήχηση' : 'Humming and voice'}
             <ConceptInfoIcon conceptId="vagus_nerve" /></span>}
           lead={language === 'el' 
               ? 'Βουητό και ψάλσιμο πάνω στην εκπνοή: μακριά εκπνοή με δόνηση. Το σώμα ηρεμεί το σώμα. Αν σου τελειώνει ο αέρας, σταμάτα νωρίτερα· δεν χρειάζεται να φτάσεις ως το τέλος.' 
@@ -375,7 +375,7 @@ const axisInfo = {
             <div className="py-12 text-center text-ink/70 font-sans border border-white/5 rounded-2xl bg-white/[0.01]" id="no-filtered-vocals">
               {language === 'el' 
                 ? 'Δεν βρέθηκαν ασκήσεις ψαλσίματος με αυτά τα φίλτρα.' 
-                : 'No chanting exercises found with the active filters.'}
+                : 'No humming practices found with the active filters.'}
             </div>
           ) : (
             <div className="grid grid-cols-1 desk:grid-cols-3 gap-6 desk:gap-4">
@@ -715,7 +715,7 @@ const axisInfo = {
           </div>} />
         <CategoryCard id="vocal" onOpen={() => handleCategoryChange('vocal')} conceptId="vagus_nerve"
           shape="shape-cloud-4 hover:border-violet-500/20" glow="bg-violet-500/15"
-          title={language === 'en' ? 'Chanting and resonance' : 'Ψάλσιμο και αντήχηση'}
+          title={language === 'en' ? 'Humming and voice' : 'Ψάλσιμο και αντήχηση'}
           desc={language === 'en'
             ? 'Humming and simple sounds with your voice, on the exhale. You feel the vibration in your chest and head.'
             : 'Βουητό και απλοί ήχοι με τη φωνή, πάνω στην εκπνοή. Νιώθεις τη δόνηση στο στήθος και στο κεφάλι.'}
@@ -724,7 +724,7 @@ const axisInfo = {
           </div>} />
         <CategoryCard id="microdoses" onOpen={() => navigate('/practice/microdoses')} conceptId="neuroplasticity"
           shape="shape-cloud-5 hover:border-amber-500/20" glow="bg-amber-500/15"
-          title={language === 'en' ? 'Microdoses' : 'Μικροδόσεις'}
+          title={language === 'en' ? 'Small doses' : 'Μικροδόσεις'}
           desc={language === 'en'
             ? 'Tiny practices, from a few seconds to a minute or two, that you can do anywhere unnoticed.'
             : 'Μικρές πρακτικές, από λίγα δευτερόλεπτα ως ένα-δυο λεπτά, που γίνονται παντού χωρίς να φανεί.'}

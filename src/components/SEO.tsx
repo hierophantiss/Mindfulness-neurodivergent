@@ -535,7 +535,7 @@ export const SEO: React.FC = () => {
       ? 'Mindfulness Practices for ADHD & Autism | Neurodivergent Mindfulness'
       : 'Πρακτικές Ενσυνειδητότητας για ΔΕΠΥ & Αυτισμό | Neurodivergent Mindfulness';
     description = lang === 'en'
-      ? 'The breathing rhythms of the book (5-5, 4-6, 4-2-7) and SOS, Tai Chi and Qigong, swaying, chanting and short microdoses, for ADHD and autism. Free.'
+      ? 'The breathing rhythms of the book (5-5, 4-6, 4-2-7) and SOS, Tai Chi and Qigong, swaying, chanting and short small doses, for ADHD and autism. Free.'
       : 'Οι ρυθμοί αναπνοής του βιβλίου (5-5, 4-6, 4-2-7) και το SOS, Τάι Τσι και Qigong, Λίκνισμα, ψάλσιμο και σύντομες μικροδόσεις, για ΔΕΠΥ και αυτισμό. Δωρεάν.';
     schema = webAppSchema(title, description, pageUrl);
 

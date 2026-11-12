@@ -16,7 +16,7 @@ const TEXT = {
   },
   en: {
     title: 'A few minutes for you',
-    details: 'One practice, whichever suits today: a breath, a little movement, or a microdose. If today is not the day, let it go.',
+    details: 'One practice, whichever suits today: a breath, a little movement, or a small dose. If today is not the day, let it go.',
   },
 };
 

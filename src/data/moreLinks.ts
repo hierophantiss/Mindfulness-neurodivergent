@@ -16,7 +16,7 @@ export function getMoreLinks(lang: 'el' | 'en', programSub?: string): MoreLink[]
   return [
     { to: '/practice', icon: Activity, tone: 'text-teal-300',
       label: el ? 'Ασκήσεις' : 'Practices',
-      desc: el ? 'Αναπνοές, κίνηση & Τάι Τσι, ψάλσιμο, μικροδόσεις' : 'Breathing, movement & Tai Chi, chanting, microdoses' },
+      desc: el ? 'Αναπνοές, κίνηση & Τάι Τσι, ψάλσιμο, μικροδόσεις' : 'Breathing, movement & Tai Chi, chanting, small doses' },
     { to: '/sanctuary', icon: Moon, tone: 'text-[#b4abce]',
       label: el ? 'Καταφύγιο' : 'Sanctuary',
       desc: el ? 'Ήχοι φύσης και binaural για ύπνο, χαλάρωση ή εστίαση' : 'Nature sounds and binaural beats for sleep, rest or focus' },

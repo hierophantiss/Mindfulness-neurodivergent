@@ -6,7 +6,7 @@ import { X, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CatInfinityAvatar } from './CatInfinityAvatar';
 import { useLocation } from 'react-router-dom';
-import { TIPS, placeOf, tipSeen, markTipSeen, isQuiet } from '../lib/companionTips';
+import { TIPS, placeOf, tipSeen, markTipSeen, isQuiet, tipsUsedUp } from '../lib/companionTips';
 
 export const InfinitySVG = ({ size }: { size: number }) => (
   <svg width={size} height={Math.round(size * 0.55)} viewBox="0 0 120 66" fill="none" xmlns="http://www.w3.org/2000/svg" className="inf-svg-glow filter drop-shadow-sm">
@@ -43,7 +43,7 @@ export default function Companion() {
   // welcome is still open, and not at all with "quiet cat".
   useEffect(() => {
     const place = placeOf(pathname);
-    if (!place || isQuiet() || tipSeen(place)) return;
+    if (!place || isQuiet() || tipSeen(place) || tipsUsedUp()) return;
     const t = setTimeout(() => {
       if (document.querySelector('[aria-labelledby="onboarding-title"]')) return;
       markTipSeen(place);

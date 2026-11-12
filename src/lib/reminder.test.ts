@@ -24,7 +24,7 @@ describe('calendar reminder', () => {
 
   it('escapes commas and folds long lines at 75 bytes', () => {
     const unfolded = buildIcs('en', '09:00', now, 'x').replace(/\r\n /g, '');
-    expect(unfolded).toContain('a breath\\, a little movement\\, or a microdose');
+    expect(unfolded).toContain('a breath\\, a little movement\\, or a small dose');
     const enc = new TextEncoder();
     for (const l of buildIcs('el', '09:00', now, 'x').split('\r\n')) expect(enc.encode(l).length).toBeLessThanOrEqual(75);
     expect(fold('α'.repeat(50)).split('\r\n ').join('')).toBe('α'.repeat(50));

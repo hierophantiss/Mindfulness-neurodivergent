@@ -58,7 +58,7 @@ export default function PracticeMicrodoses() {
     { id: 'all', label: { el: 'Όλα', en: 'All' }, color: 'text-ink/70' },
     { id: 'body', label: { el: 'Σώμα', en: 'Body' }, color: 'text-[var(--axis-body-ink)]' },
     { id: 'breath', label: { el: 'Αναπνοή', en: 'Breath' }, color: 'text-[var(--axis-breath-ink)]' },
-    { id: 'focus', label: { el: 'Προσοχή', en: 'Focus' }, color: 'text-[var(--axis-attention-ink)]' },
+    { id: 'focus', label: { el: 'Προσοχή', en: 'Attention' }, color: 'text-[var(--axis-attention-ink)]' },
     { id: 'space', label: { el: 'Χώρος', en: 'Space' }, color: 'text-[var(--axis-space-ink)]' }
   ];
 
@@ -114,7 +114,7 @@ export default function PracticeMicrodoses() {
         back="/practice"
         size="sub"
         eyebrow={language === 'el' ? 'Πρακτική' : 'Practice'}
-        title={language === 'el' ? 'Μικροδόσεις' : 'Microdoses'}
+        title={language === 'el' ? 'Μικροδόσεις' : 'Small doses'}
         lead={language === 'el'
           ? 'Πολύ σύντομες πρακτικές, για παντού, χωρίς να φαίνονται.'
           : 'Very short practices, for anywhere, that nobody notices.'}
@@ -139,10 +139,10 @@ export default function PracticeMicrodoses() {
         <div className="space-y-3 relative z-10 flex-1">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[12px] font-medium bg-teal-500/10 text-teal-300 border border-teal-500/15 gap-1">
-              <Sparkles size={12} aria-hidden="true" /> {language === 'el' ? 'Ανακούφιση απόφασης' : 'Decision relief'}
+              <Sparkles size={12} aria-hidden="true" /> {language === 'el' ? 'Χωρίς να διαλέξεις' : 'No need to choose'}
             </span>
             <span className="text-[12px] text-ink/70 tracking-wider">
-              {language === 'el' ? 'Πρόταση της Ημέρας' : 'Suggested Daily Core'}
+              {language === 'el' ? 'Η πρόταση της ημέρας' : 'Today\'s suggestion'}
             </span>
           </div>
           
@@ -152,8 +152,8 @@ export default function PracticeMicrodoses() {
           
           <p className="text-sm text-ink/70 leading-relaxed font-sans max-w-2xl">
             {language === 'el' 
-              ? 'Εάν νιώθεις πίεση ή υπερδιέγερση, μην ψάχνεις ανάμεσα στις κάρτες. Ξεκίνα απευθείας με αυτή την απλή άσκηση.' 
-              : 'If choosing feels overwhelming right now, bypass the cards completely. Try this direct, single-focus practice.'}
+              ? 'Αν το να διαλέξεις είναι πολύ τώρα, ξεκίνα απευθείας με αυτή.' 
+              : 'If choosing feels like too much right now, start with this one.'}
           </p>
           
           <div className="flex flex-wrap gap-4 items-center pt-1 text-xs">
@@ -179,32 +179,32 @@ export default function PracticeMicrodoses() {
       {/* Somatic Quick Filters */}
       <div className="space-y-3" id="somatic-needs-section">
         <span className="text-[13px] font-medium text-ink/65 pl-1 block">
-          {language === 'el' ? 'Φιλτράρισμα με βάση το Σύστημά σου' : 'Filter by Somatic State'}
+          {language === 'el' ? 'Πού είσαι' : 'Where you are'}
         </span>
         <div className="grid grid-cols-1 desk:grid-cols-4 gap-3">
           {[
             { 
               id: 'all', 
-              label: { el: 'Όλα τα Συστήματα', en: 'All States' }, 
-              desc: { el: 'Εμφάνιση όλων των πρακτικών', en: 'Show all microdoses' },
+              label: { el: 'Όλες', en: 'All' }, 
+              desc: { el: 'Εμφάνιση όλων των πρακτικών', en: 'Show all small doses' },
               color: 'teal'
             },
             { 
               id: 'stealth', 
-              label: { el: 'Αόρατο & Παντού', en: 'Stealth & Anywhere' }, 
-              desc: { el: 'Ασκήσεις με ανοιχτά μάτια, ιδανικές για δημόσιους χώρους', en: 'Discreet practices perfect for work or public settings' },
+              label: { el: 'Αόρατα, παντού', en: 'Unnoticed, anywhere' }, 
+              desc: { el: 'Ασκήσεις με ανοιχτά μάτια, ιδανικές για δημόσιους χώρους', en: 'Eyes open, for work or public places' },
               color: 'emerald'
             },
             { 
               id: 'seated', 
-              label: { el: 'Σταθερότητα & Κάθισμα', en: 'Seated & Grounded' }, 
-              desc: { el: 'Βαθιά γείωση, ιδανική για όταν κάθεσαι ή είσαι στο σπίτι', en: 'Deeper relaxation while sitting comfortably' },
+              label: { el: 'Καθιστά', en: 'Sitting' }, 
+              desc: { el: 'Για όταν κάθεσαι ή είσαι στο σπίτι', en: 'For when you sit, or are at home' },
               color: 'indigo'
             },
             { 
               id: 'vibration', 
-              label: { el: 'Με Ήχο ή Δόνηση', en: 'Voice & Vibration' }, 
-              desc: { el: 'Απαλοί ήχοι/εκπνοές για διέγερση του πνευμονογαστρικού', en: 'Subtle humming or sighing to massage the vagus nerve' },
+              label: { el: 'Με τη φωνή', en: 'With your voice' }, 
+              desc: { el: 'Απαλό βουητό ή αναστεναγμός στην εκπνοή', en: 'A soft hum or a sigh on the out-breath' },
               color: 'amber'
             }
           ].map((sf) => {
@@ -286,7 +286,7 @@ export default function PracticeMicrodoses() {
               { id: 'all', label: { el: 'Όλες οι Διάρκειες', en: 'All Durations' }, icon: null, color: 'neutral' },
               { id: 'sos', label: { el: 'Αστραπιαία (< 15δ)', en: 'Instant (< 15s)' }, icon: <Zap size={13} className="text-amber-400" />, color: 'amber' },
               { id: 'brief', label: { el: 'Σύντομα (< 45δ)', en: 'Brief (< 45s)' }, icon: <Focus size={13} className="text-teal-400" />, color: 'teal' },
-              { id: 'deep', label: { el: 'Βαθιά (1λ+)', en: 'Deep Reset (1m+)' }, icon: <Anchor size={13} className="text-indigo-400" />, color: 'indigo' }
+              { id: 'deep', label: { el: 'Πιο μεγάλα (1λ+)', en: 'Longer (1m+)' }, icon: <Anchor size={13} className="text-indigo-400" />, color: 'indigo' }
             ].map(speed => {
               const isActive = activeSpeed === speed.id;
               const color = speed.color;
@@ -389,7 +389,7 @@ export default function PracticeMicrodoses() {
             <p className="text-sm text-ink/70">
               {language === 'el' 
                 ? 'Δεν βρέθηκαν μικροδόσεις με αυτά τα φίλτρα.' 
-                : 'No microdoses found with these criteria.'}
+                : 'No small doses found with these criteria.'}
             </p>
           </div>
         )}

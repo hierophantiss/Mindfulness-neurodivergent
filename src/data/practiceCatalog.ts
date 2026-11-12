@@ -119,7 +119,7 @@ function build(): CatalogItem[] {
 export const PRACTICE_CATALOG: CatalogItem[] = build();
 
 export const KIND_LABEL: Record<PracticeKind, T> = {
-  dose: { el: 'Μικρο-δόσεις', en: 'Microdoses' },
+  dose: { el: 'Μικρο-δόσεις', en: 'Small doses' },
   breath: { el: 'Αναπνοή', en: 'Breathing' },
   voice: { el: 'Φωνή & ήχος', en: 'Voice & sound' },
   movement: { el: 'Κίνηση', en: 'Movement' },

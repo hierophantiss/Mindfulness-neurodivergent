@@ -160,8 +160,8 @@ export default function Dashboard() {
   const WAYS = [
     { key: 'movement', to: '/practice?category=movement', title: el ? 'Κίνηση και Τάι Τσι' : 'Movement and Tai Chi', axis: el ? 'Σώμα' : 'Body', ink: 'var(--axis-body-ink)', icon: 'M12 3a2 2 0 1 0 0 4 2 2 0 1 0 0-4M12 8v7M12 15l-3 6M12 15l3 6M5 9l7 2 7-4' },
     { key: 'breath', to: '/practice?category=breath', title: el ? 'Ρυθμοί αναπνοής' : 'Breath rhythms', axis: el ? 'Αναπνοή' : 'Breath', ink: 'var(--axis-breath-ink)', icon: 'M3 9h10a3 3 0 1 0-3-3M3 14h15a3 3 0 1 1-3 3M3 19h6' },
-    { key: 'micro', to: '/practice/microdoses', title: el ? 'Μικροδόσεις' : 'Microdoses', axis: el ? 'Προσοχή · λίγα δευτερόλεπτα' : 'Attention · a few seconds', ink: 'var(--axis-attention-ink)', icon: 'M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z' },
-    { key: 'vocal', to: '/practice?category=vocal', title: el ? 'Ψάλσιμο και αντήχηση' : 'Chanting and resonance', axis: el ? 'Χώρος' : 'Space', ink: 'var(--axis-space-ink)', icon: 'M3 12c2-4 4-4 6 0s4 4 6 0 4-4 6 0M3 17c2-3 4-3 6 0s4 3 6 0 4-3 6 0' },
+    { key: 'micro', to: '/practice/microdoses', title: el ? 'Μικροδόσεις' : 'Small doses', axis: el ? 'Προσοχή · λίγα δευτερόλεπτα' : 'Attention · a few seconds', ink: 'var(--axis-attention-ink)', icon: 'M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z' },
+    { key: 'vocal', to: '/practice?category=vocal', title: el ? 'Ψάλσιμο και αντήχηση' : 'Humming and voice', axis: el ? 'Χώρος' : 'Space', ink: 'var(--axis-space-ink)', icon: 'M3 12c2-4 4-4 6 0s4 4 6 0 4-4 6 0M3 17c2-3 4-3 6 0s4 3 6 0 4-3 6 0' },
   ];
   // On a phone the four ways open from one card (on a computer they are always there).
   const [waysOpen, setWaysOpen] = useState(false);
@@ -208,7 +208,7 @@ export default function Dashboard() {
                 {el ? 'Ενσυνειδητότητα' : 'Mindfulness'}
               </span>{' '}
               <span className="sky-text text-[12.5px] leading-[1.2] text-ink/70 [text-wrap:balance]">
-                {el ? 'Για νου που τρέχει ή κλειδώνει' : 'For minds that race or lock'}
+                {el ? 'Για νου που τρέχει ή κλειδώνει' : 'For minds that race or freeze'}
               </span>
             </span>
           </div>
@@ -280,7 +280,7 @@ export default function Dashboard() {
                     {!finishedGuide && spot.chapter?.sub && (
                       <span className="text-[13px] leading-snug text-ink/75 line-clamp-2 desk:text-[15.5px]">{spot.chapter.sub}</span>
                     )}
-                    {guideLine && <span className="hidden desk:line-clamp-2 mt-1 text-[15px] leading-relaxed text-ink/70">«{guideLine}»</span>}
+                    {guideLine && <span className="hidden desk:line-clamp-2 mt-1 text-[15px] leading-relaxed text-ink/70">{el ? `«${guideLine}»` : `“${guideLine}”`}</span>}
                   </span>
                   <span className="flex items-end justify-between gap-2 text-[12px] desk:text-[14px]">
                     <span className="text-ink/65">{midChapter ? (el ? `σελ. ${spot.page + 1} από ${spot.pages.length}` : `p. ${spot.page + 1} of ${spot.pages.length}`) : ''}</span>
@@ -339,7 +339,7 @@ export default function Dashboard() {
               </span>
               <span className="flex-1 min-w-0 flex flex-col gap-0.5">
                 <span className="text-[15.5px] leading-snug text-ink">{el ? 'Τέσσερις τρόποι εξάσκησης' : 'Four ways to practise'}</span>
-                <span className="text-[13px] leading-snug text-ink/70">{el ? 'Κίνηση, αναπνοή, μικροδόσεις, ψάλσιμο' : 'Movement, breath, microdoses, chanting'}</span>
+                <span className="text-[13px] leading-snug text-ink/70">{el ? 'Κίνηση, αναπνοή, μικροδόσεις, ψάλσιμο' : 'Movement, breath, small doses, humming'}</span>
               </span>
               <ChevronDown size={18} aria-hidden="true" className={cn("shrink-0 text-ink/70 transition-transform", waysOpen && "rotate-180")} />
             </button>
@@ -391,7 +391,7 @@ export default function Dashboard() {
         >
           <figcaption className="sky-text text-[12px] desk:text-[13px] text-ink/70">{el ? 'Για σήμερα' : 'For today'}</figcaption>
           <blockquote className="sky-text mt-2 font-display text-[19px] desk:text-[24px] leading-[1.45] text-ink/80">
-            «{el ? affirmation.el : affirmation.en}»
+            {el ? `«${affirmation.el}»` : `“${affirmation.en}”`}
           </blockquote>
         </motion.figure>
 

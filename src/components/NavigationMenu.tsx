@@ -148,7 +148,7 @@ export default function NavigationMenu() {
           <MethodMark small dim={nightDim} className="w-10 h-10 shrink-0" />
           <span className="flex flex-col gap-[3px] min-w-0">
             <span className="keep-font font-display text-[17px] leading-none text-sign-gold whitespace-nowrap">{el ? 'Ενσυνειδητότητα' : 'Mindfulness'}</span>
-            <span className="text-[12.5px] leading-tight text-ink/70 [text-wrap:balance]">{el ? 'Για νου που τρέχει ή κλειδώνει' : 'For minds that race or lock'}</span>
+            <span className="text-[12.5px] leading-tight text-ink/70 [text-wrap:balance]">{el ? 'Για νου που τρέχει ή κλειδώνει' : 'For minds that race or freeze'}</span>
           </span>
         </Link>
         {sideItems.map(({ path, Icon, label }) => {
@@ -574,7 +574,7 @@ export default function NavigationMenu() {
                 {language === 'el' ? (
                   <>Αν χρειάζεσαι βοήθεια τώρα: <a href="tel:112">112</a> για κίνδυνο, <a href="tel:1018">1018</a> (Κλίμακα) ή <a href="tel:197">197</a>, όλο το 24ωρο.</>
                 ) : (
-                  <>If you need help now: <a href="tel:112">112</a> in danger (Europe), <a href="tel:1018">1018</a> in Greece, or <a href="https://findahelpline.com" target="_blank" rel="noopener noreferrer">findahelpline.com</a>.</>
+                  <>If you need help now: <a href="https://findahelpline.com" target="_blank" rel="noopener noreferrer">findahelpline.com</a> lists free helplines in your country. In danger, your local emergency number (<a href="tel:112">112</a> in Europe).</>
                 )}
               </p>
 

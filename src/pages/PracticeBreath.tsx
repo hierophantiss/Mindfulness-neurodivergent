@@ -923,7 +923,7 @@ export default function PracticeBreath() {
               {language === 'el' ? (
                 <>Αν κινδυνεύεις τώρα: <a href="tel:112">112</a>. Αν αυτό δεν είναι αρκετό, μπορείς να μιλήσεις με κάποιον: <a href="tel:1018">1018</a> (Κλίμακα, 24ωρη γραμμή) ή <a href="tel:197">197</a> (δωρεάν, 24ωρη ψυχοκοινωνική στήριξη).</>
               ) : (
-                <>If you are in danger now: <a href="tel:112">112</a> (Europe) or your local emergency number. If this isn't enough, you are not alone: <a href="tel:1018">1018</a> (Greece) or <a href="https://findahelpline.com" target="_blank" rel="noopener noreferrer">findahelpline.com</a>.</>
+                <>If you are in danger now, call your local emergency number (<a href="tel:112">112</a> in Europe). If this isn't enough, you are not alone: <a href="https://findahelpline.com" target="_blank" rel="noopener noreferrer">findahelpline.com</a> lists free helplines in your country (in Greece: <a href="tel:1018">1018</a>).</>
               )}
             </p>
           </div>

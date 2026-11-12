@@ -264,7 +264,7 @@ export default function CompanionSheet() {
                     {el ? `Για σήμερα · από το Κεφάλαιο ${reminder.num}` : `For today · from Chapter ${reminder.num}`}
                   </figcaption>
                   <blockquote className="font-light text-[16px] leading-relaxed text-ink/80">
-                    «{reminder.text}»
+                    {el ? `«${reminder.text}»` : `“${reminder.text}”`}
                   </blockquote>
                 </figure>
               )}

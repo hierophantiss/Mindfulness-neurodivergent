@@ -103,7 +103,7 @@ const CHAPTER_CONCEPTS_MAP: Record<number, { id: string; labelEn: string; labelE
     { id: 'amygdala', labelEn: 'Amygdala (No Self-Criticism)', labelEl: 'Αμυγδαλή (Όχι Αυτοκριτική)', icon: '🛡️' }
   ],
   6: [
-    { id: 'cearns_2022', labelEn: 'Consistency & Microdosing', labelEl: 'Συνέπεια & Μικροδόσεις', icon: '⚡' },
+    { id: 'cearns_2022', labelEn: 'Consistency & Small Doses', labelEl: 'Συνέπεια & Μικροδόσεις', icon: '⚡' },
     { id: 'peripheral_vision', labelEn: 'Peripheral Safety Sign', labelEl: 'Περιφερειακό Σήμα Ασφάλειας', icon: '👁️' },
     { id: 'parasympathetic', labelEn: 'Active Recovery', labelEl: 'Ενεργή Ανάκαμψη', icon: '🌿' }
   ],

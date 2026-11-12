@@ -33,11 +33,11 @@ const translations: Record<string, Record<Language, string>> = {
 
   // Onboarding
 
-  'onboarding.s1.title': { el: 'Για νου που τρέχει ή κλειδώνει', en: 'For minds that race or lock' },
+  'onboarding.s1.title': { el: 'Για νου που τρέχει ή κλειδώνει', en: 'For minds that race or freeze' },
   'onboarding.s1.body': { el: 'Το μυαλό σου δεν είναι χαλασμένο, απλώς λειτουργεί αλλιώς. Σύντομες πρακτικές για νευροδιαφορετικούς ενήλικες και για όσους ζουν με τραύμα.', en: 'Your mind isn\'t broken, it just works differently. Short practices for neurodivergent adults and for anyone living with trauma.' },
   
   'onboarding.s2.title': { el: 'Δεν χρειάζεται να αδειάσεις το μυαλό σου', en: "You don't have to empty your mind" },
-  'onboarding.s2.body': { el: 'Ούτε να μείνεις ακίνητος. Η μέθοδος έχει τέσσερα απλά βήματα, με αυτή τη σειρά: Σώμα, Αναπνοή, Προσοχή, Χώρος. Πες πώς νιώθεις και θα σου προτείνει από πού να ξεκινήσεις, με μια άσκηση 2–5 λεπτών.', en: 'Nor to stay still. The method has four simple steps, in this order: Body, Breath, Attention, Space. Say how you feel and it will suggest where to begin, with a 2–5 minute practice.' },
+  'onboarding.s2.body': { el: 'Ούτε να μείνεις ακίνητος. Αν ο διαλογισμός δεν σου βγήκε ως τώρα, εδώ ξεκινάς αλλιώς: από το σώμα. Τέσσερα απλά βήματα, με αυτή τη σειρά: Σώμα, Αναπνοή, Προσοχή, Χώρος.', en: 'Nor to stay still. If meditation hasn\'t worked for you before, this starts differently: with the body. Four simple steps, in this order: Body, Breath, Attention, Space.' },
 
   'onboarding.s3.title': { el: 'Τι να περιμένεις', en: 'What to expect' },
   'onboarding.s3.body': { el: 'Δωρεάν, χωρίς λογαριασμό, χωρίς διαφημίσεις. Όλα μένουν στη συσκευή σου. Δεν μετράμε σερί: λίγα δευτερόλεπτα αρκούν, και αν χάσεις μέρες δεν πειράζει. Δεν είναι θεραπεία και δεν την αντικαθιστά.', en: "Free, no account, no ads. Everything stays on your device. We don't count streaks: a few seconds are enough, and missing days is fine. It is not therapy and does not replace it." },

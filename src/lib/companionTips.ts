@@ -49,6 +49,12 @@ export function tipSeen(place: TipPlace): boolean {
   return readSeen().includes(place);
 }
 
+/** The cat speaks by itself on three places at most; then only when asked ("What is on this page?"). */
+export const TIPS_BY_ITSELF = 3;
+export function tipsUsedUp(): boolean {
+  return readSeen().length >= TIPS_BY_ITSELF;
+}
+
 export function markTipSeen(place: TipPlace) {
   try {
     const seen = readSeen();

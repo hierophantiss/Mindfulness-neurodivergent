@@ -586,7 +586,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       title: 'ADHD & Mindfulness Study (Zylowska et al., 2008)',
       short: 'A mindfulness programme adapted for ADHD was feasible, and participants reported improvements.',
       full: 'A pilot study (“Mindfulness Meditation Training in Adults and Adolescents With ADHD: A Feasibility Study”) with 24 adults and 8 adolescents. The 8-week programme was adapted for ADHD: shorter sittings, walking meditation, visual aids. Most participants completed it, reported fewer ADHD symptoms, less anxiety and low mood, and did better on some attention tests.\n\nThere was no control group. So the study shows that this kind of approach is feasible and worth more research, not that it works better than others.',
-      ndNote: 'Adapting the practice to your mind, rather than your mind to the practice: that is also the idea behind the microdoses and the gentle return.',
+      ndNote: 'Adapting the practice to your mind, rather than your mind to the practice: that is also the idea behind the small doses and the gentle return.',
       science: 'Zylowska et al. (2008) Journal of Attention Disorders (Doi: 10.1177/1087054707308502)'
     },
     axis: 'attention',
@@ -646,7 +646,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
       title: 'Dose & Practice Habits in Digital Meditation (Cearns & Clark, 2023)',
       short: 'Practising regularly, most days of the week, was linked to greater benefit and to keeping going.',
       full: 'A longitudinal study (“The Effects of Dose, Practice Habits, and Objects of Focus on Digital Meditation Effectiveness and Adherence”) of about 10,000 users of a meditation app, with more than 280,000 sessions across 103 countries. Mood, equanimity and resilience improved as practice continued. Practising 4 to 7 days a week was the strongest predictor of keeping going; session length was not.\n\nIt is an observational study: it shows associations, not cause and effect. Nor did it show that short sessions are better than long ones.',
-      ndNote: 'What seems to matter is coming back often. Microdoses make coming back easy; when you have time, a longer practice is good too.',
+      ndNote: 'What seems to matter is coming back often. Small doses make coming back easy; when you have time, a longer practice is good too.',
       science: 'Cearns & Clark (2023) JMIR (Doi: 10.2196/43358, 280,000+ sessions studied)'
     },
     axis: 'attention',

@@ -264,7 +264,7 @@ function getMetaForRoute(route: string): RouteMeta {
   if (clean === '/') {
     const n = METHODOLOGY_DATA[lang as 'en' | 'el'].pillars.length;
     const sections: [string, string, string][] = lang === 'en' ? [
-      ['/en/practice', 'Practices', 'the three breathing rhythms of the book (5-5, 4-6, 4-2-7) and SOS, Tai Chi and Qigong with an animated figure, swaying, chanting, and short microdoses. The breaths and movements say what you do on the inhale and on the exhale.'],
+      ['/en/practice', 'Practices', 'the three breathing rhythms of the book (5-5, 4-6, 4-2-7) and SOS, Tai Chi and Qigong with an animated figure, swaying, chanting, and short small doses. The breaths and movements say what you do on the inhale and on the exhale.'],
       ['/en/sanctuary', 'Sanctuary', 'rain, ocean, wind, brown and pink noise, a 5-5 breathing wave, and binaural sounds for sleep, unwinding, calm alertness and focus, with a sleep timer.'],
       ['/en/chapters', 'The 11 chapters', 'read them, or listen to them in a natural voice with the text lit as it is read. The whole guide is also an audiobook (MP3) and a book (PDF and EPUB) to download.'],
       ['/en/program', '8-week program', 'one small step a day, at your own pace.'],
@@ -309,7 +309,7 @@ function getMetaForRoute(route: string): RouteMeta {
       creator: { '@type': 'Person', name: 'Theodoros', description: 'Contemplative practitioner, creator of the Fourfold Axis method' },
       featureList: lang === 'el'
         ? `Τετραπλός Άξονας (Σώμα, Αναπνοή, Προσοχή, Χώρος), «Πώς νιώθεις τώρα;», κουμπί SOS με τηλέφωνα βοήθειας, ρυθμοί αναπνοής, Τάι Τσι & Qigong, Λίκνισμα, ψάλσιμο, μικροδόσεις, Καταφύγιο με ήχους φύσης και binaural, 11 κεφάλαια με ακρόαση σε φυσική φωνή, ακουστικό βιβλίο (MP3), βιβλίο σε PDF και EPUB, πρόγραμμα 8 εβδομάδων, ημερολόγιο πρακτικής, γάτα-σύντροφος που θυμάται τι διάβασες, Κουνελότρυπα, επιστημονική βάση με ${n} μελέτες, συχνές ερωτήσεις, λειτουργία offline, χωρίς λογαριασμό, χωρίς παρακολούθηση`
-        : `Fourfold Axis method (Body, Breath, Attention, Space), "How do you feel right now?" check-in, SOS button with helplines, breathing rhythms, Tai Chi & Qigong, swaying, chanting, microdoses, Sanctuary with nature sounds and binaural beats, 11 chapters with read-aloud in a natural voice, audiobook (MP3), workbook as PDF and EPUB, 8-week program, practice journal, cat companion that remembers what you read, Rabbit Hole, scientific basis with ${n} studies, FAQ, offline support, no account, no tracking`,
+        : `Fourfold Axis method (Body, Breath, Attention, Space), "How do you feel right now?" check-in, SOS button with helplines, breathing rhythms, Tai Chi & Qigong, swaying, chanting, small doses, Sanctuary with nature sounds and binaural beats, 11 chapters with read-aloud in a natural voice, audiobook (MP3), workbook as PDF and EPUB, 8-week program, practice journal, cat companion that remembers what you read, Rabbit Hole, scientific basis with ${n} studies, FAQ, offline support, no account, no tracking`,
       // The whole guide as an audiobook (Sulafat voice), downloadable from the app.
       subjectOf: {
         '@type': 'Audiobook',
@@ -620,10 +620,10 @@ function getMetaForRoute(route: string): RouteMeta {
   // ── Practice hub ──
   if (clean === '/practice') {
     const t = lang === 'en'
-      ? 'Mindfulness Practices for ADHD & Autism – Breathing, Tai Chi, Chanting & Microdoses'
+      ? 'Mindfulness Practices for ADHD & Autism – Breathing, Tai Chi, Chanting & Small Doses'
       : 'Πρακτικές Ενσυνειδητότητας για ΔΕΠΥ & Αυτισμό – Αναπνοές, Τάι Τσι, Ψάλσιμο & Μικροδόσεις';
     const d = lang === 'en'
-      ? 'The breathing rhythms of the book (5-5, 4-6, 4-2-7) and SOS, Tai Chi and Qigong, swaying, chanting and short microdoses, for ADHD and autism. Free.'
+      ? 'The breathing rhythms of the book (5-5, 4-6, 4-2-7) and SOS, Tai Chi and Qigong, swaying, chanting and short small doses, for ADHD and autism. Free.'
       : 'Οι ρυθμοί αναπνοής του βιβλίου (5-5, 4-6, 4-2-7) και το SOS, Τάι Τσι και Qigong, Λίκνισμα, ψάλσιμο και σύντομες μικροδόσεις, για ΔΕΠΥ και αυτισμό. Δωρεάν.';
     const exerciseDesc = BREATH_PATTERNS.slice(0, 3).map(p => {
        const title = p.title?.[lang as 'en'|'el'] ?? p.title?.en;
@@ -672,7 +672,7 @@ function getMetaForRoute(route: string): RouteMeta {
   // ── Practice / Microdoses ──
   if (clean === '/practice/microdoses') {
     const t = lang === 'en'
-      ? '1-Minute Mindfulness Microdoses for ADHD & Autism – Quick Resets'
+      ? '1-Minute Mindfulness Small Doses for ADHD & Autism – Quick Resets'
       : 'Μικροδόσεις Ενσυνειδητότητας 1 Λεπτού για ΔΕΠΥ & Αυτισμό – Γρήγορη Επαναφορά';
     const d = lang === 'en'
       ? 'Very short practices for transitions and overload, from a few seconds to a minute or two: body, breath, attention and space, many of them unnoticeable to others.'
