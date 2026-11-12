@@ -207,9 +207,9 @@ export default function NavigationMenu() {
       </AnimatePresence>
 
       {/* Bottom Navigation */}
-      {/* A floating glass bar (colour and a light edge, no blur: light on old phones). */}
+      {/* A solid bar along the bottom edge: no text shows through it or around it. */}
       {!zenReading && (
-      <div data-nosnippet className="glass fixed left-3 right-3 bottom-[calc(10px+env(safe-area-inset-bottom))] z-40 rounded-[26px] bg-[rgb(12_15_28/0.84)] desk:hidden">
+      <div data-nosnippet className="fixed left-0 right-0 bottom-0 z-40 rounded-t-[22px] bg-[var(--color-surface)] border-t border-white/[0.09] shadow-[0_-14px_28px_-14px_rgb(0_0_0/0.7)] pt-1 pb-[calc(4px+env(safe-area-inset-bottom))] desk:hidden">
         <div className="flex items-center justify-around px-1 py-1 max-w-md mx-auto">
           {mainNavItems.map((item) => {
             // Home lives at "/" ("/dashboard" only redirects there).
