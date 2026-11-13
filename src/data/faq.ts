@@ -397,8 +397,8 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
         relatedExercise: 'racing_mind.html'
       },
       {
-        q: 'My mind is "locking." What do I do?',
-        a: 'Locking mind = Anchored Attention / Hyperfocus. Like a tunnel of intense focus. Time disappears, the body is forgotten.\n\nTool: Space (Release) + Body (Return). Soften your gaze, feel the space around — this "breaks" the tunnel.',
+        q: 'My mind has "locked in." What do I do?',
+        a: 'Locked-in mind = Anchored Attention / Hyperfocus. Like a tunnel of intense focus. Time disappears, the body is forgotten.\n\nTool: Space (Release) + Body (Return). Soften your gaze, feel the space around — this "breaks" the tunnel.',
         tags: ['mind', 'locking', 'hyperfocus', 'nd-specific', 'practical', 'autism'],
         depth: 1,
         relatedConcept: 'hyperfocus'
@@ -418,7 +418,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'My mind isn\'t broken?',
-        a: 'No. The neurodivergent mind is not defective — it works differently. The intensity, the scattering, the locking are not weaknesses — they are patterns. And patterns can be recognized. You don\'t fight your brain — you collaborate with it.',
+        a: 'No. The neurodivergent mind is not defective — it works differently. The intensity, the scattering, the locking in are not weaknesses — they are patterns. And patterns can be recognized. You don\'t fight your brain — you collaborate with it.',
         tags: ['mind', 'affirmation', 'nd-specific', 'core-message'],
         depth: 1
       }

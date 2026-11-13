@@ -29,7 +29,7 @@ export default function InfoModal({ isOpen, onClose }: InfoModalProps) {
     title: { el: 'Ο Τετραπλός Άξονας', en: 'The Fourfold Axis' },
     subtitle: {
       el: 'Ενσυνειδητότητα για νου που τρέχει ή κλειδώνει.',
-      en: 'Mindfulness for minds that race or freeze.'
+      en: 'Mindfulness for minds that race or lock in.'
     },
     purpose: {
       el: 'Μια μέθοδος σταδιακής επανασύνδεσης με τέσσερα κέντρα της εμπειρίας: Σώμα, Αναπνοή, Προσοχή, Χώρος. Σχεδιασμένη με σεβασμό στη νευροδιαφορετικότητα. Ξεκίνα με μικρές πρακτικές. Αντί για «άδειασμα του μυαλού», έρχεσαι σε επαφή με το καθένα και σιγά σιγά τα συντονίζεις.',

@@ -563,19 +563,19 @@ Always with a grounded body. First the earth, then the sky.
 ## Chapter 5 — The Neurodivergent Mind: Defence, Racing, the Mask
 
 > **In this chapter**
-> The neurodivergent mind is not broken; it works differently. You come to understand its two main states (racing and locking), the setting that lies beneath them, and the cost of the mask.
+> The neurodivergent mind is not broken; it works differently. You come to understand its two main states (racing and locking in), the setting that lies beneath them, and the cost of the mask.
 
-A neurodivergent person's mind is rarely static. It usually moves between two extreme states: it "races" or it "locks".
+A neurodivergent person's mind is rarely static. It usually moves between two extreme states: it "races" or it "locks in".
 
 **THE RACING MIND** — Scattered Attention / Overload. The world becomes a chain of small hooks. Many stimuli arrive at once, unfiltered. Tool: Body (Grounding) + Breath (Rhythm).
 
-**THE LOCKING MIND** — Stuck Attention / hyperfocus. Like a tunnel of intense focus. It can become a trap if its object is an anxious thought or an obsession. Tool: Body (Grounding) + Space (Release). Attention frees itself.
+**THE LOCKED-IN MIND** — Stuck Attention / hyperfocus. Like a tunnel of intense focus. It can become a trap if its object is an anxious thought or an obsession. Tool: Body (Grounding) + Space (Release). Attention frees itself.
 
 **Strategy for obsession:** Use Open Awareness (Space). Remember that your thoughts happen within a wider space. You can recognise their real proportions and gain freedom, without being smothered by them.
 
 ### Defence: The Setting Underneath
 
-Racing and locking are not two independent kinds of weather. They change character according to a setting that lies beneath them: whether the system is in defence or not.
+Racing and locking in are not two independent kinds of weather. They change character according to a setting that lies beneath them: whether the system is in defence or not.
 
 Defence is not an episode. For many of us it is the resting state, the point the system returns to when nothing is happening. There is a reason for this, and it deserves respect. Years in sensory environments you could not predict. Years of corrections for reactions that seemed natural to you. When you do not know which of your moves will be judged wrong, the system draws the only logical conclusion: the world needs constant monitoring.
 
@@ -591,7 +591,7 @@ Defence is not character. You are not "too much" or "oversensitive". You are a s
 
 ### The Role of the Mechanical Mind
 
-Locking (hyperfocus) is often fuelled by the **Mechanical Mind**, the part of the mind that constantly analyses the past and plans the future, without a stable base in the present (we met it in Chapter 1). The Mechanical Mind is not an enemy; it is a tool that has "overheated" without the steadying effect of presence.
+Locking in (hyperfocus) is often fuelled by the **Mechanical Mind**, the part of the mind that constantly analyses the past and plans the future, without a stable base in the present (we met it in Chapter 1). The Mechanical Mind is not an enemy; it is a tool that has "overheated" without the steadying effect of presence.
 
 The practice does not try to stop the Mechanical Mind, but to complement it with an **Open Mind**: a mind that observes without analysing, embraces without judging, sees beyond the scenarios and perceives the causes.
 
@@ -621,7 +621,7 @@ The gentleness of this method is the stance you need to hold towards yourself. G
 
 Remember: your thoughts and experiences happen within a wider space of awareness. Within this open space, you can recognise their real proportions. **Treat yourself the way you would treat a friend who is struggling.**
 
-**Reflection:** My own patterns: when does my mind tend to "race"? When does it "lock"? What situations trigger it?
+**Reflection:** My own patterns: when does my mind tend to "race"? When does it "lock in"? What situations trigger it?
 
 > ★ **Key Point:** Defence does not make your thoughts; it selects them. It does not come down through arguments, but through signals of safety and through time. And the mask was always a function, never an identity.
 
@@ -663,7 +663,7 @@ Self-regulation is the ability to bring your nervous system back from overstimul
 
 1. **Contact with the Body** — You feel the earth, the weight, the axis.
 2. **Contact with the Breath** — You see whether the rhythm is fast, shallow or calm.
-3. **Contact with Attention** — You see where the mind has got stuck (scattering or locking).
+3. **Contact with Attention** — You see where the mind has got stuck (scattering or locking in).
 4. **Contact with Space** — You feel whether there is openness and safety.
 
 ### Practical Applications

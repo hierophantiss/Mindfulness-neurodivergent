@@ -216,7 +216,7 @@ export default function Dashboard() {
                 {el ? 'Ενσυνειδητότητα' : 'Mindfulness'}
               </span>{' '}
               <span className="sky-text text-[12.5px] leading-[1.2] text-ink/70 [text-wrap:balance]">
-                {el ? 'Για νου που τρέχει ή κλειδώνει' : 'For minds that race or freeze'}
+                {el ? 'Για νου που τρέχει ή κλειδώνει' : 'For minds that race or lock in'}
               </span>
             </span>
           </div>

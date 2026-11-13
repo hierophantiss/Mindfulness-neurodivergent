@@ -395,15 +395,15 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
       "color": "var(--teal-med)",
       "hex": "#2E8B9A",
       "icon": "🧠",
-      "summary": "The neurodivergent mind is not broken; it works differently. You come to understand its two main states (racing and locking), the setting that lies beneath them, and the cost of the mask.",
-      "tldr": "The neurodivergent mind races or locks, and underneath there is a setting: defence. It does not come down through arguments, but through signals of safety and through time. The mask was always a function, never an identity.",
+      "summary": "The neurodivergent mind is not broken; it works differently. You come to understand its two main states (racing and locking in), the setting that lies beneath them, and the cost of the mask.",
+      "tldr": "The neurodivergent mind races or locks in, and underneath there is a setting: defence. It does not come down through arguments, but through signals of safety and through time. The mask was always a function, never an identity.",
       "theorySections": [
         {
-          "title": "The Racing Mind, the Locking Mind",
+          "title": "The Racing Mind, the Locked-In Mind",
           "paragraphs": [
-            "A neurodivergent person's mind is rarely static. It usually moves between two extreme states: it \"races\" or it \"locks\".",
+            "A neurodivergent person's mind is rarely static. It usually moves between two extreme states: it \"races\" or it \"locks in\".",
             "<strong>THE RACING MIND</strong> — Scattered Attention / Overload. The world becomes a chain of small hooks. Many stimuli arrive at once, unfiltered. Tool: Body (Grounding) + Breath (Rhythm).",
-            "<strong>THE LOCKING MIND</strong> — Stuck Attention / hyperfocus. Like a tunnel of intense focus. It can become a trap if its object is an anxious thought or an obsession. Tool: Body (Grounding) + Space (Release). Attention frees itself.",
+            "<strong>THE LOCKED-IN MIND</strong> — Stuck Attention / hyperfocus. Like a tunnel of intense focus. It can become a trap if its object is an anxious thought or an obsession. Tool: Body (Grounding) + Space (Release). Attention frees itself.",
             "<strong>Strategy for obsession:</strong> Use Open Awareness (Space). Remember that your thoughts happen within a wider space. You can recognise their real proportions and gain freedom, without being smothered by them."
           ],
           "interactive": "racing_mind"
@@ -411,7 +411,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
         {
           "title": "Defence: The Setting Underneath",
           "paragraphs": [
-            "Racing and locking are not two independent kinds of weather. They change character according to a setting that lies beneath them: whether the system is in defence or not.",
+            "Racing and locking in are not two independent kinds of weather. They change character according to a setting that lies beneath them: whether the system is in defence or not.",
             "Defence is not an episode. For many of us it is the resting state, the point the system returns to when nothing is happening. There is a reason for this, and it deserves respect. Years in sensory environments you could not predict. Years of corrections for reactions that seemed natural to you. When you do not know which of your moves will be judged wrong, the system draws the only logical conclusion: the world needs constant monitoring.",
             "So defence stays switched on. And because it stays on, it costs all the time, even when nothing is happening.",
             "What it is like from inside: nothing is going wrong, and yet everything is one notch louder. A small thing lands big. A neutral face reads as a verdict. You are tired without having done anything.",
@@ -423,7 +423,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
         {
           "title": "The Role of the Mechanical Mind",
           "paragraphs": [
-            "Locking (hyperfocus) is often fuelled by the <strong>Mechanical Mind</strong>{{mechanical_mind}}, the part of the mind that constantly analyses the past and plans the future, without a stable base in the present (we met it in Chapter 1). The Mechanical Mind is not an enemy; it is a tool that has \"overheated\" without the steadying effect of presence.",
+            "Locking in (hyperfocus) is often fuelled by the <strong>Mechanical Mind</strong>{{mechanical_mind}}, the part of the mind that constantly analyses the past and plans the future, without a stable base in the present (we met it in Chapter 1). The Mechanical Mind is not an enemy; it is a tool that has \"overheated\" without the steadying effect of presence.",
             "The practice does not try to stop the Mechanical Mind, but to complement it with an <strong>Open Mind</strong>: a mind that observes without analysing, embraces without judging, sees beyond the scenarios and perceives the causes."
           ]
         },
@@ -456,13 +456,13 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
         "title": "My Patterns",
         "steps": [
           "When does my mind tend to \"race\"?",
-          "When does it \"lock\"?",
+          "When does it \"lock in\"?",
           "What situations trigger it?",
           "Where do I feel the mask in my body: in the jaw, the shoulders, the breath?"
         ]
       },
       "insight": "Defence does not make your thoughts; it selects them. It does not come down through arguments, but through signals of safety and through time. And the mask was always a function, never an identity.",
-      "reflection": "My own patterns: when does my mind tend to \"race\"? When does it \"lock\"? What situations trigger it?"
+      "reflection": "My own patterns: when does my mind tend to \"race\"? When does it \"lock in\"? What situations trigger it?"
     },
     {
       "num": 6,
@@ -495,7 +495,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
             "The thread will break. That is not failure; that is how it is designed. The moment you notice, the small flash of \"oh, I was gone\", is the bridge: you cross it (soles, one exhale, space) and you are in contact again. Remembering is only the moment of the bridge. Contact is the country the bridge leads to, the place you live from.",
             "<strong>Two seconds of real contact, many times a day.</strong> That is the whole practice of this chapter.",
             "Self-regulation is the ability to bring your nervous system back from overstimulation or shutdown to a state of balance. It begins with contact on four levels:",
-            "1. <strong>Contact with the Body</strong> — You feel the earth, the weight, the axis.\n2. <strong>Contact with the Breath</strong> — You see whether the rhythm is fast, shallow or calm.\n3. <strong>Contact with Attention</strong> — You see where the mind has got stuck (scattering or locking).\n4. <strong>Contact with Space</strong> — You feel whether there is openness and safety."
+            "1. <strong>Contact with the Body</strong> — You feel the earth, the weight, the axis.\n2. <strong>Contact with the Breath</strong> — You see whether the rhythm is fast, shallow or calm.\n3. <strong>Contact with Attention</strong> — You see where the mind has got stuck (scattering or locking in).\n4. <strong>Contact with Space</strong> — You feel whether there is openness and safety."
           ]
         },
         {
