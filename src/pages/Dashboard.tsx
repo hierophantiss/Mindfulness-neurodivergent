@@ -186,9 +186,6 @@ export default function Dashboard() {
   const fit = (100 / (longestWord * 0.56)).toFixed(2);
   const bookTitleSize = `clamp(18px, ${fit}cqw, 26px)`;
   const bookTitleSizeDesk = `clamp(24px, ${fit}cqw, 40px)`;
-  const bookLabel = finishedGuide
-    ? (el ? `Όλα τα κεφάλαια · ${chapters.length}` : `All chapters · ${chapters.length}`)
-    : `${guideAction}: ${el ? 'Κεφάλαιο' : 'Chapter'} ${spot.chapter?.num ?? ''}, ${guideTitle}`;
   // The key line of the chapter you are in (once the chapters have loaded), for the wide guide card.
   const guideLine = !finishedGuide ? (spot.chapter?.insight || '') : '';
   // The phrase of the day, never the same as the chapter's line in the card above (then the next day's).
@@ -267,7 +264,6 @@ export default function Dashboard() {
             </div>
             <Link
               to={spot.href}
-              aria-label={bookLabel}
               className="relative block h-[150px] hover:brightness-110 active:scale-[0.99] transition-[filter,transform] desk:h-[232px]"
             >
               {/* The edges of the pages, below. */}
