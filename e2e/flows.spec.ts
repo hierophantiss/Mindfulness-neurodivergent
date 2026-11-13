@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
 import { asReturningVisitor } from './helpers';
 
 // The main things a person does, on a phone and on a computer.
@@ -181,4 +182,20 @@ test('the cat shows the home page around: four stops, at your pace', async ({ pa
   await expect(tour.getByText('4 / 4')).toBeVisible();
   await tour.getByRole('button', { name: 'Τέλος' }).click();
   await expect(tour).toHaveCount(0);
+});
+
+test('"Gravity and thoughts" (Chapter 1) plays its four scenes, with no accessibility problems', async ({ page }) => {
+  await page.goto('/el/chapters/1?p=3', { waitUntil: 'networkidle' });
+  const anim = page.getByRole('group', { name: 'Βαρύτητα και σκέψεις' });
+  await anim.scrollIntoViewIfNeeded();
+  await expect(anim.getByRole('heading', { name: 'Οι σκέψεις πληθαίνουν' })).toBeVisible();
+  await anim.getByRole('button', { name: /Ξεκίνα/ }).click();
+  await expect(anim.getByRole('button', { name: 'Παύση' }).last()).toBeVisible();
+  await anim.getByRole('button', { name: 'Επόμενη σκηνή' }).click();
+  await expect(anim.getByRole('heading', { name: 'Το τούνελ' })).toBeVisible();
+  await anim.getByRole('button', { name: 'Σκηνή 4: Εδώ' }).click();
+  await expect(anim.getByRole('heading', { name: 'Εδώ' })).toBeVisible();
+  await expect(anim.getByRole('button', { name: 'Επόμενη σκηνή' })).toBeDisabled();
+  const r = await new AxeBuilder({ page: page as never }).include('[role="group"]').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+  expect(r.violations.map(v => `${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
 });

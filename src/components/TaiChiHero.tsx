@@ -159,6 +159,9 @@ interface TaiChiHeroProps {
   idle?: boolean;
   /** Only the figure and the earth, on the page's own sky (the Practice cards). */
   bare?: boolean;
+  /** Only the figure, without its earth, axis or the light under the feet: for
+   *  a picture that draws its own ground (Chapter 1's "Gravity and thoughts"). */
+  figureOnly?: boolean;
 }
 
 export default function TaiChiHero({
@@ -169,6 +172,7 @@ export default function TaiChiHero({
   rhythmText,
   idle = false,
   bare = false,
+  figureOnly = false,
 }: TaiChiHeroProps) {
   // The Tai Chi flows move as the 5-5 Sync (from Theodoros's video), in their own rhythms.
   const movementType = givenType === "taichi" ? "5-5" : givenType;
@@ -1043,11 +1047,12 @@ export default function TaiChiHero({
 
       </svg>
       </>)}
-      {staticScene}
+      {!figureOnly && staticScene}
       <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 400">
         {/* SCENE WRAPPER: Double size hero and earth */}
         <g transform={sceneTf}>
           {/* Energy pulses expanding up the central beam */}
+          {!figureOnly && (<>
           <circle
             cx="200"
             cy={284 - breathForce * 200}
@@ -1062,13 +1067,14 @@ export default function TaiChiHero({
             fill="#fed7aa"
             opacity={1 - ((breathForce + 0.5) % 1)}
           />
+          </>)}
 
           {/* Light behind the figure: always a little, more with the inhale */}
           {!bare && (
             <ellipse cx={200 + bodyShift} cy={226 + sinkY} rx={42} ry={66} fill="url(#tc-backlight)" opacity={0.35 + 0.4 * bf} />
           )}
           {/* The figure stands on the earth: a soft shadow under the feet */}
-          <ellipse cx={200} cy={289} rx={17} ry={2.6} fill="url(#tc-foot-shadow)" />
+          {!figureOnly && <ellipse cx={200} cy={289} rx={17} ry={2.6} fill="url(#tc-foot-shadow)" />}
 
           {/* CHARACTER / HERO MODEL */}
           {/* Bare Feet Grounded on top curve of Earth */}

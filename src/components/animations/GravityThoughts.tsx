@@ -1,475 +1,475 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
+import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 import { useLanguage } from '../../hooks/useLanguage';
-import { PlayPauseOverlay } from '../PlayPauseOverlay';
+import { useAccessibility } from '../../hooks/useAccessibility';
+import { useTime } from '../../contexts/TimeContext';
+import TaiChiHero from '../TaiChiHero';
+import { Earth, daylight, rimColour } from '../HomeEarth';
+
+// Chapter 1, "Gravity and thoughts". The same person as in the practices,
+// standing on the earth of the home page, in four scenes:
+//   1. the thoughts multiply, and lift the figure a little off the earth;
+//   2. they close in like a tunnel: the earth is still there, unfelt;
+//   3. gravity: a long exhale, and the weight falls back into the feet;
+//   4. here: the thoughts stay, but transparent; the vision opens sideways.
+// Slow on purpose: the words drift, they do not spin. With reduced motion
+// each scene is a still picture.
+
+type Lang = 'el' | 'en';
+
+const SCENES: Record<Lang, { title: string; caption: string }[]> = {
+  el: [
+    { title: 'Οι σκέψεις πληθαίνουν', caption: 'Το μυαλό γεμίζει ερωτήσεις και φόβους. Το κέντρο βάρους ανεβαίνει, και αρχίζεις να χάνεις την επαφή με το έδαφος.' },
+    { title: 'Το τούνελ', caption: 'Οι σκέψεις γίνονται τούνελ: βλέπεις μόνο αυτές. Η γη είναι ακόμα εκεί, αλλά δεν τη νιώθεις.' },
+    { title: 'Η βαρύτητα', caption: 'Μια μακριά εκπνοή. Το βάρος πέφτει στα πέλματα· η γη σε κρατά, όπως πάντα.' },
+    { title: 'Εδώ', caption: 'Οι σκέψεις μένουν, αλλά διάφανες. Η όραση ανοίγει στα πλάγια. Είσαι εδώ.' },
+  ],
+  en: [
+    { title: 'Thoughts multiply', caption: 'The mind fills with questions and fears. Your centre of gravity rises, and you begin to lose touch with the ground.' },
+    { title: 'The tunnel', caption: 'The thoughts become a tunnel: they are all you see. The earth is still there, but you do not feel it.' },
+    { title: 'Gravity', caption: 'A long exhale. The weight falls into your feet; the earth holds you, as it always has.' },
+    { title: 'Here', caption: 'The thoughts stay, but transparent. Your vision opens to the sides. You are here.' },
+  ],
+};
+
+const WORDS: Record<Lang, string[]> = {
+  el: ['έπρεπε', 'τι θα γίνει αν', 'ανησυχία', 'ανεπαρκής', 'φόβος', 'ενοχές', 'αυτοκριτική', 'ντροπή', 'αμφιβολία', 'παγίδα'],
+  en: ['should', 'what if', 'worry', 'not enough', 'fear', 'guilt', 'self-criticism', 'shame', 'doubt', 'trap'],
+};
+
+/** Seconds each scene lasts when it plays by itself. The third holds two breaths (4 in, 6 out). */
+const DURATION = [11, 9, 21, 14];
+/** In the hero's 400 box: where the soles touch the ground, and the middle of the head. */
+const SOLE = 331, HEAD = 152;
+const BELLY = 238; // where the weight gathers before the exhale takes it down
+
+// The places of the words around the head (units of the 400 box; the head at
+// 0, 0), laid out so that no two ever overlap. The first ones are far apart,
+// so the first thoughts arrive scattered, then fill in.
+const SLOTS: [number, number][] = [
+  [-120, -44], [120, 14], [0, -126], [115, -72], [-115, 40], [-60, -100], [120, -44], [-125, 14],
+  [60, -100], [115, 40], [-115, -72], [0, -72], [-110, 68], [110, 68], [-80, 96], [80, 96],
+];
+const POOL = SLOTS.length;
+const SEEDS = SLOTS.map((_, i) => {
+  const r = (n: number) => { const x = Math.sin(i * 12.9898 + n * 78.233) * 43758.5453; return x - Math.floor(x); };
+  return { bright: 0.72 + 0.28 * r(3), size: 0.94 + 0.14 * r(4), phase: r(6) * Math.PI * 2 };
+});
+
+// Each scene's picture, as numbers the frame eases towards.
+type Look = { lift: number; sway: number; tunnel: number; ground: number; open: number; stars: number; bg: number[]; halo: number[] };
+const LOOKS: Look[] = [
+  { lift: 14, sway: 0.5, tunnel: 0, ground: 0, open: 0, stars: 0.55, bg: [1, 0, 0, 0], halo: [1, 0, 0] },
+  { lift: 26, sway: 0.9, tunnel: 1, ground: 0, open: 0, stars: 0.12, bg: [0, 1, 0, 0], halo: [1, 0, 0] },
+  { lift: 0, sway: 0, tunnel: 0, ground: 1, open: 0, stars: 0.6, bg: [0, 0, 1, 0], halo: [0, 1, 0] },
+  { lift: 0, sway: 0, tunnel: 0, ground: 0.8, open: 1, stars: 0.9, bg: [0, 0, 0, 1], halo: [0, 0, 1] },
+];
+
+/** Where each word wants to be in a scene, at a moment of it (seconds). */
+function wordTarget(scene: number, i: number, clock: number) {
+  const [x, y] = SLOTS[i], b = SEEDS[i].bright;
+  if (scene === 0) {
+    const shown = Math.min(10, 3 + Math.floor(clock / 0.85));
+    return { on: i < shown, x, y: y * 1.12 - 6, o: 0.8 * b };
+  }
+  // The tunnel: every word, closer in.
+  if (scene === 1) return { on: true, x: x * 0.92, y: y * 0.92 + 4, o: 0.96 * b };
+  // Gravity: they loosen and float up, paler.
+  if (scene === 2) {
+    const away = Math.min(1, clock / 12);
+    return { on: i < 8, x: x * 1.08, y: y * 1.15 - 18 - away * 34, o: (0.34 - away * 0.12) * b };
+  }
+  // Here: a few, far and transparent.
+  return { on: i < 6, x: x * 1.2, y: y * 1.25 - 30, o: 0.15 * b };
+}
+
+/** 0 → 1 with the inhale (4 s), 1 → 0 with the long exhale (6 s); still for the first second. */
+function breathAt(clock: number) {
+  const t = clock - 1;
+  if (t <= 0) return { force: 0, rising: false };
+  const c = t % 10;
+  const ease = (x: number) => 0.5 - 0.5 * Math.cos(Math.PI * x);
+  return c < 4 ? { force: ease(c / 4), rising: true } : { force: 1 - ease((c - 4) / 6), rising: false };
+}
+
+// The figure stands still: in this picture the breath shows as light, the
+// weight going down the axis into the feet with each exhale.
+const Figure = memo(function Figure() {
+  return <TaiChiHero bare figureOnly idle breathForce={0} isRising={false} breathStateText="" movementType="5-5" />;
+});
 
 export default function GravityThoughts() {
   const { language } = useLanguage();
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  
-  const [curScene, setCurScene] = useState(0);
-  const [autoPlay, setAutoPlay] = useState(false);
-  const [trans, setTrans] = useState(false);
-  
-  const curSceneRef = useRef(0);
-  const targetSceneRef = useRef(0);
-  const transRef = useRef(false);
-  const transTRef = useRef(0);
-  const autoPlayRef = useRef(false);
-  
-  const localeData = {
-    el: {
-      scenes: [
-        { label:"Γείωση · Βαρύτητα", sub:"Πέλματα στο έδαφος, ηρεμία", bg:[25,45,48], caption:"Το σύστημα ησυχάζει. Νιώθεις τα πέλματα να πατούν γερά. Η αναπνοή ρυθμίζεται. Οι σκέψεις είναι λίγες και διάφανες." },
-        { label:"Δίνη Reality Tunnel", sub:"Αυτοκριτική, 'τι θα γίνει αν'", bg:[55,35,48], caption:"Το μυαλό γεμίζει ερωτήσεις και φόβους. Η φούσκα μεγαλώνει. Το κέντρο βάρους ανεβαίνει. Χάνεις την επαφή με το σώμα." },
-        { label:"Παγίδευση · Φούσκα τούνελ", sub:"Πλήρης ταύτιση – ταχύτητα, αδιαφάνεια", bg:[65,38,42], caption:"Οι σκέψεις γίνονται τούνελ. Βλέπεις μόνο τον κίνδυνο. Χωρίς άγκυρα, το reality tunnel γίνεται φυλακή." },
-        { label:"Επαναφορά · Αναπνοή + Βάρος", sub:"Πνευμονογαστρικό νεύρο – η φούσκα γίνεται διάφανη", bg:[30,58,52], caption:"Η βαθιά αναπνοή ενεργοποιεί το πνευμονογαστρικό. Τα πέλματα γειώνουν. Η φούσκα παραμένει ήρεμη, διάφανη – δεν σε αποκόπτει. Είσαι εδώ." }
-      ],
-      bubbleWords: ["ενοχές","ανησυχία","ντροπή","φόβος","αυτοκριτική","αμφιβολία","τι θα γίνει αν","reality tunnel","παγίδα","DMN"],
-      introTitle:"Δίνη Σκέψεων · Άγκυρα Βαρύτητας",
-      introSub:"Reality Tunnel — Η φούσκα της αυτοκριτικής & η επιστροφή στο σώμα",
-      introHint:"▶ Ξεκίνα",
-      warning:"⚠️ Προσοχή: Έντονα οπτικά εφέ (κινούμενες λέξεις, δίνες). Κατάλληλο για άτομα που επιθυμούν εξοικείωση με αισθητηριακά ερεθίσματα."
-    },
-    en: {
-      scenes: [
-        { label:"Grounded · Gravity", sub:"Feet on earth, calm", bg:[25,45,48], caption:"The system calms down. Feel your feet firmly on the ground. Breath steadies. Thoughts are few and transparent." },
-        { label:"Reality Tunnel Vortex", sub:"Self-criticism, 'what if'", bg:[55,35,48], caption:"The mind fills with questions and fears. The bubble grows. Center of gravity rises. You lose body connection." },
-        { label:"Trapped · Tunnel Bubble", sub:"Full identification – speed, opacity", bg:[65,38,42], caption:"Thoughts become a tunnel. You only see danger. Without an anchor, the reality tunnel becomes a prison." },
-        { label:"Reset · Breath + Weight", sub:"Vagus nerve – bubble becomes transparent", bg:[30,58,52], caption:"Deep breathing activates the vagus nerve. Feet ground you. The bubble stays calm, transparent – it doesn't disconnect you. You are here." }
-      ],
-      bubbleWords: ["guilt","worry","shame","fear","self-criticism","doubt","what if","reality tunnel","trap","DMN"],
-      introTitle:"Thought Vortex · Gravity Anchor",
-      introSub:"Reality Tunnel — The bubble of self-criticism & return to body",
-      introHint:"▶ Begin",
-      warning:"⚠️ Caution: Intense visual effects (moving words, vortex). Suitable for those familiar with sensory stimuli."
-    }
-  };
+  const lang: Lang = language === 'en' ? 'en' : 'el';
+  const el = lang === 'el';
+  const { reduceMotion } = useAccessibility();
+  const { timeFloat } = useTime();
+  const rim = rimColour(timeFloat);
+  const day = daylight(timeFloat);
 
-  const currentLang = language === 'en' ? 'en' : 'el';
-  const data = localeData[currentLang];
-  const [showIntro, setShowIntro] = useState(true);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const [size, setSize] = useState({ w: 0, h: 0 });
+  const [scene, setScene] = useState(0);
+  const [playing, setPlaying] = useState(false);
+  const [started, setStarted] = useState(false);
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+  // Everything that moves each frame is written straight into the picture
+  // (no React render per frame); these refs point at it.
+  const heroRef = useRef<HTMLDivElement>(null);
+  const axisUpRef = useRef<SVGLineElement>(null);
+  const axisDownRef = useRef<SVGLineElement>(null);
+  const contactRef = useRef<SVGCircleElement>(null);
+  const weightRef = useRef<SVGCircleElement>(null);
+  const shadowRef = useRef<SVGEllipseElement>(null);
+  const tunnelRef = useRef<SVGRectElement>(null);
+  const openRef = useRef<SVGEllipseElement>(null);
+  const starsRef = useRef<SVGGElement>(null);
+  const bgRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const haloRefs = useRef<(SVGCircleElement | null)[]>([]);
+  const wordRefs = useRef<(SVGTextElement | null)[]>([]);
+  const barRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
-    let w = 0, h = 0, cx = 0, cy = 0;
-    
-    const resize = () => {
-      if (!canvas.parentElement) return;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const rect = canvas.parentElement.getBoundingClientRect();
-      w = rect.width;
-      h = rect.height;
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      cx = w / 2;
-      cy = h / 2;
-    };
-    
-    // Initial size
-    resize();
-    const ro = new ResizeObserver(resize);
-    ro.observe(canvas.parentElement!);
+  const live = useRef({
+    scene: 0, clock: 0, playing: false, started: false, visible: true,
+    look: { ...LOOKS[0], bg: [...LOOKS[0].bg], halo: [...LOOKS[0].halo] } as Look,
+    words: SLOTS.map(([x, y]) => ({ x, y: y * 1.12 - 6, o: 0 })),
+  });
+  live.current.playing = playing;
+  live.current.started = started;
 
-    let wordParticles: any[] = [];
-    let vortexSpecks: any[] = [];
-    
-    const initWords = (sceneIdx: number) => {
-      let targetCount = (sceneIdx === 0 || sceneIdx === 3) ? 24 : 72;
-      wordParticles = [];
-      for(let i=0; i<targetCount; i++) {
-        const word = data.bubbleWords[Math.floor(Math.random() * data.bubbleWords.length)];
-        wordParticles.push({
-          word,
-          angle: Math.random() * Math.PI * 2,
-          radius: 20 + Math.random() * 95,
-          speed: 0.2 + Math.random() * 1.3,
-          size: 14 + Math.random() * 12,
-          alpha: 0.6 + Math.random() * 0.4,
-          orbitOffset: Math.random() * Math.PI * 2,
-          yOffset: (Math.random() - 0.5) * 60
-        });
-      }
-    };
+  // The frame's size decides the layout.
+  useLayoutEffect(() => {
+    const node = rootRef.current;
+    if (!node) return;
+    const read = () => setSize({ w: node.clientWidth, h: node.clientHeight });
+    read();
+    const ro = new ResizeObserver(read);
+    ro.observe(node);
+    return () => ro.disconnect();
+  }, []);
 
-    const initSpecks = () => {
-      vortexSpecks = [];
-      for(let i=0; i<70; i++) {
-        vortexSpecks.push({ angle:Math.random()*Math.PI*2, radius:20+Math.random()*120, speed:0.3+Math.random()*1.4, size:1.5+Math.random()*3.5 });
-      }
-    };
+  const { w, h } = size;
+  const panel = Math.min(230, Math.max(176, h * 0.31));
+  const rimY = h - panel;
+  // As large as fits, with room above the head for the highest words (150 units).
+  const S = Math.max(160, Math.min(w * 1.1, (rimY - 26) / ((SOLE - HEAD + 150) / 400), 600));
+  const u = S / 400;
+  const stageTop = rimY - (SOLE / 400) * S;
+  const headY = stageTop + HEAD * u;
+  const cx = w / 2;
+  const earthScale = w / 390;
+  const fontPx = Math.max(12.5, Math.min(17, 13.2 * u));
 
-    initWords(curSceneRef.current);
-    initSpecks();
+  const stars = useMemo(() => Array.from({ length: 42 }, (_, i) => {
+    const r = (n: number) => { const x = Math.sin(i * 91.7 + n * 17.3) * 9631.17; return x - Math.floor(x); };
+    return { x: r(1), y: r(2), s: 0.5 + r(3) * 0.9, o: 0.25 + r(4) * 0.6, d: 3 + r(5) * 5 };
+  }), []);
 
-    const stars: any[] = [];
-    for(let i=0; i<60; i++) stars.push({ 
-      x: Math.random(), // store relative 0-1
-      y: Math.random(), // store relative 0-1
-      vx:(Math.random()-0.5)*0.0003, 
-      vy:(Math.random()-0.5)*0.0003, 
-      sz:0.5+Math.random()*1.2, 
-      alpha:0.1+Math.random()*0.2 
+  const goTo = useCallback((i: number) => {
+    const next = Math.max(0, Math.min(3, i));
+    live.current.scene = next;
+    live.current.clock = 0;
+    setScene(next);
+    setStarted(true);
+  }, []);
+
+  const toggle = useCallback(() => {
+    setStarted(true);
+    setPlaying(p => {
+      // Played to the end: play again from the start.
+      if (!p && live.current.scene === 3 && live.current.clock >= DURATION[3]) { live.current.scene = 0; live.current.clock = 0; setScene(0); }
+      return !p;
     });
+  }, []);
 
-    function drawHero(x: number, y: number, tiltRad: number, headScale: number, bodyShiftY: number, alpha: number) {
-      if (!ctx) return;
-      ctx.save();
-      ctx.translate(x, y + bodyShiftY);
-      ctx.rotate(tiltRad);
-      const op = Math.min(1, alpha);
-      
-      ctx.fillStyle = `rgba(255, 224, 102, ${op*0.8})`;
-      ctx.fillRect(98, 0, 4, 420);
-      
-      ctx.fillStyle = `rgba(18, 18, 18, ${op*0.95})`;
-      ctx.beginPath(); ctx.moveTo(60, 155); ctx.quadraticCurveTo(100, 140, 140, 155); ctx.lineTo(140, 300); ctx.quadraticCurveTo(100, 320, 60, 300); ctx.fill();
-      ctx.fillStyle = `rgba(255, 59, 47, ${op*0.7})`;
-      ctx.fillRect(99, 155, 2, 145);
-      
-      ctx.fillStyle = `rgba(18, 18, 18, ${op*0.95})`;
-      ctx.beginPath(); ctx.moveTo(60, 170); ctx.quadraticCurveTo(40, 180, 45, 260); ctx.quadraticCurveTo(50, 290, 60, 290); ctx.fill();
-      ctx.beginPath(); ctx.moveTo(140, 170); ctx.quadraticCurveTo(160, 180, 155, 260); ctx.quadraticCurveTo(150, 290, 140, 290); ctx.fill();
-      
-      ctx.fillStyle = `rgba(243, 197, 154, ${op*0.9})`;
-      ctx.beginPath(); ctx.ellipse(52, 300, 9, 13, 0, 0, Math.PI*2); ctx.fill();
-      ctx.beginPath(); ctx.ellipse(148, 300, 9, 13, 0, 0, Math.PI*2); ctx.fill();
-      
-      ctx.fillStyle = `rgba(18, 18, 18, ${op*0.95})`;
-      ctx.beginPath(); ctx.moveTo(65, 300); ctx.lineTo(95, 300); ctx.lineTo(95, 410); ctx.quadraticCurveTo(80, 420, 65, 410); ctx.fill();
-      ctx.beginPath(); ctx.moveTo(105, 300); ctx.lineTo(135, 300); ctx.lineTo(135, 410); ctx.quadraticCurveTo(120, 420, 105, 410); ctx.fill();
-      ctx.fillStyle = `rgba(10, 10, 10, ${op})`;
-      ctx.beginPath(); ctx.ellipse(80, 415, 16, 7, 0, 0, Math.PI*2); ctx.fill();
-      ctx.beginPath(); ctx.ellipse(120, 415, 16, 7, 0, 0, Math.PI*2); ctx.fill();
-      
-      ctx.save();
-      ctx.translate(100, 95);
-      ctx.scale(headScale, headScale);
-      ctx.translate(-100, -95);
-      ctx.fillStyle = `rgba(31, 47, 48, ${op*0.95})`;
-      ctx.beginPath(); ctx.moveTo(50, 95); ctx.quadraticCurveTo(100, 15, 150, 95); ctx.quadraticCurveTo(145, 160, 130, 180); ctx.quadraticCurveTo(100, 155, 70, 180); ctx.quadraticCurveTo(55, 160, 50, 95); ctx.fill();
-      ctx.fillStyle = `rgba(243, 197, 154, ${op*0.95})`;
-      ctx.beginPath(); ctx.ellipse(100, 115, 26, 30, 0, 0, Math.PI*2); ctx.fill();
-      ctx.strokeStyle = `rgba(34,34,34,${op})`; ctx.lineWidth = 2;
-      if(headScale > 1.15) {
-        ctx.beginPath(); ctx.arc(88, 115, 4, 0, Math.PI*2); ctx.fillStyle = `rgba(210,100,80,${op*0.6})`; ctx.fill();
-        ctx.beginPath(); ctx.arc(112, 115, 4, 0, Math.PI*2); ctx.fill();
-      } else {
-        ctx.beginPath(); ctx.moveTo(85, 115); ctx.quadraticCurveTo(90, 120, 95, 115); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(105, 115); ctx.quadraticCurveTo(110, 120, 115, 115); ctx.stroke();
-      }
-      if(headScale > 1.2) {
-        ctx.beginPath(); ctx.moveTo(90, 135); ctx.quadraticCurveTo(100, 142, 110, 135); ctx.stroke();
-      } else {
-        ctx.beginPath(); ctx.moveTo(90, 130); ctx.quadraticCurveTo(100, 138, 110, 130); ctx.stroke();
-      }
-      ctx.fillStyle = `rgba(243, 197, 154, ${op*0.9})`;
-      ctx.fillRect(96, 140, 8, 18);
-      ctx.restore();
-      
-      const grad = ctx.createLinearGradient(75, 215, 125, 215);
-      grad.addColorStop(0, '#ff3c38'); grad.addColorStop(0.2, '#ff9f1c'); grad.addColorStop(0.4, '#ffe066');
-      grad.addColorStop(0.6, '#2ec4b6'); grad.addColorStop(0.8, '#3a86ff'); grad.addColorStop(1, '#8338ec');
-      ctx.beginPath();
-      ctx.moveTo(75, 215); ctx.bezierCurveTo(75,200,95,200,100,215); ctx.bezierCurveTo(105,230,125,230,125,215); 
-      ctx.bezierCurveTo(125,200,105,200,100,215); ctx.bezierCurveTo(95,230,75,230,75,215);
-      ctx.strokeStyle = grad; ctx.lineWidth = 5; ctx.stroke();
-      
-      ctx.fillStyle = `rgba(183, 255, 0, ${op*0.9})`;
-      ctx.save(); ctx.translate(100, 303); ctx.rotate(0.785); ctx.fillRect(-8, -8, 16, 16); ctx.restore();
-      
-      ctx.fillStyle = `rgba(203, 213, 225, ${op})`;
-      ctx.font = '12px Inter';
-      ctx.fillText(currentLang === 'el' ? "Κέντρο Βάρους" : "Center of gravity", 135, 305);
-      
-      ctx.restore();
-    }
-
-    function drawGround(alpha: number, yPos: number) {
-      if (!ctx) return;
-      ctx.beginPath(); ctx.moveTo(cx-300, yPos); ctx.lineTo(cx+300, yPos);
-      ctx.strokeStyle = `rgba(140,190,150,${alpha*0.5})`; ctx.lineWidth = 2; ctx.stroke();
-      const grad = ctx.createRadialGradient(cx, yPos+8, 0, cx, yPos+8, 70);
-      grad.addColorStop(0, `rgba(100,170,130,${alpha*0.2})`); grad.addColorStop(1, 'transparent');
-      ctx.fillStyle = grad; ctx.fillRect(cx-200, yPos-15, 400, 40);
-    }
-
-    function drawAxis(x: number, topY: number, botY: number, alpha: number) {
-      if (!ctx) return;
-      ctx.beginPath(); ctx.moveTo(x, topY); ctx.lineTo(x, botY);
-      ctx.strokeStyle = `rgba(160,180,130,${alpha*0.6})`; ctx.lineWidth = 1.5; ctx.setLineDash([6,8]); ctx.stroke();
-      ctx.setLineDash([]);
-    }
-
-    function drawCoGMarker(x: number, y: number, alpha: number, stressLevel: number) {
-      if (!ctx) return;
-      let color = (stressLevel > 1.2) ? '210,100,80' : (stressLevel > 0.8 ? '210,170,90' : '140,190,150');
-      ctx.fillStyle = `rgba(${color},${alpha*0.35})`;
-      ctx.beginPath(); ctx.moveTo(x, y-9); ctx.lineTo(x+9, y); ctx.lineTo(x, y+9); ctx.lineTo(x-9, y); ctx.fill();
-      ctx.fillStyle = `rgba(${color},${alpha*0.9})`;
-      ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI*2); ctx.fill();
-      if(stressLevel > 1.2) {
-        ctx.fillStyle = `rgba(255,180,120,${alpha})`;
-        ctx.font = 'bold 10px Inter';
-        ctx.fillText("⚠️", x+12, y+4);
-      }
-    }
-
-    function drawBubbleWords(sceneIdx: number, alpha: number, t: number) {
-      if (!ctx) return;
-      let intensityFactor = 1.0;
-      if(sceneIdx === 0) intensityFactor = 0.2;
-      else if(sceneIdx === 1) intensityFactor = 0.7;
-      else if(sceneIdx === 2) intensityFactor = 1.2;
-      else if(sceneIdx === 3) intensityFactor = 0.35;
-      
-      const bCX = cx, bCY = cy - 55;
-      
-      ctx.save();
-      ctx.globalAlpha = alpha * (sceneIdx===0 ? 0.1 : (sceneIdx===3 ? 0.2 : 0.45));
-      ctx.fillStyle = `rgba(210,220,190,0.08)`;
-      ctx.beginPath(); ctx.ellipse(bCX, bCY, 88, 74, 0, 0, Math.PI*2); ctx.fill();
-      ctx.strokeStyle = `rgba(210,190,150,0.25)`; ctx.lineWidth = 1.2; ctx.stroke();
-      ctx.restore();
-      
-      for(let p of wordParticles) {
-        let angle = p.angle + p.speed * 0.018 * intensityFactor + t * 0.12;
-        let rad = p.radius + Math.sin(t * 0.7 + p.orbitOffset) * 8;
-        let x = bCX + Math.cos(angle) * rad * 0.7;
-        let y = bCY + Math.sin(angle) * rad * 0.6 + p.yOffset * 0.4;
-        if(y < cy-105) y = cy-105;
-        if(y > cy-5) y = cy-5;
-        let wAlpha = p.alpha * alpha;
-        if(sceneIdx === 0) wAlpha *= 0.3;
-        if(sceneIdx === 3) wAlpha *= 0.5;
-        if(sceneIdx === 2) wAlpha *= 1.1;
-        ctx.font = `${Math.floor(15 + p.size * 0.5)}px sans-serif`;
-        ctx.fillStyle = `rgba(250, 215, 160, ${wAlpha * 0.95})`;
-        ctx.fillText(p.word, x, y);
-        p.angle += p.speed * 0.004 * intensityFactor;
-      }
-      
-      for(let s of vortexSpecks) {
-        let ang = s.angle + s.speed * 0.018 * intensityFactor + t;
-        let rad = s.radius + Math.sin(t * 1.3) * 12;
-        let x = bCX + Math.cos(ang) * rad * 0.7;
-        let y = bCY + Math.sin(ang) * rad * 0.6;
-        ctx.beginPath(); ctx.arc(x, y, s.size * (0.4 + intensityFactor*0.5), 0, Math.PI*2);
-        ctx.fillStyle = `rgba(210, 140, 100, ${alpha * 0.2 * intensityFactor})`;
-        ctx.fill();
-        s.angle += s.speed * 0.005 * intensityFactor;
-      }
-      
-      const breath = (Math.sin(t * 1.5) + 1) / 2;
-      const radiusRing = 26 + breath * 12;
-      ctx.beginPath(); ctx.arc(cx, cy+5, radiusRing, 0, Math.PI*2);
-      ctx.strokeStyle = `rgba(140,220,180,${alpha*0.5})`; ctx.lineWidth = 1.8; ctx.stroke();
-      ctx.beginPath(); ctx.arc(cx, cy+5, radiusRing-6, 0, Math.PI*2);
-      ctx.strokeStyle = `rgba(200,240,200,${alpha*0.6})`; ctx.stroke();
-    }
-
-    function renderScene(sceneIdx: number, alpha: number, t: number) {
-      if (!ctx) return;
-      const bg = data.scenes[sceneIdx].bg;
-      const grad = ctx.createLinearGradient(0,0,0,h);
-      grad.addColorStop(0, `rgb(${bg[0]+8},${bg[1]+8},${bg[2]+12})`);
-      grad.addColorStop(1, `rgb(${Math.max(5,bg[0]-5)},${Math.max(8,bg[1]-6)},${Math.max(10,bg[2]-5)})`);
-      ctx.fillStyle = grad; ctx.fillRect(0,0,w,h);
-      
-      ctx.globalAlpha = 0.25;
-      stars.forEach(s => { 
-        s.x+=s.vx; s.y+=s.vy; 
-        if(s.x<0) s.x=1; if(s.x>1) s.x=0; 
-        if(s.y<0) s.y=1; if(s.y>1) s.y=0; 
-        ctx.beginPath(); ctx.arc(s.x*w, s.y*h, s.sz, 0, Math.PI*2); 
-        ctx.fillStyle=`rgba(210,230,200,${s.alpha})`; ctx.fill(); 
-      });
-      ctx.globalAlpha = 1;
-      
-      const groundY = cy + 110;
-      drawGround(alpha, groundY);
-      drawAxis(cx, cy-130, groundY, alpha);
-      
-      let tilt = 0, headScale = 1, bodyShift = 0, stressLevel = 1;
-      if(sceneIdx === 0) { tilt = 0; headScale = 1; bodyShift = 0; stressLevel = 0.8; }
-      else if(sceneIdx === 1) { tilt = Math.sin(t * 1.6) * 0.04; headScale = 1.12; bodyShift = -5; stressLevel = 1.2; }
-      else if(sceneIdx === 2) { tilt = Math.sin(t * 2.0) * 0.08 + 0.03; headScale = 1.28; bodyShift = -12; stressLevel = 1.6; }
-      else if(sceneIdx === 3) { tilt = Math.sin(t * 0.7) * 0.01; headScale = 1.02; bodyShift = 1; stressLevel = 0.9; }
-      
-      const heroX = cx - 100;
-      const heroY = cy - 210;
-      drawHero(heroX, heroY, tilt, headScale, bodyShift, alpha);
-      drawBubbleWords(sceneIdx, alpha, t);
-      
-      let cogY = heroY + 255 + bodyShift;
-      if(sceneIdx === 1) cogY += Math.sin(t*2)*3;
-      if(sceneIdx === 2) cogY += Math.sin(t*2.5)*5;
-      drawCoGMarker(cx, cogY, alpha, stressLevel);
-      
-      if(sceneIdx === 0 || sceneIdx === 3) {
-        ctx.beginPath(); ctx.arc(cx, heroY + 260, 28, 0, Math.PI*2);
-        ctx.fillStyle = `rgba(120,200,140,${alpha*0.1*(0.6+Math.sin(t*1.2)*0.3)})`; ctx.fill();
-      }
-    }
-
-    let time = 0;
-    let globalAlpha = 0;
-    let lastTime = 0;
-    let reqId: number;
-
-    const animate = (now: number) => {
-      const dt = Math.min((now - (lastTime||now))/1000, 0.05);
-      lastTime = now;
-      time += dt;
-      if (globalAlpha < 1) globalAlpha = Math.min(1, globalAlpha + dt*0.6);
-      
-      if (transRef.current) {
-        transTRef.current = Math.min(1, transTRef.current + dt*0.7);
-        const ease = transTRef.current < 0.5 ? 4*Math.pow(transTRef.current,3) : 1-Math.pow(-2*transTRef.current+2,3)/2;
-        renderScene(curSceneRef.current, globalAlpha*(1-ease), time);
-        renderScene(targetSceneRef.current, globalAlpha*ease, time);
-        if (transTRef.current >= 1) {
-          transRef.current = false;
-          curSceneRef.current = targetSceneRef.current;
-          setCurScene(targetSceneRef.current);
-          setTrans(false);
-          initWords(curSceneRef.current);
-          initSpecks();
-        }
-      } else {
-        renderScene(curSceneRef.current, globalAlpha, time);
-      }
-      reqId = requestAnimationFrame(animate);
-    };
-
-    reqId = requestAnimationFrame(animate);
-    
-    return () => {
-      cancelAnimationFrame(reqId);
-      ro.disconnect();
-    };
-  }, [data]);
+  // Draw only while the frame is on screen.
+  useEffect(() => {
+    const node = rootRef.current;
+    if (!node || typeof IntersectionObserver === 'undefined') return;
+    const io = new IntersectionObserver(([e]) => { live.current.visible = e.isIntersecting; });
+    io.observe(node);
+    return () => io.disconnect();
+  }, []);
 
   useEffect(() => {
-    autoPlayRef.current = autoPlay;
-    let timer: any;
-    if (autoPlay) {
-      const runNext = () => {
-        if (!autoPlayRef.current) return;
-        if (curSceneRef.current < 3) {
-          triggerGoToScene(curSceneRef.current + 1);
-          timer = setTimeout(runNext, 9000);
-        } else {
-          setAutoPlay(false);
-        }
+    if (!w || !h) return;
+    let raf = 0, last = 0, settle = 0;
+    const widths: number[] = []; // each word's width, read once
+    const L = live.current;
+
+    const apply = (dt: number) => {
+      const target = LOOKS[L.scene];
+      const k = reduceMotion ? 1 : 1 - Math.exp(-dt / 1.5); // slow easing
+      const kQuick = reduceMotion ? 1 : 1 - Math.exp(-dt / 0.9);
+      const lk = L.look;
+      // The first scene lifts the figure little by little, as the words come.
+      const liftGoal = L.scene === 0 ? 3 + (target.lift - 3) * Math.min(1, L.clock / 8) : target.lift;
+      lk.lift += (liftGoal - lk.lift) * (L.scene >= 2 ? (reduceMotion ? 1 : 1 - Math.exp(-dt / 2.2)) : k);
+      lk.sway += (target.sway - lk.sway) * k;
+      lk.tunnel += (target.tunnel - lk.tunnel) * k;
+      lk.ground += (target.ground - lk.ground) * k;
+      lk.open += (target.open - lk.open) * (reduceMotion ? 1 : 1 - Math.exp(-dt / 3));
+      lk.stars += (target.stars - lk.stars) * k;
+      for (let i = 0; i < 4; i++) lk.bg[i] += (target.bg[i] - lk.bg[i]) * k;
+      for (let i = 0; i < 3; i++) lk.halo[i] += (target.halo[i] - lk.halo[i]) * k;
+
+      const t = L.clock;
+      const lift = lk.lift * u;
+      const sway = reduceMotion ? 0 : Math.sin(performance.now() / 1000 * 0.55) * lk.sway;
+      const breathing = L.scene >= 2 && !reduceMotion;
+      const br = breathing ? breathAt(t) : { force: 0, rising: false };
+      const down = breathing && !br.rising && t > 1 ? 1 - br.force : 0; // how far the exhale has taken the weight
+      if (heroRef.current) heroRef.current.style.transform = `translateY(${-lift}px) rotate(${sway}deg)`;
+      const sole = rimY - lift;
+      axisUpRef.current?.setAttribute('y2', String(sole - 3 * u));
+      if (axisDownRef.current) axisDownRef.current.style.opacity = String(0.28 + 0.6 * lk.ground);
+      // The light where the feet meet the earth grows as the weight arrives, and fades with the next inhale.
+      const arrived = !breathing || t <= 1 ? 0 : br.rising ? 1 - br.force : down;
+      if (contactRef.current) contactRef.current.style.opacity = String(lk.ground * (breathing ? 0.3 + 0.65 * arrived : 0.75));
+      if (weightRef.current) {
+        const belly = stageTop + BELLY * u - lift;
+        weightRef.current.setAttribute('cy', String(belly + (sole - belly) * down));
+        weightRef.current.style.opacity = String(breathing && t > 1 ? lk.ground * (br.rising ? 0.25 + 0.55 * br.force : 0.8 * (1 - down * 0.7)) : 0);
+      }
+      if (shadowRef.current) {
+        shadowRef.current.setAttribute('rx', String(Math.max(8, 24 - lk.lift * 0.45) * u));
+        shadowRef.current.style.opacity = String(Math.max(0.12, 0.6 - lk.lift * 0.017));
+      }
+      if (tunnelRef.current) tunnelRef.current.style.opacity = String(lk.tunnel);
+      if (openRef.current) {
+        openRef.current.setAttribute('rx', String(w * (0.12 + 0.5 * lk.open)));
+        openRef.current.style.opacity = String(lk.open);
+      }
+      if (starsRef.current) starsRef.current.style.opacity = String(lk.stars);
+      bgRefs.current.forEach((n, i) => { if (n) n.style.opacity = String(lk.bg[i]); });
+      haloRefs.current.forEach((n, i) => { if (n) n.style.opacity = String(lk.halo[i] * (i === 1 ? 0.75 + 0.25 * br.force : 1)); });
+
+      // The words ease to their places and sway a little where they are.
+      // A long word near the edge is moved in, so it is never cut.
+      const room = (i: number) => {
+        if (!widths[i]) widths[i] = wordRefs.current[i]?.getComputedTextLength() || 0;
+        const half = (widths[i] || 100) / 2;
+        return Math.max(0, (w / 2 - 14 - half) / u);
       };
-      timer = setTimeout(runNext, 9000);
-    }
-    return () => clearTimeout(timer);
-  }, [autoPlay]);
+      const now = performance.now() / 1000;
+      L.words.forEach((wd, i) => {
+        const goal = wordTarget(L.scene, i, reduceMotion ? 99 : t);
+        wd.x += (goal.x - wd.x) * k;
+        wd.y += (goal.y - wd.y) * k;
+        wd.o += ((goal.on ? goal.o : 0) - wd.o) * kQuick;
+        const ph = SEEDS[i].phase;
+        const maxX = room(i);
+        const x = Math.max(-maxX, Math.min(maxX, wd.x + (reduceMotion ? 0 : Math.sin(now * 0.35 + ph) * 3)));
+        const y = wd.y + (reduceMotion ? 0 : Math.cos(now * 0.3 + ph) * 2.2);
+        const node = wordRefs.current[i];
+        if (node) {
+          node.setAttribute('x', String(cx + x * u));
+          const py = headY + y * u;
+          node.setAttribute('y', String(py));
+          // Words that float up past the top dissolve before the edge.
+          const top = fontPx * 1.1;
+          node.style.opacity = String(Math.max(0, wd.o * Math.min(1, Math.max(0, (py - top) / 40))));
+        }
+      });
 
-  const triggerGoToScene = (idx: number) => {
-    if (idx === curSceneRef.current || transRef.current || idx < 0 || idx > 3) return;
-    targetSceneRef.current = idx;
-    transRef.current = true;
-    transTRef.current = 0;
-    setTrans(true);
-  };
+      barRefs.current.forEach((n, i) => {
+        if (!n) return;
+        const f = i < L.scene ? 1 : i > L.scene ? 0 : Math.min(1, t / DURATION[i]);
+        n.style.transform = `scaleX(${f})`;
+      });
 
-  const currentSceneData = data.scenes[curScene];
+    };
+
+    const frame = (now: number) => {
+      const dt = Math.min(0.05, last ? (now - last) / 1000 : 0.016);
+      last = now;
+      if (L.visible) {
+        if (L.playing) {
+          L.clock += dt;
+          if (L.clock >= DURATION[L.scene]) {
+            if (L.scene < 3) { L.scene += 1; L.clock = 0; setScene(L.scene); }
+            else { L.clock = DURATION[3]; setPlaying(false); }
+          }
+        }
+        apply(dt);
+      }
+      // With reduced motion there is nothing to animate: draw, then rest.
+      if (reduceMotion && !L.playing && ++settle > 2) return;
+      raf = requestAnimationFrame(frame);
+    };
+    raf = requestAnimationFrame(frame);
+    return () => cancelAnimationFrame(raf);
+  }, [w, h, u, rimY, headY, stageTop, cx, reduceMotion, scene, playing, lang, fontPx]);
+
+  const text = SCENES[lang][scene];
+  const words = WORDS[lang];
+  const tint = (bg: string, hi: string) =>
+    `radial-gradient(125% 85% at 50% ${Math.round((headY / Math.max(1, h)) * 100)}%, var(${hi}) 0%, color-mix(in srgb, var(${bg}) 55%, var(--color-stage)) 48%, var(--color-stage) 100%)`;
+  const BGS = [tint('--tint-rose-bg', '--tint-rose-bg'), tint('--tint-rose-bg', '--tint-rose-hi'), tint('--tint-sage-bg', '--tint-sage-hi'), tint('--tint-blue-bg', '--tint-blue-hi')];
 
   return (
-    <div className="absolute inset-0 overflow-hidden bg-[#0c171b] group select-none">
-      <canvas 
-        ref={canvasRef} 
-        className="absolute inset-0 block w-full h-full cursor-pointer" 
-        onClick={() => setAutoPlay(!autoPlay)}
-      />
-      <PlayPauseOverlay isPlaying={autoPlay} />
-      
-      {showIntro && (
-        <div 
-          className="absolute inset-0 z-50 flex flex-col items-center justify-center p-6 text-center cursor-pointer bg-[#071013] transition-opacity duration-1000"
-          onClick={() => setShowIntro(false)}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setShowIntro(false); } }}
-        >
-          <div className="text-3xl md:text-5xl font-light tracking-wider bg-gradient-to-br from-[#f5f2e9] to-[#bde0cf] text-transparent bg-clip-text mb-4 font-serif">
-            {data.introTitle}
-          </div>
-          <div className="text-sm md:text-base text-[#bbd9ce] max-w-[85%]">
-            {data.introSub}
-          </div>
-          <div className="bg-[#b44632]/20 border-l-4 border-[#ffaa77] p-4 mt-8 max-w-sm text-xs md:text-sm text-[#ffddbb] rounded-xl backdrop-blur-sm">
-            {data.warning}
-          </div>
-          <div className="mt-8 px-6 py-2 border border-[#8cc8aa]/60 rounded-full bg-[#1e4641]/60 backdrop-blur-md text-sm tracking-widest text-[#f5f2e9]">
-            {data.introHint}
+    <div ref={rootRef} className="absolute inset-0 overflow-hidden bg-[var(--color-stage)] select-none" role="group" aria-label={el ? 'Βαρύτητα και σκέψεις' : 'Gravity and thoughts'}>
+      {/* The sky of each scene; they cross-fade. */}
+      {BGS.map((bg, i) => (
+        <div key={i} ref={n => { bgRefs.current[i] = n; }} aria-hidden="true" className="absolute inset-0" style={{ background: bg, opacity: i === 0 ? 1 : 0 }} />
+      ))}
+
+      {w > 0 && (<>
+        {/* Stars, the light behind the figure, the open field of the last scene */}
+        <svg aria-hidden="true" className="absolute inset-0 w-full h-full pointer-events-none" viewBox={`0 0 ${w} ${h}`}>
+          <defs>
+            {(['--tint-rose-ink', '--tint-sage-ink', '--tint-lav-ink'] as const).map((v, i) => (
+              <radialGradient key={v} id={`gt-halo-${i}`}>
+                <stop offset="0%" style={{ stopColor: `var(${v})`, stopOpacity: 0.3 }} />
+                <stop offset="100%" style={{ stopColor: `var(${v})`, stopOpacity: 0 }} />
+              </radialGradient>
+            ))}
+            <radialGradient id="gt-open">
+              <stop offset="0%" style={{ stopColor: 'var(--tint-lav-ink)', stopOpacity: 0.16 }} />
+              <stop offset="100%" style={{ stopColor: 'var(--tint-lav-ink)', stopOpacity: 0 }} />
+            </radialGradient>
+          </defs>
+          <g ref={starsRef} style={{ opacity: LOOKS[0].stars }}>
+            {stars.map((s, i) => (
+              <circle key={i} cx={s.x * w} cy={s.y * (rimY - 30)} r={s.s} style={{ fill: 'var(--color-ink)' }} opacity={s.o}>
+                {!reduceMotion && i % 3 === 0 && <animate attributeName="opacity" values={`${s.o};${s.o * 0.3};${s.o}`} dur={`${s.d}s`} repeatCount="indefinite" />}
+              </circle>
+            ))}
+          </g>
+          <ellipse ref={openRef} cx={cx} cy={headY + 20 * u} rx={w * 0.12} ry={150 * u} fill="url(#gt-open)" style={{ opacity: 0 }} />
+          {[0, 1, 2].map(i => (
+            <circle key={i} ref={n => { haloRefs.current[i] = n; }} cx={cx} cy={stageTop + 238 * u} r={128 * u} fill={`url(#gt-halo-${i})`} style={{ opacity: i === 0 ? 1 : 0 }} />
+          ))}
+        </svg>
+
+        {/* The earth of the home page, its rim in the light of the hour */}
+        <div aria-hidden="true" className="absolute left-0 pointer-events-none" style={{ top: rimY - 60 * earthScale, width: w, height: 280 * earthScale }}>
+          <Earth w={390} h={280} r={520} top={60} id="earth-gt" landScale={1} rim={rim} day={day} />
+        </div>
+
+        {/* The axis: it goes on through the earth; above, it reaches the feet only when they are down. */}
+        <svg aria-hidden="true" className="absolute inset-0 w-full h-full pointer-events-none" viewBox={`0 0 ${w} ${h}`}>
+          <defs>
+            <linearGradient id="gt-axis" gradientUnits="userSpaceOnUse" x1="0" y1={rimY} x2="0" y2={stageTop + 40 * u}>
+              <stop offset="0%" style={{ stopColor: 'var(--gold-top)', stopOpacity: 0.85 }} />
+              <stop offset="100%" style={{ stopColor: 'var(--gold-top)', stopOpacity: 0 }} />
+            </linearGradient>
+            {/* Into the earth it fades before the words below, so it never crosses them. */}
+            <linearGradient id="gt-root" gradientUnits="userSpaceOnUse" x1="0" y1={rimY} x2="0" y2={rimY + 30}>
+              <stop offset="0%" style={{ stopColor: 'var(--gold-top)', stopOpacity: 1 }} />
+              <stop offset="100%" style={{ stopColor: 'var(--gold-top)', stopOpacity: 0 }} />
+            </linearGradient>
+            <filter id="gt-soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation={3 * u} /></filter>
+          </defs>
+          <line ref={axisUpRef} x1={cx} y1={stageTop + 40 * u} x2={cx} y2={rimY} stroke="url(#gt-axis)" strokeWidth={1.5 * u} />
+          <line ref={axisDownRef} x1={cx} y1={rimY + 1} x2={cx} y2={rimY + 30} stroke="url(#gt-root)" style={{ opacity: 0.3 }} strokeWidth={1.7 * u} />
+          <ellipse ref={shadowRef} cx={cx} cy={rimY + 1.5 * u} rx={24 * u} ry={3.4 * u} style={{ fill: 'var(--color-stage)' }} />
+          <circle ref={weightRef} cx={cx} cy={rimY} r={5 * u} style={{ fill: 'var(--gold-top)', opacity: 0 }} filter="url(#gt-soft)" />
+          <circle ref={contactRef} cx={cx} cy={rimY} r={7 * u} style={{ fill: 'var(--gold-top)', opacity: 0 }} filter="url(#gt-soft)" />
+        </svg>
+
+        {/* The figure */}
+        <div aria-hidden="true" className="absolute pointer-events-none" style={{ left: cx - S / 2, top: stageTop, width: S, height: S }}>
+          <div ref={heroRef} className="absolute inset-0" style={{ transformOrigin: `50% ${(SOLE / 400) * 100}%`, willChange: 'transform' }}>
+            <Figure />
           </div>
         </div>
+
+        {/* The thoughts, and the tunnel they make */}
+        <svg aria-hidden="true" className="absolute inset-0 w-full h-full pointer-events-none" viewBox={`0 0 ${w} ${h}`}>
+          <defs>
+            <radialGradient id="gt-tunnel" gradientUnits="userSpaceOnUse" cx={cx} cy={headY + 30 * u} r={Math.max(w, h) * 0.62}>
+              <stop offset="0.28" style={{ stopColor: 'var(--color-stage)', stopOpacity: 0 }} />
+              <stop offset="0.7" style={{ stopColor: 'var(--color-stage)', stopOpacity: 0.82 }} />
+              <stop offset="1" style={{ stopColor: 'var(--color-stage)', stopOpacity: 0.97 }} />
+            </radialGradient>
+          </defs>
+          <rect ref={tunnelRef} width={w} height={h} fill="url(#gt-tunnel)" style={{ opacity: 0 }} />
+          {SEEDS.map((s, i) => (
+            <text
+              key={i}
+              ref={n => { wordRefs.current[i] = n; }}
+              textAnchor="middle"
+              dominantBaseline="middle"
+              style={{ fill: 'var(--color-ink)', fontFamily: 'var(--font-sans)', fontSize: fontPx * s.size, opacity: 0, letterSpacing: '0.01em' }}
+            >
+              {words[i % words.length]}
+            </text>
+          ))}
+        </svg>
+      </>)}
+
+      {/* A tap on the picture plays or pauses it. */}
+      <button
+        type="button"
+        onClick={toggle}
+        className="absolute inset-x-0 top-0 cursor-pointer"
+        style={{ height: Math.max(0, rimY) }}
+        aria-label={playing ? (el ? 'Παύση' : 'Pause') : (el ? 'Αναπαραγωγή' : 'Play')}
+        tabIndex={-1}
+      />
+
+      {!started && (
+        <button
+          type="button"
+          onClick={toggle}
+          className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap flex items-center gap-2.5 min-h-[48px] pl-4 pr-5 rounded-full bg-[color-mix(in_srgb,var(--color-stage)_55%,transparent)] backdrop-blur-md border border-[color-mix(in_srgb,var(--color-sign-gold)_45%,transparent)] text-ink text-[15px] shadow-[0_12px_30px_-12px_rgb(0_0_0/0.8)] hover:brightness-110 transition-[filter]"
+          style={{ top: Math.max(14, stageTop + 28 * u) }}
+        >
+          <Play size={17} className="text-sign-gold fill-current" aria-hidden="true" />
+          <span>{el ? 'Ξεκίνα' : 'Begin'}</span>
+          <span className="text-ink/60 text-[13px] whitespace-nowrap">{el ? '· περίπου 1 λεπτό' : '· about a minute'}</span>
+        </button>
       )}
 
-      <div className={`absolute bottom-[140px] md:bottom-[180px] w-[92%] left-[4%] z-40 max-w-lg bg-black/75 backdrop-blur-md px-5 py-3 rounded-2xl md:rounded-3xl text-xs md:text-sm leading-relaxed text-[#e2f0ea] border-l-4 border-[#7fc1a3] transition-opacity duration-700 mx-auto right-[4%] ${trans ? 'opacity-0' : 'opacity-100'}`}>
-        {currentSceneData.caption}
-      </div>
-
-      <div className={`absolute bottom-[75px] md:bottom-[85px] w-[92%] left-[4%] z-40 max-w-2xl bg-black/70 backdrop-blur-xl px-5 py-3 rounded-[2rem] md:rounded-[3rem] border border-[#8cd2b4]/40 text-center transition-opacity duration-700 right-[4%] mx-auto ${trans ? 'opacity-0' : 'opacity-100'}`}>
-        <div className="font-serif text-lg md:text-2xl text-transparent bg-clip-text bg-gradient-to-br from-[#f3f0e6] to-[#bfe0cf] tracking-wide">
-          {currentSceneData.label}
+      {/* Below, on the earth: the scene's name and words, and the controls */}
+      <div className="absolute inset-x-0 bottom-0 px-5 desk:px-8 pb-3 pt-8 flex flex-col items-center" style={{ height: panel, background: 'linear-gradient(to top, color-mix(in srgb, var(--color-stage) 82%, transparent) 40%, transparent)' }}>
+        <div className="w-full max-w-[560px] flex-1 min-h-0 flex flex-col" aria-live="polite">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={`${lang}-${scene}`}
+              initial={{ opacity: 0, y: reduceMotion ? 0 : 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: reduceMotion ? 0.01 : 0.6, ease: 'easeOut' }}
+            >
+              <div className="flex items-baseline justify-between gap-3">
+                <h3 className="font-display text-[21px] desk:text-[24px] leading-tight text-ink">{text.title}</h3>
+                <span className="text-[12px] text-ink/60 tabular-nums">{scene + 1} / 4</span>
+              </div>
+              <p className="mt-1.5 text-[14px] desk:text-[15px] leading-relaxed text-ink/80">{text.caption}</p>
+            </motion.div>
+          </AnimatePresence>
         </div>
-        <div className="text-[10px] md:text-xs tracking-[0.12em] text-[#cde6db] mt-1 uppercase">
-          {currentSceneData.sub}
+
+        <div className="w-full max-w-[560px] flex items-center gap-2">
+          <button type="button" onClick={() => goTo(scene - 1)} disabled={scene === 0}
+            className="shrink-0 w-11 h-11 rounded-full flex items-center justify-center text-ink/80 hover:text-ink disabled:opacity-30 transition-colors"
+            aria-label={el ? 'Προηγούμενη σκηνή' : 'Previous scene'}>
+            <ChevronLeft size={22} aria-hidden="true" />
+          </button>
+          <div className="flex-1 flex items-center gap-1.5">
+            {SCENES[lang].map((s, i) => (
+              <button key={i} type="button" onClick={() => goTo(i)} className="flex-1 h-11 flex items-center"
+                aria-label={`${el ? 'Σκηνή' : 'Scene'} ${i + 1}: ${s.title}`} aria-current={i === scene ? 'step' : undefined}>
+                <span className="relative block w-full h-[3px] rounded-full overflow-hidden bg-[color-mix(in_srgb,var(--color-ink)_18%,transparent)]">
+                  <span ref={n => { barRefs.current[i] = n; }} className="absolute inset-0 origin-left rounded-full bg-[var(--color-sign-gold)]" style={{ transform: `scaleX(${i < scene ? 1 : 0})` }} />
+                </span>
+              </button>
+            ))}
+          </div>
+          <button type="button" onClick={toggle}
+            className="shrink-0 w-11 h-11 rounded-full flex items-center justify-center border border-[color-mix(in_srgb,var(--color-sign-gold)_45%,transparent)] bg-[color-mix(in_srgb,var(--color-sign-gold)_12%,transparent)] text-sign-gold hover:brightness-110 transition-[filter]"
+            aria-label={playing ? (el ? 'Παύση' : 'Pause') : (el ? 'Αναπαραγωγή' : 'Play')}>
+            {playing ? <Pause size={18} className="fill-current" aria-hidden="true" /> : <Play size={18} className="ml-0.5 fill-current" aria-hidden="true" />}
+          </button>
+          <button type="button" onClick={() => goTo(scene + 1)} disabled={scene === 3}
+            className="shrink-0 w-11 h-11 rounded-full flex items-center justify-center text-ink/80 hover:text-ink disabled:opacity-30 transition-colors"
+            aria-label={el ? 'Επόμενη σκηνή' : 'Next scene'}>
+            <ChevronRight size={22} aria-hidden="true" />
+          </button>
         </div>
-      </div>
-
-      <div className="absolute top-4 right-4 z-40 bg-black/50 backdrop-blur-sm px-4 py-1.5 rounded-full text-[10px] md:text-xs font-mono text-ink/80">
-        {curScene + 1}/4
-      </div>
-
-      <div className="absolute top-0 right-0 w-12 h-full flex flex-col items-center justify-center gap-3 z-40 pr-2">
-        {[0, 1, 2, 3].map(i => (
-          <button
-            key={i}
-            onClick={() => triggerGoToScene(i)}
-            className={`w-2 h-2 md:w-2.5 md:h-2.5 rounded-full transition-all duration-300 ${curScene === i ? 'bg-[#d0f0e0] scale-[1.7] shadow-[0_0_8px_#8cd5b5]' : 'bg-[#c8dcd2]/40'}`}
-            aria-label={`Scene ${i + 1}`}
-          />
-        ))}
-      </div>
-
-      <div className="absolute bottom-4 left-0 w-full flex justify-center gap-2 md:gap-3 z-40">
-        <button 
-          onClick={() => triggerGoToScene(curScene - 1)}
-          disabled={curScene === 0}
-          className="px-3 md:px-4 py-1.5 bg-[#1e3737]/90 border border-[#8cbeaa]/60 text-[#f0ede5] rounded-full text-[11px] md:text-xs font-medium hover:bg-[#3a7868] disabled:opacity-50 transition-colors backdrop-blur-md"
-        >
-          {language === 'el' ? '◀ Πίσω' : '◀ Prev'}
-        </button>
-        <button 
-          onClick={() => setAutoPlay(!autoPlay)}
-          className="px-3 md:px-4 py-1.5 bg-[#1e3737]/90 border border-[#8cbeaa]/60 text-[#f0ede5] rounded-full text-[11px] md:text-xs font-medium hover:bg-[#3a7868] transition-colors backdrop-blur-md"
-        >
-          {autoPlay ? (language === 'el' ? '⏸ Παύση' : '⏸ Pause') : (language === 'el' ? '▶ Αυτόματο' : '▶ Auto')}
-        </button>
-        <button 
-          onClick={() => triggerGoToScene(curScene + 1)}
-          disabled={curScene === 3}
-          className="px-3 md:px-4 py-1.5 bg-[#1e3737]/90 border border-[#8cbeaa]/60 text-[#f0ede5] rounded-full text-[11px] md:text-xs font-medium hover:bg-[#3a7868] disabled:opacity-50 transition-colors backdrop-blur-md"
-        >
-          {language === 'el' ? 'Επόμενο ▶' : 'Next ▶'}
-        </button>
-      </div>
-
-      <div className="absolute bottom-0 left-0 w-full h-1 bg-white/10 z-40">
-        <div 
-          className="h-full bg-gradient-to-r from-[#5fba9b] via-[#b9a7dc] to-[#efc48a] transition-all duration-1000 ease-[cubic-bezier(0.2,0.9,0.4,1)]"
-          style={{ width: `${(curScene / 3) * 100}%` }}
-        />
       </div>
     </div>
   );

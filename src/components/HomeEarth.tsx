@@ -37,7 +37,7 @@ const LANDS = [
   'M104 96C110 92 120 94 120 100 118 106 108 106 104 96Z',
 ];
 
-function Earth({ w, h, r, top, id, landScale, rim, day }: { w: number; h: number; r: number; top: number; id: string; landScale: number; rim: string; day: number }) {
+export function Earth({ w, h, r, top, id, landScale, rim, day }: { w: number; h: number; r: number; top: number; id: string; landScale: number; rim: string; day: number }) {
   const cx = w / 2, cy = top + r;
   const lit = `color-mix(in srgb, var(--earth-lit) ${Math.round((1 - day) * 100)}%, var(--earth-lit-day))`;
   return (
