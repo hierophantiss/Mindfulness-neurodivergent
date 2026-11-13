@@ -1,11 +1,13 @@
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Pause, Play, Volume2, VolumeX } from 'lucide-react';
 import { useLanguage } from '../../hooks/useLanguage';
 import { useAccessibility } from '../../hooks/useAccessibility';
 import { useTime } from '../../contexts/TimeContext';
 import TaiChiHero from '../TaiChiHero';
 import { Earth, daylight, rimColour } from '../HomeEarth';
+import { getAudio } from '../../lib/chapterAudio';
+import { type AnimTiming, animAudioUrl, breathAt as voiceBreathAt, loadAnimTiming, sceneAt, sceneLength, setVoicePreferred, voicePreferred } from '../../lib/animVoice';
 
 // Chapter 1, "Gravity and thoughts". The same person as in the practices,
 // standing on the earth of the home page, in four scenes:
@@ -15,6 +17,11 @@ import { Earth, daylight, rimColour } from '../HomeEarth';
 //   4. here: the thoughts stay, but transparent; the vision opens sideways.
 // Slow on purpose: the words drift, they do not spin. With reduced motion
 // each scene is a still picture.
+//
+// A voice can guide it (the chapters' voice, src/data/narration.json): off
+// until the person turns it on. With the voice on, the voice keeps the time:
+// a scene changes when its words are done, and the breath's light goes down
+// with the spoken "out".
 
 type Lang = 'el' | 'en';
 
@@ -113,6 +120,12 @@ export default function GravityThoughts() {
   const [scene, setScene] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [started, setStarted] = useState(false);
+  // The voice: offered once its timing map has arrived (so not offline, and
+  // not before the audio exists); off unless the person turned it on.
+  const [timing, setTiming] = useState<AnimTiming | null>(null);
+  const [voiceOn, setVoiceOn] = useState(voicePreferred);
+  const [voiceTrouble, setVoiceTrouble] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Everything that moves each frame is written straight into the picture
   // (no React render per frame); these refs point at it.
@@ -131,12 +144,48 @@ export default function GravityThoughts() {
   const barRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
   const live = useRef({
-    scene: 0, clock: 0, playing: false, started: false, visible: true,
+    scene: 0, clock: 0, playing: false, started: false, visible: true, seen: false,
+    voice: null as AnimTiming | null, // the voice is on and can be heard
+    guided: false, // the voice has been started and keeps the time
     look: { ...LOOKS[0], bg: [...LOOKS[0].bg], halo: [...LOOKS[0].halo] } as Look,
     words: SLOTS.map(([x, y]) => ({ x, y: y * 1.12 - 6, o: 0 })),
   });
   live.current.playing = playing;
   live.current.started = started;
+  live.current.voice = voiceOn && timing && !voiceTrouble ? timing : null;
+
+  // The voice's audio element: made when first needed, released when the animation goes.
+  const audio = useCallback(() => {
+    if (!audioRef.current) {
+      const a = new Audio();
+      a.preload = 'none';
+      a.addEventListener('ended', () => {
+        if (live.current.voice) live.current.clock = sceneLength(live.current.voice, 3);
+        live.current.guided = false;
+        setPlaying(false);
+      });
+      // Without the voice the picture goes on by itself, from where it is.
+      a.addEventListener('error', () => { if (live.current.guided) { live.current.guided = false; live.current.voice = null; setVoiceTrouble(true); } });
+      audioRef.current = a;
+    }
+    return audioRef.current;
+  }, []);
+  useEffect(() => () => { audioRef.current?.pause(); audioRef.current?.removeAttribute('src'); }, []);
+
+  /** Starts the voice where the picture is. Called inside the tap, as phones require. */
+  const startVoice = useCallback(() => {
+    const t = live.current.voice;
+    if (!t) return;
+    const a = audio();
+    const want = new URL(animAudioUrl('gravity', lang, t.duration), window.location.href).href;
+    if (a.src !== want) { a.src = want; a.preload = 'auto'; }
+    const at = t.scenes[live.current.scene].t0 + Math.min(live.current.clock, sceneLength(t, live.current.scene) - 0.05);
+    try { a.currentTime = at; } catch { /* set once it has loaded */ }
+    if (a.readyState < 1) a.addEventListener('loadedmetadata', () => { a.currentTime = at; }, { once: true });
+    window.dispatchEvent(new Event('voice-elsewhere')); // the chapter's reader stops, if it was reading
+    live.current.guided = true;
+    a.play().catch(() => { live.current.guided = false; live.current.voice = null; setVoiceTrouble(true); });
+  }, [audio, lang]);
 
   // The frame's size decides the layout.
   useLayoutEffect(() => {
@@ -172,24 +221,64 @@ export default function GravityThoughts() {
     live.current.clock = 0;
     setScene(next);
     setStarted(true);
-  }, []);
+    if (live.current.voice && live.current.playing) startVoice();
+  }, [startVoice]);
 
   const toggle = useCallback(() => {
     setStarted(true);
-    setPlaying(p => {
-      // Played to the end: play again from the start.
-      if (!p && live.current.scene === 3 && live.current.clock >= DURATION[3]) { live.current.scene = 0; live.current.clock = 0; setScene(0); }
-      return !p;
-    });
-  }, []);
+    const L = live.current;
+    if (L.playing) {
+      audioRef.current?.pause();
+      L.guided = false;
+      setPlaying(false);
+      return;
+    }
+    // Played to the end: play again from the start.
+    const last = L.voice && L.clock > DURATION[3] ? sceneLength(L.voice, 3) : DURATION[3];
+    if (L.scene === 3 && L.clock >= last - 0.05) { L.scene = 0; L.clock = 0; setScene(0); }
+    L.playing = true;
+    setPlaying(true);
+    if (L.voice) startVoice();
+  }, [startVoice]);
+
+  const toggleVoice = useCallback(() => {
+    const on = !voiceOn;
+    setVoiceOn(on);
+    setVoicePreferred(on);
+    setVoiceTrouble(false);
+    live.current.voice = on && timing ? timing : null;
+    if (!on) { audioRef.current?.pause(); live.current.guided = false; }
+    else if (live.current.playing) startVoice();
+  }, [voiceOn, timing, startVoice]);
 
   // Draw only while the frame is on screen.
   useEffect(() => {
     const node = rootRef.current;
     if (!node || typeof IntersectionObserver === 'undefined') return;
-    const io = new IntersectionObserver(([e]) => { live.current.visible = e.isIntersecting; });
+    const io = new IntersectionObserver(([e]) => {
+      live.current.visible = e.isIntersecting;
+      // The voice's timing map (a few hundred bytes) is asked for the first time the animation is seen.
+      if (e.isIntersecting && !live.current.seen) { live.current.seen = true; setSeenAt(Date.now()); }
+    });
     io.observe(node);
     return () => io.disconnect();
+  }, []);
+
+  const [seenAt, setSeenAt] = useState(0);
+  useEffect(() => {
+    if (!seenAt) return;
+    let on = true;
+    setTiming(null);
+    loadAnimTiming('gravity', lang).then(t => { if (on) setTiming(t); });
+    return () => { on = false; };
+  }, [seenAt, lang]);
+
+  // The chapter's reader starting to read stops the voice here.
+  useEffect(() => {
+    const reader = getAudio();
+    const onPlay = () => { if (audioRef.current && !audioRef.current.paused) { audioRef.current.pause(); live.current.guided = false; setPlaying(false); } };
+    reader.addEventListener('play', onPlay);
+    return () => reader.removeEventListener('play', onPlay);
   }, []);
 
   useEffect(() => {
@@ -218,19 +307,28 @@ export default function GravityThoughts() {
       const lift = lk.lift * u;
       const sway = reduceMotion ? 0 : Math.sin(performance.now() / 1000 * 0.55) * lk.sway;
       const breathing = L.scene >= 2 && !reduceMotion;
-      const br = breathing ? breathAt(t) : { force: 0, rising: false };
-      const down = breathing && !br.rising && t > 1 ? 1 - br.force : 0; // how far the exhale has taken the weight
+      // The breath: from the voice when it guides, else the picture's own 4-6.
+      let br = { force: 0, rising: false }, down = 0, arrived = 0, shown = false;
+      if (breathing && L.voice && L.guided && audioRef.current) {
+        const v = voiceBreathAt(L.voice, audioRef.current.currentTime);
+        br = v; down = v.down; shown = v.active;
+        arrived = v.rising ? 1 - v.force : v.down;
+      } else if (breathing) {
+        br = breathAt(t);
+        down = !br.rising && t > 1 ? 1 - br.force : 0; // how far the exhale has taken the weight
+        shown = t > 1;
+        arrived = t <= 1 ? 0 : br.rising ? 1 - br.force : down;
+      }
       if (heroRef.current) heroRef.current.style.transform = `translateY(${-lift}px) rotate(${sway}deg)`;
       const sole = rimY - lift;
       axisUpRef.current?.setAttribute('y2', String(sole - 3 * u));
       if (axisDownRef.current) axisDownRef.current.style.opacity = String(0.28 + 0.6 * lk.ground);
       // The light where the feet meet the earth grows as the weight arrives, and fades with the next inhale.
-      const arrived = !breathing || t <= 1 ? 0 : br.rising ? 1 - br.force : down;
       if (contactRef.current) contactRef.current.style.opacity = String(lk.ground * (breathing ? 0.3 + 0.65 * arrived : 0.75));
       if (weightRef.current) {
         const belly = stageTop + BELLY * u - lift;
         weightRef.current.setAttribute('cy', String(belly + (sole - belly) * down));
-        weightRef.current.style.opacity = String(breathing && t > 1 ? lk.ground * (br.rising ? 0.25 + 0.55 * br.force : 0.8 * (1 - down * 0.7)) : 0);
+        weightRef.current.style.opacity = String(shown ? lk.ground * (br.rising ? 0.25 + 0.55 * br.force : 0.8 * (1 - down * 0.7)) : 0);
       }
       if (shadowRef.current) {
         shadowRef.current.setAttribute('rx', String(Math.max(8, 24 - lk.lift * 0.45) * u));
@@ -275,7 +373,7 @@ export default function GravityThoughts() {
 
       barRefs.current.forEach((n, i) => {
         if (!n) return;
-        const f = i < L.scene ? 1 : i > L.scene ? 0 : Math.min(1, t / DURATION[i]);
+        const f = i < L.scene ? 1 : i > L.scene ? 0 : Math.min(1, t / (L.voice && L.guided ? sceneLength(L.voice, i) : DURATION[i]));
         n.style.transform = `scaleX(${f})`;
       });
 
@@ -285,7 +383,15 @@ export default function GravityThoughts() {
       const dt = Math.min(0.05, last ? (now - last) / 1000 : 0.016);
       last = now;
       if (L.visible) {
-        if (L.playing) {
+        const a = audioRef.current;
+        if (L.playing && L.voice && L.guided && a) {
+          // The voice keeps the time (and while it is still loading, the picture waits for it).
+          if (!a.paused && a.readyState >= 2) {
+            const at = sceneAt(L.voice, a.currentTime);
+            if (at.scene !== L.scene) { L.scene = at.scene; setScene(at.scene); }
+            L.clock = at.clock;
+          }
+        } else if (L.playing) {
           L.clock += dt;
           if (L.clock >= DURATION[L.scene]) {
             if (L.scene < 3) { L.scene += 1; L.clock = 0; setScene(L.scene); }
@@ -300,7 +406,7 @@ export default function GravityThoughts() {
     };
     raf = requestAnimationFrame(frame);
     return () => cancelAnimationFrame(raf);
-  }, [w, h, u, rimY, headY, stageTop, cx, reduceMotion, scene, playing, lang, fontPx]);
+  }, [w, h, u, rimY, headY, stageTop, cx, reduceMotion, scene, playing, lang, fontPx, voiceOn, timing]);
 
   const text = SCENES[lang][scene];
   const words = WORDS[lang];
@@ -409,6 +515,26 @@ export default function GravityThoughts() {
         aria-label={playing ? (el ? 'Παύση' : 'Pause') : (el ? 'Αναπαραγωγή' : 'Play')}
         tabIndex={-1}
       />
+
+      {/* The voice: offered when it can be heard; off until turned on. */}
+      {timing && (
+        <div className="absolute top-3 right-3 flex flex-col items-end gap-1.5">
+          <button
+            type="button"
+            onClick={toggleVoice}
+            aria-pressed={voiceOn}
+            className={`flex items-center gap-2 min-h-[40px] px-3.5 rounded-full backdrop-blur-md text-[13px] transition-colors bg-[color-mix(in_srgb,var(--color-stage)_55%,transparent)] border ${voiceOn ? 'border-[color-mix(in_srgb,var(--color-sign-gold)_50%,transparent)] text-sign-gold' : 'border-[color-mix(in_srgb,var(--color-ink)_16%,transparent)] text-ink/75 hover:text-ink'}`}
+          >
+            {voiceOn ? <Volume2 size={16} aria-hidden="true" /> : <VolumeX size={16} aria-hidden="true" />}
+            <span>{el ? 'Με φωνή' : 'With voice'}</span>
+          </button>
+          {voiceOn && voiceTrouble && (
+            <p role="status" className="max-w-[200px] text-right text-[12px] leading-snug text-ink/70 bg-[color-mix(in_srgb,var(--color-stage)_60%,transparent)] rounded-lg px-2 py-1">
+              {el ? 'Η φωνή δεν φορτώνει τώρα· η εικόνα συνεχίζει χωρίς αυτήν.' : 'The voice is not loading right now; the picture goes on without it.'}
+            </p>
+          )}
+        </div>
+      )}
 
       {!started && (
         <button

@@ -11,6 +11,8 @@
 #   book  the audiobook of the workbook → release "audiobook"
 #         (with "chapters" set: a preview → pre-release "audiobook-preview")
 #   both  the two
+#   anim  the spoken guidance of the chapter animations (src/data/narration.json):
+#         one MP3 and one timing map per animation → release "app-audio"
 #   sample  a short listening sample of the app's Greek reader in a few
 #         versions (tools/audiobook/sample.py) → pre-release "voice-sample"
 #
@@ -25,7 +27,7 @@ on:
       target:
         description: What to build
         type: choice
-        options: [app, book, both, sample]
+        options: [app, book, both, anim, sample]
         default: app
       lang:
         description: Language
@@ -95,6 +97,18 @@ jobs:
               --notes "Chapter audio for the app's reader (Google Chirp 3 HD, Sulafat): one MP3 and one timing map per chapter. Served by the site at /audio/. CC BY-NC-ND 4.0."
           gh release upload app-audio audiobook-out/app/*.mp3 audiobook-out/app/*.json --clobber
           echo "App audio: https://github.com/${{ github.repository }}/releases/tag/app-audio" >> "$GITHUB_STEP_SUMMARY"
+
+      # ── Animations' voice ──────────────────────────────────────────
+      - name: Animations' voice
+        if: env.TARGET == 'anim'
+        run: |
+          python3 tools/audiobook/synth_anim.py src/data/narration.json audiobook-out/anim \
+            --langs "${LANGS// /,}" --cache .tts-cache
+          gh release view app-audio >/dev/null 2>&1 || \
+            gh release create app-audio --title "App chapter audio" \
+              --notes "Chapter audio for the app's reader (Google Chirp 3 HD, Sulafat): one MP3 and one timing map per chapter. Served by the site at /audio/. CC BY-NC-ND 4.0."
+          gh release upload app-audio audiobook-out/anim/*.mp3 audiobook-out/anim/*.json --clobber
+          echo "Animations' voice: https://github.com/${{ github.repository }}/releases/tag/app-audio" >> "$GITHUB_STEP_SUMMARY"
 
       # ── Audiobook ──────────────────────────────────────────────────
       - name: Audiobook

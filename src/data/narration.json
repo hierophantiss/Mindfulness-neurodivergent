@@ -1,0 +1,81 @@
+{
+  "_about": "The spoken guidance of the chapter animations (voice off unless the person turns it on). Made into audio by tools/audiobook/synth_anim.py (Audiobook workflow, target anim). Each scene is a list of steps: say (speak), pause (ms of silence), breath (speak the cue, then wait so that the phase lasts ms in all; the app moves the breath's light with it), rest (silence at the end of the scene).",
+  "gravity": {
+    "el": [
+      [
+        { "say": "Πρόσεξε πώς έρχονται οι σκέψεις." },
+        { "pause": 900 },
+        { "say": "Η μία φέρνει την επόμενη." },
+        { "pause": 1100 },
+        { "say": "Η προσοχή ανεβαίνει στο κεφάλι, και τα πέλματα σχεδόν δεν τα νιώθεις." },
+        { "rest": 2600 }
+      ],
+      [
+        { "say": "Τώρα βλέπεις μόνο αυτές." },
+        { "pause": 1000 },
+        { "say": "Δεν χρειάζεται να τις διώξεις." },
+        { "pause": 1100 },
+        { "say": "Η γη είναι ακόμα από κάτω σου." },
+        { "rest": 2600 }
+      ],
+      [
+        { "say": "Φέρε την προσοχή στα πέλματα." },
+        { "pause": 1200 },
+        { "breath": "in", "say": "Εισπνοή…", "ms": 4000 },
+        { "breath": "out", "say": "και μακριά εκπνοή…", "ms": 6000 },
+        { "say": "Άφησε το βάρος να πέσει στη γη." },
+        { "pause": 900 },
+        { "breath": "in", "say": "Εισπνοή…", "ms": 4000 },
+        { "breath": "out", "say": "εκπνοή…", "ms": 6000 },
+        { "say": "Η γη σε κρατά." },
+        { "rest": 2600 }
+      ],
+      [
+        { "say": "Οι σκέψεις μπορούν να μείνουν." },
+        { "pause": 1100 },
+        { "say": "Χωρίς να κουνήσεις τα μάτια, άφησε την περιφερειακή όραση να ανοίξει στα πλάγια." },
+        { "pause": 1600 },
+        { "say": "Είσαι εδώ." },
+        { "rest": 4000 }
+      ]
+    ],
+    "en": [
+      [
+        { "say": "Notice how the thoughts arrive." },
+        { "pause": 900 },
+        { "say": "One brings the next." },
+        { "pause": 1100 },
+        { "say": "Your attention rises into your head, and you can hardly feel your feet." },
+        { "rest": 2600 }
+      ],
+      [
+        { "say": "Now they are all you see." },
+        { "pause": 1000 },
+        { "say": "You don't need to push them away." },
+        { "pause": 1100 },
+        { "say": "The earth is still beneath you." },
+        { "rest": 2600 }
+      ],
+      [
+        { "say": "Bring your attention to your feet." },
+        { "pause": 1200 },
+        { "breath": "in", "say": "Breathe in…", "ms": 4000 },
+        { "breath": "out", "say": "and a long breath out…", "ms": 6000 },
+        { "say": "Let your weight fall into the earth." },
+        { "pause": 900 },
+        { "breath": "in", "say": "Breathe in…", "ms": 4000 },
+        { "breath": "out", "say": "breathe out…", "ms": 6000 },
+        { "say": "The earth holds you." },
+        { "rest": 2600 }
+      ],
+      [
+        { "say": "The thoughts can stay." },
+        { "pause": 1100 },
+        { "say": "Without moving your eyes, let your peripheral vision open to the sides." },
+        { "pause": 1600 },
+        { "say": "You are here." },
+        { "rest": 4000 }
+      ]
+    ]
+  }
+}

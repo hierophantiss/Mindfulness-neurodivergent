@@ -293,6 +293,12 @@ export function useSpeechReader(
     setStatusBoth('paused');
   }, []);
 
+  // Another voice starting (a chapter animation's guidance) pauses the reading.
+  useEffect(() => {
+    window.addEventListener('voice-elsewhere', pause);
+    return () => window.removeEventListener('voice-elsewhere', pause);
+  }, [pause]);
+
   const resume = useCallback(() => {
     if (statusRef.current !== 'paused') return;
     setErrorCode(null);

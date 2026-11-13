@@ -1,7 +1,7 @@
 // Cloudflare Pages Function: /audio/<file>
 //
 // The audio lives in this repository's GitHub Releases ("audiobook" for the
-// book, "app-audio" for the chapters of the app's reader). GitHub serves those
+// book, "app-audio" for the reader's chapters and the animations' voice). GitHub serves those
 // files as downloads (application/octet-stream, attachment) and without CORS,
 // so phones, iPhones above all, may not play them in place. This bridge fetches
 // the file and passes it on as audio, from the site's own address, with range
@@ -23,6 +23,7 @@ const FILES = [
   { re: /^(?:el|en)-\d{2}\.mp3$/, tag: 'audiobook' },
   { re: /^mindfulness-guide-(?:el|en)\.(?:mp3|m4b)$/, tag: 'audiobook' },
   { re: /^app-(?:el|en)-\d{2}\.(?:mp3|json)$/, tag: 'app-audio' },
+  { re: /^anim-[a-z0-9-]+-(?:el|en)\.(?:mp3|json)$/, tag: 'app-audio' },
 ];
 
 const TYPES = {
