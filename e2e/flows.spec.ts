@@ -170,3 +170,15 @@ test('the cat guides someone new: how you feel, and a first step', async ({ page
   await sheet.getByRole('link', { name: /Βύθιση στη Βαρύτητα/ }).click();
   await expect(page).toHaveURL(/\/practice\/body\/gravity-sink/);
 });
+
+test('the cat shows the home page around: four stops, at your pace', async ({ page }) => {
+  await page.goto('/el', { waitUntil: 'networkidle' });
+  await page.getByRole('button', { name: 'Συνοδός: τι κάνω τώρα;' }).click();
+  await page.getByRole('button', { name: 'Δείξε μου την αρχική' }).click();
+  const tour = page.getByRole('dialog', { name: 'Ξενάγηση στην αρχική' });
+  await expect(tour.getByText('1 / 4')).toBeVisible();
+  for (let i = 0; i < 3; i++) await tour.getByRole('button', { name: 'Επόμενο' }).click();
+  await expect(tour.getByText('4 / 4')).toBeVisible();
+  await tour.getByRole('button', { name: 'Τέλος' }).click();
+  await expect(tour).toHaveCount(0);
+});

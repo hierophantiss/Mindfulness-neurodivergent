@@ -950,7 +950,7 @@ We saw why in Chapter 5: intense self-criticism appears to activate the same thr
 ### Stage 4 — Open into Space (Open Awareness)
 
 - Soften your gaze. Open your peripheral vision.
-- See the whole visual field: right, left, up, down.
+- Without moving your eyes, let your vision open: right, left, up, down.
 - Feel at the same time: body, breath, earth, sky.
 - **Goal:** a direct sense of presence, without words or effort.
 

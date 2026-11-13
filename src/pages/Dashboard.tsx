@@ -1,5 +1,5 @@
 import { AudioEnabler } from '../components/AudioEnabler';
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, lazy, Suspense } from 'react';
 import { ArrowRight, BookOpen, ChevronDown, Info, Download, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
@@ -19,6 +19,7 @@ import { MethodMark } from '../components/MethodMark';
 import { useInstallApp } from '../hooks/useInstallApp';
 import HomeCheckin from '../components/HomeCheckin';
 import HomeEarth from '../components/HomeEarth';
+const HomeTour = lazy(() => import('../components/HomeTour'));
 import { PLACE_PATHS } from '../components/placeIcons';
 import BackupReminder from '../components/BackupReminder';
 import { readingSpot, chaptersRead } from '../lib/readingSpot';
@@ -117,6 +118,13 @@ export default function Dashboard() {
   const nightDim = hour >= 21 || hour < 5;
 
   const [isInfoOpen, setIsInfoOpen] = useState(false);
+  // The cat's tour of this page, asked for from its sheet.
+  const [touring, setTouring] = useState(false);
+  useEffect(() => {
+    const start = () => setTouring(true);
+    window.addEventListener('home-tour', start);
+    return () => window.removeEventListener('home-tour', start);
+  }, []);
   const [bookOpen, setBookOpen] = useState(false);
   const { installed } = useInstallApp(language);
 
@@ -214,6 +222,7 @@ export default function Dashboard() {
           </div>
           <Link
             to="/practice/breath/sos-breath"
+            data-tour="sos"
             className="keep-font flex items-center justify-center min-w-[52px] min-h-[44px] pl-1 shrink-0"
             title={el ? 'Άμεση Ηρέμηση' : 'Immediate Calm'}
           >
@@ -461,6 +470,7 @@ export default function Dashboard() {
       {/* At the foot of the page, the earth: first the earth, then the sky. */}
       <HomeEarth />
       <InfoModal isOpen={isInfoOpen} onClose={() => setIsInfoOpen(false)} />
+      {touring && <Suspense fallback={null}><HomeTour language={language} onClose={() => setTouring(false)} /></Suspense>}
     </div>
   );
 }

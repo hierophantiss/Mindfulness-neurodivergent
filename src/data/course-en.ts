@@ -460,7 +460,7 @@ export const COURSE_EN: Record<number, any> = {
         "title": "Sounding Breath (Chanting)",
         "where": "A quiet place",
         "dur": "5 minutes",
-        "lesson": "<p>Producing sound (like humming) creates a vibration that massages the vagus nerve, calming the body.</p><p>It does not need to have any religious tone. Today we will use a note (e.g., “C”) or simply the letter “A.” If you have a mantra of your own from your tradition (optional), you may use it.</p><p><a href=\"/practice?category=vocal\">Explore the “Chanting & Resonance” (Humming) practices</a></p>",
+        "lesson": "<p>Humming lengthens the exhale and brings a gentle vibration to the chest and head. A long exhale is linked with the body calming down.</p><p>It does not need to have any religious tone. Today we will use a note (e.g., “C”) or simply the letter “A.” If you have a mantra of your own from your tradition (optional), you may use it.</p><p><a href=\"/practice?category=vocal\">Explore the “Chanting & Resonance” (Humming) practices</a></p>",
         "exercise": {
           "title": "Vibration with the Sound “A”:",
           "steps": [

@@ -819,7 +819,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
         {
           "title": "Stage 4 — Open into Space (Open Awareness)",
           "paragraphs": [
-            "• Soften your gaze. Open your peripheral vision{{peripheral_vision}}.\n• See the whole visual field: right, left, up, down.\n• Feel at the same time: body, breath, earth, sky.\n• <strong>Goal:</strong> a direct sense of presence, without words or effort."
+            "• Soften your gaze. Open your peripheral vision{{peripheral_vision}}.\n• Without moving your eyes, let your vision open: right, left, up, down.\n• Feel at the same time: body, breath, earth, sky.\n• <strong>Goal:</strong> a direct sense of presence, without words or effort."
           ],
           "actionLink": {
             "url": "/rabbithole",
@@ -1736,7 +1736,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
         {
           "title": "Στάδιο 4 — Άνοιξε στον Χώρο (Ανοιχτή Επίγνωση)",
           "paragraphs": [
-            "• Μαλάκωσε το βλέμμα. Άνοιξε την περιφερειακή όραση{{peripheral_vision}}.\n• Δες όλο το οπτικό πεδίο: δεξιά, αριστερά, πάνω, κάτω.\n• Νιώσε ταυτόχρονα: σώμα, αναπνοή, γη, ουρανό.\n• <strong>Στόχος:</strong> άμεση αίσθηση παρουσίας χωρίς λέξεις ή προσπάθεια."
+            "• Μαλάκωσε το βλέμμα. Άνοιξε την περιφερειακή όραση{{peripheral_vision}}.\n• Χωρίς να κουνήσεις τα μάτια, άφησε την όραση να ανοίξει: δεξιά, αριστερά, πάνω, κάτω.\n• Νιώσε ταυτόχρονα: σώμα, αναπνοή, γη, ουρανό.\n• <strong>Στόχος:</strong> άμεση αίσθηση παρουσίας χωρίς λέξεις ή προσπάθεια."
           ],
           "actionLink": {
             "url": "/rabbithole",

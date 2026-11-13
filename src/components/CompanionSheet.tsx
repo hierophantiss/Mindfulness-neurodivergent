@@ -1,8 +1,8 @@
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Link, useLocation } from 'react-router-dom';
-import { Anchor, BookOpen, Check, ChevronDown, ChevronRight, HelpCircle, X } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Anchor, BookOpen, Check, ChevronDown, ChevronRight, HelpCircle, Map as MapIcon, X } from 'lucide-react';
 import { useCompanion } from '../hooks/useCompanion';
 import { useLanguage } from '../hooks/useLanguage';
 import { useProgress } from '../contexts/ProgressContext';
@@ -86,6 +86,14 @@ export default function CompanionSheet() {
     setTimeout(() => window.dispatchEvent(new Event('companion-tip-again')), 350);
   };
   const toggleQuiet = () => { setQuiet(!quiet); setQuietState(!quiet); };
+
+  // The cat's tour of the home page: to the home page first, if you are elsewhere.
+  const navigate = useNavigate();
+  const startTour = () => {
+    close();
+    if (location.pathname !== '/') navigate('/');
+    setTimeout(() => window.dispatchEvent(new Event('home-tour')), location.pathname === '/' ? 350 : 900);
+  };
 
   const showIntro = () => {
     close();
@@ -239,6 +247,9 @@ export default function CompanionSheet() {
                     <ChevronRight size={18} className="text-ink/70 shrink-0" aria-hidden="true" />
                   </Link>
                   <div className="flex flex-col gap-1 px-1">
+                    <button onClick={startTour} className="self-start min-h-[44px] text-[14px] text-ink/80 hover:text-ink underline decoration-white/25 underline-offset-4">
+                      {el ? 'Ή δείξε μου την αρχική · 4 στάσεις' : 'Or show me the home page · 4 stops'}
+                    </button>
                     <button onClick={showIntro} className="self-start min-h-[44px] text-[14px] text-ink/80 hover:text-ink underline decoration-white/25 underline-offset-4">
                       {el ? 'Ή γνώρισε πρώτα την εφαρμογή · 3 κάρτες' : 'Or get to know the app first · 3 cards'}
                     </button>
@@ -319,6 +330,12 @@ export default function CompanionSheet() {
 
               {/* What is this page? And a quiet cat, for those who prefer it. */}
               <div className="flex flex-col gap-1.5">
+                {!newcomer && (
+                  <button onClick={startTour} className="flex items-center gap-3 min-h-[48px] px-4 rounded-2xl text-left text-[14px] text-ink/80 hover:bg-white/[0.04] transition-colors">
+                    <MapIcon size={17} strokeWidth={1.6} className="shrink-0 text-ink/60" aria-hidden="true" />
+                    {el ? 'Δείξε μου την αρχική' : 'Show me the home page'}
+                  </button>
+                )}
                 {here && !newcomer && (
                   <button onClick={tipAgain} className="flex items-center gap-3 min-h-[48px] px-4 rounded-2xl text-left text-[14px] text-ink/80 hover:bg-white/[0.04] transition-colors">
                     <HelpCircle size={17} strokeWidth={1.6} className="shrink-0 text-ink/60" aria-hidden="true" />
