@@ -5,7 +5,7 @@ Reads the JSON written by scripts/export-reading.ts (the app's chapters, cut
 into segments and sentences exactly as the reader speaks them) and writes, for
 each language and chapter:
 
-    <out>/app-<lang>-NN.mp3    the chapter, spoken by Sulafat, with the reader's pauses
+    <out>/app-<lang>-NN.mp3    the chapter, spoken by the language's voice (synth.VOICE), with the reader's pauses
     <out>/app-<lang>-NN.json   timing map: where each segment starts and its speech ends
 
 The reader plays the MP3 and uses the map to highlight the segment being read,
@@ -76,7 +76,7 @@ def main():
     for lang in [x.strip() for x in a.langs.split(',') if x.strip()]:
         use_ssml = lang in ssml_langs
         locale = synth.LOCALE[lang]
-        voice = f'{locale}-Chirp3-HD-Sulafat'
+        voice = synth.voice_for(lang)
         if not a.mock:
             synth.check_voice(locale, voice)
         chapters = [c for c in data['langs'][lang] if keep is None or c['num'] in keep]

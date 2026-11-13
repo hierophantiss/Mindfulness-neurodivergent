@@ -1,4 +1,4 @@
-# Builds the audio with Google Text-to-Speech (Chirp 3 HD, voice Sulafat) and
+# Builds the audio with Google Text-to-Speech (Chirp 3 HD: Gacrux in Greek, Sulafat in English) and
 # attaches it to GitHub Releases. Nothing audio is committed to the repository.
 #
 # Run it by hand: Actions → Audiobook → Run workflow.
@@ -96,7 +96,7 @@ jobs:
             --langs "${LANGS// /,}" --cache .tts-cache --only "$ONLY"
           gh release view app-audio >/dev/null 2>&1 || \
             gh release create app-audio --title "App chapter audio" \
-              --notes "Chapter audio for the app's reader (Google Chirp 3 HD, Sulafat): one MP3 and one timing map per chapter. Served by the site at /audio/. CC BY-NC-ND 4.0."
+              --notes "Chapter audio for the app's reader (Google Chirp 3 HD): one MP3 and one timing map per chapter. Served by the site at /audio/. CC BY-NC-ND 4.0."
           gh release upload app-audio audiobook-out/app/*.mp3 audiobook-out/app/*.json --clobber
           echo "App audio: https://github.com/${{ github.repository }}/releases/tag/app-audio" >> "$GITHUB_STEP_SUMMARY"
 
@@ -108,7 +108,7 @@ jobs:
             --langs "${LANGS// /,}" --cache .tts-cache
           gh release view app-audio >/dev/null 2>&1 || \
             gh release create app-audio --title "App chapter audio" \
-              --notes "Chapter audio for the app's reader (Google Chirp 3 HD, Sulafat): one MP3 and one timing map per chapter. Served by the site at /audio/. CC BY-NC-ND 4.0."
+              --notes "Chapter audio for the app's reader (Google Chirp 3 HD): one MP3 and one timing map per chapter. Served by the site at /audio/. CC BY-NC-ND 4.0."
           gh release upload app-audio audiobook-out/anim/*.mp3 audiobook-out/anim/*.json --clobber
           echo "Animations' voice: https://github.com/${{ github.repository }}/releases/tag/app-audio" >> "$GITHUB_STEP_SUMMARY"
 
@@ -141,7 +141,7 @@ jobs:
           fi
           gh release view "$tag" >/dev/null 2>&1 || \
             gh release create "$tag" --title "$title" $extra \
-              --notes "Audiobook of the workbook, read by a synthetic voice (Google Chirp 3 HD, Sulafat). CC BY-NC-ND 4.0."
+              --notes "Audiobook of the workbook, read by a synthetic voice (Google Chirp 3 HD). CC BY-NC-ND 4.0."
           files=""
           for l in $LANGS; do files="$files audiobook-out/$l/*.mp3 audiobook-out/$l/*.m4b"; done
           gh release upload "$tag" $files --clobber

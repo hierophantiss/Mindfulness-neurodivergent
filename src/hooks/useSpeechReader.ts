@@ -12,7 +12,7 @@ import {
 } from '../lib/chapterAudio';
 
 /**
- * Reads a chapter aloud with its recorded audio (Sulafat) and a timing map:
+ * Reads a chapter aloud with its recorded audio (Gacrux in Greek, Sulafat in English) and a timing map:
  * the segment being heard is highlighted, the page follows it, and the silence
  * after an exercise step is shown. One <audio> element plays the whole chapter,
  * so it keeps going with the screen off and answers the lock-screen controls.

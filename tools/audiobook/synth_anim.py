@@ -3,7 +3,7 @@
 
 Reads src/data/narration.json and writes, for each animation and language:
 
-    <out>/anim-<id>-<lang>.mp3    the guidance, spoken by Sulafat, scene after scene
+    <out>/anim-<id>-<lang>.mp3    the guidance, in the language's voice (synth.VOICE), scene after scene
     <out>/anim-<id>-<lang>.json   timing map: where each scene starts and its speech
                                   ends, and where each breath phase starts and how long it lasts
 
@@ -48,7 +48,7 @@ def main():
     ap.add_argument('--langs', default='el,en')
     ap.add_argument('--cache', default='.tts-cache')
     ap.add_argument('--mock', action='store_true')
-    ap.add_argument('--voice', default='Sulafat', help='Chirp 3 HD voice name')
+    ap.add_argument('--voice', default='', help='a Chirp 3 HD voice name (default: the language\'s, synth.VOICE)')
     ap.add_argument('--try-voices', default='', help='a language: write a sample in each of its voices')
     a = ap.parse_args()
 
@@ -66,7 +66,7 @@ def main():
 
     for lang in [x.strip() for x in a.langs.split(',') if x.strip()]:
         locale = synth.LOCALE[lang]
-        voice = f'{locale}-Chirp3-HD-{a.voice}'
+        voice = f'{locale}-Chirp3-HD-{a.voice}' if a.voice else synth.voice_for(lang)
         if not a.mock:
             synth.check_voice(locale, voice)
         for anim_id, langs in data.items():

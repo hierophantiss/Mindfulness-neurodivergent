@@ -65,7 +65,7 @@ def main():
         sys.exit(f'None of {wanted} in chapter {a.chapter}.')
 
     locale = synth.LOCALE[a.lang]
-    voice = f'{locale}-Chirp3-HD-Sulafat'
+    voice = synth.voice_for(a.lang)
     voice2 = f'{locale}-Chirp3-HD-{a.voice2}'
     if not a.mock:
         synth.check_voice(locale, voice)

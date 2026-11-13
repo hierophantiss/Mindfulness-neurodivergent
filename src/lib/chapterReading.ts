@@ -22,7 +22,7 @@ export interface ReadSegment {
 }
 
 /**
- * How the reader paces a chapter. The chapter audio (Sulafat, made by
+ * How the reader paces a chapter. The chapter audio (Gacrux in Greek, Sulafat in English; made by
  * tools/audiobook/synth_app.py from scripts/export-reading.ts) is spoken with
  * these values, so the app and the audio files stay in step.
  */

@@ -2,7 +2,7 @@
 """Speak the audiobook script and assemble the audio files.
 
 Reads the JSON written by script.py, sends each segment to Google Cloud
-Text-to-Speech (Chirp 3 HD, voice Sulafat by default), adds the silences and
+Text-to-Speech (Chirp 3 HD: Gacrux for Greek, Sulafat for English; see VOICE), adds the silences and
 builds:
 
     <out>/<lang>-NN.mp3                        one file per chapter (ID3 tags)
@@ -44,6 +44,13 @@ LOCALE = {'el': 'el-GR', 'en': 'en-US'}
 TITLE = {'el': 'Οδηγός Ενσυνειδητότητας για Νευροδιαφορετικούς',
          'en': 'A Mindfulness Guide for Neurodivergents'}
 AUTHOR = {'el': 'Θεόδωρος Μπαϊρακτάρης', 'en': 'Theodoros Bairaktaris'}
+# The voice of each language, for the book, the app's chapters and the
+# animations' guidance alike (Gacrux chosen by ear for Greek, November 2026).
+VOICE = {'el': 'Gacrux', 'en': 'Sulafat'}
+
+
+def voice_for(lang):
+    return f'{LOCALE[lang]}-Chirp3-HD-{VOICE[lang]}'
 API = 'https://texttospeech.googleapis.com/v1'
 MAX_CHARS = 1500          # the API takes 5000 bytes per request; Greek letters are 2 bytes
 GAP_BETWEEN_CHUNKS_MS = 250
@@ -250,7 +257,7 @@ def main():
     ap.add_argument('script')
     ap.add_argument('lang', choices=['el', 'en'])
     ap.add_argument('out')
-    ap.add_argument('--voice', default=None, help='default: <locale>-Chirp3-HD-Sulafat')
+    ap.add_argument('--voice', default=None, help='default: the language\'s voice (VOICE)')
     ap.add_argument('--cache', default='.tts-cache')
     ap.add_argument('--mock', action='store_true')
     ap.add_argument('--workers', type=int, default=4)
@@ -260,7 +267,7 @@ def main():
     a = ap.parse_args()
 
     locale = LOCALE[a.lang]
-    voice = a.voice or f'{locale}-Chirp3-HD-Sulafat'
+    voice = a.voice or voice_for(a.lang)
     chapters = json.loads(Path(a.script).read_text(encoding='utf-8'))
     total = len(chapters)
     for n, c in enumerate(chapters, 1):

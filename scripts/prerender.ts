@@ -310,7 +310,7 @@ function getMetaForRoute(route: string): RouteMeta {
       featureList: lang === 'el'
         ? `Τετραπλός Άξονας (Σώμα, Αναπνοή, Προσοχή, Χώρος), «Πώς νιώθεις τώρα;», κουμπί SOS με τηλέφωνα βοήθειας, ρυθμοί αναπνοής, Τάι Τσι & Qigong, Λίκνισμα, ψάλσιμο, μικροδόσεις, Καταφύγιο με ήχους φύσης και binaural, 11 κεφάλαια με ακρόαση σε φυσική φωνή, ακουστικό βιβλίο (MP3), βιβλίο σε PDF και EPUB, πρόγραμμα 8 εβδομάδων, ημερολόγιο πρακτικής, γάτα-σύντροφος που θυμάται τι διάβασες, Κουνελότρυπα, επιστημονική βάση με ${n} μελέτες, συχνές ερωτήσεις, λειτουργία offline, χωρίς λογαριασμό, χωρίς παρακολούθηση`
         : `Fourfold Axis method (Body, Breath, Attention, Space), "How do you feel right now?" check-in, SOS button with helplines, breathing rhythms, Tai Chi & Qigong, swaying, chanting, small doses, Sanctuary with nature sounds and binaural beats, 11 chapters with read-aloud in a natural voice, audiobook (MP3), workbook as PDF and EPUB, 8-week program, practice journal, cat companion that remembers what you read, Rabbit Hole, scientific basis with ${n} studies, FAQ, offline support, no account, no tracking`,
-      // The whole guide as an audiobook (Sulafat voice), downloadable from the app.
+      // The whole guide as an audiobook (Gacrux in Greek, Sulafat in English), downloadable from the app.
       subjectOf: {
         '@type': 'Audiobook',
         name: lang === 'el' ? 'Οδηγός Ενσυνειδητότητας για Νευροδιαφορετικούς' : 'A Mindfulness Guide for Neurodivergents',

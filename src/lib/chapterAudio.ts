@@ -2,7 +2,7 @@ import type { ReadLang } from './chapterReading';
 import { isNative, remote } from './native';
 
 /**
- * The chapter audio: one MP3 per chapter, read by Sulafat, and a timing map
+ * The chapter audio: one MP3 per chapter, read by Google's Chirp 3 HD voices, and a timing map
  * that says where each segment starts and where its speech ends. Both are made
  * by the "Audiobook" workflow (target: app), live in the GitHub release
  * "app-audio" and are served by the site at /audio/ (functions/audio/[name].js).
