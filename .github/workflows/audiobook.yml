@@ -13,6 +13,8 @@
 #   both  the two
 #   anim  the spoken guidance of the chapter animations (src/data/narration.json):
 #         one MP3 and one timing map per animation → release "app-audio"
+#   anim-voices  the animations' guidance in every voice of the language(s),
+#         a short sample each, to choose a voice → pre-release "voice-sample-anim"
 #   sample  a short listening sample of the app's Greek reader in a few
 #         versions (tools/audiobook/sample.py) → pre-release "voice-sample"
 #
@@ -27,7 +29,7 @@ on:
       target:
         description: What to build
         type: choice
-        options: [app, book, both, anim, sample]
+        options: [app, book, both, anim, anim-voices, sample]
         default: app
       lang:
         description: Language
@@ -109,6 +111,17 @@ jobs:
               --notes "Chapter audio for the app's reader (Google Chirp 3 HD, Sulafat): one MP3 and one timing map per chapter. Served by the site at /audio/. CC BY-NC-ND 4.0."
           gh release upload app-audio audiobook-out/anim/*.mp3 audiobook-out/anim/*.json --clobber
           echo "Animations' voice: https://github.com/${{ github.repository }}/releases/tag/app-audio" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Animations' voice, every voice
+        if: env.TARGET == 'anim-voices'
+        run: |
+          for l in $LANGS; do
+            python3 tools/audiobook/synth_anim.py src/data/narration.json audiobook-out/voices --try-voices "$l" --cache .tts-cache
+          done
+          gh release view voice-sample-anim >/dev/null 2>&1 || \
+            gh release create voice-sample-anim --title "Voice sample (animations)" --prerelease \
+              --notes "The guidance of Chapter 1's animation in every voice of the language, to choose one by ear."
+          gh release upload voice-sample-anim audiobook-out/voices/*.mp3 audiobook-out/voices/*.json --clobber
 
       # ── Audiobook ──────────────────────────────────────────────────
       - name: Audiobook

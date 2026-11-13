@@ -13,6 +13,12 @@ with the spoken "in" and "out".
 
     python3 tools/audiobook/synth_anim.py src/data/narration.json out/anim [--langs el,en] [--cache .tts-cache] [--mock]
 
+    python3 tools/audiobook/synth_anim.py src/data/narration.json out/voices --try-voices el
+
+With --try-voices, instead: a short sample (scene 1 and the first breath of
+scene 3 of the first animation) in every voice the API has for that language,
+Chirp 3 HD first, to choose the voice by ear.
+
 Uses the same voice, authentication and cache as synth.py.
 """
 import argparse
@@ -42,6 +48,8 @@ def main():
     ap.add_argument('--langs', default='el,en')
     ap.add_argument('--cache', default='.tts-cache')
     ap.add_argument('--mock', action='store_true')
+    ap.add_argument('--voice', default='Sulafat', help='Chirp 3 HD voice name')
+    ap.add_argument('--try-voices', default='', help='a language: write a sample in each of its voices')
     a = ap.parse_args()
 
     data = json.loads(Path(a.narration).read_text(encoding='utf-8'))
@@ -51,9 +59,14 @@ def main():
     for d in (out, cache, work):
         d.mkdir(parents=True, exist_ok=True)
 
+    if a.try_voices:
+        try_voices(data, a.try_voices, out, cache, a.mock)
+        shutil.rmtree(work)
+        return
+
     for lang in [x.strip() for x in a.langs.split(',') if x.strip()]:
         locale = synth.LOCALE[lang]
-        voice = f'{locale}-Chirp3-HD-Sulafat'
+        voice = f'{locale}-Chirp3-HD-{a.voice}'
         if not a.mock:
             synth.check_voice(locale, voice)
         for anim_id, langs in data.items():
@@ -106,6 +119,45 @@ def main():
             print(f'  {name}: {t:.1f} s, {len(scenes)} scenes, {len(breaths)} breath phases', flush=True)
 
     shutil.rmtree(work)
+
+
+def try_voices(data, lang, out, cache, mock):
+    locale = synth.LOCALE[lang]
+    if mock:
+        names = [f'{locale}-Chirp3-HD-Sulafat', f'{locale}-Chirp3-HD-Achernar']
+    else:
+        res = synth._call('GET', f'/voices?languageCode={locale}')
+        names = sorted({v['name'] for v in res.get('voices', [])}, key=lambda n: ('Chirp3-HD' not in n, n))
+    first = next(k for k in data if not k.startswith('_'))
+    scenes = data[first][lang]
+    steps = scenes[0] + [{'pause': 1500}] + scenes[2][:4]
+    listing = []
+    for name in names:
+        pieces, t = [synth.silence(LEAD_IN_MS, cache)], LEAD_IN_MS / 1000
+        try:
+            for st in steps:
+                if 'pause' in st or 'rest' in st:
+                    ms = st.get('pause', st.get('rest'))
+                    pieces.append(synth.silence(int(ms), cache)); t += ms / 1000
+                    continue
+                start = t
+                wav = synth.speak(st['say'], RATE, name, locale, cache, mock)
+                pieces.append(wav); t += wav_seconds(wav)
+                if 'breath' in st:
+                    rest = st['ms'] - (t - start) * 1000
+                    if rest > 0:
+                        pieces.append(synth.silence(int(rest), cache)); t += rest / 1000
+        except Exception as e:  # some voices do not take every setting; skip them
+            print(f'  skip {name}: {e}', flush=True)
+            continue
+        short = name.replace(f'{locale}-', '')
+        wav_all = out / '_work' / f'{short}.wav'
+        synth.concat_wav(pieces, wav_all, out / '_work')
+        synth.ffmpeg('-i', str(wav_all), '-af', 'loudnorm=I=-18:TP=-1.5:LRA=11', '-ar', str(synth.RATE_HZ),
+                     '-ac', '1', '-c:a', 'libmp3lame', '-b:a', '48k', str(out / f'voice-{lang}-{short}.mp3'))
+        listing.append({'name': short, 'file': f'voice-{lang}-{short}.mp3', 'seconds': round(t, 1)})
+        print(f'  {short}: {t:.1f} s', flush=True)
+    (out / f'voices-{lang}.json').write_text(json.dumps(listing, ensure_ascii=False, indent=1), encoding='utf-8')
 
 
 if __name__ == '__main__':
