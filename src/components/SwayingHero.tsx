@@ -1,15 +1,47 @@
 import { useAccessibility } from '../hooks/useAccessibility';
-import { motion } from "motion/react";
-import { useMemo } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
+import TaiChiHero from "./TaiChiHero";
 
 interface SwayingHeroProps {
   tickCount: number; // 0 to 19
   tempo: number;
+  /** While the practice plays; at rest the body sits upright. */
+  active?: boolean;
 }
 
-export default function SwayingHero({ tickCount, tempo }: SwayingHeroProps) {
-    const { reduceMotion } = useAccessibility();
-  
+/** Degrees to each side, and how much larger than its box the figure is drawn. */
+const MAX_ANGLE = 11;
+const HERO_ZOOM = 1.55;
+
+// The same person as everywhere in the app, seated; redrawn only when the lean changes.
+const Figure = memo(function Figure({ sway }: { sway: number }) {
+  return <TaiChiHero bare figureOnly idle seated sway={sway} stance="natural" breathForce={0} isRising={false} breathStateText="" movementType="5-5" />;
+});
+
+const easeInOut = (x: number) => 0.5 - 0.5 * Math.cos(Math.PI * Math.min(1, Math.max(0, x)));
+
+export default function SwayingHero({ tickCount, tempo, active = true }: SwayingHeroProps) {
+  const { reduceMotion } = useAccessibility();
+
+  // Each tick is one side: the body goes there over the tick's length, easing
+  // in and out, from wherever it is (so a change of tempo never jumps).
+  // Even ticks to the right (as seen), odd to the left.
+  const goal = active ? (tickCount % 2 === 0 ? MAX_ANGLE : -MAX_ANGLE) : 0;
+  const [sway, setSway] = useState(0);
+  const now = useRef(0);
+  useEffect(() => {
+    if (reduceMotion) { now.current = goal; setSway(-goal); return; }
+    const from = now.current, start = performance.now(), len = Math.max(300, tempo);
+    let raf = 0;
+    const step = (t: number) => {
+      const v = from + (goal - from) * easeInOut((t - start) / len);
+      now.current = v;
+      setSway(-Math.round(v * 20) / 20); // the hero's own sway turns the other way
+      if (t - start < len) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [goal, tickCount, tempo, reduceMotion]);
 
   const stars = useMemo(() => {
     const list = [];
@@ -37,35 +69,6 @@ export default function SwayingHero({ tickCount, tempo }: SwayingHeroProps) {
     }
     return list;
   }, []);
-
-  // Mapping animation: Each tick is an extreme.
-  // tickCount % 2 === 0 -> Right side
-  // tickCount % 2 === 1 -> Left side
-  const maxAngle = 14; 
-  const isEvenTick = tickCount % 2 === 0;
-  const targetRotation = isEvenTick ? maxAngle : -maxAngle;
-  
-  // To create the arc (highest point at center, lowest at sides):
-  // We animate Y through a trajectory frame: [Sides -> Center -> Sides] over the tick duration.
-  // We are currently at one side (Y = 12), moving to the other side (Y = 12), 
-  // passing through the center (Y = 0) halfway.
-  const targetTranslateY = [12, -2, 12];
-  
-  // The hips/base shift slightly in the direction of the lean to emphasize the motion
-  const targetTranslateX = isEvenTick ? 2 : -2; 
-  
-  // Keep hands mostly grounded on knees with minimal movement
-  const targetHandRotation = -targetRotation * 0.15;
-  // The head leans slightly INTO the sway to make the largest arc movement.
-  const targetHeadRotation = targetRotation * 0.15;
-
-  // Breathing scales (5 ticks for inhale, 5 for exhale)
-  const phase = Math.floor(tickCount / 5) % 2;
-  const isExhaling = phase === 1;
-  const targetBreathing = isExhaling ? 0.98 : 1.03;
-
-  const transitionConfig = { duration: tempo / 1000, ease: "easeInOut" as const };
-  const yTransitionConfig = { duration: tempo / 1000, times: [0, 0.5, 1], ease: "easeInOut" as const };
 
   // Infinity symbol rainbow gradient colors
   const rainbowStops = [
@@ -119,7 +122,7 @@ export default function SwayingHero({ tickCount, tempo }: SwayingHeroProps) {
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
-          <linearGradient id="silver-axis" x1="0%" y1="0%" x2="0%" y2="100%">
+          <linearGradient id="silver-axis" gradientUnits="userSpaceOnUse" x1="0" y1="10" x2="0" y2="390">
             <stop offset="0%" stopColor="#f8fafc" stopOpacity="0" />
             <stop offset="20%" stopColor="#ffffff" stopOpacity="1" />
             <stop offset="80%" stopColor="#e2e8f0" stopOpacity="1" />
@@ -170,146 +173,18 @@ export default function SwayingHero({ tickCount, tempo }: SwayingHeroProps) {
         </g>
       </svg>
 
-      {/* Animated Hero Character */}
-      <div className="absolute inset-0 pointer-events-none flex items-center justify-center z-20">
-        <svg fill="none" viewBox="0 0 400 400" className="w-[180%] h-[180%] mt-[16%]">
-
-          {/* ── FIXED BASE: Legs + cushion ── */}
-          <g>
-            <ellipse cx="200" cy="300" rx="35" ry="8" fill="#030408" opacity="0.9" />
-            {/* Wider, more rounded crossed legs that blend into torso */}
-            <path
-              d="M 155 288 Q 175 308 200 306 Q 225 308 245 288 Q 248 294 200 310 Q 152 294 155 288"
-              fill="#1b1e26"
-              stroke="#13161b"
-              strokeWidth="0.5"
-            />
-            <path d="M 155 288 Q 170 300 200 298 Q 178 293 155 288" fill="#252a34" />
-            <path d="M 245 288 Q 230 300 200 298 Q 222 293 245 288" fill="#252a34" />
-          </g>
-
-          {/* ── FIXED HANDS on knees (counter-rotate to stay grounded) ── */}
-          <motion.g 
-            animate={{ rotate: targetHandRotation }} 
-            transition={transitionConfig}
-            style={{ transformOrigin: "200px 291px" }}
-          >
-            {/* Left hand */}
-            <ellipse cx="160" cy="291" rx="5" ry="3.2" fill="#e5bda3" transform="rotate(-18 160 291)" />
-            {/* Right hand */}
-            <ellipse cx="240" cy="291" rx="5" ry="3.2" fill="#e5bda3" transform="rotate(18 240 291)" />
-          </motion.g>
-
-          {/* ── UPPER BODY: spring-physics pendulum ── */}
-          <motion.g
-            animate={{
-              x: targetTranslateX,
-              y: targetTranslateY,
-              rotate: targetRotation,
-            }}
-            transition={reduceMotion ? { duration: 0.01 } : {
-              ...transitionConfig,
-              y: yTransitionConfig
-            }}
-            style={{
-              transformOrigin: "200px 291px",
-            }}
-          >
-            {/* Torso & Arms scale gently with breath */}
-            <motion.g 
-              animate={{ scale: targetBreathing }} 
-              transition={transitionConfig}
-              style={{ transformOrigin: "200px 260px" }}
-            >
-              {/* TORSO — curved bottom to blend into legs */}
-              <path
-                d="M 184 232 L 216 232 L 214 278 Q 210 294 200 296 Q 190 294 186 278 Z"
-                fill="#13161d"
-              />
-              {/* Subtle robe fold */}
-              <path
-                d="M 190 252 L 210 252 L 211 262 L 189 262 Z"
-                fill="#1b1e26"
-                stroke="#0b0d12"
-                strokeWidth="0.8"
-              />
-
-              {/* Left Arm — follows torso */}
-              <path
-                d="M 184 236 Q 166 254 161 284"
-                fill="none"
-                stroke="#13161d"
-                strokeWidth="10"
-                strokeLinecap="round"
-              />
-              {/* Right Arm */}
-              <path
-                d="M 216 236 Q 234 254 239 284"
-                fill="none"
-                stroke="#13161d"
-                strokeWidth="10"
-                strokeLinecap="round"
-              />
-
-              {/* ── RAINBOW INFINITY on chest ── */}
-              <g filter="url(#infinity-glow)" opacity={0.92}>
-                {/* Left lobe */}
-                <path
-                  d="M 200 255 C 200 248, 188 244, 184 249 C 180 254, 180 260, 184 263 C 188 266, 200 262, 200 255 Z"
-                  fill="none"
-                  stroke="url(#rainbow-infinity)"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-                {/* Right lobe */}
-                <path
-                  d="M 200 255 C 200 248, 212 244, 216 249 C 220 254, 220 260, 216 263 C 212 266, 200 262, 200 255 Z"
-                  fill="none"
-                  stroke="url(#rainbow-infinity)"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </g>
-            </motion.g>
-
-            {/* HEAD & HOOD (Separate counter-rotation & isolated from breathing scale) */}
-            <motion.g 
-              animate={{ rotate: targetHeadRotation, x: 1 }} 
-              transition={transitionConfig}
-              style={{ transformOrigin: "199px 219px" }}
-            >
-              {/* Neck */}
-              <rect x="195" y="219" width="8" height="11" fill="#e5bda3" />
-              {/* Face */}
-              <ellipse cx="199" cy="208" rx="10" ry="12" fill="#e5bda3" />
-              {/* Closed eyes */}
-              <path d="M 192 208 Q 194 210 196 208" fill="none" stroke="#6b4c35" strokeWidth="1" strokeLinecap="round" />
-              <path d="M 202 208 Q 204 210 206 208" fill="none" stroke="#6b4c35" strokeWidth="1" strokeLinecap="round" />
-              {/* Calm smile */}
-              <path d="M 196 215 Q 199 217 202 215" fill="none" stroke="#7e533c" strokeWidth="1" strokeLinecap="round" />
-              {/* Hood outer */}
-              <path
-                d="M 184 228 C 177 214 181 193 191 189 C 195 187 203 187 207 189 C 217 193 221 214 214 228 Z"
-                fill="#13161d"
-                stroke="#000000"
-                strokeWidth="0.5"
-              />
-              {/* Hood inner shadow */}
-              <path
-                d="M 188 226 C 184 213 186 201 193 197 C 197 195 201 195 205 197 C 212 201 214 213 210 226 Z"
-                fill="#0c0e12"
-              />
-            </motion.g>
-          </motion.g>
-
-          {/* Ethereal Silver Gravity Axis placed ON TOP of the hero to act as a clear plumb line */}
-          <g pointerEvents="none">
-            <path d="M 200 10 L 200 390" stroke="url(#silver-axis)" strokeWidth="1.5" strokeDasharray="6 8" opacity="0.9" />
-            <path d="M 200 10 L 200 390" stroke="#ffffff" strokeWidth="4" opacity="0.3" filter="url(#infinity-glow)" />
-          </g>
-
-        </svg>
+      {/* The hero, seated cross-legged on the earth, hands on the knees: the
+          upper body sways from the hips, the legs stay. (The 400 box of the
+          hero puts the floor at y 320, where the earth's rim is.) */}
+      <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-20" style={{ transform: `scale(${HERO_ZOOM})`, transformOrigin: '50% 80%' }}>
+        <Figure sway={sway} />
       </div>
+
+      {/* Ethereal Silver Gravity Axis placed ON TOP of the hero to act as a clear plumb line */}
+      <svg aria-hidden="true" className="absolute inset-0 w-full h-full pointer-events-none z-30" viewBox="0 0 400 400">
+        <path d="M 200 10 L 200 390" stroke="url(#silver-axis)" strokeWidth="1.5" strokeDasharray="6 8" opacity="0.9" />
+        <path d="M 200 10 L 200 390" stroke="url(#silver-axis)" strokeWidth="4" opacity="0.12" />
+      </svg>
     </div>
   );
 }

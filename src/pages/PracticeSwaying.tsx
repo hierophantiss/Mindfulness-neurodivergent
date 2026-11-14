@@ -196,7 +196,7 @@ export default function PracticeSwaying() {
       >
         {/* The scene steps 12px into the page's margin on each side, like the other animation windows. */}
         <div className="w-[calc(100%+24px)] max-w-[600px] relative pointer-events-none">
-          <SwayingHero tickCount={isPlaying ? tickCount : 0} tempo={tempo} />
+          <SwayingHero tickCount={isPlaying ? tickCount : 0} tempo={tempo} active={isPlaying} />
           
           {/* Subtle Breathing Label overlaying the hero */}
           {isPlaying && (
