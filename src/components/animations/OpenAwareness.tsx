@@ -182,71 +182,73 @@ export default function OpenAwareness() {
       });
     }
 
+    // The person seen from straight above, as in Chapter 3 (AttentionBeam's
+    // TopFigure): hood, shoulders and the tops of the arms in the hoodie, the
+    // fronts of the feet; forward is up. The head's middle is at (0, -3) of
+    // this scene's units, where the gravity axis shows as a point of light.
+    const FOOT = new Path2D('M -2.6 1.6 C -2.8 -2.2 -1.6 -4.4 0 -4.4 C 1.6 -4.4 2.8 -2.2 2.6 1.6 Z');
+    const BODY = new Path2D('M -21 1.5 C -21 -4.5 -16 -7 -9 -7.4 L 9 -7.4 C 16 -7 21 -4.5 21 1.5 C 21 6.8 16 9.6 9 10 L -9 10 C -16 9.6 -21 6.8 -21 1.5 Z');
+    const HOOD_OPENING = new Path2D('M -5.8 -5.4 Q 0 -10.6 5.8 -5.4 Q 0 -7.6 -5.8 -5.4 Z');
     const drawTopBody = (x: number, y: number, scale: number, alpha: number, lightLevel: number, transparent = 1) => {
       ctx.save();
       ctx.translate(x, y);
       ctx.scale(scale, scale);
       ctx.globalAlpha = alpha * transparent;
 
-      // Shoulders
-      ctx.fillStyle = `rgba(180,170,155,${0.08 * transparent})`;
-      ctx.beginPath();
-      ctx.ellipse(0, 8, 28, 18, 0, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.strokeStyle = `rgba(200,190,175,${0.5 * transparent})`;
-      ctx.lineWidth = 1.8;
-      ctx.stroke();
-
-      // Arms
-      ctx.strokeStyle = `rgba(200,190,175,${0.4 * transparent})`;
-      ctx.lineWidth = 1.5;
-      ctx.beginPath(); ctx.moveTo(-26, 4); ctx.quadraticCurveTo(-30, -12, -15, -18); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(26, 4); ctx.quadraticCurveTo(30, -12, 15, -18); ctx.stroke();
-      
-      // Hands
-      ctx.beginPath(); ctx.arc(-14, -18, 3, 0, Math.PI * 2); ctx.stroke();
-      ctx.beginPath(); ctx.arc(14, -18, 3, 0, Math.PI * 2); ctx.stroke();
-
-      // Head
-      const headR = 14;
+      // The light round the head, when there is some
       if (lightLevel > 0) {
-        const hg = ctx.createRadialGradient(0, -3, 0, 0, -3, headR * 2 + lightLevel * 20);
-        hg.addColorStop(0, `rgba(140,200,220,${alpha * lightLevel * 0.2 * transparent})`);
-        hg.addColorStop(0.5, `rgba(120,180,200,${alpha * lightLevel * 0.08 * transparent})`);
+        const r = 28 + lightLevel * 20;
+        const hg = ctx.createRadialGradient(0, -3, 0, 0, -3, r);
+        hg.addColorStop(0, `rgba(140,200,220,${lightLevel * 0.2})`);
+        hg.addColorStop(0.5, `rgba(120,180,200,${lightLevel * 0.08})`);
         hg.addColorStop(1, 'rgba(120,180,200,0)');
         ctx.fillStyle = hg;
-        ctx.beginPath(); ctx.arc(0, -3, headR * 2 + lightLevel * 20, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(0, -3, r, 0, Math.PI * 2); ctx.fill();
       }
-      
-      ctx.fillStyle = `rgba(200,190,170,${0.15 * transparent})`;
-      ctx.beginPath(); ctx.arc(0, -3, headR, 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = `rgba(210,200,185,${0.7 * transparent})`;
-      ctx.lineWidth = 2; ctx.stroke();
 
-      // Hair
-      ctx.strokeStyle = `rgba(150,140,120,${0.3 * transparent})`;
-      ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(0, -3 - headR); ctx.lineTo(0, -3 + 4); ctx.stroke();
+      ctx.translate(0, -3);
+      ctx.scale(1.35, 1.35);
+      // A soft shadow on the ground, a little behind
+      const sh = ctx.createRadialGradient(1.5, 5, 0, 1.5, 5, 25);
+      sh.addColorStop(0, 'rgba(0,0,0,0.35)'); sh.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = sh;
+      ctx.beginPath(); ctx.ellipse(1.5, 5, 25, 15, 0, 0, Math.PI * 2); ctx.fill();
+      // The feet: only the front of each shows, a little turned out
+      for (const s of [-1, 1]) {
+        ctx.save();
+        ctx.translate(s * 6.2, -11.2); ctx.rotate((s * 14 * Math.PI) / 180);
+        ctx.fillStyle = '#e5bda3'; ctx.fill(FOOT);
+        ctx.fillStyle = '#d9b197';
+        [-1.6, -0.5, 0.5, 1.5].forEach((tx, i) => { ctx.beginPath(); ctx.arc(tx * s, -3.6 + Math.abs(tx) * 0.3, 0.55 - i * 0.06, 0, Math.PI * 2); ctx.fill(); });
+        ctx.restore();
+      }
+      // Shoulders, back and the tops of the arms, in the hoodie
+      const hg2 = ctx.createLinearGradient(0, -7.4, 0, 10);
+      hg2.addColorStop(0, '#425547'); hg2.addColorStop(1, '#2c392f');
+      ctx.fillStyle = hg2; ctx.fill(BODY);
+      ctx.strokeStyle = '#1b241d'; ctx.lineWidth = 0.45; ctx.stroke(BODY);
+      ctx.globalAlpha = alpha * transparent * 0.6;
+      for (const s of [-1, 1]) { ctx.beginPath(); ctx.moveTo(s * 14.5, -6); ctx.bezierCurveTo(s * 15.6, -1.5, s * 15.6, 4.5, s * 14.5, 9); ctx.stroke(); }
+      ctx.globalAlpha = alpha * transparent;
+      // The hood, its seam, and the opening at the front
+      ctx.beginPath(); ctx.ellipse(0, 0.6, 8.6, 9.6, 0, 0, Math.PI * 2);
+      ctx.fillStyle = '#3c4e40'; ctx.fill(); ctx.lineWidth = 0.5; ctx.stroke();
+      ctx.globalAlpha = alpha * transparent * 0.45;
+      ctx.fillStyle = '#4a5f50'; ctx.beginPath(); ctx.ellipse(-2.4, -0.6, 4.2, 5.6, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.globalAlpha = alpha * transparent * 0.5;
+      ctx.beginPath(); ctx.moveTo(0, -5.6); ctx.lineTo(0, 10); ctx.stroke();
+      ctx.globalAlpha = alpha * transparent;
+      ctx.fillStyle = '#222d25'; ctx.fill(HOOD_OPENING);
 
-      // Nose
-      ctx.fillStyle = `rgba(210,200,185,${0.4 * transparent})`;
-      ctx.beginPath(); ctx.moveTo(-3, -3 - headR + 2); ctx.lineTo(3, -3 - headR + 2); ctx.lineTo(0, -3 - headR - 4); ctx.closePath(); ctx.fill();
-
-      // Ears
-      ctx.fillStyle = `rgba(200,190,175,${0.2 * transparent})`;
-      ctx.beginPath(); ctx.ellipse(-headR - 2, -3, 3, 5, 0, 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = `rgba(210,200,185,${0.4 * transparent})`; ctx.lineWidth = 1; ctx.stroke();
-      ctx.beginPath(); ctx.ellipse(headR + 2, -3, 3, 5, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-
-      // Gravity axis
+      // The gravity axis, seen from above: a point of light at the crown
       if (lightLevel > 0) {
-        const ag = ctx.createRadialGradient(0, -3, 0, 0, -3, 5 + lightLevel * 3);
-        ag.addColorStop(0, `rgba(220,210,180,${alpha * lightLevel * 0.8 * transparent})`);
-        ag.addColorStop(1, `rgba(220,210,180,0)`);
+        const ag = ctx.createRadialGradient(0, 0.6, 0, 0, 0.6, (5 + lightLevel * 3) / 1.35);
+        ag.addColorStop(0, `rgba(220,210,180,${lightLevel * 0.8})`);
+        ag.addColorStop(1, 'rgba(220,210,180,0)');
         ctx.fillStyle = ag;
-        ctx.beginPath(); ctx.arc(0, -3, 5 + lightLevel * 3, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = `rgba(240,230,200,${alpha * lightLevel * 0.9 * transparent})`;
-        ctx.beginPath(); ctx.arc(0, -3, 2, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(0, 0.6, (5 + lightLevel * 3) / 1.35, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = `rgba(240,230,200,${lightLevel * 0.9})`;
+        ctx.beginPath(); ctx.arc(0, 0.6, 1.5, 0, Math.PI * 2); ctx.fill();
       }
 
       ctx.restore();
