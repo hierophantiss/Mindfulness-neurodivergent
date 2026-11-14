@@ -928,14 +928,34 @@ export default function TaiChiHero({
     hR = { x: 400 - hLf.x, y: hLf.y };
     rightHandRotation = -2;
   }
-  // Seated: the hands rest in the lap, one in the other, the elbows soft by the sides.
+  // Seated: the hands rest on the knees, the arms long and soft, the elbows a
+  // little out. When the body leans (sway, turning at the hips) the hands stay
+  // on the knees and the arms follow the shoulders.
   if (seated) {
-    eLf = { x: 181, y: 221.5 };
-    hLf = { x: 193, y: 231.5 };
-    leftRot = -70;
-    eR = { x: 400 - eLf.x, y: eLf.y };
-    hR = { x: 400 - hLf.x, y: hLf.y };
-    rightHandRotation = 70;
+    const turn = (p: Pt, deg: number): Pt => {
+      const r = (deg * Math.PI) / 180, dx = p.x - 200, dy = p.y - SEAT_PIVOT;
+      return { x: 200 + dx * Math.cos(r) - dy * Math.sin(r), y: SEAT_PIVOT + dx * Math.sin(r) + dy * Math.cos(r) };
+    };
+    const lean = -sway; // the upper body is drawn turned by this (see tc-upper)
+    const arm = (side: 1 | -1) => {
+      const sh = turn({ x: 200 + side * SHOULDER_HALF, y: SHOULDER_Y }, lean); // where the shoulder is now
+      let w: Pt = { x: 200 + side * 24, y: 236 }; // the wrist, at the knee
+      let dx = w.x - sh.x, dy = w.y - sh.y, d = Math.hypot(dx, dy);
+      const reach = UPPER_ARM + FOREARM - 0.05;
+      if (d > reach) { w = { x: sh.x + (dx * reach) / d, y: sh.y + (dy * reach) / d }; dx = w.x - sh.x; dy = w.y - sh.y; d = reach; }
+      const A = Math.acos(Math.max(-1, Math.min(1, (UPPER_ARM ** 2 + d * d - FOREARM ** 2) / (2 * UPPER_ARM * d))));
+      const phi = Math.atan2(dy, dx);
+      const e1 = { x: sh.x + UPPER_ARM * Math.cos(phi + A), y: sh.y + UPPER_ARM * Math.sin(phi + A) };
+      const e2 = { x: sh.x + UPPER_ARM * Math.cos(phi - A), y: sh.y + UPPER_ARM * Math.sin(phi - A) };
+      const elbow = side * (e1.x - e2.x) > 0 ? e1 : e2; // the elbow out to the side
+      // Back into the upper body's own (turned) drawing.
+      return { s: turn(sh, -lean), e: turn(elbow, -lean), h: turn(w, -lean) };
+    };
+    const L = arm(-1), R = arm(1);
+    sL.x = L.s.x; sL.y = L.s.y; sR.x = R.s.x; sR.y = R.s.y;
+    eLf = L.e; hLf = L.h; eR = R.e; hR = R.h;
+    leftRot = 14 - lean;
+    rightHandRotation = -14 - lean;
   }
 
   // ── Light trails: each palm leaves a soft trail that fades in under a
