@@ -103,7 +103,7 @@ function breathAt(clock: number) {
 // The figure stands still: in this picture the breath shows as light, the
 // weight going down the axis into the feet with each exhale.
 const Figure = memo(function Figure() {
-  return <TaiChiHero bare figureOnly idle breathForce={0} isRising={false} breathStateText="" movementType="5-5" />;
+  return <TaiChiHero bare figureOnly idle stance="natural" breathForce={0} isRising={false} breathStateText="" movementType="5-5" />;
 });
 
 export default function GravityThoughts() {

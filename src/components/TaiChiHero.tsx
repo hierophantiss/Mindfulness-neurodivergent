@@ -118,8 +118,8 @@ function hoodiePath(cx: number, top: number, hem: number): string {
   const s = Math.max(0.12, (hem - top) / (HEM_Y - SHOULDER_Y)); // shorter in the bow
   const y = (k: number) => top + k * s;
   return mirrored(cx, [
-    { x: 4.6, y: y(-3) }, { x: 9.5, y: y(-2.5) }, { x: 14, y: y(-1.8) }, { x: 16.6, y: y(1) },
-    { x: 15.4, y: y(9) }, { x: 13.2, y: y(17) }, { x: 12.3, y: y(24) }, { x: 12.6, y: hem - 2.6 }, { x: 12.4, y: hem },
+    { x: 4.6, y: y(-3) }, { x: 9.2, y: y(-2.5) }, { x: 13.2, y: y(-1.6) }, { x: 15.4, y: y(1.2) },
+    { x: 14, y: y(9) }, { x: 12, y: y(17) }, { x: 11.2, y: y(24) }, { x: 11.6, y: hem - 2.6 }, { x: 11.5, y: hem },
   ]);
 }
 /**
@@ -130,7 +130,7 @@ function hoodiePath(cx: number, top: number, hem: number): string {
 function legPath(side: 1 | -1, top: number, sink: number): string {
   const k = sink * 0.4, kneeY = KNEE_Y + sink * 0.45;
   const pts: Pt[] = [
-    { x: 12.3, y: top }, { x: 11.6, y: (top + kneeY) / 2 }, { x: 9.9 + k, y: kneeY },
+    { x: 11.5, y: top }, { x: 11, y: (top + kneeY) / 2 }, { x: 9.9 + k, y: kneeY },
     { x: 10.1 + k * 0.5, y: (kneeY + 279) / 2 - 1 }, { x: 9.6, y: 279.5 },
   ];
   const inner: Pt[] = [
@@ -229,6 +229,9 @@ interface TaiChiHeroProps {
   /** Only the figure, without its earth, axis or the light under the feet: for
    *  a picture that draws its own ground (Chapter 1's "Gravity and thoughts"). */
   figureOnly?: boolean;
+  /** "natural": standing at ease, the arms hanging close to the body (the
+   *  chapters' animations); the practices keep the Tai Chi stance. */
+  stance?: "taichi" | "natural";
 }
 
 export default function TaiChiHero({
@@ -240,7 +243,9 @@ export default function TaiChiHero({
   idle = false,
   bare = false,
   figureOnly = false,
+  stance = "taichi",
 }: TaiChiHeroProps) {
+  const natural = stance === "natural";
   // The Tai Chi flows move as the 5-5 Sync (from Theodoros's video), in their own rhythms.
   const movementType = givenType === "taichi" ? "5-5" : givenType;
   // Generate a list of randomized cosmic stars (twinkling)
@@ -313,7 +318,7 @@ export default function TaiChiHero({
   // hips drop) and rises again with the inhale; the feet stay where they are.
   // Not in the bow (it folds) nor in Cloud Hands (the weight goes side to side).
   const SINK = 3;
-  const sinkY = (movementType === "5-5" || movementType === "be-like-a-flower-5-5" || movementType === "qigong-lifting-sky"
+  const sinkY = natural ? 0 : (movementType === "5-5" || movementType === "be-like-a-flower-5-5" || movementType === "qigong-lifting-sky"
     || movementType === "lotus-bloom-5-5" || movementType === "lotus") ? SINK * (1 - bf) : 0;
 
   // Base shoulders
@@ -857,6 +862,24 @@ export default function TaiChiHero({
     sL.x = shL.x; sR.x = shR.x;
   }
 
+  // Standing at ease (not Tai Chi): the arms hang by the sides, close to the
+  // body, the elbows soft, the fingers down; the same on both sides.
+  if (natural) {
+    const down = (from: Pt, len: number, deg: number): Pt => ({
+      x: from.x + len * Math.sin((deg * Math.PI) / 180),
+      y: from.y + len * Math.cos((deg * Math.PI) / 180),
+    });
+    // The shoulders a little in, as they sit when the arms rest (the joints
+    // of the practices stay where they are).
+    sL.x = 200 - (SHOULDER_HALF - 1.5); sR.x = 200 + (SHOULDER_HALF - 1.5);
+    eLf = down(sL, UPPER_ARM, -5);
+    hLf = down(eLf, FOREARM, -2);
+    leftRot = 2;
+    eR = { x: 400 - eLf.x, y: eLf.y };
+    hR = { x: 400 - hLf.x, y: hLf.y };
+    rightHandRotation = -2;
+  }
+
   // ── Light trails: each palm leaves a soft trail that fades in under a
   // second, so the path of the movement can be seen (the arc of the 5-5, the
   // Lotus's V, the circles of Cloud Hands). Kept as the last moments' palms.
@@ -1174,7 +1197,7 @@ export default function TaiChiHero({
             {/* The shoulders slope up to the neck, the waist comes in a little; a light edge from behind */}
             <path stroke="#a7f3d0" strokeOpacity={bare ? 0 : 0.22} strokeWidth={0.7} strokeLinejoin="round" d={hoodiePath(200, SHOULDER_Y + torsoBendY + leanBackY, HEM_Y)} />
             {/* The ribbed band at the hem */}
-            <path d={`M 187.5 ${HEM_Y - 2.6} L 212.5 ${HEM_Y - 2.6} L 212.4 ${HEM_Y} L 187.6 ${HEM_Y} Z`} fill="#2a372d" opacity={0.85} />
+            <path d={`M 188.4 ${HEM_Y - 2.6} L 211.6 ${HEM_Y - 2.6} L 211.5 ${HEM_Y} L 188.5 ${HEM_Y} Z`} fill="#2a372d" opacity={0.85} />
             {/* Kangaroo Pocket */}
             <path
               d={`M 191 ${HEM_Y - 14 + torsoBendY * 0.35 + leanBackY * 0.35} L 209 ${HEM_Y - 14 + torsoBendY * 0.35 + leanBackY * 0.35} L 210.5 ${HEM_Y - 3} L 189.5 ${HEM_Y - 3} Z`}

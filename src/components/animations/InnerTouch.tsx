@@ -91,7 +91,7 @@ const LOOKS: Look[] = [0, 1, 2, 3, 4].map(i => ({
 
 // The figure stands still; the breath shows as light.
 const Figure = memo(function Figure() {
-  return <TaiChiHero bare figureOnly idle breathForce={0} isRising={false} breathStateText="" movementType="5-5" />;
+  return <TaiChiHero bare figureOnly idle stance="natural" breathForce={0} isRising={false} breathStateText="" movementType="5-5" />;
 });
 
 export default function InnerTouch() {
