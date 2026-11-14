@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useMemo, useRef } from "react";
+import { memo, useMemo, useRef } from "react";
 import { motion } from "motion/react";
 
 // The head (with its hood), smaller than first drawn: it read too big for the
@@ -162,6 +162,47 @@ function sleeveParts(s: Pt, e: Pt, h: Pt, grow = 0): string[] {
 const FOOT_X = 6.5;
 const FOOT_PATH = 'M -2.7 -1 L 2.7 -1 C 2.9 1.4 3.3 3 4.4 4.3 C 5.3 5.3 5.6 6.1 5.2 6.7 C 4.8 7.2 3.8 7.3 2.8 7.3 L -2.2 7.3 C -3.4 7.3 -4 6.8 -3.9 5.9 C -3.8 4.9 -3.1 3.4 -2.7 -1 Z';
 const TOES: [number, number, number][] = [[-2.6, 6.5, 1.3], [-0.4, 6.8, 1.05], [1.4, 6.8, 0.95], [3.0, 6.6, 0.85], [4.3, 6.2, 0.75]];
+
+// Seated cross-legged (the metronome, the swaying): the floor, and the point
+// at the hips the body turns about when it sways.
+const SEAT_FLOOR = 254.5;
+const SEAT_PIVOT = 244;
+/** The crossed legs, seen from the front: each shin crosses to the other
+ *  side, its foot resting under the other knee; the left shin in front. The
+ *  thighs come down from the hips to the knees, which rest near the floor. */
+const SeatedLegs = memo(function SeatedLegs() {
+  const X = (s: number, x: number) => f2(200 + s * x);
+  // A thigh, from the hip down to the knee near the floor (behind the shins).
+  const thigh = (s: 1 | -1) => `M ${X(s, 0.6)} 237 L ${X(s, 12.4)} 236 C ${X(s, 20)} 238 ${X(s, 27)} 240.5 ${X(s, 30.5)} 245 C ${X(s, 32.2)} 248 ${X(s, 31.2)} 252.2 ${X(s, 27.4)} 252.8 C ${X(s, 20)} 251.8 ${X(s, 8)} 250 ${X(s, 0.6)} 249.4 Z`;
+  // A shin, from the knee across to the ankle on the other side (in front of the thighs).
+  const shin = (s: 1 | -1) => `M ${X(s, 27)} 246.6 C ${X(s, 14)} 246.8 ${X(-s, 2)} 247.8 ${X(-s, 12)} 248.6 L ${X(-s, 12.4)} 253.8 C ${X(-s, 2)} 254.1 ${X(s, 14)} 254.2 ${X(s, 27.6)} 253.4 C ${X(s, 30)} 252.6 ${X(s, 29.8)} 247.4 ${X(s, 27)} 246.6 Z`;
+  // A foot, past the ankle, resting under the other knee: the sole a little up, the toes outward.
+  const foot = (s: 1 | -1) => (
+    <g key={`f${s}`}>
+      <path d={`M ${X(-s, 12.2)} 248.4 C ${X(-s, 17)} 247.4 ${X(-s, 22.5)} 247.6 ${X(-s, 25.2)} 249.4 C ${X(-s, 26.4)} 250.6 ${X(-s, 25.8)} 252.6 ${X(-s, 23.6)} 253.2 C ${X(-s, 19)} 254 ${X(-s, 15)} 253.9 ${X(-s, 12.2)} 253.4 Z`} fill="#e5bda3" />
+      <path d={`M ${X(-s, 14)} 249.6 C ${X(-s, 18)} 249 ${X(-s, 22)} 249.2 ${X(-s, 24)} 250.4`} stroke="#d9b197" strokeWidth={1.1} fill="none" strokeLinecap="round" />
+      {[0, 1, 2, 3].map(k => <circle key={k} cx={X(-s, 25 - k * 0.25)} cy={249.6 + k * 0.95} r={0.6 - k * 0.07} fill="#d9b197" />)}
+    </g>
+  );
+  return (
+    <g id="tc-seated-legs">
+      <g fill="url(#tc-pants-shade)" stroke="#1b241d" strokeWidth="0.5">
+        {([-1, 1] as const).map(s => <path key={`t${s}`} d={thigh(s)} />)}
+        {([-1, 1] as const).map(s => (
+          <path key={`k${s}`} fill="none" strokeOpacity={0.6} d={`M ${X(s, 9)} 240.2 q ${s * 4} 0.6 ${s * 8} 2.2`} />
+        ))}
+        {/* the right knee's shin behind, the left knee's in front */}
+        <path d={shin(1)} />
+        <path d={shin(-1)} />
+        <path fill="none" strokeOpacity={0.55} d={`M ${X(-1, 24)} 248.2 q -1.8 2 -1.4 4.6 M ${X(1, 24)} 248.2 q 1.8 2 1.4 4.6`} />
+      </g>
+      {/* both feet show, tucked under the knees, the same on each side */}
+      {foot(1)}
+      {foot(-1)}
+      {([-1, 1] as const).map(s => <rect key={`c${s}`} x={s < 0 ? f2(200 - 12.4 - 2.4) : f2(200 + 12.4 - 0.2)} y={248.4} width={2.6} height={5.6} rx={0.9} fill="#1b241d" />)}
+    </g>
+  );
+});
 const dist2 = (a: Pt, b: Pt) => Math.hypot(a.x - b.x, a.y - b.y);
 /**
  * The elbow has two possible places for a given hand. It stays on the side it
@@ -232,6 +273,12 @@ interface TaiChiHeroProps {
   /** "natural": standing at ease, the arms hanging close to the body (the
    *  chapters' animations); the practices keep the Tai Chi stance. */
   stance?: "taichi" | "natural";
+  /** Seated cross-legged on the floor, the hands resting in the lap (the
+   *  metronome, the swaying): the same person. */
+  seated?: boolean;
+  /** Seated: how far the body leans, in degrees (+ to the person's left, as
+   *  seen, to the right), turning at the hips; the legs stay where they are. */
+  sway?: number;
 }
 
 export default function TaiChiHero({
@@ -244,8 +291,10 @@ export default function TaiChiHero({
   bare = false,
   figureOnly = false,
   stance = "taichi",
+  seated = false,
+  sway = 0,
 }: TaiChiHeroProps) {
-  const natural = stance === "natural";
+  const natural = stance === "natural" || seated;
   // The Tai Chi flows move as the 5-5 Sync (from Theodoros's video), in their own rhythms.
   const movementType = givenType === "taichi" ? "5-5" : givenType;
   // Generate a list of randomized cosmic stars (twinkling)
@@ -879,6 +928,15 @@ export default function TaiChiHero({
     hR = { x: 400 - hLf.x, y: hLf.y };
     rightHandRotation = -2;
   }
+  // Seated: the hands rest in the lap, one in the other, the elbows soft by the sides.
+  if (seated) {
+    eLf = { x: 181, y: 221.5 };
+    hLf = { x: 193, y: 231.5 };
+    leftRot = -70;
+    eR = { x: 400 - eLf.x, y: eLf.y };
+    hR = { x: 400 - hLf.x, y: hLf.y };
+    rightHandRotation = 70;
+  }
 
   // ── Light trails: each palm leaves a soft trail that fades in under a
   // second, so the path of the movement can be seen (the arc of the 5-5, the
@@ -904,9 +962,11 @@ export default function TaiChiHero({
   // The figure and the earth, framed: in the practice picture closer than at
   // first (the figure about two thirds of the height, the open arms still in),
   // feet a little lower; small pictures (bare) keep their framing.
+  // Seated, the floor is at SEAT_FLOOR rather than under the standing soles.
+  const floorY = seated ? SEAT_FLOOR : 283;
   const sceneTf = bare
-    ? "translate(200, 320) scale(1.8) translate(-200, -283)"
-    : "translate(200, 336) scale(2.3) translate(-200, -283)";
+    ? `translate(200, 320) scale(1.8) translate(-200, -${floorY})`
+    : `translate(200, 336) scale(2.3) translate(-200, -${floorY})`;
 
   // Drawn once and kept (see the layers below).
   const staticSky = useMemo(() => (
@@ -1164,11 +1224,14 @@ export default function TaiChiHero({
             <ellipse cx={200 + bodyShift} cy={226 + sinkY} rx={42} ry={66} fill="url(#tc-backlight)" opacity={0.35 + 0.4 * bf} />
           )}
           {/* The figure stands on the earth: a soft shadow under the feet */}
-          {!figureOnly && <ellipse cx={200} cy={289} rx={17} ry={2.6} fill="url(#tc-foot-shadow)" />}
+          {!figureOnly && (seated
+            ? <ellipse cx={200} cy={SEAT_FLOOR + 0.6} rx={36} ry={3} fill="url(#tc-foot-shadow)" />
+            : <ellipse cx={200} cy={289} rx={17} ry={2.6} fill="url(#tc-foot-shadow)" />)}
+          {seated && <SeatedLegs />}
 
           {/* CHARACTER / HERO MODEL: drawn from one half and its mirror, so both sides match */}
           {/* Bare feet on the earth */}
-          {([-1, 1] as const).map(side => (
+          {!seated && ([-1, 1] as const).map(side => (
             <g key={side} id={side < 0 ? 'tc-left-foot' : 'tc-right-foot'} transform={`translate(${200 + side * FOOT_X}, 283) scale(${side}, 1)`}>
               <path d={FOOT_PATH} fill="#e5bda3" />
               <path d="M -2.7 -1 L 2.7 -1 L 2.8 0.6 L -2.8 0.6 Z" fill="#d9b197" />
@@ -1177,7 +1240,7 @@ export default function TaiChiHero({
           ))}
 
           {/* LEGS: joggers in the meditator's green, so it is the same person everywhere */}
-          <g id="tc-legs" fill="url(#tc-pants-shade)" stroke="#1b241d" strokeWidth="0.5" transform={bodyShift ? `translate(0, 283) skewX(${(-Math.atan2(bodyShift, 38) * 180) / Math.PI}) translate(0, -283)` : undefined}>
+          {!seated && <g id="tc-legs" fill="url(#tc-pants-shade)" stroke="#1b241d" strokeWidth="0.5" transform={bodyShift ? `translate(0, 283) skewX(${(-Math.atan2(bodyShift, 38) * 180) / Math.PI}) translate(0, -283)` : undefined}>
             {([-1, 1] as const).map(side => <path key={side} d={legPath(side, HEM_Y - 3 + sinkY, sinkY)} />)}
             {/* Soft folds at the knees, and where the cuff gathers */}
             {([-1, 1] as const).map(side => {
@@ -1189,9 +1252,9 @@ export default function TaiChiHero({
             })}
             {/* Cuffs */}
             {([-1, 1] as const).map(side => <rect key={side} x={200 + side * FOOT_X - 3.3} y={279} width={6.6} height={4} rx={1.4} fill="#1b241d" />)}
-          </g>
+          </g>}
 
-          <g id="tc-upper" transform={sinkY ? `translate(0, ${sinkY})` : undefined}>
+          <g id="tc-upper" transform={seated ? (sway ? `rotate(${-sway} 200 ${SEAT_PIVOT})` : undefined) : sinkY ? `translate(0, ${sinkY})` : undefined}>
           {/* TORSO / HOODIE */}
           <g id="tc-torso" fill="url(#tc-hoodie-shade)" transform={bodyShift ? `translate(${bodyShift}, 0)` : undefined}>
             {/* The shoulders slope up to the neck, the waist comes in a little; a light edge from behind */}
