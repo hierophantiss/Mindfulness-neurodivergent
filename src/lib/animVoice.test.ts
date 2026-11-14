@@ -61,4 +61,12 @@ describe('the voice of the animations', () => {
       expect(g[lang].flat().some(st => st.breath)).toBe(false);
     }
   });
+
+  it('guides the Samatha page (Chapter 3) through its ten phases', () => {
+    const g = (narration as unknown as Record<string, Record<string, { say?: string; breath?: string }[][]>>).samatha;
+    for (const lang of ['el', 'en']) {
+      expect(g[lang]).toHaveLength(10);
+      for (const scene of g[lang]) expect(scene.some(st => st.say)).toBe(true);
+    }
+  });
 });

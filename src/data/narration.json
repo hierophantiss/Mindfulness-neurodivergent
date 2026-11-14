@@ -269,5 +269,107 @@
         { "rest": 3000 }
       ]
     ]
+  },
+  "samatha": {
+    "el": [
+      [
+        { "say": "Νιώσε τον άξονα της βαρύτητας, από το κεφάλι ως τα πέλματα." },
+        { "pause": 900 },
+        { "say": "Γύρω σου, ένας κύκλος φροντίδας." },
+        { "rest": 2200 }
+      ],
+      [
+        { "say": "Μια σκέψη μπαίνει στη σκηνή." },
+        { "rest": 1400 }
+      ],
+      [
+        { "say": "Η προσοχή πιάνεται πάνω της." },
+        { "rest": 1600 }
+      ],
+      [
+        { "say": "Το βλέπεις, και γυρνάς απαλά στον άξονα." },
+        { "rest": 2200 }
+      ],
+      [
+        { "say": "Τώρα η σκηνή ανοίγει." },
+        { "pause": 700 },
+        { "say": "Χωράνε όλα." },
+        { "rest": 2200 }
+      ],
+      [
+        { "say": "Μια νέα σκέψη αναδύεται." },
+        { "rest": 1400 }
+      ],
+      [
+        { "say": "Σε τραβά μέσα της." },
+        { "rest": 1600 }
+      ],
+      [
+        { "say": "Δεν είσαι αυτή η σκέψη." },
+        { "rest": 1800 }
+      ],
+      [
+        { "say": "Την αφήνεις, και διαλύεται στον χώρο." },
+        { "rest": 2200 }
+      ],
+      [
+        { "say": "Ο άξονας." },
+        { "pause": 700 },
+        { "say": "Ο κύκλος." },
+        { "pause": 700 },
+        { "say": "Είσαι εδώ." },
+        { "rest": 3000 }
+      ]
+    ],
+    "en": [
+      [
+        { "say": "Feel the axis of gravity, from your head to your soles." },
+        { "pause": 900 },
+        { "say": "Around you, a circle of care." },
+        { "rest": 2200 }
+      ],
+      [
+        { "say": "A thought enters the stage." },
+        { "rest": 1400 }
+      ],
+      [
+        { "say": "Attention gets caught on it." },
+        { "rest": 1600 }
+      ],
+      [
+        { "say": "You see it, and come gently back to the axis." },
+        { "rest": 2200 }
+      ],
+      [
+        { "say": "Now the stage opens." },
+        { "pause": 700 },
+        { "say": "Everything fits." },
+        { "rest": 2200 }
+      ],
+      [
+        { "say": "A new thought arises." },
+        { "rest": 1400 }
+      ],
+      [
+        { "say": "It pulls you in." },
+        { "rest": 1600 }
+      ],
+      [
+        { "say": "You are not this thought." },
+        { "rest": 1800 }
+      ],
+      [
+        { "say": "You let it go, and it dissolves into space." },
+        { "rest": 2200 }
+      ],
+      [
+        { "say": "The axis." },
+        { "pause": 700 },
+        { "say": "The circle." },
+        { "pause": 700 },
+        { "say": "You are here." },
+        { "rest": 3000 }
+      ]
+    ]
   }
 }

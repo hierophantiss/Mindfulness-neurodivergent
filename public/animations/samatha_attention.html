@@ -193,6 +193,21 @@ if (lang === 'en') {
 }
 speedEl.oninput = () => { speedMult = parseFloat(speedEl.value); };
 
+// The voice (played by the app around this page, off until the person turns
+// it on): while it guides, it sends the time of the picture, so each phase
+// lasts as long as its words. When it stops, the picture goes on by itself.
+let voiceT = null, voiceAt = 0;
+window.addEventListener('message', (e) => {
+  const d = e.data;
+  if (e.origin !== location.origin || !d || d.type !== 'samatha-voice') return;
+  voiceT = typeof d.t === 'number' ? d.t : null;
+  voiceAt = performance.now();
+  if (voiceT !== null) {
+    document.getElementById('exIntro').classList.add('hidden');
+    if (paused) { paused = false; btnPause.textContent = lang === 'en' ? '⏸ PAUSE' : '⏸ ΠΑΥΣΗ'; lastTime = null; requestAnimationFrame(loop); }
+  }
+});
+
 // Ambient Mind Dust
 const dustParticles = Array.from({ length: 60 }, () => ({
   x: Math.random() * W,
@@ -560,8 +575,9 @@ function loop(ts) {
 
   const dt0 = lastTime === null ? 0 : (ts - lastTime) / 1000;
   lastTime = ts;
-  const dt = dt0 * speedMult;
-  t += dt;
+  let dt = dt0 * speedMult;
+  if (voiceT !== null && performance.now() - voiceAt < 600) { dt = Math.max(0, Math.min(0.1, voiceT - t)); t = voiceT; }
+  else t += dt;
 
   const phase = getPhase(t / speedMult * speedMult);
   const phaseT = getPhaseT(t);
