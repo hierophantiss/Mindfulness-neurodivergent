@@ -48,7 +48,7 @@ const SCENES: Record<Lang, { title: string; caption: string }[]> = {
   ],
 };
 const LAST = 4;
-const DURATION = [16, 14, 13, 16, 16];
+const DURATION = [20, 14, 13, 16, 17];
 
 // Places on the ground: x as a share of the half-width, y as a share of the
 // ground between the person and the top.
@@ -77,10 +77,10 @@ const mix = (a: number, b: number, t: number) => a + (b - a) * t;
 /** Where the beam wants to be: its target, its half-width there (in the person's units), how bright. */
 export function beamGoal(scene: number, t: number): { spot: Spot; half: number; o: number } {
   if (scene === 0) {
-    // On the point; a thought drifts over and the beam goes to it, then back;
-    // then another (the first at 4-8 s, the second at 9.5-13.5).
-    const a1 = ease((t - 4.4) / 1.4) * (1 - ease((t - 6.8) / 1.6));
-    const a2 = ease((t - 9.6) / 1.4) * (1 - ease((t - 12) / 1.6));
+    // On the point; a thought drifts over and the beam goes to it, then back
+    // (5-10.6 s); then another (13-17.2).
+    const a1 = ease((t - 5) / 1.4) * (1 - ease((t - 8.8) / 1.8));
+    const a2 = ease((t - 13) / 1.4) * (1 - ease((t - 15.6) / 1.6));
     const to = a2 > 0 ? PULLS[1] : PULLS[0], away = Math.max(a1, a2);
     return { spot: [mix(POINT[0], to[0], away), mix(POINT[1], to[1], away)], half: 5, o: 0.9 };
   }
@@ -95,8 +95,8 @@ export function beamGoal(scene: number, t: number): { spot: Spot; half: number; 
     const ph = (t / 7) * Math.PI * 2; // the same small orbit, slowly
     return { spot: [LOCK[0] + 0.07 * Math.cos(ph), LOCK[1] + 0.04 * Math.sin(ph)], half: 11, o: 1 };
   }
-  // The way out: the clouds part (3-6 s); the soles (6-9), the breath (9-11); the beam on the point again (11-).
-  const back = ease((t - 11) / 2.5);
+  // The way out: the clouds part (3-6 s); the soles (6.5-), the breath (9.5-), the beam on the point again (12-).
+  const back = ease((t - 12) / 2.5);
   return { spot: back > 0 ? POINT : LOCK, half: back > 0 ? 5 : 11, o: back > 0 ? 0.9 * back : Math.max(0, 1 - ease((t - 3) / 3)) };
 }
 
@@ -304,7 +304,7 @@ export default function AttentionBeam() {
 
     const apply = (dt: number) => {
       // A still picture shows each scene at its telling moment.
-      const STILL = [5.6, 99, 1, 2.5, 99];
+      const STILL = [6.6, 99, 1, 2.5, 99];
       const t = reduceMotion ? STILL[L.scene] : L.clock;
       const target = LOOKS[L.scene];
       const kk = reduceMotion ? 1 : 1 - Math.exp(-dt / 1.3);
@@ -313,8 +313,8 @@ export default function AttentionBeam() {
       const outT = L.scene === 4 ? t : 0;
       // In the way out the clouds part first, then the feet and the breath come back.
       const darkGoal = L.scene === 4 ? 1 - ease((outT - 3) / 3) : target.dark;
-      const groundGoal = L.scene === 4 ? ease((outT - 6) / 2) * 0.85 : target.ground;
-      const chestGoal = L.scene === 4 ? ease((outT - 8.5) / 1.5) * (1 - ease((outT - 12) / 2)) : 0;
+      const groundGoal = L.scene === 4 ? ease((outT - 6.5) / 2) * 0.85 : target.ground;
+      const chestGoal = L.scene === 4 ? ease((outT - 9.5) / 1.5) * (1 - ease((outT - 13) / 2)) : 0;
       lk.dark += (darkGoal - lk.dark) * kk;
       lk.ground += (groundGoal - lk.ground) * kk;
       lk.chest += (chestGoal - lk.chest) * kk;
@@ -372,7 +372,7 @@ export default function AttentionBeam() {
       });
 
       if (pointRef.current) {
-        const on = L.scene === 0 ? 1 : L.scene === 4 ? ease((t - 10.5) / 2) : 0.25;
+        const on = L.scene === 0 ? 1 : L.scene === 4 ? ease((t - 11.5) / 2) : 0.25;
         pointRef.current.style.opacity = String(on);
       }
       if (contactRef.current) contactRef.current.style.opacity = String(lk.ground);
@@ -390,8 +390,8 @@ export default function AttentionBeam() {
         n.style.opacity = String(L.words[i]);
       };
       // The two thoughts of the closed attention drift in from the side, pull, and pass.
-      place(0, [PULLS[0][0] - (L.scene === 0 ? 0.2 * (1 - ease((t - 3) / 2.5)) : 0), PULLS[0][1]], L.scene === 0 ? ease((t - 3.2) / 1.2) * (1 - ease((t - 7.2) / 1.6)) : 0);
-      place(13, [PULLS[1][0] + (L.scene === 0 ? 0.2 * (1 - ease((t - 8.4) / 2.5)) : 0), PULLS[1][1]], L.scene === 0 ? ease((t - 8.6) / 1.2) * (1 - ease((t - 12.4) / 1.6)) : 0);
+      place(0, [PULLS[0][0] - (L.scene === 0 ? 0.2 * (1 - ease((t - 3.6) / 2.5)) : 0), PULLS[0][1]], L.scene === 0 ? ease((t - 3.8) / 1.2) * (1 - ease((t - 9.4) / 1.8)) : 0);
+      place(13, [PULLS[1][0] + (L.scene === 0 ? 0.2 * (1 - ease((t - 11.6) / 2.5)) : 0), PULLS[1][1]], L.scene === 0 ? ease((t - 11.8) / 1.2) * (1 - ease((t - 16) / 1.6)) : 0);
       OPEN_WORDS.forEach((s, j) => {
         const c = (t - 1.2 - j * 1.6) / 5; // each comes and goes in its turn
         const on = L.scene === 1 ? (reduceMotion ? 0.7 : c > 0 ? Math.sin(Math.PI * Math.min(1, c % 1.4)) * 0.75 : 0) : 0;

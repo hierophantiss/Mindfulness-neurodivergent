@@ -215,3 +215,19 @@ test('"Inner touch" (Chapter 2) plays its five scenes, with no accessibility pro
   const r = await new AxeBuilder({ page: page as never }).include('[role="group"]').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
   expect(r.violations.map(v => `${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
 });
+
+test('"The four forms of attention" (Chapter 3) plays its five scenes, with no accessibility problems', async ({ page }) => {
+  await page.goto('/el/chapters/3?p=2', { waitUntil: 'networkidle' });
+  const anim = page.getByRole('group', { name: 'Οι τέσσερις μορφές προσοχής' });
+  await anim.scrollIntoViewIfNeeded();
+  await expect(anim.getByRole('heading', { name: 'Κλειστή προσοχή' })).toBeVisible();
+  await anim.getByRole('button', { name: /Ξεκίνα/ }).click();
+  await expect(anim.getByRole('button', { name: 'Παύση' }).last()).toBeVisible();
+  await anim.getByRole('button', { name: 'Σκηνή 4: Αγκυλωμένη προσοχή' }).click();
+  await expect(anim.getByRole('heading', { name: 'Αγκυλωμένη προσοχή' })).toBeVisible();
+  await anim.getByRole('button', { name: 'Επόμενη σκηνή' }).click();
+  await expect(anim.getByRole('heading', { name: 'Η έξοδος' })).toBeVisible();
+  await expect(anim.getByRole('button', { name: 'Επόμενη σκηνή' })).toBeDisabled();
+  const r = await new AxeBuilder({ page: page as never }).include('[role="group"]').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+  expect(r.violations.map(v => `${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
+});

@@ -163,5 +163,111 @@
         { "rest": 4000 }
       ]
     ]
+  },
+  "attention": {
+    "el": [
+      [
+        { "say": "Κράτα το βλέμμα σε ένα σημείο μπροστά σου." },
+        { "pause": 1300 },
+        { "say": "Η προσοχή φεύγει σε μια σκέψη." },
+        { "pause": 700 },
+        { "say": "Τη βλέπεις." },
+        { "pause": 500 },
+        { "say": "Και γυρνάς απαλά στο σημείο." },
+        { "pause": 1200 },
+        { "say": "Ξανά φεύγει, ξανά γυρνάς." },
+        { "pause": 1000 },
+        { "say": "Η επιστροφή είναι η ίδια η άσκηση." },
+        { "rest": 2000 }
+      ],
+      [
+        { "say": "Τώρα άφησε την προσοχή να ανοίξει γύρω σου, σαν κύκλος." },
+        { "pause": 1500 },
+        { "say": "Ήχοι, αισθήσεις, σκέψεις." },
+        { "pause": 1200 },
+        { "say": "Όλα χωράνε στην ίδια επίγνωση." },
+        { "rest": 4000 }
+      ],
+      [
+        { "say": "Κάποτε η προσοχή πηδά από κλαδί σε κλαδί." },
+        { "pause": 2500 },
+        { "say": "Δεν τη μαλώνεις." },
+        { "pause": 900 },
+        { "say": "Τη φέρνεις πίσω απαλά." },
+        { "rest": 3500 }
+      ],
+      [
+        { "say": "Κι άλλοτε κολλά." },
+        { "pause": 1000 },
+        { "say": "Σε ένα ειδικό ενδιαφέρον, σε ένα σενάριο." },
+        { "pause": 1500 },
+        { "say": "Οι σκέψεις σκεπάζουν την όραση, και μένει μόνο ένα τούνελ." },
+        { "rest": 4000 }
+      ],
+      [
+        { "say": "Βάλε μια ταμπέλα: σενάριο." },
+        { "pause": 900 },
+        { "say": "Δεν χρειάζεται να κερδίσεις τη συζήτηση." },
+        { "pause": 900 },
+        { "say": "Νιώσε τα πέλματα." },
+        { "pause": 1000 },
+        { "say": "Την αναπνοή." },
+        { "pause": 1000 },
+        { "say": "Και γύρνα στο σταθερό σημείο." },
+        { "rest": 3000 }
+      ]
+    ],
+    "en": [
+      [
+        { "say": "Keep your gaze on one point in front of you." },
+        { "pause": 1300 },
+        { "say": "Your attention drifts off to a thought." },
+        { "pause": 700 },
+        { "say": "You see it." },
+        { "pause": 500 },
+        { "say": "And you come gently back to the point." },
+        { "pause": 1200 },
+        { "say": "Off again, back again." },
+        { "pause": 1000 },
+        { "say": "The return is the practice itself." },
+        { "rest": 2000 }
+      ],
+      [
+        { "say": "Now let your attention open around you, like a circle." },
+        { "pause": 1500 },
+        { "say": "Sounds, sensations, thoughts." },
+        { "pause": 1200 },
+        { "say": "Everything fits in the same awareness." },
+        { "rest": 4000 }
+      ],
+      [
+        { "say": "Sometimes attention leaps from branch to branch." },
+        { "pause": 2500 },
+        { "say": "You don't scold it." },
+        { "pause": 900 },
+        { "say": "You bring it gently back." },
+        { "rest": 3500 }
+      ],
+      [
+        { "say": "And sometimes it gets stuck." },
+        { "pause": 1000 },
+        { "say": "On a special interest, on a scenario." },
+        { "pause": 1500 },
+        { "say": "Thoughts cover what you see, and only a tunnel is left." },
+        { "rest": 4000 }
+      ],
+      [
+        { "say": "Put a label on it: scenario." },
+        { "pause": 900 },
+        { "say": "You don't need to win the argument." },
+        { "pause": 900 },
+        { "say": "Feel your soles." },
+        { "pause": 1000 },
+        { "say": "Your breath." },
+        { "pause": 1000 },
+        { "say": "And come back to the steady point." },
+        { "rest": 3000 }
+      ]
+    ]
   }
 }

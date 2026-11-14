@@ -52,4 +52,13 @@ describe('the voice of the animations', () => {
       expect(g[lang].flat().some(st => st.breath)).toBe(false);
     }
   });
+
+  it('guides "The four forms of attention" (Chapter 3) through five scenes, never setting the breath', () => {
+    const g = (narration as unknown as Record<string, Record<string, { say?: string; breath?: string }[][]>>).attention;
+    for (const lang of ['el', 'en']) {
+      expect(g[lang]).toHaveLength(5);
+      for (const scene of g[lang]) expect(scene.some(st => st.say)).toBe(true);
+      expect(g[lang].flat().some(st => st.breath)).toBe(false);
+    }
+  });
 });
