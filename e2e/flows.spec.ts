@@ -199,3 +199,19 @@ test('"Gravity and thoughts" (Chapter 1) plays its four scenes, with no accessib
   const r = await new AxeBuilder({ page: page as never }).include('[role="group"]').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
   expect(r.violations.map(v => `${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
 });
+
+test('"Inner touch" (Chapter 2) plays its five scenes, with no accessibility problems', async ({ page }) => {
+  await page.goto('/el/chapters/2?p=3', { waitUntil: 'networkidle' });
+  const anim = page.getByRole('group', { name: 'Εσωτερική αφή' });
+  await anim.scrollIntoViewIfNeeded();
+  await expect(anim.getByRole('heading', { name: 'Η βαρύτητα' })).toBeVisible();
+  await anim.getByRole('button', { name: /Ξεκίνα/ }).click();
+  await expect(anim.getByRole('button', { name: 'Παύση' }).last()).toBeVisible();
+  await anim.getByRole('button', { name: 'Επόμενη σκηνή' }).click();
+  await expect(anim.getByRole('heading', { name: 'Τα ρουθούνια' })).toBeVisible();
+  await anim.getByRole('button', { name: 'Σκηνή 5: Όλο το σώμα' }).click();
+  await expect(anim.getByRole('heading', { name: 'Όλο το σώμα' })).toBeVisible();
+  await expect(anim.getByRole('button', { name: 'Επόμενη σκηνή' })).toBeDisabled();
+  const r = await new AxeBuilder({ page: page as never }).include('[role="group"]').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+  expect(r.violations.map(v => `${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
+});

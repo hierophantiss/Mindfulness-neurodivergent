@@ -77,5 +77,91 @@
         { "rest": 4000 }
       ]
     ]
+  },
+  "innertouch": {
+    "el": [
+      [
+        { "say": "Νιώσε το βάρος σου να πέφτει στα πέλματα." },
+        { "pause": 1100 },
+        { "say": "Η γη σε κρατά." },
+        { "pause": 1400 },
+        { "say": "Η αναπνοή έρχεται και φεύγει μόνη της. Δεν χρειάζεται να την αλλάξεις." },
+        { "rest": 3000 }
+      ],
+      [
+        { "say": "Φέρε την προσοχή στα ρουθούνια." },
+        { "pause": 1500 },
+        { "say": "Νιώσε πού αγγίζει ο αέρας, όταν μπαίνει και όταν βγαίνει." },
+        { "pause": 2600 },
+        { "say": "Τίποτα άλλο. Μόνο αυτή η αφή." },
+        { "rest": 4000 }
+      ],
+      [
+        { "say": "Τώρα στον θώρακα." },
+        { "pause": 1300 },
+        { "say": "Πρόσεξε πώς ανοίγει λίγο στην εισπνοή," },
+        { "pause": 900 },
+        { "say": "και πώς μαζεύεται στην εκπνοή." },
+        { "rest": 5000 }
+      ],
+      [
+        { "say": "Κατέβα στην κοιλιά." },
+        { "pause": 1300 },
+        { "say": "Στην εισπνοή φουσκώνει απαλά." },
+        { "pause": 1100 },
+        { "say": "Στην εκπνοή μαζεύεται ήπια." },
+        { "rest": 5000 }
+      ],
+      [
+        { "say": "Τώρα όλο το σώμα." },
+        { "pause": 1300 },
+        { "say": "Με κάθε αναπνοή, μια μικρή αλλαγή στη στάση." },
+        { "pause": 2000 },
+        { "say": "Βαθιά ή ρηχή, αργή ή γρήγορη: δεν τη διορθώνεις. Την παρατηρείς." },
+        { "rest": 4000 }
+      ]
+    ],
+    "en": [
+      [
+        { "say": "Feel your weight falling into your feet." },
+        { "pause": 1100 },
+        { "say": "The earth holds you." },
+        { "pause": 1400 },
+        { "say": "The breath comes and goes by itself. You don't need to change it." },
+        { "rest": 3000 }
+      ],
+      [
+        { "say": "Bring your attention to your nostrils." },
+        { "pause": 1500 },
+        { "say": "Feel where the air touches, as it comes in and as it goes out." },
+        { "pause": 2600 },
+        { "say": "Nothing else. Only this touch." },
+        { "rest": 4000 }
+      ],
+      [
+        { "say": "Now to your chest." },
+        { "pause": 1300 },
+        { "say": "Notice how it opens a little as you breathe in," },
+        { "pause": 900 },
+        { "say": "and how it settles as you breathe out." },
+        { "rest": 5000 }
+      ],
+      [
+        { "say": "Come down to your belly." },
+        { "pause": 1300 },
+        { "say": "Breathing in, it swells softly." },
+        { "pause": 1100 },
+        { "say": "Breathing out, it draws gently in." },
+        { "rest": 5000 }
+      ],
+      [
+        { "say": "Now the whole body." },
+        { "pause": 1300 },
+        { "say": "With each breath, a small change in your posture." },
+        { "pause": 2000 },
+        { "say": "Deep or shallow, slow or fast: you don't correct it. You notice it." },
+        { "rest": 4000 }
+      ]
+    ]
   }
 }

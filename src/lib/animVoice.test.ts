@@ -43,4 +43,13 @@ describe('the voice of the animations', () => {
       expect(g[lang].flat().filter(st => st.breath).map(st => st.breath)).toEqual(['in', 'out', 'in', 'out']);
     }
   });
+
+  it('guides "Inner touch" (Chapter 2) through five scenes, saying where to notice, never when to breathe', () => {
+    const g = (narration as unknown as Record<string, Record<string, { say?: string; breath?: string }[][]>>).innertouch;
+    for (const lang of ['el', 'en']) {
+      expect(g[lang]).toHaveLength(5);
+      for (const scene of g[lang]) expect(scene.some(st => st.say)).toBe(true);
+      expect(g[lang].flat().some(st => st.breath)).toBe(false);
+    }
+  });
 });
