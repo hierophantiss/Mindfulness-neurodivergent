@@ -3,25 +3,25 @@ import { AnimatePresence, motion } from 'motion/react';
 import { ChevronLeft, ChevronRight, Pause, Play, Volume2, VolumeX } from 'lucide-react';
 import { useLanguage } from '../../hooks/useLanguage';
 import { useAccessibility } from '../../hooks/useAccessibility';
-import { useTime } from '../../contexts/TimeContext';
-import TaiChiHero from '../TaiChiHero';
-import { Earth, daylight, rimColour } from '../HomeEarth';
 import { getAudio } from '../../lib/chapterAudio';
 import { type AnimTiming, animAudioUrl, loadAnimTiming, sceneAt, sceneLength, setVoicePreferred, voicePreferred } from '../../lib/animVoice';
 
-// Chapter 3, "The four forms of attention". Attention is the lens of the mind
-// (the chapter's "flashlight"), drawn as the method's sign draws it: a golden
-// triangle, its apex at the brow of the same person as in Chapters 1 and 2.
-//   1. closed: the beam narrows to one point; a thought pulls it away, it is
-//      seen, and the beam comes gently back (the return is the practice);
-//   2. open: the beam opens wide; sounds, sensations, thoughts come and go in it;
-//   3. scattered: the beam hops from thing to thing, like a monkey from branch
-//      to branch (slowly: the overload has its own animation further on);
-//   4. locked: the beam fastens on one thing and becomes a tunnel joining the
-//      person to it: a special interest, or scenarios, in turn. The world goes
-//      dark, the feet lose the earth, the thing turns on the same small orbit;
-//   5. the way out: a label ("Scenario"); the tunnel opens; back through the
-//      body and the breath to the steady point.
+// Chapter 3, "The four forms of attention", seen from straight above: the
+// same person as in Chapters 1 and 2 (hood, shoulders, the toes in front) at
+// the foot of the picture, and before them the ground. Attention is the
+// chapter's flashlight, drawn as the method's sign draws it: a golden
+// triangle from the brow, lighting the ground. Thoughts pass over the ground
+// like clouds, and when they are strong they cover what is seen.
+//   1. closed: the beam on one point; a thought drifts over, pulls the beam,
+//      is seen, and the beam comes gently back (the return is the practice);
+//   2. open: the beam opens over the whole ground; thoughts pass, light, and go;
+//   3. scattered: the beam hops from thing to thing (slowly: the overload has
+//      its own animation further on);
+//   4. locked: clouds cover the ground; only a tunnel is left, from the brow
+//      to one thing: a special interest, and, in turn, scenarios. The feet
+//      lose the earth; the thing turns on the same small orbit;
+//   5. the way out: a label ("Scenario"); the clouds part; the feet, the
+//      breath, and the beam on the steady point again.
 // With reduced motion each scene is a still picture.
 //
 // A voice can guide it (src/data/narration.json, "attention"), off until the
@@ -32,35 +32,37 @@ const VOICE_ID = 'attention';
 
 const SCENES: Record<Lang, { title: string; caption: string }[]> = {
   el: [
-    { title: 'Κλειστή προσοχή', caption: 'Η δέσμη μαζεύεται σε ένα σημείο. Μια σκέψη την τραβά· τη βλέπεις, και γυρνάς απαλά. Η επιστροφή είναι η ίδια η άσκηση.' },
-    { title: 'Ανοιχτή προσοχή', caption: 'Η δέσμη ανοίγει και φωτίζει πολλά μαζί. Ήχοι, αισθήσεις, σκέψεις: όλα χωράνε, τίποτα δεν κρατιέται.' },
+    { title: 'Κλειστή προσοχή', caption: 'Η δέσμη μαζεύεται σε ένα σημείο. Μια σκέψη περνά από πάνω και την τραβά· τη βλέπεις, και γυρνάς απαλά. Η επιστροφή είναι η ίδια η άσκηση.' },
+    { title: 'Ανοιχτή προσοχή', caption: 'Η δέσμη ανοίγει και φωτίζει πολλά μαζί. Ήχοι, αισθήσεις, σκέψεις περνούν: όλα χωράνε, τίποτα δεν κρατιέται.' },
     { title: 'Διασπασμένη προσοχή', caption: 'Σαν μαϊμού που πηδά από κλαδί σε κλαδί. Δεν τη μαλώνεις· τη χαλιναγωγείς απαλά.' },
-    { title: 'Αγκυλωμένη προσοχή', caption: 'Η δέσμη κολλά σε ένα ειδικό ενδιαφέρον ή σε σενάρια και γίνεται τούνελ. Ο κόσμος σκοτεινιάζει, η γη χάνεται, ο κύκλος γυρίζει στην ίδια τροχιά.' },
-    { title: 'Η έξοδος', caption: 'Μια ταμπέλα: «Σενάριο». Δεν χρειάζεται να κερδίσεις τη συζήτηση. Σώμα, αναπνοή, και πάλι το σταθερό σημείο.' },
+    { title: 'Αγκυλωμένη προσοχή', caption: 'Οι σκέψεις σκεπάζουν την όραση. Μένει μόνο ένα τούνελ ως ένα ειδικό ενδιαφέρον ή ως τα σενάρια· η γη χάνεται, ο κύκλος γυρίζει στην ίδια τροχιά.' },
+    { title: 'Η έξοδος', caption: 'Μια ταμπέλα: «Σενάριο». Δεν χρειάζεται να κερδίσεις τη συζήτηση. Τα πέλματα, η αναπνοή, και πάλι το σταθερό σημείο.' },
   ],
   en: [
-    { title: 'Closed attention', caption: 'The beam gathers on one point. A thought pulls it away; you see it, and come gently back. The return is the practice itself.' },
-    { title: 'Open attention', caption: 'The beam opens and lights many things at once. Sounds, sensations, thoughts: everything fits, nothing is held.' },
+    { title: 'Closed attention', caption: 'The beam gathers on one point. A thought drifts over and pulls it away; you see it, and come gently back. The return is the practice itself.' },
+    { title: 'Open attention', caption: 'The beam opens and lights many things at once. Sounds, sensations, thoughts pass: everything fits, nothing is held.' },
     { title: 'Scattered attention', caption: 'Like a monkey leaping from branch to branch. You do not scold it; you rein it in gently.' },
-    { title: 'Locked attention', caption: 'The beam fastens on a special interest or on scenarios and becomes a tunnel. The world goes dark, the earth is lost, the loop turns on the same orbit.' },
-    { title: 'The way out', caption: 'A label: “Scenario”. You do not need to win the argument. Body, breath, and back to the steady point.' },
+    { title: 'Locked attention', caption: 'Thoughts cover what you see. Only a tunnel is left, to a special interest or to scenarios; the earth is lost, the loop turns on the same orbit.' },
+    { title: 'The way out', caption: 'A label: “Scenario”. You do not need to win the argument. The soles, the breath, and back to the steady point.' },
   ],
 };
 const LAST = 4;
 const DURATION = [16, 14, 13, 16, 16];
 
-/** In the hero's 400 box: the soles, the brow (the beam's apex), the chest. */
-const SOLE = 331, BROW = 150, CHEST = 194;
-/** Room above the brow for the field the beam lights, in the same units. */
-const FIELD = 170;
-
-// Places in the field: x as a share of the half-width, y in units above the brow.
+// Places on the ground: x as a share of the half-width, y as a share of the
+// ground between the person and the top.
 type Spot = [number, number];
-const POINT: Spot = [0.6, 22];             // the steady point
-const PULL: Spot = [-0.55, 105];           // the thought that pulls (scene 1)
-const OPEN_WORDS: Spot[] = [[-0.62, 52], [0.55, 118], [-0.18, 150], [0.4, 40], [-0.5, 128], [0.12, 92]];
-const HOPS: Spot[] = [[-0.6, 40], [0.5, 128], [-0.3, 152], [0.66, 52], [0.02, 112], [-0.66, 98]];
-const LOCK: Spot = [0.32, 132];            // the thing at the end of the tunnel
+const POINT: Spot = [0.38, 0.3];          // the steady point
+const PULL: Spot = [-0.42, 0.56];          // the thought that drifts over (scene 1)
+const OPEN_WORDS: Spot[] = [[-0.6, 0.3], [0.55, 0.62], [-0.15, 0.86], [0.42, 0.16], [-0.52, 0.7], [0.12, 0.46]];
+const HOPS: Spot[] = [[-0.62, 0.24], [0.5, 0.7], [-0.25, 0.9], [0.68, 0.3], [0.02, 0.6], [-0.65, 0.6]];
+const LOCK: Spot = [0.08, 0.6];            // the thing at the end of the tunnel
+// The ground's own things: stones, tufts, a bush, a tree's crown.
+const STONES: [number, number, number][] = [[-0.72, 0.14, 3], [0.76, 0.2, 2.4], [0.2, 0.07, 2], [-0.3, 0.44, 2.6], [0.66, 0.74, 3.2], [-0.82, 0.78, 2.2], [0.34, 0.97, 2.6], [-0.05, 0.75, 1.8]];
+const TUFTS: Spot[] = [[-0.5, 0.06], [0.55, 0.42], [-0.66, 0.52], [0.12, 0.28], [0.85, 0.58], [-0.18, 0.66], [0.48, 0.9], [-0.4, 0.94]];
+const CROWNS: [number, number, number][] = [[-0.56, 0.9, 30], [0.72, 0.5, 15]];
+// The clouds that cover the ground when attention locks.
+const CLOUDS: [number, number, number][] = [[-0.62, 0.18, 0.5], [0.56, 0.22, 0.46], [-0.2, 0.5, 0.5], [0.62, 0.62, 0.5], [-0.66, 0.82, 0.52], [0.18, 0.92, 0.5], [0.02, 0.24, 0.4], [-0.1, 0.72, 0.44]];
 
 const WORDS: Record<Lang, { pull: string; open: string[]; hops: string[]; lock: [string, string]; tag: string }> = {
   el: { pull: 'ανησυχία', open: ['ήχος', 'αίσθηση', 'σκέψη', 'ανάμνηση', 'εικόνα', 'αναπνοή'], hops: ['μήνυμα', 'θόρυβος', 'ιδέα', 'σχέδια', 'φως', 'σκέψη'], lock: ['ειδικό ενδιαφέρον', 'σενάρια'], tag: 'Σενάριο' },
@@ -70,15 +72,14 @@ const WORDS: Record<Lang, { pull: string; open: string[]; hops: string[]; lock: 
 const ease = (x: number) => 0.5 - 0.5 * Math.cos(Math.PI * Math.min(1, Math.max(0, x)));
 const mix = (a: number, b: number, t: number) => a + (b - a) * t;
 
-/** Where the beam wants to be: its target, its half-width at the target (units), how bright. */
-function beamGoal(scene: number, t: number): { spot: Spot; half: number; o: number } {
+/** Where the beam wants to be: its target, its half-width there (in the person's units), how bright. */
+export function beamGoal(scene: number, t: number): { spot: Spot; half: number; o: number } {
   if (scene === 0) {
-    // On the point; at 5 s a thought appears, at 6-8 the beam slides to it,
-    // at 10-13 it comes back.
+    // On the point; at 5 s a thought drifts over, at 6-8 the beam goes to it, at 10-13 it comes back.
     const away = ease((t - 6) / 2) * (1 - ease((t - 10) / 3));
     return { spot: [mix(POINT[0], PULL[0], away), mix(POINT[1], PULL[1], away)], half: 5, o: 0.9 };
   }
-  if (scene === 1) return { spot: [0, 330], half: 470, o: 0.5 }; // wide, and on past the top
+  if (scene === 1) return { spot: [0, 1.5], half: 210, o: 0.5 }; // wide, and on past the top
   if (scene === 2) {
     // A hop every 2.1 s, sliding for 0.7 s.
     const k = Math.floor(t / 2.1), f = ease((t - k * 2.1) / 0.7);
@@ -86,26 +87,46 @@ function beamGoal(scene: number, t: number): { spot: Spot; half: number; o: numb
     return { spot: [mix(a[0], b[0], f), mix(a[1], b[1], f)], half: 6, o: 0.85 };
   }
   if (scene === 3) {
-    const r = 9, ph = (t / 7) * Math.PI * 2; // the same small orbit, slowly
-    return { spot: [LOCK[0] + (r * Math.cos(ph)) / 140, LOCK[1] + r * Math.sin(ph)], half: 13, o: 1 };
+    const ph = (t / 7) * Math.PI * 2; // the same small orbit, slowly
+    return { spot: [LOCK[0] + 0.07 * Math.cos(ph), LOCK[1] + 0.04 * Math.sin(ph)], half: 11, o: 1 };
   }
-  // The way out: the tunnel fades (3-6 s); body (6-9), breath (9-11); the beam on the point again (11-).
+  // The way out: the clouds part (3-6 s); the soles (6-9), the breath (9-11); the beam on the point again (11-).
   const back = ease((t - 11) / 2.5);
-  return { spot: back > 0 ? POINT : LOCK, half: back > 0 ? 5 : 13, o: back > 0 ? 0.9 * back : Math.max(0, 1 - ease((t - 3) / 3)) };
+  return { spot: back > 0 ? POINT : LOCK, half: back > 0 ? 5 : 11, o: back > 0 ? 0.9 * back : Math.max(0, 1 - ease((t - 3) / 3)) };
 }
 
-// The figure stands at ease.
-const Figure = memo(function Figure() {
-  return <TaiChiHero bare figureOnly idle stance="natural" breathForce={0} isRising={false} breathStateText="" movementType="5-5" />;
+/** The person seen from straight above, in units (the head's middle at 0, 0; forward is up). */
+const TopFigure = memo(function TopFigure() {
+  return (
+    <g>
+      {/* a soft shadow on the ground, a little behind */}
+      <ellipse cx={1.5} cy={5} rx={24} ry={13} style={{ fill: 'var(--earth-deep)' }} opacity={0.55} filter="url(#ab-blur)" />
+      {/* the feet: only the front of each shows, a little turned out */}
+      {[-1, 1].map(s => (
+        <g key={s} transform={`translate(${s * 6.2} -11.2) rotate(${s * 14})`}>
+          <path d="M -2.6 1.6 C -2.8 -2.2 -1.6 -4.4 0 -4.4 C 1.6 -4.4 2.8 -2.2 2.6 1.6 Z" fill="#e5bda3" />
+          {[-1.6, -0.5, 0.5, 1.5].map((x, i) => <circle key={i} cx={x * s} cy={-3.6 + Math.abs(x) * 0.3} r={0.55 - i * 0.06} fill="#d9b197" />)}
+        </g>
+      ))}
+      {/* shoulders, back and the tops of the arms, in the hoodie */}
+      <path d="M -21 1.5 C -21 -4.5 -16 -7 -9 -7.4 L 9 -7.4 C 16 -7 21 -4.5 21 1.5 C 21 6.8 16 9.6 9 10 L -9 10 C -16 9.6 -21 6.8 -21 1.5 Z" fill="url(#ab-hoodie)" stroke="#1b241d" strokeWidth={0.45} />
+      {[-1, 1].map(s => <path key={s} d={`M ${s * 14.5} -6 C ${s * 15.6} -1.5 ${s * 15.6} 4.5 ${s * 14.5} 9`} stroke="#1b241d" strokeWidth={0.45} opacity={0.6} fill="none" />)}
+      {/* the hood, its seam, and the opening at the front */}
+      <ellipse cx={0} cy={0.6} rx={8.6} ry={9.6} fill="#3c4e40" stroke="#1b241d" strokeWidth={0.5} />
+      <ellipse cx={-2.4} cy={-0.6} rx={4.2} ry={5.6} fill="#4a5f50" opacity={0.45} />
+      <path d="M 0 -5.6 L 0 10" stroke="#1b241d" strokeWidth={0.45} opacity={0.5} />
+      <path d="M -5.8 -5.4 Q 0 -10.6 5.8 -5.4 Q 0 -7.6 -5.8 -5.4 Z" fill="#222d25" />
+    </g>
+  );
 });
 
-type Look = { dark: number; ground: number; chest: number; stars: number; bg: number[] };
+type Look = { dark: number; ground: number; chest: number; bg: number[] };
 const LOOKS: Look[] = [
-  { dark: 0, ground: 0.45, chest: 0, stars: 0.55, bg: [1, 0, 0] },
-  { dark: 0, ground: 0.45, chest: 0, stars: 0.75, bg: [1, 0, 0] },
-  { dark: 0, ground: 0.3, chest: 0, stars: 0.6, bg: [1, 0, 0] },
-  { dark: 1, ground: 0, chest: 0, stars: 0.08, bg: [0, 1, 0] },
-  { dark: 0, ground: 0.8, chest: 0, stars: 0.75, bg: [0, 0, 1] },
+  { dark: 0, ground: 0.4, chest: 0, bg: [1, 0, 0] },
+  { dark: 0, ground: 0.4, chest: 0, bg: [1, 0, 0] },
+  { dark: 0, ground: 0.25, chest: 0, bg: [1, 0, 0] },
+  { dark: 1, ground: 0, chest: 0, bg: [0, 1, 0] },
+  { dark: 0, ground: 0.8, chest: 0, bg: [0, 0, 1] },
 ];
 
 export default function AttentionBeam() {
@@ -113,9 +134,6 @@ export default function AttentionBeam() {
   const lang: Lang = language === 'en' ? 'en' : 'el';
   const el = lang === 'el';
   const { reduceMotion } = useAccessibility();
-  const { timeFloat } = useTime();
-  const rim = rimColour(timeFloat);
-  const day = daylight(timeFloat);
 
   const rootRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ w: 0, h: 0 });
@@ -130,16 +148,16 @@ export default function AttentionBeam() {
   const beamRef = useRef<SVGPolygonElement>(null);
   const beamGradRef = useRef<SVGLinearGradientElement>(null);
   const holeRef = useRef<SVGPolygonElement>(null);
-  const darkRef = useRef<SVGRectElement>(null);
+  const fogRef = useRef<SVGGElement>(null);
+  const cloudRefs = useRef<(SVGEllipseElement | null)[]>([]);
   const ringRefs = useRef<(SVGEllipseElement | null)[]>([]);
   const pointRef = useRef<SVGCircleElement>(null);
-  const contactRef = useRef<SVGCircleElement>(null);
+  const contactRef = useRef<SVGEllipseElement>(null);
   const chestRef = useRef<SVGEllipseElement>(null);
-  const starsRef = useRef<SVGGElement>(null);
   const bgRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const wordRefs = useRef<(SVGTextElement | null)[]>([]);
+  const wordRefs = useRef<(SVGGElement | null)[]>([]);
   const trailRefs = useRef<(SVGCircleElement | null)[]>([]);
-  const lockRefs = useRef<(SVGTextElement | null)[]>([]);
+  const lockRefs = useRef<(SVGGElement | null)[]>([]);
   const tagRef = useRef<SVGGElement>(null);
   const barRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
@@ -149,7 +167,8 @@ export default function AttentionBeam() {
     guided: false,
     look: { ...LOOKS[0], bg: [...LOOKS[0].bg] } as Look,
     beam: { x: POINT[0], y: POINT[1], half: 5, o: 0 },
-    words: Array.from({ length: 14 }, () => 0),
+    words: Array.from({ length: 13 }, () => 0),
+    lock: [0, 0],
     rings: 0,
   });
   live.current.playing = playing;
@@ -198,21 +217,16 @@ export default function AttentionBeam() {
   const { w, h } = size;
   const panel = Math.min(230, Math.max(176, h * 0.31));
   const rimY = h - panel;
-  const S = Math.max(150, Math.min(w * 1.0, (rimY - 20) / ((SOLE - BROW + FIELD) / 400), 560));
-  const u = S / 400;
-  const stageTop = rimY - (SOLE / 400) * S;
+  // The person's unit, and where they stand: near the foot of the picture.
+  const k = Math.max(1.3, Math.min(w / 190, rimY / 230, 2.6));
+  const headY = rimY - 22 * k;
   const cx = w / 2;
-  const browY = stageTop + BROW * u;
-  const earthScale = w / 390;
-  const fontPx = Math.max(12.5, Math.min(16, 13 * u));
-  // A place in the field, in pixels; never above the top edge.
-  const reach = Math.max(60, w / 2 - 34);
-  const px = (s: Spot) => ({ x: cx + s[0] * reach, y: Math.max(fontPx + 10, browY - s[1] * u) });
-
-  const stars = useMemo(() => Array.from({ length: 42 }, (_, i) => {
-    const r = (n: number) => { const x = Math.sin(i * 91.7 + n * 17.3) * 9631.17; return x - Math.floor(x); };
-    return { x: r(1), y: r(2), s: 0.5 + r(3) * 0.9, o: 0.25 + r(4) * 0.6, d: 3 + r(5) * 5 };
-  }), []);
+  const reach = Math.max(70, w / 2 - 30);
+  const groundTop = 22;
+  const groundH = Math.max(80, headY - 26 * k - groundTop);
+  const fontPx = Math.max(12.5, Math.min(16, 6.4 * k + 2));
+  const at = (s: Spot) => ({ x: cx + s[0] * reach, y: headY - 26 * k - s[1] * groundH });
+  const apex = { x: cx, y: headY - 9.5 * k };
 
   const goTo = useCallback((i: number) => {
     const next = Math.max(0, Math.min(LAST, i));
@@ -280,40 +294,37 @@ export default function AttentionBeam() {
     if (!w || !h) return;
     let raf = 0, last = 0, settle = 0;
     const L = live.current;
-    const apex = { x: cx, y: browY };
 
     const apply = (dt: number) => {
       // A still picture shows each scene at its telling moment.
-      const STILL = [3, 99, 1, 2.5, 99];
+      const STILL = [8, 99, 1, 2.5, 99];
       const t = reduceMotion ? STILL[L.scene] : L.clock;
       const target = LOOKS[L.scene];
-      const k = reduceMotion ? 1 : 1 - Math.exp(-dt / 1.3);
+      const kk = reduceMotion ? 1 : 1 - Math.exp(-dt / 1.3);
       const kQuick = reduceMotion ? 1 : 1 - Math.exp(-dt / 0.45);
       const lk = L.look;
       const outT = L.scene === 4 ? t : 0;
-      // In the way out the dark lifts first, then the earth and the breath return.
+      // In the way out the clouds part first, then the feet and the breath come back.
       const darkGoal = L.scene === 4 ? 1 - ease((outT - 3) / 3) : target.dark;
       const groundGoal = L.scene === 4 ? ease((outT - 6) / 2) * 0.85 : target.ground;
       const chestGoal = L.scene === 4 ? ease((outT - 8.5) / 1.5) * (1 - ease((outT - 12) / 2)) : 0;
-      lk.dark += (darkGoal - lk.dark) * k;
-      lk.ground += (groundGoal - lk.ground) * k;
-      lk.chest += (chestGoal - lk.chest) * k;
-      lk.stars += ((L.scene === 4 ? mix(0.08, 0.75, 1 - darkGoal) : target.stars) - lk.stars) * k;
+      lk.dark += (darkGoal - lk.dark) * kk;
+      lk.ground += (groundGoal - lk.ground) * kk;
+      lk.chest += (chestGoal - lk.chest) * kk;
       const bgGoal = L.scene === 4 ? [0, darkGoal, 1 - darkGoal] : target.bg;
-      for (let i = 0; i < 3; i++) lk.bg[i] += (bgGoal[i] - lk.bg[i]) * k;
+      for (let i = 0; i < 3; i++) lk.bg[i] += (bgGoal[i] - lk.bg[i]) * kk;
 
-      // The beam eases towards its goal (the hops are already eased).
+      // The beam eases towards its goal (the hops and the orbit are already eased).
       const g = beamGoal(L.scene, t);
       const b = L.beam;
-      const kb = L.scene === 2 || L.scene === 3 ? (reduceMotion ? 1 : 1 - Math.exp(-dt / 0.25)) : k;
+      const kb = L.scene === 2 || L.scene === 3 ? (reduceMotion ? 1 : 1 - Math.exp(-dt / 0.25)) : kk;
       b.x += (g.spot[0] - b.x) * kb;
       b.y += (g.spot[1] - b.y) * kb;
-      b.half += (g.half - b.half) * k;
-      b.o += (g.o - b.o) * k;
-      // The beam's far end may go past the top (the open fan); the words may not.
-      const end = { x: cx + b.x * reach, y: browY - b.y * u };
+      b.half += (g.half - b.half) * kk;
+      b.o += (g.o - b.o) * kk;
+      const end = at([b.x, b.y]);
       const dx = end.x - apex.x, dy = end.y - apex.y, len = Math.max(1, Math.hypot(dx, dy));
-      const nx = -dy / len, ny = dx / len, hw = b.half * u;
+      const nx = -dy / len, ny = dx / len, hw = b.half * k;
       const pts = `${apex.x},${apex.y} ${end.x + nx * hw},${end.y + ny * hw} ${end.x - nx * hw},${end.y - ny * hw}`;
       beamRef.current?.setAttribute('points', pts);
       if (beamRef.current) beamRef.current.style.opacity = String(b.o);
@@ -321,82 +332,80 @@ export default function AttentionBeam() {
         beamGradRef.current.setAttribute('x1', String(apex.x)); beamGradRef.current.setAttribute('y1', String(apex.y));
         beamGradRef.current.setAttribute('x2', String(end.x)); beamGradRef.current.setAttribute('y2', String(end.y));
       }
-      // The dark of the tunnel leaves the beam's way open.
+      // The clouds cover everything but the tunnel.
       holeRef.current?.setAttribute('points', pts);
-      if (darkRef.current) darkRef.current.style.opacity = String(0.86 * lk.dark);
-      // The tunnel's rings drift slowly along it, towards the thing.
+      if (fogRef.current) fogRef.current.style.opacity = String(lk.dark);
+      const now = performance.now() / 1000;
+      cloudRefs.current.forEach((n, i) => {
+        if (!n) return;
+        const c = CLOUDS[i], p = at([c[0], c[1]]);
+        const drift = reduceMotion ? 0 : Math.sin(now * 0.12 + i * 1.7) * 10;
+        n.setAttribute('cx', String(p.x + drift));
+        n.setAttribute('cy', String(p.y + (reduceMotion ? 0 : Math.cos(now * 0.1 + i) * 5)));
+      });
       if (!reduceMotion) L.rings = (L.rings + dt * 0.09) % 1;
       const ang = (Math.atan2(dy, dx) * 180) / Math.PI;
       ringRefs.current.forEach((n, i) => {
         if (!n) return;
         const f = (L.rings + i / 5) % 1;
-        const p = 0.12 + 0.86 * f;
+        const p = 0.14 + 0.84 * f;
         n.setAttribute('cx', String(apex.x + dx * p));
         n.setAttribute('cy', String(apex.y + dy * p));
-        n.setAttribute('rx', String(Math.max(1.5, 2.6 * u)));
+        n.setAttribute('rx', String(Math.max(1.5, 1.2 * k)));
         n.setAttribute('ry', String(Math.max(2, hw * p * 1.05)));
         n.setAttribute('transform', `rotate(${ang} ${apex.x + dx * p} ${apex.y + dy * p})`);
-        n.style.opacity = String(lk.dark * 0.5 * Math.sin(Math.PI * f));
+        n.style.opacity = String(lk.dark * 0.55 * Math.sin(Math.PI * f));
       });
 
-      // The steady point: there in the closed attention and at the end.
       if (pointRef.current) {
-        const p = px(POINT);
-        pointRef.current.setAttribute('cx', String(p.x)); pointRef.current.setAttribute('cy', String(p.y));
-        const on = L.scene === 0 ? 1 : L.scene === 4 ? ease((t - 10.5) / 2) : 0;
+        const on = L.scene === 0 ? 1 : L.scene === 4 ? ease((t - 10.5) / 2) : 0.25;
         pointRef.current.style.opacity = String(on);
       }
       if (contactRef.current) contactRef.current.style.opacity = String(lk.ground);
       if (chestRef.current) chestRef.current.style.opacity = String(lk.chest * 0.85);
-      if (starsRef.current) starsRef.current.style.opacity = String(lk.stars);
       bgRefs.current.forEach((n, i) => { if (n) n.style.opacity = String(lk.bg[i]); });
 
-      // The words: 0 the pull, 1-6 the open field, 7-12 the hops.
-      const now = performance.now() / 1000;
+      // The thoughts, each a little cloud with its word: 0 the pull, 1-6 the open field, 7-12 the hops.
       const place = (i: number, s: Spot, goal: number) => {
         const n = wordRefs.current[i];
         if (!n) return;
         L.words[i] += (goal - L.words[i]) * kQuick;
-        const p = px(s);
-        const sway = reduceMotion ? 0 : Math.sin(now * 0.4 + i) * 2;
-        n.setAttribute('x', String(Math.max(40, Math.min(w - 40, p.x))));
-        n.setAttribute('y', String(p.y - 14 * u + sway));
+        const p = at(s);
+        const sway = reduceMotion ? 0 : Math.sin(now * 0.35 + i) * 4;
+        n.setAttribute('transform', `translate(${Math.max(46, Math.min(w - 46, p.x + sway))} ${p.y})`);
         n.style.opacity = String(L.words[i]);
       };
-      place(0, PULL, L.scene === 0 ? ease((t - 5) / 1) * (1 - ease((t - 10.5) / 2)) * 0.95 + (L.scene === 0 && t > 12.5 ? 0.18 : 0) : 0);
+      place(0, [PULL[0] + (L.scene === 0 ? 0.25 * (1 - ease((t - 4) / 3)) : 0), PULL[1]], L.scene === 0 ? ease((t - 4.2) / 1.2) * (1 - ease((t - 10.5) / 2)) : 0);
       OPEN_WORDS.forEach((s, j) => {
         const c = (t - 1.2 - j * 1.6) / 5; // each comes and goes in its turn
-        const on = L.scene === 1 ? (reduceMotion ? 0.75 : c > 0 ? Math.sin(Math.PI * Math.min(1, c % 1.4)) * 0.85 : 0) : 0;
+        const on = L.scene === 1 ? (reduceMotion ? 0.7 : c > 0 ? Math.sin(Math.PI * Math.min(1, c % 1.4)) * 0.75 : 0) : 0;
         place(1 + j, s, on);
       });
       const hop = Math.floor(t / 2.1);
       HOPS.forEach((s, j) => {
-        const lit = L.scene === 2 && (hop % HOPS.length === j || (hop + 1) % HOPS.length === j && t - hop * 2.1 > 0.5);
+        const lit = L.scene === 2 && (hop % HOPS.length === j || ((hop + 1) % HOPS.length === j && t - hop * 2.1 > 0.5));
         place(7 + j, s, L.scene === 2 ? (lit ? 0.95 : 0.3) : 0);
         const tr = trailRefs.current[j];
         if (tr) {
-          const p = px(s);
+          const p = at(s);
           tr.setAttribute('cx', String(p.x)); tr.setAttribute('cy', String(p.y));
-          tr.style.opacity = String(L.scene === 2 ? (lit ? 0.7 : 0.15) : 0);
+          tr.style.opacity = String(L.scene === 2 ? (lit ? 0.7 : 0.12) : 0);
         }
       });
-      // At the end of the tunnel: a special interest, then scenarios, in turn; held on "scenarios" in the way out.
+      // At the end of the tunnel: a special interest, then scenarios, in turn; the label takes their place in the way out.
       const turnAt = L.scene === 3 ? (reduceMotion ? 0 : Math.floor(t / 4) % 2) : 1;
-      const lockOn = L.scene === 3 ? ease(t / 1.5) : L.scene === 4 ? 0.3 * (1 - ease(t / 1.2)) : 0; // the label takes its place
-      const lockAt = L.scene === 4 ? px(LOCK) : end;
+      const lockOn = L.scene === 3 ? ease(t / 1.5) : L.scene === 4 ? 0.9 * (1 - ease(t / 1.2)) : 0;
+      const lockAt = L.scene === 4 ? at(LOCK) : end;
       lockRefs.current.forEach((n, i) => {
         if (!n) return;
-        n.setAttribute('x', String(lockAt.x));
-        n.setAttribute('y', String(lockAt.y - 16 * u));
+        n.setAttribute('transform', `translate(${Math.max(70, Math.min(w - 70, lockAt.x))} ${lockAt.y})`);
         const want = lockOn * (i === turnAt ? 1 : 0);
-        const cur = Number(n.dataset.o || 0);
-        const v = cur + (want - cur) * (reduceMotion ? 1 : 1 - Math.exp(-dt / 0.6));
-        n.dataset.o = String(v);
-        n.style.opacity = String(v);
+        L.lock[i] += (want - L.lock[i]) * (reduceMotion ? 1 : 1 - Math.exp(-dt / 0.6));
+        n.style.opacity = String(L.lock[i]);
       });
       if (tagRef.current) {
-        const lp = px(LOCK);
-        tagRef.current.setAttribute('transform', `translate(${lp.x} ${lp.y - 16 * u})`);
+        const lp = at(LOCK);
+        tagRef.current.setAttribute('transform', `translate(${Math.max(70, Math.min(w - 70, lp.x))} ${lp.y})`);
         tagRef.current.style.opacity = String(L.scene === 4 ? ease(t / 1.5) * (1 - 0.75 * ease((t - 9) / 3)) : 0);
       }
 
@@ -432,63 +441,36 @@ export default function AttentionBeam() {
     };
     raf = requestAnimationFrame(frame);
     return () => cancelAnimationFrame(raf);
-  }, [w, h, u, rimY, stageTop, cx, browY, reduceMotion, scene, playing, lang, voiceOn, timing, fontPx]);
+  }, [w, h, k, rimY, headY, cx, reach, groundH, reduceMotion, scene, playing, lang, voiceOn, timing]);
 
+  // The ground: earth tones, lit a little around the person; a tint per scene over it.
+  const groundBg = `radial-gradient(120% 90% at 50% ${Math.round((headY / Math.max(1, h)) * 100)}%, var(--earth-lit) 0%, var(--earth-mid) 45%, var(--earth-deep) 100%)`;
+  const tint = (v: string) => `radial-gradient(110% 80% at 50% ${Math.round((headY / Math.max(1, h)) * 100)}%, color-mix(in srgb, var(${v}) 55%, transparent) 0%, transparent 75%)`;
+  const BGS = [tint('--tint-sand-hi'), tint('--tint-rose-hi'), tint('--tint-sage-hi')];
   const text = SCENES[lang][scene];
   const words = WORDS[lang];
-  const tint = (bg: string, hi: string) =>
-    `radial-gradient(125% 85% at 50% ${Math.round((browY / Math.max(1, h)) * 100)}%, var(${hi}) 0%, color-mix(in srgb, var(${bg}) 55%, var(--color-stage)) 48%, var(--color-stage) 100%)`;
-  const BGS = [tint('--tint-sand-bg', '--tint-sand-hi'), tint('--tint-rose-bg', '--tint-rose-bg'), tint('--tint-sage-bg', '--tint-sage-hi')];
-  const wordStyle = (size = 1) => ({ fill: 'var(--color-ink)', fontFamily: 'var(--font-sans)', fontSize: fontPx * size, opacity: 0, letterSpacing: '0.01em' });
+  const ground = useMemo(() => ({ stones: STONES, tufts: TUFTS, crowns: CROWNS }), []);
+
+  const Thought = ({ word, size = 1, accent = false }: { word: string; size?: number; accent?: boolean }) => (
+    <>
+      <ellipse rx={(word.length * 0.36 + 1.6) * fontPx * size} ry={fontPx * 1.25 * size} fill="url(#ab-cloud)" />
+      <text textAnchor="middle" dominantBaseline="central" style={{ fill: accent ? 'var(--axis-attention-ink)' : 'var(--color-ink)', fontFamily: 'var(--font-sans)', fontSize: fontPx * size, letterSpacing: '0.01em' }}>{word}</text>
+    </>
+  );
 
   return (
-    <div ref={rootRef} className="absolute inset-0 overflow-hidden bg-[var(--color-stage)] select-none" role="group" aria-label={el ? 'Οι τέσσερις μορφές προσοχής' : 'The four forms of attention'}>
+    <div ref={rootRef} className="absolute inset-0 overflow-hidden select-none" style={{ background: groundBg }} role="group" aria-label={el ? 'Οι τέσσερις μορφές προσοχής' : 'The four forms of attention'}>
       {BGS.map((bg, i) => (
         <div key={i} ref={n => { bgRefs.current[i] = n; }} aria-hidden="true" className="absolute inset-0" style={{ background: bg, opacity: i === 0 ? 1 : 0 }} />
       ))}
 
-      {w > 0 && (<>
-        <svg aria-hidden="true" className="absolute inset-0 w-full h-full pointer-events-none" viewBox={`0 0 ${w} ${h}`}>
-          <g ref={starsRef} style={{ opacity: LOOKS[0].stars }}>
-            {stars.map((s, i) => (
-              <circle key={i} cx={s.x * w} cy={s.y * (rimY - 30)} r={s.s} style={{ fill: 'var(--color-ink)' }} opacity={s.o}>
-                {!reduceMotion && i % 3 === 0 && <animate attributeName="opacity" values={`${s.o};${s.o * 0.3};${s.o}`} dur={`${s.d}s`} repeatCount="indefinite" />}
-              </circle>
-            ))}
-          </g>
-        </svg>
-
-        {/* The earth of the home page */}
-        <div aria-hidden="true" className="absolute left-0 pointer-events-none" style={{ top: rimY - 60 * earthScale, width: w, height: 280 * earthScale }}>
-          <Earth w={390} h={280} r={520} top={60} id="earth-ab" landScale={1} rim={rim} day={day} />
-        </div>
-
-        {/* The dark of the tunnel: everything but the beam's way */}
-        <svg aria-hidden="true" className="absolute inset-0 w-full h-full pointer-events-none" viewBox={`0 0 ${w} ${h}`}>
-          <defs>
-            <mask id="ab-hole" maskUnits="userSpaceOnUse" x="0" y="0" width={w} height={h}>
-              <rect width={w} height={h} fill="#fff" />
-              <polygon ref={holeRef} fill="#000" />
-            </mask>
-            <filter id="ab-soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation={3 * u} /></filter>
-          </defs>
-          <rect ref={darkRef} width={w} height={h} mask="url(#ab-hole)" style={{ fill: 'var(--color-stage)', opacity: 0 }} />
-          {/* Where the feet meet the earth */}
-          <circle ref={contactRef} cx={cx} cy={rimY} r={7 * u} style={{ fill: 'var(--tint-sage-ink)', opacity: 0.45 }} filter="url(#ab-soft)" />
-        </svg>
-
-        {/* The figure */}
-        <div aria-hidden="true" className="absolute pointer-events-none" style={{ left: cx - S / 2, top: stageTop, width: S, height: S }}>
-          <Figure />
-        </div>
-
-        {/* The beam, the tunnel's rings, the things it lights */}
+      {w > 0 && (
         <svg aria-hidden="true" className="absolute inset-0 w-full h-full pointer-events-none" viewBox={`0 0 ${w} ${h}`}>
           <defs>
             <linearGradient ref={beamGradRef} id="ab-beam" gradientUnits="userSpaceOnUse">
               <stop offset="0%" style={{ stopColor: 'var(--gold-top)', stopOpacity: 0.62 }} />
-              <stop offset="82%" style={{ stopColor: 'var(--axis-attention-ink)', stopOpacity: 0.18 }} />
-              <stop offset="100%" style={{ stopColor: 'var(--axis-attention-ink)', stopOpacity: 0.04 }} />
+              <stop offset="82%" style={{ stopColor: 'var(--axis-attention-ink)', stopOpacity: 0.2 }} />
+              <stop offset="100%" style={{ stopColor: 'var(--axis-attention-ink)', stopOpacity: 0.05 }} />
             </linearGradient>
             <radialGradient id="ab-glow">
               <stop offset="0%" style={{ stopColor: 'var(--gold-top)', stopOpacity: 1 }} />
@@ -498,28 +480,87 @@ export default function AttentionBeam() {
               <stop offset="0%" style={{ stopColor: 'var(--tint-blue-ink)', stopOpacity: 0.85 }} />
               <stop offset="100%" style={{ stopColor: 'var(--tint-blue-ink)', stopOpacity: 0 }} />
             </radialGradient>
+            <radialGradient id="ab-sole">
+              <stop offset="0%" style={{ stopColor: 'var(--tint-sage-ink)', stopOpacity: 0.7 }} />
+              <stop offset="100%" style={{ stopColor: 'var(--tint-sage-ink)', stopOpacity: 0 }} />
+            </radialGradient>
+            <radialGradient id="ab-cloud">
+              <stop offset="0%" style={{ stopColor: 'color-mix(in srgb, var(--color-ink) 22%, var(--color-stage))', stopOpacity: 0.85 }} />
+              <stop offset="70%" style={{ stopColor: 'color-mix(in srgb, var(--color-ink) 14%, var(--color-stage))', stopOpacity: 0.55 }} />
+              <stop offset="100%" style={{ stopColor: 'var(--color-stage)', stopOpacity: 0 }} />
+            </radialGradient>
+            <radialGradient id="ab-fogpuff">
+              <stop offset="0%" style={{ stopColor: 'color-mix(in srgb, var(--color-ink) 16%, var(--color-stage))', stopOpacity: 0.97 }} />
+              <stop offset="65%" style={{ stopColor: 'color-mix(in srgb, var(--color-ink) 10%, var(--color-stage))', stopOpacity: 0.85 }} />
+              <stop offset="100%" style={{ stopColor: 'var(--color-stage)', stopOpacity: 0 }} />
+            </radialGradient>
+            <linearGradient id="ab-hoodie" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#425547" />
+              <stop offset="100%" stopColor="#2c392f" />
+            </linearGradient>
+            <filter id="ab-blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation={2.2} /></filter>
+            <mask id="ab-hole" maskUnits="userSpaceOnUse" x="0" y="0" width={w} height={h}>
+              <rect width={w} height={h} fill="#fff" />
+              <polygon ref={holeRef} fill="#000" />
+            </mask>
           </defs>
-          <ellipse ref={chestRef} cx={cx} cy={stageTop + CHEST * u} rx={18 * u} ry={12 * u} fill="url(#ab-breath)" style={{ opacity: 0 }} />
+
+          {/* The ground's own things */}
+          {ground.crowns.map(([x, y, r], i) => {
+            const p = at([x, y]);
+            return (
+              <g key={`c${i}`} opacity={0.75}>
+                {[0, 1, 2, 3, 4].map(j => (
+                  <circle key={j} cx={p.x + Math.cos(j * 1.26) * r * 0.45 * k / 2} cy={p.y + Math.sin(j * 1.26) * r * 0.45 * k / 2} r={r * 0.55 * k / 2} style={{ fill: 'var(--tint-sage-bg)', stroke: 'var(--tint-sage-line)' }} strokeWidth={1} />
+                ))}
+              </g>
+            );
+          })}
+          {ground.stones.map(([x, y, r], i) => {
+            const p = at([x, y]);
+            return <ellipse key={`s${i}`} cx={p.x} cy={p.y} rx={r * k} ry={r * 0.72 * k} style={{ fill: 'var(--earth-lit-day)', stroke: 'var(--earth-deep)' }} strokeWidth={0.6} opacity={0.75} />;
+          })}
+          {ground.tufts.map(([x, y], i) => {
+            const p = at([x, y]);
+            return <path key={`t${i}`} d={`M ${p.x - 3 * k} ${p.y} l ${1.6 * k} ${-2.6 * k} M ${p.x} ${p.y + 0.5 * k} l 0 ${-3.2 * k} M ${p.x + 3 * k} ${p.y} l ${-1.6 * k} ${-2.6 * k}`} style={{ stroke: 'var(--tint-sage-dot)' }} strokeWidth={0.8} strokeLinecap="round" opacity={0.5} fill="none" />;
+          })}
+
+          {/* The beam on the ground, and the steady point */}
           <polygon ref={beamRef} fill="url(#ab-beam)" style={{ opacity: 0 }} />
+          <circle ref={pointRef} cx={at(POINT).x} cy={at(POINT).y} r={4 * k} fill="url(#ab-glow)" style={{ opacity: 0 }} />
+          {HOPS.map((_, j) => <circle key={j} ref={n => { trailRefs.current[j] = n; }} r={2.4 * k} fill="url(#ab-glow)" style={{ opacity: 0 }} />)}
+
+          {/* The person, from above; the light under the soles; the breath on the back */}
+          <ellipse ref={contactRef} cx={cx} cy={headY - 4 * k} rx={24 * k} ry={20 * k} fill="url(#ab-sole)" style={{ opacity: 0.4 }} />
+          <g transform={`translate(${cx} ${headY}) scale(${k})`}>
+            <TopFigure />
+          </g>
+          <ellipse ref={chestRef} cx={cx} cy={headY + 2 * k} rx={18 * k} ry={10 * k} fill="url(#ab-breath)" style={{ opacity: 0 }} />
+
+          {/* The thoughts passing over */}
+          <g ref={n => { wordRefs.current[0] = n; }} style={{ opacity: 0 }}><Thought word={words.pull} /></g>
+          {words.open.map((wd, j) => <g key={`o${j}`} ref={n => { wordRefs.current[1 + j] = n; }} style={{ opacity: 0 }}><Thought word={wd} size={0.92} /></g>)}
+          {words.hops.map((wd, j) => <g key={`h${j}`} ref={n => { wordRefs.current[7 + j] = n; }} style={{ opacity: 0 }}><Thought word={wd} size={0.92} /></g>)}
+
+          {/* When attention locks: clouds over all of it but the tunnel */}
+          <g ref={fogRef} mask="url(#ab-hole)" style={{ opacity: 0 }}>
+            <rect width={w} height={rimY + 40} style={{ fill: 'var(--color-stage)' }} opacity={0.55} />
+            {CLOUDS.map(([, , r], i) => (
+              <ellipse key={i} ref={n => { cloudRefs.current[i] = n; }} rx={r * reach * 1.15} ry={r * reach * 0.8} fill="url(#ab-fogpuff)" />
+            ))}
+          </g>
           {[0, 1, 2, 3, 4].map(i => (
             <ellipse key={i} ref={n => { ringRefs.current[i] = n; }} fill="none" style={{ stroke: 'var(--axis-attention-ink)', opacity: 0 }} strokeWidth={1} />
           ))}
-          <circle ref={pointRef} r={6 * u} fill="url(#ab-glow)" style={{ opacity: 0 }} />
-          {HOPS.map((_, j) => (
-            <circle key={j} ref={n => { trailRefs.current[j] = n; }} r={4 * u} fill="url(#ab-glow)" style={{ opacity: 0 }} />
-          ))}
-          <text ref={n => { wordRefs.current[0] = n; }} textAnchor="middle" style={wordStyle()}>{words.pull}</text>
-          {words.open.map((wd, j) => <text key={`o${j}`} ref={n => { wordRefs.current[1 + j] = n; }} textAnchor="middle" style={wordStyle(0.95)}>{wd}</text>)}
-          {words.hops.map((wd, j) => <text key={`h${j}`} ref={n => { wordRefs.current[7 + j] = n; }} textAnchor="middle" style={wordStyle(0.95)}>{wd}</text>)}
-          {words.lock.map((wd, j) => <text key={`l${j}`} ref={n => { lockRefs.current[j] = n; }} textAnchor="middle" style={{ ...wordStyle(1.08), fill: 'var(--axis-attention-ink)' }}>{wd}</text>)}
+          {words.lock.map((wd, j) => <g key={`l${j}`} ref={n => { lockRefs.current[j] = n; }} style={{ opacity: 0 }}><Thought word={wd} size={1.05} accent /></g>)}
           {/* The label */}
           <g ref={tagRef} style={{ opacity: 0 }}>
             <rect x={-(words.tag.length * fontPx * 0.36 + 14)} y={-fontPx * 0.95} width={words.tag.length * fontPx * 0.72 + 28} height={fontPx * 1.9} rx={fontPx * 0.95}
-              style={{ fill: 'color-mix(in srgb, var(--color-stage) 70%, transparent)', stroke: 'var(--axis-attention-ink)' }} strokeWidth={1} />
+              style={{ fill: 'color-mix(in srgb, var(--color-stage) 75%, transparent)', stroke: 'var(--axis-attention-ink)' }} strokeWidth={1} />
             <text textAnchor="middle" dominantBaseline="central" style={{ fill: 'var(--axis-attention-ink)', fontFamily: 'var(--font-sans)', fontSize: fontPx }}>{words.tag}</text>
           </g>
         </svg>
-      </>)}
+      )}
 
       <button
         type="button"
@@ -554,7 +595,7 @@ export default function AttentionBeam() {
           type="button"
           onClick={toggle}
           className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap flex items-center gap-2.5 min-h-[48px] pl-4 pr-5 rounded-full bg-[color-mix(in_srgb,var(--color-stage)_55%,transparent)] backdrop-blur-md border border-[color-mix(in_srgb,var(--color-sign-gold)_45%,transparent)] text-ink text-[15px] shadow-[0_12px_30px_-12px_rgb(0_0_0/0.8)] hover:brightness-110 transition-[filter]"
-          style={{ top: Math.max(14, browY - 120 * u) }}
+          style={{ top: Math.max(14, rimY * 0.42) }}
         >
           <Play size={17} className="text-sign-gold fill-current" aria-hidden="true" />
           <span>{el ? 'Ξεκίνα' : 'Begin'}</span>
@@ -562,7 +603,7 @@ export default function AttentionBeam() {
         </button>
       )}
 
-      <div className="absolute inset-x-0 bottom-0 px-5 desk:px-8 pb-3 pt-8 flex flex-col items-center" style={{ height: panel, background: 'linear-gradient(to top, color-mix(in srgb, var(--color-stage) 82%, transparent) 40%, transparent)' }}>
+      <div className="absolute inset-x-0 bottom-0 px-5 desk:px-8 pb-3 pt-8 flex flex-col items-center" style={{ height: panel, background: 'linear-gradient(to top, color-mix(in srgb, var(--color-stage) 86%, transparent) 55%, transparent)' }}>
         <div className="w-full max-w-[560px] flex-1 min-h-0 flex flex-col" aria-live="polite">
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
