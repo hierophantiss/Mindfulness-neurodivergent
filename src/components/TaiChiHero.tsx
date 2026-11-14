@@ -10,7 +10,7 @@ import { motion } from "motion/react";
 // body. Now about 1/6 of the height, crown to chin under the hood (a real head
 // is about 1/7.5; the hood adds the rest). It shrinks towards the neck, so it
 // stays on the shoulders.
-const HEAD_SCALE = 0.58;
+const HEAD_SCALE = 0.52;
 // The neck: the head sits this much above the shoulders, so a little neck
 // shows between them (without it the head looked sunk into the body).
 const NECK_LIFT = 6;
@@ -95,6 +95,73 @@ const HAND_W = 5.4;                  // the hand's width, for palms that meet in
 const HAND_PATH = 'M -2.2 -0.6 L 2.2 -0.6 C 2.8 1.8 2.9 4.6 2.5 6.8 C 2.1 9 1.2 10.8 0 10.8 C -1.2 10.8 -2.1 9 -2.5 6.8 C -2.9 4.6 -2.8 1.8 -2.2 -0.6 Z';
 
 type Pt = { x: number; y: number };
+
+// The body is drawn from one half and its mirror, so the two sides are always
+// the same. A smooth curve through points (Catmull-Rom, as cubic Béziers).
+const f2 = (n: number) => Math.round(n * 100) / 100;
+function through(pts: Pt[]): string {
+  let d = '';
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[Math.max(0, i - 1)], p1 = pts[i], p2 = pts[i + 1], p3 = pts[Math.min(pts.length - 1, i + 2)];
+    d += ` C ${f2(p1.x + (p2.x - p0.x) / 6)} ${f2(p1.y + (p2.y - p0.y) / 6)} ${f2(p2.x - (p3.x - p1.x) / 6)} ${f2(p2.y - (p3.y - p1.y) / 6)} ${f2(p2.x)} ${f2(p2.y)}`;
+  }
+  return d;
+}
+/** A closed outline from its right half (offsets from the middle, top to bottom), mirrored. */
+function mirrored(cx: number, half: Pt[]): string {
+  const R = half.map(p => ({ x: cx + p.x, y: p.y }));
+  const L = [...half].reverse().map(p => ({ x: cx - p.x, y: p.y }));
+  return `M ${f2(L[L.length - 1].x)} ${f2(L[L.length - 1].y)} L ${f2(R[0].x)} ${f2(R[0].y)}${through(R)} L ${f2(L[0].x)} ${f2(L[0].y)}${through(L)} Z`;
+}
+/** The hoodie: neck, sloping shoulders, a little in at the waist, the hem at the hips. */
+function hoodiePath(cx: number, top: number, hem: number): string {
+  const s = Math.max(0.12, (hem - top) / (HEM_Y - SHOULDER_Y)); // shorter in the bow
+  const y = (k: number) => top + k * s;
+  return mirrored(cx, [
+    { x: 4.6, y: y(-3) }, { x: 9.5, y: y(-2.5) }, { x: 14, y: y(-1.8) }, { x: 16.6, y: y(1) },
+    { x: 15.4, y: y(9) }, { x: 13.2, y: y(17) }, { x: 12.3, y: y(24) }, { x: 12.6, y: hem - 2.6 }, { x: 12.4, y: hem },
+  ]);
+}
+/**
+ * One leg of the joggers (the right; the left is its mirror): full at the
+ * thigh, in at the knee, the calf, gathered into the cuff above the ankle.
+ * The knee goes out a little as the body sinks.
+ */
+function legPath(side: 1 | -1, top: number, sink: number): string {
+  const k = sink * 0.4, kneeY = KNEE_Y + sink * 0.45;
+  const pts: Pt[] = [
+    { x: 12.3, y: top }, { x: 11.6, y: (top + kneeY) / 2 }, { x: 9.9 + k, y: kneeY },
+    { x: 10.1 + k * 0.5, y: (kneeY + 279) / 2 - 1 }, { x: 9.6, y: 279.5 },
+  ];
+  const inner: Pt[] = [
+    { x: 3.4, y: 279.5 }, { x: 3.0 + k * 0.5, y: (kneeY + 279) / 2 }, { x: 2.7 + k, y: kneeY }, { x: 1.2, y: (top + kneeY) / 2 + 2 }, { x: 0.2, y: top + 3 },
+  ];
+  const X = (p: Pt) => ({ x: 200 + side * p.x, y: p.y });
+  const o = pts.map(X), i = inner.map(X);
+  return `M ${f2(200 + side * 0.2)} ${f2(top)} L ${f2(o[0].x)} ${f2(o[0].y)}${through(o)} L ${f2(i[0].x)} ${f2(i[0].y)}${through(i)} Z`;
+}
+/**
+ * A sleeve: the upper arm a little slimmer at the shoulder, fuller at the
+ * elbow, the forearm narrowing to the cuff. Drawn as rounded joints joined by
+ * tapered pieces; the same on both arms.
+ */
+const SLEEVE_R = { shoulder: 3.5, elbow: 4.6, wrist: 4.1 };
+function sleeveParts(s: Pt, e: Pt, h: Pt, grow = 0): string[] {
+  const seg = (a: Pt, b: Pt, ra: number, rb: number) => {
+    const l = Math.max(1e-3, Math.hypot(b.x - a.x, b.y - a.y));
+    const nx = -(b.y - a.y) / l, ny = (b.x - a.x) / l;
+    return `M ${f2(a.x + nx * ra)} ${f2(a.y + ny * ra)} L ${f2(b.x + nx * rb)} ${f2(b.y + ny * rb)} L ${f2(b.x - nx * rb)} ${f2(b.y - ny * rb)} L ${f2(a.x - nx * ra)} ${f2(a.y - ny * ra)} Z`;
+  };
+  const dot = (c: Pt, r: number) => `M ${f2(c.x - r)} ${f2(c.y)} a ${f2(r)} ${f2(r)} 0 1 0 ${f2(2 * r)} 0 a ${f2(r)} ${f2(r)} 0 1 0 ${f2(-2 * r)} 0 Z`;
+  const r = { s: SLEEVE_R.shoulder + grow, e: SLEEVE_R.elbow + grow, h: SLEEVE_R.wrist + grow };
+  return [dot(s, r.s), seg(s, e, r.s, r.e), dot(e, r.e), seg(e, h, r.e, r.h), dot(h, r.h)];
+}
+
+// A bare foot seen from the front (the right; the left is its mirror): from
+// the ankle in the cuff, widening to the toes, which turn a little outward.
+const FOOT_X = 6.5;
+const FOOT_PATH = 'M -2.7 -1 L 2.7 -1 C 2.9 1.4 3.3 3 4.4 4.3 C 5.3 5.3 5.6 6.1 5.2 6.7 C 4.8 7.2 3.8 7.3 2.8 7.3 L -2.2 7.3 C -3.4 7.3 -4 6.8 -3.9 5.9 C -3.8 4.9 -3.1 3.4 -2.7 -1 Z';
+const TOES: [number, number, number][] = [[-2.6, 6.5, 1.3], [-0.4, 6.8, 1.05], [1.4, 6.8, 0.95], [3.0, 6.6, 0.85], [4.3, 6.2, 0.75]];
 const dist2 = (a: Pt, b: Pt) => Math.hypot(a.x - b.x, a.y - b.y);
 /**
  * The elbow has two possible places for a given hand. It stays on the side it
@@ -1076,50 +1143,41 @@ export default function TaiChiHero({
           {/* The figure stands on the earth: a soft shadow under the feet */}
           {!figureOnly && <ellipse cx={200} cy={289} rx={17} ry={2.6} fill="url(#tc-foot-shadow)" />}
 
-          {/* CHARACTER / HERO MODEL */}
-          {/* Bare Feet Grounded on top curve of Earth */}
-          {/* Left Foot */}
-          <g id="tc-left-foot" transform="translate(191, 283)">
-            {/* Ankle to foot curve */}
-            <path d="M -3 -5 L -3 1 C -3 3 -5 4 -5 5 C -5 6 -2 7 2 7 C 5 7 5 5 5 4 L 4 -5 Z" fill="#e5bda3" />
-            {/* Toes details */}
-            <circle cx="-3" cy="6" r="1.2" fill="#d9b197" />
-            <circle cx="-1" cy="6.2" r="1.0" fill="#d9b197" />
-            <circle cx="1" cy="6.2" r="0.9" fill="#d9b197" />
-            <circle cx="3" cy="6.2" r="0.8" fill="#d9b197" />
-          </g>
-          {/* Right Foot */}
-          <g id="tc-right-foot" transform="translate(209, 283)">
-            <path d="M -4 -5 L -4 4 C -4 5 -4 7 -1 7 C 3 7 6 6 6 5 C 6 4 4 3 4 1 L 4 -5 Z" fill="#e5bda3" />
-            <circle cx="-2" cy="6.2" r="0.8" fill="#d9b197" />
-            <circle cx="0" cy="6.2" r="0.9" fill="#d9b197" />
-            <circle cx="2" cy="6.2" r="1.0" fill="#d9b197" />
-            <circle cx="4" cy="6" r="1.2" fill="#d9b197" />
-          </g>
+          {/* CHARACTER / HERO MODEL: drawn from one half and its mirror, so both sides match */}
+          {/* Bare feet on the earth */}
+          {([-1, 1] as const).map(side => (
+            <g key={side} id={side < 0 ? 'tc-left-foot' : 'tc-right-foot'} transform={`translate(${200 + side * FOOT_X}, 283) scale(${side}, 1)`}>
+              <path d={FOOT_PATH} fill="#e5bda3" />
+              <path d="M -2.7 -1 L 2.7 -1 L 2.8 0.6 L -2.8 0.6 Z" fill="#d9b197" />
+              {TOES.map(([x, y, r], i) => <circle key={i} cx={x} cy={y} r={r} fill="#d9b197" />)}
+            </g>
+          ))}
 
-          {/* LEGS (Jogger pants, dark charcoal, elegant folds) */}
-          {/* Clothes in the meditator's green, so it is the same person everywhere */}
+          {/* LEGS: joggers in the meditator's green, so it is the same person everywhere */}
           <g id="tc-legs" fill="url(#tc-pants-shade)" stroke="#1b241d" strokeWidth="0.5" transform={bodyShift ? `translate(0, 283) skewX(${(-Math.atan2(bodyShift, 38) * 180) / Math.PI}) translate(0, -283)` : undefined}>
-            {/* Left leg */}
-            <path d={`M 189.5 ${HEM_Y - 3 + sinkY} L ${185.5 - sinkY * 0.4} ${KNEE_Y + sinkY * 0.45} L 186.5 283 L 196 283 L ${196 - sinkY * 0.2} ${HEM_Y - 3 + sinkY} Z`} />
-            {/* Right leg */}
-            <path d={`M 210.5 ${HEM_Y - 3 + sinkY} L ${214.5 + sinkY * 0.4} ${KNEE_Y + sinkY * 0.45} L 213.5 283 L 204 283 L ${204 + sinkY * 0.2} ${HEM_Y - 3 + sinkY} Z`} />
-            {/* Soft folds at the knees */}
-            <path d={`M ${187 - sinkY * 0.4} ${KNEE_Y - 1 + sinkY * 0.45} q 4 1.6 8 0.2 M ${188 - sinkY * 0.3} ${KNEE_Y + 3 + sinkY * 0.45} q 3 1.2 6.5 0.2`} fill="none" strokeOpacity={0.7} />
-            <path d={`M ${213 + sinkY * 0.4} ${KNEE_Y - 1 + sinkY * 0.45} q -4 1.6 -8 0.2 M ${212 + sinkY * 0.3} ${KNEE_Y + 3 + sinkY * 0.45} q -3 1.2 -6.5 0.2`} fill="none" strokeOpacity={0.7} />
-            {/* Cuffs on pants */}
-            <rect x="186" y="279" width="10" height="4" rx="1.2" fill="#1b241d" />
-            <rect x="204" y="279" width="10" height="4" rx="1.2" fill="#1b241d" />
+            {([-1, 1] as const).map(side => <path key={side} d={legPath(side, HEM_Y - 3 + sinkY, sinkY)} />)}
+            {/* Soft folds at the knees, and where the cuff gathers */}
+            {([-1, 1] as const).map(side => {
+              const kx = 200 + side * (6.3 + sinkY * 0.4), ky = KNEE_Y + sinkY * 0.45;
+              return (
+                <path key={side} fill="none" strokeOpacity={0.6}
+                  d={`M ${f2(kx - 3.2)} ${f2(ky - 1)} q 3.2 1.4 6.4 0 M ${f2(kx - 2.6)} ${f2(ky + 3)} q 2.6 1.1 5.2 0 M ${200 + side * 3.6} 276.5 q ${side * 3} 1.2 ${side * 5.8} 0`} />
+              );
+            })}
+            {/* Cuffs */}
+            {([-1, 1] as const).map(side => <rect key={side} x={200 + side * FOOT_X - 3.3} y={279} width={6.6} height={4} rx={1.4} fill="#1b241d" />)}
           </g>
 
           <g id="tc-upper" transform={sinkY ? `translate(0, ${sinkY})` : undefined}>
-          {/* TORSO / HOODIE (Black/Charcoal hoodie, centered) */}
+          {/* TORSO / HOODIE */}
           <g id="tc-torso" fill="url(#tc-hoodie-shade)" transform={bodyShift ? `translate(${bodyShift}, 0)` : undefined}>
-            {/* The shoulders slope up a little to the neck; a light edge from behind */}
-            <path stroke="#a7f3d0" strokeOpacity={bare ? 0 : 0.22} strokeWidth={0.7} strokeLinejoin="round" d={`M 184 ${SHOULDER_Y + torsoBendY + leanBackY} C 188 ${SHOULDER_Y + torsoBendY + leanBackY - 1} 192 ${SHOULDER_Y + torsoBendY + leanBackY - 3} 195.4 ${SHOULDER_Y + torsoBendY + leanBackY - 3} L 204.6 ${SHOULDER_Y + torsoBendY + leanBackY - 3} C 208 ${SHOULDER_Y + torsoBendY + leanBackY - 3} 212 ${SHOULDER_Y + torsoBendY + leanBackY - 1} 216 ${SHOULDER_Y + torsoBendY + leanBackY} L 211.5 ${HEM_Y} L 188.5 ${HEM_Y} Z`} />
+            {/* The shoulders slope up to the neck, the waist comes in a little; a light edge from behind */}
+            <path stroke="#a7f3d0" strokeOpacity={bare ? 0 : 0.22} strokeWidth={0.7} strokeLinejoin="round" d={hoodiePath(200, SHOULDER_Y + torsoBendY + leanBackY, HEM_Y)} />
+            {/* The ribbed band at the hem */}
+            <path d={`M 187.5 ${HEM_Y - 2.6} L 212.5 ${HEM_Y - 2.6} L 212.4 ${HEM_Y} L 187.6 ${HEM_Y} Z`} fill="#2a372d" opacity={0.85} />
             {/* Kangaroo Pocket */}
             <path
-              d={`M 191 ${HEM_Y - 14 + torsoBendY * 0.35 + leanBackY * 0.35} L 209 ${HEM_Y - 14 + torsoBendY * 0.35 + leanBackY * 0.35} L 210.5 ${HEM_Y - 2} L 189.5 ${HEM_Y - 2} Z`}
+              d={`M 191 ${HEM_Y - 14 + torsoBendY * 0.35 + leanBackY * 0.35} L 209 ${HEM_Y - 14 + torsoBendY * 0.35 + leanBackY * 0.35} L 210.5 ${HEM_Y - 3} L 189.5 ${HEM_Y - 3} Z`}
               fill="#2e3c31"
               stroke="#1b241d"
               strokeWidth="0.8"
@@ -1127,14 +1185,14 @@ export default function TaiChiHero({
             <path d={`M 191 ${HEM_Y - 14 + torsoBendY * 0.35 + leanBackY * 0.35} L 194.5 ${HEM_Y - 8} M 209 ${HEM_Y - 14 + torsoBendY * 0.35 + leanBackY * 0.35} L 205.5 ${HEM_Y - 8}`} stroke="#1b241d" strokeWidth="0.5" />
           </g>
 
-          {/* NECK: from under the hood down into the hoodie's collar */}
+          {/* NECK: from under the hood down into the hoodie's collar, a little narrower at the top */}
           <g id="tc-neck" transform={bodyShift ? `translate(${bodyShift * 1.07}, 0)` : undefined}>
             <path
-              d={`M 196.6 ${206 + torsoBendY + leanBackY * 1.5 - NECK_LIFT - 3} L 203.4 ${206 + torsoBendY + leanBackY * 1.5 - NECK_LIFT - 3} L 204.2 ${SHOULDER_Y + torsoBendY + leanBackY + 1} L 195.8 ${SHOULDER_Y + torsoBendY + leanBackY + 1} Z`}
+              d={`M 196.9 ${206 + torsoBendY + leanBackY * 1.5 - NECK_LIFT - 3} L 203.1 ${206 + torsoBendY + leanBackY * 1.5 - NECK_LIFT - 3} L 204.3 ${SHOULDER_Y + torsoBendY + leanBackY + 1} L 195.7 ${SHOULDER_Y + torsoBendY + leanBackY + 1} Z`}
               fill="#e5bda3"
             />
             {/* the hood's shadow on the neck */}
-            <rect x="196.6" y={206 + torsoBendY + leanBackY * 1.5 - NECK_LIFT - 3} width="6.8" height="2.4" fill="#d9b197" />
+            <rect x="196.9" y={206 + torsoBendY + leanBackY * 1.5 - NECK_LIFT - 3} width="6.2" height="2.4" fill="#d9b197" />
           </g>
           <g id="tc-head-group" transform={`translate(${200 + bodyShift * 1.15}, ${206 + torsoBendY + leanBackY * 1.5 - NECK_LIFT}) scale(${HEAD_SCALE * (0.85 + bowBend * 0.15)}) translate(-200, -206)`}>
             {/* INNER HEAD & FACE peeking from under hood */}
@@ -1171,49 +1229,17 @@ export default function TaiChiHero({
           {/* LEFT ARM (Shoulder -> Elbow -> Wrist) */}
           {/* A light edge round the sleeves, from the light behind */}
           {!bare && (
-            <path d={`M ${sL.x} ${sL.y} L ${eLf.x} ${eLf.y} L ${hLf.x} ${hLf.y} M ${sR.x} ${sR.y} L ${eR.x} ${eR.y} L ${hR.x} ${hR.y}`}
-              fill="none" stroke="#a7f3d0" strokeOpacity={0.2} strokeWidth={11} strokeLinecap="round" strokeLinejoin="round" />
+            <g fill="#a7f3d0" opacity={0.2}>
+              {[...sleeveParts(sL, eLf, hLf, 0.8), ...sleeveParts(sR, eR, hR, 0.8)].map((d, i) => <path key={i} d={d} />)}
+            </g>
           )}
-          {/* Left Arm Sleeve */}
-          <path
-            d={`M ${sL.x} ${sL.y} L ${eLf.x} ${eLf.y} L ${hLf.x} ${hLf.y}`}
-            fill="none"
-            stroke="#36463a"
-            strokeWidth="9.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          {/* Left Arm Shadow Inner edge */}
-          <path
-            d={`M ${sL.x} ${sL.y} L ${eLf.x} ${eLf.y} L ${hLf.x} ${hLf.y}`}
-            fill="none"
-            stroke="#222d25"
-            strokeWidth="5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            opacity="0.35"
-          />
-
-          {/* RIGHT ARM (Shoulder -> Elbow -> Wrist) */}
-          {/* Right Arm Sleeve */}
-          <path
-            d={`M ${sR.x} ${sR.y} L ${eR.x} ${eR.y} L ${hR.x} ${hR.y}`}
-            fill="none"
-            stroke="#36463a"
-            strokeWidth="9.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          {/* Right Arm Shadow Inner edge */}
-          <path
-            d={`M ${sR.x} ${sR.y} L ${eR.x} ${eR.y} L ${hR.x} ${hR.y}`}
-            fill="none"
-            stroke="#222d25"
-            strokeWidth="5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            opacity="0.35"
-          />
+          {/* The two sleeves, the same shape, and a shadow down the middle of each */}
+          {([[sL, eLf, hLf], [sR, eR, hR]] as const).map(([sh, el, wr], k) => (
+            <g key={k}>
+              <g fill="#36463a">{sleeveParts(sh, el, wr).map((d, i) => <path key={i} d={d} />)}</g>
+              <path d={`M ${sh.x} ${sh.y} L ${el.x} ${el.y} L ${wr.x} ${wr.y}`} fill="none" stroke="#222d25" strokeWidth="4.2" strokeLinecap="round" strokeLinejoin="round" opacity="0.35" />
+            </g>
+          ))}
 
           {/* RAINBOW INFINITY SYMBOL ON CHEST: drawn over the sleeves, as a light on the
               heart, so arms crossing the chest never cut it; the hands stay in front. */}
@@ -1242,7 +1268,7 @@ export default function TaiChiHero({
           {[[eLf, hLf], [eR, hR]].map(([e, h], k) => {
             const d = Math.max(0.1, Math.hypot(e.x - h.x, e.y - h.y));
             const c = Math.min(2.4, d * 0.4) / d;
-            return <line key={k} x1={h.x} y1={h.y} x2={h.x + (e.x - h.x) * c} y2={h.y + (e.y - h.y) * c} stroke="#2a372d" strokeWidth={9.5} />;
+            return <line key={k} x1={h.x} y1={h.y} x2={h.x + (e.x - h.x) * c} y2={h.y + (e.y - h.y) * c} stroke="#2a372d" strokeWidth={SLEEVE_R.wrist * 2} />;
           })}
 
           {/* LEFT HAND (Simplified Abstract Oval) */}
