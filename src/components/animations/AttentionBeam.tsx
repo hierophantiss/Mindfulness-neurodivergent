@@ -35,14 +35,14 @@ const SCENES: Record<Lang, { title: string; caption: string }[]> = {
   el: [
     { title: 'Κλειστή προσοχή', caption: 'Το βλέμμα μένει σε ένα σημείο μπροστά. Η προσοχή φεύγει σε σκέψεις· τη βλέπεις, και γυρνάς απαλά στο σημείο. Η επιστροφή είναι η ίδια η άσκηση.' },
     { title: 'Ανοιχτή προσοχή', caption: 'Η προσοχή ανοίγει σε κύκλο γύρω σου και φωτίζει πολλά μαζί. Ήχοι, αισθήσεις, σκέψεις περνούν: όλα χωράνε, τίποτα δεν κρατιέται.' },
-    { title: 'Διασπασμένη προσοχή', caption: 'Σαν μαϊμού που πηδά από κλαδί σε κλαδί. Δεν τη μαλώνεις· τη χαλιναγωγείς απαλά.' },
+    { title: 'Διασπασμένη προσοχή', caption: 'Σαν μαϊμού που πηδά από κλαδί σε κλαδί. Δεν τη μαλώνεις· τη φέρνεις πίσω απαλά.' },
     { title: 'Αγκυλωμένη προσοχή', caption: 'Οι σκέψεις σκεπάζουν την όραση. Μένει μόνο ένα τούνελ ως ένα ειδικό ενδιαφέρον ή ως τα σενάρια· η γη χάνεται, ο κύκλος γυρίζει στην ίδια τροχιά.' },
     { title: 'Η έξοδος', caption: 'Μια ταμπέλα: «Σενάριο». Δεν χρειάζεται να κερδίσεις τη συζήτηση. Τα πέλματα, η αναπνοή, και πάλι το σταθερό σημείο.' },
   ],
   en: [
     { title: 'Closed attention', caption: 'The gaze rests on one point ahead. Attention drifts off to thoughts; you see it, and come gently back to the point. The return is the practice itself.' },
     { title: 'Open attention', caption: 'Attention opens into a circle around you and lights many things at once. Sounds, sensations, thoughts pass: everything fits, nothing is held.' },
-    { title: 'Scattered attention', caption: 'Like a monkey leaping from branch to branch. You do not scold it; you rein it in gently.' },
+    { title: 'Scattered attention', caption: 'Like a monkey leaping from branch to branch. You do not scold it; you bring it gently back.' },
     { title: 'Locked attention', caption: 'Thoughts cover what you see. Only a tunnel is left, to a special interest or to scenarios; the earth is lost, the loop turns on the same orbit.' },
     { title: 'The way out', caption: 'A label: “Scenario”. You do not need to win the argument. The soles, the breath, and back to the steady point.' },
   ],
