@@ -69,4 +69,13 @@ describe('the voice of the animations', () => {
       for (const scene of g[lang]) expect(scene.some(st => st.say)).toBe(true);
     }
   });
+
+  it('guides "Open awareness" (Chapter 4) through its four scenes, never setting the breath', () => {
+    const g = (narration as unknown as Record<string, Record<string, { say?: string; breath?: string }[][]>>).openawareness;
+    for (const lang of ['el', 'en']) {
+      expect(g[lang]).toHaveLength(4);
+      for (const scene of g[lang]) expect(scene.some(st => st.say)).toBe(true);
+      expect(g[lang].flat().some(st => st.breath)).toBe(false);
+    }
+  });
 });

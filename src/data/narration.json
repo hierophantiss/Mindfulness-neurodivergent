@@ -371,5 +371,67 @@
         { "rest": 3000 }
       ]
     ]
+  },
+  "openawareness": {
+    "el": [
+      [
+        { "say": "Οι σκέψεις σε τυλίγουν σαν πέπλα." },
+        { "pause": 1200 },
+        { "say": "Δεν χρειάζεται να τις διώξεις." },
+        { "rest": 2600 }
+      ],
+      [
+        { "say": "Πρώτα η βαρύτητα." },
+        { "pause": 700 },
+        { "say": "Νιώσε το βάρος στα πέλματα, τον άξονα να φωτίζει." },
+        { "pause": 1300 },
+        { "say": "Το βλέμμα ακουμπά σε ένα σημείο μπροστά σου." },
+        { "rest": 2800 }
+      ],
+      [
+        { "say": "Τώρα άφησε την όραση να ανοίξει στα πλάγια, χωρίς να κουνήσεις τα μάτια." },
+        { "pause": 1400 },
+        { "say": "Μαζί της ανοίγει η ακοή, και η αίσθηση του σώματος." },
+        { "rest": 3000 }
+      ],
+      [
+        { "say": "Μπορείς να νιώσεις τον χώρο ανάμεσα στα δύο σου μάτια;" },
+        { "pause": 2200 },
+        { "say": "Σαν ουρανός που χωράει τα πάντα." },
+        { "pause": 1300 },
+        { "say": "Οι σκέψεις περνούν, σαν σύννεφα." },
+        { "rest": 3500 }
+      ]
+    ],
+    "en": [
+      [
+        { "say": "Thoughts wrap around you like veils." },
+        { "pause": 1200 },
+        { "say": "You don't need to push them away." },
+        { "rest": 2600 }
+      ],
+      [
+        { "say": "Gravity first." },
+        { "pause": 700 },
+        { "say": "Feel the weight in your soles, the axis lighting up." },
+        { "pause": 1300 },
+        { "say": "Your gaze rests on one point in front of you." },
+        { "rest": 2800 }
+      ],
+      [
+        { "say": "Now let your vision open to the sides, without moving your eyes." },
+        { "pause": 1400 },
+        { "say": "With it, hearing opens too, and the feeling of the body." },
+        { "rest": 3000 }
+      ],
+      [
+        { "say": "Can you feel the space between your two eyes?" },
+        { "pause": 2200 },
+        { "say": "Like a sky that holds everything." },
+        { "pause": 1300 },
+        { "say": "Thoughts pass, like clouds." },
+        { "rest": 3500 }
+      ]
+    ]
   }
 }

@@ -1,6 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Volume2, VolumeX } from 'lucide-react';
 import { useLanguage } from '../../hooks/useLanguage';
 import { PlayPauseOverlay } from '../PlayPauseOverlay';
+import { getAudio } from '../../lib/chapterAudio';
+import { type AnimTiming, animAudioUrl, loadAnimTiming, sceneAt } from '../../lib/animVoice';
+
+// A voice can guide it (src/data/narration.json, "openawareness"), off until
+// the person turns it on: it plays from the scene shown, and each scene
+// changes when its words are done. Offered only once its audio has been made.
+const VOICE_ID = 'openawareness';
 
 export default function OpenAwareness() {
   const { language } = useLanguage();
@@ -46,6 +54,12 @@ export default function OpenAwareness() {
   const currentLang = language === 'en' ? 'en' : 'el';
   const data = localeData[currentLang];
   const [showIntro, setShowIntro] = useState(true);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [timing, setTiming] = useState<AnimTiming | null>(null);
+  const [guiding, setGuiding] = useState(false);
+  const [voiceTrouble, setVoiceTrouble] = useState(false);
+  const [seen, setSeen] = useState(false);
 
   const goToScene = (i: number) => {
     if (i < 0 || i > 3 || i === curSceneRef.current || transRef.current) return;
@@ -65,6 +79,85 @@ export default function OpenAwareness() {
   useEffect(() => {
     autoPlayRef.current = autoPlay;
   }, [autoPlay]);
+
+  // The voice's timing map: asked for the first time the animation is seen.
+  useEffect(() => {
+    const node = rootRef.current;
+    if (!node || typeof IntersectionObserver === 'undefined') return;
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setSeen(true); io.disconnect(); } });
+    io.observe(node);
+    return () => io.disconnect();
+  }, []);
+  useEffect(() => {
+    if (!seen) return;
+    let on = true;
+    setTiming(null);
+    loadAnimTiming(VOICE_ID, language === 'en' ? 'en' : 'el').then(t => { if (on) setTiming(t); });
+    return () => { on = false; };
+  }, [seen, language]);
+
+  const stopVoice = useCallback(() => {
+    audioRef.current?.pause();
+    setGuiding(false);
+  }, []);
+
+  const startVoice = useCallback(() => {
+    if (!timing) return;
+    let a = audioRef.current;
+    if (!a) {
+      a = new Audio();
+      a.addEventListener('ended', () => setGuiding(false));
+      a.addEventListener('error', () => { setGuiding(false); setVoiceTrouble(true); });
+      audioRef.current = a;
+    }
+    const want = new URL(animAudioUrl(VOICE_ID, language === 'en' ? 'en' : 'el', timing.duration), window.location.href).href;
+    if (a.src !== want) a.src = want;
+    // From the scene shown (from the start if it is the last one, already seen).
+    const from = curSceneRef.current >= 3 ? 0 : curSceneRef.current;
+    if (from !== curSceneRef.current) goToScene(from);
+    const at = timing.scenes[from].t0;
+    try { a.currentTime = at; } catch { /* once it has loaded */ }
+    if (a.readyState < 1) a.addEventListener('loadedmetadata', () => { a!.currentTime = at; }, { once: true });
+    setShowIntro(false);
+    setAutoPlay(false);
+    setVoiceTrouble(false);
+    window.dispatchEvent(new Event('voice-elsewhere')); // the chapter's reader stops, if it was reading
+    setGuiding(true);
+    a.play().catch(() => { setGuiding(false); setVoiceTrouble(true); });
+  }, [timing, language]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // While the voice plays, its words set the scene.
+  useEffect(() => {
+    if (!guiding || !timing) return;
+    let raf = 0;
+    const tick = () => {
+      const a = audioRef.current;
+      if (a && !a.paused && a.readyState >= 2) {
+        const want = Math.min(3, sceneAt(timing, a.currentTime).scene);
+        if (want !== curSceneRef.current && !transRef.current) goToScene(want);
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [guiding, timing]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // A scene chosen by hand while the voice plays: the voice goes there too.
+  const navTo = (i: number) => {
+    if (i < 0 || i > 3) return;
+    goToScene(i);
+    const a = audioRef.current;
+    if (guiding && a && timing) { try { a.currentTime = timing.scenes[i].t0; } catch { /* not loaded yet */ } }
+  };
+
+  useEffect(() => {
+    const reader = getAudio();
+    const onPlay = () => { if (audioRef.current && !audioRef.current.paused) stopVoice(); };
+    reader.addEventListener('play', onPlay);
+    return () => reader.removeEventListener('play', onPlay);
+  }, [stopVoice]);
+  useEffect(() => () => { audioRef.current?.pause(); audioRef.current?.removeAttribute('src'); }, []);
+  useEffect(() => { stopVoice(); }, [language, stopVoice]);
 
   useEffect(() => {
     let autoT: ReturnType<typeof setTimeout>;
@@ -612,7 +705,25 @@ export default function OpenAwareness() {
   }, [data]);
 
   return (
-    <div className="absolute inset-0 overflow-hidden" style={{ backgroundColor: '#050510' }}>
+    <div ref={rootRef} className="absolute inset-0 overflow-hidden" style={{ backgroundColor: '#050510' }}>
+      {timing && (
+        <div className="absolute top-3 left-3 z-[60] flex flex-col items-start gap-1.5">
+          <button
+            type="button"
+            onClick={guiding ? stopVoice : startVoice}
+            aria-pressed={guiding}
+            className={`flex items-center gap-2 min-h-[40px] px-3.5 rounded-full backdrop-blur-md text-[13px] transition-colors bg-[color-mix(in_srgb,var(--color-stage)_55%,transparent)] border ${guiding ? 'border-[color-mix(in_srgb,var(--color-sign-gold)_50%,transparent)] text-sign-gold' : 'border-[color-mix(in_srgb,var(--color-ink)_16%,transparent)] text-ink/75 hover:text-ink'}`}
+          >
+            {guiding ? <Volume2 size={16} aria-hidden="true" /> : <VolumeX size={16} aria-hidden="true" />}
+            <span>{currentLang === 'el' ? 'Με φωνή' : 'With voice'}</span>
+          </button>
+          {voiceTrouble && (
+            <p role="status" className="max-w-[200px] text-[12px] leading-snug text-ink/70 bg-[color-mix(in_srgb,var(--color-stage)_60%,transparent)] rounded-lg px-2 py-1">
+              {currentLang === 'el' ? 'Η φωνή δεν φορτώνει τώρα· η εικόνα συνεχίζει χωρίς αυτήν.' : 'The voice is not loading right now; the picture goes on without it.'}
+            </p>
+          )}
+        </div>
+      )}
       
       {showIntro && (
         <div 
@@ -638,9 +749,9 @@ export default function OpenAwareness() {
       <canvas 
         ref={canvasRef} 
         className="absolute inset-0 w-full h-full block cursor-pointer" 
-        onClick={() => setAutoPlay(!autoPlay)}
+        onClick={() => (guiding ? stopVoice() : setAutoPlay(!autoPlay))}
       />
-      <PlayPauseOverlay isPlaying={autoPlay} />
+      <PlayPauseOverlay isPlaying={autoPlay || guiding} />
 
       {/* UI Overlay Layer */}
       <div className={`absolute inset-0 pointer-events-none transition-opacity duration-1000 ${showIntro ? 'opacity-0' : 'opacity-100'}`}>
@@ -670,7 +781,7 @@ export default function OpenAwareness() {
           {[0, 1, 2, 3].map(i => (
             <button 
               key={i}
-              onClick={() => goToScene(i)}
+              onClick={() => navTo(i)}
               className={`w-2 h-2 rounded-full transition-all duration-500 border-none p-0
                 ${i === curScene 
                   ? 'bg-white/70 scale-[1.8] shadow-[0_0_10px_rgba(255,255,255,0.3)]' 
@@ -683,7 +794,7 @@ export default function OpenAwareness() {
         {/* Controls */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3 pointer-events-auto">
           <button 
-            onClick={() => goToScene(curScene - 1)}
+            onClick={() => navTo(curScene - 1)}
             disabled={curScene === 0}
             className="w-10 h-10 rounded-full border border-[#e8e4df]/20 bg-[#e8e4df]/5 text-[#e8e4df]/60 flex items-center justify-center hover:bg-[#e8e4df]/20 hover:text-ink transition-all disabled:opacity-30 disabled:hover:bg-[#e8e4df]/5"
           >
@@ -691,14 +802,14 @@ export default function OpenAwareness() {
           </button>
           
           <button 
-            onClick={() => setAutoPlay(!autoPlay)}
+            onClick={() => (guiding ? stopVoice() : setAutoPlay(!autoPlay))}
             className="px-6 h-10 rounded-full border border-[#e8e4df]/20 bg-[#e8e4df]/5 text-[#e8e4df]/60 flex items-center justify-center hover:bg-[#e8e4df]/20 hover:text-ink transition-all text-sm tracking-widest uppercase font-serif"
           >
-            {autoPlay ? '⏸ pause' : '▶ auto'}
+            {autoPlay || guiding ? '⏸ pause' : '▶ auto'}
           </button>
 
           <button 
-            onClick={() => goToScene(curScene + 1)}
+            onClick={() => navTo(curScene + 1)}
             disabled={curScene === 3}
             className="w-10 h-10 rounded-full border border-[#e8e4df]/20 bg-[#e8e4df]/5 text-[#e8e4df]/60 flex items-center justify-center hover:bg-[#e8e4df]/20 hover:text-ink transition-all disabled:opacity-30 disabled:hover:bg-[#e8e4df]/5"
           >
