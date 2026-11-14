@@ -53,7 +53,10 @@ const DURATION = [20, 14, 13, 16, 17];
 // Places on the ground: x as a share of the half-width, y as a share of the
 // ground between the person and the top.
 type Spot = [number, number];
-const POINT: Spot = [0, 0.36];            // the steady point, straight ahead, where the gaze rests
+// The steady point, where the gaze rests: straight ahead of the face, about
+// 1.5 m away. The shoulders (42 units) are about 45 cm, so 1.5 m is about 140
+// units from the brow; its place on the ground is worked out from that.
+const POINT_UNITS = 140;
 const PULLS: Spot[] = [[-0.5, 0.62], [0.52, 0.5]]; // the thoughts that drift over and pull (scene 1)
 const OPEN_WORDS: Spot[] = [[-0.62, 0.06], [0.6, 0.14], [-0.3, 0.5], [0.36, 0.42], [0.02, 0.74], [-0.62, 0.34]];
 const HOPS: Spot[] = [[-0.62, 0.24], [0.5, 0.7], [-0.25, 0.9], [0.68, 0.3], [0.02, 0.6], [-0.65, 0.6]];
@@ -75,7 +78,7 @@ const ease = (x: number) => 0.5 - 0.5 * Math.cos(Math.PI * Math.min(1, Math.max(
 const mix = (a: number, b: number, t: number) => a + (b - a) * t;
 
 /** Where the beam wants to be: its target, its half-width there (in the person's units), how bright. */
-export function beamGoal(scene: number, t: number): { spot: Spot; half: number; o: number } {
+export function beamGoal(scene: number, t: number, POINT: Spot): { spot: Spot; half: number; o: number } {
   if (scene === 0) {
     // On the point; a thought drifts over and the beam goes to it, then back
     // (5-10.6 s); then another (13-17.2).
@@ -172,7 +175,7 @@ export default function AttentionBeam() {
     voice: null as AnimTiming | null,
     guided: false,
     look: { ...LOOKS[0], bg: [...LOOKS[0].bg] } as Look,
-    beam: { x: POINT[0], y: POINT[1], half: 5, o: 0 },
+    beam: { x: 0, y: 0.5, half: 5, o: 0 },
     words: Array.from({ length: 14 }, () => 0),
     field: 0,
     lock: [0, 0],
@@ -234,6 +237,7 @@ export default function AttentionBeam() {
   const fontPx = Math.max(12.5, Math.min(16, 6.4 * k + 2));
   const at = (s: Spot) => ({ x: cx + s[0] * reach, y: headY - 26 * k - s[1] * groundH });
   const apex = { x: cx, y: headY - 9.5 * k };
+  const POINT: Spot = [0, Math.min(0.8, Math.max(0.2, ((POINT_UNITS - 16.5) * k) / groundH))];
 
   const goTo = useCallback((i: number) => {
     const next = Math.max(0, Math.min(LAST, i));
@@ -322,7 +326,7 @@ export default function AttentionBeam() {
       for (let i = 0; i < 3; i++) lk.bg[i] += (bgGoal[i] - lk.bg[i]) * kk;
 
       // The beam eases towards its goal (the hops and the orbit are already eased).
-      const g = beamGoal(L.scene, t);
+      const g = beamGoal(L.scene, t, POINT);
       const b = L.beam;
       const kb = L.scene === 2 ? (reduceMotion ? 1 : 1 - Math.exp(-dt / 0.08)) : L.scene === 3 ? (reduceMotion ? 1 : 1 - Math.exp(-dt / 0.25)) : kk;
       b.x += (g.spot[0] - b.x) * kb;
@@ -422,7 +426,7 @@ export default function AttentionBeam() {
       if (tagRef.current) {
         const lp = at(LOCK);
         tagRef.current.setAttribute('transform', `translate(${Math.max(70, Math.min(w - 70, lp.x))} ${lp.y})`);
-        tagRef.current.style.opacity = String(L.scene === 4 ? ease(t / 1.5) * (1 - 0.75 * ease((t - 9) / 3)) : 0);
+        tagRef.current.style.opacity = String(L.scene === 4 ? ease(t / 1.5) * (1 - ease((t - 9) / 3)) : 0); // gone before the beam comes back past it
       }
 
       barRefs.current.forEach((n, i) => {
