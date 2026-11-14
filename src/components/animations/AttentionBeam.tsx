@@ -12,11 +12,12 @@ import { type AnimTiming, animAudioUrl, loadAnimTiming, sceneAt, sceneLength, se
 // chapter's flashlight, drawn as the method's sign draws it: a golden
 // triangle from the brow, lighting the ground. Thoughts pass over the ground
 // like clouds, and when they are strong they cover what is seen.
-//   1. closed: the beam on one point; a thought drifts over, pulls the beam,
-//      is seen, and the beam comes gently back (the return is the practice);
-//   2. open: the beam opens over the whole ground; thoughts pass, light, and go;
-//   3. scattered: the beam hops from thing to thing (slowly: the overload has
-//      its own animation further on);
+//   1. closed: the gaze held on one point straight ahead; thoughts drift over
+//      and pull the beam, each is seen, and the beam comes gently back (the
+//      return is the practice);
+//   2. open: a circle of light round the person; thoughts pass, light, and go;
+//   3. scattered: the beam hops quickly from thing to thing (that is what
+//      scattering is; the overload has its own animation further on);
 //   4. locked: clouds cover the ground; only a tunnel is left, from the brow
 //      to one thing: a special interest, and, in turn, scenarios. The feet
 //      lose the earth; the thing turns on the same small orbit;
@@ -32,15 +33,15 @@ const VOICE_ID = 'attention';
 
 const SCENES: Record<Lang, { title: string; caption: string }[]> = {
   el: [
-    { title: 'Κλειστή προσοχή', caption: 'Η δέσμη μαζεύεται σε ένα σημείο. Μια σκέψη περνά από πάνω και την τραβά· τη βλέπεις, και γυρνάς απαλά. Η επιστροφή είναι η ίδια η άσκηση.' },
-    { title: 'Ανοιχτή προσοχή', caption: 'Η δέσμη ανοίγει και φωτίζει πολλά μαζί. Ήχοι, αισθήσεις, σκέψεις περνούν: όλα χωράνε, τίποτα δεν κρατιέται.' },
+    { title: 'Κλειστή προσοχή', caption: 'Το βλέμμα μένει σε ένα σημείο μπροστά. Η προσοχή φεύγει σε σκέψεις· τη βλέπεις, και γυρνάς απαλά στο σημείο. Η επιστροφή είναι η ίδια η άσκηση.' },
+    { title: 'Ανοιχτή προσοχή', caption: 'Η προσοχή ανοίγει σε κύκλο γύρω σου και φωτίζει πολλά μαζί. Ήχοι, αισθήσεις, σκέψεις περνούν: όλα χωράνε, τίποτα δεν κρατιέται.' },
     { title: 'Διασπασμένη προσοχή', caption: 'Σαν μαϊμού που πηδά από κλαδί σε κλαδί. Δεν τη μαλώνεις· τη χαλιναγωγείς απαλά.' },
     { title: 'Αγκυλωμένη προσοχή', caption: 'Οι σκέψεις σκεπάζουν την όραση. Μένει μόνο ένα τούνελ ως ένα ειδικό ενδιαφέρον ή ως τα σενάρια· η γη χάνεται, ο κύκλος γυρίζει στην ίδια τροχιά.' },
     { title: 'Η έξοδος', caption: 'Μια ταμπέλα: «Σενάριο». Δεν χρειάζεται να κερδίσεις τη συζήτηση. Τα πέλματα, η αναπνοή, και πάλι το σταθερό σημείο.' },
   ],
   en: [
-    { title: 'Closed attention', caption: 'The beam gathers on one point. A thought drifts over and pulls it away; you see it, and come gently back. The return is the practice itself.' },
-    { title: 'Open attention', caption: 'The beam opens and lights many things at once. Sounds, sensations, thoughts pass: everything fits, nothing is held.' },
+    { title: 'Closed attention', caption: 'The gaze rests on one point ahead. Attention drifts off to thoughts; you see it, and come gently back to the point. The return is the practice itself.' },
+    { title: 'Open attention', caption: 'Attention opens into a circle around you and lights many things at once. Sounds, sensations, thoughts pass: everything fits, nothing is held.' },
     { title: 'Scattered attention', caption: 'Like a monkey leaping from branch to branch. You do not scold it; you rein it in gently.' },
     { title: 'Locked attention', caption: 'Thoughts cover what you see. Only a tunnel is left, to a special interest or to scenarios; the earth is lost, the loop turns on the same orbit.' },
     { title: 'The way out', caption: 'A label: “Scenario”. You do not need to win the argument. The soles, the breath, and back to the steady point.' },
@@ -52,9 +53,9 @@ const DURATION = [16, 14, 13, 16, 16];
 // Places on the ground: x as a share of the half-width, y as a share of the
 // ground between the person and the top.
 type Spot = [number, number];
-const POINT: Spot = [0.38, 0.3];          // the steady point
-const PULL: Spot = [-0.42, 0.56];          // the thought that drifts over (scene 1)
-const OPEN_WORDS: Spot[] = [[-0.6, 0.3], [0.55, 0.62], [-0.15, 0.86], [0.42, 0.16], [-0.52, 0.7], [0.12, 0.46]];
+const POINT: Spot = [0, 0.36];            // the steady point, straight ahead, where the gaze rests
+const PULLS: Spot[] = [[-0.5, 0.62], [0.52, 0.5]]; // the thoughts that drift over and pull (scene 1)
+const OPEN_WORDS: Spot[] = [[-0.62, 0.06], [0.6, 0.14], [-0.3, 0.5], [0.36, 0.42], [0.02, 0.74], [-0.62, 0.34]];
 const HOPS: Spot[] = [[-0.62, 0.24], [0.5, 0.7], [-0.25, 0.9], [0.68, 0.3], [0.02, 0.6], [-0.65, 0.6]];
 const LOCK: Spot = [0.08, 0.6];            // the thing at the end of the tunnel
 // The ground's own things: stones, tufts, a bush, a tree's crown.
@@ -64,25 +65,29 @@ const CROWNS: [number, number, number][] = [[-0.56, 0.9, 30], [0.72, 0.5, 15]];
 // The clouds that cover the ground when attention locks.
 const CLOUDS: [number, number, number][] = [[-0.62, 0.18, 0.5], [0.56, 0.22, 0.46], [-0.2, 0.5, 0.5], [0.62, 0.62, 0.5], [-0.66, 0.82, 0.52], [0.18, 0.92, 0.5], [0.02, 0.24, 0.4], [-0.1, 0.72, 0.44]];
 
-const WORDS: Record<Lang, { pull: string; open: string[]; hops: string[]; lock: [string, string]; tag: string }> = {
-  el: { pull: 'ανησυχία', open: ['ήχος', 'αίσθηση', 'σκέψη', 'ανάμνηση', 'εικόνα', 'αναπνοή'], hops: ['μήνυμα', 'θόρυβος', 'ιδέα', 'σχέδια', 'φως', 'σκέψη'], lock: ['ειδικό ενδιαφέρον', 'σενάρια'], tag: 'Σενάριο' },
-  en: { pull: 'worry', open: ['sound', 'sensation', 'thought', 'memory', 'image', 'breath'], hops: ['message', 'noise', 'idea', 'plans', 'light', 'thought'], lock: ['special interest', 'scenarios'], tag: 'Scenario' },
+const WORDS: Record<Lang, { pull: [string, string]; open: string[]; hops: string[]; lock: [string, string]; tag: string }> = {
+  el: { pull: ['ανησυχία', 'σχέδια'], open: ['ήχος', 'αίσθηση', 'σκέψη', 'ανάμνηση', 'εικόνα', 'αναπνοή'], hops: ['μήνυμα', 'θόρυβος', 'ιδέα', 'σχέδια', 'φως', 'σκέψη'], lock: ['ειδικό ενδιαφέρον', 'σενάρια'], tag: 'Σενάριο' },
+  en: { pull: ['worry', 'plans'], open: ['sound', 'sensation', 'thought', 'memory', 'image', 'breath'], hops: ['message', 'noise', 'idea', 'plans', 'light', 'thought'], lock: ['special interest', 'scenarios'], tag: 'Scenario' },
 };
 
+const HOP = 1.1;
 const ease = (x: number) => 0.5 - 0.5 * Math.cos(Math.PI * Math.min(1, Math.max(0, x)));
 const mix = (a: number, b: number, t: number) => a + (b - a) * t;
 
 /** Where the beam wants to be: its target, its half-width there (in the person's units), how bright. */
 export function beamGoal(scene: number, t: number): { spot: Spot; half: number; o: number } {
   if (scene === 0) {
-    // On the point; at 5 s a thought drifts over, at 6-8 the beam goes to it, at 10-13 it comes back.
-    const away = ease((t - 6) / 2) * (1 - ease((t - 10) / 3));
-    return { spot: [mix(POINT[0], PULL[0], away), mix(POINT[1], PULL[1], away)], half: 5, o: 0.9 };
+    // On the point; a thought drifts over and the beam goes to it, then back;
+    // then another (the first at 4-8 s, the second at 9.5-13.5).
+    const a1 = ease((t - 4.4) / 1.4) * (1 - ease((t - 6.8) / 1.6));
+    const a2 = ease((t - 9.6) / 1.4) * (1 - ease((t - 12) / 1.6));
+    const to = a2 > 0 ? PULLS[1] : PULLS[0], away = Math.max(a1, a2);
+    return { spot: [mix(POINT[0], to[0], away), mix(POINT[1], to[1], away)], half: 5, o: 0.9 };
   }
-  if (scene === 1) return { spot: [0, 1.5], half: 210, o: 0.5 }; // wide, and on past the top
+  if (scene === 1) return { spot: POINT, half: 5, o: 0 }; // the beam gives way to the circle round the person
   if (scene === 2) {
-    // A hop every 2.1 s, sliding for 0.7 s.
-    const k = Math.floor(t / 2.1), f = ease((t - k * 2.1) / 0.7);
+    // A hop every 1.1 s, sliding for 0.35 s: quicker, as scattering is.
+    const k = Math.floor(t / HOP), f = ease((t - k * HOP) / 0.35);
     const a = HOPS[k % HOPS.length], b = HOPS[(k + 1) % HOPS.length];
     return { spot: [mix(a[0], b[0], f), mix(a[1], b[1], f)], half: 6, o: 0.85 };
   }
@@ -146,6 +151,7 @@ export default function AttentionBeam() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const beamRef = useRef<SVGPolygonElement>(null);
+  const fieldRef = useRef<SVGCircleElement>(null);
   const beamGradRef = useRef<SVGLinearGradientElement>(null);
   const holeRef = useRef<SVGPolygonElement>(null);
   const fogRef = useRef<SVGGElement>(null);
@@ -167,7 +173,8 @@ export default function AttentionBeam() {
     guided: false,
     look: { ...LOOKS[0], bg: [...LOOKS[0].bg] } as Look,
     beam: { x: POINT[0], y: POINT[1], half: 5, o: 0 },
-    words: Array.from({ length: 13 }, () => 0),
+    words: Array.from({ length: 14 }, () => 0),
+    field: 0,
     lock: [0, 0],
     rings: 0,
   });
@@ -297,7 +304,7 @@ export default function AttentionBeam() {
 
     const apply = (dt: number) => {
       // A still picture shows each scene at its telling moment.
-      const STILL = [8, 99, 1, 2.5, 99];
+      const STILL = [5.6, 99, 1, 2.5, 99];
       const t = reduceMotion ? STILL[L.scene] : L.clock;
       const target = LOOKS[L.scene];
       const kk = reduceMotion ? 1 : 1 - Math.exp(-dt / 1.3);
@@ -317,7 +324,7 @@ export default function AttentionBeam() {
       // The beam eases towards its goal (the hops and the orbit are already eased).
       const g = beamGoal(L.scene, t);
       const b = L.beam;
-      const kb = L.scene === 2 || L.scene === 3 ? (reduceMotion ? 1 : 1 - Math.exp(-dt / 0.25)) : kk;
+      const kb = L.scene === 2 ? (reduceMotion ? 1 : 1 - Math.exp(-dt / 0.08)) : L.scene === 3 ? (reduceMotion ? 1 : 1 - Math.exp(-dt / 0.25)) : kk;
       b.x += (g.spot[0] - b.x) * kb;
       b.y += (g.spot[1] - b.y) * kb;
       b.half += (g.half - b.half) * kk;
@@ -331,6 +338,13 @@ export default function AttentionBeam() {
       if (beamGradRef.current) {
         beamGradRef.current.setAttribute('x1', String(apex.x)); beamGradRef.current.setAttribute('y1', String(apex.y));
         beamGradRef.current.setAttribute('x2', String(end.x)); beamGradRef.current.setAttribute('y2', String(end.y));
+      }
+      // Open attention: a circle of light round the person, widening.
+      L.field += ((L.scene === 1 ? 1 : 0) - L.field) * (reduceMotion ? 1 : 1 - Math.exp(-dt / (L.scene === 1 ? 1.4 : 0.6)));
+      if (fieldRef.current) {
+        const R = Math.hypot(reach, groundH * 0.95) * (0.25 + 0.75 * L.field);
+        fieldRef.current.setAttribute('r', String(R));
+        fieldRef.current.style.opacity = String(L.field);
       }
       // The clouds cover everything but the tunnel.
       holeRef.current?.setAttribute('points', pts);
@@ -375,15 +389,17 @@ export default function AttentionBeam() {
         n.setAttribute('transform', `translate(${Math.max(46, Math.min(w - 46, p.x + sway))} ${p.y})`);
         n.style.opacity = String(L.words[i]);
       };
-      place(0, [PULL[0] + (L.scene === 0 ? 0.25 * (1 - ease((t - 4) / 3)) : 0), PULL[1]], L.scene === 0 ? ease((t - 4.2) / 1.2) * (1 - ease((t - 10.5) / 2)) : 0);
+      // The two thoughts of the closed attention drift in from the side, pull, and pass.
+      place(0, [PULLS[0][0] - (L.scene === 0 ? 0.2 * (1 - ease((t - 3) / 2.5)) : 0), PULLS[0][1]], L.scene === 0 ? ease((t - 3.2) / 1.2) * (1 - ease((t - 7.2) / 1.6)) : 0);
+      place(13, [PULLS[1][0] + (L.scene === 0 ? 0.2 * (1 - ease((t - 8.4) / 2.5)) : 0), PULLS[1][1]], L.scene === 0 ? ease((t - 8.6) / 1.2) * (1 - ease((t - 12.4) / 1.6)) : 0);
       OPEN_WORDS.forEach((s, j) => {
         const c = (t - 1.2 - j * 1.6) / 5; // each comes and goes in its turn
         const on = L.scene === 1 ? (reduceMotion ? 0.7 : c > 0 ? Math.sin(Math.PI * Math.min(1, c % 1.4)) * 0.75 : 0) : 0;
         place(1 + j, s, on);
       });
-      const hop = Math.floor(t / 2.1);
+      const hop = Math.floor(t / HOP);
       HOPS.forEach((s, j) => {
-        const lit = L.scene === 2 && (hop % HOPS.length === j || ((hop + 1) % HOPS.length === j && t - hop * 2.1 > 0.5));
+        const lit = L.scene === 2 && (hop % HOPS.length === j || ((hop + 1) % HOPS.length === j && t - hop * HOP > 0.25));
         place(7 + j, s, L.scene === 2 ? (lit ? 0.95 : 0.3) : 0);
         const tr = trailRefs.current[j];
         if (tr) {
@@ -476,6 +492,11 @@ export default function AttentionBeam() {
               <stop offset="0%" style={{ stopColor: 'var(--gold-top)', stopOpacity: 1 }} />
               <stop offset="100%" style={{ stopColor: 'var(--gold-top)', stopOpacity: 0 }} />
             </radialGradient>
+            <radialGradient id="ab-field">
+              <stop offset="0%" style={{ stopColor: 'var(--gold-top)', stopOpacity: 0.34 }} />
+              <stop offset="70%" style={{ stopColor: 'var(--axis-attention-ink)', stopOpacity: 0.16 }} />
+              <stop offset="100%" style={{ stopColor: 'var(--axis-attention-ink)', stopOpacity: 0.06 }} />
+            </radialGradient>
             <radialGradient id="ab-breath">
               <stop offset="0%" style={{ stopColor: 'var(--tint-blue-ink)', stopOpacity: 0.85 }} />
               <stop offset="100%" style={{ stopColor: 'var(--tint-blue-ink)', stopOpacity: 0 }} />
@@ -525,6 +546,8 @@ export default function AttentionBeam() {
             return <path key={`t${i}`} d={`M ${p.x - 3 * k} ${p.y} l ${1.6 * k} ${-2.6 * k} M ${p.x} ${p.y + 0.5 * k} l 0 ${-3.2 * k} M ${p.x + 3 * k} ${p.y} l ${-1.6 * k} ${-2.6 * k}`} style={{ stroke: 'var(--tint-sage-dot)' }} strokeWidth={0.8} strokeLinecap="round" opacity={0.5} fill="none" />;
           })}
 
+          {/* Open attention's circle, round the person */}
+          <circle ref={fieldRef} cx={cx} cy={headY - 2 * k} r={10} fill="url(#ab-field)" style={{ stroke: 'var(--axis-attention-ink)', strokeOpacity: 0.35, opacity: 0 }} strokeWidth={1.2} />
           {/* The beam on the ground, and the steady point */}
           <polygon ref={beamRef} fill="url(#ab-beam)" style={{ opacity: 0 }} />
           <circle ref={pointRef} cx={at(POINT).x} cy={at(POINT).y} r={4 * k} fill="url(#ab-glow)" style={{ opacity: 0 }} />
@@ -538,7 +561,7 @@ export default function AttentionBeam() {
           <ellipse ref={chestRef} cx={cx} cy={headY + 2 * k} rx={18 * k} ry={10 * k} fill="url(#ab-breath)" style={{ opacity: 0 }} />
 
           {/* The thoughts passing over */}
-          <g ref={n => { wordRefs.current[0] = n; }} style={{ opacity: 0 }}><Thought word={words.pull} /></g>
+          {words.pull.map((wd, j) => <g key={`p${j}`} ref={n => { wordRefs.current[j === 0 ? 0 : 13] = n; }} style={{ opacity: 0 }}><Thought word={wd} /></g>)}
           {words.open.map((wd, j) => <g key={`o${j}`} ref={n => { wordRefs.current[1 + j] = n; }} style={{ opacity: 0 }}><Thought word={wd} size={0.92} /></g>)}
           {words.hops.map((wd, j) => <g key={`h${j}`} ref={n => { wordRefs.current[7 + j] = n; }} style={{ opacity: 0 }}><Thought word={wd} size={0.92} /></g>)}
 
