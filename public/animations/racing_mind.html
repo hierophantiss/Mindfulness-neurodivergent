@@ -124,7 +124,9 @@ function drawBg(blend){
   ctx.fillStyle=grd;ctx.fillRect(0,0,W,H);
 }
 function updUI(){var s=scenes[cur];document.getElementById('lm').textContent=lang==='el'?s.label:s.label_en;document.getElementById('lsci').textContent=lang==='el'?s.sci:s.sci_en;document.getElementById('label').classList.add('vis');document.getElementById('sn').textContent=(cur+1)+' / 4';document.getElementById('pb').style.width=(cur/3*100)+'%';document.querySelectorAll('.dot').forEach(function(d,i){d.classList.toggle('active',i===cur)})}
-function goTo(i){if(i<0||i>3||i===cur||trans)return;tgt=i;trans=true;tT=0;document.getElementById('label').classList.remove('vis');setTimeout(function(){cur=tgt;trans=false;updUI()},1800)}
+// fromVoice: the app's voice asked for it; otherwise the person did, and the
+// app is told, so that a voice playing goes to the same scene.
+function goTo(i,fromVoice){if(i<0||i>3||i===cur||trans)return;if(!fromVoice&&parent!==window)parent.postMessage({type:'anim-scene',scene:i},location.origin);tgt=i;trans=true;tT=0;document.getElementById('label').classList.remove('vis');setTimeout(function(){cur=tgt;trans=false;updUI()},1800)}
 function togAuto(){autoP=!autoP;document.getElementById('ab').textContent=autoP?'⏸ pause':'▶ auto';if(autoP)runA();else clearTimeout(autoTm)}
 function runA(){if(!autoP)return;autoTm=setTimeout(function(){if(cur<3){goTo(cur+1);setTimeout(runA,2200)}else{autoP=false;document.getElementById('ab').textContent='▶ auto'}},7000)}
 var lt=performance.now();
@@ -140,6 +142,12 @@ function loop(ts){var dt=Math.min((ts-lt)/1000,0.05);lt=ts;t+=dt;
   ctx.globalAlpha=1;requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
 document.getElementById('intro').addEventListener('click',function(){this.classList.add('hidden');updUI()});
+// The voice (played by the app around this page, off until the person turns
+// it on): it says which scene to show; the page's own "auto" stops meanwhile.
+addEventListener('message',function(e){var d=e.data;if(e.origin!==location.origin||!d||d.type!=='anim-voice'||typeof d.scene!=='number')return;
+  var it=document.getElementById('intro');if(!it.classList.contains('hidden')){it.classList.add('hidden');updUI()}
+  if(autoP){autoP=false;clearTimeout(autoTm);document.getElementById('ab').textContent='▶ auto'}
+  if(d.scene!==cur&&!trans)goTo(Math.max(0,Math.min(3,d.scene)),true)});
 document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key===' ')goTo(cur+1);if(e.key==='ArrowLeft')goTo(cur-1)});
 </script>
 </body>

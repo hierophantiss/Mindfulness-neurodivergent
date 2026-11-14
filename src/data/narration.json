@@ -433,5 +433,71 @@
         { "rest": 3500 }
       ]
     ]
+  },
+  "racingmind": {
+    "el": [
+      [
+        { "say": "Ο νους τρέχει." },
+        { "pause": 1000 },
+        { "say": "Οι σκέψεις γυρίζουν γύρω από το κεφάλι, και το σώμα σχεδόν χάνεται." },
+        { "rest": 3000 }
+      ],
+      [
+        { "say": "Φέρε την προσοχή στα πέλματα." },
+        { "pause": 900 },
+        { "say": "Νιώσε το βάρος να πέφτει, τη γη να σε κρατά." },
+        { "pause": 1300 },
+        { "say": "Ο άξονας ανάβει, και η δίνη χαμηλώνει." },
+        { "rest": 3000 }
+      ],
+      [
+        { "say": "Τώρα η αναπνοή." },
+        { "pause": 900 },
+        { "say": "Άφησε την εκπνοή να γίνει λίγο πιο μακριά από την εισπνοή." },
+        { "pause": 1500 },
+        { "say": "Ο ρυθμός ηρεμεί." },
+        { "rest": 3500 }
+      ],
+      [
+        { "say": "Οι σκέψεις ησυχάζουν." },
+        { "pause": 1000 },
+        { "say": "Δεν χρειάστηκε να τις σταματήσεις." },
+        { "pause": 1300 },
+        { "say": "Είσαι εδώ, στο σώμα." },
+        { "rest": 3500 }
+      ]
+    ],
+    "en": [
+      [
+        { "say": "The mind is racing." },
+        { "pause": 1000 },
+        { "say": "Thoughts spin around the head, and the body almost fades." },
+        { "rest": 3000 }
+      ],
+      [
+        { "say": "Bring your attention to your soles." },
+        { "pause": 900 },
+        { "say": "Feel the weight dropping, the earth holding you." },
+        { "pause": 1300 },
+        { "say": "The axis lights up, and the spin slows." },
+        { "rest": 3000 }
+      ],
+      [
+        { "say": "Now the breath." },
+        { "pause": 900 },
+        { "say": "Let the breath out become a little longer than the breath in." },
+        { "pause": 1500 },
+        { "say": "The rhythm settles." },
+        { "rest": 3500 }
+      ],
+      [
+        { "say": "The thoughts grow quiet." },
+        { "pause": 1000 },
+        { "say": "You didn't have to stop them." },
+        { "pause": 1300 },
+        { "say": "You are here, in the body." },
+        { "rest": 3500 }
+      ]
+    ]
   }
 }

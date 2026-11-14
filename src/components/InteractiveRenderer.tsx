@@ -6,6 +6,7 @@ import AttentionBeam from './animations/AttentionBeam';
 import OpenAwareness from './animations/OpenAwareness';
 import CameraAnimation from './CameraAnimation';
 import SamathaAnimation from './SamathaAnimation';
+import VoicedFrame from './VoicedFrame';
 import { Maximize2, X, Play } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useLanguage } from '../hooks/useLanguage';
@@ -47,6 +48,8 @@ export default function InteractiveRenderer({ id, asModal }: InteractiveRenderer
 
     const fileName = htmlMap[id] || `${id}.html`;
     const src = `/animations/${fileName}?lang=${language}`;
+    // The racing mind (Chapter 3's overload and Chapter 5): with a voice.
+    if (fileName === 'racing_mind.html') return <VoicedFrame src={src} title={`Interactive Exercise: ${id}`} voiceId="racingmind" />;
 
     return (
       <iframe 
