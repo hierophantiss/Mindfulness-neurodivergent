@@ -11,7 +11,10 @@ The animation plays the MP3 when the person turns the voice on, and follows the
 map: the scene changes when its words are done, and the breath's light moves
 with the spoken "in" and "out".
 
-    python3 tools/audiobook/synth_anim.py src/data/narration.json out/anim [--langs el,en] [--cache .tts-cache] [--mock]
+    python3 tools/audiobook/synth_anim.py src/data/narration.json out/anim [--langs el,en] [--only attention,samatha] [--cache .tts-cache] [--mock]
+
+With --only, just those animations are made; the others keep the files they
+have in the release, so their voice does not change and nothing is paid twice.
 
     python3 tools/audiobook/synth_anim.py src/data/narration.json out/voices --try-voices el
 
@@ -48,6 +51,7 @@ def main():
     ap.add_argument('--langs', default='el,en')
     ap.add_argument('--cache', default='.tts-cache')
     ap.add_argument('--mock', action='store_true')
+    ap.add_argument('--only', default='', help='animation ids, comma-separated (default: all)')
     ap.add_argument('--voice', default='', help='a Chirp 3 HD voice name (default: the language\'s, synth.VOICE)')
     ap.add_argument('--try-voices', default='', help='a language: write a sample in each of its voices')
     a = ap.parse_args()
@@ -58,6 +62,11 @@ def main():
     work = out / '_work'
     for d in (out, cache, work):
         d.mkdir(parents=True, exist_ok=True)
+
+    only = [x.strip() for x in a.only.split(',') if x.strip()]
+    unknown = [x for x in only if x not in data or x.startswith('_')]
+    if unknown:
+        sys.exit(f'No such animation in {a.narration}: {", ".join(unknown)} (there are: {", ".join(k for k in data if not k.startswith("_"))})')
 
     if a.try_voices:
         try_voices(data, a.try_voices, out, cache, a.mock)
@@ -70,7 +79,7 @@ def main():
         if not a.mock:
             synth.check_voice(locale, voice)
         for anim_id, langs in data.items():
-            if anim_id.startswith('_') or lang not in langs:
+            if anim_id.startswith('_') or lang not in langs or (only and anim_id not in only):
                 continue
             pieces = [synth.silence(LEAD_IN_MS, cache)]
             t = LEAD_IN_MS / 1000

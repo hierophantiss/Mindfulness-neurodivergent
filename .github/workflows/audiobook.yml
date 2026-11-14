@@ -19,7 +19,12 @@
 #         versions (tools/audiobook/sample.py) → pre-release "voice-sample"
 #
 # "chapters" limits the run: for the app, chapter numbers (e.g. 3 or 1-4; the
-# other chapters keep their files); for the book, audio tracks (e.g. 1-3).
+# other chapters keep their files); for the book, audio tracks (e.g. 1-3); for
+# the animations, their ids in narration.json (e.g. attention or
+# attention,samatha). Set it for the animations: the voice of every other
+# animation then stays exactly as it is, and only the new text is paid for.
+# (The TTS cache saved by a run on a branch is not seen by runs on main or on
+# other branches, so without it a run would speak everything again.)
 
 name: Audiobook
 
@@ -37,7 +42,7 @@ on:
         options: [both, el, en]
         default: both
       chapters:
-        description: 'Only these (app = chapter numbers, book = audio tracks), e.g. 1-3. Empty = all'
+        description: 'Only these (app = chapter numbers, book = audio tracks, anim = animation ids), e.g. 1-3 or attention. Empty = all'
         type: string
         default: ''
 
@@ -105,7 +110,7 @@ jobs:
         if: env.TARGET == 'anim'
         run: |
           python3 tools/audiobook/synth_anim.py src/data/narration.json audiobook-out/anim \
-            --langs "${LANGS// /,}" --cache .tts-cache
+            --langs "${LANGS// /,}" --cache .tts-cache --only "$ONLY"
           gh release view app-audio >/dev/null 2>&1 || \
             gh release create app-audio --title "App chapter audio" \
               --notes "Chapter audio for the app's reader (Google Chirp 3 HD): one MP3 and one timing map per chapter. Served by the site at /audio/. CC BY-NC-ND 4.0."
