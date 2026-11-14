@@ -2,6 +2,7 @@ import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useEffect, useRef, useState } from 'react';
 import GravityThoughts from './animations/GravityThoughts';
 import InnerTouch from './animations/InnerTouch';
+import AttentionBeam from './animations/AttentionBeam';
 import OpenAwareness from './animations/OpenAwareness';
 import CameraAnimation from './CameraAnimation';
 import SamathaAnimation from './SamathaAnimation';
@@ -30,7 +31,6 @@ export default function InteractiveRenderer({ id, asModal }: InteractiveRenderer
     'gravity_thoughts': 'gravity_thoughts.html',
     'treepose': 'treepose.html',
     'metronomos': 'metronomos.html',
-    'three_attention': 'three_attention.html',
     'attention_dispersion': 'racing_mind.html', // TODO: create dedicated attention_dispersion.html
     'racing_mind': 'racing_mind.html',
     'journey': 'journey.html',
@@ -39,6 +39,7 @@ export default function InteractiveRenderer({ id, asModal }: InteractiveRenderer
   const renderContent = () => {
     if (id === 'gravity_thoughts') return <GravityThoughts />;
     if (id === 'eswterikhafh' || id === 'inner_touch') return <InnerTouch />;
+    if (id === 'three_attention') return <AttentionBeam />;
     if (id === 'openawareness' || id === 'open_awareness') return <OpenAwareness />;
     if (id === 'camera_exercise') return <CameraAnimation mode="camera" bare />;
     if (id === 'samatha_attention') return <SamathaAnimation bare />;
