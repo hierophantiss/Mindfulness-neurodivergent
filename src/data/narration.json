@@ -499,5 +499,51 @@
         { "rest": 3500 }
       ]
     ]
+  },
+  "metronome": {
+    "el": [
+      [
+        { "say": "Κάθισε σε στάση διαλογισμού." },
+        { "pause": 1600 },
+        { "say": "Νιώσε τη βαρύτητα." },
+        { "pause": 2200 },
+        { "say": "Βρες τον κατακόρυφο άξονα." },
+        { "rest": 3500 }
+      ],
+      [
+        { "say": "Η κίνηση ξεκινά από το κέντρο, την κοιλιά." },
+        { "pause": 1200 },
+        { "breath": "in", "say": "Δεξιά…", "ms": 5000 },
+        { "breath": "out", "say": "αριστερά…", "ms": 5000 },
+        { "breath": "in", "say": "Ρυθμικά…", "ms": 5000 },
+        { "breath": "out", "say": "Συνειδητά…", "ms": 5000 },
+        { "say": "Τίποτα δεν είναι ακίνητο." },
+        { "pause": 1200 },
+        { "say": "Η παρουσία ζει μέσα στην κίνηση." },
+        { "rest": 9000 }
+      ]
+    ],
+    "en": [
+      [
+        { "say": "Sit in a meditation posture." },
+        { "pause": 1600 },
+        { "say": "Feel gravity." },
+        { "pause": 2200 },
+        { "say": "Find the vertical axis." },
+        { "rest": 3500 }
+      ],
+      [
+        { "say": "The movement starts from the centre, the belly." },
+        { "pause": 1200 },
+        { "breath": "in", "say": "Right…", "ms": 5000 },
+        { "breath": "out", "say": "left…", "ms": 5000 },
+        { "breath": "in", "say": "Rhythmic…", "ms": 5000 },
+        { "breath": "out", "say": "Conscious…", "ms": 5000 },
+        { "say": "Nothing is still." },
+        { "pause": 1200 },
+        { "say": "Presence lives within movement." },
+        { "rest": 9000 }
+      ]
+    ]
   }
 }

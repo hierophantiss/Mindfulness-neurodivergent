@@ -4,6 +4,7 @@ import GravityThoughts from './animations/GravityThoughts';
 import InnerTouch from './animations/InnerTouch';
 import AttentionBeam from './animations/AttentionBeam';
 import OpenAwareness from './animations/OpenAwareness';
+import MindfulSwaying from './animations/MindfulSwaying';
 import CameraAnimation from './CameraAnimation';
 import SamathaAnimation from './SamathaAnimation';
 import VoicedFrame from './VoicedFrame';
@@ -31,7 +32,6 @@ export default function InteractiveRenderer({ id, asModal }: InteractiveRenderer
   const htmlMap: Record<string, string> = {
     'gravity_thoughts': 'gravity_thoughts.html',
     'treepose': 'treepose.html',
-    'metronomos': 'metronomos.html',
     'attention_dispersion': 'racing_mind.html', // TODO: create dedicated attention_dispersion.html
     'racing_mind': 'racing_mind.html',
     'journey': 'journey.html',
@@ -42,6 +42,7 @@ export default function InteractiveRenderer({ id, asModal }: InteractiveRenderer
     if (id === 'eswterikhafh' || id === 'inner_touch') return <InnerTouch />;
     if (id === 'three_attention') return <AttentionBeam />;
     if (id === 'openawareness' || id === 'open_awareness') return <OpenAwareness />;
+    if (id === 'metronomos') return <MindfulSwaying />;
     if (id === 'camera_exercise') return <CameraAnimation mode="camera" bare />;
     if (id === 'samatha_attention') return <SamathaAnimation bare />;
     if (id === 'camera_hero') return <CameraAnimation mode="hero" bare />;
