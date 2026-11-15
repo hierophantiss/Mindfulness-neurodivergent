@@ -153,12 +153,11 @@ export default function RabbitHole() {
   const formatDate = (dateStr: string | undefined, lang: string) => {
     if (!dateStr) return null;
     const [year, month] = dateStr.split('-');
-    if (lang === 'el') {
-      const elMonths: Record<string, string> = { '05': 'Μάιος', '06': 'Ιούνιος', '07': 'Ιούλιος' };
-      return `${elMonths[month]} ${year}`;
-    }
-    const enMonths: Record<string, string> = { '05': 'May', '06': 'June', '07': 'July' };
-    return `${enMonths[month]} ${year}`;
+    const i = Number(month) - 1;
+    const months = lang === 'el'
+      ? ['Ιανουάριος', 'Φεβρουάριος', 'Μάρτιος', 'Απρίλιος', 'Μάιος', 'Ιούνιος', 'Ιούλιος', 'Αύγουστος', 'Σεπτέμβριος', 'Οκτώβριος', 'Νοέμβριος', 'Δεκέμβριος']
+      : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    return months[i] ? `${months[i]} ${year}` : year;
   };
 
   // Η λίστα παράγεται από το rabbitholeContent — μοναδική πηγή.
