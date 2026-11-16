@@ -91,8 +91,8 @@ export default function PracticeMovement() {
       <div className="text-ink/70 mb-8 max-w-lg bg-black/40 backdrop-blur-md/80 p-5 rounded-2xl border border-white/5 backdrop-blur-md z-10 relative">
         <p className="text-[15px] font-sans leading-relaxed mb-3">
           {language === 'el' 
-            ? 'Ασκήσεις ενσυνείδητης κίνησης και αναπνοής. Συνοδεύονται από ακουστικά κύματα (binaural beats) για συγχρονισμό των εγκεφαλικών ημισφαιρίων και μπορούν να χρησιμοποιηθούν με τα μάτια ανοιχτά ή κλειστά.' 
-            : 'Mindful movement and breath exercises. Accompanied by binaural beats for brain hemisphere synchronization, they can be used with eyes open or closed.'}
+            ? 'Ασκήσεις ενσυνείδητης κίνησης και αναπνοής, με τα μάτια ανοιχτά ή κλειστά. Με ακουστικά μπορείς να βάλεις από κάτω και ήπιο ήχο binaural.' 
+            : 'Mindful movement and breath exercises, with eyes open or closed. With headphones you can add a soft binaural sound underneath.'}
         </p>
       </div>
 

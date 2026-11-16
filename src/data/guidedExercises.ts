@@ -398,7 +398,7 @@ export const GUIDED_EXERCISES: Record<string, any> = {
   'nadi-shodhana': {
     axis: 'breath',
     title: { el: 'Αναπνοή Εναλλαγής (Nadi Shodhana)', en: 'Alternate Nostril Breathing' },
-    desc: { el: 'Ισορροπεί τα δύο ημισφαίρια του εγκεφάλου. Ιδανικό για πνευματική καθαρότητα.', en: 'Balances the brain hemispheres. Ideal for mental clarity.' },
+    desc: { el: 'Η αναπνοή περνά αργά, εναλλάξ, από το ένα ρουθούνι στο άλλο, και η προσοχή μένει στον αέρα.', en: 'The breath passes slowly, in turn, through one nostril and the other, and attention stays with the air.' },
     duration: 300, // 5 minutes
     color: 'violet',
     instructions: {
