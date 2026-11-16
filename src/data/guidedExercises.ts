@@ -335,14 +335,14 @@ export const GUIDED_EXERCISES: Record<string, any> = {
     instructions: {
       el: [
         "Γειώσου για λίγο.",
-        "Κλείσε τα μάτια.",
+        "Κλείσε τα μάτια, αν θέλεις.",
         "Παρατήρησε την αναπνοή όπως ακριβώς είναι.",
         "Μην την αλλάξεις.",
         "Πού τη νιώθεις; Μύτη; Στήθος; Κοιλιά;"
       ],
       en: [
         "Ground yourself briefly.",
-        "Close your eyes.",
+        "Close your eyes if you wish.",
         "Observe the breath exactly as it is.",
         "Do not change it.",
         "Where do you feel it? Nose? Chest? Belly?"
@@ -382,7 +382,7 @@ export const GUIDED_EXERCISES: Record<string, any> = {
       el: [
         "Εισπνοή 4 δευτερόλεπτα από μύτη.",
         "Εκπνοή 6-7 δευτερόλεπτα από το στόμα (σαν να σβήνεις κερί).",
-        "Επανάληψη. Μείνε ήρεμος — χωρίς υπερβολή.",
+        "Επανάληψη. Ήρεμα, χωρίς υπερβολή.",
         "Παρατήρησε: η καρδιά επιβραδύνει;",
         "Άφησε την εκπνοή να λέει: «Είσαι ασφαλής. Μπορείς να αφεθείς»."
       ],
@@ -428,14 +428,14 @@ export const GUIDED_EXERCISES: Record<string, any> = {
     instructions: {
       el: [
         "Γείωση + Αναπνοή (1 λεπτό).",
-        "Κλείσε τα μάτια.",
+        "Κλείσε τα μάτια, αν θέλεις.",
         "Πού πηγαίνει η προσοχή; Σε ήχους; Σκέψεις; Σωματικές αισθήσεις;",
         "Μην την κατευθύνεις — απλώς παρακολούθησε.",
         "Πόσες φορές «μετακινήθηκε»;"
       ],
       en: [
         "Grounding + Breath (1 minute).",
-        "Close your eyes.",
+        "Close your eyes if you wish.",
         "Where does the attention go? To sounds? Thoughts? Body sensations?",
         "Do not direct it — just watch.",
         "How many times did it 'move'?"

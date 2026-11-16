@@ -352,7 +352,7 @@ const axisInfo = {
         subtitle: { el: 'Κοιλιά · Στήθος · Λαιμός · Κεφάλι', en: 'Belly · Chest · Throat · Head' },
         desc: {
           el: 'Ένα φωνήεν, εκεί όπου νιώθεις τη δόνηση: κοιλιά «ΟΥ», στήθος «Α», λαιμός «ΧΑΜ», κεφάλι «ΜΜΜ». Μέσα διαλέγεις πού.',
-          en: 'One vowel, where you feel the vibration: belly «OO», chest «AH», throat «HAM», head «MMM». Inside you choose where.',
+          en: 'One vowel, where you feel the vibration: belly “OO”, chest “AH”, throat “HAM”, head “MMM”. Inside you choose where.',
         },
       }] : []),
     ];

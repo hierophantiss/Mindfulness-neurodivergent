@@ -30,11 +30,11 @@
 </style>
 </head>
 <body>
-<div class="intro" id="intro"><div class="intro-t">Άσκηση Κάμερας</div><div class="intro-s">Zoom · Wide · Βλέμμα</div><div class="intro-warn" id="intro-warn">⚠️ Η πρώτη σκηνή δείχνει οπτικά το τρέμουλο του zoom.<br>Αν σε δυσκολεύει, μπορείς να πας κατευθείαν σε άλλη σκηνή (κουκκίδες δεξιά).<br>⚠️ First scene visually shows zoom shakiness.</div><div class="intro-h">πάτησε για να ξεκινήσεις</div></div>
+<div class="intro" id="intro"><div class="intro-t">Άσκηση Κάμερας</div><div class="intro-s">Zoom · Wide · Βλέμμα</div><div class="intro-warn" id="intro-warn">⚠️ Η πρώτη σκηνή δείχνει οπτικά το τρέμουλο του zoom.<br>Αν σε δυσκολεύει, μπορείς να πας κατευθείαν σε άλλη σκηνή (κουκκίδες δεξιά).</div><div class="intro-h">πάτησε για να ξεκινήσεις</div></div>
 <canvas id="c"></canvas>
 <div class="label" id="label"><div class="main" id="lm"></div><div class="sub" id="ls"></div></div>
 <div class="eng-banner" id="engBanner"></div><div class="sci-note" id="sciNote"></div><div class="snum" id="sn"></div><div class="ptrack"><div class="pbar" id="pb"></div></div>
-<div class="dots"><button class="dot active" onclick="goTo(0)"></button><button class="dot" onclick="goTo(1)"></button><button class="dot" onclick="goTo(2)"></button><button class="dot" onclick="goTo(3)"></button></div>
+<div class="dots"><button class="dot active" onclick="goTo(0)" aria-label="1 / 4"></button><button class="dot" onclick="goTo(1)" aria-label="2 / 4"></button><button class="dot" onclick="goTo(2)" aria-label="3 / 4"></button><button class="dot" onclick="goTo(3)" aria-label="4 / 4"></button></div>
 <div class="ctrls"><button onclick="goTo(cur-1)">◀</button><button id="ab" onclick="togAuto()">▶ auto</button><button onclick="goTo(cur+1)">▶</button></div>
 <script>
 const cv=document.getElementById('c'),ctx=cv.getContext('2d'); let W,H,cx,cy; function resize(){const d=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*d;cv.height=H*d;cv.style.width=W+'px';cv.style.height=H+'px';ctx.setTransform(d,0,0,d,0,0);cx=W/2;cy=H/2} resize();addEventListener('resize',resize);
@@ -47,6 +47,7 @@ const scenes=[
 let cur=0,tgt=0,tT=0,trans=false,time=0,gA=0,autoP=false,autoTm=null;
 const urlLang = new URLSearchParams(location.search).get('lang');
 const isEn = (urlLang === 'en');
+if (isEn) { document.documentElement.lang = 'en'; document.querySelector('.intro-t').textContent = 'Camera Exercise'; document.querySelector('.intro-s').textContent = 'Zoom · Wide · Gaze'; document.getElementById('intro-warn').innerHTML = '⚠️ The first scene shows the zoom shake on screen.<br>If that is hard for you, go straight to another scene (the dots on the right).'; document.querySelector('.intro-h').textContent = 'tap to begin'; }
 function drawLandscape(ox,oy,scale,alpha){
   ctx.save();ctx.translate(ox,oy);ctx.scale(scale,scale);
   const sky=ctx.createLinearGradient(0,-200,0,50); sky.addColorStop(0,`rgba(40,60,80,${alpha*0.15})`); sky.addColorStop(1,`rgba(60,80,70,${alpha*0.08})`); ctx.fillStyle=sky;ctx.fillRect(-300,-200,600,250);

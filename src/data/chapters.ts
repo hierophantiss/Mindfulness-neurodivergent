@@ -199,7 +199,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
             "Attention is the third centre of consciousness and the tool that decides where the mind will settle. The body is the base, the breath the rhythm, and attention is the lens that lights up the present moment.",
             "<strong>Closed Attention.</strong> The beam gathers on one point. Useful for concentration. For example, you look steadily at an object.",
             "<strong>Open Attention.</strong> The beam opens and lights up many things at once. You hear the sounds, feel the body, breathe. Everything fits in the same awareness.",
-            "<strong>Scattered Attention.</strong> Attention is like a monkey leaping from branch to branch. The aim is not to \"kill\" it but to rein it in gently.",
+            "<strong>Scattered Attention.</strong> Attention is like a monkey leaping from branch to branch. The aim is not to \"kill\" it but to bring it gently back.",
             "<strong>Stuck Attention.</strong> The beam gets stuck{{hyperfocus}} on an outer object or on mental content: a thought, a worry. Excessive self-reference (\"why do I feel like this? what does it mean?\") is its typical form. It is the state that deserves the most attention, and the next section is devoted to it."
           ],
           "interactive": "three_attention"
@@ -627,8 +627,9 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
         {
           "title": "Why It Changes Over Time",
           "paragraphs": [
-            "When every start comes with pressure and self-criticism{{self_criticism}}, the act becomes linked with threat and the mind learns to avoid it. When you do things through the body, with attention on the moment rather than the result, that link slowly loosens.",
-            "The method doesn't change how your brain is made, and it doesn't cure avoidance; it embraces and supports it."
+            "When every start comes with pressure and self-criticism{{self_criticism}}, the act becomes linked with threat and the mind learns to avoid it. Stress research also shows that pressure impairs the prefrontal cortex, where planning and starting take place. When you do things through the body, with your attention on the moment rather than the result, the act slowly stops being linked with threat; what has been recorded changes, and the refusal loosens. And research shows that forgiving yourself for one bout of procrastination reduces the next: gentleness is not a luxury.",
+            "The śamatha tradition of calm-abiding meditation describes something similar in its nine stages: effort shrinks, not because you push harder, but because resistance lessens. It is a parallel, not a proof, and a path of years. But it begins in the same place: the body, now.",
+            "None of this changes how your brain is made. The method does not cure avoidance; it embraces and supports it. Why it works from the bottom up is explained in Chapter 11."
           ]
         }
       ],
@@ -642,7 +643,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
         ]
       },
       "insight": "Keep the act, let go of the outcome, and move one step at a time, without hurry.",
-      "reflection": "What am I putting off? Is the act itself hard, or the mountain around it?"
+      "reflection": "Bring to mind something you are putting off. Is the act itself hard, or the mountain the mind has built around it? Is it avoidance or executive dysfunction — and how can you tell from the body? What would be the body's first small step, without waiting to want it?"
     },
     {
       "num": 8,
@@ -653,7 +654,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
       "hex": "#C07050",
       "icon": "🌊",
       "summary": "Two practical protocols, for intense anxiety and for overload, together with what comes before the wave, and what comes after.",
-      "tldr": "Catch the wind early: at the first signals, one long exhale may be enough. Inside the wave, four words: grounding, long exhale, label, opening. Afterwards, kindness.",
+      "tldr": "Catch the wind early: at the first signals, one long exhale may be enough. Inside the wave, four words: ground, long exhale, label, open. Afterwards, kindness.",
       "theorySections": [
         {
           "title": "The Barometer: Before the Storm",
@@ -666,7 +667,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
           "title": "Protocol 1: Immediate Response to Intense Anxiety",
           "paragraphs": [
             "Intense anxiety is a \"fight or flight\" state that calls for an immediate signal of safety to the nervous system, through body and breath.",
-            "1. <strong>Grounding (Body)</strong> — Feel the weight of the body, its posture, its tensions, without verbal analysis. Simply notice where you are holding the tension.\n2. <strong>Regulation (Breath)</strong> — Close your eyes and move into the 4-6 rhythm. Let the exhale leave slowly through the mouth{{slow_exhale}}, as if gently blowing on a flame. Do not force the inhale; work only with the exhale.\n3. <strong>Labelling (Attention)</strong> — If the mind gets stuck in a scenario, use a label{{labeling}} (\"Worry\", \"Scenario\") and return to the breath.\n4. <strong>Opening (Space)</strong> — Open your peripheral vision and notice the space around you. Widening reduces the sense of being trapped.\n5. <strong>Movement & Axis</strong> — If you can, walk a little, feeling your soles. Keep the sense of the vertical axis. Open gaze and awareness of space."
+            "1. <strong>Grounding (Body)</strong> — Feel the weight of the body, its posture, its tensions, without verbal analysis. Simply notice where you are holding the tension.\n2. <strong>Regulation (Breath)</strong> — Close your eyes if you wish, and move into the 4-6 rhythm. Let the exhale leave slowly through the mouth{{slow_exhale}}, as if gently blowing on a flame. Do not force the inhale; work only with the exhale.\n3. <strong>Labelling (Attention)</strong> — If the mind gets stuck in a scenario, use a label{{labeling}} (\"Worry\", \"Scenario\") and return to the breath.\n4. <strong>Opening (Space)</strong> — Open your peripheral vision and notice the space around you. Widening reduces the sense of being trapped.\n5. <strong>Movement & Axis</strong> — If you can, walk a little, feeling your soles. Keep the sense of the vertical axis. Open gaze and awareness of space."
           ]
         },
         {
@@ -696,7 +697,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
           "title": "The Pocket Card",
           "paragraphs": [
             "Inside the wave, nobody reads paragraphs. Four words, in order:",
-            "<strong>GROUNDING — LONG EXHALE — LABEL — OPENING</strong>  (Soles. Through the mouth, slowly. Name the scenario. Peripheral vision.)",
+            "<strong>GROUND — LONG EXHALE — LABEL — OPEN</strong>  (Soles. Through the mouth, slowly. Name the scenario. Peripheral vision.)",
             "If you keep just one thing from this chapter, keep these four words. They are the version for inside the wave. For inside the day there is the Worksheet (Ch. 9); for a quiet moment, the Four Stages (Ch. 10)."
           ],
           "actionLink": {
@@ -708,10 +709,10 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
       "exercise": {
         "title": "The Pocket Card",
         "steps": [
-          "Grounding: the soles of your feet.",
+          "Ground: the soles of your feet.",
           "Long exhale: through the mouth, slowly.",
           "Label: name the scenario.",
-          "Opening: peripheral vision."
+          "Open: peripheral vision."
         ]
       },
       "insight": "Catch the wind early, keep the boat seaworthy, and treat yourself with kindness afterwards. The wave is weather, not a verdict.",
@@ -1116,7 +1117,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
             "Η προσοχή είναι το τρίτο κέντρο συνείδησης και το εργαλείο που καθορίζει πού θα σταθεί ο νους. Το σώμα είναι η βάση, η αναπνοή ο ρυθμός, και η προσοχή είναι ο φακός που φωτίζει την παρούσα στιγμή.",
             "<strong>Κλειστή Προσοχή.</strong> Η δέσμη μαζεύεται σε ένα σημείο. Χρήσιμη για συγκέντρωση. Π.χ. κοιτάς σταθερά ένα αντικείμενο.",
             "<strong>Ανοιχτή Προσοχή.</strong> Η δέσμη ανοίγει και φωτίζει πολλά μαζί. Ακούς τους ήχους, νιώθεις το σώμα, αναπνέεις. Όλα χωράνε στην ίδια επίγνωση.",
-            "<strong>Διασπασμένη Προσοχή.</strong> Η προσοχή μοιάζει με μαϊμού που πηδά από κλαδί σε κλαδί. Ο στόχος δεν είναι να τη «σκοτώσεις» αλλά να τη χαλιναγωγήσεις απαλά.",
+            "<strong>Διασπασμένη Προσοχή.</strong> Η προσοχή μοιάζει με μαϊμού που πηδά από κλαδί σε κλαδί. Ο στόχος δεν είναι να τη «σκοτώσεις» αλλά να τη φέρνεις πίσω απαλά.",
             "<strong>Αγκυλωμένη Προσοχή.</strong> Η δέσμη κολλάει{{hyperfocus}} σε εξωτερικό αντικείμενο ή σε ψυχικό περιεχόμενο: μια σκέψη, μια ανησυχία. Η υπερβολική αυτοαναφορικότητα («γιατί νιώθω έτσι; τι σημαίνει αυτό;») είναι η χαρακτηριστική της μορφή. Είναι η κατάσταση που αξίζει τη μεγαλύτερη προσοχή, και σε αυτήν αφιερώνεται η επόμενη ενότητα."
           ],
           "interactive": "three_attention"
@@ -1544,8 +1545,9 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
         {
           "title": "Γιατί Αλλάζει με τον Καιρό",
           "paragraphs": [
-            "Όταν κάθε ξεκίνημα συνοδεύεται από πίεση και αυτοκριτική{{self_criticism}}, η πράξη συνδέεται με απειλή και ο νους μαθαίνει να την αποφεύγει. Όταν κάνεις τα πράγματα σωματικά, με την προσοχή στη στιγμή και όχι στο αποτέλεσμα, αυτή η σύνδεση χαλαρώνει σιγά σιγά.",
-            "Η μέθοδος δεν αλλάζει το πώς είναι φτιαγμένος ο εγκέφαλός σου και δεν θεραπεύει την αποφυγή· την αγκαλιάζει και τη στηρίζει."
+            "Όταν κάθε ξεκίνημα συνοδεύεται από πίεση και αυτοκριτική{{self_criticism}}, η πράξη συνδέεται με απειλή και ο νους μαθαίνει να την αποφεύγει. Η έρευνα για το στρες δείχνει επίσης ότι η πίεση δυσκολεύει τη λειτουργία του προμετωπιαίου φλοιού, εκεί όπου γίνεται ο σχεδιασμός και η εκκίνηση. Όταν κάνεις τα πράγματα σωματικά, με την προσοχή στη στιγμή και όχι στο αποτέλεσμα, η πράξη σταματά σιγά σιγά να συνδέεται με απειλή, αυτό που έχει καταγραφεί αλλάζει, και η άρνηση χαλαρώνει. Και η έρευνα δείχνει ότι η αυτοσυγχώρεση για μια αναβολή μειώνει την επόμενη: η απαλότητα δεν είναι πολυτέλεια.",
+            "Η παράδοση της śamatha περιγράφει κάτι παρόμοιο στα εννέα στάδιά της: η προσπάθεια μικραίνει, όχι επειδή πιέζεις περισσότερο, αλλά επειδή η αντίσταση λιγοστεύει. Είναι παράλληλο, όχι απόδειξη, και πορεία χρόνων. Αρχίζει όμως από το ίδιο σημείο: το σώμα, τώρα.",
+            "Τίποτα από αυτά δεν αλλάζει το πώς είναι φτιαγμένος ο εγκέφαλός σου. Η μέθοδος δεν θεραπεύει την αποφυγή· την αγκαλιάζει και τη στηρίζει. Γιατί δουλεύει από κάτω προς τα πάνω, το εξηγεί το Κεφάλαιο 11."
           ]
         }
       ],
@@ -1559,7 +1561,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
         ]
       },
       "insight": "Κρατάς την πράξη, αφήνεις την έκβαση, και κινείσαι ένα βήμα τη φορά, χωρίς βιασύνη.",
-      "reflection": "Τι αναβάλλω; Δύσκολη είναι η ίδια η πράξη ή το βουνό γύρω της;"
+      "reflection": "Φέρε στον νου κάτι που αναβάλλεις. Δύσκολη είναι η ίδια η πράξη ή το βουνό που έχτισε γύρω της ο νους; Είναι αποφυγή ή εκτελεστική δυσλειτουργία, και πώς το καταλαβαίνεις από το σώμα; Ποιο θα ήταν το πρώτο μικρό βήμα του σώματος, χωρίς να περιμένεις να το θες;"
     },
     {
       "num": 8,
@@ -1583,7 +1585,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
           "title": "Πρωτόκολλο 1: Άμεση Αντιμετώπιση Έντονου Άγχους",
           "paragraphs": [
             "Το έντονο άγχος είναι μια κατάσταση «πάλης ή φυγής» που απαιτεί άμεση σηματοδότηση ασφάλειας στο νευρικό σύστημα μέσω σώματος και αναπνοής.",
-            "1. <strong>Γείωση (Σώμα)</strong> — Νιώσε το βάρος του σώματος, τη στάση του, τις εντάσεις, χωρίς λεκτική ανάλυση. Απλώς παρατήρησε πού κρατάς την ένταση.\n2. <strong>Ρύθμιση (Αναπνοή)</strong> — Κλείσε τα μάτια και πέρασε στον ρυθμό 4-6. Άφησε την εκπνοή να βγει αργά από το στόμα{{slow_exhale}}, σαν να φυσάς απαλά μια φλόγα. Μην πιέζεις την εισπνοή· δούλεψε μόνο με την εκπνοή.\n3. <strong>Ετικετοποίηση (Προσοχή)</strong> — Αν ο νους κολλήσει σε σενάριο, χρησιμοποίησε ταμπέλα{{labeling}} («Ανησυχία», «Σενάριο») και επέστρεψε στην αναπνοή.\n4. <strong>Άνοιγμα (Χώρος)</strong> — Άνοιξε την περιφερειακή όραση και παρατήρησε τον χώρο γύρω. Η διεύρυνση μειώνει την αίσθηση παγίδευσης.\n5. <strong>Κίνηση & Άξονας</strong> — Αν μπορείς, περπάτα λίγο νιώθοντας τα πέλματα. Διατήρησε την αίσθηση του κατακόρυφου άξονα. Ανοιχτό βλέμμα και επίγνωση χώρου."
+            "1. <strong>Γείωση (Σώμα)</strong> — Νιώσε το βάρος του σώματος, τη στάση του, τις εντάσεις, χωρίς λεκτική ανάλυση. Απλώς παρατήρησε πού κρατάς την ένταση.\n2. <strong>Ρύθμιση (Αναπνοή)</strong> — Κλείσε τα μάτια, αν θέλεις, και πέρασε στον ρυθμό 4-6. Άφησε την εκπνοή να βγει αργά από το στόμα{{slow_exhale}}, σαν να φυσάς απαλά μια φλόγα. Μην πιέζεις την εισπνοή· δούλεψε μόνο με την εκπνοή.\n3. <strong>Ετικετοποίηση (Προσοχή)</strong> — Αν ο νους κολλήσει σε σενάριο, χρησιμοποίησε ταμπέλα{{labeling}} («Ανησυχία», «Σενάριο») και επέστρεψε στην αναπνοή.\n4. <strong>Άνοιγμα (Χώρος)</strong> — Άνοιξε την περιφερειακή όραση και παρατήρησε τον χώρο γύρω. Η διεύρυνση μειώνει την αίσθηση παγίδευσης.\n5. <strong>Κίνηση & Άξονας</strong> — Αν μπορείς, περπάτα λίγο νιώθοντας τα πέλματα. Διατήρησε την αίσθηση του κατακόρυφου άξονα. Ανοιχτό βλέμμα και επίγνωση χώρου."
           ]
         },
         {

@@ -110,7 +110,7 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
     id: 'gravity-sink',
     evidence: { en: 'Feeling the ground beneath you can act as a cue of safety', el: 'Η αίσθηση του εδάφους κάτω από σένα μπορεί να λειτουργεί ως σήμα ασφάλειας', ref: 'study-gibson' },
     axis: 'body',
-    title: { el: 'Βύθιση στη Βαρύτητα', en: 'Gravity Sink' },
+    title: { el: 'Βύθιση στη Βαρύτητα', en: 'Sinking into Gravity' },
     type: 'body',
     dur: { el: '20 δευτ.', en: '20 sec' },
     maxSeconds: 20,

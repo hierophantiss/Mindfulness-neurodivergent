@@ -20,7 +20,7 @@ const translations: Record<string, Record<Language, string>> = {
   
   // Home
   'home.introTitle': { el: 'Καλώς ήρθατε στο N-Mindfulness', en: 'Welcome to N-Mindfulness' },
-  'home.introText': { el: 'Η μέθοδός μας είναι μια μέθοδος «αυτο-χαλάρωσης» και όχι πιεστικής αυτο-συγκέντρωσης. Δεν απαιτεί να αδειάσεις το μυαλό σου, ούτε να μείνεις ακίνητος. Μαθαίνουμε να βγαίνουμε από τον «αυτόματο πιλότο» και να δημιουργούμε χώρο, ρυθμίζοντας το νευρικό σύστημα.', en: 'Our method is one of "auto-relaxation" rather than forced concentration. It does not require you to empty your mind, nor to stay perfectly still. We learn how to step out of the "autopilot" and create space, regulating the nervous system.' },
+  'home.introText': { el: 'Η μέθοδός μας είναι μια μέθοδος «αυτο-χαλάρωσης» και όχι πιεστικής αυτο-συγκέντρωσης. Δεν απαιτεί να αδειάσεις το μυαλό σου, ούτε να μείνεις ακίνητος/η. Μαθαίνουμε να βγαίνουμε από τον «αυτόματο πιλότο» και να δημιουργούμε χώρο, ρυθμίζοντας το νευρικό σύστημα.', en: 'Our method is one of "auto-relaxation" rather than forced concentration. It does not require you to empty your mind, nor to stay perfectly still. We learn how to step out of the "autopilot" and create space, regulating the nervous system.' },
   
   // Welcome Modal
   'welcome.title': { el: 'Καλώς ήρθατε στο N-Mindfulness', en: 'Welcome to N-Mindfulness' },
@@ -37,7 +37,7 @@ const translations: Record<string, Record<Language, string>> = {
   'onboarding.s1.body': { el: 'Το μυαλό σου δεν είναι χαλασμένο, απλώς λειτουργεί αλλιώς. Σύντομες πρακτικές για νευροδιαφορετικούς ενήλικες και για όσους ζουν με τραύμα.', en: 'Your mind isn\'t broken, it just works differently. Short practices for neurodivergent adults and for anyone living with trauma.' },
   
   'onboarding.s2.title': { el: 'Δεν χρειάζεται να αδειάσεις το μυαλό σου', en: "You don't have to empty your mind" },
-  'onboarding.s2.body': { el: 'Ούτε να μείνεις ακίνητος. Αν ο διαλογισμός δεν σου βγήκε ως τώρα, εδώ ξεκινάς αλλιώς: από το σώμα. Τέσσερα απλά βήματα, με αυτή τη σειρά: Σώμα, Αναπνοή, Προσοχή, Χώρος.', en: 'Nor to stay still. If meditation hasn\'t worked for you before, this starts differently: with the body. Four simple steps, in this order: Body, Breath, Attention, Space.' },
+  'onboarding.s2.body': { el: 'Ούτε να μείνεις ακίνητος/η. Αν ο διαλογισμός δεν σου βγήκε ως τώρα, εδώ ξεκινάς αλλιώς: από το σώμα. Τέσσερα απλά βήματα, με αυτή τη σειρά: Σώμα, Αναπνοή, Προσοχή, Χώρος.', en: 'Nor to stay still. If meditation hasn\'t worked for you before, this starts differently: with the body. Four simple steps, in this order: Body, Breath, Attention, Space.' },
 
   'onboarding.s3.title': { el: 'Τι να περιμένεις', en: 'What to expect' },
   'onboarding.s3.body': { el: 'Δωρεάν, χωρίς λογαριασμό, χωρίς διαφημίσεις. Όλα μένουν στη συσκευή σου. Δεν μετράμε σερί: λίγα δευτερόλεπτα αρκούν, και αν χάσεις μέρες δεν πειράζει. Δεν είναι θεραπεία και δεν την αντικαθιστά.', en: "Free, no account, no ads. Everything stays on your device. We don't count streaks: a few seconds are enough, and missing days is fine. It is not therapy and does not replace it." },

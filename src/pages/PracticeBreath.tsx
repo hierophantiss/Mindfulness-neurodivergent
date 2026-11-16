@@ -200,6 +200,9 @@ export default function PracticeBreath() {
   const cycleSeconds = Math.round(pattern.totalCycleDurationMs / 1000);
 
   const [running, setRunning] = useState(false);
+  // The phone only vibrates while the breath runs, never when the page just opens.
+  const runningRef = useRef(false);
+  runningRef.current = running;
   const [audioEnabled, setAudioEnabled] = useState(false);
   const [cycles, setCycles] = useState(0);
   const [finished, setFinished] = useState(false);
@@ -493,7 +496,7 @@ export default function PracticeBreath() {
     }
     
     // Haptic feedback logic: only at the onset of Inhalation or Exhalation
-    if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
+    if (runningRef.current && typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
       const labelEn = p.label?.en || p.text || '';
       const labelEl = p.label?.el || '';
       const isInhale = labelEn.toLowerCase() === 'inhale' || labelEl === 'Εισπνοή';

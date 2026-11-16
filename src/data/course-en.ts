@@ -206,7 +206,7 @@ export const COURSE_EN: Record<number, any> = {
         },
         "breathing": "<strong>Belly Breathing (Soft Belly)</strong><p>Inhale: the belly gently rises. Exhale: the belly falls.</p>",
         "reflection": "Did I manage to let my belly relax, instead of holding it “in”?",
-        "insight": "A soft belly immediately sends a signal of “safety” to the brain (via the Vagus nerve)."
+        "insight": "A soft belly is linked with the calming side of the vagus nerve; in experience, it brings calm."
       },
       {
         "title": "Scan & Balance",
@@ -340,7 +340,7 @@ export const COURSE_EN: Record<number, any> = {
         },
         "breathing": "<strong>Exhale from the belly</strong><p>Emphasize how the belly relaxes as the air empties out.</p>",
         "reflection": "Was it easy to breathe by unlocking my belly?",
-        "insight": "A soft belly lets the deep breath heal us."
+        "insight": "With a soft belly, the breath finds its own room."
       },
       {
         "title": "The Path: Nose - Throat - Chest",
@@ -925,7 +925,7 @@ export const COURSE_EN: Record<number, any> = {
         },
         "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
         "reflection": "How many times did I recognize that I was on “autopilot”?",
-        "insight": "The magic hides between the ordinary movements."
+        "insight": "Presence hides inside the ordinary movements."
       }
     ]
   },

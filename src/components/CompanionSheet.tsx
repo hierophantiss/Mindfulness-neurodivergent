@@ -114,7 +114,7 @@ export default function CompanionSheet() {
             <Anchor size={18} strokeWidth={1.5} className="shrink-0 text-[var(--axis-body-ink)]" />
             <span className="flex flex-col min-w-0 flex-1 gap-0.5">
               <span className={eyebrow}>{el ? 'Ένα πρώτο βήμα · 20 δευτερόλεπτα' : 'A first step · 20 seconds'}</span>
-              <span className="text-[14px] leading-snug text-[#9bb8d1]">{el ? 'Βύθιση στη Βαρύτητα' : 'Gravity Sink'}</span>
+              <span className="text-[14px] leading-snug text-[#9bb8d1]">{el ? 'Βύθιση στη Βαρύτητα' : 'Sinking into Gravity'}</span>
               <span className="text-[12px] leading-snug text-ink/70">{el ? 'Πρώτα η γη: νιώσε το βάρος σου.' : 'First the earth: feel your weight.'}</span>
             </span>
             <ChevronRight size={16} className="text-ink/70 shrink-0" />
@@ -241,7 +241,7 @@ export default function CompanionSheet() {
                   <Link to="/practice/body/gravity-sink" onClick={close} className="flex items-center gap-3.5 rounded-2xl px-4 py-4 bg-[color-mix(in_srgb,var(--axis-body-ink)_12%,transparent)] border border-[color-mix(in_srgb,var(--axis-body-ink)_40%,transparent)] hover:brightness-110 active:scale-[0.98] transition-[filter,transform]">
                     <Anchor size={20} strokeWidth={1.6} className="shrink-0 text-[var(--axis-body-ink)]" aria-hidden="true" />
                     <span className="flex flex-col min-w-0 flex-1 gap-0.5">
-                      <span className="text-[15.5px] leading-snug text-ink">{el ? 'Βύθιση στη Βαρύτητα · 20 δευτ.' : 'Gravity Sink · 20 sec'}</span>
+                      <span className="text-[15.5px] leading-snug text-ink">{el ? 'Βύθιση στη Βαρύτητα · 20 δευτ.' : 'Sinking into Gravity · 20 sec'}</span>
                       <span className="text-[13px] leading-snug text-ink/75">{el ? 'Πρώτα η γη: νιώσε το βάρος σου.' : 'First the earth: feel your weight.'}</span>
                     </span>
                     <ChevronRight size={18} className="text-ink/70 shrink-0" aria-hidden="true" />

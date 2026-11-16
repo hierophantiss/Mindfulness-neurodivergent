@@ -97,7 +97,7 @@ export const PRACTICE_TEXTS: Record<string, PracticeText> = {
     card: { el: 'Όρθιος: ελάχιστα λυγισμένα γόνατα, και το βάρος πηγαίνει στη γη.', en: 'Standing: knees very slightly bent, and the weight goes to the ground.' },
     title: { el: 'Ξεκλείδωτα Γόνατα', en: 'Unlocked Knees' },
     sub: { el: 'Όταν στέκεσαι πολλή ώρα, τα γόνατα κλειδώνουν χωρίς να το καταλάβεις.', en: 'When you stand for a long time, the knees lock without you noticing.' },
-    setup: { el: 'Στάσου όρθιος.', en: 'Stand up.' },
+    setup: { el: 'Στάσου όρθιος/η.', en: 'Stand up.' },
     steps: {
       el: [`Νιώσε ${AXIS_LINE.el}.`, 'Λύγισε ελάχιστα τα γόνατα, τόσο λίγο που να μη φαίνεται.', 'Άφησε το βάρος να κατέβει από τα γόνατα στα πέλματα και στη γη.'],
       en: [`Feel ${AXIS_LINE.en}.`, 'Bend your knees very slightly, so little that it does not show.', 'Let the weight travel down from the knees to the feet and into the ground.'],
@@ -169,7 +169,7 @@ export const PRACTICE_TEXTS: Record<string, PracticeText> = {
     sub: { el: 'Ένα σύντομο πέρασμα από το σώμα, για να γυρίσεις στο εδώ.', en: 'A short pass through the body, to come back to here.' },
     setup: { el: 'Κάθισε άνετα. Κλείσε απαλά τα μάτια, αν θέλεις.', en: 'Sit comfortably. Gently close your eyes, if you like.' },
     steps: {
-      el: ['Φέρε την προσοχή στα πέλματα. Νιώσε την επαφή τους με το έδαφος.', 'Πάρε μια αργή εισπνοή· με την εκπνοή άφησε το βάρος σου να πέσει προς τα κάτω.', 'Πήγαινε στα χέρια. Νιώσε τη θερμοκρασία και την υφή τους.', 'Μια τελευταία αργή αναπνοή. Όταν είσαι έτοιμος, άνοιξε τα μάτια.'],
+      el: ['Φέρε την προσοχή στα πέλματα. Νιώσε την επαφή τους με το έδαφος.', 'Πάρε μια αργή εισπνοή· με την εκπνοή άφησε το βάρος σου να πέσει προς τα κάτω.', 'Πήγαινε στα χέρια. Νιώσε τη θερμοκρασία και την υφή τους.', 'Μια τελευταία αργή αναπνοή. Όταν είσαι έτοιμος/η, άνοιξε τα μάτια.'],
       en: ['Bring your attention to your feet. Feel their contact with the ground.', 'Take a slow inhale; as you breathe out, let your weight drop down.', 'Move to your hands. Feel their temperature and texture.', 'One last slow breath. When you are ready, open your eyes.'],
     },
   },
@@ -214,7 +214,7 @@ export const PRACTICE_TEXTS: Record<string, PracticeText> = {
   'mindful-walking': {
     title: { el: 'Ενσυνείδητο Περπάτημα', en: 'Mindful Walking' },
     sub: { el: 'Περπάτα αργά, νιώθοντας τα πέλματα να αγγίζουν τη γη σε κάθε βήμα.', en: 'Walk slowly, feeling your feet touch the ground with every step.' },
-    setup: { el: 'Στάσου όρθιος, σε ένα σημείο όπου μπορείς να κάνεις λίγα βήματα.', en: 'Stand up, somewhere you can take a few steps.' },
+    setup: { el: 'Στάσου όρθιος/η, σε ένα σημείο όπου μπορείς να κάνεις λίγα βήματα.', en: 'Stand up, somewhere you can take a few steps.' },
     steps: {
       el: ['Ξεκίνα να περπατάς αργά.', 'Νιώσε κάθε βήμα: φτέρνα → πέλμα → δάχτυλα.', 'Ο [[άξονας|axis]] μένει όρθιος· η βαρύτητα δουλεύει σε κάθε βήμα.', 'Περπάτα χωρίς προορισμό.'],
       en: ['Begin to walk slowly.', 'Feel each step: heel → sole → toes.', 'The [[axis|axis]] stays upright; gravity works in every step.', 'Walk without a destination.'],
@@ -429,8 +429,8 @@ export const PRACTICE_TEXTS: Record<string, PracticeText> = {
     title: { el: 'Παρατήρηση Προσοχής', en: 'Observing Attention' },
     sub: { el: 'Πού πηγαίνει η προσοχή σου μόνη της; Μην την κατευθύνεις, απλώς δες.', en: 'Where does your attention go on its own? Do not steer it, just see.' },
     steps: {
-      el: ['Μείνε ένα λεπτό στη βαρύτητα και στην αναπνοή.', 'Κλείσε τα μάτια.', 'Πού πηγαίνει η προσοχή; Σε ήχους; Σε σκέψεις; Σε αισθήσεις του σώματος;', 'Μην την κατευθύνεις. Απλώς πρόσεξε κάθε φορά που μετακινείται.'],
-      en: ['Stay for a minute with gravity and the breath.', 'Close your eyes.', 'Where does your attention go? To sounds? Thoughts? Sensations in the body?', 'Do not steer it. Just notice each time it moves.'],
+      el: ['Μείνε ένα λεπτό στη βαρύτητα και στην αναπνοή.', 'Κλείσε τα μάτια, αν θέλεις.', 'Πού πηγαίνει η προσοχή; Σε ήχους; Σε σκέψεις; Σε αισθήσεις του σώματος;', 'Μην την κατευθύνεις. Απλώς πρόσεξε κάθε φορά που μετακινείται.'],
+      en: ['Stay for a minute with gravity and the breath.', 'Close your eyes if you wish.', 'Where does your attention go? To sounds? Thoughts? Sensations in the body?', 'Do not steer it. Just notice each time it moves.'],
     },
     evidence: SCHOOLER,
   },

@@ -43,3 +43,10 @@
 /el/rabbithole/polyvagal-middle-way      /el/rabbithole                         301
 /en/rabbithole/polyvagal-middle-way      /en/rabbithole                         301
 /favicon.svg                             /favicon.ico                           301
+# Old animation pages, now inside their chapters: the old link opens the chapter.
+/animations/gravity_thoughts.html      /el/chapters/1  301
+/animations/three_attention.html       /el/chapters/3  301
+/animations/attention_dispersion.html  /el/chapters/3  301
+/animations/metronomos.html            /el/chapters/4  301
+/animations/openawareness.html         /el/chapters/4  301
+/animations/treepose.html              /el/practice    301

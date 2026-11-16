@@ -230,7 +230,7 @@ export default function RabbitHole() {
           >
             <X size={24} />
           </button>
-          <div className="flex-1 px-4 text-center">
+          <div className="flex-1 min-w-0 px-4 text-center">
             <h1 id="rabbithole-article-title" className="text-[14px] font-medium text-ink/90 truncate">{article.title}</h1>
             {article.date && (
               <p className="text-[13px] text-ink/65 mt-0.5">
@@ -238,7 +238,7 @@ export default function RabbitHole() {
               </p>
             )}
           </div>
-          <div className="w-10 text-xs text-teal-300 font-mono text-right font-medium tracking-wide">
+          <div className="w-10 shrink-0 text-xs text-teal-300 font-mono text-right font-medium tracking-wide">
             {currentPage + 1}<span className="text-ink/60">/{article.pages.length}</span>
           </div>
         </div>

@@ -151,7 +151,7 @@
   <button id="btn-pause">⏸ ΠΑΥΣΗ</button>
   <div id="speed-wrap">
     <span>ΡΥΘΜΟΣ</span>
-    <input type="range" id="speed" min="0.3" max="2" step="0.1" value="1">
+    <input type="range" id="speed" min="0.3" max="2" step="0.1" value="1" aria-label="Ρυθμός">
   </div>
 </div>
 
@@ -183,12 +183,18 @@ if (lang === 'en') {
   labelEl.style.cssText = 'color:#dfc593;font-size:clamp(12px,1.6vw,14px);letter-spacing:0.2em;text-align:center;margin-top:8px;opacity:0.7;font-style:italic;min-height:20px';
   labelEn.style.cssText = 'margin-top:28px;color:#aed3d3;font-size:clamp(15px,2.2vw,18px);letter-spacing:0.15em;font-weight:400;text-align:center;min-height:24px;transition:opacity 0.6s ease;text-shadow:0 0 10px rgba(160,210,230,0.2)';
   labelEn.parentNode.insertBefore(labelEn, labelEl);
+  labelEl.style.display = 'none';
+  document.documentElement.lang = 'en';
+  document.querySelector('.ex-intro-s').textContent = 'Focus & Open Awareness';
+  document.querySelector('#speed-wrap span').textContent = 'SPEED';
+  document.getElementById('speed').setAttribute('aria-label', 'Speed');
   document.getElementById('title').textContent = 'The Stage of the Mind';
   document.querySelector('.ex-intro-t').textContent = 'Attention Geometry';
-  document.querySelector('.ex-intro-h').textContent = 'click anywhere to begin';
+  document.querySelector('.ex-intro-h').textContent = 'tap to begin';
   btnPause.textContent = '⏸ PAUSE';
   btnPause.onclick = () => { paused = !paused; btnPause.textContent = paused ? '▶ PLAY' : '⏸ PAUSE'; if (!paused) loop(); };
 } else {
+  labelEn.style.display = 'none';
   btnPause.onclick = () => { paused = !paused; btnPause.textContent = paused ? '▶ ΣΥΝΕΧΕΙΑ' : '⏸ ΠΑΥΣΗ'; if (!paused) loop(); };
 }
 speedEl.oninput = () => { speedMult = parseFloat(speedEl.value); };

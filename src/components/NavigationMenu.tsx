@@ -492,7 +492,7 @@ export default function NavigationMenu() {
                           <span className="text-xs font-medium text-red-200">
                             {language === 'en' 
                               ? 'Are you sure? This will delete all your progress and history.' 
-                              : 'Είσαι σίγουρος; Αυτό θα διαγράψει όλη την πρόοδο και το ιστορικό σου.'}
+                              : 'Είσαι σίγουρος/η; Αυτό θα διαγράψει όλη την πρόοδο και το ιστορικό σου.'}
                           </span>
                           <div className="flex justify-end gap-2">
                              <button

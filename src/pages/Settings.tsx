@@ -261,7 +261,7 @@ export default function Settings() {
             label: { el: 'Διαγραφή Δεδομένων', en: 'Clear Data' },
             value: null,
             action: () => {
-                if (confirm(language === 'el' ? 'Είσαι σίγουρος; Όλες οι καταγραφές θα διαγραφούν.' : 'Are you sure? All records will be deleted.')) {
+                if (confirm(language === 'el' ? 'Είσαι σίγουρος/η; Όλες οι καταγραφές θα διαγραφούν.' : 'Are you sure? All records will be deleted.')) {
                     localStorage.clear();
                     window.location.href = '/';
                 }

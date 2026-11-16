@@ -23,10 +23,10 @@
   .intro{position:fixed;inset:0;z-index:100;background:#050510;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:opacity 2s ease}
   .intro.hidden{opacity:0;pointer-events:none}
   .intro-t{font-size:clamp(1.4rem,4vw,2.4rem);font-weight:300;letter-spacing:0.2em;background:linear-gradient(135deg,#e8e4df,#c8a860);-webkit-background-clip:text;-webkit-text-fill-color:transparent;opacity:0;animation:fi 2s ease 0.5s forwards}
-  .intro-s{font-size:clamp(0.6rem,1.1vw,0.8rem);letter-spacing:0.3em;color:rgba(232,228,223,0.22);margin-top:8px;font-style:italic;opacity:0;animation:fi 2s ease 1.2s forwards}
-  .intro-h{position:absolute;bottom:clamp(40px,8vh,80px);left:50%;transform:translateX(-50%);font-size:clamp(0.85rem,2vw,1.1rem);letter-spacing:0.3em;color:rgba(232,228,223,0.55);text-transform:uppercase;cursor:pointer;padding:14px 36px;border:1.5px solid rgba(232,228,223,0.2);border-radius:30px;background:rgba(232,228,223,0.04);backdrop-filter:blur(4px);transition:all 0.3s;animation:pu 3s ease-in-out infinite;white-space:nowrap}
+  .intro-s{font-size:clamp(0.6rem,1.1vw,0.8rem);letter-spacing:0.3em;color:rgba(232,228,223,0.6);margin-top:8px;opacity:0;animation:fi 2s ease 1.2s forwards}
+  .intro-h{position:absolute;bottom:clamp(40px,8vh,80px);left:50%;transform:translateX(-50%);font-size:clamp(0.85rem,2vw,1.1rem);letter-spacing:0.3em;color:rgba(232,228,223,0.75);text-transform:uppercase;cursor:pointer;padding:14px 36px;border:1.5px solid rgba(232,228,223,0.2);border-radius:30px;background:rgba(232,228,223,0.04);backdrop-filter:blur(4px);transition:all 0.3s;animation:pu 3s ease-in-out infinite;white-space:nowrap}
   .intro-h:active{background:rgba(232,228,223,0.12);transform:translateX(-50%) scale(0.96)}
-  @keyframes fi{to{opacity:1}} @keyframes pu{0%,100%{opacity:0.1}50%{opacity:0.3}}
+  @keyframes fi{to{opacity:1}} @keyframes pu{0%,100%{opacity:0.8}50%{opacity:1}}
 </style>
 </head>
 <body>
@@ -39,10 +39,10 @@
 const cv = document.getElementById('c'), ctx = cv.getContext('2d'); let W, H, cx, cy; let time = 0, globalAlpha = 0; let cur = 0, tgt = 0, tT = 0, trans = false; let autoP = false, autoTm = null; let lastTimestamp = 0;
 const urlLang = new URLSearchParams(location.search).get('lang'); const isEn = (urlLang === 'en');
 const SCENES = [
-  { tag: 'Σκηνή 1 · Zoom In', tag_en: 'Scene 1 · Zoom In', sub: 'Κράτα το τηλέφωνο μπροστά σου — κάνε zoom.\nΤο σώμα σου δεν είναι σταθερό τρίποδο.\nΠαρατήρησε πόσο τρέμει η εικόνα.', sub_en: 'Hold your phone in front of you — zoom in.\nYour body is not a stable tripod.\nNotice how much the image shakes.', sci: '📷 Η στενή εστίαση αυξάνει τη σωματική αστάθεια — το zoom μεγεθύνει κάθε μικροκίνηση.', sci_en: '📷 Narrow focus increases postural sway — zoom amplifies every micro-movement.', bg: [28,20,30], zoomLabel: '5x', shake: 4.2, showAxis: false, focusMode: false, openMode: false, phoneScale: 1.8 },
-  { tag: 'Σκηνή 2 · Ultra Wide', tag_en: 'Scene 2 · Ultra Wide', sub: 'Βάλε ultra wide — ανοιχτό πλάνο.\nΤο σώμα ακόμα δεν είναι σταθερό τρίποδο.\nΌμως η εικόνα είναι πολύ πιο σταθερή!', sub_en: 'Switch to ultra wide — open frame.\nYour body is still not a stable tripod.\nBut the image looks much more stable!', sci: '📐 Η ευρεία όραση μειώνει τη φαινόμενη αστάθεια.', sci_en: '📐 Wide vision reduces apparent instability.', bg: [18,25,32], zoomLabel: '0.5x', shake: 2.8, showAxis: false, focusMode: false, openMode: false, phoneScale: 0.7 },
-  { tag: 'Σκηνή 3 · Εστιασμένο Βλέμμα', tag_en: 'Scene 3 · Focused Gaze', sub: 'Άνοιξε και λύγισε λίγο τα γόνατα.\nΣτάσου όρθιος — βρες τον άξονα της βαρύτητας.\nΑυτός ο άξονας είναι το σέλφι στικ.\nΕστίασε το βλέμμα σε ένα σημείο.', sub_en: 'Open and slightly bend your knees.\nStand upright — find your gravity axis.\nThis axis is the selfie stick.\nFocus your gaze on a single point.', sci: '🧠 Η εστιασμένη προσοχή αυξάνει την σταθερότητα.', sci_en: '🧠 Focused attention improves stability.', bg: [20,28,25], zoomLabel: '1x', shake: 1.2, showAxis: true, focusMode: true, openMode: false, phoneScale: 1.0 },
-  { tag: 'Σκηνή 4 · Ανοιχτή Προσοχή', tag_en: 'Scene 4 · Open Awareness', sub: 'Μείνε όρθιος, γόνατα ελαφρώς λυγισμένα.\nΜαλάκωσε το βλέμμα — άφησε το πεδίο να ανοίξει.\nΕίσαι ο χώρος που αντιλαμβάνεται.', sub_en: 'Stay upright, knees slightly bent.\nSoften your gaze — let the field open.\nYou are the space that perceives.', sci: '🧘 Η ανοιχτή προσοχή παράγει συγχρονισμένα κύματα Άλφα.', sci_en: '🧘 Open attention produces synchronized Alpha waves.', bg: [12,30,22], zoomLabel: '1x', shake: 0.9, showAxis: true, focusMode: false, openMode: true, phoneScale: 1.0 }
+  { tag: 'Σκηνή 1 · Zoom In', tag_en: 'Scene 1 · Zoom In', sub: 'Κράτα το τηλέφωνο μπροστά σου — κάνε zoom.\nΤο σώμα σου δεν είναι σταθερό τρίποδο.\nΠαρατήρησε πόσο τρέμει η εικόνα.', sub_en: 'Hold your phone in front of you — zoom in.\nYour body is not a stable tripod.\nNotice how much the image shakes.', sci: '📷 Στο zoom κάθε μικρή κίνηση του σώματος φαίνεται μεγάλη.', sci_en: '📷 In zoom, every small movement of the body looks big.', bg: [28,20,30], zoomLabel: '5x', shake: 4.2, showAxis: false, focusMode: false, openMode: false, phoneScale: 1.8 },
+  { tag: 'Σκηνή 2 · Ultra Wide', tag_en: 'Scene 2 · Ultra Wide', sub: 'Βάλε ultra wide — ανοιχτό πλάνο.\nΤο σώμα ακόμα δεν είναι σταθερό τρίποδο.\nΌμως η εικόνα είναι πολύ πιο σταθερή!', sub_en: 'Switch to ultra wide — open frame.\nYour body is still not a stable tripod.\nBut the image looks much more stable!', sci: '📐 Στο ευρύ πλάνο η ίδια κίνηση σχεδόν δεν φαίνεται.', sci_en: '📐 In the wide shot, the same movement hardly shows.', bg: [18,25,32], zoomLabel: '0.5x', shake: 2.8, showAxis: false, focusMode: false, openMode: false, phoneScale: 0.7 },
+  { tag: 'Σκηνή 3 · Εστιασμένο Βλέμμα', tag_en: 'Scene 3 · Focused Gaze', sub: 'Άνοιξε και λύγισε λίγο τα γόνατα.\nΣτάσου όρθιος/η — βρες τον άξονα της βαρύτητας.\nΑυτός ο άξονας είναι το σέλφι στικ.\nΕστίασε το βλέμμα σε ένα σημείο.', sub_en: 'Open and slightly bend your knees.\nStand upright — find your gravity axis.\nThis axis is the selfie stick.\nFocus your gaze on a single point.', sci: '🧠 Με τον άξονα και ένα σημείο, το βλέμμα σταθεροποιείται.', sci_en: '🧠 With the axis and one point, the gaze steadies.', bg: [20,28,25], zoomLabel: '1x', shake: 1.2, showAxis: true, focusMode: true, openMode: false, phoneScale: 1.0 },
+  { tag: 'Σκηνή 4 · Ανοιχτή Προσοχή', tag_en: 'Scene 4 · Open Awareness', sub: 'Μείνε όρθιος/η, γόνατα ελαφρώς λυγισμένα.\nΜαλάκωσε το βλέμμα — άφησε το πεδίο να ανοίξει.\nΕίσαι ο χώρος που αντιλαμβάνεται.', sub_en: 'Stay upright, knees slightly bent.\nSoften your gaze — let the field open.\nYou are the space that perceives.', sci: '🧘 Στην εμπειρία, η ανοιχτή προσοχή φέρνει ηρεμία χωρίς προσπάθεια.', sci_en: '🧘 In experience, open attention brings calm without effort.', bg: [12,30,22], zoomLabel: '1x', shake: 0.9, showAxis: true, focusMode: false, openMode: true, phoneScale: 1.0 }
 ]; const N = SCENES.length;
 
 function drawJourneyHero(x, y, alpha, sceneParams) {
@@ -116,20 +116,31 @@ function updUI() {
   const altSub = isEn ? s.sub : s.sub_en;
   const mainSci = isEn ? s.sci_en : s.sci;
   const altSci = isEn ? s.sci : s.sci_en;
-  document.getElementById('stag').innerHTML = primary + ' · ' + secondary;
-  document.getElementById('msub').innerHTML = mainSub.replace(/\n/g,'<br>') + '<div style="margin-top:6px;font-size:0.75em;color:rgba(180,200,190,0.4);font-style:italic">' + altSub.replace(/\n/g,'<br>') + '</div>';
-  document.getElementById('ssci').innerHTML = mainSci + '<br>' + altSci;
+  document.getElementById('stag').innerHTML = primary;
+  document.getElementById('msub').innerHTML = mainSub.replace(/\n/g,'<br>');
+  document.getElementById('ssci').innerHTML = mainSci;
   document.getElementById('sub').classList.add('vis');
-  const engDiv = document.getElementById('engBanner'); engDiv.innerHTML = altSub.replace(/\n/g,'<br>'); engDiv.classList.add('vis'); document.getElementById('sn').textContent = `${cur+1} / ${N}`; document.getElementById('pb').style.width = `${(cur/(N-1))*100}%`;
+  document.getElementById('sn').textContent = `${cur+1} / ${N}`; document.getElementById('pb').style.width = `${(cur/(N-1))*100}%`;
   const dots = document.querySelectorAll('.dot'); dots.forEach((d,i)=> d.classList.toggle('active', i===cur));
 }
 function goTo(i) { if(i<0 || i>=N || i===cur || trans) return; tgt=i; trans=true; tT=0; document.getElementById('sub').classList.remove('vis'); document.getElementById('engBanner').classList.remove('vis'); setTimeout(()=>{ cur=tgt; trans=false; updUI(); }, 1800); }
 function ease(t2){ return t2<0.5?4*t2*t2*t2:1-Math.pow(-2*t2+2,3)/2; }
-function togAuto(){ autoP=!autoP; document.getElementById('ab').innerHTML=autoP?'⏸ pause':'▶ auto'; if(autoP) runA(); else clearTimeout(autoTm); }
-function runA(){ if(!autoP) return; autoTm=setTimeout(()=>{ if(cur<N-1){ goTo(cur+1); setTimeout(runA, 7000); } else { autoP=false; document.getElementById('ab').innerHTML='▶ auto'; } }, 7000); }
+function togAuto(){ autoP=!autoP; document.getElementById('ab').innerHTML=autoP?(isEn?'⏸ pause':'⏸ παύση'):(isEn?'▶ auto':'▶ αυτόματα'); if(autoP) runA(); else clearTimeout(autoTm); }
+function runA(){ if(!autoP) return; autoTm=setTimeout(()=>{ if(cur<N-1){ goTo(cur+1); setTimeout(runA, 7000); } else { autoP=false; document.getElementById('ab').innerHTML=isEn?'▶ auto':'▶ αυτόματα'; } }, 7000); }
 document.getElementById('intro').addEventListener('click',()=>{ document.getElementById('intro').classList.add('hidden'); updUI(); });
 document.addEventListener('keydown',e=>{ if(e.key==='ArrowRight') goTo(cur+1); if(e.key==='ArrowLeft') goTo(cur-1); });
-document.getElementById('dotsC').innerHTML = SCENES.map((_,i)=>`<button class="dot${i===0?' active':''}" onclick="goTo(${i})"></button>`).join('');
+document.getElementById('dotsC').innerHTML = SCENES.map((s,i)=>`<button class="dot${i===0?' active':''}" onclick="goTo(${i})" aria-label="${isEn ? s.tag_en : s.tag}"></button>`).join('');
+if (!isEn) {
+  document.getElementById('ab').innerHTML = '▶ αυτόματα';
+  document.querySelector('.ctrls button[aria-label="Previous"]').setAttribute('aria-label', 'Προηγούμενη σκηνή');
+  document.querySelector('.ctrls button[aria-label="Next"]').setAttribute('aria-label', 'Επόμενη σκηνή');
+}
+if (isEn) {
+  document.documentElement.lang = 'en';
+  document.querySelector('.intro-t').textContent = 'Camera Exercise';
+  document.querySelector('.intro-s').textContent = 'Zoom · Wide · Focus · Open Awareness';
+  document.querySelector('.intro-h').textContent = 'tap to begin';
+}
 let lastTime = 0;
 function animate(now) { requestAnimationFrame(animate); let dt = Math.min((now - lastTime) / 1000, 0.05); if(dt<0) dt=0.016; lastTime = now; time += dt; if(globalAlpha < 1) globalAlpha = Math.min(1, globalAlpha + dt*0.6); if(trans) tT = Math.min(tT + dt*0.7, 1); ctx.clearRect(0,0,W,H); const sf = trans ? cur + (tgt-cur)*ease(tT) : cur; drawBg(sf); ctx.globalAlpha = 1; if(trans) { const e2 = ease(tT); drawScene(cur, 1-e2); drawScene(tgt, e2); } else { drawScene(cur, 1); } }
 requestAnimationFrame(animate);

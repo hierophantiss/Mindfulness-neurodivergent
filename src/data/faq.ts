@@ -9,7 +9,6 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
         a: 'Η γείωση είναι η αίσθηση του σώματός σου στον χώρο μέσω της βαρύτητας. Νιώθεις τα πέλματα στο πάτωμα, το βάρος στην καρέκλα, τον άξονα της σπονδυλικής στήλης. Η βαρύτητα είναι η απόδειξη του «Εδώ» — σου δείχνει ακριβώς πού βρίσκεσαι αυτή τη στιγμή.',
         tags: ['body', 'grounding', 'basics', 'gravity'],
         depth: 1,
-        relatedExercise: 'gravity_thoughts.html',
         relatedConcept: 'grounding'
       },
       {
@@ -44,7 +43,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'Τι ρόλο παίζει η ιδιοδεκτικότητα;',
-        a: 'Η ιδιοδεκτικότητα (proprioception) είναι η αίσθηση της θέσης του σώματος στον χώρο. Όταν νιώθεις τη βαρύτητα, ενεργοποιείς το ιδιοδεκτικό σύστημα. Στην εμπειρία, αυτή η αίσθηση φέρνει τον νου στο «εδώ» χωρίς προσπάθεια.',
+        a: 'Η ιδιοδεκτικότητα (proprioception) είναι η αίσθηση της θέσης του σώματος στον χώρο. Όταν νιώθεις τη βαρύτητα, στρέφεις την προσοχή ακριβώς σε αυτή την αίσθηση. Στην εμπειρία, αυτή η αίσθηση φέρνει τον νου στο «εδώ» χωρίς προσπάθεια.',
         tags: ['body', 'proprioception', 'neuroscience'],
         depth: 3,
         relatedConcept: 'proprioception'
@@ -63,7 +62,6 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
         a: 'Grounding is the sensation of your body in space through gravity. You feel your soles on the floor, the weight on the chair, the axis of your spine. Gravity is the proof of "Here" — it shows you exactly where you exist in this moment.',
         tags: ['body', 'grounding', 'basics', 'gravity'],
         depth: 1,
-        relatedExercise: 'gravity_thoughts.html',
         relatedConcept: 'grounding'
       },
       {
@@ -98,7 +96,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'What role does proprioception play?',
-        a: 'Proprioception is the sense of your body\'s position in space. When you feel gravity, you activate the proprioceptive system. In experience, this sensation brings the mind to "here" without effort.',
+        a: 'Proprioception is the sense of your body\'s position in space. When you feel gravity, you turn your attention to exactly this sense. In experience, this sensation brings the mind to "here" without effort.',
         tags: ['body', 'proprioception', 'neuroscience'],
         depth: 3,
         relatedConcept: 'proprioception'
@@ -126,7 +124,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'Τι είναι η «εσωτερική αφή»;',
-        a: 'Η αναπνοή δεν είναι μόνο αέρας — είναι αφή. Νιώσε τον αέρα στα ρουθούνια, τη διαστολή του στήθους, τη μαλακή κίνηση της κοιλιάς. Αυτή η εσωτερική αφή ενεργοποιεί τη δια-αίσθηση (interoception) — τη γέφυρα μεταξύ σώματος και συνείδησης.',
+        a: 'Η αναπνοή δεν είναι μόνο αέρας — είναι αφή. Νιώσε τον αέρα στα ρουθούνια, τη διαστολή του στήθους, τη μαλακή κίνηση της κοιλιάς. Αυτή η εσωτερική αφή είναι δια-αίσθηση (interoception): το σώμα όπως το νιώθεις από μέσα.',
         tags: ['breath', 'interoception', 'internal-touch'],
         depth: 2,
         relatedConcept: 'interoception'
@@ -140,7 +138,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'Γιατί η αργή εκπνοή ηρεμεί;',
-        a: 'Η αργή εκπνοή ενεργοποιεί το πνευμονογαστρικό νεύρο (vagus nerve) — το «φρένο» του νευρικού συστήματος. Αυτό μειώνει τον καρδιακό ρυθμό και στέλνει σήμα ασφάλειας στον εγκέφαλο — Gerritsen & Band (2018). Εκπνοή 6 δευτερολέπτων αρκεί για ενεργοποίηση.',
+        a: 'Η αργή, παρατεταμένη εκπνοή συνδέεται με τη δραστηριότητα του πνευμονογαστρικού νεύρου (vagus nerve), που βοηθά το σώμα να ηρεμήσει. Σε μια τυχαιοποιημένη μελέτη, πέντε λεπτά τη μέρα αναπνοής με μακριά εκπνοή βελτίωσαν τη διάθεση — Balban et al. (2023). Δεν χρειάζεται να «πείσεις» τον εαυτό σου ότι είναι ασφαλής· στην εμπειρία, η εκπνοή στέλνει το σήμα από μόνη της.',
         tags: ['breath', 'vagus-nerve', 'neuroscience', 'exhale'],
         depth: 2,
         relatedConcept: 'vagus_nerve'
@@ -167,8 +165,8 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
         depth: 1
       },
       {
-        q: 'What is "internal touch"?',
-        a: 'Breath is not just air — it is touch. Feel the air at your nostrils, the expansion of the chest, the soft movement of the belly. This internal touch activates interoception — the bridge between body and consciousness.',
+        q: 'What is "inner touch"?',
+        a: 'Breath is not just air — it is touch. Feel the air at your nostrils, the expansion of the chest, the soft movement of the belly. This inner touch is interoception: the body as you feel it from the inside.',
         tags: ['breath', 'interoception', 'internal-touch'],
         depth: 2,
         relatedConcept: 'interoception'
@@ -182,7 +180,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'Why does slow exhale calm us?',
-        a: 'Slow exhale activates the vagus nerve — the "brake" of the nervous system. This reduces heart rate and sends a safety signal to the brain — Gerritsen & Band (2018). A 6-second exhale is enough for activation.',
+        a: 'A slow, long exhale is linked with the activity of the vagus nerve, which helps the body calm down. In a randomised study, five minutes a day of breathing with a long exhale improved mood — Balban et al. (2023). You do not need to "convince" yourself that you are safe; in experience, the exhale sends the signal on its own.',
         tags: ['breath', 'vagus-nerve', 'neuroscience', 'exhale'],
         depth: 2,
         relatedConcept: 'vagus_nerve'
@@ -216,7 +214,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
         relatedConcept: 'attention_modes'
       },
       {
-        q: 'Τι είναι το hyperfocus και πώς το σπάω;',
+        q: 'Τι είναι η υπερεστίαση (hyperfocus) και πώς βγαίνω από αυτή;',
         a: 'Η αντίθετη ακραία κατάσταση: ο νους κλειδώνει σε ένα σημείο και δεν μπορεί να φύγει. Ο κόσμος γύρω εξαφανίζεται — χώρος, σώμα, χρόνος.\n\nΕργαλείο: Χώρος (μαλάκωσε το βλέμμα, νιώσε τον χώρο γύρω) + Σώμα (νιώσε τη βαρύτητα — «σπάει» το τούνελ).',
         tags: ['attention', 'hyperfocus', 'nd-specific', 'practical'],
         depth: 1,
@@ -225,14 +223,14 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'Τι είναι η «ταμπέλα» και πώς βοηθάει;',
-        a: 'Όταν μια σκέψη σε τραβά, βάλε της ταμπέλα: «Ανησυχία», «Σενάριο», «Κριτική». Η ταμπέλα δημιουργεί απόσταση — δεν είσαι η σκέψη, είσαι αυτός που την παρατηρεί. Μετά επέστρεψε απαλά στον άξονα. Δεν χρειάζεται να αναλύσεις τη σκέψη — μόνο να τη χαρακτηρίσεις.',
+        a: 'Όταν μια σκέψη σε τραβά, βάλε της ταμπέλα: «Ανησυχία», «Σενάριο», «Κριτική». Η ταμπέλα δημιουργεί απόσταση — δεν είσαι η σκέψη· τη βλέπεις να περνά. Μετά επέστρεψε απαλά στον άξονα. Δεν χρειάζεται να αναλύσεις τη σκέψη — μόνο να τη χαρακτηρίσεις.',
         tags: ['attention', 'labeling', 'practical', 'technique'],
         depth: 1,
         relatedConcept: 'labeling'
       },
       {
         q: 'Η προσοχή μου φεύγει αμέσως. Αποτυγχάνω;',
-        a: 'Η επιστροφή της προσοχής δεν είναι αποτυχία — είναι η ίδια η άσκηση. Κάθε φορά που παρατηρείς ότι η προσοχή έφυγε και γυρνάς, κάνεις ένα «κάμψη» για τον προμετωπιαίο φλοιό. Ο αριθμός των επιστροφών μετράει — όχι η διάρκεια της εστίασης.',
+        a: 'Η επιστροφή της προσοχής δεν είναι αποτυχία — είναι η ίδια η άσκηση. Κάθε φορά που παρατηρείς ότι η προσοχή έφυγε και γυρνάς, εξασκείς την ίδια την ικανότητα της επιστροφής. Ο αριθμός των επιστροφών μετράει — όχι η διάρκεια της εστίασης.',
         tags: ['attention', 'failure', 'nd-specific', 'encouragement'],
         depth: 1,
         relatedConcept: 'gentle_return'
@@ -254,7 +252,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
         relatedConcept: 'attention_modes'
       },
       {
-        q: 'What is hyperfocus and how do I break it?',
+        q: 'What is hyperfocus and how do I come out of it?',
         a: 'The opposite extreme: the mind locks onto one point and cannot leave. The world around disappears — space, body, time.\n\nTool: Space (soften your gaze, feel the space around) + Body (feel gravity — it "breaks" the tunnel).',
         tags: ['attention', 'hyperfocus', 'nd-specific', 'practical'],
         depth: 1,
@@ -270,14 +268,14 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'My attention leaves immediately. Am I failing?',
-        a: 'Returning attention is not failure — it is the practice itself. Every time you notice attention has left and you return, you\'re doing a "push-up" for the prefrontal cortex. The number of returns matters — not the duration of focus.',
+        a: 'Returning attention is not failure — it is the practice itself. Every time you notice attention has left and you return, you are training the very skill of returning. The number of returns matters — not the duration of focus.',
         tags: ['attention', 'failure', 'nd-specific', 'encouragement'],
         depth: 1,
         relatedConcept: 'gentle_return'
       },
       {
         q: 'What does "Fourfold Attention" mean?',
-        a: 'In the full practice, attention does not work alone. It focuses upon the vertical axis (Body + Breath), and from there opens into Space. Four centers, one presence. This is what "Fourfold Axis" means.',
+        a: 'In the full practice, attention does not work alone. It focuses upon the vertical axis (Body + Breath), and from there opens into Space. Four centres, one presence. This is what "Fourfold Axis" means.',
         tags: ['attention', 'fourfold', 'axis', 'integration'],
         depth: 2,
         relatedChapter: 9
@@ -299,7 +297,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'Πώς βοηθάει ο χώρος στην υπερφόρτωση;',
-        a: 'Η ανοιχτή προσοχή λειτουργεί ως σήμα ασφάλειας στον εγκέφαλο: «δεν υπάρχει κίνδυνος, υπάρχει χώρος». Η περιφερειακή όραση, η ανοιχτή ακοή, η αίσθηση του χώρου γύρω — όλα αυτά μαζί «σβήνουν» το σήμα συναγερμού. Αντί να πολεμάς τα ερεθίσματα, τα αφήνεις να υπάρχουν.',
+        a: 'Στην εμπειρία, η ανοιχτή προσοχή λειτουργεί σαν σήμα ασφάλειας: «δεν υπάρχει κίνδυνος, υπάρχει χώρος». Η περιφερειακή όραση, η ανοιχτή ακοή, η αίσθηση του χώρου γύρω — όλα αυτά μαζί χαμηλώνουν τον συναγερμό. Αντί να πολεμάς τα ερεθίσματα, τα αφήνεις να υπάρχουν.',
         tags: ['space', 'overload', 'nd-specific', 'safety', 'practical'],
         depth: 1,
         relatedChapter: 7
@@ -308,8 +306,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
         q: 'Πώς μαλακώνω το βλέμμα;',
         a: 'Τρία βήματα:\n1. Εστίασε σε ένα σημείο (Προσοχή).\n2. Μαλάκωσε το βλέμμα — μην κρατάς, άφησε τα μάτια να χαλαρώσουν.\n3. Άφησε τον χώρο να σε αγκαλιάσει — ήχοι, σώμα, αέρας, όλα μαζί.\n\nΔεν προσπαθείς να δεις τα πάντα. Αφήνεις τα πάντα να υπάρχουν.',
         tags: ['space', 'peripheral-vision', 'technique', 'practical'],
-        depth: 1,
-        relatedExercise: 'openawareness.html'
+        depth: 1
       },
       {
         q: 'Τι σχέση έχει ο χώρος με τη μεταφορά του ουρανού;',
@@ -328,7 +325,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'How does space help with overload?',
-        a: 'Open attention functions as a safety signal to the brain: "no danger, there is space." Peripheral vision, open hearing, the sense of space around — all together they "turn off" the alarm signal. Instead of fighting stimuli, you let them be.',
+        a: 'In experience, open attention works like a safety signal: "no danger, there is space." Peripheral vision, open hearing, the sense of space around — together they turn the alarm down. Instead of fighting stimuli, you let them be.',
         tags: ['space', 'overload', 'nd-specific', 'safety', 'practical'],
         depth: 1,
         relatedChapter: 7
@@ -337,8 +334,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
         q: 'How do I soften my gaze?',
         a: 'Three steps:\n1. Focus on one point (Attention).\n2. Soften your gaze — don\'t hold, let the eyes relax.\n3. Let space embrace you — sounds, body, air, all together.\n\nYou\'re not trying to see everything. You\'re letting everything exist.',
         tags: ['space', 'peripheral-vision', 'technique', 'practical'],
-        depth: 1,
-        relatedExercise: 'openawareness.html'
+        depth: 1
       },
       {
         q: 'What\'s the relationship between space and the sky metaphor?',
@@ -376,7 +372,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'Γιατί η αυτοκριτική είναι τόσο δυνατή;',
-        a: 'Έρευνες δείχνουν ότι η έντονη αυτοκριτική μπορεί να ενεργοποιήσει τα ίδια κυκλώματα απόκρισης σε απειλή που αντιδρούν και σε εξωτερικό κίνδυνο, με τη συμμετοχή της αμυγδαλής και ορμονών του στρες όπως η κορτιζόλη. Κάθε φορά που κρίνεις τον εαυτό σου, ο εγκέφαλος αντιδρά σαν να δέχεσαι επίθεση. Η αυτοκριτική δεν είναι δική σου αλήθεια — είναι απόηχος. Η απαλότητα της μεθόδου είναι η ίδια η στάση που χρειάζεται.',
+        a: 'Η αυτοκριτική και η καθησύχαση του εαυτού συνδέονται με διαφορετικά δίκτυα στον εγκέφαλο: η αυτοκριτική με τον εντοπισμό λάθους και το φρενάρισμα της συμπεριφοράς, η καθησύχαση με περιοχές που μοιάζουν με εκείνες της συμπόνιας για τους άλλους — Longe et al. (2010). Η αυτοκριτική δεν είναι δική σου αλήθεια — είναι απόηχος. Η απαλότητα της μεθόδου είναι η ίδια η στάση που χρειάζεται.',
         tags: ['mind', 'self-criticism', 'amygdala', 'cortisol', 'neuroscience', 'kindness'],
         depth: 2,
         relatedConcept: 'self_criticism'
@@ -398,7 +394,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'My mind has "locked in." What do I do?',
-        a: 'Locked-in mind = Anchored Attention / Hyperfocus. Like a tunnel of intense focus. Time disappears, the body is forgotten.\n\nTool: Space (Release) + Body (Return). Soften your gaze, feel the space around — this "breaks" the tunnel.',
+        a: 'Locked-in mind = Stuck Attention / Hyperfocus. Like a tunnel of intense focus. Time disappears, the body is forgotten.\n\nTool: Space (Release) + Body (Return). Soften your gaze, feel the space around — this "breaks" the tunnel.',
         tags: ['mind', 'locking', 'hyperfocus', 'nd-specific', 'practical', 'autism'],
         depth: 1,
         relatedConcept: 'hyperfocus'
@@ -411,7 +407,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'Why is self-criticism so powerful?',
-        a: 'Research suggests that harsh self-criticism can engage the same threat-response circuitry that reacts to external danger, involving the amygdala and stress hormones like cortisol. Every time you judge yourself, your brain reacts as if under attack. Self-criticism isn\'t your truth — it\'s an echo. The gentleness of this method is the very attitude that\'s needed.',
+        a: 'Self-criticism and self-reassurance are linked with different networks in the brain: self-criticism with error detection and holding back behaviour, self-reassurance with areas like those of compassion for others — Longe et al. (2010). Self-criticism isn\'t your truth — it\'s an echo. The gentleness of this method is the very attitude that\'s needed.',
         tags: ['mind', 'self-criticism', 'amygdala', 'cortisol', 'neuroscience', 'kindness'],
         depth: 2,
         relatedConcept: 'self_criticism'
@@ -432,19 +428,19 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
     el: [
       {
         q: 'Πώς χρησιμοποιώ τον Τετραπλό Άξονα στη δουλειά;',
-        a: '3 αναπνοές πριν ανοίξεις email. Νιώσε τα πέλματα πριν μιλήσεις σε meeting. Ταμπέλα στις σκέψεις ανησυχίας. Αυτά τα 3 πράγματα, κάθε μέρα, αλλάζουν τη σχέση σου με την ένταση χωρίς να χρειαστείς χρόνο.',
+        a: '3 αναπνοές πριν ανοίξεις email. Νιώσε τα πέλματα πριν μιλήσεις σε μια σύσκεψη. Ταμπέλα στις σκέψεις ανησυχίας. Αυτά τα 3 πράγματα, κάθε μέρα, αλλάζουν τη σχέση σου με την ένταση χωρίς να χρειαστείς χρόνο.',
         tags: ['daily', 'work', 'practical', 'invisible-doses'],
         depth: 1
       },
       {
         q: 'Τι κάνω σε θορυβώδη χώρο;',
-        a: '• Νιώσε τα πόδια στο έδαφος — άμεση γείωση.\n• 3 ήσυχες αναπνοές με εκπνοή από το στόμα.\n• Άνοιξε την περιφερειακή όραση — μετατρέπει τα ερεθίσματα σε «σύννεφα».\n• Ακουστικά ή fidget toy αν χρειαστεί — δεν είναι αδυναμία, είναι ρύθμιση.',
+        a: '• Νιώσε τα πόδια στο έδαφος — άμεση γείωση.\n• 3 ήσυχες αναπνοές με εκπνοή από το στόμα.\n• Άνοιξε την περιφερειακή όραση — μετατρέπει τα ερεθίσματα σε «σύννεφα».\n• Ακουστικά ή ένα μικρό αντικείμενο για τα χέρια (fidget toy) αν χρειαστεί — δεν είναι αδυναμία, είναι ρύθμιση.',
         tags: ['daily', 'noise', 'sensory', 'practical', 'nd-specific'],
         depth: 1
       },
       {
         q: 'Πώς βοηθάει σε κοινωνικές καταστάσεις;',
-        a: '• Βρες ένα ουδέτερο σημείο εστίασης (φυτό, τοίχο).\n• Νιώσε τα πόδια σταθερά — γείωση κατά τη διάρκεια.\n• Ένταση στο σαγόνι; Μία αργή εκπνοή τη λύνει.\n• Αν χρειαστεί, βγες για 30 δευτερόλεπτα — δεν χρειάζεται δικαιολογία.',
+        a: '• Βρες ένα ουδέτερο σημείο εστίασης (φυτό, τοίχο).\n• Νιώσε τα πόδια σταθερά — γείωση κατά τη διάρκεια.\n• Ένταση στο σαγόνι; Μία αργή εκπνοή τη μαλακώνει.\n• Αν χρειαστεί, βγες για 30 δευτερόλεπτα — δεν χρειάζεται δικαιολογία.',
         tags: ['daily', 'social', 'practical', 'nd-specific', 'masking'],
         depth: 1
       },
@@ -458,19 +454,19 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
     en: [
       {
         q: 'How do I use the Fourfold Axis at work?',
-        a: '3 breaths before opening email. Feel your soles before speaking in a meeting. Label anxious thoughts. These 3 things, every day, change your relationship with tension without needing extra time.',
+        a: '3 breaths before opening email. Feel your soles before you speak in a meeting. Label anxious thoughts. These 3 things, every day, change your relationship with tension without needing extra time.',
         tags: ['daily', 'work', 'practical', 'invisible-doses'],
         depth: 1
       },
       {
         q: 'What do I do in a noisy space?',
-        a: '• Feel your feet on the ground — instant grounding.\n• 3 quiet breaths with mouth exhale.\n• Open peripheral vision — it transforms stimuli into "clouds."\n• Headphones or fidget toy if needed — it\'s not weakness, it\'s regulation.',
+        a: '• Feel your feet on the ground — instant grounding.\n• 3 quiet breaths with mouth exhale.\n• Open peripheral vision — it transforms stimuli into "clouds."\n• Headphones or a fidget toy if needed — it\'s not weakness, it\'s regulation.',
         tags: ['daily', 'noise', 'sensory', 'practical', 'nd-specific'],
         depth: 1
       },
       {
         q: 'How does it help in social situations?',
-        a: '• Find a neutral focus point (plant, wall).\n• Feel your feet steady — grounding during interaction.\n• Tension in jaw? One slow exhale releases it.\n• If you need to, step out for 30 seconds — no justification needed.',
+        a: '• Find a neutral focus point (plant, wall).\n• Feel your feet steady — grounding during interaction.\n• Tension in jaw? One slow exhale softens it.\n• If you need to, step out for 30 seconds — no justification needed.',
         tags: ['daily', 'social', 'practical', 'nd-specific', 'masking'],
         depth: 1
       },
@@ -484,19 +480,19 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
   },
 
   // ═══════════════════════════════════════════
-  // ΚΕΦΑΛΑΙΟ 7: ΚΡΙΣΗ — Crisis
+  // ΚΕΦΑΛΑΙΟ 8: ΚΡΙΣΗ — Crisis
   // ═══════════════════════════════════════════
-  7: {
+  8: {
     el: [
       {
         q: 'Τι κάνω σε κρίση άγχους;',
-        a: 'Πρωτόκολλο Άγχους — 4 βήματα:\n1. Βάρος: νιώσε τη βαρύτητα\n2. Εκπνοή: 3 αργές εκπνοές από το στόμα\n3. Ταμπέλα: «Ανησυχία» ή «Σενάριο»\n4. Χώρος: άνοιξε περιφερειακή όραση\n\nΜπορείς να κάνεις μόνο ένα βήμα. Ακόμα και αυτό αρκεί.',
+        a: 'Η Κάρτα της Τσέπης (Κεφάλαιο 8) — τέσσερις λέξεις, με τη σειρά:\n1. Γείωση: πέλματα, το βάρος σου.\n2. Μακριά εκπνοή: από το στόμα, αργά (ρυθμός 4-6, χωρίς κράτημα).\n3. Ταμπέλα: ονόμασε το σενάριο («Ανησυχία», «Σενάριο»).\n4. Άνοιγμα: περιφερειακή όραση.\n\nΜπορείς να κάνεις μόνο ένα βήμα. Ακόμα και αυτό αρκεί. Αν είναι πολύ, πάτα το SOS.',
         tags: ['crisis', 'anxiety', 'protocol', 'practical', 'sos'],
         depth: 1
       },
       {
         q: 'Τι κάνω σε υπερφόρτωση ερεθισμάτων;',
-        a: 'Πρωτόκολλο Υπερφόρτωσης — 4 βήματα:\n1. Πέλματα: νιώσε τα στο πάτωμα\n2. Ροή: μείνε στη ροή της αναπνοής\n3. Ένα σημείο: σταθερό σημείο εστίασης\n4. Μαλάκωσε: τα ερεθίσματα είναι σύννεφα\n\nΑν είναι πολύ έντονο, χρησιμοποίησε το SOS mode.',
+        a: 'Πρωτόκολλο Υπερφόρτωσης — 4 βήματα:\n1. Πέλματα: νιώσε τα στο πάτωμα\n2. Ροή: μείνε στη ροή της αναπνοής\n3. Ένα σημείο: σταθερό σημείο εστίασης\n4. Μαλάκωσε: τα ερεθίσματα είναι σύννεφα\n\nΑν είναι πολύ έντονο, πάτα το SOS.',
         tags: ['crisis', 'overload', 'protocol', 'practical', 'sos'],
         depth: 1
       },
@@ -510,13 +506,13 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
     en: [
       {
         q: 'What do I do in an anxiety crisis?',
-        a: 'Anxiety Protocol — 4 steps:\n1. Weight: feel gravity\n2. Exhale: 3 slow mouth exhales\n3. Label: "Worry" or "Scenario"\n4. Space: open peripheral vision\n\nYou can do just one step. Even that is enough.',
+        a: 'The Pocket Card (Chapter 8) — four words, in order:\n1. Ground: your soles, your weight.\n2. Long exhale: through the mouth, slowly (the 4-6 rhythm, no hold).\n3. Label: name the scenario ("Worry", "Scenario").\n4. Open: peripheral vision.\n\nYou can do just one step. Even that is enough. If it is too much, tap SOS.',
         tags: ['crisis', 'anxiety', 'protocol', 'practical', 'sos'],
         depth: 1
       },
       {
         q: 'What do I do in sensory overload?',
-        a: 'Overload Protocol — 4 steps:\n1. Soles: feel them on the floor\n2. Flow: stay with the breath flow\n3. One point: stable focus point\n4. Soften: stimuli are clouds\n\nIf too intense, use SOS mode.',
+        a: 'Overload Protocol — 4 steps:\n1. Soles: feel them on the floor\n2. Flow: stay with the breath flow\n3. One point: stable focus point\n4. Soften: stimuli are clouds\n\nIf it is too intense, tap SOS.',
         tags: ['crisis', 'overload', 'protocol', 'practical', 'sos'],
         depth: 1
       },
@@ -530,9 +526,9 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
   },
 
   // ═══════════════════════════════════════════
-  // ΚΕΦΑΛΑΙΟ 8: ΦΥΛΛΟ ΕΡΓΑΣΙΑΣ
+  // ΚΕΦΑΛΑΙΟ 9: ΦΥΛΛΟ ΕΡΓΑΣΙΑΣ
   // ═══════════════════════════════════════════
-  8: {
+  9: {
     el: [
       {
         q: 'Πώς χρησιμοποιώ τα 4 βήματα;',
@@ -543,7 +539,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'Πρέπει να τα κάνω με σειρά;',
-        a: 'Όχι. Μπορείς να ξεκινήσεις από οποιοδήποτε βήμα. Αν νιώθεις ένταση → ΣΩΜΑ πρώτα. Αν τρέχει ο νους → ΑΝΑΠΝΟΗ. Αν η προσοχή πηδά → ΠΡΟΣΟΧΗ. Αν νιώθεις κλειστός → ΧΩΡΟΣ. Η σειρά Σ→Α→Π→Χ είναι η πλήρης ακολουθία, αλλά ένα μόνο βήμα αρκεί.',
+        a: 'Όχι. Μπορείς να ξεκινήσεις από οποιοδήποτε βήμα. Αν νιώθεις ένταση → ΣΩΜΑ πρώτα. Αν τρέχει ο νους → ΑΝΑΠΝΟΗ. Αν η προσοχή πηδά → ΠΡΟΣΟΧΗ. Αν νιώθεις παγιδευμένος/η → ΧΩΡΟΣ. Η σειρά Σ→Α→Π→Χ είναι η πλήρης ακολουθία, αλλά ένα μόνο βήμα αρκεί.',
         tags: ['worksheet', 'flexibility', 'practical'],
         depth: 1
       }
@@ -558,7 +554,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
       },
       {
         q: 'Do I have to do them in order?',
-        a: 'No. You can start from any step. Feeling tension → BODY first. Mind racing → BREATH. Attention jumping → ATTENTION. Feeling closed → SPACE. The S→B→A→S sequence is the full practice, but one step alone is enough.',
+        a: 'No. You can start from any step. Feeling tension → BODY first. Mind racing → BREATH. Attention jumping → ATTENTION. Feeling trapped → SPACE. The S→B→A→S sequence is the full practice, but one step alone is enough.',
         tags: ['worksheet', 'flexibility', 'practical'],
         depth: 1
       }
@@ -566,13 +562,13 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
   },
 
   // ═══════════════════════════════════════════
-  // ΚΕΦΑΛΑΙΟ 9: ΤΑ ΤΕΣΣΕΡΑ ΣΤΑΔΙΑ
+  // ΚΕΦΑΛΑΙΟ 10: ΤΑ ΤΕΣΣΕΡΑ ΣΤΑΔΙΑ
   // ═══════════════════════════════════════════
-  9: {
+  10: {
     el: [
       {
         q: 'Πώς κάνω την πλήρη πρακτική;',
-        a: 'Στάδιο 1 — Γείωση: Κάθισε. Νιώσε τα σημεία επαφής.\nΣτάδιο 2 — Αναπνοή: Κλείσε τα μάτια. Ακολούθησε τη ροή.\nΣτάδιο 3 — Προσοχή: Άνοιξε τα μάτια. Σταθερό σημείο. Ταμπέλα αν χρειαστεί.\nΣτάδιο 4 — Χώρος: Μαλάκωσε. Νιώσε τα πάντα μαζί.\n\nΑκόμα και 20 δευτερόλεπτα αρκούν.',
+        a: 'Στάδιο 1 — Γη: Κάθισε ή στάσου άνετα. Νιώσε τα σημεία επαφής και άφησε το βάρος να βυθιστεί.\nΣτάδιο 2 — Αναπνοή: Κλείσε ή μισόκλεισε τα μάτια. Νιώσε τη διαδρομή του αέρα.\nΣτάδιο 3 — Εστίαση: Άνοιξε τα μάτια σε ένα ήσυχο σημείο μπροστά σου. Ταμπέλα αν χρειαστεί, και επέστρεψε απαλά.\nΣτάδιο 4 — Χώρος: Μαλάκωσε το βλέμμα. Χωρίς να κουνήσεις τα μάτια, άφησε την όραση να ανοίξει: δεξιά, αριστερά, πάνω, κάτω.\n\nΑκόμα και 20 δευτερόλεπτα αρκούν.',
         tags: ['stages', 'full-practice', 'practical', 'guide'],
         depth: 1,
         relatedExercise: 'journey.html'
@@ -593,7 +589,7 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
     en: [
       {
         q: 'How do I do the full practice?',
-        a: 'Stage 1 — Grounding: Sit. Feel contact points.\nStage 2 — Breath: Close eyes. Follow the flow.\nStage 3 — Attention: Open eyes. Stable point. Label if needed.\nStage 4 — Space: Soften. Feel everything together.\n\nEven 20 seconds is enough.',
+        a: 'Stage 1 — Earth: Sit or stand comfortably. Feel the points of contact and let the weight sink.\nStage 2 — Breath: Close or half-close your eyes. Feel the path of the air.\nStage 3 — Focus: Open your eyes onto a quiet point in front of you. Label if needed, and come back gently.\nStage 4 — Space: Soften your gaze. Without moving your eyes, let your vision open: right, left, up, down.\n\nEven 20 seconds is enough.',
         tags: ['stages', 'full-practice', 'practical', 'guide'],
         depth: 1,
         relatedExercise: 'journey.html'
@@ -614,25 +610,25 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
   },
 
   // ═══════════════════════════════════════════
-  // ΚΕΦΑΛΑΙΟ 10: ΕΠΙΣΤΗΜΗ & ΣΟΦΙΑ
+  // ΚΕΦΑΛΑΙΟ 11: ΕΠΙΣΤΗΜΗ & ΣΟΦΙΑ
   // ═══════════════════════════════════════════
-  10: {
+  11: {
     el: [
       {
         q: 'Τι λέει η νευροεπιστήμη για αυτή τη μέθοδο;',
-        a: '• Ο εγκέφαλος υπολογίζει διαρκώς τη βαρύτητα, με κεντρικό ρόλο της παρεγκεφαλίδας — Mackrous et al. (2019).\n• Η αργή εκπνοή ενεργοποιεί το vagus nerve — Gerritsen & Band (2018).\n• Οι έμπειροι διαλογιστές έχουν χαμηλότερη δραστηριότητα στο DMN — Brewer et al. (2011) PNAS.\n• 8 εβδομάδες πρακτικής αλλάζουν μετρήσιμα τη δομή του εγκεφάλου — Hölzel et al. (2011).\n• Η εστιασμένη προσοχή εμπλέκει τον προμετωπιαίο φλοιό, κεντρικό για την αυτορρύθμιση.',
+        a: '• Ο εγκέφαλος υπολογίζει διαρκώς τη βαρύτητα, με κεντρικό ρόλο της παρεγκεφαλίδας — Mackrous et al. (2019).\n• Η αργή, παρατεταμένη εκπνοή συνδέεται με τη δραστηριότητα του πνευμονογαστρικού νεύρου — Balban et al. (2023).\n• Η στροφή από την αφήγηση στην άμεση αίσθηση σχετίζεται με μειωμένη δραστηριότητα του DMN — Farb et al. (2007).\n• Πρώτα καλλιεργείται η σταθερή προσοχή και μετά η ανοιχτή παρατήρηση — Lutz et al. (2008).\n\nΚαμία μελέτη δεν έχει εξετάσει τη μέθοδο ως σύνολο· οι μελέτες στηρίζουν κομμάτια της. Περισσότερα στο Κεφάλαιο 11.',
         tags: ['science', 'neuroscience', 'evidence', 'references'],
         depth: 3
       },
       {
-        q: 'Από ποιες παραδόσεις προέρχεται η μέθοδος;',
-        a: '• Satipatthana Sutta (Θεραβάντα): Τα Τέσσερα Θεμέλια αντιστοιχούν στους τέσσερις άξονες.\n• Samatha & Vipassana: Εστίαση → ενόραση, η κλασική διαδρομή 3ος → 4ος άξονας.\n• Dzogchen (Nyingma): Rigpa — η φυσική κατάσταση ανοιχτής επίγνωσης = 4ος άξονας.\n• Σουφισμός (Inayatiyya): Αναπνοή ως γέφυρα ύλης-πνεύματος.\n• Tai Chi / Qi Gong: Γείωση μέσω κίνησης — η βαρύτητα ως δάσκαλος.',
+        q: 'Σε ποιες παραδόσεις πατά η μέθοδος;',
+        a: 'Οι πρακτικές στις οποίες πατά η μέθοδος δεν μαθεύτηκαν από βιβλία· δόθηκαν ζωντανά, από δασκάλους (η Γραμμή Μετάδοσης, Κεφάλαιο 11).\n• Mahāsatipaṭṭhāna Sutta: τα Τέσσερα Θεμέλια της Ενσυνειδητότητας αντιστοιχούν στα τέσσερα στάδια της μεθόδου.\n• Ντζόγκτσεν (Dzogchen): η αναγνώριση του ανοιχτού χώρου της συνείδησης.\n• Σουφισμός (Inayatiyya): η γείωση και η καρδιά ως κέντρο.\n• Τάι Τσι / Τσι Γκονγκ: η γείωση μέσα από την κίνηση.\n\nΚαμία από αυτές τις γραμμές δεν έχει εγκρίνει το βιβλίο και καμία δεν φέρει ευθύνη για τη μορφή του.',
         tags: ['science', 'traditions', 'philosophy', 'lineage'],
         depth: 2
       },
       {
         q: 'Αλλάζει πραγματικά ο εγκέφαλος;',
-        a: 'Ναι, μετρήσιμα. Η Hölzel et al. (2011) έδειξαν ότι 8 εβδομάδες πρακτικής ενσυνειδητότητας αυξάνουν τη φαιά ουσία σε περιοχές που σχετίζονται με μάθηση, μνήμη, συναισθηματική ρύθμιση και λήψη αποφάσεων. Αυτό λέγεται νευροπλαστικότητα — ο εγκέφαλος αλλάζει δομή με βάση αυτό που κάνεις επανειλημμένα. Ακόμα και 5 δευτερόλεπτα παρατήρησης ενισχύουν τη νησίδα (insula).',
+        a: 'Ο εγκέφαλος αλλάζει με αυτό που κάνεις επανειλημμένα· αυτό λέγεται νευροπλαστικότητα. Η Hölzel και οι συνεργάτες της (2011) βρήκαν ότι μετά από ένα πρόγραμμα ενσυνειδητότητας 8 εβδομάδων (MBSR) αυξήθηκε η φαιά ουσία σε περιοχές που σχετίζονται με τη μάθηση, τη μνήμη και τη ρύθμιση του συναισθήματος. Ήταν ένα συγκεκριμένο πρόγραμμα, όχι αυτή η μέθοδος· καμία μελέτη δεν έχει εξετάσει τη μέθοδο ως σύνολο.',
         tags: ['science', 'neuroplasticity', 'evidence', 'brain-change'],
         depth: 3,
         relatedConcept: 'neuroplasticity'
@@ -641,19 +637,19 @@ export const KNOWLEDGE_FAQ: Record<number, any> = {
     en: [
       {
         q: 'What does neuroscience say about this method?',
-        a: '• The brain continually computes gravity, with the cerebellum playing a central role — Mackrous et al. (2019).\n• Slow exhale activates the vagus nerve — Gerritsen & Band (2018).\n• Experienced meditators show lower DMN activity — Brewer et al. (2011) PNAS.\n• 8 weeks of practice measurably change brain structure — Hölzel et al. (2011).\n• Focused attention engages the prefrontal cortex, central to self-regulation.',
+        a: '• The brain continually computes gravity, with the cerebellum playing a central role — Mackrous et al. (2019).\n• A slow, long exhale is linked with the activity of the vagus nerve — Balban et al. (2023).\n• Moving from narrative to direct sensation is associated with reduced DMN activity — Farb et al. (2007).\n• Steady, focused attention is cultivated first, open observation after — Lutz et al. (2008).\n\nNo study has examined the method as a whole; studies support parts of it. More in Chapter 11.',
         tags: ['science', 'neuroscience', 'evidence', 'references'],
         depth: 3
       },
       {
-        q: 'Which traditions does the method come from?',
-        a: '• Satipatthana Sutta (Theravada): The Four Foundations correspond to the four axes.\n• Samatha & Vipassana: Focus → insight, the classic path 3rd → 4th axis.\n• Dzogchen (Nyingma): Rigpa — the natural state of open awareness = 4th axis.\n• Sufism (Inayatiyya): Breath as bridge between matter and spirit.\n• Tai Chi / Qi Gong: Grounding through movement — gravity as teacher.',
+        q: 'Which traditions does the method rest on?',
+        a: 'The practices this method rests on were not learned from books; they were given in person, by teachers (the Transmission Lineage, Chapter 11).\n• Mahāsatipaṭṭhāna Sutta: the Four Foundations of Mindfulness correspond to the four stages of the method.\n• Dzogchen: recognising the open space of awareness.\n• Sufism (Inayatiyya): grounding, and the heart as the centre.\n• Tai Chi / Qi Gong: grounding through movement.\n\nNone of these lineages has endorsed the book, and none is responsible for its form.',
         tags: ['science', 'traditions', 'philosophy', 'lineage'],
         depth: 2
       },
       {
         q: 'Does the brain actually change?',
-        a: 'Yes, measurably. Hölzel et al. (2011) showed that 8 weeks of mindfulness practice increases grey matter in areas related to learning, memory, emotional regulation, and decision-making. This is called neuroplasticity — the brain changes structure based on what you do repeatedly. Even 5 seconds of observation strengthens the insula.',
+        a: 'The brain changes with what you do repeatedly; this is called neuroplasticity. Hölzel and colleagues (2011) found that after an 8-week mindfulness programme (MBSR), grey matter increased in areas related to learning, memory and emotional regulation. That was a specific programme, not this method; no study has examined the method as a whole.',
         tags: ['science', 'neuroplasticity', 'evidence', 'brain-change'],
         depth: 3,
         relatedConcept: 'neuroplasticity'

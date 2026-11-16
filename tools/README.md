@@ -21,7 +21,7 @@ apt install pandoc       # για το EPUB
 
 ```bash
 # PDF
-python3 tools/build_pdf.py  book/workbook_el.md public/Workbook_el.pdf   book/img/00-cover.jpg
+python3 tools/build_pdf.py  book/workbook_el.md public/workbook_el.pdf   book/img/00-cover.jpg
 python3 tools/build_pdf.py  book/workbook_en.md public/workbook_en.pdf   book/img/00-cover.jpg
 
 # EPUB

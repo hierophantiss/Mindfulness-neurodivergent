@@ -258,16 +258,18 @@ export default function PracticeSwaying() {
              ))}
           </div>
 
-          <label className="text-[13px] text-ink/65 mb-3 w-full text-center mt-2">
+          <label htmlFor="sway-tempo" className="text-[13px] text-ink/65 mb-3 w-full text-center mt-2">
              {lang === "el" ? "Ρυθμός του χτύπου" : "Beat tempo"}
           </label>
           <input
+            id="sway-tempo"
             type="range"
             min="600"
             max="2000"
             step="100"
             value={tempo}
             onChange={(e) => setTempo(Number(e.target.value))}
+            aria-valuetext={lang === 'el' ? `${(tempo / 1000).toLocaleString('el-GR')} δευτερόλεπτα ανά χτύπο` : `${tempo / 1000} seconds per beat`}
             className="w-full max-w-xs accent-teal-500"
           />
           <div className="flex justify-between w-full max-w-xs mt-1 px-1">

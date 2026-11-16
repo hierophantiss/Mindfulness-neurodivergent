@@ -30,9 +30,7 @@ export default function InteractiveRenderer({ id, asModal }: InteractiveRenderer
 
   // Map other IDs to existing or newly created HTML files in /animations/
   const htmlMap: Record<string, string> = {
-    'gravity_thoughts': 'gravity_thoughts.html',
-    'treepose': 'treepose.html',
-    'attention_dispersion': 'racing_mind.html', // TODO: create dedicated attention_dispersion.html
+    'attention_dispersion': 'racing_mind.html', // Chapter 3's sensory overload is the racing mind
     'racing_mind': 'racing_mind.html',
     'journey': 'journey.html',
   };
@@ -49,14 +47,15 @@ export default function InteractiveRenderer({ id, asModal }: InteractiveRenderer
 
     const fileName = htmlMap[id] || `${id}.html`;
     const src = `/animations/${fileName}?lang=${language}`;
+    const frameTitle = language === 'en' ? 'Chapter animation' : 'Κινούμενη εικόνα του κεφαλαίου';
     // The racing mind (Chapter 3's overload and Chapter 5): with a voice.
-    if (fileName === 'racing_mind.html') return <VoicedFrame src={src} title={`Interactive Exercise: ${id}`} voiceId="racingmind" />;
+    if (fileName === 'racing_mind.html') return <VoicedFrame src={src} title={frameTitle} voiceId="racingmind" />;
 
     return (
       <iframe 
         src={src} 
         className="absolute inset-0 w-full h-full border-0"
-        title={`Interactive Exercise: ${id}`}
+        title={frameTitle}
         sandbox="allow-scripts allow-same-origin"
         loading="lazy"
       />
@@ -74,7 +73,7 @@ export default function InteractiveRenderer({ id, asModal }: InteractiveRenderer
           <Play size={20} className="ml-1" />
         </div>
         <span className="text-[13px] font-medium text-ink/65 group-hover:text-teal-400 font-sans transition-colors">
-          Άνοιγμα Διαδραστικής Άσκησης
+          {language === 'en' ? 'Open the animation' : 'Άνοιγμα της κινούμενης εικόνας'}
         </span>
       </button>
     );

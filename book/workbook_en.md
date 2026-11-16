@@ -230,7 +230,7 @@ This is a good moment to name two functions you will meet throughout this guide.
 - **Focus:** Notice how you need to stand so that it does not fall. Feel the weight descend smoothly through the neck, the spine and the pelvis.
 - **Sensation:** Feel the weight, the touch of your soles on the ground and the sense of the axis that keeps you upright.
 
-*In the app: Guided grounding exercise · Body microdoses · for movement, Swaying and Cloud Hands (Tai Chi).*
+*In the app: Guided grounding exercise · Body small doses · for movement, Swaying and Cloud Hands (Tai Chi).*
 
 **Reflection:** After the exercise, what did I notice in my body?
 
@@ -345,7 +345,7 @@ The tool here is twofold: to recognise the rhythm and quality of your breath, an
 
 The breath teaches you to observe without intervening. That ability is the bridge to the next step: Attention.
 
-*In the app: Guided breathing with a moving inhale/exhale guide · Breath microdoses.*
+*In the app: Guided breathing with a moving inhale/exhale guide · Breath small doses.*
 
 **Reflection:** How was my breath during the exercise? (fast/slow, shallow/deep, tight/free)
 
@@ -379,7 +379,7 @@ Attention is the third centre of consciousness and the tool that decides where t
 
 ![Open attention: the same light, without direction.](img/04-anoixti.jpg)
 
-**Scattered Attention.** Attention is like a monkey leaping from branch to branch. The aim is not to "kill" it but to rein it in gently.
+**Scattered Attention.** Attention is like a monkey leaping from branch to branch. The aim is not to "kill" it but to bring it gently back.
 
 **Stuck Attention.** The beam gets stuck on an outer object or on mental content: a thought, a worry. Excessive self-reference ("why do I feel like this? what does it mean?") is its typical form. It is the state that deserves the most attention, and the next section is devoted to it.
 
@@ -422,7 +422,7 @@ When a thought pulls at you, simply going back to the breath can be hard. **Labe
 - **Fourfold awareness:** Keep your attention there, while staying aware of body, breath and thoughts.
 - **Gentle return:** If you drift, notice it (with a label if needed) and come back gently: body → breath → steady point.
 
-*In the app: Attention microdoses for training the lens.*
+*In the app: Attention small doses for training the lens.*
 
 *In the Rabbit Hole: The Soft Gaze — how peripheral vision and open listening regulate the nervous system.*
 
@@ -502,7 +502,7 @@ Attention moved, but found nothing to grasp. Space has no edge, no weight. And w
 
 Awareness does not need duration. You do not need to "stay" in the open field for hours, or even for minutes. One moment of recognition is complete, however short; two seconds of open field are two whole seconds, not a failed version of ten minutes.
 
-What seems to matter is not duration but repetition: many short moments, scattered through the day, build familiarity with the open more steadily than one long, effortful session. The microdoses and the final weeks of the programme in the companion app are built on this.
+What seems to matter is not duration but repetition: many short moments, scattered through the day, build familiarity with the open more steadily than one long, effortful session. The small doses and the final weeks of the programme in the companion app are built on this.
 
 One condition, always — the golden rule of every exercise in this book: **opening is safe only on a grounded body.**
 
@@ -515,7 +515,7 @@ One condition, always — the golden rule of every exercise in this book: **open
 - **Acceptance:** Listen, see, feel, without focusing, without judging. Contents come and go. You are the field.
 - **Return:** If you get lost, the flash will come, "oh, I was gone". That flash is awareness. Come back to the open.
 
-*In the app: Space microdoses.*
+*In the app: Space small doses.*
 
 > **If at some point you feel yourself "drifting away"** If, as you open, you feel disconnected or as if you are moving away from yourself, that is not the goal. Open your eyes, feel your soles on the ground and the weight of your body, say where you are right now. You come back to the earth. **First the earth, then the sky.**
 
@@ -699,7 +699,7 @@ Until now the tools pointed in one direction: downwards, towards calm. But regul
 
 The aim is not to force energy, but to let the wind rise again by itself.
 
-*In the app: Swaying · Chanting & Resonance · Microdoses for every axis.*
+*In the app: Swaying · Chanting & Resonance · Small doses for every axis.*
 
 ### Transitions: The Practice of the Threshold
 
@@ -829,7 +829,7 @@ The earlier you catch the wind, the less force it takes: at the first signals, o
 Intense anxiety is a "fight or flight" state that calls for an immediate signal of safety to the nervous system, through body and breath.
 
 1. **Grounding (Body)** — Feel the weight of the body, its posture, its tensions, without verbal analysis. Simply notice where you are holding the tension.
-2. **Regulation (Breath)** — Close your eyes and move into the 4-6 rhythm. Let the exhale leave slowly through the mouth, as if gently blowing on a flame. Do not force the inhale; work only with the exhale.
+2. **Regulation (Breath)** — Close your eyes if you wish, and move into the 4-6 rhythm. Let the exhale leave slowly through the mouth, as if gently blowing on a flame. Do not force the inhale; work only with the exhale.
 3. **Labelling (Attention)** — If the mind gets stuck in a scenario, use a label ("Worry", "Scenario") and return to the breath.
 4. **Opening (Space)** — Open your peripheral vision and notice the space around you. Widening reduces the sense of being trapped.
 5. **Movement & Axis** — If you can, walk a little, feeling your soles. Keep the sense of the vertical axis. Open gaze and awareness of space.
@@ -1132,8 +1132,6 @@ The terms of the method, one line each, with where they first appear.
 
 **Meta-awareness** *(Ch. 4)* — The moment the mind notices by itself where it is: the "oh, I was gone." You do not decide it; it appears.
 
-**Microdoses** *(Ch. 4)* — Very short moments of practice, many times a day. Repetition counts, not duration.
-
 **Open attention** *(Ch. 3)* — The beam of attention widens and lights many things at once. The wide lens.
 
 **Open awareness** *(Ch. 4)* — The open field within which experience happens. It selects nothing and holds nothing, which is why it does not tire you.
@@ -1145,6 +1143,8 @@ The terms of the method, one line each, with where they first appear.
 **Scattered attention** *(Ch. 3)* — Attention jumps from stimulus to stimulus, like a monkey from branch to branch.
 
 **Short moment** *(Ch. 4)* — Two to five seconds in which you leave everything exactly as it is.
+
+**Small doses** *(Ch. 4)* — Very short moments of practice, many times a day. Repetition counts, not duration.
 
 **Stuck attention** *(Ch. 3)* — Attention sticks to one content: a thought, a worry, an obsession. Different from scattered attention, which jumps.
 
