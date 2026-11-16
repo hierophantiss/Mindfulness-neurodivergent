@@ -15,6 +15,9 @@
 /accessibility /el/accessibility      301
 /cards         /el/cards              301
 /install       /el/install            301
+/el/practice/movement  /el/practice?category=movement  301
+/en/practice/movement  /en/practice?category=movement  301
+/practice/movement     /el/practice?category=movement  301
 /practice        /el/practice          301
 /practice/*      /el/practice/:splat   301
 /program        /el/program           301

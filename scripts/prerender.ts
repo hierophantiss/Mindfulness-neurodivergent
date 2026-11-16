@@ -633,26 +633,6 @@ function getMetaForRoute(route: string): RouteMeta {
     return { title: t, description: d, schema: {}, schemaType: 'WebApplication', bodyParagraphs: [d, ...exerciseDesc] };
   }
 
-  // ── Practice / Movement ──
-  if (clean === '/practice/movement') {
-    const t = lang === 'en'
-      ? 'Mindful Movement for ADHD & Autism – Tai Chi, Qigong & Swaying'
-      : 'Ενσυνείδητη Κίνηση για ΔΕΠΥ & Αυτισμό – Τάι Τσι, Qigong & Λίκνισμα';
-    const d = lang === 'en'
-      ? 'Slow movements with the breath: Cloud Hands, Lifting the Sky (Qigong), Swaying, and the Tai Chi and Lotus flows, with an animated figure to follow.'
-      : 'Αργές κινήσεις με την αναπνοή: Χέρια στα Σύννεφα, Σηκώνοντας τον Ουρανό (Qigong), Λίκνισμα και οι ροές Τάι Τσι και Λωτός, με κινούμενη φιγούρα να ακολουθείς.';
-    const bodyParagraphs = lang === 'en' ? [d,
-      'Cloud Hands (Yun Shou): on the inhale you turn to one side, on the exhale to the other, shifting your weight.',
-      'Lifting the Sky (Qigong): the hands rise with the inhale and come down with the exhale.',
-      'Swaying: a gentle to-and-fro for when sitting still is not what you need.',
-    ] : [d,
-      'Χέρια στα Σύννεφα (Yun Shou): στην εισπνοή στρίβεις προς τη μία πλευρά, στην εκπνοή προς την άλλη, μετατοπίζοντας το βάρος.',
-      'Σηκώνοντας τον Ουρανό (Qigong): τα χέρια ανεβαίνουν με την εισπνοή και κατεβαίνουν με την εκπνοή.',
-      'Λίκνισμα: ένα ήπιο πήγαινε-έλα, για όταν το να κάθεσαι ακίνητος/η δεν είναι αυτό που χρειάζεσαι.',
-    ];
-    return { title: t, description: d, schema: {}, schemaType: 'WebApplication', bodyParagraphs };
-  }
-
   // ── Practice / Guided grounding and Swaying (opened from the chapters) ──
   if (clean === '/practice/grounding' || clean === '/practice/swaying') {
     const g = clean === '/practice/grounding';

@@ -63,7 +63,8 @@ export default function Layout() {
   // On a computer the side bar is on the left and the page fills the rest:
   // home and practice lists in a wide grid, a chapter with its contents beside
   // it, every other page in a comfortable column (lines never get too long).
-  const isWideDesk = location.pathname === '/' || /^\/practice(\/microdoses)?\/?$/.test(location.pathname);
+  // The Sanctuary and the Settings open in two columns, so they take the wide page too.
+  const isWideDesk = location.pathname === '/' || /^\/practice(\/microdoses)?\/?$/.test(location.pathname) || /^\/(sanctuary|settings)\/?$/.test(location.pathname);
 
   return (
     <div className="min-h-[100dvh] h-[100dvh] bg-transparent text-pine-100 font-sans selection:bg-teal-500/30 flex flex-col relative overflow-hidden">

@@ -162,7 +162,7 @@ export default function ProgramWeek() {
                   if (!isLocked) setActiveDay(idx);
                 }}
                 disabled={isLocked}
-                className={`snap-start shrink-0 flex flex-col items-start p-5 rounded-2xl border transition-all duration-300 active:scale-[0.98] ${
+                className={`snap-start shrink-0 max-w-[min(280px,72vw)] flex flex-col items-start p-5 rounded-2xl border transition-all duration-300 active:scale-[0.98] ${
                   isLocked ? 'glass-card opacity-50 grayscale cursor-not-allowed min-w-[180px]' :
                   activeDay === idx 
                     ? 'bg-teal-500/10 border-teal-500/30 text-ink min-w-[220px] shadow-sm ring-1 ring-teal-500/20' 

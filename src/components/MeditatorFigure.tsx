@@ -100,7 +100,7 @@ export const MeditatorFigure: React.FC<MeditatorFigureProps> = ({
   const isExercise = animationMode === 'breathing-exercise';
   
   return (
-    <div className={`relative inline-block w-full ${className} ${dimmed ? 'brightness-50 grayscale-[50%] transition-all duration-1000' : 'transition-all duration-1000'}`}>
+    <div className={`relative inline-block w-full ${className} ${dimmed ? 'brightness-[0.82] grayscale-[25%] transition-all duration-1000' : 'transition-all duration-1000'}`}>
       <svg 
         viewBox={crop ? "0 72 340 348" : "0 0 340 420"}
         width="100%" 

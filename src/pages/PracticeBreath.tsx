@@ -586,7 +586,7 @@ export default function PracticeBreath() {
       {/* Top Bar */}
       <div className={cn(
         "flex items-center justify-between z-20 w-full mb-2 shrink-0 transition-opacity duration-1000",
-        running ? "opacity-20 hover:opacity-100 focus-within:opacity-100" : "opacity-100"
+        running ? "opacity-60 hover:opacity-100 focus-within:opacity-100 active:opacity-100" : "opacity-100"
       )}>
         <button aria-label={language === 'en' ? 'Back' : 'Πίσω'} 
           onClick={(e) => {
@@ -602,10 +602,10 @@ export default function PracticeBreath() {
           <ArrowLeft size={20} />
         </button>
         <div className="flex-1 flex justify-center items-center pointer-events-auto">
-            <h1 className="text-zinc-400 text-[13px] font-semibold tracking-wider font-sans ml-3">
+            <h1 className="text-zinc-400 text-[13px] leading-tight font-semibold tracking-wide font-sans ml-3 text-center text-balance">
                {language === 'en' ? pattern.title.en : pattern.title.el}
              </h1>
-             <ConceptInfoIcon conceptId={pattern.category === 'breath' ? 'vagus_nerve' : 'proprioception'} className="w-6 h-6 ml-1.5 opacity-60 hover:opacity-100 bg-transparent text-zinc-400 border border-zinc-400/20" />
+             <ConceptInfoIcon conceptId={pattern.category === 'breath' ? 'vagus_nerve' : 'proprioception'} className="w-6 h-6 ml-1.5 shrink-0 opacity-60 hover:opacity-100 bg-transparent text-zinc-400 border border-zinc-400/20" />
         </div>
         <div className="flex items-center gap-2 shrink-0">
           <button 
@@ -809,7 +809,7 @@ export default function PracticeBreath() {
 
       {/* Hero Section (Canvas + Stats Overlay) */}
       <div 
-        className="flex-1 relative w-full overflow-hidden flex flex-col justify-end cursor-pointer"
+        className={cn("breath-hero flex-1 relative w-full overflow-hidden flex flex-col justify-end cursor-pointer", currentPatternId === 'sos-breath' && "breath-hero-sos")}
         onClick={handleStartToggle}
       >
         {/* The Animated Canvas Background */}
@@ -830,7 +830,7 @@ export default function PracticeBreath() {
 
         {/* Organic Motion Circle & Counter (Centered exactly in the globe) */}
         <div 
-          className={cn("absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none", !isTaiChi && "drop-shadow-lg")}
+          className={cn("breath-hero-inner absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none", !isTaiChi && "drop-shadow-lg")}
         >
           {/* Centred in the space it has, as large as the screen leaves (.breath-stage), so the circle is never cut at the top */}
           <div className="breath-stage relative flex items-center justify-center shrink-0">
@@ -848,8 +848,8 @@ export default function PracticeBreath() {
                 <motion.div 
                   className="absolute inset-0 flex items-center justify-center pointer-events-none"
                   initial={isTaiChi ? { scale: 1, opacity: 0 } : { scale: 1, opacity: 0, filter: 'drop-shadow(0 0 0px rgba(0,0,0,0))' }}
-                  animate={isTaiChi ? { opacity: running || demo ? 1 : 0.55 } : {
-                    opacity: running ? 1 : 0.55,
+                  animate={isTaiChi ? { opacity: running || demo ? 1 : 0.9 } : {
+                    opacity: running ? 1 : 0.9,
                     filter: glowFilter,
                   }}
                   transition={{ 
@@ -946,7 +946,7 @@ export default function PracticeBreath() {
       {/* Floating Controls Panel */}
       <div className={cn(
         "z-20 flex relative shrink-0 pb-safe px-6 pt-0 mb-2 gap-3 w-[75%] max-w-sm mx-auto transition-opacity duration-1000",
-        running ? "opacity-20 hover:opacity-100 focus-within:opacity-100" : "opacity-100"
+        running ? "opacity-60 hover:opacity-100 focus-within:opacity-100 active:opacity-100" : "opacity-100"
       )}>
          {/* Play/Pause button */}
          <button
@@ -1065,9 +1065,11 @@ export default function PracticeBreath() {
 
       {/* Warning Modal */}
       {showWarning && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/90 backdrop-blur-md">
-          <div className="card-relief p-5 md:p-6 rounded-[2rem] max-w-sm w-full max-h-full overflow-y-auto animate-in zoom-in-95 fade-in duration-200 md:scrollbar-hide">
-            <div className="w-14 h-14 rounded-full bg-zinc-800 flex items-center justify-center mx-auto mb-3 border border-zinc-600">
+        <div className="absolute inset-0 z-50 flex items-center justify-center p-4 pb-[calc(100px+env(safe-area-inset-bottom))] desk:pb-4 bg-zinc-950/90 backdrop-blur-md">
+          <div className="card-relief p-5 rounded-[2rem] max-w-sm w-full max-h-full flex flex-col overflow-hidden animate-in zoom-in-95 fade-in duration-200">
+            {/* The words scroll if the screen is short; the choices below stay in view */}
+            <div className="min-h-0 overflow-y-auto">
+            <div className="w-14 h-14 rounded-full bg-zinc-800 flex items-center justify-center mx-auto mb-3 border border-zinc-600 short:hidden">
               <Headphones size={28} className="text-teal-400" />
             </div>
             
@@ -1108,13 +1110,13 @@ export default function PracticeBreath() {
             </div>
             )}
 
-            <p className="text-amber-200/80 text-[12px] md:text-[13px] mb-5 text-center">
+            <p className="text-amber-200/80 text-[12px] md:text-[13px] mb-5 short:mb-3 text-center">
               {isVocal
                 ? (language === 'el' ? 'Κράτα την ένταση χαμηλά.' : 'Keep the volume low.')
                 : (language === 'el' ? 'Κράτα την ένταση χαμηλά. Αν έχεις επιληψία, ρώτα πρώτα τον γιατρό σου.' : 'Keep the volume low. If you have epilepsy, ask your doctor first.')}
             </p>
 
-            <label className="flex items-start justify-center gap-3 text-xs text-zinc-300 mb-5 cursor-pointer select-none group">
+            <label className="flex items-start justify-center gap-3 text-xs text-zinc-300 mb-1 cursor-pointer select-none group">
               <input
                 type="checkbox"
                 className="peer sr-only"
@@ -1134,8 +1136,9 @@ export default function PracticeBreath() {
                 {language === 'el' ? 'Να θυμάσαι την επιλογή μου για αυτή την άσκηση' : 'Remember my choice for this exercise'}
               </span>
             </label>
+            </div>
 
-            <div className="flex flex-col gap-2.5">
+            <div className="flex flex-col gap-2.5 short:gap-2 shrink-0 pt-4 short:pt-3">
               <button 
                 onClick={() => savePreferenceAndStart('with')}
                 className="w-full bg-zinc-600 hover:bg-zinc-700 border border-zinc-300 text-ink font-medium py-3 rounded-full transition-colors flex items-center justify-center gap-2 text-sm tracking-wide"

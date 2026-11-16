@@ -252,7 +252,7 @@ export default function PracticeMicrodoses() {
           <span className="text-[13px] font-medium text-ink/65 pl-1">
             {language === 'el' ? 'Κατηγορία Άξονα' : 'Axis Category'}
           </span>
-          <div className="flex overflow-x-auto gap-2 pb-1 scrollbar-none">
+          <div className="flex overflow-x-auto gap-2 py-1.5 -mt-1.5 -mb-0.5 scrollbar-none">
             {categories.map(cat => {
               const isActive = activeTab === cat.id;
               const color = getTypeColor(cat.id);
@@ -262,7 +262,7 @@ export default function PracticeMicrodoses() {
                   key={cat.id}
                   onClick={() => setTab(cat.id)}
                   className={cn(
-                    "px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all duration-300 whitespace-nowrap border",
+                    "hit-44 px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all duration-300 whitespace-nowrap border",
                     isActive 
                       ? `bg-${color}-500/15 border-${color}-400/40 text-${color}-300` 
                       : "bg-white/5 border-white/5 text-ink/70 hover:text-ink"
@@ -281,7 +281,7 @@ export default function PracticeMicrodoses() {
           <span className="text-[13px] font-medium text-ink/65 pl-1">
             {language === 'el' ? 'Ταχύτητα & Διάρκεια' : 'Speed & Duration'}
           </span>
-          <div className="flex overflow-x-auto gap-2 pb-1 scrollbar-none">
+          <div className="flex overflow-x-auto gap-2 py-1.5 -mt-1.5 -mb-0.5 scrollbar-none">
             {[
               { id: 'all', label: { el: 'Όλες οι Διάρκειες', en: 'All Durations' }, icon: null, color: 'neutral' },
               { id: 'sos', label: { el: 'Αστραπιαία (< 15δ)', en: 'Instant (< 15s)' }, icon: <Zap size={13} className="text-amber-400" />, color: 'amber' },
@@ -296,7 +296,7 @@ export default function PracticeMicrodoses() {
                   key={speed.id}
                   onClick={() => setActiveSpeed(speed.id as any)}
                   className={cn(
-                    "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all duration-300 whitespace-nowrap border",
+                    "hit-44 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all duration-300 whitespace-nowrap border",
                     isActive 
                       ? speed.id === 'all' 
                         ? 'bg-white/10 border-white/25 text-ink' 

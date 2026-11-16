@@ -286,9 +286,9 @@ export default function NavigationMenu() {
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
               data-nosnippet
-              className="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-[480px] max-h-[85vh] desk:left-[260px] desk:right-auto desk:bottom-4 desk:mx-0 desk:rounded-[2rem] desk:border desk:border-white/10 bg-[#1a1d27]/98 backdrop-blur-2xl border-t border-white/10 z-[9999] shadow-[0_-20px_50px_rgba(0,0,0,0.6)] flex flex-col rounded-t-[2rem]"
+              className="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-[480px] max-h-[85vh] short:max-h-[94dvh] desk:left-[260px] desk:right-auto desk:bottom-4 desk:mx-0 desk:rounded-[2rem] desk:border desk:border-white/10 bg-[#1a1d27]/98 backdrop-blur-2xl border-t border-white/10 z-[9999] shadow-[0_-20px_50px_rgba(0,0,0,0.6)] flex flex-col rounded-t-[2rem]"
             >
-              <div className="p-4 flex justify-between items-center border-b border-white/[0.08]">
+              <div className="p-4 short:py-2 flex justify-between items-center border-b border-white/[0.08]">
                 <span className="font-medium text-zinc-200 text-sm px-4">
                   {language === 'en' ? 'More Options' : 'Περισσότερα'}
                 </span>
@@ -307,7 +307,7 @@ export default function NavigationMenu() {
                 </button>
               </div>
 
-              <div className="flex-[1] overflow-y-auto pt-6 px-6 pb-6 max-w-2xl mx-auto w-full flex flex-col gap-3">
+              <div className="flex-[1] overflow-y-auto pt-6 short:pt-3 px-6 pb-6 short:pb-3 max-w-2xl mx-auto w-full flex flex-col gap-3">
                 {/* On the phone, the places the home page does not list (on a computer they are in the side bar). */}
                 <nav aria-label={el ? 'Τόποι της εφαρμογής' : 'Places in the app'} className="grid grid-cols-2 gap-2.5 desk:hidden">
                   {sideItems.filter(i => ['/cards', '/method'].includes(i.path)).map(({ path, Icon, label }) => (
@@ -570,7 +570,7 @@ export default function NavigationMenu() {
               </div>
 
               {/* Help now: always here, in plain sight. */}
-              <p className="mt-auto px-6 pb-4 text-center text-[13px] leading-relaxed text-ink/70 [&_a]:text-ink/90 [&_a]:underline [&_a]:decoration-white/30 [&_a]:underline-offset-2">
+              <p className="mt-auto px-6 pb-4 short:pb-2 text-center text-[13px] leading-relaxed short:leading-snug text-ink/70 [&_a]:text-ink/90 [&_a]:underline [&_a]:decoration-white/30 [&_a]:underline-offset-2">
                 {language === 'el' ? (
                   <>Αν χρειάζεσαι βοήθεια τώρα: <a href="tel:112">112</a> για κίνδυνο, <a href="tel:1018">1018</a> (Κλίμακα) ή <a href="tel:197">197</a>, όλο το 24ωρο.</>
                 ) : (
@@ -579,7 +579,7 @@ export default function NavigationMenu() {
               </p>
 
               {/* Settings, About and the sound mixer: each with its name under it. */}
-              <div className="flex justify-center gap-7 items-start px-6 pt-5 border-t border-white/[0.08] pb-[calc(1.25rem+env(safe-area-inset-bottom))]">
+              <div className="flex justify-center gap-7 items-start px-6 pt-5 short:pt-3 border-t border-white/[0.08] pb-[calc(1.25rem+env(safe-area-inset-bottom))] short:pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
                 {[
                   { key: 'settings', label: language === 'el' ? 'Ρυθμίσεις' : 'Settings', onClick: () => handleNav('/settings'), icon: <Settings size={20} aria-hidden="true" /> },
                   { key: 'about', label: language === 'el' ? 'Σχετικά' : 'About', onClick: showInfo, icon: <Info size={20} aria-hidden="true" /> },

@@ -90,7 +90,7 @@ export function ConceptInfoIcon({ conceptId, className = "w-6 h-6 ml-1" }: { con
     <>
       <button 
         onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsOpen(true); }}
-        className={`inline-flex items-center justify-center rounded-full text-ink/70 hover:text-ink hover:bg-white/10 transition-all focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 ${className}`}
+        className={`hit-44 inline-flex items-center justify-center rounded-full text-ink/70 hover:text-ink hover:bg-white/10 transition-all focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 ${className}`}
         aria-label={label}
       >
         <Info size={15} />

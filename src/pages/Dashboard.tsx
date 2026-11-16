@@ -233,8 +233,8 @@ export default function Dashboard() {
 
         {/* The greeting is there at once (no fade): it is the first word you read,
             and the page counts as shown only when it is. */}
-        <div className="mt-6 [@media(max-height:700px)]:mt-4 desk:mt-2">
-          <h1 className="font-display sky-text text-[38px] max-[359px]:text-[34px] leading-[1.05] text-ink desk:text-[60px] desk:leading-none">
+        <div className="mt-6 short:mt-2 desk:mt-2">
+          <h1 className="font-display sky-text text-[38px] short:text-[33px] max-[359px]:text-[34px] leading-[1.05] text-ink desk:text-[60px] desk:leading-none">
             {greeting}
           </h1>
           {/* The method in one line: one way, many ways in. */}
@@ -247,16 +247,16 @@ export default function Dashboard() {
         {/* First "How do you feel", then the book; on a computer side by side, in the same order. */}
         <div className="desk:grid desk:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] desk:gap-7 desk:mt-10 desk:items-start">
           {/* How do you feel right now? First, and always in the same place. */}
-          <motion.section variants={itemVariants} initial="hidden" animate="show" transition={{ delay: 0.4 }} aria-labelledby="home-checkin-title" className="mt-[26px] [@media(max-height:700px)]:mt-5 desk:mt-0">
-            <h2 id="home-checkin-title" className={cn(sectionTitle, "mb-3 desk:mb-5")}>
+          <motion.section variants={itemVariants} initial="hidden" animate="show" transition={{ delay: 0.4 }} aria-labelledby="home-checkin-title" className="mt-[26px] short:mt-3 desk:mt-0">
+            <h2 id="home-checkin-title" className={cn(sectionTitle, "mb-3 short:mb-2 desk:mb-5")}>
               {el ? 'Πώς νιώθεις τώρα;' : 'How do you feel right now?'}
             </h2>
             <HomeCheckin embedded />
           </motion.section>
 
           {/* Learn: the book, open where you stopped. */}
-          <section aria-labelledby="home-learn-title" className="mt-[30px] desk:mt-0">
-            <div className="flex items-baseline justify-between gap-3 mb-3 desk:mb-5">
+          <section aria-labelledby="home-learn-title" className="mt-[30px] short:mt-4 desk:mt-0">
+            <div className="flex items-baseline justify-between gap-3 mb-3 short:mb-1 desk:mb-5">
               <h2 id="home-learn-title" className={sectionTitle}>{el ? 'Το βιβλίο' : 'The book'}</h2>
               <Link to="/chapters" className="sky-text flex items-center min-h-[36px] text-[13.5px] text-ink/75 hover:text-ink transition-colors">
                 {el ? `${chapters.length} κεφάλαια` : `${chapters.length} chapters`}

@@ -167,7 +167,7 @@ export default function Settings() {
           id: 'motion',
           icon: Activity,
           label: { el: 'Μειωμένη Κίνηση', en: 'Reduce Motion' },
-          value: reduceMotion ? { el: 'Ενεργό', en: 'Enabled' } : { el: 'Ανενεργό', en: 'Disabled' },
+          value: reduceMotion ? { el: 'Ενεργό', en: 'On' } : { el: 'Ανενεργό', en: 'Off' },
           action: toggleReduceMotion,
           pressed: reduceMotion,
           color: 'text-indigo-400'
@@ -177,7 +177,7 @@ export default function Settings() {
           icon: LetterText,
           label: { el: 'Εύκολη ανάγνωση', en: 'Easy reading' },
           hint: { el: 'Λίγο μεγαλύτερα γράμματα, περισσότερος χώρος ανάμεσα σε γράμματα, λέξεις και γραμμές, χωρίς πλάγια', en: 'Slightly larger letters, more space between letters, words and lines, no slanted text' },
-          value: easyRead ? { el: 'Ενεργό', en: 'Enabled' } : { el: 'Ανενεργό', en: 'Disabled' },
+          value: easyRead ? { el: 'Ενεργό', en: 'On' } : { el: 'Ανενεργό', en: 'Off' },
           action: toggleEasyRead,
           pressed: easyRead,
           color: 'text-sky-300'
@@ -274,7 +274,7 @@ export default function Settings() {
 
   return (
     <div className="relative min-h-screen w-full bg-transparent flex flex-col pt-2 pb-32">
-       <div className="w-full max-w-xl mx-auto">
+       <div className="w-full max-w-xl desk:max-w-[1040px] mx-auto">
           <div className="mb-10">
             <PageHeader
               back={() => {
@@ -285,7 +285,8 @@ export default function Settings() {
             />
           </div>
 
-          <div className="space-y-8">
+          {/* On a computer the groups fill two columns, in the same reading order. */}
+          <div className="space-y-8 desk:space-y-0 desk:columns-2 desk:gap-10 [&>*]:break-inside-avoid desk:[&>*]:mb-8">
             {/* The research behind the method: a card like the rows below, in the sign's blue. */}
             <button
               type="button"
@@ -354,7 +355,7 @@ export default function Settings() {
              </div>
              <div className="text-center">
                 <p className="text-[13px] font-sans font-medium text-ink mb-1">
-                   Mindfulness for Neurodivergent Minds
+                   {language === 'el' ? 'Ενσυνειδητότητα για Νευροδιαφορετικούς' : 'Mindfulness for Neurodivergent Minds'}
                 </p>
                 {/* Which version this is: the day it was built, and in the Android app the
                     copy number too (it rises when the app has updated itself). */}

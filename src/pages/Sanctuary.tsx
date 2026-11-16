@@ -301,7 +301,8 @@ export default function Sanctuary() {
   };
 
   const step = (dir: 1 | -1) => {
-    if (!activeTrackDef) return;
+    // Before any sound is chosen, the arrows start one: the first, or the last.
+    if (!activeTrackDef) { play(tracks[dir === 1 ? 0 : tracks.length - 1].id); return; }
     const i = tracks.findIndex(t => t.id === activeTrackDef.id);
     play(tracks[(i + dir + tracks.length) % tracks.length].id);
   };
@@ -394,7 +395,7 @@ export default function Sanctuary() {
         )}
       </AnimatePresence>
 
-      <div className="relative z-10 w-full max-w-2xl mx-auto px-5 py-6 flex-1 flex flex-col">
+      <div className={cn("relative z-10 w-full max-w-2xl mx-auto px-5 py-6 flex-1 flex flex-col", activeTab === 'audio' && !isDimmed && "desk:max-w-[1040px]")}>
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
           <button
@@ -430,7 +431,7 @@ export default function Sanctuary() {
 
         {/* Tabs */}
         {!isDimmed && (
-          <div className="flex p-1 bg-white/[0.04] border border-white/[0.08] rounded-2xl mb-8" role="tablist">
+          <div className="flex p-1 bg-white/[0.04] border border-white/[0.08] rounded-2xl mb-8 desk:w-full desk:max-w-2xl desk:mx-auto" role="tablist">
             {([
               ['audio', Headphones, { el: 'Ήχοι', en: 'Sounds' }],
               ['bilateral', Sparkles, { el: 'Διμερής κίνηση', en: 'Bilateral' }],
@@ -454,6 +455,9 @@ export default function Sanctuary() {
           </div>
         )}
 
+        {/* On a computer the sound that plays stays on the left and the sounds to choose from are on the right; on a phone, one under the other as before. */}
+        <div className={cn("flex flex-col", activeTab === 'audio' && !isDimmed ? "desk:grid desk:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] desk:gap-12 desk:items-start" : "flex-1")}>
+        <div className={cn("flex flex-col", activeTab === 'audio' && !isDimmed ? "desk:sticky desk:top-2" : "flex-1")}>
         {/* Player */}
         {activeTab === 'audio' && (
           <div className={cn("flex flex-col items-center justify-center relative", activeSound ? "flex-1 py-6" : "pt-1")}>
@@ -502,7 +506,7 @@ export default function Sanctuary() {
               <button
                 onClick={() => step(-1)}
                 aria-label={language === 'el' ? 'Προηγούμενος ήχος' : 'Previous sound'}
-                className={cn("w-12 h-12 flex items-center justify-center rounded-full bg-white/[0.04] border border-white/10 text-ink/70 hover:text-ink transition-colors", !activeTrackDef && "opacity-50 pointer-events-none")}
+                className={cn("w-12 h-12 flex items-center justify-center rounded-full bg-white/[0.04] border border-white/10 text-ink/70 hover:text-ink transition-colors")}
               >
                 <ChevronLeft size={20} />
               </button>
@@ -518,7 +522,7 @@ export default function Sanctuary() {
               <button
                 onClick={() => step(1)}
                 aria-label={language === 'el' ? 'Επόμενος ήχος' : 'Next sound'}
-                className={cn("w-12 h-12 flex items-center justify-center rounded-full bg-white/[0.04] border border-white/10 text-ink/70 hover:text-ink transition-colors", !activeTrackDef && "opacity-50 pointer-events-none")}
+                className={cn("w-12 h-12 flex items-center justify-center rounded-full bg-white/[0.04] border border-white/10 text-ink/70 hover:text-ink transition-colors")}
               >
                 <ChevronRight size={20} />
               </button>
@@ -587,6 +591,8 @@ export default function Sanctuary() {
           </div>
         )}
 
+        </div>
+        <div className="min-w-0">
         {/* Sound cards */}
         {activeTab === 'audio' && !isDimmed && (
           <div className="flex flex-col gap-10 pb-24">
@@ -672,7 +678,7 @@ export default function Sanctuary() {
                     <button
                       onClick={() => setShowInfo(v => !v)}
                       aria-expanded={showInfo}
-                      className="mt-2 flex items-center gap-1.5 text-[12px] text-teal-300/80 hover:text-teal-200 transition-colors"
+                      className="hit-44 mt-2 flex items-center gap-1.5 text-[12px] text-teal-300/80 hover:text-teal-200 transition-colors"
                     >
                       <Info size={13} aria-hidden="true" />
                       {language === 'el' ? 'Τι λέει η έρευνα' : 'What research says'}
@@ -741,6 +747,9 @@ export default function Sanctuary() {
             ))}
           </div>
         )}
+
+        </div>
+        </div>
 
         {/* Bilateral */}
         {activeTab === 'bilateral' && !isDimmed && (

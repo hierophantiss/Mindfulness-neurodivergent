@@ -452,9 +452,10 @@ export default function ChapterDetail() {
             <span className="text-[13px] font-medium text-ink/70 font-sans whitespace-nowrap">
               {language === 'el' ? 'Κεφάλαιο' : 'Chapter'} {chapter.num}
             </span>{' '}
-            {CHAPTER_MICRO_CAT[chapter.num] && (
+            {/* Only where the axis is the chapter's own subject (chapters 1–4). */}
+            {axisOfChapter(chapter.num) && (
               <span className="text-[12px] font-medium px-2 py-0.5 rounded-full bg-white/5 text-ink/70 border border-white/5 font-sans whitespace-nowrap">
-                {AXIS_LABEL[CHAPTER_MICRO_CAT[chapter.num]]?.[language === 'el' ? 'el' : 'en'] ?? CHAPTER_MICRO_CAT[chapter.num]}
+                {AXIS_LABEL[axisOfChapter(chapter.num)!][language === 'el' ? 'el' : 'en']}
               </span>
             )}
           </div>

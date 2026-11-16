@@ -158,14 +158,14 @@ export default function PracticeSwaying() {
 
   return (
     <div 
-      className="w-full min-h-screen flex flex-col p-4 pb-28 md:p-8 md:pb-28 font-sans animate-fade-in relative cursor-pointer" 
-      style={{ backgroundColor: "var(--color-bg, #0f1117)", color: "var(--color-text, #d4d4d8)" }}
+      className="w-full flex-1 flex flex-col pt-4 desk:pt-0 font-sans animate-fade-in relative cursor-pointer"
+      style={{ color: "var(--color-text, #d4d4d8)" }}
       onClick={handleTogglePlayback}
     >
       <PlayPauseOverlay isPlaying={isPlaying} />
 
       {/* Top Bar */}
-      <div className="w-full max-w-5xl mx-auto flex justify-between items-center mb-6 z-10 block relative">
+      <div className="w-full max-w-5xl mx-auto flex justify-between items-center mb-6 short:mb-2 z-10 relative">
         <button 
           onClick={(e) => { 
             e.stopPropagation(); 
@@ -192,10 +192,11 @@ export default function PracticeSwaying() {
 
       {/* Main Area */}
       <div 
-        className="flex-1 w-full max-w-5xl mx-auto flex flex-col items-center justify-center relative"
+        className="w-full max-w-5xl mx-auto flex flex-col items-center justify-center relative"
       >
-        {/* The scene steps 12px into the page's margin on each side, like the other animation windows. */}
-        <div className="w-[calc(100%+24px)] max-w-[600px] relative pointer-events-none">
+        {/* The scene steps 12px into the page's margin on each side, like the other animation windows,
+            and never grows taller than the screen leaves: the picture, the words and the button fit together. */}
+        <div className="w-[calc(100%+24px)] max-w-[min(600px,calc(100dvh-400px))] relative pointer-events-none">
           <SwayingHero tickCount={isPlaying ? tickCount : 0} tempo={tempo} active={isPlaying} />
           
           {/* Subtle Breathing Label overlaying the hero */}
@@ -216,7 +217,7 @@ export default function PracticeSwaying() {
         </div>
 
         {/* Dynamic Instruction */}
-        <div className="h-16 mt-8 flex items-center justify-center px-4">
+        <div className="min-h-16 mt-6 short:mt-3 flex items-center justify-center px-4">
           {!isPlaying && !showSettings && (
             <p className="text-ink/70 text-[14px] text-center leading-relaxed max-w-sm">
               {lang === 'el'
@@ -233,7 +234,7 @@ export default function PracticeSwaying() {
       </div>
 
       {/* Controls Container (Absolute Positioned Settings) */}
-      <div className="w-full max-w-md mx-auto flex flex-col items-center gap-6 pb-8 relative z-30" onClick={(e) => e.stopPropagation()}>
+      <div className="w-full max-w-md mx-auto flex flex-col items-center gap-4 short:gap-2 pt-4 short:pt-2 relative z-30" onClick={(e) => e.stopPropagation()}>
         
         {/* Settings Panel */}
         <div 
@@ -278,30 +279,27 @@ export default function PracticeSwaying() {
           </div>
         </div>
 
-        {/* Main Controls Row */}
-        <div className="flex items-center gap-6">
-          <button 
+        {/* Main Controls Row: the same gold "Start" as every other practice */}
+        <div className="flex items-center gap-3 w-full max-w-xs">
+          <button
              onClick={() => setShowSettings(!showSettings)}
              aria-label={lang === 'el' ? 'Ήχος και ρυθμός' : 'Sound and tempo'}
              aria-expanded={showSettings}
-             className="w-12 h-12 flex items-center justify-center rounded-full bg-white/5 border border-white/5 hover:bg-white/10 transition-colors"
+             className="w-12 h-12 shrink-0 flex items-center justify-center rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
           >
              <Settings2 size={18} className="text-ink/70" />
           </button>
-          
-          <button 
-            onClick={(e) => { e.stopPropagation(); handleTogglePlayback(); }} 
-            aria-label={isPlaying ? (lang === 'el' ? 'Παύση' : 'Pause') : (lang === 'el' ? 'Έναρξη' : 'Play')} className="w-20 h-20 flex items-center justify-center rounded-full shadow-2xl border transition-all hover:scale-105 active:scale-95 cursor-pointer z-10 focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-white"
-            style={{ backgroundColor: "var(--color-accent, #5f8fd6)", borderColor: "rgba(255,255,255,0.1)" }}
+
+          <button
+            onClick={(e) => { e.stopPropagation(); handleTogglePlayback(); }}
+            className={isPlaying ? "btn-soft flex-1" : "btn-main flex-1"}
           >
             {isPlaying ? (
-               <Pause size={32} className="text-ink fill-current" />
+              <><Pause size={14} className="fill-current opacity-70" />{lang === 'el' ? 'Παύση' : 'Pause'}</>
             ) : (
-               <Play size={32} className="text-ink fill-current ml-1" />
+              <><Play size={14} className="fill-current ml-0.5" />{lang === 'el' ? 'Ξεκίνα' : 'Start'}</>
             )}
           </button>
-
-          <div className="w-12 h-12" /> {/* Empty spacer for centering the play button */}
         </div>
       </div>
     </div>

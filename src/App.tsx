@@ -14,7 +14,6 @@ const ChapterDetail = lazyWithReload(() => import('./pages/ChapterDetail'));
 const Program = lazyWithReload(() => import('./pages/Program'));
 const ProgramWeek = lazyWithReload(() => import('./pages/ProgramWeek'));
 const Practice = lazyWithReload(() => import('./pages/Practice'));
-const PracticeMovement = lazyWithReload(() => import('./pages/PracticeMovement'));
 const PracticeMicrodoses = lazyWithReload(() => import('./pages/PracticeMicrodoses'));
 const BreathRoute = lazyWithReload(() => import('./pages/BreathRoute'));
 const PracticeSection = lazyWithReload(() => import('./components/PracticeSection'));
@@ -105,7 +104,8 @@ function AppContent() {
             <Route path="practice" element={<Practice />} />
             <Route path="practice/grounding" element={<PracticeSection />} />
             <Route path="practice/swaying" element={<PracticeSwaying />} />
-            <Route path="practice/movement" element={<PracticeMovement />} />
+            {/* The old "Movement & Breath" page: its link opens Movement and Tai Chi. */}
+            <Route path="practice/movement" element={<Navigate to="/practice?category=movement" replace />} />
             <Route path="practice/microdoses" element={<PracticeMicrodoses />} />
             <Route path="practice/breath/:id" element={<BreathRoute />} />
             <Route path="practice/:category/:id" element={<GenericExercise />} />

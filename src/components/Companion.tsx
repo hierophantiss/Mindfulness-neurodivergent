@@ -23,16 +23,25 @@ export const InfinitySVG = ({ size }: { size: number }) => (
   </svg>
 );
 
+/** How big the cat is and how far it may go: 48px on a phone (56px on a computer), never under the bottom bar. */
+function catBounds() {
+  const desk = window.innerWidth >= 1024;
+  const size = desk ? 56 : 48;
+  return { desk, size, maxX: window.innerWidth - size - 8, maxY: window.innerHeight - size - (desk ? 101 : 78) };
+}
+
 export default function Companion() {
     const { reduceMotion } = useAccessibility();
   
 
   const { companionData, updateCompanionData, setSheetVisible, sheetVisible, companionMessage, setCompanionMessage } = useCompanion();
-  // The cat starts at the bottom left, just above the bottom bar: the actions of
-  // the cards ("Start →", the arrows) are on the right, and it should not sit on
-  // them. On a computer: in the bottom right corner, beside the content.
+  // The cat starts at the bottom right, right above the bottom bar, a little
+  // smaller on a phone: on the left it sat on the first words of every line.
+  // Its sentence opens upwards, so it does not cover what is beside it.
+  // On a computer: in the bottom right corner, beside the content.
   // Once moved, it stays where it was put.
-  const [position, setPosition] = useState({ x: window.innerWidth >= 1024 ? window.innerWidth - 84 : 10, y: window.innerHeight - 56 - 85 - 16 });
+  const [position, setPosition] = useState(() => { const b = catBounds(); return { x: b.desk ? window.innerWidth - 84 : b.maxX, y: b.desk ? window.innerHeight - 56 - 85 - 16 : b.maxY }; });
+  const { size, desk } = catBounds();
   const [isDragging, setIsDragging] = useState(false);
   const dragRef = useRef<{ startX: number, startY: number, initX: number, initY: number } | null>(null);
   const { language } = useLanguage();
@@ -90,31 +99,19 @@ export default function Companion() {
 
   useEffect(() => {
     if (companionData.fabPos) {
-       const maxW = window.innerWidth;
-       const maxH = window.innerHeight;
-       const clampWidth = 56; 
-       const clampHeight = 56;
-       
-       const safeBottom = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--safe-area-inset-bottom') || '0');
-       const bottomLimit = maxH - clampHeight - 85 - (safeBottom || 16); 
-       
-       const cX = Math.max(8, Math.min(maxW - clampWidth - 8, companionData.fabPos.x));
-       const cY = Math.max(60, Math.min(bottomLimit, companionData.fabPos.y));
+       const b = catBounds();
+       const cX = Math.max(8, Math.min(b.maxX, companionData.fabPos.x));
+       const cY = Math.max(60, Math.min(b.maxY, companionData.fabPos.y));
        setPosition({ x: cX, y: cY });
     }
   }, [companionData.fabPos]);
 
   useEffect(() => {
     const handleResize = () => {
-       const clampWidth = 56; 
-       const clampHeight = 56;
-       const maxH = window.innerHeight;
-       const safeBottom = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--safe-area-inset-bottom') || '0');
-       const bottomLimit = maxH - clampHeight - 85 - (safeBottom || 16);
-
+       const b = catBounds();
        setPosition(prev => ({
-         x: Math.max(8, Math.min(window.innerWidth - clampWidth - 8, prev.x)),
-         y: Math.max(60, Math.min(bottomLimit, prev.y))
+         x: Math.max(8, Math.min(b.maxX, prev.x)),
+         y: Math.max(60, Math.min(b.maxY, prev.y))
        }));
     }
     window.addEventListener('resize', handleResize);
@@ -143,18 +140,14 @@ export default function Companion() {
     }
 
     if (isDragging) {
-      const clampWidth = 56; 
-      const clampHeight = 56;
-      const maxH = window.innerHeight;
-      const safeBottom = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--safe-area-inset-bottom') || '0');
-      const bottomLimit = maxH - clampHeight - 85 - (safeBottom || 16);
+      const b = catBounds();
 
       const newX = dragRef.current.initX + dx;
       const newY = dragRef.current.initY + dy;
       
       setPosition({
-        x: Math.max(8, Math.min(window.innerWidth - clampWidth - 8, newX)),
-        y: Math.max(60, Math.min(bottomLimit, newY))
+        x: Math.max(8, Math.min(b.maxX, newX)),
+        y: Math.max(60, Math.min(b.maxY, newY))
       });
     }
   };
@@ -184,9 +177,9 @@ export default function Companion() {
   return (
     <>
       {/* The cat and its speech bubble side by side (a button may not hold another button). */}
-      <div data-nosnippet className="fixed z-50 w-[56px] h-[56px]" style={{ left: position.x, top: position.y }}>
+      <div data-nosnippet className="fixed z-50" style={{ left: position.x, top: position.y, width: size, height: size }}>
         <div
-          className={`relative flex items-center justify-center w-[56px] h-[56px] rounded-full bg-[#0d0e12]/80 backdrop-blur-md border-2 border-teal-400/40 shadow-[0_0_25px_rgba(95,143,214,0.25)] cursor-pointer touch-none transition-transform duration-300 ${isDragging ? 'scale-110 opacity-80' : 'hover:scale-110 active:scale-90'}`}
+          className={`relative flex items-center justify-center w-full h-full rounded-full bg-[#0d0e12]/80 backdrop-blur-md border-2 border-teal-400/40 shadow-[0_0_25px_rgba(95,143,214,0.25)] cursor-pointer touch-none transition-transform duration-300 ${isDragging ? 'scale-110 opacity-80' : 'hover:scale-110 active:scale-90'}`}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
@@ -199,7 +192,7 @@ export default function Companion() {
         >
           <div className="absolute inset-0 rounded-full bg-teal-500/10 pointer-events-none" />
           <motion.div 
-            className="relative w-12 h-12 flex items-center justify-center transition-transform duration-300"
+            className="relative w-full h-full flex items-center justify-center transition-transform duration-300"
             animate={{ y: [0, -3, 0] }}
             transition={reduceMotion ? { duration: 0.01 } : { 
               repeat: Infinity, 
@@ -207,35 +200,44 @@ export default function Companion() {
               ease: "easeInOut" 
             }}
           >
-            <CatInfinityAvatar className="w-11 h-11" />
+            <CatInfinityAvatar className="w-[79%] h-[79%]" />
           </motion.div>
         </div>
         <AnimatePresence>
           {companionMessage && (
             <motion.div 
               key={companionMessage}
-              initial={{ opacity: 0, scale: 0.9, x: isRightSide ? 20 : -20 }}
-              animate={{ opacity: 1, scale: 1, x: 0 }}
-              exit={{ opacity: 0, scale: 0.9, x: isRightSide ? 20 : -20 }}
+              initial={desk ? { opacity: 0, scale: 0.9, x: isRightSide ? 20 : -20 } : { opacity: 0, scale: 0.9, y: 10 }}
+              animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+              exit={desk ? { opacity: 0, scale: 0.9, x: isRightSide ? 20 : -20 } : { opacity: 0, scale: 0.9, y: 10 }}
               role="status"
-              className={`absolute top-1/2 -translate-y-1/2 flex items-center gap-2 bg-stone-900 text-ink p-3 rounded-2xl shadow-2xl border border-stone-700 font-sans pointer-events-auto z-50 cursor-default ${isRightSide ? 'right-[120%]' : 'left-[120%]'}`}
-              style={{ width: 'max-content', maxWidth: '240px' }}
+              className={`absolute flex items-center gap-2 bg-stone-900 text-ink p-3 rounded-2xl shadow-2xl border border-stone-700 font-sans pointer-events-auto z-50 cursor-default ${desk
+                ? `top-1/2 -translate-y-1/2 ${isRightSide ? 'right-[120%]' : 'left-[120%]'}`
+                : `bottom-[calc(100%+10px)] ${isRightSide ? 'right-0' : 'left-0'}`}`}
+              style={{ width: 'max-content', maxWidth: desk ? '240px' : 'min(270px, calc(100vw - 24px))' }}
               onClick={dismissBubble}
             >
-              <div className="absolute top-1/2 -translate-y-1/2 border-[6px] border-transparent"
-                  style={isRightSide 
-                    ? { right: '-12px', borderLeftColor: '#44403c' } 
-                    : { left: '-12px', borderRightColor: '#44403c' }} />
-              <div className="absolute top-1/2 -translate-y-1/2 border-[6px] border-transparent"
-                  style={isRightSide 
-                    ? { right: '-11px', borderLeftColor: '#1c1917' } 
-                    : { left: '-11px', borderRightColor: '#1c1917' }} />      
+              {desk ? (
+                <>
+                  <div className="absolute top-1/2 -translate-y-1/2 border-[6px] border-transparent"
+                      style={isRightSide ? { right: '-12px', borderLeftColor: '#44403c' } : { left: '-12px', borderRightColor: '#44403c' }} />
+                  <div className="absolute top-1/2 -translate-y-1/2 border-[6px] border-transparent"
+                      style={isRightSide ? { right: '-11px', borderLeftColor: '#1c1917' } : { left: '-11px', borderRightColor: '#1c1917' }} />
+                </>
+              ) : (
+                <>
+                  <div className="absolute border-[6px] border-transparent"
+                      style={{ bottom: '-12px', borderTopColor: '#44403c', ...(isRightSide ? { right: '18px' } : { left: '18px' }) }} />
+                  <div className="absolute border-[6px] border-transparent"
+                      style={{ bottom: '-11px', borderTopColor: '#1c1917', ...(isRightSide ? { right: '18px' } : { left: '18px' }) }} />
+                </>
+              )}
               <span className="text-[13.5px] font-semibold tracking-wide leading-snug">
                 {companionMessage}
               </span>
               <button 
                 onClick={dismissBubble} 
-                className="p-1.5 hover:bg-white/20 rounded-full ml-1 transition-colors flex-shrink-0"
+                className="hit-44 p-1.5 hover:bg-white/20 rounded-full ml-1 transition-colors flex-shrink-0"
                 aria-label={language === 'el' ? 'Κλείσιμο μηνύματος' : 'Close message'}
               >
                 <X size={14} className="text-stone-300" />

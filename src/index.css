@@ -60,6 +60,8 @@
    and progress on either side of the text. */
 @custom-variant desk (@media (min-width: 1024px));
 @custom-variant wide (@media (min-width: 1360px));
+/* Short phone screens (short:, up to 700px tall, never a computer): tighter spacing, nothing new. */
+@custom-variant short (@media (max-height: 700px) and (max-width: 1023px));
 
 @layer base {
   /* The app's colours. Use these (never a bright white background). */
@@ -219,6 +221,17 @@
   .btn-soft:hover { background: rgb(255 255 255 / 0.09); color: var(--color-ink); }
   .btn-main:active, .btn-soft:active { transform: scale(0.98); }
   .btn-main:disabled, .btn-soft:disabled { opacity: 0.5; pointer-events: none; }
+  /* A small icon or word keeps its look but answers to a 44px touch. */
+  .hit-44 { position: relative; }
+  .hit-44::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
   .btn-text {
     display: inline-flex;
     align-items: center;
@@ -366,6 +379,20 @@
   }
   @media (min-width: 1024px) {
     .breath-stage { width: clamp(320px, calc(100vh - 420px), 520px); }
+  }
+  /* Where the browser can measure the stage's own room, the figure takes what
+     is really left: under the notes above it, over the counter (and, in the
+     SOS breath, over the helplines), never under the buttons. */
+  @supports (width: 1cqh) {
+    .breath-hero { container-type: size; }
+    .breath-stage { width: clamp(132px, min(calc(100cqh - 72px), calc(100cqw - 24px)), 440px); }
+    .breath-hero-sos .breath-hero-inner { padding-bottom: 104px; }
+    .breath-hero-sos .breath-stage { width: clamp(120px, min(calc(100cqh - 176px), calc(100cqw - 24px)), 440px); }
+    @media (min-width: 1024px) {
+      .breath-stage { width: clamp(320px, calc(100cqh - 88px), 620px); }
+      .breath-hero-sos .breath-hero-inner { padding-bottom: 72px; }
+      .breath-hero-sos .breath-stage { width: clamp(280px, calc(100cqh - 160px), 620px); }
+    }
   }
   /* A key sentence, marked with the line of the axis (the sign's vertical
      line) in its chapter's colour: --axis-line. */

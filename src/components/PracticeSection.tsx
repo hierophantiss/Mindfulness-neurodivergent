@@ -310,54 +310,49 @@ export default function PracticeSection() {
     return (
       <div className="w-full min-h-screen flex flex-col pt-2 font-sans animate-fade-in text-ink">
         <div className="max-w-4xl mx-auto w-full flex-1">
-          <div className="mb-12">
+          <div className="mb-8">
             <PageHeader
               size="sub"
               back="/practice"
               eyebrow={lang === 'el' ? 'Κίνηση & Τάι Τσι' : 'Movement & Tai Chi'}
-              title={lang === "el" ? "Οπτική Απεικόνιση" : "Visual Theme"}
+              title={lang === "el" ? "Διάλεξε κίνηση" : "Choose a movement"}
               lead={lang === "el" ? "Επίλεξε το μοτίβο κίνησης που σε βοηθάει να συγκεντρωθείς και να γειωθείς καλύτερα." : "Choose the movement pattern that helps you center and ground yourself best."}
-              action={
-                <button onClick={() => setLang(lang === "el" ? "en" : "el")} className="h-11 px-3 rounded-full transition-colors text-[13px] cursor-pointer flex gap-1 items-center text-teal-400 hover:text-teal-300">
-                  <Languages className="w-4 h-4" aria-hidden="true" /> {lang === "el" ? "EN" : "EL"}
-                </button>
-              }
             />
           </div>
 
-          <div className="grid grid-cols-1 desk:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 desk:grid-cols-2 gap-3.5">
             <button
               onClick={() => handleSelectTheme('taichi')}
-              className="group relative block p-8 md:p-10 rounded-[32px] border transition-all duration-300 text-left overflow-hidden cursor-pointer"
-              style={{ backgroundColor: "var(--color-surface, #1a1d27)", borderColor: "rgba(255,255,255,0.05)" }}
+              className="card-relief group relative flex items-start gap-4 p-5 rounded-[22px] transition-all duration-300 text-left overflow-hidden cursor-pointer hover:brightness-110 active:scale-[0.98]"
             >
-              <div className="absolute top-0 right-0 w-64 h-64 bg-teal-500/10 blur-[80px] -mr-32 -mt-32 rounded-full pointer-events-none transition-transform group-hover:scale-150 duration-1000" />
-              <div className="w-16 h-16 rounded-2xl bg-teal-500/10 flex items-center justify-center text-teal-400 mb-6 group-hover:scale-110 transition-transform shadow-inner border border-teal-500/20">
-                <Activity size={32} strokeWidth={1.5} />
+              <div className="w-12 h-12 shrink-0 rounded-2xl bg-teal-500/10 flex items-center justify-center text-teal-400 border border-teal-500/20">
+                <Activity size={24} strokeWidth={1.5} aria-hidden="true" />
               </div>
-              <h3 className="text-2xl md:text-3xl font-light text-ink/90 mb-3">
+              <div className="min-w-0">
+              <h3 className="font-display text-[21px] leading-snug text-ink/90 mb-1.5">
                 {lang === "el" ? "Η Ροή της Σύνδεσης" : "Grounding Flow"}
               </h3>
-              <p className="text-ink/70 font-sans text-sm md:text-base leading-relaxed">
+              <p className="text-ink/70 font-sans text-[14.5px] leading-relaxed">
                 {lang === "el" ? "Τα χέρια ανεβαίνουν με την εισπνοή και κατεβαίνουν με την εκπνοή, σαν παλίρροια." : "The arms rise with the inhale and sink with the exhale, like a tide."}
               </p>
+              </div>
             </button>
 
             <button
               onClick={() => handleSelectTheme('lotus')}
-              className="group relative block p-8 md:p-10 rounded-[32px] border transition-all duration-300 text-left overflow-hidden cursor-pointer"
-              style={{ backgroundColor: "var(--color-surface, #1a1d27)", borderColor: "rgba(255,255,255,0.05)" }}
+              className="card-relief group relative flex items-start gap-4 p-5 rounded-[22px] transition-all duration-300 text-left overflow-hidden cursor-pointer hover:brightness-110 active:scale-[0.98]"
             >
-              <div className="absolute bottom-0 right-0 w-64 h-64 bg-indigo-500/10 blur-[80px] -mr-32 -mb-32 rounded-full pointer-events-none transition-transform group-hover:scale-150 duration-1000" />
-              <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 mb-6 group-hover:scale-110 transition-transform shadow-inner border border-indigo-500/20">
-                <Wind size={32} strokeWidth={1.5} />
+              <div className="w-12 h-12 shrink-0 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 border border-indigo-500/20">
+                <Wind size={24} strokeWidth={1.5} aria-hidden="true" />
               </div>
-              <h3 className="text-2xl md:text-3xl font-light text-ink/90 mb-3">
+              <div className="min-w-0">
+              <h3 className="font-display text-[21px] leading-snug text-ink/90 mb-1.5">
                 {lang === "el" ? "Το Άνθος του Λωτού" : "Lotus Blossom"}
               </h3>
-              <p className="text-ink/70 font-sans text-sm md:text-base leading-relaxed">
+              <p className="text-ink/70 font-sans text-[14.5px] leading-relaxed">
                 {lang === "el" ? "Τα χέρια ανοίγουν σαν λωτός με την εισπνοή και κλείνουν στο στήθος με την εκπνοή." : "The arms open like a lotus with the inhale and close at the chest with the exhale."}
               </p>
+              </div>
             </button>
           </div>
         </div>
@@ -387,8 +382,7 @@ export default function PracticeSection() {
               <button
                 key={p.id}
                 onClick={() => handleSelectRhythm(p.id)}
-                className="text-left p-6 md:p-8 rounded-[24px] border transition-all duration-300 overflow-hidden cursor-pointer group hover:bg-white/[0.04]"
-                style={{ backgroundColor: "var(--color-surface, #1a1d27)", borderColor: "rgba(255,255,255,0.05)" }}
+                className="card-relief text-left p-5 rounded-[22px] transition-all duration-300 overflow-hidden cursor-pointer group hover:brightness-110 active:scale-[0.98]"
               >
                 <div className="font-light text-2xl text-ink/90 mb-2">{lang === "el" ? p.nameEl : p.nameEn}</div>
                 <div className="text-[13px] font-medium mb-4" style={{ color: "var(--color-accent, #5f8fd6)" }}>

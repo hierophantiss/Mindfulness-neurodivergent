@@ -37,6 +37,16 @@ const formatMarkdown = (text: string) => {
   );
 };
 
+/** The first lines of an article for its card: without its opening heading and without the marks of emphasis. */
+function excerptOf(page: string): string {
+  const text = page
+    .replace(/^\s*\*\*[^*\n]+\*\*\s*\n+/, '')
+    .replace(/\*+/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return text.length > 240 ? `${text.slice(0, 240).replace(/\s+\S*$/, '')}…` : text;
+}
+
 export default function RabbitHole() {
     const { reduceMotion } = useAccessibility();
   
@@ -434,7 +444,7 @@ export default function RabbitHole() {
                   </div>
                 </div>
                 <p className="text-ink/70 text-[13px] md:text-[14px] leading-relaxed line-clamp-3 relative z-10 font-sans">
-                  "{article.pages[0].replace(/\*\*/g, '')}"
+                  {excerptOf(article.pages[0])}
                 </p>
                 <div className="mt-auto pt-6">
                   <div className="pt-5 border-t border-white/5 flex justify-between items-center text-ink/70 font-medium text-[13px] md:text-[14px] relative z-10 group-hover:text-ink/70 transition-colors">

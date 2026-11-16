@@ -75,7 +75,7 @@ export function BreathingHero({
         </defs>
 
         {/* The breath itself */}
-        <g opacity={idle ? 0.45 : 1}>
+        <g opacity={idle ? 0.7 : 1}>
           <circle cx={C} cy={C} r={discR} fill="url(#breath-disc)" />
           <circle cx={C} cy={C} r={discR} fill="none" stroke="#7ca7d6" strokeWidth="2.5" opacity={discOpacity} filter="url(#breath-glow)" />
         </g>

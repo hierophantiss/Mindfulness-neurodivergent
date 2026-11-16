@@ -78,7 +78,8 @@ interface Props {
   onSettings: (s: ReaderSettings) => void;
 }
 
-const bottom = 'bottom-[calc(88px+env(safe-area-inset-bottom))] desk:bottom-6 desk:left-[248px]';
+// A chapter is read without the bottom bar on a phone, so the button sits at the foot of the screen.
+const bottom = 'bottom-[calc(16px+env(safe-area-inset-bottom))] desk:bottom-6 desk:left-[248px]';
 const card = 'rounded-2xl bg-[#1a1d27]/95 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)]';
 
 export default function ChapterReaderBar(p: Props) {
@@ -102,7 +103,11 @@ export default function ChapterReaderBar(p: Props) {
   if (!active) {
     return (
       <div data-no-read className={cn('fixed left-0 right-0 z-40 px-4 pointer-events-none transition-opacity duration-300', aside && 'opacity-0', bottom)}>
-        <div inert={aside} className={cn('max-w-md mx-auto', aside ? 'pointer-events-none' : 'pointer-events-auto')}>
+        {/* The button has a strip of its own: the text fades out under it at the foot
+            of the page, so no line is read through the button. On a wide screen the
+            button sits in the margin beside the text and needs no strip. */}
+        <div aria-hidden="true" className="fixed left-0 right-0 bottom-0 h-[calc(96px+env(safe-area-inset-bottom))] desk:left-[248px] desk:h-28 wide:hidden" style={{ background: 'linear-gradient(to top, var(--color-bg) 0%, var(--color-bg) 60%, transparent)' }} />
+        <div inert={aside} className={cn('relative max-w-md mx-auto wide:max-w-none wide:mr-6', aside ? 'pointer-events-none' : 'pointer-events-auto')}>
           <div className="flex items-center justify-end gap-2">
             {p.hasResume && (
               <button
