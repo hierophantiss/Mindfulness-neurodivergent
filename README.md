@@ -16,7 +16,8 @@
 - React Router για την πλοήγηση, prerender για SEO (διαδρομές στο
   `src/prerender-paths.json`)
 - PWA μέσω `vite-plugin-pwa`
-- Android: σχεδιάζεται ως TWA (Trusted Web Activity) για το Play Store
+- Android: εφαρμογή Capacitor (τα αρχεία του ιστότοπου μέσα στο APK, δουλεύει χωρίς σύνδεση), στο Google Play· ενημερώνεται και χωρίς το κατάστημα, με υπογεγραμμένα πακέτα (`src/lib/nativeUpdate.ts`, workflow `Android`)
+- Microsoft Store: η PWA του ιστότοπου
 - Deploy σε Cloudflare Pages (`public/_headers`, `public/_redirects`, `functions/`)
 
 ## Δομή

@@ -330,6 +330,14 @@ export default function ChapterDetail() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [segments.length]);
 
+  // Arrow keys turn the page; the handler is set below, on every render.
+  const onKeyRef = useRef<(e: KeyboardEvent) => void>(() => {});
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => onKeyRef.current(e);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   if (!chapter) {
     return <div className="p-8 text-center text-ink/70">{language === 'el' ? 'Κεφάλαιο δεν βρέθηκε.' : 'Chapter not found.'}</div>;
   }
@@ -375,23 +383,21 @@ export default function ChapterDetail() {
     else if (diff < -40) handlePrev();
   };
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') handleNext();
-      if (e.key === 'ArrowLeft') handlePrev();
-      // Space starts, pauses or resumes listening (not while typing, not on a focused button).
-      const t = e.target as HTMLElement | null;
-      const typing = t?.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON', 'A'].includes(t?.tagName || '');
-      if (e.key === ' ' && !typing && !e.ctrlKey && !e.metaKey && !e.altKey) {
-        e.preventDefault();
-        if (reader.status === 'playing') reader.pause();
-        else if (reader.status === 'paused') reader.resume();
-        else reader.playFrom(firstSegmentOfPage(page));
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  });
+  // The keys (see the listener above the "not found" return, so the hooks
+  // stay in the same order on every render).
+  onKeyRef.current = (e: KeyboardEvent) => {
+    if (e.key === 'ArrowRight') handleNext();
+    if (e.key === 'ArrowLeft') handlePrev();
+    // Space starts, pauses or resumes listening (not while typing, not on a focused button).
+    const t = e.target as HTMLElement | null;
+    const typing = t?.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON', 'A'].includes(t?.tagName || '');
+    if (e.key === ' ' && !typing && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      e.preventDefault();
+      if (reader.status === 'playing') reader.pause();
+      else if (reader.status === 'paused') reader.resume();
+      else reader.playFrom(firstSegmentOfPage(page));
+    }
+  };
 
   const variants = {
     enter: (dir: number) => ({ x: dir > 0 ? 20 : -20, opacity: 0 }),

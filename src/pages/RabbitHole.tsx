@@ -577,7 +577,6 @@ export default function RabbitHole() {
               isVoidActive ? "opacity-20 hover:opacity-100" : "opacity-100"
             )}>
               {(() => {
-                          const { reduceMotion } = useAccessibility();
                 const videoData = informativeVideos.find(v => v.id === activeVideo);
                 if (videoData?.description) {
                   const desc = videoData.description[language as 'en'|'el'];

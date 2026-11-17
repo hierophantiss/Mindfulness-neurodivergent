@@ -36,6 +36,9 @@ jobs:
       - name: Types
         run: npx tsc --noEmit
 
+      - name: React hooks (ESLint)
+        run: npx eslint src
+
       - name: Tests
         run: npx vitest run
 
