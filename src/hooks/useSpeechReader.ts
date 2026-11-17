@@ -233,7 +233,7 @@ export function useSpeechReader(
       el.removeEventListener('ended', onEnded);
       el.removeEventListener('error', onError);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, []);
 
   /** Starts playback inside the listener's tap (needed on iPhone), then finds the place. */
@@ -332,7 +332,7 @@ export function useSpeechReader(
       setIndexBoth(k);
       if (getAudio().src === srcRef.current) seekTo(k);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, []);
 
   // A changed speed applies at once.
@@ -340,7 +340,7 @@ export function useSpeechReader(
     const el = getAudio();
     el.defaultPlaybackRate = rate();
     el.playbackRate = rate();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [settings.rate]);
 
   // Lock-screen and headset controls.

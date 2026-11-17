@@ -1,4 +1,6 @@
-export const COURSE_EN: Record<number, any> = {
+import type { Course } from './types-content';
+
+export const COURSE_EN: Course = {
   "1": {
     "title": "Body: Gravity & Axis",
     "days": [

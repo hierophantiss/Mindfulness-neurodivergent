@@ -156,11 +156,14 @@ export default function PracticeSwaying() {
     ? (lang === "el" ? "εκπνοή" : "exhale") 
     : (lang === "el" ? "εισπνοή" : "inhale");
 
+  // A tap anywhere starts or pauses (a shortcut for the pointer; the keyboard
+  // has the Start/Pause button). Taps in the controls do not count.
   return (
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
     <div 
       className="w-full flex-1 flex flex-col pt-4 desk:pt-0 font-sans animate-fade-in relative cursor-pointer"
       style={{ color: "var(--color-text, #d4d4d8)" }}
-      onClick={handleTogglePlayback}
+      onClick={(e) => { if (!(e.target as Element).closest('[data-controls]')) handleTogglePlayback(); }}
     >
       <PlayPauseOverlay isPlaying={isPlaying} />
 
@@ -234,7 +237,7 @@ export default function PracticeSwaying() {
       </div>
 
       {/* Controls Container (Absolute Positioned Settings) */}
-      <div className="w-full max-w-md mx-auto flex flex-col items-center gap-4 short:gap-2 pt-4 short:pt-2 relative z-30" onClick={(e) => e.stopPropagation()}>
+      <div data-controls className="w-full max-w-md mx-auto flex flex-col items-center gap-4 short:gap-2 pt-4 short:pt-2 relative z-30">
         
         {/* Settings Panel */}
         <div 

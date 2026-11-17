@@ -148,8 +148,8 @@ export default function ProgramWeek() {
         />
         
         {/* Days Horizontal Scroll */}
-        <div className="flex gap-4 overflow-x-auto pb-6 snap-x hide-scrollbar px-1" tabIndex={0} aria-label={language === 'el' ? 'Οι μέρες της εβδομάδας' : 'The days of the week'}>
-          {week.days.map((day: any, idx: number) => {
+        <div role="region" className="flex gap-4 overflow-x-auto pb-6 snap-x hide-scrollbar px-1" tabIndex={0} aria-label={language === 'el' ? 'Οι μέρες της εβδομάδας' : 'The days of the week'}>
+          {week.days.map((day, idx) => {
              const dayCompleted = isLessonComplete(weekNum, idx + 1);
              const curW = companionData.programProgress?.week || 1;
              const curD = companionData.programProgress?.day || 0;

@@ -1,4 +1,6 @@
-export const KNOWLEDGE_FAQ: Record<number, any> = {
+import type { Faq } from './types-content';
+
+export const KNOWLEDGE_FAQ: Faq = {
   // ═══════════════════════════════════════════
   // ΚΕΦΑΛΑΙΟ 1: ΣΩΜΑ — Body
   // ═══════════════════════════════════════════

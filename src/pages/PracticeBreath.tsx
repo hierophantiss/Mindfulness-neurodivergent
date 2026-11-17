@@ -59,13 +59,13 @@ function HowTo({ text, language, gravityFirst = false, longExhale = false, chant
       </button>
       {/* Over the stage, not inside it: on small screens the text would push the start button away. */}
       {open && typeof document !== 'undefined' && createPortal(
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-[#0f1117]/70 backdrop-blur-sm" onClick={(e) => { e.stopPropagation(); setOpen(false); }}>
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-[#0f1117]/70 backdrop-blur-sm" aria-hidden="true" onClick={() => setOpen(false)} />
           <div
             role="dialog"
             aria-modal="true"
             aria-label={el ? 'Πώς γίνεται' : 'How it is done'}
-            onClick={(e) => e.stopPropagation()}
-            className="card-relief w-full max-w-sm max-h-[80dvh] overflow-y-auto rounded-3xl p-5"
+            className="relative card-relief w-full max-w-sm max-h-[80dvh] overflow-y-auto rounded-3xl p-5"
           >
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-[15px] text-ink/90">{el ? 'Πώς γίνεται' : 'How it is done'}</h2>
@@ -808,10 +808,13 @@ export default function PracticeBreath() {
         </div>
       )}
 
-      {/* Hero Section (Canvas + Stats Overlay) */}
+      {/* Hero Section (Canvas + Stats Overlay). A tap anywhere on it starts or
+          pauses: a shortcut for the pointer; the keyboard has the Start/Pause
+          button below. Taps in what it opens over the page (portals) do not count. */}
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
       <div 
         className={cn("breath-hero flex-1 relative w-full overflow-hidden flex flex-col justify-end cursor-pointer", currentPatternId === 'sos-breath' && "breath-hero-sos")}
-        onClick={handleStartToggle}
+        onClick={(e) => { if (e.currentTarget.contains(e.target as Node)) handleStartToggle(); }}
       >
         {/* The Animated Canvas Background */}
         <div className="absolute inset-0 pointer-events-none z-0">

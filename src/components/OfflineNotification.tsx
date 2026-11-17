@@ -50,7 +50,8 @@ export default function OfflineNotification() {
           animate={{ y: 0, opacity: 1 }}
           className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[100] w-[calc(100%-3rem)] max-w-sm"
         >
-          {/* A tap anywhere on it closes it, as the × does. */}
+          {/* A tap anywhere on it closes it, as the × does (the × is the keyboard's way). */}
+          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
           <div onClick={() => setShowStatus(false)} className={`p-4 rounded-2xl border backdrop-blur-md shadow-2xl flex items-center gap-4 cursor-pointer ${
             isOffline 
               ? 'bg-amber-900/20 border-amber-500/30 text-amber-200' 

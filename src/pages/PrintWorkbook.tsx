@@ -65,13 +65,13 @@ export default function PrintWorkbook() {
             {language === 'el' ? 'Μέρος 2ο: Το Πρόγραμμα' : 'Part 2: The Program'}
           </h2>
           
-          {Object.entries(course).map(([weekNum, weekData]: [string, any]) => (
+          {Object.entries(course).map(([weekNum, weekData]) => (
             <div key={weekNum} className="mb-16 break-before-page">
               <h3 className="text-3xl font-bold mb-8 text-center bg-gray-100 p-4 rounded-lg">
                 {language === 'el' ? 'Εβδομάδα' : 'Week'} {weekNum}: {weekData.title}
               </h3>
 
-              {weekData.days.map((day: any, idx: number) => (
+              {weekData.days.map((day, idx) => (
                 <div key={idx} className="mb-12 border-2 border-gray-200 rounded-xl p-6 break-inside-avoid shadow-sm">
                   <div className="flex justify-between items-end border-b pb-4 mb-6">
                     <h4 className="text-2xl font-bold">

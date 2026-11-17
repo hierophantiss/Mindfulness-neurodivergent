@@ -1,4 +1,29 @@
-export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
+import type { Axis } from './types';
+
+/** A concept's text in one language. */
+export interface ConceptText {
+  title: string;
+  short: string;
+  full: string;
+  /** For neurodivergent readers: what to try if this does not fit. */
+  ndNote: string;
+  /** The study behind it, when there is one (both languages, or neither). */
+  science?: string;
+}
+
+/** A concept of the method, explained in a card (ConceptInfoOverlay). */
+export interface Concept {
+  el: ConceptText;
+  en: ConceptText;
+  /** Its axis, or 'all' for what runs through the four. */
+  axis: Axis | 'all';
+  /** The chapters it appears in. */
+  chapters: number[];
+  /** Other concepts to read next. */
+  related?: string[];
+}
+
+export const KNOWLEDGE_CONCEPTS: Record<string, Concept> = {
   // ═══════════════════════════════════════════
   // ΑΞΟΝΑΣ 1: ΣΩΜΑ — Body
   // ═══════════════════════════════════════════
@@ -75,7 +100,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     },
     axis: 'body',
     chapters: [5, 6, 8, 11],
-    related: ['grounding', 'exhale']
+    related: ['grounding', 'slow_exhale']
   },
 
   proprioception: {
@@ -111,7 +136,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, any> = {
     },
     axis: 'body',
     chapters: [1, 2, 8, 11],
-    related: ['proprioception', 'grounding', 'internal_touch']
+    related: ['proprioception', 'grounding']
   },
 
   echo: {

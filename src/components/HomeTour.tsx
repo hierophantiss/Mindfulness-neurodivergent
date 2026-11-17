@@ -79,7 +79,7 @@ export default function HomeTour({ language, onClose }: { language: string; onCl
         <div aria-hidden="true" className="absolute inset-0 bg-[rgb(7_9_15/0.72)]" />
       )}
       {/* A tap outside the words does nothing: only the buttons move on. */}
-      <div className="absolute inset-0" onClick={e => e.stopPropagation()} />
+      <div className="absolute inset-0" aria-hidden="true" onClick={e => e.stopPropagation()} />
 
       <div className="absolute flex items-start gap-3" style={{ top: boxTop, left: boxLeft, width: boxWidth, transition: move }}>
         <div className="shrink-0 w-12 h-12 rounded-full bg-[var(--color-surface)] border border-teal-500/25 flex items-center justify-center shadow-lg">

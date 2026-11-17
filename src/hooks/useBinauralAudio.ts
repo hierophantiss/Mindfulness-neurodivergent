@@ -8,7 +8,7 @@ export function useBinauralAudio(config?: AudioConfig) {
   const { startAudio, stopAudio, fadeOutAudio, isPlaying, setGlobalVolume, updateArmPos, updatePhase, volume, setLayerLevel } = useAudioMixer();
 
   const start = useCallback((overrideConfig?: AudioConfig) => {
-    startAudio((overrideConfig || config || { base: 110, beat: 6.3, pulse: 0.1 }) as any);
+    startAudio(overrideConfig || config || { base: 110, beat: 6.3, pulse: 0.1 });
   }, [startAudio, config]);
 
   return {

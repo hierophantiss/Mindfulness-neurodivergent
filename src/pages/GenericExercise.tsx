@@ -10,7 +10,12 @@ import { EvidenceLine } from '../components/EvidenceLine';
 import { ConceptText } from '../components/ConceptInfoOverlay';
 import GuideAfterPractice from '../components/GuideAfterPractice';
 import { MICRODOSES_EXERCISES, type MicrodoseExercise } from '../data/microdoses';
-import { GUIDED_EXERCISES as EXERCISES } from '../data/guidedExercises';
+import { GUIDED_EXERCISES as EXERCISES, type GuidedExercise } from '../data/guidedExercises';
+import type { Bilingual } from '../data/types-breath';
+
+// What this page shows: a guided exercise, or a microdose shown as one (no
+// description of its own; how long it takes, in words).
+type ShownExercise = Omit<GuidedExercise, 'desc'> & { desc?: Bilingual; dur?: Bilingual };
 
 // A quiet practice: the steps, a timer and a soft bell at the end. The app
 // plays no sound during it, and the page says so, so nobody waits for audio.
@@ -27,12 +32,12 @@ const LISTENING = new Set(['one-sound', 'sound-focus', 'silence-background']);
 
 const toSteps = (text: string) => text.split(/(?<=[.!;·])\s+/).map(t => t.trim()).filter(Boolean);
 
-function microdoseAsExercise(m: MicrodoseExercise) {
+function microdoseAsExercise(m: MicrodoseExercise): ShownExercise {
   return {
     axis: m.axis,
     evidence: m.evidence,
     title: m.title,
-    desc: undefined as { el: string; en: string } | undefined,
+    desc: undefined,
     dur: m.dur,
     duration: Math.max(m.maxSeconds, 10),
     instructions: { el: toSteps(m.desc.el), en: toSteps(m.desc.en) },
@@ -63,7 +68,7 @@ export default function GenericExercise() {
     ? MICRODOSES_EXERCISES.find(m => m.link.split('/').pop() === id) ?? (!EXERCISES[id] ? MICRODOSES_EXERCISES.find(m => m.id === id) : undefined)
     : undefined;
 
-  const exercise: any = id && EXERCISES[id] ? EXERCISES[id] : microdose ? microdoseAsExercise(microdose) : {
+  const exercise: ShownExercise = id && EXERCISES[id] ? EXERCISES[id] : microdose ? microdoseAsExercise(microdose) : {
     axis: 'breath',
     title: { el: 'Ελεύθερη Πρακτική', en: 'Free Practice' },
     desc: { el: 'Λίγος χρόνος για σένα.', en: 'A little time for yourself.' },

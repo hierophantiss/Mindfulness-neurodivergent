@@ -302,6 +302,8 @@ export default function RabbitHole() {
 
           {/* Scrolling Content */}
           <div 
+            role="region"
+            aria-label={language === 'el' ? 'Το κείμενο' : 'The text'}
             className="flex-1 overflow-y-auto px-6 md:px-16"
             tabIndex={0}
             onTouchStart={handleTouchStart}

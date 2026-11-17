@@ -35,7 +35,7 @@ export default function Faq() {
                 <span className="flex-1 h-px bg-zinc-800/50"></span>
               </h2>
               <div className="space-y-4 w-full">
-                {faqs.map((faq: any, idx: number) => (
+                {faqs.map((faq, idx) => (
                   <details key={idx} className="card-relief rounded-2xl p-5 md:p-6 group transition-all duration-300 w-full outline-none [&_summary::-webkit-details-marker]:hidden">
                     <summary className="font-medium cursor-pointer focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 list-none flex justify-between items-center text-base md:text-lg text-ink group-open:text-teal-100 transition-colors w-full">
                       <span className="pr-6 leading-snug">{faq.q}</span>

@@ -439,7 +439,9 @@ export default function PracticeSection() {
         </div>
       </div>
 
-      {/* Main Visual Arena (Hero) - Expanded */}
+      {/* Main Visual Arena (Hero) - Expanded. A tap anywhere plays or pauses:
+          a shortcut for the pointer; the keyboard has the Play/Pause button. */}
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
       <div 
         className="w-full max-w-5xl flex-1 rounded-[32px] p-4 relative overflow-hidden flex flex-col justify-between shadow-2xl border cursor-pointer" 
         style={{ backgroundColor: "var(--color-surface, #1a1d27)", borderColor: "rgba(255,255,255,0.02)", minHeight: "80vh" }}
@@ -495,6 +497,7 @@ export default function PracticeSection() {
         </button>
         <button 
           onClick={(e) => { e.stopPropagation(); setIsPlaying(!isPlaying); }} 
+          aria-label={lang === 'el' ? (isPlaying ? 'Παύση' : 'Συνέχεια') : (isPlaying ? 'Pause' : 'Play')}
           className="w-20 h-20 flex items-center justify-center rounded-full backdrop-blur cursor-pointer shadow-2xl border hover:scale-105 transition-transform" 
           style={{ backgroundColor: "var(--color-accent, #5f8fd6)", borderColor: "rgba(255,255,255,0.1)", color: "var(--color-ink)" }}
         >

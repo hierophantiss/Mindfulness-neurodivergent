@@ -7,27 +7,14 @@ import React, {
   useRef,
 } from 'react';
 import { getAudioContext } from '../lib/sound';
+import type { AmbientLayer, AudioConfig } from '../data/types-breath';
+export type { AmbientLayer, AudioConfig };
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
 /** The sounds that can play under (or instead of) a tone. */
-export type AmbientLayer = 'rain' | 'ocean' | 'wind' | 'brown' | 'pink' | 'green' | 'breath' | 'fire' | 'stream' | 'crickets' | 'storm' | 'purr';
-
-export interface AudioConfig {
-  base: number;
-  beat: number;
-  pulse?: number;
-  carrierType?: 'sine' | 'triangle' | 'square' | 'sawtooth';
-  pulseType?: 'sine';
-  disableSynth?: boolean;
-  ambientLayers?: AmbientLayer[];
-  /** Each layer's own level, 0–1 (1 when not given): "My mix" in the Sanctuary. */
-  layerLevels?: Partial<Record<AmbientLayer, number>>;
-  id?: string;
-}
-
 export interface AudioContextProps {
   masterPlaying: boolean;
   masterVolume: number;

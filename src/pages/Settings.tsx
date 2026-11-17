@@ -4,6 +4,7 @@ import { versionText } from '../lib/version';
 import { isNative } from '../lib/native';
 import React, { useState, useEffect } from 'react';
 import BackupDialog, { type BackupMode } from '../components/BackupDialog';
+import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
 import { lastBackupDate } from '../lib/dataSafety';
 import { readErrors, clearErrors, errorReport } from '../lib/errorLog';
 import { Languages, Activity, LetterText, Info, LogOut, Sparkles, Sun, Database, FileText, Download, Bug, ShieldCheck, Accessibility, MessageCircleHeart, CalendarClock } from 'lucide-react';
@@ -34,6 +35,8 @@ export default function Settings() {
   // The day of the last copy, shown next to "Save Data".
   const [lastBackup, setLastBackup] = useState(lastBackupDate);
   const [backupMode, setBackupMode] = useState<BackupMode | null>(null);
+  // The two small dialogs below close with Escape, as with a tap outside.
+  useKeyboardShortcuts({ Escape: () => { setShowReminder(false); setShowDebug(false); } }, showReminder || showDebug);
   const [debugLog, setDebugLog] = useState<string[]>([]);
   // Errors the app noted on this device (lib/errorLog.ts).
   const [errors, setErrors] = useState(readErrors);
@@ -348,8 +351,9 @@ export default function Settings() {
         const el = language === 'el';
         const lg = el ? 'el' : 'en';
         return createPortal(
-          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80" onClick={() => setShowReminder(false)}>
-            <div role="dialog" aria-modal="true" aria-labelledby="reminder-title" onClick={(e) => e.stopPropagation()} className="card-relief p-6 rounded-2xl w-full max-w-md max-h-[85vh] overflow-y-auto flex flex-col gap-4">
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+            <div className="absolute inset-0 bg-black/80" aria-hidden="true" onClick={() => setShowReminder(false)} />
+            <div role="dialog" aria-modal="true" aria-labelledby="reminder-title" className="relative card-relief p-6 rounded-2xl w-full max-w-md max-h-[85vh] overflow-y-auto flex flex-col gap-4">
               <h2 id="reminder-title" className="font-display text-[24px] text-ink">{el ? 'Υπενθύμιση στο ημερολόγιο' : 'Reminder in your calendar'}</h2>
               <p className="text-[14px] leading-relaxed text-ink/75">
                 {el
@@ -392,8 +396,9 @@ export default function Settings() {
         const report = errorReport(el ? 'el' : 'en', errors) + '\n\n' + debugLog.join('\n');
         const mail = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(el ? 'Σφάλματα της εφαρμογής' : 'App errors')}&body=${encodeURIComponent(report.slice(0, 1900))}`;
         return createPortal(
-          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80" onClick={() => setShowDebug(false)}>
-            <div role="dialog" aria-modal="true" aria-labelledby="diag-title" onClick={(e) => e.stopPropagation()} className="card-relief p-6 rounded-2xl w-full max-w-md max-h-[80vh] overflow-y-auto flex flex-col gap-4">
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+            <div className="absolute inset-0 bg-black/80" aria-hidden="true" onClick={() => setShowDebug(false)} />
+            <div role="dialog" aria-modal="true" aria-labelledby="diag-title" className="relative card-relief p-6 rounded-2xl w-full max-w-md max-h-[80vh] overflow-y-auto flex flex-col gap-4">
               <h2 id="diag-title" className="font-display text-[24px] text-ink">{el ? 'Διαγνωστικά' : 'Diagnostics'}</h2>
               <p className="text-[14px] leading-relaxed text-ink/75">
                 {el

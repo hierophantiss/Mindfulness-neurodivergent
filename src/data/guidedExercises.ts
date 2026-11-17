@@ -4,7 +4,25 @@
 import { MICRODOSES_EXERCISES } from './microdoses';
 import { PRACTICE_TEXTS, GRAVITY_STEP } from './practiceTexts';
 
-export const GUIDED_EXERCISES: Record<string, any> = {
+import type { Axis } from './types';
+import type { Bilingual } from './types-breath';
+
+/** A guided exercise: its text in both languages, step by step. */
+export interface GuidedExercise {
+  axis: Axis;
+  title: Bilingual;
+  desc: Bilingual;
+  /** About how long, in seconds. */
+  duration: number;
+  /** The steps, the same number in both languages. */
+  instructions: { el: string[]; en: string[] };
+  /** What it rests on, and the study (see the Rabbit Hole's sources). */
+  evidence?: Bilingual & { ref: string };
+  /** The card's colour (a CSS colour). */
+  color?: string;
+}
+
+export const GUIDED_EXERCISES: Record<string, GuidedExercise> = {
   // --- ΜΙΚΡΟΔΟΣΕΙΣ ΑΠΟ ΤΟ 8-ΕΒΔΟΜΑΔΟ ΠΡΟΓΡΑΜΜΑ ---
   'axis-pause': {
     evidence: { en: 'The brain constantly computes gravity; attending to it can steady you', el: 'Ο εγκέφαλος υπολογίζει διαρκώς τη βαρύτητα· η προσοχή σε αυτήν μπορεί να σε σταθεροποιήσει', ref: 'study-mackrous' },

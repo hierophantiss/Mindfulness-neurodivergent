@@ -124,7 +124,7 @@ export default function OpenAwareness() {
     window.dispatchEvent(new Event('voice-elsewhere')); // the chapter's reader stops, if it was reading
     setGuiding(true);
     a.play().catch(() => { setGuiding(false); setVoiceTrouble(true); });
-  }, [timing, language]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [timing, language]);  
 
   // While the voice plays, its words set the scene.
   useEffect(() => {
@@ -140,7 +140,7 @@ export default function OpenAwareness() {
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [guiding, timing]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [guiding, timing]);  
 
   // A scene chosen by hand while the voice plays: the voice goes there too.
   const navTo = (i: number) => {
