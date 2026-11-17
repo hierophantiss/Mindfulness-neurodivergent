@@ -26,6 +26,28 @@ for (const p of PAGES) {
   });
 }
 
+// The same with a plain Error (some browsers and webviews throw that rather
+// than a SecurityError), only localStorage blocked: the app must still open,
+// and say that nothing can be kept; the note closes with its ×.
+test('with localStorage throwing a plain Error, the app opens and says nothing is kept', async ({ browser }) => {
+  const page = await browser.newPage();
+  await page.addInitScript(() => {
+    Object.defineProperty(window, 'localStorage', { configurable: true, get() { throw new Error('blocked'); } });
+  });
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  await page.goto('/el', { waitUntil: 'networkidle' });
+  await expect(page.locator('h1').first()).toBeVisible({ timeout: 10_000 });
+  const note = page.getByRole('status').filter({ hasText: 'Δεν κρατιέται τίποτα σε αυτή τη συσκευή' });
+  await expect(note).toBeVisible();
+  await note.getByRole('button', { name: 'Κλείσιμο' }).click();
+  await expect(note).toHaveCount(0);
+  await page.goto('/el/journal', { waitUntil: 'networkidle' });
+  await expect(page.locator('h1').first()).toBeVisible();
+  expect(errors).toEqual([]);
+  await page.close();
+});
+
 test('with site data blocked, the language can still be changed', async ({ page, isMobile }) => {
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));

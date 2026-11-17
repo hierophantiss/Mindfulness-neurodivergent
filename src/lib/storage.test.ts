@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { clearAll, deviceStorage, readJSON, readText, removeKey, writeJSON, writeText } from './storage';
+import { canKeepData, clearAll, deviceStorage, readJSON, readText, removeKey, writeJSON, writeText } from './storage';
 import { recordError, readErrors } from './errorLog';
 import { backupReminderDue } from './dataSafety';
 import { offlineLangs } from './chapterAudio';
@@ -27,11 +27,13 @@ describe('storage', () => {
     clearAll();
     expect(localStorage.length).toBe(0);
     expect(deviceStorage()).toBe(localStorage);
+    expect(canKeepData()).toBe(true);
   });
 
   it('never throws when the browser blocks site data', () => {
     blockStorage();
     expect(() => localStorage).toThrow();
+    expect(canKeepData()).toBe(false);
     expect(readText('k')).toBeNull();
     expect(writeText('k', 'v')).toBe(false);
     expect(readJSON('j', 7)).toBe(7);
@@ -46,4 +48,16 @@ describe('storage', () => {
     expect(() => backupReminderDue()).not.toThrow();
     expect(offlineLangs()).toEqual([]);
   });
+});
+
+it('never throws when reading localStorage throws a plain Error', () => {
+  Object.defineProperty(window, 'localStorage', { configurable: true, get() { throw new Error('blocked'); } });
+  try {
+    expect(canKeepData()).toBe(false);
+    expect(readText('k')).toBeNull();
+    expect(writeText('k', 'v')).toBe(false);
+    expect(() => recordError('page', new Error('boom'))).not.toThrow();
+  } finally {
+    Object.defineProperty(window, 'localStorage', real);
+  }
 });

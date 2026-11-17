@@ -30,6 +30,18 @@ export function deviceStorage(): Storage {
   }
 }
 
+/** Whether the browser lets the app keep anything on this device at all. */
+export function canKeepData(): boolean {
+  try {
+    const s = window.localStorage;
+    s.setItem('__keep_probe', '1');
+    s.removeItem('__keep_probe');
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 /** A text value as saved, or null (not saved, or storage blocked). */
 export function readText(key: string): string | null {
   try {

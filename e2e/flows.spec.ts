@@ -267,3 +267,9 @@ test('the Tai Chi practices draw the figure in 3D where the device can', async (
   await expect(page.locator('.breath-hero canvas')).toHaveCount(1);
   expect(errors).toEqual([]);
 });
+
+test('where the device can keep data, there is no note that nothing is kept', async ({ page }) => {
+  await page.goto('/el', { waitUntil: 'networkidle' });
+  await expect(page.locator('h1').first()).toBeVisible();
+  await expect(page.getByText('Δεν κρατιέται τίποτα σε αυτή τη συσκευή')).toHaveCount(0);
+});
