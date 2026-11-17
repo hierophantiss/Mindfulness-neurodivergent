@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { clearAll } from '../lib/storage';
 import InfoModal from './InfoModalLazy';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
 import { downloadBackup, restoreBackup } from '../lib/backup';
@@ -503,7 +504,7 @@ export default function NavigationMenu() {
                              </button>
                              <button
                                onClick={() => {
-                                 localStorage.clear();
+                                 clearAll();
                                  window.location.hash = '';
                                  window.location.reload();
                                }}

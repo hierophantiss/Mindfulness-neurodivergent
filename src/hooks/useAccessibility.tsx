@@ -1,4 +1,5 @@
 import { MotionConfig } from 'motion/react';
+import { readText, writeText } from '../lib/storage';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { applyReadingPrefs, readEasyRead, savePref, EASY_READ_KEY } from '../lib/readingPrefs';
 
@@ -14,7 +15,7 @@ const AccessibilityContext = createContext<AccessibilityContextType | undefined>
 
 export function AccessibilityProvider({ children }: { children: React.ReactNode }) {
   const [reduceMotion, setReduceMotion] = useState(() => {
-    const saved = localStorage.getItem('n_mindfulness_reduce_motion');
+    const saved = readText('n_mindfulness_reduce_motion');
     if (saved !== null) return saved === 'true';
     return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   });
@@ -22,7 +23,7 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
   const toggleReduceMotion = () => {
     setReduceMotion(prev => {
       const next = !prev;
-      localStorage.setItem('n_mindfulness_reduce_motion', String(next));
+      writeText('n_mindfulness_reduce_motion', String(next));
       return next;
     });
   };

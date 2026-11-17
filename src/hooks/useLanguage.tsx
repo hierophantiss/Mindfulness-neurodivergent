@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { readText, writeText } from '../lib/storage';
 
 type Language = 'el' | 'en';
 
@@ -73,7 +74,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       if (path.startsWith('/el')) return 'el';
       if (path.startsWith('/en')) return 'en';
     }
-    const saved = localStorage.getItem('mindfulness_lang');
+    const saved = readText('mindfulness_lang');
     if (saved === 'en' || saved === 'el') return saved;
     // Autodetect based on system language
     if (typeof navigator !== 'undefined' && navigator.language) {
@@ -83,7 +84,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   });
 
   const setLanguage = (lang: Language) => {
-    localStorage.setItem('mindfulness_lang', lang);
+    writeText('mindfulness_lang', lang);
     setLanguageState(lang);
   };
 

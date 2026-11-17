@@ -5,6 +5,7 @@
 // companion data (one object with chapterProgress, programProgress, ...).
 
 import { RECORD_VERSION_KEY } from './activityLog';
+import { deviceStorage } from './storage';
 import { markBackupSaved } from './dataSafety';
 
 const COMPANION_KEY = 'mindful_companion_v5';
@@ -12,7 +13,7 @@ const SKIP = (key: string) => key.startsWith('vite') || key.startsWith('workbox'
 
 export type BackupFormat = 'full' | 'companion';
 
-export function collectBackup(storage: Storage = localStorage): Record<string, string> {
+export function collectBackup(storage: Storage = deviceStorage()): Record<string, string> {
   const data: Record<string, string> = {};
   for (let i = 0; i < storage.length; i++) {
     const key = storage.key(i);
@@ -42,7 +43,7 @@ const looksLikeCompanion = (o: Record<string, unknown>) =>
  * Writes a backup back into storage. Returns which kind it was, or throws if
  * the file is not a backup of this app (nothing is written then).
  */
-export function restoreBackup(text: string, storage: Storage = localStorage): BackupFormat {
+export function restoreBackup(text: string, storage: Storage = deviceStorage()): BackupFormat {
   const parsed = JSON.parse(text);
   if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('not a backup');
 

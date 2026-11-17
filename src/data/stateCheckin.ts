@@ -4,6 +4,7 @@
 // from the practice catalogue, so every tagged exercise can be offered.
 
 import type { Axis } from './types';
+import { deviceStorage } from '../lib/storage';
 import { CHECKIN_LABEL } from '../lib/checkinLook';
 import { pickWithUsage, forTag, type CatalogItem, type PracticeKind, type UsageCounts } from './practiceCatalog';
 
@@ -171,7 +172,7 @@ function readDays(storage: Storage): Record<string, CheckinChoice> {
   }
 }
 
-export function recordCheckinDay(choice: CheckinChoice, now = new Date(), storage: Storage = localStorage) {
+export function recordCheckinDay(choice: CheckinChoice, now = new Date(), storage: Storage = deviceStorage()) {
   try {
     const days = readDays(storage);
     days[localDay(now)] = choice;
@@ -183,7 +184,7 @@ export function recordCheckinDay(choice: CheckinChoice, now = new Date(), storag
 }
 
 /** The last "How do you feel?" answer of that day ("YYYY-MM-DD"), if any. */
-export function checkinOnDay(day: string, storage: Storage = localStorage): CheckinChoice | null {
+export function checkinOnDay(day: string, storage: Storage = deviceStorage()): CheckinChoice | null {
   const v = readDays(storage)[day];
   return isChoice(v) ? v : null;
 }

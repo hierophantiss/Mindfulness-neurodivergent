@@ -9,6 +9,8 @@
 //    to a file. Never in the first two weeks, never twice in a month, and
 //    "Not now" means a month of quiet.
 
+import { deviceStorage } from './storage';
+
 const DAY = 24 * 60 * 60 * 1000;
 export const LAST_BACKUP_KEY = 'n_mindfulness_last_backup';
 export const BACKUP_SNOOZE_KEY = 'n_mindfulness_backup_snooze';
@@ -19,7 +21,7 @@ export const REMINDER_EVERY_DAYS = 30;
 const num = (storage: Storage, key: string) => Number(storage.getItem(key)) || 0;
 
 /** A journal entry, a finished chapter or program day, or a chapter begun. */
-export function hasDataWorthKeeping(storage: Storage = localStorage): boolean {
+export function hasDataWorthKeeping(storage: Storage = deviceStorage()): boolean {
   try {
     for (let i = 0; i < storage.length; i++) {
       if (storage.key(i)?.startsWith('journal_v2_')) return true;
@@ -38,7 +40,7 @@ export function hasDataWorthKeeping(storage: Storage = localStorage): boolean {
  * Whether the home page should offer a copy now. The first time there is
  * something worth keeping, it notes the day (the two quiet weeks start then).
  */
-export function backupReminderDue(now = Date.now(), storage: Storage = localStorage): boolean {
+export function backupReminderDue(now = Date.now(), storage: Storage = deviceStorage()): boolean {
   try {
     if (!hasDataWorthKeeping(storage)) return false;
     let since = num(storage, DATA_SINCE_KEY);
@@ -59,16 +61,16 @@ export function backupReminderDue(now = Date.now(), storage: Storage = localStor
   }
 }
 
-export function markBackupSaved(now = Date.now(), storage: Storage = localStorage): void {
+export function markBackupSaved(now = Date.now(), storage: Storage = deviceStorage()): void {
   try { storage.setItem(LAST_BACKUP_KEY, String(now)); } catch { /* storage unavailable */ }
 }
 
-export function snoozeBackupReminder(now = Date.now(), storage: Storage = localStorage): void {
+export function snoozeBackupReminder(now = Date.now(), storage: Storage = deviceStorage()): void {
   try { storage.setItem(BACKUP_SNOOZE_KEY, String(now)); } catch { /* storage unavailable */ }
 }
 
 /** The day of the last copy, or null. */
-export function lastBackupDate(storage: Storage = localStorage): Date | null {
+export function lastBackupDate(storage: Storage = deviceStorage()): Date | null {
   try {
     const t = num(storage, LAST_BACKUP_KEY);
     return t ? new Date(t) : null;

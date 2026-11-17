@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect } from 'react';
+import { removeKey } from '../lib/storage';
 
 type Theme = 'dark' | 'light';
 
@@ -13,7 +14,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const theme: Theme = 'dark'; // Always dark
   
   useEffect(() => {
-    localStorage.removeItem('theme');
+    removeKey('theme');
     document.body.classList.remove('light-theme');
     document.documentElement.classList.remove('light-theme');
     document.documentElement.classList.add('dark');

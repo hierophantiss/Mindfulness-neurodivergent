@@ -1,4 +1,5 @@
 import { PageHeader } from '../components/PageHeader';
+import { clearAll } from '../lib/storage';
 import { versionText } from '../lib/version';
 import { isNative } from '../lib/native';
 import React, { useState, useEffect } from 'react';
@@ -262,7 +263,7 @@ export default function Settings() {
             value: null,
             action: () => {
                 if (confirm(language === 'el' ? 'Είσαι σίγουρος/η; Όλες οι καταγραφές θα διαγραφούν.' : 'Are you sure? All records will be deleted.')) {
-                    localStorage.clear();
+                    clearAll();
                     window.location.href = '/';
                 }
             },

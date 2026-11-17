@@ -3,6 +3,8 @@
 // they choose: Settings → Diagnostics → "Send it to the creator" (email).
 // Nothing is ever sent on its own.
 
+import { deviceStorage } from './storage';
+
 export const ERROR_LOG_KEY = 'n_mindfulness_error_log';
 const MAX = 20;
 
@@ -18,7 +20,7 @@ export type LoggedError = {
 // Noise from browsers and extensions that says nothing about the app.
 const IGNORE = [/ResizeObserver loop/i, /^Script error\.?$/i, /extension:\/\//i, /AbortError/i];
 
-export function readErrors(storage: Storage = localStorage): LoggedError[] {
+export function readErrors(storage: Storage = deviceStorage()): LoggedError[] {
   try {
     const list = JSON.parse(storage.getItem(ERROR_LOG_KEY) || '[]');
     return Array.isArray(list) ? list : [];
@@ -27,11 +29,11 @@ export function readErrors(storage: Storage = localStorage): LoggedError[] {
   }
 }
 
-export function clearErrors(storage: Storage = localStorage): void {
+export function clearErrors(storage: Storage = deviceStorage()): void {
   try { storage.removeItem(ERROR_LOG_KEY); } catch { /* storage unavailable */ }
 }
 
-export function recordError(kind: string, error: unknown, storage: Storage = localStorage, now = Date.now()): void {
+export function recordError(kind: string, error: unknown, storage: Storage = deviceStorage(), now = Date.now()): void {
   try {
     const e = error as { message?: string; stack?: string } | undefined;
     const msg = String(e?.message ?? error ?? '').slice(0, 300);

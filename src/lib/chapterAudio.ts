@@ -1,4 +1,5 @@
 import type { ReadLang } from './chapterReading';
+import { deviceStorage } from './storage';
 import { isNative, remote } from './native';
 
 /**
@@ -59,7 +60,8 @@ const langNumOf = (url: string): [ReadLang, number] | null => {
 };
 const mapUrl = (lang: ReadLang, num: number) => remote(`/audio/${fileName(lang, num)}.json`);
 
-const hasCaches = () => typeof caches !== 'undefined';
+// (Reading `caches` itself throws where the browser blocks site data.)
+const hasCaches = () => { try { return typeof caches !== 'undefined'; } catch { return false; } };
 
 async function openCache() {
   return hasCaches() ? caches.open(CACHE).catch(() => null) : null;
@@ -124,7 +126,7 @@ export async function keepOnDevice(lang: ReadLang, num: number, version: string)
 
 // ── Listen offline: all chapters of one language, by hand ─────────────
 
-export function offlineLangs(storage: Storage | undefined = typeof localStorage !== 'undefined' ? localStorage : undefined): ReadLang[] {
+export function offlineLangs(storage: Storage | undefined = typeof window !== 'undefined' ? deviceStorage() : undefined): ReadLang[] {
   try {
     const list = JSON.parse(storage?.getItem(OFFLINE_KEY) || '[]');
     return Array.isArray(list) ? list.filter((l): l is ReadLang => l === 'el' || l === 'en') : [];

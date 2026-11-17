@@ -1,4 +1,5 @@
 import { createPortal } from 'react-dom';
+import { readText } from '../lib/storage';
 import { movementSteps, movementStance, phaseName, stanceName, type Step } from '../data/movementSteps';
 import { AudioEnabler } from '../components/AudioEnabler';
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
@@ -309,7 +310,7 @@ export default function PracticeBreath() {
 
   // Check if preference exists for this pattern
   useEffect(() => {
-    if (localStorage.getItem('hide_binaural_banner') === 'true') {
+    if (readText('hide_binaural_banner') === 'true') {
       setShowBanner(false);
     }
     let savedPref: 'with' | 'nature' | 'without' | null = null;

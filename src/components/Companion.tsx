@@ -1,4 +1,5 @@
 import { useAccessibility } from '../hooks/useAccessibility';
+import { writeText } from '../lib/storage';
 import React, { useState, useRef, useEffect } from 'react';
 import { useCompanion } from '../hooks/useCompanion';
 import { useLanguage } from '../hooks/useLanguage';
@@ -94,7 +95,7 @@ export default function Companion() {
        e.stopPropagation();
     }
     setCompanionMessage(null);
-    localStorage.setItem('N_MINDFULNESS_SEEN_COMPANION_TUTORIAL', 'true');
+    writeText('N_MINDFULNESS_SEEN_COMPANION_TUTORIAL', 'true');
   };
 
   useEffect(() => {
