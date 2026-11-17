@@ -832,6 +832,12 @@ export default function PracticeBreath() {
           />
         </div>
 
+        {/* The phase in words, for a screen reader (the canvas shows it only
+            in pictures): said as each phase begins. */}
+        <p className="sr-only" role="status" aria-live="polite" data-testid="breath-phase">
+          {running ? (language === 'el' ? pattern.labels[phaseIdx].label.el : pattern.labels[phaseIdx].label.en) : ''}
+        </p>
+
         {/* Organic Motion Circle & Counter (Centered exactly in the globe) */}
         <div 
           className={cn("breath-hero-inner absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none", !isTaiChi && "drop-shadow-lg")}

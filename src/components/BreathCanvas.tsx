@@ -75,7 +75,10 @@ export default function BreathCanvas({
 
         if (progress >= 1) {
           state.current.phaseIdx = (state.current.phaseIdx + 1) % phases.length;
-          state.current.phaseStartTime = now;
+          // The next phase starts when this one ended (not at this frame), so
+          // the breath keeps its time; after a long pause (a hidden tab) it
+          // simply starts now.
+          state.current.phaseStartTime = now - Math.min(elapsed - phase.dur, 100);
           onPhaseChange(phaseLabels[state.current.phaseIdx], state.current.phaseIdx);
 
           if (state.current.phaseIdx === 0) {
