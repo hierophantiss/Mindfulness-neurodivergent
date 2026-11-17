@@ -59,8 +59,9 @@ describe('the update signature', () => {
     expect(await signatureHolds(manifest, UPDATE_PUBLIC_KEY)).toBe(false);
   });
 
-  it('reads the key however it was pasted (one line, spaces, CRLF)', async () => {
-    for (const k of [pem.replace(/\n/g, ''), pem.replace(/\n/g, ' '), pem.replace(/\n/g, '\r\n'), `  ${pem}  `]) {
+  it('reads the key however it was pasted (one short line, PEM on one line, spaces, CRLF)', async () => {
+    const seed = privateKey.export({ type: 'pkcs8', format: 'der' }).subarray(16).toString('base64');
+    for (const k of [seed, ` ${seed}\n`, pem.replace(/\n/g, ''), pem.replace(/\n/g, ' '), pem.replace(/\n/g, '\r\n'), `  ${pem}  `]) {
       const { status, manifest } = signWithScript(k);
       expect(status).toBe(0);
       expect(await signatureHolds(manifest, pub)).toBe(true);

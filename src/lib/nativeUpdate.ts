@@ -23,7 +23,7 @@ import { recordError } from './errorLog';
 const RELEASE = 'https://github.com/hierophantiss/Mindfulness-neurodivergent/releases/download/app-bundle/';
 const MANIFEST = `${RELEASE}app-bundle.json`;
 /** The public half of the key that signs the updates (Ed25519, raw, base64). */
-export const UPDATE_PUBLIC_KEY = '9mCKog9ePCAd11kWYKO1oprGI/ZrRwT8tCBEor8t618=';
+export const UPDATE_PUBLIC_KEY = 'kD6Q46TI5HUQHzWE/UgwvnoLZmwPfQYYlV6NuLtyLds=';
 const PENDING = 'n_mindfulness_app_bundle_next';
 
 /** This copy's number: the workflow run that built it (0 when built by hand). */
