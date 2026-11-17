@@ -59,7 +59,16 @@ describe('the update signature', () => {
     expect(await signatureHolds(manifest, UPDATE_PUBLIC_KEY)).toBe(false);
   });
 
-  it('is not published without the key', () => {
+  it('reads the key however it was pasted (one line, spaces, CRLF)', async () => {
+    for (const k of [pem.replace(/\n/g, ''), pem.replace(/\n/g, ' '), pem.replace(/\n/g, '\r\n'), `  ${pem}  `]) {
+      const { status, manifest } = signWithScript(k);
+      expect(status).toBe(0);
+      expect(await signatureHolds(manifest, pub)).toBe(true);
+    }
+  });
+
+  it('is not published without the key, or with something that is not one', () => {
     expect(signWithScript('').status).toBe(1);
+    expect(signWithScript('-----BEGIN PRIVATE KEY-----\nnot a key\n-----END PRIVATE KEY-----').status).toBe(1);
   });
 });

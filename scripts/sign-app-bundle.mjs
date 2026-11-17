@@ -13,7 +13,16 @@ if (!pem) { console.error('No OTA_SIGNING_KEY: the update is not published.'); p
 if (!/^\d+$/.test(version) || !/^https:\/\//.test(url) || !/^[0-9a-f]{64}$/.test(sha256) || !/^\d+$/.test(minNative)) {
   console.error('Usage: sign-app-bundle.mjs <version> <url> <sha256> <minNative>'); process.exit(1);
 }
-const key = createPrivateKey(pem);
+// The key as pasted (a phone may turn its line breaks into spaces or drop
+// them): only the base64 between the markers counts.
+const der = Buffer.from(pem.replace(/-----(BEGIN|END) PRIVATE KEY-----/g, '').replace(/[^A-Za-z0-9+/=]/g, ''), 'base64');
+let key;
+try {
+  key = createPrivateKey({ key: der, format: 'der', type: 'pkcs8' });
+} catch {
+  console.error('OTA_SIGNING_KEY is not a readable Ed25519 private key (PKCS8).'); process.exit(1);
+}
+if (key.asymmetricKeyType !== 'ed25519') { console.error('OTA_SIGNING_KEY is not an Ed25519 key.'); process.exit(1); }
 const text = Buffer.from(`mindfulness-app-bundle\n${version}\n${url}\n${sha256}\n${minNative}`);
 const sig = sign(null, text, key);
 if (!verify(null, text, createPublicKey(key), sig)) { console.error('The signature does not check.'); process.exit(1); }
