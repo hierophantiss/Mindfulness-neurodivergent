@@ -144,6 +144,9 @@ interface TaiChiHeroProps {
   /** Only the figure, without its earth, axis or the light under the feet: for
    *  a picture that draws its own ground (Chapter 1's "Gravity and thoughts"). */
   figureOnly?: boolean;
+  /** Only the sky, the earth, the axis and the light behind the figure, for
+   *  the 3D figure to stand in front of (TaiChiHero3D). */
+  backdrop?: boolean;
   /** "natural": standing at ease, the arms hanging close to the body (the
    *  chapters' animations); the practices keep the Tai Chi stance. */
   stance?: "taichi" | "natural";
@@ -164,6 +167,7 @@ export default function TaiChiHero({
   idle = false,
   bare = false,
   figureOnly = false,
+  backdrop = false,
   stance = "taichi",
   seated = false,
   sway = 0,
@@ -502,6 +506,7 @@ export default function TaiChiHero({
           {!figureOnly && (seated
             ? <ellipse cx={200} cy={SEAT_FLOOR + 0.6} rx={36} ry={3} fill="url(#tc-foot-shadow)" />
             : <ellipse cx={200} cy={289} rx={17} ry={2.6} fill="url(#tc-foot-shadow)" />)}
+          {!backdrop && (<>
           {seated && <SeatedLegs />}
 
           {/* CHARACTER / HERO MODEL: drawn from one half and its mirror, so both sides match */}
@@ -645,8 +650,10 @@ export default function TaiChiHero({
           </g>
           </g>
 
+          </>)}
+
           {/* The palms' light trails */}
-          {trail.length > 1 && (
+          {!backdrop && trail.length > 1 && (
             <g stroke="var(--color-sign-gold)" strokeLinecap="round" fill="none">
               {trail.slice(1).map((p, i) => {
                 const q = trail[i];

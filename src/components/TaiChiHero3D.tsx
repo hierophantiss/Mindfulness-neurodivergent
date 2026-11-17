@@ -5,6 +5,7 @@
 
 import { useEffect, useRef } from "react";
 import { createTaiChi3D, type TaiChi3D } from "../lib/taiChi3D";
+import TaiChiHero from "./TaiChiHero";
 
 interface Props {
   breathForce: number;
@@ -16,7 +17,7 @@ interface Props {
   onTrouble: () => void;
 }
 
-/** The Tai Chi figure in 3D, in the same square card as the 2D one. */
+/** The Tai Chi figure in 3D, standing on the same earth as the 2D one. */
 export default function TaiChiHero3D({ breathForce, isRising, movementType, idle = false, breathStateText, onTrouble }: Props) {
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<TaiChi3D | null>(null);
@@ -42,11 +43,13 @@ export default function TaiChiHero3D({ breathForce, isRising, movementType, idle
     sceneRef.current?.setState({ bf: breathForce, isRising, movementType, idle });
   });
 
+  // The 2D picture's sky, earth and axis behind; the 3D figure stands on them.
   return (
-    <div className="relative w-full aspect-square bg-[#070b14] rounded-2xl overflow-hidden border border-slate-800 shadow-2xl flex items-center justify-center">
-      <div ref={mountRef} className="absolute inset-0" />
+    <div className="relative w-full">
+      <TaiChiHero backdrop breathForce={breathForce} isRising={isRising} movementType={movementType} idle={idle} breathStateText="" />
+      <div ref={mountRef} className="absolute inset-0 rounded-2xl overflow-hidden" />
       {breathStateText && (
-        <div className="absolute top-4 flex flex-col items-center">
+        <div className="absolute top-4 inset-x-0 flex flex-col items-center">
           <span className="text-[13px] text-[var(--tint-lav-ink)] bg-[var(--tint-lav-bg)] px-3 py-1 rounded-full border border-[var(--tint-lav-line)]">
             {breathStateText}
           </span>

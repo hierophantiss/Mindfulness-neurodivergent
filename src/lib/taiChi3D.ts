@@ -43,7 +43,8 @@ export function createTaiChi3D(mount: HTMLElement, onTrouble: () => void): TaiCh
   type SweptLimb = ReturnType<typeof createSweptLimbMesh>;
   let state: TaiChi3DState = { bf: 1, isRising: true, movementType: '5-5', idle: true };
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance', alpha: false });
+  const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance', alpha: true, premultipliedAlpha: true });
+  renderer.setClearColor(0x000000, 0);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.08;
@@ -56,8 +57,7 @@ export function createTaiChi3D(mount: HTMLElement, onTrouble: () => void): TaiCh
   renderer.domElement.addEventListener('webglcontextlost', onLost);
 
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x070b14);
-  scene.fog = new THREE.FogExp2(0x070b14, 0.065);
+  // No background of its own: it stands on the 2D picture's earth and sky.
 
   // A soft studio light to reflect (made here, no files).
   {
@@ -82,16 +82,21 @@ export function createTaiChi3D(mount: HTMLElement, onTrouble: () => void): TaiCh
     camera.updateProjectionMatrix();
     renderer.setSize(w, h);
     // The whole figure, from the feet to the raised palms, and the arms out at level.
-    camDist = Math.max(1.3 / HALF_FOV, 0.98 / (HALF_FOV * aspect));
+    // The figure stands where the 2D one does: soles at 87% of the height of
+    // the (square) picture, 1.8 m tall over 62% of it; the camera looks level.
+    const k = 0.69 * Math.min(1, aspect);   // screen half-heights per metre
+    camDist = 1 / (k * HALF_FOV);
+    camY = 0.749 / 0.69;
     placeCamera();
   }
   // The camera stands in front; for the bow it moves round a little to the
   // side (still, not turning), so the fold at the hips can be seen.
   let camDist = 4;
+  let camY = 1.08;
   let camYaw = 0;
   function placeCamera() {
-    camera.position.set(Math.sin(camYaw) * camDist, 1.22, Math.cos(camYaw) * camDist);
-    camera.lookAt(0, 1.08, 0);
+    camera.position.set(Math.sin(camYaw) * camDist, camY, Math.cos(camYaw) * camDist);
+    camera.lookAt(0, camY, 0);
   }
   fitCamera();
 
@@ -237,137 +242,6 @@ export function createTaiChi3D(mount: HTMLElement, onTrouble: () => void): TaiCh
     roughness: 0.42,
     metalness: 0.35
   });
-
-  // ── Soft Circle of Light & Cosmic Ground ──
-  const lightDiscTex = (() => {
-    const c = document.createElement('canvas');
-    c.width = 256;
-    c.height = 256;
-    const ctx = c.getContext('2d')!;
-    const g = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
-    g.addColorStop(0.0, 'rgba(240, 211, 151, 0.56)');
-    g.addColorStop(0.36, 'rgba(201, 189, 240, 0.24)');
-    g.addColorStop(0.72, 'rgba(201, 189, 240, 0.06)');
-    g.addColorStop(1.0, 'rgba(5, 7, 16, 0.0)');
-    ctx.fillStyle = g;
-    ctx.fillRect(0, 0, 256, 256);
-    const tex = new THREE.CanvasTexture(c);
-    tex.colorSpace = THREE.SRGBColorSpace;
-    return tex;
-  })();
-
-  const floorCircle = new THREE.Mesh(
-    new THREE.PlaneGeometry(2.3, 2.3),
-    new THREE.MeshBasicMaterial({
-      map: lightDiscTex,
-      transparent: true,
-      depthWrite: false,
-      polygonOffset: true,
-      polygonOffsetFactor: -1,
-      polygonOffsetUnits: -1
-    })
-  );
-  floorCircle.rotation.x = -Math.PI / 2;
-  floorCircle.position.y = 0.002;
-  scene.add(floorCircle);
-
-  const floorGoldRing = new THREE.Mesh(
-    new THREE.RingGeometry(0.62, 0.635, 48),
-    new THREE.MeshBasicMaterial({
-      color: 0xf0d397,
-      transparent: true,
-      opacity: 0.28,
-      side: THREE.DoubleSide,
-      depthWrite: false
-    })
-  );
-  floorGoldRing.rotation.x = -Math.PI / 2;
-  floorGoldRing.position.y = 0.003;
-  scene.add(floorGoldRing);
-
-  // Soft contact shadow under bare feet
-  const footShadowTex = (() => {
-    const c = document.createElement('canvas');
-    c.width = 128;
-    c.height = 128;
-    const ctx = c.getContext('2d')!;
-    const g = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
-    g.addColorStop(0.0, 'rgba(2, 3, 8, 0.68)');
-    g.addColorStop(1.0, 'rgba(2, 3, 8, 0.0)');
-    ctx.fillStyle = g;
-    ctx.fillRect(0, 0, 128, 128);
-    const tex = new THREE.CanvasTexture(c);
-    tex.colorSpace = THREE.SRGBColorSpace;
-    return tex;
-  })();
-
-  const groundShadowPlane = new THREE.Mesh(
-    new THREE.PlaneGeometry(0.68, 0.38),
-    new THREE.MeshBasicMaterial({
-      map: footShadowTex,
-      transparent: true,
-      depthWrite: false
-    })
-  );
-  groundShadowPlane.rotation.x = -Math.PI / 2;
-  groundShadowPlane.position.set(0, 0.004, 0.042);
-  scene.add(groundShadowPlane);
-
-  // Subtle vertical golden axis beam & energy pulses behind figure
-  const axisGeo = new THREE.CylinderGeometry(0.0025, 0.004, 2.7, 6);
-  const axisMat = new THREE.MeshBasicMaterial({
-    color: 0xf0d397,
-    transparent: true,
-    opacity: 0.12,
-    depthWrite: false
-  });
-  const axisBeam = new THREE.Mesh(axisGeo, axisMat);
-  axisBeam.position.set(0, 1.35, -0.18);
-  scene.add(axisBeam);
-
-  const pulseMat1 = new THREE.MeshBasicMaterial({ color: 0xf0d397, transparent: true, opacity: 0.55 });
-  const pulseMat2 = new THREE.MeshBasicMaterial({ color: 0xc9bdf0, transparent: true, opacity: 0.48 });
-  const pulseOrb1 = new THREE.Mesh(new THREE.SphereGeometry(0.020, 8, 8), pulseMat1);
-  const pulseOrb2 = new THREE.Mesh(new THREE.SphereGeometry(0.016, 8, 8), pulseMat2);
-  pulseOrb1.position.set(0, 0.1, -0.18);
-  pulseOrb2.position.set(0, 1.1, -0.18);
-  scene.add(pulseOrb1);
-  scene.add(pulseOrb2);
-
-  // ── Ambient Cosmic Stars (InstancedMesh, low poly) ──
-  const STAR_COUNT = 44;
-  const starGeo = new THREE.SphereGeometry(0.015, 6, 6);
-  const starMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
-  const starInstances = new THREE.InstancedMesh(starGeo, starMat, STAR_COUNT);
-  starInstances.frustumCulled = false;
-  const starMeta: { x: number; y: number; z: number; baseScale: number; phase: number; speed: number }[] = [];
-  (function populateStars() {
-    let hash = 0;
-    const seed = 'taichi_3d_stars';
-    for (let i = 0; i < seed.length; i++) hash = seed.charCodeAt(i) + ((hash << 5) - hash);
-    const rand = () => {
-      const x = Math.sin(hash++) * 10000;
-      return x - Math.floor(x);
-    };
-    const dummy = new THREE.Object3D();
-    const col = new THREE.Color();
-    for (let i = 0; i < STAR_COUNT; i++) {
-      const x = (rand() - 0.5) * 6.5;
-      const y = 0.55 + rand() * 3.1;
-      const z = -1.8 - rand() * 3.5;
-      const s = 0.45 + rand() * 0.95;
-      dummy.position.set(x, y, z);
-      dummy.scale.setScalar(s);
-      dummy.updateMatrix();
-      starInstances.setMatrixAt(i, dummy.matrix);
-      col.setHex(rand() > 0.5 ? 0xf0d397 : 0xc9bdf0);
-      starInstances.setColorAt(i, col);
-      starMeta.push({ x, y, z, baseScale: s, phase: rand() * Math.PI * 2, speed: 0.8 + rand() * 1.3 });
-    }
-    starInstances.instanceMatrix.needsUpdate = true;
-    if (starInstances.instanceColor) starInstances.instanceColor.needsUpdate = true;
-    scene.add(starInstances);
-  })();
 
   // ── Build 3D Figure from Simple Shapes (Capsules, Spheres, Cylinders) ──
   const figureGroup = new THREE.Group();
@@ -817,7 +691,6 @@ export function createTaiChi3D(mount: HTMLElement, onTrouble: () => void): TaiCh
   const _quat = new THREE.Quaternion();
   const _euler = new THREE.Euler();
   const _qWrist = new THREE.Quaternion();
-  const _dummy = new THREE.Object3D();
 
   const _sL3 = new THREE.Vector3();
   const _sR3 = new THREE.Vector3();
@@ -1078,24 +951,8 @@ export function createTaiChi3D(mount: HTMLElement, onTrouble: () => void): TaiCh
       orientHand(arm, fingers, _hint);
     }
 
-    // The floor light and the axis breathe.
+    // The light at the feet breathes.
     floorGlowLight.intensity = 0.65 + 0.35 * bf;
-    floorGoldRing.material.opacity = 0.22 + 0.16 * bf;
-    pulseOrb1.position.y = 0.05 + bf * 2.15;
-    pulseMat1.opacity = (1 - bf) * 0.65;
-    const bf2 = (bf + 0.5) % 1;
-    pulseOrb2.position.y = 0.05 + bf2 * 2.15;
-    pulseMat2.opacity = (1 - bf2) * 0.5;
-
-    for (let i = 0; i < STAR_COUNT; i++) {
-      const st = starMeta[i];
-      const tw = 0.55 + 0.45 * Math.sin(tSec * st.speed + st.phase);
-      _dummy.position.set(st.x, st.y, st.z);
-      _dummy.scale.setScalar(st.baseScale * (0.7 + 0.35 * bf) * tw);
-      _dummy.updateMatrix();
-      starInstances.setMatrixAt(i, _dummy.matrix);
-    }
-    starInstances.instanceMatrix.needsUpdate = true;
 
     // Soft gold trails behind the palms.
     if (idle) trailPoints.length = 0;
