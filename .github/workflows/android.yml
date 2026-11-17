@@ -2,8 +2,9 @@
 # no connection and no website (capacitor.config.ts).
 #
 # - Every run makes an APK (as a downloadable artifact).
-# - On main it also publishes the site's files as a bundle in the release
-#   "app-bundle", where installed apps find their update (src/lib/nativeUpdate.ts).
+# - On main it also publishes the site's files as a signed bundle in the
+#   release "app-bundle", where installed apps find their update
+#   (src/lib/nativeUpdate.ts; job publish-update, environment app-update).
 # - On main, with the upload key in the secrets, it also makes the package
 #   for Google Play (AAB) in the release "play".
 # - Other branches build a test copy (CAP_TEST=1) with its own id and name,
@@ -195,18 +196,57 @@ jobs:
           gh release view android-test >/dev/null 2>&1 || gh release create android-test --prerelease --title "Android app: test copy" --notes "A test copy of the Android app (its own id and name, next to the app from the store). Made by the Android workflow from the branch ${{ github.ref_name }}." --latest=false
           gh release upload android-test mindfulness-test.apk --clobber
 
-      - name: Publish the update for installed apps (main only)
+      # The update for installed apps: the site's files as one zip, handed to
+      # the job below, which signs and publishes it.
+      - name: The update for installed apps (main only)
         if: github.ref == 'refs/heads/main'
+        run: (cd dist && zip -qr "../app-bundle-$N.zip" .)
+
+      - uses: actions/upload-artifact@v4
+        if: github.ref == 'refs/heads/main'
+        with:
+          name: app-bundle
+          path: app-bundle-${{ github.run_number }}.zip
+          retention-days: 7
+
+  # Signs the update and publishes it to the release "app-bundle". The key
+  # (OTA_SIGNING_KEY) is a secret of the environment "app-update" only, so
+  # only this job, on main, can sign; the environment can ask for approval
+  # before it runs (Settings → Environments → app-update → Required
+  # reviewers). Installed apps take an update only with a signature their own
+  # key confirms (src/lib/nativeUpdate.ts). The last three bundles stay, so a
+  # phone that read the manifest a moment before still finds its file.
+  publish-update:
+    needs: android
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: app-update
+    env:
+      N: ${{ github.run_number }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: scripts/sign-app-bundle.mjs
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: app-bundle
+
+      - name: Sign and publish the update
         env:
           GH_TOKEN: ${{ github.token }}
+          OTA_SIGNING_KEY: ${{ secrets.OTA_SIGNING_KEY }}
         run: |
-          (cd dist && zip -qr "../app-bundle-$N.zip" .)
           sha=$(sha256sum "app-bundle-$N.zip" | cut -d' ' -f1)
           url="https://github.com/${{ github.repository }}/releases/download/app-bundle/app-bundle-$N.zip"
-          printf '{"version":%s,"url":"%s","sha256":"%s","minNative":1}\n' "$N" "$url" "$sha" > app-bundle.json
-          gh release view app-bundle >/dev/null 2>&1 || gh release create app-bundle --title "Android app: update bundle" --notes "The site's files for the Android app's own updates (src/lib/nativeUpdate.ts). Made by the Android workflow." --latest=false
+          node scripts/sign-app-bundle.mjs "$N" "$url" "$sha" 1 > app-bundle.json
+          cat app-bundle.json
+          gh release view app-bundle >/dev/null 2>&1 || gh release create app-bundle --title "Android app: update bundle" --notes "The site's files for the Android app's own updates (src/lib/nativeUpdate.ts), signed. Made by the Android workflow." --latest=false
+          # The zip first, then the manifest that points to it.
           gh release upload app-bundle "app-bundle-$N.zip" --clobber
           gh release upload app-bundle app-bundle.json --clobber
-          for old in $(gh release view app-bundle --json assets -q '.assets[].name' | grep -E '^app-bundle-[0-9]+\.zip$' | grep -v "^app-bundle-$N.zip$"); do
-            gh release delete-asset app-bundle "$old" -y
+          for old in $(gh release view app-bundle --json assets -q '.assets[].name' | grep -E '^app-bundle-[0-9]+\.zip$' | sed -E 's/^app-bundle-([0-9]+)\.zip$/\1/' | sort -rn | tail -n +4); do
+            gh release delete-asset app-bundle "app-bundle-$old.zip" -y
           done

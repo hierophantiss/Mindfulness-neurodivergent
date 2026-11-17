@@ -7,20 +7,55 @@
 //
 // Nothing about the person is sent: it is one request for a small file.
 // The plugin's own reporting to Capgo is off (capacitor.config.ts).
+//
+// Trust: a copy runs only if (1) it comes from this repository's own release,
+// at the one address below, (2) app-bundle.json carries an Ed25519 signature
+// of its version, address and SHA-256 that this app's own key confirms, and
+// (3) the file matches that SHA-256 (the plugin checks it). The private key
+// lives only in the GitHub environment "app-update" (secret OTA_SIGNING_KEY),
+// used by the Android workflow's last job; whoever can only write to the
+// release cannot make a copy the app will take. If that key is ever lost or
+// changed, a new key reaches the phones through a Google Play update.
 
+import * as ed from '@noble/ed25519';
 import { recordError } from './errorLog';
 
-const MANIFEST = 'https://github.com/hierophantiss/Mindfulness-neurodivergent/releases/download/app-bundle/app-bundle.json';
+const RELEASE = 'https://github.com/hierophantiss/Mindfulness-neurodivergent/releases/download/app-bundle/';
+const MANIFEST = `${RELEASE}app-bundle.json`;
+/** The public half of the key that signs the updates (Ed25519, raw, base64). */
+export const UPDATE_PUBLIC_KEY = '9mCKog9ePCAd11kWYKO1oprGI/ZrRwT8tCBEor8t618=';
 const PENDING = 'n_mindfulness_app_bundle_next';
 
 /** This copy's number: the workflow run that built it (0 when built by hand). */
 export const BUNDLE_VERSION = Number(import.meta.env.VITE_BUNDLE_VERSION || 0);
 
-interface Manifest { version: number; url: string; sha256?: string; minNative?: number }
+interface Manifest { version: number; url: string; sha256?: string; minNative?: number; sig?: string }
+
+/** Only a copy from this repository's own release, at its own address. */
+export function fromOurRelease(url: string): boolean {
+  return url.startsWith(RELEASE) && /^app-bundle-\d+\.zip$/.test(url.slice(RELEASE.length));
+}
 
 export function isNewer(m: Partial<Manifest> | null | undefined, mine: number, nativeBuild: number): m is Manifest {
-  return !!m && typeof m.version === 'number' && typeof m.url === 'string' && /^https:\/\//.test(m.url)
+  return !!m && typeof m.version === 'number' && Number.isInteger(m.version) && typeof m.url === 'string' && fromOurRelease(m.url)
     && m.version > mine && nativeBuild >= (m.minNative ?? 0);
+}
+
+/** What the workflow signs (scripts/sign-app-bundle.mjs writes the same). */
+export function signedText(m: Pick<Manifest, 'version' | 'url' | 'sha256' | 'minNative'>): string {
+  return `mindfulness-app-bundle\n${m.version}\n${m.url}\n${m.sha256}\n${m.minNative ?? 0}`;
+}
+
+const fromBase64 = (b: string) => Uint8Array.from(atob(b), (c) => c.charCodeAt(0));
+
+/** Whether this app's key confirms the manifest's signature. */
+export async function signatureHolds(m: Manifest, publicKey = UPDATE_PUBLIC_KEY): Promise<boolean> {
+  try {
+    if (typeof m.sig !== 'string' || typeof m.sha256 !== 'string' || !/^[0-9a-f]{64}$/.test(m.sha256)) return false;
+    return await ed.verifyAsync(fromBase64(m.sig), new TextEncoder().encode(signedText(m)), fromBase64(publicKey));
+  } catch {
+    return false;
+  }
 }
 
 /** At the start: a copy downloaded last time takes over now. Returns true if the app is reloading. */
@@ -50,10 +85,13 @@ async function check() {
   const m = (typeof res.data === 'string' ? JSON.parse(res.data) : res.data) as Partial<Manifest>;
   const info = await App.getInfo();
   if (!isNewer(m, BUNDLE_VERSION, Number(info.build) || 0)) return;
-  // The bundle comes over HTTPS from the repository's own release. The plugin
-  // refuses any download without its SHA-256 (it checks the file against it).
-  if (!m.sha256) return;
-  const bundle = await CapacitorUpdater.download({ url: m.url, version: String(m.version), checksum: m.sha256 });
+  // Signed with the update key, or nothing happens (and a note is kept).
+  // The plugin then checks the downloaded file against the signed SHA-256.
+  if (!(await signatureHolds(m))) {
+    recordError('app-update', new Error(`update ${m.version}: signature does not hold`));
+    return;
+  }
+  const bundle = await CapacitorUpdater.download({ url: m.url, version: String(m.version), checksum: m.sha256! });
   try { localStorage.setItem(PENDING, bundle.id); } catch { /* ignore */ }
 }
 
