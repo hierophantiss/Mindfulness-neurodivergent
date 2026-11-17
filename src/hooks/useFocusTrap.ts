@@ -30,6 +30,14 @@ export function useFocusTrap(isOpen: boolean, onClose: () => void) {
         const firstElement = focusableElements[0];
         const lastElement = focusableElements[focusableElements.length - 1];
 
+        // Focus somewhere else (the first Tab before the window took it):
+        // bring it into the window.
+        if (!modalRef.current.contains(document.activeElement)) {
+          (e.shiftKey ? lastElement : firstElement)?.focus();
+          e.preventDefault();
+          return;
+        }
+
         if (e.shiftKey) {
           if (document.activeElement === firstElement || document.activeElement === modalRef.current) {
             lastElement?.focus();

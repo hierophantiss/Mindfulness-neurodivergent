@@ -1,3 +1,4 @@
+import MotionGate from './MotionGate';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
@@ -133,5 +134,6 @@ export default function SamathaAnimation({ bare = false }: { bare?: boolean }) {
       </div>
     </>
   );
-  return bare ? content : <div className="anim-frame my-6">{content}</div>;
+  const gated = <MotionGate>{content}</MotionGate>;
+  return bare ? gated : <div className="anim-frame my-6">{gated}</div>;
 }

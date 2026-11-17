@@ -1,3 +1,4 @@
+import MotionGate from './MotionGate';
 import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useEffect, useRef, useState } from 'react';
 import GravityThoughts from './animations/GravityThoughts';
@@ -49,9 +50,10 @@ export default function InteractiveRenderer({ id, asModal }: InteractiveRenderer
     const src = `/animations/${fileName}?lang=${language}`;
     const frameTitle = language === 'en' ? 'Chapter animation' : 'Κινούμενη εικόνα του κεφαλαίου';
     // The racing mind (Chapter 3's overload and Chapter 5): with a voice.
-    if (fileName === 'racing_mind.html') return <VoicedFrame src={src} title={frameTitle} voiceId="racingmind" />;
+    if (fileName === 'racing_mind.html') return <MotionGate><VoicedFrame src={src} title={frameTitle} voiceId="racingmind" /></MotionGate>;
 
     return (
+      <MotionGate>
       <iframe 
         src={src} 
         className="absolute inset-0 w-full h-full border-0"
@@ -59,6 +61,7 @@ export default function InteractiveRenderer({ id, asModal }: InteractiveRenderer
         sandbox="allow-scripts allow-same-origin"
         loading="lazy"
       />
+      </MotionGate>
     );
   };
 

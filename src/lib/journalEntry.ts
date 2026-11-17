@@ -31,7 +31,15 @@ export function loadEntry(date: string): JournalEntry {
     const v2 = localStorage.getItem(V2(date));
     if (v2) {
       const parsed = JSON.parse(v2) as JournalEntry;
-      return { ...EMPTY, ...parsed, axes: parsed.axes || [], state: parsed.state || null };
+      // Only what has the right kind is taken (an entry from a changed file
+      // must not break the page).
+      return {
+        ...EMPTY, ...parsed,
+        text: typeof parsed.text === 'string' ? parsed.text : '',
+        axes: Array.isArray(parsed.axes) ? parsed.axes : [],
+        axesOff: Array.isArray(parsed.axesOff) ? parsed.axesOff : undefined,
+        state: typeof parsed.state === 'string' ? parsed.state : null,
+      };
     }
     const v1 = localStorage.getItem(V1(date));
     if (v1) return { ...EMPTY, text: v1 };

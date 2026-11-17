@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import { BookOpen, ChevronLeft, ChevronRight, X, Play, Youtube, Film, Check, SkipForward, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link, useLocation, useNavigate, useSearchParams, useParams } from 'react-router-dom';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import { useLanguage } from '../hooks/useLanguage';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { cn } from '../lib/utils';
@@ -183,13 +184,11 @@ export default function RabbitHole() {
     }));
 
   // Story Viewer Handlers
+  // (The bound is checked inside the update: the arrow keys' listener keeps
+  // the page number of its first render.)
   const handleNext = () => {
-    if (activeArticle) {
-      const activeData = articles.find(a => a.id === activeArticle);
-      if (activeData && currentPage < activeData.pages.length - 1) {
-        setCurrentPage(p => p + 1);
-      }
-    }
+    const pages = articles.find(a => a.id === activeArticle)?.pages.length ?? 0;
+    if (pages) setCurrentPage(p => Math.min(p + 1, pages - 1));
   };
 
   const handlePrev = () => {
@@ -216,20 +215,29 @@ export default function RabbitHole() {
       if (activeArticle) {
         if (e.key === 'ArrowRight') handleNext();
         if (e.key === 'ArrowLeft') handlePrev();
-        if (e.key === 'Escape') setActiveArticle(null);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [activeArticle]);
 
+  // The open article holds the keyboard's focus (Tab stays in it; Escape closes it).
+  const viewerRef = useFocusTrap(!!activeArticle, () => setActiveArticle(null));
+
   // Story Viewer Render
   if (activeArticle) {
     const article = articles.find(a => a.id === activeArticle);
-    if (!article) return <div className="text-ink p-20 mt-20 text-center">Article not found: {activeArticle}</div>;
+    if (!article) return (
+      <div className="text-ink p-20 mt-20 text-center space-y-4">
+        <p>{language === 'el' ? 'Αυτό το κείμενο δεν βρέθηκε.' : 'This text was not found.'}</p>
+        <button type="button" onClick={() => setActiveArticle(null)} className="btn-soft">
+          {language === 'el' ? 'Πίσω στην Κουνελότρυπα' : 'Back to the Rabbit Hole'}
+        </button>
+      </div>
+    );
 
     const storyViewer = (
-      <div role="dialog" aria-modal="true" aria-labelledby="rabbithole-article-title" className="fixed inset-0 z-[9999] bg-black/40 backdrop-blur-md text-ink flex flex-col animate-in fade-in duration-300">
+      <div ref={viewerRef} role="dialog" aria-modal="true" aria-labelledby="rabbithole-article-title" className="fixed inset-0 z-[9999] bg-black/40 backdrop-blur-md text-ink flex flex-col animate-in fade-in duration-300">
         
         {/* Top Progress Bar & Header */}
         <div className="pt-safe px-4 pb-3 flex items-center justify-between border-b border-white/5 bg-black/40 backdrop-blur-md/80 backdrop-blur-md relative z-20">
@@ -606,8 +614,8 @@ export default function RabbitHole() {
                             className={cn("w-3 h-3 rounded-full", isVoidActive ? "bg-white" : "bg-teal-500")} 
                           />
                           {isVoidActive 
-                             ? (language === 'el' ? 'Return from Reality' : 'Return from the Void')
-                             : (language === 'el' ? 'Enter the Void' : 'Enter the Void')}
+                             ? (language === 'el' ? 'Επιστροφή από το Κενό' : 'Return from the Void')
+                             : (language === 'el' ? 'Είσοδος στο Κενό' : 'Enter the Void')}
                         </motion.button>
                       )}
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { clearAll } from '../lib/storage';
 import InfoModal from './InfoModalLazy';
-import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import BackupDialog, { type BackupMode } from './BackupDialog';
 import { Home, BookOpen, Activity, X, Info, Music, LayoutGrid, EyeOff, Eye, Database, Download, Sparkles, RotateCcw, Headphones, LetterText, Compass, Settings, Layers } from 'lucide-react';
 import { MethodMark } from './MethodMark';
@@ -106,7 +106,8 @@ export default function NavigationMenu() {
   };
 
   // Esc closes the open menu.
-  useKeyboardShortcuts({ Escape: () => setIsOpen(false) }, isOpen);
+  // The open menu holds the keyboard's focus: Tab stays in it, Escape closes it.
+  const panelRef = useFocusTrap(isOpen, () => setIsOpen(false));
 
   const showToast = (message: string) => {
     setToastMessage(message);
@@ -279,6 +280,7 @@ export default function NavigationMenu() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="fixed inset-0 bg-[#0f1117]/70 backdrop-blur-sm z-[9998]"
+              aria-hidden="true"
               onClick={() => setIsOpen(false)}
             />
             
@@ -287,6 +289,10 @@ export default function NavigationMenu() {
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              ref={panelRef}
+              role="dialog"
+              aria-modal="true"
+              aria-label={language === 'en' ? 'More Options' : 'Περισσότερα'}
               data-nosnippet
               className="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-[480px] max-h-[85vh] short:max-h-[94dvh] desk:left-[260px] desk:right-auto desk:bottom-4 desk:mx-0 desk:rounded-[2rem] desk:border desk:border-white/10 bg-[#1a1d27]/98 backdrop-blur-2xl border-t border-white/10 z-[9999] shadow-[0_-20px_50px_rgba(0,0,0,0.6)] flex flex-col rounded-t-[2rem]"
             >

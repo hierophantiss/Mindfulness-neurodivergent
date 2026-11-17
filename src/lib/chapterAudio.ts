@@ -110,9 +110,10 @@ export async function keepOnDevice(lang: ReadLang, num: number, version: string)
     if (!cache || (await cache.match(url))) return;
     const res = await fetch(url);
     if (!res.ok || res.status !== 200) return;
-    // An older recording of the same chapter goes.
-    for (const r of await cache.keys()) if (isMp3(r.url) && samePath(r.url, url)) await cache.delete(r);
+    // The new recording first; then an older one of the same chapter goes
+    // (if the new one does not fit, the old one stays for listening offline).
     await cache.put(url, res);
+    for (const r of await cache.keys()) if (isMp3(r.url) && samePath(r.url, url) && r.url !== new URL(url, location.href).href) await cache.delete(r);
     // Oldest chapters go first; a language kept offline by hand never goes.
     const kept = offlineLangs();
     const audio = (await cache.keys()).filter((r) => isMp3(r.url) && !kept.includes(langNumOf(r.url)?.[0] as ReadLang));

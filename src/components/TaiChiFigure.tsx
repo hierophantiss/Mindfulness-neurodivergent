@@ -5,16 +5,16 @@
 
 import { lazy, Suspense, useState, type ComponentProps } from "react";
 import TaiChiHero from "./TaiChiHero";
+import { useAccessibility } from "../hooks/useAccessibility";
 
 // The 3D figure (three.js) loads only here, on the practice page.
 const TaiChiHero3D = lazy(() => import("./TaiChiHero3D"));
 
 let can3D: boolean | null = null;
-/** A real graphics chip and no request for less motion: the 3D figure. */
+/** A real graphics chip: the 3D figure can be drawn. */
 function wants3D(): boolean {
   if (can3D !== null) return can3D;
   if (typeof window === "undefined") return (can3D = false);
-  if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return (can3D = false);
   try {
     const c = document.createElement("canvas");
     const gl = (c.getContext("webgl2") || c.getContext("webgl")) as WebGLRenderingContext | null;
@@ -35,9 +35,11 @@ function wants3D(): boolean {
  * for) the 2D figure, which is also shown while the 3D one loads.
  */
 export default function TaiChiFigure(props: ComponentProps<typeof TaiChiHero>) {
+  // "Less motion" (the app's setting, which starts from the device's): 2D.
+  const { reduceMotion } = useAccessibility();
   const [use3D, setUse3D] = useState(wants3D);
   const flat = <TaiChiHero {...props} />;
-  if (!use3D) return flat;
+  if (!use3D || reduceMotion) return flat;
   return (
     <Suspense fallback={flat}>
       <TaiChiHero3D

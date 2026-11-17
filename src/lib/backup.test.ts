@@ -102,3 +102,40 @@ describe('a backup locked with a passphrase', () => {
     await expect(unlockBackup(JSON.stringify(locked), 'πολύ καλός κωδικός')).rejects.toThrow('passphrase');
   }, 30_000);
 });
+
+describe('restore: each field checked, all or nothing', () => {
+  beforeEach(() => localStorage.clear());
+
+  it('a Journal day whose fields are of the wrong kind is left out (it would break the page)', () => {
+    const file = JSON.stringify({ app: 'neurodivergent-mindfulness', version: 2, data: {
+      'journal_v2_2026-11-01': JSON.stringify({ text: 'καλή', mood: null, state: null, axes: ['breath'], timestamp: 1 }),
+      'journal_v2_2026-11-02': JSON.stringify({ text: { evil: true }, axes: [] }),
+      'journal_v2_2026-11-03': JSON.stringify({ text: 'x', axes: 'breath' }),
+    } });
+    expect(restoreBackup(file)).toEqual({ format: 'full', restored: 1, left: 2 });
+    expect(localStorage.getItem('journal_v2_2026-11-02')).toBeNull();
+  });
+
+  it('the old Settings backup is checked too', () => {
+    expect(() => restoreBackup(JSON.stringify({ chapterProgress: 'nope', programProgress: { week: 'x' } }))).toThrow();
+    expect(localStorage.getItem('mindful_companion_v5')).toBeNull();
+  });
+
+  it('if the storage fills up halfway, what was there before is put back', () => {
+    localStorage.setItem('vocal_pitch', 'low');
+    const real = Storage.prototype.setItem;
+    let n = 0;
+    Storage.prototype.setItem = function (k: string, v: string) {
+      if (++n === 2) throw new DOMException('full', 'QuotaExceededError');
+      return real.call(this, k, v);
+    };
+    try {
+      const file = JSON.stringify({ app: 'neurodivergent-mindfulness', version: 2, data: { vocal_pitch: 'high', mindfulness_lang: 'en' } });
+      expect(() => restoreBackup(file)).toThrow();
+    } finally {
+      Storage.prototype.setItem = real;
+    }
+    expect(localStorage.getItem('vocal_pitch')).toBe('low');
+    expect(localStorage.getItem('mindfulness_lang')).toBeNull();
+  });
+});

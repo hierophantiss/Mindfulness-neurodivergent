@@ -49,7 +49,10 @@ export async function onRequest({ request, params, waitUntil }) {
   const isMap = ext === 'json';
   // The book's files are large (up to ~70 MB): passed through as they come.
   if (file.tag !== 'app-audio') return passThrough(request, file.tag, name, ext);
-  const v = new URL(request.url).searchParams.get('v');
+  // The version is the recording's length in seconds (chapterAudio.ts); any
+  // other value is ignored, so made-up values cannot bypass the cache.
+  const vRaw = new URL(request.url).searchParams.get('v');
+  const v = vRaw && /^\d{1,6}(?:\.\d{1,4})?$/.test(vRaw) ? vRaw : null;
   const cache = caches.default;
   const key = new Request(`https://audio-cache.neurodivergent-mindfulness.org/${file.tag}/${name}${v ? `?v=${encodeURIComponent(v)}` : ''}`);
 

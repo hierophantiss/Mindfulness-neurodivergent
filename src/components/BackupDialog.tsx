@@ -4,6 +4,7 @@ import { X, Lock } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { backupText, isLocked, lockBackup, restoreBackup, saveBackupFile, unlockBackup } from '../lib/backup';
+import { RESTORED_KEY } from './RestoredNote';
 
 // Saving a copy of the data, and bringing one back: the menu, Settings and
 // the home page's monthly reminder all open this. A copy can be locked with a
@@ -55,7 +56,10 @@ export default function BackupDialog({ mode, onClose, onSaved }: Props) {
       setStep({ s: 'busy' });
       const plain = backupText();
       const text = lock ? await lockBackup(plain, pass) : plain;
-      saveBackupFile(text, lock);
+      if (!(await saveBackupFile(text, lock))) {
+        setStep({ s: 'error', message: el ? 'Το αντίγραφο δεν αποθηκεύτηκε (έκλεισε το παράθυρο κοινοποίησης). Δοκίμασε ξανά και διάλεξε πού θα πάει, π.χ. Αρχεία ή Drive.' : 'The copy was not saved (the share window was closed). Try again and choose where it goes, e.g. Files or Drive.' });
+        return;
+      }
       setPass(''); setPass2('');
       setStep({ s: 'saved' });
       onSaved?.();
@@ -68,7 +72,10 @@ export default function BackupDialog({ mode, onClose, onSaved }: Props) {
     try {
       const r = restoreBackup(text);
       setStep({ s: 'restored', restored: r.restored, left: r.left });
-      window.setTimeout(() => window.location.reload(), r.left ? 4000 : 2000);
+      // Start again at once, before the open pages write their own (older)
+      // state over what was just restored; the next start says it was done.
+      try { sessionStorage.setItem(RESTORED_KEY, JSON.stringify({ left: r.left })); } catch { /* the restart still shows it all */ }
+      window.setTimeout(() => window.location.reload(), 50);
     } catch {
       setStep({ s: 'error', message: el ? 'Αυτό το αρχείο δεν είναι αντίγραφο της εφαρμογής. Δεν άλλαξε τίποτα.' : 'This file is not a copy from the app. Nothing was changed.' });
     }

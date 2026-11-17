@@ -135,6 +135,8 @@ export default function Install() {
   const { language } = useLanguage();
   const lang = language === 'en' ? 'en' : 'el';
   const t = T[lang];
+  // Back from /download/android when the file could not be reached.
+  const apkLater = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('apk') === 'later';
   const { installed, install } = useInstallApp(lang);
   const [hint, setHint] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -195,11 +197,16 @@ export default function Install() {
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
                 {/* A plain link: the site's /download/android sends it on to the file. */}
                 <a
-                  href="/download/android"
+                  href={`/download/android?lang=${lang}`}
                   className="btn-main"
                 >
                   <Download size={17} aria-hidden="true" /> {t.apk}
                 </a>
+                {apkLater && (
+                  <p role="status" className="w-full text-[13.5px] text-ink/75">
+                    {lang === 'el' ? 'Το αρχείο δεν είναι διαθέσιμο αυτή τη στιγμή. Δοκίμασε ξανά σε λίγο, ή εγκατάστησε από το Google Play.' : 'The file is not available right now. Try again shortly, or install from Google Play.'}
+                  </p>
+                )}
                 <span className="text-[13px] text-ink/70">{t.apkSize}</span>
               </div>
             )}

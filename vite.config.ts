@@ -20,7 +20,9 @@ export default defineConfig(() => {
         workbox: {
           // The app itself (and the shell page), not the 248 prerendered pages: those
           // are for search engines and load from the network when opened.
-          globPatterns: ['**/*.{js,css,woff2,svg,ico}', 'index.html'],
+          // The animation pages of the chapters and the program (iframes) too, so
+          // they open offline (they take ?lang=, which is ignored below).
+          globPatterns: ['**/*.{js,css,woff2,svg,ico}', 'index.html', 'animations/*.html'],
           // Fonts: only the Latin and Greek letters go into the offline copy; the
           // rarer alphabets load from the network if a page ever needs them.
           globIgnores: ['**/*.{mp4,pdf,png,jpg}', '**/*_debug.html', '**/*-{cyrillic,cyrillic-ext,vietnamese,latin-ext,greek-ext}-wght-*.woff2',

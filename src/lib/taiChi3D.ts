@@ -43,12 +43,15 @@ export function createTaiChi3D(mount: HTMLElement, onTrouble: () => void): TaiCh
   type SweptLimb = ReturnType<typeof createSweptLimbMesh>;
   let state: TaiChi3DState = { bf: 1, isRising: true, movementType: '5-5', idle: true };
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance', alpha: true, premultipliedAlpha: true });
+  // Lighter on a phone: on a sharp screen (2× and more) the pixels are fine
+  // enough without antialiasing, and 1.5× is drawn instead of 2× or 3×.
+  const dpr = window.devicePixelRatio || 1;
+  const renderer = new THREE.WebGLRenderer({ antialias: dpr < 2, powerPreference: 'default', alpha: true, premultipliedAlpha: true });
   renderer.setClearColor(0x000000, 0);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.08;
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setPixelRatio(Math.min(dpr, 1.5));
   renderer.setSize(Math.max(1, mount.clientWidth), Math.max(1, mount.clientHeight));
   renderer.domElement.style.display = 'block';
   renderer.domElement.setAttribute('aria-hidden', 'true');

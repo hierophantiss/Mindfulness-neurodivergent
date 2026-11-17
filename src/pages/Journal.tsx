@@ -127,15 +127,20 @@ export default function Journal() {
 
   // Autosave. Both the current and the oldest key are cleared when an entry
   // is emptied, so a deleted entry never comes back.
+  // The new entry is written first; only then is the oldest key removed, so
+  // a write that fails (a full storage) never loses the old one. If it does
+  // fail, the page says so instead of seeming to keep the text.
+  const [notSaved, setNotSaved] = useState(false);
   const save = (patch: Partial<JournalEntry>) => {
     const next: JournalEntry = { ...entry, ...patch, timestamp: Date.now() };
     setEntry(next);
     try {
-      localStorage.removeItem(V1(dateStr));
       if (nothingToKeep(next)) localStorage.removeItem(V2(dateStr));
       else localStorage.setItem(V2(dateStr), JSON.stringify(next));
+      localStorage.removeItem(V1(dateStr));
+      setNotSaved(false);
     } catch {
-      // storage unavailable
+      setNotSaved(true);
     }
   };
 
@@ -358,6 +363,13 @@ export default function Journal() {
                 rows={6}
                 className="mt-4 w-full min-h-[168px] rounded-2xl bg-black/20 border border-white/[0.07] focus:border-[var(--color-accent)]/50 resize-none overflow-hidden outline-none px-4 py-3 text-[16px] desk:text-[17px] leading-[1.7] text-ink/90 placeholder:text-ink/35 transition-colors"
               />
+              {notSaved && (
+                <p role="alert" className="mt-2 rounded-xl border border-[var(--tint-rose-line)] bg-[var(--tint-rose-bg)] px-3 py-2 text-[13.5px] leading-relaxed text-[var(--tint-rose-ink)]">
+                  {lang === 'el'
+                    ? 'Αυτό δεν αποθηκεύτηκε: η συσκευή δεν αφήνει να κρατηθεί άλλο (γεμάτη ή μπλοκαρισμένη μνήμη). Κράτα το κείμενο κάπου αλλού προς το παρόν.'
+                    : 'This was not saved: the device lets nothing more be kept (storage full or blocked). Keep the text somewhere else for now.'}
+                </p>
+              )}
 
               <div className="mt-3 flex items-center gap-2 overflow-x-auto pb-1 custom-scrollbar desk:flex-wrap desk:overflow-visible">
                 <span className="shrink-0 text-[12px] text-ink/70">{lang === 'el' ? 'Ή ξεκίνα από:' : 'Or start from:'}</span>

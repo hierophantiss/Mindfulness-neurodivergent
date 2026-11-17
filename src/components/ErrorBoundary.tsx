@@ -1,6 +1,7 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { isChunkLoadError, reloadOnceForUpdate } from '../lib/lazyWithReload';
 import { recordError } from '../lib/errorLog';
+import { pageFailed, pageShown } from '../lib/appHealth';
 
 interface Props {
   children?: ReactNode;
@@ -25,7 +26,12 @@ export class ErrorBoundary extends Component<Props, State> {
     return { hasError: true };
   }
 
+  public componentDidMount() {
+    if (!this.state.hasError) pageShown();
+  }
+
   public componentDidCatch(error: Error, info: ErrorInfo) {
+    pageFailed();
     if (isChunkLoadError(error) && reloadOnceForUpdate()) return;
     recordError('page', error);
     console.error('Page error:', error, info.componentStack);

@@ -117,8 +117,8 @@ test('a copy locked with a passphrase comes back only with it, and the journal r
   expect(await page.evaluate(() => localStorage.getItem('journal_v2_2026-11-17'))).toBeNull();
   await restore.getByLabel('Κωδικός').fill('ένας καλός κωδικός');
   await restore.getByRole('button', { name: 'Άνοιγμα και επαναφορά' }).click();
-  await expect(restore.getByText(/Η επαναφορά έγινε/)).toBeVisible({ timeout: 20_000 });
-  await page.waitForLoadState('load');
+  // The app starts again at once and says, on that start, that it was done.
+  await expect(page.getByRole('status').filter({ hasText: 'Η επαναφορά από το αντίγραφο έγινε' })).toBeVisible({ timeout: 20_000 });
   await expect.poll(() => page.evaluate(() => localStorage.getItem('journal_v2_2026-11-17')), { timeout: 10_000 }).toContain('κάτι ιδιωτικό');
 });
 
@@ -325,3 +325,37 @@ test('where the device can keep data, there is no note that nothing is kept', as
   await expect(page.locator('h1').first()).toBeVisible();
   await expect(page.getByText('Δεν κρατιέται τίποτα σε αυτή τη συσκευή')).toHaveCount(0);
 });
+
+test('a Rabbit Hole text: the arrow keys stop at its last page, and Tab stays inside it', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'keyboard');
+  await page.goto('/el/rabbithole/alchemical-vessel', { waitUntil: 'networkidle' });
+  const dialog = page.getByRole('dialog');
+  await expect(dialog).toBeVisible();
+  const counter = dialog.locator('text=/^\\d+\\/\\d+$/').first();
+  const total = Number((await counter.textContent())!.split('/')[1]);
+  for (let i = 0; i < total + 5; i++) await page.keyboard.press('ArrowRight');
+  await expect(counter).toHaveText(`${total}/${total}`);
+  for (let i = 0; i < 12; i++) {
+    await page.keyboard.press('Tab');
+    expect(await page.evaluate(() => !!document.activeElement?.closest('[role=dialog]'))).toBe(true);
+  }
+});
+
+test('the "More" menu keeps the keyboard inside it and closes with Escape', async ({ page }) => {
+  await page.goto('/el/practice', { waitUntil: 'networkidle' });
+  await page.getByRole('button', { name: 'Μενού' }).first().click();
+  const menu = page.getByRole('dialog', { name: 'Περισσότερα' });
+  await expect(menu).toBeVisible();
+  for (let i = 0; i < 25; i++) {
+    await page.keyboard.press('Tab');
+    expect(await page.evaluate(() => !!document.activeElement?.closest('[role=dialog]'))).toBe(true);
+  }
+  await page.keyboard.press('Escape');
+  await expect(menu).toHaveCount(0);
+});
+
+test('the animation pages are kept for offline use', async ({ request }) => {
+  const sw = await (await request.get('/sw.js')).text();
+  for (const f of ['journey', 'racing_mind', 'samatha_attention', 'camera', 'camera-hero']) expect(sw).toContain(`animations/${f}.html`);
+});
+

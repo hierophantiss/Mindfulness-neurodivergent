@@ -23,8 +23,16 @@ async function blobToBase64(blob: Blob): Promise<string> {
 
 /** A file from the app (a PDF, the backup, a calendar file, the book): saved, then the share sheet opens. */
 async function shareFile(href: string, name: string) {
+  await shareBlob(await (await fetch(href)).blob(), name);
+}
+
+/**
+ * Writes the file and opens the share sheet. Resolves once the person has
+ * chosen where it goes; rejects if they close the sheet or it fails, so the
+ * caller does not say "saved" when it was not (the backup, see backup.ts).
+ */
+export async function shareBlob(blob: Blob, name: string) {
   const [{ Filesystem, Directory }, { Share }] = await Promise.all([import('@capacitor/filesystem'), import('@capacitor/share')]);
-  const blob = await (await fetch(href)).blob();
   const safe = name.replace(/[^\w.\-()Ͱ-Ͽ]+/g, '-') || 'file';
   const { uri } = await Filesystem.writeFile({ path: safe, data: await blobToBase64(blob), directory: Directory.Cache });
   await Share.share({ title: safe, files: [uri] });

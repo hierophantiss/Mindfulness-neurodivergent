@@ -20,8 +20,10 @@ on:
     branches: [main, android-app]
   workflow_dispatch:
 
+# Read only; the jobs that publish ask for writing themselves. The build
+# (npm ci, Gradle, third-party actions) never holds a token that can write.
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: android-${{ github.ref }}
@@ -31,6 +33,8 @@ jobs:
   android:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    permissions:
+      contents: read
     env:
       N: ${{ github.run_number }}
       VITE_BUNDLE_VERSION: ${{ github.run_number }}
@@ -67,7 +71,13 @@ jobs:
         run: rm -rf dist/el dist/en dist/screenshots dist/og-image.png dist/sitemap.xml dist/robots.txt dist/sw.js dist/workbox-*.js
 
       - name: The Android project
-        run: npx cap add android
+        run: |
+          npx cap add android
+          # No copy of the app's data in the phone's Google backup: the Journal
+          # stays on the phone (src/pages/Privacy.tsx says so).
+          m=android/app/src/main/AndroidManifest.xml
+          sed -i -E 's/android:allowBackup="true"/android:allowBackup="false"/' "$m"
+          grep -q 'android:allowBackup="false"' "$m"
 
       - name: Icons and splash, from the app's own icon
         run: |
@@ -168,33 +178,22 @@ jobs:
           unzip -l "$f" | grep -q 'base/assets/public/index.html'
           echo "AAB_FILE=$f" >> "$GITHUB_ENV"
 
-      - name: Publish the package for Google Play (main only)
+      - name: The package for Google Play, for the job that publishes it (main only)
         if: github.ref == 'refs/heads/main' && env.AAB_FILE != ''
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          cp "$AAB_FILE" "mindfulness-play-$N.aab"
-          gh release view play >/dev/null 2>&1 || gh release create play --prerelease --title "Android app: package for Google Play" --notes "The newest package (AAB) to upload in the Play Console, signed with the upload key. Made by the Android workflow from main." --latest=false
-          gh release upload play "mindfulness-play-$N.aab" --clobber
-          for old in $(gh release view play --json assets -q '.assets[].name' | grep -E '^mindfulness-play-[0-9]+\.aab$' | grep -v "^mindfulness-play-$N.aab$"); do
-            gh release delete-asset play "$old" -y
-          done
+        run: cp "$AAB_FILE" "mindfulness-play-$N.aab"
+
+      - uses: actions/upload-artifact@v4
+        if: github.ref == 'refs/heads/main' && env.AAB_FILE != ''
+        with:
+          name: play-aab
+          path: mindfulness-play-${{ github.run_number }}.aab
+          retention-days: 7
 
       - uses: actions/upload-artifact@v4
         with:
           name: mindfulness-android-${{ github.run_number }}
           path: ${{ env.APK_FILE }}
           retention-days: 14
-
-      # The test copy, to download straight onto a phone from the release page.
-      - name: Publish the test APK (branches)
-        if: github.ref != 'refs/heads/main'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          cp "$APK_FILE" mindfulness-test.apk
-          gh release view android-test >/dev/null 2>&1 || gh release create android-test --prerelease --title "Android app: test copy" --notes "A test copy of the Android app (its own id and name, next to the app from the store). Made by the Android workflow from the branch ${{ github.ref_name }}." --latest=false
-          gh release upload android-test mindfulness-test.apk --clobber
 
       # The update for installed apps: the site's files as one zip, handed to
       # the job below, which signs and publishes it.
@@ -216,15 +215,76 @@ jobs:
   # reviewers). Installed apps take an update only with a signature their own
   # key confirms (src/lib/nativeUpdate.ts). The last three bundles stay, so a
   # phone that read the manifest a moment before still finds its file.
+  # The package for Google Play (main) and the test copy (branches), to the
+  # releases "play" and "android-test".
+  publish-builds:
+    needs: android
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    env:
+      N: ${{ github.run_number }}
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: mindfulness-android-${{ github.run_number }}
+
+      - uses: actions/download-artifact@v4
+        if: github.ref == 'refs/heads/main'
+        continue-on-error: true   # no upload key yet: no package for Google Play
+        with:
+          name: play-aab
+
+      - name: Publish the package for Google Play (main only)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          [ -f "mindfulness-play-$N.aab" ] || { echo "No package for Google Play in this run."; exit 0; }
+          gh release view play >/dev/null 2>&1 || gh release create play --prerelease --title "Android app: package for Google Play" --notes "The newest package (AAB) to upload in the Play Console, signed with the upload key. Made by the Android workflow from main." --latest=false
+          gh release upload play "mindfulness-play-$N.aab" --clobber
+          for old in $(gh release view play --json assets -q '.assets[].name' | grep -E '^mindfulness-play-[0-9]+\.aab$' | grep -v "^mindfulness-play-$N.aab$"); do
+            gh release delete-asset play "$old" -y
+          done
+
+      # The test copy, to download straight onto a phone from the release page.
+      - name: Publish the test APK (branches)
+        if: github.ref != 'refs/heads/main'
+        run: |
+          cp "$(ls *.apk | head -1)" mindfulness-test.apk
+          gh release view android-test >/dev/null 2>&1 || gh release create android-test --prerelease --title "Android app: test copy" --notes "A test copy of the Android app (its own id and name, next to the app from the store). Made by the Android workflow from the branch ${{ github.ref_name }}." --latest=false
+          gh release upload android-test mindfulness-test.apk --clobber
+
   publish-update:
     needs: android
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 40
     environment: app-update
+    permissions:
+      contents: write
+      actions: read
     env:
       N: ${{ github.run_number }}
     steps:
+      # Phones take this copy only if the same commit passed every check
+      # (the Check workflow: unit tests, build, browser checks).
+      - name: Wait for the Check workflow on this commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for i in $(seq 1 70); do
+            r=$(gh api "repos/${{ github.repository }}/actions/runs?head_sha=${{ github.sha }}&per_page=50" -q '[.workflow_runs[] | select(.name == "Check")][0] | [.status, .conclusion] | join(" ")')
+            echo "Check: ${r:-not started yet}"
+            case "$r" in
+              "completed success") exit 0 ;;
+              completed*) echo "::error::The Check workflow did not pass: no update for the phones."; exit 1 ;;
+            esac
+            sleep 30
+          done
+          echo "::error::The Check workflow did not finish in time: no update for the phones."; exit 1
+
       - uses: actions/checkout@v4
         with:
           sparse-checkout: scripts/sign-app-bundle.mjs

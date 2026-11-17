@@ -15,6 +15,7 @@
 import { RECORD_VERSION_KEY } from './activityLog';
 import { deviceStorage } from './storage';
 import { markBackupSaved } from './dataSafety';
+import { isNative } from './native';
 
 const COMPANION_KEY = 'mindful_companion_v5';
 const APP = 'neurodivergent-mindfulness';
@@ -29,11 +30,32 @@ const anyJSON = json(() => true);
 const oneOf = (...values: string[]): Check => (v) => values.includes(v);
 const like = (re: RegExp, max = 200): Check => (v) => v.length <= max && re.test(v);
 const flag = oneOf('true', 'false');
+const isObj = (x: unknown): x is Record<string, unknown> => !!x && typeof x === 'object' && !Array.isArray(x);
+const strings = (x: unknown) => Array.isArray(x) && x.every((s) => typeof s === 'string');
+/** A Journal day: the fields the Journal reads, each of its kind. */
+const journalDay = json((x) => isObj(x)
+  && (x.text === undefined || typeof x.text === 'string')
+  && (x.mood == null || typeof x.mood === 'number')
+  && (x.state == null || typeof x.state === 'string')
+  && (x.stateOff === undefined || typeof x.stateOff === 'boolean')
+  && (x.axes === undefined || strings(x.axes))
+  && (x.axesOff === undefined || strings(x.axesOff))
+  && (x.timestamp === undefined || typeof x.timestamp === 'number'));
+/** What the cat keeps: reading place per chapter, the program day, where it sits. */
+const companionShape = (x: unknown) => isObj(x)
+  && (x.chapterProgress === undefined || isObj(x.chapterProgress))
+  && (x.programProgress === undefined || (isObj(x.programProgress) && typeof x.programProgress.week === 'number' && typeof x.programProgress.day === 'number'))
+  && (x.lastChapter == null || typeof x.lastChapter === 'number')
+  && (x.fabPos == null || (isObj(x.fabPos) && typeof x.fabPos.x === 'number' && typeof x.fabPos.y === 'number'));
+/** Progress: the lists of what was completed. */
+const progressShape = json((x) => isObj(x)
+  && (x.completedChapters === undefined || Array.isArray(x.completedChapters))
+  && (x.completedLessons === undefined || Array.isArray(x.completedLessons)));
 
 const KEYS: Record<string, Check> = {
   // Progress and record
-  awareness_progress: object,
-  [COMPANION_KEY]: object,
+  awareness_progress: progressShape,
+  [COMPANION_KEY]: json(companionShape),
   neurodivergent_mindfulness_detailed_activity_logs: list,
   [RECORD_VERSION_KEY]: number,
   breath_history: anyJSON,          // older records, folded in on the next start
@@ -68,7 +90,7 @@ const KEYS: Record<string, Check> = {
   n_mindfulness_quiet_axis_hidden: like(/^\d{4}-\d{2}-\d{2}$/),
 };
 const PREFIXES: [RegExp, Check][] = [
-  [/^journal_v2_\d{4}-\d{2}-\d{2}$/, object],
+  [/^journal_v2_\d{4}-\d{2}-\d{2}$/, journalDay],
   [/^journal_papyrus_\d{4}-\d{2}-\d{2}$/, (v) => v.length <= 200_000],   // the older journal
   [/^binaural_pref_[a-z0-9-]{1,60}$/, like(/^[a-z-]{1,20}$/)],
 ];
@@ -100,24 +122,56 @@ export function backupText(storage: Storage = deviceStorage()): string {
   return JSON.stringify({ app: APP, version: 2, data: collectBackup(storage) });
 }
 
-/** Saves the file (as given: plain or locked) and starts the monthly reminder's count again. */
-export function saveBackupFile(text: string, locked: boolean): void {
+/**
+ * Saves the file (as given: plain or locked). Only when it was saved does the
+ * monthly reminder's count start again. In the Android app the share sheet
+ * opens; if the person closes it, or it fails, nothing was saved: false.
+ */
+export async function saveBackupFile(text: string, locked: boolean): Promise<boolean> {
   const blob = new Blob([text], { type: 'application/json' });
+  const name = `mindfulness-backup-${new Date().toISOString().split('T')[0]}${locked ? '-locked' : ''}.json`;
+  if (isNative()) {
+    try {
+      const { shareBlob } = await import('./nativeApp');
+      await shareBlob(blob, name);
+    } catch {
+      return false;
+    }
+    markBackupSaved();
+    return true;
+  }
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `mindfulness-backup-${new Date().toISOString().split('T')[0]}${locked ? '-locked' : ''}.json`;
+  a.download = name;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   setTimeout(() => URL.revokeObjectURL(url), 1000);
   markBackupSaved();
+  return true;
 }
 
 const looksLikeCompanion = (o: Record<string, unknown>) =>
   'chapterProgress' in o || 'programProgress' in o || 'dailyLogs' in o;
 
 export interface RestoreResult { format: BackupFormat; restored: number; left: number }
+
+/**
+ * Writes all of them, or none: if one does not fit (a full storage), what was
+ * already written is put back as it was, and the error goes on.
+ */
+function writeAll(storage: Storage, entries: [string, string][]): void {
+  const before = entries.map(([k]) => [k, storage.getItem(k)] as const);
+  try {
+    for (const [k, v] of entries) storage.setItem(k, v);
+  } catch (e) {
+    for (const [k, v] of before) {
+      try { if (v === null) storage.removeItem(k); else storage.setItem(k, v); } catch { /* as much as it can */ }
+    }
+    throw e;
+  }
+}
 
 /**
  * Writes a (plain) backup back into storage: only the app's own keys, each
@@ -131,9 +185,10 @@ export function restoreBackup(text: string, storage: Storage = deviceStorage()):
   if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('not a backup');
   if (isLocked(parsed)) throw new Error('locked');
 
-  // The older Settings backup: the companion object itself.
+  // The older Settings backup: the companion object itself (checked too).
   if (looksLikeCompanion(parsed)) {
-    storage.setItem(COMPANION_KEY, JSON.stringify(parsed));
+    if (!companionShape(parsed)) throw new Error('not a backup');
+    writeAll(storage, [[COMPANION_KEY, JSON.stringify(parsed)]]);
     return { format: 'companion', restored: 1, left: 0 };
   }
 
@@ -142,7 +197,7 @@ export function restoreBackup(text: string, storage: Storage = deviceStorage()):
   const all = Object.entries(data as Record<string, unknown>).filter(([k]) => !(data === parsed && (k === 'app' || k === 'version')));
   const good = all.filter(([k, v]) => acceptable(k, v)) as [string, string][];
   if (!good.length) throw new Error('nothing to restore');
-  for (const [k, v] of good) storage.setItem(k, v);
+  writeAll(storage, good);
   // A backup from before the one activity record: bring it up to date on the
   // next start (lib/activityLog.ts folds its older histories in).
   if (!good.some(([k]) => k === RECORD_VERSION_KEY)) storage.removeItem(RECORD_VERSION_KEY);

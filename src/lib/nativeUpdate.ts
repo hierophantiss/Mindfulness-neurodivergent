@@ -19,12 +19,15 @@
 
 import * as ed from '@noble/ed25519';
 import { recordError } from './errorLog';
+import { startedWell } from './appHealth';
 
 const RELEASE = 'https://github.com/hierophantiss/Mindfulness-neurodivergent/releases/download/app-bundle/';
 const MANIFEST = `${RELEASE}app-bundle.json`;
 /** The public half of the key that signs the updates (Ed25519, raw, base64). */
 export const UPDATE_PUBLIC_KEY = 'kD6Q46TI5HUQHzWE/UgwvnoLZmwPfQYYlV6NuLtyLds=';
 const PENDING = 'n_mindfulness_app_bundle_next';
+/** A version that did not start well on this phone: not downloaded again. */
+const FAILED = 'n_mindfulness_app_bundle_failed';
 
 /** This copy's number: the workflow run that built it (0 when built by hand). */
 export const BUNDLE_VERSION = Number(import.meta.env.VITE_BUNDLE_VERSION || 0);
@@ -85,6 +88,9 @@ async function check() {
   const m = (typeof res.data === 'string' ? JSON.parse(res.data) : res.data) as Partial<Manifest>;
   const info = await App.getInfo();
   if (!isNewer(m, BUNDLE_VERSION, Number(info.build) || 0)) return;
+  let failed = 0;
+  try { failed = Number(localStorage.getItem(FAILED)) || 0; } catch { /* ignore */ }
+  if (m.version === failed) return;
   // Signed with the update key, or nothing happens (and a note is kept).
   // The plugin then checks the downloaded file against the signed SHA-256.
   if (!(await signatureHolds(m))) {
@@ -97,8 +103,16 @@ async function check() {
 
 export async function startUpdates() {
   const { CapacitorUpdater } = await import('@capgo/capacitor-updater');
-  // This copy started fine: keep it (otherwise the plugin rolls back).
-  await CapacitorUpdater.notifyAppReady();
+  // Keep this copy only if it really works: a page shown and none broken in
+  // the first seconds. If not, the plugin puts the previous copy back on the
+  // next start (appReadyTimeout), and this version is not taken again.
+  if (await startedWell()) {
+    await CapacitorUpdater.notifyAppReady();
+  } else {
+    try { localStorage.setItem(FAILED, String(BUNDLE_VERSION)); } catch { /* ignore */ }
+    recordError('app-update', new Error(`copy ${BUNDLE_VERSION} did not start well: not kept`));
+    return;
+  }
   // Look a little after the start, when the page has settled.
   window.setTimeout(() => { check().catch((e) => recordError('app-update', e)); }, 5000);
 }
