@@ -13,7 +13,7 @@ import { useAccessibility } from '../hooks/useAccessibility';
 import { motion, AnimatePresence } from 'motion/react';
 import { RainbowInfinity } from '../components/RainbowInfinity';
 import { BreathingHero, PHASE_COLORS } from '../components/BreathingHero';
-import TaiChiHero from '../components/TaiChiHero';
+import TaiChiFigure from '../components/TaiChiFigure';
 import { createTickStore, LiveTick } from '../lib/breathTick';
 import { PlayPauseOverlay } from '../components/PlayPauseOverlay';
 import { EvidenceLine } from '../components/EvidenceLine';
@@ -863,7 +863,7 @@ export default function PracticeBreath() {
                     <div aria-hidden="true" className="absolute inset-x-0 top-1/2 -translate-y-1/2 aspect-square rounded-2xl pointer-events-none transition-[box-shadow] duration-[1500ms]" style={{ boxShadow: glowShadow }} />
                   )}
                   <LiveTick store={tick}>{({ pos, prog }) => isTaiChi ? (
-                    <TaiChiHero
+                    <TaiChiFigure
                       breathForce={running || demo ? pos : 1.0}
                       isRising={running ? isInhale : demo ? demo.rising : true}
                       breathStateText={demo ? demo.label : ""}

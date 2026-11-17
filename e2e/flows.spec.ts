@@ -245,3 +245,25 @@ test('"The metronome of presence" (Chapter 4) plays its two scenes, with no acce
   const r = await new AxeBuilder({ page: page as never }).include('[role="group"]').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
   expect(r.violations.map(v => `${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
 });
+
+test('the Tai Chi practices draw the figure in 3D where the device can', async ({ page }) => {
+  // Seen as a phone with a real graphics chip (the test browser draws in software).
+  await page.addInitScript(() => {
+    for (const P of [WebGLRenderingContext.prototype, WebGL2RenderingContext.prototype]) {
+      const get = P.getParameter;
+      P.getParameter = function (this: WebGLRenderingContext, p: number) { return p === 0x9246 ? 'Adreno (TM) 640' : get.call(this, p); };
+    }
+  });
+  const errors: string[] = [];
+  page.on('pageerror', e => errors.push(String(e)));
+  await page.goto('/el/practice/breath/qigong-lifting-sky', { waitUntil: 'networkidle' });
+  const webgl = await page.evaluate(() => !!document.createElement('canvas').getContext('webgl'));
+  test.skip(!webgl, 'no WebGL in this browser');
+  await expect(page.locator('.breath-hero canvas')).toHaveCount(1, { timeout: 15_000 });
+  await page.getByRole('button', { name: 'Ξεκίνα', exact: true }).first().click();
+  await page.getByRole('button', { name: 'Χωρίς ήχο', exact: true }).click();
+  // Moving through the breath (after the three seconds to take position).
+  await page.waitForTimeout(5000);
+  await expect(page.locator('.breath-hero canvas')).toHaveCount(1);
+  expect(errors).toEqual([]);
+});
