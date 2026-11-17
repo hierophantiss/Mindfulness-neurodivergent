@@ -72,11 +72,63 @@ test('the menu leads to Settings', async ({ page }) => {
 
 test('Settings saves a copy of the data to a file', async ({ page }) => {
   await page.goto('/el/settings', { waitUntil: 'networkidle' });
-  page.on('dialog', (d) => d.dismiss());
-  const download = page.waitForEvent('download');
   await page.getByRole('button', { name: /Αποθήκευση Δεδομένων/ }).click();
+  const dialog = page.getByRole('dialog', { name: 'Αντίγραφο των δεδομένων σου' });
+  const download = page.waitForEvent('download');
+  await dialog.getByRole('button', { name: 'Αποθήκευση αντιγράφου' }).click();
   expect((await download).suggestedFilename()).toMatch(/^mindfulness-backup-\d{4}-\d{2}-\d{2}\.json$/);
+  await expect(dialog.getByText('Το αντίγραφο αποθηκεύτηκε.')).toBeVisible();
+  await dialog.getByRole('button', { name: 'Κλείσιμο' }).click();
   await expect(page.getByText(/Τελευταίο:/)).toBeVisible();
+});
+
+test('a copy locked with a passphrase comes back only with it, and the journal returns', async ({ page }) => {
+  await page.goto('/el/settings', { waitUntil: 'networkidle' });
+  await page.evaluate(() => localStorage.setItem('journal_v2_2026-11-17', JSON.stringify({ text: 'κάτι ιδιωτικό', mood: null, state: null, axes: [], timestamp: 1 })));
+  // Save, locked.
+  await page.getByRole('button', { name: /Αποθήκευση Δεδομένων/ }).click();
+  const save = page.getByRole('dialog', { name: 'Αντίγραφο των δεδομένων σου' });
+  await save.getByLabel('Κλείδωσε το με κωδικό').check();
+  await expect(save.getByText(/Αν ξεχάσεις τον κωδικό/)).toBeVisible();
+  const a11y = await new AxeBuilder({ page: page as never }).include('[role=dialog]').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+  expect(a11y.violations.map(v => v.id)).toEqual([]);
+  const button = save.getByRole('button', { name: 'Αποθήκευση αντιγράφου' });
+  await save.getByLabel('Κωδικός', { exact: true }).fill('ένας καλός κωδικός');
+  await save.getByLabel('Ξανά ο κωδικός').fill('ένας άλλος');
+  await expect(button).toBeDisabled();
+  await save.getByLabel('Ξανά ο κωδικός').fill('ένας καλός κωδικός');
+  const download = page.waitForEvent('download');
+  await button.click();
+  const d = await download;
+  expect(d.suggestedFilename()).toMatch(/-locked\.json$/);
+  const file = await d.path();
+  const text = (await import('node:fs')).readFileSync(file!, 'utf8');
+  expect(text).not.toContain('ιδιωτικό');
+  await save.getByRole('button', { name: 'Κλείσιμο' }).click();
+
+  // Gone from the device; restore with a wrong, then the right passphrase.
+  await page.evaluate(() => localStorage.removeItem('journal_v2_2026-11-17'));
+  await page.getByRole('button', { name: /Ανάκτηση/ }).click();
+  const restore = page.getByRole('dialog', { name: 'Επαναφορά από αντίγραφο' });
+  await restore.locator('input[type=file]').setInputFiles({ name: 'copy.json', mimeType: 'application/json', buffer: Buffer.from(text) });
+  await restore.getByLabel('Κωδικός').fill('λάθος κωδικός');
+  await restore.getByRole('button', { name: 'Άνοιγμα και επαναφορά' }).click();
+  await expect(restore.getByText(/Ο κωδικός δεν ταιριάζει/)).toBeVisible({ timeout: 20_000 });
+  expect(await page.evaluate(() => localStorage.getItem('journal_v2_2026-11-17'))).toBeNull();
+  await restore.getByLabel('Κωδικός').fill('ένας καλός κωδικός');
+  await restore.getByRole('button', { name: 'Άνοιγμα και επαναφορά' }).click();
+  await expect(restore.getByText(/Η επαναφορά έγινε/)).toBeVisible({ timeout: 20_000 });
+  await page.waitForLoadState('load');
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('journal_v2_2026-11-17')), { timeout: 10_000 }).toContain('κάτι ιδιωτικό');
+});
+
+test('restoring a file that is not a copy changes nothing', async ({ page }) => {
+  await page.goto('/el/settings', { waitUntil: 'networkidle' });
+  await page.getByRole('button', { name: /Ανάκτηση/ }).click();
+  const restore = page.getByRole('dialog', { name: 'Επαναφορά από αντίγραφο' });
+  await restore.locator('input[type=file]').setInputFiles({ name: 'x.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify({ n_mindfulness_app_bundle_next: 'evil' })) });
+  await expect(restore.getByText(/δεν είναι αντίγραφο της εφαρμογής/)).toBeVisible();
+  expect(await page.evaluate(() => localStorage.getItem('n_mindfulness_app_bundle_next'))).toBeNull();
 });
 
 test('the language changes to English', async ({ page, isMobile }) => {

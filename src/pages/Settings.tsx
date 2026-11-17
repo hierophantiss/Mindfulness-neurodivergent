@@ -3,7 +3,7 @@ import { clearAll } from '../lib/storage';
 import { versionText } from '../lib/version';
 import { isNative } from '../lib/native';
 import React, { useState, useEffect } from 'react';
-import { downloadBackup, restoreBackup } from '../lib/backup';
+import BackupDialog, { type BackupMode } from '../components/BackupDialog';
 import { lastBackupDate } from '../lib/dataSafety';
 import { readErrors, clearErrors, errorReport } from '../lib/errorLog';
 import { Languages, Activity, LetterText, Info, LogOut, Sparkles, Sun, Database, FileText, Download, Bug, ShieldCheck, Accessibility, MessageCircleHeart, CalendarClock } from 'lucide-react';
@@ -33,6 +33,7 @@ export default function Settings() {
   };
   // The day of the last copy, shown next to "Save Data".
   const [lastBackup, setLastBackup] = useState(lastBackupDate);
+  const [backupMode, setBackupMode] = useState<BackupMode | null>(null);
   const [debugLog, setDebugLog] = useState<string[]>([]);
   // Errors the app noted on this device (lib/errorLog.ts).
   const [errors, setErrors] = useState(readErrors);
@@ -195,11 +196,7 @@ export default function Settings() {
             value: lastBackup
               ? { el: `Τελευταίο: ${lastBackup.toLocaleDateString('el-GR', { day: 'numeric', month: 'short' })}`, en: `Last: ${lastBackup.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}` }
               : null,
-            action: () => {
-              downloadBackup();
-              setLastBackup(lastBackupDate());
-              alert(language === 'el' ? 'Τα δεδομένα σου αποθηκεύτηκαν σε αρχείο.' : 'Your data has been saved to a file.');
-            },
+            action: () => setBackupMode('save'),
             color: 'text-indigo-400'
           },
           {
@@ -207,27 +204,7 @@ export default function Settings() {
             icon: Database,
             label: { el: 'Ανάκτηση (Restore)', en: 'Restore Data' },
             value: null,
-            action: () => {
-              const input = document.createElement('input');
-              input.type = 'file';
-              input.accept = 'application/json';
-              input.onchange = (e) => {
-                const file = (e.target as HTMLInputElement).files?.[0];
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                  try {
-                    restoreBackup(event.target?.result as string);
-                    alert(language === 'el' ? 'Επιτυχής επαναφορά! Η εφαρμογή θα επανεκκινηθεί.' : 'Restore successful! App will reload.');
-                    window.location.reload();
-                  } catch (err) {
-                    alert(language === 'el' ? 'Σφάλμα ανάγνωσης αρχείου.' : 'Error reading backup file.');
-                  }
-                };
-                reader.readAsText(file);
-              };
-              input.click();
-            },
+            action: () => setBackupMode('restore'),
             color: 'text-teal-400'
           },
           {
@@ -461,6 +438,7 @@ export default function Settings() {
           document.body,
         );
       })()}
+      <BackupDialog mode={backupMode} onClose={() => setBackupMode(null)} onSaved={() => setLastBackup(lastBackupDate())} />
     </div>
   );
 }

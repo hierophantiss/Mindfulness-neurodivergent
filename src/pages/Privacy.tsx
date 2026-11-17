@@ -10,7 +10,7 @@ type Block = { title: string; paras?: string[]; list?: string[]; after?: string[
 const T: Record<'el' | 'en', { title: string; updated: string; short: string; blocks: Block[]; crisisTitle: string; crisis: string[]; crisisAbroad: string; contactTitle: string; contact: string; back: string }> = {
   el: {
     title: 'Απόρρητο και όροι',
-    updated: 'Τελευταία ενημέρωση: 31 Οκτωβρίου 2026',
+    updated: 'Τελευταία ενημέρωση: 17 Νοεμβρίου 2026',
     short: 'Με λίγα λόγια: ό,τι κάνεις στην εφαρμογή μένει στη συσκευή σου. Η εφαρμογή δεν έχει λογαριασμό, δεν συλλέγει προσωπικά δεδομένα, δεν έχει διαφημίσεις ούτε παρακολούθηση.',
     blocks: [
       {
@@ -25,7 +25,10 @@ const T: Record<'el' | 'en', { title: string; updated: string; short: string; bl
           'τα κεφάλαια που άκουσες, ώστε να παίζουν και χωρίς σύνδεση,',
           'μια σύντομη σημείωση για τα τελευταία σφάλματα, αν συμβούν (Ρυθμίσεις → Διαγνωστικά). Δεν στέλνεται πουθενά μόνη της· τη στέλνεις εσύ με email, αν θέλεις.',
         ],
-        after: ['Τίποτα από αυτά δεν φεύγει από τη συσκευή. Δεν το βλέπει ούτε ο δημιουργός της εφαρμογής ούτε κανείς άλλος.'],
+        after: [
+          'Τίποτα από αυτά δεν φεύγει από τη συσκευή. Δεν το βλέπει ούτε ο δημιουργός της εφαρμογής ούτε κανείς άλλος.',
+          'Δεν κρυπτογραφούνται όμως μέσα στη συσκευή, και η εφαρμογή δεν έχει δικό της κλείδωμα: σε κοινόχρηστη συσκευή, όποιος την ανοίγει μπορεί να διαβάσει και το Ημερολόγιό σου. Την προστασία τη δίνει το κλείδωμα οθόνης της συσκευής σου.',
+        ],
       },
       {
         title: 'Τι δεν κάνει η εφαρμογή',
@@ -51,7 +54,7 @@ const T: Record<'el' | 'en', { title: string; updated: string; short: string; bl
       {
         title: 'Τα δεδομένα σου, στο χέρι σου',
         list: [
-          'Αντίγραφο: Ρυθμίσεις → Αποθήκευση Δεδομένων φτιάχνει ένα αρχείο με όλα όσα κρατά η εφαρμογή. Το αρχείο είναι δικό σου και μένει όπου το αποθηκεύσεις. Το επαναφέρεις από Ρυθμίσεις → Ανάκτηση.',
+          'Αντίγραφο: Ρυθμίσεις → Αποθήκευση Δεδομένων φτιάχνει ένα αρχείο με όλα όσα κρατά η εφαρμογή. Το αρχείο είναι δικό σου και μένει όπου το αποθηκεύσεις. Μπορείς να το κλειδώσεις με κωδικό (κρυπτογράφηση AES-GCM, μέσα στη συσκευή): τότε ανοίγει μόνο με αυτόν, και αν τον ξεχάσεις, δεν ανοίγει από κανέναν. Χωρίς κωδικό, όποιος έχει το αρχείο μπορεί να το διαβάσει. Το επαναφέρεις από Ρυθμίσεις → Ανάκτηση· η εφαρμογή γράφει πίσω μόνο τα δικά της στοιχεία.',
           'Η εβδομάδα μου: στο Ημερολόγιο → Εβδομάδα, το «Κατέβασε PDF» φτιάχνει μια σελίδα με την εβδομάδα σου, μέσα στη συσκευή. Πηγαίνει μόνο όπου τη στείλεις εσύ.',
           'Διαγραφή: Ρυθμίσεις → Διαγραφή Δεδομένων σβήνει τα πάντα από τη συσκευή. Το ίδιο κάνει και η διαγραφή των δεδομένων του ιστότοπου από τον browser, ή η απεγκατάσταση της εφαρμογής.',
           'Δεν χρειάζεται να ζητήσεις διαγραφή από κανέναν: αντίγραφο των δεδομένων σου δεν υπάρχει πουθενά αλλού.',
@@ -85,7 +88,7 @@ const T: Record<'el' | 'en', { title: string; updated: string; short: string; bl
   },
   en: {
     title: 'Privacy and terms',
-    updated: 'Last updated: 31 October 2026',
+    updated: 'Last updated: 17 November 2026',
     short: 'In short: whatever you do in the app stays on your device. The app has no account, collects no personal data, and has no ads and no tracking.',
     blocks: [
       {
@@ -100,7 +103,10 @@ const T: Record<'el' | 'en', { title: string; updated: string; short: string; bl
           'the chapters you listened to, so they play offline too,',
           'a short note of the last errors, if any happen (Settings → Diagnostics). It is never sent anywhere on its own; you send it by email, if you like.',
         ],
-        after: ['None of this leaves the device. Neither the creator of the app nor anyone else sees it.'],
+        after: [
+          'None of this leaves the device. Neither the creator of the app nor anyone else sees it.',
+          'It is not encrypted on the device, though, and the app has no lock of its own: on a shared device, whoever opens it can read your Journal too. The protection is your device’s screen lock.',
+        ],
       },
       {
         title: 'What the app does not do',
@@ -126,7 +132,7 @@ const T: Record<'el' | 'en', { title: string; updated: string; short: string; bl
       {
         title: 'Your data, in your hands',
         list: [
-          'Copy: Settings → Save Data makes a file with everything the app keeps. The file is yours and stays wherever you save it. You restore it from Settings → Restore.',
+          'Copy: Settings → Save Data makes a file with everything the app keeps. The file is yours and stays wherever you save it. You can lock it with a passphrase (AES-GCM encryption, on the device): then it opens only with that, and if you forget it, nobody can open it. Without a passphrase, whoever has the file can read it. You restore it from Settings → Restore; the app writes back only its own items.',
           'My week: in the Journal → Week, “Download PDF” makes a page of your week, on the device. It goes only where you send it.',
           'Deletion: Settings → Clear Data erases everything from the device. So does clearing the site’s data in the browser, or uninstalling the app.',
           'You do not need to ask anyone to delete anything: no copy of your data exists anywhere else.',

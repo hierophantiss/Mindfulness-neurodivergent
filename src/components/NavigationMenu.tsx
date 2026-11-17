@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { clearAll } from '../lib/storage';
 import InfoModal from './InfoModalLazy';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
-import { downloadBackup, restoreBackup } from '../lib/backup';
+import BackupDialog, { type BackupMode } from './BackupDialog';
 import { Home, BookOpen, Activity, X, Info, Music, LayoutGrid, EyeOff, Eye, Database, Download, Sparkles, RotateCcw, Headphones, LetterText, Compass, Settings, Layers } from 'lucide-react';
 import { MethodMark } from './MethodMark';
 import { useTime } from '../contexts/TimeContext';
@@ -17,6 +17,7 @@ import { QuillIcon, SpiralIcon, SproutIcon, WavesIcon } from './placeIcons';
 export default function NavigationMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const [backupMode, setBackupMode] = useState<BackupMode | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const navigate = useNavigate();
@@ -427,38 +428,20 @@ export default function NavigationMenu() {
                       </div>
                      </div>
                      <div className="flex gap-2">
-                       <button 
-                         onClick={() => {
-                           downloadBackup();
-                           showToast(language === 'en' ? 'Data exported!' : 'Τα δεδομένα εξήχθησαν!');
-                         }}
+                       <button
+                         type="button"
+                         onClick={() => setBackupMode('save')}
                          className="px-3 py-1.5 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-medium transition-colors"
                        >
                          {language === 'en' ? 'Export' : 'Εξαγωγή'}
                        </button>
-                       <label className="px-3 py-1.5 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-medium transition-colors cursor-pointer">
+                       <button
+                         type="button"
+                         onClick={() => setBackupMode('restore')}
+                         className="px-3 py-1.5 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-medium transition-colors"
+                       >
                          {language === 'en' ? 'Import' : 'Εισαγωγή'}
-                         <input 
-                           type="file" 
-                           accept=".json"
-                           className="hidden" 
-                           onChange={(e) => {
-                             const file = e.target.files?.[0];
-                             if(!file) return;
-                             const reader = new FileReader();
-                             reader.onload = (event) => {
-                               try {
-                                 restoreBackup(event.target?.result as string);
-                                 showToast(language === 'en' ? 'Data imported successfully!' : 'Τα δεδομένα εισήχθησαν!');
-                                 setTimeout(() => window.location.reload(), 1500);
-                                } catch(err) {
-                                  showToast(language === 'en' ? 'Invalid backup file' : 'Άκυρο αρχείο αντιγράφου');
-                                }
-                              };
-                              reader.readAsText(file);
-                            }} 
-                          />
-                        </label>
+                       </button>
                       </div>
                    </div>
                  </div>
@@ -605,6 +588,7 @@ export default function NavigationMenu() {
         )}
       </AnimatePresence>
       <InfoModal isOpen={infoOpen} onClose={() => setInfoOpen(false)} />
+      <BackupDialog mode={backupMode} onClose={() => setBackupMode(null)} />
     </>
   );
 }

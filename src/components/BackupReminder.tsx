@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { X } from 'lucide-react';
-import { downloadBackup } from '../lib/backup';
+import BackupDialog from './BackupDialog';
 import { backupReminderDue, isIOSBrowserTab, snoozeBackupReminder } from '../lib/dataSafety';
 
 /**
@@ -11,15 +11,14 @@ import { backupReminderDue, isIOSBrowserTab, snoozeBackupReminder } from '../lib
 export default function BackupReminder({ lang }: { lang: 'el' | 'en' }) {
   const [due] = useState(() => backupReminderDue());
   const [state, setState] = useState<'ask' | 'saved' | 'gone'>('ask');
+  const [dialog, setDialog] = useState(false);
   const [ios] = useState(isIOSBrowserTab);
   const el = lang === 'el';
 
   if (!due || state === 'gone') return null;
 
-  const save = () => {
-    downloadBackup();
-    setState('saved');
-  };
+  // The same dialog as in Settings: the copy can be locked with a passphrase.
+  const save = () => setDialog(true);
   const later = () => {
     snoozeBackupReminder();
     setState('gone');
@@ -77,6 +76,7 @@ export default function BackupReminder({ lang }: { lang: 'el' | 'en' }) {
       >
         <X size={16} />
       </button>
+      <BackupDialog mode={dialog ? 'save' : null} onClose={() => setDialog(false)} onSaved={() => setState('saved')} />
     </section>
   );
 }
