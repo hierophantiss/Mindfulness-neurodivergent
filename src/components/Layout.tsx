@@ -9,11 +9,15 @@ import StorageNote from './StorageNote';
 import RestoredNote from './RestoredNote';
 import { useLanguage } from '../hooks/useLanguage';
 import { motion, AnimatePresence } from 'motion/react';
-import { SEO } from './SEO';
 import { ErrorBoundary } from './ErrorBoundary';
 import { isUpdateWaiting, applyWaitingUpdate } from '../lib/appUpdate';
 import { lazyWithReload } from '../lib/lazyWithReload';
 import { useCompanion } from '../hooks/useCompanion';
+
+// Page titles and descriptions for search engines and sharing. Every page the
+// site serves already carries them (scripts/prerender.ts), so this piece loads
+// after the page and takes over as the visitor moves around.
+const SEO = React.lazy(() => import('./SEO').then((m) => ({ default: m.SEO })).catch(() => ({ default: () => null })));
 
 // The cat's sheet needs the text of every chapter, so it loads only once it is
 // first opened (and quietly in the background once the page has settled).
@@ -70,7 +74,7 @@ export default function Layout() {
 
   return (
     <div className="min-h-[100dvh] h-[100dvh] bg-transparent text-pine-100 font-sans selection:bg-teal-500/30 flex flex-col relative overflow-hidden">
-      <SEO />
+      <React.Suspense fallback={null}><SEO /></React.Suspense>
       <div className="noise-overlay" />
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-emerald-500 text-ink px-4 py-2 rounded-md z-50 shadow-lg">
         {t('skip_to_content')}

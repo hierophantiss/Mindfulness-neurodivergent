@@ -1,5 +1,8 @@
 // Standalone types — no React, no browser APIs
 
+/** The breath wave in the background sounds: 5 s rising (in), 5 s falling (out). */
+export const BREATH_WAVE_SECONDS = 10;
+
 /** Text in both languages. */
 export interface Bilingual { el: string; en: string }
 

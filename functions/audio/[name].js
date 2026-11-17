@@ -13,7 +13,7 @@
 //   kept in Cloudflare's cache (the MP3s for a
 //   month, keyed with the app's ?v=, which changes when a recording is made
 //   again; the timing maps for five minutes), and later requests, seeking
-//   included, are answered from there;
+//   included, are answered from there, the cache cutting out the asked range;
 // - if the download address fails, the same file comes through GitHub's API
 //   (the release's list of files, itself kept ten minutes).
 
@@ -56,19 +56,7 @@ export async function onRequest({ request, params, waitUntil }) {
   const cache = caches.default;
   const key = new Request(`https://audio-cache.neurodivergent-mindfulness.org/${file.tag}/${name}${v ? `?v=${encodeURIComponent(v)}` : ''}`);
 
-  let whole = await cache.match(key);
-  if (!whole) {
-    const body = await fromGitHub(file.tag, name, cache, waitUntil);
-    if (body === 404) return new Response('Not found', { status: 404, headers: cors() });
-    if (!body) return new Response('Upstream error', { status: 502, headers: cors({ 'Cache-Control': 'no-store' }) });
-    whole = new Response(body, {
-      headers: { 'Content-Type': TYPES[ext] || 'application/octet-stream', 'Cache-Control': isMap ? 'public, max-age=300' : 'public, max-age=2592000' },
-    });
-    waitUntil(cache.put(key, whole.clone()));
-  }
-
-  const bytes = new Uint8Array(await whole.arrayBuffer());
-  const size = bytes.length;
+  const range = request.headers.get('Range');
   const headers = cors({
     'Content-Type': TYPES[ext] || 'application/octet-stream',
     'Content-Disposition': 'inline',
@@ -78,7 +66,32 @@ export async function onRequest({ request, params, waitUntil }) {
     'X-Content-Type-Options': 'nosniff',
   });
 
-  const range = request.headers.get('Range');
+  // Already in the cache: Cloudflare's cache answers the range itself (206),
+  // streaming only the asked part, without reading the file into memory.
+  const hit = await cache.match(range ? new Request(key.url, { headers: { Range: range } }) : key);
+  if (hit) {
+    for (const k of ['Content-Length', 'Content-Range']) {
+      const val = hit.headers.get(k);
+      if (val) headers.set(k, val);
+    }
+    return new Response(request.method === 'HEAD' ? null : hit.body, { status: hit.status, headers });
+  }
+
+  // Not yet: the whole file from GitHub, kept for the next requests, and the
+  // asked part of it now.
+  const body = await fromGitHub(file.tag, name, cache, waitUntil);
+  if (body === 404) return new Response('Not found', { status: 404, headers: cors() });
+  if (!body) return new Response('Upstream error', { status: 502, headers: cors({ 'Cache-Control': 'no-store' }) });
+  const bytes = new Uint8Array(body);
+  const size = bytes.length;
+  waitUntil(cache.put(key, new Response(bytes, {
+    headers: {
+      'Content-Type': TYPES[ext] || 'application/octet-stream',
+      'Content-Length': String(size),
+      'Cache-Control': isMap ? 'public, max-age=300' : 'public, max-age=2592000',
+    },
+  })));
+
   const m = range && /^bytes=(\d*)-(\d*)$/.exec(range.trim());
   if (m && (m[1] !== '' || m[2] !== '')) {
     let start = m[1] === '' ? Math.max(0, size - Number(m[2])) : Number(m[1]);

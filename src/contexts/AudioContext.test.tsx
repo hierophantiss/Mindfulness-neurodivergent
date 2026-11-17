@@ -2,7 +2,7 @@ import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from 'vite
 import { act, renderHook } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { FakeAudioContext } from '../test/fakeWebAudio';
-import { AudioProvider, useAudioMixer } from './AudioContext';
+import { AudioProvider, loadAmbientLayers, useAudioMixer } from './AudioContext';
 
 // The app's one sound engine, on a stand-in for Web Audio: what it builds
 // when a practice starts, how it changes while it plays, and that it always
@@ -10,7 +10,8 @@ import { AudioProvider, useAudioMixer } from './AudioContext';
 
 let ctx: FakeAudioContext;
 class Ctx extends FakeAudioContext { constructor() { super(); ctx = this; } }
-beforeAll(() => { (window as unknown as { AudioContext: unknown }).AudioContext = Ctx; });
+// The background sounds load on first use; here they are loaded before the tests.
+beforeAll(async () => { (window as unknown as { AudioContext: unknown }).AudioContext = Ctx; await loadAmbientLayers(); });
 beforeEach(() => { vi.useFakeTimers(); if (ctx) ctx.nodes = []; });
 afterEach(() => { vi.useRealTimers(); });
 

@@ -75,12 +75,6 @@ const ARTICLES: Record<string, { en: [string, string]; el: [string, string] }> =
     el: ['Η Χήνα Είναι Έξω | Neurodivergent Mindfulness App',
          'Μια αλληγορία Ζεν για το masking, την ταυτότητα και την απελευθέρωση για νευροδιαφορετικούς νους.'],
   },
-  'dzogchen-nature-of-mind': {
-    en: ['The Nature of Mind & Tregchod | Neurodivergent Mindfulness App',
-         'Tibetan Dzogchen philosophy meets modern neuroscience. How releasing tension (Tregchod) helps ADHD and autistic nervous systems find open awareness.'],
-    el: ['Η Φύση του Νου & Η Λύση της Έντασης | Neurodivergent Mindfulness App',
-         'Φιλοσοφία Ντζόγκτσεν και σύγχρονη νευροεπιστήμη. Πώς η λύση της έντασης βοηθά νευροδιαφορετικά νευρικά συστήματα.'],
-  },
   'koshas-veils': {
     en: ['The Veils of Being – Kosha Framework | Neurodivergent Mindfulness App',
          'The Matryoshka allegory: a journey through the five Koshas from body to pure consciousness. A neurodivergent-friendly yoga philosophy guide.'],

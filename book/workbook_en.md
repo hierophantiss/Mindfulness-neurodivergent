@@ -956,8 +956,6 @@ We saw why in Chapter 5: intense self-criticism appears to activate the same thr
 
 *In the app: the whole practice with guidance and the structured step-by-step programme · the practice space with all the exercises.*
 
-*In the Rabbit Hole: Dzogchen, the Great Perfection · The Nature of Mind & the Release of Tension.*
-
 **Reflection:** Which stage feels most natural to me? Where do I struggle most?
 
 > ★ **Key Point:** Four stages, in order: earth, rhythm, point, field. And underneath it all, gentleness.
@@ -1187,7 +1185,6 @@ further. They are all free. Below, organised by chapter.
 - *[The Goose Is Out](https://neurodivergent-mindfulness.org/en/rabbithole/the-goose-is-out)* — the koan of the goose, and the mask.
 
 **Stages & Tradition (Ch. 10–11)**
-- *[Dzogchen: The Nature of Mind & the Release of Tension](https://neurodivergent-mindfulness.org/en/rabbithole/dzogchen-nature-of-mind)* — the mechanical mind and the nature of mind, tregchöd as the effortless release of tension, and where kindness arises from.
 - *[The Forces of the Cosmos, the Axes of the Mind](https://neurodivergent-mindfulness.org/en/rabbithole/forces-of-the-cosmos)* — the elements and the four axes.
 
 **About the App Itself**

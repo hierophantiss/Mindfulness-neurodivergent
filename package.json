@@ -63,6 +63,12 @@
     "vitest": "^4.1.12"
   },
   "overrides": {
-    "node-domexception": "npm:domexception@^4.0.0"
+    "node-domexception": "npm:domexception@^4.0.0",
+    "workbox-build": {
+      "glob": "^14.0.6"
+    },
+    "xcode": {
+      "uuid": "^11.1.1"
+    }
   }
 }

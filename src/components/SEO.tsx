@@ -30,12 +30,6 @@ const ARTICLES: Record<string, { titleEn: string; titleEl: string; descEn: strin
     descEn: 'A Zen allegory about masking, identity, and liberation for neurodivergent minds. How the neurodivergent nervous system can move from narrow focus to open awareness.',
     descEl: 'Μια αλληγορία Ζεν για το masking, την ταυτότητα και την απελευθέρωση για νευροδιαφορετικούς νους.',
   },
-  'dzogchen-nature-of-mind': {
-    titleEn: 'The Nature of Mind & Tregchod | Neurodivergent Mindfulness',
-    titleEl: 'Η Φύση του Νου & Η Λύση της Έντασης | Neurodivergent Mindfulness',
-    descEn: 'Tibetan Dzogchen philosophy meets modern neuroscience. How releasing tension (Tregchod) helps ADHD and autistic nervous systems find open awareness.',
-    descEl: 'Φιλοσοφία Ντζόγκτσεν και σύγχρονη νευροεπιστήμη. Πώς η λύση της έντασης βοηθά νευροδιαφορετικά νευρικά συστήματα.',
-  },
   'koshas-veils': {
     titleEn: 'The Veils of Being – Kosha Framework | Neurodivergent Mindfulness',
     titleEl: 'Τα Πέπλα της Ύπαρξης – Koshas | Neurodivergent Mindfulness',
@@ -71,12 +65,6 @@ const ARTICLES: Record<string, { titleEn: string; titleEl: string; descEn: strin
     titleEl: 'Τι σημαίνει Sandbox στην Ενσυνειδητότητα; | Neurodivergent Mindfulness',
     descEn: 'The Sandbox concept: a safe internal space for self-exploration using IFS (Internal Family Systems) and mindfulness. Ideal for neurodivergent self-inquiry.',
     descEl: 'Η έννοια του Sandbox: ένας ασφαλής εσωτερικός χώρος για αυτοεξερεύνηση με IFS και ενσυνειδητότητα.',
-  },
-  'dzogchen-great-perfection': {
-    titleEn: 'Dzogchen: The Great Perfection | Neurodivergent Mindfulness',
-    titleEl: 'Ντζόγκτσεν: Η Μεγάλη Τελειότητα | Neurodivergent Mindfulness',
-    descEn: 'An introduction to Dzogchen, the Tibetan Buddhist path of effortless awareness. How the Great Perfection teaching applies to neurodivergent minds seeking stillness.',
-    descEl: 'Εισαγωγή στο Ντζόγκτσεν, τη θιβετιανή βουδιστική οδό της αβίαστης επίγνωσης για νευροδιαφορετικούς νους.',
   },
   'never-force': {
     titleEn: 'Never Force – The Art of Effortless Practice | Neurodivergent Mindfulness',
