@@ -635,7 +635,8 @@ export default function ChapterDetail() {
                           {CHAPTER_TAKEAWAYS[currentLang][chapter.num]?.slice(0, 3).map((take, idx) => (
                             <li key={idx} className="flex gap-4 items-start text-base desk:text-lg text-ink/70 font-light leading-relaxed">
                               <span aria-hidden="true" className="text-ink/70 mt-1.5">—</span>
-                              <ConceptAnnotatedText text={take} />
+                              {/* One flowing line: the words and the term buttons inside it are not columns. */}
+                              <span className="flex-1 min-w-0"><ConceptAnnotatedText text={take} /></span>
                             </li>
                           ))}
                         </ul>
