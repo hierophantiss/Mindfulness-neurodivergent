@@ -252,6 +252,16 @@ test('"Gravity and thoughts" (Chapter 1) plays its four scenes, with no accessib
   expect(r.violations.map(v => `${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
 });
 
+test('the last page of a chapter says what you take from it', async ({ page }) => {
+  await page.goto('/el/chapters/1?p=99', { waitUntil: 'networkidle' });
+  const gains = page.getByRole('region', { name: 'Τι παίρνεις από αυτό το κεφάλαιο' });
+  await expect(gains).toBeVisible();
+  await expect(gains.getByRole('listitem').first()).toContainText('Μπορείς να βρίσκεις τη γείωση');
+  // Only at the chapter's end.
+  await page.goto('/el/chapters/1?p=2', { waitUntil: 'networkidle' });
+  await expect(page.getByRole('region', { name: 'Τι παίρνεις από αυτό το κεφάλαιο' })).toHaveCount(0);
+});
+
 test('"The four stages" (Chapter 10) plays its five scenes, with no accessibility problems', async ({ page }) => {
   await page.goto('/el/chapters/10?p=2', { waitUntil: 'networkidle' });
   const anim = page.getByRole('group', { name: 'Τα τέσσερα στάδια' });

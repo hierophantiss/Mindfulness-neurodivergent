@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { useParams, useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { CHAPTERS_DATA } from '../data/chapters';
 import { CHAPTER_TAKEAWAYS, CHAPTER_MICRO_CAT } from '../data/takeaways';
+import { chapterObjectives } from '../data/chapterObjectives';
 import { ArrowLeft, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, Check, Zap, Sparkles, Music } from 'lucide-react';
 import { useCompanion } from '../hooks/useCompanion';
 import { useLanguage } from '../hooks/useLanguage';
@@ -749,6 +750,25 @@ export default function ChapterDetail() {
                   )}
                 </div>
               </div>
+            )}
+
+            {/* At the chapter's end: what you can now do. The method is something
+                you learn (to regulate body, breath, attention, space), so each chapter
+                says what it gives; no ticks, no scores, and "Listen" does not read it. */}
+            {isLastPage && chapterObjectives(chapter.num, language === 'el' ? 'el' : 'en').length > 0 && (
+              <section aria-labelledby="chapter-gains" className="card-relief rounded-3xl p-8 desk:p-10 space-y-7 mt-16 text-left">
+                <h2 id="chapter-gains" className="text-center text-[13px] font-medium text-ink/70 font-sans">
+                  {language === 'el' ? 'Τι παίρνεις από αυτό το κεφάλαιο' : 'What you take from this chapter'}
+                </h2>
+                <ul className="space-y-5">
+                  {chapterObjectives(chapter.num, language === 'el' ? 'el' : 'en').map((line, idx) => (
+                    <li key={idx} className="flex gap-4 items-start text-base desk:text-lg text-ink/75 font-light leading-relaxed">
+                      <span aria-hidden="true" className="text-ink/60 mt-1.5">—</span>
+                      <span className="flex-1 min-w-0"><ConceptAnnotatedText text={line} /></span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
             )}
 
             {/* In-content Navigation Buttons */}
