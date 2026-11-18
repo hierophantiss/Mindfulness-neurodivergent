@@ -757,9 +757,18 @@ export default function ChapterDetail() {
                 says what it gives; no ticks, no scores, and "Listen" does not read it. */}
             {isLastPage && chapterObjectives(chapter.num, language === 'el' ? 'el' : 'en').length > 0 && (
               <section aria-labelledby="chapter-gains" className="card-relief rounded-3xl p-8 desk:p-10 space-y-7 mt-16 text-left">
-                <h2 id="chapter-gains" className="text-center text-[13px] font-medium text-ink/70 font-sans">
-                  {language === 'el' ? 'Τι παίρνεις από αυτό το κεφάλαιο' : 'What you take from this chapter'}
-                </h2>
+                <div className="space-y-2 text-center">
+                  <h2 id="chapter-gains" className="text-[13px] font-medium text-ink/70 font-sans">
+                    {language === 'el' ? 'Τι παίρνεις από αυτό το κεφάλαιο' : 'What you take from this chapter'}
+                  </h2>
+                  {/* Reading is not enough: some of it you know once you have read it, most of
+                      it is a skill that becomes yours with thought and practice. */}
+                  <p className="text-[14px] leading-relaxed text-ink/65 font-sans max-w-[34ch] mx-auto">
+                    {language === 'el'
+                      ? 'Κάποια τα παίρνεις διαβάζοντας· τα περισσότερα γίνονται κτήμα σου όταν τα σκεφτείς και τα ασκήσεις, λίγο λίγο.'
+                      : 'Some of this you take by reading; most of it becomes yours as you think it through and practise it, little by little.'}
+                  </p>
+                </div>
                 <ul className="space-y-5">
                   {chapterObjectives(chapter.num, language === 'el' ? 'el' : 'en').map((line, idx) => (
                     <li key={idx} className="flex gap-4 items-start text-base desk:text-lg text-ink/75 font-light leading-relaxed">
