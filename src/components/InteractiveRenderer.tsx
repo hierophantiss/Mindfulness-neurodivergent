@@ -6,6 +6,7 @@ import InnerTouch from './animations/InnerTouch';
 import AttentionBeam from './animations/AttentionBeam';
 import OpenAwareness from './animations/OpenAwareness';
 import MindfulSwaying from './animations/MindfulSwaying';
+import Journey from './animations/Journey';
 import CameraAnimation from './CameraAnimation';
 import SamathaAnimation from './SamathaAnimation';
 import VoicedFrame from './VoicedFrame';
@@ -33,7 +34,6 @@ export default function InteractiveRenderer({ id, asModal }: InteractiveRenderer
   const htmlMap: Record<string, string> = {
     'attention_dispersion': 'racing_mind.html', // Chapter 3's sensory overload is the racing mind
     'racing_mind': 'racing_mind.html',
-    'journey': 'journey.html',
   };
 
   const renderContent = () => {
@@ -42,6 +42,7 @@ export default function InteractiveRenderer({ id, asModal }: InteractiveRenderer
     if (id === 'three_attention') return <AttentionBeam />;
     if (id === 'openawareness' || id === 'open_awareness') return <OpenAwareness />;
     if (id === 'metronomos') return <MindfulSwaying />;
+    if (id === 'journey') return <Journey />;
     if (id === 'camera_exercise') return <CameraAnimation mode="camera" bare />;
     if (id === 'samatha_attention') return <SamathaAnimation bare />;
     if (id === 'camera_hero') return <CameraAnimation mode="hero" bare />;

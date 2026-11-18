@@ -20,6 +20,10 @@ export interface TaiChi3DState {
   isRising: boolean;
   movementType: string;
   idle: boolean;
+  /** Standing at ease, not in Tai Chi (the chapters' animations): the arms
+   *  hang by the sides, the palms to the thighs; `bf` only lights the hood's
+   *  universe and the light at the feet. */
+  natural?: boolean;
 }
 
 export interface TaiChi3D {
@@ -825,7 +829,8 @@ export function createTaiChi3D(mount: HTMLElement, onTrouble: () => void): TaiCh
     const { bf, isRising, idle } = state;
     const type = state.movementType === 'taichi' ? '5-5' : state.movementType;
     if (memo.type !== type || idle) { memo.type = type; memo.eL = undefined; memo.cL = undefined; memo.cR = undefined; memo.diff = undefined; }
-    const pose = taiChiPose({ bf, isRising, movementType: type, idle, natural: false, seated: false, sway: 0 }, memo);
+    const natural = !!state.natural;
+    const pose = taiChiPose({ bf: natural ? 0 : bf, isRising: natural ? true : isRising, movementType: type, idle: idle || natural, natural, seated: false, sway: 0 }, memo);
     const { sinkY, leanBackY, bodyShift, bowBend, palmVis, meetW } = pose;
     const isBow = type === 'deep-bow-5-5' || type === 'bow';
     const isSky = type === 'qigong-lifting-sky';
@@ -943,7 +948,8 @@ export function createTaiChi3D(mount: HTMLElement, onTrouble: () => void): TaiCh
         const lift = smc((238 - h2.y) / 40);
         lerpDir(DOWN, BACK, lift, _hint);
       } else {
-        palmHint(type, bf, isRising, _hint);
+        if (natural) _hint.copy(IN_L); // at ease: the palms to the thighs
+        else palmHint(type, bf, isRising, _hint);
         if (!left) _hint.x = -_hint.x;
       }
       // Seen a little: the palms turned to us (2D palmVis), and those facing
@@ -958,9 +964,9 @@ export function createTaiChi3D(mount: HTMLElement, onTrouble: () => void): TaiCh
     floorGlowLight.intensity = 0.65 + 0.35 * bf;
 
     // Soft gold trails behind the palms.
-    if (idle) trailPoints.length = 0;
+    if (idle || natural) trailPoints.length = 0;
     const lastT = trailPoints[trailPoints.length - 1];
-    if (!idle && (!lastT || nowMs - lastT.t > 20)) {
+    if (!idle && !natural && (!lastT || nowMs - lastT.t > 20)) {
       const tip = (arm: typeof leftArm, h: THREE.Vector3, e: THREE.Vector3) => {
         _x3.subVectors(h, e).normalize();
         return _n3.copy(arm.handGroup.position).addScaledVector(_x3, 0.06);

@@ -356,6 +356,6 @@ test('the "More" menu keeps the keyboard inside it and closes with Escape', asyn
 
 test('the animation pages are kept for offline use', async ({ request }) => {
   const sw = await (await request.get('/sw.js')).text();
-  for (const f of ['journey', 'racing_mind', 'samatha_attention', 'camera', 'camera-hero']) expect(sw).toContain(`animations/${f}.html`);
+  for (const f of ['racing_mind', 'samatha_attention', 'camera', 'camera-hero']) expect(sw).toContain(`animations/${f}.html`);
 });
 

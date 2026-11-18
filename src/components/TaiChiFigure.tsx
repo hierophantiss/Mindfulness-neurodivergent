@@ -6,28 +6,10 @@
 import { lazy, Suspense, useState, type ComponentProps } from "react";
 import TaiChiHero from "./TaiChiHero";
 import { useAccessibility } from "../hooks/useAccessibility";
+import { no3D, wants3D } from "../lib/can3D";
 
 // The 3D figure (three.js) loads only here, on the practice page.
 const TaiChiHero3D = lazy(() => import("./TaiChiHero3D"));
-
-let can3D: boolean | null = null;
-/** A real graphics chip: the 3D figure can be drawn. */
-function wants3D(): boolean {
-  if (can3D !== null) return can3D;
-  if (typeof window === "undefined") return (can3D = false);
-  try {
-    const c = document.createElement("canvas");
-    const gl = (c.getContext("webgl2") || c.getContext("webgl")) as WebGLRenderingContext | null;
-    if (!gl) return (can3D = false);
-    const ext = gl.getExtension("WEBGL_debug_renderer_info");
-    const gpu = String(gl.getParameter(ext ? ext.UNMASKED_RENDERER_WEBGL : gl.RENDERER));
-    gl.getExtension("WEBGL_lose_context")?.loseContext();
-    can3D = !/SwiftShader|llvmpipe|softpipe|Software|Basic Render/i.test(gpu);
-  } catch {
-    can3D = false;
-  }
-  return can3D;
-}
 
 /**
  * The Tai Chi figure of the practices: in 3D where the device draws it well,
@@ -48,7 +30,7 @@ export default function TaiChiFigure(props: ComponentProps<typeof TaiChiHero>) {
         movementType={props.movementType}
         idle={props.idle}
         breathStateText={props.breathStateText}
-        onTrouble={() => { can3D = false; setUse3D(false); }}
+        onTrouble={() => { no3D(); setUse3D(false); }}
       />
     </Suspense>
   );
