@@ -5,7 +5,8 @@ Reads src/data/narration.json and writes, for each animation and language:
 
     <out>/anim-<id>-<lang>.mp3    the guidance, in the language's voice (synth.VOICE), scene after scene
     <out>/anim-<id>-<lang>.json   timing map: where each scene starts and its speech
-                                  ends, and where each breath phase starts and how long it lasts
+                                  ends, where each breath phase starts and how long it lasts,
+                                  and where each marked line starts ("marks")
 
 The animation plays the MP3 when the person turns the voice on, and follows the
 map: the scene changes when its words are done, and the breath's light moves
@@ -83,7 +84,7 @@ def main():
                 continue
             pieces = [synth.silence(LEAD_IN_MS, cache)]
             t = LEAD_IN_MS / 1000
-            scenes, breaths = [], []
+            scenes, breaths, marks = [], [], []
 
             def gap(ms):
                 nonlocal t
@@ -91,7 +92,7 @@ def main():
                     pieces.append(synth.silence(int(ms), cache))
                     t += ms / 1000
 
-            for steps in langs[lang]:
+            for si, steps in enumerate(langs[lang]):
                 t0 = t
                 end = t
                 for st in steps:
@@ -102,6 +103,8 @@ def main():
                         gap(st['rest'])
                     elif 'say' in st:
                         start = t
+                        if 'mark' in st:
+                            marks.append({'scene': si, 'name': st['mark'], 't': round(start, 3)})
                         wav = synth.speak(st['say'], RATE, voice, locale, cache, a.mock)
                         pieces.append(wav)
                         t += wav_seconds(wav)
@@ -124,6 +127,7 @@ def main():
             (out / f'{name}.json').write_text(json.dumps({
                 'v': 1, 'id': anim_id, 'lang': lang, 'rate': RATE,
                 'duration': round(t, 3), 'scenes': scenes, 'breaths': breaths,
+                **({'marks': marks} if marks else {}),
             }, ensure_ascii=False), encoding='utf-8')
             print(f'  {name}: {t:.1f} s, {len(scenes)} scenes, {len(breaths)} breath phases', flush=True)
 

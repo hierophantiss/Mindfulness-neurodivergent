@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { animAudioUrl, breathAt, sceneAt, sceneLength, type AnimTiming } from './animVoice';
+import { animAudioUrl, breathAt, markedClock, sceneAt, sceneLength, type AnimTiming } from './animVoice';
 import narration from '../data/narration.json';
 
 const T: AnimTiming = {
@@ -97,6 +97,33 @@ describe('the voice of the animations', () => {
       const sides = g[lang][1].filter(st => st.breath);
       expect(sides.map(st => st.breath)).toEqual(['in', 'out', 'in', 'out']);
       expect(new Set(sides.map(st => st.ms)).size).toBe(1); // each side as long as the other
+    }
+  });
+
+  it('bends the picture\'s clock so its moments meet the marked words', () => {
+    const t: AnimTiming = { ...T, scenes: [{ t0: 0.4, e: 10 }, { t0: 20, e: 40 }], marks: [
+      { scene: 1, name: 'thought', t: 26 }, { scene: 1, name: 'label', t: 30 }, { scene: 0, name: 'thought', t: 5 },
+    ] };
+    const keys = { thought: 3, label: 6 };
+    expect(markedClock(t, 1, 0, keys)).toBe(0);
+    expect(markedClock(t, 1, 6, keys)).toBeCloseTo(3, 5);   // "thought" is said 6 s into the scene
+    expect(markedClock(t, 1, 8, keys)).toBeCloseTo(4.5, 5);
+    expect(markedClock(t, 1, 10, keys)).toBeCloseTo(6, 5);  // "label"
+    expect(markedClock(t, 1, 13, keys)).toBeCloseTo(9, 5);  // then at the voice's pace
+    // No marks for the scene: the voice's clock.
+    expect(markedClock({ ...T }, 1, 7, keys)).toBe(7);
+  });
+
+  it('guides "The four stages" (Chapter 10): five scenes, 4-6 breaths, the marks the picture follows', () => {
+    type Step = { say?: string; breath?: string; ms?: number; mark?: string };
+    const g = (narration as unknown as Record<string, Record<string, Step[][]>>).journey;
+    for (const lang of ['el', 'en']) {
+      expect(g[lang]).toHaveLength(5);
+      for (const scene of g[lang]) expect(scene.some(st => st.say)).toBe(true);
+      const br = g[lang].flat().filter(st => st.breath);
+      expect(br.map(st => `${st.breath}${st.ms}`)).toEqual(['in4000', 'out6000', 'in4000', 'out6000', 'in4000', 'out6000']);
+      expect(g[lang][3].filter(st => st.mark).map(st => st.mark)).toEqual(['thought', 'label', 'return']);
+      expect(g[lang][4].filter(st => st.mark).map(st => st.mark)).toEqual(['right', 'left', 'up', 'down', 'all']);
     }
   });
 });

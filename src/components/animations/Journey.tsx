@@ -9,7 +9,7 @@ import { Earth, daylight, rimColour } from '../HomeEarth';
 import { getAudio } from '../../lib/chapterAudio';
 import { no3D, wants3D } from '../../lib/can3D';
 import type { TaiChi3D } from '../../lib/taiChi3D';
-import { type AnimTiming, animAudioUrl, breathAt as voiceBreathAt, loadAnimTiming, sceneAt, sceneLength, setVoicePreferred, voicePreferred } from '../../lib/animVoice';
+import { type AnimTiming, animAudioUrl, breathAt as voiceBreathAt, loadAnimTiming, markedClock, sceneAt, sceneLength, setVoicePreferred, voicePreferred } from '../../lib/animVoice';
 
 // Chapter 10, "The Four Stages": the complete exercise, in order, as the
 // chapter gives it: the mind that races, then earth, breath, a point ahead and
@@ -113,6 +113,12 @@ function focusAt(t: number) {
   const tag = t < 6 ? 0 : t < 6.8 ? (t - 6) / 0.8 : t < 8.5 ? 1 : t < 10 ? 1 - (t - 8.5) / 1.5 : 0;
   return { pull, thought, tag };
 }
+
+// With the voice, these moments of the picture meet its words (the marks in
+// narration.json, "journey"): the thought, its label, the return; then each
+// side the vision opens to, and all of it together.
+const FOCUS_KEYS = { thought: 3, label: 6, return: 8 };
+const SPACE_KEYS = { right: 0.6, left: 3.4, up: 6.2, down: 9, all: 12.6 };
 
 /** How far the vision has opened in "Open into space": right, left, up, down, one after the other. */
 function openAt(t: number) {
@@ -352,7 +358,11 @@ export default function Journey() {
       }
 
       // With reduced motion, each scene's picture at its fullest moment.
-      const t = reduceMotion ? [0, 6, 6, 7, 99][L.scene] : L.clock;
+      const voiced = L.voice && L.guided ? L.voice : null;
+      const t = reduceMotion ? [0, 6, 6, 7, 99][L.scene]
+        : voiced && L.scene === 3 ? markedClock(voiced, 3, L.clock, FOCUS_KEYS)
+        : voiced && L.scene === 4 ? markedClock(voiced, 4, L.clock, SPACE_KEYS)
+        : L.clock;
       const now = performance.now() / 1000;
       const lift = lk.lift * u;
       const sway = reduceMotion ? 0 : Math.sin(now * 0.9) * lk.sway;

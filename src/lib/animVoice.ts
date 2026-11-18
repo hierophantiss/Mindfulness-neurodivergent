@@ -20,6 +20,8 @@ export interface AnimTiming {
   duration: number;
   scenes: { t0: number; e: number }[];
   breaths: { t: number; phase: 'in' | 'out'; len: number }[];
+  /** Where marked lines start (narration.json: a say step with "mark"). */
+  marks?: { scene: number; name: string; t: number }[];
 }
 
 const name = (id: string, lang: VoiceLang) => `anim-${id}-${lang}`;
@@ -49,6 +51,29 @@ export function sceneAt(timing: AnimTiming, t: number) {
 export function sceneLength(timing: AnimTiming, i: number) {
   const next = timing.scenes[i + 1];
   return (next ? next.t0 : timing.duration) - timing.scenes[i].t0;
+}
+
+/**
+ * The picture's own clock for a scene, bent so that its moments meet the
+ * voice: `keys` gives, for each mark name, the second of the picture's own
+ * timeline where that thing happens; between marks the time runs evenly, and
+ * after the last one at the voice's pace. Without marks, the voice's clock.
+ */
+export function markedClock(timing: AnimTiming, scene: number, clock: number, keys: Record<string, number>) {
+  const t0 = timing.scenes[scene]?.t0 ?? 0;
+  const pts: [number, number][] = [[0, 0]];
+  for (const m of timing.marks ?? []) {
+    if (m.scene !== scene || !(m.name in keys)) continue;
+    const at = m.t - t0, v = keys[m.name];
+    if (at > pts[pts.length - 1][0] && v > pts[pts.length - 1][1]) pts.push([at, v]);
+  }
+  if (pts.length === 1) return clock;
+  for (let i = 1; i < pts.length; i++) {
+    const [a, va] = pts[i - 1], [b, vb] = pts[i];
+    if (clock <= b) return va + ((clock - a) / (b - a)) * (vb - va);
+  }
+  const [b, vb] = pts[pts.length - 1];
+  return vb + (clock - b);
 }
 
 const ease = (x: number) => 0.5 - 0.5 * Math.cos(Math.PI * Math.min(1, Math.max(0, x)));
