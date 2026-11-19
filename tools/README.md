@@ -141,17 +141,38 @@ python3 tools/audiobook/synth.py /tmp/script_el.json el /tmp/audio_el --mock --o
 ## Internet Archive (`internet_archive.py`)
 
 Το βιβλίο και το ακουστικό βιβλίο στον λογαριασμό του Internet Archive
-(<https://archive.org/details/@hierophantis>), σε δύο items: το βιβλίο (PDF και
-EPUB από το `public/`) και το ακουστικό βιβλίο (τα αρχεία του Release `audiobook`).
-Οι περιγραφές παίρνουν τα λόγια του ίδιου του βιβλίου (τίτλος, «Για Ποιον Είναι
-Αυτό το Βιβλίο;», η σημείωση πριν ξεκινήσεις).
+(<https://archive.org/details/@hierophantis>), σε τέσσερα items, ένα για κάθε είδος
+και γλώσσα, το καθένα μόνο στη γλώσσα του (τίτλος, περιγραφή, αρχεία):
+
+| item | identifier | αρχεία |
+|---|---|---|
+| βιβλίο, ελληνικά | `mindfulness-guide-neurodivergents-2nd-edition` | `workbook_el.pdf`, `.epub` |
+| ακουστικό, ελληνικά | `mindfulness-guide-neurodivergents-audiobook` | `el-NN.mp3`, `mindfulness-guide-el.mp3`, `.m4b` |
+| βιβλίο, αγγλικά | `mindfulness-guide-neurodivergents-2nd-edition-en` | `workbook_en.pdf`, `.epub` |
+| ακουστικό, αγγλικά | `mindfulness-guide-neurodivergents-audiobook-en` | `en-NN.mp3`, `mindfulness-guide-en.mp3`, `.m4b` |
+
+Τα βιβλία από το `public/`, το ακουστικό βιβλίο από το Release `audiobook`· κάθε
+item έχει και το εξώφυλλο ως εικόνα (`__ia_thumb.jpg`). Οι περιγραφές παίρνουν τα
+λόγια του ίδιου του βιβλίου (τίτλος, «Για Ποιον Είναι Αυτό το Βιβλίο;», η σημείωση
+πριν ξεκινήσεις) και δείχνουν στο άλλο item της ίδιας γλώσσας (βιβλίο ↔ ακουστικό)
+και, στο τέλος, στο item της άλλης γλώσσας.
 
 Από το κινητό: **Actions → Internet Archive → Run workflow**. Χρειάζεται τα secrets
 `IA_ACCESS_KEY` και `IA_SECRET_KEY` (τα κλειδιά S3 του λογαριασμού:
-<https://archive.org/account/s3.php>). Επιλογές:
+<https://archive.org/account/s3.php>). Η επιλογή `lang` λέει ποιας γλώσσας τα items
+γίνονται (`both`, `el`, `en`). Επιλογές:
 
-- `list` — τα items του λογαριασμού (για να φανεί ποια είναι της πρώτης έκδοσης).
-- `dry-run` — τι θα ανέβαινε και με ποια στοιχεία, χωρίς να ανεβεί τίποτα.
-- `upload` — φτιάχνει ή ενημερώνει τα δύο items. Δεν σβήνει τίποτα· όσα αρχεία
-  δεν άλλαξαν δεν ξαναστέλνονται. Για να ενημερωθεί item της πρώτης έκδοσης,
-  δίνεις το identifier του.
+- `list` — τα items του λογαριασμού (για να φανεί ποια είναι της πρώτης έκδοσης)
+  και αν τα τέσσερα identifiers είναι ελεύθερα ή ήδη του λογαριασμού.
+- `dry-run` — τι θα γινόταν (αρχεία, στοιχεία, ποια αρχεία θα έφευγαν), χωρίς να
+  σταλεί τίποτα.
+- `upload` — φτιάχνει ή ενημερώνει τα items. Όσα αρχεία δεν άλλαξαν δεν
+  ξαναστέλνονται. Το μόνο που σβήνει: από ένα item, τα αρχικά αρχεία της άλλης
+  γλώσσας, με τα ακριβή τους ονόματα (`workbook_<άλλη>.pdf`/`.epub` στο βιβλίο·
+  `<άλλη>-NN.mp3`, `mindfulness-guide-<άλλη>.mp3`/`.m4b` στο ακουστικό) και ό,τι
+  έφτιαξε το archive.org από αυτά. Τίποτε άλλο.
+- `point-old` — μια σημείωση στην αρχή της περιγραφής των items της πρώτης
+  έκδοσης, στη γλώσσα τους, που δείχνει στο νέο βιβλίο και ακουστικό της ίδιας
+  γλώσσας: `httpsneurodivergent-mindfulness.org_202610` (ελληνικά) και
+  `httpsneurodivergent-mindfulness.org` (αγγλικά). Μια παλιότερη τέτοια σημείωση
+  αντικαθίσταται· αν η σημείωση είναι ήδη ίδια, δεν αλλάζει τίποτα.

@@ -1,6 +1,7 @@
 # Puts the book and the audiobook on the Internet Archive (archive.org), in the
 # author's account (https://archive.org/details/@hierophantis), with
-# tools/internet_archive.py.
+# tools/internet_archive.py: four items, one per kind and language, each in its
+# own language (the identifiers are in the script).
 #
 # Run it by hand: Actions → Internet Archive → Run workflow.
 # Needs the repository secrets IA_ACCESS_KEY and IA_SECRET_KEY: the account's
@@ -9,20 +10,22 @@
 # Mode:
 #   list     the account's items (identifier, title, mediatype, date, files,
 #            licence), to tell which ones are the first edition; and whether
-#            the two identifiers below are free or already the account's
-#   dry-run  everything an upload would do (files, metadata), nothing sent;
-#            works before the keys exist
-#   point-old  a note at the top of older items' descriptions (input
-#            old_identifiers) pointing to the two items; nothing else changes
-#   upload   creates or updates two items:
-#            book  (texts)  public/workbook_{el,en}.{pdf,epub}
-#            audio (audio)  the files of the release "audiobook" (per-chapter
-#                           MP3s, the whole book as MP3 and M4B), with the
-#                           book's cover as its picture
+#            the four identifiers are free or already the account's
+#   dry-run  everything an upload would do (files, metadata, the files it
+#            would remove), nothing sent; works before the keys exist
+#   upload   creates or updates the items of the chosen language(s):
+#            book  (texts)  public/workbook_<lang>.{pdf,epub}
+#            audio (audio)  the files of the release "audiobook" for <lang>
+#                           (per-chapter MP3s, the whole book as MP3 and M4B)
+#            each with the book's cover as its picture
+#   point-old  a note at the top of the first-edition item of each chosen
+#            language, in that language, pointing to its new book and
+#            audiobook; nothing else changes
 #
-# An upload deletes nothing on archive.org: a file with the same name is
-# replaced, an unchanged file (same MD5) is not sent again, and the item's
-# metadata is updated. To update a first-edition item, give its identifier.
+# What an upload removes: only the other language's original files from an
+# item (the two Greek items held both languages at first), by their exact
+# names, with what archive.org derived from them. Nothing else. A file with
+# the same name is replaced and an unchanged file (same MD5) is not sent again.
 
 name: Internet Archive
 
@@ -30,24 +33,12 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'list = the account''s items · dry-run = what would be uploaded · upload'
+        description: 'list = the account''s items · dry-run = what would be done · upload · point-old = a note on the first edition'
         type: choice
         options: [list, dry-run, upload, point-old]
         default: list
-      book_identifier:
-        description: 'The book''s item on archive.org (empty = mindfulness-guide-neurodivergents-2nd-edition)'
-        type: string
-        default: ''
-      audio_identifier:
-        description: 'The audiobook''s item on archive.org (empty = mindfulness-guide-neurodivergents-audiobook)'
-        type: string
-        default: ''
-      old_identifiers:
-        description: 'point-old: older items (comma-separated) that get a note pointing to the new edition'
-        type: string
-        default: ''
       lang:
-        description: Language of the files
+        description: The language whose items are processed
         type: choice
         options: [both, el, en]
         default: both
@@ -66,9 +57,6 @@ jobs:
     env:
       MODE: ${{ inputs.mode }}
       LANGS: ${{ inputs.lang == 'both' && 'el,en' || inputs.lang }}
-      BOOK_ID: ${{ inputs.book_identifier }}
-      AUDIO_ID: ${{ inputs.audio_identifier }}
-      OLD_IDS: ${{ inputs.old_identifiers }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -120,5 +108,4 @@ jobs:
           IA_SECRET_KEY: ${{ secrets.IA_SECRET_KEY }}
         run: |
           "$RUNNER_TEMP/ia-venv/bin/python" tools/internet_archive.py "$MODE" \
-            --book-id="$BOOK_ID" --audio-id="$AUDIO_ID" --langs="$LANGS" \
-            --audio-dir="$RUNNER_TEMP/audiobook" --old-ids="$OLD_IDS" --summary="$GITHUB_STEP_SUMMARY"
+            --langs="$LANGS" --audio-dir="$RUNNER_TEMP/audiobook" --summary="$GITHUB_STEP_SUMMARY"
