@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { execFileSync } from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -14,6 +15,56 @@ import { GUIDED_EXERCISES } from '../src/data/guidedExercises';
 import { rabbitholeContent } from '../src/data/rabbitholeContent';
 
 const BASE_URL = 'https://neurodivergent-mindfulness.org';
+
+// ── When each page last changed (<lastmod>) ─────────────────────────
+// From git: the last commit that touched the files a page is made from.
+// In a shallow clone every file looks as old as the one commit there, so
+// then every page gets the build's date instead.
+const BUILD_DATE = new Date().toISOString();
+const IS_SHALLOW = (() => {
+  try { return execFileSync('git', ['rev-parse', '--is-shallow-repository'], { cwd: ROOT_DIR, encoding: 'utf8' }).trim() !== 'false'; }
+  catch { return true; }
+})();
+const lastChangeCache = new Map<string, string>();
+function lastChange(files: string[]): string {
+  if (IS_SHALLOW) return BUILD_DATE;
+  const key = files.join('|');
+  if (!lastChangeCache.has(key)) {
+    let date = '';
+    try { date = execFileSync('git', ['log', '-1', '--format=%cI', '--', ...files], { cwd: ROOT_DIR, encoding: 'utf8' }).trim(); } catch { /* not a git checkout */ }
+    lastChangeCache.set(key, date || BUILD_DATE);
+  }
+  return lastChangeCache.get(key)!;
+}
+
+/** The source files a page is made from (its words and its component). */
+function sourcesOf(route: string): string[] {
+  const r = route.replace(/^\/(en|el)/, '').replace(/\?.*$/, '') || '/';
+  const D = (f: string) => `src/data/${f}`;
+  const P = (f: string) => `src/pages/${f}`;
+  if (r === '/') return [P('Dashboard.tsx')];
+  if (r.startsWith('/chapters/')) return [D('chapters.ts'), P('ChapterDetail.tsx')];
+  if (r === '/chapters') return [D('chapters.ts'), P('Chapters.tsx')];
+  if (r.startsWith('/rabbithole')) return [D('rabbitholeContent.ts'), P('RabbitHole.tsx')];
+  if (r.startsWith('/practice/breath/')) return [D('breathPatterns.ts'), P('BreathRoute.tsx')];
+  if (r === '/practice/microdoses') return [D('microdoses.ts'), P('PracticeMicrodoses.tsx')];
+  if (r === '/practice/grounding') return ['src/components/PracticeSection.tsx'];
+  if (r === '/practice/swaying') return [P('PracticeSwaying.tsx')];
+  if (r.startsWith('/practice/')) return [D('microdoses.ts'), D('guidedExercises.ts'), P('GenericExercise.tsx')];
+  if (r === '/practice') return [P('Practice.tsx'), D('breathPatterns.ts')];
+  if (r.startsWith('/program/week/')) return [D('course-el.ts'), D('course-en.ts'), P('ProgramWeek.tsx')];
+  if (r === '/program') return [D('course-el.ts'), D('course-en.ts'), P('Program.tsx')];
+  if (r === '/method') return [D('pages/method.ts'), D('pages/methodSign.ts'), P('Method.tsx')];
+  if (r === '/methodology') return [D('methodology.ts'), P('Methodology.tsx')];
+  if (r === '/faq') return [D('faq.ts'), P('Faq.tsx')];
+  if (r === '/privacy') return [D('pages/privacy.ts'), P('Privacy.tsx')];
+  if (r === '/accessibility') return [D('pages/accessibility.ts'), P('Accessibility.tsx')];
+  if (r === '/install') return [D('pages/install.ts'), P('Install.tsx')];
+  if (r === '/cards') return [D('bookCards.ts'), D('chapters.ts'), P('Cards.tsx')];
+  if (r === '/sanctuary') return [P('Sanctuary.tsx')];
+  return [];
+}
+
 
 const mainRoutes = [
   '/',
@@ -139,10 +190,17 @@ async function generate() {
     <xhtml:link rel="alternate" hreflang="en" href="${enUrl}" />
     <xhtml:link rel="alternate" hreflang="el" href="${elUrl}" />
     <xhtml:link rel="alternate" hreflang="x-default" href="${xdefaultUrl}" />
-    <changefreq>weekly</changefreq>
-    <priority>${p.length < 10 ? '1.0' : '0.8'}</priority>
+    <lastmod>${lastChange(sourcesOf(p))}</lastmod>
   </url>`;
-  }).join('');
+  }).join('') + (['el', 'en'] as const).flatMap(l => ['pdf', 'epub'].map(ext => {
+    // The book itself, as PDF and EPUB.
+    const file = `workbook_${l}.${ext}`;
+    return `
+  <url>
+    <loc>${BASE_URL}/${file}</loc>
+    <lastmod>${lastChange([`public/${file}`])}</lastmod>
+  </url>`;
+  })).join('');
 
   const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
