@@ -37,6 +37,12 @@ export default defineConfig(() => {
             urlPattern: /\/assets\/(?:weekPdf-[^/]*\.js|[^/]*-400-normal-[^/]*\.woff)$/,
             handler: 'CacheFirst',
             options: { cacheName: 'week-pdf', expiration: { maxEntries: 12 } },
+          }, {
+            // The pages' heads (title, description…) the app reads as you move
+            // between pages (components/SEO.tsx): kept for offline, refreshed when online.
+            urlPattern: /\/seo\/.*\.json$/,
+            handler: 'StaleWhileRevalidate',
+            options: { cacheName: 'seo-heads', expiration: { maxEntries: 300 } },
           }],
           navigateFallback: '/index.html',
           navigateFallbackDenylist: [/\.(?:pdf|epub|json)$/, /^\/workbook_/, /^\/animations\//, /^\/audio\//, /^\/download\//, /^\/\.well-known\//],

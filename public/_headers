@@ -20,6 +20,11 @@
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
+# The head of each page as JSON, read by the app when you move between pages
+# (components/SEO.tsx); the pages themselves are what search engines list.
+/seo/*
+  X-Robots-Tag: noindex
+
 /sitemap.xml
   Content-Type: application/xml; charset=UTF-8
   X-Robots-Tag: noindex
@@ -28,6 +33,13 @@
   Content-Type: application/json
 
 /robots.txt
+  Content-Type: text/plain; charset=UTF-8
+
+# For AI assistants: what the work is, and the whole book as text (made at build).
+/llms.txt
+  Content-Type: text/plain; charset=UTF-8
+
+/llms-full.txt
   Content-Type: text/plain; charset=UTF-8
 
 /sw.js

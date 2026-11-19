@@ -1,973 +1,80 @@
-import { METHODOLOGY_DATA } from "../src/data/methodology";
 /**
- * Static HTML Generator — no Puppeteer, no browser required.
- * Works in Cloudflare Pages build environment.
+ * Static HTML for every route — no Puppeteer, no browser required (works in
+ * the Cloudflare Pages build).
  *
- * For each route in prerender-paths.json, reads the base dist/index.html
- * and injects route-specific <title>, <meta>, canonical, hreflang, and
- * JSON-LD structured data before saving to dist/<route>/index.html.
+ * For each route in prerender-paths.json, reads the base dist/index.html,
+ * writes the route's head (title, description, canonical, hreflang, Open
+ * Graph, JSON-LD) and a crawlable body, and saves it to dist/<route>.html.
+ * The words come from scripts/seo-meta.ts. The same head is also written as
+ * JSON (dist/seo/<route>.json), which the app reads when you move between
+ * pages, so the browser and search engines see one and the same head.
  *
- * The React app still hydrates on the client — users get the full SPA.
- * Search engines get the correct metadata immediately without JS.
+ * The React app still starts on the client — people get the full app.
  */
 
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { CHAPTERS_DATA } from '../src/data/chapters';
-import { BREATH_PATTERNS } from '../src/data/breathPatterns';
-import { rabbitholeContent } from '../src/data/rabbitholeContent';
-import { MICRODOSES_EXERCISES } from '../src/data/microdoses';
-import { GUIDED_EXERCISES } from '../src/data/guidedExercises';
-import { plainConcepts } from '../src/data/practiceTexts';
-import { KNOWLEDGE_FAQ } from '../src/data/faq';
-import { audioUrl } from '../src/lib/chapterAudio';
+import { routeMeta, escapeHtml, type RouteMeta } from './seo-meta';
+import { headHtml, seoJsonPath } from '../src/seo/head';
 
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname  = path.dirname(__filename);
-const ROOT_DIR   = path.join(__dirname, '..');
-const DIST_DIR   = path.join(ROOT_DIR, 'dist');
-const BASE_URL   = 'https://neurodivergent-mindfulness.org';
-
-// ─────────────────────────────────────────────────────────────
-// Article metadata
-// ─────────────────────────────────────────────────────────────
-
-const ARTICLE_DATES: Record<string, string> = {
-  'what-is-sandbox': '2025-05',
-  'koshas-veils': '2025-05',
-  'riding-the-wind': '2025-05',
-  'the-goose-is-out': '2025-05',
-  'forces-of-the-cosmos': '2025-06',
-  'quantum-void-awareness': '2025-06',
-  'soft-gaze-open-hearing': '2025-06',
-  'polyvagal-middle-way': '2025-06',
-  'plato-cave-neurodivergent': '2025-06',
-  'you-are-the-path': '2025-07',
-  'wave-and-sea': '2025-07',
-  'dzogchen-great-perfection': '2025-05',
-  'never-force': '2025-05'
-};
-
-const ARTICLE_AUTHORS: Record<string, { name: string; byline?: { en: string; el: string } }> = {
-  'dzogchen-great-perfection': {
-    name: 'Vangelis Vadarma Petropoulos',
-    byline: {
-      en: "Text by Vangelis Vadarma Petropoulos — republished with the author's permission.",
-      el: "Κείμενο του Βαγγέλη Vadarma Πετρόπουλου — αναδημοσίευση με άδεια του συγγραφέα.",
-    },
-  },
-  'never-force': { name: 'Chögyal Namkhai Norbu Rinpoche' },
-  'plato-cave-neurodivergent': { name: 'Theodoros Bairaktaris' },
-};
-
-const ARTICLES: Record<string, { en: [string, string]; el: [string, string] }> = {
-'forces-of-the-cosmos': {
-    en: ['The Four Forces of the Cosmos & the Fourfold Axis | Neurodivergent Mindfulness App',
-         'Gravity, electromagnetism, weak and strong force mapped to Body, Breath, Attention and Space. Where physics meets contemplative practice for neurodivergent minds.'],
-    el: ['Οι Τέσσερις Δυνάμεις του Σύμπαντος & ο Τετραπλός Άξονας | Neurodivergent Mindfulness App',
-         'Βαρύτητα, ηλεκτρομαγνητισμός, ασθενής και ισχυρή δύναμη σε αντιστοιχία με Σώμα, Αναπνοή, Προσοχή και Χώρο. Η φυσική συναντά τη διαλογιστική πρακτική.']
-  },
-'the-goose-is-out': {
-    en: ['The Goose is Out | Neurodivergent Mindfulness App',
-         'A Zen allegory about masking, identity and liberation for neurodivergent minds. How the ADHD and autistic nervous system can move from narrow focus to open awareness.'],
-    el: ['Η Χήνα Είναι Έξω | Neurodivergent Mindfulness App',
-         'Μια αλληγορία Ζεν για το masking, την ταυτότητα και την απελευθέρωση για νευροδιαφορετικούς νους.'],
-  },
-  'koshas-veils': {
-    en: ['The Veils of Being – Kosha Framework | Neurodivergent Mindfulness App',
-         'The Matryoshka allegory: a journey through the five Koshas from body to pure consciousness. A neurodivergent-friendly yoga philosophy guide.'],
-    el: ['Τα Πέπλα της Ύπαρξης – Koshas | Neurodivergent Mindfulness App',
-         'Η αλληγορία της Μπάμπουσκα: διαδρομή μέσα από τα πέντε Koshas από το σώμα στην καθαρή συνείδηση.'],
-  },
-'mahamudra-one-taste': {
-    en: ['Mahamudra: The One Taste | Neurodivergent Mindfulness App',
-         'How the Vajrayana concept of One Taste helps neurodivergent individuals with sensory integration and transforms sensory overwhelm into open awareness.'],
-    el: ['Μαχαμουντρα: Η Μία Γεύση | Neurodivergent Mindfulness App',
-         'Πώς η έννοια της Μίας Γεύσης βοηθά νευροδιαφορετικά άτομα με αισθητηριακή ολοκλήρωση.'],
-  },
-  'binaural-gateway': {
-    en: ['Binaural Beats & The Gateway Experience | Neurodivergent Mindfulness App',
-         'Binaural beats and the Monroe Institute\'s Gateway Experience: a practitioner\'s account, and what research does and does not show.'],
-    el: ['Binaural Beats & Το Gateway Experience | Neurodivergent Mindfulness App',
-         'Τα binaural beats και το Gateway Experience του Monroe Institute: μια προσωπική εμπειρία, και τι δείχνει, και τι όχι, η έρευνα.'],
-  },
-  'open-focus-brain': {
-    en: ['The Open Focus Brain by Les Fehmi | Neurodivergent Mindfulness App',
-         'Dr. Les Fehmi\'s Open Focus: shifting from narrow, anxious attention to wide, open attention.'],
-    el: ['Το Open Focus Brain – Les Fehmi | Neurodivergent Mindfulness App',
-         'Η τεχνική Open Focus του Δρ. Fehmi: από τη στενή, αγχώδη εστίαση στην ανοιχτή, ευρεία προσοχή.'],
-  },
-  'riding-the-wind': {
-    en: ['Learning to Ride the Wind – Tsa Lung & Nervous System | Neurodivergent Mindfulness App',
-         'Tibetan Tsa Lung, Yoga, Tai Chi and Sufi spinning: what ancient traditions of body and breath can offer a neurodivergent mind.'],
-    el: ['Μαθαίνοντας να ιππεύεις τον άνεμο – Tsa Lung | Neurodivergent Mindfulness App',
-         'Θιβετιανό Tsa Lung, γιόγκα, Τάι Τσι και Σούφι: τι μπορούν να δώσουν οι αρχαίες παραδόσεις σώματος και αναπνοής σε έναν νευροδιαφορετικό νου.'],
-  },
-  'what-is-sandbox': {
-    en: ['What is a Sandbox in Mindfulness? | Neurodivergent Mindfulness App',
-         'The Sandbox concept: a safe internal space for self-exploration using IFS (Internal Family Systems) and mindfulness. Ideal for neurodivergent self-inquiry.'],
-    el: ['Τι σημαίνει Sandbox στην Ενσυνειδητότητα; | Neurodivergent Mindfulness App',
-         'Η έννοια του Sandbox: ένας ασφαλής εσωτερικός χώρος για αυτοεξερεύνηση με IFS και ενσυνειδητότητα.'],
-  },
-  'you-are-the-path': {
-    en: ['You Are the Path: The Map, the Territory & the Axis | Neurodivergent Mindfulness App',
-         'The map is not the territory. Korzybski, Gibson and how to enter the map. A guide for neurodivergent minds.'],
-    el: ['Είσαι ο Δρόμος: Ο Χάρτης, το Έδαφος & ο Άξονας | Neurodivergent Mindfulness App',
-         'Ο χάρτης δεν είναι το έδαφος. Κορζίμπσκι, Γκίμπσον και πώς να μπείτε στον χάρτη.']
-  },
-  'wave-and-sea': {
-    en: ['The Wave Is Not the Sea — Until It Lets Go | Neurodivergent Mindfulness App',
-         "The map is not the territory — but who drew your outline? From Korzybski to the wave and the sea: mindfulness, awareness, and the fourfold method's path from regulation to presence."],
-    el: ['Το Κύμα Δεν Είναι η Θάλασσα — Ώσπου να Αφεθεί | Neurodivergent Mindfulness App',
-         "Ο χάρτης δεν είναι το έδαφος — αλλά ποιος σχεδίασε το περίγραμμά σου; Από τον Κορζίμπσκι στο κύμα και τη θάλασσα: ενσυνειδητότητα, συνειδητότητα, και ο δρόμος της τετραπλής μεθόδου από τη ρύθμιση στην παρουσία."]
-  },
-  'dzogchen-great-perfection': {
-    en: ['Dzogchen: The Great Perfection | Neurodivergent Mindfulness App',
-         'An introduction to Dzogchen, the Tibetan Buddhist path of effortless awareness. How the Great Perfection teaching applies to neurodivergent minds.'],
-    el: ['Ντζόγκτσεν: Η Μεγάλη Τελειότητα | Neurodivergent Mindfulness App',
-         'Εισαγωγή στο Ντζόγκτσεν, τη θιβετιανή βουδιστική οδό της αβίαστης επίγνωσης για νευροδιαφορετικούς νους.'],
-  },
-  'never-force': {
-    en: ['Never Force – The Art of Effortless Practice | Neurodivergent Mindfulness App',
-         'Why forcing mindfulness often backfires for neurodivergent people. The principle of effortless practice and how to work with your nervous system, not against it.'],
-    el: ['Ποτέ Μη Βιάζεσαι – Η Τέχνη της Αβίαστης Πρακτικής | Neurodivergent Mindfulness App',
-         'Γιατί η βίαιη πρακτική ενσυνειδητότητας αντιτίθεται για νευροδιαφορετικά άτομα. Η αρχή της αβίαστης πρακτικής.'],
-  },
-  'quantum-void-awareness': {
-    en: ['The Seething Void & Quantum Physics | Neurodivergent Mindfulness App',
-         'How modern physics defines the Quantum Void not as emptiness, but as a seething womb of potential. Connecting science with the 4th Axis of Space.'],
-    el: ['Το Κοχλάζον Κενό & Κβαντική Φυσική | Neurodivergent Mindfulness App',
-         'Πώς η σύγχρονη φυσική ορίζει το Κβαντικό Κενό όχι ως απουσία, αλλά ως γενεσιουργό πηγή δυναμικού. Κβαντική Φυσική & ο 4ος Άξονας (Χώρος).'],
-  },
-  'tai-chi-cloud-hands': {
-    en: ['Cloud Hands Tai Chi Breathing | Neurodivergent Mindfulness App',
-         'Animated Tai Chi Cloud Hands with real-time skeletal movement synced to breath cycles and binaural beats. Mindful movement for ADHD and autistic nervous system regulation.'],
-    el: ['Χέρια στα Σύννεφα – Tai Chi Αναπνοή | Neurodivergent Mindfulness App',
-         'Κινούμενο Tai Chi με σκελετική κινηματική συγχρονισμένη με την αναπνοή και binaural beats. Κίνηση για ρύθμιση νευροδιαφορετικού νευρικού συστήματος.'],
-  },
-  'qigong-lifting-sky': {
-    en: ['Lifting the Sky – Qigong Breathwork | Neurodivergent Mindfulness App',
-         'Animated Qigong Lifting the Sky exercise with binaural beats. Somatic breathwork combining ancient movement and neuroscience for ADHD and autism regulation.'],
-    el: ['Σηκώνοντας τον Ουρανό – Qigong | Neurodivergent Mindfulness App',
-         'Κινούμενη άσκηση Qigong με binaural beats. Σωματική αναπνοή που συνδυάζει αρχαία κίνηση και νευροεπιστήμη για ΔΕΠΥ και αυτισμό.'],
-  },
-  'deep-bow-5-5': {
-    en: ['Deep Bow – Humility & Grounding Breathwork | Neurodivergent Mindfulness App',
-         'Animated Deep Bow movement with 5-5 breath cycle and binaural beats. A somatic grounding practice for neurodivergent nervous system regulation.'],
-    el: ['Βαθιά Υπόκλιση – Γείωση & Ταπεινότητα | Neurodivergent Mindfulness App',
-         'Κινούμενη άσκηση βαθιάς υπόκλισης με κύκλο 5-5 και binaural beats. Σωματική γείωση για νευροδιαφορετικά νευρικά συστήματα.'],
-  },
-  'be-like-a-flower-5-5': {
-    en: ['Greeting the Infinite – Animated Breathwork | Neurodivergent Mindfulness App',
-         'Animated breath movement synced to opening and expanding gestures. Binaural beats with mindful Tai Chi-inspired movement for ADHD and autism.'],
-    el: ['Χαιρετισμός στο Άπειρο – Κινούμενη Αναπνοή | Neurodivergent Mindfulness App',
-         'Κινούμενη αναπνοή με χειρονομίες ανοίγματος. Binaural beats με κίνηση εμπνευσμένη από Tai Chi για ΔΕΠΥ και αυτισμό.'],
-  },
-  'lotus-bloom-5-5': {
-    en: ['Ascetic Breath – Lotus Bloom Movement | Neurodivergent Mindfulness App',
-         'Animated Lotus Bloom breathing practice with binaural beats. Serenity and open awareness through mindful movement for neurodivergent individuals.'],
-    el: ['Ασκητική Αναπνοή – Κίνηση Λωτού | Neurodivergent Mindfulness App',
-         'Κινούμενη πρακτική αναπνοής Λωτού με binaural beats. Γαλήνη και ανοιχτή επίγνωση μέσα από κίνηση για νευροδιαφορετικά άτομα.'],
-  },
-};
-
-// ─────────────────────────────────────────────────────────────
-// Route → SEO metadata resolver
-// ─────────────────────────────────────────────────────────────
-interface RouteMeta {
-  title: string;
-  description: string;
-  schema: object;
-  schemaType: 'WebApplication' | 'Article' | 'HowTo' | 'FAQPage' | 'MedicalWebPage' | 'WebPage';
-  /** Real, crawlable paragraphs injected into <body> for search engines
-   *  and non-JS agents. Falls back to [description] if omitted. */
-  bodyParagraphs?: string[];
-  rawHtml?: string;
-  relatedLinks?: { href: string; label: string }[];
-  noindex?: boolean;
-}
-
-/** Strips interactive-widget tokens like {{gravity}} that the live React
- *  component would normally replace with tooltips/links. */
-
-function stripMarkdown(text: string): string {
-  if (!text) return text;
-  return text
-    .replace(/\*\*(.*?)\*\*/g, '$1') // bold
-    .replace(/\*(.*?)\*/g, '$1')     // italic
-    .replace(/_(.*?)_/g, '$1')       // underscore
-    .replace(/^#+\s+/gm, '')         // headings
-    .replace(/`(.*?)`/g, '$1');      // code
-}
-
-function stripInteractiveTokens(text: string): string {
-  return text.replace(/{{[^}]+}}/g, '');
-}
-
-/** Chapter/article text → plain paragraphs for the static body.
- *  Removes {{tokens}} and inline HTML (<strong>, <br>), and splits on line
- *  breaks so numbered steps become separate paragraphs instead of showing
- *  up as literal "&lt;strong&gt;" text in search results. */
-function toPlainParagraphs(text: string): string[] {
-  if (!text) return [];
-  return stripMarkdown(stripInteractiveTokens(text))
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<[^>]+>/g, '')
-    .split(/\n+/)
-    .map(s => s.replace(/\s+/g, ' ').trim())
-    .filter(Boolean);
-}
-
-function toPlainText(text: string): string {
-  return toPlainParagraphs(text).join(' ');
-}
-
-/** First ~155 characters of real text, cut at a word boundary. */
-function excerpt(paragraphs: string[], max = 155): string {
-  const text = paragraphs.join(' ').trim();
-  if (text.length <= max) return text;
-  const cut = text.slice(0, max);
-  return cut.slice(0, cut.lastIndexOf(' ')).replace(/[,;:—–-]\s*$/, '') + '…';
-}
-
-
-function getMetaForRoute(route: string): RouteMeta {
-  const lang = route.startsWith('/en') ? 'en' : 'el';
-  const clean = route.replace(/^\/(en|el)/, '') || '/';
-  const url = `${BASE_URL}${route}`;
-
-  const homeDescription = lang === 'en'
-    ? 'Free mindfulness app for ADHD & autism: breathing, Tai Chi & Qigong, binaural sounds, and an 11-chapter workbook you can read or listen to, plus an audiobook. Made by a neurodivergent person; no account, no tracking.'
-    : 'Δωρεάν εφαρμογή ενσυνειδητότητας για ΔΕΠΥ & αυτισμό: αναπνοές, Τάι Τσι & Qigong, binaural, βιβλίο 11 κεφαλαίων που διαβάζεις ή ακούς, και ακουστικό βιβλίο. Από νευροδιαφορετικό άτομο, χωρίς λογαριασμό και παρακολούθηση.';
-  const homeIntro = lang === 'en'
-    ? 'Built around the Fourfold Axis — Body, Breath, Attention, Space — this is a free, privacy-first companion for grounding, regulation, and open awareness, made by a neurodivergent person for neurodivergent minds.'
-    : 'Χτισμένη γύρω από τον Τετραπλό Άξονα — Σώμα, Αναπνοή, Προσοχή, Χώρος — είναι μια δωρεάν εφαρμογή, χωρίς παρακολούθηση, για γείωση, ρύθμιση και ανοιχτή επίγνωση, φτιαγμένη από νευροδιαφορετικό άτομο για νευροδιαφορετικούς νους.';
-
-  const defaults: RouteMeta = {
-    title: lang === 'en'
-      ? 'Neurodivergent Mindfulness App – Trauma-Informed Practice for ADHD & Autism'
-      : 'Neurodivergent Mindfulness App – Ενσυνειδητότητα για ΔΕΠΥ & Αυτισμό',
-    description: homeDescription,
-    schema: {},
-    schemaType: 'WebApplication',
-    bodyParagraphs: [homeDescription, homeIntro],
-  };
-
-  if (clean === '/') {
-    const n = METHODOLOGY_DATA[lang as 'en' | 'el'].pillars.length;
-    const sections: [string, string, string][] = lang === 'en' ? [
-      ['/en/practice', 'Practices', 'the three breathing rhythms of the book (5-5, 4-6, 4-2-7) and SOS, Tai Chi and Qigong with an animated figure, swaying, chanting, and short small doses. The breaths and movements say what you do on the inhale and on the exhale.'],
-      ['/en/sanctuary', 'Sanctuary', 'rain, ocean, wind, brown and pink noise, a 5-5 breathing wave, and binaural sounds for sleep, unwinding, calm alertness and focus, with a sleep timer.'],
-      ['/en/chapters', 'The 11 chapters', 'read them, or listen to them in a natural voice with the text lit as it is read. The whole guide is also an audiobook (MP3) and a book (PDF and EPUB) to download.'],
-      ['/en/program', '8-week program', 'one small step a day, at your own pace.'],
-      ['/en/rabbithole', 'Rabbit Hole', 'deeper texts on Dzogchen, Mahamudra and the neurodivergent mind, for when your practice feels steady.'],
-      ['/en/method', 'The Method', 'what the Fourfold Axis is and how it works.'],
-      ['/en/methodology', 'Scientific basis', `${n} published studies behind parts of the method, each with what it found and what it did not show. The method as a whole has not been studied yet.`],
-      ['/en/faq', 'Questions & answers', 'common questions about the practice.'],
-    ] : [
-      ['/el/practice', 'Πρακτικές', 'οι τρεις ρυθμοί αναπνοής του βιβλίου (5-5, 4-6, 4-2-7) και το SOS, Τάι Τσι και Qigong με κινούμενη φιγούρα, Λίκνισμα, ψάλσιμο και σύντομες μικροδόσεις. Οι αναπνοές και οι κινήσεις λένε τι κάνεις στην εισπνοή και τι στην εκπνοή.'],
-      ['/el/sanctuary', 'Καταφύγιο', 'βροχή, ωκεανός, αέρας, καφέ και ροζ θόρυβος, κύμα αναπνοής 5-5 και binaural για ύπνο, χαλάρωση, ήρεμη εγρήγορση και εστίαση, με χρονοδιακόπτη ύπνου.'],
-      ['/el/chapters', 'Τα 11 κεφάλαια', 'τα διαβάζεις ή τα ακούς με φυσική φωνή, με το κείμενο να φωτίζεται καθώς διαβάζεται. Όλος ο οδηγός υπάρχει και ως ακουστικό βιβλίο (MP3) και ως βιβλίο (PDF και EPUB) για λήψη.'],
-      ['/el/program', 'Πρόγραμμα 8 εβδομάδων', 'ένα μικρό βήμα τη μέρα, με τον δικό σου ρυθμό.'],
-      ['/el/rabbithole', 'Κουνελότρυπα', 'βαθύτερα κείμενα για το Ντζόγκτσεν, τη Μαχαμούντρα και τον νευροδιαφορετικό νου, για όταν η πρακτική σταθεροποιηθεί.'],
-      ['/el/method', 'Η Μέθοδος', 'τι είναι ο Τετραπλός Άξονας και πώς δουλεύει.'],
-      ['/el/methodology', 'Επιστημονική βάση', `${n} δημοσιευμένες μελέτες πίσω από κομμάτια της μεθόδου, η καθεμία με το τι βρήκε και τι δεν έδειξε. Η μέθοδος ως σύνολο δεν έχει μελετηθεί ακόμα.`],
-      ['/el/faq', 'Συχνές ερωτήσεις', 'απαντήσεις σε όσα ρωτιούνται συχνά για την πρακτική.'],
-    ];
-    const extras = lang === 'en' ? [
-      '“How do you feel right now?” on the home page (Tension · Numbness · Calm · Not sure) leads to one fitting practice; an SOS button opens a calming breath and helplines.',
-      'A practice journal along the four axes, and a cat companion that remembers what you have read: it brings you back to the page where you stopped, offers one key line for the day from a chapter you read, and keeps the key points of each chapter. Everything stays on your device: no account, no tracking, and it works offline. In Greek and English.',
-    ] : [
-      'Το «Πώς νιώθεις τώρα;» στην αρχική (Ένταση · Μούδιασμα · Ηρεμία · Δεν ξέρω) σε πηγαίνει σε μία άσκηση που ταιριάζει· το κουμπί SOS ανοίγει μια αναπνοή ηρεμίας και τηλέφωνα βοήθειας.',
-      'Ημερολόγιο πρακτικής με τους τέσσερις άξονες, και μια γάτα-σύντροφος που θυμάται τι έχεις διαβάσει: σε γυρίζει στη σελίδα που σταμάτησες, σου θυμίζει μία φράση-κλειδί για τη μέρα από ένα κεφάλαιο που διάβασες, και κρατά τα βασικά σημεία κάθε κεφαλαίου. Όλα μένουν στη συσκευή σου: χωρίς λογαριασμό, χωρίς παρακολούθηση, και λειτουργεί χωρίς σύνδεση. Στα ελληνικά και στα αγγλικά.',
-    ];
-    defaults.rawHtml = `<p>${escapeHtml(homeDescription)}</p>\n      <p>${escapeHtml(homeIntro)}</p>\n      <ul>\n      ` +
-      sections.map(([href, name, text]) => `<li><a href="${href}">${escapeHtml(name)}</a>: ${escapeHtml(text)}</li>`).join('\n      ') +
-      `\n      </ul>\n      ` + extras.map(x => `<p>${escapeHtml(x)}</p>`).join('\n      ');
-    defaults.schema = {
-      '@context': 'https://schema.org',
-      '@type': ['WebApplication', 'SoftwareApplication'],
-      name: 'Neurodivergent Mindfulness App',
-      url: BASE_URL + (lang === 'el' ? '/el' : ''),
-      image: `${BASE_URL}/icon-512.png`,
-      description: homeDescription,
-      applicationCategory: 'HealthApplication',
-      applicationSubCategory: 'Mindfulness & Meditation',
-      operatingSystem: 'Any (Progressive Web App)',
-      browserRequirements: 'Requires JavaScript',
-      offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
-      isAccessibleForFree: true,
-      inLanguage: ['el', 'en'],
-      creator: { '@type': 'Person', name: 'Theodoros', description: 'Contemplative practitioner, creator of the Fourfold Axis method' },
-      featureList: lang === 'el'
-        ? `Τετραπλός Άξονας (Σώμα, Αναπνοή, Προσοχή, Χώρος), «Πώς νιώθεις τώρα;», κουμπί SOS με τηλέφωνα βοήθειας, ρυθμοί αναπνοής, Τάι Τσι & Qigong, Λίκνισμα, ψάλσιμο, μικροδόσεις, Καταφύγιο με ήχους φύσης και binaural, 11 κεφάλαια με ακρόαση σε φυσική φωνή, ακουστικό βιβλίο (MP3), βιβλίο σε PDF και EPUB, πρόγραμμα 8 εβδομάδων, ημερολόγιο πρακτικής, γάτα-σύντροφος που θυμάται τι διάβασες, Κουνελότρυπα, επιστημονική βάση με ${n} μελέτες, συχνές ερωτήσεις, λειτουργία offline, χωρίς λογαριασμό, χωρίς παρακολούθηση`
-        : `Fourfold Axis method (Body, Breath, Attention, Space), "How do you feel right now?" check-in, SOS button with helplines, breathing rhythms, Tai Chi & Qigong, swaying, chanting, small doses, Sanctuary with nature sounds and binaural beats, 11 chapters with read-aloud in a natural voice, audiobook (MP3), workbook as PDF and EPUB, 8-week program, practice journal, cat companion that remembers what you read, Rabbit Hole, scientific basis with ${n} studies, FAQ, offline support, no account, no tracking`,
-      // The whole guide as an audiobook (Gacrux in Greek, Sulafat in English), downloadable from the app.
-      subjectOf: {
-        '@type': 'Audiobook',
-        name: lang === 'el' ? 'Οδηγός Ενσυνειδητότητας για Νευροδιαφορετικούς' : 'A Mindfulness Guide for Neurodivergents',
-        inLanguage: lang,
-        author: { '@type': 'Person', name: 'Theodoros Bairaktaris' },
-        duration: lang === 'el' ? 'PT2H27M' : 'PT2H11M',
-        encodingFormat: 'audio/mpeg',
-        contentUrl: `${BASE_URL}/audio/mindfulness-guide-${lang}.mp3`,
-        isAccessibleForFree: true,
-      },
-    };
-  }
-
-  // ── Rabbit Hole list ──
-  if (clean === '/rabbithole') {
-    const t = lang === 'en'
-      ? 'The Rabbit Hole – Philosophy & Neurodivergence | Neurodivergent Mindfulness App'
-      : 'Κουνελότρυπα – Φιλοσοφία & Νευροδιαφορετικότητα | Neurodivergent Mindfulness App';
-    const d = lang === 'en'
-      ? 'Allegories, articles and philosophical reflections bridging Dzogchen, Mahamudra, neuroscience and neurodivergent experience. Deep reading for ADHD and autistic minds.'
-      : 'Αλληγορίες, άρθρα και στοχασμοί που γεφυρώνουν το Ντζόγκτσεν, τη Μαχαμούντρα, τη νευροεπιστήμη και τη νευροδιαφορετική εμπειρία. Για βαθύτερο διάβασμα, όταν η πρακτική σταθεροποιηθεί.';
-    // Every article as a real link (same source as the sitemap).
-    const L = lang as 'en' | 'el';
-    const items = Object.entries(rabbitholeContent).map(([id, a]: [string, any]) => {
-      const title = a.title?.[L] ?? a.title?.en ?? id;
-      const first = toPlainParagraphs((a[L] ?? a.en ?? [])[0] ?? '')[0];
-      return `<li><a href="/${lang}/rabbithole/${id}">${escapeHtml(title)}</a>` +
-        (first ? `<p>${escapeHtml(excerpt([first], 160))}</p>` : '') + `</li>`;
-    }).join('\n      ');
-    const rawHtml = `<p>${escapeHtml(d)}</p>\n      <ul>\n      ${items}\n      </ul>`;
-    return { title: t, description: d, schema: {}, schemaType: 'Article', rawHtml };
-  }
-
-  // ── Rabbit Hole article ──
-  const rhMatch = clean.match(/^\/rabbithole\/([a-z0-9-]+)$/);
-  if (rhMatch) {
-    const slug = rhMatch[1];
-    
-    const dataMap: Record<string, any> = { ...rabbitholeContent };
-
-    const art = ARTICLES[slug];
-    const data = dataMap[slug];
-
-    if (art || data) {
-      let t = '';
-      let d = '';
-
-      if (art) {
-        t = art[lang as 'en'|'el'][0];
-        d = art[lang as 'en'|'el'][1];
-        if (!t.includes('Neurodivergent Mindfulness App')) {
-           t = `${t} | Neurodivergent Mindfulness App`;
-        }
-      } else if (data) {
-        // Fallback to title from data if not in ARTICLES
-        t = data.title ? (typeof data.title[lang] === 'string' ? data.title[lang] : (data.title[lang as 'en'|'el'] || data.title.en)) : '';
-        t = `${t} | Neurodivergent Mindfulness App`;
-        d = lang === 'en' ? 'An exploration of neurodivergent mindfulness.' : 'Μια εξερεύνηση στην νευροδιαφορετική ενσυνειδητότητα.'; // generic fallback desc
-      }
-      
-      let articlePages: string[] = [];
-      if (data) {
-        if ('pagesEn' in data) {
-           articlePages = lang === 'en' ? data.pagesEn : data.pagesEl;
-        } else {
-           articlePages = lang === 'en' ? data.en : data.el;
-        }
-      }
-      
-      let bodyParagraphs: string[] = [];
-      if (articlePages && articlePages.length > 0) {
-        bodyParagraphs = articlePages.flatMap(page => toPlainParagraphs(page));
-      } else {
-        bodyParagraphs = [d];
-      }
-      // No hand-written description: use the article's own opening lines
-      // instead of one generic sentence shared by several pages.
-      if (!art && bodyParagraphs.length > 0) {
-        d = excerpt(bodyParagraphs);
-      }
-      
-      const authorInfo = ARTICLE_AUTHORS[slug];
-      if (authorInfo?.byline) {
-        bodyParagraphs = [authorInfo.byline[lang as 'en' | 'el'], ...bodyParagraphs];
-      }
-      
-      const relatedMap: Record<string, {href: string, label: {en: string, el: string}}[]> = {
-        'soft-gaze-open-hearing': [{ href: '/practice', label: { en: 'Try the soft gaze practice', el: 'Δοκίμασε την πρακτική του μαλακού βλέμματος' } }],
-        'polyvagal-middle-way': [{ href: '/practice', label: { en: 'Regulation exercises', el: 'Ασκήσεις ρύθμισης' } }],
-        'binaural-gateway': [{ href: '/sanctuary', label: { en: 'Sanctuary', el: 'Καταφύγιο' } }],
-        'default': [{ href: '/chapters', label: { en: 'Chapters', el: 'Κεφάλαια' } }, { href: '/rabbithole', label: { en: 'Rabbit Hole', el: 'Rabbit Hole' } }]
-      };
-      
-      const related = relatedMap[slug] || relatedMap['default'];
-      const relatedLinks = related.map((r: any) => ({
-        href: `/${lang}${r.href}`,
-        label: r.label[lang as 'en'|'el']
-      }));
-      relatedLinks.push({ href: `/${lang}/rabbithole`, label: lang === 'en' ? 'Back to Rabbit Hole' : 'Επιστροφή στο Rabbit Hole' });
-
-      return {
-        title: t, description: d, schemaType: 'Article',
-        bodyParagraphs,
-        relatedLinks,
-        schema: {
-          '@context': 'https://schema.org', '@type': 'Article',
-          headline: t, description: d, url,
-          inLanguage: lang,
-          articleBody: bodyParagraphs.slice(0, 2).join(' '),
-          author: authorInfo ? { '@type': 'Person', name: authorInfo.name } : { '@type': 'Organization', name: 'Neurodivergent Mindfulness App' },
-          ...(ARTICLE_DATES[slug] ? { datePublished: `${ARTICLE_DATES[slug]}-01T00:00:00Z` } : {}),
-          about: [
-            { '@type': 'Thing', name: 'Mindfulness' },
-            { '@type': 'Thing', name: 'Neurodiversity' },
-            { '@type': 'Thing', name: 'ADHD' },
-            { '@type': 'Thing', name: 'Autism' },
-          ],
-        },
-      };
-    }
-  }
-
-  // ── Chapters list ──
-  if (clean === '/chapters') {
-    const t = lang === 'en'
-      ? 'Presence Workbook – 11-Chapter Study | Neurodivergent Mindfulness App'
-      : 'Βιβλίο Παρουσίας – 11 Κεφάλαια | Neurodivergent Mindfulness App';
-    const d = lang === 'en'
-      ? 'An 11-chapter guided workbook on the Fourfold Axis: Body, Breath, Attention, Space. Read each chapter or listen to it in a natural voice. For ADHD and autism.'
-      : '11 κεφάλαια καθοδηγούμενης μελέτης στον Τετραπλό Άξονα: Σώμα, Αναπνοή, Προσοχή, Χώρος. Κάθε κεφάλαιο το διαβάζεις ή το ακούς με φυσική φωνή. Για ΔΕΠΥ και αυτισμό.';
-    // Every chapter as a real link, so crawlers reach them from the list
-    // page and not only from the sitemap.
-    const chapters = ((CHAPTERS_DATA as any)[lang] ?? []) as any[];
-    const word = lang === 'en' ? 'Chapter' : 'Κεφάλαιο';
-    const items = chapters.map(ch =>
-      `<li><a href="/${lang}/chapters/${ch.num}">${escapeHtml(`${word} ${ch.num}: ${ch.title} – ${ch.sub}`)}</a>` +
-      (ch.summary ? `<p>${escapeHtml(toPlainText(ch.summary))}</p>` : '') + `</li>`
-    ).join('\n      ');
-    const rawHtml = `<p>${escapeHtml(d)}</p>\n      <ol>\n      ${items}\n      </ol>`;
-    return { title: t, description: d, schema: {}, schemaType: 'Article', rawHtml };
-  }
-
-  // ── Individual chapter ──
-  const chMatch = clean.match(/^\/chapters\/(\d+)$/);
-  if (chMatch) {
-    const num = parseInt(chMatch[1]);
-    const chapters = (CHAPTERS_DATA as any)[lang];
-    const ch = chapters?.find((c: any) => c.num === num);
-    if (ch) {
-      const t = lang === 'en'
-        ? `Chapter ${ch.num}: ${ch.title} – ${ch.sub} | Neurodivergent Mindfulness App`
-        : `Κεφάλαιο ${ch.num}: ${ch.title} – ${ch.sub} | Neurodivergent Mindfulness App`;
-      const d = toPlainText(ch.summary || ch.tldr || '') || defaults.description;
-
-      // Static body: summary, then each theory section under its own <h2>,
-      // the exercise as a list, and links to the neighbouring chapters.
-      const p = (s: string) => toPlainParagraphs(s).map(x => `<p>${escapeHtml(x)}</p>`).join('\n      ');
-      const parts: string[] = [];
-      if (ch.summary) parts.push(p(ch.summary));
-      if (ch.tldr && ch.tldr !== ch.summary) parts.push(p(ch.tldr));
-      for (const section of ch.theorySections ?? []) {
-        if (section.title) parts.push(`<h2>${escapeHtml(toPlainText(section.title))}</h2>`);
-        for (const para of section.paragraphs ?? []) parts.push(p(para));
-      }
-      if (ch.exercise?.steps?.length) {
-        if (ch.exercise.title) parts.push(`<h2>${escapeHtml(toPlainText(ch.exercise.title))}</h2>`);
-        parts.push(`<ol>${ch.exercise.steps.map((s: string) => `<li>${escapeHtml(toPlainText(s))}</li>`).join('')}</ol>`);
-      }
-      if (ch.insight) parts.push(p(ch.insight));
-      const word = lang === 'en' ? 'Chapter' : 'Κεφάλαιο';
-      const nav: string[] = [];
-      const prev = chapters.find((c: any) => c.num === num - 1);
-      const next = chapters.find((c: any) => c.num === num + 1);
-      if (prev) nav.push(`<li><a href="/${lang}/chapters/${prev.num}">${escapeHtml(`${word} ${prev.num}: ${prev.title}`)}</a></li>`);
-      if (next) nav.push(`<li><a href="/${lang}/chapters/${next.num}">${escapeHtml(`${word} ${next.num}: ${next.title}`)}</a></li>`);
-      nav.push(`<li><a href="/${lang}/chapters">${lang === 'en' ? 'All chapters' : 'Όλα τα κεφάλαια'}</a></li>`);
-      parts.push(`<ul>${nav.join('')}</ul>`);
-
-      return {
-        title: t, description: d, schemaType: 'Article', rawHtml: parts.join('\n      '),
-        schema: {
-          '@context': 'https://schema.org', '@type': 'Article',
-          headline: t, description: d, url, inLanguage: lang,
-          author: { '@type': 'Organization', name: 'Neurodivergent Mindfulness App' },
-          // Every chapter can also be listened to, read aloud in a natural voice.
-          accessMode: ['textual', 'auditory'],
-          audio: {
-            '@type': 'AudioObject',
-            name: `${lang === 'en' ? 'Chapter' : 'Κεφάλαιο'} ${ch.num}: ${ch.title}`,
-            contentUrl: `${BASE_URL}${audioUrl(lang as 'el' | 'en', ch.num)}`,
-            encodingFormat: 'audio/mpeg',
-            inLanguage: lang,
-          },
-        },
-      };
-    }
-  }
-
-  // ── Practice breath exercise ──
-  const breathMatch = clean.match(/^\/practice\/(breath|movement|grounding)\/([a-z0-9-]+)$/);
-  if (breathMatch) {
-    const pattern = (BREATH_PATTERNS as any[]).find((p: any) => p.id === breathMatch[2]);
-    if (pattern) {
-      const ptitle = pattern.title?.[lang] ?? pattern.title?.en ?? pattern.id;
-      const psub   = pattern.subtitle?.[lang] ?? pattern.subtitle?.en ?? '';
-      const t = `${ptitle} – ${psub} | Neurodivergent Mindfulness App`;
-      // Described with the exercise's own text, which says what you do and claims nothing more.
-      const own = pattern.desc?.[lang] ?? pattern.desc?.en ?? '';
-      const d = excerpt([`${ptitle}${psub ? ` – ${psub}` : ''}: ${own}`], 158);
-
-      const bodyParagraphs: string[] = [d];
-      const pdesc = pattern.desc?.[lang] ?? pattern.desc?.en;
-      if (pdesc && pdesc !== d) bodyParagraphs.push(pdesc);
-      for (const l of pattern.labels ?? []) {
-        const label = l.label?.[lang] ?? l.label?.en;
-        const sub   = l.sub?.[lang] ?? l.sub?.en;
-        if (label) bodyParagraphs.push(sub ? `${label}: ${sub}` : label);
-      }
-
-      return {
-        title: t, description: d, schemaType: 'HowTo', bodyParagraphs,
-        schema: {
-          '@context': 'https://schema.org', '@type': 'HowTo',
-          name: t, description: d, url,
-          audience: { '@type': 'Audience', audienceType: 'Neurodivergent individuals, ADHD, Autism' },
-        },
-      };
-    }
-  }
-
-  // ── Practice category/id ──
-  const practiceMatch = clean.match(/^\/practice\/([a-z]+)\/([a-z0-9-]+)$/);
-  if (practiceMatch) {
-    const catNames: Record<string, { en: string; el: string }> = {
-      body:  { en: 'Body',      el: 'Σώμα' },
-      breath: { en: 'Breath',   el: 'Αναπνοή' },
-      focus: { en: 'Attention', el: 'Προσοχή' },
-      space: { en: 'Space',     el: 'Χώρος' },
-    };
-    const cat = catNames[practiceMatch[1]] ?? { en: practiceMatch[1], el: practiceMatch[1] };
-    // The exercise's own title and description, instead of the URL slug and
-    // one sentence shared by every exercise of the same category.
-    const ex = MICRODOSES_EXERCISES.find(m => m.link === clean);
-    if (ex) {
-      const L = lang as 'en' | 'el';
-      const exTitle = ex.title[L] ?? ex.title.en;
-      const exDesc = ex.desc[L] ?? ex.desc.en;
-      const t = lang === 'en'
-        ? `${exTitle} – ${cat.en} Practice | Neurodivergent Mindfulness App`
-        : `${exTitle} – Πρακτική: ${cat.el} | Neurodivergent Mindfulness App`;
-      const d = lang === 'en'
-        ? `${exDesc} Duration: ${ex.dur.en} · Axis: ${cat.en}.`
-        : `${exDesc} Διάρκεια: ${ex.dur.el} · Άξονας: ${cat.el}.`;
-      // The steps of its page, as they are shown in the app.
-      const page: any = GUIDED_EXERCISES[ex.link.split('/').pop() as string];
-      const exSteps: string[] = ((page?.instructions && (page.instructions[L] ?? page.instructions.en)) || []).map(plainConcepts);
-      const bodyParagraphs = [
-        exDesc,
-        lang === 'en' ? `Duration: ${ex.dur.en.replace(/\.$/, '')}.` : `Διάρκεια: ${ex.dur.el.replace(/\.$/, '')}.`,
-        ...exSteps,
-        ...(ex.evidence ? [ex.evidence[L] ?? ex.evidence.en] : []),
-      ];
-      return {
-        title: t, description: d, schemaType: 'HowTo', bodyParagraphs,
-        relatedLinks: [{ href: `/${lang}/practice/microdoses`, label: lang === 'en' ? 'All micro-practices' : 'Όλες οι μικρο-πρακτικές' }],
-        schema: {
-          '@context': 'https://schema.org', '@type': 'HowTo',
-          name: exTitle, description: d, url, inLanguage: lang,
-          step: (exSteps.length ? exSteps : [exDesc]).map(text => ({ '@type': 'HowToStep', text })),
-        },
-      };
-    }
-    // A guided exercise: its own title, description and steps.
-    const g: any = GUIDED_EXERCISES[practiceMatch[2]];
-    if (g && g.title) {
-      const L = lang as 'en' | 'el';
-      const gTitle = g.title[L] ?? g.title.en;
-      const gDesc = (g.desc && (g.desc[L] ?? g.desc.en)) || '';
-      const steps: string[] = ((g.instructions && (g.instructions[L] ?? g.instructions.en)) || []).map(plainConcepts);
-      const mins = Math.max(1, Math.round((g.duration || 300) / 60));
-      const durText = lang === 'en' ? `${mins} min` : `${mins} λεπτ${mins === 1 ? 'ό' : 'ά'}`;
-      const t = lang === 'en'
-        ? `${gTitle} – ${cat.en} Practice | Neurodivergent Mindfulness App`
-        : `${gTitle} – Πρακτική: ${cat.el} | Neurodivergent Mindfulness App`;
-      const d = lang === 'en'
-        ? `${gDesc} A quiet guided practice, ${durText}.`.trim()
-        : `${gDesc} Σιωπηλή καθοδηγούμενη πρακτική, ${durText}.`.trim();
-      return {
-        title: t, description: d, schemaType: 'HowTo', bodyParagraphs: [gDesc, ...steps].filter(Boolean),
-        relatedLinks: [{ href: `/${lang}/practice`, label: lang === 'en' ? 'All practices' : 'Όλες οι πρακτικές' }],
-        schema: {
-          '@context': 'https://schema.org', '@type': 'HowTo',
-          name: gTitle, description: d, url, inLanguage: lang,
-          step: steps.map(text => ({ '@type': 'HowToStep', text })),
-        },
-      };
-    }
-    const t = lang === 'en'
-      ? `${practiceMatch[2].replace(/-/g, ' ')} – ${cat.en} Practice | Neurodivergent Mindfulness App`
-      : `${practiceMatch[2].replace(/-/g, ' ')} – Πρακτική ${cat.el} | Neurodivergent Mindfulness App`;
-    const d = lang === 'en'
-      ? `A ${cat.en.toLowerCase()} mindfulness exercise for neurodivergent individuals. Trauma-informed practice supporting ADHD and autistic nervous system regulation.`
-      : `Άσκηση ενσυνειδητότητας ${cat.el.toLowerCase()} για νευροδιαφορετικά άτομα.`;
-    return { title: t, description: d, schemaType: 'HowTo', schema: {} };
-  }
-
-  // ── Practice hub ──
-  if (clean === '/practice') {
-    const t = lang === 'en'
-      ? 'Mindfulness Practices for ADHD & Autism – Breathing, Tai Chi, Chanting & Small Doses'
-      : 'Πρακτικές Ενσυνειδητότητας για ΔΕΠΥ & Αυτισμό – Αναπνοές, Τάι Τσι, Ψάλσιμο & Μικροδόσεις';
-    const d = lang === 'en'
-      ? 'The breathing rhythms of the book (5-5, 4-6, 4-2-7) and SOS, Tai Chi and Qigong, swaying, chanting and short small doses, for ADHD and autism. Free.'
-      : 'Οι ρυθμοί αναπνοής του βιβλίου (5-5, 4-6, 4-2-7) και το SOS, Τάι Τσι και Qigong, Λίκνισμα, ψάλσιμο και σύντομες μικροδόσεις, για ΔΕΠΥ και αυτισμό. Δωρεάν.';
-    const exerciseDesc = BREATH_PATTERNS.slice(0, 3).map(p => {
-       const title = p.title?.[lang as 'en'|'el'] ?? p.title?.en;
-       const desc = p.desc?.[lang as 'en'|'el'] ?? p.desc?.en;
-       return `${title}: ${desc}`;
-    });
-    return { title: t, description: d, schema: {}, schemaType: 'WebApplication', bodyParagraphs: [d, ...exerciseDesc] };
-  }
-
-  // ── Practice / Guided grounding and Swaying (opened from the chapters) ──
-  if (clean === '/practice/grounding' || clean === '/practice/swaying') {
-    const g = clean === '/practice/grounding';
-    const t = g
-      ? (lang === 'en' ? 'Guided Grounding – Neurodivergent Mindfulness' : 'Γείωση με καθοδήγηση – Νευροδιαφορετική Ενσυνειδητότητα')
-      : (lang === 'en' ? 'Swaying – Gentle Movement with the Breath' : 'Λίκνισμα – Ήπια κίνηση με την αναπνοή');
-    const d = g
-      ? (lang === 'en'
-        ? 'A guided grounding practice from the chapters: you feel gravity, your weight being supported, and let the exhale grow longer. With nature sounds or binaural sound, if you like.'
-        : 'Μια καθοδηγούμενη άσκηση γείωσης από τα κεφάλαια: νιώθεις τη βαρύτητα, το βάρος σου να στηρίζεται, και αφήνεις την εκπνοή να μακρύνει. Με ήχο φύσης ή binaural, αν θέλεις.')
-      : (lang === 'en'
-        ? 'A gentle to-and-fro of the body with the breath, for when sitting still is not what you need.'
-        : 'Ένα ήπιο πήγαινε-έλα του σώματος με την αναπνοή, για όταν το να κάθεσαι ακίνητος δεν είναι αυτό που χρειάζεσαι.');
-    return { title: t, description: d, schema: {}, schemaType: 'WebApplication', bodyParagraphs: [d] };
-  }
-
-  // ── Practice / Microdoses ──
-  if (clean === '/practice/microdoses') {
-    const t = lang === 'en'
-      ? '1-Minute Mindfulness Small Doses for ADHD & Autism – Quick Resets'
-      : 'Μικροδόσεις Ενσυνειδητότητας 1 Λεπτού για ΔΕΠΥ & Αυτισμό – Γρήγορη Επαναφορά';
-    const d = lang === 'en'
-      ? 'Very short practices for transitions and overload, from a few seconds to a minute or two: body, breath, attention and space, many of them unnoticeable to others.'
-      : 'Πολύ σύντομες πρακτικές για μεταβάσεις και υπερφόρτωση, από λίγα δευτερόλεπτα ως ένα-δύο λεπτά: σώμα, αναπνοή, προσοχή και χώρος, πολλές χωρίς να φαίνονται.';
-    const microDesc = MICRODOSES_EXERCISES.slice(0, 3).map(p => {
-       const title = p.title?.[lang as 'en'|'el'] ?? p.title?.en;
-       const desc = p.desc?.[lang as 'en'|'el'] ?? p.desc?.en;
-       return `${title}: ${desc}`;
-    });
-    return { title: t, description: d, schema: {}, schemaType: 'WebApplication', bodyParagraphs: [d, ...microDesc] };
-  }
-
-  // ── Program ──
-  if (clean === '/program') {
-    const t = lang === 'en'
-      ? '8-Week Mindfulness Program for ADHD & Autism | Neurodivergent Mindfulness App'
-      : 'Πρόγραμμα Ενσυνειδητότητας 8 Εβδομάδων για ΔΕΠΥ & Αυτισμό | Neurodivergent Mindfulness App';
-    const d = lang === 'en'
-      ? 'An 8-week mindfulness program for ADHD and autism, one small step a day: Body, Breath, Attention, Space, at your own pace.'
-      : '8 εβδομάδες ενσυνειδητότητας για ΔΕΠΥ και αυτισμό, ένα μικρό βήμα τη μέρα: Σώμα, Αναπνοή, Προσοχή, Χώρος, με τον δικό σου ρυθμό.';
-    return { title: t, description: d, schema: {}, schemaType: 'WebApplication' };
-  }
-
-  const weekMatch = clean.match(/^\/program\/week\/(\d+)$/);
-  if (weekMatch) {
-    const t = lang === 'en'
-      ? `Week ${weekMatch[1]} – Mindfulness Program | Neurodivergent Mindfulness App`
-      : `Εβδομάδα ${weekMatch[1]} – Πρόγραμμα | Neurodivergent Mindfulness App`;
-    const d = lang === 'en'
-      ? `Week ${weekMatch[1]} of the neurodivergent mindfulness program. Guided practices for body, breath, and open awareness.`
-      : `Εβδομάδα ${weekMatch[1]} του προγράμματος. Καθοδηγούμενες πρακτικές για σώμα, αναπνοή και ανοιχτή επίγνωση.`;
-    return { title: t, description: d, schema: {}, schemaType: 'WebApplication' };
-  }
-
-  // ── Method ──
-  if (clean === '/method') {
-    const t = lang === 'en'
-      ? 'The Fourfold Axis Method | Neurodivergent Mindfulness App'
-      : 'Η Μέθοδος του Τετραπλού Άξονα | Neurodivergent Mindfulness App';
-    const d = lang === 'en'
-      ? 'The Fourfold Axis: Body, Breath, Attention, Space. A mindfulness method for ADHD and autism that starts from the body, with breathing rhythms, Tai Chi, chanting and a free 11-chapter workbook you can read or listen to.'
-      : 'Ο Τετραπλός Άξονας: Σώμα, Αναπνοή, Προσοχή, Χώρος. Μέθοδος ενσυνειδητότητας για ΔΕΠΥ και αυτισμό που ξεκινά από το σώμα, με ρυθμούς αναπνοής, Τάι Τσι, ψάλσιμο και δωρεάν βιβλίο 11 κεφαλαίων που διαβάζεις ή ακούς.';
-    const linkText = lang === 'en'
-      ? `Parts of the method draw on ${METHODOLOGY_DATA.en.pillars.length} published studies, each with what it found and what it did not show — see the <a href="/en/methodology">scientific basis</a>. The method as a whole has not been studied yet.`
-      : `Κομμάτια της μεθόδου στηρίζονται σε ${METHODOLOGY_DATA.el.pillars.length} δημοσιευμένες μελέτες, η καθεμία με το τι βρήκε και τι δεν έδειξε — δες την <a href="/el/methodology">επιστημονική βάση</a>. Η μέθοδος ως σύνολο δεν έχει μελετηθεί ακόμα.`;
-    const rawHtml = `<p>${escapeHtml(d)}</p>\n<p>${linkText}</p>`;
-    return { title: t, description: d, schema: {}, schemaType: 'Article', rawHtml };
-  }
-
-  if (clean === '/methodology') {
-    const t = lang === 'en'
-      ? `The Science Behind the Fourfold Axis — ${METHODOLOGY_DATA.en.pillars.length} Published Studies | Neurodivergent Mindfulness`
-      : `Η Επιστημονική Βάση του Τετραπλού Άξονα — ${METHODOLOGY_DATA.el.pillars.length} Δημοσιευμένες Έρευνες | Neurodivergent Mindfulness`;
-    const d = lang === 'en'
-      ? `${METHODOLOGY_DATA.en.pillars.length} published studies behind parts of the Fourfold Axis, on ADHD, autism, breathing, attention and sound, each with what it found and what it did not show. The method as a whole has not been studied yet.`
-      : `${METHODOLOGY_DATA.el.pillars.length} δημοσιευμένες μελέτες πίσω από κομμάτια του Τετραπλού Άξονα, για ΔΕΠΥ, αυτισμό, αναπνοή, προσοχή και ήχο, η καθεμία με το τι βρήκε και τι δεν έδειξε. Η μέθοδος ως σύνολο δεν έχει μελετηθεί ακόμα.`;
-    
-    const methodData = METHODOLOGY_DATA[lang as 'en'|'el'];
-    
-    let rawHtml = `<p>${escapeHtml(methodData.intro)}</p>\n`;
-    rawHtml += `<h2>${escapeHtml(methodData.philosophyTitle)}</h2>\n`;
-    rawHtml += `<p>${escapeHtml(methodData.philosophyText)}</p>\n`;
-
-    const citations = methodData.pillars.map(pillar => {
-      let url = undefined;
-      let htmlCitation = escapeHtml(pillar.citation);
-      const doiMatch = pillar.citation.match(/Doi:\s*([^\s]+)/i);
-      if (doiMatch) {
-        url = `https://doi.org/${doiMatch[1]}`;
-        htmlCitation = htmlCitation.replace(/Doi:\s*([^\s]+)/i, `<a href="${url}" rel="noopener">doi.org/${escapeHtml(doiMatch[1])}</a>`);
-      } else {
-        const urlMatch = pillar.citation.match(/https?:\/\/[^\s]+/);
-        if (urlMatch) url = urlMatch[0];
-      }
-
-      rawHtml += `<h3>${escapeHtml(pillar.title)}</h3>\n`;
-      rawHtml += `<p>${escapeHtml(pillar.desc)}</p>\n`;
-      rawHtml += `<p>Citation: ${htmlCitation}</p>\n`;
-
-      return {
-        '@type': 'ScholarlyArticle',
-        name: pillar.citation,
-        description: pillar.desc,
-        ...(url ? { url } : {})
-      };
-    });
-
-    const schema = {
-      '@context': 'https://schema.org',
-      '@type': 'MedicalWebPage',
-      name: t,
-      description: d,
-      citation: citations
-    };
-
-    return { title: t, description: d, schema, schemaType: 'MedicalWebPage', rawHtml };
-  }
-
-  // ── Install ──
-  if (clean === '/install') {
-    const t = lang === 'en' ? 'Install the app | Neurodivergent Mindfulness' : 'Εγκατάσταση της εφαρμογής | Neurodivergent Mindfulness';
-    const d = lang === 'en'
-      ? 'Install the free app on Windows (Microsoft Store), Android, iPhone, iPad or Mac in a few steps. No account; it works offline.'
-      : 'Εγκατάστησε τη δωρεάν εφαρμογή σε Windows (Microsoft Store), Android, iPhone, iPad ή Mac σε λίγα βήματα. Χωρίς λογαριασμό· λειτουργεί και χωρίς σύνδεση.';
-    const bodyParagraphs = lang === 'en'
-      ? [d, 'Windows: from the Microsoft Store (apps.microsoft.com/detail/9P4VQBGJM317), or install it from Edge or Chrome.', 'Android: in Chrome, the three dots → Install app.', 'iPhone and iPad: in Safari, Share → Add to Home Screen.']
-      : [d, 'Windows: από το Microsoft Store (apps.microsoft.com/detail/9P4VQBGJM317), ή εγκατάσταση από το Edge ή το Chrome.', 'Android: στο Chrome, οι τρεις τελείες → Εγκατάσταση εφαρμογής.', 'iPhone και iPad: στο Safari, Κοινοποίηση → Προσθήκη στην οθόνη αφετηρίας.'];
-    return { title: t, description: d, schema: { '@context': 'https://schema.org', '@type': 'WebPage', name: t, description: d }, schemaType: 'WebPage', bodyParagraphs };
-  }
-
-  // ── Privacy ──
-  if (clean === '/privacy') {
-    const t = lang === 'en' ? 'Privacy and terms | Neurodivergent Mindfulness' : 'Απόρρητο και όροι | Neurodivergent Mindfulness';
-    const d = lang === 'en'
-      ? 'Everything stays on your device: no account, no tracking, no ads. What the app keeps, the services it passes through, how to save or delete your data, and what the app is and is not.'
-      : 'Όλα μένουν στη συσκευή σου: χωρίς λογαριασμό, χωρίς παρακολούθηση, χωρίς διαφημίσεις. Τι κρατά η εφαρμογή, από ποιες υπηρεσίες περνά, πώς κρατάς ή σβήνεις τα δεδομένα σου, και τι είναι και τι δεν είναι η εφαρμογή.';
-    const bodyParagraphs = lang === 'en'
-      ? [d, 'The app keeps your progress, journal, practices, check-ins and settings only in your browser’s storage. The site is hosted on Cloudflare; videos in the Rabbit Hole and the Sanctuary play from YouTube. It is a guide to mindfulness for wellbeing, not therapy or medical advice. In a crisis: 112, or findahelpline.com.']
-      : [d, 'Η εφαρμογή κρατά την πρόοδο, το ημερολόγιο, τις ασκήσεις, το «Πώς νιώθεις» και τις ρυθμίσεις μόνο στον αποθηκευτικό χώρο του browser. Ο ιστότοπος φιλοξενείται στο Cloudflare· τα βίντεο της Κουνελότρυπας και του Καταφυγίου παίζουν από το YouTube. Είναι οδηγός ενσυνειδητότητας για την ευεξία, όχι θεραπεία ή ιατρική συμβουλή. Σε κρίση: 112, 1018 (Κλίμακα), 197.'];
-    return { title: t, description: d, schema: { '@context': 'https://schema.org', '@type': 'WebPage', name: t, description: d }, schemaType: 'WebPage', bodyParagraphs };
-  }
-
-  // ── Cards: the book's four summaries ──
-  if (clean === '/cards') {
-    const t = lang === 'en' ? 'The Book\'s Four Cards | Neurodivergent Mindfulness' : 'Οι τέσσερις κάρτες του βιβλίου | Neurodivergent Mindfulness';
-    const d = lang === 'en' ? 'The four summaries of the Fourfold Axis, each for a different moment: the Pocket Card for inside the wave, the card for when you are stuck, the Worksheet for inside the day and the Four Stages for a quiet moment.' : 'Οι τέσσερις περιλήψεις του Τετραπλού Άξονα, η καθεμία για άλλη στιγμή: η Κάρτα της Τσέπης για μέσα στο κύμα, η κάρτα για όταν έχεις κολλήσει, το Φύλλο Εργασίας για μέσα στη μέρα και τα Τέσσερα Στάδια για ήσυχη στιγμή.';
-    return { title: t, description: d, schema: { '@context': 'https://schema.org', '@type': 'WebPage', name: t, description: d }, schemaType: 'WebPage', bodyParagraphs: [d] };
-  }
-
-  // ── Accessibility ──
-  if (clean === '/accessibility') {
-    const t = lang === 'en' ? 'Accessibility statement | Neurodivergent Mindfulness' : 'Δήλωση προσβασιμότητας | Neurodivergent Mindfulness';
-    const d = lang === 'en'
-      ? 'What the app already does for accessibility, how it is checked, what does not work well yet, and how to tell us if something gets in your way. Aim: WCAG 2.2 AA.'
-      : 'Τι κάνει ήδη η εφαρμογή για την προσβασιμότητα, πώς ελέγχεται, τι δεν δουλεύει ακόμα καλά και πώς λες αν κάτι σε δυσκολεύει. Στόχος: WCAG 2.2 AA.';
-    const bodyParagraphs = lang === 'en'
-      ? [d, 'Two languages, reduced motion, easy reading, zoom, keyboard use, no sound that starts on its own, and the text of every audio chapter. Not yet: full descriptions of the animations for screen readers, a few small texts below the contrast threshold, and checked PDF files.']
-      : [d, 'Δύο γλώσσες, μειωμένη κίνηση, εύκολη ανάγνωση, μεγέθυνση, πληκτρολόγιο, κανένας ήχος που ξεκινά μόνος του, και το κείμενο κάθε ηχητικού κεφαλαίου. Όχι ακόμα: πλήρης περιγραφή των κινούμενων σχεδίων για αναγνώστες οθόνης, λίγα μικρά κείμενα κάτω από το όριο αντίθεσης, και ελεγμένα αρχεία PDF.'];
-    return { title: t, description: d, schema: { '@context': 'https://schema.org', '@type': 'WebPage', name: t, description: d }, schemaType: 'WebPage', bodyParagraphs };
-  }
-
-  // ── FAQ ──
-  if (clean === '/faq') {
-    const t = lang === 'en'
-      ? 'FAQ – Neurodivergent Mindfulness App Questions & Answers'
-      : 'Συχνές Ερωτήσεις – Νευροδιαφορετική Ενσυνειδητότητα';
-    const d = lang === 'en'
-      ? 'Frequently asked questions about neurodivergent mindfulness, ADHD meditation, autism and breathwork.'
-      : 'Συχνές ερωτήσεις για νευροδιαφορετική ενσυνειδητότητα, ΔΕΠΥ, αυτισμό και αναπνοή.';
-      
-    const mainEntity = Object.values(KNOWLEDGE_FAQ)
-      .flatMap(chap => chap[lang as 'en'|'el'] || [])
-      .map(item => ({
-         '@type': 'Question',
-         name: item.q,
-         acceptedAnswer: { '@type': 'Answer', text: stripMarkdown(item.a) }
-      }));
-      
-    const bodyParagraphs = Object.values(KNOWLEDGE_FAQ)
-      .flatMap(chap => chap[lang as 'en'|'el'] || [])
-      .map(item => `${item.q} — ${stripMarkdown(item.a)}`);
-      
-    return { 
-      title: t, 
-      description: d, 
-      schema: { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity }, 
-      schemaType: 'FAQPage',
-      bodyParagraphs
-    };
-  }
-
-  // ── Sanctuary ──
-  if (clean === '/sanctuary') {
-    const t = lang === 'en'
-      ? 'Sanctuary – Nature Sounds, Noise & Binaural Beats for ADHD & Autism'
-      : 'Καταφύγιο – Ήχοι Φύσης, Θόρυβος & Binaural Beats για ΔΕΠΥ & Αυτισμό';
-    const d = lang === 'en'
-      ? 'Rain, ocean and wind, brown and pink noise, a 5-5 breathing wave, and four binaural sounds for sleep, unwinding, calm alertness and focus — with an honest note on what research shows.'
-      : 'Βροχή, ωκεανός και άνεμος, καφέ και ροζ θόρυβος, ένα κύμα αναπνοής 5-5 και τέσσερα binaural για ύπνο, χαλάρωση, ήρεμη εγρήγορση και εστίαση — με τίμια σημείωση για το τι δείχνει η έρευνα.';
-    const bodyParagraphs = lang === 'en' 
-      ? [d, 'Nature sounds and steady noise that play from the speaker, with a sleep timer that fades out.', 'Binaural sounds for headphones, named by use, with what the studies found and did not find.']
-      : [d, 'Ήχοι φύσης και σταθερός θόρυβος που παίζουν από το ηχείο, με χρονοδιακόπτη ύπνου που σβήνει σιγά.', 'Binaural για ακουστικά, ονομασμένα με βάση τη χρήση, με το τι βρήκαν και τι όχι οι μελέτες.'];
-    return { title: t, description: d, schema: {}, schemaType: 'WebApplication', bodyParagraphs };
-  }
-  
-  const isPrivatePath = clean.startsWith('/dashboard') || 
-                        clean.startsWith('/journal') || 
-                        clean.startsWith('/settings');
-                        
-  if (isPrivatePath) {
-    defaults.noindex = true;
-  }
-
-  return defaults;
-}
-
-// ─────────────────────────────────────────────────────────────
-// HTML injection
-// ─────────────────────────────────────────────────────────────
-function escapeHtml(str: string): string {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
+const ROOT_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
+const DIST_DIR = path.join(ROOT_DIR, 'dist');
 
 /**
  * Real, static, crawlable HTML rendered into <div id="root"> for every
  * route. main.tsx uses createRoot(...).render(...) (NOT hydrateRoot), so
  * React fully replaces this content on mount — there is no hydration
- * mismatch risk. Search engines, social-preview bots, and any crawler
- * that doesn't execute JS see this instead of an empty div.
+ * mismatch risk.
  */
-function buildBodyContent(meta: RouteMeta, h1: string): string {
+function buildBodyContent(meta: RouteMeta): string {
+  let inner: string;
   if (meta.rawHtml) {
-    return `<div id="root"><div data-prerendered="true">
-      <h1>${escapeHtml(h1)}</h1>
-      ${meta.rawHtml}
-    </div></div>`;
+    inner = meta.rawHtml;
+  } else {
+    const paragraphs = meta.bodyParagraphs?.length ? meta.bodyParagraphs : [meta.head.description];
+    inner = paragraphs.filter(Boolean).map(x => `<p>${escapeHtml(x)}</p>`).join('\n      ');
+    if (meta.relatedLinks?.length) {
+      inner += `\n      <ul>${meta.relatedLinks.map(r => `<li><a href="${r.href}">${escapeHtml(r.label)}</a></li>`).join('')}</ul>`;
+    }
   }
-
-  const paragraphs = meta.bodyParagraphs && meta.bodyParagraphs.length > 0
-    ? meta.bodyParagraphs
-    : [meta.description];
-  let paragraphsHtml = paragraphs
-    .filter(Boolean)
-    .map(p => `<p>${escapeHtml(p)}</p>`)
-    .join('\n      ');
-    
-  if (meta.relatedLinks && meta.relatedLinks.length > 0) {
-    const linksHtml = meta.relatedLinks.map(r => `<li><a href="${r.href}">${escapeHtml(r.label)}</a></li>`).join('');
-    paragraphsHtml += `\n      <ul>${linksHtml}</ul>`;
-  }
-
   return `<div id="root"><div data-prerendered="true">
-      <h1>${escapeHtml(h1)}</h1>
-      ${paragraphsHtml}
+      <h1>${escapeHtml(meta.h1)}</h1>
+      ${inner}
     </div></div>`;
 }
 
-function buildHead(route: string, meta: RouteMeta, baseHtml: string): string {
-  const lang = route.startsWith('/en') ? 'en' : 'el';
-  const clean = route.replace(/^\/(en|el)/, '') || '/';
-  const canonicalUrl = `${BASE_URL}${route}`;
-  const enUrl = `${BASE_URL}/en${clean === '/' ? '' : clean}`;
-  const elUrl = `${BASE_URL}/el${clean === '/' ? '' : clean}`;
-  // The root picks the language from the browser, so it is the x-default of
-  // the home cluster; every other page falls back to its English version.
-  const xDefaultUrl = clean === '/' ? `${BASE_URL}/` : enUrl;
-  const title = escapeHtml(meta.title);
-  const desc = escapeHtml(meta.description);
-
-  // Every tag carries data-seo="prerender" so the client SEO component can
-  // tell that the page already has correct tags for this URL (and remove
-  // them after in-app navigation) instead of adding a second, conflicting set.
-  const seoBlock = `
-  <!-- SEO: prerendered for ${route} -->
-  <title data-seo="prerender">${title}</title>
-  <meta data-seo="prerender" name="description" content="${desc}" />
-  <meta data-seo="prerender" name="robots" content="${meta.noindex ? 'noindex, follow' : 'index, follow'}" />
-  <meta data-seo="prerender" property="og:title" content="${title}" />
-  <meta data-seo="prerender" property="og:description" content="${desc}" />
-  <meta data-seo="prerender" property="og:url" content="${canonicalUrl}" />
-  <meta data-seo="prerender" property="og:image" content="${BASE_URL}/og-image.png?v=3" />
-  <meta data-seo="prerender" property="og:image:width" content="1200" />
-  <meta data-seo="prerender" property="og:image:height" content="630" />
-  <meta data-seo="prerender" property="og:image:alt" content="${lang === 'en' ? 'Mindfulness for neurodivergents – the sign of the Fourfold Axis: a blue circle, a gold triangle and axis, a rainbow infinity at the centre' : 'Ενσυνειδητότητα για νευροδιαφορετικούς – το σήμα του Τετραπλού Άξονα: μπλε κύκλος, χρυσό τρίγωνο και άξονας, άπειρο σε ουράνιο τόξο στο κέντρο'}" />
-  <meta data-seo="prerender" property="og:type" content="website" />
-  <meta data-seo="prerender" property="og:locale" content="${lang === 'en' ? 'en_US' : 'el_GR'}" />
-  <meta data-seo="prerender" property="og:site_name" content="Neurodivergent Mindfulness App" />
-  <meta data-seo="prerender" name="twitter:card" content="summary_large_image" />
-  <meta data-seo="prerender" name="twitter:title" content="${title}" />
-  <meta data-seo="prerender" name="twitter:description" content="${desc}" />
-  <link data-seo="prerender" rel="canonical" href="${canonicalUrl}" />
-  <link data-seo="prerender" rel="alternate" hreflang="en" href="${enUrl}" />
-  <link data-seo="prerender" rel="alternate" hreflang="el" href="${elUrl}" />
-  <link data-seo="prerender" rel="alternate" hreflang="x-default" href="${xDefaultUrl}" />
-  ${Object.keys(meta.schema).length > 0
-    ? `<script data-seo="prerender" type="application/ld+json">${JSON.stringify(meta.schema).replace(/</g, '\\u003c')}</script>`
-    : ''}
-  <!-- /SEO -->`;
-
-  // Remove all existing SEO tags from the base HTML to avoid duplicates,
-  // then inject our complete per-route block
-  let html = baseHtml
-    .replace(/<html lang="[^"]*"/, `<html lang="${lang}"`)
-    // The Greek pages install the Greek app (name, shortcuts); same app id.
-    .replace('<link rel="manifest" href="/manifest.json" />', `<link rel="manifest" href="${lang === 'el' ? '/manifest-el.json' : '/manifest.json'}" />`)
+/** The base page without any of its own head tags for search engines. */
+function stripHead(html: string): string {
+  return html
     .replace(/<title>[^<]*<\/title>/g, '')
     .replace(/<meta name="description"[^>]*>/g, '')
     .replace(/<meta name="keywords"[^>]*>/g, '')
+    .replace(/<meta name="author"[^>]*>/g, '')
     .replace(/<meta name="robots"[^>]*>/g, '')
     .replace(/<meta property="og:[^"]*"[^>]*>/g, '')
     .replace(/<meta name="twitter:[^"]*"[^>]*>/g, '')
     .replace(/<link rel="canonical"[^>]*>/g, '')
-    .replace(/<link rel="alternate"[^>]*>/g, '');
-
-  // Inject full SEO block just before </head>
-  html = html.replace('</head>', `${seoBlock}\n</head>`);
-
-  // Derive a clean H1 from the title (strip the trailing site-name suffix)
-  const h1 = meta.title.replace(/\s*[|–]\s*Neurodivergent Mindfulness App\s*$/, '');
-
-  // Replace the empty React mount point with real, crawlable text.
-  // Matches both `<div id="root"></div>` and `<div id="root"/>` variants.
-  html = html.replace(
-    /<div id="root"\s*\/?>(<\/div>)?/,
-    buildBodyContent(meta, h1)
-  );
-
-  return html;
+    .replace(/<link rel="alternate"[^>]*>/g, '')
+    .replace(/[ \t]*<!-- (Google SEO & Meta Tags|Open Graph \(Facebook\/LinkedIn\)|Twitter) -->\n/g, '');
 }
 
-// ─────────────────────────────────────────────────────────────
-// Main
-// ─────────────────────────────────────────────────────────────
-async function run() {
-  const routesPath = path.join(ROOT_DIR, 'src', 'prerender-paths.json');
-  const routes: string[] = JSON.parse(fs.readFileSync(routesPath, 'utf8'));
+function buildPage(meta: RouteMeta, baseHtml: string): string {
+  const { lang } = meta.head;
+  let html = stripHead(baseHtml)
+    .replace(/<html lang="[^"]*"/, `<html lang="${lang}"`)
+    // The Greek pages install the Greek app (name, shortcuts); same app id.
+    .replace('<link rel="manifest" href="/manifest.json" />', `<link rel="manifest" href="${lang === 'el' ? '/manifest-el.json' : '/manifest.json'}" />`);
+  // Every tag carries data-seo="prerender" so the app can tell that the page
+  // already has the right tags for this address (and replace them after
+  // moving to another page) instead of adding a second, conflicting set.
+  html = html.replace('</head>', `  <!-- SEO: prerendered for ${meta.head.route} -->\n  ${headHtml(meta.head)}\n  <!-- /SEO -->\n</head>`);
+  // Matches both `<div id="root"></div>` and `<div id="root"/>`.
+  return html.replace(/<div id="root"\s*\/?>(<\/div>)?/, buildBodyContent(meta));
+}
 
+async function run() {
+  const routes: string[] = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'src', 'prerender-paths.json'), 'utf8'));
   const baseIndexPath = path.join(DIST_DIR, 'index.html');
   if (!fs.existsSync(baseIndexPath)) {
     console.error('❌ dist/index.html not found. Run vite build first.');
@@ -977,44 +84,28 @@ async function run() {
 
   console.log(`🔧 Static prerendering ${routes.length} routes...`);
   let count = 0;
-
   for (const route of routes) {
-    const meta = getMetaForRoute(route);
-    const html = buildHead(route, meta, baseHtml);
+    const meta = routeMeta(route);
+    // '/' writes dist/index.html; every other route a flat dist/<route>.html.
+    // Cloudflare Pages serves foo.html at /foo with no redirect, so the served
+    // URL matches the no-trailing-slash canonical and sitemap URLs.
+    const clean = route.replace(/\/+$/, '');
+    const outFile = route === '/' ? baseIndexPath : path.join(DIST_DIR, `${clean.slice(1)}.html`);
+    fs.mkdirSync(path.dirname(outFile), { recursive: true });
+    fs.writeFileSync(outFile, buildPage(meta, baseHtml), 'utf8');
 
-    // '/' writes directly to dist/index.html; every other route is written
-    // as a flat dist/<route>.html file. Cloudflare Pages serves foo.html at
-    // /foo with NO redirect, so the served URL exactly matches the
-    // no-trailing-slash canonical and sitemap URLs (fixes GSC redirect
-    // errors caused by the 308 /foo -> /foo/ directory-index redirect).
-    let outFile: string;
-    if (route === '/') {
-      outFile = path.join(DIST_DIR, 'index.html');
-    } else {
-      // '/el/method' -> dist/el/method.html ; '/el' -> dist/el.html
-      const clean = route.replace(/\/+$/, '');
-      outFile = path.join(DIST_DIR, `${clean.slice(1)}.html`);
-    }
-
-    const outDir = path.dirname(outFile);
-    if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
-    fs.writeFileSync(outFile, html, 'utf8');
+    // The same head as JSON, for the app (components/SEO.tsx).
+    const jsonFile = path.join(DIST_DIR, seoJsonPath(route).slice(1));
+    fs.mkdirSync(path.dirname(jsonFile), { recursive: true });
+    fs.writeFileSync(jsonFile, JSON.stringify(meta.head), 'utf8');
     count++;
   }
 
   // A real "not found" page. Cloudflare Pages serves a top-level 404.html with
   // status 404 for any address that matches no file (no SPA catch-all in
-  // _redirects), so unknown URLs are no longer "soft 404s". The page still
-  // boots the app, which shows the same message in the visitor's language.
-  const notFound = baseHtml
-    .replace(/<title>[^<]*<\/title>/g, '')
-    .replace(/<meta name="description"[^>]*>/g, '')
-    .replace(/<meta name="keywords"[^>]*>/g, '')
-    .replace(/<meta name="robots"[^>]*>/g, '')
-    .replace(/<meta property="og:[^"]*"[^>]*>/g, '')
-    .replace(/<meta name="twitter:[^"]*"[^>]*>/g, '')
-    .replace(/<link rel="canonical"[^>]*>/g, '')
-    .replace(/<link rel="alternate"[^>]*>/g, '')
+  // _redirects), so unknown URLs are not "soft 404s". The page still boots the
+  // app, which shows the same message in the visitor's language.
+  const notFound = stripHead(baseHtml)
     .replace('</head>', `  <title data-seo="prerender">Η σελίδα δεν βρέθηκε · Page not found</title>
   <meta data-seo="prerender" name="robots" content="noindex, follow" />
 </head>`)
@@ -1024,11 +115,11 @@ async function run() {
   <h1>Αυτή η σελίδα δεν υπάρχει</h1>
   <p>Ίσως άλλαξε η διεύθυνση. <a href="/el">Στην αρχική</a> · <a href="/el/chapters">Στα κεφάλαια</a></p>
   <p lang="en">This page does not exist. <a href="/en">Home</a> · <a href="/en/chapters">Chapters</a></p>
-</main></div>`
+</main></div>`,
     );
   fs.writeFileSync(path.join(DIST_DIR, '404.html'), notFound, 'utf8');
 
-  console.log(`✅ Prerendered ${count} routes successfully (+ 404.html).`);
+  console.log(`✅ Prerendered ${count} routes successfully (+ 404.html, + their heads as JSON).`);
 }
 
 run().catch(err => {
