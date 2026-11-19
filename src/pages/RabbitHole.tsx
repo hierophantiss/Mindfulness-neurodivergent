@@ -327,6 +327,11 @@ export default function RabbitHole() {
                 {formatMarkdown(article.pages[currentPage])}
               </p>
             </div>
+            {/* The other pages are here too, hidden until you turn to them (like
+                tabs): search engines read the whole text, you read it page by page. */}
+            {article.pages.map((pg, i) => i === currentPage ? null : (
+              <p key={`page-text-${i}`} hidden className="whitespace-pre-line">{formatMarkdown(pg)}</p>
+            ))}
           </div>
         </div>
       </div>
@@ -419,9 +424,16 @@ export default function RabbitHole() {
           {articles.map((article) => {
             const isNew = article.date >= '2025-07';
             return (
-              <button 
+              // A real link (its own address), opened in place as before.
+              <Link
                 key={article.id}
-                onClick={() => { setActiveArticle(article.id); setCurrentPage(0); }}
+                to={`/rabbithole/${article.id}`}
+                onClick={(e) => {
+                  if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+                  e.preventDefault();
+                  setActiveArticle(article.id);
+                  setCurrentPage(0);
+                }}
                 className={`w-full border rounded-[2rem] p-6 md:p-8 flex flex-col text-left transition-all duration-300 active:scale-[0.98] relative overflow-hidden group ${
                   isNew 
  ? 'glass-card border-teal-500/20 hover:border-teal-500/40 ' 
@@ -466,7 +478,7 @@ export default function RabbitHole() {
                     </span>
                   </div>
                 </div>
-              </button>
+              </Link>
             );
           })}
         </div>

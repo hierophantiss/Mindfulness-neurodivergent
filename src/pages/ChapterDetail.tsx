@@ -18,7 +18,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
 import InteractiveRenderer from '../components/InteractiveRenderer';
 import ChapterReaderBar from '../components/ChapterReaderBar';
-import { chapterPages, chapterPageLabel } from '../lib/chapterPages';
+import { chapterPages, chapterPageLabel, type ChapterPage } from '../lib/chapterPages';
+import type { Chapter } from '../data/types';
 import { buildChapterSegments } from '../lib/chapterReading';
 import { MeditatorFigure } from '../components/MeditatorFigure';
 import { axisOfChapter } from '../lib/axisOfChapter';
@@ -150,12 +151,13 @@ const CHAPTER_CONCEPTS_MAP: Record<number, { id: string; labelEn: string; labelE
   ]
 };
 
-const ConceptAnnotatedText = ({ text }: { text: string }) => {
+const ConceptAnnotatedText = ({ text, plain = false }: { text: string; plain?: boolean }) => {
   const parts = text.split(/(\{\{[^}]+\}\})/g);
   return (
     <>
       {parts.map((part, i) => {
         const match = part.match(/\{\{([^}]+)\}\}/);
+        if (match && plain) return null;
         if (match) {
           const conceptId = match[1];
           return (
@@ -206,6 +208,56 @@ const ZenParagraph = ({ text, index, readKey, readState }: { text: string, index
     </motion.div>
   );
 };
+
+/**
+ * The text of a page you are not on: the chapter's other pages sit in the
+ * page too, hidden until you turn to them (like tabs). Search engines read the
+ * whole chapter; you still read it page by page, as before. Only the words:
+ * no animations, no buttons, nothing to load.
+ */
+function PageText({ chapter, page, lang, isLast }: { chapter: Chapter; page: ChapterPage; lang: 'el' | 'en'; isLast: boolean }) {
+  const el = lang === 'el';
+  const objectives = isLast ? chapterObjectives(chapter.num, lang) : [];
+  return (
+    <>
+      {page.type === 'intro' && (
+        <>
+          <h1><span>{el ? `Κεφάλαιο ${chapter.num}: ` : `Chapter ${chapter.num}: `}</span>{chapter.title}</h1>
+          <p>{chapter.sub}</p>
+          <p>{chapter.summary}</p>
+          {chapter.tldr && <p>{chapter.tldr}</p>}
+        </>
+      )}
+      {page.type === 'theory' && (
+        <>
+          <h2>{page.section.title}</h2>
+          {page.section.paragraphs.map((par, i) => <p key={i}><ConceptAnnotatedText text={par} plain /></p>)}
+          {page.section.actionLink && <p><Link to={page.section.actionLink.url}>{page.section.actionLink.label}</Link></p>}
+          {page.index === chapter.theorySections.length - 1 && (
+            <ul>
+              {CHAPTER_TAKEAWAYS[lang][chapter.num]?.slice(0, 3).map((take, i) => <li key={i}><ConceptAnnotatedText text={take} plain /></li>)}
+            </ul>
+          )}
+        </>
+      )}
+      {page.type === 'exercise' && (
+        <>
+          {chapter.exercise && (
+            <>
+              <h2>{chapter.exercise.title}</h2>
+              <ol>{chapter.exercise.steps.map((step, i) => <li key={i}>{step}</li>)}</ol>
+            </>
+          )}
+          {chapter.insight && <p>{chapter.insight}</p>}
+          {chapter.reflection && <p>{chapter.reflection}</p>}
+        </>
+      )}
+      {objectives.length > 0 && (
+        <ul>{objectives.map((line, i) => <li key={i}><ConceptAnnotatedText text={line} plain /></li>)}</ul>
+      )}
+    </>
+  );
+}
 
 export default function ChapterDetail() {
     const { reduceMotion } = useAccessibility();
@@ -535,6 +587,8 @@ export default function ChapterDetail() {
                   )}
                   <div data-read-key="intro-title" className={readClass(rs('intro-title'))}>
                     <h1 className="font-display text-4xl desk:text-6xl text-ink/90 leading-tight px-4">
+                      {/* "Chapter N" is shown just above, in the header; the heading carries it too. */}
+                      <span className="sr-only">{language === 'el' ? `Κεφάλαιο ${chapter.num}: ` : `Chapter ${chapter.num}: `}</span>
                       {chapter.title}
                     </h1>
                     <p className="text-lg desk:text-xl text-ink/70 leading-relaxed font-sans px-6 mt-5">
@@ -858,6 +912,12 @@ export default function ChapterDetail() {
             </div>
           </motion.div>
         </AnimatePresence>
+
+        {pages.map((pg, i) => i === page ? null : (
+          <div key={`page-text-${i}`} hidden>
+            <PageText chapter={chapter} page={pg} lang={currentLang} isLast={i === pages.length - 1} />
+          </div>
+        ))}
       </div>
       </div>
 
