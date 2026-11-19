@@ -57,7 +57,7 @@ const TEXT = {
     axes: { body: 'Body', breath: 'Breath', attention: 'Attention', space: 'Space' } as Record<Axis, string>,
     notes: 'In my own words',
     reflect: 'What do I notice, looking at the week?',
-    site: 'Mindfulness for Neurodivergent Minds · neurodivergent-mindfulness.org',
+    site: 'Neurodivergent Mindfulness · neurodivergent-mindfulness.org',
     notMedical: 'Personal notes, not a medical document',
     more: 'continued',
   },

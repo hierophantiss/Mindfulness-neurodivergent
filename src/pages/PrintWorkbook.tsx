@@ -4,6 +4,7 @@ import { CHAPTERS_DATA } from '../data/chapters';
 import { COURSE_EL as courseEL } from '../data/course-el';
 import { COURSE_EN as courseEN } from '../data/course-en';
 import { plainConcepts } from '../data/practiceTexts';
+import { BOOK_NAME } from '../seo/head';
 
 export default function PrintWorkbook() {
   const { language } = useLanguage();
@@ -24,7 +25,7 @@ export default function PrintWorkbook() {
       {/* Cover Page */}
       <div className="h-screen flex flex-col justify-center items-center text-center p-8 break-after-page">
         <h1 className="text-5xl font-bold mb-4">
-          {language === 'el' ? 'Εγχειρίδιο Παρουσίας' : 'Manual of Presence'}
+          {BOOK_NAME[language === 'el' ? 'el' : 'en']}
         </h1>
         <h2 className="text-2xl text-gray-600 mb-12">
           {language === 'el' ? 'Awareness Gateway • Πρακτικός Οδηγός' : 'Awareness Gateway • Practical Guide'}

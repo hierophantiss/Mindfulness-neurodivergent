@@ -336,7 +336,7 @@ export default function Settings() {
              </div>
              <div className="text-center">
                 <p className="text-[13px] font-sans font-medium text-ink mb-1">
-                   {language === 'el' ? 'Ενσυνειδητότητα για Νευροδιαφορετικούς' : 'Mindfulness for Neurodivergent Minds'}
+                   {language === 'el' ? 'Ενσυνειδητότητα για Νευροδιαφορετικούς' : 'Neurodivergent Mindfulness'}
                 </p>
                 {/* Which version this is: the day it was built, and in the Android app the
                     copy number too (it rises when the app has updated itself). */}

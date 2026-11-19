@@ -20,6 +20,8 @@ type Props = {
   title: ReactNode;
   /** Where you are, above the title (e.g. "Practice"). */
   eyebrow?: ReactNode;
+  /** The line above is part of the heading (it names what the page is). */
+  eyebrowInTitle?: boolean;
   lead?: ReactNode;
   /** Where the arrow goes: a path, a function, or nothing for no arrow. */
   back?: string | (() => void);
@@ -31,7 +33,13 @@ type Props = {
   id?: string;
 };
 
-export function PageHeader({ title, eyebrow, lead, back, action, size = 'main', children, id }: Props) {
+export function PageHeader({ title, eyebrow, eyebrowInTitle = false, lead, back, action, size = 'main', children, id }: Props) {
+  const eyebrowClass = 'sky-text text-[13px] desk:text-[14px] font-medium text-teal-400';
+  const titleClass = `sky-text font-display text-ink text-balance ${
+    size === 'main'
+      ? 'text-[38px] max-[359px]:text-[34px] leading-[1.05] desk:text-[52px]'
+      : 'text-[30px] max-[359px]:text-[27px] leading-[1.1] desk:text-[40px]'
+  }`;
   const navigate = useNavigate();
   const { language } = useLanguage();
   const goBack = typeof back === 'function' ? back : back ? () => navigate(back) : null;
@@ -56,17 +64,21 @@ export function PageHeader({ title, eyebrow, lead, back, action, size = 'main', 
         </div>
       )}
       <header className="flex flex-col gap-2.5">
-        {eyebrow && <p className="sky-text text-[13px] desk:text-[14px] font-medium text-teal-400">{eyebrow}</p>}
-        <h1
-          id={id}
-          className={`sky-text font-display text-ink text-balance ${
-            size === 'main'
-              ? 'text-[38px] max-[359px]:text-[34px] leading-[1.05] desk:text-[52px]'
-              : 'text-[30px] max-[359px]:text-[27px] leading-[1.1] desk:text-[40px]'
-          }`}
-        >
-          {title}
-        </h1>
+        {eyebrowInTitle && eyebrow ? (
+          // The line above belongs to the heading (e.g. the book's name above "The book"):
+          // both in the h1, looking exactly as the two separate lines.
+          <h1 id={id} className="flex flex-col gap-2.5">
+            <span className={eyebrowClass}>{eyebrow}</span>
+            <span className={titleClass}>{title}</span>
+          </h1>
+        ) : (
+          <>
+            {eyebrow && <p className={eyebrowClass}>{eyebrow}</p>}
+            <h1 id={id} className={titleClass}>
+              {title}
+            </h1>
+          </>
+        )}
         {lead && <p className="sky-text text-[16px] desk:text-[17px] leading-relaxed text-ink/75 max-w-[36em]">{lead}</p>}
         {children}
       </header>

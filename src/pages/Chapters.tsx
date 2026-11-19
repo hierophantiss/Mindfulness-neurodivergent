@@ -6,6 +6,7 @@ import { MeditatorFigure } from '../components/MeditatorFigure';
 import { axisOfChapter } from '../lib/axisOfChapter';
 import { ChapterIcon } from '../components/ChapterIcon';
 import { CHAPTERS_DATA } from '../data/chapters';
+import { BOOK_NAME } from '../seo/head';
 import { useLanguage } from '../hooks/useLanguage';
 import { useProgress } from '../contexts/ProgressContext';
 import { Skeleton } from '../components/ui/Skeleton';
@@ -37,7 +38,9 @@ export default function Chapters() {
         
         <PageHeader
           back="/dashboard"
-          eyebrow={language === 'en' ? 'Presence Workbook' : 'Εγχειρίδιο Παρουσίας'}
+          // The book's own name, as on its cover (and the page's heading with "The book").
+          eyebrow={BOOK_NAME[language === 'en' ? 'en' : 'el']}
+          eyebrowInTitle
           title={language === 'en' ? 'The book' : 'Το βιβλίο'}
           lead={
             <>

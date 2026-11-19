@@ -1,5 +1,5 @@
 import { AudioEnabler } from '../components/AudioEnabler';
-import React, { useState, useEffect, useMemo, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useMemo, useSyncExternalStore, lazy, Suspense } from 'react';
 import { ArrowRight, BookOpen, ChevronDown, Info, Download, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
@@ -60,6 +60,20 @@ const OUTLINE_CHAPTERS: Record<'el' | 'en', Chapter[]> = {
   el: CHAPTER_OUTLINE.el.map(chapterFromOutline),
   en: CHAPTER_OUTLINE.en.map(chapterFromOutline),
 };
+
+/** Whether the computer layout is on (the `desk:` width, 1024px and up). */
+const DESK_QUERY = '(min-width: 1024px)';
+function useOnComputer(): boolean {
+  return useSyncExternalStore(
+    (cb) => {
+      if (typeof window.matchMedia !== 'function') return () => {};
+      const mq = window.matchMedia(DESK_QUERY);
+      mq.addEventListener('change', cb);
+      return () => mq.removeEventListener('change', cb);
+    },
+    () => typeof window.matchMedia === 'function' && window.matchMedia(DESK_QUERY).matches,
+  );
+}
 
 const footerLinkClasses = "sky-text flex items-center gap-1.5 min-h-[44px] text-[14px] text-ink/75 hover:text-ink transition-colors";
 const bookPillClasses = "whitespace-nowrap px-4 py-2 rounded-full border border-[var(--tint-sand-line)] bg-[var(--tint-sand-bg)] text-[12px] text-ink/65 hover:text-ink/80 hover:bg-white/[0.06] transition-colors";
@@ -133,6 +147,12 @@ export default function Dashboard() {
     [hour, recentState]
   );
 
+  // The page's one heading is the app's name where it shows (the phone's top
+  // row); on a computer that row gives way to the side bar, so the greeting is.
+  const onComputer = useOnComputer();
+  const BrandTag = onComputer ? 'span' : 'h1';
+  const GreetingTag = onComputer ? 'h1' : 'p';
+
   const greeting = hour >= 6 && hour < 12
     ? (language === 'el' ? 'Καλημέρα' : 'Good morning')
     : hour >= 12 && hour < 18
@@ -197,14 +217,15 @@ export default function Dashboard() {
             >
               <MethodMark small breathe dim={nightDim} className="w-[30px] h-[30px]" />
             </Link>
-            <span className="flex flex-col min-w-0 gap-0.5">
+            {/* On the phone the app's name is the page's heading (on a computer it sits in the side bar, so there the greeting is). */}
+            <BrandTag className="flex flex-col min-w-0 gap-0.5">
               <span className="keep-font sky-text font-display text-[18px] leading-none text-sign-gold whitespace-nowrap">
                 {el ? 'Ενσυνειδητότητα' : 'Mindfulness'}
               </span>{' '}
               <span className="sky-text text-[12.5px] leading-[1.2] text-ink/70 [text-wrap:balance]">
                 {el ? 'Για νου που τρέχει ή κλειδώνει' : 'For minds that race or lock in'}
               </span>
-            </span>
+            </BrandTag>
           </div>
           <Link
             to="/practice/breath/sos-breath"
@@ -223,9 +244,9 @@ export default function Dashboard() {
         {/* The greeting is there at once (no fade): it is the first word you read,
             and the page counts as shown only when it is. */}
         <div className="mt-6 short:mt-2 desk:mt-2">
-          <h1 className="font-display sky-text text-[38px] short:text-[33px] max-[359px]:text-[34px] leading-[1.05] text-ink desk:text-[60px] desk:leading-none">
+          <GreetingTag className="font-display sky-text text-[38px] short:text-[33px] max-[359px]:text-[34px] leading-[1.05] text-ink desk:text-[60px] desk:leading-none">
             {greeting}
-          </h1>
+          </GreetingTag>
           {/* The method in one line: one way, many ways in. */}
           <Link to="/method" className="sky-text mt-2 inline-flex items-center gap-1.5 min-h-[40px] text-[15px] leading-snug text-ink/75 hover:text-ink transition-colors desk:mt-3 desk:text-[18px]">
             <span>{el ? 'Μία μέθοδος, τέσσερις άξονες. Δες πώς δουλεύει' : 'One method, four axes. See how it works'}</span>
