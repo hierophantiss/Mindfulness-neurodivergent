@@ -70,8 +70,10 @@ const files = [
     `- [${BOOK_NAME[l]} (PDF)](${SITE_URL}/workbook_${l}.pdf)`,
     `- [${BOOK_NAME[l]} (EPUB)](${SITE_URL}/workbook_${l}.epub)`,
   ]),
-  `- [The book on the Internet Archive / Το βιβλίο στο Internet Archive](${ARCHIVE_BOOK_URL})`,
-  `- [The audiobook on the Internet Archive / Το ακουστικό βιβλίο στο Internet Archive](${ARCHIVE_AUDIOBOOK_URL})`,
+  `- [The book on the Internet Archive (English)](${ARCHIVE_BOOK_URL.en})`,
+  `- [The audiobook on the Internet Archive (English)](${ARCHIVE_AUDIOBOOK_URL.en})`,
+  `- [Το βιβλίο στο Internet Archive (ελληνικά)](${ARCHIVE_BOOK_URL.el})`,
+  `- [Το ακουστικό βιβλίο στο Internet Archive (ελληνικά)](${ARCHIVE_AUDIOBOOK_URL.el})`,
 ];
 
 const llms = `# ${SITE_NAME.en} / ${SITE_NAME.el}
