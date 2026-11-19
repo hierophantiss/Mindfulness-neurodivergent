@@ -41,7 +41,7 @@ const page = (route: string) => {
 };
 
 function pages(lang: L): string[] {
-  const out = [`/${lang}`, `/${lang}/method`, `/${lang}/chapters`];
+  const out = [`/${lang}`, `/${lang}/about`, `/${lang}/method`, `/${lang}/glossary`, `/${lang}/chapters`];
   for (const c of CHAPTERS_DATA[lang]) out.push(`/${lang}/chapters/${c.num}`);
   out.push(`/${lang}/cards`, `/${lang}/program`, `/${lang}/practice`, `/${lang}/faq`, `/${lang}/methodology`, `/${lang}/rabbithole`, `/${lang}/install`, `/${lang}/privacy`, `/${lang}/accessibility`);
   return out.map(page);

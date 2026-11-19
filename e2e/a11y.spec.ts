@@ -3,7 +3,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { asReturningVisitor } from './helpers';
 
 // Accessibility (axe, WCAG A/AA, contrast included) on the main pages.
-const PAGES = ['/el', '/en', '/el/chapters/2', '/el/practice', '/el/practice/breath/breath-5-5', '/el/sanctuary', '/el/program', '/el/settings', '/el/privacy', '/en/faq'];
+const PAGES = ['/el', '/en', '/el/chapters/2', '/el/practice', '/el/practice/breath/breath-5-5', '/el/sanctuary', '/el/program', '/el/settings', '/el/privacy', '/en/faq', '/el/glossary', '/en/about'];
 
 test.beforeEach(async ({ page }) => asReturningVisitor(page));
 

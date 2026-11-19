@@ -27,6 +27,8 @@ const Install = lazyWithReload(() => import('./pages/Install'));
 const GenericExercise = lazyWithReload(() => import('./pages/GenericExercise'));
 const Method = lazyWithReload(() => import('./pages/Method'));
 const Methodology = lazyWithReload(() => import('./pages/Methodology'));
+const Glossary = lazyWithReload(() => import('./pages/Glossary'));
+const About = lazyWithReload(() => import('./pages/About'));
 const RabbitHole = lazyWithReload(() => import('./pages/RabbitHole'));
 const Sanctuary = lazyWithReload(() => import('./pages/Sanctuary'));
 const Settings = lazyWithReload(() => import('./pages/Settings'));
@@ -95,6 +97,8 @@ function AppContent() {
             <Route path="dashboard" element={<Navigate to="/" replace />} />
             <Route path="method" element={<Method />} />
             <Route path="methodology" element={<Methodology />} />
+            <Route path="glossary" element={<Glossary />} />
+            <Route path="about" element={<About />} />
             <Route path="rabbithole" element={<RabbitHole />} />
             <Route path="rabbithole/:articleId" element={<RabbitHole />} />
             <Route path="chapters" element={<Chapters />} />

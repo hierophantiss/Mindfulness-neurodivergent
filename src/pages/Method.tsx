@@ -125,6 +125,11 @@ export default function Method() {
           <p className="text-ink/80 text-sm leading-relaxed">{t.roots}</p>
         </section>
 
+        {/* The method's terms, from the book's glossary. */}
+        <Link to="/glossary" className="btn-soft w-full">
+          {language === 'en' ? 'Glossary: the terms of the method' : 'Γλωσσάρι: οι όροι της μεθόδου'}
+        </Link>
+
         {/* Closing: the author's words */}
         <p className="text-center text-[15px] leading-relaxed text-amber-200/80 px-4 pb-4">{t.closing}</p>
 

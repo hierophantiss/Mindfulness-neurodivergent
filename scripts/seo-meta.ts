@@ -23,6 +23,7 @@ import { T as PRIVACY } from '../src/data/pages/privacy';
 import { T as ACCESSIBILITY } from '../src/data/pages/accessibility';
 import { T as INSTALL } from '../src/data/pages/install';
 import { bookCards } from '../src/data/bookCards';
+import { GLOSSARY } from '../src/data/glossary';
 import { audioUrl } from '../src/lib/chapterAudio';
 import { MICROSOFT_STORE_URL } from '../src/lib/links';
 import {
@@ -211,8 +212,8 @@ const ARTICLES: Record<string, { en: [string, string]; el: [string, string] }> =
     el: ['Είσαι ο Δρόμος: Ο Χάρτης, το Έδαφος & ο Άξονας', 'Ο χάρτης δεν είναι το έδαφος. Κορζίμπσκι, Γκίμπσον και πώς να μπείτε στον χάρτη.'],
   },
   'wave-and-sea': {
-    en: ['The Wave Is Not the Sea — Until It Lets Go', "The map is not the territory — but who drew your outline? From Korzybski to the wave and the sea: mindfulness, awareness, and the fourfold method's path from regulation to presence."],
-    el: ['Το Κύμα Δεν Είναι η Θάλασσα — Ώσπου να Αφεθεί', 'Ο χάρτης δεν είναι το έδαφος — αλλά ποιος σχεδίασε το περίγραμμά σου; Από τον Κορζίμπσκι στο κύμα και τη θάλασσα: ενσυνειδητότητα, συνειδητότητα, και ο δρόμος της τετραπλής μεθόδου από τη ρύθμιση στην παρουσία.'],
+    en: ['The Wave Is Not the Sea — Until It Lets Go', "The map is not the territory — but who drew your outline? From Korzybski to the wave and the sea: mindfulness, awareness, and the Fourfold Axis's path from regulation to presence."],
+    el: ['Το Κύμα Δεν Είναι η Θάλασσα — Ώσπου να Αφεθεί', 'Ο χάρτης δεν είναι το έδαφος — αλλά ποιος σχεδίασε το περίγραμμά σου; Από τον Κορζίμπσκι στο κύμα και τη θάλασσα: ενσυνειδητότητα, συνειδητότητα, και ο δρόμος του Τετραπλού Άξονα από τη ρύθμιση στην παρουσία.'],
   },
   'quantum-void-awareness': {
     en: ['The Seething Void & Quantum Physics', 'How modern physics defines the Quantum Void not as emptiness, but as a seething womb of potential. Connecting science with the 4th Axis of Space.'],
@@ -747,6 +748,66 @@ export function routeMeta(route: string): RouteMeta {
       base, description: d, h1: el ? 'Επιστημονική βάση' : 'Scientific basis', rawHtml,
       // A page about the studies behind the method: not medical content.
       jsonLd: graph(webPage('WebPage', url, L, base, d, { citation }), breadcrumbs(L, [[el ? 'Επιστημονική βάση' : 'Scientific basis', route]])),
+    });
+  }
+
+  // ── Glossary: the book's glossary, word for word ──
+  if (clean === '/glossary') {
+    const g = GLOSSARY[L];
+    const name = el ? 'Γλωσσάρι' : 'Glossary';
+    const base = el ? 'Γλωσσάρι του Τετραπλού Άξονα' : 'Glossary of the Fourfold Axis';
+    const d = excerpt([g.intro, ...g.terms.map(t => t.term)], 158);
+    const chapterWord = el ? 'Κεφ.' : 'Ch.';
+    const where = (t: typeof g.terms[number]) => t.chapters.length
+      ? `${chapterWord} ${t.chapters.map(n => link(`/${lang}/chapters/${n}`, String(n))).join(', ')}`
+      : escapeHtml(t.where);
+    const rawHtml = `<p>${escapeHtml(g.intro)}</p>\n      <dl>\n      ` +
+      g.terms.map(t => `<dt id="${escapeHtml(t.id)}">${escapeHtml(t.term)} (${where(t)})</dt><dd>${escapeHtml(t.definition)}</dd>`).join('\n      ') +
+      `\n      </dl>\n      <p>${link(`/${lang}/method`, el ? 'Η Μέθοδος' : 'The Method')} · ${link(`/${lang}/chapters`, BOOK_NAME[L])}</p>`;
+    const setId = `${url}#terms`;
+    return make({
+      base, description: d, h1: name, rawHtml,
+      jsonLd: graph(
+        webPage('WebPage', url, L, base, d, { mainEntity: { '@id': setId } }),
+        {
+          '@type': 'DefinedTermSet', '@id': setId, name: base, inLanguage: lang, url,
+          isPartOf: BOOK_REF(L),
+          hasDefinedTerm: g.terms.map(t => ({
+            '@type': 'DefinedTerm', '@id': `${url}#${encodeURIComponent(t.id)}`, name: t.term, description: t.definition,
+            inDefinedTermSet: { '@id': setId }, url: `${url}#${encodeURIComponent(t.id)}`,
+          })),
+        },
+        breadcrumbs(L, [[el ? 'Η Μέθοδος' : 'The Method', `/${lang}/method`], [name, route]]),
+      ),
+    });
+  }
+
+  // ── About: the method, the app and its maker (the About text, word for word) ──
+  if (clean === '/about') {
+    const a = ABOUT;
+    const name = el ? 'Σχετικά' : 'About';
+    const base = el ? `Σχετικά: ${AUTHOR_NAME.el} και ο Τετραπλός Άξονας` : `About: ${AUTHOR_NAME.en} and the Fourfold Axis`;
+    const d = excerpt([a.purpose[L], a.creatorDesc[L]], 158);
+    const parts = [
+      `<p>${escapeHtml(a.subtitle[L])}</p>`,
+      `<p>${escapeHtml(a.purpose[L])}</p>`,
+      `<h2>${escapeHtml(a.features.title[L])}</h2>`, ul(a.features.items.map(i => i[L])),
+      `<h2>${escapeHtml(a.trauma.title[L])}</h2>`, ul(a.trauma.items.map(i => i[L])),
+      `<h2>${escapeHtml(a.research.title[L])}</h2>`, ul(a.research.items.map(i => i[L])),
+      `<p>${link(`/${lang}/methodology`, a.research.more[L])}</p>`,
+      `<h2>${escapeHtml(a.axesTitle[L])}</h2>`, `<ul>${a.axes.map(x => `<li>${escapeHtml(`${x.title[L]}: ${x.desc[L]}`)}</li>`).join('')}</ul>`,
+      `<h2>${escapeHtml(`${a.creatorLabel[L]}: ${a.creatorName[L]}`)}</h2>`,
+      `<p>${escapeHtml(a.creatorDesc[L])}</p>`, `<p>${escapeHtml(a.creatorQuote[L])}</p>`, `<p>${escapeHtml(a.madeWith[L])}</p>`,
+      `<h2>${escapeHtml(a.privacy.title[L])}</h2>`, `<p>${escapeHtml(a.privacy.text[L])}</p>`,
+      `<p>${link(`/${lang}/method`, el ? 'Η Μέθοδος' : 'The Method')} · ${link(`/${lang}/chapters`, BOOK_NAME[L])} · ${link(`/${lang}/methodology`, el ? 'Επιστημονική βάση' : 'Scientific basis')} · ${link(`/${lang}/privacy`, el ? 'Απόρρητο' : 'Privacy')}</p>`,
+    ];
+    return make({
+      base, description: d, h1: name, rawHtml: parts.join('\n      '),
+      jsonLd: graph(
+        webPage('AboutPage', url, L, base, d, { mainEntity: AUTHOR_REF, about: [AUTHOR_REF, { '@id': APP_ID }, { '@id': BOOK_ID }] }),
+        { ...personNode(L), url, mainEntityOfPage: { '@id': `${url}#page` } },
+        breadcrumbs(L, [[name, route]]),
+      ),
     });
   }
 

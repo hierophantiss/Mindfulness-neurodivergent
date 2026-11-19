@@ -59,8 +59,9 @@ test('moving to another page inside the app gives it the same head as its preren
   await expect(page).toHaveURL(/\/el\/chapters$/);
   const want = await (await request.get('/seo/el/chapters.json')).json();
   await expect(page).toHaveTitle(want.title);
+  // (The head library writes the tags a moment after the title.)
+  await expect.poll(async () => (await headOf(page)).canonicals).toEqual(['https://neurodivergent-mindfulness.org/el/chapters']);
   const head = await headOf(page);
-  expect(head.canonicals).toEqual(['https://neurodivergent-mindfulness.org/el/chapters']);
   expect(head.robots).toBe('index, follow');
   expect(head.ld).toHaveLength(1);
   const ld = JSON.parse(head.ld[0]);

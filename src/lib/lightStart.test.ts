@@ -10,11 +10,10 @@ const EVERY_PAGE = [
   'src/components/Layout.tsx',
   'src/components/Companion.tsx',
   'src/components/NavigationMenu.tsx',
-  'src/components/InfoModal.tsx',
   'src/components/Onboarding.tsx',
   'src/components/SEO.tsx',
 ];
-const HEAVY = ['chapters', 'breathPatterns', 'guidedExercises', 'microdoses', 'stateCheckin', 'practiceCatalog', 'rabbitholeContent', 'concepts', 'faq', 'methodology'];
+const HEAVY = ['chapters', 'glossary', 'breathPatterns', 'guidedExercises', 'microdoses', 'stateCheckin', 'practiceCatalog', 'rabbitholeContent', 'concepts', 'faq', 'methodology'];
 
 describe('a light start', () => {
   for (const file of EVERY_PAGE) {

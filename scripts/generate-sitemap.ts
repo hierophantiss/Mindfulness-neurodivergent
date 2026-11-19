@@ -62,6 +62,8 @@ function sourcesOf(route: string): string[] {
   if (r === '/install') return [D('pages/install.ts'), P('Install.tsx')];
   if (r === '/cards') return [D('bookCards.ts'), D('chapters.ts'), P('Cards.tsx')];
   if (r === '/sanctuary') return [P('Sanctuary.tsx')];
+  if (r === '/glossary') return [D('glossary.ts'), P('Glossary.tsx')];
+  if (r === '/about') return [D('about.ts'), P('About.tsx')];
   return [];
 }
 
@@ -86,7 +88,9 @@ const mainRoutes = [
   '/privacy',
   '/accessibility',
   '/cards',
-  '/install'
+  '/install',
+  '/glossary',
+  '/about'
 ];
 
 async function generate() {

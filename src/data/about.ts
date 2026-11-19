@@ -1,5 +1,5 @@
 // What the app says about itself and its maker: the "About" text, word for
-// word. One source for the About window/page, the search-engine data (the
+// word. One source for the About page (pages/About.tsx), the search-engine data (the
 // author's description) and llms.txt.
 export const ABOUT = {
   title: { el: 'Ο Τετραπλός Άξονας', en: 'The Fourfold Axis' },

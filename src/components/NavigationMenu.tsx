@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { clearAll } from '../lib/storage';
-import InfoModal from './InfoModalLazy';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import BackupDialog from './BackupDialogLazy';
 import type { BackupMode } from './BackupDialog';
-import { Home, BookOpen, Activity, X, Info, Music, LayoutGrid, EyeOff, Eye, Database, Download, Sparkles, RotateCcw, Headphones, LetterText, Compass, Settings, Layers } from 'lucide-react';
+import { Home, BookOpen, Activity, X, Info, Music, LayoutGrid, EyeOff, Eye, Database, Download, Sparkles, RotateCcw, Headphones, LetterText, Compass, Settings, Layers, BookA } from 'lucide-react';
 import { MethodMark } from './MethodMark';
 import { useTime } from '../contexts/TimeContext';
 import { motion, AnimatePresence } from 'motion/react';
@@ -99,12 +98,6 @@ export default function NavigationMenu() {
     navigate(path);
   };
 
-  // The same "About" as on the home page.
-  const [infoOpen, setInfoOpen] = useState(false);
-  const showInfo = () => {
-    setIsOpen(false);
-    setInfoOpen(true);
-  };
 
   // Esc closes the open menu.
   // The open menu holds the keyboard's focus: Tab stays in it, Escape closes it.
@@ -141,6 +134,7 @@ export default function NavigationMenu() {
     { path: '/cards', Icon: Layers, label: el ? 'Κάρτες' : 'Cards' },
     { path: '/rabbithole', Icon: SpiralIcon, label: el ? 'Κουνελότρυπα' : 'Rabbit Hole' },
     { path: '/method', Icon: Compass, label: el ? 'Η Μέθοδος' : 'The Method' },
+    { path: '/glossary', Icon: BookA, label: el ? 'Γλωσσάρι' : 'Glossary' },
   ];
   const nightDim = hour >= 21 || hour < 5;
 
@@ -190,9 +184,9 @@ export default function NavigationMenu() {
           >
             {el ? 'English' : 'Ελληνικά'}
           </button>
-          <button type="button" onClick={() => setInfoOpen(true)} className="min-h-[40px] hover:text-ink/90 transition-colors">
+          <Link to="/about" className="flex items-center min-h-[40px] hover:text-ink/90 transition-colors">
             {el ? 'Σχετικά' : 'About'}
-          </button>
+          </Link>
         </div>
       </nav>
 
@@ -319,12 +313,12 @@ export default function NavigationMenu() {
               <div className="flex-[1] overflow-y-auto pt-6 short:pt-3 px-6 pb-6 short:pb-3 max-w-2xl mx-auto w-full flex flex-col gap-3">
                 {/* On the phone, the places the home page does not list (on a computer they are in the side bar). */}
                 <nav aria-label={el ? 'Τόποι της εφαρμογής' : 'Places in the app'} className="grid grid-cols-2 gap-2.5 desk:hidden">
-                  {sideItems.filter(i => ['/cards', '/method'].includes(i.path)).map(({ path, Icon, label }) => (
+                  {sideItems.filter(i => ['/cards', '/method', '/glossary'].includes(i.path)).map(({ path, Icon, label }) => (
                     <Link
                       key={path}
                       to={path}
                       onClick={() => setIsOpen(false)}
-                      className="flex items-center gap-3 min-h-[56px] px-4 rounded-2xl bg-white/[0.04] border border-white/[0.07] text-[14.5px] text-ink/90 hover:bg-white/[0.07] transition-colors"
+                      className="flex items-center gap-3 min-h-[56px] px-4 rounded-2xl bg-white/[0.04] border border-white/[0.07] text-[14.5px] text-ink/90 hover:bg-white/[0.07] transition-colors [&:last-child:nth-child(odd)]:col-span-2"
                     >
                       <Icon size={19} aria-hidden="true" className="shrink-0 text-ink/75" />
                       {label}
@@ -573,7 +567,7 @@ export default function NavigationMenu() {
               <div className="flex justify-center gap-7 items-start px-6 pt-5 short:pt-3 border-t border-white/[0.08] pb-[calc(1.25rem+env(safe-area-inset-bottom))] short:pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
                 {[
                   { key: 'settings', label: language === 'el' ? 'Ρυθμίσεις' : 'Settings', onClick: () => handleNav('/settings'), icon: <Settings size={20} aria-hidden="true" /> },
-                  { key: 'about', label: language === 'el' ? 'Σχετικά' : 'About', onClick: showInfo, icon: <Info size={20} aria-hidden="true" /> },
+                  { key: 'about', label: language === 'el' ? 'Σχετικά' : 'About', onClick: () => handleNav('/about'), icon: <Info size={20} aria-hidden="true" /> },
                   { key: 'mixer', label: language === 'el' ? 'Ήχοι' : 'Sounds', onClick: () => toggleMaster(), icon: <Music size={20} aria-hidden="true" className={masterPlaying ? 'text-teal-400' : undefined} />, pressed: masterPlaying },
                 ].map((b) => (
                   <button
@@ -594,7 +588,6 @@ export default function NavigationMenu() {
           </>
         )}
       </AnimatePresence>
-      <InfoModal isOpen={infoOpen} onClose={() => setInfoOpen(false)} />
       <BackupDialog mode={backupMode} onClose={() => setBackupMode(null)} />
     </>
   );

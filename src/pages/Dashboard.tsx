@@ -12,7 +12,6 @@ import type { Chapter } from '../data/types';
 import { cn } from '../lib/utils';
 import { motion } from 'motion/react';
 import { useAccessibility } from '../hooks/useAccessibility';
-import InfoModal from '../components/InfoModalLazy';
 
 import { phraseOfDay } from '../data/affirmations';
 import { readRecentCheckinState } from '../data/stateCheckin';
@@ -120,7 +119,6 @@ export default function Dashboard() {
   // At night the lines of the sign step back a little (the infinity keeps its colours).
   const nightDim = hour >= 21 || hour < 5;
 
-  const [isInfoOpen, setIsInfoOpen] = useState(false);
   // The cat's tour of this page, asked for from its sheet.
   const [touring, setTouring] = useState(false);
   useEffect(() => {
@@ -429,10 +427,10 @@ export default function Dashboard() {
               <BookOpen size={12} />
               <span>{language === 'el' ? 'Το βιβλίο' : 'The book'}</span>
             </button>
-            <button onClick={() => setIsInfoOpen(true)} className={footerLinkClasses}>
+            <Link to="/about" className={footerLinkClasses}>
               <Info size={12} />
               <span>{language === 'el' ? 'Σχετικά' : 'About'}</span>
-            </button>
+            </Link>
             <Link to="/privacy" className={footerLinkClasses}>
               <span>{language === 'el' ? 'Απόρρητο' : 'Privacy'}</span>
             </Link>
@@ -475,7 +473,6 @@ export default function Dashboard() {
       </div>
       {/* At the foot of the page, the earth: first the earth, then the sky. */}
       <HomeEarth />
-      <InfoModal isOpen={isInfoOpen} onClose={() => setIsInfoOpen(false)} />
       {touring && <Suspense fallback={null}><HomeTour language={language} onClose={() => setTouring(false)} /></Suspense>}
     </div>
   );
