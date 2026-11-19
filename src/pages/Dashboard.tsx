@@ -6,7 +6,8 @@ import { useLanguage } from '../hooks/useLanguage';
 import { useCompanion } from '../hooks/useCompanion';
 import { useTime } from '../contexts/TimeContext';
 import { useProgress } from '../contexts/ProgressContext';
-import { CHAPTER_TITLES } from '../data/chapterTitles';
+import { CHAPTER_OUTLINE } from '../data/chapterOutline';
+import { chapterFromOutline } from '../data/chapterOutlineOf';
 import type { Chapter } from '../data/types';
 import { cn } from '../lib/utils';
 import { motion } from 'motion/react';
@@ -52,25 +53,13 @@ function useLastPractice(lang: 'el' | 'en') {
 }
 
 
-// The full chapters (230 KB of text) load after the page shows. Until then the
-// "Continue" card knows each chapter by its title; the page you stopped at
-// fills in a moment later.
-let chaptersLoaded: Record<string, Chapter[]> | null = null;
-function useChapters(lang: 'el' | 'en'): Chapter[] {
-  const [data, setData] = useState(chaptersLoaded);
-  useEffect(() => {
-    if (data) return;
-    let alive = true;
-    const load = () => import('../data/chapters').then(m => { chaptersLoaded = m.CHAPTERS_DATA; if (alive) setData(m.CHAPTERS_DATA); }).catch(() => {});
-    // Once the page is shown and the phone is idle.
-    const idle = (window as any).requestIdleCallback as ((cb: () => void, o?: { timeout: number }) => number) | undefined;
-    const id = idle ? idle(load, { timeout: 2000 }) : window.setTimeout(load, 300);
-    return () => { alive = false; if (idle) (window as any).cancelIdleCallback?.(id); else clearTimeout(id); };
-  }, [data]);
-  return useMemo(() => data?.[lang]
-    || Object.entries(CHAPTER_TITLES[lang]).map(([n, title]) => ({ num: Number(n), title, theorySections: [] }) as unknown as Chapter),
-  [data, lang]);
-}
+// Where you stopped needs only each chapter's name and pages, not its text:
+// the outline (a few KB) instead of the whole book, which loads only on the
+// pages that show it (AGENTS.md, heavy data).
+const OUTLINE_CHAPTERS: Record<'el' | 'en', Chapter[]> = {
+  el: CHAPTER_OUTLINE.el.map(chapterFromOutline),
+  en: CHAPTER_OUTLINE.en.map(chapterFromOutline),
+};
 
 const footerLinkClasses = "sky-text flex items-center gap-1.5 min-h-[44px] text-[14px] text-ink/75 hover:text-ink transition-colors";
 const bookPillClasses = "whitespace-nowrap px-4 py-2 rounded-full border border-[var(--tint-sand-line)] bg-[var(--tint-sand-bg)] text-[12px] text-ink/65 hover:text-ink/80 hover:bg-white/[0.06] transition-colors";
@@ -94,7 +83,7 @@ export default function Dashboard() {
   const { progress } = useProgress();
 
   const lang = language === 'el' ? 'el' : 'en';
-  const chapters = useChapters(lang);
+  const chapters = OUTLINE_CHAPTERS[lang];
   // "Continue": where you stopped (the same answer the cat gives).
   const spot = readingSpot(chapters, progress.completedChapters, companionData.chapterProgress, companionData.lastChapter);
   const midChapter = spot.kind === 'resume' && spot.page > 0;

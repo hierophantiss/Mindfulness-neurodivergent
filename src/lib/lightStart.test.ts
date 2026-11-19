@@ -27,3 +27,10 @@ describe('a light start', () => {
     });
   }
 });
+
+describe('the home page', () => {
+  it('does not load the chapters’ text, not even after it shows (the outline is enough)', () => {
+    const src = fs.readFileSync(path.resolve('src/pages/Dashboard.tsx'), 'utf8');
+    expect(src).not.toMatch(/['"]\.\.\/data\/chapters['"]/);
+  });
+});
