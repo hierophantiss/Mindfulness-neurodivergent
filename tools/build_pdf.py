@@ -590,6 +590,16 @@ a.tocl::after {{ flex:0 0 auto; color:#2e7d80; font-weight:800;
      content: target-counter(attr(href), page); }}
 '''
 
+# ---------- the book's information (PDF metadata) ----------
+# The second edition's date, not the day of the build.
+EDITION_DATE = '2026'
+KEYWORDS = {
+    'el': ['Ενσυνειδητότητα', 'Νευροδιαφορετικότητα', 'ΔΕΠΥ', 'Αυτισμός', 'Τραύμα',
+           'Αυτορρύθμιση', 'Τετραπλός Άξονας', 'Σώμα', 'Αναπνοή', 'Προσοχή', 'Χώρος'],
+    'en': ['Mindfulness', 'Neurodiversity', 'ADHD', 'Autism', 'Trauma',
+           'Self-regulation', 'Fourfold Axis', 'Body', 'Breath', 'Attention', 'Space'],
+}
+
 # ---------- main ----------
 def main(src, out_pdf, cover_path):
     global SRC_DIR
@@ -635,7 +645,15 @@ def main(src, out_pdf, cover_path):
     if missing:
         print('  unbound toc entries:', len(missing), missing[:6])
 
-    doc = f'''<!doctype html><html lang="{lang}"><head><meta charset="utf-8">
+    # The PDF's own information (title, author, subject, keywords, date), which
+    # WeasyPrint takes from the head: what readers and search engines show.
+    subject = ' — '.join(x for x in (meta.get('subtitle', ''), meta.get('description', '')) if x)
+    head_meta = (f'<title>{html.escape(meta.get("title", ""))}</title>'
+                 f'<meta name="author" content="{html.escape(meta.get("author", ""))}">'
+                 f'<meta name="description" content="{html.escape(subject)}">'
+                 f'<meta name="keywords" content="{html.escape(", ".join(KEYWORDS[lang]))}">'
+                 f'<meta name="dcterms.created" content="{EDITION_DATE}">')
+    doc = f'''<!doctype html><html lang="{lang}"><head><meta charset="utf-8">{head_meta}
 <style>{css(L)}</style></head><body>
 <div class="hband"><span class="rt">{html.escape(L['running'])}</span></div>
 <div class="fband"><span class="fl">{html.escape(meta.get('author',''))}</span><span class="fr">CC BY-NC-ND 4.0</span></div>
@@ -645,7 +663,8 @@ def main(src, out_pdf, cover_path):
 </body></html>'''
     pathlib.Path(out_pdf.replace('.pdf','_debug.html')).write_text(doc, encoding='utf-8')
     from weasyprint import HTML
-    HTML(string=doc, base_url='.').write_pdf(out_pdf)
+    # PDF/UA-1: a tagged PDF that states its language, for screen readers.
+    HTML(string=doc, base_url='.').write_pdf(out_pdf, pdf_variant='pdf/ua-1')
     print('wrote', out_pdf)
 
 if __name__ == '__main__':

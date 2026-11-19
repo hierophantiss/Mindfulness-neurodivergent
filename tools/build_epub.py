@@ -49,6 +49,16 @@ code { font-family: monospace; font-size: .92em; }
 """
 
 
+# The same in both languages: the licence, with its address.
+RIGHTS = '© 2025–2026 · CC BY-NC-ND 4.0 · https://creativecommons.org/licenses/by-nc-nd/4.0/'
+SUBJECTS = {
+    'el': ['Ενσυνειδητότητα', 'Νευροδιαφορετικότητα', 'ΔΕΠΥ', 'Αυτισμός', 'Τραύμα',
+           'Αυτορρύθμιση', 'Τετραπλός Άξονας'],
+    'en': ['Mindfulness', 'Neurodiversity', 'ADHD', 'Autism', 'Trauma',
+           'Self-regulation', 'Fourfold Axis'],
+}
+
+
 def build(src, out, cover):
     src, out, cover = map(pathlib.Path, (src, out, cover))
     text = src.read_text(encoding='utf-8')
@@ -84,14 +94,21 @@ def build(src, out, cover):
         return m.group(1).strip() if m else ''
 
     title = pick('title', r'^#[ \t]+(.+)$')
-    subtitle = pick('subtitle', r'^\*\*([^*]+)\*\*$')
+    subtitle = pick('subtitle', r'^##[ \t]+(.+)$')
     author = pick('author', r'^\*\*([^*]+)\*\*$')
-    rights = front.get('rights') or 'CC BY-NC-ND 4.0'
+    description = pick('description', r'^\*([^*].+?)\*$')
+    # The edition's date (not the day of the build), and the same rights line in both languages.
+    date = front.get('date') or pick('edition', r'^(?:Έκδοση|Edition):.*?(\d{4})')
+    rights = RIGHTS
 
     q = lambda v: v.replace('"', "'")
+    subjects = ''.join(f'\n  - "{q(k)}"' for k in SUBJECTS[lang])
     meta = (f'---\ntitle: "{q(title)}"\nsubtitle: "{q(subtitle)}"\n'
             f'author: "{q(author)}"\nlang: {lang}\n'
+            f'date: "{q(date)}"\n'
             f'rights: "{q(rights)}"\n'
+            f'description: "{q(" — ".join(x for x in (subtitle, description) if x))}"\n'
+            f'subject:{subjects}\n'
             f'publisher: "neurodivergent-mindfulness.org"\n---\n\n')
 
     with tempfile.TemporaryDirectory() as tmp:
