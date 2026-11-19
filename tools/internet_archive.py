@@ -41,6 +41,7 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+COVER = ROOT / 'book' / 'img' / '00-cover.jpg'
 
 BOOK_ID = 'mindfulness-guide-neurodivergents-2nd-edition'
 AUDIO_ID = 'mindfulness-guide-neurodivergents-audiobook'
@@ -550,7 +551,12 @@ def main(argv=None):
             return 0
         words = {l: book_words(l) for l in LANGS}
         book, missing = book_files(a.book_dir, langs)
-        files = {'texts': book, 'audio': audio_files(a.audio_dir, langs)}
+        audio = audio_files(a.audio_dir, langs)
+        if audio and COVER.is_file():
+            # The book's cover as the audiobook's picture (archive.org shows
+            # __ia_thumb.jpg as an item's image).
+            audio['__ia_thumb.jpg'] = COVER
+        files = {'texts': book, 'audio': audio}
         rep.line(f'# Internet Archive: {a.mode}, languages {", ".join(langs)}')
         if acc:
             rep.line(f'Account: {acc["screenname"]} ({acc["itemname"]}), {mask_email(acc["email"])}')

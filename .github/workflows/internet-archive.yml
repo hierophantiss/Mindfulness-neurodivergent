@@ -15,7 +15,8 @@
 #   upload   creates or updates two items:
 #            book  (texts)  public/workbook_{el,en}.{pdf,epub}
 #            audio (audio)  the files of the release "audiobook" (per-chapter
-#                           MP3s, the whole book as MP3 and M4B)
+#                           MP3s, the whole book as MP3 and M4B), with the
+#                           book's cover as its picture
 #
 # An upload deletes nothing on archive.org: a file with the same name is
 # replaced, an unchanged file (same MD5) is not sent again, and the item's
