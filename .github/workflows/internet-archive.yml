@@ -1,0 +1,116 @@
+# Puts the book and the audiobook on the Internet Archive (archive.org), in the
+# author's account (https://archive.org/details/@hierophantis), with
+# tools/internet_archive.py.
+#
+# Run it by hand: Actions → Internet Archive → Run workflow.
+# Needs the repository secrets IA_ACCESS_KEY and IA_SECRET_KEY: the account's
+# S3 keys (https://archive.org/account/s3.php).
+#
+# Mode:
+#   list     the account's items (identifier, title, mediatype, date, files,
+#            licence), to tell which ones are the first edition; and whether
+#            the two identifiers below are free or already the account's
+#   dry-run  everything an upload would do (files, metadata), nothing sent;
+#            works before the keys exist
+#   upload   creates or updates two items:
+#            book  (texts)  public/workbook_{el,en}.{pdf,epub}
+#            audio (audio)  the files of the release "audiobook" (per-chapter
+#                           MP3s, the whole book as MP3 and M4B)
+#
+# An upload deletes nothing on archive.org: a file with the same name is
+# replaced, an unchanged file (same MD5) is not sent again, and the item's
+# metadata is updated. To update a first-edition item, give its identifier.
+
+name: Internet Archive
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'list = the account''s items · dry-run = what would be uploaded · upload'
+        type: choice
+        options: [list, dry-run, upload]
+        default: list
+      book_identifier:
+        description: 'The book''s item on archive.org (empty = mindfulness-guide-neurodivergents-2nd-edition)'
+        type: string
+        default: ''
+      audio_identifier:
+        description: 'The audiobook''s item on archive.org (empty = mindfulness-guide-neurodivergents-audiobook)'
+        type: string
+        default: ''
+      lang:
+        description: Language of the files
+        type: choice
+        options: [both, el, en]
+        default: both
+
+permissions:
+  contents: read
+
+concurrency:
+  group: internet-archive
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    env:
+      MODE: ${{ inputs.mode }}
+      LANGS: ${{ inputs.lang == 'both' && 'el,en' || inputs.lang }}
+      BOOK_ID: ${{ inputs.book_identifier }}
+      AUDIO_ID: ${{ inputs.audio_identifier }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Check the keys
+        if: inputs.mode != 'dry-run'
+        env:
+          IA_ACCESS_KEY: ${{ secrets.IA_ACCESS_KEY }}
+          IA_SECRET_KEY: ${{ secrets.IA_SECRET_KEY }}
+        run: |
+          if [ -z "$IA_ACCESS_KEY" ] || [ -z "$IA_SECRET_KEY" ]; then
+            echo "::error::Add the repository secrets IA_ACCESS_KEY and IA_SECRET_KEY first: the keys are at https://archive.org/account/s3.php (Settings → Secrets and variables → Actions)."
+            exit 1
+          fi
+
+      # Only the languages asked for; nothing if the release does not exist.
+      - name: The audiobook's files (release "audiobook")
+        if: inputs.mode != 'list'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          AUDIO_DIR="$RUNNER_TEMP/audiobook"
+          mkdir -p "$AUDIO_DIR"
+          if ! names=$(gh api "repos/$GH_REPO/releases/tags/audiobook" --jq '.assets[].name' 2>/dev/null); then
+            echo "::notice::No release \"audiobook\": only the book."
+            exit 0
+          fi
+          langs="${LANGS//,/|}"
+          wanted=$(printf '%s\n' "$names" | grep -E "^(($langs)-[0-9]{2}\.mp3|mindfulness-guide-($langs)\.(mp3|m4b))$" || true)
+          if [ -z "$wanted" ]; then
+            echo "::notice::The release \"audiobook\" has no files for: $LANGS"
+            exit 0
+          fi
+          args=()
+          while read -r n; do args+=(--pattern "$n"); done <<< "$wanted"
+          gh release download audiobook --dir "$AUDIO_DIR" --clobber "${args[@]}"
+          ls -l "$AUDIO_DIR"
+
+      - name: Python and the archive.org library
+        run: |
+          python3 -m venv "$RUNNER_TEMP/ia-venv"
+          "$RUNNER_TEMP/ia-venv/bin/pip" install --quiet --disable-pip-version-check "internetarchive==5.13.0"
+
+      - name: Internet Archive (${{ inputs.mode }})
+        env:
+          IA_ACCESS_KEY: ${{ secrets.IA_ACCESS_KEY }}
+          IA_SECRET_KEY: ${{ secrets.IA_SECRET_KEY }}
+        run: |
+          "$RUNNER_TEMP/ia-venv/bin/python" tools/internet_archive.py "$MODE" \
+            --book-id="$BOOK_ID" --audio-id="$AUDIO_ID" --langs="$LANGS" \
+            --audio-dir="$RUNNER_TEMP/audiobook" --summary="$GITHUB_STEP_SUMMARY"
