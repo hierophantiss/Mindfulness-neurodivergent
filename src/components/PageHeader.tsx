@@ -68,7 +68,7 @@ export function PageHeader({ title, eyebrow, eyebrowInTitle = false, lead, back,
           // The line above belongs to the heading (e.g. the book's name above "The book"):
           // both in the h1, looking exactly as the two separate lines.
           <h1 id={id} className="flex flex-col gap-2.5">
-            <span className={eyebrowClass}>{eyebrow}</span>
+            <span className={eyebrowClass}>{eyebrow}</span>{' '}
             <span className={titleClass}>{title}</span>
           </h1>
         ) : (
