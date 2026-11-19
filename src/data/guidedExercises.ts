@@ -164,14 +164,14 @@ export const GUIDED_EXERCISES: Record<string, GuidedExercise> = {
     color: 'amber',
     instructions: {
       el: [
-        "Κάθισε άνετα και κλείσε απαλά τα μάτια σου.",
+        "Κάθισε άνετα και κλείσε απαλά τα μάτια σου, αν θέλεις.",
         "Φέρε την προσοχή σου στα πέλματα των ποδιών σου. Νιώσε την επαφή τους με το έδαφος.",
         "Πάρε μια βαθιά ανάσα, και στην εκπνοή, άφησε το βάρος σου να πέσει προς τα κάτω.",
         "Μετακίνησε την προσοχή σου στα χέρια σου. Νιώσε τη θερμοκρασία και την υφή τους.",
         "Ολοκλήρωσε με μια απαλή, βαθιά εισπνοή, και όταν νιώσεις έτοιμος/η, άνοιξε τα μάτια."
       ],
       en: [
-        "Sit comfortably and gently close your eyes.",
+        "Sit comfortably and gently close your eyes if you like.",
         "Bring your attention to the soles of your feet. Feel their contact with the ground.",
         "Take a deep breath and on the exhale, let your weight drop downwards.",
         "Move your attention to your hands. Feel their temperature and texture.",

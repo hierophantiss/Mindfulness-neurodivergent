@@ -78,6 +78,8 @@ export default function Onboarding({ onClose }: { onClose: () => void }) {
     {
       title: t('onboarding.s2.title'),
       body: t('onboarding.s2.body'),
+      // Before the first practice: the book's note on when to stop.
+      note: t('onboarding.stop'),
       visual: (
         <div className="flex gap-3 mb-4 [@media(max-height:700px)]:hidden" aria-hidden="true">
           <div className="w-5 h-5 rounded-full" style={{ backgroundColor: 'var(--color-axis-body, #7A9E7E)' }} />
@@ -87,7 +89,7 @@ export default function Onboarding({ onClose }: { onClose: () => void }) {
         </div>
       )
     },
-  ];
+  ] as { title: string; body: string; note?: string; visual?: React.ReactNode }[];
   const last = step === screens.length - 1;
 
   
@@ -163,6 +165,11 @@ export default function Onboarding({ onClose }: { onClose: () => void }) {
             <p className={`text-ink/70 font-sans ${last ? 'text-[16px] leading-[1.6]' : 'text-lg md:text-xl leading-relaxed'}`}>
               {screens[step].body}
             </p>
+            {screens[step].note && (
+              <p className="mt-3 pt-3 border-t border-white/10 text-[14px] leading-[1.55] text-ink/75 font-sans">
+                {screens[step].note}
+              </p>
+            )}
           </motion.div>
         </AnimatePresence>
       </div>

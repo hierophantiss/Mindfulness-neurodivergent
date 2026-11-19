@@ -417,7 +417,7 @@ When a thought pulls at you, simply going back to the breath can be hard. **Labe
 
 ### Practice Exercise: Steadying the Lens
 
-- **Body & Breath:** Stand or sit comfortably. Close your eyes. Feel your body and the rhythm of your breath.
+- **Body & Breath:** Stand or sit comfortably. Close your eyes if you like. Feel your body and the rhythm of your breath.
 - **Steady point:** Open your eyes and choose a point of focus (visual, auditory or bodily).
 - **Fourfold awareness:** Keep your attention there, while staying aware of body, breath and thoughts.
 - **Gentle return:** If you drift, notice it (with a label if needed) and come back gently: body → breath → steady point.

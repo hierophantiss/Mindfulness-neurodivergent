@@ -9,6 +9,7 @@ import { prepareSound, ringBell } from '../lib/sound';
 import { EvidenceLine } from '../components/EvidenceLine';
 import { ConceptText } from '../components/ConceptInfoOverlay';
 import GuideAfterPractice from '../components/GuideAfterPractice';
+import { DriftNote } from '../components/DriftNote';
 import { MICRODOSES_EXERCISES, type MicrodoseExercise } from '../data/microdoses';
 import { GUIDED_EXERCISES as EXERCISES, type GuidedExercise } from '../data/guidedExercises';
 import type { Bilingual } from '../data/types-breath';
@@ -240,6 +241,9 @@ export default function GenericExercise() {
             })}
           </ol>
         )}
+
+        {/* Space practices: the book's way back if opening feels like drifting away (Chapter 4). */}
+        {exercise.axis === 'space' && <DriftNote lang={lang} className={cn('w-full mb-6', steps.length > 1 ? '' : 'mt-6')} />}
       </div>
     </div>
   );

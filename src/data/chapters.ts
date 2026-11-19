@@ -255,7 +255,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
       "exercise": {
         "title": "Steadying the Lens",
         "steps": [
-          "Body & Breath: Stand or sit comfortably. Close your eyes. Feel your body and the rhythm of your breath.",
+          "Body & Breath: Stand or sit comfortably. Close your eyes if you like. Feel your body and the rhythm of your breath.",
           "Steady point: Open your eyes and choose a point of focus (visual, auditory or bodily).",
           "Fourfold awareness: Keep your attention there, while staying aware of body, breath and thoughts.",
           "Gentle return: If you drift, notice it (with a label if needed) and come back gently: body → breath → steady point."
@@ -1168,7 +1168,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
       "exercise": {
         "title": "Σταθεροποίηση του Φακού",
         "steps": [
-          "Σώμα & Αναπνοή: Στάσου ή κάθισε με άνεση. Κλείσε τα μάτια. Νιώσε το σώμα σου και τον ρυθμό της αναπνοής.",
+          "Σώμα & Αναπνοή: Στάσου ή κάθισε με άνεση. Κλείσε τα μάτια, αν θέλεις. Νιώσε το σώμα σου και τον ρυθμό της αναπνοής.",
           "Σταθερό Σημείο: Άνοιξε τα μάτια και επίλεξε ένα σημείο εστίασης (οπτικό, ακουστικό ή σωματικό).",
           "Τετραπλή Επίγνωση: Κράτησε την προσοχή εκεί, διατηρώντας παράλληλα επίγνωση σώματος, αναπνοής και σκέψεων.",
           "Απαλή Επιστροφή: Αν παρασυρθείς, αναγνώρισέ το (με ταμπέλα αν χρειάζεται) και επέστρεψε απαλά: σώμα → αναπνοή → σταθερό σημείο."

@@ -22,6 +22,8 @@ export const translations: Record<string, Record<Language, string>> = {
   'onboarding.s2.body': { el: 'Ούτε να μείνεις ακίνητος/η. Αν ο διαλογισμός δεν σου βγήκε ως τώρα, εδώ ξεκινάς αλλιώς: από το σώμα. Τέσσερα απλά βήματα, με αυτή τη σειρά: Σώμα, Αναπνοή, Προσοχή, Χώρος.', en: 'Nor to stay still. If meditation hasn\'t worked for you before, this starts differently: with the body. Four simple steps, in this order: Body, Breath, Attention, Space.' },
   'onboarding.s3.title': { el: 'Τι να περιμένεις', en: 'What to expect' },
   'onboarding.s3.body': { el: 'Δωρεάν, χωρίς λογαριασμό, χωρίς διαφημίσεις. Όλα μένουν στη συσκευή σου. Δεν μετράμε σερί: λίγα δευτερόλεπτα αρκούν, και αν χάσεις μέρες δεν πειράζει. Δεν είναι θεραπεία και δεν την αντικαθιστά.', en: "Free, no account, no ads. Everything stays on your device. We don't count streaks: a few seconds are enough, and missing days is fine. It is not therapy and does not replace it." },
+  // The book's note before the first exercise (word for word): when to stop.
+  'onboarding.stop': { el: 'Αν κάποια στιγμή τα συναισθήματα σε πλημμυρίσουν, ή αν νιώσεις έντονη δυσφορία, σταμάτα την άσκηση, άνοιξε τα μάτια και νιώσε τα πέλματα στο έδαφος.', en: 'If at any point your emotions overwhelm you, or you feel intense discomfort, stop the exercise, open your eyes and feel your soles on the ground.' },
   'onboarding.next': { el: 'Επόμενο', en: 'Next' },
   'onboarding.skip': { el: 'Παράλειψη', en: 'Skip' },
 };
