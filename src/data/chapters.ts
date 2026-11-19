@@ -785,7 +785,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
       "hex": "#C8922A",
       "icon": "👣",
       "summary": "The full, sequential exercise of the Fourfold Axis, for a quiet moment. It works best in a quiet position, but the steps can be applied at any moment. The short version for inside the day is the Worksheet (Ch. 9); the version for inside the wave is the Pocket Card (Ch. 8).",
-      "tldr": "The full, seated exercise of the Fourfold Axis: earth, rhythm, point, field. And underneath it all, gentleness.",
+      "tldr": "The full, seated exercise of the Fourfold Axis: earth, breath, point, space. And underneath it all, gentleness.",
       "theorySections": [
         {
           "title": "The Stance Behind the Steps",
@@ -830,10 +830,10 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
           "Stage 1 — Earth: Sit comfortably. Feel the points of contact and let the weight sink.",
           "Stage 2 — Breath: Close or half-close your eyes. Feel the path of the air. Under tension, the 4-6 rhythm.",
           "Stage 3 — Focus: Open your eyes onto a quiet point in front of you. If thoughts come: recognise, label, return gently.",
-          "Stage 4 — Space: Soften your gaze. Feel body, breath and the space around you, all at once."
+          "Stage 4 — Space: Soften your gaze. Without moving your eyes, let your vision open: right, left, up, down. Feel body, breath, earth and sky, all at once."
         ]
       },
-      "insight": "Four stages, in order: earth, rhythm, point, field. And underneath it all, gentleness.",
+      "insight": "Four stages, in order: earth, breath, point, space. And underneath it all, gentleness.",
       "reflection": "Which stage feels most natural to me? Where do I struggle most?"
     },
     {
@@ -1573,7 +1573,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
         {
           "title": "Το Βαρόμετρο: Πριν από την Καταιγίδα",
           "paragraphs": [
-            "Κάθε κύμα προαναγγέλλεται· απλώς η αναγγελία είναι σιωπηλή. Ένα σαγόνι που σφίγγει. Ανάσα που ανεβαίνει ψηλά στο στήθος. Ενόχληση από ήχους που πριν από μία ώρα ανεχόσουν. Η ίδια πρόταση διαβασμένη τρεις φορές. Αυτές είναι οι ενδείξεις του <strong>βαρόμετρού</strong>{{interoception}} σου.",
+            "Κάθε κύμα προαναγγέλλεται· απλώς η αναγγελία είναι σιωπηλή. Ένα σαγόνι που σφίγγει. Ανάσα που ανεβαίνει ψηλά στο στήθος. Ενόχληση από ήχους που πριν από μία ώρα ανεχόσουν. Η ίδια πρόταση διαβασμένη τρεις φορές. Αυτές είναι οι ενδείξεις του <strong>βαρομέτρου</strong>{{interoception}} σου.",
             "Όσο νωρίτερα πιάσεις τον άνεμο, τόσο λιγότερη δύναμη χρειάζεται: στα πρώτα σήματα, μία μακριά εκπνοή ίσως αρκεί· στην κορυφή, χρειάζεται ολόκληρο το πρωτόκολλο. Μάθε τα δικά σου τρία πρώτα σημάδια. Ο αναστοχασμός στο τέλος του κεφαλαίου τα ζητά. Πάρε αυτή την ερώτηση ως έρευνα πεδίου για την εβδομάδα."
           ]
         },
@@ -1699,7 +1699,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
       "hex": "#C8922A",
       "icon": "👣",
       "summary": "Η πλήρης, διαδοχική άσκηση του Τετραπλού Άξονα, για ήσυχη στιγμή. Εκτελείται καλύτερα σε ήσυχη θέση, αλλά τα βήματα μπορούν να εφαρμοστούν οποιαδήποτε στιγμή. Η σύντομη εκδοχή για μέσα στη μέρα είναι το Φύλλο Εργασίας (Κεφ. 9)· η εκδοχή για μέσα στο κύμα είναι η Κάρτα της Τσέπης (Κεφ. 8).",
-      "tldr": "Η πλήρης, καθιστή άσκηση του Τετραπλού Άξονα: γη, ρυθμός, σημείο, πεδίο. Και από κάτω, σε όλα, η απαλότητα.",
+      "tldr": "Η πλήρης, καθιστή άσκηση του Τετραπλού Άξονα: γη, αναπνοή, σημείο, χώρος. Και από κάτω, σε όλα, η απαλότητα.",
       "theorySections": [
         {
           "title": "Η Στάση Πίσω από τα Βήματα",
@@ -1744,10 +1744,10 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
           "Στάδιο 1 — Γη: Κάθισε άνετα. Νιώσε τα σημεία επαφής και άφησε το βάρος να βυθιστεί.",
           "Στάδιο 2 — Αναπνοή: Κλείσε ή μισόκλεισε τα μάτια. Νιώσε τη διαδρομή του αέρα. Σε ένταση, ρυθμός 4-6.",
           "Στάδιο 3 — Εστίαση: Άνοιξε τα μάτια σε ένα ήσυχο σημείο μπροστά σου. Αν έρθουν σκέψεις: αναγνώρισε, ταμπέλα, επέστρεψε απαλά.",
-          "Στάδιο 4 — Χώρος: Μαλάκωσε το βλέμμα. Νιώσε ταυτόχρονα σώμα, αναπνοή και τον χώρο γύρω σου."
+          "Στάδιο 4 — Χώρος: Μαλάκωσε το βλέμμα. Χωρίς να κουνήσεις τα μάτια, άφησε την όραση να ανοίξει: δεξιά, αριστερά, πάνω, κάτω. Νιώσε ταυτόχρονα σώμα, αναπνοή, γη, ουρανό."
         ]
       },
-      "insight": "Τέσσερα στάδια, με σειρά: γη, ρυθμός, σημείο, πεδίο. Και από κάτω, σε όλα, η απαλότητα.",
+      "insight": "Τέσσερα στάδια, με σειρά: γη, αναπνοή, σημείο, χώρος. Και από κάτω, σε όλα, η απαλότητα.",
       "reflection": "Ποιο στάδιο μου φαίνεται πιο φυσικό; Πού δυσκολεύομαι περισσότερο;"
     },
     {

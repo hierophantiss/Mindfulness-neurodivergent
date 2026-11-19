@@ -76,10 +76,10 @@ const CHAPTER_CONCEPTS_MAP: Record<number, { id: string; labelEn: string; labelE
   ],
   2: [
     { id: 'corrigan_2010', labelEn: 'Corrigan (2011) • Window of Tolerance', labelEl: 'Μελέτη Corrigan (2011) • Παράθυρο Ανοχής', icon: '⚖️' },
-    { id: 'vagus_nerve', labelEn: 'Vagus Nerve Activation', labelEl: 'Ενεργοποίηση Πνευμονογαστρικού', icon: '⚡' },
+    { id: 'vagus_nerve', labelEn: 'Slow exhale and the vagus nerve', labelEl: 'Αργή εκπνοή και πνευμονογαστρικό', icon: '⚡' },
     { id: 'parasympathetic', labelEn: 'Parasympathetic Response', labelEl: 'Παρασυμπαθητικό Σύστημα', icon: '🌿' },
     { id: 'interoception', labelEn: 'Inner Touch', labelEl: 'Εσωτερική Αφή', icon: '🫁' },
-    { id: 'pattern_4261', labelEn: '4-2-6-1 Breath', labelEl: 'Αναπνοή 4-2-6-1', icon: '🌬️' }
+    { id: 'slow_exhale', labelEn: 'Slow Exhale', labelEl: 'Αργή Εκπνοή', icon: '🌬️' }
   ],
   3: [
     { id: 'farb_2007', labelEn: 'Farb (2007) • Neural Self-Reference', labelEl: 'Μελέτη Farb (2007) • Αυτοαναφορά', icon: '🔬' },
@@ -91,16 +91,15 @@ const CHAPTER_CONCEPTS_MAP: Record<number, { id: string; labelEn: string; labelE
     { id: 'davidson_2004', labelEn: 'Lutz (2004) • Gamma Synchrony', labelEl: 'Μελέτη Lutz (2004) • Κύματα Gamma', icon: '🔬' },
     { id: 'farb_2007', labelEn: 'Farb (2007) • Experiential Focus', labelEl: 'Μελέτη Farb (2007) • Βιωματική Εστίαση', icon: '🔬' },
     { id: 'open_awareness', labelEn: 'Open Awareness', labelEl: 'Ανοιχτή Επίγνωση', icon: '🌌' },
-    { id: 'sky_metaphor', labelEn: 'Dzogchen (Rigpa)', labelEl: 'Dzogchen (Ρίγκπα)', icon: '🪷' },
+    { id: 'sky_metaphor', labelEn: 'The Sky as a Pointer', labelEl: 'Ο Ουρανός ως Δείκτης', icon: '🪷' },
     { id: 'peripheral_vision', labelEn: 'Peripheral Gaze', labelEl: 'Περιφερειακή Όραση', icon: '👁️' }
   ],
   5: [
     { id: 'corrigan_2010', labelEn: 'Corrigan (2011) • Window of Tolerance', labelEl: 'Μελέτη Corrigan (2011) • Παράθυρο Ανοχής', icon: '⚖️' },
-    { id: 'brewer_2011', labelEn: 'Brewer (2011) • DMN & Mechanical Mind', labelEl: 'Μελέτη Brewer (2011) • DMN', icon: '🧠' },
     { id: 'kim_2025', labelEn: 'Kim (2025) • Adult ADHD', labelEl: 'Μελέτη Kim (2025) • ΔΕΠΥ', icon: '🔬' },
     { id: 'zylowska_2007', labelEn: 'ADHD Adaptation', labelEl: 'ΔΕΠΥ & Προσαρμογή', icon: '🔬' },
     { id: 'cearns_2022', labelEn: 'Habit & Adherence', labelEl: 'Μελέτη Cearns & Clark (2023) • Δόση', icon: '📊' },
-    { id: 'hyperfocus', labelEn: 'Hyperfocus Breakthrough', labelEl: 'Απελευθέρωση Hyperfocus', icon: '🧠' },
+    { id: 'hyperfocus', labelEn: 'Hyperfocus: a Source to Care For', labelEl: 'Υπερεστίαση: Πηγή που Θέλει Φροντίδα', icon: '🧠' },
     { id: 'amygdala', labelEn: 'Amygdala (No Self-Criticism)', labelEl: 'Αμυγδαλή (Όχι Αυτοκριτική)', icon: '🛡️' }
   ],
   6: [
@@ -114,18 +113,17 @@ const CHAPTER_CONCEPTS_MAP: Record<number, { id: string; labelEn: string; labelE
     { id: 'mechanical_mind', labelEn: 'Mechanical Mind', labelEl: 'Μηχανικός Νους', icon: '⚙️' },
     { id: 'self_criticism', labelEn: 'Self-Criticism', labelEl: 'Αυτοκριτική', icon: '🪞' },
     { id: 'kindness', labelEn: 'Kindness', labelEl: 'Καλοσύνη', icon: '🤍' },
-    { id: 'trauma', labelEn: 'Trauma-Informed', labelEl: 'Trauma-Informed', icon: '🛡️' }
+    { id: 'trauma', labelEn: 'Trauma-Informed', labelEl: 'Με Σεβασμό στο Τραύμα (trauma-informed)', icon: '🛡️' }
   ],
   8: [
     { id: 'polyvagal', labelEn: 'Porges (1995) • Polyvagal Theory', labelEl: 'Θεωρία Porges (1995) • Πολυβαγική', icon: '🛡️' },
-    { id: 'binaural_beats', labelEn: 'Lane (1998) • Binaural Beats', labelEl: 'Μελέτη Lane (1998) • Διωτικά Κύματα', icon: '🔬' },
     { id: 'sos', labelEn: 'Somatic Crisis Protocol', labelEl: 'Πρωτόκολλο Κρίσης SOS', icon: '🚨' },
     { id: 'vagus_nerve', labelEn: 'Slow Exhale Vagus', labelEl: 'Πνευμονογαστρική Εκπνοή', icon: '🌬️' },
-    { id: 'trauma', labelEn: 'Trauma-Informed Anchor', labelEl: 'Trauma-Informed Άγκυρα', icon: '🛡️' }
+    { id: 'trauma', labelEn: 'Trauma-Informed Anchor', labelEl: 'Άγκυρα με Σεβασμό στο Τραύμα', icon: '🛡️' }
   ],
   9: [
     { id: 'cearns_2022', labelEn: 'Dose & Practice Adherence', labelEl: 'Δόση & Τήρηση Πρακτικής', icon: '🔬' },
-    { id: 'sky_metaphor', labelEn: 'The Spacious Containment', labelEl: 'Ανοιχτός Χώρος', icon: '🌌' },
+    { id: 'sky_metaphor', labelEn: 'The Sky as a Pointer', labelEl: 'Ο Ουρανός ως Δείκτης', icon: '🌌' },
     { id: 'vagus_nerve', labelEn: 'Physiological Brake', labelEl: 'Φυσιολογικό Φρένο', icon: '⚡' }
   ],
   10: [
@@ -140,10 +138,10 @@ const CHAPTER_CONCEPTS_MAP: Record<number, { id: string; labelEn: string; labelE
     { id: 'cearns_2022', labelEn: 'Cearns & Clark (2023) • 280,000 Sessions', labelEl: 'Μελέτη Cearns & Clark (2023) • 280.000 Συνεδρίες', icon: '🔬' },
     { id: 'polyvagal', labelEn: 'Porges Vagal Safety Model', labelEl: 'Μοντέλο Vagal Porges (Πολυβαγική)', icon: '🛡️' },
     { id: 'davidson_2004', labelEn: 'Lutz (2004) • Gamma Synchrony', labelEl: 'Μελέτη Lutz (2004) • Κύματα Gamma', icon: '🔬' },
-    { id: 'binaural_beats', labelEn: 'Oster (1973) Brainwave Entrainment', labelEl: 'Μελέτη Oster (1973) • Διωτικά Κύματα', icon: '🔬' },
+    { id: 'binaural_beats', labelEn: 'Binaural Beats • Mixed Findings', labelEl: 'Διωτικά Κύματα • Ευρήματα Ανάμεικτα', icon: '🔬' },
     { id: 'vagus_nerve', labelEn: 'Vagal Regulation', labelEl: 'Πνευμονογαστρική Ρύθμιση', icon: '⚡' },
     { id: 'proprioception', labelEn: 'Proprioception', labelEl: 'Ιδιοδεκτικότητα', icon: '🧠' },
-    { id: 'sky_metaphor', labelEn: 'Dzogchen (Rigpa/Mahamudra)', labelEl: 'Dzogchen (Ρίγκπα/Μαχαμούντρα)', icon: '🪷' },
+    { id: 'sky_metaphor', labelEn: 'Dzogchen: the Open Space', labelEl: 'Ντζόγκτσεν: ο Ανοιχτός Χώρος', icon: '🪷' },
     { id: 'movement_vs_breathwork', labelEn: 'Somatic Movement (Tai Chi)', labelEl: 'Σωματική Κίνηση (Τάι Τσι)', icon: '🪷' }
   ]
 };
@@ -700,8 +698,8 @@ export default function ChapterDetail() {
                         </div>
                         <p className="text-[13px] text-ink/70 leading-relaxed font-sans max-w-2xl">
                           {language === 'el'
-                            ? 'Αυτή η άσκηση συνδέεται με κλινικές έρευνες, νευρολογικές εξηγήσεις και αρχαίες παραδόσεις. Επίλεξε μια πηγή για να δεις DOIs και περιλήψεις:'
-                            : 'This practice is backed by clinical studies, neurobiological evidence, and contemplative lineages. Select a reference to explore DOIs and research summaries:'}
+                            ? 'Από πού αντλεί αυτή η άσκηση: μελέτες για επιμέρους στοιχεία της, και οι παραδόσεις της. Καμία μελέτη δεν έχει εξετάσει τη μέθοδο ως σύνολο. Πάτησε μια πηγή:'
+                            : 'Where this practice draws from: studies of some of its parts, and its traditions. No study has tested the method as a whole. Tap a source:'}
                         </p>
                         <div className="flex flex-wrap gap-2 pt-2">
                           {CHAPTER_CONCEPTS_MAP[chapter.num].map((concept) => (

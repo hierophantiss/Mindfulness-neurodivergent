@@ -336,13 +336,13 @@ export const KNOWLEDGE_CONCEPTS: Record<string, Concept> = {
     el: {
       title: 'Η Μεταφορά του Ουρανού',
       short: 'Εσύ δεν είσαι τα σύννεφα — είσαι ο ουρανός που τα χωράει.',
-      full: 'Ο ουρανός δεν πιέζεται από τα σύννεφα, δεν αντιδρά, δεν κρίνει. Απλά τα χωράει. Σκέψεις, συναισθήματα, αισθήσεις εμφανίζονται και εξαφανίζονται. Εσύ μένεις. Αυτό δεν είναι ποιητική εικόνα — είναι η εμπειρία του 4ου άξονα. Στη Dzogchen παράδοση λέγεται Rigpa: η φυσική κατάσταση ανοιχτής επίγνωσης.',
+      full: 'Ο ουρανός δεν πιέζεται από τα σύννεφα, δεν αντιδρά, δεν κρίνει. Απλά τα χωράει. Σκέψεις, συναισθήματα, αισθήσεις εμφανίζονται και εξαφανίζονται. Εσύ μένεις. Ο ουρανός εδώ είναι δείκτης, όχι προορισμός, σαν το δάχτυλο που δείχνει το φεγγάρι: δεν τον ζωγραφίζεις με τη φαντασία, νιώθεις τον πραγματικό χώρο γύρω σου, τώρα. Παραδόσεις όπως το Ντζόγκτσεν μιλούν για την αναγνώριση του «ανοιχτού χώρου» της συνείδησης, στον οποίο σκέψεις και συναισθήματα εμφανίζονται και εξαφανίζονται χωρίς να μας περιορίζουν.',
       ndNote: 'Αυτή η μεταφορά αλλάζει τη σχέση σου με τα ερεθίσματα. Αντί «πρέπει να τα σταματήσω», γίνεται «μπορώ να τα χωρέσω». Σε πολλούς νευροδιαφορετικούς αυτή η αλλαγή βοηθά.'
     },
     en: {
       title: 'The Sky Metaphor',
       short: 'You are not the clouds — you are the sky that holds them.',
-      full: 'The sky is not burdened by clouds, does not react, does not judge. It simply holds them. Thoughts, emotions, sensations appear and disappear. You remain. This is not a poetic image — it\'s the experience of the 4th axis. In the Dzogchen tradition this is called Rigpa: the natural state of open awareness.',
+      full: 'The sky is not burdened by clouds, does not react, does not judge. It simply holds them. Thoughts, emotions, sensations appear and disappear. You remain. The sky here is a pointer, not a destination, like the finger pointing at the moon: you do not paint it in your imagination, you feel the real space around you, now. Traditions such as Dzogchen speak of recognising the “open space” of consciousness, in which thoughts and emotions appear and disappear without confining us.',
       ndNote: 'This metaphor changes your relationship with stimuli. Instead of “I must stop them,” it becomes “I can hold them.” For many neurodivergent people this shift helps.'
     },
     axis: 'space',

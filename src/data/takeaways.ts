@@ -9,7 +9,7 @@ export const CHAPTER_TAKEAWAYS: Record<string, Record<number, string[]>> = {
     7: ['Δεν περιμένεις το «θέλω» — ξεκινάς από τη βαρύτητα{{gravity}} και ένα βήμα.', 'Η πρόθεση μένει στην άκρη του μυαλού· η προσοχή κάνει το επόμενο βήμα.', 'Κρατάς την πράξη, αφήνεις την έκβαση.'],
     8: ['Πιάσε τον άνεμο νωρίς: στα πρώτα σήματα, μία μακριά εκπνοή ίσως αρκεί.', 'Μέσα στο κύμα: γείωση, μακριά εκπνοή, ταμπέλα, άνοιγμα.', 'Μετά το κύμα, καλοσύνη{{kindness}}: πέρασε καιρός, κι εσύ κράτησες το σκάφος.'],
     9: ['Τέσσερα κέντρα, τέσσερις ερωτήσεις.', 'Δεν χρειάζεται να τα κάνεις όλα· ένα, καλά, αρκεί.', 'Στόχος: να επιστρέφεις στο «τώρα» σε λίγα δευτερόλεπτα.'],
-    10: ['Τέσσερα στάδια με σειρά: γη, ρυθμός, σημείο, πεδίο.', 'Η απαλότητα δεν είναι προαιρετική· είναι η ίδια η μέθοδος.', 'Κάθε επιστροφή χωρίς κριτική είναι καλοσύνη{{kindness}} στην πράξη.'],
+    10: ['Τέσσερα στάδια με σειρά: γη, αναπνοή, σημείο, χώρος.', 'Η απαλότητα δεν είναι προαιρετική· είναι η ίδια η μέθοδος.', 'Κάθε επιστροφή χωρίς κριτική είναι καλοσύνη{{kindness}} στην πράξη.'],
     11: ['Πρώτα ρυθμίζεται το νευρικό σύστημα, μετά έρχεται η παρατήρηση.', 'Ο εγκέφαλος αλλάζει με την επανάληψη{{neuroplasticity}}.', 'Η μέθοδος δεν ζητά να πιστέψεις τίποτα· ζητά να δοκιμάσεις και να παρατηρήσεις.']
   },
   en: {
@@ -22,7 +22,7 @@ export const CHAPTER_TAKEAWAYS: Record<string, Record<number, string[]>> = {
     7: ['You don\'t wait for the \'want\' — you start from gravity{{gravity}} and one step.', 'Intention stays at the edge of the mind; attention takes the next step.', 'Keep the act, let go of the outcome.'],
     8: ['Catch the wind early: at the first signals, one long exhale may be enough.', 'Inside the wave: grounding, long exhale, label, opening.', 'After the wave, kindness{{kindness}}: weather passed through, and you kept the boat.'],
     9: ['Four centres, four questions.', 'You do not need to do them all; one, done well, is enough.', 'Goal: to come back to "now" within a few seconds.'],
-    10: ['Four stages, in order: earth, rhythm, point, field.', 'Gentleness is not optional; it is the method itself.', 'Every return without criticism is kindness{{kindness}} in action.'],
+    10: ['Four stages, in order: earth, breath, point, space.', 'Gentleness is not optional; it is the method itself.', 'Every return without criticism is kindness{{kindness}} in action.'],
     11: ['First the nervous system is regulated, then observation comes.', 'The brain changes with repetition{{neuroplasticity}}.', 'The method does not ask you to believe anything; it asks you to try and to observe.']
   }
 };

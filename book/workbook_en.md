@@ -958,7 +958,7 @@ We saw why in Chapter 5: intense self-criticism appears to activate the same thr
 
 **Reflection:** Which stage feels most natural to me? Where do I struggle most?
 
-> ★ **Key Point:** Four stages, in order: earth, rhythm, point, field. And underneath it all, gentleness.
+> ★ **Key Point:** Four stages, in order: earth, breath, point, space. And underneath it all, gentleness.
 
 ---
 

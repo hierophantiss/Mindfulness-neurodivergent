@@ -47,8 +47,8 @@ export const AFFIRMATIONS: Affirmation[] = [
     el: 'Δεν χρειάζεται να τα κάνεις όλα. Ένα, καλά, αρκεί.',
     en: 'You do not need to do them all. One, done well, is enough.' },
   // Chapter 10
-  { el: 'Γη, ρυθμός, σημείο, πεδίο. Και από κάτω, σε όλα, η απαλότητα.',
-    en: 'Earth, rhythm, point, field. And underneath it all, gentleness.' },
+  { el: 'Γη, αναπνοή, σημείο, χώρος. Και από κάτω, σε όλα, η απαλότητα.',
+    en: 'Earth, breath, point, space. And underneath it all, gentleness.' },
   // Chapter 11
   { el: 'Η μέθοδος δεν ζητά να πιστέψεις τίποτα· ζητά να δοκιμάσεις και να παρατηρήσεις.',
     en: 'The method does not ask you to believe anything; it asks you to try and to observe.' },

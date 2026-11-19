@@ -16,8 +16,8 @@ export const CHAPTER_OBJECTIVES: Record<number, { el: string[]; en: string[] }> 
     en: [
       'You can find grounding through gravity (soles, weight, axis) within seconds, wherever you are.',
       'You can combine grounding with awareness of the space around you, so the body gets permission to release its grip.',
-      'You can tell the Mechanical Mind from the Open Mind and recognize when analysis is not useful.',
-      'You can practice persistence in gentleness: posture and tension change over time, and rushing is not part of the method.',
+      'You can tell the Mechanical Mind from the Open Mind and recognise when analysis is not useful.',
+      'You can practise persistence in gentleness: posture and tension change over time, and rushing is not part of the method.',
     ],
   },
   // Κεφ.2 Αναπνοή — Μαθαίνεις να παρατηρείς χωρίς να επεμβαίνεις, να διαβάζεις τα
@@ -46,9 +46,9 @@ export const CHAPTER_OBJECTIVES: Record<number, { el: string[]; en: string[] }> 
       'Μπορείς να αντιμετωπίζεις κάθε απαλή επιστροφή ως την ίδια την άσκηση, όχι ως διόρθωση αποτυχίας.',
     ],
     en: [
-      'You can recognize the four forms of attention and name where yours is.',
-      'You can spot the "If-only" and "Should" loops and exit by recognition and a label, not by analysis.',
-      'You can hold quadruple awareness (body, breath, attention, thoughts) while focusing on a steady point.',
+      'You can recognise the four forms of attention and name where yours is.',
+      'You can spot the "Otherwise" and "Should" loops and exit by recognition and a label, not by analysis.',
+      'You can hold fourfold attention (body, breath, attention, thoughts) while focusing on a steady point.',
       'You can treat each gentle return as the practice itself, not as a correction of failure.',
     ],
   },
@@ -62,9 +62,9 @@ export const CHAPTER_OBJECTIVES: Record<number, { el: string[]; en: string[] }> 
       'Μπορείς να εφαρμόζεις τον χρυσό κανόνα: άνοιγμα μόνο πάνω σε γειωμένο σώμα· αν νιώσεις αποσύνδεση, επιστρέφεις στη γη.',
     ],
     en: [
-      'You can tell attention (the point) from awareness (the field) and shift the center from self-centered to space-centered.',
-      'You can open the periphery with the objectless question ("the space between the eyes"), keeping the gravity axis as center.',
-      'You can recognize meta-awareness ("ah, I was lost") as something that arises on its own, and practice short moments, many times.',
+      'You can tell attention (the point) from awareness (the field) and shift the centre from the egocentric to the spacecentric.',
+      'You can open the periphery with the objectless question ("the space between the eyes"), keeping the gravity axis as centre.',
+      'You can recognise meta-awareness ("ah, I was lost") as something that arises on its own, and practise short moments, many times.',
       'You can apply the golden rule: opening only on a grounded body; if you feel disconnected, return to the earth.',
     ],
   },
@@ -78,10 +78,10 @@ export const CHAPTER_OBJECTIVES: Record<number, { el: string[]; en: string[] }> 
       'Μπορείς να αναγνωρίζεις την αυτοκριτική ως απόηχο και να απαντάς με καλοσύνη, όπως θα μιλούσες σε έναν φίλο που δυσκολεύεται.',
     ],
     en: [
-      'You can tell a racing mind from a locked mind and pick the matching tool (Body+Breath or Body+Space).',
-      'You can recognize defense as the underlying setting that selects your thoughts, and lower it with safety signals and time, not arguments.',
+      'You can tell a racing mind from a locked-in mind and pick the matching tool (Body+Breath or Body+Space).',
+      'You can recognise defence as the underlying setting that selects your thoughts, and lower it with safety signals and time, not arguments.',
       'You can see masking as a function, not an identity, and find spaces where you can loosen it safely.',
-      'You can recognize self-criticism as an echo and respond with kindness, as you would to a friend who is struggling.',
+      'You can recognise self-criticism as an echo and respond with kindness, as you would to a friend who is struggling.',
     ],
   },
   // Κεφ.6 Καθημερινή Ζωή — Μαθαίνεις την «επαφή» αντί για ενθύμηση, αμφίδρομη ρύθμιση
@@ -97,7 +97,7 @@ export const CHAPTER_OBJECTIVES: Record<number, { el: string[]; en: string[] }> 
       'You can carry the practice into daily life as "contact": a thin thread to soles, breath and space, running under whatever you do.',
       'You can regulate down or up as the state requires (tension→grounding/exhale; shutdown→gentle activation: swaying, humming, gaze to the horizon).',
       'You can use thresholds (doors, end of a call, closing the laptop) as three seconds of contact before each transition.',
-      'You can build your "harbor": light, sound, textures and decompression time, as maintenance of the boat, not a luxury.',
+      'You can build your "harbour": light, sound, textures and decompression time, as maintenance of the boat, not a luxury.',
     ],
   },
   // Κεφ.7 Ο Νέος Οδηγός — Μαθαίνεις να ξεκινάς χωρίς πίεση/διάθεση: κάρτα εκκίνησης,
@@ -120,13 +120,13 @@ export const CHAPTER_OBJECTIVES: Record<number, { el: string[]; en: string[] }> 
   // Κάρτα της Τσέπης, τι να μην κάνεις μέσα στο κύμα, και τη φροντίδα μετά.
   8: {
     el: [
-      'Μπορείς να αναγνωρίζεις τα τρία πρώτα σημάδια του βαρόμετρου σου και να πιάνεις τον άνεμο νωρίς, πριν χρειαστεί ολόκληρο το πρωτόκολλο.',
+      'Μπορείς να αναγνωρίζεις τα τρία πρώτα σημάδια του βαρομέτρου σου και να πιάνεις τον άνεμο νωρίς, πριν χρειαστεί ολόκληρο το πρωτόκολλο.',
       'Μπορείς να εφαρμόζεις την Κάρτα της Τσέπης (Γείωση → Μακριά Εκπνοή → Ταμπέλα → Άνοιγμα) και τα δύο πρωτόκολλα μέσα στο κύμα.',
       'Μπορείς να αποφεύγεις ό,τι τροφοδοτεί το κύμα (ανάλυση εν μέσω, βίαιες εισπνοές, καταπίεση των αυτορρυθμιστικών κινήσεων) και να μην απαιτείς ηρεμία ως απόδειξη επιτυχίας.',
       'Μπορείς να φροντίζεις το «μετά το κύμα» (νερό, φαγητό, ξεκούραση, καμία ανάλυση για λίγες ώρες, καλοσύνη) και να σταματάς το άνοιγμα αν νιώσεις αποσύνδεση.',
     ],
     en: [
-      'You can recognize your barometer\'s three first signs and catch the wind early, before the whole protocol is needed.',
+      'You can recognise your barometer\'s three first signs and catch the wind early, before the whole protocol is needed.',
       'You can apply the Pocket Card (Grounding → Long Exhale → Label → Opening) and the two protocols inside the wave.',
       'You can avoid what feeds the wave (mid-wave analysis, forced inhales, holding back your self-soothing movements) and not demand calm as proof of success.',
       'You can care for the "after the wave" (water, food, rest, no analysis for a few hours, kindness) and stop the opening if you feel disconnected.',
@@ -141,8 +141,8 @@ export const CHAPTER_OBJECTIVES: Record<number, { el: string[]; en: string[] }> 
       'Μπορείς να επιστρέφεις στο «τώρα» σε λίγα δευτερόλεπτα, χρησιμοποιώντας το φύλλο ως γέφυρα και όχι ως εξέταση.',
     ],
     en: [
-      'You can fill the Worksheet as a short practice inside the day: observation, tool, and one question per center.',
-      'You can pick a single center when not all are needed, and do it well.',
+      'You can fill the Worksheet as a short practice inside the day: observation, tool, and one question per centre.',
+      'You can pick a single centre when not all are needed, and do it well.',
       'You can return to "now" within seconds, using the sheet as a bridge, not an exam.',
     ],
   },
@@ -157,8 +157,8 @@ export const CHAPTER_OBJECTIVES: Record<number, { el: string[]; en: string[] }> 
     ],
     en: [
       'You can run the four stages in order (Earth → Breath → Point → Space) in a quiet moment, and apply them partly at any time.',
-      'You can hold gentleness as the method itself: each return without judgment is kindness practiced, not an idea.',
-      'You can adjust duration and conditions without losing the sequence, and recognize which stage feels natural and where you struggle.',
+      'You can hold gentleness as the method itself: each return without judgement is kindness practised, not an idea.',
+      'You can adjust duration and conditions without losing the sequence, and recognise which stage feels natural and where you struggle.',
       'You can tell the three versions of the practice apart: Pocket Card (inside the wave), Worksheet (inside the day), Four Stages (quiet moment).',
     ],
   },
@@ -174,7 +174,7 @@ export const CHAPTER_OBJECTIVES: Record<number, { el: string[]; en: string[] }> 
     en: [
       'You can explain the bottom-up logic: first regulation of the nervous system, then observation — and why this order matters for the neurodivergent mind.',
       'You can tell what rests on controlled research, what is clinical observation, and what is traditional description, holding each claim\'s limits.',
-      'You can recognize the method\'s sources (Four Foundations, Dzogchen, Sufism, Tai Chi) and the difference between practice transmission and religious bond, with no belief required.',
+      'You can recognise the method\'s sources (Four Foundations, Dzogchen, Sufism, Tai Chi) and the difference between practice transmission and religious bond, with no belief required.',
       'You can hold the method\'s stance: it asks you to believe nothing; it asks you to test and observe.',
     ],
   },
