@@ -128,11 +128,15 @@ export function websiteNode(lang: Lang) {
   };
 }
 
+/** The book and the audiobook on the Internet Archive (19/11/2026), both languages in each. */
+export const ARCHIVE_BOOK_URL = 'https://archive.org/details/mindfulness-guide-neurodivergents-2nd-edition';
+export const ARCHIVE_AUDIOBOOK_URL = 'https://archive.org/details/mindfulness-guide-neurodivergents-audiobook';
+
 const BOOK_FILES = (['el', 'en'] as const).flatMap(l => [
   { '@type': 'Book', name: BOOK_NAME[l], inLanguage: l, bookFormat: 'https://schema.org/EBook', encodingFormat: 'application/pdf', url: `${SITE_URL}/workbook_${l}.pdf`, isAccessibleForFree: true },
   { '@type': 'Book', name: BOOK_NAME[l], inLanguage: l, bookFormat: 'https://schema.org/EBook', encodingFormat: 'application/epub+zip', url: `${SITE_URL}/workbook_${l}.epub`, isAccessibleForFree: true },
   // The whole guide as an audiobook (Gacrux in Greek, Sulafat in English).
-  { '@type': 'Audiobook', name: BOOK_NAME[l], inLanguage: l, encodingFormat: 'audio/mpeg', contentUrl: `${SITE_URL}/audio/mindfulness-guide-${l}.mp3`, duration: l === 'el' ? 'PT2H27M' : 'PT2H11M', isAccessibleForFree: true },
+  { '@type': 'Audiobook', name: BOOK_NAME[l], inLanguage: l, encodingFormat: 'audio/mpeg', contentUrl: `${SITE_URL}/audio/mindfulness-guide-${l}.mp3`, duration: l === 'el' ? 'PT2H27M' : 'PT2H11M', isAccessibleForFree: true, sameAs: ARCHIVE_AUDIOBOOK_URL },
 ]);
 
 export function bookNode(lang: Lang) {
@@ -148,6 +152,7 @@ export function bookNode(lang: Lang) {
     license: LICENSE_URL,
     isAccessibleForFree: true,
     url: `${SITE_URL}/${lang}/chapters`,
+    sameAs: [ARCHIVE_BOOK_URL, ARCHIVE_AUDIOBOOK_URL],
     workExample: BOOK_FILES,
     hasPart: CHAPTERS_DATA[lang].map(c => ({
       '@type': 'Chapter',

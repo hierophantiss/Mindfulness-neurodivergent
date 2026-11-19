@@ -13,7 +13,7 @@ import { T as PRIVACY } from '../src/data/pages/privacy';
 import { CHAPTERS_DATA } from '../src/data/chapters';
 import { METHODOLOGY_DATA } from '../src/data/methodology';
 import { SITE_URL, SITE_NAME, BOOK_NAME, AUTHOR_NAME } from '../src/seo/head';
-import { routeMeta, LICENSE_URL } from './seo-meta';
+import { routeMeta, LICENSE_URL, ARCHIVE_BOOK_URL, ARCHIVE_AUDIOBOOK_URL } from './seo-meta';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.join(ROOT, 'dist');
@@ -65,10 +65,14 @@ function about(lang: L): string[] {
   ].filter(Boolean);
 }
 
-const files = (['en', 'el'] as const).flatMap(l => [
-  `- [${BOOK_NAME[l]} (PDF)](${SITE_URL}/workbook_${l}.pdf)`,
-  `- [${BOOK_NAME[l]} (EPUB)](${SITE_URL}/workbook_${l}.epub)`,
-]);
+const files = [
+  ...(['en', 'el'] as const).flatMap(l => [
+    `- [${BOOK_NAME[l]} (PDF)](${SITE_URL}/workbook_${l}.pdf)`,
+    `- [${BOOK_NAME[l]} (EPUB)](${SITE_URL}/workbook_${l}.epub)`,
+  ]),
+  `- [The book on the Internet Archive / Το βιβλίο στο Internet Archive](${ARCHIVE_BOOK_URL})`,
+  `- [The audiobook on the Internet Archive / Το ακουστικό βιβλίο στο Internet Archive](${ARCHIVE_AUDIOBOOK_URL})`,
+];
 
 const llms = `# ${SITE_NAME.en} / ${SITE_NAME.el}
 
