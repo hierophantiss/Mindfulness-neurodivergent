@@ -61,20 +61,21 @@ function CategoryCard({ id, onOpen, figure, conceptId, title, desc, glow, shape 
 }
 
 
-function PatternCard({ p, colorScheme, icon: Icon, onClick, language, hideCycle = false }: { 
+function PatternCard({ p, colorScheme, icon: Icon, to, language, hideCycle = false }: { 
   p: BreathPattern, 
   colorScheme: 'indigo' | 'orange', 
   icon: any, 
-  onClick: () => void,
+  /** Where the card leads: a real link, so every practice has one. */
+  to: string,
   language: 'en' | 'el',
   hideCycle?: boolean
 }) {
   const isIndigo = colorScheme === 'indigo';
   
   return (
-    <button type="button"
+    <Link
+      to={to}
       id={`pattern-${p.id}`}
-      onClick={onClick}
       className={cn(
         "w-full group relative border p-6 text-left transition-all duration-300 overflow-hidden flex flex-col active:scale-[0.98] hover:-translate-y-0.5 scroll-mt-4",
         "glass-card hover:border-white/10",
@@ -123,7 +124,7 @@ function PatternCard({ p, colorScheme, icon: Icon, onClick, language, hideCycle 
           )}
         </div>
       </div>
-    </button>
+    </Link>
   );
 }
 
@@ -291,7 +292,7 @@ const axisInfo = {
                     p={p}
                     colorScheme={activeAxis === 'body' ? 'orange' : 'indigo'}
                     icon={Compass}
-                    onClick={() => navigate(`/practice/breath/${p.id}`)}
+                    to={`/practice/breath/${p.id}`}
                     language={language}
                   />
                 ))}
@@ -385,7 +386,7 @@ const axisInfo = {
                   p={p}
                   colorScheme="indigo"
                   icon={Volume2}
-                  onClick={() => navigate(`/practice/breath/${p.id}`)}
+                  to={`/practice/breath/${p.id}`}
                   language={language}
                 />
               ))}
@@ -461,7 +462,7 @@ const axisInfo = {
                   p={p}
                   colorScheme="orange"
                   icon={Wind}
-                  onClick={() => navigate(`/practice/breath/${p.id}`)}
+                  to={`/practice/breath/${p.id}`}
                   language={language}
                 />
               ))}
@@ -598,7 +599,7 @@ const axisInfo = {
                         p={p}
                         colorScheme="indigo"
                         icon={Activity}
-                        onClick={() => navigate(`/practice/breath/${p.id}`)}
+                        to={`/practice/breath/${p.id}`}
                         language={language}
                       />
                     ))}
@@ -606,7 +607,7 @@ const axisInfo = {
                       p={swayingCard}
                       colorScheme="indigo"
                       icon={Activity}
-                      onClick={() => navigate('/practice/swaying')}
+                      to="/practice/swaying"
                       language={language}
                       hideCycle
                     />
@@ -636,7 +637,7 @@ const axisInfo = {
                         p={p}
                         colorScheme="indigo"
                         icon={Compass}
-                        onClick={() => navigate(`/practice/breath/${p.id}`)}
+                        to={`/practice/breath/${p.id}`}
                         language={language}
                         hideCycle
                       />
