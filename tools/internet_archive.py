@@ -519,9 +519,50 @@ def do_items(sess, acc, ids, files, words, rep, send):
     return not failed
 
 
+# Plain text, not an HTML attribute: archive.org may clean a description's HTML.
+NEWER_MARK = 'Newer edition (2nd, 2026)'
+
+
+def newer_note(ids):
+    """The note put at the top of an older item: where the current edition is."""
+    book, audio = item_url(ids['texts']), item_url(ids['audio'])
+    return (f'<p><b>Νεότερη έκδοση (2η, 2026) / {NEWER_MARK}:</b> '
+            f'<a href="{book}">{book}</a><br />'
+            f'Ακουστικό βιβλίο / Audiobook: <a href="{audio}">{audio}</a></p>')
+
+
+def do_point_old(sess, acc, ids, old_ids, rep):
+    """Puts a note at the top of each older item's description, pointing to the
+    current items. Changes nothing else; an item that already has it is skipped."""
+    rep.line('\n## Older items: a note pointing to the new edition')
+    for name in ('texts', 'audio'):
+        if not get_item(sess, ids[name]).exists:
+            rep.line(f'::error::{ids[name]} does not exist yet: upload first.')
+            return False
+    ok = True
+    for ident in old_ids:
+        item = get_item(sess, ident)
+        if not item.exists:
+            rep.line(f'::error::{ident}: no such item.')
+            ok = False
+            continue
+        if _owner(item, acc) is not True:
+            rep.line(f'::error::{ident} is not this account\'s item; left alone.')
+            ok = False
+            continue
+        current = str((item.metadata or {}).get('description', ''))
+        if NEWER_MARK in current:
+            rep.line(f'{ident}: already points to the new edition.')
+            continue
+        set_metadata(item, {'description': newer_note(ids) + current})
+        rep.line(f'{ident}: note added ({item_url(ident)})')
+    return ok
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split('\n\n')[0])
-    ap.add_argument('mode', choices=['list', 'dry-run', 'upload'])
+    ap.add_argument('mode', choices=['list', 'dry-run', 'upload', 'point-old'])
+    ap.add_argument('--old-ids', default='', help='point-old: older items, comma-separated')
     ap.add_argument('--book-id', default='')
     ap.add_argument('--audio-id', default='')
     ap.add_argument('--langs', default='el,en', help='el, en or el,en')
@@ -549,6 +590,14 @@ def main(argv=None):
         if a.mode == 'list':
             do_list(sess, acc, ids, rep)
             return 0
+        if a.mode == 'point-old':
+            try:
+                old_ids = [check_identifier(x) for x in re.split(r'[,\s]+', a.old_ids) if x]
+            except ValueError as e:
+                sys.exit(str(e))
+            if not old_ids:
+                sys.exit('point-old: give the older items with --old-ids.')
+            return 0 if do_point_old(sess, acc, ids, old_ids, rep) else 1
         words = {l: book_words(l) for l in LANGS}
         book, missing = book_files(a.book_dir, langs)
         audio = audio_files(a.audio_dir, langs)

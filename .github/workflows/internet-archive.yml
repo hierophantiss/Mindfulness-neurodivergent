@@ -12,6 +12,8 @@
 #            the two identifiers below are free or already the account's
 #   dry-run  everything an upload would do (files, metadata), nothing sent;
 #            works before the keys exist
+#   point-old  a note at the top of older items' descriptions (input
+#            old_identifiers) pointing to the two items; nothing else changes
 #   upload   creates or updates two items:
 #            book  (texts)  public/workbook_{el,en}.{pdf,epub}
 #            audio (audio)  the files of the release "audiobook" (per-chapter
@@ -30,7 +32,7 @@ on:
       mode:
         description: 'list = the account''s items · dry-run = what would be uploaded · upload'
         type: choice
-        options: [list, dry-run, upload]
+        options: [list, dry-run, upload, point-old]
         default: list
       book_identifier:
         description: 'The book''s item on archive.org (empty = mindfulness-guide-neurodivergents-2nd-edition)'
@@ -38,6 +40,10 @@ on:
         default: ''
       audio_identifier:
         description: 'The audiobook''s item on archive.org (empty = mindfulness-guide-neurodivergents-audiobook)'
+        type: string
+        default: ''
+      old_identifiers:
+        description: 'point-old: older items (comma-separated) that get a note pointing to the new edition'
         type: string
         default: ''
       lang:
@@ -62,6 +68,7 @@ jobs:
       LANGS: ${{ inputs.lang == 'both' && 'el,en' || inputs.lang }}
       BOOK_ID: ${{ inputs.book_identifier }}
       AUDIO_ID: ${{ inputs.audio_identifier }}
+      OLD_IDS: ${{ inputs.old_identifiers }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -80,7 +87,7 @@ jobs:
 
       # Only the languages asked for; nothing if the release does not exist.
       - name: The audiobook's files (release "audiobook")
-        if: inputs.mode != 'list'
+        if: inputs.mode == 'dry-run' || inputs.mode == 'upload'
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
@@ -114,4 +121,4 @@ jobs:
         run: |
           "$RUNNER_TEMP/ia-venv/bin/python" tools/internet_archive.py "$MODE" \
             --book-id="$BOOK_ID" --audio-id="$AUDIO_ID" --langs="$LANGS" \
-            --audio-dir="$RUNNER_TEMP/audiobook" --summary="$GITHUB_STEP_SUMMARY"
+            --audio-dir="$RUNNER_TEMP/audiobook" --old-ids="$OLD_IDS" --summary="$GITHUB_STEP_SUMMARY"
