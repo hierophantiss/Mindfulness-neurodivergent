@@ -37,8 +37,12 @@ import { fileURLToPath } from 'url';
 const ROOT_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 export const LICENSE_URL = 'https://creativecommons.org/licenses/by-nc-nd/4.0/';
-/** The author's profiles whose addresses the project already uses (the repository's owner on GitHub). */
-export const AUTHOR_SAME_AS = ['https://github.com/hierophantiss'];
+/** The author's own profiles (Academia, Internet Archive, GitHub), given by him on 19/11/2026. */
+export const AUTHOR_SAME_AS = [
+  'https://independent.academia.edu/HierophantisHierophantis',
+  'https://archive.org/details/@hierophantis',
+  'https://github.com/hierophantiss',
+];
 
 export interface RouteMeta {
   head: SeoHead;

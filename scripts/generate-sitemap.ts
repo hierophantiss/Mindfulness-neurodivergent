@@ -18,16 +18,26 @@ const BASE_URL = 'https://neurodivergent-mindfulness.org';
 
 // ── When each page last changed (<lastmod>) ─────────────────────────
 // From git: the last commit that touched the files a page is made from.
-// In a shallow clone every file looks as old as the one commit there, so
-// then every page gets the build's date instead.
+// In a shallow clone (Cloudflare's own build may be one) every file looks as
+// old as the one commit there, so then each page keeps the date already in the
+// committed sitemap, made with full history; only a page new to it gets the
+// build's date.
 const BUILD_DATE = new Date().toISOString();
+const COMMITTED_LASTMOD = (() => {
+  const dates = new Map<string, string>();
+  try {
+    const xml = fs.readFileSync(path.join(ROOT_DIR, 'public', 'sitemap.xml'), 'utf8');
+    for (const m of xml.matchAll(/<loc>([^<]+)<\/loc>[\s\S]*?<lastmod>([^<]+)<\/lastmod>/g)) dates.set(m[1], m[2]);
+  } catch { /* no sitemap yet */ }
+  return dates;
+})();
 const IS_SHALLOW = (() => {
   try { return execFileSync('git', ['rev-parse', '--is-shallow-repository'], { cwd: ROOT_DIR, encoding: 'utf8' }).trim() !== 'false'; }
   catch { return true; }
 })();
 const lastChangeCache = new Map<string, string>();
-function lastChange(files: string[]): string {
-  if (IS_SHALLOW) return BUILD_DATE;
+function lastChange(files: string[], loc: string): string {
+  if (IS_SHALLOW) return COMMITTED_LASTMOD.get(loc) ?? BUILD_DATE;
   const key = files.join('|');
   if (!lastChangeCache.has(key)) {
     let date = '';
@@ -194,7 +204,7 @@ async function generate() {
     <xhtml:link rel="alternate" hreflang="en" href="${enUrl}" />
     <xhtml:link rel="alternate" hreflang="el" href="${elUrl}" />
     <xhtml:link rel="alternate" hreflang="x-default" href="${xdefaultUrl}" />
-    <lastmod>${lastChange(sourcesOf(p))}</lastmod>
+    <lastmod>${lastChange(sourcesOf(p), loc)}</lastmod>
   </url>`;
   }).join('') + (['el', 'en'] as const).flatMap(l => ['pdf', 'epub'].map(ext => {
     // The book itself, as PDF and EPUB.
@@ -202,7 +212,7 @@ async function generate() {
     return `
   <url>
     <loc>${BASE_URL}/${file}</loc>
-    <lastmod>${lastChange([`public/${file}`])}</lastmod>
+    <lastmod>${lastChange([`public/${file}`], `${BASE_URL}/${file}`)}</lastmod>
   </url>`;
   })).join('');
 
