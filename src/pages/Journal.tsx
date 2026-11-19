@@ -2,7 +2,7 @@ import { PageHeader } from '../components/PageHeader';
 import React, { useState, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { practiceOf } from '../lib/quietAxis';
 import { ChevronLeft, ChevronRight, RefreshCw, Plus, Search, CalendarArrowDown, Heart, Wind, Lightbulb, Compass } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useLanguage } from '../hooks/useLanguage';
 import { cn } from '../lib/utils';
@@ -92,8 +92,20 @@ import { AXIS_GLYPH } from '../lib/axisOfChapter';
 import { CHECKIN_ICON, tint } from '../lib/checkinLook';
 import { EMPTY, V1, V2, feltOn, isEmptyEntry, loadEntry, nothingToKeep, parseLocalDate, tickedAxes as axesOfDay, toLocalDateStr, type JournalEntry } from '../lib/journalEntry';
 
+// A reflection from a chapter or a Program day can open the Journal with its
+// question (router state, see components/ReflectInJournal). Only a short string
+// and a known axis are taken from it.
+function questionFrom(state: unknown): { axis?: Axis; q: string } | null {
+  if (!state || typeof state !== 'object') return null;
+  const { question, axis } = state as { question?: unknown; axis?: unknown };
+  if (typeof question !== 'string' || !question.trim()) return null;
+  return { q: question.trim().slice(0, 300), axis: AXES.includes(axis as Axis) ? (axis as Axis) : undefined };
+}
+
 export default function Journal() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [givenQuestion] = useState(() => questionFrom(location.state));
   const { language } = useLanguage();
   const lang: Lang = language === 'en' ? 'en' : 'el';
 
@@ -162,8 +174,12 @@ export default function Journal() {
 
   // One question of the day, from the axes practised (or all four); the same
   // all day, with "another question" for a different one.
-  const questionPool = (tickedAxes.length ? tickedAxes : AXES).flatMap(a => AXIS_QUESTIONS[a][lang].map(q => ({ axis: a, q })));
-  const question = questionPool[(dayOfYear(currentDate) + questionShift) % questionPool.length];
+  // A question brought from a reflection takes its place today, until "another question".
+  const questionPool: { axis?: Axis; q: string }[] = (tickedAxes.length ? tickedAxes : AXES).flatMap(a => AXIS_QUESTIONS[a][lang].map(q => ({ axis: a, q })));
+  const isToday = toLocalDateStr(new Date()) === dateStr;
+  const question = givenQuestion && isToday && questionShift === 0
+    ? givenQuestion
+    : questionPool[(dayOfYear(currentDate) + questionShift) % questionPool.length];
 
   const appendText = (add: string) => save({ text: entry.text + (entry.text ? '\n\n' : '') + add });
 
@@ -172,8 +188,6 @@ export default function Journal() {
     d.setDate(d.getDate() + days);
     setCurrentDate(d);
   };
-
-  const isToday = toLocalDateStr(new Date()) === dateStr;
 
   const allEntries = useMemo(() => {
     const entries: { date: string; data: JournalEntry }[] = [];
@@ -338,7 +352,7 @@ export default function Journal() {
               </p>
 
               {question && (
-                <div className="mt-4 pl-3 border-l-2" style={{ borderColor: AXIS_COLOR[question.axis] }}>
+                <div className="mt-4 pl-3 border-l-2" style={{ borderColor: question.axis ? AXIS_COLOR[question.axis] : 'var(--color-sign-gold)' }}>
                   <p className="text-[12px] text-ink/70">{lang === 'el' ? 'Ερώτηση της ημέρας' : 'Question of the day'}</p>
                   <p className="mt-1 text-[15px] desk:text-[16px] leading-relaxed text-ink/85">{question.q}</p>
                   <div className="flex items-center gap-4 mt-1">

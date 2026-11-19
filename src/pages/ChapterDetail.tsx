@@ -2,7 +2,11 @@ import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { useParams, useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { CHAPTERS_DATA } from '../data/chapters';
-import { CHAPTER_TAKEAWAYS, CHAPTER_MICRO_CAT } from '../data/takeaways';
+import { CHAPTER_TAKEAWAYS } from '../data/takeaways';
+import { tryNow } from '../data/tryNow';
+import { CHAPTER_TITLES } from '../data/chapterTitles';
+import { DriftNote } from '../components/DriftNote';
+import { ReflectInJournal } from '../components/ReflectInJournal';
 import { chapterObjectives } from '../data/chapterObjectives';
 import { ArrowLeft, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, Check, Zap, Sparkles, Music } from 'lucide-react';
 import { useCompanion } from '../hooks/useCompanion';
@@ -209,7 +213,7 @@ export default function ChapterDetail() {
 
   const { id } = useParams();
   const navigate = useNavigate();
-  const { updateChapterProgress } = useCompanion();
+  const { updateChapterProgress, companionData } = useCompanion();
   const { language } = useLanguage();
   const { markChapterComplete } = useProgress();
   const { triggerReward } = useReward();
@@ -670,18 +674,20 @@ export default function ChapterDetail() {
                       ))}
                     </ul>
 
-                    {/* From reading to doing: the practices of this chapter's axis, or its card. */}
+                    {/* The way back if opening feels like drifting away: under the Space exercise, as in the book. */}
+                    {axisOfChapter(chapter.num) === 'space' && <DriftNote lang={currentLang} />}
+
+                    {/* From reading to doing: one practice to try now (chapters 1–6, 11), or the chapter's card (7–10). */}
                     {(() => {
-                      const axis = axisOfChapter(chapter.num);
                       const el = language === 'el';
-                      const AXIS_NAME = { body: el ? 'το Σώμα' : 'the Body', breath: el ? 'την Αναπνοή' : 'the Breath', attention: el ? 'την Προσοχή' : 'Attention', space: el ? 'τον Χώρο' : 'Space' } as const;
-                      const to = axis ? `/practice?axis=${axis}` : [7, 8, 9, 10].includes(chapter.num) ? `/cards#card-${chapter.num}` : null;
+                      const tryIt = tryNow(chapter.num, el ? 'el' : 'en');
+                      const to = tryIt ? tryIt.to : [7, 8, 9, 10].includes(chapter.num) ? `/cards#card-${chapter.num}` : null;
                       if (!to) return null;
                       return (
                         <Link to={to} className="glass flex items-center gap-4 min-h-[64px] rounded-[20px] pl-5 pr-4 py-3 hover:brightness-110 active:scale-[0.99] transition-[filter,transform]">
                           <span className="flex-1 min-w-0 flex flex-col gap-0.5">
-                            <span className="text-[16px] leading-snug text-ink">{axis ? (el ? 'Δοκίμασέ το τώρα' : 'Try it now') : (el ? 'Κράτα το στις Κάρτες' : 'Keep it in the Cards')}</span>
-                            <span className="text-[13px] leading-snug text-ink/70">{axis ? (el ? `Ασκήσεις για ${AXIS_NAME[axis]}` : `Practices for ${AXIS_NAME[axis]}`) : (el ? 'Οι περιλήψεις του βιβλίου, με ένα πάτημα' : 'The book\'s summaries, one tap away')}</span>
+                            <span className="text-[16px] leading-snug text-ink">{tryIt ? (el ? 'Δοκίμασέ το τώρα' : 'Try it now') : (el ? 'Κράτα το στις Κάρτες' : 'Keep it in the Cards')}</span>
+                            <span className="text-[13px] leading-snug text-ink/70">{tryIt ? tryIt.sub : (el ? 'Οι περιλήψεις του βιβλίου, με ένα πάτημα' : 'The book\'s summaries, one tap away')}</span>
                           </span>
                           <span className="shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-white/[0.06] border border-white/10">
                             <ChevronRight size={20} aria-hidden="true" className="text-ink/80" />
@@ -746,6 +752,7 @@ export default function ChapterDetail() {
                     >
                       <span className="text-[13px] font-medium text-ink/70 relative z-10 block font-sans">{language === 'el' ? 'Αναστοχασμός' : 'Reflection'}</span>
                       <p className="text-lg desk:text-xl text-ink/80 font-sans font-light leading-relaxed relative z-10">{chapter.reflection}</p>
+                      <ReflectInJournal question={chapter.reflection} axis={axisOfChapter(chapter.num) ?? undefined} lang={currentLang} className="relative z-10" />
                     </div>
                   )}
                 </div>
@@ -778,6 +785,34 @@ export default function ChapterDetail() {
                   ))}
                 </ul>
               </section>
+            )}
+
+            {/* α4: from the chapter to the Program weeks that practise it (and from Space to the full practice). */}
+            {isLastPage && axisOfChapter(chapter.num) && (
+              <nav aria-label={language === 'el' ? 'Συνέχισε την πρακτική' : 'Carry on the practice'} className="mt-10 flex flex-col gap-2.5 text-left">
+                {[chapter.num * 2 - 1, chapter.num * 2].map((w) => {
+                  // A week not yet open leads to the Program, which shows where you are.
+                  const open = w <= (companionData.programProgress?.week || 1);
+                  return (
+                    <Link key={w} to={open ? `/program/week/${w}` : '/program'} className="glass flex items-center gap-3 min-h-[56px] rounded-[18px] pl-4 pr-3 py-2.5 hover:brightness-110 active:scale-[0.99] transition-[filter,transform]">
+                      <span className="flex-1 min-w-0 flex flex-col">
+                        <span className="text-[12.5px] text-ink/70">{language === 'el' ? 'Πρόγραμμα 8 εβδομάδων' : '8-week Program'}</span>
+                        <span className="text-[15px] leading-snug text-ink">{language === 'el' ? `Εβδομάδα ${w}` : `Week ${w}`}</span>
+                      </span>
+                      <ChevronRight size={18} aria-hidden="true" className="shrink-0 text-ink/70" />
+                    </Link>
+                  );
+                })}
+                {chapter.num === 4 && (
+                  <Link to="/chapters/10" className="glass flex items-center gap-3 min-h-[56px] rounded-[18px] pl-4 pr-3 py-2.5 hover:brightness-110 active:scale-[0.99] transition-[filter,transform]">
+                    <span className="flex-1 min-w-0 flex flex-col">
+                      <span className="text-[12.5px] text-ink/70">{language === 'el' ? 'Κεφάλαιο 10' : 'Chapter 10'}</span>
+                      <span className="text-[15px] leading-snug text-ink">{CHAPTER_TITLES[currentLang][10]}</span>
+                    </span>
+                    <ChevronRight size={18} aria-hidden="true" className="shrink-0 text-ink/70" />
+                  </Link>
+                )}
+              </nav>
             )}
 
             {/* In-content Navigation Buttons */}

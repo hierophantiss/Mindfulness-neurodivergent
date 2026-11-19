@@ -1,7 +1,7 @@
 import { PageHeader } from '../components/PageHeader';
 import { useAccessibility } from '../hooks/useAccessibility';
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useCompanion } from '../hooks/useCompanion';
 import { COURSE_EL as courseDataEl } from '../data/course-el';
@@ -13,6 +13,29 @@ import SamathaAnimation from '../components/SamathaAnimation';
 import { useReward } from '../contexts/RewardContext';
 import { useProgress } from '../contexts/ProgressContext';
 import { ConceptText } from '../components/ConceptInfoOverlay';
+import { DriftNote } from '../components/DriftNote';
+import { ReflectInJournal } from '../components/ReflectInJournal';
+import { CHAPTER_TITLES } from '../data/chapterTitles';
+import type { Axis } from '../data/types';
+
+// Two weeks for each axis, in the order of the book's Part 1: weeks 1–2 are
+// Chapter 1 (Body), 3–4 Chapter 2 (Breath), 5–6 Chapter 3 (Attention), 7–8
+// Chapter 4 (Space).
+const chapterOfWeek = (week: number) => Math.min(4, Math.max(1, Math.ceil(week / 2)));
+const AXIS_OF_CHAPTER: Axis[] = ['body', 'breath', 'attention', 'space'];
+
+/** A plain row that leads somewhere: a small label above, the name below. */
+function BridgeLink({ to, eyebrow, title }: { to: string; eyebrow: string; title: string }) {
+  return (
+    <Link to={to} className="glass flex items-center gap-3 min-h-[56px] rounded-[18px] pl-4 pr-3 py-2.5 hover:brightness-110 active:scale-[0.99] transition-[filter,transform]">
+      <span className="flex-1 min-w-0 flex flex-col">
+        <span className="text-[12.5px] text-ink/70">{eyebrow}</span>
+        <span className="text-[15px] leading-snug text-ink">{title}</span>
+      </span>
+      <ChevronRight size={18} aria-hidden="true" className="shrink-0 text-ink/70" />
+    </Link>
+  );
+}
 
 export default function ProgramWeek() {
     const { reduceMotion } = useAccessibility();
@@ -53,6 +76,7 @@ export default function ProgramWeek() {
   }
 
   const currentDayContent = week.days[activeDay];
+  const lastWeek = Math.max(...Object.keys(courseData).map(Number));
   
   const hasCameraAnchor = currentDayContent.lesson?.includes('Animation Camera') || currentDayContent.lesson?.includes('Οπτική Άγκυρα') || currentDayContent.title?.includes('Άγκυρα');
   const hasCameraZoom = currentDayContent.lesson?.includes('Camera Animation') || currentDayContent.title?.includes('Κλειστή και Ανοιχτή');
@@ -145,6 +169,13 @@ export default function ProgramWeek() {
           back="/program"
           eyebrow={`${language === 'en' ? 'Week' : 'Εβδομάδα'} ${weekNum}`}
           title={week.title}
+        />
+
+        {/* The chapter this week practises: from the Program back to the book. */}
+        <BridgeLink
+          to={`/chapters/${chapterOfWeek(weekNum)}`}
+          eyebrow={language === 'el' ? 'Στο βιβλίο' : 'In the book'}
+          title={`${language === 'el' ? 'Κεφάλαιο' : 'Chapter'} ${chapterOfWeek(weekNum)} · ${CHAPTER_TITLES[language === 'el' ? 'el' : 'en'][chapterOfWeek(weekNum)]}`}
         />
         
         {/* Days Horizontal Scroll */}
@@ -264,6 +295,8 @@ export default function ProgramWeek() {
                         </li>
                       ))}
                     </ul>
+                    {/* Weeks 7–8 open into space: the book's way back, under the exercise. */}
+                    {weekNum >= 7 && <DriftNote lang={language === 'el' ? 'el' : 'en'} className="mt-6" />}
                   </div>
                 )}
 
@@ -278,7 +311,7 @@ export default function ProgramWeek() {
                       <div className="bg-black/40 backdrop-blur-md/80 border border-white/5 rounded-[1.75rem] p-6 shadow-2xl backdrop-blur-sm">
                         <div className="flex items-center gap-2 mb-3">
                           <div className="w-1.5 h-1.5 rounded-full bg-amber-400/80"></div>
-                          <h4 className="text-[13px] font-medium text-amber-400/90 drop-shadow-sm">{language === 'el' ? 'Επίγνωση' : 'Insight'}</h4>
+                          <h4 className="text-[13px] font-medium text-amber-400/90 drop-shadow-sm">{language === 'el' ? 'Με μια φράση' : 'In one sentence'}</h4>
                         </div>
                         <p className="text-ink font-medium leading-relaxed text-lg sm:text-xl">"{currentDayContent.insight}"</p>
                       </div>
@@ -292,7 +325,28 @@ export default function ProgramWeek() {
                           </h4>
                         </div>
                         <p className="text-ink/80 leading-relaxed text-base sm:text-lg">{currentDayContent.reflection}</p>
+                        <ReflectInJournal
+                          question={currentDayContent.reflection}
+                          axis={AXIS_OF_CHAPTER[chapterOfWeek(weekNum) - 1]}
+                          lang={language === 'el' ? 'el' : 'en'}
+                          className="mt-4"
+                        />
                       </div>
+                    )}
+                    {/* The last day: where the practice goes on (daily life, the worksheet, the Cards). */}
+                    {weekNum === lastWeek && activeDay === week.days.length - 1 && (
+                      <nav aria-label={language === 'el' ? 'Μετά το Πρόγραμμα' : 'After the Program'} className="flex flex-col gap-2.5">
+                        <h4 className="text-[13px] font-medium text-ink/70 ml-1">{language === 'el' ? 'Μετά το Πρόγραμμα' : 'After the Program'}</h4>
+                        {[6, 9].map(n => (
+                          <BridgeLink
+                            key={n}
+                            to={`/chapters/${n}`}
+                            eyebrow={`${language === 'el' ? 'Κεφάλαιο' : 'Chapter'} ${n}`}
+                            title={CHAPTER_TITLES[language === 'el' ? 'el' : 'en'][n]}
+                          />
+                        ))}
+                        <BridgeLink to="/cards" eyebrow={language === 'el' ? 'Πρακτική' : 'Practice'} title={language === 'el' ? 'Κάρτες' : 'Cards'} />
+                      </nav>
                     )}
                   </div>
                 )}
