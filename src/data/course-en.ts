@@ -8,7 +8,7 @@ export const COURSE_EN: Course = {
         "title": "Gravity vs. “Autopilot”",
         "where": "Anywhere",
         "dur": "1 second",
-        "lesson": "<p>Our method is a method of “self-relaxation,” not of pressured self-concentration. There is no rush, no force, no “failure” — everything is learning, even distraction.</p><p>The Default Mode Network (DMN) — the brain's “autopilot” — is associated with mind-wandering. Today we run an experiment: we feel gravity in order to restore bodily sensation and activate the proprioceptive center. The “autopilot” does not stop for good with gravity alone (that requires open awareness), but it is the first step in returning to the Now.</p>",
+        "lesson": "<p>Our method is a method of “self-relaxation,” not of pressured self-concentration. There is no rush, no force, no “failure” — everything is learning, even distraction.</p><p>Today we run an experiment: we feel gravity in order to restore bodily sensation. The “autopilot” does not stop for good with gravity alone (that requires open awareness), but it is the first step in returning to the Now.</p>",
         "exercise": {
           "title": "Feel Gravity:",
           "steps": [
@@ -37,7 +37,7 @@ export const COURSE_EN: Course = {
           ]
         },
         "breathing": "<strong>Natural Breath</strong><p>Let your body breathe as it wishes.</p>",
-        "reflection": "Could I feel this “imaginary line” within me without clenching?",
+        "reflection": "After the exercise, what did I notice in my body?",
         "insight": "Your axis keeps you upright and aligned, providing structure without tension."
       },
       {
@@ -207,7 +207,7 @@ export const COURSE_EN: Course = {
           ]
         },
         "breathing": "<strong>Belly Breathing (Soft Belly)</strong><p>Inhale: the belly gently rises. Exhale: the belly falls.</p>",
-        "reflection": "Did I manage to let my belly relax, instead of holding it “in”?",
+        "reflection": "After the exercise, what did I notice in my body?",
         "insight": "A soft belly is linked with the calming side of the vagus nerve; in experience, it brings calm."
       },
       {
@@ -359,7 +359,7 @@ export const COURSE_EN: Course = {
           ]
         },
         "breathing": "<strong>Circular Awareness</strong><p>Your attention travels along with the air.</p>",
-        "reflection": "Could I follow the air along its whole path?",
+        "reflection": "How was my breath during the exercise? (fast/slow, shallow/deep, tight/free)",
         "insight": "When the mind travels with the breath, it has no room for anxious thoughts."
       },
       {
@@ -396,13 +396,13 @@ export const COURSE_EN: Course = {
           ]
         },
         "breathing": "<strong>Synchronization</strong><p>Opening = inhale. Relaxing = exhale.</p>",
-        "reflection": "Could I synchronize the body with the breath?",
+        "reflection": "How was my breath during the exercise? (fast/slow, shallow/deep, tight/free)",
         "insight": "Movement without forcing makes the breath deeper and safer."
       }
     ]
   },
   "4": {
-    "title": "Breath: Movement & Kindness",
+    "title": "Breath: The Rhythm of Life",
     "days": [
       {
         "title": "Review: Nostrils & 5-5",
@@ -455,7 +455,7 @@ export const COURSE_EN: Course = {
           ]
         },
         "breathing": "<strong>Pause at the Belly</strong><p>The belly “rests” between the cycles.</p>",
-        "reflection": "Did I manage to stay in the pause without anxiety?",
+        "reflection": "How was my breath during the exercise? (fast/slow, shallow/deep, tight/free)",
         "insight": "In the pause lies the deepest trust."
       },
       {
@@ -478,53 +478,54 @@ export const COURSE_EN: Course = {
         "insight": "Sound is a tool of the nervous system. Vibration drives out tension."
       },
       {
-        "title": "Mindful Movement: Opening the Arms & Kindness",
-        "where": "Open space",
+        "title": "The Active Return",
+        "where": "A quiet place",
         "dur": "5 minutes",
-        "lesson": "<p>We introduce a new Mindful Movement: opening the arms toward the sky and the heart. Here we add the intention of Kindness (Metta) toward all.</p>",
+        "lesson": "<p>Through its movement, the breath strengthens the axis of presence that rests on gravity. It works as a counterweight to the flow of thoughts: while the mind may be racing, the breath keeps the body in the now.</p>",
         "exercise": {
-          "title": "Opening to the Universe:",
+          "title": "The Active Return:",
           "steps": [
-            "[[Grounding|grounding]] in the body (10 seconds).",
-            "With the inhale, open your arms wide and upward (to the sky). Unfold the chest (heart).",
-            "As you open, feel tenderness and kindness toward yourself and toward all.",
-            "With the exhale, lower the arms gently to your sides."
+            "Grounding (Body): Stand upright or sit comfortably. Feel [[gravity|gravity]], the contact with the ground.",
+            "Awareness (Breath): Turn your attention to the inhale and exhale. Feel the air touching the nostrils.",
+            "On the exhale: Let the belly draw gently inwards, as if letting all the tension out with the air.",
+            "Acceptance: Do not try to change the breath. Awareness is enough.",
+            "Regulation (optional): If you feel a lot of anxiety, move into the 4-6 rhythm, with the exhale leaving through the mouth."
           ]
         },
-        "breathing": "<strong>Expanded Inhale</strong><p>The chest opens, the heart “breathes.”</p>",
-        "reflection": "What feeling did opening the arms evoke?",
-        "insight": "The body's posture deeply affects our emotion and our intention."
+        "breathing": "<strong>The exhale is the tool, not the inhale</strong><p>You never need to force the air in.</p>",
+        "reflection": "How was my breath during the exercise? (fast/slow, shallow/deep, tight/free)",
+        "insight": "I observe without intervening. Every breath is a new beginning. The tool is always the exhale."
       },
       {
-        "title": "Deepening: Opening to the Sky",
-        "where": "Open space",
+        "title": "Four Exercises for Air",
+        "where": "A quiet place",
         "dur": "5 minutes",
-        "lesson": "<p>We repeat the same Mindful Movement, focusing even more on the sensation of the chest and the heart.</p>",
+        "lesson": "<p>The first step is acceptance. You do not need to control your breath. It is enough to observe it as it is: deep or shallow, slow or fast, free or tight.</p>",
         "exercise": {
-          "title": "The Center of the Heart:",
+          "title": "Four Exercises for Air:",
           "steps": [
-            "[[Grounding|grounding]] in the body (10 seconds).",
-            "Begin the movement: arms open, heart opens.",
-            "Think inwardly: “May I be well. May all be well” as you inhale from the chest.",
-            "The movement becomes a prayer of kindness."
+            "One breath (1 breath): Observe a single inhale and exhale, without changing anything. Just see it as it is.",
+            "The air at the nostrils (30 seconds): Feel the cool stream on the inhale, the warmer one on the exhale. Only the point where the air touches.",
+            "Soft belly (1 minute): Let the belly soften. On the exhale, let the air out slowly through the mouth (4-6 rhythm). Feel the belly draw in gently.",
+            "Humming on the exhale (1–2 minutes): Take a quiet inhale and, on the exhale, make a soft “mmm”. Feel the vibration. The body calms the body."
           ]
         },
-        "breathing": "<strong>Breath from the Heart</strong><p>The inhale as an opening.</p>",
-        "reflection": "Was there any resistance to kindness within me?",
-        "insight": "Kindness is not just a thought, it is a bodily experience."
+        "breathing": "<strong>4-6</strong><p>The longer exhale tells the nervous system “we are safe”.</p>",
+        "reflection": "How did my breath change?",
+        "insight": "The breath teaches you to observe without intervening."
       },
       {
-        "title": "Completion: Body, Breath & Kindness",
+        "title": "Completion: Body & Breath",
         "where": "Open space",
         "dur": "10 minutes",
-        "lesson": "<p>Today the second axis is completed. We have connected body, breath, movement, and kindness.</p><p>As we have said, the app contains a series of mindful movements, one for each axis, which you can combine freely after completing the weeks.</p><p><a href=\"/practice?category=vocal\">Explore the “Chanting & Resonance” (Humming) practices</a></p>",
+        "lesson": "<p>Today the second axis is completed. We have connected body, breath and movement.</p><p>As we have said, the app contains a series of mindful movements, one for each axis, which you can combine freely after completing the weeks.</p><p><a href=\"/practice?category=vocal\">Explore the “Chanting & Resonance” (Humming) practices</a></p>",
         "exercise": {
           "title": "The Final Breathing Practice:",
           "steps": [
             "[[Grounding|grounding]] in the body (10 seconds).",
             "Observation of rhythm (5-5) for 2 minutes.",
             "Mindful movement Bow (2 minutes).",
-            "Opening the arms to the sky + Kindness (Metta) (2 minutes).",
+            "Soft belly (1 minute): Let the belly soften. On the exhale, let the air out slowly through the mouth (4-6 rhythm). Feel the belly draw in gently.",
             "Pause and observe the effect in the body (2 minutes)."
           ]
         },
@@ -706,7 +707,7 @@ export const COURSE_EN: Course = {
           ]
         },
         "breathing": "<strong>Breath of Calm</strong><p>A steady base while the “objects” pass.</p>",
-        "reflection": "Did I manage not to identify with any thought?",
+        "reflection": "The journey of my attention: where does it tend to “stick” or to “race”?",
         "insight": "You are not your thoughts. You are the space in which they happen."
       },
       {
@@ -724,7 +725,7 @@ export const COURSE_EN: Course = {
           ]
         },
         "breathing": "<strong>5-5 and Breath of Calm</strong><p>The rhythm of stability.</p>",
-        "reflection": "Did the evening routine help my sleep?",
+        "reflection": "How did my breath change?",
         "insight": "Whatever is repeated becomes part of you."
       },
       {
@@ -737,12 +738,13 @@ export const COURSE_EN: Course = {
           "steps": [
             "When you observe a critical thought (the echo), recognize it.",
             "Do not fight it. Simply let it go, as “not useful.”",
+            "Soles. Through the mouth, slowly. Name the scenario: “Criticism” or “Should”.",
             "In its place, put presence ([[grounding|grounding]]) with kindness and openness.",
-            "You change “helmsman”: from the subconscious/turmoil, to conscious, open presence."
+            "You change “helmsman”: from turmoil, to conscious, open presence."
           ]
         },
         "breathing": "<strong>Breath of Acceptance</strong><p>Inhale presence, exhale the “not useful.”</p>",
-        "reflection": "Could I see my “self-criticism” as a mere “echo” and not as truth?",
+        "reflection": "The journey of my attention: where does it tend to “stick” or to “race”?",
         "insight": "You are now free to choose who governs your mind."
       },
       {
@@ -820,7 +822,7 @@ export const COURSE_EN: Course = {
           ]
         },
         "breathing": "<strong>Breathing into Space</strong><p>Do not imagine a space; feel the real space around you, and let the exhale spread into it.</p>",
-        "reflection": "Could I feel the open attention today?",
+        "reflection": "What changed in my attention when it had nowhere to hook on?",
         "insight": "Space is always there, behind the clouds."
       },
       {
@@ -909,14 +911,14 @@ export const COURSE_EN: Course = {
           ]
         },
         "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
-        "reflection": "Did I manage not to follow a “cloud” (thought) today?",
+        "reflection": "What changed in my attention when it had nowhere to hook on?",
         "insight": "You do not need to clear the sky of clouds. The sky always has room."
       },
       {
         "title": "Interrupting the Autopilot",
         "where": "During an activity",
         "dur": "3 seconds",
-        "lesson": "<p>Morning, noon, evening: Open attention and 4 centers. Sky-gazing still shows you the sense of space.</p><p>Today we break the routine with small interruptions. Our mind's “autopilot” (the Default Mode Network we mentioned on the first day) feeds on ceaseless, breathless motion. When we cut it, our nervous system does a “reset.”</p>",
+        "lesson": "<p>Morning, noon, evening: Open attention and 4 centers. Sky-gazing still shows you the sense of space.</p><p>Today we break the routine with small interruptions. Our mind's “autopilot” feeds on ceaseless, breathless motion. When we cut it, our nervous system does a “reset.”</p>",
         "exercise": {
           "title": "Interrupting the Autopilot:",
           "steps": [
@@ -953,22 +955,24 @@ export const COURSE_EN: Course = {
         "insight": "Resistance to emotion stirs the water. Acceptance clears it."
       },
       {
-        "title": "The Six Points (Non-Effort)",
+        "title": "Widening the Space",
         "where": "Anywhere",
-        "dur": "A few seconds",
-        "lesson": "<p>Today we practice Tilopa's six points — the core of “non-effort” that calms the Mechanical Mind.</p><p>1. Do not recall (Past). 2. Do not imagine (Future). 3. Do not think (Inner monologue). 4. Do not examine (Analysis). 5. Do not control (Effort). 6. Rest (Let go).</p>",
+        "dur": "A few minutes",
+        "lesson": "<p><strong>Can you feel the space between your two eyes?</strong></p><p>Attention moved, but found nothing to grasp. Space has no edge, no weight. And with nowhere to hook on, the grip loosened by itself and opened. That is all: when you give attention space as its “object”, it becomes awareness.</p><p>One condition, always: <strong>opening is safe only on a grounded body.</strong></p>",
         "exercise": {
-          "title": "Non-Effort Test:",
+          "title": "Widening the Space:",
           "steps": [
-            "In a moment of respite:",
-            "Do not analyze whether you are doing well or badly.",
-            "Do not even try to control your breath.",
-            "Feel your [[axis|axis]] and simply “Rest” in the Now."
+            "Grounding: Sit comfortably. Close or lower your eyes. Feel the weight of your body and the rhythm of your breath.",
+            "Focus: Settle on one point (an image, a sound or a sensation) for a few seconds.",
+            "The question without an object: “Can I feel the space between my eyes?” Do not look for an answer; let the question loosen the grip.",
+            "Widening: As when driving you open from the road to the surroundings and the mirrors, let your attention spread in every direction. The [[axis|axis]] of gravity stays the centre.",
+            "Acceptance: Listen, see, feel, without focusing, without judging. Contents come and go. You are the field.",
+            "Return: If you get lost, the flash will come, “oh, I was gone”. That flash is awareness. Come back to the open."
           ]
         },
         "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
-        "reflection": "How did it feel to “not try” for a few seconds?",
-        "insight": "Sometimes the greatest effort is to stop trying."
+        "reflection": "What changed in my attention when it had nowhere to hook on?",
+        "insight": "Attention is the point; awareness the field in which it moves."
       },
       {
         "title": "The Elephant, the Monkey & the Lasso",
@@ -1022,7 +1026,7 @@ export const COURSE_EN: Course = {
         },
         "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
         "reflection": "How does the chest feel when it is not compressed?",
-        "insight": "Spaciousness in the chest is the biological signature of calm."
+        "insight": "Open space centred here, grounded, at the height of the heart."
       },
       {
         "title": "Giving Space to Others",
@@ -1052,8 +1056,7 @@ export const COURSE_EN: Course = {
           "steps": [
             "Feel [[gravity|gravity]] in the body.",
             "Open your eyes to the sky.",
-            "Hear the silence behind the sounds.",
-            "Feel that you are this Open Horizon."
+            "Hear the silence behind the sounds."
           ]
         },
         "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
