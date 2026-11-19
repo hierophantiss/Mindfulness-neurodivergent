@@ -137,3 +137,21 @@ pdftotext public/Workbook_el.pdf - | grep -c '\*\*'   # πρέπει να δίν
 python3 tools/audiobook/script.py el /tmp/script_el.json --preview /tmp/preview_el.txt
 python3 tools/audiobook/synth.py /tmp/script_el.json el /tmp/audio_el --mock --only 1-3
 ```
+
+## Internet Archive (`internet_archive.py`)
+
+Το βιβλίο και το ακουστικό βιβλίο στον λογαριασμό του Internet Archive
+(<https://archive.org/details/@hierophantis>), σε δύο items: το βιβλίο (PDF και
+EPUB από το `public/`) και το ακουστικό βιβλίο (τα αρχεία του Release `audiobook`).
+Οι περιγραφές παίρνουν τα λόγια του ίδιου του βιβλίου (τίτλος, «Για Ποιον Είναι
+Αυτό το Βιβλίο;», η σημείωση πριν ξεκινήσεις).
+
+Από το κινητό: **Actions → Internet Archive → Run workflow**. Χρειάζεται τα secrets
+`IA_ACCESS_KEY` και `IA_SECRET_KEY` (τα κλειδιά S3 του λογαριασμού:
+<https://archive.org/account/s3.php>). Επιλογές:
+
+- `list` — τα items του λογαριασμού (για να φανεί ποια είναι της πρώτης έκδοσης).
+- `dry-run` — τι θα ανέβαινε και με ποια στοιχεία, χωρίς να ανεβεί τίποτα.
+- `upload` — φτιάχνει ή ενημερώνει τα δύο items. Δεν σβήνει τίποτα· όσα αρχεία
+  δεν άλλαξαν δεν ξαναστέλνονται. Για να ενημερωθεί item της πρώτης έκδοσης,
+  δίνεις το identifier του.
