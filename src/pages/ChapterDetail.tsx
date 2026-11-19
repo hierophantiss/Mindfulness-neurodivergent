@@ -616,7 +616,8 @@ export default function ChapterDetail() {
                         />
                       )}
 
-                      {/* Key Takeaways for this section or end of sections */}
+                      {/* The chapter's key points: once, on the last theory page (where "Listen" reads them). */}
+                      {curPage.index === chapter.theorySections.length - 1 && (
                       <div
                         data-read-key={`s${curPage.index}-key`}
                         className={cn(
@@ -640,6 +641,7 @@ export default function ChapterDetail() {
                           ))}
                         </ul>
                       </div>
+                      )}
                     </motion.div>
                 </div>
               </article>
@@ -729,8 +731,8 @@ export default function ChapterDetail() {
                       )}
                     >
                       <div className="absolute inset-0 bg-gradient-to-br from-teal-500/[0.02] to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl"></div>
-                      <span className="text-[13px] font-medium text-teal-300/90 relative z-10 block font-sans">{language === 'el' ? 'Επίγνωση' : 'Insight'}</span>
-                      <p className="text-lg desk:text-xl text-ink/80 font-light leading-relaxed relative z-10">"{chapter.insight}"</p>
+                      <span className="text-[13px] font-medium text-teal-300/90 relative z-10 block font-sans">{language === 'el' ? 'Με μια φράση' : 'In one sentence'}</span>
+                      <p className="text-lg desk:text-xl text-ink/80 font-light leading-relaxed relative z-10">{chapter.insight}</p>
                     </div>
                   )}
                   {chapter.reflection && (

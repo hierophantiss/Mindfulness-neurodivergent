@@ -496,8 +496,8 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     title: { el: "SOS", en: "SOS" },
     subtitle: { el: "Όταν Ανεβαίνει το Κύμα", en: "When the Wave Rises" },
     desc: {
-      el: "Εισπνοή 4, εκπνοή 6, χωρίς κράτημα: ο ρυθμός του βιβλίου για την κορύφωση. Άφησε την εκπνοή να βγαίνει από το στόμα, σαν να σβήνεις ένα κερί μακριά σου, και νιώσε τα πόδια σου στο πάτωμα. Αν η μέτρηση σε αγχώνει, μη μετράς· απλώς βγάλε τον αέρα πιο αργά απ' ό,τι μπήκε.",
-      en: "Inhale 4, exhale 6, no holding: the book's rhythm for the peak. Let the exhale leave through the mouth, as if blowing out a candle far away, and feel your feet on the floor. If counting stresses you, do not count; just let the air out more slowly than it came in.",
+      el: "Εισπνοή 4, εκπνοή 6, χωρίς κράτημα: ο ρυθμός του βιβλίου για την κορύφωση. Άφησε την εκπνοή να βγαίνει από το στόμα, σαν να φυσάς απαλά μια φλόγα, και νιώσε τα πόδια σου στο πάτωμα. Αν η μέτρηση σε αγχώνει, μη μετράς· απλώς βγάλε τον αέρα πιο αργά απ' ό,τι μπήκε.",
+      en: "Inhale 4, exhale 6, no holding: the book's rhythm for the peak. Let the exhale leave through the mouth, as if gently blowing on a flame, and feel your feet on the floor. If counting stresses you, do not count; just let the air out more slowly than it came in.",
     },
     totalCycleDurationMs: 10000,
     audioConfig: {

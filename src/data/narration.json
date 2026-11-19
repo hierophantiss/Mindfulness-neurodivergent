@@ -397,7 +397,7 @@
       [
         { "say": "Μπορείς να νιώσεις τον χώρο ανάμεσα στα δύο σου μάτια;" },
         { "pause": 2200 },
-        { "say": "Σαν ουρανός που χωράει τα πάντα." },
+        { "say": "Ο χώρος γύρω σου, εδώ, χωράει τα πάντα." },
         { "pause": 1300 },
         { "say": "Οι σκέψεις περνούν, σαν σύννεφα." },
         { "rest": 3500 }
@@ -427,7 +427,7 @@
       [
         { "say": "Can you feel the space between your two eyes?" },
         { "pause": 2200 },
-        { "say": "Like a sky that holds everything." },
+        { "say": "The space around you, here, holds everything." },
         { "pause": 1300 },
         { "say": "Thoughts pass, like clouds." },
         { "rest": 3500 }
@@ -503,7 +503,7 @@
   "metronome": {
     "el": [
       [
-        { "say": "Κάθισε σε στάση διαλογισμού." },
+        { "say": "Κάθισε άνετα, σταυροπόδι αν σε βολεύει." },
         { "pause": 1600 },
         { "say": "Νιώσε τη βαρύτητα." },
         { "pause": 2200 },
@@ -513,10 +513,10 @@
       [
         { "say": "Η κίνηση ξεκινά από το κέντρο, την κοιλιά." },
         { "pause": 1200 },
+        { "breath": "in", "say": "Δεξιά, με την εισπνοή…", "ms": 5000 },
+        { "breath": "out", "say": "αριστερά, με την εκπνοή…", "ms": 5000 },
         { "breath": "in", "say": "Δεξιά…", "ms": 5000 },
         { "breath": "out", "say": "αριστερά…", "ms": 5000 },
-        { "breath": "in", "say": "Ρυθμικά…", "ms": 5000 },
-        { "breath": "out", "say": "Συνειδητά…", "ms": 5000 },
         { "say": "Τίποτα δεν είναι ακίνητο." },
         { "pause": 1200 },
         { "say": "Η παρουσία ζει μέσα στην κίνηση." },
@@ -525,7 +525,7 @@
     ],
     "en": [
       [
-        { "say": "Sit in a meditation posture." },
+        { "say": "Sit comfortably, cross-legged if that suits you." },
         { "pause": 1600 },
         { "say": "Feel gravity." },
         { "pause": 2200 },
@@ -535,10 +535,10 @@
       [
         { "say": "The movement starts from the centre, the belly." },
         { "pause": 1200 },
+        { "breath": "in", "say": "Right, as you breathe in…", "ms": 5000 },
+        { "breath": "out", "say": "left, as you breathe out…", "ms": 5000 },
         { "breath": "in", "say": "Right…", "ms": 5000 },
         { "breath": "out", "say": "left…", "ms": 5000 },
-        { "breath": "in", "say": "Rhythmic…", "ms": 5000 },
-        { "breath": "out", "say": "Conscious…", "ms": 5000 },
         { "say": "Nothing is still." },
         { "pause": 1200 },
         { "say": "Presence lives within movement." },
@@ -572,7 +572,7 @@
         { "say": "Τώρα νιώσε τη διαδρομή του αέρα." },
         { "pause": 1000 },
         { "breath": "in", "say": "Μέσα από τη μύτη…", "ms": 4000 },
-        { "breath": "out", "say": "έξω αργά από το στόμα, σαν να φυσάς ένα κερί…", "ms": 6000 },
+        { "breath": "out", "say": "έξω αργά από το στόμα, σαν να φυσάς απαλά μια φλόγα…", "ms": 6000 },
         { "breath": "in", "say": "Εισπνοή…", "ms": 4000 },
         { "breath": "out", "say": "μακριά εκπνοή· η κοιλιά μαζεύεται απαλά…", "ms": 6000 },
         { "rest": 2000 }
@@ -586,7 +586,7 @@
         { "pause": 700 },
         { "say": "Την αναγνωρίζεις…" },
         { "pause": 500 },
-        { "say": "της δίνεις ταμπέλα: σκέψη.", "mark": "label" },
+        { "say": "της δίνεις ταμπέλα: ανησυχία.", "mark": "label" },
         { "pause": 1100 },
         { "say": "Και επιστρέφεις απαλά στο σημείο.", "mark": "return" },
         { "rest": 3000 }
@@ -635,7 +635,7 @@
         { "say": "Now feel the path of the air." },
         { "pause": 1000 },
         { "breath": "in", "say": "In through the nose…", "ms": 4000 },
-        { "breath": "out", "say": "slowly out through the mouth, as if blowing out a candle…", "ms": 6000 },
+        { "breath": "out", "say": "slowly out through the mouth, as if gently blowing on a flame…", "ms": 6000 },
         { "breath": "in", "say": "Breathe in…", "ms": 4000 },
         { "breath": "out", "say": "a long breath out; the belly draws in gently…", "ms": 6000 },
         { "rest": 2000 }
@@ -649,7 +649,7 @@
         { "pause": 700 },
         { "say": "You recognise it…" },
         { "pause": 500 },
-        { "say": "you give it a label: thinking.", "mark": "label" },
+        { "say": "you give it a label: worry.", "mark": "label" },
         { "pause": 1100 },
         { "say": "And you come gently back to the point.", "mark": "return" },
         { "rest": 3000 }

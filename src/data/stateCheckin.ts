@@ -232,7 +232,7 @@ export const CHECKIN_DETAILS: Partial<Record<CheckinState, CheckinDetail[]>> = {
       id: 'panic',
       label: { el: 'Πανικός', en: 'Panic' },
       msg: { el: 'Ο πανικός είναι πολύ έντονος, αλλά περνάει.', en: 'Panic is very intense, but it passes.' },
-      step: { el: 'Εκπνοή από το στόμα, αργά, σαν να σβήνεις ένα κερί μακριά σου.', en: 'Breathe out through the mouth, slowly, as if blowing out a candle far away.' },
+      step: { el: 'Εκπνοή από το στόμα, αργά, σαν να φυσάς απαλά μια φλόγα.', en: 'Breathe out through the mouth, slowly, as if gently blowing on a flame.' },
       actions: [SOS_ACTION, { title: { el: 'Μακριά εκπνοή · 4-6', en: 'Long exhale · 4-6' }, path: '/practice/breath/breath-4-6' }],
     },
     {

@@ -312,8 +312,8 @@ export const PRACTICE_TEXTS: Record<string, PracticeText> = {
     title: { el: 'Ο Ρυθμός της Εκπνοής', en: 'The Rhythm of the Exhale' },
     sub: { el: 'Η εκπνοή πιο μακριά από την εισπνοή.', en: 'The exhale longer than the inhale.' },
     steps: {
-      el: ['Εισπνοή από τη μύτη για 4.', 'Εκπνοή αργά για 6, σαν να σβήνεις απαλά ένα κερί· στο τέλος μάζεψε την κοιλιά.', 'Επανάλαβε ήρεμα. Αν ζαλιστείς, γύρνα στη φυσική σου αναπνοή.', 'Πρόσεξε πώς είναι το σώμα σου τώρα.'],
-      en: ['Breathe in through the nose for 4.', 'Breathe out slowly for 6, as if gently blowing out a candle; at the end, draw the belly in.', 'Repeat calmly. If you feel dizzy, return to your natural breath.', 'Notice how your body is now.'],
+      el: ['Εισπνοή από τη μύτη για 4.', 'Εκπνοή αργά για 6, σαν να φυσάς απαλά μια φλόγα· στο τέλος μάζεψε την κοιλιά.', 'Επανάλαβε ήρεμα. Αν ζαλιστείς, γύρνα στη φυσική σου αναπνοή.', 'Πρόσεξε πώς είναι το σώμα σου τώρα.'],
+      en: ['Breathe in through the nose for 4.', 'Breathe out slowly for 6, as if gently blowing on a flame; at the end, draw the belly in.', 'Repeat calmly. If you feel dizzy, return to your natural breath.', 'Notice how your body is now.'],
     },
     evidence: BALBAN,
   },

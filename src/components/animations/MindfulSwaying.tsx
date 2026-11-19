@@ -7,7 +7,7 @@ import TaiChiHero from '../TaiChiHero';
 import { getAudio } from '../../lib/chapterAudio';
 import { type AnimTiming, animAudioUrl, loadAnimTiming, sceneAt, sceneLength, setVoicePreferred, voicePreferred } from '../../lib/animVoice';
 
-// Chapter 4, "The metronome of presence" (Mindful swaying). The same person,
+// Chapter 6 (when the system shuts down), "The metronome of presence" (Mindful swaying). The same person,
 // seated cross-legged, the hands on the knees, in front of a metronome. The
 // legs stay where they are; the upper body sways from the centre, right and
 // left, like the metronome's arm, and the gravity axis sways with it.
@@ -23,12 +23,12 @@ const VOICE_ID = 'metronome';
 
 const SCENES: Record<Lang, { title: string; caption: string }[]> = {
   el: [
-    { title: 'Βρες τον άξονα', caption: 'Κάθισε σε στάση διαλογισμού. Νιώσε τη βαρύτητα. Βρες τον κατακόρυφο άξονα.' },
-    { title: 'Ενσυνείδητο λίκνισμα', caption: 'Η κίνηση ξεκινά από το κέντρο, την κοιλιά. Δεξιά, αριστερά. Ρυθμικά. Συνειδητά. Τίποτα δεν είναι ακίνητο· η παρουσία ζει μέσα στην κίνηση.' },
+    { title: 'Βρες τον άξονα', caption: 'Κάθισε άνετα, σταυροπόδι αν σε βολεύει. Νιώσε τη βαρύτητα. Βρες τον κατακόρυφο άξονα.' },
+    { title: 'Ενσυνείδητο λίκνισμα', caption: 'Η κίνηση ξεκινά από το κέντρο, την κοιλιά. Δεξιά με την εισπνοή, αριστερά με την εκπνοή. Τίποτα δεν είναι ακίνητο· η παρουσία ζει μέσα στην κίνηση.' },
   ],
   en: [
-    { title: 'Find the axis', caption: 'Sit in a meditation posture. Feel gravity. Find the vertical axis.' },
-    { title: 'Mindful swaying', caption: 'The movement starts from the centre, the belly. Right, left. Rhythmic. Conscious. Nothing is still; presence lives within movement.' },
+    { title: 'Find the axis', caption: 'Sit comfortably, cross-legged if that suits you. Feel gravity. Find the vertical axis.' },
+    { title: 'Mindful swaying', caption: 'The movement starts from the centre, the belly. Right as you breathe in, left as you breathe out. Nothing is still; presence lives within movement.' },
   ],
 };
 const LAST = 1;

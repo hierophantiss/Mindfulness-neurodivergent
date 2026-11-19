@@ -399,14 +399,14 @@ export const GUIDED_EXERCISES: Record<string, GuidedExercise> = {
     instructions: {
       el: [
         "Εισπνοή 4 δευτερόλεπτα από μύτη.",
-        "Εκπνοή 6-7 δευτερόλεπτα από το στόμα (σαν να σβήνεις κερί).",
+        "Εκπνοή 6-7 δευτερόλεπτα από το στόμα (σαν να φυσάς απαλά μια φλόγα).",
         "Επανάληψη. Ήρεμα, χωρίς υπερβολή.",
         "Παρατήρησε: η καρδιά επιβραδύνει;",
         "Άφησε την εκπνοή να λέει: «Είσαι ασφαλής. Μπορείς να αφεθείς»."
       ],
       en: [
         "Inhale for 4 seconds through the nose.",
-        "Exhale for 6-7 seconds through the mouth (like blowing out a candle).",
+        "Exhale for 6-7 seconds through the mouth (as if gently blowing on a flame).",
         "Repeat. Stay calm — do not overdo it.",
         "Observe: does your heart slow down?",
         "Let the exhale say: 'You are safe. You can let go'."

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Γεωμετρία της Προσοχής · Attention Geometry</title>
+<title>Γεωμετρία της Προσοχής</title>
 <style>
 
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -190,6 +190,7 @@ if (lang === 'en') {
   document.getElementById('speed').setAttribute('aria-label', 'Speed');
   document.getElementById('title').textContent = 'The Stage of the Mind';
   document.querySelector('.ex-intro-t').textContent = 'Attention Geometry';
+  document.title = 'Attention Geometry';
   document.querySelector('.ex-intro-h').textContent = 'tap to begin';
   btnPause.textContent = '⏸ PAUSE';
   btnPause.onclick = () => { paused = !paused; btnPause.textContent = paused ? '▶ PLAY' : '⏸ PAUSE'; if (!paused) loop(); };

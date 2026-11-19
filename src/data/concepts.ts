@@ -185,13 +185,13 @@ export const KNOWLEDGE_CONCEPTS: Record<string, Concept> = {
       title: 'Αργή Εκπνοή',
       short: 'Η εκπνοή πιο αργή από την εισπνοή: το βασικό εργαλείο της μεθόδου.',
       full: 'Η αργή εκπνοή — από το στόμα, πιο αργή από την εισπνοή — είναι το βασικό εργαλείο της ρύθμισης. Σε στιγμές πανικού, μπορεί να αρκεί μόνο αυτή. Δεν χρειάζεται μοτίβο, δεν χρειάζεται μέτρηση — απλά αφήνεις τον αέρα να βγει πιο αργά απ\' ό,τι μπήκε.',
-      ndNote: 'Αν η μέτρηση σε αγχώνει, μην μετράς. Απλά φύσα αργά σαν να σβήνεις ένα κερί πολύ μακριά σου.'
+      ndNote: 'Αν η μέτρηση σε αγχώνει, μην μετράς. Απλά φύσα αργά, σαν να φυσάς απαλά μια φλόγα.'
     },
     en: {
       title: 'Slow Exhale',
       short: 'The exhale slower than the inhale: the method\'s basic tool.',
       full: 'A slow exhale — through the mouth, slower than the inhale — is the basic tool of regulation. In moments of panic, it may be enough on its own. No pattern needed, no counting — just let the air out slower than it came in.',
-      ndNote: 'If counting stresses you, don\'t count. Just blow slowly as if extinguishing a candle far away.'
+      ndNote: 'If counting stresses you, don\'t count. Just breathe out slowly, as if gently blowing on a flame.'
     },
     axis: 'breath',
     chapters: [2, 6, 7, 8, 9],

@@ -310,8 +310,8 @@ test('"The four forms of attention" (Chapter 3) plays its five scenes, with no a
   expect(r.violations.map(v => `${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
 });
 
-test('"The metronome of presence" (Chapter 4) plays its two scenes, with no accessibility problems', async ({ page }) => {
-  await page.goto('/el/chapters/4?p=7', { waitUntil: 'networkidle' });
+test('"The metronome of presence" (Chapter 6) plays its two scenes, with no accessibility problems', async ({ page }) => {
+  await page.goto('/el/chapters/6?p=7', { waitUntil: 'networkidle' });
   const anim = page.getByRole('group', { name: 'Ο μετρονόμος της παρουσίας' });
   await anim.scrollIntoViewIfNeeded();
   await expect(anim.getByRole('heading', { name: 'Βρες τον άξονα' })).toBeVisible();

@@ -88,7 +88,7 @@ describe('the voice of the animations', () => {
     }
   });
 
-  it('guides "The metronome of presence" (Chapter 4): two scenes, "right" and "left" on the sides of the swaying', () => {
+  it('guides "The metronome of presence" (Chapter 6): two scenes, "right" and "left" on the sides of the swaying', () => {
     const g = (narration as unknown as Record<string, Record<string, { say?: string; breath?: string; ms?: number }[][]>>).metronome;
     for (const lang of ['el', 'en']) {
       expect(g[lang]).toHaveLength(2);

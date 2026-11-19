@@ -33,14 +33,14 @@ const SCENES: Record<Lang, { title: string; caption: string }[]> = {
   el: [
     { title: 'Ο νους τρέχει', caption: 'Οι σκέψεις πηδούν από τη μία στην άλλη, και η προσοχή τις ακολουθεί. Η επαφή με τη γη χάνεται.' },
     { title: 'Νιώσε τη γη', caption: 'Νιώσε τα σημεία επαφής. Άφησε το βάρος να βυθιστεί στη γη· με την εκπνοή, χαλάρωσε σαγόνι και ώμους.' },
-    { title: 'Νιώσε την αναπνοή', caption: 'Η διαδρομή του αέρα: μέσα από τη μύτη, έξω αργά από το στόμα, σαν να φυσάς ένα κερί. Σε ένταση, ρυθμός 4-6.' },
+    { title: 'Νιώσε την αναπνοή', caption: 'Η διαδρομή του αέρα: μέσα από τη μύτη, έξω αργά από το στόμα, σαν να φυσάς απαλά μια φλόγα. Σε ένταση, ρυθμός 4-6.' },
     { title: 'Εστίασε μπροστά', caption: 'Ένα ήσυχο σημείο μπροστά σου, με απαλό βλέμμα. Έρχεται σκέψη: την αναγνωρίζεις, της δίνεις ταμπέλα, επιστρέφεις απαλά.' },
     { title: 'Άνοιξε στον χώρο', caption: 'Χωρίς να κουνήσεις τα μάτια, η όραση ανοίγει: δεξιά, αριστερά, πάνω, κάτω. Σώμα, αναπνοή, γη, ουρανός, μαζί.' },
   ],
   en: [
     { title: 'The mind races', caption: 'Thoughts jump from one to the next, and attention follows them. The contact with the ground is lost.' },
     { title: 'Feel the earth', caption: 'Feel the points of contact. Let the weight sink into the earth; with the exhale, soften your jaw and shoulders.' },
-    { title: 'Feel the breath', caption: 'The path of the air: in through the nose, slowly out through the mouth, as if blowing out a candle. Under tension, the 4-6 rhythm.' },
+    { title: 'Feel the breath', caption: 'The path of the air: in through the nose, slowly out through the mouth, as if gently blowing on a flame. Under tension, the 4-6 rhythm.' },
     { title: 'Focus forward', caption: 'A quiet point in front of you, a soft gaze. A thought comes: you recognise it, give it a label, return gently.' },
     { title: 'Open into space', caption: 'Without moving your eyes, your vision opens: right, left, up, down. Body, breath, earth, sky, together.' },
   ],
@@ -51,8 +51,8 @@ const WORDS: Record<Lang, string[]> = {
   en: ['should', 'later', 'I forgot', 'what if', 'hurry', 'what will they say', 'tomorrow', 'the message', 'late', 'again'],
 };
 const THOUGHT: Record<Lang, { word: string; tag: string }> = {
-  el: { word: 'κι αν δεν προλάβω;', tag: 'σκέψη' },
-  en: { word: 'what if I am late?', tag: 'thinking' },
+  el: { word: 'κι αν δεν προλάβω;', tag: 'ανησυχία' },
+  en: { word: 'what if I am late?', tag: 'worry' },
 };
 // Screen right first, as in the metronome of Chapter 4: the figure faces us,
 // so "right" is shown as in a mirror.

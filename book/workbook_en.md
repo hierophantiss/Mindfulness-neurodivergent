@@ -435,7 +435,7 @@ When a thought pulls at you, simply going back to the breath can be hard. **Labe
 3. **Triple focus** *(1 minute)* — Hold three things at once: the soles of your feet, the breath, and the point in front of you. If one slips, bring it back.
 4. **Switching the lens** *(1–2 minutes)* — Focus narrowly on one point; then open your gaze to take in the whole room; then narrow again. Zoom in, zoom out.
 
-> ★ **Key Point:** Bringing attention back is not failure; it is the exercise itself. Every "gentle return" builds new neural pathways.
+> ★ **Key Point:** Bringing attention back is not failure; it is the exercise itself. Every "gentle return" is practice, and with repetition the return becomes easier.
 
 ---
 
@@ -937,7 +937,7 @@ We saw why in Chapter 5: intense self-criticism appears to activate the same thr
 
 - Close or half-close your eyes.
 - Feel the path: inhale through the nose → lungs → belly, exhale the other way round.
-- Under tension: move into the 4-6 rhythm, with the exhale slowly through the mouth, as if blowing out a candle.
+- Under tension: move into the 4-6 rhythm, with the exhale slowly through the mouth, as if gently blowing on a flame.
 - **Goal:** a natural, unbroken rhythm; calm in the nervous system.
 
 ### Stage 3 — Focus Forward (Concentration)

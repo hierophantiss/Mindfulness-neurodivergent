@@ -27,13 +27,13 @@ export const CHAPTER_OBJECTIVES: Record<number, { el: string[]; en: string[] }> 
       'Μπορείς να παρατηρείς την αναπνοή χωρίς να επεμβαίνεις και να τη διαβάζεις ως δείκτη της κατάστασής σου.',
       'Μπορείς να επιλέγεις ρυθμό ανάλογα με τη στιγμή (5-5, 4-6, 4-2-7), κρατώντας πάντα την εκπνοή ως εργαλείο.',
       'Μπορείς να διαβάζεις τα συναισθήματα ως «άνεμο» στο σώμα και στην αναπνοή, πριν χρειαστεί να τα ονομάσεις με λέξεις.',
-      'Μπορείς να ξεχωρίζεις ριπές, συστήματα και κλίμα, και να αλλάζεις στόχο ανάλογα: όχι να σβήσει ο άνεμος, αλλά να μένει το σκάφος πλεύσιμο.',
+      'Μπορείς να ξεχωρίζεις ριπές, συστήματα και κλίμα, και να αλλάζεις στόχο ανάλογα: σε μια ριπή βοηθά η αναπνοή· σε ένα σύστημα, ο στόχος είναι να μένει το σκάφος πλεύσιμο.',
     ],
     en: [
       'You can observe the breath without intervening and read it as an indicator of your state.',
       'You can choose a rhythm for the moment (5-5, 4-6, 4-2-7), always keeping the exhale as the tool.',
       'You can read emotions as "winds" in the body and breath, before needing to name them in words.',
-      'You can tell gusts, weather systems and climate apart, and shift the goal accordingly: not to stop the wind, but to keep the boat seaworthy.',
+      'You can tell gusts, weather systems and climate apart, and shift the goal accordingly: in a gust the breath helps; in a system, the goal is to keep the boat seaworthy.',
     ],
   },
   // Κεφ.3 Προσοχή — Μαθαίνεις τις 4 μορφές, τους φαύλους κύκλους «Αλλιώς»/«Έπρεπε»,
@@ -58,13 +58,13 @@ export const CHAPTER_OBJECTIVES: Record<number, { el: string[]; en: string[] }> 
     el: [
       'Μπορείς να ξεχωρίζεις την προσοχή (σημείο) από την επίγνωση (πεδίο) και να μετατοπίζεις το κέντρο από το εγωκεντρικό στο χωροκεντρικό.',
       'Μπορείς να ανοίγεις την περιφέρεια με την ερώτηση χωρίς αντικείμενο («ο χώρος ανάμεσα στα μάτια»), κρατώντας κέντρο τον άξονα της βαρύτητας.',
-      'Μπορείς να αναγνωρίζεις τη μετα-επίγνωση («α, είχα χαθεί») ως κάτι που εμφανίζεται μόνο του, και να εξασκείς σύντομες στιγμές πολλές φορές.',
+      'Μπορείς να αναγνωρίζεις τη μετα-επίγνωση («α, είχα χαθεί») ως κάτι που εμφανίζεται μόνο του, και να φροντίζεις το τούνελ της έντονης εστίασης: δεν το σβήνεις· το αφήνεις να ξαναγεμίσει στο ανοιχτό.',
       'Μπορείς να εφαρμόζεις τον χρυσό κανόνα: άνοιγμα μόνο πάνω σε γειωμένο σώμα· αν νιώσεις αποσύνδεση, επιστρέφεις στη γη.',
     ],
     en: [
       'You can tell attention (the point) from awareness (the field) and shift the centre from the egocentric to the spacecentric.',
       'You can open the periphery with the objectless question ("the space between the eyes"), keeping the gravity axis as centre.',
-      'You can recognise meta-awareness ("ah, I was lost") as something that arises on its own, and practise short moments, many times.',
+      'You can recognise meta-awareness ("ah, I was lost") as something that arises on its own, and care for the tunnel of intense focus: you don\'t switch it off; you let it refill in the open.',
       'You can apply the golden rule: opening only on a grounded body; if you feel disconnected, return to the earth.',
     ],
   },
@@ -104,15 +104,15 @@ export const CHAPTER_OBJECTIVES: Record<number, { el: string[]; en: string[] }> 
   // πρόθεση αντί επιθυμίας, αποφυγή vs εκτελεστική δυσλειτουργία, πληροφορίες αντί σεναρίων.
   7: {
     el: [
-      'Μπορείς να εφαρμόζεις την κάρτα εκκίνησης (Βαρύτητα → Αναπνοή → Χώρος → Ένα Βήμα) όταν δεν μπορείς να ξεκινήσεις, χωρίς να περιμένεις τη διάθεση.',
+      'Μπορείς να εφαρμόζεις την κάρτα «Βαρύτητα — Αναπνοή — Χώρος — Ένα βήμα» όταν δεν μπορείς να ξεκινήσεις, χωρίς να περιμένεις τη διάθεση.',
       'Μπορείς να ξεχωρίζεις την επιθυμία από την πρόθεση και τη θέληση της πράξης: κρατάς την πράξη, αφήνεις την έκβαση, και κινείσαι ένα βήμα τη φορά.',
-      'Μπορείς να διακρίνεις την αποφυγή από την εκτελεστική δυσλειτουργία, και να στηρίζεις τη δεύτερη και με εξωτερικά εργαλεία (χρονόμετρο, λίστα τριών βημάτων, κάποιος δίπλα σου που κάνει κι αυτός τη δουλειά του).',
+      'Μπορείς να αναγνωρίζεις πότε δεν είναι αποφυγή αλλά εκτελεστική δυσλειτουργία, και τότε να ζητάς στήριγμα και έξω από σένα (χρονόμετρο, λίστα τριών βημάτων, κάποιος δίπλα σου που κάνει κι αυτός τη δουλειά του).',
       'Μπορείς να μετατρέπεις τους μεγάλους στόχους σε πληροφορίες αντί για σενάρια, και να αντιμετωπίζεις κάθε προσπάθεια ως παιχνίδι και εξάσκηση, όχι ως εξέταση.',
     ],
     en: [
-      'You can apply the starting card (Gravity → Breath → Space → One Step) when you can\'t begin, without waiting for the mood.',
+      'You can apply the card “Gravity — Breath — Space — One step” when you can\'t begin, without waiting for the mood.',
       'You can tell desire from intention and the will of the act: keep the act, leave the outcome, and move one step at a time.',
-      'You can tell avoidance from executive dysfunction, and support the latter with external tools too (a timer, a three-step list, someone beside you doing their own work).',
+      'You can recognise when it isn\'t avoidance but executive dysfunction, and then lean on support from outside too (a timer, a three-step list, someone beside you doing their own work).',
       'You can turn big goals into information instead of scenarios, and treat each attempt as play and practice, not an exam.',
     ],
   },
@@ -153,13 +153,13 @@ export const CHAPTER_OBJECTIVES: Record<number, { el: string[]; en: string[] }> 
       'Μπορείς να εκτελείς τα τέσσερα στάδια με σειρά (Γη → Αναπνοή → Σημείο → Χώρος) σε ήσυχη στιγμή, και να τα εφαρμόζεις εν μέρει οποιαδήποτε στιγμή.',
       'Μπορείς να κρατάς την απαλότητα ως την ίδια τη μέθοδο: κάθε επιστροφή χωρίς κριτική είναι εξάσκηση καλοσύνης, όχι ιδέα.',
       'Μπορείς να προσαρμόζεις διάρκεια και συνθήκες χωρίς να χάνεις τη σειρά, και να αναγνωρίζεις ποιο στάδιο σου είναι φυσικό και πού δυσκολεύεσαι.',
-      'Μπορείς να ξεχωρίζεις τις τρεις εκδοχές της πρακτικής: Κάρτα της Τσέπης (μέσα στο κύμα), Φύλλο Εργασίας (μέσα στη μέρα), Τέσσερα Στάδια (ήσυχη στιγμή).',
+      'Μπορείς να ξεχωρίζεις τις εκδοχές της πρακτικής: Κάρτα της Τσέπης (μέσα στο κύμα), Φύλλο Εργασίας (μέσα στη μέρα), Τέσσερα Στάδια (ήσυχη στιγμή)· και, όταν δεν μπορείς να ξεκινήσεις, την κάρτα του Κεφαλαίου 7.',
     ],
     en: [
       'You can run the four stages in order (Earth → Breath → Point → Space) in a quiet moment, and apply them partly at any time.',
       'You can hold gentleness as the method itself: each return without judgement is kindness practised, not an idea.',
       'You can adjust duration and conditions without losing the sequence, and recognise which stage feels natural and where you struggle.',
-      'You can tell the three versions of the practice apart: Pocket Card (inside the wave), Worksheet (inside the day), Four Stages (quiet moment).',
+      'You can tell the versions of the practice apart: Pocket Card (inside the wave), Worksheet (inside the day), Four Stages (quiet moment); and, when you can\'t begin, the card of Chapter 7.',
     ],
   },
   // Κεφ.11 Το Υπόβαθρο — Μαθαίνεις το «πώς» (bottom-up, τι στηρίζει η έρευνα και με ποια

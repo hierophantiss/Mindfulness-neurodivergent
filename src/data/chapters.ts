@@ -261,7 +261,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
           "Gentle return: If you drift, notice it (with a label if needed) and come back gently: body → breath → steady point."
         ]
       },
-      "insight": "Bringing attention back is not failure; it is the exercise itself. Every \"gentle return\" builds new neural pathways.",
+      "insight": "Bringing attention back is not failure; it is the exercise itself. Every \"gentle return\" is practice, and with repetition the return becomes easier.",
       "reflection": "The journey of my attention: where does it tend to \"stick\" or to \"race\"?"
     },
     {
@@ -324,7 +324,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
             "Attention moved, but found nothing to grasp. Space has no edge, no weight. And with nowhere to hook on, the grip loosened by itself and opened. That is all: when you give attention space as its \"object\", it becomes awareness.",
             "Many of the breathing exercises here, in the sound space, come with binaural beats in the alpha band, as support for this relaxed, open attention."
           ],
-          "interactive": "metronomos"
+          "interactive": "openawareness"
         },
         {
           "title": "Short Moments, Many Times",
@@ -340,8 +340,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
           "paragraphs": [
             "The first three centres were not an \"antechamber\" we leave behind. Narrow focus and open awareness are complementary, the way the zoom and the wide-angle lens are the same camera. The tunnel was never the enemy; it is the zoom lens. You will use both all your life; freedom is not getting stuck in either.",
             "Over time the distinction softens: the return becomes effortless, focus stops being a clench, and mindfulness and awareness stop being two things. The wave does not stop being a wave when it remembers it is water. It simply stops fighting the sea."
-          ],
-          "interactive": "openawareness"
+          ]
         },
         {
           "title": "The Drop and the Ocean",
@@ -453,12 +452,11 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
         }
       ],
       "exercise": {
-        "title": "My Patterns",
+        "title": "The Mask in the Body",
         "steps": [
-          "When does my mind tend to \"race\"?",
-          "When does it \"lock in\"?",
-          "What situations trigger it?",
-          "Where do I feel the mask in my body: in the jaw, the shoulders, the breath?"
+          "Where do I feel the mask in my body: in the jaw, the shoulders, the breath held a little high?",
+          "When did the jaw start to tighten? When did the breath rise?",
+          "You don't need to decide anything about your identity to notice it."
         ]
       },
       "insight": "Defence does not make your thoughts; it selects them. It does not come down through arguments, but through signals of safety and through time. And the mask was always a function, never an identity.",
@@ -523,6 +521,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
             "• Sway gently. Rhythm wakes the system without startling it.\n• Hum on the exhale. Vibration is movement from within.\n• Raise your gaze to the horizon or the sky. The body reads distance as an invitation.\n• Walk slowly, feeling the push of each sole, and let the rhythm rise by itself.\n• Warmth, light, a favourite song. Small, warm, rhythmic: that is the recipe.",
             "The aim is not to force energy, but to let the wind rise again by itself."
           ],
+          "interactive": "metronomos",
           "actionLink": {
             "url": "/practice/microdoses",
             "label": "Small doses for every axis"
@@ -639,10 +638,10 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
           "Once, write down what it involves: what is needed, in what order, whom you ask.",
           "Information, not scenarios: not 'how will I feel', but 'what is there'.",
           "Put the map at the edge of the mind.",
-          "Take only the next step. For a driving license: first, go to the instructor."
+          "Take only the next step, with the card: gravity, breath, space, one step. For a driving licence: first, go to the instructor."
         ]
       },
-      "insight": "Keep the act, let go of the outcome, and move one step at a time, without hurry.",
+      "insight": "In place of urgency and panic you put the body and its energy, the breath, and your intention. You keep the act, let go of the outcome, and move one step at a time. Avoidance you meet with gentleness; executive dysfunction you also support with tools outside yourself.",
       "reflection": "Bring to mind something you are putting off. Is the act itself hard, or the mountain the mind has built around it? Is it avoidance or executive dysfunction — and how can you tell from the body? What would be the body's first small step, without waiting to want it?"
     },
     {
@@ -808,7 +807,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
         {
           "title": "Stage 2 — Feel the Breath (Regulation)",
           "paragraphs": [
-            "• Close or half-close your eyes.\n• Feel the path: inhale through the nose → lungs → belly, exhale the other way round.\n• Under tension: move into the 4-6 rhythm, with the exhale slowly through the mouth, as if blowing out a candle.\n• <strong>Goal:</strong> a natural, unbroken rhythm; calm in the nervous system."
+            "• Close or half-close your eyes.\n• Feel the path: inhale through the nose → lungs → belly, exhale the other way round.\n• Under tension: move into the 4-6 rhythm, with the exhale slowly through the mouth, as if gently blowing on a flame.\n• <strong>Goal:</strong> a natural, unbroken rhythm; calm in the nervous system."
           ]
         },
         {
@@ -1175,7 +1174,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
           "Απαλή Επιστροφή: Αν παρασυρθείς, αναγνώρισέ το (με ταμπέλα αν χρειάζεται) και επέστρεψε απαλά: σώμα → αναπνοή → σταθερό σημείο."
         ]
       },
-      "insight": "Η επιστροφή της προσοχής δεν είναι αποτυχία, είναι η ίδια η άσκηση. Κάθε «απαλή επιστροφή» χτίζει νέες νευρικές διαδρομές.",
+      "insight": "Η επιστροφή της προσοχής δεν είναι αποτυχία, είναι η ίδια η άσκηση. Κάθε «απαλή επιστροφή» είναι εξάσκηση, και με την επανάληψη η επιστροφή γίνεται πιο εύκολη.",
       "reflection": "Το ταξίδι της προσοχής μου — πού τείνει να «κολλάει» ή να «τρέχει»;"
     },
     {
@@ -1238,7 +1237,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
             "Η προσοχή κινήθηκε, αλλά δεν βρήκε τίποτα να πιάσει. Ο χώρος δεν έχει άκρη, δεν έχει βάρος. Και χωρίς κάπου να γαντζωθεί, η λαβή λύθηκε μόνη της κι άνοιξε. Αυτό είναι όλο: όταν δίνεις στην προσοχή τον χώρο ως «αντικείμενο», γίνεται επίγνωση.",
             "Πολλές ασκήσεις αναπνοής εδώ, στον χώρο ήχου, συνοδεύονται από binaural beats στη ζώνη άλφα, ως υποστήριξη γι' αυτή τη χαλαρή, ανοιχτή προσοχή."
           ],
-          "interactive": "metronomos"
+          "interactive": "openawareness"
         },
         {
           "title": "Σύντομες Στιγμές, Πολλές Φορές",
@@ -1254,8 +1253,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
           "paragraphs": [
             "Τα τρία πρώτα κέντρα δεν ήταν «προθάλαμος» που ξεπερνάμε. Στενή εστίαση και ανοιχτή επίγνωση είναι συμπληρωματικές, όπως το ζουμ και ο ευρύς φακός είναι η ίδια κάμερα. Το τούνελ δεν ήταν ποτέ ο εχθρός· είναι ο φακός του ζουμ. Θα χρησιμοποιείς και τα δύο σε όλη σου τη ζωή· η ελευθερία είναι να μην κολλάς σε κανένα.",
             "Με τον καιρό η διάκριση μαλακώνει: η επιστροφή γίνεται αβίαστη, η εστίαση παύει να είναι σφίξιμο, και ενσυνειδητότητα και επίγνωση παύουν να είναι δύο πράγματα. Το κύμα δεν σταματά να είναι κύμα όταν θυμηθεί ότι είναι νερό. Απλώς παύει να παλεύει με τη θάλασσα."
-          ],
-          "interactive": "openawareness"
+          ]
         },
         {
           "title": "Η Σταγόνα και ο Ωκεανός",
@@ -1367,12 +1365,11 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
         }
       ],
       "exercise": {
-        "title": "Τα Μοτίβα μου",
+        "title": "Η Μάσκα στο Σώμα",
         "steps": [
-          "Πότε τείνει να «τρέχει» ο νους μου;",
-          "Πότε «κλειδώνει»;",
-          "Ποιες καταστάσεις το προκαλούν;",
-          "Πού νιώθω τη μάσκα στο σώμα: στο σαγόνι, στους ώμους, στην αναπνοή;"
+          "Πού νιώθω τη μάσκα στο σώμα: στο σαγόνι, στους ώμους, στην αναπνοή που κρατιέται λίγο ψηλά;",
+          "Πότε άρχισε να σφίγγει το σαγόνι; Πότε ανέβηκε η αναπνοή;",
+          "Δεν χρειάζεται να αποφασίσεις τίποτα για την ταυτότητά σου για να το προσέξεις."
         ]
       },
       "insight": "Η άμυνα δεν φτιάχνει τις σκέψεις σου, τις επιλέγει. Δεν χαμηλώνει με επιχειρήματα, αλλά με σήματα ασφάλειας και με χρόνο. Και η μάσκα ήταν πάντα λειτουργία, ποτέ ταυτότητα.",
@@ -1437,6 +1434,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
             "• Λικνίσου απαλά. Ο ρυθμός ξυπνά το σύστημα χωρίς να το τρομάζει.\n• Βούισε στην εκπνοή. Η δόνηση είναι κίνηση από μέσα.\n• Σήκωσε το βλέμμα στον ορίζοντα ή στον ουρανό. Το σώμα διαβάζει την απόσταση ως πρόσκληση.\n• Περπάτα αργά, νιώθοντας το σπρώξιμο κάθε πέλματος, και άφησε τον ρυθμό να ανέβει μόνος του.\n• Ζεστασιά, φως, ένα αγαπημένο τραγούδι. Μικρό, ζεστό, ρυθμικό: αυτή είναι η συνταγή.",
             "Στόχος δεν είναι να πιέσεις ενέργεια, αλλά να αφήσεις τον άνεμο να ξανασηκωθεί μόνος του."
           ],
+          "interactive": "metronomos",
           "actionLink": {
             "url": "/practice/microdoses",
             "label": "Μικρο-δόσεις για κάθε άξονα"
@@ -1553,10 +1551,10 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
           "Μία φορά, κατέγραψε τι περιλαμβάνει: τι χρειάζεται, με ποια σειρά, ποιον ρωτάς.",
           "Πληροφορίες, όχι σενάρια: όχι «πώς θα νιώσω», αλλά «τι υπάρχει».",
           "Βάλε τον χάρτη στην άκρη του μυαλού.",
-          "Κάνε μόνο το επόμενο βήμα. Για ένα δίπλωμα: πρώτα πας στον δάσκαλο."
+          "Κάνε μόνο το επόμενο βήμα, με την κάρτα: βαρύτητα, αναπνοή, χώρος, ένα βήμα. Για ένα δίπλωμα: πρώτα πας στον δάσκαλο."
         ]
       },
-      "insight": "Κρατάς την πράξη, αφήνεις την έκβαση, και κινείσαι ένα βήμα τη φορά, χωρίς βιασύνη.",
+      "insight": "Στη θέση του επείγοντος και του πανικού βάζεις το σώμα και την ενέργειά του, την αναπνοή και την πρόθεσή σου. Κρατάς την πράξη, αφήνεις την έκβαση, και κινείσαι ένα βήμα τη φορά. Την αποφυγή τη δουλεύεις με απαλότητα· την εκτελεστική δυσλειτουργία τη στηρίζεις και με εργαλεία έξω από σένα.",
       "reflection": "Φέρε στον νου κάτι που αναβάλλεις. Δύσκολη είναι η ίδια η πράξη ή το βουνό που έχτισε γύρω της ο νους; Είναι αποφυγή ή εκτελεστική δυσλειτουργία, και πώς το καταλαβαίνεις από το σώμα; Ποιο θα ήταν το πρώτο μικρό βήμα του σώματος, χωρίς να περιμένεις να το θες;"
     },
     {
@@ -1722,7 +1720,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
         {
           "title": "Στάδιο 2 — Νιώσε την Αναπνοή (Ρύθμιση)",
           "paragraphs": [
-            "• Κλείσε ή μισόκλεισε τα μάτια.\n• Νιώσε τη διαδρομή: εισπνοή από τη μύτη → πνεύμονες → κοιλιά, εκπνοή αντίστροφα.\n• Σε ένταση: πέρασε στον ρυθμό 4-6, με την εκπνοή αργά από το στόμα, σαν να φυσάς ένα κερί.\n• <strong>Στόχος:</strong> φυσικός αδιάκοπος ρυθμός, ηρεμία του νευρικού συστήματος."
+            "• Κλείσε ή μισόκλεισε τα μάτια.\n• Νιώσε τη διαδρομή: εισπνοή από τη μύτη → πνεύμονες → κοιλιά, εκπνοή αντίστροφα.\n• Σε ένταση: πέρασε στον ρυθμό 4-6, με την εκπνοή αργά από το στόμα, σαν να φυσάς απαλά μια φλόγα.\n• <strong>Στόχος:</strong> φυσικός αδιάκοπος ρυθμός, ηρεμία του νευρικού συστήματος."
           ]
         },
         {

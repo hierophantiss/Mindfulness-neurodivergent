@@ -27,26 +27,26 @@ export default function OpenAwareness() {
   const localeData = {
     el: {
       scenes: [
-        { label: 'Εγκλωβισμός', sub: 'Τυλιγμένοι στα πέπλα των σκέψεων', bg: [30, 15, 35] },
+        { label: 'Τα πέπλα των σκέψεων', sub: 'Οι σκέψεις σε τυλίγουν· δεν χρειάζεται να τις διώξεις', bg: [30, 15, 35] },
         { label: 'Γείωση & Εστίαση', sub: 'Ο άξονας φωτίζει — το βλέμμα εστιάζει', bg: [15, 20, 38] },
         { label: 'Διεύρυνση', sub: 'Η βεντάλια ανοίγει — όραση, ακοή, αίσθηση', bg: [12, 25, 30] },
-        { label: 'Ανοιχτή Επίγνωση', sub: 'Ο ουρανός που χωράει τα πάντα', bg: [15, 30, 25] }
+        { label: 'Ανοιχτή Επίγνωση', sub: 'Ο χώρος γύρω σου, εδώ, χωράει τα πάντα', bg: [15, 30, 25] }
       ],
       thoughtWords: ['σκέψη', 'ανησυχία', 'σχέδιο', 'θυμός', 'χαρά', 'φόβος', 'ανάμνηση', 'προσδοκία', 'κρίση', 'επιθυμία'],
       introTitle: 'Χώρος',
-      introSub: 'Ανοιχτή Επίγνωση — Από την εστίαση στον ανοιχτό ουρανό',
+      introSub: 'Ανοιχτή Επίγνωση — Από την εστίαση στον ανοιχτό χώρο',
       introHint: '▶ Ξεκίνα'
     },
     en: {
       scenes: [
-        { label: 'Entrapment', sub: 'Wrapped in veils of thought', bg: [30, 15, 35] },
+        { label: 'Veils of thought', sub: 'Thoughts wrap around you; you don\'t need to push them away', bg: [30, 15, 35] },
         { label: 'Grounding & Focus', sub: 'The axis illuminates — the gaze focuses', bg: [15, 20, 38] },
         { label: 'Expansion', sub: 'The fan opens — sight, hearing, sensation', bg: [12, 25, 30] },
-        { label: 'Open Awareness', sub: 'The sky that holds everything', bg: [15, 30, 25] }
+        { label: 'Open Awareness', sub: 'The space around you, here, holds everything', bg: [15, 30, 25] }
       ],
-      thoughtWords: ['thought', 'worry', 'plan', 'anger', 'joy', 'fear', 'memory', 'expectation', 'judgment', 'desire'],
+      thoughtWords: ['thought', 'worry', 'plan', 'anger', 'joy', 'fear', 'memory', 'expectation', 'judgement', 'desire'],
       introTitle: 'Space',
-      introSub: 'Open Awareness — From focus to the open sky',
+      introSub: 'Open Awareness — From focus to open space',
       introHint: '▶ Begin'
     }
   };

@@ -65,13 +65,13 @@ const LABELS: Record<ReadLang, Record<string, string>> = {
   el: {
     keyPoints: 'Βασικά σημεία.',
     practice: 'Πρακτική άσκηση.',
-    insight: 'Επίγνωση.',
+    insight: 'Με μια φράση.',
     reflection: 'Αναστοχασμός.',
   },
   en: {
     keyPoints: 'Key points.',
     practice: 'Practice.',
-    insight: 'Insight.',
+    insight: 'In one sentence.',
     reflection: 'Reflection.',
   },
 };
