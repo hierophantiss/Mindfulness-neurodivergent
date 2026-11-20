@@ -22,8 +22,31 @@ test('the guide opens the first chapter, and the arrow keys turn the page', asyn
     const pages = page.getByRole('navigation', { name: 'Σελίδες του κεφαλαίου' });
     await expect(pages).toBeVisible();
     await page.keyboard.press('ArrowRight');
-    await expect(page.getByText(/Σελίδα 2 από/)).toBeVisible();
+    await expect(page.getByText(/Σελίδα 2 από/).filter({ visible: true })).toBeVisible();
   }
+});
+
+test('a chapter says once that its pages turn like a book, and where you are', async ({ page, isMobile }) => {
+  await page.goto('/el/chapters/1', { waitUntil: 'networkidle' });
+  const hint = page.getByRole('note').filter({ hasText: 'Σαν βιβλίο' });
+  await expect(hint).toBeVisible();
+  await expect(hint).toContainText(isMobile ? 'σύρε προς τα αριστερά' : 'βελάκια');
+  await expect(page.getByText(/^Σελίδα 1 από \d+$/).filter({ visible: true })).toBeVisible();
+  await page.getByRole('button', { name: /Επόμενη σελίδα/ }).click();
+  await expect(page.getByText(/^Σελίδα 2 από \d+$/).filter({ visible: true })).toBeVisible();
+  await expect(hint).toHaveCount(0);
+  await page.reload({ waitUntil: 'networkidle' });
+  await expect(page.getByRole('note').filter({ hasText: 'Σαν βιβλίο' })).toHaveCount(0);
+});
+
+test('a Rabbit Hole text: the next page opens at its top', async ({ page }) => {
+  await page.goto('/el/rabbithole/wave-and-sea', { waitUntil: 'networkidle' });
+  const text = page.getByRole('dialog').getByRole('region', { name: 'Το κείμενο' });
+  await expect(text).toBeVisible();
+  await text.evaluate(el => { el.scrollTop = el.scrollHeight; });
+  expect(await text.evaluate(el => el.scrollTop)).toBeGreaterThan(0);
+  await page.getByRole('button', { name: 'Επόμενη σελίδα' }).click();
+  await expect.poll(() => text.evaluate(el => el.scrollTop)).toBe(0);
 });
 
 test('a breath starts without sound and counts', async ({ page }) => {

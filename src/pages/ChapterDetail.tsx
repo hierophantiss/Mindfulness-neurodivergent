@@ -8,7 +8,7 @@ import { CHAPTER_TITLES } from '../data/chapterTitles';
 import { DriftNote } from '../components/DriftNote';
 import { ReflectInJournal } from '../components/ReflectInJournal';
 import { chapterObjectives } from '../data/chapterObjectives';
-import { ArrowLeft, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, Check, Zap, Sparkles, Music } from 'lucide-react';
+import { ArrowLeft, BookOpen, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, Check, Zap, Sparkles, Music } from 'lucide-react';
 import { useCompanion } from '../hooks/useCompanion';
 import { useLanguage } from '../hooks/useLanguage';
 import { useReward } from '../contexts/RewardContext';
@@ -27,6 +27,8 @@ import { ChapterIcon } from '../components/ChapterIcon';
 import { useSpeechReader, loadReaderSettings, saveReaderSettings, type ReaderSettings } from '../hooks/useSpeechReader';
 
 const READER_POS_KEY = 'n_mindfulness_reader_pos';
+/** Set once the reader has turned a page: the hint «Σαν βιβλίο…» is not shown again. */
+const PAGE_HINT_KEY = 'n_mindfulness_page_hint_seen';
 /** The chapter's axis, shown next to "Chapter N" in the reader's language. */
 const AXIS_LABEL: Record<string, { el: string; en: string }> = {
   body: { el: 'Σώμα', en: 'Body' },
@@ -283,6 +285,17 @@ export default function ChapterDetail() {
   });
   const [direction, setDirection] = useState(1);
   const touchStartX = useRef(0);
+  // The pages turn like a book's. Until the reader has turned one, a quiet line
+  // under the header says so (once per device).
+  const [pageHint, setPageHint] = useState(() => {
+    try { return localStorage.getItem(PAGE_HINT_KEY) !== '1'; } catch { return false; }
+  });
+  const openedOnPage = useRef(page);
+  useEffect(() => {
+    if (!pageHint || page === openedOnPage.current) return;
+    setPageHint(false);
+    try { localStorage.setItem(PAGE_HINT_KEY, '1'); } catch { /* storage blocked: the line just shows again next time */ }
+  }, [page, pageHint]);
   const [visibleParagraphs, setVisibleParagraphs] = useState(1);
   const [activeConceptId, setActiveConceptId] = useState<string | null>(null);
 
@@ -472,6 +485,7 @@ export default function ChapterDetail() {
     scrollToTop();
   };
   const tocLang = language === 'el' ? 'el' : 'en';
+
   const isLastPage = page >= pages.length - 1;
 
   return (
@@ -532,6 +546,9 @@ export default function ChapterDetail() {
               />
             ))}
           </div>
+          <span className="wide:hidden mt-1.5 text-[12px] text-ink/65 font-sans">
+            {language === 'el' ? `Σελίδα ${page + 1} από ${pages.length}` : `Page ${page + 1} of ${pages.length}`}
+          </span>
         </div>
         
         {/* Discret Ambient Audio Toggle */}
@@ -550,6 +567,18 @@ export default function ChapterDetail() {
           <span className="desk:hidden">{language === 'el' ? 'Μουσική' : 'Music'}</span>
         </button>
       </header>
+
+      {pageHint && pages.length > 1 && (
+        <p role="note" className="mx-auto mt-1 mb-2 max-w-md flex items-center justify-center gap-2 rounded-full px-4 py-2 text-[13px] text-ink/75 bg-white/[0.04] border border-white/10 font-sans">
+          <BookOpen size={15} aria-hidden="true" className="shrink-0 text-ink/60" />
+          <span className="desk:hidden">
+            {language === 'el' ? 'Σαν βιβλίο: σύρε προς τα αριστερά για την επόμενη σελίδα.' : 'Like a book: swipe left for the next page.'}
+          </span>
+          <span className="hidden desk:inline">
+            {language === 'el' ? 'Σαν βιβλίο: τα βελάκια του πληκτρολογίου αλλάζουν σελίδα.' : 'Like a book: the arrow keys turn the page.'}
+          </span>
+        </p>
+      )}
 
       {/* Main Content Area */}
       <div

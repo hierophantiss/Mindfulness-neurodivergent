@@ -124,6 +124,11 @@ export default function RabbitHole() {
   }, [logActivity]);
   
   const [currentPage, setCurrentPage] = useState(0);
+  // A new page starts at its top, as a chapter's does (the text scrolls inside the viewer).
+  const textScrollRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    textScrollRef.current?.scrollTo({ top: 0 });
+  }, [currentPage, activeArticle]);
 
   useEffect(() => {
     // If it's a sub-route (e.g. /rabbithole/the-goose-is-out)
@@ -311,6 +316,7 @@ export default function RabbitHole() {
           {/* Scrolling Content */}
           <div 
             role="region"
+            ref={textScrollRef}
             aria-label={language === 'el' ? 'Το κείμενο' : 'The text'}
             className="flex-1 overflow-y-auto px-6 md:px-16"
             tabIndex={0}
