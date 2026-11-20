@@ -12,6 +12,7 @@ import { keepDataOnDevice } from './lib/dataSafety';
 import { installErrorLog } from './lib/errorLog';
 import { isNative } from './lib/native';
 import { keepArrivingText } from './lib/firstPaint';
+import { catchInstallPrompt } from './lib/installPrompt';
 
 // Errors are noted on this device only (Settings → Diagnostics).
 installErrorLog();
@@ -23,6 +24,9 @@ applyReadingPrefs(readEasyRead());
 window.addEventListener('vite:preloadError', (event) => {
   if (reloadOnceForUpdate()) event.preventDefault();
 });
+
+// The browser's offer to install comes early: kept for our own "Install" buttons.
+catchInstallPrompt();
 
 // Sound is allowed only after a tap: the first one wakes the audio engine, quietly.
 listenForFirstTap();

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { clearAll } from '../lib/storage';
 import { useFocusTrap } from '../hooks/useFocusTrap';
+import { promptInstall } from '../lib/installPrompt';
 import BackupDialog from './BackupDialogLazy';
 import type { BackupMode } from './BackupDialog';
 import { Home, BookOpen, Activity, X, Info, Music, LayoutGrid, EyeOff, Eye, Database, Download, Sparkles, RotateCcw, Headphones, LetterText, Compass, Settings, Layers, BookA } from 'lucide-react';
@@ -19,7 +20,6 @@ export default function NavigationMenu() {
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [backupMode, setBackupMode] = useState<BackupMode | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const { language, setLanguage } = useLanguage();
@@ -40,34 +40,12 @@ export default function NavigationMenu() {
     return () => window.removeEventListener('open-menu', open);
   }, []);
 
-  useEffect(() => {
-    const handler = (e: any) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-      (window as any).initDeferredPrompt = e;
-    };
-    
-    if ((window as any).initDeferredPrompt) {
-      setDeferredPrompt((window as any).initDeferredPrompt);
-    }
-
-    window.addEventListener('beforeinstallprompt', handler);
-    return () => window.removeEventListener('beforeinstallprompt', handler);
-  }, []);
-
   const handleInstallClick = async () => {
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
     const isIframe = window.self !== window.top;
     
-    const promptEvent = deferredPrompt || (window as any).initDeferredPrompt;
-
-    if (promptEvent) {
-      promptEvent.prompt();
-      const { outcome } = await promptEvent.userChoice;
-      if (outcome === 'accepted') {
-        setDeferredPrompt(null);
-        (window as any).initDeferredPrompt = null;
-      }
+    if (await promptInstall()) {
+      // The browser's own install window opened (and closed).
     } else if (isIframe) {
        showToast(language === 'el'
          ? 'Άνοιξέ το σε νέο παράθυρο για εγκατάσταση.'

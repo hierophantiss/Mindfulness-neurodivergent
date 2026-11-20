@@ -408,3 +408,45 @@ test('the animation pages are kept for offline use', async ({ request }) => {
   for (const f of ['racing_mind', 'samatha_attention', 'camera', 'camera-hero']) expect(sw).toContain(`animations/${f}.html`);
 });
 
+
+// The browser's offer to install, as Chrome sends it.
+const offerInstall = (page: import('@playwright/test').Page, outcome: 'accepted' | 'dismissed') =>
+  page.evaluate((outcome) => {
+    const e = new Event('beforeinstallprompt', { cancelable: true }) as Event & Record<string, unknown>;
+    e.prompt = async () => { (window as unknown as Record<string, boolean>).__prompted = true; };
+    e.userChoice = Promise.resolve({ outcome });
+    window.dispatchEvent(e);
+  }, outcome);
+
+test('the home page offers the app with one tap once the browser allows it', async ({ page }) => {
+  await page.goto('/el', { waitUntil: 'networkidle' });
+  const card = page.getByRole('region', { name: 'Η εφαρμογή στην οθόνη σου' });
+  await expect(card).toHaveCount(0);
+  await offerInstall(page, 'accepted');
+  await expect(card).toBeVisible();
+  await card.getByRole('button', { name: 'Εγκατάσταση' }).click();
+  expect(await page.evaluate(() => (window as unknown as Record<string, boolean>).__prompted)).toBe(true);
+  await expect(page.getByRole('status').filter({ hasText: 'Έγινε' })).toBeVisible();
+});
+
+test('"Not now" puts the install card away, and it stays away', async ({ page }) => {
+  await page.goto('/el', { waitUntil: 'networkidle' });
+  await offerInstall(page, 'dismissed');
+  const card = page.getByRole('region', { name: 'Η εφαρμογή στην οθόνη σου' });
+  await card.getByRole('button', { name: 'Όχι τώρα' }).click();
+  await expect(card).toHaveCount(0);
+  await page.reload({ waitUntil: 'networkidle' });
+  await offerInstall(page, 'dismissed');
+  await expect(page.getByRole('region', { name: 'Η εφαρμογή στην οθόνη σου' })).toHaveCount(0);
+});
+
+test.describe('on an iPhone', () => {
+  test.use({ userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1' });
+  test('the install card says the two steps, since Safari has no install button', async ({ page }) => {
+    await page.goto('/el', { waitUntil: 'networkidle' });
+    const card = page.getByRole('region', { name: 'Η εφαρμογή στην οθόνη σου' });
+    await expect(card).toBeVisible();
+    await expect(card).toContainText('Προσθήκη στην οθόνη αφετηρίας');
+    await expect(card.getByRole('button', { name: 'Εγκατάσταση' })).toHaveCount(0);
+  });
+});

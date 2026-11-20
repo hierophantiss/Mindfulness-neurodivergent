@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { isNative } from '../lib/native';
+import { canPromptInstall, onInstallPromptChange, promptInstall } from '../lib/installPrompt';
 
-// The browser's install prompt is caught once (NavigationMenu keeps it on
-// window.initDeferredPrompt). This hook shares it, and tells whether the app
-// is already running installed, so install links can hide themselves.
+// The browser's install prompt is caught at start-up (lib/installPrompt.ts).
+// This hook shares it, says whether a tap can open it (canPrompt), and whether
+// the app is already running installed, so install links can hide themselves.
 
 // The Android app counts as installed: it is.
 const isStandaloneNow = () =>
@@ -12,32 +13,24 @@ const isStandaloneNow = () =>
 
 export function useInstallApp(language: string) {
   const [installed, setInstalled] = useState(isStandaloneNow);
+  const [canPrompt, setCanPrompt] = useState(canPromptInstall);
 
   useEffect(() => {
     const onInstalled = () => setInstalled(true);
-    const onPrompt = (e: any) => {
-      e.preventDefault();
-      (window as any).initDeferredPrompt = e;
-    };
     window.addEventListener('appinstalled', onInstalled);
-    window.addEventListener('beforeinstallprompt', onPrompt);
+    const off = onInstallPromptChange(() => setCanPrompt(canPromptInstall()));
     return () => {
       window.removeEventListener('appinstalled', onInstalled);
-      window.removeEventListener('beforeinstallprompt', onPrompt);
+      off();
     };
   }, []);
 
   // Returns a short hint when the browser cannot show its own prompt.
   const install = async (): Promise<string | null> => {
     const el = language === 'el';
-    const promptEvent = (window as any).initDeferredPrompt;
-    if (promptEvent) {
-      promptEvent.prompt();
-      const { outcome } = await promptEvent.userChoice;
-      if (outcome === 'accepted') {
-        (window as any).initDeferredPrompt = null;
-        setInstalled(true);
-      }
+    const outcome = await promptInstall();
+    if (outcome) {
+      if (outcome === 'accepted') setInstalled(true);
       return null;
     }
     if (window.self !== window.top) {
@@ -52,5 +45,5 @@ export function useInstallApp(language: string) {
     return el ? 'Πάτα τις τρεις τελείες του browser και μετά «Εγκατάσταση εφαρμογής».' : 'Tap the browser’s three dots, then “Install app”.';
   };
 
-  return { installed, install };
+  return { installed, canPrompt, install };
 }

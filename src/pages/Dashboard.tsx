@@ -22,6 +22,7 @@ import HomeEarth from '../components/HomeEarth';
 const HomeTour = lazy(() => import('../components/HomeTour'));
 import { PLACE_PATHS } from '../components/placeIcons';
 import BackupReminder from '../components/BackupReminder';
+import InstallCard from '../components/InstallCard';
 import { readingSpot, chaptersRead } from '../lib/readingSpot';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { PRACTICE_CATALOG } from '../data/practiceCatalog';
@@ -127,7 +128,7 @@ export default function Dashboard() {
     return () => window.removeEventListener('home-tour', start);
   }, []);
   const [bookOpen, setBookOpen] = useState(false);
-  const { installed } = useInstallApp(language);
+  const { installed, canPrompt } = useInstallApp(language);
 
 
 
@@ -394,6 +395,9 @@ export default function Dashboard() {
           </motion.nav>
 
         </motion.div>
+
+        {/* The app on your screen, with one tap where the browser allows it. */}
+        <InstallCard lang={lang} installed={installed} canPrompt={canPrompt} />
 
         {/* The phrase of the day, as a quiet close at the foot of the page. */}
         <motion.figure
