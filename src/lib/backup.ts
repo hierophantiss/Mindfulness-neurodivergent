@@ -74,6 +74,9 @@ const KEYS: Record<string, Check> = {
   n_mindfulness_airy_text: flag,
   // Settings
   n_mindfulness_reduce_motion: flag,
+  n_mindfulness_vibration: flag,
+  n_mindfulness_bell: flag,
+  n_mindfulness_program_days: object,
   mindfulness_lang: oneOf('el', 'en'),
   n_mindfulness_reminder_time: like(/^\d{2}:\d{2}$/),
   vocal_pitch: oneOf('high', 'low'),
@@ -118,8 +121,9 @@ export function collectBackup(storage: Storage = deviceStorage()): Record<string
 }
 
 /** The backup as the text of its file (plain JSON). */
-export function backupText(storage: Storage = deviceStorage()): string {
-  return JSON.stringify({ app: APP, version: 2, data: collectBackup(storage) });
+export function backupText(storage: Storage = deviceStorage(), now: Date = new Date()): string {
+  // savedAt: the day of the copy, shown before a restore writes anything.
+  return JSON.stringify({ app: APP, version: 2, savedAt: now.toISOString(), data: collectBackup(storage) });
 }
 
 /**
@@ -194,7 +198,7 @@ export function restoreBackup(text: string, storage: Storage = deviceStorage()):
 
   // The full backup, with or without the { app, version, data } wrapper.
   const data = parsed.app === APP && parsed.data && typeof parsed.data === 'object' && !Array.isArray(parsed.data) ? parsed.data : parsed;
-  const all = Object.entries(data as Record<string, unknown>).filter(([k]) => !(data === parsed && (k === 'app' || k === 'version')));
+  const all = Object.entries(data as Record<string, unknown>).filter(([k]) => !(data === parsed && (k === 'app' || k === 'version' || k === 'savedAt')));
   const good = all.filter(([k, v]) => acceptable(k, v)) as [string, string][];
   if (!good.length) throw new Error('nothing to restore');
   writeAll(storage, good);
@@ -202,6 +206,50 @@ export function restoreBackup(text: string, storage: Storage = deviceStorage()):
   // next start (lib/activityLog.ts folds its older histories in).
   if (!good.some(([k]) => k === RECORD_VERSION_KEY)) storage.removeItem(RECORD_VERSION_KEY);
   return { format: 'full', restored: good.length, left: all.length - good.length };
+}
+
+/** What a (plain) backup holds, in words a person can check before it is written. */
+export interface BackupPreview {
+  /** The day the copy was made, if known (newer copies say it; older ones by their file name). */
+  savedAt: Date | null;
+  journalDays: number;
+  progress: boolean;
+  record: boolean;
+  settings: boolean;
+}
+
+const PROGRESS_KEYS = new Set(['awareness_progress', COMPANION_KEY, 'n_mindfulness_reader_pos', 'n_mindfulness_program_days']);
+const RECORD_KEYS = new Set(['neurodivergent_mindfulness_detailed_activity_logs', 'breath_history', 'n_mindfulness_checkin_days', 'n_mindfulness_checkin_uses', 'n_mindfulness_state', 'n_mindfulness_data_since', RECORD_VERSION_KEY]);
+
+/**
+ * Reads a plain backup without writing anything: what restoring it would
+ * replace. Throws, as restoreBackup does, if it is not a backup of the app.
+ * `fileName` gives the day of older copies (mindfulness-backup-2026-11-03.json).
+ */
+export function previewBackup(text: string, fileName = ''): BackupPreview {
+  if (text.length > MAX_FILE) throw new Error('too large');
+  const parsed = JSON.parse(text);
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('not a backup');
+  if (isLocked(parsed)) throw new Error('locked');
+  const fromName = /(\d{4})-(\d{2})-(\d{2})/.exec(fileName);
+  const stamped = typeof parsed.savedAt === 'string' && !Number.isNaN(Date.parse(parsed.savedAt)) ? new Date(parsed.savedAt) : null;
+  const savedAt = stamped ?? (fromName ? new Date(Number(fromName[1]), Number(fromName[2]) - 1, Number(fromName[3])) : null);
+  if (looksLikeCompanion(parsed)) {
+    if (!companionShape(parsed)) throw new Error('not a backup');
+    return { savedAt, journalDays: 0, progress: true, record: false, settings: false };
+  }
+  const data = parsed.app === APP && parsed.data && typeof parsed.data === 'object' && !Array.isArray(parsed.data) ? parsed.data : parsed;
+  const good = Object.entries(data as Record<string, unknown>).filter(([k, v]) => acceptable(k, v)).map(([k]) => k);
+  if (!good.length) throw new Error('nothing to restore');
+  const journalDays = good.filter(k => /^journal_(v2|papyrus)_\d{4}-\d{2}-\d{2}$/.test(k)).length;
+  const isJournal = (k: string) => /^journal_/.test(k);
+  return {
+    savedAt,
+    journalDays,
+    progress: good.some(k => PROGRESS_KEYS.has(k)),
+    record: good.some(k => RECORD_KEYS.has(k)),
+    settings: good.some(k => !isJournal(k) && !PROGRESS_KEYS.has(k) && !RECORD_KEYS.has(k)),
+  };
 }
 
 // ── Locking with a passphrase ──

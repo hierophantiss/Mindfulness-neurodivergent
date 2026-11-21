@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { X, Lock } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import { useFocusTrap } from '../hooks/useFocusTrap';
-import { backupText, isLocked, lockBackup, restoreBackup, saveBackupFile, unlockBackup } from '../lib/backup';
+import { backupText, isLocked, lockBackup, previewBackup, restoreBackup, saveBackupFile, unlockBackup, type BackupPreview } from '../lib/backup';
 import { RESTORED_KEY } from './RestoredNote';
 
 // Saving a copy of the data, and bringing one back: the menu, Settings and
@@ -25,7 +25,9 @@ type Step =
   | { s: 'idle' }
   | { s: 'busy' }
   | { s: 'saved' }
-  | { s: 'locked'; text: string; wrong?: boolean }
+  | { s: 'locked'; text: string; name: string; wrong?: boolean }
+  /** A copy was read: what it will replace, before anything is written. */
+  | { s: 'confirm'; text: string; preview: BackupPreview }
   | { s: 'restored'; restored: number; left: number }
   | { s: 'error'; message: string };
 
@@ -68,6 +70,8 @@ export default function BackupDialog({ mode, onClose, onSaved }: Props) {
     }
   };
 
+  const notACopy = () => setStep({ s: 'error', message: el ? 'Αυτό το αρχείο δεν είναι αντίγραφο της εφαρμογής. Δεν άλλαξε τίποτα.' : 'This file is not a copy from the app. Nothing was changed.' });
+
   const restoreText = (text: string) => {
     try {
       const r = restoreBackup(text);
@@ -77,7 +81,18 @@ export default function BackupDialog({ mode, onClose, onSaved }: Props) {
       try { sessionStorage.setItem(RESTORED_KEY, JSON.stringify({ left: r.left })); } catch { /* the restart still shows it all */ }
       window.setTimeout(() => window.location.reload(), 50);
     } catch {
-      setStep({ s: 'error', message: el ? 'Αυτό το αρχείο δεν είναι αντίγραφο της εφαρμογής. Δεν άλλαξε τίποτα.' : 'This file is not a copy from the app. Nothing was changed.' });
+      notACopy();
+    }
+  };
+
+  /** First what the copy holds and its day; it is written only after «Ναι». */
+  const askFirst = (text: string, name: string, lastModified?: number) => {
+    try {
+      const preview = previewBackup(text, name);
+      if (!preview.savedAt && lastModified) preview.savedAt = new Date(lastModified);
+      setStep({ s: 'confirm', text, preview });
+    } catch {
+      notACopy();
     }
   };
 
@@ -87,23 +102,22 @@ export default function BackupDialog({ mode, onClose, onSaved }: Props) {
     reader.onload = () => {
       const text = String(reader.result ?? '');
       let parsed: unknown = null;
-      try { parsed = JSON.parse(text); } catch { /* not JSON: restoreText says so */ }
-      if (isLocked(parsed)) { setPass(''); setStep({ s: 'locked', text }); }
-      else restoreText(text);
+      try { parsed = JSON.parse(text); } catch { /* not JSON: askFirst says so */ }
+      if (isLocked(parsed)) { setPass(''); setStep({ s: 'locked', text, name: file.name }); }
+      else askFirst(text, file.name, file.lastModified);
     };
     reader.readAsText(file);
   };
 
-  const unlock = async (text: string) => {
+  const unlock = async (text: string, name: string) => {
     setStep({ s: 'busy' });
     try {
       const plain = await unlockBackup(text, pass);
       setPass('');
-      restoreText(plain);
+      askFirst(plain, name);
     } catch (e) {
-      setStep((e as Error).message === 'passphrase'
-        ? { s: 'locked', text, wrong: true }
-        : { s: 'error', message: el ? 'Αυτό το αρχείο δεν είναι αντίγραφο της εφαρμογής. Δεν άλλαξε τίποτα.' : 'This file is not a copy from the app. Nothing was changed.' });
+      if ((e as Error).message === 'passphrase') setStep({ s: 'locked', text, name, wrong: true });
+      else notACopy();
     }
   };
 
@@ -157,15 +171,35 @@ export default function BackupDialog({ mode, onClose, onSaved }: Props) {
         )}
       </div>
     ) : step.s === 'locked' ? (
-      <form onSubmit={(e) => { e.preventDefault(); void unlock(step.text); }} className="space-y-3">
+      <form onSubmit={(e) => { e.preventDefault(); void unlock(step.text, step.name); }} className="space-y-3">
         <p className="text-[14.5px] leading-relaxed text-[var(--color-ink)]/80">
           {el ? 'Το αντίγραφο είναι κλειδωμένο. Γράψε τον κωδικό του.' : 'This copy is locked. Enter its passphrase.'}
         </p>
         <input type="password" autoComplete="current-password" autoFocus value={pass} onChange={(e) => setPass(e.target.value)} className={field}
           aria-label={el ? 'Κωδικός' : 'Passphrase'} aria-invalid={step.wrong || undefined} />
         {step.wrong && <p role="alert" className="text-[13.5px] text-[var(--tint-rose-ink)]">{el ? 'Ο κωδικός δεν ταιριάζει. Δεν άλλαξε τίποτα.' : 'The passphrase does not match. Nothing was changed.'}</p>}
-        <button type="submit" disabled={!pass} className={primary}>{el ? 'Άνοιγμα και επαναφορά' : 'Open and restore'}</button>
+        <button type="submit" disabled={!pass} className={primary}>{el ? 'Άνοιγμα' : 'Open'}</button>
       </form>
+    ) : step.s === 'confirm' ? (
+      <div className="space-y-3 text-[14.5px] leading-relaxed text-[var(--color-ink)]/85">
+        <p className="font-medium text-[var(--color-ink)]">
+          {step.preview.savedAt
+            ? (el ? `Αντίγραφο της ${step.preview.savedAt.toLocaleDateString('el-GR', { day: 'numeric', month: 'long', year: 'numeric' })}.` : `A copy from ${step.preview.savedAt.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}.`)
+            : (el ? 'Η μέρα αυτού του αντιγράφου δεν είναι γνωστή.' : 'The day of this copy is not known.')}
+        </p>
+        <p>{el ? 'Θα αντικαταστήσει σε αυτή τη συσκευή ό,τι έχει το αρχείο:' : 'On this device it will replace what the file holds:'}</p>
+        <ul className="list-disc pl-5 space-y-1">
+          {step.preview.journalDays > 0 && <li>{el ? `Ημερολόγιο: ${step.preview.journalDays} ${step.preview.journalDays === 1 ? 'μέρα' : 'μέρες'} (όπως ήταν τότε)` : `Journal: ${step.preview.journalDays} ${step.preview.journalDays === 1 ? 'day' : 'days'} (as they were then)`}</li>}
+          {step.preview.progress && <li>{el ? 'Πρόοδος: κεφάλαια, Πρόγραμμα, πού σταμάτησες να διαβάζεις' : 'Progress: chapters, the Program, where you stopped reading'}</li>}
+          {step.preview.record && <li>{el ? 'Το ιστορικό των ασκήσεων και του «Πώς νιώθεις»' : 'The record of practices and of “How do you feel”'}</li>}
+          {step.preview.settings && <li>{el ? 'Ρυθμίσεις' : 'Settings'}</li>}
+        </ul>
+        <p className="text-[13.5px] text-[var(--color-ink)]/70">{el ? 'Ό,τι δεν έχει το αρχείο μένει όπως είναι.' : 'What the file does not hold stays as it is.'}</p>
+        <div className="flex flex-col gap-2 pt-1">
+          <button type="button" onClick={() => restoreText(step.text)} className={primary}>{el ? 'Ναι, επανάφερέ το' : 'Yes, restore it'}</button>
+          <button type="button" onClick={onClose} className="w-full min-h-[44px] rounded-xl border border-white/15 text-[15px] text-[var(--color-ink)]/85">{el ? 'Άκυρο' : 'Cancel'}</button>
+        </div>
+      </div>
     ) : (
       <>
         <p className="text-[14.5px] leading-relaxed text-[var(--color-ink)]/80">

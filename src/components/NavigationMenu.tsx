@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { clearAll } from '../lib/storage';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { promptInstall } from '../lib/installPrompt';
 import BackupDialog from './BackupDialogLazy';
 import type { BackupMode } from './BackupDialog';
-import { Home, BookOpen, Activity, X, Info, Music, LayoutGrid, EyeOff, Eye, Database, Download, Sparkles, RotateCcw, Headphones, LetterText, Compass, Settings, Layers, BookA } from 'lucide-react';
+import { Home, BookOpen, Activity, X, Info, Music, LayoutGrid, EyeOff, Eye, Database, Download, Sparkles, Headphones, LetterText, Compass, Settings, Layers, BookA } from 'lucide-react';
 import { MethodMark } from './MethodMark';
 import { useTime } from '../contexts/TimeContext';
 import { motion, AnimatePresence } from 'motion/react';
@@ -12,12 +11,10 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { useTheme } from '../hooks/useTheme';
 import { useAccessibility } from '../hooks/useAccessibility';
-import { useAudioMixer } from '../contexts/AudioContext';
 import { QuillIcon, SpiralIcon, SproutIcon, WavesIcon } from './placeIcons';
 
 export default function NavigationMenu() {
   const [isOpen, setIsOpen] = useState(false);
-  const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [backupMode, setBackupMode] = useState<BackupMode | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -25,13 +22,6 @@ export default function NavigationMenu() {
   const { language, setLanguage } = useLanguage();
   const { theme, toggleTheme } = useTheme();
   const { reduceMotion, toggleReduceMotion, easyRead, toggleEasyRead } = useAccessibility();
-  const { masterPlaying, toggleMaster } = useAudioMixer();
-
-  useEffect(() => {
-    if (!isOpen) {
-      setShowResetConfirm(false);
-    }
-  }, [isOpen]);
 
   // The home page's "In the Menu" line opens it.
   useEffect(() => {
@@ -150,7 +140,7 @@ export default function NavigationMenu() {
           <span className="font-normal">{el ? 'Άμεση ηρέμηση' : 'Immediate calm'}</span>
         </Link>
         <div className="mt-3 flex items-center justify-between gap-2 px-1.5 text-[13px] text-ink/65">
-          <button type="button" onClick={() => setIsOpen(true)} aria-expanded={isOpen} className="flex items-center gap-1.5 min-h-[40px] hover:text-ink/90 transition-colors">
+          <button type="button" onClick={() => setIsOpen(true)} aria-expanded={isOpen} className="flex items-center gap-1.5 min-h-[44px] hover:text-ink/90 transition-colors">
             <LayoutGrid size={14} aria-hidden="true" />
             {el ? 'Μενού' : 'Menu'}
           </button>
@@ -158,11 +148,11 @@ export default function NavigationMenu() {
             type="button"
             onClick={() => setLanguage(el ? 'en' : 'el')}
             aria-label={el ? 'Switch to English' : 'Αλλαγή σε Ελληνικά'}
-            className="min-h-[40px] hover:text-ink/90 transition-colors"
+            className="min-h-[44px] hover:text-ink/90 transition-colors"
           >
             {el ? 'English' : 'Ελληνικά'}
           </button>
-          <Link to="/about" className="flex items-center min-h-[40px] hover:text-ink/90 transition-colors">
+          <Link to="/about" className="flex items-center min-h-[44px] hover:text-ink/90 transition-colors">
             {el ? 'Σχετικά' : 'About'}
           </Link>
         </div>
@@ -276,13 +266,13 @@ export default function NavigationMenu() {
                 <button
                   onClick={() => setLanguage(language === 'el' ? 'en' : 'el')}
                   aria-label={language === 'el' ? 'Switch to English' : 'Αλλαγή σε Ελληνικά'}
-                  className="ml-auto mr-2 h-9 px-3 rounded-full border border-white/10 text-[12px] font-medium text-zinc-300 hover:bg-white/10 transition-colors"
+                  className="ml-auto mr-2 min-h-[44px] px-3 rounded-full border border-white/10 text-[12px] font-medium text-zinc-300 hover:bg-white/10 transition-colors"
                 >
                   {language === 'el' ? 'English' : 'Ελληνικά'}
                 </button>
                 <button aria-label={language === 'en' ? 'Close' : 'Κλείσιμο'} 
                   onClick={() => setIsOpen(false)}
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-zinc-400 hover:bg-white/10 hover:text-ink transition-colors"
+                  className="w-11 h-11 rounded-full flex items-center justify-center text-zinc-400 hover:bg-white/10 hover:text-ink transition-colors"
                 >
                   <X size={20} />
                 </button>
@@ -305,28 +295,24 @@ export default function NavigationMenu() {
                 </nav>
                 <div className="bg-white/[0.03] border border-white/[0.05] rounded-3xl p-4 flex flex-col gap-4">
                   
-                  {/* Evidence-Based Science Link */}
-                  <div className="flex items-center justify-between">
-                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center bg-teal-500/10 text-teal-400">
-                        <Sparkles size={18} />
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-sm font-medium text-zinc-200">
-                          {language === 'en' ? 'Research Basis' : 'Επιστημονική Θεμελίωση'}
-                        </span>
-                        <span className="text-[10px] text-teal-400">
-                          {language === 'en' ? 'Scientific references' : 'Επιστημονικές αναφορές'}
-                        </span>
-                      </div>
-                     </div>
-                     <button 
-                       onClick={() => handleNav('/methodology')}
-                       className="px-3 py-1.5 bg-teal-500/15 hover:bg-teal-500/25 rounded-lg text-xs font-medium text-teal-300 transition-colors"
-                     >
-                       {language === 'en' ? 'Science' : 'Επιστήμη'}
-                     </button>
-                  </div>
+                  {/* The research: the same name as the page it opens, and in Settings. */}
+                  <button
+                    type="button"
+                    onClick={() => handleNav('/methodology')}
+                    className="flex items-center gap-3 min-h-[44px] text-left rounded-2xl hover:bg-white/[0.03] transition-colors"
+                  >
+                    <span className="w-10 h-10 shrink-0 rounded-full flex items-center justify-center bg-teal-500/10 text-teal-400">
+                      <Sparkles size={18} aria-hidden="true" />
+                    </span>
+                    <span className="flex flex-col">
+                      <span className="text-sm font-medium text-zinc-200">
+                        {language === 'en' ? 'Evidence & Methodology' : 'Επιστημονική Θεμελίωση'}
+                      </span>
+                      <span className="text-[12px] text-teal-300">
+                        {language === 'en' ? 'Scientific references' : 'Επιστημονικές αναφορές'}
+                      </span>
+                    </span>
+                  </button>
                   
                   <div className="w-full h-px bg-white/5 my-1" />
 
@@ -337,10 +323,10 @@ export default function NavigationMenu() {
                       </div>
                       <div className="flex flex-col">
                         <span className="text-sm font-medium text-zinc-200">
-                          {language === 'en' ? 'Reduce Motion' : 'Μείωση Κίνησης'}
+                          {language === 'en' ? 'Reduce motion' : 'Μειωμένη κίνηση'}
                         </span>
-                        <span className="text-[10px] text-zinc-400">
-                          {language === 'en' ? 'Disable breathing animations' : 'Απενεργοποίηση εφέ αναπνοής'}
+                        <span className="text-[12px] text-zinc-400">
+                          {language === 'en' ? 'Nothing moves; the breath shows as light' : 'Τίποτα δεν κινείται· η αναπνοή φαίνεται με φως'}
                         </span>
                       </div>
                     </div>
@@ -350,8 +336,8 @@ export default function NavigationMenu() {
                       onClick={toggleReduceMotion}
                       role="switch"
                       aria-checked={reduceMotion}
-                      aria-label={language === 'en' ? 'Reduce Motion' : 'Μείωση Κίνησης'}
-                      className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 ${reduceMotion ? 'bg-amber-500' : 'bg-white/10'}`}
+                      aria-label={language === 'en' ? 'Reduce motion' : 'Μειωμένη κίνηση'}
+                      className={`hit-44 relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 ${reduceMotion ? 'bg-amber-500' : 'bg-white/10'}`}
                     >
                       <span 
                         className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${reduceMotion ? 'translate-x-6' : 'translate-x-1'}`}
@@ -374,7 +360,7 @@ export default function NavigationMenu() {
                           </div>
                           <div className="flex flex-col min-w-0">
                             <span className="text-sm font-medium text-zinc-200">{label}</span>
-                            <span className="text-[10px] text-zinc-400">{hint}</span>
+                            <span className="text-[12px] text-zinc-400">{hint}</span>
                           </div>
                         </div>
                         <button
@@ -382,7 +368,7 @@ export default function NavigationMenu() {
                           role="switch"
                           aria-checked={on}
                           aria-label={label}
-                          className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 ${on ? 'bg-amber-500' : 'bg-white/10'}`}
+                          className={`hit-44 relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400 ${on ? 'bg-amber-500' : 'bg-white/10'}`}
                         >
                           <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${on ? 'translate-x-6' : 'translate-x-1'}`} />
                         </button>
@@ -392,92 +378,34 @@ export default function NavigationMenu() {
                   
                   <div className="w-full h-px bg-white/5 my-1"></div>
                   
-                  <div className="flex items-center justify-between">
-                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white/[0.05] text-zinc-300">
-                        <Database size={18} />
+                  {/* A copy of the data: the same names as in Settings. (Deleting everything is in Settings only.) */}
+                  <div className="flex flex-col gap-2.5">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 shrink-0 rounded-full flex items-center justify-center bg-white/[0.05] text-zinc-300">
+                        <Database size={18} aria-hidden="true" />
                       </div>
-                      <div className="flex flex-col">
-                        <span className="text-sm font-medium text-zinc-200">
-                          {language === 'en' ? 'Your Data' : 'Τα δεδομένα σου'}
-                        </span>
-                        <span className="text-[10px] text-zinc-400">
-                          {language === 'en' ? 'Save or restore progress' : 'Αποθήκευση ή επαναφορά προόδου'}
-                        </span>
-                      </div>
-                     </div>
-                     <div className="flex gap-2">
-                       <button
-                         type="button"
-                         onClick={() => setBackupMode('save')}
-                         className="px-3 py-1.5 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-medium transition-colors"
-                       >
-                         {language === 'en' ? 'Export' : 'Εξαγωγή'}
-                       </button>
-                       <button
-                         type="button"
-                         onClick={() => setBackupMode('restore')}
-                         className="px-3 py-1.5 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-medium transition-colors"
-                       >
-                         {language === 'en' ? 'Import' : 'Εισαγωγή'}
-                       </button>
-                      </div>
-                   </div>
-                 </div>
-
-                    <div className="w-full h-px bg-white/5 my-1"></div>
-
-                    <div className="transition-all duration-300">
-                      {!showResetConfirm ? (
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full flex items-center justify-center bg-rose-500/15 text-rose-300">
-                              <RotateCcw size={18} />
-                            </div>
-                            <div className="flex flex-col">
-                              <span className="text-sm font-medium text-zinc-200">
-                                {language === 'en' ? 'Clear All Data (Testing)' : 'Επαναφορά Εφαρμογής'}
-                              </span>
-                              <span className="text-[10px] text-rose-400">
-                                {language === 'en' ? 'Start from Day 1 onboarding' : 'Διαγραφή προόδου και έναρξη από την αρχή'}
-                              </span>
-                            </div>
-                          </div>
-                          <button
-                            onClick={() => setShowResetConfirm(true)}
-                            className="px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-300 rounded-lg text-xs font-medium transition-colors"
-                          >
-                            {language === 'en' ? 'Reset' : 'Επαναφορά'}
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="flex flex-col gap-3 p-3 bg-red-500/10 border border-red-500/20 rounded-xl">
-                          <span className="text-xs font-medium text-red-200">
-                            {language === 'en' 
-                              ? 'Are you sure? This will delete all your progress and history.' 
-                              : 'Είσαι σίγουρος/η; Αυτό θα διαγράψει όλη την πρόοδο και το ιστορικό σου.'}
-                          </span>
-                          <div className="flex justify-end gap-2">
-                             <button
-                               onClick={() => setShowResetConfirm(false)}
-                               className="px-2.5 py-1 bg-white/5 hover:bg-white/10 text-ink rounded text-xs font-medium transition-colors"
-                             >
-                               {language === 'en' ? 'Cancel' : 'Ακύρωση'}
-                             </button>
-                             <button
-                               onClick={() => {
-                                 clearAll();
-                                 window.location.hash = '';
-                                 window.location.reload();
-                               }}
-                               className="px-2.5 py-1 bg-red-600 hover:bg-red-500 text-ink rounded text-xs font-medium transition-colors shadow-lg"
-                             >
-                               {language === 'en' ? 'Confirm Reset' : 'Επιβεβαίωση'}
-                             </button>
-                          </div>
-                        </div>
-                      )}
+                      <span className="text-sm font-medium text-zinc-200">
+                        {language === 'en' ? 'A copy of your data' : 'Αντίγραφο των δεδομένων σου'}
+                      </span>
                     </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setBackupMode('save')}
+                        className="min-h-[44px] px-3 bg-white/5 hover:bg-white/10 rounded-xl text-[13px] font-medium text-ink/90 transition-colors"
+                      >
+                        {language === 'en' ? 'Save a copy' : 'Αποθήκευση αντιγράφου'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setBackupMode('restore')}
+                        className="min-h-[44px] px-3 bg-white/5 hover:bg-white/10 rounded-xl text-[13px] font-medium text-ink/90 transition-colors"
+                      >
+                        {language === 'en' ? 'Restore from a copy' : 'Επαναφορά από αντίγραφο'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
 
                 {/* Download the Book */}
                 <div className="bg-teal-500/10 border border-teal-500/20 rounded-3xl p-4">
@@ -489,7 +417,7 @@ export default function NavigationMenu() {
                       <span className="text-sm font-medium text-teal-100">
                         {language === 'en' ? 'Download the Book' : 'Κατέβασε το βιβλίο'}
                       </span>
-                      <span className="text-[10px] text-teal-400/80">
+                      <span className="text-[12px] text-teal-300/90">
                         {language === 'en' ? 'Free · CC BY-NC-ND 4.0' : 'Δωρεάν · CC BY-NC-ND 4.0'}
                       </span>
                     </div>
@@ -522,9 +450,9 @@ export default function NavigationMenu() {
                       </div>
                       <div className="flex flex-col text-left">
                         <span className="text-sm font-medium text-teal-100">
-                          {language === 'en' ? 'Install App' : 'Εγκατάσταση Εφαρμογής'}
+                          {language === 'en' ? 'Install the app' : 'Εγκατάσταση εφαρμογής'}
                         </span>
-                        <span className="text-[10px] text-teal-400/80">
+                        <span className="text-[12px] text-teal-300/90">
                           {language === 'en' ? 'Add to your home screen' : 'Προσθήκη στην αρχική οθόνη'}
                         </span>
                       </div>
@@ -541,18 +469,18 @@ export default function NavigationMenu() {
                 )}
               </p>
 
-              {/* Settings, About and the sound mixer: each with its name under it. */}
+              {/* Settings, About and the Sanctuary's sounds: each with its name under it. */}
               <div className="flex justify-center gap-7 items-start px-6 pt-5 short:pt-3 border-t border-white/[0.08] pb-[calc(1.25rem+env(safe-area-inset-bottom))] short:pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
                 {[
                   { key: 'settings', label: language === 'el' ? 'Ρυθμίσεις' : 'Settings', onClick: () => handleNav('/settings'), icon: <Settings size={20} aria-hidden="true" /> },
                   { key: 'about', label: language === 'el' ? 'Σχετικά' : 'About', onClick: () => handleNav('/about'), icon: <Info size={20} aria-hidden="true" /> },
-                  { key: 'mixer', label: language === 'el' ? 'Ήχοι' : 'Sounds', onClick: () => toggleMaster(), icon: <Music size={20} aria-hidden="true" className={masterPlaying ? 'text-teal-400' : undefined} />, pressed: masterPlaying },
+                  // The sounds live in the Sanctuary: this opens it (it never plays anything by itself).
+                  { key: 'sounds', label: language === 'el' ? 'Ήχοι' : 'Sounds', onClick: () => handleNav('/sanctuary'), icon: <Music size={20} aria-hidden="true" /> },
                 ].map((b) => (
                   <button
                     key={b.key}
                     type="button"
                     onClick={b.onClick}
-                    aria-pressed={b.pressed}
                     className="group flex flex-col items-center gap-1.5 min-w-[64px] text-zinc-300 hover:text-ink transition-colors"
                   >
                     <span className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 group-hover:bg-white/10 border border-white/5 transition-colors">

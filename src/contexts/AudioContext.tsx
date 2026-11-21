@@ -28,11 +28,8 @@ export function loadAmbientLayers(): Promise<Layers> {
 
 /** The sounds that can play under (or instead of) a tone. */
 export interface AudioContextProps {
-  masterPlaying: boolean;
   masterVolume: number;
-  toggleMaster: () => void;
   setMasterVolume: (vol: number) => void;
-  stopAll: () => void;
   isPlaying: boolean;
   volume: number;
   startAudio: (config: AudioConfig) => void;
@@ -74,7 +71,6 @@ interface SynthNodes {
 const AudioCtx = createContext<AudioContextProps | undefined>(undefined);
 
 export function AudioProvider({ children }: { children: ReactNode }) {
-  const [masterPlaying, setMasterPlaying] = useState(false);
   const [isPlaying, setIsPlaying]         = useState(false);
   const [masterVolume, _setMasterVolume]  = useState(1.0);
   const [volume, _setVolume]              = useState(1.0);
@@ -182,7 +178,6 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     n.currentConfig = config;
 
     setIsPlaying(true);
-    setMasterPlaying(true);
 
     try {
       const ctx = getCtx();
@@ -413,7 +408,6 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   // ---- stopAudio ----
   const stopAudio = useCallback(() => {
     setIsPlaying(false);
-    setMasterPlaying(false);
 
     const n       = nodesRef.current;
     const ctx     = webAudioCtxRef.current;
@@ -671,7 +665,6 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   // ---- fadeOutAudio ----
   const fadeOutAudio = useCallback((seconds: number) => {
     setIsPlaying(false);
-    setMasterPlaying(false);
 
     const n       = nodesRef.current;
     const ctx     = webAudioCtxRef.current;
@@ -688,8 +681,6 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     }, seconds * 1000 + 200);
   }, [hardStop]);
 
-  const toggleMaster = useCallback(() => setMasterPlaying(p => !p), []);
-  const stopAll      = useCallback(() => { setMasterPlaying(false); stopAudio(); }, [stopAudio]);
 
   // ---- Cleanup on unmount ----
   React.useEffect(() => {
@@ -701,8 +692,8 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   return (
     <AudioCtx.Provider
       value={{
-        masterPlaying, masterVolume, toggleMaster, setMasterVolume,
-        stopAll, isPlaying, volume, startAudio, stopAudio, fadeOutAudio,
+        masterVolume, setMasterVolume,
+        isPlaying, volume, startAudio, stopAudio, fadeOutAudio,
         setGlobalVolume, updateArmPos, updatePhase, setLayerLevel,
       }}
     >
