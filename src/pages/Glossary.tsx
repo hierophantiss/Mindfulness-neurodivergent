@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import { PageHeader } from '../components/PageHeader';
 import { useLanguage } from '../hooks/useLanguage';
@@ -20,6 +20,15 @@ export default function Glossary() {
   const fold = (x: string) => x.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   const q = fold(query.trim());
   const terms = q ? g.terms.filter(t => fold(t.term).includes(q) || fold(t.definition).includes(q)) : g.terms;
+
+  // A link to one term (/glossary#id) opens the page at that term.
+  const { hash } = useLocation();
+  useEffect(() => {
+    if (!hash) return;
+    const id = decodeURIComponent(hash.slice(1));
+    const t = window.setTimeout(() => document.getElementById(id)?.scrollIntoView({ block: 'start' }), 60);
+    return () => window.clearTimeout(t);
+  }, [hash]);
 
   return (
     <div className="flex flex-col gap-8 pb-10 animate-in fade-in duration-500">

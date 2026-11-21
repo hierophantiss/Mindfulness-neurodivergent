@@ -1,7 +1,7 @@
 import { PageHeader } from '../components/PageHeader';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, BookOpen, Layers, Star } from 'lucide-react';
+import { ArrowRight, BookOpen, Layers } from 'lucide-react';
 import { MeditatorFigure } from '../components/MeditatorFigure';
 import { axisOfChapter } from '../lib/axisOfChapter';
 import { ChapterIcon } from '../components/ChapterIcon';
@@ -54,15 +54,13 @@ export default function Chapters() {
           eyebrow={BOOK_NAME[language === 'en' ? 'en' : 'el']}
           eyebrowInTitle
           title={language === 'en' ? 'The book' : 'Το βιβλίο'}
-          lead={
-            <>
-              {language === 'el' ? 'Μαθαίνοντας να ιππεύεις τον άνεμο. Ένας οδηγός για την επίγνωση.' : 'Learning to ride the wind. A guide to awareness.'}{' '}
-              <Link to="/rabbithole" state={{ activeArticle: 'riding-the-wind' }} className="inline-flex align-[-3px] text-teal-400 hover:text-teal-300 transition-colors" aria-label={language === 'en' ? 'Read in the Rabbit Hole' : 'Διάβασέ το στην Κουνελότρυπα'}>
-                <Star size={17} className="fill-current" aria-hidden="true" />
-              </Link>
-            </>
-          }
-        />
+          lead={language === 'el' ? 'Ο οδηγός της μεθόδου σε 11 κεφάλαια· τα διαβάζεις ή τα ακούς.' : 'The method’s guide in 11 chapters; you read them or listen to them.'}
+        >
+          {/* The book's image (the wind), as a link that says where it leads. */}
+          <Link to="/rabbithole" state={{ activeArticle: 'riding-the-wind' }} className="sky-text flex items-center w-fit min-h-[44px] text-[15px] text-sign-gold hover:brightness-110 transition-[filter]">
+            {language === 'el' ? 'Στην Κουνελότρυπα: Μαθαίνοντας να ιππεύεις τον άνεμο →' : 'In the Rabbit Hole: Learning to Ride the Wind →'}
+          </Link>
+        </PageHeader>
 
         {/* The book's four summaries, one tap away. */}
         <Link to="/cards" className="glass flex items-center gap-3.5 min-h-[68px] rounded-[22px] px-4 py-3 hover:brightness-110 active:scale-[0.99] transition-[filter,transform]">

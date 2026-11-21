@@ -3,7 +3,10 @@
 // "Numbness" only these are shown, never the ones about observing or space,
 // which can deepen disconnection.
 
-export interface Affirmation { el: string; en: string; ground?: boolean }
+// `plain`: under a phrase that is an image, the same thing said plainly, shown
+// small beneath it (for whoever reads literally, before the book explains it).
+
+export interface Affirmation { el: string; en: string; ground?: boolean; plain?: { el: string; en: string } }
 
 export const AFFIRMATIONS: Affirmation[] = [
   // Chapter 1
@@ -24,7 +27,9 @@ export const AFFIRMATIONS: Affirmation[] = [
     en: 'Bringing attention back is not failure; it is the exercise itself.' },
   // Chapter 5
   { el: 'Η μάσκα ήταν πάντα λειτουργία, ποτέ ταυτότητα.',
-    en: 'The mask was always a function, never an identity.' },
+    en: 'The mask was always a function, never an identity.',
+    plain: { el: 'Η μάσκα είναι κάτι που κάνεις, ώστε οι γύρω σου να νιώθουν άνετα· δεν είναι αυτό που είσαι.',
+             en: 'The mask is something you do so that the people around you feel comfortable; it is not who you are.' } },
   { el: 'Το νευροδιαφορετικό μυαλό δεν είναι χαλασμένο — λειτουργεί διαφορετικά.',
     en: 'The neurodivergent mind is not broken — it operates differently.' },
   // Chapter 6
@@ -32,14 +37,18 @@ export const AFFIRMATIONS: Affirmation[] = [
     el: 'Η γη σε κρατά χωρίς προσπάθειά σου.',
     en: 'The earth holds you without effort on your part.' },
   { el: 'Η σκέψη συνεχίζει, αλλά παύει να είναι το πάτωμα.',
-    en: 'Thinking goes on, but it stops being the floor.' },
+    en: 'Thinking goes on, but it stops being the floor.',
+    plain: { el: 'Οι σκέψεις συνεχίζουν, αλλά δεν στηρίζεσαι πάνω τους· σε στηρίζει το έδαφος.',
+             en: 'Thoughts go on, but you do not stand on them; the ground holds you.' } },
   // Chapter 7
   { ground: true,
     el: 'Κρατάς την πράξη, αφήνεις την έκβαση, και κινείσαι ένα βήμα τη φορά, χωρίς βιασύνη.',
     en: 'Keep the act, let go of the outcome, and move one step at a time, without hurry.' },
   // Chapter 8
   { el: 'Το κύμα είναι καιρός, όχι ετυμηγορία.',
-    en: 'The wave is weather, not a verdict.' },
+    en: 'The wave is weather, not a verdict.',
+    plain: { el: 'Ένα επεισόδιο έντονου άγχους ή υπερφόρτωσης περνά, όπως ο καιρός. Δεν σημαίνει ότι απέτυχες.',
+             en: 'An episode of intense anxiety or overload passes, like the weather. It does not mean you failed.' } },
   { el: 'Φέρσου στον εαυτό σου όπως θα φερόσουν σε έναν φίλο που δυσκολεύεται.',
     en: 'Treat yourself as you would treat a struggling friend.' },
   // Chapter 9

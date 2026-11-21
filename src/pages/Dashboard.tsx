@@ -206,8 +206,9 @@ export default function Dashboard() {
   const fit = (100 / (longestWord * 0.56)).toFixed(2);
   const bookTitleSize = `clamp(18px, ${fit}cqw, 26px)`;
   const bookTitleSizeDesk = `clamp(24px, ${fit}cqw, 40px)`;
-  // The key line of the chapter you are in (once the chapters have loaded), for the wide guide card.
-  const guideLine = !finishedGuide ? (spot.chapter?.insight || '') : '';
+  // For the wide guide card: the first sentence of the chapter's summary (the
+  // outline keeps only that). It is plain, where the chapter's key line is often an image.
+  const guideLine = !finishedGuide ? (spot.chapter?.tldr || '') : '';
   // The phrase of the day, never the same as the chapter's line in the card above (then the next day's).
   const same = (x: string, y: string) => x.replace(/[«»"\s.]/g, '') === y.replace(/[«»"\s.]/g, '');
   const affirmation = guideLine && same(el ? affirmationToday.el : affirmationToday.en, guideLine)
@@ -233,9 +234,10 @@ export default function Dashboard() {
               <span className="keep-font sky-text font-display text-[18px] leading-none text-sign-gold whitespace-nowrap">
                 {el ? 'Ενσυνειδητότητα' : 'Mindfulness'}
               </span>{' '}
-              <span className="sky-text text-[12.5px] leading-[1.2] text-ink/70 [text-wrap:balance]">
+              {/* The name, explained: it opens the glossary's entry (racing and locking in). */}
+              <Link to={el ? '/glossary#αγκυλωμενη-προσοχη' : '/glossary#stuck-attention'} className="sky-text text-[12.5px] leading-[1.2] text-ink/70 [text-wrap:balance] underline decoration-dotted decoration-ink/35 underline-offset-[3px] hover:text-ink transition-colors">
                 {el ? 'Για νου που τρέχει ή κλειδώνει' : 'For minds that race or lock in'}
-              </span>
+              </Link>
             </BrandTag>
           </div>
           <Link
@@ -436,6 +438,12 @@ export default function Dashboard() {
           <blockquote className="sky-text mt-2 font-display text-[19px] desk:text-[24px] leading-[1.45] text-ink/80">
             {el ? `«${affirmation.el}»` : `“${affirmation.en}”`}
           </blockquote>
+          {/* Under an image, the same thing said plainly, for whoever reads literally. */}
+          {affirmation.plain && (
+            <p className="sky-text mt-2.5 text-[13.5px] desk:text-[14.5px] leading-relaxed text-ink/70">
+              {el ? affirmation.plain.el : affirmation.plain.en}
+            </p>
+          )}
         </motion.figure>
 
         {/* About once a month: a copy of what lives only on this device. */}

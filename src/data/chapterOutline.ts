@@ -9,6 +9,7 @@ export const CHAPTER_OUTLINE: Record<'el' | 'en', ChapterOutline[]> = {
       "title": "Σώμα",
       "sub": "Η Σταθερότητα του «Εδώ»",
       "insight": "Η βαρύτητα είναι πάντα εδώ. Το σώμα είναι πάντα εδώ. Αυτό είναι αρκετό για να ξεκινήσουμε.",
+      "lead": "Το σώμα είναι το μοναδικό σημείο που είναι πάντα στο «Εδώ».",
       "sections": [
         "Η Αρχή: Χαλάρωση και Γείωση",
         "Η Βαρύτητα: Το Αναμφίβολο «Εδώ»",
@@ -24,6 +25,7 @@ export const CHAPTER_OUTLINE: Record<'el' | 'en', ChapterOutline[]> = {
       "title": "Αναπνοή",
       "sub": "Ο Ρυθμός της Ζωής",
       "insight": "Παρατηρώ χωρίς να επεμβαίνω. Κάθε αναπνοή είναι μια νέα αρχή. Το εργαλείο είναι πάντα η εκπνοή.",
+      "lead": "Η αναπνοή είναι ο ρυθμός που σε συνοδεύει πάντα.",
       "sections": [
         "Ο Ρυθμός της Ύπαρξης",
         "Η Πράξη της Παρατήρησης — Εσωτερική Αφή",
@@ -41,6 +43,7 @@ export const CHAPTER_OUTLINE: Record<'el' | 'en', ChapterOutline[]> = {
       "title": "Προσοχή",
       "sub": "Ο Φακός της Συνείδησης",
       "insight": "Η επιστροφή της προσοχής δεν είναι αποτυχία, είναι η ίδια η άσκηση. Κάθε «απαλή επιστροφή» είναι εξάσκηση, και με την επανάληψη η επιστροφή γίνεται πιο εύκολη.",
+      "lead": "Η προσοχή είναι ο φακός: εστιάζει, ανοίγει, διασπάται, αγκυλώνεται.",
       "sections": [
         "Οι Τέσσερις Μορφές Προσοχής",
         "Οι Φαύλοι Κύκλοι: «Αλλιώς» και «Έπρεπε»",
@@ -56,6 +59,7 @@ export const CHAPTER_OUTLINE: Record<'el' | 'en', ChapterOutline[]> = {
       "title": "Χώρος",
       "sub": "Η Ανοιχτή Επίγνωση",
       "insight": "Η προσοχή είναι το σημείο· η επίγνωση το πεδίο μέσα στο οποίο κινείται. Το τέταρτο βήμα μετατοπίζει το κέντρο από το σημείο στο πεδίο, από το εγωκεντρικό στο χωροκεντρικό, με το σώμα γειωμένο και παρόν. Σύντομες στιγμές, πολλές φορές.",
+      "lead": "Τα τρία πρώτα κέντρα είναι κάτι που κάνεις· ο Χώρος είναι κάτι που ήδη υπάρχει.",
       "sections": [
         "Πώς Οδηγείς",
         "Το Σημείο και το Πεδίο",
@@ -76,6 +80,7 @@ export const CHAPTER_OUTLINE: Record<'el' | 'en', ChapterOutline[]> = {
       "title": "Ο Νευροδιαφορετικός Νους",
       "sub": "Άμυνα, Τρέξιμο, Μάσκα",
       "insight": "Η άμυνα δεν φτιάχνει τις σκέψεις σου, τις επιλέγει. Δεν χαμηλώνει με επιχειρήματα, αλλά με σήματα ασφάλειας και με χρόνο. Και η μάσκα ήταν πάντα λειτουργία, ποτέ ταυτότητα.",
+      "lead": "Ο νευροδιαφορετικός νους τρέχει ή κλειδώνει, και από κάτω υπάρχει μια ρύθμιση: η άμυνα.",
       "sections": [
         "Ο Νους που Τρέχει, ο Νους που Κλειδώνει",
         "Η Άμυνα: Η Ρύθμιση από Κάτω",
@@ -90,6 +95,7 @@ export const CHAPTER_OUTLINE: Record<'el' | 'en', ChapterOutline[]> = {
       "title": "Στην Καθημερινή Ζωή",
       "sub": "Αυτορρύθμιση",
       "insight": "Η επαφή είναι η βάση. Η γη σε κρατά χωρίς προσπάθειά σου, ο ουρανός ανοίγει χωρίς κατασκευή σου. Μπορείς να πατήσεις στο αληθινό, και να αφήσεις τη σκέψη να είναι καιρός, όχι πάτωμα.",
+      "lead": "Η καθημερινή πρακτική λέγεται επαφή: ένα λεπτό νήμα προς τα πέλματα, την ανάσα και τον χώρο, κάτω από ό,τι κάνεις.",
       "sections": [
         "Πού Πατάς;",
         "Επαφή, όχι Ενθύμηση",
@@ -107,6 +113,7 @@ export const CHAPTER_OUTLINE: Record<'el' | 'en', ChapterOutline[]> = {
       "title": "Ο Νέος Οδηγός",
       "sub": "Αποφυγή και Αναβολή",
       "insight": "Στη θέση του επείγοντος και του πανικού βάζεις το σώμα και την ενέργειά του, την αναπνοή και την πρόθεσή σου. Κρατάς την πράξη, αφήνεις την έκβαση, και κινείσαι ένα βήμα τη φορά. Την αποφυγή τη δουλεύεις με απαλότητα· την εκτελεστική δυσλειτουργία τη στηρίζεις και με εργαλεία έξω από σένα.",
+      "lead": "Δεν περιμένεις το «θέλω».",
       "sections": [
         "Αν Έχεις Κολλήσει Τώρα",
         "Αν Δεν Νιώθεις το Σώμα",
@@ -125,6 +132,7 @@ export const CHAPTER_OUTLINE: Record<'el' | 'en', ChapterOutline[]> = {
       "title": "Όταν το Κύμα Ανεβαίνει",
       "sub": "Άγχος, Υπερφόρτωση",
       "insight": "Πιάσε τον άνεμο νωρίς, κράτα το σκάφος πλεύσιμο, και φέρσου με καλοσύνη μετά. Το κύμα είναι καιρός, όχι ετυμηγορία.",
+      "lead": "Πιάσε τον άνεμο νωρίς: στα πρώτα σήματα, μία μακριά εκπνοή ίσως αρκεί.",
       "sections": [
         "Το Βαρόμετρο: Πριν από την Καταιγίδα",
         "Πρωτόκολλο 1: Άμεση Αντιμετώπιση Έντονου Άγχους",
@@ -140,6 +148,7 @@ export const CHAPTER_OUTLINE: Record<'el' | 'en', ChapterOutline[]> = {
       "title": "Φύλλο Εργασίας της Παρουσίας",
       "sub": "Η Πρακτική της Παρουσίας",
       "insight": "Τέσσερα κέντρα, τέσσερις ερωτήσεις. Δεν χρειάζεται να τα κάνεις όλα. Ένα, καλά, αρκεί.",
+      "lead": "Η σύντομη εκδοχή της πρακτικής, για μέσα στη μέρα: τέσσερα κέντρα, τέσσερις ερωτήσεις.",
       "sections": [
         "Πώς να το Χρησιμοποιήσεις",
         "1. Σώμα / Βάση",
@@ -154,6 +163,7 @@ export const CHAPTER_OUTLINE: Record<'el' | 'en', ChapterOutline[]> = {
       "title": "Τα Τέσσερα Στάδια",
       "sub": "Οδηγός Βήμα-Βήμα",
       "insight": "Τέσσερα στάδια, με σειρά: γη, αναπνοή, σημείο, χώρος. Και από κάτω, σε όλα, η απαλότητα.",
+      "lead": "Η πλήρης, καθιστή άσκηση του Τετραπλού Άξονα: γη, αναπνοή, σημείο, χώρος.",
       "sections": [
         "Η Στάση Πίσω από τα Βήματα",
         "Στάδιο 1 — Νιώσε τη Γη (Γείωση)",
@@ -168,6 +178,7 @@ export const CHAPTER_OUTLINE: Record<'el' | 'en', ChapterOutline[]> = {
       "title": "Το Υπόβαθρο",
       "sub": "Επιστήμη και Σοφία",
       "insight": "Η μέθοδος δεν ζητά να πιστέψεις τίποτα. Ζητά να δοκιμάσεις και να παρατηρήσεις. Η επιστήμη εξηγεί γιατί δουλεύει· η παράδοση εξηγεί από πού ήρθε.",
+      "lead": "Το «πώς» από τη νευροεπιστήμη και το «γιατί» από τη στοχαστική παράδοση.",
       "sections": [
         "Η Φιλοσοφία της Έρευνας",
         "Τα Τέσσερα Κέντρα στην Έρευνα",
@@ -187,6 +198,7 @@ export const CHAPTER_OUTLINE: Record<'el' | 'en', ChapterOutline[]> = {
       "title": "Body",
       "sub": "The Stability of \"Here\"",
       "insight": "Gravity is always here. The body is always here. That is enough to begin.",
+      "lead": "The body is the only place that is always \"Here\".",
       "sections": [
         "The Beginning: Relaxation and Grounding",
         "Gravity: The Undeniable \"Here\"",
@@ -202,6 +214,7 @@ export const CHAPTER_OUTLINE: Record<'el' | 'en', ChapterOutline[]> = {
       "title": "Breath",
       "sub": "The Rhythm of Life",
       "insight": "I observe without intervening. Every breath is a new beginning. The tool is always the exhale.",
+      "lead": "The breath is the rhythm that is always with you.",
       "sections": [
         "The Rhythm of Existence",
         "The Act of Observation — Inner Touch",
@@ -219,6 +232,7 @@ export const CHAPTER_OUTLINE: Record<'el' | 'en', ChapterOutline[]> = {
       "title": "Attention",
       "sub": "The Lens of Consciousness",
       "insight": "Bringing attention back is not failure; it is the exercise itself. Every \"gentle return\" is practice, and with repetition the return becomes easier.",
+      "lead": "Attention is the lens: it focuses, opens, scatters, gets stuck.",
       "sections": [
         "The Four Forms of Attention",
         "The Vicious Circles: \"Otherwise\" and \"Should\"",
@@ -234,6 +248,7 @@ export const CHAPTER_OUTLINE: Record<'el' | 'en', ChapterOutline[]> = {
       "title": "Space",
       "sub": "Open Awareness",
       "insight": "Attention is the point; awareness the field in which it moves. The fourth step shifts the centre from the point to the field, from the egocentric to the spacecentric, with the body grounded and present. Short moments, many times.",
+      "lead": "The first three centres are something you do; Space is something that already exists.",
       "sections": [
         "How You Drive",
         "The Point and the Field",
@@ -254,6 +269,7 @@ export const CHAPTER_OUTLINE: Record<'el' | 'en', ChapterOutline[]> = {
       "title": "The Neurodivergent Mind",
       "sub": "Defence, Racing, the Mask",
       "insight": "Defence does not make your thoughts; it selects them. It does not come down through arguments, but through signals of safety and through time. And the mask was always a function, never an identity.",
+      "lead": "The neurodivergent mind races or locks in, and underneath there is a setting: defence.",
       "sections": [
         "The Racing Mind, the Locked-In Mind",
         "Defence: The Setting Underneath",
@@ -268,6 +284,7 @@ export const CHAPTER_OUTLINE: Record<'el' | 'en', ChapterOutline[]> = {
       "title": "Daily Life",
       "sub": "Self-Regulation",
       "insight": "Contact is the base. The earth holds you without effort on your part; the sky opens without construction on your part. You can stand on what is real, and let thinking be weather, not floor.",
+      "lead": "Daily practice is called contact: a fine thread to your soles, your breath and the space around you, running beneath whatever you do.",
       "sections": [
         "Where Do You Stand?",
         "Contact, not Remembering",
@@ -285,6 +302,7 @@ export const CHAPTER_OUTLINE: Record<'el' | 'en', ChapterOutline[]> = {
       "title": "The New Driver",
       "sub": "Avoidance and Procrastination",
       "insight": "In place of urgency and panic you put the body and its energy, the breath, and your intention. You keep the act, let go of the outcome, and move one step at a time. Avoidance you meet with gentleness; executive dysfunction you also support with tools outside yourself.",
+      "lead": "You don't wait for the 'want'.",
       "sections": [
         "If You're Stuck Right Now",
         "If You Can't Feel Your Body",
@@ -303,6 +321,7 @@ export const CHAPTER_OUTLINE: Record<'el' | 'en', ChapterOutline[]> = {
       "title": "When the Wave Rises",
       "sub": "Anxiety, Overload",
       "insight": "Catch the wind early, keep the boat seaworthy, and treat yourself with kindness afterwards. The wave is weather, not a verdict.",
+      "lead": "Catch the wind early: at the first signals, one long exhale may be enough.",
       "sections": [
         "The Barometer: Before the Storm",
         "Protocol 1: Immediate Response to Intense Anxiety",
@@ -318,6 +337,7 @@ export const CHAPTER_OUTLINE: Record<'el' | 'en', ChapterOutline[]> = {
       "title": "Presence Worksheet",
       "sub": "The Practice of Presence",
       "insight": "Four centres, four questions. You do not need to do them all. One, done well, is enough.",
+      "lead": "The short version of the practice, for inside the day: four centres, four questions.",
       "sections": [
         "How to Use It",
         "1. Body / Base",
@@ -332,6 +352,7 @@ export const CHAPTER_OUTLINE: Record<'el' | 'en', ChapterOutline[]> = {
       "title": "The Four Stages",
       "sub": "Step-by-Step Guide",
       "insight": "Four stages, in order: earth, breath, point, space. And underneath it all, gentleness.",
+      "lead": "The full, seated exercise of the Fourfold Axis: earth, breath, point, space.",
       "sections": [
         "The Stance Behind the Steps",
         "Stage 1 — Feel the Earth (Grounding)",
@@ -346,6 +367,7 @@ export const CHAPTER_OUTLINE: Record<'el' | 'en', ChapterOutline[]> = {
       "title": "The Background",
       "sub": "Science and Wisdom",
       "insight": "The method does not ask you to believe anything. It asks you to try and to observe. Science explains why it works; tradition explains where it came from.",
+      "lead": "The \"how\" from neuroscience and the \"why\" from contemplative tradition.",
       "sections": [
         "The Philosophy of the Research",
         "The Four Centres in Research",

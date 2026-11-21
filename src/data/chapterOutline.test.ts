@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { CHAPTERS_DATA } from './chapters';
 import { CHAPTER_OUTLINE } from './chapterOutline';
-import { chapterOutlineOf, chapterFromOutline } from './chapterOutlineOf';
+import { chapterOutlineOf, chapterFromOutline, firstSentence } from './chapterOutlineOf';
 import { chapterPages, chapterPageLabel } from '../lib/chapterPages';
 
 describe('chapter outline (the home page knows the chapters without their text)', () => {
@@ -20,5 +20,13 @@ describe('chapter outline (the home page knows the chapters without their text)'
         expect(light.map(p => chapterPageLabel(p, l))).toEqual(full.map(p => chapterPageLabel(p, l)));
       });
     }
+  });
+
+  it('keeps the first sentence of the summary, for the wide book card', () => {
+    expect(firstSentence('Catch the wind early: at the first signals, one long exhale may be enough. Inside the wave, four words.')).toBe('Catch the wind early: at the first signals, one long exhale may be enough.');
+    expect(firstSentence('The first three centres are something you do; Space is something that already exists. More.')).toBe('The first three centres are something you do; Space is something that already exists.');
+    expect(firstSentence('Το σώμα είναι πάντα στο «Εδώ». Η βαρύτητα.')).toBe('Το σώμα είναι πάντα στο «Εδώ».');
+    expect(firstSentence('Γιατί; Επειδή.')).toBe('Γιατί;');
+    for (const l of ['el', 'en'] as const) for (const o of CHAPTER_OUTLINE[l]) if (o.lead) expect(o.lead.length, `${l} ${o.num}`).toBeGreaterThan(20);
   });
 });

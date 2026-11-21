@@ -6,10 +6,19 @@ export interface ChapterOutline {
   title: string;
   sub: string;
   insight?: string;
+  /** The first sentence of the chapter's summary (tldr): plain words, for the wide book card. */
+  lead?: string;
   /** The names of its theory pages, in order. */
   sections: string[];
   /** Whether it ends with a practice page. */
   practice: boolean;
+}
+
+/** The first sentence of a text: up to . ! ? (and, in Greek, ; the question mark), with a closing quote. */
+export function firstSentence(text: string): string {
+  const greek = /\p{Script=Greek}/u.test(text);
+  const m = text.match(greek ? /^[\s\S]*?[.!?;…]["»”’']?(?=\s|$)/ : /^[\s\S]*?[.!?…]["»”’']?(?=\s|$)/);
+  return (m ? m[0] : text).trim();
 }
 
 export function chapterOutlineOf(c: Chapter): ChapterOutline {
@@ -18,6 +27,7 @@ export function chapterOutlineOf(c: Chapter): ChapterOutline {
     title: c.title,
     sub: c.sub,
     ...(c.insight ? { insight: c.insight } : {}),
+    ...(c.tldr ? { lead: firstSentence(c.tldr) } : {}),
     sections: (c.theorySections ?? []).map(s => s.title),
     practice: !!(c.exercise || c.insight || c.reflection),
   };
@@ -33,6 +43,7 @@ export function chapterFromOutline(o: ChapterOutline): Chapter {
     title: o.title,
     sub: o.sub,
     insight: o.insight,
+    tldr: o.lead,
     color: '',
     hex: '',
     icon: '',

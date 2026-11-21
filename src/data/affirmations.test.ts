@@ -15,4 +15,11 @@ describe('phrase of the day', () => {
       expect(a.en).not.toMatch(/one observing|I observe|you are the space/i);
     }
   });
+  it('the wave, the floor and the mask are also said plainly, in both languages', () => {
+    for (const word of [/κύμα/i, /πάτωμα/i, /μάσκα/i]) {
+      const a = AFFIRMATIONS.find(x => word.test(x.el))!;
+      expect(a.plain?.el, a.el).toBeTruthy();
+      expect(a.plain?.en, a.en).toBeTruthy();
+    }
+  });
 });
