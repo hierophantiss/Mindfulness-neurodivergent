@@ -8,17 +8,19 @@ import { CHAPTER_TITLES } from '../data/chapterTitles';
 import { DriftNote } from '../components/DriftNote';
 import { ReflectInJournal } from '../components/ReflectInJournal';
 import { chapterObjectives } from '../data/chapterObjectives';
-import { ArrowLeft, BookOpen, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, Check, Zap, Sparkles, Music } from 'lucide-react';
+import { ArrowLeft, BookOpen, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, Check, Zap, Sparkles, Music, Pause } from 'lucide-react';
 import { useCompanion } from '../hooks/useCompanion';
 import { useLanguage } from '../hooks/useLanguage';
 import { useReward } from '../contexts/RewardContext';
 import { useProgress } from '../contexts/ProgressContext';
 import { useAudioMixer } from '../contexts/AudioContext';
+import { readMix } from '../lib/myMix';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
 import InteractiveRenderer from '../components/InteractiveRenderer';
 import ChapterReaderBar from '../components/ChapterReaderBar';
 import { chapterPages, chapterPageLabel, type ChapterPage } from '../lib/chapterPages';
+import { savedPage } from '../lib/readingSpot';
 import type { Chapter } from '../data/types';
 import { buildChapterSegments } from '../lib/chapterReading';
 import { MeditatorFigure } from '../components/MeditatorFigure';
@@ -269,9 +271,27 @@ export default function ChapterDetail() {
   const navigate = useNavigate();
   const { updateChapterProgress, companionData } = useCompanion();
   const { language } = useLanguage();
-  const { markChapterComplete } = useProgress();
+  const { markChapterComplete, isChapterComplete } = useProgress();
   const { triggerReward } = useReward();
-  const { masterPlaying, toggleMaster } = useAudioMixer();
+  // «Ήχος» while reading: the Sanctuary's own mix if there is one, else calm
+  // rain, softly, through the app's one mixer; it stops when the chapter closes.
+  const { startAudio, stopAudio, setGlobalVolume } = useAudioMixer();
+  const [bgSound, setBgSound] = useState(false);
+  const readingMix = useMemo(() => readMix(), []);
+  const bgName = readingMix.length
+    ? (language === 'el' ? 'Η μίξη μου' : 'My mix')
+    : (language === 'el' ? 'Βροχή' : 'Rain');
+  const toggleBgSound = () => {
+    if (bgSound) { stopAudio(); setBgSound(false); return; }
+    setGlobalVolume(0.5);
+    startAudio(readingMix.length
+      ? { base: 0, beat: 0, disableSynth: true, ambientLayers: readingMix.map(p => p.layer), layerLevels: Object.fromEntries(readingMix.map(p => [p.layer, p.level])) }
+      : { base: 0, beat: 0, disableSynth: true, ambientLayers: ['rain'] });
+    setBgSound(true);
+  };
+  const bgSoundRef = useRef(false);
+  bgSoundRef.current = bgSound;
+  useEffect(() => () => { if (bgSoundRef.current) stopAudio(); }, [stopAudio]);
   
   const currentLang = language === 'en' && CHAPTERS_DATA['en'] ? 'en' : 'el';
   const chapter = CHAPTERS_DATA[currentLang].find(c => c.num === Number(id));
@@ -279,10 +299,17 @@ export default function ChapterDetail() {
   const pages: any[] = chapterPages(chapter);
   // "?p=3" opens page 3 — the cat uses it to bring you back where you stopped.
   const [searchParams] = useSearchParams();
+  // Without "?p", a chapter not yet finished opens where the reader left it
+  // (the same place the home page's "Continue" uses), from any link, the Book
+  // tab included; "?p=1" opens the first page.
   const [page, setPage] = useState(() => {
     const p = Number(searchParams.get('p'));
-    return Number.isFinite(p) && p > 1 ? Math.min(p - 1, Math.max(0, pages.length - 1)) : 0;
+    if (searchParams.has('p')) return Number.isFinite(p) && p > 1 ? Math.min(p - 1, Math.max(0, pages.length - 1)) : 0;
+    if (!chapter || isChapterComplete(chapter.num)) return 0;
+    return savedPage(companionData.chapterProgress?.[chapter.num], pages.length);
   });
+  /** Opened where it was left (not at page 1): a quiet line says so, with "from the start". */
+  const [resumedAt] = useState(page);
   const [direction, setDirection] = useState(1);
   const touchStartX = useRef(0);
   // The pages turn like a book's. Until the reader has turned one, a quiet line
@@ -551,20 +578,21 @@ export default function ChapterDetail() {
           </span>
         </div>
         
-        {/* Discret Ambient Audio Toggle */}
-        <button 
-          onClick={toggleMaster}
-          title={language === 'el' ? 'Ηχητικό Τοπίο' : 'Ambient Audio'}
+        {/* A soft sound under the reading: says which, and plays it (again: stops it). */}
+        <button
+          onClick={toggleBgSound}
+          aria-pressed={bgSound}
+          aria-label={language === 'el' ? `Ήχος υποβάθρου: ${bgName}` : `Background sound: ${bgName}`}
           className={cn(
-            "rounded-full px-3 py-2 border flex items-center justify-center gap-2 transition-all duration-700 font-sans text-[12px] desk:text-[13px] shrink-0 whitespace-nowrap",
-            masterPlaying 
-              ? "text-teal-300 bg-teal-500/10 border-teal-500/20" 
+            "rounded-full min-h-[44px] px-3 border flex items-center justify-center gap-2 transition-all duration-700 font-sans text-[12px] desk:text-[13px] shrink-0 whitespace-nowrap",
+            bgSound
+              ? "text-teal-300 bg-teal-500/10 border-teal-500/20"
               : "text-ink/75 bg-white/[0.04] border-white/10 hover:bg-white/[0.07] hover:text-ink"
           )}
         >
-          <Music size={14} aria-hidden="true" />
-          <span className="hidden desk:inline">{language === 'el' ? 'Μουσική υπόκρουση' : 'Background music'}</span>
-          <span className="desk:hidden">{language === 'el' ? 'Μουσική' : 'Music'}</span>
+          {bgSound ? <Pause size={14} aria-hidden="true" /> : <Music size={14} aria-hidden="true" />}
+          <span className="hidden desk:inline">{language === 'el' ? `Ήχος υποβάθρου: ${bgName}` : `Background sound: ${bgName}`}</span>
+          <span className="desk:hidden">{bgName}</span>
         </button>
       </header>
 
@@ -577,6 +605,15 @@ export default function ChapterDetail() {
           <span className="hidden desk:inline">
             {language === 'el' ? 'Σαν βιβλίο: τα βελάκια του πληκτρολογίου αλλάζουν σελίδα.' : 'Like a book: the arrow keys turn the page.'}
           </span>
+        </p>
+      )}
+
+      {resumedAt > 0 && page === resumedAt && (
+        <p role="note" data-testid="chapter-resumed" className="mx-auto mt-1 mb-2 max-w-md flex items-center justify-center flex-wrap gap-x-2 rounded-full px-4 py-1 text-[13px] text-ink/75 bg-white/[0.04] border border-white/10 font-sans">
+          <span>{language === 'el' ? `Συνεχίζεις από τη σελίδα ${page + 1}.` : `You go on from page ${page + 1}.`}</span>
+          <button type="button" onClick={() => { setDirection(-1); setPage(0); setVisibleParagraphs(1); }} className="min-h-[44px] underline underline-offset-4 decoration-white/30 text-ink/90 hover:text-ink">
+            {language === 'el' ? 'Από την αρχή' : 'From the start'}
+          </button>
         </p>
       )}
 

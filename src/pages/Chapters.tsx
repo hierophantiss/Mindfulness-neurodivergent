@@ -13,10 +13,22 @@ import { Skeleton } from '../components/ui/Skeleton';
 import { cn } from '../lib/utils';
 import { Check } from 'lucide-react';
 import { OfflineAudioCard } from '../components/OfflineAudioCard';
+import { useCompanion } from '../hooks/useCompanion';
+import { chapterPages } from '../lib/chapterPages';
+import { savedPage } from '../lib/readingSpot';
+import type { Chapter } from '../data/types';
 
 export default function Chapters() {
   const { language } = useLanguage();
   const { isChapterComplete } = useProgress();
+  const { companionData } = useCompanion();
+  // A chapter you are in the middle of says where (it opens there).
+  const whereYouAre = (c: Chapter) => {
+    if (isChapterComplete(c.num)) return null;
+    const n = chapterPages(c).length;
+    const pg = savedPage(companionData.chapterProgress?.[c.num], n);
+    return pg > 0 ? (language === 'el' ? `Συνέχισε · σελ. ${pg + 1} από ${n}` : `Continue · p. ${pg + 1} of ${n}`) : null;
+  };
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -115,6 +127,7 @@ export default function Chapters() {
                   <div>
                     <h2 className="font-display text-3xl text-ink/90 group-hover:text-ink transition-colors">{chapter.title}</h2>
                     <p className="text-sm text-ink/65 font-sans mt-2 line-clamp-2">{chapter.sub}</p>
+                    {whereYouAre(chapter) && <p className="text-[13px] text-sign-gold mt-1.5">{whereYouAre(chapter)}</p>}
                   </div>
                   <div className="flex items-center gap-2">
                     <span 
@@ -179,6 +192,7 @@ export default function Chapters() {
                   <div className="flex-1">
                     <h2 className="text-lg font-light text-ink/90 leading-tight group-hover:translate-x-1 transition-transform">{chapter.title}</h2>
                     <p className="text-[13px] text-ink/65 mt-1">{chapter.sub}</p>
+                    {whereYouAre(chapter) && <p className="text-[12.5px] text-sign-gold mt-1">{whereYouAre(chapter)}</p>}
                   </div>
                 </Link>
               )))}
@@ -190,7 +204,8 @@ export default function Chapters() {
             <div className="flex items-center gap-4">
               <span className="w-12 h-[1px] bg-white/10"></span>
               <h2 className="text-[13px] font-medium text-ink/70">
-                {language === 'el' ? 'Το Υπόβαθρο' : 'The Background'}
+                {/* Its one chapter is called «Το Υπόβαθρο»: the heading does not say it twice. */}
+                {language === 'el' ? 'Μέρος 3' : 'Part 3'}
               </h2>
             </div>
             <div className="space-y-4">
@@ -225,6 +240,7 @@ export default function Chapters() {
                   <div className="flex-1">
                     <h2 className="text-lg font-light text-ink/90 leading-tight group-hover:translate-x-1 transition-transform">{chapter.title}</h2>
                     <p className="text-[13px] text-ink/65 mt-1">{chapter.sub}</p>
+                    {whereYouAre(chapter) && <p className="text-[12.5px] text-sign-gold mt-1">{whereYouAre(chapter)}</p>}
                   </div>
                 </Link>
               )))}
