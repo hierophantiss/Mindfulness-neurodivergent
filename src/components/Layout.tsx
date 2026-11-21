@@ -4,6 +4,7 @@ import { useOutlet, useLocation } from 'react-router-dom';
 import { cn } from '../lib/utils';
 import Companion from './Companion';
 import NavigationMenu from './NavigationMenu';
+import NowPlaying from './NowPlaying';
 import OfflineNotification from './OfflineNotification';
 import StorageNote from './StorageNote';
 import RestoredNote from './RestoredNote';
@@ -118,6 +119,9 @@ export default function Layout() {
       <div className="lg:hidden">
         {hideGlobalNavigation && <NavigationMenu />}
       </div>
+
+      {/* A sound from the Sanctuary goes on through the app: here it can be stopped (phone; on a computer it is in the side bar). */}
+      {hideGlobalNavigation && <NowPlaying place="float" />}
 
       {/* The Floating Companion (Mobile only if we want, or universally if needed) */}
       <div className="lg:hidden">

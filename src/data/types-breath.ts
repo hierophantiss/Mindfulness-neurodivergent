@@ -29,6 +29,19 @@ export interface PhaseLabel {
 
 export type AmbientLayer = 'rain' | 'ocean' | 'wind' | 'brown' | 'pink' | 'green' | 'breath' | 'fire' | 'stream' | 'crickets' | 'storm' | 'purr';
 
+/**
+ * A background sound that goes on while you move around the app: a sound or
+ * "My mix" from the Sanctuary, or a chapter's sound under the reading. The
+ * "now playing" control (components/NowPlaying.tsx) names it and stops it.
+ * A practice's own sound has none: it is part of the practice.
+ */
+export interface NowPlaying {
+  source: 'sanctuary' | 'chapter';
+  name: Bilingual;
+  /** The Sanctuary's track, so the Sanctuary shows it again when reopened. */
+  trackId?: string;
+}
+
 /** The sound of a practice (contexts/AudioContext.tsx plays it). */
 export interface AudioConfig {
   base: number;
@@ -41,4 +54,6 @@ export interface AudioConfig {
   /** Each layer's own level, 0–1 (1 when not given): "My mix" in the Sanctuary. */
   layerLevels?: Partial<Record<AmbientLayer, number>>;
   id?: string;
+  /** Set only for a background sound (see NowPlaying). */
+  nowPlaying?: NowPlaying;
 }

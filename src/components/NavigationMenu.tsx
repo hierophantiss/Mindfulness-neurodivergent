@@ -12,6 +12,8 @@ import { useLanguage } from '../hooks/useLanguage';
 import { useTheme } from '../hooks/useTheme';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { QuillIcon, SpiralIcon, SproutIcon, WavesIcon } from './placeIcons';
+import NowPlaying from './NowPlaying';
+import { useAudioMixer } from '../contexts/AudioContext';
 
 export default function NavigationMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,6 +24,8 @@ export default function NavigationMenu() {
   const { language, setLanguage } = useLanguage();
   const { theme, toggleTheme } = useTheme();
   const { reduceMotion, toggleReduceMotion, easyRead, toggleEasyRead } = useAccessibility();
+  // A sound from the Sanctuary (or a chapter) playing: «Ήχοι» says so.
+  const soundOn = !!useAudioMixer().nowPlaying;
 
   // The home page's "In the Menu" line opens it.
   useEffect(() => {
@@ -132,6 +136,7 @@ export default function NavigationMenu() {
           );
         })}
         <div className="flex-1 min-h-6" />
+        <NowPlaying place="side" />
         <Link
           to="/practice/breath/sos-breath"
           className="keep-font flex items-center justify-center gap-2.5 h-12 rounded-2xl text-[14px] font-medium text-[var(--tint-rose-ink)] bg-[rgb(240_194_200/0.08)] border border-[rgb(240_194_200/0.36)] hover:bg-[rgb(240_194_200/0.12)] transition-colors"
@@ -475,7 +480,8 @@ export default function NavigationMenu() {
                   { key: 'settings', label: language === 'el' ? 'Ρυθμίσεις' : 'Settings', onClick: () => handleNav('/settings'), icon: <Settings size={20} aria-hidden="true" /> },
                   { key: 'about', label: language === 'el' ? 'Σχετικά' : 'About', onClick: () => handleNav('/about'), icon: <Info size={20} aria-hidden="true" /> },
                   // The sounds live in the Sanctuary: this opens it (it never plays anything by itself).
-                  { key: 'sounds', label: language === 'el' ? 'Ήχοι' : 'Sounds', onClick: () => handleNav('/sanctuary'), icon: <Music size={20} aria-hidden="true" /> },
+                  // While one plays: «Ήχοι · παίζει», and it still opens the Sanctuary.
+                  { key: 'sounds', label: language === 'el' ? (soundOn ? 'Ήχοι · παίζει' : 'Ήχοι') : (soundOn ? 'Sounds · playing' : 'Sounds'), on: soundOn, onClick: () => handleNav('/sanctuary'), icon: <Music size={20} aria-hidden="true" /> },
                 ].map((b) => (
                   <button
                     key={b.key}
@@ -483,10 +489,10 @@ export default function NavigationMenu() {
                     onClick={b.onClick}
                     className="group flex flex-col items-center gap-1.5 min-w-[64px] text-zinc-300 hover:text-ink transition-colors"
                   >
-                    <span className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 group-hover:bg-white/10 border border-white/5 transition-colors">
+                    <span className={`w-12 h-12 rounded-full flex items-center justify-center border transition-colors ${'on' in b && b.on ? 'bg-teal-500/15 border-teal-500/35 text-teal-200' : 'bg-white/5 group-hover:bg-white/10 border-white/5'}`}>
                       {b.icon}
                     </span>
-                    <span className="text-[11px] text-ink/60 group-hover:text-ink/85">{b.label}</span>
+                    <span className={`text-[11px] whitespace-nowrap ${'on' in b && b.on ? 'text-teal-200/90' : 'text-ink/60 group-hover:text-ink/85'}`}>{b.label}</span>
                   </button>
                 ))}
               </div>

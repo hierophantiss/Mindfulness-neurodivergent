@@ -109,6 +109,23 @@ describe('the sound engine', () => {
     expect(lastTarget(voice)).toBe(0);                         // and goes quiet on the inhale
   });
 
+  it('a background sound is named while it plays; a stop, a fade or a practice clears it', () => {
+    const { result } = mixer();
+    const rain = { source: 'sanctuary' as const, trackId: 'rain-ambient', name: { el: 'Ήρεμη Βροχή', en: 'Calm Rain' } };
+    act(() => result.current.startAudio({ base: 0, beat: 0, disableSynth: true, ambientLayers: ['rain'], nowPlaying: rain }));
+    expect(result.current.nowPlaying).toEqual(rain);
+    act(() => result.current.stopAudio());
+    expect(result.current.nowPlaying).toBeNull();
+    act(() => result.current.startAudio({ base: 0, beat: 0, disableSynth: true, ambientLayers: ['rain'], nowPlaying: rain }));
+    act(() => result.current.fadeOutAudio(30));
+    expect(result.current.nowPlaying).toBeNull();
+    // A practice's own sound takes over and is not a background sound.
+    act(() => result.current.startAudio({ base: 0, beat: 0, disableSynth: true, ambientLayers: ['rain'], nowPlaying: rain }));
+    act(() => result.current.startAudio({ base: 200, beat: 6 }));
+    expect(result.current.isPlaying).toBe(true);
+    expect(result.current.nowPlaying).toBeNull();
+  });
+
   it('volume changes reach what plays, smoothly', () => {
     const { result } = mixer();
     act(() => result.current.startAudio({ base: 200, beat: 6 }));

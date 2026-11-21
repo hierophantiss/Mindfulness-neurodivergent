@@ -275,23 +275,26 @@ export default function ChapterDetail() {
   const { triggerReward } = useReward();
   // «Ήχος» while reading: the Sanctuary's own mix if there is one, else calm
   // rain, softly, through the app's one mixer; it stops when the chapter closes.
-  const { startAudio, stopAudio, setGlobalVolume } = useAudioMixer();
-  const [bgSound, setBgSound] = useState(false);
+  // The button follows the mixer, the one place that knows what plays: a sound
+  // still on from the Sanctuary shows here too (by its name) and this stops it,
+  // and the "now playing" control stops this one.
+  const { startAudio, stopAudio, setGlobalVolume, nowPlaying } = useAudioMixer();
+  const bgSound = !!nowPlaying;
   const readingMix = useMemo(() => readMix(), []);
-  const bgName = readingMix.length
-    ? (language === 'el' ? 'Η μίξη μου' : 'My mix')
-    : (language === 'el' ? 'Βροχή' : 'Rain');
+  const ownName = readingMix.length ? { el: 'Η μίξη μου', en: 'My mix' } : { el: 'Βροχή', en: 'Rain' };
+  const bgName = (nowPlaying?.name ?? ownName)[language === 'el' ? 'el' : 'en'];
   const toggleBgSound = () => {
-    if (bgSound) { stopAudio(); setBgSound(false); return; }
+    if (bgSound) { stopAudio(); return; }
     setGlobalVolume(0.5);
+    const playing = { source: 'chapter' as const, name: ownName };
     startAudio(readingMix.length
-      ? { base: 0, beat: 0, disableSynth: true, ambientLayers: readingMix.map(p => p.layer), layerLevels: Object.fromEntries(readingMix.map(p => [p.layer, p.level])) }
-      : { base: 0, beat: 0, disableSynth: true, ambientLayers: ['rain'] });
-    setBgSound(true);
+      ? { base: 0, beat: 0, disableSynth: true, ambientLayers: readingMix.map(p => p.layer), layerLevels: Object.fromEntries(readingMix.map(p => [p.layer, p.level])), nowPlaying: playing }
+      : { base: 0, beat: 0, disableSynth: true, ambientLayers: ['rain'], nowPlaying: playing });
   };
-  const bgSoundRef = useRef(false);
-  bgSoundRef.current = bgSound;
-  useEffect(() => () => { if (bgSoundRef.current) stopAudio(); }, [stopAudio]);
+  // Closing the chapter stops its own sound only (one from the Sanctuary goes on).
+  const ownSoundRef = useRef(false);
+  ownSoundRef.current = nowPlaying?.source === 'chapter';
+  useEffect(() => () => { if (ownSoundRef.current) stopAudio(); }, [stopAudio]);
   
   const currentLang = language === 'en' && CHAPTERS_DATA['en'] ? 'en' : 'el';
   const chapter = CHAPTERS_DATA[currentLang].find(c => c.num === Number(id));
@@ -592,7 +595,7 @@ export default function ChapterDetail() {
         >
           {bgSound ? <Pause size={14} aria-hidden="true" /> : <Music size={14} aria-hidden="true" />}
           <span className="hidden desk:inline">{language === 'el' ? `Ήχος υποβάθρου: ${bgName}` : `Background sound: ${bgName}`}</span>
-          <span className="desk:hidden">{bgName}</span>
+          <span className="desk:hidden max-w-[9rem] truncate">{bgName}</span>
         </button>
       </header>
 

@@ -66,6 +66,8 @@ const OLD_IDS: Record<string, string> = {
 };
 const resolveId = (id: string | null) => (id ? OLD_IDS[id] ?? id : null);
 
+const MIX_NAME: Text = { el: 'Η μίξη μου', en: 'My mix' };
+
 const TIMER_STEPS = [null, 10, 20, 30, 45, 60] as const;
 /** The sound fades out over the last half minute of the timer. */
 const FADE_SECONDS = 30;
@@ -106,9 +108,16 @@ export default function Sanctuary() {
   const { language } = useLanguage();
   const L = (t: Text) => (language === 'en' ? t.en : t.el);
 
+  const { startAudio, stopAudio, fadeOutAudio, isPlaying, nowPlaying, volume: mixerVolume, setGlobalVolume, setLayerLevel } = useBinauralAudio();
+
+  // Back in the Sanctuary while one of its sounds still plays (it goes on
+  // through the app): that sound shows as playing, as it was left, not
+  // started again.
+  const [playingOnArrival] = useState(() =>
+    !searchParams.get('track') && isPlaying && nowPlaying?.source === 'sanctuary' ? nowPlaying.trackId ?? null : null);
   const [activeTab, setActiveTab] = useState<'audio' | 'bilateral'>('audio');
-  const [activeSound, setActiveSound] = useState<string | null>(() => resolveId(searchParams.get('track')));
-  const [volume, setVolume] = useState(0.6);
+  const [activeSound, setActiveSound] = useState<string | null>(() => resolveId(searchParams.get('track')) ?? playingOnArrival);
+  const [volume, setVolume] = useState(() => (playingOnArrival ? mixerVolume : 0.6));
   const [under, setUnder] = useState<Under>(readUnder);
   const [showInfo, setShowInfo] = useState(false);
   const [isDimmed, setIsDimmed] = useState(false);
@@ -122,7 +131,6 @@ export default function Sanctuary() {
   const sessionStartTimeRef = useRef<number | null>(null);
   const startedAtRef = useRef(0);
 
-  const { startAudio, stopAudio, fadeOutAudio, isPlaying, setGlobalVolume, setLayerLevel } = useBinauralAudio();
 
   // ── Time spent, for the activity log ──
   useEffect(() => {
@@ -187,7 +195,7 @@ export default function Sanctuary() {
   const mixNames = (m: MixPart[]) => m.map(p => { const s = mixSounds.find(x => x.layer === p.layer); return s ? L(s.label) : p.layer; }).join(', ');
   const mixTrack: SanctuaryTrack = {
     id: MIX_ID, kind: 'nature', icon: SlidersHorizontal,
-    label: { el: 'Η μίξη μου', en: 'My mix' },
+    label: MIX_NAME,
     subtitle: { el: mixNames(mix), en: mixNames(mix) },
     layers: mix.map(p => p.layer),
   };
@@ -210,18 +218,22 @@ export default function Sanctuary() {
     next.set('track', id);
     setSearchParams(next, { replace: true });
     startedAtRef.current = performance.now() + 50;
+    // It plays on through the app; the "now playing" control names it and stops it.
+    const playing = { source: 'sanctuary' as const, trackId: id, name: isMix || !track ? MIX_NAME : track.label };
     if (isMix || !track) {
       startAudio({
         base: 0, beat: 0, disableSynth: true,
         ambientLayers: mixNow.map(p => p.layer),
         layerLevels: Object.fromEntries(mixNow.map(p => [p.layer, p.level])),
+        nowPlaying: playing,
       });
     } else if (track.kind === 'nature') {
-      startAudio({ base: 0, beat: 0, disableSynth: true, ambientLayers: track.layers });
+      startAudio({ base: 0, beat: 0, disableSynth: true, ambientLayers: track.layers, nowPlaying: playing });
     } else {
       startAudio({
         base: track.base!, beat: track.beat!, pulse: track.pulse ?? 0,
         disableSynth: false, ambientLayers: layersUnder(track, choice),
+        nowPlaying: playing,
       });
     }
   }, [searchParams, setSearchParams, startAudio, under, mix]);
@@ -262,9 +274,9 @@ export default function Sanctuary() {
     setSearchParams(next, { replace: true });
   };
 
-  // A link with ?track= starts that sound.
+  // A link with ?track= starts that sound (the one still playing goes on as it is).
   useEffect(() => {
-    if (activeSound) play(activeSound);
+    if (activeSound && activeSound !== playingOnArrival) play(activeSound);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -7,8 +7,8 @@ import React, {
   useRef,
 } from 'react';
 import { getAudioContext } from '../lib/sound';
-import type { AmbientLayer, AudioConfig } from '../data/types-breath';
-export type { AmbientLayer, AudioConfig };
+import type { AmbientLayer, AudioConfig, NowPlaying } from '../data/types-breath';
+export type { AmbientLayer, AudioConfig, NowPlaying };
 export { BREATH_WAVE_SECONDS } from '../data/types-breath';
 
 // The background sounds load on first use (they are a large piece).
@@ -31,6 +31,8 @@ export interface AudioContextProps {
   masterVolume: number;
   setMasterVolume: (vol: number) => void;
   isPlaying: boolean;
+  /** The background sound playing now (Sanctuary or chapter), or null: none, or a practice's own. */
+  nowPlaying: NowPlaying | null;
   volume: number;
   startAudio: (config: AudioConfig) => void;
   stopAudio: () => void;
@@ -72,6 +74,7 @@ const AudioCtx = createContext<AudioContextProps | undefined>(undefined);
 
 export function AudioProvider({ children }: { children: ReactNode }) {
   const [isPlaying, setIsPlaying]         = useState(false);
+  const [nowPlaying, setNowPlaying]       = useState<NowPlaying | null>(null);
   const [masterVolume, _setMasterVolume]  = useState(1.0);
   const [volume, _setVolume]              = useState(1.0);
 
@@ -178,6 +181,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     n.currentConfig = config;
 
     setIsPlaying(true);
+    setNowPlaying(config.nowPlaying ?? null);
 
     try {
       const ctx = getCtx();
@@ -408,6 +412,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   // ---- stopAudio ----
   const stopAudio = useCallback(() => {
     setIsPlaying(false);
+    setNowPlaying(null);
 
     const n       = nodesRef.current;
     const ctx     = webAudioCtxRef.current;
@@ -665,6 +670,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   // ---- fadeOutAudio ----
   const fadeOutAudio = useCallback((seconds: number) => {
     setIsPlaying(false);
+    setNowPlaying(null);
 
     const n       = nodesRef.current;
     const ctx     = webAudioCtxRef.current;
@@ -693,7 +699,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     <AudioCtx.Provider
       value={{
         masterVolume, setMasterVolume,
-        isPlaying, volume, startAudio, stopAudio, fadeOutAudio,
+        isPlaying, nowPlaying, volume, startAudio, stopAudio, fadeOutAudio,
         setGlobalVolume, updateArmPos, updatePhase, setLayerLevel,
       }}
     >
