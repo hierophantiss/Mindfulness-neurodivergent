@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { acceptable, backupText, collectBackup, isLocked, lockBackup, restoreBackup, unlockBackup } from './backup';
+import { acceptable, backupText, collectBackup, isLocked, lockBackup, previewBackup, restoreBackup, unlockBackup } from './backup';
 
 describe('backup and restore', () => {
   beforeEach(() => localStorage.clear());
@@ -137,5 +137,20 @@ describe('restore: each field checked, all or nothing', () => {
     }
     expect(localStorage.getItem('vocal_pitch')).toBe('low');
     expect(localStorage.getItem('mindfulness_lang')).toBeNull();
+  });
+
+  it('a preview says the copy\'s day and what it holds, and writes nothing', () => {
+    localStorage.setItem('journal_v2_2026-11-17', '{"text":"x","timestamp":1}');
+    localStorage.setItem('awareness_progress', '{"completedChapters":["1"]}');
+    localStorage.setItem('mindfulness_lang', 'en');
+    const file = backupText(localStorage, new Date('2026-11-03T10:00:00Z'));
+    localStorage.clear();
+    const p = previewBackup(file);
+    expect(p.savedAt?.toISOString()).toBe('2026-11-03T10:00:00.000Z');
+    expect(p).toMatchObject({ journalDays: 1, progress: true, record: false, settings: true });
+    expect(localStorage.length).toBe(0);
+    // An older copy: its day from the file's name.
+    expect(previewBackup(JSON.stringify({ awareness_progress: '{}' }), 'mindfulness-backup-2026-10-05.json').savedAt?.getDate()).toBe(5);
+    expect(() => previewBackup('{"x":1}')).toThrow();
   });
 });
