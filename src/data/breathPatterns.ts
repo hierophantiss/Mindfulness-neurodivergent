@@ -31,6 +31,13 @@ export interface BreathPattern {
   familyOrder?: number;
 }
 
+/** A breath's one name, the same in the lists, the suggestions and on its own page:
+ *  what it does first, then the rhythm ("At the Peak · 4-6"). */
+export function breathName(p: Pick<BreathPattern, 'title' | 'subtitle'>): { el: string; en: string } {
+  const sub = p.subtitle;
+  return p.title.el === sub.el || !sub.el ? p.title : { el: `${sub.el} · ${p.title.el}`, en: `${sub.en} · ${p.title.en}` };
+}
+
 export const BREATH_PATTERNS: BreathPattern[] = [
   {
     id: "breath-5-5",

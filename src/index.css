@@ -385,13 +385,13 @@
      SOS breath, over the helplines), never under the buttons. */
   @supports (width: 1cqh) {
     .breath-hero { container-type: size; }
-    .breath-stage { width: clamp(132px, min(calc(100cqh - 72px), calc(100cqw - 24px)), 440px); }
+    .breath-stage { width: clamp(132px, min(calc(100cqh - 108px), calc(100cqw - 24px)), 440px); }
     .breath-hero-sos .breath-hero-inner { padding-bottom: 104px; }
-    .breath-hero-sos .breath-stage { width: clamp(120px, min(calc(100cqh - 176px), calc(100cqw - 24px)), 440px); }
+    .breath-hero-sos .breath-stage { width: clamp(120px, min(calc(100cqh - 212px), calc(100cqw - 24px)), 440px); }
     @media (min-width: 1024px) {
-      .breath-stage { width: clamp(320px, calc(100cqh - 88px), 620px); }
+      .breath-stage { width: clamp(320px, calc(100cqh - 124px), 620px); }
       .breath-hero-sos .breath-hero-inner { padding-bottom: 72px; }
-      .breath-hero-sos .breath-stage { width: clamp(280px, calc(100cqh - 160px), 620px); }
+      .breath-hero-sos .breath-stage { width: clamp(280px, calc(100cqh - 196px), 620px); }
     }
   }
   /* A key sentence, marked with the line of the axis (the sign's vertical

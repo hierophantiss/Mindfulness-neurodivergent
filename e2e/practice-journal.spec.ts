@@ -16,7 +16,6 @@ test('a breath practice keeps its time, counts the cycles, and is recorded when 
   if (await close.count()) await close.first().click();
 
   await page.getByRole('button', { name: 'Ξεκίνα', exact: true }).first().click();
-  await page.getByRole('button', { name: 'Χωρίς ήχο', exact: true }).click();
   await expect(phase(page)).toHaveText('Εισπνοή');
   await page.clock.runFor(4_300);
   await expect(phase(page)).toHaveText('Εκπνοή');
@@ -31,9 +30,10 @@ test('a breath practice keeps its time, counts the cycles, and is recorded when 
   await expect(count).toContainText('3');
   await page.keyboard.press('Space');
   await expect(phase(page)).toHaveText('');
-  await expect(page.getByRole('button', { name: 'Ξεκίνα', exact: true }).first()).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Συνέχισε', exact: true }).first()).toBeVisible();
 
-  await page.getByRole('button', { name: 'Ολοκλήρωση' }).click();
+  await page.getByRole('button', { name: 'Τέλος', exact: true }).click();
+  await expect(page.getByRole('status').filter({ hasText: 'Τέλος. Πάρε μια στιγμή' })).toBeVisible();
   const record = await page.evaluate(() => JSON.parse(localStorage.getItem('neurodivergent_mindfulness_detailed_activity_logs') || '[]'));
   const last = record[record.length - 1];
   expect(last).toMatchObject({ itemId: 'breath-4-6', completed: true });
@@ -46,7 +46,6 @@ test('a practice stopped in the first seconds is not recorded', async ({ page })
   const close = page.getByRole('button', { name: 'Κλείσιμο', exact: true });
   if (await close.count()) await close.first().click();
   await page.getByRole('button', { name: 'Ξεκίνα', exact: true }).first().click();
-  await page.getByRole('button', { name: 'Χωρίς ήχο', exact: true }).click();
   await page.clock.runFor(5_000);
   await page.getByRole('button', { name: 'Παύση', exact: true }).click();
   const record = await page.evaluate(() => JSON.parse(localStorage.getItem('neurodivergent_mindfulness_detailed_activity_logs') || '[]'));

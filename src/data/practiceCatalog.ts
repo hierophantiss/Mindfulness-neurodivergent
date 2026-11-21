@@ -6,7 +6,7 @@
 
 import type { Axis } from './types';
 import { MICRODOSES_EXERCISES } from './microdoses';
-import { BREATH_PATTERNS } from './breathPatterns';
+import { BREATH_PATTERNS, breathName } from './breathPatterns';
 import { GUIDED_EXERCISES } from './guidedExercises';
 
 export type CheckinTag = 'hyper' | 'hypo' | 'balanced' | 'unsure';
@@ -91,11 +91,10 @@ function build(): CatalogItem[] {
 
   for (const p of BREATH_PATTERNS) {
     const kind: PracticeKind = p.category === 'vocal' ? 'voice' : p.category === 'breath' ? 'breath' : 'movement';
-    const sub = p.subtitle;
     items.push({
       id: p.id, kind, axis: p.axis,
       // What it does first, the rhythm after ("Deep relaxation · 4-2-7"): the numbers mean nothing yet to someone new.
-      title: p.title.el === sub.el || !sub.el ? p.title : { el: `${sub.el} · ${p.title.el}`, en: `${sub.en} · ${p.title.en}` },
+      title: breathName(p),
       path: `/practice/breath/${p.id}`,
       // A breath has no fixed end; 2–5 minutes is what the welcome promises.
       seconds: 180, dur: { el: '2–5 λεπτά', en: '2–5 min' }, tags: CHECKIN_TAGS[p.id] || [],

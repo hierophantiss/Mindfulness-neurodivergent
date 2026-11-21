@@ -1,14 +1,12 @@
-import { createPortal } from 'react-dom';
 import { readText } from '../lib/storage';
 import { movementSteps, movementStance, phaseName, stanceName, type Step } from '../data/movementSteps';
-import { AudioEnabler } from '../components/AudioEnabler';
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import BreathCanvas, { PhaseLabel } from '../components/BreathCanvas';
-import { ArrowLeft, Play, Square, Headphones, X, Check, Timer, Volume1 } from 'lucide-react';
+import { ArrowLeft, Play, Pause, Headphones, Check, Timer, Volume1, RotateCcw, Vibrate, VibrateOff } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useBinauralAudio } from '../hooks/useBinauralAudio';
-import { BREATH_PATTERNS } from '../data/breathPatterns';
+import { BREATH_PATTERNS, breathName } from '../data/breathPatterns';
 import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { motion, AnimatePresence } from 'motion/react';
@@ -21,6 +19,8 @@ import { EvidenceLine } from '../components/EvidenceLine';
 import GuideAfterPractice from '../components/GuideAfterPractice';
 import { useReward } from '../contexts/RewardContext';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
+import { useFocusTrap } from '../hooks/useFocusTrap';
+import { vibrate } from '../lib/sound';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { ConceptInfoIcon } from '../components/ConceptInfoOverlay';
 
@@ -42,90 +42,62 @@ const BELLY_CHANT = {
   en: 'Towards the end of the chant, as the air runs low, let the belly draw gently inwards; the belly carries the sound, not a squeezed chest. Chest and shoulders stay soft. No force.',
 };
 
-/** "How it's done": the description, folded so the figure keeps its room.
- *  For breathing practices it starts from the axis of gravity. */
+/** "How it is done", in view before starting (as in the other practices):
+ *  for breathing practices it starts from the axis of gravity. */
 function HowTo({ text, language, gravityFirst = false, longExhale = false, chant = false, steps = null }: { text: string; language: string; gravityFirst?: boolean; longExhale?: boolean; chant?: boolean; steps?: Step[] | null }) {
-  const [open, setOpen] = useState(false);
   const el = language === 'el';
-  useKeyboardShortcuts({ Escape: () => setOpen(false) }, open);
   return (
-    <>
-      <button
-        onClick={(e) => { e.stopPropagation(); setOpen(true); }}
-        aria-expanded={open}
-        className="mt-2 min-h-10 px-4 rounded-full border border-teal-400/30 bg-teal-400/[0.06] text-[14px] text-teal-200 hover:border-teal-300/60 hover:text-teal-100 transition-colors"
-      >
-        {el ? 'Πώς γίνεται' : 'How it is done'}
-      </button>
-      {/* Over the stage, not inside it: on small screens the text would push the start button away. */}
-      {open && typeof document !== 'undefined' && createPortal(
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-[#0f1117]/70 backdrop-blur-sm" aria-hidden="true" onClick={() => setOpen(false)} />
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-label={el ? 'Πώς γίνεται' : 'How it is done'}
-            className="relative card-relief w-full max-w-sm max-h-[80dvh] overflow-y-auto rounded-3xl p-5"
-          >
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-[15px] text-ink/90">{el ? 'Πώς γίνεται' : 'How it is done'}</h2>
-              <button onClick={() => setOpen(false)} className="min-h-[40px] px-3 -mr-2 text-[13px] text-teal-300/80 hover:text-teal-200">
-                {el ? 'Κλείσιμο' : 'Close'}
-              </button>
-            </div>
-            {steps ? (
-              // The movement, step by step, as the figure does it.
-              <ol className="flex flex-col gap-3.5 text-left">
-                {steps.map((st, i) => (
-                  <li key={i} className="flex gap-3">
-                    <span className="shrink-0 w-6 h-6 mt-0.5 rounded-full bg-teal-400/15 text-teal-300 text-[12px] flex items-center justify-center">{i + 1}</span>
-                    <span className="text-[14px] text-zinc-300 leading-relaxed">
-                      <strong className="font-medium text-ink">{st.label}. </strong>
-                      {st.text}
-                    </span>
-                  </li>
-                ))}
-              </ol>
-            ) : !gravityFirst ? (
-              <p className="text-[14px] text-zinc-300 leading-relaxed">{text}</p>
-            ) : (
-              <ol className="flex flex-col gap-3.5 text-left">
-                <li className="flex gap-3">
-                  <span className="shrink-0 w-6 h-6 mt-0.5 rounded-full bg-[#7A9E7E]/20 text-[#9cc0a0] text-[12px] flex items-center justify-center">1</span>
-                  <span className="text-[14px] text-zinc-300 leading-relaxed">
-                    <strong className="font-medium text-ink">{el ? 'Πρώτα ο άξονας της βαρύτητας. ' : 'First, the axis of gravity. '}</strong>
-                    {el ? GRAVITY_FIRST.el : GRAVITY_FIRST.en}
-                  </span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="shrink-0 w-6 h-6 mt-0.5 rounded-full bg-teal-400/15 text-teal-300 text-[12px] flex items-center justify-center">2</span>
-                  <span className="text-[14px] text-zinc-300 leading-relaxed">
-                    <strong className="font-medium text-ink">{chant ? (el ? 'Μετά η αναπνοή και η φωνή. ' : 'Then, breath and voice. ') : (el ? 'Μετά η αναπνοή. ' : 'Then, the breath. ')}</strong>
-                    {text}
-                  </span>
-                </li>
-                {longExhale && (
-                  <li className="flex gap-3">
-                    <span className="shrink-0 w-6 h-6 mt-0.5 rounded-full bg-teal-400/15 text-teal-300 text-[12px] flex items-center justify-center">3</span>
-                    <span className="text-[14px] text-zinc-300 leading-relaxed">
-                      <strong className="font-medium text-ink">{chant ? (el ? 'Η κοιλιά στο ψάλσιμο. ' : 'The belly in the chant. ') : (el ? 'Η κοιλιά στην εκπνοή. ' : 'The belly on the exhale. ')}</strong>
-                      {chant ? (el ? BELLY_CHANT.el : BELLY_CHANT.en) : (el ? BELLY_EXHALE.el : BELLY_EXHALE.en)}
-                    </span>
-                  </li>
-                )}
-              </ol>
-            )}
-            {/* Safety, where it is read: in the practice itself. */}
-            {!steps && (
-              <p className="mt-4 pt-3 border-t border-white/[0.08] text-[13px] leading-relaxed text-ink/70">
-                {el ? 'Αν ζαλιστείς ή νιώσεις πίεση, σταμάτα και γύρνα στη φυσική σου ανάσα.' : 'If you feel dizzy or pressured, stop and return to your natural breath.'}
-              </p>
-            )}
-          </div>
-        </div>,
-        document.body
+    <section aria-labelledby="breath-howto-title" className="card-relief w-full max-w-md mx-auto rounded-[1.5rem] p-5 text-left">
+      <h2 id="breath-howto-title" className="text-[15px] text-ink/90 mb-3">{el ? 'Πώς γίνεται' : 'How it is done'}</h2>
+      {steps ? (
+        // The movement, step by step, as the figure does it.
+        <ol className="flex flex-col gap-3.5 text-left">
+          {steps.map((st, i) => (
+            <li key={i} className="flex gap-3">
+              <span className="shrink-0 w-6 h-6 mt-0.5 rounded-full bg-teal-400/15 text-teal-300 text-[12px] flex items-center justify-center">{i + 1}</span>
+              <span className="text-[14px] text-zinc-300 leading-relaxed">
+                <strong className="font-medium text-ink">{st.label}. </strong>
+                {st.text}
+              </span>
+            </li>
+          ))}
+        </ol>
+      ) : !gravityFirst ? (
+        <p className="text-[14px] text-zinc-300 leading-relaxed">{text}</p>
+      ) : (
+        <ol className="flex flex-col gap-3.5 text-left">
+          <li className="flex gap-3">
+            <span className="shrink-0 w-6 h-6 mt-0.5 rounded-full bg-[var(--color-axis-body)]/20 text-[var(--axis-body-ink)] text-[12px] flex items-center justify-center">1</span>
+            <span className="text-[14px] text-zinc-300 leading-relaxed">
+              <strong className="font-medium text-ink">{el ? 'Πρώτα ο άξονας της βαρύτητας. ' : 'First, the axis of gravity. '}</strong>
+              {el ? GRAVITY_FIRST.el : GRAVITY_FIRST.en}
+            </span>
+          </li>
+          <li className="flex gap-3">
+            <span className="shrink-0 w-6 h-6 mt-0.5 rounded-full bg-teal-400/15 text-teal-300 text-[12px] flex items-center justify-center">2</span>
+            <span className="text-[14px] text-zinc-300 leading-relaxed">
+              <strong className="font-medium text-ink">{chant ? (el ? 'Μετά η αναπνοή και η φωνή. ' : 'Then, breath and voice. ') : (el ? 'Μετά η αναπνοή. ' : 'Then, the breath. ')}</strong>
+              {text}
+            </span>
+          </li>
+          {longExhale && (
+            <li className="flex gap-3">
+              <span className="shrink-0 w-6 h-6 mt-0.5 rounded-full bg-teal-400/15 text-teal-300 text-[12px] flex items-center justify-center">3</span>
+              <span className="text-[14px] text-zinc-300 leading-relaxed">
+                <strong className="font-medium text-ink">{chant ? (el ? 'Η κοιλιά στο ψάλσιμο. ' : 'The belly in the chant. ') : (el ? 'Η κοιλιά στην εκπνοή. ' : 'The belly on the exhale. ')}</strong>
+                {chant ? (el ? BELLY_CHANT.el : BELLY_CHANT.en) : (el ? BELLY_EXHALE.el : BELLY_EXHALE.en)}
+              </span>
+            </li>
+          )}
+        </ol>
       )}
-    </>
+      {/* Safety, where it is read: in the practice itself. */}
+      {!steps && (
+        <p className="mt-4 pt-3 border-t border-white/[0.08] text-[13px] leading-relaxed text-ink/70">
+          {el ? 'Αν ζαλιστείς ή νιώσεις πίεση, σταμάτα και γύρνα στη φυσική σου ανάσα.' : 'If you feel dizzy or pressured, stop and return to your natural breath.'}
+        </p>
+      )}
+    </section>
   );
 }
 
@@ -133,7 +105,6 @@ export default function PracticeBreath() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { language } = useLanguage();
-  const { reduceMotion } = useAccessibility();
   const { triggerReward } = useReward();
   const { logActivity } = useActivityTracker();
   
@@ -207,6 +178,8 @@ export default function PracticeBreath() {
   const [audioEnabled, setAudioEnabled] = useState(false);
   const [cycles, setCycles] = useState(0);
   const [finished, setFinished] = useState(false);
+  /** A session has begun (and is not over): «Συνέχισε» and «Τέλος» instead of «Ξεκίνα». */
+  const [started, setStarted] = useState(false);
   const [phase, setPhase] = useState(pattern.labels[0]);
   const [phaseIdx, setPhaseIdx] = useState(0);
 
@@ -269,6 +242,8 @@ export default function PracticeBreath() {
   const [showSleepTimer, setShowSleepTimer] = useState(false);
   const [sleepMinutes, setSleepMinutes] = useState(0);
   const [sleepSecondsLeft, setSleepSecondsLeft] = useState(0);
+  // The timer's end closes the practice gently, as «Τέλος» does (see below).
+  const [timerEnded, setTimerEnded] = useState(false);
 
   useEffect(() => {
     if (sleepMinutes === 0) {
@@ -281,8 +256,8 @@ export default function PracticeBreath() {
       setSleepSecondsLeft(prev => {
         if (prev <= 1) {
           clearInterval(interval);
-          setRunning(false);
           setSleepMinutes(0);
+          setTimerEnded(true);
           return 0;
         }
         
@@ -299,20 +274,18 @@ export default function PracticeBreath() {
     return () => clearInterval(interval);
   }, [sleepMinutes]);
 
-  // Audio Warning Modal State
+  // The sound window (the headphones at the top): opened only by the person.
+  // A practice always starts at once; silent, unless a sound was chosen here
+  // before (kept per practice).
   const [showWarning, setShowWarning] = useState(false);
-  const [rememberChoice, setRememberChoice] = useState(true);
   const [audioPref, setAudioPref] = useState<'with' | 'nature' | 'without' | null>(null);
   /** What plays when sound is on: binaural tones (headphones) or only the nature sound (speaker). */
   const [soundMode, setSoundMode] = useState<'binaural' | 'nature'>('binaural');
-  const [showBanner, setShowBanner] = useState(true);
   const [globalVolume, setGlobalVolumeState] = useState(1);
+  const { vibration, toggleVibration } = useAccessibility();
 
-  // Check if preference exists for this pattern
+  // The sound chosen before for this practice, if any
   useEffect(() => {
-    if (readText('hide_binaural_banner') === 'true') {
-      setShowBanner(false);
-    }
     let savedPref: 'with' | 'nature' | 'without' | null = null;
     try { savedPref = localStorage.getItem(`binaural_pref_${pattern.id}`) as typeof savedPref; } catch { /* not stored */ }
     setAudioPref(savedPref);
@@ -359,32 +332,21 @@ export default function PracticeBreath() {
   useEffect(() => {
     setRunning(false);
     stopAudio();
+    setStarted(false);
+    setFinished(false);
     setCycles(0);
     setPhase(pattern.labels[0]);
     setPhaseIdx(0);
   }, [pattern, stopAudio]);
 
 
-  const handleAudioToggle = () => {
-    if (audioPref === null && !showWarning && !audioEnabled) {
-      setShowWarning(true);
-    } else {
-      const nextAudio = !audioEnabled;
-      setAudioEnabled(nextAudio);
-      // If already running, toggle audio immediately
-      if (running) {
-        if (nextAudio) {
-          beginSound();
-        } else {
-          stopAudio();
-        }
-      }
-    }
-  };
+  // The headphones open the sound window; the choice there applies at once.
+  const handleAudioToggle = () => setShowWarning(true);
 
   const beginRun = (withAudio: boolean, mode: 'binaural' | 'nature') => {
     setAudioEnabled(withAudio);
     setFinished(false);
+    setStarted(true);
     setRunning(true);
     if (withAudio) {
       beginSound(mode);
@@ -452,19 +414,22 @@ export default function PracticeBreath() {
     else beginRun(withAudio, mode);
   };
 
-  const savePreferenceAndStart = (choice: 'with' | 'nature' | 'without') => {
+  /** A choice in the sound window: kept for this practice, heard at once if the breath runs. */
+  const chooseSound = (choice: 'with' | 'nature' | 'without') => {
     const withAudio = choice !== 'without';
     const mode = choice === 'nature' ? 'nature' : 'binaural';
-    if (rememberChoice) {
-      try { localStorage.setItem(`binaural_pref_${pattern.id}`, choice); } catch { /* not stored */ }
-    }
+    try { localStorage.setItem(`binaural_pref_${pattern.id}`, choice); } catch { /* not stored */ }
     setAudioPref(choice);
     setSoundMode(mode);
-    setShowWarning(false);
     setAudioEnabled(withAudio);
-    startSequence(withAudio, mode);
+    if (running) {
+      stopAudio();
+      if (withAudio) beginSound(mode);
+    }
+    setShowWarning(false);
   };
 
+  // «Ξεκίνα» starts at once: no question in between (above all in SOS).
   const handleStartToggle = () => {
     if (prep) { setPrep(null); return; }
     if (demo) { stopDemo(); return; }
@@ -472,13 +437,47 @@ export default function PracticeBreath() {
       setRunning(false);
       stopAudio();
     } else {
-      if (audioPref === null) {
-        setShowWarning(true);
-      } else {
-        startSequence(audioEnabled);
-      }
+      document.getElementById('main-content')?.scrollTo({ top: 0 });
+      startSequence(audioEnabled);
     }
   };
+
+  /** «Τέλος»: the breath stops and the practice closes, with the bell only if a sound was chosen. */
+  const endPractice = () => {
+    setPrep(null);
+    stopDemo();
+    const hadRun = running || cycles > 0;
+    setRunning(false);
+    stopAudio();
+    if (hadRun) triggerReward('breath', { sound: audioEnabled });
+    setStarted(false);
+    setFinished(true);
+    setCycles(0);
+    setPhaseIdx(0);
+    setPhase(pattern.labels[0]);
+  };
+
+  /** «Από την αρχή»: back to before the start, nothing counted. */
+  const restartPractice = () => {
+    setRunning(false);
+    stopAudio();
+    setStarted(false);
+    setFinished(false);
+    setCycles(0);
+    setPhaseIdx(0);
+    setPhase(pattern.labels[0]);
+  };
+
+  useEffect(() => {
+    if (!timerEnded) return;
+    setTimerEnded(false);
+    endPractice();
+    setGlobalVolumeState(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timerEnded]);
+
+  // The sound window holds the keyboard while open; Escape closes it.
+  const soundRef = useFocusTrap(showWarning, () => setShowWarning(false));
 
   // Keyboard: Space starts or pauses, Esc closes the open window.
   useKeyboardShortcuts({
@@ -496,20 +495,15 @@ export default function PracticeBreath() {
       updatePhase(idx, p.label?.en || p.text || '');
     }
     
-    // Haptic feedback logic: only at the onset of Inhalation or Exhalation
-    if (runningRef.current && typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
+    // A short vibration as the inhale and the exhale begin, only while the
+    // breath runs and only if vibration is on (Settings, or the switch here).
+    if (runningRef.current) {
       const labelEn = p.label?.en || p.text || '';
       const labelEl = p.label?.el || '';
       const isInhale = labelEn.toLowerCase() === 'inhale' || labelEl === 'Εισπνοή';
       const isExhale = labelEn.toLowerCase() === 'exhale' || labelEl === 'Εκπνοή';
-
-      if (isInhale) {
-        // Single gentle distinct vibration for inhale onset
-        navigator.vibrate(55);
-      } else if (isExhale) {
-        // Double gentle pulse for exhale onset
-        navigator.vibrate([40, 60, 40]);
-      }
+      if (isInhale) vibrate(55);
+      else if (isExhale) vibrate([40, 60, 40]);
     }
   }, []);
 
@@ -572,124 +566,139 @@ export default function PracticeBreath() {
 
 
 
+  const el = language === 'el';
+  const isSOS = currentPatternId === 'sos-breath';
+  const shownName = breathName(pattern)[lang];
+  const canVibrate = typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function';
+  const soundNow: 'with' | 'nature' | 'without' = !audioEnabled ? 'without' : soundMode === 'nature' ? 'nature' : 'with';
+  const soundWord = soundNow === 'without' ? (el ? 'χωρίς ήχο' : 'no sound')
+    : soundNow === 'nature' ? (el ? 'ήχος φύσης' : 'nature sound')
+    : isVocal ? (el ? 'φωνή-οδηγός' : 'voice guide') : 'binaural';
+  const SOUND_CHOICES: Array<{ id: 'with' | 'nature' | 'without'; label: string; hint: string }> = [
+    { id: 'without', label: el ? 'Χωρίς ήχο' : 'No sound', hint: el ? 'Ησυχία. Ούτε καμπανάκι στο τέλος.' : 'Silence. No bell at the end either.' },
+    { id: 'nature', label: el ? 'Ήχος φύσης' : 'Nature sound',
+      hint: isVocal ? (el ? 'Απαλά από κάτω· παίζει και από το ηχείο.' : 'Softly underneath; plays from the speaker too.')
+        : (el ? 'Κύματα και άνεμος· παίζει και από το ηχείο.' : 'Waves and wind; plays from the speaker too.') },
+    isVocal
+      ? { id: 'with', label: el ? 'Φωνή-οδηγός' : 'Voice guide', hint: el ? 'Ένα απαλό βουητό στην εκπνοή, για να ψέλνεις μαζί του.' : 'A soft hum on the exhale, to chant along with.' }
+      : { id: 'with', label: el ? 'Binaural, με ακουστικά' : 'Binaural, with headphones', hint: el ? 'Δύο απαλοί τόνοι, λίγο διαφορετικοί σε κάθε αυτί.' : 'Two soft tones, slightly different in each ear.' },
+  ];
+  const leave = () => {
+    if (window.history.length > 2) navigate(-1);
+    else navigate('/practice');
+  };
+  const stepsCard = !running && (
+    basePattern.visualizer || basePattern.family ? (
+      <HowTo text={el ? basePattern.desc.el : basePattern.desc.en} language={language}
+        gravityFirst={isVocal} longExhale={isVocal} chant={isVocal}
+        steps={movementSteps(basePattern.visualizer || basePattern.id, basePattern.phases, lang)} />
+    ) : isVocal ? (
+      <HowTo text={el ? basePattern.desc.el : basePattern.desc.en} language={language} gravityFirst longExhale chant />
+    ) : (basePattern.category === 'movement' || basePattern.category === 'breath') ? (
+      <HowTo text={el ? basePattern.desc.el : basePattern.desc.en} language={language} gravityFirst={basePattern.category === 'breath'}
+        longExhale={basePattern.category === 'breath' && basePattern.phases.some(ph => ph.armFrom > ph.armTo && ph.dur >= 5000)}
+        steps={basePattern.category === 'movement' ? movementSteps(basePattern.visualizer || basePattern.id, pattern.phases, lang) : null} />
+    ) : null
+  );
+  const watchSlowly = stance && !running && (
+    <button
+      onClick={(e) => { e.stopPropagation(); if (demo) stopDemo(); else playDemo(); }}
+      aria-pressed={!!demo}
+      className="mt-2 min-h-11 px-4 rounded-full border border-teal-400/30 bg-teal-400/[0.06] text-[14px] text-teal-200 hover:border-teal-300/60 hover:text-teal-100 transition-colors"
+    >
+      {demo ? (el ? 'Σταμάτα' : 'Stop') : (el ? 'Δες το αργά' : 'Watch it slowly')}
+    </button>
+  );
+  const toolButton = "flex flex-col items-center gap-1 w-12 min-h-[52px] shrink-0 text-zinc-300 hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 rounded-xl";
+  const toolCircle = (on: boolean) => cn("w-10 h-10 rounded-full border flex items-center justify-center transition-colors", on ? "bg-zinc-700 border-teal-500/70 text-teal-300" : "bg-zinc-800/50 border-zinc-700 text-zinc-300");
+
   // The dark stage reaches down to the bottom bar (over the room the other pages keep below their last line).
+  // Before the start the page scrolls, so the steps can be read under the buttons; while the breath runs it is one still screen.
   return (
-    <div className="flex flex-col flex-1 bg-[#061114] -mx-4 -mt-4 -mb-[calc(2rem+84px)] px-4 pt-4 pb-8 md:-mx-8 md:-mt-8 md:-mb-8 md:px-8 md:pt-8 md:pb-8 overflow-hidden relative font-sans text-ink">
-      
+    <div className={cn("flex flex-col flex-1 bg-[#061114] -mx-4 -mt-4 -mb-[calc(2rem+84px)] px-4 pt-4 pb-8 md:-mx-8 md:-mt-8 md:-mb-8 md:px-8 md:pt-8 md:pb-8 relative font-sans text-ink", running ? "overflow-hidden" : "overflow-x-hidden")}>
+
       {/* Sleep Mode Overlay */}
-      <div 
+      <div
         className="absolute inset-0 z-10 bg-black pointer-events-none transition-opacity duration-1000"
         style={{ opacity: sleepOverlayOpacity }}
       />
-      
+
       <PlayPauseOverlay isPlaying={running} />
 
-      {/* Top Bar */}
-      <div className={cn(
-        "flex items-center justify-between z-20 w-full mb-2 shrink-0 transition-opacity duration-1000",
-        running ? "opacity-60 hover:opacity-100 focus-within:opacity-100 active:opacity-100" : "opacity-100"
-      )}>
-        <button aria-label={language === 'en' ? 'Back' : 'Πίσω'} 
-          onClick={(e) => {
-            e.stopPropagation();
-            if (window.history.length > 2) {
-              navigate(-1);
-            } else {
-              navigate('/practice');
-            }
-          }} 
-          className="w-10 h-10 shrink-0 rounded-full bg-zinc-800/50 border border-zinc-700 flex items-center justify-center hover:bg-zinc-700 text-zinc-300 hover:text-ink transition-colors"
+      {/* Top: back, the practice's name, and three tools, each with its word under it */}
+      <div className="flex items-start justify-between gap-2 z-20 w-full mb-2 shrink-0">
+        <button aria-label={language === 'en' ? 'Back' : 'Πίσω'}
+          onClick={(e) => { e.stopPropagation(); leave(); }}
+          className="w-11 h-11 shrink-0 rounded-full bg-zinc-800/50 border border-zinc-700 flex items-center justify-center hover:bg-zinc-700 text-zinc-300 hover:text-ink transition-colors"
         >
           <ArrowLeft size={20} />
         </button>
-        <div className="flex-1 flex justify-center items-center pointer-events-auto">
-            <h1 className="text-zinc-400 text-[13px] leading-tight font-semibold tracking-wide font-sans ml-3 text-center text-balance">
-               {language === 'en' ? pattern.title.en : pattern.title.el}
-             </h1>
-             <ConceptInfoIcon conceptId={pattern.category === 'breath' ? 'vagus_nerve' : 'proprioception'} className="w-6 h-6 ml-1.5 shrink-0 opacity-60 hover:opacity-100 bg-transparent text-zinc-400 border border-zinc-400/20" />
+        <div className="flex-1 min-w-0 flex justify-center items-center pt-2">
+          <h1 className="text-zinc-300 text-[13px] leading-tight font-semibold tracking-wide font-sans text-center text-balance">
+            {shownName}
+          </h1>
+          <ConceptInfoIcon conceptId={pattern.category === 'breath' ? 'vagus_nerve' : 'proprioception'} className="w-6 h-6 ml-1.5 shrink-0 opacity-80 hover:opacity-100 bg-transparent text-zinc-400 border border-zinc-400/20" />
         </div>
-        <div className="flex items-center gap-2 shrink-0">
-          <button 
+        <div className="flex items-start gap-0.5 shrink-0">
+          <button
             onClick={() => setShowSleepTimer(true)}
-            aria-label={language === 'el' ? 'Χρονοδιακόπτης ύπνου' : 'Sleep timer'}
-            className={cn(
-              "h-10 rounded-full border border-zinc-700 flex items-center justify-center transition-colors shrink-0 shadow-lg px-3 overflow-hidden",
-              sleepMinutes > 0 ? "bg-zinc-700 text-teal-300 border-teal-500/50" : "bg-zinc-800/50 text-zinc-400 opacity-80"
-            )}
+            title={el ? 'Χρονοδιακόπτης' : 'Timer'}
+            className={toolButton}
           >
-            <Timer size={18} />
-            {sleepMinutes > 0 && sleepSecondsLeft > 0 && (
-              <span className="ml-2 text-xs font-mono w-10 text-left">
-                {Math.floor(sleepSecondsLeft / 60)}:{(sleepSecondsLeft % 60).toString().padStart(2, '0')}
-              </span>
-            )}
+            <span className={toolCircle(sleepMinutes > 0)}><Timer size={18} aria-hidden="true" /></span>
+            <span className="text-[11px] leading-none text-ink/75 font-mono">
+              {sleepMinutes > 0 && sleepSecondsLeft > 0
+                ? `${Math.floor(sleepSecondsLeft / 60)}:${(sleepSecondsLeft % 60).toString().padStart(2, '0')}`
+                : <span className="font-sans">{el ? 'Χρόνος' : 'Timer'}</span>}
+            </span>
           </button>
-          {audioEnabled && (
-            <div className="bg-zinc-800/80 backdrop-blur-md border border-teal-900/50 rounded-[20px] flex items-center px-3 h-10 animate-in slide-in-from-right-4 fade-in duration-200 shadow-lg">
-              <Volume1 size={14} className="text-teal-400 mr-2 shrink-0" />
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.05"
-                value={globalVolume}
-                onChange={(e) => setGlobalVolumeState(parseFloat(e.target.value))}
-                aria-label={language === 'el' ? 'Ένταση ήχου' : 'Volume'}
-                className="w-20 md:w-24 accent-teal-500 h-1.5 bg-zinc-900 rounded-lg appearance-none cursor-pointer"
-              />
-            </div>
-          )}
-          <button 
+          <button
             onClick={handleAudioToggle}
-            aria-label={language === 'el' ? 'Ήχος' : 'Sound'}
-            aria-pressed={audioEnabled}
-            className={cn(
-              "w-10 h-10 rounded-full border flex items-center justify-center transition-colors relative shadow-lg shrink-0",
-              audioEnabled ? "bg-zinc-700 border-teal-500 text-teal-400" : "bg-zinc-800/50 border-zinc-700 text-zinc-300"
-            )}
+            aria-label={`${el ? 'Ήχος' : 'Sound'}: ${soundWord}`}
+            aria-haspopup="dialog"
+            data-testid="breath-sound"
+            className={toolButton}
           >
-            <Headphones size={18} />
-            {audioPref === null ? (
-              <span className={`absolute -top-1 -right-1 w-3 h-3 bg-indigo-500 rounded-full border-2 border-zinc-900`}></span>
-            ) : null}
+            <span className={toolCircle(audioEnabled)}><Headphones size={18} aria-hidden="true" /></span>
+            <span className="text-[11px] leading-none text-ink/75">{el ? 'Ήχος' : 'Sound'}</span>
           </button>
+          {canVibrate && (
+            <button
+              onClick={toggleVibration}
+              role="switch"
+              aria-checked={vibration}
+              aria-label={el ? 'Δόνηση' : 'Vibration'}
+              className={toolButton}
+            >
+              <span className={toolCircle(vibration)}>{vibration ? <Vibrate size={18} aria-hidden="true" /> : <VibrateOff size={18} aria-hidden="true" />}</span>
+              <span className="text-[11px] leading-none text-ink/75">{el ? 'Δόνηση' : 'Vibration'}</span>
+            </button>
+          )}
         </div>
       </div>
 
-      {!running && (finished || cycles > 2) && (
-        <GuideAfterPractice axis={pattern.axis} language={language} className="z-20 w-full max-w-sm mx-auto mb-4 px-4 md:px-0" />
+      {/* While it runs: the first step, in one short line (as in «Πώς γίνεται»). */}
+      {running && (basePattern.category === 'breath' || isVocal) && (
+        <p className="z-20 shrink-0 text-center text-[13px] leading-snug text-[var(--axis-body-ink)] mb-1 px-4">
+          {el ? 'Πρώτα ο άξονας της βαρύτητας.' : 'First, the axis of gravity.'}
+        </p>
       )}
-      {!running && <EvidenceLine evidence={pattern.evidence} language={language} />}
-      {/* Info Banner for Binaural Beats */}
-      {!running && showBanner && currentPatternId !== 'sos-breath' && (
-        <div className="z-20 w-full mb-4 md:px-0 relative px-4">
-          <div className="mx-auto max-w-sm flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] pl-3 pr-1 py-2">
-            <div className="w-8 h-8 rounded-full bg-[var(--tint-blue-bg)] border border-[var(--tint-blue-line)] flex items-center justify-center shrink-0">
-               <Headphones size={14} className="text-[var(--tint-blue-ink)]" aria-hidden="true" />
-            </div>
-            <p className="flex-1 text-[13px] text-ink/85 leading-relaxed">
-              {language === 'el' 
-                ? (isVocal ? 'Για ήχο πάτα τα ακουστικά πάνω δεξιά: φωνή-οδηγός για να ψέλνεις μαζί της, ή μόνο ήχος φύσης.' : 'Για ήχο πάτα τα ακουστικά πάνω δεξιά: binaural με ακουστικά, ή μόνο ήχος φύσης από το ηχείο.')
-                : (isVocal ? 'For sound, tap the headphones at the top right: a voice guide to chant with, or just a nature sound.' : 'For sound, tap the headphones at the top right: binaural with headphones, or just a nature sound from the speaker.')}
-            </p>
-            <button type="button" aria-label={language === 'en' ? 'Close' : 'Κλείσιμο'}
-              onClick={() => {
-                setShowBanner(false);
-                try { localStorage.setItem('hide_binaural_banner', 'true'); } catch { /* fine */ }
-              }}
-              className="w-11 h-11 shrink-0 flex items-center justify-center text-ink/70 hover:text-ink rounded-full hover:bg-white/5 transition-colors"
-            >
-              <X size={16} aria-hidden="true" />
-            </button>
-          </div>
+
+      {finished && !running && (
+        <div className="z-20 w-full max-w-sm mx-auto mb-3 px-4 desk:px-0 flex flex-col gap-3">
+          <p role="status" className="text-center text-[15px] leading-relaxed text-ink/85">
+            {el ? 'Τέλος. Πάρε μια στιγμή πριν συνεχίσεις.' : 'Done. Take a moment before you go on.'}
+          </p>
+          <GuideAfterPractice axis={pattern.axis} language={language} className="w-full" />
         </div>
       )}
+      {!running && !finished && <EvidenceLine evidence={pattern.evidence} language={language} />}
 
       {/* Rhythm Override Selector (Movement Only) */}
       {!running && basePattern.category === 'movement' && (
         <div className="z-20 w-full mb-4 md:px-0 relative px-4 flex flex-col items-center animate-in fade-in slide-in-from-top-2 duration-500">
            <span className="text-[13px] font-medium text-zinc-400 mb-2">
-             {language === 'el' ? 'Ρυθμός αναπνοής' : 'Breathing Rhythm'}
+             {el ? 'Ρυθμός αναπνοής' : 'Breathing Rhythm'}
            </span>
            <div className="flex flex-wrap justify-center gap-2 max-w-sm">
              {[
@@ -700,18 +709,20 @@ export default function PracticeBreath() {
              ].map(r => (
                <button
                  key={r.id}
-                 onClick={() => setRhythmOverride(r.id as any)}
+                 onClick={() => setRhythmOverride(r.id as typeof rhythmOverride)}
+                 aria-pressed={rhythmOverride === r.id}
                  className={cn(
-                   "px-3 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all",
-                   rhythmOverride === r.id 
-                     ? "bg-teal-500/20 text-teal-300 border border-teal-500/50" 
+                   "px-3 min-h-11 rounded-full text-xs font-semibold tracking-wide transition-all",
+                   rhythmOverride === r.id
+                     ? "bg-teal-500/20 text-teal-300 border border-teal-500/50"
                      : "bg-zinc-800/50 text-zinc-400 border border-zinc-700/50 hover:bg-zinc-700/50"
                  )}
                >
-                 {language === 'el' ? r.el : r.en}
+                 {el ? r.el : r.en}
                </button>
              ))}
            </div>
+           {watchSlowly}
         </div>
       )}
 
@@ -720,8 +731,8 @@ export default function PracticeBreath() {
         <div className="z-20 w-full mb-4 md:px-0 relative px-4 flex flex-col items-center animate-in fade-in slide-in-from-top-2 duration-500">
           <span className="text-[13px] font-medium text-zinc-400 mb-2">
             {basePattern.family
-              ? (language === 'el' ? 'Πού νιώθεις τη δόνηση' : 'Where you feel the vibration')
-              : (language === 'el' ? 'Ρυθμός αναπνοής' : 'Breathing Rhythm')}
+              ? (el ? 'Πού νιώθεις τη δόνηση' : 'Where you feel the vibration')
+              : (el ? 'Ρυθμός αναπνοής' : 'Breathing Rhythm')}
           </span>
           <div className="flex flex-wrap justify-center gap-2 max-w-sm">
             {BREATH_PATTERNS
@@ -733,77 +744,42 @@ export default function PracticeBreath() {
                 onClick={() => navigate(`/practice/breath/${p.id}`, { replace: true })}
                 aria-pressed={p.id === basePattern.id}
                 className={cn(
-                  "px-3 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all",
+                  "px-3 min-h-11 rounded-full text-xs font-semibold tracking-wide transition-all",
                   p.id === basePattern.id
                     ? "bg-teal-500/20 text-teal-300 border border-teal-500/50"
                     : "bg-zinc-800/50 text-zinc-400 border border-zinc-700/50 hover:bg-zinc-700/50"
                 )}
               >
-                {language === 'el' ? p.rhythmName?.el : p.rhythmName?.en}
+                {el ? p.rhythmName?.el : p.rhythmName?.en}
               </button>
             ))}
           </div>
-          <div className="flex flex-wrap justify-center gap-2">
-            <HowTo text={language === 'el' ? basePattern.desc.el : basePattern.desc.en} language={language}
-              gravityFirst={isVocal} longExhale={isVocal} chant={isVocal}
-              steps={movementSteps(basePattern.visualizer || basePattern.id, basePattern.phases, language === 'en' ? 'en' : 'el')} />
-            {stance && (
-              <button
-                onClick={(e) => { e.stopPropagation(); if (demo) stopDemo(); else playDemo(); }}
-                aria-pressed={!!demo}
-                className="mt-2 min-h-10 px-4 rounded-full border border-teal-400/30 bg-teal-400/[0.06] text-[14px] text-teal-200 hover:border-teal-300/60 hover:text-teal-100 transition-colors"
-              >
-                {demo ? (language === 'el' ? 'Σταμάτα' : 'Stop') : (language === 'el' ? 'Δες το αργά' : 'Watch it slowly')}
-              </button>
-            )}
-          </div>
+          {basePattern.category !== 'movement' && watchSlowly}
         </div>
       )}
 
-      {/* Movements and breaths: how it is done, before starting */}
+      {/* Chanting: the pitch of the voice guide */}
       {!running && isVocal && (
         <div className="z-20 w-full mb-3 px-4 flex flex-col items-center">
           <span className="text-[13px] font-medium text-zinc-400 mb-2">
-            {language === 'el' ? 'Φωνή-οδηγός' : 'Voice guide'}
+            {el ? 'Φωνή-οδηγός' : 'Voice guide'}
           </span>
           <div className="flex justify-center gap-2">
-            {([['low', 'Χαμηλή φωνή', 'Low voice'], ['high', 'Ψηλή φωνή', 'High voice']] as const).map(([id, el, en]) => (
+            {([['low', 'Χαμηλή φωνή', 'Low voice'], ['high', 'Ψηλή φωνή', 'High voice']] as const).map(([vid, vel, ven]) => (
               <button
-                key={id}
-                onClick={() => choosePitch(id)}
-                aria-pressed={voicePitch === id}
+                key={vid}
+                onClick={() => choosePitch(vid)}
+                aria-pressed={voicePitch === vid}
                 className={cn(
-                  "px-3 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all",
-                  voicePitch === id
+                  "px-3 min-h-11 rounded-full text-xs font-semibold tracking-wide transition-all",
+                  voicePitch === vid
                     ? "bg-teal-500/20 text-teal-300 border border-teal-500/50"
                     : "bg-zinc-800/50 text-zinc-400 border border-zinc-700/50 hover:bg-zinc-700/50"
                 )}
               >
-                {language === 'el' ? el : en}
+                {el ? vel : ven}
               </button>
             ))}
-          </div>
-          {!basePattern.family && (
-            <HowTo text={language === 'el' ? basePattern.desc.el : basePattern.desc.en} language={language} gravityFirst longExhale chant />
-          )}
-        </div>
-      )}
-
-      {!running && (basePattern.category === 'movement' || basePattern.category === 'breath') && (
-        <div className="z-20 mb-3 -mt-2 px-6 flex flex-col items-center">
-          <div className="flex flex-wrap justify-center gap-2">
-            <HowTo text={language === 'el' ? basePattern.desc.el : basePattern.desc.en} language={language} gravityFirst={basePattern.category === 'breath'}
-              longExhale={basePattern.category === 'breath' && basePattern.phases.some(ph => ph.armFrom > ph.armTo && ph.dur >= 5000)}
-              steps={basePattern.category === 'movement' ? movementSteps(basePattern.visualizer || basePattern.id, pattern.phases, language === 'en' ? 'en' : 'el') : null} />
-            {stance && (
-              <button
-                onClick={(e) => { e.stopPropagation(); if (demo) stopDemo(); else playDemo(); }}
-                aria-pressed={!!demo}
-                className="mt-2 min-h-10 px-4 rounded-full border border-teal-400/30 bg-teal-400/[0.06] text-[14px] text-teal-200 hover:border-teal-300/60 hover:text-teal-100 transition-colors"
-              >
-                {demo ? (language === 'el' ? 'Σταμάτα' : 'Stop') : (language === 'el' ? 'Δες το αργά' : 'Watch it slowly')}
-              </button>
-            )}
           </div>
         </div>
       )}
@@ -812,13 +788,13 @@ export default function PracticeBreath() {
           pauses: a shortcut for the pointer; the keyboard has the Start/Pause
           button below. Taps in what it opens over the page (portals) do not count. */}
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
-      <div 
-        className={cn("breath-hero flex-1 relative w-full overflow-hidden flex flex-col justify-end cursor-pointer", currentPatternId === 'sos-breath' && "breath-hero-sos")}
+      <div
+        className={cn("breath-hero flex-1 relative w-full overflow-hidden flex flex-col justify-end cursor-pointer", !running && "min-h-[min(62dvh,520px)] shrink-0", isSOS && "breath-hero-sos")}
         onClick={(e) => { if (e.currentTarget.contains(e.target as Node)) handleStartToggle(); }}
       >
         {/* The Animated Canvas Background */}
         <div className="absolute inset-0 pointer-events-none z-0">
-          <BreathCanvas 
+          <BreathCanvas
             running={running}
             phases={pattern.phases}
             phaseLabels={pattern.labels}
@@ -832,39 +808,44 @@ export default function PracticeBreath() {
           />
         </div>
 
-        {/* The phase in words, for a screen reader (the canvas shows it only
-            in pictures): said as each phase begins. */}
+        {/* The phase in words, for a screen reader: said as each phase begins. */}
         <p className="sr-only" role="status" aria-live="polite" data-testid="breath-phase">
-          {running ? (language === 'el' ? pattern.labels[phaseIdx].label.el : pattern.labels[phaseIdx].label.en) : ''}
+          {running ? (el ? pattern.labels[phaseIdx].label.el : pattern.labels[phaseIdx].label.en) : ''}
         </p>
 
         {/* Organic Motion Circle & Counter (Centered exactly in the globe) */}
-        <div 
+        <div
           className={cn("breath-hero-inner absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none", !isTaiChi && "drop-shadow-lg")}
         >
+          {/* The phase in a word, above the figure, in its colour: not by colour alone. */}
+          {running && (
+            <p aria-hidden="true" data-testid="breath-phase-word" className="mb-2 text-[22px] desk:text-[26px] leading-none font-medium tracking-wide transition-colors duration-500" style={{ color: phaseColor }}>
+              {el ? pattern.labels[phaseIdx].label.el : pattern.labels[phaseIdx].label.en}
+            </p>
+          )}
           {/* Centred in the space it has, as large as the screen leaves (.breath-stage), so the circle is never cut at the top */}
           <div className="breath-stage relative flex items-center justify-center shrink-0">
              {/* Take position: the stance, and three seconds */}
              {prep && stance && (
                <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 aspect-square z-20 flex flex-col items-center justify-center gap-3 px-6 text-center rounded-2xl bg-[#0f1117]/80" role="status" aria-live="polite">
-                 <p className="text-[13px] text-teal-200/90">{language === 'el' ? 'Πάρε θέση' : 'Take your position'}</p>
+                 <p className="text-[13px] text-teal-200/90">{el ? 'Πάρε θέση' : 'Take your position'}</p>
                  <p className="text-[15px] leading-relaxed text-ink/90 max-w-[320px]">{stance}</p>
                  <p className="font-mono text-[40px] font-light text-ink" aria-hidden="true">{prep.left}</p>
                </div>
              )}
-             
+
              {/* Counter Text & Infinity */}
              <div className="z-10 absolute inset-0 flex items-center justify-center">
-                <motion.div 
+                <motion.div
                   className="absolute inset-0 flex items-center justify-center pointer-events-none"
                   initial={isTaiChi ? { scale: 1, opacity: 0 } : { scale: 1, opacity: 0, filter: 'drop-shadow(0 0 0px rgba(0,0,0,0))' }}
                   animate={isTaiChi ? { opacity: running || demo ? 1 : 0.9 } : {
                     opacity: running ? 1 : 0.9,
                     filter: glowFilter,
                   }}
-                  transition={{ 
-                    duration: running ? (pattern.phases[phaseIdx]?.dur / 1000 || 2) : 4, 
-                    ease: [0.45, 0, 0.55, 1] 
+                  transition={{
+                    duration: running ? (pattern.phases[phaseIdx]?.dur / 1000 || 2) : 4,
+                    ease: [0.45, 0, 0.55, 1]
                   }}
                 >
                   {/* The Tai Chi card's glow is a shadow behind the square card, drawn once
@@ -897,46 +878,49 @@ export default function PracticeBreath() {
                     />
                   )}</LiveTick>
                 </motion.div>
-                
+
              </div>
           </div>
 
-          {/* Where you are: seconds of this phase, and the whole cycle with the current phase lit */}
-          {running && pattern.category !== 'vocal' && (
-            <div className="mt-3 flex flex-col items-center gap-2">
+          {/* Where you are: seconds of this phase, and the whole cycle with the current
+              phase lit. Before the start, the cycle itself: what will happen. */}
+          <div className="mt-3 flex flex-col items-center gap-2">
+            {running && pattern.category !== 'vocal' && (
               <p className="text-2xl desk:text-3xl tracking-[0.2em] font-mono font-light text-center drop-shadow-md transition-colors duration-500" style={{ color: phaseColor }}>
                 {phaseSeconds} <span className="text-lg opacity-50 relative -top-0.5">/ {maxSeconds}</span>
               </p>
-              <div className="flex items-center justify-center flex-wrap gap-x-2.5 gap-y-1 px-2">
+            )}
+            {(running ? pattern.category !== 'vocal' : !prep && !demo) && (
+              <div className="flex items-center justify-center flex-wrap gap-x-2.5 gap-y-1 px-2" data-testid="breath-cycle">
                 {cycleSteps.map((step, i) => (
                   <span
                     key={i}
                     className={cn(
                       "flex items-center gap-1 text-[12px] desk:text-[14px] whitespace-nowrap transition-all duration-500",
-                      i === phaseIdx ? "font-medium" : "text-ink/70"
+                      running && i === phaseIdx ? "font-medium" : "text-ink/75"
                     )}
-                    style={i === phaseIdx ? { color: step.color } : undefined}
+                    style={running && i === phaseIdx ? { color: step.color } : undefined}
                   >
                     <span
                       className="w-1.5 h-1.5 rounded-full transition-all duration-500"
-                      style={{ backgroundColor: step.color, opacity: i === phaseIdx ? 1 : 0.35 }}
+                      style={{ backgroundColor: step.color, opacity: running && i === phaseIdx ? 1 : 0.5 }}
                     />
                     {step.name} {step.seconds}
                   </span>
                 ))}
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         {/* SOS: the helplines sit at the bottom of the stage, so the figure stays at the same height as in the other breaths */}
-        {currentPatternId === 'sos-breath' && (
+        {isSOS && (
           <div className="absolute bottom-2 left-0 right-0 px-8 text-center z-20 pointer-events-none">
-            <p className="text-[13px] text-ink/70 font-sans leading-relaxed [&_a]:pointer-events-auto [&_a]:text-ink/90 [&_a]:underline [&_a]:decoration-white/30 [&_a]:underline-offset-2">
-              {language === 'el' ? (
-                <>Αν κινδυνεύεις τώρα: <a href="tel:112">112</a>. Αν αυτό δεν είναι αρκετό, μπορείς να μιλήσεις με κάποιον: <a href="tel:1018">1018</a> (Κλίμακα, 24ωρη γραμμή) ή <a href="tel:197">197</a> (δωρεάν, 24ωρη ψυχοκοινωνική στήριξη).</>
+            <p className="text-[13px] text-ink/75 font-sans leading-relaxed [&_a]:pointer-events-auto [&_a]:text-ink/90 [&_a]:underline [&_a]:decoration-white/30 [&_a]:underline-offset-2">
+              {el ? (
+                <>Αν η αναπνοή δεν αρκεί, το επόμενο βήμα είναι ένας άνθρωπος. Αν κινδυνεύεις τώρα: <a href="tel:112">112</a>. Για να μιλήσεις με κάποιον: <a href="tel:1018">1018</a> (Κλίμακα, 24ωρη γραμμή) ή <a href="tel:197">197</a> (δωρεάν, 24ωρη ψυχοκοινωνική στήριξη).</>
               ) : (
-                <>If you are in danger now, call your local emergency number (<a href="tel:112">112</a> in Europe). If this isn't enough, you are not alone: <a href="https://findahelpline.com" target="_blank" rel="noopener noreferrer">findahelpline.com</a> lists free helplines in your country (in Greece: <a href="tel:1018">1018</a>).</>
+                <>If the breath is not enough, the next step is a person. If you are in danger now, call your local emergency number (<a href="tel:112">112</a> in Europe). To talk with someone: <a href="https://findahelpline.com" target="_blank" rel="noopener noreferrer">findahelpline.com</a> lists free helplines in your country (in Greece: <a href="tel:1018">1018</a>).</>
               )}
             </p>
           </div>
@@ -947,90 +931,91 @@ export default function PracticeBreath() {
           {cycles > 0 && (
              <div className="flex flex-col items-center">
                <span className="font-semibold text-2xl text-ink/90 leading-none drop-shadow-sm">{cycles}</span>
-               <span className="text-[13px] font-sans mt-0.5 text-ink/70">{language === 'el' ? 'Κύκλοι' : 'Cycles'}</span>
+               <span className="text-[13px] font-sans mt-0.5 text-ink/70">{el ? 'Κύκλοι' : 'Cycles'}</span>
              </div>
           )}
         </div>
       </div>
 
-      {/* Floating Controls Panel */}
-      <div className={cn(
-        "z-20 flex relative shrink-0 pb-safe px-6 pt-0 mb-2 gap-3 w-[75%] max-w-sm mx-auto transition-opacity duration-1000",
-        running ? "opacity-60 hover:opacity-100 focus-within:opacity-100 active:opacity-100" : "opacity-100"
-      )}>
-         {/* Play/Pause button */}
-         <button
-           onClick={(e) => { e.stopPropagation(); handleStartToggle(); }}
-           className={cn(
-             "flex-1 z-20 !text-[14px] focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400",
-             running || prep
-               ? "btn-soft" 
-               : "btn-main"
-           )}
-         >
-           {prep ? (
-             <span className="text-[13px] font-medium mt-0.5 opacity-80">{language === 'el' ? 'Άκυρο' : 'Cancel'}</span>
-           ) : running ? (
-             <>
-               <Square size={12} className="fill-current opacity-60" />
-               <span className="text-[13px] font-medium mt-0.5 opacity-80">{language === 'el' ? 'Παύση' : 'Pause'}</span>
-             </>
-           ) : (
-             <>
-               <Play size={14} className="ml-0.5 fill-current" />
-               <span className="text-[13px] font-medium mt-0.5">{language === 'el' ? 'Ξεκίνα' : 'Start'}</span>
-             </>
-           )}
-         </button>
-
-         {/* Reset/Complete button */}
-         {(!running && cycles > 2) ? (
-           <button
-             onClick={() => { 
-               triggerReward('breath');
-               setFinished(true);
-               setRunning(false); 
-               setCycles(0); 
-               setPhaseIdx(0); 
-               setPhase(pattern.labels[0]); 
-             }}
-             className="btn-soft flex-1 !text-[14px] !border-[var(--tint-blue-line)] !text-[var(--tint-blue-ink)]"
-           >
-             <Check size={14} />
-             <span className="text-[13px] font-medium mt-0.5">{language === 'el' ? 'Ολοκλήρωση' : 'Complete'}</span>
-           </button>
-         ) : (
-           <button
-             onClick={() => { 
-              setRunning(false); 
-              stopAudio();
-              setCycles(0); 
-              setPhaseIdx(0); 
-              setPhase(pattern.labels[0]); 
-            }}
-             className="btn-soft flex-1 !text-[14px] !bg-transparent"
-           >
-             <X size={14} />
-             <span className="text-[13px] font-medium mt-0.5 opacity-90">{language === 'el' ? 'Επαναφορά' : 'Reset'}</span>
-           </button>
-         )}
+      {/* The buttons: start or pause, and «Τέλος» once it has begun */}
+      <div className="z-20 flex relative shrink-0 pb-safe px-6 pt-0 mb-2 gap-3 w-full max-w-sm mx-auto">
+        {finished ? (
+          <>
+            <button
+              onClick={(e) => { e.stopPropagation(); restartPractice(); startSequence(audioEnabled); }}
+              className="btn-main flex-1 z-20 !text-[14px] focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400"
+            >
+              <RotateCcw size={15} aria-hidden="true" />
+              <span className="text-[14px] font-medium">{el ? 'Ξανά' : 'Again'}</span>
+            </button>
+            <button onClick={leave} className="btn-soft flex-1 !text-[14px]">
+              <span className="text-[14px] font-medium">{el ? 'Κλείσιμο' : 'Close'}</span>
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              onClick={(e) => { e.stopPropagation(); handleStartToggle(); }}
+              className={cn(
+                "flex-1 z-20 !text-[14px] focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-teal-400",
+                running || prep ? "btn-soft" : "btn-main"
+              )}
+            >
+              {prep ? (
+                <span className="text-[14px] font-medium">{el ? 'Άκυρο' : 'Cancel'}</span>
+              ) : running ? (
+                <>
+                  <Pause size={15} className="fill-current" aria-hidden="true" />
+                  <span className="text-[14px] font-medium">{el ? 'Παύση' : 'Pause'}</span>
+                </>
+              ) : (
+                <>
+                  <Play size={14} className="ml-0.5 fill-current" aria-hidden="true" />
+                  <span className="text-[14px] font-medium">{started ? (el ? 'Συνέχισε' : 'Continue') : (el ? 'Ξεκίνα' : 'Start')}</span>
+                </>
+              )}
+            </button>
+            {(running || started) && (
+              <button
+                onClick={(e) => { e.stopPropagation(); endPractice(); }}
+                className="btn-soft flex-1 !text-[14px] !border-[var(--tint-blue-line)] !text-[var(--tint-blue-ink)]"
+              >
+                <Check size={15} aria-hidden="true" />
+                <span className="text-[14px] font-medium">{el ? 'Τέλος' : 'End'}</span>
+              </button>
+            )}
+          </>
+        )}
       </div>
+      {!running && started && !finished && !prep && (
+        <button onClick={restartPractice} className="btn-text z-20 mx-auto shrink-0 !text-[14px]">
+          <RotateCcw size={14} aria-hidden="true" />
+          {el ? 'Από την αρχή' : 'From the start'}
+        </button>
+      )}
 
+      {/* How it is done: in view before the start, under the buttons (the page scrolls to it). */}
+      {stepsCard && (
+        <div className="z-20 w-full mt-4 shrink-0">
+          {stepsCard}
+          <div aria-hidden="true" className="h-[84px] desk:h-0" />
+        </div>
+      )}
 
       {/* Sleep Timer Modal */}
       {showSleepTimer && (
         <div className="absolute inset-0 z-[60] flex items-center justify-center p-4 bg-zinc-950/90 backdrop-blur-md">
-          <div className="card-relief p-5 md:p-6 rounded-[2rem] max-w-sm w-full animate-in zoom-in-95 fade-in duration-200">
+          <div role="dialog" aria-modal="true" aria-labelledby="breath-timer-title" className="card-relief p-5 md:p-6 rounded-[2rem] max-w-sm w-full animate-in zoom-in-95 fade-in duration-200">
             <div className="w-14 h-14 rounded-full bg-zinc-800 flex items-center justify-center mx-auto mb-4 border border-zinc-600">
-              <Timer size={28} className="text-teal-400" />
+              <Timer size={28} className="text-teal-400" aria-hidden="true" />
             </div>
-            
-            <h2 className="text-lg md:text-xl font-medium text-center text-teal-50 mb-2">
-              {language === 'el' ? 'Χρονοδιακόπτης ' : 'Sleep Timer '}
+
+            <h2 id="breath-timer-title" className="text-lg md:text-xl font-medium text-center text-teal-50 mb-2">
+              {el ? 'Χρονοδιακόπτης' : 'Timer'}
             </h2>
-            
-            <p className="text-zinc-200 text-xs md:text-sm text-center leading-relaxed mb-6">
-              {language === 'el' ? 'Διάλεξε μετά από πόση ώρα θέλεις να σταματήσει η εφαρμογή.' : 'Select when you want the application to stop.'}
+
+            <p className="text-zinc-200 text-[13px] text-center leading-relaxed mb-6">
+              {el ? 'Διάλεξε μετά από πόση ώρα θα τελειώσει η άσκηση. Ο ήχος χαμηλώνει σιγά σιγά στο τέλος.' : 'Choose after how long the practice ends. The sound fades slowly at the end.'}
             </p>
 
             <div className="grid grid-cols-3 gap-3 mb-6">
@@ -1041,6 +1026,7 @@ export default function PracticeBreath() {
                     setSleepMinutes(mins);
                     setShowSleepTimer(false);
                   }}
+                  aria-pressed={sleepMinutes === mins}
                   className={cn(
                     "py-3 rounded-2xl border text-center font-medium transition-colors",
                     sleepMinutes === mins
@@ -1049,134 +1035,107 @@ export default function PracticeBreath() {
                   )}
                 >
                   <div className="text-lg">{mins}</div>
-                  <div className="text-[12px] opacity-80">{language === 'el' ? 'Λεπτά' : 'Min'}</div>
+                  <div className="text-[12px] opacity-80">{el ? 'λεπτά' : 'min'}</div>
                 </button>
               ))}
             </div>
 
-            <button 
+            <button
               onClick={() => {
                 setSleepMinutes(0);
                 setShowSleepTimer(false);
               }}
-              className="w-full bg-zinc-800 border-2 border-transparent text-zinc-300 font-medium py-3 rounded-full transition-colors hover:text-ink hover:border-zinc-600 mb-2 text-sm"
+              className="w-full min-h-[44px] bg-zinc-800 border-2 border-transparent text-zinc-300 font-medium py-3 rounded-full transition-colors hover:text-ink hover:border-zinc-600 mb-2 text-sm"
             >
-              {language === 'el' ? 'Απενεργοποίηση' : 'Turn Off'}
+              {el ? 'Χωρίς χρονοδιακόπτη' : 'No timer'}
             </button>
-            <button 
+            <button
               onClick={() => setShowSleepTimer(false)}
-              className="w-full bg-transparent text-zinc-400 font-medium py-2 rounded-full transition-colors hover:text-ink text-sm"
+              className="w-full min-h-[44px] bg-transparent text-zinc-400 font-medium py-2 rounded-full transition-colors hover:text-ink text-sm"
             >
-              {language === 'el' ? 'Ακύρωση' : 'Cancel'}
+              {el ? 'Κλείσιμο' : 'Close'}
             </button>
           </div>
         </div>
       )}
 
-      {/* Warning Modal */}
+      {/* The sound window: opened only from «Ήχος». «Χωρίς ήχο» first; plain words first, the details under them. */}
       {showWarning && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center p-4 pb-[calc(100px+env(safe-area-inset-bottom))] desk:pb-4 bg-zinc-950/90 backdrop-blur-md">
-          <div className="card-relief p-5 rounded-[2rem] max-w-sm w-full max-h-full flex flex-col overflow-hidden animate-in zoom-in-95 fade-in duration-200">
-            {/* The words scroll if the screen is short; the choices below stay in view */}
-            <div className="min-h-0 overflow-y-auto">
-            <div className="w-14 h-14 rounded-full bg-zinc-800 flex items-center justify-center mx-auto mb-3 border border-zinc-600 short:hidden">
-              <Headphones size={28} className="text-teal-400" />
-            </div>
-            
-            <h2 className="text-lg md:text-xl font-medium text-center text-teal-50 mb-3">
-              {language === 'el' ? 'Ήχος για την άσκηση' : 'Sound for this practice'}
+        // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+        <div className="absolute inset-0 z-50 flex items-center justify-center p-4 pb-[calc(100px+env(safe-area-inset-bottom))] desk:pb-4 bg-zinc-950/90 backdrop-blur-md" onClick={() => setShowWarning(false)}>
+          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
+          <div ref={soundRef} role="dialog" aria-modal="true" aria-labelledby="breath-sound-title" onClick={(e) => e.stopPropagation()}
+            className="card-relief p-5 rounded-[2rem] max-w-sm w-full max-h-full overflow-y-auto animate-in zoom-in-95 fade-in duration-200">
+            <h2 id="breath-sound-title" className="text-lg font-medium text-center text-teal-50 mb-1">
+              {el ? 'Ήχος για την άσκηση' : 'Sound for this practice'}
             </h2>
-
-            {isVocal ? (
-            <div className="text-zinc-200 text-xs md:text-sm leading-relaxed mb-4 space-y-2">
-              <p>
-                <strong className="text-teal-200">{language === 'el' ? 'Φωνή-οδηγός' : 'Voice guide'}</strong>{language === 'el'
-                  ? ': ένα απαλό βουητό που μπαίνει στην εκπνοή, για να ψέλνεις μαζί του. Διάλεξε χαμηλή ή ψηλή φωνή, όποια σου βγαίνει πιο άνετα.'
-                  : ': a soft hum that comes in on the exhale, to chant along with. Choose a low or high voice, whichever is more comfortable for you.'}
-              </p>
-              <p>
-                <strong className="text-teal-200">{language === 'el' ? 'Ήχος φύσης' : 'Nature sound'}</strong>{language === 'el'
-                  ? ': απαλά από κάτω· παίζει και από το ηχείο.'
-                  : ': softly underneath; plays from the speaker too.'}
-              </p>
-            </div>
-            ) : (
-            <div className="text-zinc-200 text-xs md:text-sm leading-relaxed mb-4 space-y-2">
-              <p>
-                <strong className="text-teal-200">Binaural</strong>{bandName ? ` (${bandName} ${beat} Hz)` : ''}{language === 'el'
-                  ? ': κάθε αυτί ακούει λίγο διαφορετικό τόνο και ο παλμός σχηματίζεται ανάμεσά τους· θέλουν ακουστικά.'
-                  : ': each ear hears a slightly different tone and the beat forms between them, so they need headphones.'}
-              </p>
-              <p>
-                <strong className="text-teal-200">{language === 'el' ? 'Ήχος φύσης' : 'Nature sound'}</strong>{language === 'el'
-                  ? ': κύματα και άνεμος· παίζει και από το ηχείο.'
-                  : ': waves and wind; plays from the speaker too.'}
-              </p>
-              <p className="text-zinc-400">
-                {language === 'el'
-                  ? 'Και τα δύο δυναμώνουν με την εισπνοή και χαμηλώνουν με την εκπνοή. Τα ευρήματα για τα binaural είναι ακόμα ανάμεικτα· αν ένας ήχος σε ενοχλεί, δεν τον χρειάζεσαι.'
-                  : 'Both grow with the inhale and soften with the exhale. Findings on binaural beats are still mixed; if a sound bothers you, you do not need it.'}
-              </p>
-            </div>
-            )}
-
-            <p className="text-amber-200/80 text-[12px] md:text-[13px] mb-5 short:mb-3 text-center">
-              {isVocal
-                ? (language === 'el' ? 'Κράτα την ένταση χαμηλά.' : 'Keep the volume low.')
-                : (language === 'el' ? 'Κράτα την ένταση χαμηλά. Αν έχεις επιληψία, ρώτα πρώτα τον γιατρό σου.' : 'Keep the volume low. If you have epilepsy, ask your doctor first.')}
+            <p className="text-[13px] text-ink/70 text-center mb-4">
+              {el ? 'Η επιλογή σου μένει για αυτή την άσκηση.' : 'Your choice stays for this practice.'}
             </p>
-
-            <label className="flex items-start justify-center gap-3 text-xs text-zinc-300 mb-1 cursor-pointer select-none group">
-              <input
-                type="checkbox"
-                className="peer sr-only"
-                checked={rememberChoice}
-                onChange={(e) => setRememberChoice(e.target.checked)}
-              />
-              <div
-                aria-hidden="true"
-                className={cn(
-                  "w-5 h-5 shrink-0 rounded border flex items-center justify-center transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-teal-400",
-                  rememberChoice ? "bg-teal-600 border-teal-500" : "bg-zinc-800 border-zinc-600 group-hover:border-zinc-300"
-                )}
-              >
-                {rememberChoice && <Check size={14} className="text-ink" />}
-              </div>
-              <span className="mt-0.5 leading-tight">
-                {language === 'el' ? 'Να θυμάσαι την επιλογή μου για αυτή την άσκηση' : 'Remember my choice for this exercise'}
-              </span>
-            </label>
+            <div className="flex flex-col gap-2.5">
+              {SOUND_CHOICES.map(c => {
+                const on = soundNow === c.id;
+                return (
+                  <button
+                    key={c.id}
+                    onClick={() => chooseSound(c.id)}
+                    aria-pressed={on}
+                    className={cn(
+                      "w-full min-h-[56px] rounded-2xl border px-4 py-2.5 flex items-center gap-3 text-left transition-colors",
+                      on ? "border-teal-400/60 bg-teal-400/10" : "border-white/10 bg-white/[0.03] hover:bg-white/[0.06]"
+                    )}
+                  >
+                    <span className="flex-1 min-w-0 flex flex-col gap-0.5">
+                      <span className="text-[15px] text-ink">{c.label}</span>
+                      <span className="text-[12.5px] leading-snug text-ink/70">{c.hint}</span>
+                    </span>
+                    {on && <Check size={18} aria-hidden="true" className="shrink-0 text-teal-300" />}
+                  </button>
+                );
+              })}
             </div>
-
-            <div className="flex flex-col gap-2.5 short:gap-2 shrink-0 pt-4 short:pt-3">
-              <button 
-                onClick={() => savePreferenceAndStart('with')}
-                className="w-full bg-zinc-600 hover:bg-zinc-700 border border-zinc-300 text-ink font-medium py-3 rounded-full transition-colors flex items-center justify-center gap-2 text-sm tracking-wide"
-              >
-                <Headphones size={18} />
-                {isVocal
-                  ? (language === 'el' ? 'Με φωνή-οδηγό' : 'With voice guide')
-                  : (language === 'el' ? 'Με binaural (ακουστικά)' : 'With binaural (headphones)')}
-              </button>
-              <button
-                onClick={() => savePreferenceAndStart('nature')}
-                className="w-full bg-zinc-800 border border-teal-800/60 text-teal-100 font-medium py-2.5 rounded-full transition-colors hover:text-ink text-sm"
-              >
-                {language === 'el' ? 'Μόνο ήχος φύσης' : 'Nature sound only'}
-              </button>
-              <button 
-                onClick={() => savePreferenceAndStart('without')}
-                className="w-full bg-zinc-800 border border-zinc-600 text-zinc-300 font-medium py-2.5 rounded-full transition-colors hover:text-ink text-sm"
-               >
-                {language === 'el' ? 'Χωρίς ήχο' : 'No sound'}
-              </button>
-              <button 
-                onClick={() => setShowWarning(false)}
-                className="w-full bg-transparent text-zinc-400/80 font-medium py-2 rounded-full transition-colors hover:text-ink text-sm"
-               >
-                {language === 'el' ? 'Ακύρωση' : 'Cancel'}
-              </button>
-            </div>
+            {audioEnabled && (
+              <label className="mt-4 flex items-center gap-3 rounded-2xl bg-white/[0.03] border border-white/10 px-4 min-h-[48px]">
+                <Volume1 size={16} className="text-teal-300 shrink-0" aria-hidden="true" />
+                <span className="text-[13px] text-ink/80 shrink-0">{el ? 'Ένταση ήχου' : 'Volume'}</span>
+                <input
+                  type="range" min="0" max="1" step="0.05"
+                  value={globalVolume}
+                  onChange={(e) => setGlobalVolumeState(parseFloat(e.target.value))}
+                  className="flex-1 accent-teal-500 h-1.5 bg-zinc-900 rounded-lg appearance-none cursor-pointer"
+                />
+              </label>
+            )}
+            <p className="mt-4 text-amber-200/80 text-[12.5px] leading-snug text-center">
+              {isVocal
+                ? (el ? 'Κράτα την ένταση του ήχου χαμηλά.' : 'Keep the volume low.')
+                : (el ? 'Κράτα την ένταση του ήχου χαμηλά. Αν έχεις επιληψία, ρώτα πρώτα τον γιατρό σου.' : 'Keep the volume low. If you have epilepsy, ask your doctor first.')}
+            </p>
+            {!isVocal && (
+              <details className="mt-2 text-[13px] leading-relaxed text-ink/75">
+                <summary className="min-h-[44px] flex items-center justify-center cursor-pointer text-teal-300">
+                  {el ? 'Περισσότερα για τα binaural' : 'More about binaural'}
+                </summary>
+                <div className="space-y-2 pt-1">
+                  <p>
+                    <strong className="text-teal-200">Binaural</strong>{bandName ? ` (${bandName} ${beat} Hz)` : ''}{el
+                      ? ': κάθε αυτί ακούει λίγο διαφορετικό τόνο και ο παλμός σχηματίζεται ανάμεσά τους· θέλουν ακουστικά.'
+                      : ': each ear hears a slightly different tone and the beat forms between them, so they need headphones.'}
+                  </p>
+                  <p className="text-ink/70">
+                    {el
+                      ? 'Και τα δύο δυναμώνουν με την εισπνοή και χαμηλώνουν με την εκπνοή. Τα ευρήματα για τα binaural είναι ακόμα ανάμεικτα· αν ένας ήχος σε ενοχλεί, δεν τον χρειάζεσαι.'
+                      : 'Both grow with the inhale and soften with the exhale. Findings on binaural beats are still mixed; if a sound bothers you, you do not need it.'}
+                  </p>
+                </div>
+              </details>
+            )}
+            <button
+              onClick={() => setShowWarning(false)}
+              className="mt-3 w-full min-h-[44px] bg-transparent text-zinc-300 font-medium rounded-full transition-colors hover:text-ink text-sm"
+            >
+              {el ? 'Κλείσιμο' : 'Close'}
+            </button>
           </div>
         </div>
       )}
