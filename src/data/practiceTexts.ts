@@ -483,22 +483,24 @@ export const PRACTICE_TEXTS: Record<string, PracticeText> = {
     evidence: null,
   },
   'tilopa-rest': {
-    card: { el: 'Μην αναπολείς, μη φαντάζεσαι, μη σκέφτεσαι, μην εξετάζεις, μην ελέγχεις. Ξεκουράσου.', en: 'Do not recall, do not imagine, do not think, do not examine, do not control. Rest.' },
-    title: { el: 'Ξεκούραση (Tilopa)', en: 'Rest (Tilopa)' },
-    sub: { el: 'Οι έξι λέξεις του Tilopa, για δέκα δευτερόλεπτα.', en: 'Tilopa\'s six words, for ten seconds.' },
+    card: { el: 'Μια ερώτηση χωρίς απάντηση: μπορείς να νιώσεις τον χώρο ανάμεσα στα μάτια σου;', en: 'A question with no answer: can you feel the space between your eyes?' },
+    title: { el: 'Ο Χώρος Ανάμεσα στα Μάτια', en: 'The Space Between the Eyes' },
+    sub: { el: 'Δέκα δευτερόλεπτα. Μην ψάξεις απάντηση· άσε τη λαβή να λυθεί.', en: 'Ten seconds. Don’t look for an answer; let the grip loosen.' },
     steps: {
-      el: ['Μην αναπολείς. Μη φαντάζεσαι. Μη σκέφτεσαι.', 'Μην εξετάζεις. Μην ελέγχεις. Ξεκουράσου.'],
-      en: ['Do not recall. Do not imagine. Do not think.', 'Do not examine. Do not control. Rest.'],
+      el: ['Με την εισπνοή, νιώσε τον αέρα να μπαίνει. Με την εκπνοή, άφησέ τον να βγει αργά, χωρίς να σπρώχνεις.', 'Ρώτησε: «Μπορώ να νιώσω τον χώρο ανάμεσα στα μάτια μου;»', 'Μην ψάξεις απάντηση. Άσε τη λαβή να λυθεί.'],
+      en: ['With the in-breath, feel the air come in. With the out-breath, let it leave slowly, without pushing.', 'Ask: “Can I feel the space between my eyes?”', 'Don’t look for an answer. Let the grip loosen.'],
     },
     seconds: 20,
+    // Les Fehmi's question is from a book, not a study: no "why it works" line.
+    evidence: null,
   },
   'spacious-metta': {
-    card: { el: 'Ο χώρος στο στήθος γίνεται αρκετός για ό,τι νιώθεις τώρα.', en: 'The space in your chest grows large enough for whatever you feel now.' },
-    title: { el: 'Ευρύχωρη Καλοσύνη', en: 'Spacious Kindness' },
+    card: { el: 'Ο χώρος στο στήθος, που είναι ήδη εκεί.', en: 'The space in your chest, already there.' },
+    title: { el: 'Ο Χώρος στο Στήθος', en: 'The Space in the Chest' },
     sub: { el: 'Δεν χρειάζεται να αλλάξεις αυτό που νιώθεις. Μόνο να του κάνεις χώρο.', en: 'You do not need to change what you feel. Only to make room for it.' },
     steps: {
-      el: ['Φέρε την προσοχή στο στήθος. Νιώσε την αναπνοή εκεί.', 'Με κάθε εκπνοή άφησε τον χώρο στο στήθος να γίνει λίγο πιο ευρύχωρος.', 'Αρκετός για να χωρέσει ό,τι νιώθεις τώρα, όπως είναι.'],
-      en: ['Bring your attention to your chest. Feel the breath there.', 'With each exhale, let the space in your chest grow a little roomier.', 'Large enough to hold whatever you feel now, as it is.'],
+      el: ['Φέρε την προσοχή στο στήθος. Με την εισπνοή, νιώσε το στήθος να ανοίγει λίγο. Με την εκπνοή, άφησέ το να μαλακώσει.', 'Ρώτησε: «Μπορώ να νιώσω τον χώρο μέσα στο στήθος μου;» Μην ψάξεις απάντηση.', 'Ο χώρος είναι ήδη εκεί, χωρίς να κάνεις τίποτα. Χωρά ό,τι νιώθεις τώρα, όπως είναι.'],
+      en: ['Bring your attention to your chest. With the in-breath, feel the chest open a little. With the out-breath, let it soften.', 'Ask: “Can I feel the space inside my chest?” Don’t look for an answer.', 'The space is already there, without your doing anything. It holds whatever you feel now, as it is.'],
     },
   },
   'silence-background': {

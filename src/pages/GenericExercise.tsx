@@ -55,8 +55,13 @@ const formatTime = (seconds: number) => {
 const durationLabel = (s: number, el: boolean) =>
   s < 60 ? (el ? `${s} δευτ.` : `${s} sec`) : (el ? `${Math.round(s / 60)} λεπτ${Math.round(s / 60) === 1 ? 'ό' : 'ά'}` : `${Math.round(s / 60)} min`);
 
+const RENAMED: Record<string, string> = { 'metta-expansion': 'chest-space' };
+
 export default function GenericExercise() {
-  const { id } = useParams();
+  // A page that was renamed still opens from an old link inside the app
+  // (on the site, public/_redirects sends the old address on).
+  const { id: rawId } = useParams();
+  const id = rawId ? RENAMED[rawId] ?? rawId : rawId;
   const navigate = useNavigate();
   const { language } = useLanguage();
   const el = language !== 'en';

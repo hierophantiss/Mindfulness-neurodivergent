@@ -319,26 +319,25 @@ export const MICRODOSES_EXERCISES: MicrodoseExercise[] = [
   },
   {
     id: 'tilopa-rest',
-    evidence: { en: 'In experienced meditators, linked to a quieter narrative network (DMN)', el: 'Σε έμπειρους διαλογιστές, συνδέεται με πιο ήσυχο δίκτυο αφήγησης (DMN)', ref: 'study-brewer' },
     axis: 'space',
-    title: { el: 'Ξεκούραση (Tilopa)', en: 'Rest (Tilopa)' },
+    title: { el: 'Ο Χώρος Ανάμεσα στα Μάτια', en: 'The Space Between the Eyes' },
     type: 'space',
     dur: { el: '10 δευτ.', en: '10 sec' },
     maxSeconds: 10,
-    desc: { el: 'Μην αναπολείς, μην φαντάζεσαι, μην εξετάζεις, μην ελέγχεις. Απλά ξεκουράσου.', en: 'Do not recall, do not imagine, do not examine, do not control. Just rest.' },
+    desc: { el: 'Μια ερώτηση χωρίς απάντηση: μπορείς να νιώσεις τον χώρο ανάμεσα στα μάτια σου;', en: 'A question with no answer: can you feel the space between your eyes?' },
     iconName: 'Box',
     link: '/practice/space/tilopa-rest'
   },
   {
     id: 'spacious-metta',
     axis: 'space',
-    title: { el: 'Ευρύχωρη Καλοσύνη', en: 'Spacious Kindness' },
+    title: { el: 'Ο Χώρος στο Στήθος', en: 'The Space in the Chest' },
     type: 'space',
     dur: { el: '1 λεπτό', en: '1 minute' },
     maxSeconds: 60,
-    desc: { el: 'Νιώσε τον χώρο μέσα στο στήθος σου. Άφησέ τον να γίνει λίγο πιο ευρύχωρος, αρκετός για να χωρέσει ό,τι νιώθεις τώρα, όπως είναι.', en: 'Feel the space inside your chest. Let it grow a little roomier, enough to hold whatever you feel right now, as it is.' },
+    desc: { el: 'Ο χώρος στο στήθος, που είναι ήδη εκεί.', en: 'The space in your chest, already there.' },
     iconName: 'Box',
-    link: '/practice/space/metta-expansion'
+    link: '/practice/space/chest-space'
   },
   {
     id: 'silence-background',

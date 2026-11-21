@@ -161,7 +161,7 @@ export default function Practice() {
   const matchesSomaticFilter = (p: BreathPattern): boolean => {
     if (activeSomatic === 'all') return true;
     if (activeSomatic === 'seated') {
-      return p.category === 'breath' || p.category === 'grounding' || p.category === 'vocal' || p.id.includes('lotus') || p.id.includes('bow') || p.id === 'tilopa-rest';
+      return p.category === 'breath' || p.category === 'grounding' || p.category === 'vocal' || p.id.includes('lotus') || p.id.includes('bow');
     }
     if (activeSomatic === 'quick') {
       return p.totalCycleDurationMs < 14000 || p.id === 'sos-breath' || p.id.includes('resonant') || p.id === '4-2-6-1';
@@ -188,7 +188,7 @@ const axisInfo = {
     color: 'text-[var(--axis-body-ink)]', 
     borderColor: 'border-[var(--color-axis-body)]/30',
     bgColor: 'bg-[var(--color-axis-body)]/15',
-    desc: { en: 'Practices that root you down and build somatic awareness.', el: 'Πρακτικές που σε γειώνουν και χτίζουν σωματική επίγνωση.' } 
+    desc: { en: 'Practices to feel gravity: your weight drops and is supported.', el: 'Πρακτικές για να νιώσεις τη βαρύτητα: το βάρος σου πέφτει και στηρίζεται.' } 
   },
   breath: { 
     icon: '○', 
@@ -196,7 +196,7 @@ const axisInfo = {
     color: 'text-[var(--axis-breath-ink)]', 
     borderColor: 'border-[var(--color-axis-breath)]/30',
     bgColor: 'bg-[var(--color-axis-breath)]/15',
-    desc: { en: 'Practices that regulate the nervous system through the breath.', el: 'Πρακτικές που ρυθμίζουν το νευρικό σύστημα μέσω της αναπνοής.' } 
+    desc: { en: 'Practices with the breath: you feel it, and with a long exhale you regulate it.', el: 'Πρακτικές με την αναπνοή: τη νιώθεις, και με μακριά εκπνοή τη ρυθμίζεις.' } 
   },
   attention: { 
     icon: '△', 
@@ -204,7 +204,7 @@ const axisInfo = {
     color: 'text-[var(--axis-attention-ink)]', 
     borderColor: 'border-[var(--color-axis-focus)]/30',
     bgColor: 'bg-[var(--color-axis-focus)]/15',
-    desc: { en: 'Practices that sharpen focus and direct mental energy.', el: 'Πρακτικές που οξύνουν την εστίαση και κατευθύνουν τη νοητική ενέργεια.' } 
+    desc: { en: 'Practices where attention rests on one point, and comes back gently when it drifts.', el: 'Πρακτικές όπου η προσοχή μένει σε ένα σημείο, και γυρνά απαλά όταν φύγει.' } 
   },
   space: { 
     icon: '∞', 
@@ -212,7 +212,7 @@ const axisInfo = {
     color: 'text-[var(--axis-space-ink)]', 
     borderColor: 'border-[var(--color-axis-space)]/30',
     bgColor: 'bg-[var(--color-axis-space)]/15',
-    desc: { en: 'Practices that cultivate open awareness and deep letting go.', el: 'Πρακτικές που καλλιεργούν ανοιχτή επίγνωση και βαθιά απελευθέρωση.' } 
+    desc: { en: 'Open awareness practices: with your body grounded, attention opens to the space around you.', el: 'Πρακτικές ανοιχτής επίγνωσης: με το σώμα γειωμένο, η προσοχή ανοίγει στον χώρο γύρω σου.' } 
   }
 };
 

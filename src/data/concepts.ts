@@ -51,8 +51,8 @@ export const KNOWLEDGE_CONCEPTS: Record<string, Concept> = {
   axis: {
     el: {
       title: 'Άξονας',
-      short: 'Η νοητή κάθετη γραμμή που σε κρατά όρθιο.',
-      full: 'Από τη λεκάνη, μέσα από τη σπονδυλική στήλη, ως την κορυφή του κεφαλιού. Δεν τον φτιάχνεις ούτε τον σφίγγεις· τον νιώθεις. Η βαρύτητα σε τραβά προς τα κάτω, ο άξονας σε κρατά όρθιο.',
+      short: 'Η νοητή κάθετη γραμμή που κρατά το σώμα όρθιο.',
+      full: 'Από τη λεκάνη, μέσα από τη σπονδυλική στήλη, ως την κορυφή του κεφαλιού. Δεν τον φτιάχνεις ούτε τον σφίγγεις· τον νιώθεις. Η βαρύτητα σε τραβά προς τα κάτω, ο άξονας κρατά το σώμα όρθιο.',
       ndNote: 'Αν δεν τον νιώθεις ακόμα, φαντάσου απλώς τη γραμμή. Η αίσθηση έρχεται με την επανάληψη.'
     },
     en: {
@@ -368,25 +368,7 @@ export const KNOWLEDGE_CONCEPTS: Record<string, Concept> = {
     },
     axis: 'all',
     chapters: [1, 10, 11],
-    related: ['kindness', 'echo', 'six_words']
-  },
-
-  six_words: {
-    el: {
-      title: 'Οι Έξι Συμβουλές (Tilopa)',
-      short: 'Η τέχνη της μη-προσπάθειας.',
-      full: 'Ο πυρήνας της άσκησης χωρίς προσπάθεια: 1. Μην αναπολείς (Άσε το παρελθόν). 2. Μην φαντάζεσαι (Άσε το μέλλον). 3. Μην σκέφτεσαι (Άσε τον εσωτερικό διάλογο). 4. Μην εξετάζεις (Μην αναλύεις). 5. Μην ελέγχεις (Μην πιέζεις την εμπειρία). 6. Ξεκουράσου (Αφέσου στη φυσική κατάσταση). Η γαλήνη είναι η εργοστασιακή ρύθμιση του νου σου όταν σταματάς να τον ανακατεύεις.',
-      ndNote: 'Ιδανικό αντίδοτο για τον εσωτερικό «Μηχανικό Νου» που προσπαθεί διαρκώς να βάλει κανόνες για το πώς «πρέπει» να διαλογιστεί.'
-    },
-    en: {
-      title: 'The Six Words of Advice (Tilopa)',
-      short: 'The art of non-effort.',
-      full: 'The core of effortless practice: 1. Don\'t recall (Let go of the past). 2. Don\'t imagine (Let go of the future). 3. Don\'t think (Let go of present dialogue). 4. Don\'t examine (Don\'t analyze). 5. Don\'t control (Don\'t force the experience). 6. Rest (Surrender to the natural state). Peace is your mind\'s factory setting when you stop stirring it.',
-      ndNote: 'Ideal antidote for the inner “Mechanical Mind” that constantly tries to make rules on how it “should” meditate.'
-    },
-    axis: 'attention',
-    chapters: [5, 9],
-    related: ['open_awareness', 'mechanical_mind']
+    related: ['kindness', 'echo']
   },
 
   elephant_path: {

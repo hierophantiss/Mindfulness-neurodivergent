@@ -1,6 +1,6 @@
 import { createPortal } from 'react-dom';
 import { readText } from '../lib/storage';
-import { movementSteps, movementStance, phaseName, stanceName, type Step } from '../data/movementSteps';
+import { MOVEMENT_HOWTO_INTRO, movementSteps, movementStance, phaseName, stanceName, type Step } from '../data/movementSteps';
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import BreathCanvas, { PhaseLabel } from '../components/BreathCanvas';
@@ -52,6 +52,8 @@ function HowTo({ text, language, gravityFirst = false, longExhale = false, chant
       <h2 id="breath-howto-title" className="text-[15px] text-ink/90 mb-3">{el ? 'Πώς γίνεται' : 'How it is done'}</h2>
       {steps ? (
         // The movement, step by step, as the figure does it.
+        <>
+        <p className="text-[14px] text-ink/75 leading-relaxed mb-3.5">{el ? MOVEMENT_HOWTO_INTRO.el : MOVEMENT_HOWTO_INTRO.en}</p>
         <ol className="flex flex-col gap-3.5 text-left">
           {steps.map((st, i) => (
             <li key={i} className="flex gap-3">
@@ -63,6 +65,7 @@ function HowTo({ text, language, gravityFirst = false, longExhale = false, chant
             </li>
           ))}
         </ol>
+        </>
       ) : !gravityFirst ? (
         <p className="text-[14px] text-zinc-300 leading-relaxed">{text}</p>
       ) : (

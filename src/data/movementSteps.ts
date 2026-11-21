@@ -126,6 +126,12 @@ const LABEL: Record<Kind, L> = {
 
 export type Step = { label: string; text: string };
 
+/** Above a movement's steps: how to learn it, as in Tai Chi (and which button is the "watching"). */
+export const MOVEMENT_HOWTO_INTRO: L = {
+  el: 'Όπως στο Τάι Τσι: πρώτα διαβάζεις τα βήματα, μετά πατάς «Δες το αργά» και ακολουθείς τη φιγούρα.',
+  en: 'As in Tai Chi: first you read the steps, then press “Watch it slowly” and follow the figure.',
+};
+
 /** The steps for a movement, in the order of its own phases; null if it has none. */
 export function movementSteps(
   movementType: string,
