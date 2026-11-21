@@ -94,7 +94,7 @@ test('with «No sound» nothing rings at the end, and vibration follows its swit
   await vib.click();
   await expect(vib).toHaveAttribute('aria-checked', 'false');
   await page.getByRole('button', { name: 'Ξεκίνα', exact: true }).first().click();
-  await page.clock.runFor(12_000);
+  for (let i = 0; i < 24; i++) await page.clock.fastForward(500);
   await page.getByRole('button', { name: 'Τέλος', exact: true }).click();
   await page.clock.runFor(1_000);
   const seen = await page.evaluate(() => {
@@ -117,7 +117,7 @@ test('vibration is on until turned off, and then the breath does not buzz', asyn
   await page.goto('/el/practice/breath/breath-4-6', { waitUntil: 'networkidle' });
   await page.getByRole('button', { name: 'Ξεκίνα', exact: true }).first().click();
   // Through a whole cycle: the exhale (and the next inhale) begin with a buzz.
-  await page.clock.runFor(11_000);
+  for (let i = 0; i < 22; i++) await page.clock.fastForward(500);
   await expect.poll(() => page.evaluate(() => (window as unknown as { __buzz: unknown[] }).__buzz.length)).toBeGreaterThan(0);
   await page.getByRole('button', { name: 'Παύση', exact: true }).click();
   await page.goto('/el/settings', { waitUntil: 'networkidle' });
@@ -125,7 +125,7 @@ test('vibration is on until turned off, and then the breath does not buzz', asyn
   await page.goto('/el/practice/breath/breath-4-6', { waitUntil: 'networkidle' });
   await page.evaluate(() => { (window as unknown as { __buzz: unknown[] }).__buzz = []; });
   await page.getByRole('button', { name: 'Ξεκίνα', exact: true }).first().click();
-  await page.clock.runFor(12_000);
+  for (let i = 0; i < 24; i++) await page.clock.fastForward(500);
   expect(await page.evaluate(() => (window as unknown as { __buzz: unknown[] }).__buzz.length)).toBe(0);
 });
 
