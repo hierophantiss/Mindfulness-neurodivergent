@@ -5,7 +5,7 @@ export type Block = { title: string; paras?: string[]; list?: string[] };
 export const T: Record<'el' | 'en', { title: string; updated: string; short: string; blocks: Block[]; contactTitle: string; contact: string; subject: string }> = {
   el: {
     title: 'Δήλωση προσβασιμότητας',
-    updated: 'Τελευταία ενημέρωση: 10 Νοεμβρίου 2026',
+    updated: 'Τελευταία ενημέρωση: 21 Νοεμβρίου 2026',
     short: 'Η εφαρμογή φτιάχτηκε για ανθρώπους με νευροδιαφορετικό νου, και θέλει να μπορεί να τη χρησιμοποιήσει ο καθένας. Εδώ γράφεται τι κάνει ήδη, τι δεν κάνει ακόμα καλά, και πώς λες αν κάτι σε δυσκολεύει.',
     blocks: [
       {
@@ -43,7 +43,7 @@ export const T: Record<'el' | 'en', { title: string; updated: string; short: str
           'Λίγα μικρά κείμενα (τέσσερα στον τελευταίο έλεγχο) έχουν λίγο χαμηλότερη αντίθεση από το όριο.',
           'Σε πολύ μικρές οθόνες (πλάτος 320 pixel), η τελευταία κάρτα της υποδοχής θέλει κύλιση.',
           'Τα βίντεο της Κουνελότρυπας και του Καταφυγίου παίζουν από το YouTube· οι υπότιτλοι εξαρτώνται από το κάθε βίντεο.',
-          'Τα αρχεία PDF (το βιβλίο, η εβδομάδα σου) δεν έχουν ελεγχθεί ακόμα για αναγνώστες οθόνης.',
+          'Τα PDF του βιβλίου έχουν ετικέτες για αναγνώστες οθόνης (PDF/UA-1), αλλά δεν έχουν ελεγχθεί ακόμα με εργαλείο ελέγχου (PAC). Το PDF «Η εβδομάδα μου» δεν έχει ακόμα ετικέτες.',
         ],
       },
     ],
@@ -53,7 +53,7 @@ export const T: Record<'el' | 'en', { title: string; updated: string; short: str
   },
   en: {
     title: 'Accessibility statement',
-    updated: 'Last updated: 10 November 2026',
+    updated: 'Last updated: 21 November 2026',
     short: 'The app was made for neurodivergent minds, and it wants everyone to be able to use it. This page says what it already does, what does not work well yet, and how to tell if something gets in your way.',
     blocks: [
       {
@@ -91,7 +91,7 @@ export const T: Record<'el' | 'en', { title: string; updated: string; short: str
           'A few small texts (four at the last check) have slightly lower contrast than the threshold.',
           'On very small screens (320 pixels wide), the last card of the welcome needs scrolling.',
           'The videos in the Rabbit Hole and the Sanctuary play from YouTube; captions depend on each video.',
-          'The PDF files (the book, your week) have not yet been checked for screen readers.',
+          'The book’s PDFs are tagged for screen readers (PDF/UA-1), but have not yet been checked with a validator (PAC). The “My week” PDF is not tagged yet.',
         ],
       },
     ],
