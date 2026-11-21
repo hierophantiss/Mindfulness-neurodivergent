@@ -3,7 +3,7 @@
 export const T = {
   el: {
     title: 'Η Μέθοδος',
-    intro: 'Η ενσυνειδητότητα της μεθόδου δεν σου ζητά «να αδειάσεις το μυαλό σου» ούτε να μείνεις ακίνητος/η. Σε μαθαίνει να ρυθμίζεις το νευρικό σου σύστημα με τέσσερα απλά βήματα, τους τέσσερις άξονες: Σώμα, Αναπνοή, Προσοχή, Χώρος.',
+    intro: 'Ο Τετραπλός Άξονας είναι μέθοδος αυτορρύθμισης του Θεόδωρου Μπαϊρακτάρη για νευροδιαφορετικούς ενήλικες και ανθρώπους που ζουν με τραύμα, με τέσσερα βήματα: Σώμα, Αναπνοή, Προσοχή, Χώρος. Η ενσυνειδητότητα της μεθόδου δεν σου ζητά «να αδειάσεις το μυαλό σου» ούτε να μείνεις ακίνητος/η. Σε μαθαίνει να ρυθμίζεις το νευρικό σου σύστημα με τέσσερα απλά βήματα, τους τέσσερις άξονες: Σώμα, Αναπνοή, Προσοχή, Χώρος.',
     rootsTitle: 'Ρίζες',
     roots: 'Η μέθοδος πατά σε αρχές από διαφορετικές παραδόσεις: τη Σαμάθα (shiné, η ηρεμία του νου) και τη Βιπάσανα (η καθαρή όραση), το Τάι Τσι και το Τσι Κονγκ, και τον Σουφισμό. Από αυτές κρατά ό,τι βοηθά το νευρικό σύστημα να ρυθμιστεί, δοσμένο σε απλά βήματα. Καμία από αυτές τις παραδόσεις δεν έχει εγκρίνει τη μέθοδο.',
     axesTitle: 'Οι 4 Άξονες',
@@ -29,7 +29,7 @@ export const T = {
   },
   en: {
     title: 'The Method',
-    intro: 'The mindfulness of this method does not ask you to "empty your mind", nor to stay still. It teaches you to regulate your nervous system in four simple steps, the four axes: Body, Breath, Attention, Space.',
+    intro: 'The Fourfold Axis is a self-regulation method by Theodoros Bairaktaris for neurodivergent adults and people living with trauma, in four steps: Body, Breath, Attention, Space. The mindfulness of this method does not ask you to "empty your mind", nor to stay still. It teaches you to regulate your nervous system in four simple steps, the four axes: Body, Breath, Attention, Space.',
     rootsTitle: 'Roots',
     roots: 'The method draws on principles from different traditions: Samatha (shiné, calm abiding of the mind) and Vipassana (clear seeing), Tai Chi and Qigong, and Sufism. From them it keeps what helps the nervous system settle, given in simple steps. None of these traditions has endorsed the method.',
     axesTitle: 'The 4 Axes',

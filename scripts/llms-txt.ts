@@ -8,7 +8,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { ABOUT } from '../src/data/about';
+import { ABOUT, DEFINITION } from '../src/data/about';
 import { T as PRIVACY } from '../src/data/pages/privacy';
 import { CHAPTERS_DATA } from '../src/data/chapters';
 import { METHODOLOGY_DATA } from '../src/data/methodology';
@@ -78,7 +78,7 @@ const files = [
 
 const llms = `# ${SITE_NAME.en} / ${SITE_NAME.el}
 
-> A free, bilingual (English and Greek) mindfulness app and book by ${AUTHOR_NAME.en} (${AUTHOR_NAME.el}), built on the Fourfold Axis: Body, Breath, Attention, Space. The book: "${BOOK_NAME.en}" / «${BOOK_NAME.el}», second edition, CC BY-NC-ND 4.0.
+> ${DEFINITION.en} A free, bilingual (English and Greek) mindfulness app and book by ${AUTHOR_NAME.en} (${AUTHOR_NAME.el}). The book: "${BOOK_NAME.en}" / «${BOOK_NAME.el}», second edition, CC BY-NC-ND 4.0.
 
 ${about('en').join('\n\n')}
 

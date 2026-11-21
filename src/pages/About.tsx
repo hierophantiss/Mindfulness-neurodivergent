@@ -32,6 +32,13 @@ function Dots({ items }: { items: string[] }) {
   );
 }
 
+/** A text with the page's name in quotes («…» / “…”) made into a link to that page. */
+function ProLinked({ text, to }: { text: string; to: string }) {
+  const m = text.match(/^([\s\S]*?)([«“])([^»”]+)([»”])([\s\S]*)$/);
+  if (!m) return <>{text}</>;
+  return <>{m[1]}<Link to={to} className="underline decoration-white/25 underline-offset-4 hover:text-ink">{m[2]}{m[3]}{m[4]}</Link>{m[5]}</>;
+}
+
 export default function About() {
   const { language } = useLanguage();
   const l = language === 'en' ? 'en' : 'el';
@@ -41,7 +48,9 @@ export default function About() {
   return (
     <div className="flex flex-col gap-9 pb-10 animate-in fade-in duration-500">
       <div className="pt-2">
-        <PageHeader back="/" eyebrow={a.title[l]} title={el ? 'Σχετικά' : 'About'} lead={a.subtitle[l]} />
+        <PageHeader back="/" eyebrow={a.title[l]} title={el ? 'Σχετικά' : 'About'} lead={a.subtitle[l]}>
+          <p className="text-[15px] leading-relaxed text-ink/70 max-w-[36em]">{a.subtitlePlain[l]}</p>
+        </PageHeader>
       </div>
 
       <section className="flex flex-col gap-3">
@@ -97,6 +106,21 @@ export default function About() {
         <p className={para}>{a.creatorDesc[l]}</p>
         <p className="text-[15.5px] leading-relaxed text-ink/90">{a.creatorQuote[l]}</p>
         <p className={para}>{a.madeWith[l]}</p>
+      </section>
+
+      {/* For whoever would recommend it at work: what it is and is not, the licence, how. */}
+      <section id="professionals" aria-labelledby="about-professionals" className="card-relief rounded-3xl p-5 desk:p-6 flex flex-col gap-3 scroll-mt-24">
+        <h2 id="about-professionals" className={h2}>{a.professionals.title[l]}</h2>
+        {a.professionals.blocks.map(b => (
+          <p key={b.head.en} className={para}>
+            <strong className="font-semibold text-ink">{b.head[l]}</strong>{' '}
+            {b.link ? <ProLinked text={b.text[l]} to={b.link} /> : b.text[l]}
+          </p>
+        ))}
+        <p className={para}>
+          <strong className="font-semibold text-ink">{a.professionals.contactHead[l]}</strong>{' '}
+          {a.creatorName[l]} · <a href={`mailto:${CONTACT_EMAIL}`} className="underline decoration-white/25 underline-offset-4 hover:text-ink">{CONTACT_EMAIL}</a>
+        </p>
       </section>
 
       <section className="flex flex-col gap-3">

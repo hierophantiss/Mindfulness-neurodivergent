@@ -16,7 +16,7 @@ import { KNOWLEDGE_FAQ } from '../src/data/faq';
 import { METHODOLOGY_DATA } from '../src/data/methodology';
 import { COURSE_EL } from '../src/data/course-el';
 import { COURSE_EN } from '../src/data/course-en';
-import { ABOUT } from '../src/data/about';
+import { ABOUT, DEFINITION } from '../src/data/about';
 import { T as METHOD } from '../src/data/pages/method';
 import { SIGN } from '../src/data/pages/methodSign';
 import { T as PRIVACY } from '../src/data/pages/privacy';
@@ -25,7 +25,7 @@ import { T as INSTALL } from '../src/data/pages/install';
 import { bookCards } from '../src/data/bookCards';
 import { GLOSSARY } from '../src/data/glossary';
 import { audioUrl } from '../src/lib/chapterAudio';
-import { MICROSOFT_STORE_URL } from '../src/lib/links';
+import { MICROSOFT_STORE_URL, CONTACT_EMAIL } from '../src/lib/links';
 import {
   SITE_URL, SITE_NAME, BOOK_NAME, AUTHOR_NAME, AUTHOR_ID, BOOK_ID, WEBSITE_ID, APP_ID,
   withSiteName, type SeoHead, type Lang,
@@ -319,8 +319,8 @@ export function routeMeta(route: string): RouteMeta {
     : 'Free, trauma-informed mindfulness app for ADHD & autism: breathing, Tai Chi & Qigong, binaural sounds, and an 11-chapter workbook you can read or listen to, plus an audiobook. Made by a neurodivergent person; no account, no tracking.';
   if (clean === '/' || clean === '/dashboard') {
     const homeIntro = el
-      ? 'Χτισμένη γύρω από τον Τετραπλό Άξονα — Σώμα, Αναπνοή, Προσοχή, Χώρος — είναι μια δωρεάν εφαρμογή, χωρίς παρακολούθηση, για γείωση, ρύθμιση και ανοιχτή επίγνωση, φτιαγμένη από νευροδιαφορετικό άτομο για νευροδιαφορετικούς νους.'
-      : 'Built around the Fourfold Axis — Body, Breath, Attention, Space — this is a free, privacy-first companion for grounding, regulation, and open awareness, made by a neurodivergent person for neurodivergent minds.';
+      ? `${DEFINITION.el} Η εφαρμογή, χτισμένη γύρω από αυτόν, είναι δωρεάν, χωρίς παρακολούθηση, για γείωση, ρύθμιση και ανοιχτή επίγνωση, φτιαγμένη από νευροδιαφορετικό άτομο για νευροδιαφορετικούς νους.`
+      : `${DEFINITION.en} The app built around it is a free, privacy-first companion for grounding, regulation, and open awareness, made by a neurodivergent person for neurodivergent minds.`;
     const sections: [string, string, string][] = el ? [
       ['/el/practice', 'Πρακτικές', 'οι τρεις ρυθμοί αναπνοής του βιβλίου (5-5, 4-6, 4-2-7) και το SOS, Τάι Τσι και Qigong με κινούμενη φιγούρα, Λίκνισμα, ψάλσιμο και σύντομες μικροδόσεις. Οι αναπνοές και οι κινήσεις λένε τι κάνεις στην εισπνοή και τι στην εκπνοή.'],
       ['/el/sanctuary', 'Καταφύγιο', 'βροχή, ωκεανός, αέρας, καφέ και ροζ θόρυβος, κύμα αναπνοής 5-5 και binaural για ύπνο, χαλάρωση, ήρεμη εγρήγορση και εστίαση, με χρονοδιακόπτη ύπνου.'],
@@ -707,8 +707,8 @@ export function routeMeta(route: string): RouteMeta {
   if (clean === '/method') {
     const base = el ? 'Η Μέθοδος του Τετραπλού Άξονα – με Σεβασμό στο Τραύμα' : 'The Fourfold Axis – a Trauma-Informed Mindfulness Method';
     const d = el
-      ? 'Ο Τετραπλός Άξονας: Σώμα, Αναπνοή, Προσοχή, Χώρος. Μέθοδος ενσυνειδητότητας για ΔΕΠΥ και αυτισμό, με φροντίδα για όσους ζουν με τραύμα, που ξεκινά από το σώμα, με ρυθμούς αναπνοής, Τάι Τσι, ψάλσιμο και δωρεάν βιβλίο 11 κεφαλαίων που διαβάζεις ή ακούς.'
-      : 'The Fourfold Axis: Body, Breath, Attention, Space. A trauma-informed mindfulness method for ADHD and autism that starts from the body, with breathing rhythms, Tai Chi, chanting and a free 11-chapter workbook you can read or listen to.';
+      ? `${DEFINITION.el} Για ΔΕΠΥ και αυτισμό: ξεκινά από το σώμα, με ρυθμούς αναπνοής, Τάι Τσι, ψάλσιμο και δωρεάν βιβλίο 11 κεφαλαίων που διαβάζεις ή ακούς.`
+      : `${DEFINITION.en} For ADHD and autism: it starts from the body, with breathing rhythms, Tai Chi, chanting and a free 11-chapter workbook you can read or listen to.`;
     const t = METHOD[L];
     const sign = SIGN[L];
     const linkText = el
@@ -806,6 +806,7 @@ export function routeMeta(route: string): RouteMeta {
     const d = excerpt([a.purpose[L], a.creatorDesc[L]], 158);
     const parts = [
       `<p>${escapeHtml(a.subtitle[L])}</p>`,
+      `<p>${escapeHtml(a.subtitlePlain[L])}</p>`,
       `<p>${escapeHtml(a.purpose[L])}</p>`,
       `<h2>${escapeHtml(a.features.title[L])}</h2>`, ul(a.features.items.map(i => i[L])),
       `<h2>${escapeHtml(a.trauma.title[L])}</h2>`, ul(a.trauma.items.map(i => i[L])),
@@ -814,6 +815,9 @@ export function routeMeta(route: string): RouteMeta {
       `<h2>${escapeHtml(a.axesTitle[L])}</h2>`, `<ul>${a.axes.map(x => `<li>${escapeHtml(`${x.title[L]}: ${x.desc[L]}`)}</li>`).join('')}</ul>`,
       `<h2>${escapeHtml(`${a.creatorLabel[L]}: ${a.creatorName[L]}`)}</h2>`,
       `<p>${escapeHtml(a.creatorDesc[L])}</p>`, `<p>${escapeHtml(a.creatorQuote[L])}</p>`, `<p>${escapeHtml(a.madeWith[L])}</p>`,
+      `<h2 id="professionals">${escapeHtml(a.professionals.title[L])}</h2>`,
+      ...a.professionals.blocks.map(b => `<p><strong>${escapeHtml(b.head[L])}</strong> ${escapeHtml(b.text[L])}</p>`),
+      `<p><strong>${escapeHtml(a.professionals.contactHead[L])}</strong> ${escapeHtml(a.creatorName[L])} · ${escapeHtml(CONTACT_EMAIL)}</p>`,
       `<h2>${escapeHtml(a.privacy.title[L])}</h2>`, `<p>${escapeHtml(a.privacy.text[L])}</p>`,
       `<p>${link(`/${lang}/method`, el ? 'Η Μέθοδος' : 'The Method')} · ${link(`/${lang}/chapters`, BOOK_NAME[L])} · ${link(`/${lang}/methodology`, el ? 'Επιστημονική βάση' : 'Scientific basis')} · ${link(`/${lang}/privacy`, el ? 'Απόρρητο' : 'Privacy')}</p>`,
     ];
