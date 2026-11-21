@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom';
 import { readText } from '../lib/storage';
 import { movementSteps, movementStance, phaseName, stanceName, type Step } from '../data/movementSteps';
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
@@ -1003,8 +1004,8 @@ export default function PracticeBreath() {
       )}
 
       {/* Sleep Timer Modal */}
-      {showSleepTimer && (
-        <div className="absolute inset-0 z-[60] flex items-center justify-center p-4 bg-zinc-950/90 backdrop-blur-md">
+      {showSleepTimer && createPortal(
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 pb-[calc(96px+env(safe-area-inset-bottom))] desk:pb-4 bg-zinc-950/90 backdrop-blur-md">
           <div role="dialog" aria-modal="true" aria-labelledby="breath-timer-title" className="card-relief p-5 md:p-6 rounded-[2rem] max-w-sm w-full animate-in zoom-in-95 fade-in duration-200">
             <div className="w-14 h-14 rounded-full bg-zinc-800 flex items-center justify-center mx-auto mb-4 border border-zinc-600">
               <Timer size={28} className="text-teal-400" aria-hidden="true" />
@@ -1057,12 +1058,12 @@ export default function PracticeBreath() {
             </button>
           </div>
         </div>
-      )}
+      , document.body)}
 
       {/* The sound window: opened only from «Ήχος». «Χωρίς ήχο» first; plain words first, the details under them. */}
-      {showWarning && (
+      {showWarning && createPortal(
         // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-        <div className="absolute inset-0 z-50 flex items-center justify-center p-4 pb-[calc(100px+env(safe-area-inset-bottom))] desk:pb-4 bg-zinc-950/90 backdrop-blur-md" onClick={() => setShowWarning(false)}>
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 pb-[calc(96px+env(safe-area-inset-bottom))] desk:pb-4 bg-zinc-950/90 backdrop-blur-md" onClick={() => setShowWarning(false)}>
           {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
           <div ref={soundRef} role="dialog" aria-modal="true" aria-labelledby="breath-sound-title" onClick={(e) => e.stopPropagation()}
             className="card-relief p-5 rounded-[2rem] max-w-sm w-full max-h-full overflow-y-auto animate-in zoom-in-95 fade-in duration-200">
@@ -1138,7 +1139,7 @@ export default function PracticeBreath() {
             </button>
           </div>
         </div>
-      )}
+      , document.body)}
 
     </div>
   );

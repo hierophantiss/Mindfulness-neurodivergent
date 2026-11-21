@@ -166,7 +166,7 @@ export default function GenericExercise() {
       </div>
 
       <div className="flex flex-col items-center w-full max-w-md mx-auto text-center">
-        <h1 className="font-display text-[26px] text-ink/95 leading-tight px-2">{exercise.title[lang]}</h1>
+        <h1 className="font-display text-[26px] short:text-[22px] text-ink/95 leading-tight px-2">{exercise.title[lang]}</h1>
         <p className="mt-1.5 text-[14px] text-ink/70">
           {exercise.dur ? exercise.dur[lang] : durationLabel(total, el)}
           {exercise.desc && <> · {exercise.desc[lang]}</>}
@@ -175,7 +175,7 @@ export default function GenericExercise() {
 
         {/* Space practices: the book's way back if opening feels like drifting away
             (Chapter 4), read before starting, above the timer. */}
-        {exercise.axis === 'space' && <DriftNote lang={lang} className="w-full mt-4" />}
+        {exercise.axis === 'space' && <DriftNote lang={lang} className="w-full mt-4 short:mt-3 short:py-2.5 short:[&_p]:text-[13px] short:[&_p]:leading-snug" />}
 
         {/* Timer */}
         <button
@@ -184,7 +184,7 @@ export default function GenericExercise() {
             "relative mt-5 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-white/25",
             // With the Space note above it, the timer gives up some room so «Ξεκίνα» stays in view.
             exercise.axis === 'space'
-              ? "w-[clamp(120px,calc(100dvh-600px),200px)] h-[clamp(120px,calc(100dvh-600px),200px)]"
+              ? "w-[clamp(120px,calc(100dvh-600px),200px)] h-[clamp(120px,calc(100dvh-600px),200px)] short:w-[92px] short:h-[92px] short:mt-3 short:[&_.tabular-nums]:text-[24px]"
               : "w-[clamp(150px,calc(100dvh-460px),200px)] h-[clamp(150px,calc(100dvh-460px),200px)]"
           )}
         >
@@ -206,7 +206,7 @@ export default function GenericExercise() {
           </span>
         </button>
 
-        <div className="mt-5 flex items-center gap-3">
+        <div className="mt-5 short:mt-3 flex items-center gap-3">
           <button
             onClick={toggle}
             className={cn(
