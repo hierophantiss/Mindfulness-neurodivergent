@@ -17,6 +17,7 @@ import { DriftNote } from '../components/DriftNote';
 import { ReflectInJournal } from '../components/ReflectInJournal';
 import { CHAPTER_TITLES } from '../data/chapterTitles';
 import type { Axis } from '../data/types';
+import { noteDayDone, weekWasQuick } from '../lib/programPace';
 
 // Two weeks for each axis, in the order of the book's Part 1: weeks 1–2 are
 // Chapter 1 (Body), 3–4 Chapter 2 (Breath), 5–6 Chapter 3 (Attention), 7–8
@@ -56,6 +57,9 @@ export default function ProgramWeek() {
   const [activeStep, setActiveStep] = useState(0);
   const [direction, setDirection] = useState(1);
   const touchStartX = useRef(0);
+  // A whole week done in a rush: a gentle word before the next week (it never locks it).
+  const [quickWeek, setQuickWeek] = useState(false);
+  useEffect(() => { setQuickWeek(false); }, [weekNum]);
 
   // Default activeDay to what the companion has IF it's on this week
   useEffect(() => {
@@ -130,6 +134,7 @@ export default function ProgramWeek() {
     if (!isCompleted) {
       triggerReward('program');
       markLessonComplete(weekNum, activeDay + 1);
+      noteDayDone(weekNum, activeDay + 1);
     }
     
     // Advance companion data progress if needed
@@ -152,9 +157,11 @@ export default function ProgramWeek() {
         }
       });
       
-      // Auto move to next day or back to program if week finished
+      // Auto move to next day or back to program if week finished; a week done
+      // within a few days first gets a gentle word, and the choice is the reader's.
       if (nextD === 0) {
-        setTimeout(() => navigate('/program'), 800);
+        if (weekNum < lastWeek && weekWasQuick(weekNum, week.days.length)) setQuickWeek(true);
+        else setTimeout(() => navigate('/program'), 800);
       } else {
         setTimeout(() => setActiveDay(nextD), 800);
       }
@@ -287,6 +294,8 @@ export default function ProgramWeek() {
                       </div>
                       {currentDayContent.exercise.title}
                     </h3>
+                    {/* Weeks 7–8 open into space: the book's way back, read before the exercise. */}
+                    {weekNum >= 7 && <DriftNote lang={language === 'el' ? 'el' : 'en'} className="mb-6" />}
                     <ul className="space-y-4">
                       {currentDayContent.exercise.steps.map((step: string, idx: number) => (
                         <li key={idx} className="flex gap-4 text-ink/90 leading-relaxed items-start">
@@ -295,8 +304,6 @@ export default function ProgramWeek() {
                         </li>
                       ))}
                     </ul>
-                    {/* Weeks 7–8 open into space: the book's way back, under the exercise. */}
-                    {weekNum >= 7 && <DriftNote lang={language === 'el' ? 'el' : 'en'} className="mt-6" />}
                   </div>
                 )}
 
@@ -313,7 +320,7 @@ export default function ProgramWeek() {
                           <div className="w-1.5 h-1.5 rounded-full bg-amber-400/80"></div>
                           <h4 className="text-[13px] font-medium text-amber-400/90 drop-shadow-sm">{language === 'el' ? 'Με μια φράση' : 'In one sentence'}</h4>
                         </div>
-                        <p className="text-ink font-medium leading-relaxed text-lg sm:text-xl">"{currentDayContent.insight}"</p>
+                        <p className="text-ink font-medium leading-relaxed text-lg sm:text-xl">{language === 'el' ? `«${currentDayContent.insight}»` : `“${currentDayContent.insight}”`}</p>
                       </div>
                     )}
                     {currentDayContent.reflection && (
@@ -353,6 +360,28 @@ export default function ProgramWeek() {
              </motion.div>
            </AnimatePresence>
         </div>
+
+        {quickWeek && (
+          <section role="status" aria-labelledby="quick-week-title" className="mt-6 rounded-2xl border border-[var(--tint-sage-line)] bg-[var(--tint-sage-bg)] p-5" data-testid="quick-week">
+            <h3 id="quick-week-title" className="text-[16px] font-medium text-[var(--tint-sage-ink)]">
+              {language === 'el' ? `Η Εβδομάδα ${weekNum} έγινε.` : `Week ${weekNum} is done.`}
+            </h3>
+            <p className="mt-2 text-[15px] leading-relaxed text-ink/85">
+              {language === 'el'
+                ? 'Τη διάβασες γρήγορα, και αυτό είναι εντάξει. Η μέθοδος γίνεται δική σου όταν την εξασκείς λίγο λίγο, μέρα με τη μέρα. Μπορείς να μείνεις λίγο ακόμα με αυτή την εβδομάδα, ή να συνεχίσεις.'
+                : 'You went through it quickly, and that is fine. The method becomes yours when you practise it little by little, day by day. You can stay a little longer with this week, or go on.'}
+            </p>
+            <div className="mt-4 flex flex-col gap-2.5">
+              <button type="button" onClick={() => setQuickWeek(false)} className="btn-soft w-full !whitespace-normal">
+                {language === 'el' ? 'Μένω λίγο ακόμα εδώ' : 'I’ll stay here a little longer'}
+              </button>
+              <button type="button" onClick={() => navigate(`/program/week/${weekNum + 1}`)} className="btn-main w-full !whitespace-normal">
+                {language === 'el' ? `Συνέχισε στην Εβδομάδα ${weekNum + 1}` : `Go on to Week ${weekNum + 1}`}
+                <ChevronRight size={18} aria-hidden="true" />
+              </button>
+            </div>
+          </section>
+        )}
 
         <div className="mt-8 pt-6 border-t border-white/5 flex justify-between items-center z-10 rounded-2xl pb-0">
           <button

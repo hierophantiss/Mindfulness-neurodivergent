@@ -126,7 +126,7 @@ export default function Program() {
                 </div>
 
                 <div aria-hidden="true" className="absolute -bottom-4 -right-4 p-8 text-ink/[0.02] transition-all duration-700 select-none pointer-events-none">
-                   <span className="text-9xl font-black">W{weekNum}</span>
+                   <span className={language === 'el' ? "text-7xl font-black whitespace-nowrap" : "text-9xl font-black"}>{language === 'el' ? `Εβδ. ${weekNum}` : `W${weekNum}`}</span>
                 </div>
               </CardElement>
             );
