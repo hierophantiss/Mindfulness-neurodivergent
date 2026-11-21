@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Νους που Τρέχει — Racing Mind | Τετραπλός Άξονας</title>
-<meta name="description" content="Διαδραστική οπτικοποίηση: διάσπαση → γείωση → αναπνοή → παρουσία.">
+<title>Ο Νους που Τρέχει, ο Νους που Κλειδώνει — The Racing Mind, the Locked-In Mind | Τετραπλός Άξονας</title>
+<meta name="description" content="Διαδραστική οπτικοποίηση: διάσπαση → γείωση → αναπνοή → παρουσία · κλείδωμα → σώμα → χώρος.">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#060810;overflow:hidden;height:100vh;height:100dvh;width:100vw;font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;color:#e8e4df;user-select:none}
@@ -16,9 +16,10 @@ canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:1}
 .snum{position:fixed;top:22px;right:26px;z-index:10;font-size:0.65rem;letter-spacing:0.3em;color:rgba(232,228,223,0.12)}
 .ptrack{position:fixed;bottom:0;left:0;width:100%;height:2px;background:rgba(255,255,255,0.03);z-index:10}
 .pbar{height:100%;background:linear-gradient(90deg,rgba(200,80,80,0.5),rgba(180,160,60,0.4),rgba(80,180,160,0.4),rgba(130,200,150,0.5));transition:width 1.5s ease}
-.dots{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:10;display:flex;flex-direction:column;gap:14px}
-.dot{width:8px;height:8px;border-radius:50%;background:rgba(232,228,223,0.1);transition:all .6s;cursor:pointer;border:none;padding:0;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center}
-.dot.active{background:rgba(232,228,223,0.5)}
+.dots{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:10;display:flex;flex-direction:column;gap:2px}
+.dot{width:44px;height:44px;background:none;cursor:pointer;border:none;padding:0;display:flex;align-items:center;justify-content:center}
+.dot::before{content:'';width:8px;height:8px;border-radius:50%;background:rgba(232,228,223,0.16);transition:all .6s}
+.dot.active::before{background:rgba(232,228,223,0.55)}
 .ctrls{position:fixed;bottom:clamp(8px,2vh,18px);left:50%;transform:translateX(-50%);z-index:10;display:flex;gap:10px}
 .ctrls button{background:rgba(232,228,223,0.06);border:1.5px solid rgba(232,228,223,0.15);color:rgba(232,228,223,0.5);padding:10px 22px;font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-size:clamp(0.75rem,1.5vw,0.9rem);letter-spacing:0.12em;cursor:pointer;border-radius:24px;transition:all .3s;min-width:48px;min-height:44px}
 .ctrls button:active{background:rgba(232,228,223,0.18);transform:scale(0.95)}
@@ -26,8 +27,8 @@ canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:1}
 .lang-btn{position:fixed;top:12px;right:12px;z-index:20;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);padding:4px 10px;border-radius:12px;font-size:11px;cursor:pointer;font-family:inherit}
 .intro{position:fixed;inset:0;z-index:100;background:#060810;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:opacity 2s ease}
 .intro.hidden{opacity:0;pointer-events:none}
-.intro-t{font-size:clamp(1.5rem,4.5vw,2.6rem);font-weight:300;letter-spacing:0.2em;background:linear-gradient(135deg,#e8a090,#c06060);-webkit-background-clip:text;-webkit-text-fill-color:transparent;opacity:0;animation:fi 2s ease 0.5s forwards}
-.intro-s{font-size:clamp(0.65rem,1.3vw,0.9rem);letter-spacing:0.3em;color:rgba(232,228,223,0.2);margin-top:8px;font-style:italic;opacity:0;animation:fi 2s ease 1.2s forwards}
+.intro-t{font-size:clamp(1.35rem,4.5vw,2.4rem);font-weight:300;letter-spacing:0.14em;text-align:center;line-height:1.3;padding:0 22px;background:linear-gradient(135deg,#e8a090,#c06060);-webkit-background-clip:text;-webkit-text-fill-color:transparent;opacity:0;animation:fi 2s ease 0.5s forwards}
+.intro-s{font-size:clamp(0.65rem,1.3vw,0.9rem);letter-spacing:0.2em;color:rgba(232,228,223,0.2);margin-top:8px;font-style:italic;text-align:center;line-height:1.6;padding:0 22px;opacity:0;animation:fi 2s ease 1.2s forwards}
 .intro-h{position:absolute;bottom:clamp(40px,8vh,80px);left:50%;transform:translateX(-50%);font-size:clamp(0.85rem,2vw,1.1rem);letter-spacing:0.3em;color:rgba(232,228,223,0.55);text-transform:uppercase;cursor:pointer;padding:14px 36px;border:1.5px solid rgba(232,228,223,0.2);border-radius:30px;background:rgba(232,228,223,0.04);transition:all 0.3s;animation:pu 3s ease-in-out infinite;white-space:nowrap}
 .intro-h:active{background:rgba(232,228,223,0.12);transform:translateX(-50%) scale(0.96)}
 @keyframes fi{to{opacity:1}}
@@ -37,8 +38,8 @@ canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:1}
 </head>
 <body>
 <div class="intro" id="intro">
-  <div class="intro-t" id="it">Νους που Τρέχει</div>
-  <div class="intro-s" id="is">Διάσπαση → Γείωση → Αναπνοή → Παρουσία</div>
+  <div class="intro-t" id="it">Ο Νους που Τρέχει, ο Νους που Κλειδώνει</div>
+  <div class="intro-s" id="is">Διάσπαση → Γείωση → Αναπνοή → Παρουσία · Κλείδωμα → Σώμα → Χώρος</div>
   <div class="intro-h" id="ih">πάτησε για να ξεκινήσεις</div>
 </div>
 <a class="back-link" href="index.html">←</a>
@@ -47,7 +48,7 @@ canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:1}
 <div class="label" id="label"><div class="main" id="lm"></div><div class="sci" id="lsci"></div></div>
 <div class="snum" id="sn"></div>
 <div class="ptrack"><div class="pbar" id="pb"></div></div>
-<div class="dots"><button class="dot active" onclick="goTo(0)"></button><button class="dot" onclick="goTo(1)"></button><button class="dot" onclick="goTo(2)"></button><button class="dot" onclick="goTo(3)"></button></div>
+<div class="dots" id="dots"></div>
 <div class="ctrls"><button onclick="goTo(cur-1)">◀ </button><button id="ab" onclick="togAuto()">▶ auto</button><button onclick="goTo(cur+1)"> ▶</button></div>
 <script>
 var cv=document.getElementById('c'),ctx=cv.getContext('2d');
@@ -57,15 +58,25 @@ resize();addEventListener('resize',resize);
 var lang='el',t=0,sb=0,gA=0;
 var ul=new URLSearchParams(location.search).get('lang');
 if(ul==='en'||ul==='el')lang=ul;
-function toggleLang(){lang=lang==='el'?'en':'el';document.getElementById('langBtn').textContent=lang==='el'?'EN':'ΕΛ';updUI();uiL()}
-function uiL(){document.getElementById('it').textContent=lang==='el'?'Νους που Τρέχει':'Racing Mind';document.getElementById('is').textContent=lang==='el'?'Διάσπαση → Γείωση → Αναπνοή → Παρουσία':'Dispersion → Grounding → Breath → Presence';document.getElementById('ih').textContent=lang==='el'?'πάτησε για να ξεκινήσεις':'click anywhere to begin'}
+function toggleLang(){lang=lang==='el'?'en':'el';document.getElementById('langBtn').textContent=lang==='el'?'EN':'ΕΛ';updUI();uiL();dotNames()}
+function uiL(){document.getElementById('it').textContent=lang==='el'?'Ο Νους που Τρέχει, ο Νους που Κλειδώνει':'The Racing Mind, the Locked-In Mind';document.getElementById('is').textContent=lang==='el'?'Διάσπαση → Γείωση → Αναπνοή → Παρουσία · Κλείδωμα → Σώμα → Χώρος':'Dispersion → Grounding → Breath → Presence · Locking in → Body → Space';document.getElementById('ih').textContent=lang==='el'?'πάτησε για να ξεκινήσεις':'click anywhere to begin'}
 if(lang==='en'){uiL();document.getElementById('langBtn').textContent='ΕΛ'}
 var scenes=[
   {label:'Διάσπαση',label_en:'Dispersion',sci:'Οι σκέψεις γυρίζουν γύρω από το κεφάλι· το σώμα σχεδόν χάνεται.',sci_en:'Thoughts spin around the head; the body almost fades.',bg:[32,10,14]},
   {label:'Γείωση',label_en:'Grounding',sci:'Το βάρος πέφτει στα πέλματα. Ο άξονας ανάβει και η δίνη χαμηλώνει.',sci_en:'The weight drops into the soles. The axis lights up and the spin slows.',bg:[12,14,24]},
   {label:'Αναπνοή',label_en:'Breath',sci:'Μια αργή εκπνοή. Ο ρυθμός ηρεμεί.',sci_en:'A slow breath out. The rhythm settles.',bg:[10,16,20]},
-  {label:'Παρουσία',label_en:'Presence',sci:'Οι σκέψεις ησυχάζουν. Είσαι εδώ, στο σώμα.',sci_en:'The thoughts grow quiet. You are here, in the body.',bg:[8,20,16]}
+  {label:'Παρουσία',label_en:'Presence',sci:'Οι σκέψεις ησυχάζουν. Είσαι εδώ, στο σώμα.',sci_en:'The thoughts grow quiet. You are here, in the body.',bg:[8,20,16]},
+  // The locked-in mind (Chapter 5): the tunnel of Chapter 3, then the body, then space.
+  {label:'Κλείδωμα',label_en:'Locking in',sci:'Ένα τούνελ. Ο χρόνος και το σώμα χάνονται.',sci_en:'A tunnel. Time and the body disappear.',bg:[16,12,24],dur:9000},
+  {label:'Σώμα',label_en:'Body',sci:'Το βάρος πέφτει και στηρίζεται. Ο άξονας ανάβει.',sci_en:'The weight drops and is held. The axis lights up.',bg:[12,14,22],dur:11000},
+  {label:'Χώρος',label_en:'Space',sci:'Η όραση ανοίγει στα πλάγια. Το τούνελ γίνεται χώρος.',sci_en:'Vision opens to the sides. The tunnel becomes space.',bg:[8,18,22],dur:14000}
 ];
+var LAST=scenes.length-1;
+// One dot per scene, named for screen readers.
+(function(){var box=document.getElementById('dots');scenes.forEach(function(sc,i){var b=document.createElement('button');b.className='dot'+(i===0?' active':'');b.onclick=function(){goTo(i)};box.appendChild(b)})})();
+function dotNames(){document.querySelectorAll('.dot').forEach(function(d,i){d.setAttribute('aria-label',(lang==='el'?'Σκηνή ':'Scene ')+(i+1)+': '+(lang==='el'?scenes[i].label:scenes[i].label_en))})}
+dotNames();
+var reduceMotion=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
 var cur=0,tgt=0,tT=0,trans=false,autoP=false,autoTm=null;
 function ease(x){return x<0.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2}
 function sc(){return Math.min(W/420,H/650)*0.85}
@@ -85,8 +96,10 @@ function drawMeditator(s,bodyAlpha,breathPhase){
   if(heroImg.complete&&heroImg.naturalWidth){ctx.save();ctx.globalAlpha*=Math.min(1,0.35+bodyAlpha*0.65);ctx.drawImage(heroImg,CX-60*m,g.y(125),120*m,215*m);ctx.restore()}
   if(breathPhase>0.01){var bp=Math.sin(t*0.5),cy=g.y(194);var bg=ctx.createRadialGradient(CX,cy,0,CX,cy,(40+bp*12)*s);bg.addColorStop(0,'rgba(100,190,210,'+breathPhase*0.2*(1+bp*0.3)+')');bg.addColorStop(1,'rgba(100,190,210,0)');ctx.fillStyle=bg;ctx.beginPath();ctx.arc(CX,cy,(40+bp*12)*s,0,Math.PI*2);ctx.fill()}
 }
-function drawAxis(alpha,s){
+function drawAxis(alpha,s,glow){
   var top=CY-s*160,bot=CY+s*60;var g=ctx.createLinearGradient(CX,top,CX,bot);
+  // (glow: the axis lighting up again, after the tunnel)
+  if(glow>0.01){var hg=ctx.createLinearGradient(CX,top,CX,bot);hg.addColorStop(0,'rgba(240,205,90,0)');hg.addColorStop(0.5,'rgba(240,205,90,'+glow*0.16+')');hg.addColorStop(1,'rgba(240,205,90,0)');ctx.strokeStyle=hg;ctx.lineWidth=34;ctx.beginPath();ctx.moveTo(CX,top);ctx.lineTo(CX,bot);ctx.stroke()}
   g.addColorStop(0,'rgba(220,190,60,0)');g.addColorStop(0.1,'rgba(220,190,60,'+alpha*0.3+')');g.addColorStop(0.5,'rgba(220,190,60,'+alpha*0.6+')');g.addColorStop(0.9,'rgba(220,190,60,'+alpha*0.3+')');g.addColorStop(1,'rgba(220,190,60,0)');
   ctx.strokeStyle=g;ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(CX,top);ctx.lineTo(CX,bot);ctx.stroke();
   ctx.strokeStyle='rgba(220,190,60,'+alpha*0.05+')';ctx.lineWidth=18;ctx.beginPath();ctx.moveTo(CX,top);ctx.lineTo(CX,bot);ctx.stroke();
@@ -110,29 +123,78 @@ function drawBreathFlow(alpha,s){
     ctx.strokeStyle='rgba(140,210,220,'+fa+')';ctx.lineWidth=1;ctx.beginPath();
     for(var y=0;y<60;y+=2){var w=Math.sin(y*0.05+ph)*(6+y*0.03)*s*0.4;var px=CX+ox+w;var py=heroAt(s).y(178)-y*s*0.5+bp*4;y===0?ctx.moveTo(px,py):ctx.lineTo(px,py)}ctx.stroke()}
 }
+// ── The locked-in mind ──
+// The thing that pulled attention in: a small warm light, up and to one side.
+function objAt(s){var g=heroAt(s);return{x:CX+s*92,y:g.y(160)-s*62}}
+function clamp01(x){return Math.max(0,Math.min(1,x))}
+// The tunnel: everything goes dark but a narrow cone from the head to the object.
+function drawTunnel(amt,open,s){
+  if(amt<0.01)return;var g=heroAt(s),hx=CX,hy=g.y(166),o=objAt(s);
+  var dx=o.x-hx,dy=o.y-hy,len=Math.sqrt(dx*dx+dy*dy),ux=dx/len,uy=dy/len,nx=-uy,ny=ux;
+  var w0=s*10,w1=s*26;
+  var dark=amt*(1-open)*0.72;
+  if(dark>0.01){ctx.save();ctx.beginPath();ctx.rect(0,0,W,H);
+    ctx.moveTo(hx+nx*w0,hy+ny*w0);ctx.lineTo(o.x+nx*w1+ux*s*18,o.y+ny*w1+uy*s*18);ctx.lineTo(o.x-nx*w1+ux*s*18,o.y-ny*w1+uy*s*18);ctx.lineTo(hx-nx*w0,hy-ny*w0);ctx.closePath();
+    ctx.fillStyle='rgba(4,5,10,'+dark+')';ctx.fill('evenodd');
+    // a faint light inside it: the one place the view still reaches
+    ctx.beginPath();ctx.moveTo(hx+nx*w0,hy+ny*w0);ctx.lineTo(o.x+nx*w1,o.y+ny*w1);ctx.lineTo(o.x-nx*w1,o.y-ny*w1);ctx.lineTo(hx-nx*w0,hy-ny*w0);ctx.closePath();ctx.fillStyle='rgba(190,150,220,'+dark*0.07+')';ctx.fill();
+    // its walls, and slow rings along it
+    ctx.strokeStyle='rgba(190,150,220,'+dark*0.35+')';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(hx+nx*w0,hy+ny*w0);ctx.lineTo(o.x+nx*w1,o.y+ny*w1);ctx.moveTo(hx-nx*w0,hy-ny*w0);ctx.lineTo(o.x-nx*w1,o.y-ny*w1);ctx.stroke();
+    var drift=reduceMotion?0:(t*0.08)%1;
+    for(var k=0;k<5;k++){var f=(k+drift)/5,cx=hx+dx*f,cy=hy+dy*f,rw=w0+(w1-w0)*f;ctx.strokeStyle='rgba(190,150,220,'+dark*0.22*Math.sin(f*Math.PI)+')';ctx.beginPath();ctx.ellipse(cx,cy,rw,rw*0.35,Math.atan2(dy,dx)+Math.PI/2,0,Math.PI*2);ctx.stroke()}
+    ctx.restore()}
+}
+// The opening: a circle of space around the figure, wide to the sides; the object stays where it was.
+function drawOpenSpace(open,s){
+  if(open<0.01)return;var g=heroAt(s),cx=CX,cy=g.y(194),R=s*(70+150*ease(open)),rx=R*1.18;
+  var a=0.5*(1-ease(open)*0.75);
+  ctx.save();ctx.beginPath();ctx.rect(0,0,W,H);ctx.ellipse(cx,cy,rx,R,0,0,Math.PI*2);ctx.fillStyle='rgba(4,5,10,'+a*open+')';ctx.fill('evenodd');
+  var rg=ctx.createRadialGradient(cx,cy,R*0.2,cx,cy,rx);rg.addColorStop(0,'rgba(110,200,200,0)');rg.addColorStop(0.85,'rgba(110,200,200,'+open*0.05+')');rg.addColorStop(1,'rgba(110,200,200,0)');
+  ctx.fillStyle=rg;ctx.beginPath();ctx.ellipse(cx,cy,rx,R,0,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='rgba(140,210,210,'+open*0.22+')';ctx.lineWidth=1.2;ctx.beginPath();ctx.ellipse(cx,cy,rx,R,0,0,Math.PI*2);ctx.stroke();ctx.restore();
+}
+function drawObject(amt,s){
+  if(amt<0.01)return;var o=objAt(s),pulse=reduceMotion?0:Math.sin(t*0.9)*0.15;
+  var gl=ctx.createRadialGradient(o.x,o.y,0,o.x,o.y,s*22);gl.addColorStop(0,'rgba(240,200,120,'+amt*(0.55+pulse)+')');gl.addColorStop(1,'rgba(240,200,120,0)');
+  ctx.fillStyle=gl;ctx.beginPath();ctx.arc(o.x,o.y,s*22,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='rgba(250,225,170,'+amt*0.9+')';ctx.beginPath();ctx.arc(o.x,o.y,s*3.2,0,Math.PI*2);ctx.fill();
+}
+// At the tunnel's end, never spoken: "special interest" and "scenario", in turn.
+function drawLockWords(a,s){
+  if(a<0.01)return;var o=objAt(s),w=lang==='el'?['ειδικό ενδιαφέρον','σενάριο']:['special interest','scenario'];
+  var per=2.6,ph=(t/per)%2,i=Math.floor(ph),f=ph-i,fade=Math.min(1,Math.min(f,1-f)*4);
+  ctx.save();ctx.textAlign='center';ctx.font=12*Math.min(Math.max(s,0.8),1.3)+'px Cormorant Garamond,serif';
+  ctx.fillStyle='rgba(240,215,170,'+a*fade*0.8+')';ctx.fillText(w[i],Math.min(W-60,o.x),o.y-s*20);ctx.restore();
+}
 function drawBg(blend){
-  var idx=Math.min(Math.floor(blend),3),fr=blend-idx,nx=Math.min(idx+1,3);
+  var idx=Math.min(Math.floor(blend),LAST),fr=blend-idx,nx=Math.min(idx+1,LAST);
   var r=scenes[idx].bg[0]*(1-fr)+scenes[nx].bg[0]*fr,g=scenes[idx].bg[1]*(1-fr)+scenes[nx].bg[1]*fr,b=scenes[idx].bg[2]*(1-fr)+scenes[nx].bg[2]*fr;
   var grd=ctx.createRadialGradient(CX,CY-30,0,CX,CY,Math.max(W,H)*0.55);
   grd.addColorStop(0,'rgb('+~~r+','+~~g+','+~~b+')');grd.addColorStop(0.7,'rgb('+~~(r*0.4)+','+~~(g*0.4)+','+~~(b*0.4)+')');grd.addColorStop(1,'rgb(4,5,10)');
   ctx.fillStyle=grd;ctx.fillRect(0,0,W,H);
 }
-function updUI(){var s=scenes[cur];document.getElementById('lm').textContent=lang==='el'?s.label:s.label_en;document.getElementById('lsci').textContent=lang==='el'?s.sci:s.sci_en;document.getElementById('label').classList.add('vis');document.getElementById('sn').textContent=(cur+1)+' / 4';document.getElementById('pb').style.width=(cur/3*100)+'%';document.querySelectorAll('.dot').forEach(function(d,i){d.classList.toggle('active',i===cur)})}
+function updUI(){var s=scenes[cur];document.getElementById('lm').textContent=lang==='el'?s.label:s.label_en;document.getElementById('lsci').textContent=lang==='el'?s.sci:s.sci_en;document.getElementById('label').classList.add('vis');document.getElementById('sn').textContent=(cur+1)+' / '+scenes.length;document.getElementById('pb').style.width=(cur/LAST*100)+'%';document.querySelectorAll('.dot').forEach(function(d,i){d.classList.toggle('active',i===cur)})}
 // fromVoice: the app's voice asked for it; otherwise the person did, and the
 // app is told, so that a voice playing goes to the same scene.
-function goTo(i,fromVoice){if(i<0||i>3||i===cur||trans)return;if(!fromVoice&&parent!==window)parent.postMessage({type:'anim-scene',scene:i},location.origin);tgt=i;trans=true;tT=0;document.getElementById('label').classList.remove('vis');setTimeout(function(){cur=tgt;trans=false;updUI()},1800)}
+function goTo(i,fromVoice){if(i<0||i>LAST||i===cur||trans)return;if(!fromVoice&&parent!==window)parent.postMessage({type:'anim-scene',scene:i},location.origin);tgt=i;trans=true;tT=0;document.getElementById('label').classList.remove('vis');setTimeout(function(){cur=tgt;trans=false;updUI()},1800)}
 function togAuto(){autoP=!autoP;document.getElementById('ab').textContent=autoP?'⏸ pause':'▶ auto';if(autoP)runA();else clearTimeout(autoTm)}
-function runA(){if(!autoP)return;autoTm=setTimeout(function(){if(cur<3){goTo(cur+1);setTimeout(runA,2200)}else{autoP=false;document.getElementById('ab').textContent='▶ auto'}},7000)}
+// Without the voice: each scene for its own time (the locked-in scenes have more to see).
+function runA(){if(!autoP)return;autoTm=setTimeout(function(){if(cur<LAST){goTo(cur+1);setTimeout(runA,2200)}else{autoP=false;document.getElementById('ab').textContent='▶ auto'}},scenes[cur].dur||7000)}
 var lt=performance.now();
 function loop(ts){var dt=Math.min((ts-lt)/1000,0.05);lt=ts;t+=dt;
   if(gA<1)gA=Math.min(1,gA+dt*0.4);if(trans)tT=Math.min(tT+dt*0.55,1);
   var target=trans?cur+(tgt-cur)*ease(tT):cur;sb+=(target-sb)*dt*2.5;
   var vortexStr=Math.max(0,1-sb*0.35);var axisAlpha=Math.max(0,Math.min(1,(sb-0.4)*1.5));
   var breathAmt=Math.max(0,Math.min(1,(sb-1.3)*1.4));var presence=Math.max(0,Math.min(1,(sb-2.3)*1.4));
-  var bodyAlpha=0.3+axisAlpha*0.4+breathAmt*0.2+presence*0.1;var breathPhase=breathAmt*Math.max(0,Math.sin(t*0.5));
+  // The locked-in scenes: the tunnel closes (4), the body comes back (5), the tunnel opens into space (6).
+  var lock=clamp01(sb-3),lost=lock*(1-clamp01(sb-4)),back=clamp01(sb-4),open=clamp01(sb-5);
+  axisAlpha*=1-lost*0.85;breathAmt*=1-lost*0.8;
+  var bodyAlpha=0.3+axisAlpha*0.4+breathAmt*0.2+presence*0.1*(1-lost);bodyAlpha*=1-lost*0.45;var breathPhase=breathAmt*Math.max(0,Math.sin(t*0.5));
   var s=sc();ctx.clearRect(0,0,W,H);drawBg(sb);ctx.globalAlpha=gA;
-  if(axisAlpha>0.01)drawAxis(axisAlpha,s);if(breathAmt>0.01)drawBreathFlow(breathAmt,s);
+  drawTunnel(lock,open,s);drawOpenSpace(open,s);
+  if(axisAlpha>0.01)drawAxis(axisAlpha,s,back*(1-open*0.5));if(breathAmt>0.01)drawBreathFlow(breathAmt,s);
   drawMeditator(s,bodyAlpha,breathPhase);drawVortex(vortexStr,s);
+  drawObject(lock,s);drawLockWords(clamp01((sb-3.6)*2.5)*(1-clamp01((sb-4.6)*2.5)),s);
   ctx.globalAlpha=1;requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
 document.getElementById('intro').addEventListener('click',function(){this.classList.add('hidden');updUI()});
@@ -141,7 +203,7 @@ document.getElementById('intro').addEventListener('click',function(){this.classL
 addEventListener('message',function(e){var d=e.data;if(e.origin!==location.origin||!d||d.type!=='anim-voice'||typeof d.scene!=='number')return;
   var it=document.getElementById('intro');if(!it.classList.contains('hidden')){it.classList.add('hidden');updUI()}
   if(autoP){autoP=false;clearTimeout(autoTm);document.getElementById('ab').textContent='▶ auto'}
-  if(d.scene!==cur&&!trans)goTo(Math.max(0,Math.min(3,d.scene)),true)});
+  if(d.scene!==cur&&!trans)goTo(Math.max(0,Math.min(LAST,d.scene)),true)});
 document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key===' ')goTo(cur+1);if(e.key==='ArrowLeft')goTo(cur-1)});
 </script>
 </body>

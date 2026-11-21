@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { animAudioUrl, breathAt, markedClock, sceneAt, sceneLength, type AnimTiming } from './animVoice';
 import narration from '../data/narration.json';
@@ -79,10 +81,15 @@ describe('the voice of the animations', () => {
     }
   });
 
-  it('guides "The racing mind" (Chapters 3 and 5) through its four scenes, never setting the breath', () => {
+  it('guides "The racing mind, the locked-in mind" (Chapters 3 and 5) through its seven scenes, never setting the breath', () => {
     const g = (narration as unknown as Record<string, Record<string, { say?: string; breath?: string }[][]>>).racingmind;
+    // The page has as many scenes as the voice.
+    const page = readFileSync(resolve('public/animations/racing_mind.html'), 'utf-8');
+    expect(page.match(/\{label:'/g)).toHaveLength(7);
     for (const lang of ['el', 'en']) {
-      expect(g[lang]).toHaveLength(4);
+      expect(g[lang]).toHaveLength(7);
+      // The thought-words at the tunnel's end are never spoken.
+      expect(g[lang].flat().some(st => /ειδικό ενδιαφέρον|σενάριο|special interest|scenario/i.test(st.say ?? ''))).toBe(false);
       for (const scene of g[lang]) expect(scene.some(st => st.say)).toBe(true);
       expect(g[lang].flat().some(st => st.breath)).toBe(false);
     }

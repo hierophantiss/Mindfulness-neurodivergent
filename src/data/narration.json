@@ -465,6 +465,30 @@
         { "pause": 1300 },
         { "say": "Είσαι εδώ, στο σώμα." },
         { "rest": 3500 }
+      ],
+      [
+        { "say": "Τώρα ο νους κλειδώνει." },
+        { "pause": 900 },
+        { "say": "Η προσοχή μπαίνει σε ένα τούνελ, και ο χρόνος και το σώμα χάνονται." },
+        { "rest": 3000 }
+      ],
+      [
+        { "say": "Πρώτα η βαρύτητα." },
+        { "pause": 800 },
+        { "say": "Με την εισπνοή, νιώσε τα πέλματα. Με την εκπνοή, άφησε το βάρος να πέσει και να στηριχτεί." },
+        { "pause": 1300 },
+        { "say": "Ο άξονας ανάβει." },
+        { "rest": 3000 }
+      ],
+      [
+        { "say": "Το βλέμμα μένει μπροστά." },
+        { "pause": 900 },
+        { "say": "Χωρίς να κουνήσεις τα μάτια, άφησε την όραση να ανοίξει στα πλάγια." },
+        { "pause": 1300 },
+        { "say": "Το τούνελ ανοίγει. Αυτό που σε τράβηξε είναι ακόμα εκεί, μέσα σε πιο μεγάλο χώρο." },
+        { "pause": 1200 },
+        { "say": "Η προσοχή ελευθερώνεται μόνη της." },
+        { "rest": 3500 }
       ]
     ],
     "en": [
@@ -496,6 +520,30 @@
         { "say": "You didn't have to stop them." },
         { "pause": 1300 },
         { "say": "You are here, in the body." },
+        { "rest": 3500 }
+      ],
+      [
+        { "say": "Now the mind locks in." },
+        { "pause": 900 },
+        { "say": "Attention goes into a tunnel, and time and the body disappear." },
+        { "rest": 3000 }
+      ],
+      [
+        { "say": "First, gravity." },
+        { "pause": 800 },
+        { "say": "With the in-breath, feel your soles. With the out-breath, let your weight drop and be held." },
+        { "pause": 1300 },
+        { "say": "The axis lights up." },
+        { "rest": 3000 }
+      ],
+      [
+        { "say": "Your gaze stays forward." },
+        { "pause": 900 },
+        { "say": "Without moving your eyes, let your vision open to the sides." },
+        { "pause": 1300 },
+        { "say": "The tunnel opens. What pulled you is still there, inside a larger space." },
+        { "pause": 1200 },
+        { "say": "Attention frees itself." },
         { "rest": 3500 }
       ]
     ]
