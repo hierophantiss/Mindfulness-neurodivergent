@@ -7,6 +7,8 @@
 // anywhere in the app wakes the engine quietly (see listenForFirstTap), so a
 // bell that comes later, at the end of a practice, can be heard.
 
+import { bellOn, vibrationOn } from './sensoryPrefs';
+
 let ctx: AudioContext | null = null;
 
 /** The shared audio engine, or null where there is none. Never throws. */
@@ -44,7 +46,9 @@ export function listenForFirstTap(): void {
   window.addEventListener('keydown', wake, true);
 }
 
+/** A short vibration, only where the person has it on (Settings → Senses). */
 export function vibrate(pattern: number | number[]): void {
+  if (!vibrationOn()) return;
   try {
     if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') navigator.vibrate(pattern);
   } catch {
@@ -55,10 +59,13 @@ export function vibrate(pattern: number | number[]): void {
 /**
  * A single bowl-like note that fades over about four seconds, with a short
  * vibration. `soft` is for small moments (a chapter finished), quieter than the
- * end of a practice.
+ * end of a practice. `sound: false` where the person chose "No sound": then
+ * only the vibration (if it is on). The bell can also be off for the whole app
+ * (Settings → Senses).
  */
-export function ringBell({ soft = false }: { soft?: boolean } = {}): void {
+export function ringBell({ soft = false, sound = true }: { soft?: boolean; sound?: boolean } = {}): void {
   vibrate(soft ? 20 : [30, 60, 30]);
+  if (!sound || !bellOn()) return;
   const c = ctx; // only if sound has already been allowed: never wakes it by itself
   if (!c) return;
   try {

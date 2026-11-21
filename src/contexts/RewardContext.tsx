@@ -4,7 +4,8 @@ import { ringBell } from '../lib/sound';
 type RewardType = 'breath' | 'program' | 'journal';
 
 interface RewardContextType {
-  triggerReward: (type: RewardType) => void;
+  /** `sound: false` where the person chose "No sound": then no bell, only the vibration (if on). */
+  triggerReward: (type: RewardType, opts?: { sound?: boolean }) => void;
 }
 
 const RewardContext = createContext<RewardContextType | undefined>(undefined);
@@ -19,8 +20,8 @@ export const useReward = () => {
 // vibration where available). There is no full-screen "reward" overlay: it
 // covered the page for seconds, and on phones it could leave the screen dark.
 export const RewardProvider = ({ children }: { children: ReactNode }) => {
-  const triggerReward = useCallback((_type: RewardType) => {
-    ringBell({ soft: true });
+  const triggerReward = useCallback((_type: RewardType, opts?: { sound?: boolean }) => {
+    ringBell({ soft: true, sound: opts?.sound ?? true });
   }, []);
 
   return (

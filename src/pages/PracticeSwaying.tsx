@@ -20,7 +20,10 @@ export default function PracticeSwaying() {
   const [showSettings, setShowSettings] = useState(false);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   
-  const [ambientLayer, setAmbientLayer] = useState<'none'|'ocean'|'wind'|'binaural'>('none');
+  // 'silent': no sound at all, not even the beat's tick; 'none': only the tick.
+  const [ambientLayer, setAmbientLayer] = useState<'silent'|'none'|'ocean'|'wind'|'binaural'>('none');
+  const silentRef = useRef(false);
+  silentRef.current = ambientLayer === 'silent';
   const { startAudio, stopAudio } = useBinauralAudio();
 
 
@@ -32,7 +35,7 @@ export default function PracticeSwaying() {
 
   // Background Ambient Audio Sync
   useEffect(() => {
-    if (isPlaying && ambientLayer !== 'none') {
+    if (isPlaying && ambientLayer !== 'none' && ambientLayer !== 'silent') {
       const isBinaural = ambientLayer === 'binaural';
       startAudio({
         base: isBinaural ? 180 : 0,
@@ -57,7 +60,7 @@ export default function PracticeSwaying() {
 
     // Schedule next tick based on tempo to avoid drift
     const scheduleNextTick = () => {
-      playTick();
+      if (!silentRef.current) playTick();
       setTickCount((prev) => (prev + 1) % 20);
 
       const now = performance.now();
@@ -241,23 +244,25 @@ export default function PracticeSwaying() {
         
         {/* Settings Panel */}
         <div 
-          className={`flex flex-col items-center w-full bg-black/20 backdrop-blur-md rounded-2xl border border-white/5 p-5 transition-all duration-300 overflow-hidden ${showSettings ? "h-[220px] opacity-100 translate-y-0" : "h-0 opacity-0 translate-y-4 pointer-events-none p-0 border-transparent shadow-none"}`}
+          className={`flex flex-col items-center w-full bg-black/20 backdrop-blur-md rounded-2xl border border-white/5 p-5 transition-all duration-300 overflow-hidden ${showSettings ? "h-[268px] opacity-100 translate-y-0" : "h-0 opacity-0 translate-y-4 pointer-events-none p-0 border-transparent shadow-none"}`}
         >
           {/* Sounds Grid */}
           <label className="text-[13px] text-ink/65 mb-3 w-full text-center">
              {lang === "el" ? "Ήχος" : "Sound"}
           </label>
-          <div className="grid grid-cols-4 gap-2 mb-6 w-full max-w-sm">
-             {(['none', 'ocean', 'wind', 'binaural'] as const).map(layer => (
+          <div className="grid grid-cols-3 gap-2 mb-6 w-full max-w-sm">
+             {(['silent', 'none', 'ocean', 'wind', 'binaural'] as const).map(layer => (
                 <button
                   key={layer}
                   onClick={() => setAmbientLayer(layer)}
-                  className={`py-2 rounded-xl text-xs font-medium border transition-colors ${ambientLayer === layer ? 'bg-teal-600 border-teal-500 text-ink' : 'bg-white/5 border-transparent text-ink/70 hover:bg-white/10'}`}
+                  aria-pressed={ambientLayer === layer}
+                  className={`min-h-[44px] px-1 rounded-xl text-xs font-medium border transition-colors ${ambientLayer === layer ? 'bg-teal-600 border-teal-500 text-ink' : 'bg-white/5 border-transparent text-ink/70 hover:bg-white/10'}`}
                 >
-                  {layer === 'none' && (lang === 'el' ? 'Κανένας' : 'None')}
+                  {layer === 'silent' && (lang === 'el' ? 'Χωρίς ήχο' : 'No sound')}
+                  {layer === 'none' && (lang === 'el' ? 'Μόνο ο χτύπος' : 'Only the beat')}
                   {layer === 'ocean' && (lang === 'el' ? 'Ωκεανός' : 'Ocean')}
                   {layer === 'wind' && (lang === 'el' ? 'Αέρας' : 'Wind')}
-                  {layer === 'binaural' && (lang === 'el' ? 'Binaural 🎧' : 'Binaural 🎧')}
+                  {layer === 'binaural' && 'Binaural 🎧'}
                 </button>
              ))}
           </div>

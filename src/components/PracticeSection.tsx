@@ -19,6 +19,7 @@ import { useLanguage } from "../hooks/useLanguage";
 import TaiChiHero from "./TaiChiHero";
 import { PlayPauseOverlay } from "./PlayPauseOverlay";
 import { useBinauralAudio } from "../hooks/useBinauralAudio";
+import { vibrate } from "../lib/sound";
 
 // Breathing presets definitions
 interface BreathingPreset {
@@ -274,13 +275,8 @@ export default function PracticeSection() {
   useEffect(() => {
     if (secElapsed !== prevSecRef.current && isPlaying && step === 'player') {
       prevSecRef.current = secElapsed;
-      if ('vibrate' in navigator) {
-        if (phaseRef.current === "Hold") {
-          navigator.vibrate(40);
-        } else {
-          navigator.vibrate(15);
-        }
-      }
+      // Through lib/sound: only if vibration is on (Settings → Senses).
+      vibrate(phaseRef.current === "Hold" ? 40 : 15);
     }
   }, [secElapsed, isPlaying, step]);
 

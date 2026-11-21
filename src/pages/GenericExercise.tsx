@@ -5,6 +5,7 @@ import { cn } from '../lib/utils';
 import { useLanguage } from '../hooks/useLanguage';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
+import { useAccessibility } from '../hooks/useAccessibility';
 import { prepareSound, ringBell } from '../lib/sound';
 import { EvidenceLine } from '../components/EvidenceLine';
 import { ConceptText } from '../components/ConceptInfoOverlay';
@@ -61,6 +62,7 @@ export default function GenericExercise() {
   const el = language !== 'en';
   const lang = el ? 'el' : 'en';
   const { logActivity } = useActivityTracker();
+  const { bell } = useAccessibility();
 
   // A microdose card links here by its own path; if there is no guided
   // version of it, the microdose itself becomes the exercise.
@@ -142,9 +144,13 @@ export default function GenericExercise() {
   const C = 2 * Math.PI * R;
   const progress = Math.min(1, elapsed / Math.max(1, total));
 
+  // What the end sounds like, as it will be: the bell can be off (Settings → Senses).
+  const endNote = bell
+    ? (el ? 'Στο τέλος χτυπά ένα απαλό καμπανάκι.' : 'A soft bell rings at the end.')
+    : (el ? 'Στο τέλος δεν χτυπά καμπανάκι (το έκλεισες στις Ρυθμίσεις).' : 'No bell rings at the end (you turned it off in Settings).');
   const note = LISTENING.has(microdose?.id || id || '')
-    ? (el ? 'Η εφαρμογή δεν παίζει ήχο: ο ήχος είναι γύρω σου. Στο τέλος χτυπά ένα απαλό καμπανάκι.' : 'The app plays no sound: the sound is around you. A soft bell rings at the end.')
-    : (el ? 'Σιωπηλή άσκηση: ακολούθησε τα βήματα. Στο τέλος χτυπά ένα απαλό καμπανάκι.' : 'A silent practice: follow the steps. A soft bell rings at the end.');
+    ? `${el ? 'Η εφαρμογή δεν παίζει ήχο: ο ήχος είναι γύρω σου.' : 'The app plays no sound: the sound is around you.'} ${endNote}`
+    : `${el ? 'Σιωπηλή άσκηση: ακολούθησε τα βήματα.' : 'A silent practice: follow the steps.'} ${endNote}`;
 
   return (
     <div className="flex flex-col flex-1 w-full">
@@ -167,10 +173,20 @@ export default function GenericExercise() {
         </p>
         <p className="mt-3 text-[12.5px] leading-snug text-ink/70 max-w-xs">{note}</p>
 
+        {/* Space practices: the book's way back if opening feels like drifting away
+            (Chapter 4), read before starting, above the timer. */}
+        {exercise.axis === 'space' && <DriftNote lang={lang} className="w-full mt-4" />}
+
         {/* Timer */}
         <button
           onClick={toggle}
-          className="relative mt-5 w-[clamp(150px,calc(100dvh-460px),200px)] h-[clamp(150px,calc(100dvh-460px),200px)] rounded-full outline-none focus-visible:ring-2 focus-visible:ring-white/25"
+          className={cn(
+            "relative mt-5 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-white/25",
+            // With the Space note above it, the timer gives up some room so «Ξεκίνα» stays in view.
+            exercise.axis === 'space'
+              ? "w-[clamp(120px,calc(100dvh-600px),200px)] h-[clamp(120px,calc(100dvh-600px),200px)]"
+              : "w-[clamp(150px,calc(100dvh-460px),200px)] h-[clamp(150px,calc(100dvh-460px),200px)]"
+          )}
         >
           <svg viewBox="0 0 200 200" className="absolute inset-0 w-full h-full -rotate-90" aria-hidden="true">
             <circle cx="100" cy="100" r={R} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
@@ -241,9 +257,6 @@ export default function GenericExercise() {
             })}
           </ol>
         )}
-
-        {/* Space practices: the book's way back if opening feels like drifting away (Chapter 4). */}
-        {exercise.axis === 'space' && <DriftNote lang={lang} className={cn('w-full mb-6', steps.length > 1 ? '' : 'mt-6')} />}
       </div>
     </div>
   );
