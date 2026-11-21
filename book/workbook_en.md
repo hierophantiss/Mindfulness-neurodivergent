@@ -31,7 +31,7 @@ modification are not permitted.
 > **A note before you begin.** The exercises that follow are tools for
 > self-regulation. They do not replace therapy, diagnosis or medication. If at any
 > point your emotions overwhelm you, or you feel intense discomfort, stop the
-> exercise, open your eyes and feel your soles on the ground. The support of a
+> exercise; if your eyes are closed, open them, and feel your soles on the ground. The support of a
 > therapist can prove valuable. The practice of presence has compassion at its core.
 
 ---
@@ -80,8 +80,8 @@ This guide is for those who feel disconnected: those whose mind races without
 pause, whose body lives in constant alertness, and for whom calm feels like a
 foreign language.
 
-It is a tool for people who live with the impact of trauma, with neurodivergence
-(such as ADHD), or simply with the chronic pressure of modern life.
+It is a tool for adults living with neurodivergence, such as ADHD or autism, or
+with the impact of trauma.
 
 You do not need to "fix" anything in yourself, because nothing is broken. The goal
 is to learn to return, gently and kindly, to your living presence.
@@ -517,7 +517,7 @@ One condition, always — the golden rule of every exercise in this book: **open
 
 *In the app: Space small doses.*
 
-> **If at some point you feel yourself "drifting away"** If, as you open, you feel disconnected or as if you are moving away from yourself, that is not the goal. Open your eyes, feel your soles on the ground and the weight of your body, say where you are right now. You come back to the earth. **First the earth, then the sky.**
+> **If at some point you feel yourself "drifting away"** If, as you open your attention to the space, you feel disconnected or as if you are moving away from yourself, that is not the goal. Stop the opening. If your eyes are closed, open them. Let your gaze rest on something near you, feel your soles on the ground and the weight of your body, say where you are right now. You come back to the earth. **First the earth, then the sky.**
 
 **Reflection:** What changed in my attention when it had nowhere to hook on?
 
@@ -845,7 +845,7 @@ When everything falls on you at once, the aim is to find space to hold the stimu
 
 **Keep the distance:** remember, you are not the clouds. You are the space that holds them. Simply recognising this immediately lowers the sense of danger.
 
-> **If at some point you feel yourself "drifting away"** If, inside the wave, you feel disconnected or as if you are moving away from yourself, stop the opening. Open your eyes, feel your soles on the ground and the weight of your body, say out loud where you are right now. **First the earth, then the sky.**
+> **If at some point you feel yourself "drifting away"** If, inside the wave, you feel disconnected or as if you are moving away from yourself, stop the opening. If your eyes are closed, open them. Let your gaze rest on something near you, feel your soles on the ground and the weight of your body, say out loud where you are right now. **First the earth, then the sky.**
 
 ### What Not to Do
 

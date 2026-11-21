@@ -332,7 +332,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
             "Awareness does not need duration. You do not need to \"stay\" in the open field for hours, or even for minutes. One moment of recognition is complete, however short; two seconds of open field are two whole seconds, not a failed version of ten minutes.",
             "What seems to matter is not duration but repetition: many short moments, scattered through the day, build familiarity with the open more steadily than one long, effortful session. The small doses and the final weeks of the programme here, in the app, are built on this.",
             "One condition, always — the golden rule of every exercise in this guide: <strong>opening is safe only on a grounded body.</strong>",
-            "<strong>If at some point you feel yourself \"drifting away\"</strong> If, as you open, you feel disconnected or as if you are moving away from yourself, that is not the goal. Open your eyes, feel your soles on the ground and the weight of your body, say where you are right now. You come back to the earth. <strong>First the earth, then the sky.</strong>"
+            "<strong>If at some point you feel yourself \"drifting away\"</strong> If, as you open your attention to the space, you feel disconnected or as if you are moving away from yourself, that is not the goal. Stop the opening. If your eyes are closed, open them. Let your gaze rest on something near you, feel your soles on the ground and the weight of your body, say where you are right now. You come back to the earth. <strong>First the earth, then the sky.</strong>"
           ]
         },
         {
@@ -675,7 +675,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
             "When everything falls on you at once, the aim is to find space to hold the stimuli without reacting. Instead of focusing on reducing anxiety, you focus on widening awareness.",
             "1. <strong>Grounding (Stage 1)</strong> — Feel your soles, your weight. Reset your position, as if pressing your body's reset button.\n2. <strong>Breath (Stage 2)</strong> — Stay with its flow. Exhaling through the mouth is optional, but recommended if you feel tight.\n3. <strong>Attention (Stage 3)</strong> — Keep your attention in front of you. Instead of being carried away by every detail, choose one steady point as your anchor.\n4. <strong>Opening (Space — Stage 4)</strong> — Soften your gaze (peripheral vision){{peripheral_vision}}. Remember the sky: all the stimuli, sounds, lights, thoughts, are clouds passing through the open space of your awareness.",
             "<strong>Keep the distance:</strong> remember, you are not the clouds. You are the space that holds them. Simply recognising this immediately lowers the sense of danger.",
-            "<strong>If at some point you feel yourself \"drifting away\"</strong> If, inside the wave, you feel disconnected or as if you are moving away from yourself, stop the opening. Open your eyes, feel your soles on the ground and the weight of your body, say out loud where you are right now. <strong>First the earth, then the sky.</strong>"
+            "<strong>If at some point you feel yourself \"drifting away\"</strong> If, inside the wave, you feel disconnected or as if you are moving away from yourself, stop the opening. If your eyes are closed, open them. Let your gaze rest on something near you, feel your soles on the ground and the weight of your body, say out loud where you are right now. <strong>First the earth, then the sky.</strong>"
           ]
         },
         {
@@ -1245,7 +1245,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
             "Η επίγνωση δεν χρειάζεται διάρκεια. Δεν χρειάζεται να «μείνεις» στο ανοιχτό πεδίο επί ώρα, ούτε επί λεπτά. Μία στιγμή αναγνώρισης είναι πλήρης, όσο σύντομη κι αν είναι· δύο δευτερόλεπτα ανοιχτού πεδίου είναι δύο δευτερόλεπτα ολόκληρα, όχι μια αποτυχημένη εκδοχή των δέκα λεπτών.",
             "Αυτό που φαίνεται να μετράει δεν είναι η διάρκεια αλλά η επανάληψη: πολλές σύντομες στιγμές, σκόρπιες μέσα στη μέρα, χτίζουν την οικειότητα με το ανοιχτό πιο σταθερά από μία μεγάλη, επίπονη συνεδρία. Πάνω σε αυτό είναι χτισμένες οι μικρο-δόσεις και οι τελευταίες εβδομάδες του προγράμματος εδώ, στην εφαρμογή.",
             "Μία προϋπόθεση, πάντα — ο χρυσός κανόνας κάθε άσκησης αυτού του οδηγού: <strong>το άνοιγμα γίνεται με ασφάλεια μόνο πάνω σε γειωμένο σώμα.</strong>",
-            "<strong>Αν κάποια στιγμή νιώσεις να «φεύγεις»</strong> Αν ανοίγοντας νιώσεις αποσυνδεδεμένος/η ή σαν να απομακρύνεσαι από τον εαυτό σου, αυτό δεν είναι ο στόχος. Άνοιξε τα μάτια, νιώσε τα πέλματα στο έδαφος και το βάρος του σώματος, πες πού βρίσκεσαι τώρα. Επιστρέφεις στη γη. <strong>Πρώτα η γη, μετά ο ουρανός.</strong>"
+            "<strong>Αν κάποια στιγμή νιώσεις να «φεύγεις»</strong> Αν, καθώς ανοίγεις την προσοχή στον χώρο, νιώσεις αποσυνδεδεμένος/η ή σαν να απομακρύνεσαι από τον εαυτό σου, αυτό δεν είναι ο στόχος. Σταμάτα το άνοιγμα. Αν τα μάτια είναι κλειστά, άνοιξέ τα. Άφησε το βλέμμα να ακουμπήσει σε κάτι κοντά σου, νιώσε τα πέλματα στο έδαφος και το βάρος του σώματος, πες πού βρίσκεσαι τώρα. Επιστρέφεις στη γη. <strong>Πρώτα η γη, μετά ο ουρανός.</strong>"
           ]
         },
         {
@@ -1588,7 +1588,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
             "Όταν όλα πέφτουν πάνω σου, ο στόχος είναι να βρεις χώρο για να χωρέσεις τα ερεθίσματα χωρίς να αντιδράσεις. Αντί να εστιάζεις στη μείωση του άγχους, εστιάζεις στη διεύρυνση της επίγνωσης.",
             "1. <strong>Γείωση (Στ. 1)</strong> — Νιώσε τα πέλματα, το βάρος σου. Μηδένισε τη θέση σου, σαν να πατάς το κουμπί επαναφοράς του σώματός σου.\n2. <strong>Αναπνοή (Στ. 2)</strong> — Μείνε στη ροή της. Η εκπνοή από στόμα είναι προαιρετική, αλλά συνιστάται αν νιώθεις σφίξιμο.\n3. <strong>Προσοχή (Στ. 3)</strong> — Κράτησε την προσοχή μπροστά. Αντί να παρασυρθείς από κάθε λεπτομέρεια, επίλεξε ένα σταθερό σημείο ως άγκυρά σου.\n4. <strong>Άνοιγμα (Χώρος — Στ. 4)</strong> — Μαλάκωσε το βλέμμα (περιφερειακή όραση){{peripheral_vision}}. Θυμήσου τον ουρανό: όλα τα ερεθίσματα, ήχοι, φώτα, σκέψεις, είναι σύννεφα που περνούν στον ανοιχτό χώρο της επίγνωσής σου.",
             "<strong>Κράτησε την απόσταση:</strong> θυμήσου, δεν είσαι τα σύννεφα. Είσαι ο χώρος που τα χωράει. Η απλή αναγνώριση αυτού μειώνει άμεσα την αίσθηση κινδύνου.",
-            "<strong>Αν κάποια στιγμή νιώσεις να «φεύγεις»</strong> Αν μέσα στο κύμα νιώσεις αποσυνδεδεμένος/η ή σαν να απομακρύνεσαι από τον εαυτό σου, σταμάτα το άνοιγμα. Άνοιξε τα μάτια, νιώσε τα πέλματα στο έδαφος και το βάρος του σώματος, πες δυνατά πού βρίσκεσαι τώρα. <strong>Πρώτα η γη, μετά ο ουρανός.</strong>"
+            "<strong>Αν κάποια στιγμή νιώσεις να «φεύγεις»</strong> Αν μέσα στο κύμα νιώσεις αποσυνδεδεμένος/η ή σαν να απομακρύνεσαι από τον εαυτό σου, σταμάτα το άνοιγμα. Αν τα μάτια είναι κλειστά, άνοιξέ τα. Άφησε το βλέμμα να ακουμπήσει σε κάτι κοντά σου, νιώσε τα πέλματα στο έδαφος και το βάρος του σώματος, πες δυνατά πού βρίσκεσαι τώρα. <strong>Πρώτα η γη, μετά ο ουρανός.</strong>"
           ]
         },
         {

@@ -398,8 +398,8 @@ def build_front(meta, L, cover_data_uri):
              'Επιτρέπεται η κοινοποίηση με αναφορά στον δημιουργό. Απαγορεύεται η εμπορική χρήση και η τροποποίηση.')
         safety=('<strong>Μια σημείωση πριν ξεκινήσεις.</strong> Οι ασκήσεις που ακολουθούν είναι εργαλεία '
                 'αυτορρύθμισης — δεν αντικαθιστούν θεραπεία, διάγνωση ή φαρμακευτική αγωγή. Αν κάποια στιγμή '
-                'τα συναισθήματα σε πλημμυρίσουν, ή αν νιώσεις έντονη δυσφορία, σταμάτα την άσκηση, άνοιξε τα '
-                'μάτια και νιώσε τα πέλματα στο έδαφος. Η υποστήριξη ενός θεραπευτή μπορεί να αποδειχθεί '
+                'τα συναισθήματα σε πλημμυρίσουν, ή αν νιώσεις έντονη δυσφορία, σταμάτα την άσκηση· αν είναι κλειστά, '
+                'άνοιξε τα μάτια και νιώσε τα πέλματα στο έδαφος. Η υποστήριξη ενός θεραπευτή μπορεί να αποδειχθεί '
                 'πολύτιμη. Η πρακτική της παρουσίας έχει τη συμπόνια στον πυρήνα της.')
     else:
         lic=('This work is offered free of charge under the terms of the Creative Commons '
@@ -407,8 +407,8 @@ def build_front(meta, L, cover_data_uri):
              'Sharing is permitted with attribution to the creator. Commercial use and modification are not permitted.')
         safety=('<strong>A note before you begin.</strong> The exercises that follow are self-regulation tools — '
                 'they are not a substitute for therapy, diagnosis, or medication. If at any point your emotions '
-                'overwhelm you, or you feel intense discomfort, stop the exercise, open your eyes, and feel the '
-                'soles of your feet on the ground. The support of a therapist can prove valuable. The practice '
+                'overwhelm you, or you feel intense discomfort, stop the exercise; if your eyes are closed, '
+                'open them, and feel the soles of your feet on the ground. The support of a therapist can prove valuable. The practice '
                 'of presence has compassion at its core.')
     return f'''
 <section class="coverpage">

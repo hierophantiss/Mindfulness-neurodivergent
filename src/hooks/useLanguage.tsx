@@ -17,13 +17,13 @@ export const translations: Record<string, Record<Language, string>> = {
   'skip_to_content': { el: 'Μετάβαση στο κύριο περιεχόμενο', en: 'Skip to main content' },
   // Onboarding
   'onboarding.s1.title': { el: 'Για νου που τρέχει ή κλειδώνει', en: 'For minds that race or lock in' },
-  'onboarding.s1.body': { el: 'Το μυαλό σου δεν είναι χαλασμένο, απλώς λειτουργεί αλλιώς. Σύντομες πρακτικές για νευροδιαφορετικούς ενήλικες και για όσους ζουν με τραύμα.', en: 'Your mind isn\'t broken, it just works differently. Short practices for neurodivergent adults and for anyone living with trauma.' },
+  'onboarding.s1.body': { el: 'Ο νους που τρέχει πηδά από σκέψη σε σκέψη· ο νους που κλειδώνει κολλά σε ένα σημείο και ξεχνά το σώμα. Το μυαλό σου δεν είναι χαλασμένο, απλώς λειτουργεί αλλιώς. Σύντομες πρακτικές για νευροδιαφορετικούς ενήλικες και για όσους ζουν με τραύμα.', en: 'A racing mind jumps from thought to thought; a locked-in mind sticks to one point and forgets the body. Your mind isn\'t broken, it just works differently. Short practices for neurodivergent adults and for anyone living with trauma.' },
   'onboarding.s2.title': { el: 'Δεν χρειάζεται να αδειάσεις το μυαλό σου', en: "You don't have to empty your mind" },
   'onboarding.s2.body': { el: 'Ούτε να μείνεις ακίνητος/η. Αν ο διαλογισμός δεν σου βγήκε ως τώρα, εδώ ξεκινάς αλλιώς: από το σώμα. Τέσσερα απλά βήματα, με αυτή τη σειρά: Σώμα, Αναπνοή, Προσοχή, Χώρος.', en: 'Nor to stay still. If meditation hasn\'t worked for you before, this starts differently: with the body. Four simple steps, in this order: Body, Breath, Attention, Space.' },
   'onboarding.s3.title': { el: 'Τι να περιμένεις', en: 'What to expect' },
   'onboarding.s3.body': { el: 'Δωρεάν, χωρίς λογαριασμό, χωρίς διαφημίσεις. Όλα μένουν στη συσκευή σου. Δεν μετράμε σερί: λίγα δευτερόλεπτα αρκούν, και αν χάσεις μέρες δεν πειράζει. Δεν είναι θεραπεία και δεν την αντικαθιστά.', en: "Free, no account, no ads. Everything stays on your device. We don't count streaks: a few seconds are enough, and missing days is fine. It is not therapy and does not replace it." },
   // The book's note before the first exercise (word for word): when to stop.
-  'onboarding.stop': { el: 'Αν κάποια στιγμή τα συναισθήματα σε πλημμυρίσουν, ή αν νιώσεις έντονη δυσφορία, σταμάτα την άσκηση, άνοιξε τα μάτια και νιώσε τα πέλματα στο έδαφος.', en: 'If at any point your emotions overwhelm you, or you feel intense discomfort, stop the exercise, open your eyes and feel your soles on the ground.' },
+  'onboarding.stop': { el: 'Αν κάποια στιγμή τα συναισθήματα σε πλημμυρίσουν, ή αν νιώσεις έντονη δυσφορία, σταμάτα την άσκηση· αν είναι κλειστά, άνοιξε τα μάτια και νιώσε τα πέλματα στο έδαφος.', en: 'If at any point your emotions overwhelm you, or you feel intense discomfort, stop the exercise; if your eyes are closed, open them, and feel your soles on the ground.' },
   'onboarding.next': { el: 'Επόμενο', en: 'Next' },
   'onboarding.skip': { el: 'Παράλειψη', en: 'Skip' },
 };
