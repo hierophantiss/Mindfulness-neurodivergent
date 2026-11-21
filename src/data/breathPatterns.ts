@@ -84,8 +84,8 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     title: { el: "4-6", en: "4-6" },
     subtitle: { el: "Στην Κορύφωση", en: "At the Peak" },
     desc: {
-      el: "Εισπνοή 4, εκπνοή 6, χωρίς κράτημα. Όταν ο άνεμος δυναμώνει, θυμός που ανεβαίνει ή άγχος που ξεφεύγει: η μακρύτερη εκπνοή λέει στο νευρικό σύστημα «είμαστε ασφαλείς». Άφησε την εκπνοή να βγαίνει από το στόμα.",
-      en: "Inhale 4, exhale 6, no holding. When the wind picks up, anger rising or anxiety running away: the longer exhale tells the nervous system “we are safe”. Let the exhale leave through the mouth.",
+      el: "Εισπνοή 4, εκπνοή 6, χωρίς κράτημα. Όταν ο άνεμος δυναμώνει (θυμός που ανεβαίνει ή άγχος που ξεφεύγει), η μακρύτερη εκπνοή λέει στο νευρικό σύστημα «είμαστε ασφαλείς». Άφησε την εκπνοή να βγαίνει από το στόμα.",
+      en: "Inhale 4, exhale 6, no holding. When the wind picks up (anger rising or anxiety running away), the longer exhale tells the nervous system “we are safe”. Let the exhale leave through the mouth.",
     },
     totalCycleDurationMs: 10000,
     audioConfig: {

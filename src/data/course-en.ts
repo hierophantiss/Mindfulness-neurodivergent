@@ -7,7 +7,7 @@ export const COURSE_EN: Course = {
       {
         "title": "Gravity vs. “Autopilot”",
         "where": "Anywhere",
-        "dur": "1 second",
+        "dur": "1 second, whenever you remember",
         "lesson": "<p>Our method is a method of “self-relaxation,” not of pressured self-concentration. There is no rush, no force, no “failure” — everything is learning, even distraction.</p><p>Today we run an experiment: we feel gravity in order to restore bodily sensation. The “autopilot” does not stop for good with gravity alone (that requires open awareness), but it is the first step in returning to the Now.</p>",
         "exercise": {
           "title": "Feel Gravity:",
