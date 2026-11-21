@@ -25,14 +25,14 @@ export const COURSE_EN: Course = {
       {
         "title": "The Axis as Safety",
         "where": "Anywhere",
-        "dur": "1 second",
+        "dur": "1 second, whenever you remember",
         "lesson": "<p>We are building a relaxed presence. The more tense you are, the more closed your attention and your sense of the space around you.</p><p>Today we add the “axis.” Besides the gravity that pulls you down, there is an imaginary vertical line that keeps you upright. This axis is your safety. It keeps you steady and open, without needing to clench.</p>",
         "exercise": {
           "title": "1-Second Pause:",
           "steps": [
             "When you remember, during the day:",
             "Take a pause (1 second).",
-            "Feel [[gravity|gravity]] pulling you down.",
+            "Feel [[gravity|gravity]]: your weight drops and is held by the seat or the ground.",
             "Feel the vertical [[axis|axis]] keeping you upright and relaxed."
           ]
         },
@@ -657,7 +657,7 @@ export const COURSE_EN: Course = {
           "title": "Melting the Lens:",
           "steps": [
             "[[Grounding|grounding]], [[axis|axis]], gentle breath.",
-            "Lock attention onto ONE point.",
+            "Let your gaze rest on one point in front of you.",
             "Feel the sharpness of your gaze.",
             "Slowly begin to see the space AROUND the point.",
             "Allow your attention to become open and [[peripheral|peripheral_vision]]."
@@ -681,9 +681,9 @@ export const COURSE_EN: Course = {
           "title": "Transition to Space:",
           "steps": [
             "Always: [[grounding|grounding]], breath, [[axis|axis]].",
-            "Lock attention onto an object across from you.",
+            "Let your gaze rest on an object in front of you.",
             "Stay there for a while.",
-            "Abruptly relax the focus ([[open attention|attention_modes]]) and simply observe the whole scene.",
+            "Let the focus soften ([[open attention|attention_modes]]) and simply observe the whole scene.",
             "Repeat three times."
           ]
         },
@@ -721,7 +721,7 @@ export const COURSE_EN: Course = {
             "During the day: 5-5 breathing exercise (Inhale 5 / Exhale 5).",
             "Breath of calm (small pauses) whenever you need it.",
             "Evening Routine: “Settling, Slowing Down.”",
-            "Before sleep: [[grounding|grounding]] in bed, deep exhales, letting the day go."
+            "Before sleep, if you like: [[grounding|grounding]] in bed; feel your weight held by the mattress. With the in-breath feel your belly, with the out-breath let the air out long and slow."
           ]
         },
         "breathing": "<strong>5-5 and Breath of Calm</strong><p>The rhythm of stability.</p>",
@@ -776,7 +776,7 @@ export const COURSE_EN: Course = {
             "During the day, without effort: recall the soles and a visual point.",
             "Your breath regulates itself often (5-5).",
             "If you drift, return gently, without criticism (self-compassion).",
-            "Evening routine of surrender to sleep."
+            "In the evening, if you like, the same grounding in bed as on Day 3."
           ]
         },
         "breathing": "<strong>5-5 as Second Nature</strong><p>The rhythm finds itself on its own.</p>",
@@ -798,7 +798,7 @@ export const COURSE_EN: Course = {
             "We end the week with the evening routine."
           ]
         },
-        "breathing": "<strong>Regulation before Sleep</strong><p>A day that closes in calm brings a clear morning.</p>",
+        "breathing": "<strong>In the evening, before sleep</strong><p>The same long exhale, without holding. It does not need to put you to sleep; it is enough that it brings you to the body.</p>",
         "reflection": "What was the most useful tool of these two weeks?",
         "insight": "You do not need to push your mind. It is enough to let it rest in the open space."
       }
@@ -1029,22 +1029,23 @@ export const COURSE_EN: Course = {
         "insight": "Open space centred here, grounded, at the height of the heart."
       },
       {
-        "title": "Giving Space to Others",
+        "title": "Space in a Conversation",
         "where": "In interactions",
         "dur": "A few seconds",
-        "lesson": "<p>The same “open space” of kindness that we offer ourselves, we learn to offer to others around us too.</p><p>We let them exist effortlessly within the space, without trying to control them — exactly as we let go of our own “elephant.”</p>",
+        "lesson": "<p>In a conversation, attention often closes onto one point: the other person’s face, what you will say, what you “should” do. The body is forgotten. Here you keep your presence inside the conversation, as in Chapter 6. You do not need to change the other person, or yourself.</p>",
         "exercise": {
-          "title": "Spacious Kindness:",
+          "title": "In social moments:",
           "steps": [
-            "In a conversation today...",
-            "Feel your [[axis|axis]] and your feet.",
-            "Offer the other person an “empty space” of acceptance.",
-            "Do not try to control them, simply let them exist."
+            "In a conversation today…",
+            "Feel your feet steady on the ground, and your [[axis|axis]].",
+            "Choose a neutral point (e.g. a plant) as a visual reference.",
+            "If you feel tension in your jaw, let it go with an exhale.",
+            "Open your [[peripheral vision|peripheral_vision]]: your gaze stays forward and your vision opens to the sides."
           ]
         },
-        "breathing": "<strong>Breathing into Space</strong><p>Let the exhale spread into the space around you.</p>",
-        "reflection": "How did communication change when I stopped forcing things?",
-        "insight": "The best relationship is one that lets both people breathe."
+        "breathing": "<strong>One exhale</strong><p>With the in-breath you feel your feet; with the out-breath you let the jaw soften.</p>",
+        "reflection": "What changed in the conversation when I could feel my feet?",
+        "insight": "Contact is the base, inside a conversation too."
       },
       {
         "title": "Completing the Journey",

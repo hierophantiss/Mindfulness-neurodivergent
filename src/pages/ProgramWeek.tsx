@@ -368,7 +368,7 @@ export default function ProgramWeek() {
             </h3>
             <p className="mt-2 text-[15px] leading-relaxed text-ink/85">
               {language === 'el'
-                ? 'Τη διάβασες γρήγορα, και αυτό είναι εντάξει. Η μέθοδος γίνεται δική σου όταν την εξασκείς λίγο λίγο, μέρα με τη μέρα. Μπορείς να μείνεις λίγο ακόμα με αυτή την εβδομάδα, ή να συνεχίσεις.'
+                ? 'Την πέρασες γρήγορα, και αυτό είναι εντάξει. Η μέθοδος γίνεται δική σου όταν την εξασκείς λίγο λίγο, μέρα με τη μέρα. Μπορείς να μείνεις λίγο ακόμα με αυτή την εβδομάδα, ή να συνεχίσεις.'
                 : 'You went through it quickly, and that is fine. The method becomes yours when you practise it little by little, day by day. You can stay a little longer with this week, or go on.'}
             </p>
             <div className="mt-4 flex flex-col gap-2.5">
