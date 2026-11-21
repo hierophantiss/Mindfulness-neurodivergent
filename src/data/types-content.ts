@@ -34,6 +34,8 @@ export interface FaqItem {
   relatedConcept?: string;
   relatedChapter?: number;
   relatedExercise?: string;
+  /** A page of the app that answers more fully (e.g. '/methodology'). */
+  relatedPage?: string;
   /** A question to ask next. */
   followUp?: string;
 }

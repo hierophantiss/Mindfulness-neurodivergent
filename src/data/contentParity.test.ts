@@ -41,8 +41,8 @@ describe('Greek and English, side by side', () => {
       expect(f.el.length, `faq ${n}`).toBe(f.en.length);
       f.el.forEach((q, i) => {
         const e = f.en[i];
-        expect([q.depth, q.relatedChapter, q.relatedConcept, q.relatedExercise, !!q.followUp], `faq ${n} #${i + 1}`)
-          .toEqual([e.depth, e.relatedChapter, e.relatedConcept, e.relatedExercise, !!e.followUp]);
+        expect([q.depth, q.relatedChapter, q.relatedConcept, q.relatedExercise, q.relatedPage, !!q.followUp], `faq ${n} #${i + 1}`)
+          .toEqual([e.depth, e.relatedChapter, e.relatedConcept, e.relatedExercise, e.relatedPage, !!e.followUp]);
       });
     }
   });

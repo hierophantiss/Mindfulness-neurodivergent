@@ -2,6 +2,108 @@ import type { Faq } from './types-content';
 
 export const KNOWLEDGE_FAQ: Faq = {
   // ═══════════════════════════════════════════
+  // ΓΙΑ ΤΗ ΜΕΘΟΔΟ ΚΑΙ ΤΗΝ ΕΦΑΡΜΟΓΗ — About the method and the app (shown first)
+  // ═══════════════════════════════════════════
+  0: {
+    el: [
+      {
+        q: 'Τι είναι ο Τετραπλός Άξονας;',
+        a: 'Ο Τετραπλός Άξονας είναι μέθοδος αυτορρύθμισης με τέσσερα βήματα, με αυτή τη σειρά: Σώμα, Αναπνοή, Προσοχή, Χώρος. Ξεκινάς από τη βαρύτητα: το βάρος σου πέφτει και στηρίζεται. Μετά η αναπνοή, με μακριά, ήρεμη εκπνοή. Μετά η προσοχή, σε ένα σημείο μπροστά σου. Στο τέλος ο χώρος γύρω σου, η ανοιχτή επίγνωση. Δεν σου ζητά «να αδειάσεις το μυαλό σου» ούτε να μείνεις ακίνητος/η.',
+        tags: ['method', 'basics'],
+        depth: 1,
+        relatedChapter: 10
+      },
+      {
+        q: 'Ποιος τον έφτιαξε;',
+        a: 'Ο Θεόδωρος Μπαϊρακτάρης, νευροδιαφορετικός ασκούμενος με πάνω από 20 χρόνια πρακτικής σε παραδόσεις ενσυνειδητότητας (Τάι Τσι, σουφικός διαλογισμός, θιβετιανός βουδισμός). Οι πρακτικές στις οποίες πατά η μέθοδος δεν μαθεύτηκαν από βιβλία· δόθηκαν ζωντανά, από δασκάλους. Καμία από αυτές τις παραδόσεις δεν έχει εγκρίνει τη μέθοδο. Ο κώδικας της εφαρμογής γράφτηκε με τη βοήθεια του Claude, της τεχνητής νοημοσύνης της Anthropic.',
+        tags: ['method', 'author'],
+        depth: 1,
+        relatedChapter: 11
+      },
+      {
+        q: 'Για ποιον είναι;',
+        a: 'Για νευροδιαφορετικούς ενήλικες, για παράδειγμα με ΔΕΠΥ ή αυτισμό, και για ενήλικες που ζουν με τραύμα. Η ΔΕΠΥ και ο αυτισμός δεν είναι ασθένειες· είναι ένας διαφορετικός τρόπος με τον οποίο δουλεύουν ο εγκέφαλος και το νευρικό σύστημα. Δεν χρειάζεται να «διορθώσεις» κάτι σε εσένα, γιατί τίποτα δεν είναι σπασμένο. Η εφαρμογή είναι γραμμένη για ενήλικες (18+).',
+        tags: ['method', 'audience', 'adhd', 'autism', 'trauma'],
+        depth: 1,
+        relatedChapter: 5
+      },
+      {
+        q: 'Είναι θεραπεία;',
+        a: 'Όχι. Είναι οδηγός ενσυνειδητότητας και αυτορρύθμισης. Δεν είναι θεραπεία, ιατρική συμβουλή, διάγνωση ή ιατρική συσκευή, και δεν αντικαθιστά επαγγελματία υγείας ή φαρμακευτική αγωγή. Δεν σου ζητά να επεξεργαστείς το τραύμα· μένει στη ρύθμιση. Η στήριξη ενός θεραπευτή μπορεί να αποδειχθεί πολύτιμη. Αν χρειάζεσαι βοήθεια τώρα: 112.',
+        tags: ['method', 'safety'],
+        depth: 1
+      },
+      {
+        q: 'Είναι δωρεάν;',
+        a: 'Ναι. Η εφαρμογή και το βιβλίο είναι δωρεάν, χωρίς διαφημίσεις και χωρίς συνδρομή. Το βιβλίο διατίθεται με την άδεια Creative Commons BY-NC-ND 4.0: μπορείς να το μοιραστείς, με αναφορά στον δημιουργό, χωρίς αλλαγές και όχι για εμπορική χρήση.',
+        tags: ['app', 'licence'],
+        depth: 1
+      },
+      {
+        q: 'Χρειάζεται λογαριασμό;',
+        a: 'Όχι. Η εφαρμογή δεν ζητά λογαριασμό, όνομα ή email. Ό,τι κάνεις μένει στη συσκευή σου, και δεν το βλέπει ούτε ο δημιουργός. Για να μη χαθεί, κράτα πότε πότε ένα αντίγραφο (Ρυθμίσεις → Αποθήκευση αντιγράφου).',
+        tags: ['app', 'privacy'],
+        depth: 1
+      },
+      {
+        q: 'Έχει μελετηθεί η μέθοδος;',
+        a: 'Όχι ως σύνολο. Καμία μελέτη δεν έχει εξετάσει ακόμα τη μέθοδο του Τετραπλού Άξονα ως σύνολο. Οι έρευνες στηρίζουν κομμάτια της, και για κάθε μία γράφεται σε ποιους έγινε και τι δεν έδειξε, στη σελίδα «Επιστημονική Θεμελίωση».',
+        tags: ['method', 'research'],
+        depth: 1,
+        relatedPage: '/methodology'
+      }
+    ],
+    en: [
+      {
+        q: 'What is the Fourfold Axis?',
+        a: 'The Fourfold Axis is a self-regulation method in four steps, in this order: Body, Breath, Attention, Space. You start from gravity: your weight drops and is supported. Then the breath, with a long, calm exhale. Then attention, on one point in front of you. Last, the space around you, open awareness. It does not ask you to “empty your mind”, nor to stay still.',
+        tags: ['method', 'basics'],
+        depth: 1,
+        relatedChapter: 10
+      },
+      {
+        q: 'Who made it?',
+        a: 'Theodoros Bairaktaris, a neurodivergent practitioner with over 20 years of practice in mindfulness traditions (Tai Chi, Sufi meditation, Tibetan Buddhism). The practices this method rests on were not learned from books; they were given in person, by teachers. None of these traditions has endorsed the method. The app’s code was written with the help of Claude, the AI made by Anthropic.',
+        tags: ['method', 'author'],
+        depth: 1,
+        relatedChapter: 11
+      },
+      {
+        q: 'Who is it for?',
+        a: 'For neurodivergent adults, for example with ADHD or autism, and for adults living with trauma. ADHD and autism are not illnesses; they are a different way the brain and the nervous system work. You do not need to “fix” anything in yourself, because nothing is broken. The app is written for adults (18+).',
+        tags: ['method', 'audience', 'adhd', 'autism', 'trauma'],
+        depth: 1,
+        relatedChapter: 5
+      },
+      {
+        q: 'Is it therapy?',
+        a: 'No. It is a guide to mindfulness and self-regulation. It is not therapy, medical advice, diagnosis or a medical device, and it does not replace a health professional or medication. It does not ask you to process trauma; it stays with regulation. The support of a therapist can prove valuable. If you need help right now: your local emergency number (112 in Europe).',
+        tags: ['method', 'safety'],
+        depth: 1
+      },
+      {
+        q: 'Is it free?',
+        a: 'Yes. The app and the book are free, with no ads and no subscription. The book is under the Creative Commons BY-NC-ND 4.0 licence: you may share it, crediting the author, without changes and not for commercial use.',
+        tags: ['app', 'licence'],
+        depth: 1
+      },
+      {
+        q: 'Do I need an account?',
+        a: 'No. The app does not ask for an account, a name or an email. What you do stays on your device; not even the creator sees it. So that it is not lost, keep a copy now and then (Settings → Save a copy).',
+        tags: ['app', 'privacy'],
+        depth: 1
+      },
+      {
+        q: 'Has the method been studied?',
+        a: 'Not as a whole. No study has yet tested the Fourfold Axis method as a whole. Research supports its parts, and for each study the “Evidence & Methodology” page says who was studied and what it did not show.',
+        tags: ['method', 'research'],
+        depth: 1,
+        relatedPage: '/methodology'
+      }
+    ]
+  },
+
+  // ═══════════════════════════════════════════
   // ΚΕΦΑΛΑΙΟ 1: ΣΩΜΑ — Body
   // ═══════════════════════════════════════════
   1: {
@@ -22,7 +124,7 @@ export const KNOWLEDGE_FAQ: Faq = {
       },
       {
         q: 'Πώς η γείωση βοηθά απέναντι στην αυτοκριτική;',
-        a: 'Το Default Mode Network — ο «αυτόματος πιλότος» — συνδέεται με νοητική περιπλάνηση, αυτοκριτική και επανάληψη παλιών ιστοριών. Κάθε φορά που νιώθεις τη βαρύτητα και τα πόδια σου στο πάτωμα, η προσοχή περνά από την αφήγηση στην άμεση αίσθηση. Αυτή η στροφή σχετίζεται με μειωμένη δραστηριότητα του DMN (Farb et al., 2007). Η γείωση δεν σβήνει τον αυτόματο πιλότο μια για πάντα· είναι το άμεσο άγκιστρο που σε φέρνει ξανά στο τώρα, κάθε φορά.',
+        a: 'Το δίκτυο προεπιλεγμένης λειτουργίας (Default Mode Network) — ο «αυτόματος πιλότος» — συνδέεται με νοητική περιπλάνηση, αυτοκριτική και επανάληψη παλιών ιστοριών. Κάθε φορά που νιώθεις τη βαρύτητα και τα πόδια σου στο πάτωμα, η προσοχή περνά από την αφήγηση στην άμεση αίσθηση. Αυτή η στροφή σχετίζεται με μειωμένη δραστηριότητα του DMN (Farb et al., 2007). Η γείωση δεν σβήνει τον αυτόματο πιλότο μια για πάντα· είναι το άμεσο άγκιστρο που σε φέρνει ξανά στο τώρα, κάθε φορά.',
         tags: ['body', 'grounding', 'dmn', 'self-criticism', 'neuroscience'],
         depth: 2,
         relatedConcept: 'dmn'
@@ -37,7 +139,7 @@ export const KNOWLEDGE_FAQ: Faq = {
       },
       {
         q: 'Τι είναι ο «απόηχος» στο σώμα;',
-        a: 'Το σφίξιμο στο σώμα, η ένταση, η φωνή που λέει «δεν κάνεις αρκετά» — δεν γεννήθηκαν μέσα σου. Είναι απόηχοι του παρελθόντος: λόγια που άκουσες, βλέμματα που δέχτηκες, προσδοκίες που δεν εκπληρώθηκαν. Το νευρικό σου σύστημα τα αποθήκευσε. Η μέθοδος δεν ζητά να πολεμήσεις αυτόν τον απόηχο — ζητά να τον αναγνωρίσεις: «Α, αυτή είναι η παλιά φωνή. Δεν χρειάζεται να την ακολουθήσω».',
+        a: 'Απόηχος λέμε τις παλιές φωνές και εντάσεις που κουβαλά το σώμα από το παρελθόν. Το σφίξιμο στο σώμα, η ένταση, η φωνή που λέει «δεν κάνεις αρκετά» — δεν γεννήθηκαν μέσα σου. Είναι απόηχοι του παρελθόντος: λόγια που άκουσες, βλέμματα που δέχτηκες, προσδοκίες που δεν εκπληρώθηκαν. Το νευρικό σου σύστημα τα αποθήκευσε. Η μέθοδος δεν ζητά να πολεμήσεις αυτόν τον απόηχο — ζητά να τον αναγνωρίσεις: «Α, αυτή είναι η παλιά φωνή. Δεν χρειάζεται να την ακολουθήσω».',
         tags: ['body', 'trauma', 'echo', 'kindness'],
         depth: 2,
         relatedChapter: 5,
@@ -52,7 +154,7 @@ export const KNOWLEDGE_FAQ: Faq = {
       },
       {
         q: 'Πώς συνδέεται το σώμα με τον χώρο;',
-        a: 'Η βαθιά χαλαρότητα μέσα στο σώμα δεν είναι ποτέ μια απομονωμένη πράξη. Προϋποθέτει πάντα την επίγνωση του χώρου. Το σώμα, μέσω των αισθητηρίων, μας πληροφορεί συνεχώς για τη θέση μας μέσα στον χώρο. Όταν ο χώρος γίνεται αντιληπτός ως ασφαλής, το νευρικό σύστημα χαλαρώνει — και μόνο τότε το σώμα αφήνεται πραγματικά.',
+        a: 'Μέσα από τις αισθήσεις: το σώμα σού λέει συνεχώς πού βρίσκεσαι, και χαλαρώνει πιο εύκολα όταν ο χώρος γύρω σου νιώθεται ασφαλής. Η βαθιά χαλαρότητα μέσα στο σώμα δεν είναι ποτέ μια απομονωμένη πράξη. Προϋποθέτει πάντα την επίγνωση του χώρου. Το σώμα, μέσω των αισθητηρίων, μας πληροφορεί συνεχώς για τη θέση μας μέσα στον χώρο. Όταν ο χώρος γίνεται αντιληπτός ως ασφαλής, το νευρικό σύστημα χαλαρώνει — και μόνο τότε το σώμα αφήνεται πραγματικά.',
         tags: ['body', 'space', 'safety', 'nervous-system'],
         depth: 2,
         relatedChapter: 4
@@ -90,7 +192,7 @@ export const KNOWLEDGE_FAQ: Faq = {
       },
       {
         q: 'What is the "echo" in the body?',
-        a: 'The tightness in your body, the tension, the voice that says "you\'re not doing enough" — they didn\'t originate inside you. They are echoes of the past: words you heard, looks you received, expectations that weren\'t met. Your nervous system stored them. This method doesn\'t ask you to fight that echo — it asks you to recognize it: "Ah, that\'s the old voice. I don\'t need to follow it."',
+        a: 'The echo is what we call the old voices and tensions the body carries from the past. The tightness in your body, the tension, the voice that says "you\'re not doing enough" — they didn\'t originate inside you. They are echoes of the past: words you heard, looks you received, expectations that weren\'t met. Your nervous system stored them. This method doesn\'t ask you to fight that echo — it asks you to recognize it: "Ah, that\'s the old voice. I don\'t need to follow it."',
         tags: ['body', 'trauma', 'echo', 'kindness'],
         depth: 2,
         relatedChapter: 5,
@@ -105,7 +207,7 @@ export const KNOWLEDGE_FAQ: Faq = {
       },
       {
         q: 'How are body and space connected?',
-        a: 'Deep relaxation in the body is never an isolated act. It always requires awareness of space. Our body, through sensory organs, continuously informs us of our position in space. When space is perceived as safe, the nervous system relaxes — and only then does the body truly let go.',
+        a: 'Through the senses: the body keeps telling you where you are, and it relaxes more easily when the space around you feels safe. Deep relaxation in the body is never an isolated act. It always requires awareness of space. Our body, through sensory organs, continuously informs us of our position in space. When space is perceived as safe, the nervous system relaxes — and only then does the body truly let go.',
         tags: ['body', 'space', 'safety', 'nervous-system'],
         depth: 2,
         relatedChapter: 4
@@ -120,13 +222,13 @@ export const KNOWLEDGE_FAQ: Faq = {
     el: [
       {
         q: 'Γιατί η αναπνοή είναι σημαντική;',
-        a: 'Αν το σώμα μάς ενώνει με τη γη, η αναπνοή μάς συνδέει με τον ρυθμό της ζωής. Κάθε εισπνοή: αρχή. Κάθε παύση: τώρα. Κάθε εκπνοή: αποδοχή. Σώμα + Αναπνοή μαζί σχηματίζουν τον κατακόρυφο άξονα: η βαρύτητα δίνει το «Εδώ», η αναπνοή το «Τώρα».',
+        a: 'Γιατί είναι ο ρυθμός που σε συνοδεύει πάντα, και μπορείς να τον ρυθμίσεις: η αργή, μακριά εκπνοή συνδέεται με την ηρεμιστική πλευρά του νευρικού συστήματος. Αν το σώμα μάς ενώνει με τη γη, η αναπνοή μάς συνδέει με τον ρυθμό της ζωής. Κάθε εισπνοή: αρχή. Κάθε παύση: τώρα. Κάθε εκπνοή: αποδοχή. Σώμα + Αναπνοή μαζί σχηματίζουν τον κατακόρυφο άξονα: η βαρύτητα δίνει το «Εδώ», η αναπνοή το «Τώρα».',
         tags: ['breath', 'basics', 'rhythm', 'axis'],
         depth: 1
       },
       {
         q: 'Τι είναι η «εσωτερική αφή»;',
-        a: 'Η αναπνοή δεν είναι μόνο αέρας — είναι αφή. Νιώσε τον αέρα στα ρουθούνια, τη διαστολή του στήθους, τη μαλακή κίνηση της κοιλιάς. Αυτή η εσωτερική αφή είναι δια-αίσθηση (interoception): το σώμα όπως το νιώθεις από μέσα.',
+        a: 'Εσωτερική αφή λέμε το να νιώθεις την αναπνοή από μέσα: τον αέρα στα ρουθούνια, το στήθος, την κοιλιά. Η αναπνοή δεν είναι μόνο αέρας — είναι αφή. Νιώσε τον αέρα στα ρουθούνια, τη διαστολή του στήθους, τη μαλακή κίνηση της κοιλιάς. Αυτή η εσωτερική αφή είναι δια-αίσθηση (interoception): το σώμα όπως το νιώθεις από μέσα.',
         tags: ['breath', 'interoception', 'internal-touch'],
         depth: 2,
         relatedConcept: 'interoception'
@@ -147,7 +249,7 @@ export const KNOWLEDGE_FAQ: Faq = {
       },
       {
         q: 'Η αναπνοή μου είναι ρηχή/σφιγμένη. Τι σημαίνει;',
-        a: 'Η αναπνοή είναι ο δείκτης της ψυχικής σου κατάστασης. Αν είναι σφιγμένη ή ρηχή → ένταση. Αν είναι αργή και βαθιά → χαλάρωση. Μην προσπαθήσεις να την αλλάξεις αμέσως — πρώτα παρατήρησε. Η παρατήρηση χωρίς επέμβαση είναι η ίδια η πρακτική.',
+        a: 'Συνήθως δείχνει ένταση· δεν σημαίνει ότι κάτι πάει στραβά. Αν είναι σφιγμένη ή ρηχή → ένταση. Αν είναι αργή και βαθιά → χαλάρωση. Μην προσπαθήσεις να την αλλάξεις αμέσως — πρώτα παρατήρησε. Η παρατήρηση χωρίς επέμβαση είναι η ίδια η πρακτική.',
         tags: ['breath', 'observation', 'indicator', 'nd-specific'],
         depth: 1
       },
@@ -162,13 +264,13 @@ export const KNOWLEDGE_FAQ: Faq = {
     en: [
       {
         q: 'Why is breathing important?',
-        a: 'If the body unites us with the earth, breath connects us with the rhythm of life. Every inhale: beginning. Every pause: now. Every exhale: acceptance. Body + Breath together form the vertical axis: gravity gives us "Here," breath gives us "Now."',
+        a: 'Because it is the rhythm that is always with you, and you can regulate it: a slow, long exhale is linked to the calming side of the nervous system. If the body unites us with the earth, breath connects us with the rhythm of life. Every inhale: beginning. Every pause: now. Every exhale: acceptance. Body + Breath together form the vertical axis: gravity gives us "Here," breath gives us "Now."',
         tags: ['breath', 'basics', 'rhythm', 'axis'],
         depth: 1
       },
       {
         q: 'What is "inner touch"?',
-        a: 'Breath is not just air — it is touch. Feel the air at your nostrils, the expansion of the chest, the soft movement of the belly. This inner touch is interoception: the body as you feel it from the inside.',
+        a: 'Inner touch means feeling the breath from inside: the air at the nostrils, the chest, the belly. Breath is not just air — it is touch. Feel the air at your nostrils, the expansion of the chest, the soft movement of the belly. This inner touch is interoception: the body as you feel it from the inside.',
         tags: ['breath', 'interoception', 'internal-touch'],
         depth: 2,
         relatedConcept: 'interoception'
@@ -189,7 +291,7 @@ export const KNOWLEDGE_FAQ: Faq = {
       },
       {
         q: 'My breathing is shallow/tight. What does it mean?',
-        a: 'Breathing is the indicator of your mental state. If tight or shallow → tension. If slow and deep → relaxation. Don\'t try to change it immediately — first observe. Observation without intervention is the practice itself.',
+        a: 'It usually shows tension; it does not mean something is wrong. If tight or shallow → tension. If slow and deep → relaxation. Don\'t try to change it immediately — first observe. Observation without intervention is the practice itself.',
         tags: ['breath', 'observation', 'indicator', 'nd-specific'],
         depth: 1
       },
@@ -217,7 +319,7 @@ export const KNOWLEDGE_FAQ: Faq = {
       },
       {
         q: 'Τι είναι η υπερεστίαση (hyperfocus) και πώς βγαίνω από αυτή;',
-        a: 'Η αντίθετη ακραία κατάσταση: ο νους κλειδώνει σε ένα σημείο και δεν μπορεί να φύγει. Ο κόσμος γύρω εξαφανίζεται — χώρος, σώμα, χρόνος.\n\nΕργαλείο: Χώρος (μαλάκωσε το βλέμμα, νιώσε τον χώρο γύρω) + Σώμα (νιώσε τη βαρύτητα — «σπάει» το τούνελ).',
+        a: 'Υπερεστίαση είναι όταν ο νους κλειδώνει σε ένα σημείο και δεν μπορεί να φύγει· βγαίνεις από αυτή με το σώμα και τον χώρο. Ο κόσμος γύρω εξαφανίζεται — χώρος, σώμα, χρόνος.\n\nΕργαλείο: Χώρος (μαλάκωσε το βλέμμα, νιώσε τον χώρο γύρω) + Σώμα (νιώσε τη βαρύτητα — «σπάει» το τούνελ).',
         tags: ['attention', 'hyperfocus', 'nd-specific', 'practical'],
         depth: 1,
         relatedChapter: 5,
@@ -239,7 +341,7 @@ export const KNOWLEDGE_FAQ: Faq = {
       },
       {
         q: 'Τι σημαίνει «Τετραπλή Προσοχή»;',
-        a: 'Στην πλήρη πρακτική, η προσοχή δεν λειτουργεί μόνη. Εστιάζει πάνω στον κατακόρυφο άξονα (Σώμα + Αναπνοή), και από εκεί ανοίγει στον Χώρο. Τέσσερα κέντρα, μία παρουσία. Αυτό σημαίνει «Τετραπλός Άξονας».',
+        a: 'Τετραπλή Προσοχή σημαίνει ότι κρατάς ταυτόχρονα επίγνωση τεσσάρων πραγμάτων: του σώματος, της αναπνοής, της ίδιας της προσοχής και των σκέψεων. Στην πλήρη πρακτική, η προσοχή δεν λειτουργεί μόνη. Εστιάζει πάνω στον κατακόρυφο άξονα (Σώμα + Αναπνοή), και από εκεί ανοίγει στον Χώρο. Τέσσερα κέντρα, μία παρουσία.',
         tags: ['attention', 'fourfold', 'axis', 'integration'],
         depth: 2,
         relatedChapter: 9
@@ -255,7 +357,7 @@ export const KNOWLEDGE_FAQ: Faq = {
       },
       {
         q: 'What is hyperfocus and how do I come out of it?',
-        a: 'The opposite extreme: the mind locks onto one point and cannot leave. The world around disappears — space, body, time.\n\nTool: Space (soften your gaze, feel the space around) + Body (feel gravity — it "breaks" the tunnel).',
+        a: 'Hyperfocus is when the mind locks onto one point and cannot leave; you come out of it through the body and space. The world around disappears — space, body, time.\n\nTool: Space (soften your gaze, feel the space around) + Body (feel gravity — it "breaks" the tunnel).',
         tags: ['attention', 'hyperfocus', 'nd-specific', 'practical'],
         depth: 1,
         relatedChapter: 5,
@@ -277,7 +379,7 @@ export const KNOWLEDGE_FAQ: Faq = {
       },
       {
         q: 'What does "Fourfold Attention" mean?',
-        a: 'In the full practice, attention does not work alone. It focuses upon the vertical axis (Body + Breath), and from there opens into Space. Four centres, one presence. This is what "Fourfold Axis" means.',
+        a: 'Fourfold Attention means holding awareness of four things at once: the body, the breath, attention itself, and thoughts. In the full practice, attention does not work alone. It focuses upon the vertical axis (Body + Breath), and from there opens into Space. Four centres, one presence.',
         tags: ['attention', 'fourfold', 'axis', 'integration'],
         depth: 2,
         relatedChapter: 9
@@ -312,7 +414,7 @@ export const KNOWLEDGE_FAQ: Faq = {
       },
       {
         q: 'Τι σχέση έχει ο χώρος με τη μεταφορά του ουρανού;',
-        a: 'Ο ουρανός δεν πιέζεται από τα σύννεφα, δεν αντιδρά, δεν κρίνει. Απλά τα χωράει. Ο χώρος της επίγνωσης λειτουργεί ακριβώς έτσι — σκέψεις, συναισθήματα, αισθήσεις εμφανίζονται και εξαφανίζονται. Εσύ μένεις. Αυτό δεν είναι ποιητική εικόνα — είναι η εμπειρία του 4ου άξονα.',
+        a: 'Ο ουρανός δείχνει πώς είναι ο χώρος της επίγνωσης: χωρά σκέψεις και αισθήσεις χωρίς να αλλάζει από αυτές. Ο ουρανός δεν πιέζεται από τα σύννεφα, δεν αντιδρά, δεν κρίνει. Απλά τα χωράει. Ο χώρος της επίγνωσης λειτουργεί ακριβώς έτσι — σκέψεις, συναισθήματα, αισθήσεις εμφανίζονται και εξαφανίζονται. Εσύ μένεις. Αυτό δεν είναι ποιητική εικόνα — είναι η εμπειρία του 4ου άξονα.',
         tags: ['space', 'sky-metaphor', 'philosophy', 'dzogchen'],
         depth: 2
       }
@@ -340,7 +442,7 @@ export const KNOWLEDGE_FAQ: Faq = {
       },
       {
         q: 'What\'s the relationship between space and the sky metaphor?',
-        a: 'The sky is not burdened by clouds, does not react, does not judge. It simply holds them. The space of awareness works exactly like this — thoughts, emotions, sensations appear and disappear. You remain. This is not a poetic image — it is the experience of the 4th axis.',
+        a: 'The sky shows what the space of awareness is like: it holds thoughts and sensations without being changed by them. The sky is not burdened by clouds, does not react, does not judge. It simply holds them. The space of awareness works exactly like this — thoughts, emotions, sensations appear and disappear. You remain. This is not a poetic image — it is the experience of the 4th axis.',
         tags: ['space', 'sky-metaphor', 'philosophy', 'dzogchen'],
         depth: 2
       }
@@ -354,14 +456,14 @@ export const KNOWLEDGE_FAQ: Faq = {
     el: [
       {
         q: 'Ο νους μου «τρέχει». Τι κάνω;',
-        a: 'Νους που τρέχει = Διασπασμένη Προσοχή / Υπερφόρτωση. Ο κόσμος γίνεται αλυσίδα από μικρά άγκιστρα — κάθε ερέθισμα κρατά ένα κομμάτι προσοχής.\n\nΕργαλείο: Σώμα (Γείωση) + Αναπνοή (Ρυθμός). Η βαρύτητα σε φέρνει «εδώ», ο ρυθμός σε φέρνει «τώρα». Νιώσε τα πέλματα + μία αναπνοή. Αυτό αρκεί.',
+        a: 'Ξεκίνα από το σώμα και την αναπνοή: νιώσε τα πέλματα και άφησε μία αργή εκπνοή. Νους που τρέχει = Διασπασμένη Προσοχή / Υπερφόρτωση. Ο κόσμος γίνεται αλυσίδα από μικρά άγκιστρα — κάθε ερέθισμα κρατά ένα κομμάτι προσοχής.\n\nΕργαλείο: Σώμα (Γείωση) + Αναπνοή (Ρυθμός). Η βαρύτητα σε φέρνει «εδώ», ο ρυθμός σε φέρνει «τώρα». Νιώσε τα πέλματα + μία αναπνοή. Αυτό αρκεί.',
         tags: ['mind', 'racing', 'nd-specific', 'practical', 'adhd'],
         depth: 1,
         relatedExercise: 'racing_mind.html'
       },
       {
         q: 'Ο νους μου «κλειδώνει». Τι κάνω;',
-        a: 'Νους που κλειδώνει = Αγκυλωμένη Προσοχή / Hyperfocus. Σαν τούνελ έντονης εστίασης. Ο χρόνος εξαφανίζεται, το σώμα ξεχνιέται.\n\nΕργαλείο: Χώρος (Απελευθέρωση) + Σώμα (Επιστροφή). Μαλάκωσε το βλέμμα, νιώσε τον χώρο γύρω — αυτό «σπάει» το τούνελ.',
+        a: 'Ξεκίνα από το σώμα και τον χώρο: νιώσε τη βαρύτητα και μαλάκωσε το βλέμμα, ώστε να ανοίξει και στα πλάγια. Νους που κλειδώνει = Αγκυλωμένη Προσοχή / Hyperfocus. Σαν τούνελ έντονης εστίασης. Ο χρόνος εξαφανίζεται, το σώμα ξεχνιέται.\n\nΕργαλείο: Χώρος (Απελευθέρωση) + Σώμα (Επιστροφή). Μαλάκωσε το βλέμμα, νιώσε τον χώρο γύρω — αυτό «σπάει» το τούνελ.',
         tags: ['mind', 'locking', 'hyperfocus', 'nd-specific', 'practical', 'autism'],
         depth: 1,
         relatedConcept: 'hyperfocus'
@@ -389,14 +491,14 @@ export const KNOWLEDGE_FAQ: Faq = {
     en: [
       {
         q: 'My mind is "racing." What do I do?',
-        a: 'Racing mind = Scattered Attention / Overload. The world becomes a chain of small hooks — each stimulus holds a piece of attention.\n\nTool: Body (Grounding) + Breath (Rhythm). Gravity brings you "here," rhythm brings you "now." Feel your soles + one breath. That\'s enough.',
+        a: 'Start from the body and the breath: feel your soles and let out one slow exhale. Racing mind = Scattered Attention / Overload. The world becomes a chain of small hooks — each stimulus holds a piece of attention.\n\nTool: Body (Grounding) + Breath (Rhythm). Gravity brings you "here," rhythm brings you "now." Feel your soles + one breath. That\'s enough.',
         tags: ['mind', 'racing', 'nd-specific', 'practical', 'adhd'],
         depth: 1,
         relatedExercise: 'racing_mind.html'
       },
       {
         q: 'My mind has "locked in." What do I do?',
-        a: 'Locked-in mind = Stuck Attention / Hyperfocus. Like a tunnel of intense focus. Time disappears, the body is forgotten.\n\nTool: Space (Release) + Body (Return). Soften your gaze, feel the space around — this "breaks" the tunnel.',
+        a: 'Start from the body and space: feel gravity and soften your gaze, so that it opens to the sides as well. Locked-in mind = Stuck Attention / Hyperfocus. Like a tunnel of intense focus. Time disappears, the body is forgotten.\n\nTool: Space (Release) + Body (Return). Soften your gaze, feel the space around — this "breaks" the tunnel.',
         tags: ['mind', 'locking', 'hyperfocus', 'nd-specific', 'practical', 'autism'],
         depth: 1,
         relatedConcept: 'hyperfocus'
@@ -448,7 +550,7 @@ export const KNOWLEDGE_FAQ: Faq = {
       },
       {
         q: 'Πόσο χρόνο χρειάζεται καθημερινά;',
-        a: 'Η συνέπεια σε αόρατες δόσεις είναι πιο σημαντική από τη διάρκεια. 5 δευτερόλεπτα γείωσης πριν ξεκινήσεις τη μέρα. 10 δευτερόλεπτα αναπνοής πριν τον ύπνο. Αρκεί. Η παρουσία δεν χρειάζεται ώρες — ξεκινά με νίκες λίγων δευτερολέπτων.',
+        a: 'Λίγα δευτερόλεπτα αρκούν· μετρά να επαναλαμβάνονται, όχι να κρατούν πολύ. Η συνέπεια σε αόρατες δόσεις είναι πιο σημαντική από τη διάρκεια. 5 δευτερόλεπτα γείωσης πριν ξεκινήσεις τη μέρα. 10 δευτερόλεπτα αναπνοής πριν τον ύπνο. Αρκεί. Η παρουσία δεν χρειάζεται ώρες — ξεκινά με νίκες λίγων δευτερολέπτων.',
         tags: ['daily', 'time', 'invisible-doses', 'encouragement'],
         depth: 1
       }
@@ -474,7 +576,7 @@ export const KNOWLEDGE_FAQ: Faq = {
       },
       {
         q: 'How much time does it need daily?',
-        a: 'Consistency in invisible doses matters more than duration. 5 seconds of grounding before starting the day. 10 seconds of breathing before sleep. That\'s enough. Presence doesn\'t need hours — it starts with victories of a few seconds.',
+        a: 'A few seconds are enough; what matters is repeating them, not making them long. Consistency in invisible doses matters more than duration. 5 seconds of grounding before starting the day. 10 seconds of breathing before sleep. That\'s enough. Presence doesn\'t need hours — it starts with victories of a few seconds.',
         tags: ['daily', 'time', 'invisible-doses', 'encouragement'],
         depth: 1
       }
@@ -576,8 +678,8 @@ export const KNOWLEDGE_FAQ: Faq = {
         relatedExercise: 'journey.html'
       },
       {
-        q: 'Τι στάση πρέπει να έχω;',
-        a: 'Η απαλότητα δεν είναι προαιρετική — είναι η ίδια η μέθοδος. Κάθε φορά που επιστρέφεις χωρίς κριτική, κάθε φορά που δέχεσαι τη διάσπαση ως μέρος της διαδικασίας — εξασκείς καλοσύνη. Μεταχειρίσου τον εαυτό σου όπως θα μεταχειριζόσουν έναν φίλο που δυσκολεύεται.',
+        q: 'Με ποια διάθεση κάνω την πρακτική;',
+        a: 'Μια απαλή στάση απέναντι στον εαυτό σου: επιστρέφεις χωρίς κριτική, όσες φορές κι αν φύγεις. Η απαλότητα δεν είναι προαιρετική — είναι η ίδια η μέθοδος. Κάθε φορά που επιστρέφεις χωρίς κριτική, κάθε φορά που δέχεσαι τη διάσπαση ως μέρος της διαδικασίας — εξασκείς καλοσύνη. Μεταχειρίσου τον εαυτό σου όπως θα μεταχειριζόσουν έναν φίλο που δυσκολεύεται.',
         tags: ['stages', 'attitude', 'kindness', 'core-message'],
         depth: 1
       },
@@ -597,8 +699,8 @@ export const KNOWLEDGE_FAQ: Faq = {
         relatedExercise: 'journey.html'
       },
       {
-        q: 'What attitude should I have?',
-        a: 'Gentleness is not optional — it is the method itself. Every time you return without criticism, every time you accept distraction as part of the process — you are practicing kindness. Treat yourself the way you would treat a friend who is struggling.',
+        q: 'With what attitude do I practise?',
+        a: 'A gentle attitude towards yourself: you come back without criticism, however many times you drift. Gentleness is not optional — it is the method itself. Every time you return without criticism, every time you accept distraction as part of the process — you are practicing kindness. Treat yourself the way you would treat a friend who is struggling.',
         tags: ['stages', 'attitude', 'kindness', 'core-message'],
         depth: 1
       },

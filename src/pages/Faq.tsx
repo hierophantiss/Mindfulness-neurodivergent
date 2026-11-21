@@ -1,9 +1,14 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { PageHeader } from '../components/PageHeader';
 import { KNOWLEDGE_FAQ } from '../data/faq';
 import { useLanguage } from '../hooks/useLanguage';
 import { CHAPTER_TITLES } from '../data/chapterTitles';
+
+// The names of the pages an answer can point to.
+const PAGE_NAME: Record<string, { el: string; en: string }> = {
+  '/methodology': { el: 'Επιστημονική Θεμελίωση', en: 'Evidence & Methodology' },
+};
 
 export default function Faq() {
   const navigate = useNavigate();
@@ -32,9 +37,14 @@ export default function Faq() {
             <div key={chapter} className="mb-10 w-full">
               <h2 className="font-medium text-[13px] text-teal-400 mb-5 px-2 flex items-center gap-3">
                 <span className="w-6 h-px bg-teal-800/50"></span>
-                {/* The chapter's name too: a question is found by its subject, not by a number. */}
-                {language === 'el' ? `Κεφάλαιο ${chapter}` : `Chapter ${chapter}`}
-                {CHAPTER_TITLES[language === 'en' ? 'en' : 'el'][Number(chapter)] ? ` · ${CHAPTER_TITLES[language === 'en' ? 'en' : 'el'][Number(chapter)]}` : ''}
+                {/* The chapter's name too: a question is found by its subject, not by a number.
+                    Group 0 is not a chapter: the questions about the method and the app. */}
+                {chapter === '0'
+                  ? (language === 'el' ? 'Για τη μέθοδο και την εφαρμογή' : 'About the method and the app')
+                  : <>
+                      {language === 'el' ? `Κεφάλαιο ${chapter}` : `Chapter ${chapter}`}
+                      {CHAPTER_TITLES[language === 'en' ? 'en' : 'el'][Number(chapter)] ? ` · ${CHAPTER_TITLES[language === 'en' ? 'en' : 'el'][Number(chapter)]}` : ''}
+                    </>}
                 <span className="flex-1 h-px bg-zinc-800/50"></span>
               </h2>
               <div className="space-y-4 w-full">
@@ -46,6 +56,11 @@ export default function Faq() {
                     </summary>
                     <div className="mt-5 pt-5 border-t border-zinc-800/60 text-[15px] md:text-base leading-relaxed text-zinc-200/90 whitespace-pre-wrap">
                       {faq.a}
+                      {faq.relatedPage && (
+                        <Link to={faq.relatedPage} className="flex items-center w-fit min-h-[44px] mt-2 whitespace-normal text-sign-gold hover:brightness-110 transition-[filter]">
+                          {PAGE_NAME[faq.relatedPage]?.[language === 'en' ? 'en' : 'el'] ?? faq.relatedPage} →
+                        </Link>
+                      )}
                     </div>
                   </details>
                 ))}
