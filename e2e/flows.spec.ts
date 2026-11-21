@@ -51,11 +51,81 @@ test('a Rabbit Hole text: the next page opens at its top', async ({ page }) => {
 
 test('a breath starts without sound and counts', async ({ page }) => {
   await page.goto('/el/practice/breath/breath-4-6', { waitUntil: 'networkidle' });
-  const close = page.getByRole('button', { name: 'Κλείσιμο', exact: true });
-  if (await close.count()) await close.first().click();
   await page.getByRole('button', { name: 'Ξεκίνα', exact: true }).first().click();
-  await page.getByRole('button', { name: 'Χωρίς ήχο', exact: true }).click();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(page.getByTestId('breath-phase-word')).toHaveText('Εισπνοή');
   await expect(page.getByText(/Εκπνοή 6/)).toBeVisible();
+});
+
+test('SOS starts at once, with no window in between, and the sound stays one tap away', async ({ page }) => {
+  await page.goto('/el/practice/breath/sos-breath', { waitUntil: 'networkidle' });
+  // What will happen, before starting: the cycle and the steps.
+  await expect(page.getByTestId('breath-cycle')).toContainText('Εισπνοή 4');
+  await expect(page.getByRole('heading', { name: 'Πώς γίνεται' })).toBeVisible();
+  await page.getByRole('button', { name: 'Ξεκίνα', exact: true }).first().click();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(page.getByTestId('breath-phase')).toHaveText('Εισπνοή');
+  await expect(page.getByRole('button', { name: 'Παύση', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Τέλος', exact: true })).toBeVisible();
+  // The sound window opens only from «Ήχος»: «Χωρίς ήχο» first, and chosen.
+  await page.getByTestId('breath-sound').click();
+  const dialog = page.getByRole('dialog', { name: 'Ήχος για την άσκηση' });
+  const choices = dialog.getByRole('button').filter({ hasText: /Χωρίς ήχο|Ήχος φύσης|Binaural/ });
+  await expect(choices.first()).toContainText('Χωρίς ήχο');
+  await expect(choices.first()).toHaveAttribute('aria-pressed', 'true');
+  // The help line points on to people, 112 first.
+  await dialog.getByRole('button', { name: 'Κλείσιμο' }).click();
+  await expect(page.getByText(/το επόμενο βήμα είναι ένας άνθρωπος/)).toBeVisible();
+});
+
+test('with «No sound» nothing rings at the end, and vibration follows its switch', async ({ page }) => {
+  await page.addInitScript(() => {
+    const w = window as unknown as { __buzz: unknown[]; __oscs: number };
+    w.__buzz = []; w.__oscs = 0;
+    (navigator as unknown as { vibrate: (p: unknown) => boolean }).vibrate = (p: unknown) => { w.__buzz.push(p); return true; };
+    const orig = AudioContext.prototype.createOscillator;
+    AudioContext.prototype.createOscillator = function (this: AudioContext) { w.__oscs++; return orig.call(this); };
+  });
+  await page.clock.install();
+  await page.goto('/el/practice/breath/breath-4-6', { waitUntil: 'networkidle' });
+  // Vibration off from the practice's own switch.
+  const vib = page.getByRole('switch', { name: 'Δόνηση' });
+  await expect(vib).toHaveAttribute('aria-checked', 'true');
+  await vib.click();
+  await expect(vib).toHaveAttribute('aria-checked', 'false');
+  await page.getByRole('button', { name: 'Ξεκίνα', exact: true }).first().click();
+  await page.clock.runFor(12_000);
+  await page.getByRole('button', { name: 'Τέλος', exact: true }).click();
+  await page.clock.runFor(1_000);
+  const seen = await page.evaluate(() => {
+    const w = window as unknown as { __buzz: unknown[]; __oscs: number };
+    return { buzz: w.__buzz.length, oscs: w.__oscs };
+  });
+  expect(seen).toEqual({ buzz: 0, oscs: 0 });
+  // The same setting in Settings.
+  await page.goto('/el/settings', { waitUntil: 'networkidle' });
+  await expect(page.getByRole('switch', { name: /^Δόνηση/ })).toHaveAttribute('aria-checked', 'false');
+});
+
+test('vibration is on until turned off, and then the breath does not buzz', async ({ page }) => {
+  await page.addInitScript(() => {
+    const w = window as unknown as { __buzz: unknown[] };
+    w.__buzz = [];
+    (navigator as unknown as { vibrate: (p: unknown) => boolean }).vibrate = (p: unknown) => { w.__buzz.push(p); return true; };
+  });
+  await page.clock.install();
+  await page.goto('/el/practice/breath/breath-4-6', { waitUntil: 'networkidle' });
+  await page.getByRole('button', { name: 'Ξεκίνα', exact: true }).first().click();
+  await page.clock.runFor(5_000);
+  expect(await page.evaluate(() => (window as unknown as { __buzz: unknown[] }).__buzz.length)).toBeGreaterThan(0);
+  await page.getByRole('button', { name: 'Παύση', exact: true }).click();
+  await page.goto('/el/settings', { waitUntil: 'networkidle' });
+  await page.getByRole('switch', { name: /^Δόνηση/ }).click();
+  await page.goto('/el/practice/breath/breath-4-6', { waitUntil: 'networkidle' });
+  await page.evaluate(() => { (window as unknown as { __buzz: unknown[] }).__buzz = []; });
+  await page.getByRole('button', { name: 'Ξεκίνα', exact: true }).first().click();
+  await page.clock.runFor(12_000);
+  expect(await page.evaluate(() => (window as unknown as { __buzz: unknown[] }).__buzz.length)).toBe(0);
 });
 
 test('the offline note closes with its ×', async ({ page, context }) => {
@@ -95,7 +165,7 @@ test('the menu leads to Settings', async ({ page }) => {
 
 test('Settings saves a copy of the data to a file', async ({ page }) => {
   await page.goto('/el/settings', { waitUntil: 'networkidle' });
-  await page.getByRole('button', { name: /Αποθήκευση Δεδομένων/ }).click();
+  await page.getByRole('button', { name: /Αποθήκευση αντιγράφου/ }).click();
   const dialog = page.getByRole('dialog', { name: 'Αντίγραφο των δεδομένων σου' });
   const download = page.waitForEvent('download');
   await dialog.getByRole('button', { name: 'Αποθήκευση αντιγράφου' }).click();
@@ -109,7 +179,7 @@ test('a copy locked with a passphrase comes back only with it, and the journal r
   await page.goto('/el/settings', { waitUntil: 'networkidle' });
   await page.evaluate(() => localStorage.setItem('journal_v2_2026-11-17', JSON.stringify({ text: 'κάτι ιδιωτικό', mood: null, state: null, axes: [], timestamp: 1 })));
   // Save, locked.
-  await page.getByRole('button', { name: /Αποθήκευση Δεδομένων/ }).click();
+  await page.getByRole('button', { name: /Αποθήκευση αντιγράφου/ }).click();
   const save = page.getByRole('dialog', { name: 'Αντίγραφο των δεδομένων σου' });
   await save.getByLabel('Κλείδωσε το με κωδικό').check();
   await expect(save.getByText(/Αν ξεχάσεις τον κωδικό/)).toBeVisible();
@@ -131,15 +201,20 @@ test('a copy locked with a passphrase comes back only with it, and the journal r
 
   // Gone from the device; restore with a wrong, then the right passphrase.
   await page.evaluate(() => localStorage.removeItem('journal_v2_2026-11-17'));
-  await page.getByRole('button', { name: /Ανάκτηση/ }).click();
+  await page.getByRole('button', { name: /Επαναφορά από αντίγραφο/ }).click();
   const restore = page.getByRole('dialog', { name: 'Επαναφορά από αντίγραφο' });
   await restore.locator('input[type=file]').setInputFiles({ name: 'copy.json', mimeType: 'application/json', buffer: Buffer.from(text) });
   await restore.getByLabel('Κωδικός').fill('λάθος κωδικός');
-  await restore.getByRole('button', { name: 'Άνοιγμα και επαναφορά' }).click();
+  await restore.getByRole('button', { name: 'Άνοιγμα', exact: true }).click();
   await expect(restore.getByText(/Ο κωδικός δεν ταιριάζει/)).toBeVisible({ timeout: 20_000 });
   expect(await page.evaluate(() => localStorage.getItem('journal_v2_2026-11-17'))).toBeNull();
   await restore.getByLabel('Κωδικός').fill('ένας καλός κωδικός');
-  await restore.getByRole('button', { name: 'Άνοιγμα και επαναφορά' }).click();
+  await restore.getByRole('button', { name: 'Άνοιγμα', exact: true }).click();
+  // First what the copy holds and its day; nothing written yet.
+  await expect(restore.getByText(/^Αντίγραφο της /)).toBeVisible({ timeout: 20_000 });
+  await expect(restore.getByText(/Ημερολόγιο: 1 μέρα/)).toBeVisible();
+  expect(await page.evaluate(() => localStorage.getItem('journal_v2_2026-11-17'))).toBeNull();
+  await restore.getByRole('button', { name: 'Ναι, επανάφερέ το' }).click();
   // The app starts again at once and says, on that start, that it was done.
   await expect(page.getByRole('status').filter({ hasText: 'Η επαναφορά από το αντίγραφο έγινε' })).toBeVisible({ timeout: 20_000 });
   await expect.poll(() => page.evaluate(() => localStorage.getItem('journal_v2_2026-11-17')), { timeout: 10_000 }).toContain('κάτι ιδιωτικό');
@@ -147,7 +222,7 @@ test('a copy locked with a passphrase comes back only with it, and the journal r
 
 test('restoring a file that is not a copy changes nothing', async ({ page }) => {
   await page.goto('/el/settings', { waitUntil: 'networkidle' });
-  await page.getByRole('button', { name: /Ανάκτηση/ }).click();
+  await page.getByRole('button', { name: /Επαναφορά από αντίγραφο/ }).click();
   const restore = page.getByRole('dialog', { name: 'Επαναφορά από αντίγραφο' });
   await restore.locator('input[type=file]').setInputFiles({ name: 'x.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify({ n_mindfulness_app_bundle_next: 'evil' })) });
   await expect(restore.getByText(/δεν είναι αντίγραφο της εφαρμογής/)).toBeVisible();
@@ -195,11 +270,11 @@ test("the Journal already knows the day's \"How do you feel\"", async ({ page })
 
 test('Settings makes a daily calendar reminder', async ({ page }) => {
   await page.goto('/el/settings', { waitUntil: 'networkidle' });
-  await page.getByRole('button', { name: /Υπενθύμιση στο ημερολόγιο/ }).click();
-  const dialog = page.getByRole('dialog', { name: 'Υπενθύμιση στο ημερολόγιο' });
+  await page.getByRole('button', { name: /Υπενθύμιση στην ατζέντα/ }).click();
+  const dialog = page.getByRole('dialog', { name: 'Υπενθύμιση στην ατζέντα του κινητού' });
   await expect(dialog).toBeVisible();
   const download = page.waitForEvent('download');
-  await dialog.getByRole('button', { name: /Πρόσθεσε στο ημερολόγιο/ }).click();
+  await dialog.getByRole('button', { name: /Πρόσθεσε στην ατζέντα/ }).click();
   expect((await download).suggestedFilename()).toBe('ypenthymisi.ics');
 });
 
@@ -238,8 +313,8 @@ test('the Journal makes a PDF of the week', async ({ page }) => {
 
 test('the cat guides someone new: how you feel, and a first step', async ({ page }) => {
   await page.goto('/el', { waitUntil: 'networkidle' });
-  // The first time on a page, one sentence about it.
-  await expect(page.getByRole('status').filter({ hasText: 'πάτα με' })).toBeVisible({ timeout: 6000 });
+  // (The first-visit line to the welcome is for someone who has not seen it.)
+  await expect(page.getByTestId('home-welcome')).toHaveCount(0);
   await page.getByRole('button', { name: 'Συνοδός: τι κάνω τώρα;' }).click();
   const sheet = page.getByRole('dialog', { name: 'Συνοδός' });
   await expect(sheet.getByRole('heading', { name: 'Πώς νιώθεις τώρα;' })).toBeVisible();
@@ -362,7 +437,6 @@ test('the Tai Chi practices draw the figure in 3D where the device can', async (
   test.skip(!webgl, 'no WebGL in this browser');
   await expect(page.locator('.breath-hero canvas')).toHaveCount(1, { timeout: 15_000 });
   await page.getByRole('button', { name: 'Ξεκίνα', exact: true }).first().click();
-  await page.getByRole('button', { name: 'Χωρίς ήχο', exact: true }).click();
   // Moving through the breath (after the three seconds to take position).
   await page.waitForTimeout(5000);
   await expect(page.locator('.breath-hero canvas')).toHaveCount(1);
