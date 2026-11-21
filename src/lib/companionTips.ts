@@ -8,7 +8,7 @@ export type TipPlace =
 
 export const TIPS: Record<TipPlace, { el: string; en: string }> = {
   home: { el: 'Καλώς ήρθες. Αν δεν ξέρεις από πού να ξεκινήσεις, πάτα με.', en: 'Welcome. If you don\'t know where to start, tap me.' },
-  practice: { el: 'Εδώ κάνεις πράξη τη μέθοδο. Διάλεξε έναν άξονα, ή πάτα με να σου πω τι ταιριάζει τώρα.', en: 'Here you put the method into practice. Choose an axis, or tap me and I\'ll say what fits now.' },
+  practice: { el: 'Εδώ κάνεις πράξη τη μέθοδο. Διάλεξε τι θέλεις να κάνεις, ή πάτα με να σου πω τι ταιριάζει τώρα.', en: 'Here you put the method into practice. Choose what you want to do, or tap me and I\'ll say what fits now.' },
   microdoses: { el: 'Πολύ σύντομες πρακτικές. Μία αρκεί για σήμερα.', en: 'Very short practices. One is enough for today.' },
   sanctuary: { el: 'Ήχοι για να ξεκουραστείς. Διάλεξε έναν και άφησέ τον να παίζει.', en: 'Sounds to rest with. Choose one and let it play.' },
   cards: { el: 'Οι περιλήψεις του βιβλίου. Κράτα αυτή που ταιριάζει στη στιγμή.', en: 'The book\'s summaries. Keep the one that fits the moment.' },
@@ -62,13 +62,25 @@ export function markTipSeen(place: TipPlace) {
   } catch { /* storage may be off: the tip may then show again, which is harmless */ }
 }
 
+/** A tip that could not be shown without covering the page: it may come another time. */
+export function unmarkTipSeen(place: TipPlace) {
+  try {
+    const seen = readSeen().filter(p => p !== place);
+    localStorage.setItem(SEEN_KEY, JSON.stringify(seen));
+  } catch { /* nothing to do */ }
+}
+
 export function isQuiet(): boolean {
   try { return localStorage.getItem(QUIET_KEY) === '1'; } catch { return false; }
 }
+
+/** Said when "Quiet cat" changes, so the cat's sheet and Settings show the same. */
+export const QUIET_EVENT = 'companion-quiet-change';
 
 export function setQuiet(quiet: boolean) {
   try {
     if (quiet) localStorage.setItem(QUIET_KEY, '1');
     else localStorage.removeItem(QUIET_KEY);
   } catch { /* nothing to do */ }
+  try { window.dispatchEvent(new Event(QUIET_EVENT)); } catch { /* no window */ }
 }

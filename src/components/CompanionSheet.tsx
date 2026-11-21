@@ -13,7 +13,8 @@ import { readingSpot, savedPage, chaptersRead } from '../lib/readingSpot';
 import { cn } from '../lib/utils';
 import { CatInfinityAvatar } from './CatInfinityAvatar';
 import HomeCheckin from './HomeCheckin';
-import { placeOf, isQuiet, setQuiet } from '../lib/companionTips';
+import { placeOf, TIPS } from '../lib/companionTips';
+import { useQuietCat } from '../hooks/useQuietCat';
 import { welcomeSeen } from '../lib/welcome';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 
@@ -41,7 +42,7 @@ export default function CompanionSheet() {
   const { progress } = useProgress();
   const location = useLocation();
   const [openNum, setOpenNum] = useState<number | null>(null);
-  const [quiet, setQuietState] = useState(isQuiet);
+  const [quiet, toggleQuiet] = useQuietCat();
   const { logs } = useActivityTracker();
   const here = placeOf(location.pathname);
   // The welcome now lives here, with the cat: until it is seen, it comes first.
@@ -81,11 +82,10 @@ export default function CompanionSheet() {
   }, [readKey, lang]);
 
   // "What is here?": the cat says again what this place is.
-  const tipAgain = () => {
-    close();
-    setTimeout(() => window.dispatchEvent(new Event('companion-tip-again')), 350);
-  };
-  const toggleQuiet = () => { setQuiet(!quiet); setQuietState(!quiet); };
+  // Said here, in the sheet: a bubble over the page could cover what it describes.
+  const [tipHere, setTipHere] = useState(false);
+  useEffect(() => { if (!sheetVisible) setTipHere(false); }, [sheetVisible]);
+  const tipAgain = () => setTipHere(true);
 
   // The cat's tour of the home page: to the home page first, if you are elsewhere.
   const navigate = useNavigate();
@@ -316,7 +316,7 @@ export default function CompanionSheet() {
                                   </li>
                                 ))}
                               </ul>
-                              <Link to={`/chapters/${c.num}`} onClick={close} className="self-start min-h-[36px] flex items-center gap-1 text-[12px] text-teal-300/80 hover:text-teal-200">
+                              <Link to={`/chapters/${c.num}`} onClick={close} className="self-start min-h-[44px] flex items-center gap-1 text-[12px] text-teal-300/80 hover:text-teal-200">
                                 {el ? 'Άνοιξε το κεφάλαιο' : 'Open the chapter'} <ChevronRight size={14} />
                               </Link>
                             </div>
@@ -337,10 +337,13 @@ export default function CompanionSheet() {
                   </button>
                 )}
                 {here && !newcomer && (
-                  <button onClick={tipAgain} className="flex items-center gap-3 min-h-[48px] px-4 rounded-2xl text-left text-[14px] text-ink/80 hover:bg-white/[0.04] transition-colors">
+                  <button onClick={tipAgain} aria-expanded={tipHere} className="flex items-center gap-3 min-h-[48px] px-4 rounded-2xl text-left text-[14px] text-ink/80 hover:bg-white/[0.04] transition-colors">
                     <HelpCircle size={17} strokeWidth={1.6} className="shrink-0 text-ink/60" aria-hidden="true" />
                     {el ? 'Τι υπάρχει σε αυτή τη σελίδα;' : 'What is on this page?'}
                   </button>
+                )}
+                {here && !newcomer && tipHere && (
+                  <p role="status" className="mx-4 -mt-1 mb-1 text-[14px] leading-relaxed text-ink/85">{TIPS[here][lang]}</p>
                 )}
                 <button
                   role="switch"
