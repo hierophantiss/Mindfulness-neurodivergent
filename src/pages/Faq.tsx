@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { PageHeader } from '../components/PageHeader';
 import { KNOWLEDGE_FAQ } from '../data/faq';
 import { useLanguage } from '../hooks/useLanguage';
+import { CHAPTER_TITLES } from '../data/chapterTitles';
 
 export default function Faq() {
   const navigate = useNavigate();
@@ -31,7 +32,9 @@ export default function Faq() {
             <div key={chapter} className="mb-10 w-full">
               <h2 className="font-medium text-[13px] text-teal-400 mb-5 px-2 flex items-center gap-3">
                 <span className="w-6 h-px bg-teal-800/50"></span>
+                {/* The chapter's name too: a question is found by its subject, not by a number. */}
                 {language === 'el' ? `Κεφάλαιο ${chapter}` : `Chapter ${chapter}`}
+                {CHAPTER_TITLES[language === 'en' ? 'en' : 'el'][Number(chapter)] ? ` · ${CHAPTER_TITLES[language === 'en' ? 'en' : 'el'][Number(chapter)]}` : ''}
                 <span className="flex-1 h-px bg-zinc-800/50"></span>
               </h2>
               <div className="space-y-4 w-full">

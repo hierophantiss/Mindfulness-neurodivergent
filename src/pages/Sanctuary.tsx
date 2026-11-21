@@ -369,7 +369,7 @@ export default function Sanctuary() {
       en: 'Noise: pink and white noise helped children and young people with ADHD a little on attention tasks, while it made them slightly harder for those without ADHD (Nigg et al., 2024). There are no studies of brown noise yet.',
     },
     {
-      el: 'Κράτα την ένταση χαμηλά. Αν ένας ήχος σε ενοχλεί, κλείσ’ τον· δεν τον χρειάζεσαι για να ασκηθείς.',
+      el: 'Κράτα την ένταση του ήχου χαμηλά. Αν ένας ήχος σε ενοχλεί, κλείσ’ τον· δεν τον χρειάζεσαι για να ασκηθείς.',
       en: 'Keep the volume low. If a sound bothers you, turn it off; you do not need it to practise.',
     },
   ];
@@ -404,7 +404,7 @@ export default function Sanctuary() {
               else navigate('/');
             }}
             aria-label={language === 'el' ? 'Πίσω' : 'Back'}
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/[0.04] border border-white/[0.1] text-ink/70 hover:text-ink transition-colors"
+            className="w-11 h-11 flex items-center justify-center rounded-full bg-white/[0.04] border border-white/[0.1] text-ink/70 hover:text-ink transition-colors"
           >
             <ChevronLeft size={20} />
           </button>
@@ -418,14 +418,17 @@ export default function Sanctuary() {
           </div>
           <button
             onClick={() => setIsDimmed(!isDimmed)}
-            aria-label={language === 'el' ? 'Σκοτείνιασμα οθόνης' : 'Dim the screen'}
+            aria-label={language === 'el' ? 'Σκοτάδι: σκοτείνιασμα οθόνης' : 'Dark: dim the screen'}
             aria-pressed={isDimmed}
-            className={cn(
-              "w-10 h-10 flex items-center justify-center rounded-full border transition-all duration-300",
-              isDimmed ? "bg-teal-500/20 border-teal-500/50 text-teal-400" : "bg-white/5 border-white/10 text-ink/70"
-            )}
+            className="flex flex-col items-center gap-1 min-w-[48px] text-ink/75"
           >
-            <Moon size={20} />
+            <span className={cn(
+              "w-11 h-11 flex items-center justify-center rounded-full border transition-all duration-300",
+              isDimmed ? "bg-teal-500/20 border-teal-500/50 text-teal-400" : "bg-white/5 border-white/10 text-ink/70"
+            )}>
+              <Moon size={20} aria-hidden="true" />
+            </span>
+            <span aria-hidden="true" className="text-[11px] leading-none">{language === 'el' ? 'Σκοτάδι' : 'Dark'}</span>
           </button>
         </div>
 
@@ -513,7 +516,7 @@ export default function Sanctuary() {
 
               <button
                 onClick={onMain}
-                aria-label={isPlaying ? (language === 'el' ? 'Παύση' : 'Pause') : (language === 'el' ? 'Αναπαραγωγή' : 'Play')}
+                aria-label={isPlaying ? (language === 'el' ? 'Παύση' : 'Pause') : `${language === 'el' ? 'Αναπαραγωγή' : 'Play'}: ${L((activeTrackDef ?? tracks[0]).label)}`}
                 className="w-16 h-16 flex items-center justify-center rounded-full bg-teal-500/20 border border-teal-500/40 text-teal-300 hover:bg-teal-500/30 transition-colors"
               >
                 {isPlaying ? <span className="flex gap-1.5"><span className="w-1.5 h-4 bg-current rounded-full" /><span className="w-1.5 h-4 bg-current rounded-full" /></span> : <Play size={24} className="ml-1" fill="currentColor" />}
@@ -528,11 +531,18 @@ export default function Sanctuary() {
               </button>
             </div>
 
+            {/* Before a sound is chosen, ▶ says which one it plays. */}
+            {!activeTrackDef && (
+              <p className="-mt-5 mb-6 text-[13px] text-ink/75" data-testid="sanctuary-next">
+                {language === 'el' ? 'Με το ▶ παίζει: ' : 'With ▶ plays: '}{L(tracks[0].label)}
+              </p>
+            )}
+
             <button
               onClick={cycleTimer}
               aria-label={language === 'el' ? 'Χρονοδιακόπτης: πάτα για να αλλάξεις τη διάρκεια' : 'Timer: tap to change the length'}
               className={cn(
-                "px-4 py-2 rounded-full border flex items-center justify-center gap-2 text-[12px] font-medium transition-colors",
+                "px-4 min-h-[44px] rounded-full border flex items-center justify-center gap-2 text-[12px] font-medium transition-colors",
                 timer !== null ? "bg-teal-500/10 border-teal-500/30 text-teal-200" : "bg-white/[0.05] border-white/[0.08] text-ink/70 hover:bg-white/[0.1]"
               )}
             >
@@ -561,7 +571,7 @@ export default function Sanctuary() {
                 step="0.01"
                 value={volume}
                 onChange={(e) => setVolume(parseFloat(e.target.value))}
-                aria-label={language === 'el' ? 'Ένταση' : 'Volume'}
+                aria-label={language === 'el' ? 'Ένταση ήχου' : 'Volume'}
                 className="flex-1 accent-teal-500 h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer"
               />
             </div>
@@ -578,7 +588,7 @@ export default function Sanctuary() {
                       aria-checked={under === c.id}
                       onClick={() => chooseUnder(c.id)}
                       className={cn(
-                        "min-h-[40px] px-3.5 rounded-full border text-[13px] transition-colors",
+                        "min-h-[44px] px-3.5 rounded-full border text-[13px] transition-colors",
                         under === c.id ? "bg-teal-500/15 border-teal-500/40 text-ink" : "bg-white/[0.04] border-white/[0.1] text-ink/75 hover:text-ink"
                       )}
                     >
@@ -735,9 +745,7 @@ export default function Sanctuary() {
                         <div className="relative z-10 pr-2">
                           {active && isPlaying ? (
                             <div className="w-1.5 h-1.5 rounded-full bg-teal-400 shadow-[0_0_8px_rgba(127,169,228,0.6)]" />
-                          ) : (
-                            <span className="text-ink/70 text-lg font-light" aria-hidden="true">∞</span>
-                          )}
+                          ) : null}
                         </div>
                       </button>
                     );

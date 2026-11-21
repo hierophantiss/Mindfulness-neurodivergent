@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Anchor, Wind, Focus, Maximize, Mail, MessageCircleHeart } from 'lucide-react';
 import { PageHeader } from '../components/PageHeader';
+import { openWelcome } from '../lib/welcome';
 import { useLanguage } from '../hooks/useLanguage';
 import { ABOUT } from '../data/about';
 import { AXIS_COLOR } from '../data/axisColor';
@@ -16,7 +17,7 @@ const AXIS_ICON = { body: Anchor, breath: Wind, attention: Focus, space: Maximiz
 
 const h2 = 'font-display text-[24px] leading-snug text-ink';
 const para = 'text-[15.5px] leading-relaxed text-ink/80';
-const textLink = 'inline-flex items-center min-h-[40px] text-[14.5px] text-ink/75 underline decoration-white/25 underline-offset-4 hover:text-ink';
+const textLink = 'inline-flex items-center min-h-[44px] text-[14.5px] text-ink/75 underline decoration-white/25 underline-offset-4 hover:text-ink';
 
 function Dots({ items }: { items: string[] }) {
   return (
@@ -49,6 +50,8 @@ export default function About() {
         <p className="flex flex-wrap gap-x-5">
           <Link to="/method" className={textLink}>{el ? 'Η Μέθοδος' : 'The Method'}</Link>
           <Link to="/chapters" className={textLink}>{BOOK_NAME[l]}</Link>
+          {/* The welcome's three cards (who it is for, what it is not), at any time. */}
+          <button type="button" onClick={openWelcome} className={textLink}>{el ? 'Η εφαρμογή σε 3 κάρτες' : 'The app in 3 cards'}</button>
         </p>
       </section>
 

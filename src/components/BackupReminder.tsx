@@ -47,14 +47,14 @@ export default function BackupReminder({ lang }: { lang: 'el' | 'en' }) {
               <button
                 type="button"
                 onClick={save}
-                className="min-h-[36px] inline-flex items-center rounded-full px-3.5 bg-[var(--tint-sand-hi)] border border-[var(--tint-sand-line)] text-[13px] text-ink/90 hover:text-ink transition-colors"
+                className="min-h-[44px] inline-flex items-center rounded-full px-3.5 bg-[var(--tint-sand-hi)] border border-[var(--tint-sand-line)] text-[13px] text-ink/90 hover:text-ink transition-colors"
               >
                 {el ? 'Αποθήκευση αντιγράφου' : 'Save a copy'}
               </button>
               <button
                 type="button"
                 onClick={later}
-                className="min-h-[36px] inline-flex items-center px-2 text-[13px] text-ink/65 hover:text-ink/85 transition-colors"
+                className="min-h-[44px] inline-flex items-center px-2 text-[13px] text-ink/65 hover:text-ink/85 transition-colors"
               >
                 {el ? 'Όχι τώρα' : 'Not now'}
               </button>

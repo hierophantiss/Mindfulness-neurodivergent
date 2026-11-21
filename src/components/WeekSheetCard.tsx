@@ -151,7 +151,7 @@ export function WeekSheetCard({ lang }: { lang: Lang }) {
             role="radio"
             aria-checked={withNotes === v}
             onClick={() => setWithNotes(v)}
-            className={`min-h-[40px] px-2 rounded-full text-[13px] whitespace-nowrap transition-colors ${withNotes === v ? 'bg-white/[0.09] text-ink' : 'text-ink/70 hover:text-ink/80'}`}
+            className={`min-h-[44px] px-2 rounded-full text-[13px] whitespace-nowrap transition-colors ${withNotes === v ? 'bg-white/[0.09] text-ink' : 'text-ink/70 hover:text-ink/80'}`}
           >
             {v ? t.notes : t.graph}
           </button>

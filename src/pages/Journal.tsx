@@ -1,7 +1,7 @@
 import { PageHeader } from '../components/PageHeader';
 import React, { useState, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { practiceOf } from '../lib/quietAxis';
-import { ChevronLeft, ChevronRight, RefreshCw, Plus, Search, CalendarArrowDown, Heart, Wind, Lightbulb, Compass } from 'lucide-react';
+import { ChevronLeft, ChevronRight, RefreshCw, Plus, Search, CalendarArrowDown, Heart, Wind, Lightbulb, Compass, Check } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useLanguage } from '../hooks/useLanguage';
@@ -262,7 +262,7 @@ export default function Journal() {
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
             {/* Date */}
             <div className="flex items-center justify-between mb-8 bg-white/[0.02] p-2 rounded-full border border-white/[0.05]">
-              <button onClick={() => changeDate(-1)} aria-label={lang === 'el' ? 'Προηγούμενη μέρα' : 'Previous day'} className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/[0.05] text-ink/70 hover:text-ink transition-colors">
+              <button onClick={() => changeDate(-1)} aria-label={lang === 'el' ? 'Προηγούμενη μέρα' : 'Previous day'} className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-white/[0.05] text-ink/70 hover:text-ink transition-colors">
                 <ChevronLeft size={20} />
               </button>
               <div className="flex flex-col items-center">
@@ -273,7 +273,7 @@ export default function Journal() {
                   {currentDate.toLocaleDateString(lang === 'el' ? 'el-GR' : 'en-GB', { weekday: 'long' })} · {currentDate.getFullYear()}
                 </span>
               </div>
-              <button onClick={() => changeDate(1)} disabled={isToday} aria-label={lang === 'el' ? 'Επόμενη μέρα' : 'Next day'} className={cn("w-10 h-10 flex items-center justify-center rounded-full transition-colors", isToday ? "opacity-30 cursor-not-allowed text-ink/70" : "hover:bg-white/[0.05] text-ink/70 hover:text-ink")}>
+              <button onClick={() => changeDate(1)} disabled={isToday} aria-label={lang === 'el' ? 'Επόμενη μέρα' : 'Next day'} className={cn("w-11 h-11 flex items-center justify-center rounded-full transition-colors", isToday ? "opacity-30 cursor-not-allowed text-ink/70" : "hover:bg-white/[0.05] text-ink/70 hover:text-ink")}>
                 <ChevronRight size={20} />
               </button>
             </div>
@@ -328,7 +328,7 @@ export default function Journal() {
                       )}
                     >
                       <span
-                        className="w-3 h-3 rounded-full border transition-colors"
+                        className="w-3 h-3 shrink-0 rounded-full border transition-colors"
                         style={{ borderColor: AXIS_COLOR[axis], backgroundColor: on ? AXIS_COLOR[axis] : 'transparent' }}
                       />
                       {AXIS_LABEL[axis][lang]}
@@ -356,11 +356,11 @@ export default function Journal() {
                   <p className="text-[12px] text-ink/70">{lang === 'el' ? 'Ερώτηση της ημέρας' : 'Question of the day'}</p>
                   <p className="mt-1 text-[15px] desk:text-[16px] leading-relaxed text-ink/85">{question.q}</p>
                   <div className="flex items-center gap-4 mt-1">
-                    <button onClick={() => appendText(`~ ${question.q}\n`)} className="min-h-[36px] flex items-center gap-1.5 whitespace-nowrap text-[12.5px] text-ink/70 hover:text-ink/90 transition-colors">
+                    <button onClick={() => appendText(`~ ${question.q}\n`)} className="min-h-[44px] flex items-center gap-1.5 whitespace-nowrap text-[12.5px] text-ink/70 hover:text-ink/90 transition-colors">
                       <Plus size={13} /> {lang === 'el' ? 'Γράψε γι\' αυτήν' : 'Write about it'}
                     </button>
                     {questionPool.length > 1 && (
-                      <button onClick={() => setQuestionShift(n => n + 1)} className="min-h-[36px] flex items-center gap-1.5 whitespace-nowrap text-[12.5px] text-ink/70 hover:text-ink/80 transition-colors">
+                      <button onClick={() => setQuestionShift(n => n + 1)} className="min-h-[44px] flex items-center gap-1.5 whitespace-nowrap text-[12.5px] text-ink/70 hover:text-ink/80 transition-colors">
                         <RefreshCw size={12} /> {lang === 'el' ? 'Άλλη ερώτηση' : 'Another question'}
                       </button>
                     )}
@@ -377,6 +377,14 @@ export default function Journal() {
                 rows={6}
                 className="mt-4 w-full min-h-[168px] rounded-2xl bg-black/20 border border-white/[0.07] focus:border-[var(--color-accent)]/50 resize-none overflow-hidden outline-none px-4 py-3 text-[16px] desk:text-[17px] leading-[1.7] text-ink/90 placeholder:text-ink/35 transition-colors"
               />
+              {!notSaved && (
+                // The Journal keeps the text as it is typed: say so, so nobody looks for a save button.
+                <p className="mt-2 ml-1 flex items-center gap-1.5 text-[12.5px] text-ink/70" aria-live="polite" data-testid="journal-kept">
+                  {entry.text.trim()
+                    ? <><Check size={13} aria-hidden="true" className="shrink-0 text-[var(--axis-body-ink)]" />{lang === 'el' ? 'Κρατήθηκε σε αυτή τη συσκευή.' : 'Kept on this device.'}</>
+                    : (lang === 'el' ? 'Ό,τι γράφεις κρατιέται μόνο του, σε αυτή τη συσκευή.' : 'What you write is kept by itself, on this device.')}
+                </p>
+              )}
               {notSaved && (
                 <p role="alert" className="mt-2 rounded-xl border border-[var(--tint-rose-line)] bg-[var(--tint-rose-bg)] px-3 py-2 text-[13.5px] leading-relaxed text-[var(--tint-rose-ink)]">
                   {lang === 'el'
@@ -385,13 +393,13 @@ export default function Journal() {
                 </p>
               )}
 
-              <div className="mt-3 flex items-center gap-2 overflow-x-auto pb-1 custom-scrollbar desk:flex-wrap desk:overflow-visible">
-                <span className="shrink-0 text-[12px] text-ink/70">{lang === 'el' ? 'Ή ξεκίνα από:' : 'Or start from:'}</span>
+              <div className="mt-3 flex items-center gap-2 flex-wrap">
+                <span className="w-full text-[12px] text-ink/70">{lang === 'el' ? 'Ή ξεκίνα από:' : 'Or start from:'}</span>
                 {QUICK_TEMPLATES.map(t => (
                   <button
                     key={t.id}
                     onClick={() => appendText(t.content[lang])}
-                    className="shrink-0 min-h-[36px] flex items-center gap-2 bg-white/[0.03] border border-white/[0.07] hover:bg-white/[0.07] rounded-full px-3.5 transition-colors"
+                    className="shrink-0 min-h-[44px] flex items-center gap-2 bg-white/[0.03] border border-white/[0.07] hover:bg-white/[0.07] rounded-full px-3.5 transition-colors"
                   >
                     <t.icon size={14} className="text-ink/70" strokeWidth={1.75} aria-hidden="true" />
                     <span className="text-[12.5px] text-ink/75">{t.title[lang]}</span>

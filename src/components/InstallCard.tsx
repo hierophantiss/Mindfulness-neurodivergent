@@ -83,7 +83,7 @@ export default function InstallCard({ lang, installed, canPrompt }: Props) {
                 <button
                   type="button"
                   onClick={go}
-                  className="min-h-[36px] inline-flex items-center gap-1.5 rounded-full px-3.5 bg-[var(--tint-lav-hi)] border border-[var(--tint-lav-line)] text-[13px] text-ink/90 hover:text-ink transition-colors"
+                  className="min-h-[44px] inline-flex items-center gap-1.5 rounded-full px-3.5 bg-[var(--tint-lav-hi)] border border-[var(--tint-lav-line)] text-[13px] text-ink/90 hover:text-ink transition-colors"
                 >
                   <Download size={14} aria-hidden="true" />
                   {el ? 'Εγκατάσταση' : 'Install'}
@@ -92,7 +92,7 @@ export default function InstallCard({ lang, installed, canPrompt }: Props) {
               <button
                 type="button"
                 onClick={later}
-                className="min-h-[36px] inline-flex items-center px-2 text-[13px] text-ink/65 hover:text-ink/85 transition-colors"
+                className="min-h-[44px] inline-flex items-center px-2 text-[13px] text-ink/65 hover:text-ink/85 transition-colors"
               >
                 {el ? 'Όχι τώρα' : 'Not now'}
               </button>

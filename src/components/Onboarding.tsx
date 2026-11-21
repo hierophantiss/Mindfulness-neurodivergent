@@ -133,10 +133,9 @@ export default function Onboarding({ onClose }: { onClose: () => void }) {
         <button 
           onClick={() => setLanguage(language === 'en' ? 'el' : 'en')}
           className="btn-soft !min-h-[44px] !px-4 !text-[13px]"
-          aria-label={language === 'en' ? 'ΕΛ, Ελληνικά' : 'EN, English'}
           lang={language === 'en' ? 'el' : 'en'}
         >
-          {language === 'en' ? 'ΕΛ' : 'EN'}
+          {language === 'en' ? 'Ελληνικά' : 'English'}
         </button>
         <button 
           onClick={handleComplete}

@@ -64,7 +64,7 @@ export default function Cards() {
                 </li>
               ))}
             </ol>
-            <Link to={`/chapters/${c.chapter}`} className="mt-5 inline-flex items-center gap-1.5 min-h-[40px] text-[13.5px] text-ink/70 hover:text-ink transition-colors">
+            <Link to={`/chapters/${c.chapter}`} className="mt-5 inline-flex items-center gap-1.5 min-h-[44px] text-[13.5px] text-ink/70 hover:text-ink transition-colors">
               {el ? `Κεφάλαιο ${c.chapter}: ${c.chapterTitle}` : `Chapter ${c.chapter}: ${c.chapterTitle}`}
               <ArrowRight size={14} aria-hidden="true" className="opacity-70" />
             </Link>

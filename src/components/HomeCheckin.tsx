@@ -199,7 +199,7 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
                     <button
                       type="button"
                       onClick={() => setAlt(i => i + 1)}
-                      className="self-start flex items-center gap-1.5 px-3 min-h-[36px] text-[13px] text-ink/70 hover:text-ink/85 transition-colors"
+                      className="self-start flex items-center gap-1.5 px-3 min-h-[44px] text-[13px] text-ink/70 hover:text-ink/85 transition-colors"
                     >
                       <RefreshCw size={13} className="opacity-70" />
                       {lang === 'el' ? 'Άλλη πρόταση' : 'Another suggestion'}
@@ -228,7 +228,7 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
                         onClick={() => setDetailId(cur => (cur === d.id ? null : d.id))}
                         aria-pressed={detailId === d.id}
                         className={cn(
-                          "min-h-[40px] px-2 rounded-full border text-[12.5px] transition-colors active:scale-[0.97]",
+                          "min-h-[44px] px-2 rounded-full border text-[12.5px] transition-colors active:scale-[0.97]",
                           detailId === d.id
                             ? "bg-white/[0.12] border-white/20 text-ink/90"
                             : "bg-white/[0.05] border-white/[0.07] text-ink/70 hover:text-ink/80"

@@ -26,6 +26,8 @@ import InstallCard from '../components/InstallCard';
 import { readingSpot, chaptersRead } from '../lib/readingSpot';
 import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 import { PRACTICE_CATALOG } from '../data/practiceCatalog';
+import { SITE_NAME } from '../seo/head';
+import { welcomeSeen, markWelcomeSeen, openWelcome } from '../lib/welcome';
 
 /** The last practice done (in the last month), to take up again with one tap. */
 function useLastPractice(lang: 'el' | 'en') {
@@ -128,6 +130,15 @@ export default function Dashboard() {
     return () => window.removeEventListener('home-tour', start);
   }, []);
   const [bookOpen, setBookOpen] = useState(false);
+  // First visit only: one quiet line to the welcome's three cards (who the app
+  // is for, that it is not therapy, no streaks), without the cat. Gone once
+  // they are seen or put away.
+  const [newcomer, setNewcomer] = useState(() => !welcomeSeen());
+  useEffect(() => {
+    const seen = () => setNewcomer(false);
+    window.addEventListener('welcome-seen', seen);
+    return () => window.removeEventListener('welcome-seen', seen);
+  }, []);
   const { installed, canPrompt } = useInstallApp(language);
 
 
@@ -146,11 +157,12 @@ export default function Dashboard() {
     [hour, recentState]
   );
 
-  // The page's one heading is the app's name where it shows (the phone's top
-  // row); on a computer that row gives way to the side bar, so the greeting is.
+  // The page's one heading is the app's name: in the phone's top row; on a
+  // computer that row gives way to the side bar, so there it is said for screen
+  // readers only (the greeting changes with the hour and is not a page's name).
   const onComputer = useOnComputer();
   const BrandTag = onComputer ? 'span' : 'h1';
-  const GreetingTag = onComputer ? 'h1' : 'p';
+  const GreetingTag = 'p';
 
   const greeting = hour >= 6 && hour < 12
     ? (language === 'el' ? 'Καλημέρα' : 'Good morning')
@@ -240,6 +252,8 @@ export default function Dashboard() {
           </Link>
         </div>
 
+        {onComputer && <h1 className="sr-only">{SITE_NAME[lang]}</h1>}
+
         {/* The greeting is there at once (no fade): it is the first word you read,
             and the page counts as shown only when it is. */}
         <div className="mt-6 short:mt-2 desk:mt-2">
@@ -247,11 +261,23 @@ export default function Dashboard() {
             {greeting}
           </GreetingTag>
           {/* The method in one line: one way, many ways in. */}
-          <Link to="/method" className="sky-text mt-2 inline-flex items-center gap-1.5 min-h-[40px] text-[15px] leading-snug text-ink/75 hover:text-ink transition-colors desk:mt-3 desk:text-[18px]">
+          <Link to="/method" className="sky-text mt-2 inline-flex items-center gap-1.5 min-h-[44px] text-[15px] leading-snug text-ink/75 hover:text-ink transition-colors desk:mt-3 desk:text-[18px]">
             <span>{el ? 'Μία μέθοδος, τέσσερις άξονες. Δες πώς δουλεύει' : 'One method, four axes. See how it works'}</span>
             <ArrowRight size={15} aria-hidden="true" className="shrink-0 opacity-70" />
           </Link>
         </div>
+
+        {newcomer && (
+          <div className="mt-3 flex items-center gap-1 rounded-full pill-sky pl-4 pr-1 max-w-full w-fit" data-testid="home-welcome">
+            <button type="button" onClick={openWelcome} className="flex items-center gap-1.5 min-h-[44px] text-left text-[14px] leading-snug text-ink/85 hover:text-ink">
+              <span>{el ? 'Πρώτη φορά εδώ; Γνώρισε την εφαρμογή σε 3 κάρτες' : 'First time here? Meet the app in 3 cards'}</span>
+              <ArrowRight size={14} aria-hidden="true" className="shrink-0 opacity-70" />
+            </button>
+            <button type="button" onClick={markWelcomeSeen} aria-label={el ? 'Όχι τώρα' : 'Not now'} className="w-11 h-11 shrink-0 flex items-center justify-center rounded-full text-ink/65 hover:text-ink">
+              <X size={15} aria-hidden="true" />
+            </button>
+          </div>
+        )}
 
         {/* First "How do you feel", then the book; on a computer side by side, in the same order. */}
         <div className="desk:grid desk:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] desk:gap-7 desk:mt-10 desk:items-start">
@@ -267,7 +293,7 @@ export default function Dashboard() {
           <section aria-labelledby="home-learn-title" className="mt-[30px] short:mt-4 desk:mt-0">
             <div className="flex items-baseline justify-between gap-3 mb-3 short:mb-1 desk:mb-5">
               <h2 id="home-learn-title" className={sectionTitle}>{el ? 'Το βιβλίο' : 'The book'}</h2>
-              <Link to="/chapters" className="sky-text flex items-center min-h-[36px] text-[13.5px] text-ink/75 hover:text-ink transition-colors">
+              <Link to="/chapters" className="sky-text flex items-center min-h-[44px] text-[13.5px] text-ink/75 hover:text-ink transition-colors">
                 {el ? `${chapters.length} κεφάλαια` : `${chapters.length} chapters`}
               </Link>
             </div>
@@ -309,7 +335,7 @@ export default function Dashboard() {
             {(lastPractice || hasRead) && (
               <div className="mt-3 flex items-center justify-between gap-3 text-[13.5px] desk:mt-4 desk:text-[14.5px]">
                 {lastPractice ? (
-                  <Link to={lastPractice.path} className="flex items-center gap-1.5 min-w-0 min-h-[40px] text-ink/80 hover:text-ink transition-colors">
+                  <Link to={lastPractice.path} className="flex items-center gap-1.5 min-w-0 min-h-[44px] text-ink/80 hover:text-ink transition-colors">
                     <span className="shrink-0 text-ink/65">{el ? 'Συνέχισε:' : 'Continue:'}</span>
                     <span className="truncate">{lastPractice.title}</span>
                     <span className="shrink-0 text-ink/65 max-[359px]:hidden">· {lastPractice.when}</span>
@@ -317,7 +343,7 @@ export default function Dashboard() {
                   </Link>
                 ) : <span />}
                 {hasRead && (
-                  <button type="button" onClick={() => setSheetVisible(true)} className="shrink-0 min-h-[40px] text-ink/70 hover:text-ink transition-colors underline decoration-white/20 underline-offset-4">
+                  <button type="button" onClick={() => setSheetVisible(true)} className="shrink-0 min-h-[44px] text-ink/70 hover:text-ink transition-colors underline decoration-white/20 underline-offset-4">
                     {el ? 'Τι έχεις διαβάσει' : 'What you have read'}
                   </button>
                 )}
@@ -332,7 +358,7 @@ export default function Dashboard() {
           <motion.section variants={itemVariants} aria-labelledby="home-practise-title" className="mt-[30px] desk:mt-12">
             <div className="flex items-baseline justify-between gap-3 mb-3 desk:mb-5">
               <h2 id="home-practise-title" className={sectionTitle}>{el ? 'Πρακτική' : 'Practice'}</h2>
-              <Link to="/practice" className="sky-text flex items-center min-h-[36px] text-[13.5px] text-ink/75 hover:text-ink transition-colors">
+              <Link to="/practice" className="sky-text flex items-center min-h-[44px] text-[13.5px] text-ink/75 hover:text-ink transition-colors">
                 {el ? 'όλες οι ασκήσεις' : 'all practices'}
               </Link>
             </div>

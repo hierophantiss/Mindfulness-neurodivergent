@@ -370,6 +370,8 @@ for (const m of MICRODOSES_EXERCISES) {
   const t = PRACTICE_TEXTS[m.id];
   if (!t) continue;
   if (t.card) m.desc = t.card;
+  // One name everywhere: the card in the lists says what its page says.
+  if (t.title) m.title = t.title;
   if (t.evidence === null) delete m.evidence;
   else if (t.evidence) m.evidence = t.evidence;
 }
