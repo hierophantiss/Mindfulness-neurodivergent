@@ -69,8 +69,6 @@ const resolveId = (id: string | null) => (id ? OLD_IDS[id] ?? id : null);
 const MIX_NAME: Text = { el: 'Η μίξη μου', en: 'My mix' };
 
 const TIMER_STEPS = [null, 10, 20, 30, 45, 60] as const;
-/** The sound fades out over the last half minute of the timer. */
-const FADE_SECONDS = 30;
 const NATURE_PREF = 'sanctuary-binaural-nature';
 
 /** Under a binaural tone: as it comes ("default"), nothing ("off"), or one of these. */
@@ -108,7 +106,7 @@ export default function Sanctuary() {
   const { language } = useLanguage();
   const L = (t: Text) => (language === 'en' ? t.en : t.el);
 
-  const { startAudio, stopAudio, fadeOutAudio, isPlaying, nowPlaying, volume: mixerVolume, setGlobalVolume, setLayerLevel } = useBinauralAudio();
+  const { startAudio, stopAudio, isPlaying, nowPlaying, volume: mixerVolume, setGlobalVolume, setLayerLevel, sleepTimer, setSleepTimer } = useBinauralAudio();
 
   // Back in the Sanctuary while one of its sounds still plays (it goes on
   // through the app): that sound shows as playing, as it was left, not
@@ -121,8 +119,11 @@ export default function Sanctuary() {
   const [under, setUnder] = useState<Under>(readUnder);
   const [showInfo, setShowInfo] = useState(false);
   const [isDimmed, setIsDimmed] = useState(false);
-  const [timer, setTimer] = useState<number | null>(null);
-  const [timeLeft, setTimeLeft] = useState<number | null>(null);
+  // The sleep timer runs in the sound engine, so it goes on outside the
+  // Sanctuary; here it shows its time to the second.
+  const timer = sleepTimer?.minutes ?? null;
+  const [now, setNow] = useState(() => Date.now());
+  const timeLeft = sleepTimer ? Math.max(0, Math.ceil((sleepTimer.endsAt - now) / 1000)) : null;
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
   const [videoStartTime, setVideoStartTime] = useState<number>(0);
   const [isVoidActive, setIsVoidActive] = useState(false);
@@ -280,20 +281,21 @@ export default function Sanctuary() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ── Timer: the last half minute fades out ──
+  // ── Timer: counts down here; the engine fades the last half minute out ──
   useEffect(() => {
-    if (timeLeft === null) return;
-    if (timeLeft === FADE_SECONDS && isPlaying) fadeOutAudio(FADE_SECONDS);
-    if (timeLeft <= 0) {
-      // Started again during the fade: keep playing, only the timer ends.
-      if (!isPlaying) setActiveSound(null);
-      setTimeLeft(null);
-      setTimer(null);
-      return;
-    }
-    const id = setTimeout(() => setTimeLeft(t => (t !== null ? t - 1 : null)), 1000);
-    return () => clearTimeout(id);
-  }, [timeLeft, isPlaying, fadeOutAudio]);
+    if (!sleepTimer) return;
+    setNow(Date.now());
+    const id = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, [sleepTimer]);
+  // At its end, with nothing playing (started again during the fade: it keeps
+  // playing, only the timer ends), the sound is no longer the chosen one.
+  const lastTimerRef = useRef(sleepTimer);
+  useEffect(() => {
+    const was = lastTimerRef.current;
+    lastTimerRef.current = sleepTimer;
+    if (was && !sleepTimer && Date.now() >= was.endsAt - 1000 && !isPlaying) setActiveSound(null);
+  }, [sleepTimer, isPlaying]);
 
   // ── Breathing wave: follow the sound's 10-second cycle ──
   useEffect(() => {
@@ -325,8 +327,7 @@ export default function Sanctuary() {
   const cycleTimer = () => {
     const i = TIMER_STEPS.indexOf(timer as (typeof TIMER_STEPS)[number]);
     const next = TIMER_STEPS[(i + 1) % TIMER_STEPS.length];
-    setTimer(next);
-    setTimeLeft(next === null ? null : next * 60);
+    setSleepTimer(next);
   };
 
   const chooseUnder = (next: Under) => {

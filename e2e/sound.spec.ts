@@ -107,3 +107,53 @@ test('home has no accessibility problems with the control showing', async ({ pag
   const r = await new AxeBuilder({ page: page as never }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
   expect(r.violations.map(v => `${v.id}: ${v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(' | ')}`)).toEqual([]);
 });
+
+/** In the Sanctuary: rain with a 10-minute timer, then home (the sound and the timer go on). */
+async function rainWithTimerThenHome(page: Page, isMobile: boolean) {
+  await page.goto('/el/sanctuary', { waitUntil: 'networkidle' });
+  await page.getByRole('button', { name: /Ήρεμη Βροχή/ }).first().click();
+  const timerButton = page.getByRole('button', { name: /^Χρονοδιακόπτης/ });
+  await timerButton.click();                                     // 10 minutes
+  await expect(timerButton).toContainText('10′ ·');
+  if (isMobile) await page.getByRole('button', { name: 'Αρχική', exact: true }).click();
+  else await page.getByRole('navigation', { name: 'Κύρια πλοήγηση' }).getByRole('link', { name: 'Αρχική' }).click();
+  await expect(page.getByRole('heading', { name: 'Πώς νιώθεις τώρα;' })).toBeVisible();
+  await page.waitForTimeout(500);   // "Αρχική" passes through /dashboard: let the page settle
+  await expect(control(page)).toContainText('Ήρεμη Βροχή');
+  await expect(control(page)).toContainText('10′');
+  await expect(control(page).getByRole('link')).toHaveAccessibleName('Ήρεμη Βροχή, σβήνει σε 10 λεπτά: άνοιξε το Καταφύγιο');
+  return timerButton;
+}
+
+test('the sleep timer keeps running away from the Sanctuary, and the sound stops by itself', async ({ page, isMobile }) => {
+  // The page's own time runs on (page changes need it); the test jumps it forward.
+  await page.clock.install();
+  await page.goto('/el', { waitUntil: 'networkidle' });
+  await page.clock.resume();
+  await rainWithTimerThenHome(page, isMobile);
+  for (let i = 0; i < 6; i++) await page.clock.fastForward(30_000);
+  await expect(control(page)).toContainText('7′');
+  await expect(control(page).getByRole('link')).toHaveAccessibleName(/σβήνει σε 7 λεπτά/);
+  // Under a minute left, then the fade and the end: the control goes by itself.
+  for (let i = 0; i < 12; i++) await page.clock.fastForward(30_000);
+  await expect(control(page)).toContainText('<1′');
+  for (let i = 0; i < 4; i++) await page.clock.fastForward(15_000);
+  await expect(control(page)).toHaveCount(0);
+  await page.clock.fastForward(30_000);
+  await page.getByRole('button', { name: /^Μενού$/ }).filter({ visible: true }).first().click();
+  await expect(page.getByRole('dialog', { name: 'Περισσότερα' }).getByRole('button', { name: 'Ήχοι', exact: true })).toBeVisible();
+});
+
+test('back in the Sanctuary, the timer that runs shows its time left (not started again)', async ({ page, isMobile }) => {
+  const timerButton = await rainWithTimerThenHome(page, isMobile);
+  // The time left beside the name passes axe too.
+  const r = await new AxeBuilder({ page: page as never }).include('[data-testid="now-playing"]').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+  expect(r.violations.map(v => v.id)).toEqual([]);
+  await control(page).getByRole('link').click();
+  await expect(page).toHaveURL(/\/sanctuary/);
+  await expect(timerButton).toContainText(/10′ · 9:[0-5]\d/);
+  await expect(page.getByRole('button', { name: 'Παύση', exact: true })).toBeVisible();
+  // Stopping the sound ends the timer.
+  await page.getByRole('button', { name: 'Παύση', exact: true }).click();
+  await expect(timerButton).toHaveText('Χρονοδιακόπτης');
+});

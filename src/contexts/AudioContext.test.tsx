@@ -126,6 +126,40 @@ describe('the sound engine', () => {
     expect(result.current.nowPlaying).toBeNull();
   });
 
+  it('the sleep timer runs in the engine: the last half minute fades out, then all is stopped', () => {
+    const { result } = mixer();
+    const rain = { source: 'sanctuary' as const, trackId: 'rain-ambient', name: { el: 'Ήρεμη Βροχή', en: 'Calm Rain' } };
+    act(() => result.current.startAudio({ base: 0, beat: 0, disableSynth: true, ambientLayers: ['rain'], nowPlaying: rain }));
+    act(() => result.current.setSleepTimer(10));
+    expect(result.current.sleepTimer?.minutes).toBe(10);
+    // Another Sanctuary sound keeps the timer.
+    act(() => result.current.startAudio({ base: 0, beat: 0, disableSynth: true, ambientLayers: ['ocean'], nowPlaying: { ...rain, trackId: 'ocean-ambient' } }));
+    expect(result.current.sleepTimer).not.toBeNull();
+    act(() => { vi.advanceTimersByTime(9.5 * 60_000 - 100); });
+    expect(result.current.isPlaying).toBe(true);
+    act(() => { vi.advanceTimersByTime(200); });                // the fade begins
+    expect(result.current.isPlaying).toBe(false);
+    expect(result.current.nowPlaying).toBeNull();
+    act(() => { vi.advanceTimersByTime(31_000); });
+    expect(ctx.playing()).toEqual([]);
+    expect(result.current.sleepTimer).toBeNull();
+  });
+
+  it('the sleep timer ends with a stop, or when something else starts', () => {
+    const { result } = mixer();
+    const rain = { source: 'sanctuary' as const, trackId: 'rain-ambient', name: { el: 'Ήρεμη Βροχή', en: 'Calm Rain' } };
+    act(() => result.current.startAudio({ base: 0, beat: 0, disableSynth: true, ambientLayers: ['rain'], nowPlaying: rain }));
+    act(() => result.current.setSleepTimer(20));
+    act(() => result.current.stopAudio());
+    expect(result.current.sleepTimer).toBeNull();
+    act(() => result.current.startAudio({ base: 0, beat: 0, disableSynth: true, ambientLayers: ['rain'], nowPlaying: rain }));
+    act(() => result.current.setSleepTimer(20));
+    act(() => result.current.startAudio({ base: 200, beat: 6 }));   // a practice's own sound
+    expect(result.current.sleepTimer).toBeNull();
+    act(() => { vi.advanceTimersByTime(25 * 60_000); });
+    expect(result.current.isPlaying).toBe(true);                   // nothing faded it
+  });
+
   it('volume changes reach what plays, smoothly', () => {
     const { result } = mixer();
     act(() => result.current.startAudio({ base: 200, beat: 6 }));

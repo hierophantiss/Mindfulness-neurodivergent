@@ -7,6 +7,7 @@ import React, {
   useRef,
 } from 'react';
 import { getAudioContext } from '../lib/sound';
+import { SLEEP_FADE_SECONDS } from '../lib/sleepTimer';
 import type { AmbientLayer, AudioConfig, NowPlaying } from '../data/types-breath';
 export type { AmbientLayer, AudioConfig, NowPlaying };
 export { BREATH_WAVE_SECONDS } from '../data/types-breath';
@@ -43,7 +44,13 @@ export interface AudioContextProps {
   updatePhase: (idx: number, label: string) => void;
   /** Changes one layer's level while it plays, without starting it again. */
   setLayerLevel: (layer: AmbientLayer, level: number) => void;
+  /** The Sanctuary's sleep timer: its length and when it ends (Date.now() time), or null. */
+  sleepTimer: SleepTimer | null;
+  /** Sets the timer (minutes from now) or clears it (null). The last half minute fades the sound out. */
+  setSleepTimer: (minutes: number | null) => void;
 }
+
+export interface SleepTimer { minutes: number; endsAt: number }
 
 interface SynthNodes {
   masterGain?: GainNode;
@@ -75,6 +82,9 @@ const AudioCtx = createContext<AudioContextProps | undefined>(undefined);
 export function AudioProvider({ children }: { children: ReactNode }) {
   const [isPlaying, setIsPlaying]         = useState(false);
   const [nowPlaying, setNowPlaying]       = useState<NowPlaying | null>(null);
+  const [sleepTimer, setSleepTimerState]  = useState<SleepTimer | null>(null);
+  // What plays now, for the timer to read without waiting for a render.
+  const playingRef = useRef<{ on: boolean; what: NowPlaying | null }>({ on: false, what: null });
   const [masterVolume, _setMasterVolume]  = useState(1.0);
   const [volume, _setVolume]              = useState(1.0);
 
@@ -180,6 +190,12 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     hardStop();
     n.currentConfig = config;
 
+    // The sleep timer belongs to the Sanctuary's sound: changing sound inside the
+    // Sanctuary keeps it (as before), anything else that starts ends it.
+    const prev = playingRef.current;
+    const stillSanctuary = config.nowPlaying?.source === 'sanctuary' && (!prev.on || prev.what?.source === 'sanctuary');
+    if (!stillSanctuary) setSleepTimerState(null);
+    playingRef.current = { on: true, what: config.nowPlaying ?? null };
     setIsPlaying(true);
     setNowPlaying(config.nowPlaying ?? null);
 
@@ -413,6 +429,8 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const stopAudio = useCallback(() => {
     setIsPlaying(false);
     setNowPlaying(null);
+    setSleepTimerState(null);
+    playingRef.current = { on: false, what: null };
 
     const n       = nodesRef.current;
     const ctx     = webAudioCtxRef.current;
@@ -671,6 +689,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const fadeOutAudio = useCallback((seconds: number) => {
     setIsPlaying(false);
     setNowPlaying(null);
+    playingRef.current = { on: false, what: null };
 
     const n       = nodesRef.current;
     const ctx     = webAudioCtxRef.current;
@@ -688,6 +707,25 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   }, [hardStop]);
 
 
+  // ---- Sleep timer ----
+  // Here, not in the Sanctuary, so it keeps running wherever the person goes.
+  // The last half minute fades the sound out, then the timer ends. A sound
+  // started again during the fade keeps playing; only the timer ends.
+  const setSleepTimer = useCallback((minutes: number | null) => {
+    setSleepTimerState(minutes === null ? null : { minutes, endsAt: Date.now() + minutes * 60_000 });
+  }, []);
+
+  React.useEffect(() => {
+    if (!sleepTimer) return;
+    const left = sleepTimer.endsAt - Date.now();
+    const fade = setTimeout(() => {
+      const secs = Math.max(1, Math.min(SLEEP_FADE_SECONDS, (sleepTimer.endsAt - Date.now()) / 1000));
+      if (playingRef.current.on) fadeOutAudio(secs);
+    }, Math.max(0, left - SLEEP_FADE_SECONDS * 1000));
+    const end = setTimeout(() => setSleepTimerState(null), Math.max(0, left));
+    return () => { clearTimeout(fade); clearTimeout(end); };
+  }, [sleepTimer, fadeOutAudio]);
+
   // ---- Cleanup on unmount ----
   React.useEffect(() => {
     return () => {
@@ -701,6 +739,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         masterVolume, setMasterVolume,
         isPlaying, nowPlaying, volume, startAudio, stopAudio, fadeOutAudio,
         setGlobalVolume, updateArmPos, updatePhase, setLayerLevel,
+        sleepTimer, setSleepTimer,
       }}
     >
       {children}

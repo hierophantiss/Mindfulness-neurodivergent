@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AudioLines, Square } from 'lucide-react';
 import { useAudioMixer } from '../contexts/AudioContext';
@@ -5,6 +6,23 @@ import { useLanguage } from '../hooks/useLanguage';
 import { useAccessibility } from '../hooks/useAccessibility';
 import { useFrameInBand } from '../lib/frameInBand';
 import { cn } from '../lib/utils';
+import { shortLeft, spokenLeft } from '../lib/sleepTimer';
+import type { SleepTimer } from '../contexts/AudioContext';
+
+/** The timer's time left, in whole minutes: it changes (and re-renders) at most once a minute. */
+function useLeft(timer: SleepTimer | null): number | null {
+  const read = () => (timer ? Math.max(0, timer.endsAt - Date.now()) : null);
+  const [left, setLeft] = useState(read);
+  useEffect(() => {
+    setLeft(read());
+    if (!timer) return;
+    const id = setInterval(() => setLeft(read()), 1000);
+    return () => clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timer]);
+  // Kept to the minute shown, so the words change only when the minute does.
+  return left === null ? null : left < 60_000 ? 0 : Math.round(left / 60_000) * 60_000;
+}
 
 // A sound from the Sanctuary (or a chapter's sound under the reading) goes on
 // while you move around the app. This small control says what is playing and
@@ -20,7 +38,8 @@ import { cn } from '../lib/utils';
 export const isSanctuaryPath = (pathname: string) => /^\/sanctuary\/?$/.test(pathname);
 
 export default function NowPlaying({ place }: { place: 'float' | 'side' }) {
-  const { nowPlaying, stopAudio } = useAudioMixer();
+  const { nowPlaying, stopAudio, sleepTimer } = useAudioMixer();
+  const left = useLeft(nowPlaying ? sleepTimer : null);
   const { language } = useLanguage();
   const { reduceMotion } = useAccessibility();
   const { pathname } = useLocation();
@@ -32,9 +51,15 @@ export default function NowPlaying({ place }: { place: 'float' | 'side' }) {
   const regionLabel = el ? 'Ήχος που παίζει' : 'Sound playing';
   const stopLabel = el ? 'Σταμάτα τον ήχο' : 'Stop the sound';
 
-  // The link's name: what it shows, then where it goes.
-  const openLabel = el ? `${name}: άνοιξε το Καταφύγιο` : `${name}: open the Sanctuary`;
+  // The link's name: what it shows (with the timer's minutes in words), then where it goes.
+  const lang = el ? 'el' : 'en';
+  const when = left === null ? '' : `, ${spokenLeft(left, lang)}`;
+  const openLabel = el ? `${name}${when}: άνοιξε το Καταφύγιο` : `${name}${when}: open the Sanctuary`;
   const nameWithWhere = <span className="truncate">{name}</span>;
+  // Beside the link (its words are already in the link's name).
+  const timeLeft = (cls: string) => left !== null && (
+    <span aria-hidden="true" className={cn('shrink-0 flex items-center tabular-nums text-ink/65', cls)}>· {shortLeft(left)}</span>
+  );
 
   if (place === 'side') {
     return (
@@ -49,6 +74,7 @@ export default function NowPlaying({ place }: { place: 'float' | 'side' }) {
             <AudioLines size={17} strokeWidth={1.7} aria-hidden="true" className="shrink-0 text-teal-300" />
             {nameWithWhere}
           </Link>
+          {timeLeft('pr-2 text-[13px]')}
           <button
             type="button"
             onClick={stopAudio}
@@ -87,6 +113,7 @@ export default function NowPlaying({ place }: { place: 'float' | 'side' }) {
         <AudioLines size={16} aria-hidden="true" className="shrink-0 text-teal-300" />
         {nameWithWhere}
       </Link>
+      {timeLeft('-ml-1.5 pr-3 text-[13px]')}
       <button
         type="button"
         onClick={stopAudio}
