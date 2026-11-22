@@ -1,5 +1,6 @@
 import { PageHeader } from '../components/PageHeader';
 import { versionText } from '../lib/version';
+import { MethodMark } from '../components/MethodMark';
 import { isNative } from '../lib/native';
 import React, { useState, useEffect } from 'react';
 import BackupDialog, { type BackupMode } from '../components/BackupDialog';
@@ -8,7 +9,7 @@ import { useQuietCat } from '../hooks/useQuietCat';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
 import { lastBackupDate } from '../lib/dataSafety';
 import { readErrors, clearErrors, errorReport } from '../lib/errorLog';
-import { Languages, Activity, LetterText, Trash2, Sparkles, Database, FileText, Download, Bug, ShieldCheck, Accessibility, MessageCircleHeart, CalendarClock, Vibrate, Bell, Cat } from 'lucide-react';
+import { Languages, Activity, LetterText, Trash2, Database, FileText, Download, Bug, ShieldCheck, Accessibility, MessageCircleHeart, CalendarClock, Vibrate, Bell, Cat } from 'lucide-react';
 import { openIcs, googleCalendarUrl } from '../lib/reminder';
 import { feedbackMailto } from '../lib/feedback';
 import { CONTACT_EMAIL } from '../lib/links';
@@ -371,9 +372,8 @@ export default function Settings() {
 
           {/* Footer Info */}
           <div className="mt-16 flex flex-col items-center gap-4 opacity-80">
-             <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center p-3">
-                <Sparkles size={20} className="text-ink" />
-             </div>
+             {/* The sign of the method, as on the home page and in the menu. */}
+             <MethodMark small className="w-14 h-14" />
              <div className="text-center">
                 <p className="text-[13px] font-sans font-medium text-ink mb-1">
                    {language === 'el' ? 'Ενσυνειδητότητα για Νευροδιαφορετικούς' : 'Neurodivergent Mindfulness'}
