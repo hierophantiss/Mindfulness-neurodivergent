@@ -122,8 +122,10 @@ export default function Install() {
                 <button
                   type="button"
                   onClick={async () => setHint(await install())}
-                  className="btn-soft self-start"
+                  className={p === 'windows' ? 'btn-soft self-start' : 'btn-main self-start'}
                 >
+                  {/* Gold where it is the main way (on Windows the Store is). */}
+                  {p !== 'windows' && <Download size={17} aria-hidden="true" />}
                   {p === 'windows' ? `${t.or} ${t.now.toLowerCase()}` : t.now}
                 </button>
                 {hint && <p role="status" className="text-[14px] leading-relaxed text-ink/70">{hint}</p>}
