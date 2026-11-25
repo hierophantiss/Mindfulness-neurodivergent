@@ -255,6 +255,14 @@ test('SOS is one tap away', async ({ page }) => {
   await expect(page).toHaveURL(/sos-breath/);
 });
 
+test('the Install page offers the Android app as a file, in both languages and in its HTML', async ({ page, request }) => {
+  for (const [lang, name] of [['el', 'Κατέβασε την εφαρμογή'], ['en', 'Download the app']] as const) {
+    await page.goto(`/${lang}/install`, { waitUntil: 'networkidle' });
+    await expect(page.getByRole('link', { name })).toHaveAttribute('href', `/download/android?lang=${lang}`);
+    expect(await (await request.get(`/${lang}/install`)).text()).toContain(`href="/download/android?lang=${lang}"`);
+  }
+});
+
 test('an unknown address answers 404 with a way home', async ({ page }) => {
   const res = await page.goto('/el/no-such-page');
   expect(res?.status()).toBe(404);

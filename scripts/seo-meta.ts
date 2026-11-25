@@ -21,7 +21,7 @@ import { T as METHOD } from '../src/data/pages/method';
 import { SIGN } from '../src/data/pages/methodSign';
 import { T as PRIVACY } from '../src/data/pages/privacy';
 import { T as ACCESSIBILITY } from '../src/data/pages/accessibility';
-import { T as INSTALL } from '../src/data/pages/install';
+import { T as INSTALL, APK_FOR_ALL } from '../src/data/pages/install';
 import { bookCards } from '../src/data/bookCards';
 import { GLOSSARY } from '../src/data/glossary';
 import { audioUrl } from '../src/lib/chapterAudio';
@@ -840,8 +840,12 @@ export function routeMeta(route: string): RouteMeta {
       : 'Install the free app on Windows (Microsoft Store), Android, iPhone, iPad or Mac in a few steps. No account; it works offline.';
     const parts = [`<p>${escapeHtml(t.lead)}</p>`, `<p>${link(MICROSOFT_STORE_URL, t.store)}</p>`];
     for (const key of ['windows', 'android', 'ios', 'mac', 'other'] as const) {
-      const s = t.sections[key] as { name: string; intro: string; steps: string[]; note?: string };
-      parts.push(`<h2>${escapeHtml(s.name)}</h2>`, `<p>${escapeHtml(s.intro)}</p>`, ul(s.steps, true));
+      // Android: the APK, as on the page itself, once it is offered to everyone.
+      const apk = key === 'android' && APK_FOR_ALL;
+      const s = (apk ? t.sections.androidApk : t.sections[key]) as { name: string; intro: string; steps: string[]; note?: string };
+      parts.push(`<h2>${escapeHtml(s.name)}</h2>`, `<p>${escapeHtml(s.intro)}</p>`);
+      if (apk) parts.push(`<p>${link(`/download/android?lang=${L}`, t.apk)} (${escapeHtml(t.apkSize)})</p>`);
+      parts.push(ul(s.steps, true));
       if (s.note) parts.push(`<p>${escapeHtml(s.note)}</p>`);
     }
     return make({ base, description: d, h1: t.title, rawHtml: parts.join('\n      '), jsonLd: graph(webPage('WebPage', url, L, base, d), breadcrumbs(L, [[t.title, route]])) });

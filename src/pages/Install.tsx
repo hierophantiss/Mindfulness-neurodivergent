@@ -4,7 +4,7 @@ import { Download, Share2, Check } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import { useInstallApp } from '../hooks/useInstallApp';
 import { MICROSOFT_STORE_URL } from '../lib/links';
-import { T } from '../data/pages/install';
+import { T, APK_FOR_ALL } from '../data/pages/install';
 
 // How to install the app, on every kind of device: the page to send to
 // someone together with the link. The visitor's own device comes first.
@@ -23,12 +23,7 @@ function detectPlatform(): Platform {
   return 'other';
 }
 
-// The Android APK (Play's, signed by Google) is offered only when anyone can
-// use it: while the app is in Play's closed test, a copy from outside Play
-// sends the person to Play, where only testers can get it. On once a version
-// without Play's "Automatic protection" is up, or the app is public on Play.
-const APK_FOR_ALL = false;
-
+// The Android APK: offered when APK_FOR_ALL is on (data/pages/install.ts).
 
 export default function Install() {
   const { language } = useLanguage();
@@ -103,7 +98,7 @@ export default function Install() {
                 </a>
                 {apkLater && (
                   <p role="status" className="w-full text-[13.5px] text-ink/75">
-                    {lang === 'el' ? 'Το αρχείο δεν είναι διαθέσιμο αυτή τη στιγμή. Δοκίμασε ξανά σε λίγο, ή εγκατάστησε από το Google Play.' : 'The file is not available right now. Try again shortly, or install from Google Play.'}
+                    {lang === 'el' ? 'Το αρχείο δεν είναι διαθέσιμο αυτή τη στιγμή. Δοκίμασε ξανά σε λίγο, ή εγκατάστησέ την από το Chrome, όπως λέει η σημείωση πιο κάτω.' : 'The file is not available right now. Try again shortly, or install it from Chrome, as the note below says.'}
                   </p>
                 )}
                 <span className="text-[13px] text-ink/70">{t.apkSize}</span>

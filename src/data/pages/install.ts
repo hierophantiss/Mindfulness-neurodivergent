@@ -1,5 +1,15 @@
 // The words of the Install page (pages/Install.tsx), also written into its
 // prerendered HTML for search engines: one text, two readers.
+
+/**
+ * The Android APK (Play's universal APK, signed by Google, in the GitHub
+ * release "Android"; /download/android sends to the newest .apk there, whatever
+ * its name) is offered only when anyone can use it: a copy with Play's
+ * "Automatic protection" sends whoever is not a tester back to Play. On since
+ * the version made without that protection (the Play release after 1.28).
+ */
+export const APK_FOR_ALL = true;
+
 export const T = {
   el: {
     title: 'Εγκατάσταση',
