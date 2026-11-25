@@ -84,14 +84,20 @@ const AIR = [-68, -34, 0, 34, 68].map(d => (d * Math.PI) / 180);
 
 // The air from the sky: fine threads that come down from the top of the
 // picture, gather round the head and reach the nostrils from below, as the
-// small currents do. With each in-breath light comes down them; with the
-// out-breath it goes back up, thinning; in the rest only the faint threads
-// stay: the line from the sky to the person. Drawn on a canvas.
+// small currents do; from there it goes on inside, down a soft channel to the
+// chest and the belly. With each in-breath light comes down the whole way;
+// with the out-breath it goes back up, belly, chest, nose, sky, thinning; in
+// the rest only the faint path stays: the line from the sky into the person.
+// Drawn on a canvas.
 /** Each thread, one side of the face (box units from the middle): at the sky, above the head, beside the jaw. */
 const THREADS = [[22, 36, 30], [50, 46, 36], [84, 60, 44]].flatMap(([a, b, c]) => [-1, 1].map(side => [a * side, b * side, c * side]));
 const MOTES = 6; // small lights on each thread
+const INNER_MOTES = 5; // and on the way inside
+/** Along the whole path of the air (0 the sky, 1 the belly): where the nostrils and the chest are. */
+export const PATH_NOSE = 0.6;
+export const PATH_CHEST = PATH_NOSE + (1 - PATH_NOSE) * (CHEST - NOSE) / (BELLY - NOSE);
 
-/** Where the light of the air is at this moment of the breath: how far down it reaches (0 sky → 1 nostrils), how bright, which way it moves. */
+/** Where the light of the air is at this moment of the breath: how far along the path it reaches (0 sky → 1 belly), how bright, which way it moves. */
 export function airAt(br: { force: number; rising: boolean; p: number }) {
   if (br.p >= 1) return { reach: 0, glow: 0, drift: 0 };
   const flow = Math.sin(Math.PI * br.p);
@@ -305,7 +311,7 @@ export default function InnerTouch() {
     const sky = ctx && line && ink ? ctx : null; // without its colours the picture goes on without it
     const rgba = (c: [number, number, number], a: number) => `rgba(${c[0]},${c[1]},${c[2]},${Math.max(0, Math.min(1, a)).toFixed(3)})`;
     let mote: HTMLCanvasElement | null = null;
-    if (sky && ink && !reduceMotion) {
+    if (sky && ink) {
       mote = document.createElement('canvas');
       mote.width = mote.height = 32;
       const m = mote.getContext('2d');
@@ -343,12 +349,24 @@ export default function InnerTouch() {
     // Draw while it plays; when it stands still, only until the picture has settled.
     let paintLeft = reduceMotion ? 3 : 240;
 
-    const drawSky = (br: { force: number; rising: boolean; p: number }, near: number) => {
+    // The way inside: from the nostrils down to the chest and the belly.
+    const inside = { top: nose.y + 1.5 * u, chest: at(CHEST), belly: at(BELLY) };
+    const ISEG = 24;
+    const innerMotes = Array.from({ length: INNER_MOTES }, (_, k) => ({ at: k / INNER_MOTES, pace: 0.85 + 0.1 * (k % 3) }));
+    /** A point of the path inside at `g` (PATH_NOSE → 1): its height. */
+    const insideY = (g: number) => {
+      const c = (g - PATH_NOSE) / (1 - PATH_NOSE);
+      return inside.top + (inside.belly - inside.top) * Math.min(1, Math.max(0, c));
+    };
+
+    const drawSky = (br: { force: number; rising: boolean; p: number }, spot: number[]) => {
       if (!sky || !line || !ink) return;
       sky.setTransform(dpr, 0, 0, dpr, 0, 0);
       sky.clearRect(0, 0, w, h);
-      const str = 0.62 + 0.38 * near; // a little clearer where the air touches (scene 2)
-      const air = reduceMotion ? { reach: 0, glow: 0, drift: 0 } : airAt(br);
+      const str = 0.62 + 0.38 * spot[1]; // a little clearer where the air touches (scene 2)
+      const whole = reduceMotion ? { reach: 0, glow: 0, drift: 0 } : airAt(br);
+      // Outside, the threads take the first part of the path, sky to nostrils.
+      const air = { ...whole, reach: whole.reach / PATH_NOSE };
       const base = (reduceMotion ? 0.2 : 0.14) * str;
       sky.lineCap = 'butt';
       sky.globalCompositeOperation = 'source-over';
@@ -369,9 +387,37 @@ export default function InnerTouch() {
           sky.beginPath(); sky.moveTo(pts[i][0], pts[i][1]); sky.lineTo(pts[i + 1][0], pts[i + 1][1]); sky.stroke();
         }
       });
-      if (!mote || air.drift === 0) return;
-      // The small lights of the air: down with the in-breath, back up with the out-breath, thinning.
+
+      // Inside: a soft channel, a little stronger than the threads outside.
+      const lightAt = (g: number) => whole.glow * (1 - smooth(whole.reach - 0.03, whole.reach + 0.08, g));
+      const frontAt = (g: number) => (br.rising ? whole.glow * Math.exp(-(((g - whole.reach) / 0.08) ** 2)) : 0);
+      const ibase = reduceMotion ? 0.3 : 0.26;
+      for (let i = 0; i < ISEG; i++) {
+        const g0 = PATH_NOSE + ((1 - PATH_NOSE) * i) / ISEG, g1 = PATH_NOSE + ((1 - PATH_NOSE) * (i + 1)) / ISEG, g = (g0 + g1) / 2;
+        const lit = lightAt(g), front = frontAt(g);
+        const fade = 1 - 0.5 * smooth(0.9, 1, g); // softly into the belly
+        const a = fade * (ibase + 0.5 * lit + 0.3 * front);
+        sky.strokeStyle = rgba(line, a * 0.45);
+        sky.lineWidth = (6 + 4 * lit) * u;
+        sky.beginPath(); sky.moveTo(cx, insideY(g0)); sky.lineTo(cx, insideY(g1)); sky.stroke();
+        sky.strokeStyle = rgba(ink, a * 0.8);
+        sky.lineWidth = (1 + 0.6 * lit + 0.4 * front) * u;
+        sky.beginPath(); sky.moveTo(cx, insideY(g0)); sky.lineTo(cx, insideY(g1)); sky.stroke();
+      }
+      if (!mote) return;
       sky.globalCompositeOperation = 'lighter';
+      // A gentle glow where the air arrives: the nostrils, the chest, the belly. The
+      // scene's own place a little brighter (scene 3 the chest, scene 4 the belly).
+      ([[PATH_NOSE, inside.top - 1.5 * u, spot[1], 0.6], [PATH_CHEST, inside.chest, spot[2], 1], [1, inside.belly, spot[3], 1]] as const).forEach(([g, y, own, size]) => {
+        const lit = reduceMotion ? 0 : lightAt(g - 0.005);
+        const a = (reduceMotion ? 0.2 : 0.12 + 0.55 * lit) * (1 + 0.6 * own);
+        const r = (7 + 4 * lit + 2 * own) * size * u;
+        sky.globalAlpha = Math.min(1, a);
+        sky.drawImage(mote, cx - r * 2, y - r * 2, r * 4, r * 4);
+      });
+      sky.globalAlpha = 1;
+      if (air.drift === 0) { sky.globalCompositeOperation = 'source-over'; return; }
+      // The small lights of the air: down with the in-breath, back up with the out-breath, thinning.
       const flow = Math.abs(air.drift);
       for (const m of motes) {
         const t = (((m.at + L.drift * m.pace) % 1) + 1) % 1;
@@ -382,6 +428,17 @@ export default function InnerTouch() {
         const r = (1.4 + 0.8 * (1 - t)) * u;
         sky.globalAlpha = Math.min(1, a);
         sky.drawImage(mote, x - r * 2, y - r * 2, r * 4, r * 4);
+      }
+      // And inside, on down to the belly (back up with the out-breath).
+      for (const m of innerMotes) {
+        const c = (((m.at + L.drift * 1.6 * m.pace) % 1) + 1) % 1;
+        const g = PATH_NOSE + (1 - PATH_NOSE) * c;
+        let a = 0.85 * flow * Math.sin(Math.PI * c) ** 0.6;
+        a *= br.rising ? 1 - smooth(whole.reach + 0.01, whole.reach + 0.08, g) : 0.6;
+        if (a < 0.01) continue;
+        const r = 1.9 * u;
+        sky.globalAlpha = Math.min(1, a);
+        sky.drawImage(mote, cx - r * 2, insideY(g) - r * 2, r * 4, r * 4);
       }
       sky.globalAlpha = 1;
       sky.globalCompositeOperation = 'source-over';
@@ -404,7 +461,7 @@ export default function InnerTouch() {
 
       // The air from the sky, on its own breath with the picture.
       if (L.playing && !reduceMotion) { const d = airAt(br).drift; L.drift += (d > 0 ? 0.42 : 0.22) * d * dt; }
-      if (reduceMotion ? paintLeft > 0 : L.playing || paintLeft > 0) { if (paintLeft > 0) paintLeft--; drawSky(br, s1); }
+      if (reduceMotion ? paintLeft > 0 : L.playing || paintLeft > 0) { if (paintLeft > 0) paintLeft--; drawSky(br, lk.spot); }
 
       // The whole body rises a hair with the inhale, most in the last scene.
       if (heroRef.current) heroRef.current.style.transform = `translateY(${-(0.4 + 1.4 * s4) * f * u}px)`;

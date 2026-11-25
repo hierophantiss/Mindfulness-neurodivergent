@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { airAt, breathAt } from './InnerTouch';
+import { PATH_CHEST, PATH_NOSE, airAt, breathAt } from './InnerTouch';
 
 describe('"Inner touch": the picture\'s breath', () => {
   it('fills on the inhale, empties on the longer exhale, then rests', () => {
@@ -30,6 +30,19 @@ describe('"Inner touch": the air from the sky', () => {
     expect(out.drift).toBeLessThan(0);
     expect(out.glow).toBeLessThan(1);
     expect(airAt(breathAt(6.4))).toEqual({ reach: 0, glow: 0, drift: 0 });
+  });
+
+  it('goes on inside, nose to chest to belly, and back up the same way', () => {
+    expect(PATH_NOSE).toBeLessThan(PATH_CHEST);
+    expect(PATH_CHEST).toBeLessThan(1);
+    // Late in the in-breath it is past the nostrils; at its end, at the belly.
+    expect(airAt(breathAt(2.0)).reach).toBeGreaterThan(PATH_NOSE);
+    expect(airAt(breathAt(2.599)).reach).toBeCloseTo(1, 3);
+    // Early in the out-breath it has left the belly but is still inside; late, it is back outside.
+    const early = airAt(breathAt(2.6 + 0.7)).reach, late = airAt(breathAt(2.6 + 3.0)).reach;
+    expect(early).toBeLessThan(1);
+    expect(early).toBeGreaterThan(PATH_NOSE);
+    expect(late).toBeLessThan(PATH_NOSE);
   });
 
   it('follows the picture\'s own uneven breath, not a counted rhythm', () => {
