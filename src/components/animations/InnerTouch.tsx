@@ -17,6 +17,8 @@ import { type AnimTiming, animAudioUrl, loadAnimTiming, sceneAt, sceneLength, se
 //   3. the chest, opening a little and settling;
 //   4. the belly, swelling softly and drawing gently in;
 //   5. the whole body: a small change in the posture with each breath.
+// Through all five, the air is seen coming down from the sky to the nostrils
+// and going back up: the breath joins the person to the sky.
 // A soft light shows where the attention rests. The picture's breath is an
 // even, unhurried one, not a counted rhythm: the chapter says the breath is
 // observed as it is, not controlled. With reduced motion each scene is a
@@ -80,6 +82,33 @@ export function breathAt(t: number) {
 // round, and go back out the same way. Angles from straight down.
 const AIR = [-68, -34, 0, 34, 68].map(d => (d * Math.PI) / 180);
 
+// The air from the sky: fine threads that come down from the top of the
+// picture, gather round the head and reach the nostrils from below, as the
+// small currents do. With each in-breath light comes down them; with the
+// out-breath it goes back up, thinning; in the rest only the faint threads
+// stay: the line from the sky to the person. Drawn on a canvas.
+/** Each thread, one side of the face (box units from the middle): at the sky, above the head, beside the jaw. */
+const THREADS = [[22, 36, 30], [50, 46, 36], [84, 60, 44]].flatMap(([a, b, c]) => [-1, 1].map(side => [a * side, b * side, c * side]));
+const MOTES = 6; // small lights on each thread
+
+/** Where the light of the air is at this moment of the breath: how far down it reaches (0 sky → 1 nostrils), how bright, which way it moves. */
+export function airAt(br: { force: number; rising: boolean; p: number }) {
+  if (br.p >= 1) return { reach: 0, glow: 0, drift: 0 };
+  const flow = Math.sin(Math.PI * br.p);
+  return br.rising
+    ? { reach: ease(br.p), glow: 1, drift: flow }
+    : { reach: 1 - ease(br.p), glow: 1 - 0.55 * ease(br.p), drift: -flow };
+}
+
+/** A colour of the palette (index.css), read for the canvas, as r, g, b. */
+function rgbOf(value: string): [number, number, number] | null {
+  const v = value.trim();
+  const m = /^#([0-9a-f]{6})$/i.exec(v);
+  if (m) return [0, 2, 4].map(i => parseInt(m[1].slice(i, i + 2), 16)) as [number, number, number];
+  const r = /^rgba?\(\s*(\d+)[\s,]+(\d+)[\s,]+(\d+)/i.exec(v);
+  return r ? [Number(r[1]), Number(r[2]), Number(r[3])] : null;
+}
+
 // Each scene's picture, as numbers the frame eases towards.
 type Look = { spot: number[]; bg: number[]; ground: number; stars: number };
 const LOOKS: Look[] = [0, 1, 2, 3, 4].map(i => ({
@@ -127,9 +156,11 @@ export default function InnerTouch() {
   const bgRefs = useRef<(HTMLDivElement | null)[]>([]);
   const haloRefs = useRef<(SVGCircleElement | null)[]>([]);
   const barRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const skyRef = useRef<HTMLCanvasElement>(null);
 
   const live = useRef({
     scene: 0, clock: 0, breath: 0, playing: false, visible: true, seen: false,
+    drift: 0, // how far the air's small lights have travelled along their threads
     voice: null as AnimTiming | null,
     guided: false,
     look: { spot: [...LOOKS[0].spot], bg: [...LOOKS[0].bg], ground: LOOKS[0].ground, stars: LOOKS[0].stars } as Look,
@@ -263,6 +294,99 @@ export default function InnerTouch() {
     let raf = 0, last = 0, settle = 0;
     const L = live.current;
 
+    // The air from the sky: its canvas, its colours from the palette, its threads.
+    const cv = skyRef.current;
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5); // soft light: no need for every pixel
+    if (cv) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
+    const ctx = cv?.getContext('2d') ?? null;
+    const css = rootRef.current ? getComputedStyle(rootRef.current) : null;
+    const line = css ? rgbOf(css.getPropertyValue('--color-axis-breath')) : null;
+    const ink = css ? rgbOf(css.getPropertyValue('--axis-breath-ink')) : null;
+    const sky = ctx && line && ink ? ctx : null; // without its colours the picture goes on without it
+    const rgba = (c: [number, number, number], a: number) => `rgba(${c[0]},${c[1]},${c[2]},${Math.max(0, Math.min(1, a)).toFixed(3)})`;
+    let mote: HTMLCanvasElement | null = null;
+    if (sky && ink && !reduceMotion) {
+      mote = document.createElement('canvas');
+      mote.width = mote.height = 32;
+      const m = mote.getContext('2d');
+      if (m) {
+        const g = m.createRadialGradient(16, 16, 0, 16, 16, 16);
+        g.addColorStop(0, rgba(ink, 1));
+        g.addColorStop(0.35, rgba(ink, 0.45));
+        g.addColorStop(1, rgba(ink, 0));
+        m.fillStyle = g;
+        m.fillRect(0, 0, 32, 32);
+      } else mote = null;
+    }
+    // Each thread as a curve: from above the top edge, round the head, into the nostrils from below.
+    const nose = { x: cx, y: at(NOSE) + 1.5 * u };
+    const curves = THREADS.map(([a, b, c]) => [
+      cx + a * u, -8,
+      cx + b * u, at(120),
+      cx + c * u, at(NOSE + 30),
+      nose.x + Math.sign(a) * 1.6 * u, nose.y,
+    ]);
+    // A slow wave along each thread, wider in the open sky, still at the face;
+    // it travels with the air (down in, up out) and rests when the breath rests.
+    const along = (j: number, t: number) => {
+      const q = curves[j], s = 1 - t, A = s * s * s, B = 3 * s * s * t, C = 3 * s * t * t, D = t * t * t;
+      const wave = Math.sin(2 * Math.PI * ((1.1 + 0.15 * (j % 3)) * t - L.drift) + j * 1.9) * 5.5 * u * s ** 1.3;
+      return [A * q[0] + B * q[2] + C * q[4] + D * q[6] + wave, A * q[1] + B * q[3] + C * q[5] + D * q[7]];
+    };
+    const SEG = 16;
+    const weight = THREADS.map((_, j) => [1, 0.8, 0.6][j >> 1]); // the outer threads fainter
+    const motes = THREADS.flatMap((_, j) => Array.from({ length: MOTES }, (_, k) => {
+      const r = Math.sin(j * 12.9898 + k * 78.233) * 43758.5453;
+      return { j, at: ((k + 0.37 * j) / MOTES) % 1, pace: 0.8 + 0.4 * (r - Math.floor(r)) };
+    }));
+    const smooth = (a: number, b: number, x: number) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+    // Draw while it plays; when it stands still, only until the picture has settled.
+    let paintLeft = reduceMotion ? 3 : 240;
+
+    const drawSky = (br: { force: number; rising: boolean; p: number }, near: number) => {
+      if (!sky || !line || !ink) return;
+      sky.setTransform(dpr, 0, 0, dpr, 0, 0);
+      sky.clearRect(0, 0, w, h);
+      const str = 0.62 + 0.38 * near; // a little clearer where the air touches (scene 2)
+      const air = reduceMotion ? { reach: 0, glow: 0, drift: 0 } : airAt(br);
+      const base = (reduceMotion ? 0.2 : 0.14) * str;
+      sky.lineCap = 'butt';
+      sky.globalCompositeOperation = 'source-over';
+      THREADS.forEach((_, j) => {
+        const pts = Array.from({ length: SEG + 1 }, (_, i) => along(j, i / SEG));
+        for (let i = 0; i < SEG; i++) {
+          const t = (i + 0.5) / SEG;
+          const lit = air.glow * (1 - smooth(air.reach - 0.04, air.reach + 0.16, t));
+          const front = br.rising ? air.glow * Math.exp(-(((t - air.reach) / 0.08) ** 2)) : 0;
+          const a = weight[j] * smooth(0, 0.42, t) * (base + str * (0.2 * lit + 0.2 * front));
+          if (a < 0.004) continue;
+          // A soft breadth of air round a fine thread.
+          sky.strokeStyle = rgba(line, a * 0.28);
+          sky.lineWidth = (3 + 2.5 * (1 - t)) * u;
+          sky.beginPath(); sky.moveTo(pts[i][0], pts[i][1]); sky.lineTo(pts[i + 1][0], pts[i + 1][1]); sky.stroke();
+          sky.strokeStyle = rgba(line, a);
+          sky.lineWidth = (0.6 + 0.5 * (lit + front)) * u;
+          sky.beginPath(); sky.moveTo(pts[i][0], pts[i][1]); sky.lineTo(pts[i + 1][0], pts[i + 1][1]); sky.stroke();
+        }
+      });
+      if (!mote || air.drift === 0) return;
+      // The small lights of the air: down with the in-breath, back up with the out-breath, thinning.
+      sky.globalCompositeOperation = 'lighter';
+      const flow = Math.abs(air.drift);
+      for (const m of motes) {
+        const t = (((m.at + L.drift * m.pace) % 1) + 1) % 1;
+        let a = 0.8 * str * weight[m.j] * flow * Math.sin(Math.PI * t) ** 0.7;
+        a *= br.rising ? 1 - smooth(air.reach + 0.02, air.reach + 0.2, t) : 0.65 * (0.3 + 0.7 * t);
+        if (a < 0.01) continue;
+        const [x, y] = along(m.j, t);
+        const r = (1.4 + 0.8 * (1 - t)) * u;
+        sky.globalAlpha = Math.min(1, a);
+        sky.drawImage(mote, x - r * 2, y - r * 2, r * 4, r * 4);
+      }
+      sky.globalAlpha = 1;
+      sky.globalCompositeOperation = 'source-over';
+    };
+
     const apply = (dt: number) => {
       const target = LOOKS[L.scene];
       const k = reduceMotion ? 1 : 1 - Math.exp(-dt / 1.2);
@@ -277,6 +401,10 @@ export default function InnerTouch() {
       const f = br.force;
       const flow = br.p < 1 ? Math.sin(Math.PI * br.p) : 0; // the air moving, in or out
       const [s0, s1, s2, s3, s4] = lk.spot;
+
+      // The air from the sky, on its own breath with the picture.
+      if (L.playing && !reduceMotion) { const d = airAt(br).drift; L.drift += (d > 0 ? 0.42 : 0.22) * d * dt; }
+      if (reduceMotion ? paintLeft > 0 : L.playing || paintLeft > 0) { if (paintLeft > 0) paintLeft--; drawSky(br, s1); }
 
       // The whole body rises a hair with the inhale, most in the last scene.
       if (heroRef.current) heroRef.current.style.transform = `translateY(${-(0.4 + 1.4 * s4) * f * u}px)`;
@@ -426,6 +554,9 @@ export default function InnerTouch() {
             <Figure />
           </div>
         </div>
+
+        {/* The air, from the sky to the nostrils */}
+        <canvas ref={skyRef} aria-hidden="true" className="absolute inset-0 w-full h-full pointer-events-none" />
 
         {/* Where the attention rests: a soft light inside the body */}
         <svg aria-hidden="true" className="absolute inset-0 w-full h-full pointer-events-none" viewBox={`0 0 ${w} ${h}`}>
