@@ -150,6 +150,10 @@ export interface TaiChiPoseInput {
   natural: boolean;
   seated: boolean;
   sway: number;
+  /** Standing at ease: how far the arms are drawn up and out from the sides
+   *  (0 hanging, 1 about 30° out), as when the thoughts lift the body
+   *  (Chapter 1). */
+  armsUp?: number;
 }
 /** The last pose, so elbows and hands carry on from where they were. */
 export interface PoseMemo { type?: string; eL?: Pt; cL?: Pt; cR?: Pt; diff?: number }
@@ -172,6 +176,7 @@ export interface TaiChiPose {
  */
 export function taiChiPose(input: TaiChiPoseInput, memo: PoseMemo): TaiChiPose {
   const { bf, isRising, movementType, idle, natural, seated, sway } = input;
+  const armsUp = Math.max(0, Math.min(1, input.armsUp ?? 0));
   // SKELETAL KINEMATICS FOR ARMS (Viewport 400x400) - TRUE BEZIER KINEMATICS
   // Bezier curve calculations for perfect semicircular/elliptical arcs
   const calcBezier2D = (p0: {x: number, y: number}, cp: {x: number, y: number}, p1: {x: number, y: number}, t: number) => {
@@ -757,9 +762,10 @@ export function taiChiPose(input: TaiChiPoseInput, memo: PoseMemo): TaiChiPose {
     // The shoulders a little in, as they sit when the arms rest (the joints
     // of the practices stay where they are).
     sL.x = 200 - (SHOULDER_HALF - 1.5); sR.x = 200 + (SHOULDER_HALF - 1.5);
-    eLf = down(sL, UPPER_ARM, -5);
-    hLf = down(eLf, FOREARM, -2);
-    leftRot = 2;
+    // Drawn up (armsUp), the arms float out from the sides, the forearms more.
+    eLf = down(sL, UPPER_ARM, -5 - 15 * armsUp);
+    hLf = down(eLf, FOREARM, -2 - 28 * armsUp);
+    leftRot = 2 + 28 * armsUp;
     eR = { x: 400 - eLf.x, y: eLf.y };
     hR = { x: 400 - hLf.x, y: hLf.y };
     rightHandRotation = -2;

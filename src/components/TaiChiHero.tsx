@@ -156,6 +156,8 @@ interface TaiChiHeroProps {
   /** Seated: how far the body leans, in degrees (+ to the person's left, as
    *  seen, to the right), turning at the hips; the legs stay where they are. */
   sway?: number;
+  /** Standing at ease: the arms drawn up and out a little (0–1). */
+  armsUp?: number;
 }
 
 export default function TaiChiHero({
@@ -171,6 +173,7 @@ export default function TaiChiHero({
   stance = "taichi",
   seated = false,
   sway = 0,
+  armsUp = 0,
 }: TaiChiHeroProps) {
   const natural = stance === "natural" || seated;
   // The Tai Chi flows move as the 5-5 Sync (from Theodoros's video), in their own rhythms.
@@ -215,7 +218,7 @@ export default function TaiChiHero({
   const trailRef = useRef<{ type?: string; pts: { t: number; l: Pt; r: Pt }[] }>({ pts: [] });
   if (memo.current.type !== movementType || idle) memo.current = { type: movementType };
   const { sL, sR, eL: eLf, hL: hLf, eR, hR, leftRot, rightRot: rightHandRotation, palmVis, bodyShift, sinkY, torsoBendY, leanBackY, bowBend } =
-    taiChiPose({ bf, isRising, movementType, idle, natural, seated, sway }, memo.current);
+    taiChiPose({ bf, isRising, movementType, idle, natural, seated, sway, armsUp }, memo.current);
 
   // ── Light trails: each palm leaves a soft trail that fades in under a
   // second, so the path of the movement can be seen (the arc of the 5-5, the
