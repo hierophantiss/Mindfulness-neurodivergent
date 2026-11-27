@@ -672,7 +672,7 @@ export const KNOWLEDGE_FAQ: Faq = {
     el: [
       {
         q: 'Πώς κάνω την πλήρη πρακτική;',
-        a: 'Στάδιο 1 — Γη: Κάθισε ή στάσου άνετα. Νιώσε τα σημεία επαφής και άφησε το βάρος να βυθιστεί.\nΣτάδιο 2 — Αναπνοή: Κλείσε ή μισόκλεισε τα μάτια. Νιώσε τη διαδρομή του αέρα.\nΣτάδιο 3 — Εστίαση: Άνοιξε τα μάτια σε ένα ήσυχο σημείο μπροστά σου. Ταμπέλα αν χρειαστεί, και επέστρεψε απαλά.\nΣτάδιο 4 — Χώρος: Μαλάκωσε το βλέμμα. Χωρίς να κουνήσεις τα μάτια, άφησε την όραση να ανοίξει: δεξιά, αριστερά, πάνω, κάτω.\n\nΑκόμα και 20 δευτερόλεπτα αρκούν.',
+        a: 'Στάδιο 1 — Γη: Κάθισε ή στάσου άνετα. Νιώσε τα σημεία επαφής και άφησε το βάρος να βυθιστεί.\nΣτάδιο 2 — Αναπνοή: Κλείσε ή μισόκλεισε τα μάτια, αν θέλεις. Νιώσε τη διαδρομή του αέρα.\nΣτάδιο 3 — Εστίαση: Άνοιξε τα μάτια σε ένα ήσυχο σημείο μπροστά σου. Ταμπέλα αν χρειαστεί, και επέστρεψε απαλά.\nΣτάδιο 4 — Χώρος: Μαλάκωσε το βλέμμα. Χωρίς να κουνήσεις τα μάτια, άφησε την όραση να ανοίξει: δεξιά, αριστερά, πάνω, κάτω.\n\nΑκόμα και 20 δευτερόλεπτα αρκούν.',
         tags: ['stages', 'full-practice', 'practical', 'guide'],
         depth: 1,
         relatedExercise: 'journey.html'
@@ -693,7 +693,7 @@ export const KNOWLEDGE_FAQ: Faq = {
     en: [
       {
         q: 'How do I do the full practice?',
-        a: 'Stage 1 — Earth: Sit or stand comfortably. Feel the points of contact and let the weight sink.\nStage 2 — Breath: Close or half-close your eyes. Feel the path of the air.\nStage 3 — Focus: Open your eyes onto a quiet point in front of you. Label if needed, and come back gently.\nStage 4 — Space: Soften your gaze. Without moving your eyes, let your vision open: right, left, up, down.\n\nEven 20 seconds is enough.',
+        a: 'Stage 1 — Earth: Sit or stand comfortably. Feel the points of contact and let the weight sink.\nStage 2 — Breath: Close or half-close your eyes, if you like. Feel the path of the air.\nStage 3 — Focus: Open your eyes onto a quiet point in front of you. Label if needed, and come back gently.\nStage 4 — Space: Soften your gaze. Without moving your eyes, let your vision open: right, left, up, down.\n\nEven 20 seconds is enough.',
         tags: ['stages', 'full-practice', 'practical', 'guide'],
         depth: 1,
         relatedExercise: 'journey.html'

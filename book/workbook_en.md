@@ -157,7 +157,7 @@ them on. They are cited there as we would cite the researcher behind a study. No
 belief is required, and none is proposed. The method stands entirely on
 observation and on your own experience.
 
-Each chapter includes **four graduated exercises**, from a single moment to a few
+Each chapter of Part 1 includes **four graduated exercises**, from a single moment to a few
 minutes, so that you can begin straight away. The full, structured eight-week
 programme is in the app. At the end of the book you will find a **Glossary** with
 all the terms of the method. If you meet a word you do not remember, it is there.
@@ -277,6 +277,8 @@ The first step is acceptance. You do not need to control your breath. It is enou
 - The movement of the belly.
 - The small change in the body's posture with each inhale and exhale.
 
+If paying attention to the breath makes you uneasy, stay with your soles and your weight. The breath can wait; you do not have to start there.
+
 **The breath as an indicator.** If it is tight or shallow, it shows tension. If it is slow and deep, it shows relaxation. The breath is the indicator of your inner state.
 
 ### The Three Rhythms
@@ -287,7 +289,7 @@ Throughout this book you will meet three breathing rhythms. They do not compete:
 |---|---|---|
 | **5-5** (inhale 5, exhale 5) | daily, in a neutral state | balance and steadying; restless air becomes a current |
 | **4-6** (inhale 4, exhale 6) | at the peak, when the wind picks up | the longer exhale tells the nervous system "we are safe" |
-| **4-2-7** (inhale 4, hold 2, exhale 7) | in a quiet moment, for deep relaxation | a pause and a very long exhale; the strongest regulator |
+| **4-2-7** (inhale 4, hold 2, exhale 7) | in a quiet moment, for deep relaxation | a pause and a very long exhale; the deepest of the three, in experience |
 
 *In the app you will also find the 4-7-8 variation, which works on the same principle as 4-2-7: a long exhale after a pause.*
 
@@ -406,6 +408,8 @@ At this stage, attention becomes fourfold. You hold awareness of four levels at 
 - **Breath** — which gives rhythm and brings you back to now.
 - **Attention itself** — which learns to steady itself and to notice where it goes.
 - **Thoughts** — which are recognised without carrying you away; simply observed.
+
+Here the fourth level is thoughts, not Space: at this stage you learn to see them without being carried off. Space, the fourth axis, comes in Chapter 4.
 
 ### The Power of the Label (Thought Labelling)
 
@@ -923,7 +927,7 @@ If you keep just one thing from this chapter, keep these four words. They are th
 
 Before you begin the stages, remember: gentleness is not optional; it is the method itself. Every time you return without criticism, every time you accept distraction as part of the process, you practise kindness. Not as an idea, as an act.
 
-We saw why in Chapter 5: intense self-criticism appears to activate the same threat circuits as outer danger. The gentle return soothes them. This is the way: not by fighting the autopilot, but by giving it room to settle.
+We saw why in Chapter 5: self-criticism engages regions linked with detecting errors and holding back, while kindness towards yourself engages regions linked with compassion. The gentle return is that kindness, as an act. This is the way: not by fighting the autopilot, but by giving it room to settle.
 
 ### Stage 1 — Feel the Earth (Grounding)
 
@@ -935,7 +939,7 @@ We saw why in Chapter 5: intense self-criticism appears to activate the same thr
 
 ### Stage 2 — Feel the Breath (Regulation)
 
-- Close or half-close your eyes.
+- Close or half-close your eyes, if you like.
 - Feel the path: inhale through the nose → lungs → belly, exhale the other way round.
 - Under tension: move into the 4-6 rhythm, with the exhale slowly through the mouth, as if gently blowing on a flame.
 - **Goal:** a natural, unbroken rhythm; calm in the nervous system.
@@ -1022,7 +1026,7 @@ That these change with repetition rests on **neuroplasticity**, the brain's abil
 
 ### Part B: The Spiritual Background
 
-**Mahāsatipaṭṭhāna Sutta.** The Four Foundations of Mindfulness (Body, Feelings, Mind, Mental Phenomena) correspond directly to the four stages of the method.
+**Mahāsatipaṭṭhāna Sutta.** The Four Foundations of Mindfulness (Body, Feelings, Mind, Mental Phenomena) are one of the roots of the method: there too, practice begins with the body and opens gradually towards the mind. They do not map one to one onto the four stages.
 
 **Dzogchen.** Traditions such as Dzogchen speak of recognising the "open space" of consciousness, in which thoughts and emotions appear and disappear without confining us.
 
@@ -1046,7 +1050,7 @@ None of these lineages has endorsed this book, and none bears responsibility for
 ### Resources & Further Reading
 
 - Open Focus — https://openfocus.com/home/
-- Short Moments of Open Intelligence — https://www.holybooks.com/wp-content/uploads/Short-Moments-of-Open-Intelligence.pdf
+- Short Moments of Open Intelligence (Candice O'Denver, 2011, free edition) — https://www.holybooks.com/wp-content/uploads/Short-Moments-of-Open-Intelligence.pdf
 - Lama Lena — Dzogchen — https://lamalenateachings.com/
 - Merigar — International Dzogchen Community (Chögyal Namkhai Norbu) — https://www.merigar.it/en/dzogchen-community/
 - Sufism — https://sufi.gr/
@@ -1106,7 +1110,7 @@ The terms of the method, one line each, with where they first appear.
 
 **Drop and ocean** *(Ch. 4)* — A drop is not less water than the ocean. In the same way, a brief moment of presence is whole, not smaller.
 
-**Egocentric / spatiocentric** *(Ch. 4)* — Two centres of experience: everything arranged around me, or me inside something vast.
+**Egocentric / spacecentric** *(Ch. 4)* — Two centres of experience: everything arranged around me, or me inside something vast.
 
 **Field / point** *(Ch. 4)* — Awareness is the field; attention is the point that moves within it.
 

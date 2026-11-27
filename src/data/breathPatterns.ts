@@ -165,8 +165,8 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     title: { el: "4-2-7", en: "4-2-7" },
     subtitle: { el: "Βαθιά Χαλάρωση", en: "Deep Relaxation" },
     desc: {
-      el: "Εισπνοή 4, κράτημα 2, εκπνοή 7. Σε ήσυχη στιγμή, για βαθιά χαλάρωση: παύση και πολύ μακριά εκπνοή, ο πιο έντονος ρυθμιστής από τους τρεις. Δεν χρειάζεται να πιέσεις τον αέρα μέσα· το εργαλείο είναι η εκπνοή.",
-      en: "Inhale 4, hold 2, exhale 7. In a quiet moment, for deep relaxation: a pause and a very long exhale, the strongest regulator of the three. You never need to force the air in; the exhale is the tool.",
+      el: "Εισπνοή 4, κράτημα 2, εκπνοή 7. Σε ήσυχη στιγμή, για βαθιά χαλάρωση: παύση και πολύ μακριά εκπνοή, η πιο βαθιά από τις τρεις, στην εμπειρία. Δεν χρειάζεται να πιέσεις τον αέρα μέσα· το εργαλείο είναι η εκπνοή.",
+      en: "Inhale 4, hold 2, exhale 7. In a quiet moment, for deep relaxation: a pause and a very long exhale, the deepest of the three, in experience. You never need to force the air in; the exhale is the tool.",
     },
     totalCycleDurationMs: 13000,
     audioConfig: {

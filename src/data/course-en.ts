@@ -154,7 +154,7 @@ export const COURSE_EN: Course = {
         },
         "breathing": "<strong>5-5 Breath</strong><p>Keep a gentle 5-5 rhythm during the scan.</p>",
         "reflection": "Is there a point that “attracts” my attention more?",
-        "insight": "Clear mapping of the body reduces the sense of anxiety."
+        "insight": "In experience, clearly mapping the body eases the sense of anxiety."
       },
       {
         "title": "Releasing the Shoulders & Axis",
