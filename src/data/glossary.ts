@@ -354,8 +354,8 @@ export const GLOSSARY: Record<'el' | 'en', Glossary> = {
         "definition": "A drop is not less water than the ocean. In the same way, a brief moment of presence is whole, not smaller."
       },
       {
-        "id": "egocentric-spacecentric",
-        "term": "Egocentric / spacecentric",
+        "id": "egocentric-spatiocentric",
+        "term": "Egocentric / spatiocentric",
         "where": "Ch. 4",
         "chapters": [
           4

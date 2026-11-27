@@ -104,7 +104,6 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
           "paragraphs": [
             "The first step is acceptance. You do not need to control your breath. It is enough to observe it as it is: deep or shallow, slow or fast, free or tight. Notice:",
             "• The feeling of the air touching the nostrils{{interoception}}.\n• The expansion and contraction of the chest.\n• The movement of the belly.\n• The small change in the body's posture with each inhale and exhale.",
-            "If paying attention to the breath makes you uneasy, stay with your soles and your weight. The breath can wait; you do not have to start there.",
             "<strong>The breath as an indicator.</strong> If it is tight or shallow, it shows tension. If it is slow and deep, it shows relaxation. The breath is the indicator of your inner state."
           ],
           "interactive": "eswterikhafh"
@@ -113,7 +112,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
           "title": "The Three Rhythms",
           "paragraphs": [
             "Throughout this guide you will meet three breathing rhythms. They do not compete: each has its own job.",
-            "• <strong>5-5</strong> (inhale 5, exhale 5): daily, in a neutral state; balance and steadying; restless air becomes a current\n• <strong>4-6</strong> (inhale 4, exhale 6): at the peak, when the wind picks up; the longer exhale tells the nervous system \"we are safe\"\n• <strong>4-2-7</strong> (inhale 4, hold 2, exhale 7): in a quiet moment, for deep relaxation; a pause and a very long exhale; the deepest of the three, in experience",
+            "• <strong>5-5</strong> (inhale 5, exhale 5): daily, in a neutral state; balance and steadying; restless air becomes a current\n• <strong>4-6</strong> (inhale 4, exhale 6): at the peak, when the wind picks up; the longer exhale tells the nervous system \"we are safe\"\n• <strong>4-2-7</strong> (inhale 4, hold 2, exhale 7): in a quiet moment, for deep relaxation; a pause and a very long exhale; the strongest regulator",
             "In the app's breathing exercises you will also find the 4-7-8 variation, which works on the same principle as 4-2-7: a long exhale after a pause.",
             "One rule holds for all three: <strong>the exhale is the tool, not the inhale.</strong>{{slow_exhale}} You never need to force the air in."
           ]
@@ -220,8 +219,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
           "title": "Fourfold Attention",
           "paragraphs": [
             "At this stage, attention becomes fourfold. You hold awareness of four levels at once:",
-            "• <strong>Body</strong> — which gives a base and stability to the present moment.\n• <strong>Breath</strong> — which gives rhythm and brings you back to now.\n• <strong>Attention itself</strong> — which learns to steady itself and to notice where it goes.\n• <strong>Thoughts</strong> — which are recognised without carrying you away; simply observed.",
-            "Here the fourth level is thoughts, not Space: at this stage you learn to see them without being carried off. Space, the fourth axis, comes in Chapter 4."
+            "• <strong>Body</strong> — which gives a base and stability to the present moment.\n• <strong>Breath</strong> — which gives rhythm and brings you back to now.\n• <strong>Attention itself</strong> — which learns to steady itself and to notice where it goes.\n• <strong>Thoughts</strong> — which are recognised without carrying you away; simply observed."
           ],
           "interactive": "samatha_attention"
         },
@@ -792,7 +790,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
           "title": "The Stance Behind the Steps",
           "paragraphs": [
             "Before you begin the stages, remember: gentleness is not optional; it is the method itself. Every time you return without criticism{{gentle_return}}, every time you accept distraction as part of the process, you practise kindness{{kindness}}. Not as an idea, as an act.",
-            "We saw why in Chapter 5: self-criticism engages regions linked with detecting errors and holding back, while kindness towards yourself engages regions linked with compassion. The gentle return is that kindness, as an act. This is the way: not by fighting the autopilot, but by giving it room to settle."
+            "We saw why in Chapter 5: intense self-criticism appears to activate the same threat circuits as outer danger. The gentle return soothes them. This is the way: not by fighting the autopilot, but by giving it room to settle."
           ],
           "interactive": "journey",
           "actionLink": {
@@ -809,7 +807,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
         {
           "title": "Stage 2 — Feel the Breath (Regulation)",
           "paragraphs": [
-            "• Close or half-close your eyes, if you like.\n• Feel the path: inhale through the nose → lungs → belly, exhale the other way round.\n• Under tension: move into the 4-6 rhythm, with the exhale slowly through the mouth, as if gently blowing on a flame.\n• <strong>Goal:</strong> a natural, unbroken rhythm; calm in the nervous system."
+            "• Close or half-close your eyes.\n• Feel the path: inhale through the nose → lungs → belly, exhale the other way round.\n• Under tension: move into the 4-6 rhythm, with the exhale slowly through the mouth, as if gently blowing on a flame.\n• <strong>Goal:</strong> a natural, unbroken rhythm; calm in the nervous system."
           ]
         },
         {
@@ -829,7 +827,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
         "title": "The Complete Exercise",
         "steps": [
           "Stage 1 — Earth: Sit comfortably. Feel the points of contact and let the weight sink.",
-          "Stage 2 — Breath: Close or half-close your eyes, if you like. Feel the path of the air. Under tension, the 4-6 rhythm.",
+          "Stage 2 — Breath: Close or half-close your eyes. Feel the path of the air. Under tension, the 4-6 rhythm.",
           "Stage 3 — Focus: Open your eyes onto a quiet point in front of you. If thoughts come: recognise, label, return gently.",
           "Stage 4 — Space: Soften your gaze. Without moving your eyes, let your vision open: right, left, up, down. Feel body, breath, earth and sky, all at once."
         ]
@@ -886,7 +884,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
         {
           "title": "The Spiritual Background",
           "paragraphs": [
-            "<strong>Mahāsatipaṭṭhāna Sutta.</strong> The Four Foundations of Mindfulness (Body, Feelings, Mind, Mental Phenomena) are one of the roots of the method: there too, practice begins with the body and opens gradually towards the mind. They do not map one to one onto the four stages.",
+            "<strong>Mahāsatipaṭṭhāna Sutta.</strong> The Four Foundations of Mindfulness (Body, Feelings, Mind, Mental Phenomena) correspond directly to the four stages of the method.",
             "<strong>Dzogchen.</strong> Traditions such as Dzogchen speak of recognising the \"open space\" of consciousness, in which thoughts and emotions appear and disappear without confining us.",
             "<strong>Sufism.</strong> Sufism reminds us of the importance of grounding and of the heart as centre: the connection of spirit and body."
           ]
@@ -903,7 +901,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
         {
           "title": "Resources & Further Reading",
           "paragraphs": [
-            "• Open Focus — https://openfocus.com/home/\n• Short Moments of Open Intelligence (Candice O'Denver, 2011, free edition) — https://www.holybooks.com/wp-content/uploads/Short-Moments-of-Open-Intelligence.pdf\n• Lama Lena — Dzogchen — https://lamalenateachings.com/\n• Merigar — International Dzogchen Community (Chögyal Namkhai Norbu) — https://www.merigar.it/en/dzogchen-community/\n• Sufism — https://sufi.gr/"
+            "• Open Focus — https://openfocus.com/home/\n• Short Moments of Open Intelligence — https://www.holybooks.com/wp-content/uploads/Short-Moments-of-Open-Intelligence.pdf\n• Lama Lena — Dzogchen — https://lamalenateachings.com/\n• Merigar — International Dzogchen Community (Chögyal Namkhai Norbu) — https://www.merigar.it/en/dzogchen-community/\n• Sufism — https://sufi.gr/"
           ]
         }
       ],
@@ -1019,7 +1017,6 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
           "paragraphs": [
             "Το πρώτο βήμα είναι η αποδοχή. Δεν χρειάζεται να ελέγξεις την αναπνοή σου. Αρκεί να την παρατηρήσεις όπως είναι: βαθιά ή ρηχή, αργή ή γρήγορη, ελεύθερη ή σφιγμένη. Παρατήρησε:",
             "• Την αίσθηση του αέρα που αγγίζει τα ρουθούνια{{interoception}}.\n• Τη διαστολή και συστολή του θώρακα.\n• Την κίνηση της κοιλιάς.\n• Τη μικρή αλλαγή στη στάση του σώματος με κάθε εισπνοή και εκπνοή.",
-            "Αν η προσοχή στην αναπνοή σού φέρνει ανησυχία, μείνε στα πέλματα και στο βάρος σου. Η αναπνοή περιμένει· δεν χρειάζεται να ξεκινήσεις από εκεί.",
             "<strong>Η αναπνοή ως δείκτης.</strong> Αν είναι σφιγμένη ή ρηχή, δείχνει ένταση. Αν είναι αργή και βαθιά, δείχνει χαλάρωση. Η αναπνοή είναι ο δείκτης της ψυχικής σου κατάστασης."
           ],
           "interactive": "eswterikhafh"
@@ -1028,7 +1025,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
           "title": "Οι Τρεις Ρυθμοί",
           "paragraphs": [
             "Σε όλο τον οδηγό θα συναντήσεις τρεις ρυθμούς αναπνοής. Δεν είναι ανταγωνιστικοί: ο καθένας έχει τη δουλειά του.",
-            "• <strong>5-5</strong> (εισπνοή 5, εκπνοή 5): καθημερινά, σε ουδέτερη κατάσταση· ισορροπία και σταθεροποίηση· ο άστατος αέρας γίνεται ρεύμα\n• <strong>4-6</strong> (εισπνοή 4, εκπνοή 6): στην κορύφωση, όταν ο άνεμος δυναμώνει· η μακρύτερη εκπνοή λέει στο νευρικό σύστημα «είμαστε ασφαλείς»\n• <strong>4-2-7</strong> (εισπνοή 4, κράτημα 2, εκπνοή 7): σε ήσυχη στιγμή, για βαθιά χαλάρωση· παύση και πολύ μακριά εκπνοή· η πιο βαθιά από τις τρεις, στην εμπειρία",
+            "• <strong>5-5</strong> (εισπνοή 5, εκπνοή 5): καθημερινά, σε ουδέτερη κατάσταση· ισορροπία και σταθεροποίηση· ο άστατος αέρας γίνεται ρεύμα\n• <strong>4-6</strong> (εισπνοή 4, εκπνοή 6): στην κορύφωση, όταν ο άνεμος δυναμώνει· η μακρύτερη εκπνοή λέει στο νευρικό σύστημα «είμαστε ασφαλείς»\n• <strong>4-2-7</strong> (εισπνοή 4, κράτημα 2, εκπνοή 7): σε ήσυχη στιγμή, για βαθιά χαλάρωση· παύση και πολύ μακριά εκπνοή· ο πιο έντονος ρυθμιστής",
             "Στις ασκήσεις αναπνοής της εφαρμογής θα βρεις και την παραλλαγή 4-7-8, που δουλεύει με την ίδια αρχή όπως το 4-2-7: μακριά εκπνοή μετά από παύση.",
             "Ένας κανόνας που ισχύει και για τους τρεις: <strong>η εκπνοή είναι το εργαλείο, όχι η εισπνοή.{{slow_exhale}}</strong> Δεν χρειάζεται ποτέ να πιέσεις τον αέρα μέσα."
           ]
@@ -1135,8 +1132,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
           "title": "Η Τετραπλή Προσοχή",
           "paragraphs": [
             "Σε αυτό το στάδιο, η προσοχή γίνεται τετραπλή. Κρατάς ταυτόχρονα επίγνωση τεσσάρων επιπέδων:",
-            "• <strong>Σώμα</strong> — που δίνει βάση και σταθερότητα στην παρούσα στιγμή.\n• <strong>Αναπνοή</strong> — που δίνει ρυθμό και επαναφέρει στο τώρα.\n• <strong>Ίδια η Προσοχή</strong> — που μαθαίνει να σταθεροποιείται, να παρατηρεί πού πηγαίνει.\n• <strong>Σκέψεις</strong> — που αναγνωρίζονται χωρίς να παρασύρουν, απλώς παρατηρούνται.",
-            "Εδώ το τέταρτο επίπεδο είναι οι σκέψεις, όχι ο Χώρος: σε αυτό το στάδιο μαθαίνεις να τις βλέπεις χωρίς να σε παίρνουν. Ο Χώρος, ο τέταρτος άξονας, έρχεται στο Κεφάλαιο 4."
+            "• <strong>Σώμα</strong> — που δίνει βάση και σταθερότητα στην παρούσα στιγμή.\n• <strong>Αναπνοή</strong> — που δίνει ρυθμό και επαναφέρει στο τώρα.\n• <strong>Ίδια η Προσοχή</strong> — που μαθαίνει να σταθεροποιείται, να παρατηρεί πού πηγαίνει.\n• <strong>Σκέψεις</strong> — που αναγνωρίζονται χωρίς να παρασύρουν, απλώς παρατηρούνται."
           ],
           "interactive": "samatha_attention"
         },
@@ -1707,7 +1703,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
           "title": "Η Στάση Πίσω από τα Βήματα",
           "paragraphs": [
             "Πριν ξεκινήσεις τα στάδια, θυμήσου: η απαλότητα δεν είναι προαιρετική, είναι η ίδια η μέθοδος. Κάθε φορά που επιστρέφεις χωρίς κριτική{{gentle_return}}, κάθε φορά που δέχεσαι τη διάσπαση ως μέρος της διαδικασίας, εξασκείς καλοσύνη{{kindness}}. Όχι ως ιδέα, ως πράξη.",
-            "Είδαμε στο Κεφάλαιο 5 γιατί: η αυτοκριτική ενεργοποιεί περιοχές του εντοπισμού λάθους και του φρεναρίσματος, ενώ η καλοσύνη προς τον εαυτό περιοχές της συμπόνιας. Η απαλή επιστροφή είναι αυτή η καλοσύνη, σε πράξη. Αυτός είναι ο δρόμος: όχι πολεμώντας τον αυτόματο πιλότο, αλλά δίνοντάς του χώρο να ηρεμήσει."
+            "Είδαμε στο Κεφάλαιο 5 γιατί: η έντονη αυτοκριτική φαίνεται να ενεργοποιεί τα ίδια κυκλώματα απειλής με τον εξωτερικό κίνδυνο. Η απαλή επιστροφή τα καταπραΰνει. Αυτός είναι ο δρόμος: όχι πολεμώντας τον αυτόματο πιλότο, αλλά δίνοντάς του χώρο να ηρεμήσει."
           ],
           "interactive": "journey",
           "actionLink": {
@@ -1724,7 +1720,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
         {
           "title": "Στάδιο 2 — Νιώσε την Αναπνοή (Ρύθμιση)",
           "paragraphs": [
-            "• Κλείσε ή μισόκλεισε τα μάτια, αν θέλεις.\n• Νιώσε τη διαδρομή: εισπνοή από τη μύτη → πνεύμονες → κοιλιά, εκπνοή αντίστροφα.\n• Σε ένταση: πέρασε στον ρυθμό 4-6, με την εκπνοή αργά από το στόμα, σαν να φυσάς απαλά μια φλόγα.\n• <strong>Στόχος:</strong> φυσικός αδιάκοπος ρυθμός, ηρεμία του νευρικού συστήματος."
+            "• Κλείσε ή μισόκλεισε τα μάτια.\n• Νιώσε τη διαδρομή: εισπνοή από τη μύτη → πνεύμονες → κοιλιά, εκπνοή αντίστροφα.\n• Σε ένταση: πέρασε στον ρυθμό 4-6, με την εκπνοή αργά από το στόμα, σαν να φυσάς απαλά μια φλόγα.\n• <strong>Στόχος:</strong> φυσικός αδιάκοπος ρυθμός, ηρεμία του νευρικού συστήματος."
           ]
         },
         {
@@ -1744,7 +1740,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
         "title": "Ολοκληρωμένη Άσκηση",
         "steps": [
           "Στάδιο 1 — Γη: Κάθισε άνετα. Νιώσε τα σημεία επαφής και άφησε το βάρος να βυθιστεί.",
-          "Στάδιο 2 — Αναπνοή: Κλείσε ή μισόκλεισε τα μάτια, αν θέλεις. Νιώσε τη διαδρομή του αέρα. Σε ένταση, ρυθμός 4-6.",
+          "Στάδιο 2 — Αναπνοή: Κλείσε ή μισόκλεισε τα μάτια. Νιώσε τη διαδρομή του αέρα. Σε ένταση, ρυθμός 4-6.",
           "Στάδιο 3 — Εστίαση: Άνοιξε τα μάτια σε ένα ήσυχο σημείο μπροστά σου. Αν έρθουν σκέψεις: αναγνώρισε, ταμπέλα, επέστρεψε απαλά.",
           "Στάδιο 4 — Χώρος: Μαλάκωσε το βλέμμα. Χωρίς να κουνήσεις τα μάτια, άφησε την όραση να ανοίξει: δεξιά, αριστερά, πάνω, κάτω. Νιώσε ταυτόχρονα σώμα, αναπνοή, γη, ουρανό."
         ]
@@ -1801,7 +1797,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
         {
           "title": "Το Πνευματικό Υπόβαθρο",
           "paragraphs": [
-            "<strong>Mahāsatipaṭṭhāna Sutta.</strong> Τα Τέσσερα Θεμέλια της Ενσυνειδητότητας (Σώμα, Αισθήσεις, Νους, Ψυχικά Φαινόμενα) είναι μία από τις ρίζες της μεθόδου: κι εκεί η πρακτική ξεκινά από το σώμα και ανοίγει σταδιακά προς τον νου. Δεν αντιστοιχούν ένα προς ένα στα τέσσερα στάδια.",
+            "<strong>Mahāsatipaṭṭhāna Sutta.</strong> Τα Τέσσερα Θεμέλια της Ενσυνειδητότητας (Σώμα, Αισθήσεις, Νους, Ψυχικά Φαινόμενα) αντιστοιχούν άμεσα στα τέσσερα στάδια της μεθόδου.",
             "<strong>Ντζόγκτσεν (Dzogchen).</strong> Παραδόσεις όπως το Ντζόγκτσεν μιλούν για την αναγνώριση του «ανοιχτού χώρου» της συνείδησης, στον οποίο σκέψεις και συναισθήματα εμφανίζονται και εξαφανίζονται χωρίς να μας περιορίζουν.",
             "<strong>Σουφισμός.</strong> Ο Σουφισμός υπενθυμίζει τη σημασία της γείωσης και της καρδιάς ως κέντρου: τη σύνδεση πνεύματος και σώματος."
           ]
@@ -1818,7 +1814,7 @@ export const CHAPTERS_DATA: Record<string, Chapter[]> = {
         {
           "title": "Πόροι & Συνέχεια",
           "paragraphs": [
-            "• Open Focus — https://openfocus.com/home/\n• Short Moments of Open Intelligence (Candice O'Denver, 2011, δωρεάν έκδοση) — https://www.holybooks.com/wp-content/uploads/Short-Moments-of-Open-Intelligence.pdf\n• Lama Lena — Ντζόγκτσεν — https://lamalenateachings.com/\n• Merigar — Παγκόσμια Κοινότητα Ντζόγκτσεν (Chögyal Namkhai Norbu) — https://www.merigar.it/en/dzogchen-community/\n• Σουφισμός — https://sufi.gr/"
+            "• Open Focus — https://openfocus.com/home/\n• Short Moments of Open Intelligence — https://www.holybooks.com/wp-content/uploads/Short-Moments-of-Open-Intelligence.pdf\n• Lama Lena — Ντζόγκτσεν — https://lamalenateachings.com/\n• Merigar — Παγκόσμια Κοινότητα Ντζόγκτσεν (Chögyal Namkhai Norbu) — https://www.merigar.it/en/dzogchen-community/\n• Σουφισμός — https://sufi.gr/"
           ]
         }
       ],
