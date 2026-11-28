@@ -8,6 +8,7 @@ import SwayingHero from "../components/SwayingHero";
 import { useBinauralAudio } from "../hooks/useBinauralAudio";
 import { PlayPauseOverlay } from "../components/PlayPauseOverlay";
 import { ConceptInfoIcon } from '../components/ConceptInfoOverlay';
+import AfterPractice from '../components/AfterPractice';
 
 export default function PracticeSwaying() {
   const navigate = useNavigate();
@@ -309,6 +310,11 @@ export default function PracticeSwaying() {
             )}
           </button>
         </div>
+
+        {/* Paused after a while (as when it is recorded): «Πώς είσαι τώρα;» */}
+        {!isPlaying && elapsedSeconds > 10 && (
+          <AfterPractice axis="body" language={lang} className="w-full mt-4 mb-6" />
+        )}
       </div>
     </div>
   );

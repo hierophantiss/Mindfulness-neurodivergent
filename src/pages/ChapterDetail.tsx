@@ -19,7 +19,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
 import InteractiveRenderer from '../components/InteractiveRenderer';
 import ChapterReaderBar from '../components/ChapterReaderBar';
-import { chapterPages, chapterPageLabel, type ChapterPage } from '../lib/chapterPages';
+import { chapterPages, chapterPageLabel, pageOfSection, type ChapterPage } from '../lib/chapterPages';
 import { savedPage } from '../lib/readingSpot';
 import type { Chapter } from '../data/types';
 import { buildChapterSegments } from '../lib/chapterReading';
@@ -305,14 +305,19 @@ export default function ChapterDetail() {
   // Without "?p", a chapter not yet finished opens where the reader left it
   // (the same place the home page's "Continue" uses), from any link, the Book
   // tab included; "?p=1" opens the first page.
+  // "?s=5" opens the page where the chapter's fifth section starts (the links
+  // after a practice, data/afterPractice.ts); with "?listen=1" the narration
+  // starts from there.
+  const sectionPage = pageOfSection(pages, searchParams.get('s'));
   const [page, setPage] = useState(() => {
+    if (sectionPage !== null) return sectionPage;
     const p = Number(searchParams.get('p'));
     if (searchParams.has('p')) return Number.isFinite(p) && p > 1 ? Math.min(p - 1, Math.max(0, pages.length - 1)) : 0;
     if (!chapter || isChapterComplete(chapter.num)) return 0;
     return savedPage(companionData.chapterProgress?.[chapter.num], pages.length);
   });
   /** Opened where it was left (not at page 1): a quiet line says so, with "from the start". */
-  const [resumedAt] = useState(page);
+  const [resumedAt] = useState(sectionPage !== null ? 0 : page);
   const [direction, setDirection] = useState(1);
   const touchStartX = useRef(0);
   // The pages turn like a book's. Until the reader has turned one, a quiet line
@@ -427,6 +432,21 @@ export default function ChapterDetail() {
     reader.playFrom(firstSegmentOfPage(page));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [segments.length]);
+
+  // "&anim=1" (the "Watch the animation" link after a practice): the page opens at its animation.
+  useEffect(() => {
+    if (searchParams.get('anim') !== '1' || sectionPage === null) return;
+    let tries = 0;
+    let timer = 0;
+    const find = () => {
+      const el = document.getElementById('chapter-animation');
+      if (el) el.scrollIntoView({ block: 'start', behavior: 'auto' });
+      else if (tries++ < 10) timer = window.setTimeout(find, 150);
+    };
+    timer = window.setTimeout(find, 150);
+    return () => window.clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Arrow keys turn the page; the handler is set below, on every render.
   const onKeyRef = useRef<(e: KeyboardEvent) => void>(() => {});
@@ -730,7 +750,7 @@ export default function ChapterDetail() {
                     className="pt-16 space-y-8"
                   >
                       {curPage.section.interactive && (
-                        <div className="my-12">
+                        <div id="chapter-animation" className="my-12 scroll-mt-24">
                           <InteractiveRenderer id={curPage.section.interactive} asModal={false} />
                         </div>
                       )}

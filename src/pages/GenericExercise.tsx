@@ -9,7 +9,7 @@ import { useAccessibility } from '../hooks/useAccessibility';
 import { prepareSound, ringBell } from '../lib/sound';
 import { EvidenceLine } from '../components/EvidenceLine';
 import { ConceptText } from '../components/ConceptInfoOverlay';
-import GuideAfterPractice from '../components/GuideAfterPractice';
+import AfterPractice from '../components/AfterPractice';
 import { DriftNote } from '../components/DriftNote';
 import { MICRODOSES_EXERCISES, type MicrodoseExercise } from '../data/microdoses';
 import { GUIDED_EXERCISES as EXERCISES, type GuidedExercise } from '../data/guidedExercises';
@@ -244,7 +244,7 @@ export default function GenericExercise() {
 
         {!running && !done && <EvidenceLine evidence={exercise.evidence} language={language} />}
 
-        {done && <GuideAfterPractice axis={exercise.axis} language={language} className="w-full mt-4" />}
+        {done && <AfterPractice axis={exercise.axis} language={language} className="w-full mt-4" />}
 
         {/* All the steps */}
         {steps.length > 1 && (

@@ -15,9 +15,12 @@ import { useActivityTracker } from '../contexts/ActivityTrackerContext';
 
 import { CHECKIN_ICON as ICON, tint } from '../lib/checkinLook';
 import { takePendingFeeling } from '../lib/welcome';
+import { beforeState } from '../data/afterPractice';
 
 // "How do you feel right now?" — the four choices and the answer. On the home
 // page it opens inside its row (`embedded`: the row is the heading).
+// The links to a practice carry the answer in the link's state only, so the
+// question at the end of the practice can show "Before → Now" (data/afterPractice.ts).
 export default function HomeCheckin({ embedded = false }: { embedded?: boolean } = {}) {
   const { language } = useLanguage();
   const lang = language === 'en' ? 'en' : 'el';
@@ -159,6 +162,7 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
                   {main && (
                     <Link
                       to={main.path}
+                      state={beforeState(opt.id)}
                       style={{ backgroundColor: tint(opt.id, 'hi'), borderColor: tint(opt.id, 'line') }}
                       className="flex items-center justify-between gap-3 px-5 py-4 rounded-2xl border text-ink/95 hover:brightness-110 transition-[filter,transform] active:scale-[0.98]"
                     >
@@ -189,6 +193,7 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
                   {sos && (
                     <Link
                       to={sos.path}
+                      state={beforeState(opt.id)}
                       className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl border text-[14px] bg-[var(--tint-rose-bg)] border-[var(--tint-rose-line)] text-[var(--tint-rose-ink)] hover:bg-[var(--tint-rose-hi)] transition-colors active:scale-[0.98]"
                     >
                       <span className="min-w-0">{sos.title[lang]}</span>
@@ -249,6 +254,7 @@ export default function HomeCheckin({ embedded = false }: { embedded?: boolean }
                         <Link
                           key={a.path}
                           to={a.path}
+                          state={beforeState(opt.id)}
                           className={cn(
                             "flex items-center justify-between gap-3 px-4 py-3 rounded-xl border text-[14px] transition-colors active:scale-[0.98]",
                             a.path === SOS_PATH

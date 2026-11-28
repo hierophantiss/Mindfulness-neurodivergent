@@ -17,7 +17,7 @@ import TaiChiFigure from '../components/TaiChiFigure';
 import { createTickStore, LiveTick } from '../lib/breathTick';
 import { PlayPauseOverlay } from '../components/PlayPauseOverlay';
 import { EvidenceLine } from '../components/EvidenceLine';
-import GuideAfterPractice from '../components/GuideAfterPractice';
+import AfterPractice from '../components/AfterPractice';
 import { useReward } from '../contexts/RewardContext';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
 import { useFocusTrap } from '../hooks/useFocusTrap';
@@ -182,6 +182,8 @@ export default function PracticeBreath() {
   const [audioEnabled, setAudioEnabled] = useState(false);
   const [cycles, setCycles] = useState(0);
   const [finished, setFinished] = useState(false);
+  /** SOS, after «Ακόμα ένταση»: the phone numbers move up, next to «Ξανά». */
+  const [sosStill, setSosStill] = useState(false);
   /** A session has begun (and is not over): «Συνέχισε» and «Τέλος» instead of «Ξεκίνα». */
   const [started, setStarted] = useState(false);
   const [phase, setPhase] = useState(pattern.labels[0]);
@@ -455,6 +457,7 @@ export default function PracticeBreath() {
     stopAudio();
     if (hadRun) triggerReward('breath', { sound: audioEnabled });
     setStarted(false);
+    setSosStill(false);
     setFinished(true);
     setCycles(0);
     setPhaseIdx(0);
@@ -572,6 +575,13 @@ export default function PracticeBreath() {
 
   const el = language === 'el';
   const isSOS = currentPatternId === 'sos-breath';
+  // SOS: the phone numbers, the same words on the stage and after «Ακόμα ένταση».
+  const helpText = el ? (
+    <>Αν η αναπνοή δεν αρκεί, το επόμενο βήμα είναι ένας άνθρωπος. Αν κινδυνεύεις τώρα: <a href="tel:112">112</a>. Για να μιλήσεις με κάποιον: <a href="tel:1018">1018</a> (Κλίμακα, 24ωρη γραμμή) ή <a href="tel:197">197</a> (δωρεάν, 24ωρη ψυχοκοινωνική στήριξη).</>
+  ) : (
+    <>If the breath is not enough, the next step is a person. If you are in danger now, call your local emergency number (<a href="tel:112">112</a> in Europe). To talk with someone: <a href="https://findahelpline.com" target="_blank" rel="noopener noreferrer">findahelpline.com</a> lists free helplines in your country (in Greece: <a href="tel:1018">1018</a>).</>
+  );
+  const helpClass = "text-[13px] text-ink/75 font-sans leading-relaxed [&_a]:text-ink/90 [&_a]:underline [&_a]:decoration-white/30 [&_a]:underline-offset-2";
   const shownName = breathName(pattern)[lang];
   const canVibrate = typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function';
   const soundNow: 'with' | 'nature' | 'without' = !audioEnabled ? 'without' : soundMode === 'nature' ? 'nature' : 'with';
@@ -693,7 +703,16 @@ export default function PracticeBreath() {
           <p role="status" className="text-center text-[15px] leading-relaxed text-ink/85">
             {el ? 'Τέλος. Πάρε μια στιγμή πριν συνεχίσεις.' : 'Done. Take a moment before you go on.'}
           </p>
-          <GuideAfterPractice axis={pattern.axis} language={language} className="w-full" />
+          {/* «Πώς είσαι τώρα;»: in SOS the light version, with the phone numbers if the tension stays. */}
+          <AfterPractice
+            axis={pattern.axis}
+            language={language}
+            sos={isSOS}
+            onAgain={() => { document.getElementById('main-content')?.scrollTo({ top: 0 }); restartPractice(); startSequence(audioEnabled); }}
+            helplines={isSOS ? <p className={helpClass}>{helpText}</p> : undefined}
+            onAnswer={a => setSosStill(a === 'still')}
+            className="w-full"
+          />
         </div>
       )}
       {!running && !finished && <EvidenceLine evidence={pattern.evidence} language={language} />}
@@ -918,15 +937,10 @@ export default function PracticeBreath() {
         </div>
 
         {/* SOS: the helplines sit at the bottom of the stage, so the figure stays at the same height as in the other breaths */}
-        {isSOS && (
+        {/* (After «Ακόμα ένταση» they are in the answer above instead, next to «Ξανά».) */}
+        {isSOS && !(finished && sosStill) && (
           <div className="absolute bottom-2 left-0 right-0 px-8 text-center z-20 pointer-events-none">
-            <p className="text-[13px] text-ink/75 font-sans leading-relaxed [&_a]:pointer-events-auto [&_a]:text-ink/90 [&_a]:underline [&_a]:decoration-white/30 [&_a]:underline-offset-2">
-              {el ? (
-                <>Αν η αναπνοή δεν αρκεί, το επόμενο βήμα είναι ένας άνθρωπος. Αν κινδυνεύεις τώρα: <a href="tel:112">112</a>. Για να μιλήσεις με κάποιον: <a href="tel:1018">1018</a> (Κλίμακα, 24ωρη γραμμή) ή <a href="tel:197">197</a> (δωρεάν, 24ωρη ψυχοκοινωνική στήριξη).</>
-              ) : (
-                <>If the breath is not enough, the next step is a person. If you are in danger now, call your local emergency number (<a href="tel:112">112</a> in Europe). To talk with someone: <a href="https://findahelpline.com" target="_blank" rel="noopener noreferrer">findahelpline.com</a> lists free helplines in your country (in Greece: <a href="tel:1018">1018</a>).</>
-              )}
-            </p>
+            <p className={cn(helpClass, '[&_a]:pointer-events-auto')}>{helpText}</p>
           </div>
         )}
 

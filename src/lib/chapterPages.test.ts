@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { CHAPTERS_DATA } from '../data/chapters';
-import { chapterPages, chapterPageLabel } from './chapterPages';
+import { chapterPages, chapterPageLabel, pageOfSection } from './chapterPages';
 
 describe('chapter pages', () => {
   it('has the opening, one page per theory section, then the practice', () => {
@@ -12,6 +12,15 @@ describe('chapter pages', () => {
         expect(pages[0].type).toBe('intro');
       }
     }
+  });
+
+  it('finds the page where a section starts (?s=), or nothing', () => {
+    const ch = CHAPTERS_DATA.el.find(c => c.num === 8)!;
+    const pages = chapterPages(ch);
+    expect(pageOfSection(pages, '1')).toBe(1);
+    const five = pageOfSection(pages, 5)!;
+    expect(pages[five]).toMatchObject({ type: 'theory', index: 4 });
+    for (const bad of [null, '', '0', '-1', '1.5', 'x', String(ch.theorySections.length + 1)]) expect(pageOfSection(pages, bad), String(bad)).toBeNull();
   });
 
   it('names each page for "where you stopped"', () => {
