@@ -144,7 +144,7 @@ STEPS.taichi = STEPS['5-5'];   // the Tai Chi flows move as the 5-5 Sync
 const LABEL: Record<Kind, L> = {
   stance: { el: 'Στάση', en: 'Stance' },
   in: { el: 'Εισπνοή', en: 'Inhale' },
-  holdIn: { el: 'Κράτημα', en: 'Hold' },
+  holdIn: { el: 'Παύση', en: 'Pause' },
   out: { el: 'Εκπνοή', en: 'Exhale' },
   holdOut: { el: 'Παύση', en: 'Pause' },
   care: { el: 'Προσοχή', en: 'Take care' },

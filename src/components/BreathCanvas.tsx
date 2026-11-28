@@ -12,9 +12,9 @@ const DEFAULT_PHASES: PhaseDef[] = [
 
 const DEFAULT_LABELS: PhaseLabel[] = [
   { text: 'Inhale', label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "σήκωσε τα χέρια αργά", en: "raise arms slowly" } },
-  { text: 'Hold', label: { el: "Παύση", en: "Hold" }, sub: { el: "κράτα ψηλά", en: "hold high" } },
+  { text: 'Hold', label: { el: "Παύση", en: "Pause" }, sub: { el: "κράτα ψηλά", en: "hold high" } },
   { text: 'Exhale', label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "κατέβασε αργά", en: "lower slowly" } },
-  { text: 'Hold', label: { el: "Παύση", en: "Hold" }, sub: { el: "νιώσε το βάρος", en: "feel the weight" } }
+  { text: 'Hold', label: { el: "Παύση", en: "Pause" }, sub: { el: "νιώσε το βάρος", en: "feel the weight" } }
 ];
 
 function easeInOutSine(x: number) {

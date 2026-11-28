@@ -220,13 +220,13 @@ export default function PracticeSection() {
   } else if (elapsed < inhale + holdFull) {
     breathForce = 1.0;
     isRising = true;
-    phaseTextEl = "Κράτημα (Προσοχή)";
-    phaseTextEn = "Hold (Awareness)";
+    phaseTextEl = "Παύση (Προσοχή)";
+    phaseTextEn = "Pause (Awareness)";
     phaseQuoteEl = "Η προσοχή ανοίγει. Μείνε λίγο εδώ, ήσυχα και ανοιχτά.";
     phaseQuoteEn = "Attention opens. Stay here a moment, quiet and open.";
     
-    phaseNameEl = "Κράτημα";
-    phaseNameEn = "Hold";
+    phaseNameEl = "Παύση";
+    phaseNameEn = "Pause";
     currentSec = Math.floor(elapsed - inhale) + 1;
     totalPhaseSec = holdFull;
   } else if (elapsed < inhale + holdFull + exhale) {
@@ -245,13 +245,13 @@ export default function PracticeSection() {
   } else {
     breathForce = 0;
     isRising = false;
-    phaseTextEl = "Κράτημα (Βαρύτητα)";
-    phaseTextEn = "Hold (Grounding)";
+    phaseTextEl = "Παύση (Βαρύτητα)";
+    phaseTextEn = "Pause (Grounding)";
     phaseQuoteEl = "Νιώσε το βάρος του σώματος και τη γη που σε κρατά.";
     phaseQuoteEn = "Feel the weight of your body and the ground that holds you.";
     
-    phaseNameEl = "Κράτημα";
-    phaseNameEn = "Hold";
+    phaseNameEl = "Παύση";
+    phaseNameEn = "Pause";
     currentSec = Math.floor(elapsed - inhale - holdFull - exhale) + 1;
     totalPhaseSec = holdEmpty;
   }
@@ -276,7 +276,7 @@ export default function PracticeSection() {
     if (secElapsed !== prevSecRef.current && isPlaying && step === 'player') {
       prevSecRef.current = secElapsed;
       // Through lib/sound: only if vibration is on (Settings → Senses).
-      vibrate(phaseRef.current === "Hold" ? 40 : 15);
+      vibrate(phaseRef.current === "Pause" ? 40 : 15);
     }
   }, [secElapsed, isPlaying, step]);
 

@@ -24,6 +24,8 @@ export interface BreathPattern {
   rhythmName?: { el: string; en: string };
   /** Movements: whether it needs standing, or can also be done seated. */
   stance?: 'standing' | 'either';
+  /** Keeps only its own rhythm: no 5-5 / 4-6 / 4-2-7 buttons (the Tree, where balance needs its own pace). */
+  ownRhythmOnly?: boolean;
   /** One of the book's three rhythms (Chapter 2). */
   fromBook?: boolean;
   /** Practices shown as one card, chosen inside (e.g. where the vibration is felt). */
@@ -142,16 +144,16 @@ export const BREATH_PATTERNS: BreathPattern[] = [
         sub: { el: "εισπνοή (4s)", en: "inhale (4s)" },
       },
       {
-        label: { el: "Παύση", en: "Hold" },
-        sub: { el: "κράτημα (2s)", en: "hold (2s)" },
+        label: { el: "Παύση", en: "Pause" },
+        sub: { el: "παύση (2s)", en: "pause (2s)" },
       },
       {
         label: { el: "Εκπνοή", en: "Exhale" },
         sub: { el: "εκπνοή (6s)", en: "exhale (6s)" },
       },
       {
-        label: { el: "Παύση", en: "Hold" },
-        sub: { el: "παύση (1s)", en: "hold (1s)" },
+        label: { el: "Παύση", en: "Pause" },
+        sub: { el: "παύση (1s)", en: "pause (1s)" },
       },
     ],
   },
@@ -187,8 +189,8 @@ export const BREATH_PATTERNS: BreathPattern[] = [
         sub: { el: "εισπνοή (4s)", en: "inhale (4s)" },
       },
       {
-        label: { el: "Παύση", en: "Hold" },
-        sub: { el: "κράτημα (2s)", en: "hold (2s)" },
+        label: { el: "Παύση", en: "Pause" },
+        sub: { el: "παύση (2s)", en: "pause (2s)" },
       },
       {
         label: { el: "Εκπνοή", en: "Exhale" },
@@ -227,8 +229,8 @@ export const BREATH_PATTERNS: BreathPattern[] = [
         sub: { el: "εισπνοή (4s)", en: "inhale (4s)" },
       },
       {
-        label: { el: "Παύση", en: "Hold" },
-        sub: { el: "κράτημα (7s)", en: "hold (7s)" },
+        label: { el: "Παύση", en: "Pause" },
+        sub: { el: "παύση (7s)", en: "pause (7s)" },
       },
       {
         label: { el: "Εκπνοή", en: "Exhale" },
@@ -437,7 +439,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
         sub: { el: "σήκωσε τον ουρανό (6s)", en: "push the sky (6s)" },
       },
       {
-        label: { el: "Παύση", en: "Hold" },
+        label: { el: "Παύση", en: "Pause" },
         sub: { el: "έκταση (2s)", en: "extend (2s)" },
       },
       {
@@ -451,6 +453,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     // sides taking turns cycle by cycle (the figure: taiChiPose, TREE).
     id: "tai-chi-tree",
     stance: 'standing',
+    ownRhythmOnly: true,
     axis: 'body',
     category: "movement",
     hasBinaural: true,
@@ -527,16 +530,16 @@ export const BREATH_PATTERNS: BreathPattern[] = [
         sub: { el: "εισπνοή (4s)", en: "inhale (4s)" },
       },
       {
-        label: { el: "Παύση", en: "Hold" },
-        sub: { el: "κράτημα (4s)", en: "hold (4s)" },
+        label: { el: "Παύση", en: "Pause" },
+        sub: { el: "παύση (4s)", en: "pause (4s)" },
       },
       {
         label: { el: "Εκπνοή", en: "Exhale" },
         sub: { el: "εκπνοή (4s)", en: "exhale (4s)" },
       },
       {
-        label: { el: "Παύση", en: "Hold" },
-        sub: { el: "κράτημα (4s)", en: "hold (4s)" },
+        label: { el: "Παύση", en: "Pause" },
+        sub: { el: "παύση (4s)", en: "pause (4s)" },
       },
     ],
   },
@@ -587,9 +590,9 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     phases: [ { dur: 4500, armFrom: 0, armTo: 1 }, { dur: 1000, armFrom: 1, armTo: 1 }, { dur: 5500, armFrom: 1, armTo: 0 }, { dur: 1000, armFrom: 0, armTo: 0 } ],
     labels: [
       { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άνοδος (4.5s)", en: "rise (4.5s)" } },
-      { label: { el: "Παύση", en: "Hold" }, sub: { el: "προσοχή (1s)", en: "awareness (1s)" } },
+      { label: { el: "Παύση", en: "Pause" }, sub: { el: "προσοχή (1s)", en: "awareness (1s)" } },
       { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "κάθοδος (5.5s)", en: "sink (5.5s)" } },
-      { label: { el: "Παύση", en: "Hold" }, sub: { el: "βαρύτητα (1s)", en: "gravity (1s)" } },
+      { label: { el: "Παύση", en: "Pause" }, sub: { el: "βαρύτητα (1s)", en: "gravity (1s)" } },
     ]
   },
   {
@@ -603,9 +606,9 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     phases: [ { dur: 4000, armFrom: 0, armTo: 1 }, { dur: 4000, armFrom: 1, armTo: 1 }, { dur: 4000, armFrom: 1, armTo: 0 }, { dur: 4000, armFrom: 0, armTo: 0 } ],
     labels: [
       { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άνοδος (4s)", en: "rise (4s)" } },
-      { label: { el: "Παύση", en: "Hold" }, sub: { el: "προσοχή (4s)", en: "awareness (4s)" } },
+      { label: { el: "Παύση", en: "Pause" }, sub: { el: "προσοχή (4s)", en: "awareness (4s)" } },
       { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "κάθοδος (4s)", en: "sink (4s)" } },
-      { label: { el: "Παύση", en: "Hold" }, sub: { el: "βαρύτητα (4s)", en: "gravity (4s)" } },
+      { label: { el: "Παύση", en: "Pause" }, sub: { el: "βαρύτητα (4s)", en: "gravity (4s)" } },
     ]
   },
   {
@@ -633,9 +636,9 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     phases: [ { dur: 4000, armFrom: 0, armTo: 1 }, { dur: 4000, armFrom: 1, armTo: 1 }, { dur: 2000, armFrom: 1, armTo: 0 }, { dur: 2000, armFrom: 0, armTo: 0 } ],
     labels: [
       { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άνοδος (4s)", en: "rise (4s)" } },
-      { label: { el: "Παύση", en: "Hold" }, sub: { el: "προσοχή (4s)", en: "awareness (4s)" } },
+      { label: { el: "Παύση", en: "Pause" }, sub: { el: "προσοχή (4s)", en: "awareness (4s)" } },
       { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "κάθοδος (2s)", en: "sink (2s)" } },
-      { label: { el: "Παύση", en: "Hold" }, sub: { el: "βαρύτητα (2s)", en: "gravity (2s)" } },
+      { label: { el: "Παύση", en: "Pause" }, sub: { el: "βαρύτητα (2s)", en: "gravity (2s)" } },
     ]
   },
   {
@@ -649,9 +652,9 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     phases: [ { dur: 4500, armFrom: 0, armTo: 1 }, { dur: 1000, armFrom: 1, armTo: 1 }, { dur: 5500, armFrom: 1, armTo: 0 }, { dur: 1000, armFrom: 0, armTo: 0 } ],
     labels: [
       { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άνοιγμα (4.5s)", en: "open (4.5s)" } },
-      { label: { el: "Παύση", en: "Hold" }, sub: { el: "προσοχή (1s)", en: "awareness (1s)" } },
+      { label: { el: "Παύση", en: "Pause" }, sub: { el: "προσοχή (1s)", en: "awareness (1s)" } },
       { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "κλείσιμο (5.5s)", en: "close (5.5s)" } },
-      { label: { el: "Παύση", en: "Hold" }, sub: { el: "κέντρο (1s)", en: "center (1s)" } },
+      { label: { el: "Παύση", en: "Pause" }, sub: { el: "κέντρο (1s)", en: "center (1s)" } },
     ]
   },
   {
@@ -665,9 +668,9 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     phases: [ { dur: 4000, armFrom: 0, armTo: 1 }, { dur: 4000, armFrom: 1, armTo: 1 }, { dur: 4000, armFrom: 1, armTo: 0 }, { dur: 4000, armFrom: 0, armTo: 0 } ],
     labels: [
       { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άνοιγμα (4s)", en: "open (4s)" } },
-      { label: { el: "Παύση", en: "Hold" }, sub: { el: "προσοχή (4s)", en: "awareness (4s)" } },
+      { label: { el: "Παύση", en: "Pause" }, sub: { el: "προσοχή (4s)", en: "awareness (4s)" } },
       { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "κλείσιμο (4s)", en: "close (4s)" } },
-      { label: { el: "Παύση", en: "Hold" }, sub: { el: "κέντρο (4s)", en: "center (4s)" } },
+      { label: { el: "Παύση", en: "Pause" }, sub: { el: "κέντρο (4s)", en: "center (4s)" } },
     ]
   },
   {
@@ -695,9 +698,9 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     phases: [ { dur: 4000, armFrom: 0, armTo: 1 }, { dur: 4000, armFrom: 1, armTo: 1 }, { dur: 2000, armFrom: 1, armTo: 0 }, { dur: 2000, armFrom: 0, armTo: 0 } ],
     labels: [
       { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "άνοιγμα (4s)", en: "open (4s)" } },
-      { label: { el: "Παύση", en: "Hold" }, sub: { el: "προσοχή (4s)", en: "awareness (4s)" } },
+      { label: { el: "Παύση", en: "Pause" }, sub: { el: "προσοχή (4s)", en: "awareness (4s)" } },
       { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "κλείσιμο (2s)", en: "close (2s)" } },
-      { label: { el: "Παύση", en: "Hold" }, sub: { el: "κέντρο (2s)", en: "center (2s)" } },
+      { label: { el: "Παύση", en: "Pause" }, sub: { el: "κέντρο (2s)", en: "center (2s)" } },
     ]
   },
   {
@@ -726,7 +729,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
         sub: { el: "από τη μύτη (4s)", en: "through the nose (4s)" },
       },
       {
-        label: { el: "Παύση", en: "Hold" },
+        label: { el: "Παύση", en: "Pause" },
         sub: { el: "ετοιμάσου (1s)", en: "get ready (1s)" },
       },
       {
@@ -760,7 +763,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
         sub: { el: "απαλά από τη μύτη (4s)", en: "gently through the nose (4s)" },
       },
       {
-        label: { el: "Παύση", en: "Hold" },
+        label: { el: "Παύση", en: "Pause" },
         sub: { el: "ετοιμάσου (1s)", en: "get ready (1s)" },
       },
       {
@@ -797,7 +800,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
         sub: { el: "βαθιά, ήρεμα (4s)", en: "deeply, calmly (4s)" },
       },
       {
-        label: { el: "Παύση", en: "Hold" },
+        label: { el: "Παύση", en: "Pause" },
         sub: { el: "νιώσε το στήθος (2s)", en: "feel the chest (2s)" },
       },
       {
@@ -834,7 +837,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
         sub: { el: "βαθιά, ήρεμα (4s)", en: "deeply, calmly (4s)" },
       },
       {
-        label: { el: "Παύση", en: "Hold" },
+        label: { el: "Παύση", en: "Pause" },
         sub: { el: "νιώσε την κοιλιά (2s)", en: "feel the belly (2s)" },
       },
       {
@@ -871,7 +874,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
         sub: { el: "εισπνοή (4s)", en: "inhale (4s)" },
       },
       {
-        label: { el: "Παύση", en: "Hold" },
+        label: { el: "Παύση", en: "Pause" },
         sub: { el: "νιώσε το λαιμό (2s)", en: "feel the throat (2s)" },
       },
       {
@@ -908,7 +911,7 @@ export const BREATH_PATTERNS: BreathPattern[] = [
         sub: { el: "εισπνοή (4s)", en: "inhale (4s)" },
       },
       {
-        label: { el: "Παύση", en: "Hold" },
+        label: { el: "Παύση", en: "Pause" },
         sub: { el: "νιώσε το κεφάλι (2s)", en: "feel the head (2s)" },
       },
       {

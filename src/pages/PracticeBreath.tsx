@@ -124,7 +124,7 @@ export default function PracticeBreath() {
   const [rhythmOverride, setRhythmOverride] = useState<'default' | '5-5' | '4-6' | '4-2-7'>('default');
 
   const pattern = React.useMemo(() => {
-    if (basePattern.category !== 'movement' || rhythmOverride === 'default') return basePattern;
+    if (basePattern.category !== 'movement' || basePattern.ownRhythmOnly || rhythmOverride === 'default') return basePattern;
     
     let dur = 0;
     let newPhases: any[] = [];
@@ -160,7 +160,7 @@ export default function PracticeBreath() {
       ];
       newLabels = [
         { label: { el: "Εισπνοή", en: "Inhale" }, sub: { el: "εισπνοή (4s)", en: "inhale (4s)" } },
-        { label: { el: "Κράτημα", en: "Hold" }, sub: { el: "κράτημα (2s)", en: "hold (2s)" } },
+        { label: { el: "Παύση", en: "Pause" }, sub: { el: "παύση (2s)", en: "pause (2s)" } },
         { label: { el: "Εκπνοή", en: "Exhale" }, sub: { el: "πολύ μακριά εκπνοή (7s)", en: "very long exhale (7s)" } },
       ];
     }
@@ -533,7 +533,7 @@ export default function PracticeBreath() {
 
   const totalTimeSeconds = cycles * cycleSeconds;
   const phaseLabelEn = pattern.labels[phaseIdx].label.en;
-  const isPause = phaseLabelEn === 'Hold' || phaseLabelEn === 'Wait';
+  const isPause = phaseLabelEn === 'Pause' || phaseLabelEn === 'Hold' || phaseLabelEn === 'Wait';
   const isInhale = phaseLabelEn === 'Inhale';
   const isExhale = phaseLabelEn === 'Exhale';
 
@@ -559,13 +559,12 @@ export default function PracticeBreath() {
   const glowFilter = `drop-shadow(0 0 ${running ? (isExhale ? 16 : 12) : 8}px ${glowRGBA})`;
   const glowShadow = `0 0 ${running ? (isExhale ? 28 : 22) : 14}px ${running ? 4 : 2}px ${glowRGBA}`;
 
-  // The whole cycle, step by step: a hold with full lungs is «Κράτημα», with empty lungs «Παύση».
+  // The whole cycle, step by step. Every pause is «Παύση» / "Pause", the same word as the label above the figure.
   const cycleSteps = pattern.phases.map((ph, i) => {
     // Read the phase from what the breath does (fuller, emptier, or held), not from its label.
     const kind = ph.armTo > ph.armFrom ? 'inhale' : ph.armTo < ph.armFrom ? 'exhale' : 'hold';
     const name = kind === 'inhale' ? (language === 'el' ? 'Εισπνοή' : 'Inhale')
       : kind === 'exhale' ? (language === 'el' ? 'Εκπνοή' : 'Exhale')
-      : ph.armFrom >= 0.5 ? (language === 'el' ? 'Κράτημα' : 'Hold')
       : (language === 'el' ? 'Παύση' : 'Pause');
     return { name, seconds: Math.round(ph.dur / 1000), color: PHASE_COLORS[kind] };
   });
@@ -718,7 +717,7 @@ export default function PracticeBreath() {
       {!running && !finished && <EvidenceLine evidence={pattern.evidence} language={language} />}
 
       {/* Rhythm Override Selector (Movement Only) */}
-      {!running && basePattern.category === 'movement' && (
+      {!running && basePattern.category === 'movement' && !basePattern.ownRhythmOnly && (
         <div className="z-20 w-full mb-4 md:px-0 relative px-4 flex flex-col items-center animate-in fade-in slide-in-from-top-2 duration-500">
            <span className="text-[13px] font-medium text-zinc-400 mb-2">
              {el ? 'Ρυθμός αναπνοής' : 'Breathing Rhythm'}
@@ -746,6 +745,13 @@ export default function PracticeBreath() {
              ))}
            </div>
            {watchSlowly}
+        </div>
+      )}
+
+      {/* A movement with its own rhythm only (the Tree): just «Δες το αργά» */}
+      {!running && basePattern.category === 'movement' && basePattern.ownRhythmOnly && watchSlowly && (
+        <div className="z-20 w-full mb-4 md:px-0 relative px-4 flex flex-col items-center">
+          {watchSlowly}
         </div>
       )}
 
