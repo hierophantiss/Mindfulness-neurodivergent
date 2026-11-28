@@ -1,6 +1,7 @@
 {
   "name": "neurodivergent-mindfulness",
   "private": true,
+  "license": "SEE LICENSE IN LICENSE",
   "version": "0.0.3",
   "type": "module",
   "scripts": {
