@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { memo, useMemo, useRef } from "react";
+import { memo, useEffect, useMemo, useRef } from "react";
 import { motion } from "motion/react";
 import {
   type Pt, type PoseMemo, type TreeLeg, type TreeLegs, taiChiPose,
@@ -315,6 +315,13 @@ export default function TaiChiHero({
   }
   const trail = trailRef.current.pts;
 
+  // The axis of gravity: in the Tree it moves with the body over the standing foot.
+  const axisShift = legs ? legs.shift : 0;
+  const axisRef = useRef<SVGGElement>(null);
+  useEffect(() => {
+    axisRef.current?.setAttribute('transform', `translate(${axisShift.toFixed(2)} 0)`);
+  });
+
   // The figure and the earth, framed: in the practice picture closer than at
   // first (the figure about two thirds of the height, the open arms still in),
   // feet a little lower; small pictures (bare) keep their framing.
@@ -432,7 +439,10 @@ export default function TaiChiHero({
       <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 400">
         {/* SCENE WRAPPER: Double size hero and earth */}
         <g transform={sceneTf}>
-          {/* CENTRAL ENERGY LIGHT BEAM (Passing through earth and cosmic body) */}
+          {/* CENTRAL ENERGY LIGHT BEAM (Passing through earth and cosmic body).
+              In the Tree the axis goes over with the body, onto the standing
+              foot: moved each frame through axisRef, so this layer is still drawn once. */}
+          <g ref={axisRef}>
           {/* Under Earth Beam (Golden orange, rich glow) */}
           <line
             x1="200"
@@ -452,6 +462,7 @@ export default function TaiChiHero({
           </linearGradient>
           <line x1="200" y1="60" x2="200" y2="284" stroke="url(#tc-axis-fade)" strokeWidth="1.8" filter="url(#tc-beam-glow)" opacity={0.6} />
           <line x1="200" y1="60" x2="200" y2="284" stroke="url(#tc-axis-fade)" strokeWidth="0.8" />
+          </g>
 
           {/* EARTH GLOBE AT THE BOTTOM */}
           {/* Atmospheric Blue Glow Ring */}
@@ -560,14 +571,14 @@ export default function TaiChiHero({
           {/* Energy pulses expanding up the central beam */}
           {!figureOnly && (<>
           <circle
-            cx="200"
+            cx={200 + axisShift}
             cy={284 - breathForce * 200}
             r={2 + breathForce * 4}
             fill="#fef08a"
             opacity={1 - breathForce}
           />
           <circle
-            cx="200"
+            cx={200 + axisShift}
             cy={284 - ((breathForce + 0.5) % 1) * 200}
             r={1 + ((breathForce + 0.5) % 1) * 3}
             fill="#fed7aa"
