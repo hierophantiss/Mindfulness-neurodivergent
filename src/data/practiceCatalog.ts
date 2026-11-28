@@ -60,6 +60,8 @@ export const CHECKIN_TAGS: Record<string, CheckinTag[]> = {
   // lotus-bloom-5-5: removed (17/10); its link opens lotus-resonant.
   '5-5': [B, L], 'deep-bow-5-5': [L, B], 'lotus-bloom-5-5': [], 'be-like-a-flower-5-5': [L, B],
   'tai-chi-cloud-hands': [H, L], 'qigong-lifting-sky': [L],
+  // The Tree: balance on one leg, standing; gentle activation (numbness) or calm, not a first step in tension.
+  'tai-chi-tree': [L, B],
   'taichi-fourfold': [B, H], 'taichi-box': [L, B], 'taichi-resonant': [B, H], 'taichi-active': [L],
   'lotus-fourfold': [B], 'lotus-box': [L, B], 'lotus-resonant': [B, H], 'lotus-active': [L],
   // voice

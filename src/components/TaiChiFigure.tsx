@@ -28,6 +28,7 @@ export default function TaiChiFigure(props: ComponentProps<typeof TaiChiHero>) {
         breathForce={props.breathForce}
         isRising={props.isRising}
         movementType={props.movementType}
+        treeLeg={props.treeLeg}
         idle={props.idle}
         breathStateText={props.breathStateText}
         onTrouble={() => { no3D(); setUse3D(false); }}

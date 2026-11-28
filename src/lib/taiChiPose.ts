@@ -89,6 +89,102 @@ export const HAND_W = 5.4;                  // the hand's width, for palms that 
 export const SEAT_PIVOT = 244;
 
 export const dist2 = (a: Pt, b: Pt) => Math.hypot(a.x - b.x, a.y - b.y);
+
+// ── THE TREE, as Theodoros does it (from his video) ──
+// One cycle: with the inhale the weight (the axis) moves slowly onto one leg;
+// the other knee bends forward and out and its foot comes to rest LOW against
+// the inside of the standing leg, at the lower calf (a low tree, never foot on
+// thigh), while the arms rise out from the sides into a wide arch above the
+// head: elbows high and out, forearms nearly upright, the hands apart. A short
+// pause in the tree; with the exhale the foot comes back down to the earth
+// and takes the weight again, the axis returns to the middle and the arms
+// open out to the sides and come down. The next cycle, the other leg.
+export const TREE = 'tai-chi-tree';
+/** Which of the person's legs lifts (facing us, the right leg is on screen-left). */
+export type TreeLeg = 'right' | 'left';
+export const TREE_SHIFT = 5.5;      // how far the hips go over the standing foot
+export const TREE_HIP_Y = HEM_Y - 3; // the hip joints, under the hoodie's hem
+export const TREE_HIP_HALF = 6;      // each hip joint from the middle
+export const ANKLE_Y = 281;          // the ankle (in the cuff), foot on the floor
+export const FOOT_HALF = 6.5;        // each foot from the middle
+export const THIGH = 22.6;
+export const SHIN = 22.6;
+/** At the top: the lifted ankle, from the middle towards the standing side, and its height. */
+export const TREE_ANKLE = { x: 1.5, y: 265 };
+
+const smooth01 = (x: number) => { const c = Math.min(1, Math.max(0, x)); return c * c * (3 - 2 * c); };
+
+/** How far along the tree is, from how full the breath is (0 standing, 1 in the tree):
+ *  first the weight moves over, then the foot lifts (and, coming back, the
+ *  foot is down before the weight returns to the middle). */
+export function treeTiming(bf: number): { shift: number; lift: number } {
+  return { shift: smooth01(bf / 0.42), lift: smooth01((bf - 0.36) / 0.56) };
+}
+
+export interface TreeLegs {
+  /** Screen-left (x < 200) and screen-right legs. */
+  hipL: Pt; kneeL: Pt; ankleL: Pt;
+  hipR: Pt; kneeR: Pt; ankleR: Pt;
+  /** How far each knee comes towards us (2D units), for the 3D figure. */
+  kneeFwdL: number; kneeFwdR: number;
+  /** The lifted foot: its screen side (−1 left, +1 right) and its turn (degrees, as the 2D foot is drawn). */
+  liftSide: 1 | -1; footRot: number;
+  /** 0–1: how far the foot has lifted. */
+  lift: number;
+  /** The hips (and the body above them) over the standing foot. */
+  shift: number;
+}
+
+/**
+ * A knee between a hip and an ankle (thigh and shin of fixed length). The bend
+ * goes mostly forward (towards us, unseen from the front) and `out` of it to
+ * the side, away from the middle, as the lifted knee turns out.
+ */
+function bendKnee(hip: Pt, ankle: Pt, side: 1 | -1, out: number): { knee: Pt; fwd: number } {
+  const dx = ankle.x - hip.x, dy = ankle.y - hip.y;
+  const d = Math.max(1e-6, Math.hypot(dx, dy));
+  // Equal thigh and shin: the knee is over the middle of the line, `h` off it.
+  const h = Math.sqrt(Math.max(0, THIGH * THIGH - (d / 2) * (d / 2)));
+  const mid = { x: hip.x + dx / 2, y: hip.y + dy / 2 };
+  // The perpendicular pointing away from the middle of the body.
+  let px = -dy / d, py = dx / d;
+  if (px * side < 0) { px = -px; py = -py; }
+  return { knee: { x: mid.x + px * h * out, y: mid.y + py * h * out }, fwd: h * Math.sqrt(Math.max(0, 1 - out * out)) };
+}
+
+/** The legs in the Tree at one moment of the breath. The standing foot never moves. */
+export function treeLegs(bf: number, leg: TreeLeg = 'right'): TreeLegs {
+  const { shift: s, lift: u } = treeTiming(bf);
+  const ls: 1 | -1 = leg === 'right' ? -1 : 1;   // the lifted leg's screen side
+  const ss = -ls as 1 | -1;                      // the standing leg's
+  const shift = ss * TREE_SHIFT * s;
+  const hip = (side: 1 | -1): Pt => ({
+    x: 200 + shift + side * TREE_HIP_HALF,
+    // The lifted side's hip rises a touch with the knee.
+    y: TREE_HIP_Y - (side === ls ? 0.8 * u : 0),
+  });
+  const home = (side: 1 | -1): Pt => ({ x: 200 + side * FOOT_HALF, y: ANKLE_Y });
+  // The lifted ankle: up off the floor first, then in, to rest low against
+  // the standing leg's calf (on its inner side, never across it).
+  const a0 = home(ls);
+  const a1 = { x: 200 + ss * TREE_ANKLE.x, y: TREE_ANKLE.y };
+  const lifted = {
+    x: a0.x + (a1.x - a0.x) * smooth01((u - 0.12) / 0.88),
+    y: a0.y + (a1.y - a0.y) * smooth01(u / 0.8),
+  };
+  const stand = bendKnee(hip(ss), home(ss), ss, 0.12);
+  const up = bendKnee(hip(ls), lifted, ls, 0.12 + 0.8 * u);
+  // The lifted foot points down and in, between the line of the shin and upright.
+  const shinDeg = (Math.atan2(-(lifted.x - up.knee.x), lifted.y - up.knee.y) * 180) / Math.PI;
+  const footRot = 0.8 * shinDeg * smooth01(u / 0.6);
+  const L = ls < 0, hipLs = hip(ls), hipSs = hip(ss);
+  return {
+    hipL: L ? hipLs : hipSs, kneeL: L ? up.knee : stand.knee, ankleL: L ? lifted : home(ss),
+    hipR: L ? hipSs : hipLs, kneeR: L ? stand.knee : up.knee, ankleR: L ? home(ss) : lifted,
+    kneeFwdL: L ? up.fwd : stand.fwd, kneeFwdR: L ? stand.fwd : up.fwd,
+    liftSide: ls, footRot, lift: u, shift,
+  };
+}
 /**
  * The elbow has two possible places for a given hand. It stays on the side it
  * was on, and goes over to the preferred side only where the arm is nearly
@@ -154,6 +250,8 @@ export interface TaiChiPoseInput {
    *  (0 hanging, 1 about 30° out), as when the thoughts lift the body
    *  (Chapter 1). */
   armsUp?: number;
+  /** The Tree: which of the person's legs lifts this cycle (they take turns). */
+  treeLeg?: TreeLeg;
 }
 /** The last pose, so elbows and hands carry on from where they were. */
 export interface PoseMemo { type?: string; eL?: Pt; cL?: Pt; cR?: Pt; diff?: number }
@@ -166,6 +264,8 @@ export interface TaiChiPose {
   /** How much the palms come together in the middle (0–1). */
   meetW: number;
   bodyShift: number; sinkY: number; torsoBendY: number; leanBackY: number; bowBend: number;
+  /** The Tree: the legs (the other movements stand on both feet as drawn). */
+  legs?: TreeLegs;
 }
 
 /**
@@ -418,7 +518,7 @@ export function taiChiPose(input: TaiChiPoseInput, memo: PoseMemo): TaiChiPose {
   // (Greeting the Infinite: in front of the belly the hands stay apart, palms up.)
   // (Lifting the Sky: the hands never meet.)
   const above = movementType === "be-like-a-flower-5-5" ? Math.min(1, Math.max(0, (231 - hL.y) / 16))
-    : movementType === "qigong-lifting-sky" ? 0 : 1;
+    : movementType === "qigong-lifting-sky" || movementType === TREE ? 0 : 1;
   const meetW = near * near * (3 - 2 * near) * above;
   hL.x += (200 - HAND_W / 2 - hL.x) * meetW;
   // At the chest they rest a little higher, in front of the breastbone, so the
@@ -632,6 +732,24 @@ export function taiChiPose(input: TaiChiPoseInput, memo: PoseMemo): TaiChiPose {
     }
     ownRot = rot;
   }
+  // ── THE TREE's arms (see TREE above) ──
+  // Joint by joint, so the arm keeps its length: the long arm turns up from
+  // hanging, out at the side, through level; above level the elbow bends and
+  // the forearm comes up, nearly upright, into the arch over the head (the
+  // hands apart, palms forward). The exhale is the same way back: the forearm
+  // opens out, and the long arm comes down at the side.
+  if (movementType === TREE) {
+    const a = Math.min(1, Math.max(0, bf));
+    const up = 100 + 108 * a;                         // the upper arm, as on a clock (90 = down, 180 = out, 270 = up)
+    const bend = 6 + 86 * smooth01((a - 0.5) / 0.5);  // the elbow's bend: in the arch, the forearm leans in about 30°
+    const rad = (d: number) => (d * Math.PI) / 180;
+    eL = { x: sL.x + UPPER_ARM * Math.cos(rad(up)), y: sL.y + UPPER_ARM * Math.sin(rad(up)) };
+    hL = { x: eL.x + FOREARM * Math.cos(rad(up + bend)), y: eL.y + FOREARM * Math.sin(rad(up + bend)) };
+    const along = (Math.atan2(-(hL.x - eL.x), hL.y - eL.y) * 180) / Math.PI;
+    // The hand in the line of the forearm; in the arch the fingers turn a little in.
+    ownRot = along + 12 * smooth01((a - 0.6) / 0.4);
+    palmVis = 0.45 * smooth01((a - 0.7) / 0.3);
+  }
   memo.eL = eL;
 
   const baseLeftHandRotation = easeBezier1D(rotExhale, isRisePhase ? rotCpRise : rotCpFall, rotInhale, bf);
@@ -752,6 +870,16 @@ export function taiChiPose(input: TaiChiPoseInput, memo: PoseMemo): TaiChiPose {
     sL.x = shL.x; sR.x = shR.x;
   }
 
+  // The Tree: the whole body goes over the standing foot, upright.
+  let legs: TreeLegs | undefined;
+  if (movementType === TREE && !natural && !seated) {
+    legs = treeLegs(bf, input.treeLeg);
+    bodyShift = legs.shift;
+    const by = (p: Pt): Pt => ({ x: p.x + bodyShift, y: p.y });
+    sL.x += bodyShift; sR.x += bodyShift;
+    eLf = by(eLf); hLf = by(hLf); eR = by(eR); hR = by(hR);
+  }
+
   // Standing at ease (not Tai Chi): the arms hang by the sides, close to the
   // body, the elbows soft, the fingers down; the same on both sides.
   if (natural) {
@@ -802,6 +930,6 @@ export function taiChiPose(input: TaiChiPoseInput, memo: PoseMemo): TaiChiPose {
 
   return {
     sL, sR, eL: eLf, hL: hLf, eR, hR, leftRot, rightRot: rightHandRotation,
-    palmVis, meetW, bodyShift, sinkY, torsoBendY, leanBackY, bowBend,
+    palmVis, meetW, bodyShift, sinkY, torsoBendY, leanBackY, bowBend, legs,
   };
 }

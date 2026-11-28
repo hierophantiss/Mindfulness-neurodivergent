@@ -12,7 +12,8 @@
 import * as THREE from 'three';
 import {
   type Pt, type PoseMemo, taiChiPose,
-  FIGURE_H, UPPER_ARM, FOREARM, SHOULDER_Y, SHOULDER_HALF, HEART_Y, HEM_Y, KNEE_Y,
+  type TreeLeg,
+  FIGURE_H, UPPER_ARM, FOREARM, SHOULDER_Y, SHOULDER_HALF, HEART_Y, HEM_Y, KNEE_Y, ANKLE_Y, TREE,
 } from './taiChiPose';
 
 export interface TaiChi3DState {
@@ -24,6 +25,8 @@ export interface TaiChi3DState {
    *  hang by the sides, the palms to the thighs; `bf` only lights the hood's
    *  universe and the light at the feet. */
   natural?: boolean;
+  /** The Tree: which of the person's legs lifts this cycle. */
+  treeLeg?: TreeLeg;
 }
 
 export interface TaiChi3D {
@@ -565,14 +568,26 @@ export function createTaiChi3D(mount: HTMLElement, onTrouble: () => void): TaiCh
     legRadii[i] = t === 0 ? 0.068 : (0.090 * (1 - t) + 0.046 * t);
   }
 
+  // Each foot hangs from its ankle (`ankleRoot`, at the end of the trouser
+  // leg), so a foot can lift (the Tree); standing, the ankle is still and the
+  // foot flat on the earth, exactly as before.
+  const ANKLE_3Y = 0.146;
   function createLegObjects(side: number) {
     const xFoot = side * FOOT_X * SCALE;
     const footZ = -0.018;
 
+    const ankleRoot = new THREE.Group();
+    ankleRoot.position.set(xFoot, ANKLE_3Y, footZ);
+    figureGroup.add(ankleRoot);
+    // The foot turns about the ankle joint.
+    const footPivot = new THREE.Group();
+    footPivot.position.set(0, 0.064 - ANKLE_3Y, 0);
+    ankleRoot.add(footPivot);
+
     const footGroup = new THREE.Group();
-    footGroup.position.set(xFoot, 0, footZ);
+    footGroup.position.set(0, -0.064, 0);
     footGroup.rotation.y = side * 0.13;
-    figureGroup.add(footGroup);
+    footPivot.add(footGroup);
 
     const heel = new THREE.Mesh(new THREE.SphereGeometry(0.031, 10, 10), skinMat);
     heel.scale.set(0.96, 0.87, 1.05);
@@ -598,19 +613,19 @@ export function createTaiChi3D(mount: HTMLElement, onTrouble: () => void): TaiCh
     footGroup.add(instep);
 
     const ankleJoint = new THREE.Mesh(new THREE.SphereGeometry(0.032, 10, 10), skinShadowMat);
-    ankleJoint.position.set(xFoot, 0.064, footZ);
-    figureGroup.add(ankleJoint);
+    ankleJoint.position.set(0, 0.064 - ANKLE_3Y, 0);
+    ankleRoot.add(ankleJoint);
 
     const ankleShaft = new THREE.Mesh(new THREE.CylinderGeometry(0.032, 0.030, 0.082, 12), skinMat);
-    ankleShaft.position.set(xFoot, 0.095, footZ);
-    figureGroup.add(ankleShaft);
+    ankleShaft.position.set(0, 0.095 - ANKLE_3Y, 0);
+    ankleRoot.add(ankleShaft);
 
     const cuff = new THREE.Mesh(new THREE.CylinderGeometry(0.053, 0.047, 0.054, 14), cuffMat);
-    cuff.position.set(xFoot, 0.132, footZ);
-    figureGroup.add(cuff);
+    cuff.position.set(0, 0.132 - ANKLE_3Y, 0);
+    ankleRoot.add(cuff);
 
     const legLimb = createSweptLimbMesh(LEG_RINGS, 12, legRadii, pantsMat);
-    return { legLimb, xFoot, footZ };
+    return { legLimb, xFoot, footZ, ankleRoot, footPivot };
   }
 
   const leftLeg = createLegObjects(-1);
@@ -800,8 +815,15 @@ export function createTaiChi3D(mount: HTMLElement, onTrouble: () => void): TaiCh
       return lerpDir(UP, IN_L, smc((bf - 0.72) / 0.28), out);
     }
     if (type === 'deep-bow-5-5' || type === 'bow') return out.copy(BACK);
+    if (type === TREE) {
+      // The palms to the thighs, then down as the long arms rise out at the
+      // sides (as wings), then forward (and a little in) in the arch overhead.
+      if (bf < 0.25) return lerpDir(IN_L, DOWN, smc(bf / 0.25), out);
+      return lerpDir(DOWN, _treePalm, smc((bf - 0.45) / 0.45), out);
+    }
     return out.copy(IN_L);
   }
+  const _treePalm = new THREE.Vector3(0.35, 0, 1).normalize();
 
   // A two-bone arm in 3D: the elbow on the side of `pole`.
   const _ikD = new THREE.Vector3();
@@ -819,6 +841,8 @@ export function createTaiChi3D(mount: HTMLElement, onTrouble: () => void): TaiCh
     outE.copy(s).addScaledVector(_ikD, a).addScaledVector(_ikP, r);
   }
   const _pole = new THREE.Vector3();
+  const _qFoot = new THREE.Quaternion();
+  const _qFoot2 = new THREE.Quaternion();
   const _pivotM = new THREE.Matrix4();
 
   // ── One frame ──
@@ -830,7 +854,7 @@ export function createTaiChi3D(mount: HTMLElement, onTrouble: () => void): TaiCh
     const type = state.movementType === 'taichi' ? '5-5' : state.movementType;
     if (memo.type !== type || idle) { memo.type = type; memo.eL = undefined; memo.cL = undefined; memo.cR = undefined; memo.diff = undefined; }
     const natural = !!state.natural;
-    const pose = taiChiPose({ bf: natural ? 0 : bf, isRising: natural ? true : isRising, movementType: type, idle: idle || natural, natural, seated: false, sway: 0 }, memo);
+    const pose = taiChiPose({ bf: natural ? 0 : bf, isRising: natural ? true : isRising, movementType: type, idle: idle || natural, natural, seated: false, sway: 0, treeLeg: state.treeLeg }, memo);
     const { sinkY, leanBackY, bodyShift, bowBend, palmVis, meetW } = pose;
     const isBow = type === 'deep-bow-5-5' || type === 'bow';
     const isSky = type === 'qigong-lifting-sky';
@@ -858,13 +882,55 @@ export function createTaiChi3D(mount: HTMLElement, onTrouble: () => void): TaiCh
     cosmosMat.color.setScalar(0.8 + 0.25 * bf);
 
     // Legs: the feet stay; the hips and knees follow the weight and the sink.
-    _hipL3.set(shift3X - 0.095, to3DY(HEM_Y - 3 + sinkY), 0);
-    _hipR3.set(shift3X + 0.095, to3DY(HEM_Y - 3 + sinkY), 0);
-    const kneeZ = 0.022 + sinkY * 0.012 + bowBend * 0.03;
-    _kneeL3.set(leftLeg.xFoot + shift3X * 0.55, to3DY(KNEE_Y + sinkY * 0.5 + bowBend * 1.5), kneeZ);
-    _kneeR3.set(rightLeg.xFoot + shift3X * 0.55, to3DY(KNEE_Y + sinkY * 0.5 + bowBend * 1.5), kneeZ);
-    _ankL3.set(leftLeg.xFoot, 0.146, leftLeg.footZ);
-    _ankR3.set(rightLeg.xFoot, 0.146, rightLeg.footZ);
+    const legs = pose.legs;
+    for (const leg of [leftLeg, rightLeg]) {
+      leg.ankleRoot.position.set(leg.xFoot, ANKLE_3Y, leg.footZ);
+      leg.ankleRoot.quaternion.identity();
+      leg.footPivot.quaternion.identity();
+    }
+    if (legs) {
+      // The Tree: the legs through their joints (taiChiPose.treeLegs). The
+      // knees bend mostly towards us; the lifted one also turns out.
+      _hipL3.set(to3DX(legs.hipL.x), to3DY(legs.hipL.y), 0);
+      _hipR3.set(to3DX(legs.hipR.x), to3DY(legs.hipR.y), 0);
+      _kneeL3.set(to3DX(legs.kneeL.x), to3DY(legs.kneeL.y), 0.012 + legs.kneeFwdL * SCALE);
+      _kneeR3.set(to3DX(legs.kneeR.x), to3DY(legs.kneeR.y), 0.012 + legs.kneeFwdR * SCALE);
+      const u = legs.lift;
+      const up = legs.liftSide < 0 ? leftLeg : rightLeg;
+      const upAnk = legs.liftSide < 0 ? _ankL3 : _ankR3, stAnk = legs.liftSide < 0 ? _ankR3 : _ankL3;
+      const st = legs.liftSide < 0 ? rightLeg : leftLeg;
+      const a2 = legs.liftSide < 0 ? legs.ankleL : legs.ankleR;
+      stAnk.set(st.xFoot, ANKLE_3Y, st.footZ);
+      // The lifted ankle joint (2D: the ankle) comes a little forward, to rest
+      // against the inside of the calf; the trouser leg ends a hand's width
+      // above it, back along the shin, so the bare ankle never cuts the calf.
+      const ls = legs.liftSide;
+      const knee = ls < 0 ? _kneeL3 : _kneeR3;
+      _hint.set(to3DX(a2.x), 0.064 + (ANKLE_Y - a2.y) * SCALE, up.footZ + 0.07 * u);
+      _vDir.subVectors(knee, _hint).normalize();
+      _quat.setFromUnitVectors(_vUp, _vDir);
+      up.ankleRoot.quaternion.identity().slerp(_quat, smc(u / 0.5));
+      _rule.set(0, ANKLE_3Y - 0.064, 0).applyQuaternion(up.ankleRoot.quaternion);
+      upAnk.copy(_hint).add(_rule);
+      up.ankleRoot.position.copy(upAnk);
+      // The foot turns from flat to resting upright against the inside of
+      // the standing calf: the sole towards it, the toes down and a little forward.
+      _f3.set(-ls * 0.15, -0.85, 0.5).normalize();                   // the toes
+      _n3.set(ls, 0, 0).addScaledVector(_f3, -ls * _f3.x).normalize(); // the top of the foot, outwards
+      _x3.crossVectors(_n3, _f3);
+      _m4.makeBasis(_x3, _n3, _f3);
+      _qFoot.setFromRotationMatrix(_m4);
+      _qFoot2.identity().slerp(_qFoot, smc(u / 0.7));
+      up.footPivot.quaternion.copy(up.ankleRoot.quaternion).invert().multiply(_qFoot2);
+    } else {
+      _hipL3.set(shift3X - 0.095, to3DY(HEM_Y - 3 + sinkY), 0);
+      _hipR3.set(shift3X + 0.095, to3DY(HEM_Y - 3 + sinkY), 0);
+      const kneeZ = 0.022 + sinkY * 0.012 + bowBend * 0.03;
+      _kneeL3.set(leftLeg.xFoot + shift3X * 0.55, to3DY(KNEE_Y + sinkY * 0.5 + bowBend * 1.5), kneeZ);
+      _kneeR3.set(rightLeg.xFoot + shift3X * 0.55, to3DY(KNEE_Y + sinkY * 0.5 + bowBend * 1.5), kneeZ);
+      _ankL3.set(leftLeg.xFoot, ANKLE_3Y, leftLeg.footZ);
+      _ankR3.set(rightLeg.xFoot, ANKLE_3Y, rightLeg.footZ);
+    }
     updateSweptLimb(leftLeg.legLimb, _hipL3, _kneeL3, _ankL3, null);
     updateSweptLimb(rightLeg.legLimb, _hipR3, _kneeR3, _ankR3, null);
 
@@ -911,6 +977,12 @@ export function createTaiChi3D(mount: HTMLElement, onTrouble: () => void): TaiCh
       const inR = isCloud ? 0 : Math.max(0, Math.sin((pose.rightRot * Math.PI) / 180));
       _hL3.x = Math.min(_hL3.x, -0.13 * smc((inL - 0.45) / 0.35));
       _hR3.x = Math.max(_hR3.x, 0.13 * smc((inR - 0.45) / 0.35));
+      if (type === TREE) {
+        // The Tree's arms move out at the sides, in the body's own plane: the
+        // hands only a little in front, overhead too (as in the video).
+        const zL = 0.04 + 0.05 * smc((to3DY(pose.hL.y) - 1.0) / 0.6);
+        _hL3.z = zL; _hR3.z = zL;
+      }
       mapElbow3D({ x: pose.eL.x, y: pose.eL.y + sinkY }, _sL3, _hL3, _eL3);
       mapElbow3D({ x: pose.eR.x, y: pose.eR.y + sinkY }, _sR3, _hR3, _eR3);
       if (isSky) {

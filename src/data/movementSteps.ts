@@ -93,6 +93,32 @@ const STEPS: Record<string, Partial<Record<Kind, L>>> = {
       en: 'If your shoulders hurt, raise the arms only as far as is comfortable.',
     },
   },
+  'tai-chi-tree': {
+    stance: {
+      el: 'Στέκεσαι κοντά σε τοίχο, με τα πόδια λίγο ανοιχτά και τα γόνατα μαλακά· τα χέρια κρέμονται χαλαρά στο πλάι.',
+      en: 'Stand near a wall, feet a little apart and knees soft; the arms hang loosely at your sides.',
+    },
+    in: {
+      el: 'Ο άξονας, το βάρος, περνά αργά στο ένα πόδι. Το άλλο γόνατο λυγίζει προς τα έξω και το πέλμα ανεβαίνει και ακουμπά χαμηλά, στη γάμπα του ποδιού που στέκεται. Μαζί τα χέρια ανεβαίνουν από το πλάι σε ανοιχτό τόξο πάνω από το κεφάλι: οι αγκώνες ψηλά και έξω, οι παλάμες χωριστά.',
+      en: 'The axis, your weight, moves slowly onto one leg. The other knee bends outwards and the foot rises to rest low, against the calf of the standing leg. At the same time the arms rise out from the sides into a wide arch above the head: elbows high and out, the palms apart.',
+    },
+    holdIn: {
+      el: 'Μένεις λίγο στο δέντρο, χωρίς να σφίγγεις.',
+      en: 'Stay a moment in the tree, without tightening.',
+    },
+    out: {
+      el: 'Το πόδι κατεβαίνει και πατά στη γη, που το δέχεται και το στηρίζει, και ο άξονας γυρίζει στη μέση. Τα χέρια ανοίγουν στο πλάι και κατεβαίνουν.',
+      en: 'The foot comes down onto the earth, which receives and supports it, and the axis returns to the middle. The arms open out to the sides and come down.',
+    },
+    holdOut: {
+      el: 'Στέκεσαι στα δύο πόδια. Στον επόμενο κύκλο, η άλλη πλευρά.',
+      en: 'Stand on both feet. In the next cycle, the other side.',
+    },
+    care: {
+      el: 'Το πόδι ακουμπά χαμηλά, στη γάμπα, ώστε να μπορεί να πατήσει αν δεν νιώθεις σιγουριά. Αν νιώθεις ανασφάλεια, άφησε τη μύτη του ποδιού να ακουμπά στο πάτωμα. Η ισορροπία έρχεται σιγά σιγά, όταν εμπιστεύεσαι το σώμα σου.',
+      en: 'The foot rests low, at the calf, so that it can step down if you do not feel sure. If you feel unsteady, let the tip of the foot keep touching the floor. Balance comes little by little, as you trust your body.',
+    },
+  },
   lotus: {
     stance: {
       el: 'Στέκεσαι με τα πόδια λίγο πιο ανοιχτά από τους ώμους και τα γόνατα μαλακά· οι παλάμες ενωμένες μπροστά στο στήθος. Γίνεται και σε καρέκλα.',

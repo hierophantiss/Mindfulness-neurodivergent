@@ -6,7 +6,7 @@
 import { memo, useMemo, useRef } from "react";
 import { motion } from "motion/react";
 import {
-  type Pt, type PoseMemo, taiChiPose,
+  type Pt, type PoseMemo, type TreeLeg, type TreeLegs, taiChiPose,
   SHOULDER_Y, HEART_Y, HEM_Y, KNEE_Y, SEAT_PIVOT,
 } from "../lib/taiChiPose";
 
@@ -84,6 +84,28 @@ function sleeveParts(s: Pt, e: Pt, h: Pt, grow = 0): string[] {
   return [dot(s, r.s), seg(s, e, r.s, r.e), dot(e, r.e), seg(e, h, r.e, r.h), dot(h, r.h)];
 }
 
+/**
+ * A leg of the joggers through its joints (the Tree, where the knee bends and
+ * lifts): full at the hip, in at the knee, slimmer to the cuff. An outline
+ * round the line hip → knee → ankle, as smooth as the straight legs.
+ */
+function jointLegPath(hip: Pt, knee: Pt, ankle: Pt): string {
+  const lerp = (a: Pt, b: Pt, k: number): Pt => ({ x: a.x + (b.x - a.x) * k, y: a.y + (b.y - a.y) * k });
+  // The leg ends where the cuff begins, a little above the ankle.
+  const shinLen = Math.max(1e-3, Math.hypot(ankle.x - knee.x, ankle.y - knee.y));
+  const end = lerp(ankle, knee, 1.6 / shinLen);
+  const pts = [hip, lerp(hip, knee, 0.5), knee, lerp(knee, end, 0.5), end];
+  const radii = [5.6, 4.7, 3.7, 3.5, 3.1];
+  const normals = pts.map((_, i) => {
+    const a = pts[Math.max(0, i - 1)], b = pts[Math.min(pts.length - 1, i + 1)];
+    const dx = b.x - a.x, dy = b.y - a.y, l = Math.max(1e-6, Math.hypot(dx, dy));
+    return { x: -dy / l, y: dx / l };
+  });
+  const A = pts.map((p, i) => ({ x: p.x + normals[i].x * radii[i], y: p.y + normals[i].y * radii[i] }));
+  const B = pts.map((p, i) => ({ x: p.x - normals[i].x * radii[i], y: p.y - normals[i].y * radii[i] })).reverse();
+  return `M ${f2(A[0].x)} ${f2(A[0].y)}${through(A)} L ${f2(B[0].x)} ${f2(B[0].y)}${through(B)} Z`;
+}
+
 // A bare foot seen from the front (the right; the left is its mirror): from
 // the ankle in the cuff, widening to the toes, which turn a little outward.
 const FOOT_X = 6.5;
@@ -131,6 +153,55 @@ const SeatedLegs = memo(function SeatedLegs() {
 });
 
 
+/** A bare foot (as on the earth), at an ankle, turned by `rot` degrees. */
+function Foot({ at, side, rot = 0 }: { at: Pt; side: 1 | -1; rot?: number }) {
+  return (
+    <g transform={`translate(${f2(at.x)}, ${f2(at.y)}) rotate(${f2(rot)}) translate(0, 2) scale(${side}, 1)`}>
+      <path d={FOOT_PATH} fill="#e5bda3" />
+      <path d="M -2.7 -1 L 2.7 -1 L 2.8 0.6 L -2.8 0.6 Z" fill="#d9b197" />
+      {TOES.map(([x, y, r], i) => <circle key={i} cx={x} cy={y} r={r} fill="#d9b197" />)}
+    </g>
+  );
+}
+
+/** The cuff at an ankle, along the shin. */
+function Cuff({ knee, ankle }: { knee: Pt; ankle: Pt }) {
+  const deg = (Math.atan2(-(ankle.x - knee.x), ankle.y - knee.y) * 180) / Math.PI;
+  return <rect x={-3.3} y={-2} width={6.6} height={4} rx={1.4} fill="#1b241d" transform={`translate(${f2(ankle.x)}, ${f2(ankle.y)}) rotate(${f2(deg)})`} />;
+}
+
+/**
+ * The Tree's legs. The standing leg and its foot stay planted; the lifted
+ * leg is drawn in front, its knee out, its foot resting low against the
+ * inside of the standing calf, the toes tucked just behind it.
+ */
+function TreeLegsDrawing({ legs }: { legs: TreeLegs }) {
+  const ls = legs.liftSide, ss = -ls as 1 | -1;
+  const side = (s: 1 | -1) => s < 0
+    ? { hip: legs.hipL, knee: legs.kneeL, ankle: legs.ankleL }
+    : { hip: legs.hipR, knee: legs.kneeR, ankle: legs.ankleR };
+  const st = side(ss), up = side(ls);
+  const fold = (j: { hip: Pt; knee: Pt; ankle: Pt }) => {
+    const k = j.knee;
+    return `M ${f2(k.x - 3)} ${f2(k.y - 0.8)} q 3 1.3 6 0 M ${f2(k.x - 2.4)} ${f2(k.y + 3)} q 2.4 1 4.8 0`;
+  };
+  return (
+    <g id="tc-tree-legs">
+      {/* the lifted foot first: its toes tuck behind the standing ankle */}
+      <Foot at={up.ankle} side={ls} rot={legs.footRot} />
+      <Foot at={st.ankle} side={ss} />
+      <g fill="url(#tc-pants-shade)" stroke="#1b241d" strokeWidth="0.5">
+        <path d={jointLegPath(st.hip, st.knee, st.ankle)} />
+        <path fill="none" strokeOpacity={0.6} d={fold(st)} />
+        <Cuff knee={st.knee} ankle={st.ankle} />
+        <path d={jointLegPath(up.hip, up.knee, up.ankle)} />
+        <path fill="none" strokeOpacity={0.6 * (1 - legs.lift)} d={fold(up)} />
+        <Cuff knee={up.knee} ankle={up.ankle} />
+      </g>
+    </g>
+  );
+}
+
 interface TaiChiHeroProps {
   breathForce: number; // 0 to 1
   isRising: boolean; // true = inhaling, false = exhaling
@@ -158,6 +229,8 @@ interface TaiChiHeroProps {
   sway?: number;
   /** Standing at ease: the arms drawn up and out a little (0–1). */
   armsUp?: number;
+  /** The Tree: which of the person's legs lifts (they take turns, cycle by cycle). */
+  treeLeg?: TreeLeg;
 }
 
 export default function TaiChiHero({
@@ -174,6 +247,7 @@ export default function TaiChiHero({
   seated = false,
   sway = 0,
   armsUp = 0,
+  treeLeg = "right",
 }: TaiChiHeroProps) {
   const natural = stance === "natural" || seated;
   // The Tai Chi flows move as the 5-5 Sync (from Theodoros's video), in their own rhythms.
@@ -217,8 +291,8 @@ export default function TaiChiHero({
   const memo = useRef<PoseMemo>({});
   const trailRef = useRef<{ type?: string; pts: { t: number; l: Pt; r: Pt }[] }>({ pts: [] });
   if (memo.current.type !== movementType || idle) memo.current = { type: movementType };
-  const { sL, sR, eL: eLf, hL: hLf, eR, hR, leftRot, rightRot: rightHandRotation, palmVis, bodyShift, sinkY, torsoBendY, leanBackY, bowBend } =
-    taiChiPose({ bf, isRising, movementType, idle, natural, seated, sway, armsUp }, memo.current);
+  const { sL, sR, eL: eLf, hL: hLf, eR, hR, leftRot, rightRot: rightHandRotation, palmVis, bodyShift, sinkY, torsoBendY, leanBackY, bowBend, legs } =
+    taiChiPose({ bf, isRising, movementType, idle, natural, seated, sway, armsUp, treeLeg }, memo.current);
 
   // ── Light trails: each palm leaves a soft trail that fades in under a
   // second, so the path of the movement can be seen (the arc of the 5-5, the
@@ -508,13 +582,16 @@ export default function TaiChiHero({
           {/* The figure stands on the earth: a soft shadow under the feet */}
           {!figureOnly && (seated
             ? <ellipse cx={200} cy={SEAT_FLOOR + 0.6} rx={36} ry={3} fill="url(#tc-foot-shadow)" />
-            : <ellipse cx={200} cy={289} rx={17} ry={2.6} fill="url(#tc-foot-shadow)" />)}
+            : <ellipse cx={200 + (legs ? legs.shift * 0.7 : 0)} cy={289} rx={17 - (legs ? 5 * legs.lift : 0)} ry={2.6} fill="url(#tc-foot-shadow)" />)}
           {!backdrop && (<>
           {seated && <SeatedLegs />}
 
+          {/* The Tree: the legs through their joints, one of them lifted */}
+          {!seated && legs && <TreeLegsDrawing legs={legs} />}
+
           {/* CHARACTER / HERO MODEL: drawn from one half and its mirror, so both sides match */}
           {/* Bare feet on the earth */}
-          {!seated && ([-1, 1] as const).map(side => (
+          {!seated && !legs && ([-1, 1] as const).map(side => (
             <g key={side} id={side < 0 ? 'tc-left-foot' : 'tc-right-foot'} transform={`translate(${200 + side * FOOT_X}, 283) scale(${side}, 1)`}>
               <path d={FOOT_PATH} fill="#e5bda3" />
               <path d="M -2.7 -1 L 2.7 -1 L 2.8 0.6 L -2.8 0.6 Z" fill="#d9b197" />
@@ -523,7 +600,7 @@ export default function TaiChiHero({
           ))}
 
           {/* LEGS: joggers in the meditator's green, so it is the same person everywhere */}
-          {!seated && <g id="tc-legs" fill="url(#tc-pants-shade)" stroke="#1b241d" strokeWidth="0.5" transform={bodyShift ? `translate(0, 283) skewX(${(-Math.atan2(bodyShift, 38) * 180) / Math.PI}) translate(0, -283)` : undefined}>
+          {!seated && !legs && <g id="tc-legs" fill="url(#tc-pants-shade)" stroke="#1b241d" strokeWidth="0.5" transform={bodyShift ? `translate(0, 283) skewX(${(-Math.atan2(bodyShift, 38) * 180) / Math.PI}) translate(0, -283)` : undefined}>
             {([-1, 1] as const).map(side => <path key={side} d={legPath(side, HEM_Y - 3 + sinkY, sinkY)} />)}
             {/* Soft folds at the knees, and where the cuff gathers */}
             {([-1, 1] as const).map(side => {

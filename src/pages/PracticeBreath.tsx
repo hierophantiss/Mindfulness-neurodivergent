@@ -882,6 +882,8 @@ export default function PracticeBreath() {
                       isRising={running ? isInhale : demo ? demo.rising : true}
                       breathStateText={demo ? demo.label : ""}
                       movementType={pattern.visualizer || pattern.id}
+                      // The Tree: the right leg first, then the left, cycle by cycle.
+                      treeLeg={cycles % 2 === 0 ? 'right' : 'left'}
                       rhythmText=""
                       idle={!running && !demo}
                     />

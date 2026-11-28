@@ -447,6 +447,52 @@ export const BREATH_PATTERNS: BreathPattern[] = [
     ],
   },
   {
+    // The Tree, as Theodoros does it (from his video): balance on one leg, the
+    // sides taking turns cycle by cycle (the figure: taiChiPose, TREE).
+    id: "tai-chi-tree",
+    stance: 'standing',
+    axis: 'body',
+    category: "movement",
+    hasBinaural: true,
+    title: { el: "Δέντρο", en: "Tree" },
+    subtitle: { el: "Ισορροπία & Ρίζωμα", en: "Balance & Rooting" },
+    desc: {
+      el: "Με την εισπνοή το βάρος περνά αργά στο ένα πόδι· το άλλο γόνατο λυγίζει, το πέλμα ακουμπά χαμηλά στη γάμπα, και τα χέρια ανεβαίνουν σε τόξο πάνω από το κεφάλι. Με την εκπνοή το πόδι ξαναπατά στη γη. Κάθε φορά η άλλη πλευρά. Κάνε την άσκηση κοντά σε τοίχο.",
+      en: "With the inhale, the weight moves slowly onto one leg; the other knee bends, the foot rests low against the calf, and the arms rise in an arch above the head. With the exhale, the foot comes back down to the earth. Each time, the other side. Do it near a wall.",
+    },
+    totalCycleDurationMs: 12000,
+    audioConfig: {
+      base: 200,
+      beat: 10,
+      pulse: 0,
+      ambientLayers: ['ocean', 'wind'],
+    },
+    phases: [
+      { dur: 5000, armFrom: 0, armTo: 1 },
+      { dur: 1000, armFrom: 1, armTo: 1 },
+      { dur: 5000, armFrom: 1, armTo: 0 },
+      { dur: 1000, armFrom: 0, armTo: 0 },
+    ],
+    labels: [
+      {
+        label: { el: "Εισπνοή", en: "Inhale" },
+        sub: { el: "μετατόπιση (5s)", en: "shift (5s)" },
+      },
+      {
+        label: { el: "Παύση", en: "Pause" },
+        sub: { el: "δέντρο (1s)", en: "tree (1s)" },
+      },
+      {
+        label: { el: "Εκπνοή", en: "Exhale" },
+        sub: { el: "επιστροφή στη γη (5s)", en: "back to the earth (5s)" },
+      },
+      {
+        label: { el: "Παύση", en: "Pause" },
+        sub: { el: "στα δύο πόδια (1s)", en: "on both feet (1s)" },
+      },
+    ],
+  },
+  {
     id: "box-breathing",
     evidence: { en: 'In a 4-week study, box breathing was one of the techniques that improved mood; breathing with a long exhale helped more', el: 'Σε μελέτη 4 εβδομάδων, η τετράγωνη αναπνοή ήταν μία από τις τεχνικές που βελτίωσαν τη διάθεση· η αναπνοή με μακριά εκπνοή βοήθησε περισσότερο', ref: 'study-balban' },
     axis: 'breath',

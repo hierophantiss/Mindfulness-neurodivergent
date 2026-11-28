@@ -698,8 +698,8 @@ const axisInfo = {
           shape="shape-cloud-3 hover:border-indigo-500/20" glow="bg-indigo-500/15"
           title={language === 'en' ? 'Movement and Tai Chi' : 'Κίνηση και Τάι Τσι'}
           desc={language === 'en'
-            ? 'Slow movements with the breath, many of them on a chair too: Cloud Hands, Qigong, Swaying, the Tai Chi and Lotus flows.'
-            : 'Αργές κινήσεις μαζί με την αναπνοή, πολλές και σε καρέκλα: Χέρια στα Σύννεφα, Qigong, Λίκνισμα, οι ροές Τάι Τσι και Λωτός.'}
+            ? 'Slow movements with the breath, many of them on a chair too: Cloud Hands, Qigong, the Tree, Swaying, the Tai Chi and Lotus flows.'
+            : 'Αργές κινήσεις μαζί με την αναπνοή, πολλές και σε καρέκλα: Χέρια στα Σύννεφα, Qigong, Δέντρο, Λίκνισμα, οι ροές Τάι Τσι και Λωτός.'}
           figure={<div className="w-[76px] h-[76px] desk:w-[136px] desk:h-[112px] desk:-ml-4 desk:-mt-3 desk:-mb-3 overflow-hidden group-hover:scale-105 transition-transform duration-500 [mask-image:radial-gradient(ellipse_at_50%_40%,black_55%,transparent_78%)]" style={{ background: 'radial-gradient(closest-side, color-mix(in srgb, var(--axis-body-ink) 32%, transparent), transparent)' }}>
             <div className="w-full origin-[50%_60%] scale-[1.12]">
               <TaiChiHero breathForce={0} isRising={false} breathStateText="" movementType="be-like-a-flower-5-5" bare />
