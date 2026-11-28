@@ -95,7 +95,7 @@ export const CHECKIN_OPTIONS: CheckinOption[] = [
     pinned: [{
       title: { el: 'Παρατήρηση επαφής', en: 'Noticing contact' },
       path: '/practice/body/contact-observe',
-      dur: { el: '30 δευτ.', en: '30 sec' },
+      dur: { el: '2 λεπτά', en: '2 min' },
       axis: 'body',
     }],
   },
